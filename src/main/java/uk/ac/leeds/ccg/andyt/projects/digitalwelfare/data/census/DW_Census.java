@@ -41,8 +41,8 @@ public class DW_Census {
      * digitalWelfareDir.
      */
     public static TreeSet<String> getLADCensusCodes(
-            String level,
-            String area) {
+            String area,
+            String level) {
         TreeSet<String> result = new TreeSet<String>();
         File censusDataDirectory = new File(
                 DW_Files.getInputCensus2011Dir(level),

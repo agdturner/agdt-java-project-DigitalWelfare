@@ -43,9 +43,9 @@ import uk.ac.leeds.ccg.andyt.generic.math.Generic_double;
  * @author Hal Mirsky
  *
  */
-public class DW_ChoroplethMapLegendLayer extends DirectLayer {
+public class DW_LegendLayer extends DirectLayer {
 
-    private List<LegendItem> legendItems;
+    private List<DW_LegendItem> legendItems;
     private MapContent mc;
     ReferencedEnvelope bounds;
 
@@ -95,21 +95,13 @@ public class DW_ChoroplethMapLegendLayer extends DirectLayer {
     private int legendUpperLeftX;
     private int legendUpperLeftY;
 
-    public static class LegendItem {
+    
+    
 
-        public String label;
-        public Color color;
-
-        public LegendItem(String l, Color c) {
-            label = l;
-            color = c;
-        }
-    }
-
-    public DW_ChoroplethMapLegendLayer(
+    public DW_LegendLayer(
             String mapTitle,
             String legendTitle,
-            List<LegendItem> legendItems,
+            List<DW_LegendItem> legendItems,
             MapContent mc,
             int imageWidth,
             int imageHeight,
@@ -151,7 +143,7 @@ public class DW_ChoroplethMapLegendLayer extends DirectLayer {
     public final void init(
             String mapTitle,
             String legendTitle,
-            List<LegendItem> legendItems,
+            List<DW_LegendItem> legendItems,
             MapContent mc,
             int imageWidth,
             int imageHeight,
@@ -268,10 +260,10 @@ public class DW_ChoroplethMapLegendLayer extends DirectLayer {
         int maxWidth = 0;
         int maxHeight = 0;
         for (int i = 0; i < legendItems.size(); i++) {
-            DW_ChoroplethMapLegendLayer.LegendItem li = legendItems.get(i);
+            DW_LegendItem li = legendItems.get(i);
             Rectangle2D b;
             b = legendItemFont.getStringBounds(
-                    li.label,
+                    li.getLabel(),
                     frc);
             // width
             int w;
@@ -340,7 +332,7 @@ public class DW_ChoroplethMapLegendLayer extends DirectLayer {
             graphics.setFont(legendItemFont);
             for (int i = 0; i < legendItems.size(); i++) {
                 graphics.setColor(Color.BLACK);
-                String label = legendItems.get(i).label;
+                String label = legendItems.get(i).getLabel();
                 Rectangle regionIcon;
                 regionIcon = new Rectangle(
                         //insetWidth + legendWidth - marginWidth - legendIconWidth + upperLeftX, // For end placement
@@ -353,8 +345,8 @@ public class DW_ChoroplethMapLegendLayer extends DirectLayer {
                         //insetWidth + marginWidth + upperLeftX, // For start placement
                         startLegendX + legendIconWidth + spaceWidth, // For end placement
                         startLegendTitleY + spaceHeight + (i * (spaceHeight + legendItemLabelMaxHeight)) + legendItemLabelMaxHeight);
-                if (legendItems.get(i).color != null) {
-                    graphics.setColor(legendItems.get(i).color);
+                if (legendItems.get(i).getColor() != null) {
+                    graphics.setColor(legendItems.get(i).getColor());
                     graphics.fill(regionIcon);
                     graphics.setColor(Color.BLACK);
                     graphics.draw(regionIcon);

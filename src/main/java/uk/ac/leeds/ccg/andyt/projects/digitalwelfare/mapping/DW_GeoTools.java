@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.brewer.color.ColorBrewer;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureSource;
@@ -56,19 +55,15 @@ import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.swing.JMapFrame;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.expression.Expression;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Execution;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps.getOutputImageFile;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_ChoroplethMapLegendLayer.LegendItem;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMaps;
 
 /**
  * A class for holding various useful methods for doing things with DW_GeoTools
@@ -116,11 +111,11 @@ public class DW_GeoTools {
         
                 
                 // Add a legendLayer
-                ArrayList<LegendItem> legendItems;
-                legendItems = (ArrayList<LegendItem>) legendItemsAndStyle[1];
+                ArrayList<DW_LegendItem> legendItems;
+                legendItems = (ArrayList<DW_LegendItem>) legendItemsAndStyle[1];
             if (legendItems != null) {
                 boolean addLegendToTheSide = true;
-                DW_ChoroplethMapLegendLayer ll = new DW_ChoroplethMapLegendLayer(
+                DW_LegendLayer ll = new DW_LegendLayer(
                         "Map title.................................",
                         "Legend",
                         legendItems,
@@ -193,7 +188,7 @@ public class DW_GeoTools {
             File mapDirectory,
             String png_String,
             int imageWidth,
-            Object[] styleParameters,
+            DW_StyleParameters styleParameters,
             boolean showMapsInJMapPane) {
         //Style resultStyle;
         String title = outname;
@@ -279,22 +274,22 @@ public class DW_GeoTools {
             //File backgroundShapefile,
             FeatureLayer backgroundFeatureLayer,
             int imageWidth,
-            Object[] styleParameters) {
+            DW_StyleParameters styleParameters) {
         MapContent result;
         result = new MapContent();
         // Unbox styleParameters
         Style style;
-        style = (Style) styleParameters[0];
+        style = styleParameters.getStyle();
         String classificationFunctionName;
-        classificationFunctionName = (String) styleParameters[1];
+        classificationFunctionName = styleParameters.getClassificationFunctionName();
         int nClasses;
-        nClasses = (Integer) styleParameters[2];
+        nClasses = styleParameters.getnClasses();
         String paletteName;
-        paletteName = (String) styleParameters[3];
-        ArrayList<LegendItem> legendItems;
-        legendItems = (ArrayList<LegendItem>) styleParameters[4];
+        paletteName = styleParameters.getPaletteName();
+        ArrayList<DW_LegendItem> legendItems;
+        legendItems = styleParameters.getLegendItems();
         boolean addWhiteForZero;
-        addWhiteForZero = (Boolean) styleParameters[5];
+        addWhiteForZero = styleParameters.isAddWhiteForZero();
 //        Style backgroundStyle;
 //        backgroundStyle = (Style) styleParameters[6];
 //        String backgroundLayerTitle;
@@ -333,9 +328,9 @@ public class DW_GeoTools {
                             paletteName,
                             addWhiteForZero);
                     style = (Style) styleAndLegendItems[0];
-                    styleParameters[0] = style;
-                    legendItems = (ArrayList<LegendItem>) styleAndLegendItems[1];
-                    styleParameters[4] = legendItems;
+                    styleParameters.setStyle(style);
+                    legendItems = (ArrayList<DW_LegendItem>) styleAndLegendItems[1];
+                    styleParameters.setLegendItems(legendItems);
                 }
                 /* Add the features and the associated Style object to mc as a new 
                  * Layer
@@ -351,7 +346,7 @@ public class DW_GeoTools {
             // Add a legendLayer
             if (legendItems != null) {
                 boolean addLegendToTheSide = true;
-                DW_ChoroplethMapLegendLayer ll = new DW_ChoroplethMapLegendLayer(
+                DW_LegendLayer ll = new DW_LegendLayer(
                         "Map title.................................",
                         "Legend",
                         legendItems,
@@ -364,7 +359,7 @@ public class DW_GeoTools {
 
 //            // Add titleLayer
 //            if (legendItems != null) {
-//                DW_ChoroplethMapLegendLayer ll = new DW_ChoroplethMapLegendLayer(
+//                DW_LegendLayer ll = new DW_LegendLayer(
 //                        legendItems,
 //                        imageWidth,
 //                        imageHeight);

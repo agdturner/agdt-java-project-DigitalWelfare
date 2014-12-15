@@ -33,7 +33,6 @@ import org.geotools.brewer.color.StyleGenerator;
 import org.geotools.data.FeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.filter.function.Classifier;
 import org.geotools.filter.function.RangedClassifier;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.FeatureTypeStyle;
@@ -62,8 +61,6 @@ import org.opengis.filter.expression.PropertyName;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_double;
 import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_ChoroplethMapLegendLayer.LegendItem;
 
 /**
  *
@@ -74,70 +71,7 @@ public class DW_Style {
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
     static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
-    /**
-     * Initialise styleParameters
-     *
-     * @return
-     */
-    public static Object[] initStyleParameters() {
-        Object[] result = new Object[4];
-        Style style = null;
-        String classificationFunctionName = "";
-        int nClasses = 0;
-        String paletteName = "";
-        boolean addWhiteForZero = false;
-        Style backgroundStyle = null;
-        String backgroundStyleTitle = "";
-        return initStyleParameters(
-                classificationFunctionName,
-                nClasses,
-                paletteName,
-                addWhiteForZero, backgroundStyle,
-                backgroundStyleTitle);
-    }
-
-    /**
-     * Initialise styleParameters Deep copy everything but styleParameters[0]
-     *
-     * @return
-     */
-    public static Object[] initStyleParameters(Object[] styleParameters) {
-        Object[] result = new Object[4];
-        //result[0] = styleFactory.createStyle((Style) styleParameters[0]);
-        result[0] = (Style) styleParameters[0];
-        result[1] = ((String) styleParameters[1]).toString();
-        result[2] = ((Integer) styleParameters[2]).intValue();
-        result[3] = ((String) styleParameters[3]).toString();
-        return result;
-    }
-
-    /**
-     * Initialise styleParameters
-     *
-     * @param classificationFunctionName
-     * @param nClasses
-     * @param paletteName
-     * @return
-     */
-    public static Object[] initStyleParameters(
-            String classificationFunctionName,
-            int nClasses,
-            String paletteName,
-            boolean addWhiteForZero,
-            Style backgroundStyle,
-            String backgroundStyleTitle) {
-        Object[] result = new Object[8];
-        Style style = null;
-        result[0] = style;
-        result[1] = classificationFunctionName;
-        result[2] = nClasses;
-        result[3] = paletteName;
-        result[4] = new ArrayList<LegendItem>();
-        result[5] = addWhiteForZero;
-        result[6] = backgroundStyle;
-        result[7] = backgroundStyleTitle;
-        return result;
-    }
+    
 
     /**
      *
@@ -188,12 +122,7 @@ public class DW_Style {
     }
 
     /**
-     * Here is a programmatic alternative to using JSimpleStyleDialog to get a
-     * Style. This methods works out what sort of feature geometry we have in
-     * the shapefile and then delegates to an appropriate style creating method.
-     *
      * @param featureSource
-     * @param attributeName
      * @return
      */
     public static Style createStyle(
@@ -391,10 +320,13 @@ public class DW_Style {
                     colorsForLegend = colorsForRenderingFeatures;
                 }
                 // STEP 2b Sort Legend Items
-                ArrayList<LegendItem> legendItems = new ArrayList<LegendItem>();
+                ArrayList<DW_LegendItem> legendItems = new ArrayList<DW_LegendItem>();
                 if (addWhiteForZero) {
                     String newLabel = "0";
-                    LegendItem li = new LegendItem(newLabel, colorsForLegend[0]);
+                    DW_LegendItem li;
+                    li = new DW_LegendItem(
+                            newLabel,
+                            colorsForLegend[0]);
                     legendItems.add(li);
                 }
                 String[] titles;
@@ -425,11 +357,11 @@ public class DW_Style {
 
                     //legendItemName = "title " + title + ", min " + min + ", max " + max;
                     //System.out.println(legendItemName);
-                    LegendItem li;
+                    DW_LegendItem li;
                     if (addWhiteForZero) {
-                        li = new LegendItem(newLabel, colorsForLegend[i + 1]);
+                        li = new DW_LegendItem(newLabel, colorsForLegend[i + 1]);
                     } else {
-                        li = new LegendItem(newLabel, colorsForLegend[i]);
+                        li = new DW_LegendItem(newLabel, colorsForLegend[i]);
                     }
                     legendItems.add(li);
                 }
@@ -596,6 +528,7 @@ public class DW_Style {
     /**
      * Assuming min is 0.
      *
+     * @param normalisation
      * @param g
      * @param cov
      * @param classificationFunctionName
@@ -615,8 +548,8 @@ public class DW_Style {
             String paletteName,
             boolean addWhiteForZero) {
         Object[] result = new Object[2];
-        ArrayList<LegendItem> legendItems;
-        legendItems = new ArrayList<LegendItem>();
+        ArrayList<DW_LegendItem> legendItems;
+        legendItems = new ArrayList<DW_LegendItem>();
         String[] classNames;
         double[] breaks;
         Generic_double d = new Generic_double();
@@ -638,10 +571,10 @@ public class DW_Style {
             for (int i = 1; i < nClasses; i++) {
                 if (i < nClasses - 1) {
                     double roundedMinInterval;
-                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval/normalisation), 2, RoundingMode.UP).doubleValue();
+                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100/normalisation), 2, RoundingMode.UP).doubleValue();
                     
                     double roundedMaxInterval;
-                    roundedMaxInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + maxInterval/normalisation), 2, RoundingMode.UP).doubleValue();
+                    roundedMaxInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + maxInterval * 100/normalisation), 2, RoundingMode.UP).doubleValue();
                     
                     classNames[i] = "" + roundedMinInterval + " - " + roundedMaxInterval;
                     breaks[i] = minInterval;
@@ -649,10 +582,10 @@ public class DW_Style {
                     maxInterval += interval;
                 } else {
                     double roundedMinInterval;
-                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval/normalisation), 2, RoundingMode.UP).doubleValue();
+                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100/normalisation), 2, RoundingMode.UP).doubleValue();
                     
                     double roundedMax;
-                    roundedMax = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + max/normalisation), 2, RoundingMode.UP).doubleValue();
+                    roundedMax = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + max * 100/normalisation), 2, RoundingMode.UP).doubleValue();
                     classNames[i] = "" + roundedMinInterval + " - " + roundedMax;
                     breaks[i] = minInterval;
                 }
@@ -665,10 +598,10 @@ public class DW_Style {
                     
                     
                     double roundedMinInterval;
-                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval/normalisation), 2, RoundingMode.UP).doubleValue();
+                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100/normalisation), 2, RoundingMode.UP).doubleValue();
                     
                     double roundedMaxInterval;
-                    roundedMaxInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + maxInterval/normalisation), 2, RoundingMode.UP).doubleValue();
+                    roundedMaxInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + maxInterval * 100/normalisation), 2, RoundingMode.UP).doubleValue();
                     
                     classNames[i] = "" + roundedMinInterval + " - " + roundedMaxInterval;
                     breaks[i] = minInterval;
@@ -676,10 +609,10 @@ public class DW_Style {
                     maxInterval += interval;
                 } else {
                     double roundedMinInterval;
-                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval/normalisation), 2, RoundingMode.UP).doubleValue();
+                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100/normalisation), 2, RoundingMode.UP).doubleValue();
                     
                     double roundedMax;
-                    roundedMax = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + max/normalisation), 2, RoundingMode.UP).doubleValue();
+                    roundedMax = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + max * 100/normalisation), 2, RoundingMode.UP).doubleValue();
                     classNames[i] = "" + roundedMinInterval + " - " + roundedMax;
                     breaks[i] = minInterval;
                 }
@@ -706,8 +639,8 @@ public class DW_Style {
         style = sb.createStyle(sb.createRasterSymbolizer(cm, 1));
         result[0] = style;
         for (int i = 0; i < nClasses; i++) {
-             LegendItem li;
-                    li = new LegendItem(classNames[i],colors[i]);
+             DW_LegendItem li;
+                    li = new DW_LegendItem(classNames[i],colors[i]);
                     legendItems.add(li);
         }
         result[1] = legendItems;

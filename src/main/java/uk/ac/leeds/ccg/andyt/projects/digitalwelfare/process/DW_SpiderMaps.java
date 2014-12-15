@@ -53,7 +53,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.EnquiryCli
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_GeoTools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_CensusAreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
 
 /**
  *
@@ -95,7 +97,8 @@ public class DW_SpiderMaps extends DW_Maps {
         // screen in a JMapPane otherwise maps are only written to file.
         boolean showMapsInJMapPane;
         // Initialise styleParameters
-        Object[] styleParameters = DW_Style.initStyleParameters();
+        DW_StyleParameters styleParameters;
+        styleParameters = new DW_StyleParameters();
         int imageWidth = 500;
         
         ShapefileDataStoreFactory sdsf;
@@ -122,7 +125,7 @@ public class DW_SpiderMaps extends DW_Maps {
             ShapefileDataStoreFactory sdsf,
             String outname,
             boolean showMapsInJMapPane,
-            Object[] styleParameters,
+            DW_StyleParameters styleParameters,
             int imageWidth) throws Exception {
 
         // Property for selecting
@@ -135,35 +138,35 @@ public class DW_SpiderMaps extends DW_Maps {
         // Get LSOA Codes, LSOA Shapefile and Leeds LSOA Shapefile
         System.out.println("Get LSOA Codes, LSOA Shapefile and Leeds LSOA Shapefile");
         level = "LSOA";
-        Object[] tLSOACodesAndLeedsLSOAShapefile;
-        tLSOACodesAndLeedsLSOAShapefile = DW_Maps.getCensusAreaCodesAndLeedsShapefile(
+        DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
+        tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
                 level, targetPropertyNameLSOA, sdsf);
         TreeSet<String> tLSOACodes;
-        tLSOACodes = (TreeSet<String>) tLSOACodesAndLeedsLSOAShapefile[0];
-        File tLSOAShapefile = (File) tLSOACodesAndLeedsLSOAShapefile[1];
+        tLSOACodes =  tLSOACodesAndLeedsLSOAShapefile.getLeedsCensusAreaCodes();
+        File tLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
         FeatureCollection tLSOAFeatureCollection;
-        tLSOAFeatureCollection = (FeatureCollection) tLSOACodesAndLeedsLSOAShapefile[2];
+        tLSOAFeatureCollection = tLSOACodesAndLeedsLSOAShapefile.getLevelFC();
         SimpleFeatureType tLSOAFeatureType;
-        tLSOAFeatureType = (SimpleFeatureType) tLSOACodesAndLeedsLSOAShapefile[3];
-        File leedsLSOAShapefile = (File) tLSOACodesAndLeedsLSOAShapefile[4];
+        tLSOAFeatureType = tLSOACodesAndLeedsLSOAShapefile.getLevelSFT();
+        File leedsLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
         //backgroundShapefile = leedsLSOAShapefile;
 
         // Get MSOA Codes, MSOA Shapefile and Leeds MSOA Shapefile
         level = "MSOA";
-        Object[] tMSOACodesAndLeedsMSOAShapefile;
-        tMSOACodesAndLeedsMSOAShapefile = DW_Maps.getCensusAreaCodesAndLeedsShapefile(
+        DW_CensusAreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
+        tMSOACodesAndLeedsMSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
                 level, targetPropertyNameMSOA, sdsf);
         TreeSet<String> tMSOACodes;
-        tLSOACodes = (TreeSet<String>) tMSOACodesAndLeedsMSOAShapefile[0];
-        File tMSOAShapefile = (File) tMSOACodesAndLeedsMSOAShapefile[1];
+        tLSOACodes = tMSOACodesAndLeedsMSOAShapefile.getLeedsCensusAreaCodes();
+        File tMSOAShapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelShapefile();
         FeatureCollection tMSOAFeatureCollection;
-        tMSOAFeatureCollection = (FeatureCollection) tMSOACodesAndLeedsMSOAShapefile[2];
+        tMSOAFeatureCollection = tMSOACodesAndLeedsMSOAShapefile.getLevelFC();
         SimpleFeatureType tMSOAFeatureType;
-        tMSOAFeatureType = (SimpleFeatureType) tMSOACodesAndLeedsMSOAShapefile[3];
-        File leedsMSOAShapefile = (File) tMSOACodesAndLeedsMSOAShapefile[4];
+        tMSOAFeatureType = tMSOACodesAndLeedsMSOAShapefile.getLevelSFT();
+        File leedsMSOAShapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelShapefile();
         backgroundShapefile = leedsMSOAShapefile;
 
-        Style backgroundStyle = (Style) styleParameters[6];
+        Style backgroundStyle = styleParameters.getBackgroundStyle();
         FeatureLayer backgroundFeatureLayer = DW_GeoTools.getFeatureLayer(
                 leedsLSOAShapefile,
                 backgroundStyle);
@@ -621,7 +624,7 @@ public class DW_SpiderMaps extends DW_Maps {
             ShapefileDataStoreFactory sdsf,
             String outname,
             boolean showMapsInJMapPane,
-            Object[] styleParameters,
+            DW_StyleParameters styleParameters,
             int imageWidth) throws Exception {
 
         // Property for selecting
@@ -634,35 +637,35 @@ public class DW_SpiderMaps extends DW_Maps {
         // Get LSOA Codes, LSOA Shapefile and Leeds LSOA Shapefile
         System.out.println("Get LSOA Codes, LSOA Shapefile and Leeds LSOA Shapefile");
         level = "LSOA";
-        Object[] tLSOACodesAndLeedsLSOAShapefile;
-        tLSOACodesAndLeedsLSOAShapefile = DW_Maps.getCensusAreaCodesAndLeedsShapefile(
+        DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
+        tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
                 level, targetPropertyNameLSOA, sdsf);
         TreeSet<String> tLSOACodes;
-        tLSOACodes = (TreeSet<String>) tLSOACodesAndLeedsLSOAShapefile[0];
-        File tLSOAShapefile = (File) tLSOACodesAndLeedsLSOAShapefile[1];
+        tLSOACodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsCensusAreaCodes();
+        File tLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
         FeatureCollection tLSOAFeatureCollection;
-        tLSOAFeatureCollection = (FeatureCollection) tLSOACodesAndLeedsLSOAShapefile[2];
+        tLSOAFeatureCollection = tLSOACodesAndLeedsLSOAShapefile.getLevelFC();
         SimpleFeatureType tLSOAFeatureType;
-        tLSOAFeatureType = (SimpleFeatureType) tLSOACodesAndLeedsLSOAShapefile[3];
-        File leedsLSOAShapefile = (File) tLSOACodesAndLeedsLSOAShapefile[4];
+        tLSOAFeatureType = tLSOACodesAndLeedsLSOAShapefile.getLevelSFT();
+        File leedsLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
         //backgroundShapefile = leedsLSOAShapefile;
 
         // Get MSOA Codes, MSOA Shapefile and Leeds MSOA Shapefile
         level = "MSOA";
-        Object[] tMSOACodesAndLeedsMSOAShapefile;
-        tMSOACodesAndLeedsMSOAShapefile = DW_Maps.getCensusAreaCodesAndLeedsShapefile(
+        DW_CensusAreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
+        tMSOACodesAndLeedsMSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
                 level, targetPropertyNameMSOA, sdsf);
         TreeSet<String> tMSOACodes;
-        tLSOACodes = (TreeSet<String>) tMSOACodesAndLeedsMSOAShapefile[0];
-        File tMSOAShapefile = (File) tMSOACodesAndLeedsMSOAShapefile[1];
+        tLSOACodes = tMSOACodesAndLeedsMSOAShapefile.getLeedsCensusAreaCodes();
+        File tMSOAShapefile = tMSOACodesAndLeedsMSOAShapefile.getLevelShapefile();
         FeatureCollection tMSOAFeatureCollection;
-        tMSOAFeatureCollection = (FeatureCollection) tMSOACodesAndLeedsMSOAShapefile[2];
+        tMSOAFeatureCollection = tMSOACodesAndLeedsMSOAShapefile.getLevelFC();
         SimpleFeatureType tMSOAFeatureType;
-        tMSOAFeatureType = (SimpleFeatureType) tMSOACodesAndLeedsMSOAShapefile[3];
-        File leedsMSOAShapefile = (File) tMSOACodesAndLeedsMSOAShapefile[4];
+        tMSOAFeatureType = tMSOACodesAndLeedsMSOAShapefile.getLevelSFT();
+        File leedsMSOAShapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelShapefile();
         backgroundShapefile = leedsMSOAShapefile;
 
-        Style backgroundStyle = (Style) styleParameters[6];
+        Style backgroundStyle = styleParameters.getBackgroundStyle();
         FeatureLayer backgroundFeatureLayer = DW_GeoTools.getFeatureLayer(
                 leedsLSOAShapefile,
                 backgroundStyle);
@@ -985,7 +988,7 @@ public class DW_SpiderMaps extends DW_Maps {
             ShapefileDataStoreFactory sdsf,
             String outname,
             boolean showMapsInJMapPane,
-            Object[] styleParameters,
+            DW_StyleParameters styleParameters,
             int imageWidth) throws Exception {
 
         // Property for selecting
@@ -998,35 +1001,35 @@ public class DW_SpiderMaps extends DW_Maps {
         // Get LSOA Codes, LSOA Shapefile and Leeds LSOA Shapefile
         System.out.println("Get LSOA Codes, LSOA Shapefile and Leeds LSOA Shapefile");
         level = "LSOA";
-        Object[] tLSOACodesAndLeedsLSOAShapefile;
-        tLSOACodesAndLeedsLSOAShapefile = DW_Maps.getCensusAreaCodesAndLeedsShapefile(
+        DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
+        tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
                 level, targetPropertyNameLSOA, sdsf);
         TreeSet<String> tLSOACodes;
-        tLSOACodes = (TreeSet<String>) tLSOACodesAndLeedsLSOAShapefile[0];
-        File tLSOAShapefile = (File) tLSOACodesAndLeedsLSOAShapefile[1];
+        tLSOACodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsCensusAreaCodes();
+        File tLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
         FeatureCollection tLSOAFeatureCollection;
-        tLSOAFeatureCollection = (FeatureCollection) tLSOACodesAndLeedsLSOAShapefile[2];
+        tLSOAFeatureCollection = tLSOACodesAndLeedsLSOAShapefile.getLevelFC();
         SimpleFeatureType tLSOAFeatureType;
-        tLSOAFeatureType = (SimpleFeatureType) tLSOACodesAndLeedsLSOAShapefile[3];
-        File leedsLSOAShapefile = (File) tLSOACodesAndLeedsLSOAShapefile[4];
+        tLSOAFeatureType = tLSOACodesAndLeedsLSOAShapefile.getLevelSFT();
+        File leedsLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
         //backgroundShapefile = leedsLSOAShapefile;
 
         // Get MSOA Codes, MSOA Shapefile and Leeds MSOA Shapefile
         level = "MSOA";
-        Object[] tMSOACodesAndLeedsMSOAShapefile;
-        tMSOACodesAndLeedsMSOAShapefile = DW_Maps.getCensusAreaCodesAndLeedsShapefile(
+        DW_CensusAreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
+        tMSOACodesAndLeedsMSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
                 level, targetPropertyNameMSOA, sdsf);
         TreeSet<String> tMSOACodes;
-        tLSOACodes = (TreeSet<String>) tMSOACodesAndLeedsMSOAShapefile[0];
-        File tMSOAShapefile = (File) tMSOACodesAndLeedsMSOAShapefile[1];
+        tLSOACodes = tMSOACodesAndLeedsMSOAShapefile.getLeedsCensusAreaCodes();
+        File tMSOAShapefile = tMSOACodesAndLeedsMSOAShapefile.getLevelShapefile();
         FeatureCollection tMSOAFeatureCollection;
-        tMSOAFeatureCollection = (FeatureCollection) tMSOACodesAndLeedsMSOAShapefile[2];
+        tMSOAFeatureCollection = tMSOACodesAndLeedsMSOAShapefile.getLevelFC();
         SimpleFeatureType tMSOAFeatureType;
-        tMSOAFeatureType = (SimpleFeatureType) tMSOACodesAndLeedsMSOAShapefile[3];
-        File leedsMSOAShapefile = (File) tMSOACodesAndLeedsMSOAShapefile[4];
+        tMSOAFeatureType = tMSOACodesAndLeedsMSOAShapefile.getLevelSFT();
+        File leedsMSOAShapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelShapefile();
         backgroundShapefile = leedsMSOAShapefile;
 
-        Style backgroundStyle = (Style) styleParameters[6];
+        Style backgroundStyle = styleParameters.getBackgroundStyle();
         FeatureLayer backgroundFeatureLayer = DW_GeoTools.getFeatureLayer(
                 leedsLSOAShapefile,
                 backgroundStyle);
