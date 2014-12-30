@@ -62,9 +62,9 @@ public abstract class DW_Processor {
         return result;
     }
 
-    protected File _DW_directory;
-    protected PrintWriter pw;
-    protected PrintWriter pw2;
+//    protected File _DW_directory;
+//    protected PrintWriter pw;
+//    protected PrintWriter pw2;
 
     public DW_Processor() {
     }
@@ -76,15 +76,15 @@ public abstract class DW_Processor {
      */
     public abstract void run(String[] args);
 
-    /**
-     * initialises output text files for reporting.
-     *
-     * @param filename
-     */
-    private void init_OutputTextFiles(String filename) {
-        pw = init_OutputTextFilePrintWriter(filename + "1.txt");
-        pw2 = init_OutputTextFilePrintWriter(filename + "2.txt");
-    }
+//    /**
+//     * initialises output text files for reporting.
+//     *
+//     * @param filename
+//     */
+//    private void init_OutputTextFiles(String filename) {
+//        pw = init_OutputTextFilePrintWriter(filename + "1.txt");
+//        pw2 = init_OutputTextFilePrintWriter(filename + "2.txt");
+//    }
 
     /**
      * Initialises a PrintWriter for pushing output to.
@@ -92,12 +92,15 @@ public abstract class DW_Processor {
      * @param filename The name of the file to be initialised for writing to.
      * @return PrintWriter for pushing output to.
      */
-    private PrintWriter init_OutputTextFilePrintWriter(String filename) {
+    protected PrintWriter init_OutputTextFilePrintWriter(
+            File dir,
+            String filename) {
         PrintWriter result = null;
-        File outputTextFile = new File(_DW_directory, filename);
+        File outputTextFile = new File(
+                dir,
+                filename);
         try {
             outputTextFile.createNewFile();
-
         } catch (IOException ex) {
             Logger.getLogger(DW_Processor.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -326,11 +329,14 @@ public abstract class DW_Processor {
      * @param var2 The name for column 1
      */
     public void createCSV(
+            File dir,
             TreeMap<String, Integer> aSHBEgeneralisation,
             String name,
             String var1,
             String var2) {
-        PrintWriter printWriter = init_OutputTextFilePrintWriter(name + ".csv");
+        PrintWriter printWriter = init_OutputTextFilePrintWriter(
+                dir,
+                name + ".csv");
         printWriter.println(var1 + "," + var2);
         Iterator<String> ite = aSHBEgeneralisation.keySet().iterator();
         while (ite.hasNext()) {
@@ -356,13 +362,17 @@ public abstract class DW_Processor {
      * @param header The header to be written to the file.
      */
     public void createCSV(
+            File dir,
             TreeMap<String, Integer> aSHBEgeneralisation,
             TreeMap<String, Integer> aCouncilRecordgeneralisation,
             TreeMap<String, Integer> aRSLRecordgeneralisation,
             String name,
             String header) {
-        PrintWriter printWriter = init_OutputTextFilePrintWriter(name + ".csv");
-        printWriter.println(header);
+        PrintWriter pw;
+        pw = init_OutputTextFilePrintWriter(
+                dir,
+                name + ".csv");
+        pw.println(header);
         Iterator<String> ite = aSHBEgeneralisation.keySet().iterator();
         while (ite.hasNext()) {
             String key = ite.next();
@@ -381,9 +391,9 @@ public abstract class DW_Processor {
             }
             Integer value4 = value2 + value3;
             double proportion = ((double) value4 / (double) value1) * 100;
-            printWriter.println(key + "," + value1 + ", " + value2 + ", " + value3 + ", " + value4 + ", " + proportion);
+            pw.println(key + "," + value1 + ", " + value2 + ", " + value3 + ", " + value4 + ", " + proportion);
         }
-        printWriter.close();
+        pw.close();
     }
 
     /**
@@ -400,27 +410,30 @@ public abstract class DW_Processor {
      * values[2] = rec.getOa11();-----------------------------------------------
      * values[3] = rec.getLsoa11();---------------------------------------------
      */
-    @Deprecated
-    public static TreeMap<String, String[]> getLookupFromPostcodeToCensusCodes(
-            String level) {
-        TreeMap<String, String[]> result;
-        File outputDirectory = DW_Files.getGeneratedONSPDDir();
-        String outputFilename = "fail";
-        if (level.equalsIgnoreCase("MSOA")) {
-            outputFilename = "PostcodeLookUp_TreeMap_String_Strings.thisFile";
-        }
-        if (level.equalsIgnoreCase("LSOA")) {
-            outputFilename = "PostcodeToLSOALookUp_TreeMap_String_Strings.thisFile";
-        }
-        File outFile = new File(outputDirectory, outputFilename);
-        if (!outFile.exists()) {
-            result = initLookupFromPostcodeToCensusCodes(level);
-        } else {
-            Object o = Generic_StaticIO.readObject(outFile);
-            result = (TreeMap<String, String[]>) o;
-        }
-        return result;
-    }
+//    @Deprecated
+//    public static TreeMap<String, String[]> getLookupFromPostcodeToCensusCodes(
+//            String level) {
+//        TreeMap<String, String[]> result;
+//        File outputDirectory = DW_Files.getGeneratedONSPDDir();
+//        String outputFilename = "fail";
+//        if (level.equalsIgnoreCase("MSOA")) {
+//            outputFilename = "PostcodeLookUp_TreeMap_String_Strings.thisFile";
+//        }
+//        if (level.equalsIgnoreCase("LSOA")) {
+//            outputFilename = "PostcodeToLSOALookUp_TreeMap_String_Strings.thisFile";
+//        }
+//        if (level.equalsIgnoreCase("OA")) {
+//            outputFilename = "PostcodeToLSOALookUp_TreeMap_String_Strings.thisFile";
+//        }
+//        File outFile = new File(outputDirectory, outputFilename);
+//        if (!outFile.exists()) {
+//            result = initLookupFromPostcodeToCensusCodes(level);
+//        } else {
+//            Object o = Generic_StaticIO.readObject(outFile);
+//            result = (TreeMap<String, String[]>) o;
+//        }
+//        return result;
+//    }
 
     /**
      * @param generatedONSPDDir
@@ -517,8 +530,8 @@ public abstract class DW_Processor {
 
     public static TreeMap<String, Deprivation_DataRecord> getDeprivation_Data() {
         File depravationDir = new File(
-                DW_Files.getInputCensus2011Dir("LSOA"),
-                "EnglandDeprivation");
+                DW_Files.getInputCensus2011AttributeDataDir("LSOA"),
+                "England/Deprivation");
         String deprivationFilename = "1871524.csv";
         Deprivation_DataHandler aDeprivation_DataHandler;
         aDeprivation_DataHandler = new Deprivation_DataHandler();

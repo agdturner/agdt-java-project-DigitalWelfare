@@ -56,6 +56,7 @@ public class DW_Files {
     private static File _DW_outputLCCDir;
     private static File _DW_outputSHBEDir;
     private static File _DW_outputSHBEMapsDir;
+    private static File _DW_outputSHBETablesDir;
     private static File _DW_outputAdviceLeedsTablesDir;
     private static File _DW_outputUnderOccupiedDir;
 
@@ -101,6 +102,18 @@ public class DW_Files {
     public static File getInputCensus2011Dir(String level) {
         return new File(getInputCensus2011Dir(),
                 level);
+    }
+
+    public static File getInputCensus2011AttributeDataDir(String level) {
+        return new File(
+                getInputCensus2011Dir(level),
+                "AttributeData");
+    }
+
+    public static File getInputCensus2011BoundaryDataDir(String level) {
+        return new File(
+                getInputCensus2011Dir(level),
+                "BoundaryData");
     }
 
     public static File getInputPostcodeDir() {
@@ -228,6 +241,12 @@ public class DW_Files {
         }
         return _DW_generatedSHBEDir;
     }
+    
+    public static File getGeneratedSHBEDir(String level) {
+        return new File(
+                getGeneratedSHBEDir(),
+                level);
+    }
 
     public static File getGeneratedUnderOccupiedDir() {
         if (_DW_generatedUnderOccupiedDir == null) {
@@ -327,6 +346,27 @@ public class DW_Files {
         return _DW_outputSHBEMapsDir;
     }
 
+    public static File getOutputSHBETablesDir() {
+        if (_DW_outputSHBETablesDir == null) {
+            _DW_outputSHBETablesDir = new File(getOutputSHBEDir(),
+                    "Tables");
+            _DW_outputSHBETablesDir.mkdirs();
+        }
+        return _DW_outputSHBETablesDir;
+    }
+
+    public static File getOutputSHBEChoroplethDir() {
+        return new File(
+                getOutputSHBEMapsDir(),
+                "Choropleth");
+    }
+    
+    public static File getOutputSHBEChoroplethDir(String level) {
+        return new File(
+                getOutputSHBEChoroplethDir(),
+                level);
+    }
+    
     public static File getOutputUnderOccupiedDir() {
         if (_DW_outputUnderOccupiedDir == null) {
             _DW_outputUnderOccupiedDir = new File(getOutputLCCDir(),

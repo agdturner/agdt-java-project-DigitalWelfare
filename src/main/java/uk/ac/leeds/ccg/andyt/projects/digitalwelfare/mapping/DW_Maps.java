@@ -25,7 +25,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
@@ -48,7 +47,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Census;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeGeocoder;
@@ -61,15 +59,30 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
  */
 public abstract class DW_Maps {
 
-    public File digitalWelfareDir;
-    public File _DW_dir;
+    public static final String png_String = "png";
+
     private static TreeMap<String, DW_Point> _ONSPDlookup;
 
-    public DW_Maps() {
-    }
+    /**
+     * If showMapsInJMapPane is true, maps are presented in individual JMapPanes
+     */
+    protected boolean showMapsInJMapPane;
+    protected int imageWidth;
+    protected boolean commonlyStyled;
+    protected boolean individuallyStyled;
+    protected File mapDirectory;
+    protected ShapefileDataStoreFactory sdsf;
+    protected DW_StyleParameters styleParameters;
+    protected DW_Shapefile foregroundDW_Shapefile0;
+    protected DW_Shapefile foregroundDW_Shapefile1;
+    protected DW_Shapefile backgroundDW_Shapefile;
 
-    public DW_Maps(File digitalWelfareDir) {
-        this.digitalWelfareDir = digitalWelfareDir;
+    /**
+     * For storing census data level (OA, LSOA, MSOA, ...)
+     */
+    protected String level;
+
+    public DW_Maps() {
     }
 
     public static TreeMap<String, DW_Point> get_ONSPDlookup() {
@@ -78,8 +91,6 @@ public abstract class DW_Maps {
         }
         return _ONSPDlookup;
     }
-
-    
 
     /*
      * Select and create a new shapefile.
@@ -126,14 +137,24 @@ public abstract class DW_Maps {
                     //System.out.println("PropertyValue " + value);
                     String valueString = value.toString();
                     if (codesToSelect.contains(valueString)) {
+                        if (valueString.trim().equalsIgnoreCase("E02002337")) {
+                            int debug = 1;
+                        }
                         String id = "" + id_int;
-                        addFeatureToFeatureCollection((SimpleFeature) inputFeature, sfb, tsfc, id);
+                        addFeatureToFeatureCollection(
+                                (SimpleFeature) inputFeature,
+                                sfb,
+                                tsfc,
+                                id);
                         id_int++;
+                    } else {
+//                        System.out.println(valueString);
                     }
                 }
             }
         }
-        DW_GeoTools.transact(outputFile, sft, tsfc, sdsf);
+        featureIterator.close();
+        DW_Shapefile.transact(outputFile, sft, tsfc, sdsf);
     }
 
     public static void init_ONSPDLookup() {
@@ -300,10 +321,11 @@ public abstract class DW_Maps {
      * @return A Object[] result where: ----------------------------------------
      * result[0] is an Object[] with the same length as filenames.length where
      * each element i is the respective TreeMap<String, Integer> returned from
-     * getLSOAData(digitalWelfareDir,filenames[i]); ----------------------------
-     * result[1] is the max of all the maximum counts.
+     * getLevelData(digitalWelfareDir,filenames[i]);
+     * ---------------------------- result[1] is the max of all the maximum
+     * counts.
      */
-    protected static Object[] getLSOAData(
+    protected static Object[] getLevelData(
             File dir,
             String[] filenames) {
         Object[] result = new Object[2];
@@ -311,11 +333,11 @@ public abstract class DW_Maps {
         Object[] resultPart0 = new Object[length];
         int max = Integer.MIN_VALUE;
         for (int i = 0; i < length; i++) {
-            Object[] LSOAData = getLSOAData(
+            Object[] levelData = getLevelData(
                     dir,
                     filenames[i]);
-            resultPart0[i] = LSOAData;
-            max = Math.max(max, (Integer) LSOAData[1]);
+            resultPart0[i] = levelData;
+            max = Math.max(max, (Integer) levelData[1]);
         }
         result[0] = resultPart0;
         result[1] = max;
@@ -330,7 +352,7 @@ public abstract class DW_Maps {
      * Codes and values that are counts;
      * --------------------------------------------- result[1] is the max count.
      */
-    protected static Object[] getLSOAData(
+    protected static Object[] getLevelData(
             File dir,
             String filename) {
         Object[] result = new Object[2];
@@ -379,14 +401,19 @@ public abstract class DW_Maps {
 
     /**
      * @param level
+     * @param area
      * @return
      */
     protected TreeMap<String, Integer> getPopData(
-            String level) {
+            String level,
+            String area) {
         TreeMap<String, Integer> result;
         result = new TreeMap<String, Integer>();
+        File dir = new File(
+                DW_Files.getInputCensus2011AttributeDataDir(level),
+                area);
         File file = new File(
-                DW_Files.getInputCensus2011Dir(level),
+                dir,
                 "pop.csv");
         BufferedReader br = Generic_StaticIO.getBufferedReader(file);
         StreamTokenizer st = new StreamTokenizer(br);
@@ -398,26 +425,41 @@ public abstract class DW_Maps {
 //            st.nextToken();
 //            st.nextToken();
 //            st.nextToken();
-            long RecordID = 0;
+//            long RecordID = 0;
             String line = "";
             while (!(token == StreamTokenizer.TT_EOF)) {
                 switch (token) {
                     case StreamTokenizer.TT_EOL:
-                        if (RecordID % 100 == 0) {
-                            System.out.println(line);
-                        }
-                        RecordID++;
+//                        if (RecordID % 100 == 0) {
+//                            System.out.println(line);
+//                        }
+//                        RecordID++;
                         break;
                     case StreamTokenizer.TT_WORD:
                         line = st.sval;
                         String[] split = line.split(",");
-                        result.put(split[0], new Integer(split[1]));
+                        if (split.length == 2) {
+//                            if (!(split[1].equalsIgnoreCase("MSOAIZ") || 
+//                                    split[1].equalsIgnoreCase("Middle Super Output Areas and Intermediate Zones"))) {
+                            try {
+                                String censusArea = split[0];
+                                Integer pop = new Integer(split[1]);
+                                result.put(censusArea, pop);
+//                            } else {
+//                                int debug = 1; //Wierdness for Scotland!
+//                            }
+                            } catch (NumberFormatException e) {
+                                // Carry on regardless
+                            }
+                        } else {
+                            int debug = 1; //Sometimes Scotland or other data is missing!
+                        }
                         break;
                 }
                 token = st.nextToken();
             }
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.err.println(e.getMessage() + "in DW_Maps.getPopData(String=" + level + ",String=" + area + ")");
         }
         return result;
     }
@@ -433,7 +475,11 @@ public abstract class DW_Maps {
         if (level.equalsIgnoreCase("LAD")) {
             name = "England_lad_2011_gen_clipped.shp";
         } else {
-            name = level + "_2011_EW_BGC.shp";
+            if (level.equalsIgnoreCase("OA")) {
+                name = "England_oa_2011_gen_clipped.shp";
+            } else {
+                name = level + "_2011_EW_BGC.shp";
+            }
         }
         ///scratch02/DigitalWelfare/Input/Census/2011/LSOA/BoundaryData/
         File censusDirectory = DW_Files.getInputCensus2011Dir(level);
@@ -451,6 +497,7 @@ public abstract class DW_Maps {
     }
 
     /**
+     * @param area
      * @param level
      * @return File
      */
@@ -458,7 +505,7 @@ public abstract class DW_Maps {
             String area,
             String level) {
         File result;
-        String name = area + level + "_2011_EW_BGC.shp";
+        String name = area + "_" + level + "_2011_EW_BGC.shp";
         File boundaryDirectory = new File(
                 DW_Files.getGeneratedCensus2011Dir(level),
                 "/BoundaryData/" + name);
@@ -505,8 +552,8 @@ public abstract class DW_Maps {
             ShapefileDataStoreFactory sdsf,
             FeatureCollection fc,
             SimpleFeatureType sft,
-            TreeSet<String> tLSOACodes,
-            TreeMap<String, Integer> tLSOAData,
+            TreeSet<String> levelCodes,
+            TreeMap<String, Integer> levelData,
             //String attributeName, 
             String targetPropertyName,
             File outputFile,
@@ -519,7 +566,7 @@ public abstract class DW_Maps {
         //FeatureFactory ff = FactoryFinder.getGeometryFactories();
         SimpleFeatureBuilder sfb;
         sfb = new SimpleFeatureBuilder(sft);
-        Set<String> tLSOADataKeySet = tLSOAData.keySet();
+        Set<String> keySet = levelData.keySet();
         FeatureIterator featureIterator;
         featureIterator = fc.features();
         int id_int = 0;
@@ -540,8 +587,8 @@ public abstract class DW_Maps {
                     //System.out.println("PropertyValue " + value);
                     String valueString = value.toString();
                     if (filter < 3) {
-                        if (tLSOACodes.contains(valueString)) {
-                            Integer clientCount = tLSOAData.get(valueString);
+                        if (levelCodes.contains(valueString)) {
+                            Integer clientCount = levelData.get(valueString);
                             //                            if (clientCount == null) {
                             //                                clientCount = 0;
                             //                            }
@@ -553,8 +600,8 @@ public abstract class DW_Maps {
                             }
                         }
                     } else {
-                        if (tLSOADataKeySet.contains(valueString) || tLSOACodes.contains(valueString)) {
-                            Integer clientCount = tLSOAData.get(valueString);
+                        if (keySet.contains(valueString) || levelCodes.contains(valueString)) {
+                            Integer clientCount = levelData.get(valueString);
                             //                            if (clientCount == null) {
                             //                                clientCount = 0;
                             //                            }
@@ -569,7 +616,8 @@ public abstract class DW_Maps {
                 }
             }
         }
-        DW_GeoTools.transact(outputFile, sft, tsfc, sdsf);
+        featureIterator.close();
+        DW_Shapefile.transact(outputFile, sft, tsfc, sdsf);
     }
 
     /*
@@ -589,8 +637,8 @@ public abstract class DW_Maps {
             ShapefileDataStoreFactory sdsf,
             FeatureCollection fc,
             SimpleFeatureType sft,
-            TreeSet<String> tLSOACodes,
-            TreeMap<String, Integer> tLSOAData,
+            TreeSet<String> censusCodes,
+            TreeMap<String, Integer> levelData,
             //String attributeName, 
             String targetPropertyName,
             File outputFile,
@@ -606,7 +654,7 @@ public abstract class DW_Maps {
         //FeatureFactory ff = FactoryFinder.getGeometryFactories();
         SimpleFeatureBuilder sfb;
         sfb = new SimpleFeatureBuilder(sft);
-        Set<String> tLSOADataKeySet = tLSOAData.keySet();
+        Set<String> keySet = levelData.keySet();
         FeatureIterator featureIterator;
         featureIterator = fc.features();
         int id_int = 0;
@@ -635,10 +683,10 @@ public abstract class DW_Maps {
                         thisDeprivationClass = Deprivation_DataHandler.getDeprivationClass(
                                 deprivationClasses,
                                 aDeprivation_DataRecord);
-                        if (thisDeprivationClass.intValue() == deprivationClass.intValue()) {
+                        if (thisDeprivationClass == deprivationClass.intValue()) {
                             if (filter < 3) {
-                                if (tLSOACodes.contains(valueString)) {
-                                    Integer clientCount = tLSOAData.get(valueString);
+                                if (censusCodes.contains(valueString)) {
+                                    Integer clientCount = levelData.get(valueString);
                                     //                            if (clientCount == null) {
                                     //                                clientCount = 0;
                                     //                            }
@@ -650,8 +698,8 @@ public abstract class DW_Maps {
                                     }
                                 }
                             } else {
-                                if (tLSOADataKeySet.contains(valueString) || tLSOACodes.contains(valueString)) {
-                                    Integer clientCount = tLSOAData.get(valueString);
+                                if (keySet.contains(valueString) || censusCodes.contains(valueString)) {
+                                    Integer clientCount = levelData.get(valueString);
                                     //                            if (clientCount == null) {
                                     //                                clientCount = 0;
                                     //                            }
@@ -669,7 +717,7 @@ public abstract class DW_Maps {
             }
         }
         featureIterator.close();
-        DW_GeoTools.transact(outputFile, sft, tsfc, sdsf);
+        DW_Shapefile.transact(outputFile, sft, tsfc, sdsf);
     }
 
     /*
@@ -679,9 +727,10 @@ public abstract class DW_Maps {
             ShapefileDataStoreFactory sdsf,
             FeatureCollection fc,
             SimpleFeatureType sft,
-            TreeSet<String> tLSOACodes,
-            TreeMap<String, Integer> tLSOAData,
+            TreeSet<String> levelCodes,
+            TreeMap<String, Integer> levelData,
             TreeMap<String, Integer> pop,
+            double multiplier,
             //String attributeName,
             String targetPropertyName,
             File outputFile,
@@ -696,7 +745,7 @@ public abstract class DW_Maps {
         int id_int = 0;
         FeatureIterator featureIterator;
         featureIterator = fc.features();
-        Set<String> tLSOADataKeySet = tLSOAData.keySet();
+        Set<String> keySet = levelData.keySet();
         while (featureIterator.hasNext()) {
             Feature inputFeature = featureIterator.next();
             Collection<Property> properties;
@@ -714,14 +763,14 @@ public abstract class DW_Maps {
                     //System.out.println("PropertyValue " + value);
                     String valueString = value.toString();
                     if (filter < 3) {
-                        if (tLSOACodes.contains(valueString)) {
-                            Integer clientCount = tLSOAData.get(valueString);
+                        if (levelCodes.contains(valueString)) {
+                            Integer clientCount = levelData.get(valueString);
                             //                            if (clientCount == null) {
                             //                                clientCount = 0;
                             //                            }
                             if (clientCount != null) {
                                 Integer population = pop.get(valueString);
-                                double clientRate = (double) clientCount / (double) population;
+                                double clientRate = (double) clientCount * multiplier / (double) population;
                                 String id = "" + id_int;
                                 addFeatureAttributeAndAddToFeatureCollection(
                                         (SimpleFeature) inputFeature, sfb, clientRate, tsfc, id);
@@ -729,14 +778,14 @@ public abstract class DW_Maps {
                             }
                         }
                     } else {
-                        if (tLSOADataKeySet.contains(valueString) || tLSOACodes.contains(valueString)) {
-                            Integer clientCount = tLSOAData.get(valueString);
+                        if (keySet.contains(valueString) || levelCodes.contains(valueString)) {
+                            Integer clientCount = levelData.get(valueString);
                             //                            if (clientCount == null) {
                             //                                clientCount = 0;
                             //                            }
                             if (clientCount != null) {
                                 Integer population = pop.get(valueString);
-                                double clientRate = (double) clientCount / (double) population;
+                                double clientRate = (double) clientCount * multiplier / (double) population;
                                 String id = "" + id_int;
                                 addFeatureAttributeAndAddToFeatureCollection(
                                         (SimpleFeature) inputFeature, sfb, clientRate, tsfc, id);
@@ -747,7 +796,8 @@ public abstract class DW_Maps {
                 }
             }
         }
-        DW_GeoTools.transact(outputFile, sft, tsfc, sdsf);
+        featureIterator.close();
+        DW_Shapefile.transact(outputFile, sft, tsfc, sdsf);
     }
 
     public String getOutName(String filename, String attributeName, int filter) {
@@ -769,9 +819,9 @@ public abstract class DW_Maps {
     }
 
     public static TreeSetFeatureCollection getAdviceLeedsPointFeatureCollection(
-        SimpleFeatureType sft) {
+            SimpleFeatureType sft) {
         TreeSetFeatureCollection result;
-        
+
 //        TreeMap<String, DW_Point> tOutletsAndPoints;
 //        tOutletsAndPoints = DW_Processor.getOutletsAndPoints();
 //        TreeMap<String, DW_Point> map = tOutletsAndPoints;
@@ -799,7 +849,7 @@ public abstract class DW_Maps {
         }
         return result;
     }
-    
+
     public static SimpleFeatureType getPointSimpleFeatureType() {
         SimpleFeatureType result = null;
         try {
@@ -826,17 +876,35 @@ public abstract class DW_Maps {
                 shapefileDir,
                 shapefileFilename);
         if (!result.exists()) {
-        ShapefileDataStoreFactory sdsf;
-        sdsf = new ShapefileDataStoreFactory();
-        SimpleFeatureType pointSFT = getPointSimpleFeatureType();
-        TreeSetFeatureCollection point_fc;
-        point_fc = DW_Maps.getAdviceLeedsPointFeatureCollection(pointSFT);
-        DW_GeoTools.transact(
-                result,
-                pointSFT,
-                point_fc,
-                sdsf);
+            ShapefileDataStoreFactory sdsf;
+            sdsf = new ShapefileDataStoreFactory();
+            SimpleFeatureType pointSFT = getPointSimpleFeatureType();
+            TreeSetFeatureCollection point_fc;
+            point_fc = DW_Maps.getAdviceLeedsPointFeatureCollection(pointSFT);
+            DW_Shapefile.transact(
+                    result,
+                    pointSFT,
+                    point_fc,
+                    sdsf);
         }
         return result;
+    }
+
+    /**
+     * @return
+     */
+    public static DW_Shapefile getAdviceLeedsPointDW_Shapefile() {
+        String tAdviceLeedsPointName = "AllAdviceLeedsPoints";
+        File tAdviceLeedsPointShapefileDir;
+        tAdviceLeedsPointShapefileDir = new File(
+                DW_Files.getGeneratedAdviceLeedsDir(),
+                tAdviceLeedsPointName);
+        String tAdviceLeedsPointShapefileFilename;
+        tAdviceLeedsPointShapefileFilename = tAdviceLeedsPointName + ".shp";
+        File tAdviceLeedsPointShapefile;
+        tAdviceLeedsPointShapefile = createAdviceLeedsPointShapefileIfItDoesNotExist(
+                tAdviceLeedsPointShapefileDir,
+                tAdviceLeedsPointShapefileFilename);
+        return new DW_Shapefile(tAdviceLeedsPointShapefile);
     }
 }

@@ -31,51 +31,57 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  * @author geoagdt
  */
 public class DW_Census {
-    
+
     /**
      * @param area
-     * @param level level.equals("LSOA") for LSOA Codes; level.equals("MSOA") 
-     * for MSOA Codes.
-     * @return <code>TreeSet&ltString&gt</code> of LSOA codes for the Leeds 
-     * Local Authority District loaded from a specific file within 
+     * @param level "OA" or "LSOA" or "MSOA" currently...
+     * @return <code>TreeSet&ltString&gt</code> of LSOA codes for the Leeds
+     * Local Authority District loaded from a specific file within
      * digitalWelfareDir.
      */
-    public static TreeSet<String> getLADCensusCodes(
+    public static TreeSet<String> getCensusCodes(
             String area,
             String level) {
-        TreeSet<String> result = new TreeSet<String>();
+        TreeSet<String> result = null;
         File censusDataDirectory = new File(
-                DW_Files.getInputCensus2011Dir(level),
+                DW_Files.getInputCensus2011AttributeDataDir(level),
                 area);
         File file = new File(censusDataDirectory,
-                area + "_" + level + "Codes.txt");
-        BufferedReader br = Generic_StaticIO.getBufferedReader(file);
-        StreamTokenizer st = new StreamTokenizer(br);
-        Generic_StaticIO.setStreamTokenizerSyntax1(st);
-        try {
-            int token = st.nextToken();
-            long RecordID = 0;
-            String line = "";
-            while (!(token == StreamTokenizer.TT_EOF)) {
-                switch (token) {
-                    case StreamTokenizer.TT_EOL:
-                        if (RecordID % 100 == 0) {
-                            System.out.println(line);
+                "censusCodes.csv");
+        if (file.exists()) {
+            try {
+                BufferedReader br;
+                StreamTokenizer st;
+                br = Generic_StaticIO.getBufferedReader(file);
+                if (br != null) {
+                    result = new TreeSet<String>();
+                    st = new StreamTokenizer(br);
+                    Generic_StaticIO.setStreamTokenizerSyntax1(st);
+                    int token = st.nextToken();
+//                    long RecordID = 0;
+                    String line = "";
+                    while (!(token == StreamTokenizer.TT_EOF)) {
+                        switch (token) {
+                            case StreamTokenizer.TT_EOL:
+//                                if (RecordID % 100 == 0) {
+//                                    System.out.println(line);
+//                                }
+//                                RecordID++;
+                                break;
+                            case StreamTokenizer.TT_WORD:
+                                line = st.sval;
+                                result.add(line);
+                                break;
                         }
-                        RecordID++;
-                        break;
-                    case StreamTokenizer.TT_WORD:
-                        line = st.sval;
-                        result.add(line);
-                        break;
+                        token = st.nextToken();
+                    }
+                    br.close();
                 }
-                token = st.nextToken();
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
             }
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
         }
         return result;
     }
-    
-    
+
 }

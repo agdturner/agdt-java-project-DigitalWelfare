@@ -21,7 +21,6 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StreamTokenizer;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -72,7 +71,6 @@ public class SHBE_DataRecord_Handler {
      *
      * @param directory
      * @param filename
-     * @param pw
      * @return Object[7] result where: ----------------------------------------
      * result[0] is a TreeMap<String,SHBE_DataRecord> representing records with
      * DRecords, --------------------------------------------------------------
@@ -86,8 +84,7 @@ public class SHBE_DataRecord_Handler {
      */
     public Object[] loadInputData(
             File directory,
-            String filename,
-            PrintWriter pw) {
+            String filename) {
         Object[] result = new Object[7];
         File inputFile = new File(
                 directory,
@@ -193,8 +190,8 @@ public class SHBE_DataRecord_Handler {
                                 Object o = recordsWithDRecords.put(aSHBE_DataRecord.getCouncilTaxBenefitClaimReferenceNumber(), aSHBE_DataRecord);
                                 if (o != null) {
                                     SHBE_DataRecord existingSHBE_DataRecord = (SHBE_DataRecord) o;
-                                    pw.println("existingSHBE_DataRecord" + existingSHBE_DataRecord);
-                                    pw.println("replacementSHBE_DataRecord" + aSHBE_DataRecord);
+                                    System.out.println("existingSHBE_DataRecord" + existingSHBE_DataRecord);
+                                    System.out.println("replacementSHBE_DataRecord" + aSHBE_DataRecord);
                                 }
                                 // Count Council Tax and Housing Benefits and combined claims
                                 if (!aSHBE_DataRecord.getCouncilTaxBenefitClaimReferenceNumber().trim().isEmpty()) {
@@ -248,7 +245,7 @@ public class SHBE_DataRecord_Handler {
         while (ite.hasNext()) {
             String councilTaxBenefitClaimReferenceNumber = ite.next();
             if (s.contains(councilTaxBenefitClaimReferenceNumber)) {
-                SHBE_DataRecord DRecord = recordsWithDRecords.get(recordsWithDRecords);
+                SHBE_DataRecord DRecord = recordsWithDRecords.get(councilTaxBenefitClaimReferenceNumber);
                 DRecord.SRecords.addAll(recordsWithDRecords.get(councilTaxBenefitClaimReferenceNumber).getSRecords());
                 rem.add(councilTaxBenefitClaimReferenceNumber);
                 countDRecordsInUnexpectedOrder ++;
@@ -258,19 +255,19 @@ public class SHBE_DataRecord_Handler {
         while (ite.hasNext()) {
             recordsWithoutDRecords.remove(ite.next());
         }
-        pw.println("totalCouncilTaxBenefitClaims " + totalCouncilTaxBenefitClaims);
-        pw.println("totalCouncilTaxAndHousingBenefitClaims " + totalCouncilTaxAndHousingBenefitClaims);
-        pw.println("totalHousingBenefitClaims " + totalHousingBenefitClaims);
-        pw.println("countDRecords " + countDRecords);
-        pw.println("countSRecords " + countSRecords);
-        pw.println("countOfSRecordsWithoutDRecord " + countOfSRecordsWithoutDRecord);
-        pw.println("countDRecordsInUnexpectedOrder " + countDRecordsInUnexpectedOrder);
-        pw.println("recordIDsNotLoaded.size() " + recordIDsNotLoaded.size());
-        pw.println("Count of Unique ClaimantNationalInsuranceNumberIDs " + ClaimantNationalInsuranceNumberIDs.size());
-        pw.println("Count of Unique PartnerNationalInsuranceNumberIDs " + PartnerNationalInsuranceNumberIDs.size());
-        pw.println("Count of Unique DependentsNationalInsuranceNumberIDs " + DependentsNationalInsuranceNumberIDs.size());
-        pw.println("Count of Unique NonDependentsNationalInsuranceNumberIDs " + NonDependentsNationalInsuranceNumberIDs.size());
-        pw.println("Count of Unique AllHouseholdNationalInsuranceNumberIDs " + AllHouseholdNationalInsuranceNumberIDs.size());
+        System.out.println("totalCouncilTaxBenefitClaims " + totalCouncilTaxBenefitClaims);
+        System.out.println("totalCouncilTaxAndHousingBenefitClaims " + totalCouncilTaxAndHousingBenefitClaims);
+        System.out.println("totalHousingBenefitClaims " + totalHousingBenefitClaims);
+        System.out.println("countDRecords " + countDRecords);
+        System.out.println("countSRecords " + countSRecords);
+        System.out.println("countOfSRecordsWithoutDRecord " + countOfSRecordsWithoutDRecord);
+        System.out.println("countDRecordsInUnexpectedOrder " + countDRecordsInUnexpectedOrder);
+        System.out.println("recordIDsNotLoaded.size() " + recordIDsNotLoaded.size());
+        System.out.println("Count of Unique ClaimantNationalInsuranceNumberIDs " + ClaimantNationalInsuranceNumberIDs.size());
+        System.out.println("Count of Unique PartnerNationalInsuranceNumberIDs " + PartnerNationalInsuranceNumberIDs.size());
+        System.out.println("Count of Unique DependentsNationalInsuranceNumberIDs " + DependentsNationalInsuranceNumberIDs.size());
+        System.out.println("Count of Unique NonDependentsNationalInsuranceNumberIDs " + NonDependentsNationalInsuranceNumberIDs.size());
+        System.out.println("Count of Unique AllHouseholdNationalInsuranceNumberIDs " + AllHouseholdNationalInsuranceNumberIDs.size());
         return result;
     }
 

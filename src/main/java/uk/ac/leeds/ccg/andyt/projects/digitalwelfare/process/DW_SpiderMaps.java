@@ -24,27 +24,23 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
+import java.awt.Color;
 import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.map.FeatureLayer;
-import org.geotools.map.Layer;
-import org.geotools.styling.Style;
 import org.opengis.feature.Feature;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord0;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord0_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord2;
@@ -54,6 +50,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_GeoTools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_CensusAreaCodesAndShapefiles;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
 
@@ -63,17 +60,25 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
  */
 public class DW_SpiderMaps extends DW_Maps {
 
-    public DW_SpiderMaps(File dir) {
-        this._DW_dir = dir;
-    }
+    private static final String targetPropertyNameMSOA = "MSOA11CD";
+    private static final String targetPropertyNameLSOA = "LSOA11CD";
+    private TreeMap<String, String> tLookupFromPostcodeToLSOACensusCodes;
+    private TreeMap<String, String> tLookupFromPostcodeToMSOACensusCodes;
+    private DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
+    private DW_CensusAreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
+    private TreeMap<String, Point> aLSOAToCentroidLookupTable;
+    private TreeMap<String, Point> aMSOAToCentroidLookupTable;
+    private TreeMap<String, String> tCABOutletPostcodes;
+    private TreeMap<String, DW_Point> tCABOutletPoints;
+    private CAB_DataRecord2_Handler aCAB_DataRecord2_Handler;
+    private CAB_DataRecord0_Handler tCAB_DataRecord0_Handler;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         try {
-            File dir = new File("/scratch02/DigitalWelfare/");
-            new DW_SpiderMaps(dir).run();
+            new DW_SpiderMaps().run();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -95,157 +100,126 @@ public class DW_SpiderMaps extends DW_Maps {
         String outname;
         // If showMapsInJMapPane == true then resulting maps are displayed on 
         // screen in a JMapPane otherwise maps are only written to file.
-        boolean showMapsInJMapPane;
-        // Initialise styleParameters
-        DW_StyleParameters styleParameters;
-        styleParameters = new DW_StyleParameters();
-        int imageWidth = 500;
-        
-        ShapefileDataStoreFactory sdsf;
-        sdsf = new ShapefileDataStoreFactory();
-        
+        showMapsInJMapPane = false;
+        imageWidth = 750;
+        init();
 
         // postcodeToOutletMaps run
+        //showMapsInJMapPane = false;
         outname = "postcodeToOutletMaps";
-        showMapsInJMapPane = false;
-        postcodeToOutletMaps(sdsf, outname, showMapsInJMapPane, styleParameters, imageWidth);
-
+        postcodeToOutletMaps(outname);
+        
         // postcodeToLSOAToOutletMaps run
-        showMapsInJMapPane = false;
+        //showMapsInJMapPane = false;
         outname = "postcodeToLSOAToOutletMaps";
-        postcodeToLSOAToOutletMaps(sdsf, outname, showMapsInJMapPane, styleParameters, imageWidth);
+        postcodeToLSOAToOutletMaps(outname);
 
         // postcodeToLSOAToMSOAToOutletMaps run
-        showMapsInJMapPane = false;
+        //showMapsInJMapPane = false;
         outname = "postcodeToLSOAToMSOAOutletMaps";
-        postcodeToLSOAToMSOAToOutletMaps(sdsf, outname, showMapsInJMapPane, styleParameters, imageWidth);
+        postcodeToLSOAToMSOAToOutletMaps(outname);
+        
+        // Tidy up
+        if (!showMapsInJMapPane) {
+            tLSOACodesAndLeedsLSOAShapefile.dispose();
+            tMSOACodesAndLeedsMSOAShapefile.dispose();
+        }
+    }
+
+    private void init() {
+        level = "MSOA";
+        initStyleParameters();
+        sdsf = new ShapefileDataStoreFactory();
+        mapDirectory = DW_Files.getOutputAdviceLeedsMapsDir();
+        // init tLSOACodesAndLeedsLSOAShapefile
+        initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
+        // init tMSOACodesAndLeedsMSOAShapefile
+        initMSOACodesAndLeedsMSOAShapefile(targetPropertyNameMSOA);
+        init_ONSPDLookup();
+        initCABOutletPoints();
+        aCAB_DataRecord2_Handler = new CAB_DataRecord2_Handler();
+        tCAB_DataRecord0_Handler = new CAB_DataRecord0_Handler();
+        aLSOAToCentroidLookupTable = getCentroidLookupTable(
+                "LSOA",
+                targetPropertyNameLSOA);
+        aMSOAToCentroidLookupTable = getCentroidLookupTable(
+                "MSOA",
+                targetPropertyNameMSOA);
+    }
+    
+    private void initStyleParameters(){
+        styleParameters = new DW_StyleParameters();
+//        styleParameters.setnClasses(9);
+//        styleParameters.setPaletteName("Reds");
+//        styleParameters.setAddWhiteForZero(true);
+        styleParameters.setForegroundStyleTitle0("Foreground Style 0");
+        styleParameters.setForegroundStyle0(DW_Style.createDefaultPointStyle());
+        styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
+                Color.GREEN,
+                Color.WHITE));
+        styleParameters.setForegroundStyleTitle1("Foreground Style 1");
+        styleParameters.setBackgroundStyle(DW_Style.createDefaultPolygonStyle(
+                Color.BLACK,
+                Color.WHITE));
+        styleParameters.setBackgroundStyleTitle("Background Style");
+    }
+
+    private void initLSOACodesAndLeedsLSOAShapefile(
+            String targetPropertyNameLSOA) {
+        tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
+                "LSOA", targetPropertyNameLSOA, sdsf);
+    }
+
+    private void initMSOACodesAndLeedsMSOAShapefile(
+            String targetPropertyNameMSOA) {
+        tMSOACodesAndLeedsMSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
+                "MSOA", targetPropertyNameMSOA, sdsf);
+    }
+
+    private void initCABOutletPoints() {
+        tCABOutletPostcodes = DW_Processor.getOutletsAndPostcodes();
+        tCABOutletPoints = new TreeMap<String, DW_Point>();
+        Iterator<String> ite_String = tCABOutletPostcodes.keySet().iterator();
+        while (ite_String.hasNext()) {
+            String outletName = ite_String.next();
+            String postcode = tCABOutletPostcodes.get(outletName);
+            DW_Point p = DW_Processor.getPointFromPostcode(postcode);
+            if (p == null) {
+                System.out.println("No point for postcode " + postcode);
+            } else {
+                tCABOutletPoints.put(outletName, p);
+                System.out.println(outletName + " " + p);
+            }
+        }
     }
 
     public void postcodeToLSOAToMSOAToOutletMaps(
-            ShapefileDataStoreFactory sdsf,
-            String outname,
-            boolean showMapsInJMapPane,
-            DW_StyleParameters styleParameters,
-            int imageWidth) throws Exception {
-
-        // Property for selecting
-        String targetPropertyNameLSOA = "LSOA11CD";
-        String targetPropertyNameMSOA = "MSOA11CD";
-
-        String level;
-        File backgroundShapefile;
-
-        // Get LSOA Codes, LSOA Shapefile and Leeds LSOA Shapefile
-        System.out.println("Get LSOA Codes, LSOA Shapefile and Leeds LSOA Shapefile");
-        level = "LSOA";
-        DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
-        tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
-                level, targetPropertyNameLSOA, sdsf);
-        TreeSet<String> tLSOACodes;
-        tLSOACodes =  tLSOACodesAndLeedsLSOAShapefile.getLeedsCensusAreaCodes();
-        File tLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
-        FeatureCollection tLSOAFeatureCollection;
-        tLSOAFeatureCollection = tLSOACodesAndLeedsLSOAShapefile.getLevelFC();
-        SimpleFeatureType tLSOAFeatureType;
-        tLSOAFeatureType = tLSOACodesAndLeedsLSOAShapefile.getLevelSFT();
-        File leedsLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
-        //backgroundShapefile = leedsLSOAShapefile;
-
-        // Get MSOA Codes, MSOA Shapefile and Leeds MSOA Shapefile
-        level = "MSOA";
-        DW_CensusAreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
-        tMSOACodesAndLeedsMSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
-                level, targetPropertyNameMSOA, sdsf);
-        TreeSet<String> tMSOACodes;
-        tLSOACodes = tMSOACodesAndLeedsMSOAShapefile.getLeedsCensusAreaCodes();
-        File tMSOAShapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelShapefile();
-        FeatureCollection tMSOAFeatureCollection;
-        tMSOAFeatureCollection = tMSOACodesAndLeedsMSOAShapefile.getLevelFC();
-        SimpleFeatureType tMSOAFeatureType;
-        tMSOAFeatureType = tMSOACodesAndLeedsMSOAShapefile.getLevelSFT();
-        File leedsMSOAShapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelShapefile();
-        backgroundShapefile = leedsMSOAShapefile;
-
-        Style backgroundStyle = styleParameters.getBackgroundStyle();
-        FeatureLayer backgroundFeatureLayer = DW_GeoTools.getFeatureLayer(
-                leedsLSOAShapefile,
-                backgroundStyle);
-
+            String outname) throws Exception {
+        backgroundDW_Shapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
+        foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
         int year_int = 2011;
-        // Get postcode to LSOA lookup
-        level = "LSOA";
-        TreeMap<String, String> tLookupFromPostcodeToLSOACensusCodes;
+        // init postcode to LSOA lookup
         tLookupFromPostcodeToLSOACensusCodes = DW_Processor.getLookupFromPostcodeToCensusCode(
-                level,
+                "LSOA",
                 year_int);
-
-        // Get postcode to LSOA lookup
-        level = "MSOA";
-        TreeMap<String, String> tLookupFromPostcodeToMSOACensusCodes;
+        // init postcode to MSOA lookup
         tLookupFromPostcodeToMSOACensusCodes = DW_Processor.getLookupFromPostcodeToCensusCode(
-                level,
+                "MSOA",
                 year_int);
         // Other variables for selecting and output
-        String png_String = "png";
-        File mapDirectory = DW_Files.getOutputAdviceLeedsMapsDir();
         File spiderMapDirectory = new File(
                 mapDirectory,
                 "spider/" + outname);
-        mapDirectory.mkdirs();
-        //boolean filter;
-
-        // Step 1. Get Locations of Outlets as Points
-        TreeMap<String, String> tCABOutletPostcodes;
-        tCABOutletPostcodes = DW_Processor.getOutletsAndPostcodes();
-
-        // Get LSOA to centroid lookup table
-        level = "LSOA";
-        TreeMap<String, Point> aLSOAToCentroidLookupTable;
-        aLSOAToCentroidLookupTable = getCentroidLookupTable(
-                level,
-                tLSOAShapefile,
-                tLSOAFeatureCollection,
-                tLSOAFeatureType,
-                targetPropertyNameLSOA);
-
-        // Get LSOA to centroid lookup table
-        level = "MSOA";
-        TreeMap<String, Point> aMSOAToCentroidLookupTable;
-        aMSOAToCentroidLookupTable = getCentroidLookupTable(
-                level,
-                tMSOAShapefile,
-                tMSOAFeatureCollection,
-                tMSOAFeatureType,
-                targetPropertyNameMSOA);
-        
-        // Get Outlet Points        
-        TreeMap<String, DW_Point> tCABOutletPoints;
-        tCABOutletPoints = DW_Processor.getOutletsAndPoints();
-        
-        // Step 2. Read Point data
-        CAB_DataRecord2_Handler aCAB_DataRecord2_Handler;
-        aCAB_DataRecord2_Handler = new CAB_DataRecord2_Handler();
-        CAB_DataRecord0_Handler tCAB_DataRecord0_Handler;
-        tCAB_DataRecord0_Handler = new CAB_DataRecord0_Handler();
-//        DW_DataProcessor_CAB aDW_DataProcessor_CAB;
-//        aDW_DataProcessor_CAB = new DW_DataProcessor_CAB(_DW_dir);
-//        String[] args = new String[0];
-//        aDW_DataProcessor_CAB.init_tCAB_DataRecord2_Handler(args);
-
-        String year;
+        spiderMapDirectory.mkdirs();
         String filename;
-        File dir;
-
+        String year;
         // year 2012-2013
         year = "1213";
-        dir = new File(
-                DW_Files.getGeneratedAdviceLeedsDir(),
-                "LeedsCAB");
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<EnquiryClientBureauOutletID, CAB_DataRecord2> tLeedsCABData;
         tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData(
-                filename,aCAB_DataRecord2_Handler);
+                filename, aCAB_DataRecord2_Handler);
         // Load Chapeltown CAB data
         TreeMap<String, CAB_DataRecord0> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(
@@ -598,152 +572,60 @@ public class DW_SpiderMaps extends DW_Maps {
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             TreeSetFeatureCollection tsfc = tsfcs.get(tCABOutlet);
-            File outputShapeFile = DW_GeoTools.getOutputShapefile(
+            File outputShapefile = DW_GeoTools.getOutputShapefile(
                     spiderMapDirectory,
                     tCABOutlet);
-            DW_GeoTools.transact(
-                    outputShapeFile,
+            DW_Shapefile.transact(
+                    outputShapefile,
                     aLineSFT,
                     tsfc,
                     sdsf);
+
+//            // @TODO Hoped to get away with doing this once.
+//            FeatureLayer backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
+//                backgroundShapefile,
+//                backgroundStyle);
             DW_GeoTools.outputToImage(
                     tCABOutlet,
-                    outputShapeFile,
-                    backgroundFeatureLayer,
-                    //backgroundShapefile,
+                    outputShapefile,
+                    foregroundDW_Shapefile0,
+                    foregroundDW_Shapefile1,
+                    backgroundDW_Shapefile,
                     "",
                     spiderMapDirectory,
                     png_String,
                     imageWidth,
                     styleParameters,
                     showMapsInJMapPane);
+
         }
+        // Tidy up
+        tLSOACodesAndLeedsLSOAShapefile.dispose();
+        tMSOACodesAndLeedsMSOAShapefile.dispose();
     }
 
     public void postcodeToLSOAToOutletMaps(
-            ShapefileDataStoreFactory sdsf,
-            String outname,
-            boolean showMapsInJMapPane,
-            DW_StyleParameters styleParameters,
-            int imageWidth) throws Exception {
-
-        // Property for selecting
-        String targetPropertyNameLSOA = "LSOA11CD";
-        String targetPropertyNameMSOA = "MSOA11CD";
-
-        String level;
-        File backgroundShapefile;
-
-        // Get LSOA Codes, LSOA Shapefile and Leeds LSOA Shapefile
-        System.out.println("Get LSOA Codes, LSOA Shapefile and Leeds LSOA Shapefile");
-        level = "LSOA";
-        DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
-        tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
-                level, targetPropertyNameLSOA, sdsf);
-        TreeSet<String> tLSOACodes;
-        tLSOACodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsCensusAreaCodes();
-        File tLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
-        FeatureCollection tLSOAFeatureCollection;
-        tLSOAFeatureCollection = tLSOACodesAndLeedsLSOAShapefile.getLevelFC();
-        SimpleFeatureType tLSOAFeatureType;
-        tLSOAFeatureType = tLSOACodesAndLeedsLSOAShapefile.getLevelSFT();
-        File leedsLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
-        //backgroundShapefile = leedsLSOAShapefile;
-
-        // Get MSOA Codes, MSOA Shapefile and Leeds MSOA Shapefile
-        level = "MSOA";
-        DW_CensusAreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
-        tMSOACodesAndLeedsMSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
-                level, targetPropertyNameMSOA, sdsf);
-        TreeSet<String> tMSOACodes;
-        tLSOACodes = tMSOACodesAndLeedsMSOAShapefile.getLeedsCensusAreaCodes();
-        File tMSOAShapefile = tMSOACodesAndLeedsMSOAShapefile.getLevelShapefile();
-        FeatureCollection tMSOAFeatureCollection;
-        tMSOAFeatureCollection = tMSOACodesAndLeedsMSOAShapefile.getLevelFC();
-        SimpleFeatureType tMSOAFeatureType;
-        tMSOAFeatureType = tMSOACodesAndLeedsMSOAShapefile.getLevelSFT();
-        File leedsMSOAShapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelShapefile();
-        backgroundShapefile = leedsMSOAShapefile;
-
-        Style backgroundStyle = styleParameters.getBackgroundStyle();
-        FeatureLayer backgroundFeatureLayer = DW_GeoTools.getFeatureLayer(
-                leedsLSOAShapefile,
-                backgroundStyle);
-
+            String outname) throws Exception {
+        backgroundDW_Shapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
+        foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
         int year_int = 2011;
         // Get postcode to LSOA lookup
-        level = "LSOA";
-        TreeMap<String, String> tLookupFromPostcodeToLSOACensusCodes;
         tLookupFromPostcodeToLSOACensusCodes = DW_Processor.getLookupFromPostcodeToCensusCode(
-                level,
+                "LSOA",
                 year_int);
-
         // Get postcode to LSOA lookup
-        level = "MSOA";
-        TreeMap<String, String> tLookupFromPostcodeToMSOACensusCodes;
         tLookupFromPostcodeToMSOACensusCodes = DW_Processor.getLookupFromPostcodeToCensusCode(
-                level,
+                "MSOA",
                 year_int);
         // Other variables for selecting and output
-        String png_String = "png";
-        File mapDirectory = DW_Files.getOutputAdviceLeedsMapsDir();
         File spiderMapDirectory = new File(
                 mapDirectory,
                 "spider/" + outname);
         spiderMapDirectory.mkdirs();
-        //boolean filter;
-
-        // Step 1. Get Locations of Outlets as Points
-        TreeMap<String, String> tCABOutletPostcodes;
-        tCABOutletPostcodes = DW_Processor.getOutletsAndPostcodes();
-
-        // Get LSOA to centroid lookup table
-        level = "LSOA";
-        TreeMap<String, Point> aLSOAToCentroidLookupTable;
-        aLSOAToCentroidLookupTable = getCentroidLookupTable(
-                level,
-                tLSOAShapefile,
-                tLSOAFeatureCollection,
-                tLSOAFeatureType,
-                targetPropertyNameLSOA);
-
-        TreeMap<String, DW_Point> tCABOutletPoints;
-        tCABOutletPoints = new TreeMap<String, DW_Point>();
-
-        init_ONSPDLookup();
-
-        Iterator<String> ite_String = tCABOutletPostcodes.keySet().iterator();
-        while (ite_String.hasNext()) {
-            String outletName = ite_String.next();
-            String postcode = tCABOutletPostcodes.get(outletName);
-            DW_Point p = DW_Processor.getPointFromPostcode(postcode);
-            if (p == null) {
-                System.out.println("No point for postcode " + postcode);
-            } else {
-                tCABOutletPoints.put(outletName, p);
-                System.out.println(outletName + " " + p);
-            }
-        }
 
         // Step 2. Read Point data
-        CAB_DataRecord2_Handler aCAB_DataRecord2_Handler;
-        aCAB_DataRecord2_Handler = new CAB_DataRecord2_Handler();
-        CAB_DataRecord0_Handler tCAB_DataRecord0_Handler;
-        tCAB_DataRecord0_Handler = new CAB_DataRecord0_Handler();
-//        DW_DataProcessor_CAB aDW_DataProcessor_CAB;
-//        aDW_DataProcessor_CAB = new DW_DataProcessor_CAB(_DW_dir);
-//        String[] args = new String[0];
-//        aDW_DataProcessor_CAB.init_tCAB_DataRecord2_Handler(args);
-
-        String year;
         String filename;
-        File dir;
-
         // year 2012-2013
-        year = "1213";
-        dir = new File(
-                DW_Files.getGeneratedAdviceLeedsDir(),
-                "LeedsCAB");
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<EnquiryClientBureauOutletID, CAB_DataRecord2> tLeedsCABData;
@@ -753,7 +635,7 @@ public class DW_SpiderMaps extends DW_Maps {
         TreeMap<String, CAB_DataRecord0> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(
                 tCAB_DataRecord0_Handler);
-        
+
         // Step 3.
         SimpleFeatureType aLineSFT = DataUtilities.createType(
                 "LINE",
@@ -764,6 +646,7 @@ public class DW_SpiderMaps extends DW_Maps {
         tsfcs = new TreeMap<String, TreeSetFeatureCollection>();
         TreeMap<String, SimpleFeatureBuilder> sfbs;
         sfbs = new TreeMap<String, SimpleFeatureBuilder>();
+        Iterator<String> ite_String;
         ite_String = tCABOutletPostcodes.keySet().iterator();
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
@@ -790,13 +673,6 @@ public class DW_SpiderMaps extends DW_Maps {
         ite2 = tLeedsCABData.keySet().iterator();
         while (ite2.hasNext()) {
             EnquiryClientBureauOutletID key = ite2.next();
-
-            if (ite2.hasNext()) {
-                int debug = 1;
-            } else {
-                int debug = 0;
-            }
-
             CAB_DataRecord2 r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
@@ -963,18 +839,20 @@ public class DW_SpiderMaps extends DW_Maps {
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             TreeSetFeatureCollection tsfc = tsfcs.get(tCABOutlet);
-            File outputShapeFile = DW_GeoTools.getOutputShapefile(
+            File outputShapefile = DW_GeoTools.getOutputShapefile(
                     spiderMapDirectory,
                     tCABOutlet);
-            DW_GeoTools.transact(
-                    outputShapeFile,
+            DW_Shapefile.transact(
+                    outputShapefile,
                     aLineSFT,
-                    tsfc, sdsf);
+                    tsfc,
+                    sdsf);
             DW_GeoTools.outputToImage(
                     tCABOutlet,
-                    outputShapeFile,
-                    backgroundFeatureLayer,
-                    //backgroundShapefile,
+                    outputShapefile,
+                    foregroundDW_Shapefile0,
+                    foregroundDW_Shapefile1,
+                    backgroundDW_Shapefile,
                     "",
                     spiderMapDirectory,
                     png_String,
@@ -985,103 +863,17 @@ public class DW_SpiderMaps extends DW_Maps {
     }
 
     public void postcodeToOutletMaps(
-            ShapefileDataStoreFactory sdsf,
-            String outname,
-            boolean showMapsInJMapPane,
-            DW_StyleParameters styleParameters,
-            int imageWidth) throws Exception {
-
-        // Property for selecting
-        String targetPropertyNameLSOA = "LSOA11CD";
-        String targetPropertyNameMSOA = "MSOA11CD";
-
-        String level;
-        File backgroundShapefile;
-
-        // Get LSOA Codes, LSOA Shapefile and Leeds LSOA Shapefile
-        System.out.println("Get LSOA Codes, LSOA Shapefile and Leeds LSOA Shapefile");
-        level = "LSOA";
-        DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
-        tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
-                level, targetPropertyNameLSOA, sdsf);
-        TreeSet<String> tLSOACodes;
-        tLSOACodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsCensusAreaCodes();
-        File tLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
-        FeatureCollection tLSOAFeatureCollection;
-        tLSOAFeatureCollection = tLSOACodesAndLeedsLSOAShapefile.getLevelFC();
-        SimpleFeatureType tLSOAFeatureType;
-        tLSOAFeatureType = tLSOACodesAndLeedsLSOAShapefile.getLevelSFT();
-        File leedsLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
-        //backgroundShapefile = leedsLSOAShapefile;
-
-        // Get MSOA Codes, MSOA Shapefile and Leeds MSOA Shapefile
-        level = "MSOA";
-        DW_CensusAreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
-        tMSOACodesAndLeedsMSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
-                level, targetPropertyNameMSOA, sdsf);
-        TreeSet<String> tMSOACodes;
-        tLSOACodes = tMSOACodesAndLeedsMSOAShapefile.getLeedsCensusAreaCodes();
-        File tMSOAShapefile = tMSOACodesAndLeedsMSOAShapefile.getLevelShapefile();
-        FeatureCollection tMSOAFeatureCollection;
-        tMSOAFeatureCollection = tMSOACodesAndLeedsMSOAShapefile.getLevelFC();
-        SimpleFeatureType tMSOAFeatureType;
-        tMSOAFeatureType = tMSOACodesAndLeedsMSOAShapefile.getLevelSFT();
-        File leedsMSOAShapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelShapefile();
-        backgroundShapefile = leedsMSOAShapefile;
-
-        Style backgroundStyle = styleParameters.getBackgroundStyle();
-        FeatureLayer backgroundFeatureLayer = DW_GeoTools.getFeatureLayer(
-                leedsLSOAShapefile,
-                backgroundStyle);
-
+            String outname) throws Exception {
+        backgroundDW_Shapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
+        foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
         // Other variables for selecting and output
-        String png_String = "png";
-        File mapDirectory = DW_Files.getOutputAdviceLeedsMapsDir();
         File spiderMapDirectory = new File(
                 mapDirectory,
                 "spider/" + outname);
         spiderMapDirectory.mkdirs();
-        //boolean filter;
-
-        // Step 1. Get Locations of Outlets as Points
-        TreeMap<String, String> tCABOutletPostcodes;
-        tCABOutletPostcodes = DW_Processor.getOutletsAndPostcodes();
-
-        TreeMap<String, DW_Point> tCABOutletPoints;
-        tCABOutletPoints = new TreeMap<String, DW_Point>();
-
-        init_ONSPDLookup();
-
-        Iterator<String> ite_String = tCABOutletPostcodes.keySet().iterator();
-        while (ite_String.hasNext()) {
-            String outletName = ite_String.next();
-            String postcode = tCABOutletPostcodes.get(outletName);
-            DW_Point p = DW_Processor.getPointFromPostcode(postcode);
-            if (p == null) {
-                System.out.println("No point for postcode " + postcode);
-            } else {
-                tCABOutletPoints.put(outletName, p);
-                System.out.println(outletName + " " + p);
-            }
-        }
-
         // Step 2. Read Point data
-        CAB_DataRecord2_Handler aCAB_DataRecord2_Handler;
-        aCAB_DataRecord2_Handler = new CAB_DataRecord2_Handler();
-        CAB_DataRecord0_Handler tCAB_DataRecord0_Handler;
-        tCAB_DataRecord0_Handler = new CAB_DataRecord0_Handler();
-//        DW_DataProcessor_CAB aDW_DataProcessor_CAB;
-//        aDW_DataProcessor_CAB = new DW_DataProcessor_CAB(_DW_dir);
-//        String[] args = new String[0];
-//        aDW_DataProcessor_CAB.init_tCAB_DataRecord2_Handler(args);
-
         String filename;
-        File dir;
-
         // year 2012-2013
-        dir = new File(
-                DW_Files.getGeneratedAdviceLeedsDir(),
-                "LeedsCAB");
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<EnquiryClientBureauOutletID, CAB_DataRecord2> tLeedsCABData;
@@ -1103,6 +895,7 @@ public class DW_SpiderMaps extends DW_Maps {
         tsfcs = new TreeMap<String, TreeSetFeatureCollection>();
         TreeMap<String, SimpleFeatureBuilder> sfbs;
         sfbs = new TreeMap<String, SimpleFeatureBuilder>();
+        Iterator<String> ite_String;
         ite_String = tCABOutletPostcodes.keySet().iterator();
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
@@ -1256,15 +1049,21 @@ public class DW_SpiderMaps extends DW_Maps {
             File outputShapeFile = DW_GeoTools.getOutputShapefile(
                     spiderMapDirectory,
                     tCABOutlet);
-            DW_GeoTools.transact(
+            DW_Shapefile.transact(
                     outputShapeFile,
                     aLineSFT,
                     tsfc, sdsf);
+
+//            // Had Hoped to getting away with doing this once
+//            FeatureLayer backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
+//                backgroundShapefile,
+//                backgroundStyle);
             DW_GeoTools.outputToImage(
                     tCABOutlet,
                     outputShapeFile,
-                    backgroundFeatureLayer,
-                    //backgroundShapefile,
+                    foregroundDW_Shapefile0,
+                    foregroundDW_Shapefile1,
+                    backgroundDW_Shapefile,
                     "",
                     spiderMapDirectory,
                     png_String,
@@ -1280,17 +1079,11 @@ public class DW_SpiderMaps extends DW_Maps {
      * table is returned.
      *
      * @param level
-     * @param tLSOAShapefile
-     * @param tLSOAFeatureCollection
-     * @param tLSOAFeatureType
      * @param targetPropertyName
      * @return
      */
-    public static TreeMap<String, Point> getCentroidLookupTable(
+    public TreeMap<String, Point> getCentroidLookupTable(
             String level,
-            File tLSOAShapefile,
-            FeatureCollection tLSOAFeatureCollection,
-            SimpleFeatureType tLSOAFeatureType,
             String targetPropertyName) {
         TreeMap<String, Point> result;
         File generatedCensus2011LUTsDir = DW_Files.getGeneratedCensus2011LUTsDir();
@@ -1302,8 +1095,14 @@ public class DW_SpiderMaps extends DW_Maps {
                     tLSOAToCentroidLookupTableFile);
         } else {
             result = new TreeMap<String, Point>();
+            FeatureCollection fc;
+            if (level.equals("LSOA")) {
+                fc = tLSOACodesAndLeedsLSOAShapefile.getLevelFC();
+            } else {
+                fc = tMSOACodesAndLeedsMSOAShapefile.getLevelFC();
+            }
             FeatureIterator featureIterator;
-            featureIterator = tLSOAFeatureCollection.features();
+            featureIterator = fc.features();
             while (featureIterator.hasNext()) {
                 Feature feature = featureIterator.next();
                 Collection<Property> properties;
@@ -1331,7 +1130,6 @@ public class DW_SpiderMaps extends DW_Maps {
                         geometry = (Geometry) geometryAttribute.getValue();
                         Point centroid;
                         centroid = geometry.getCentroid();
-
                         result.put(valueString, centroid);
                     }
                 }
@@ -1340,6 +1138,5 @@ public class DW_SpiderMaps extends DW_Maps {
         }
         return result;
     }
-
 
 }

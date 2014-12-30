@@ -92,6 +92,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_CensusAreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_GeoTools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Point;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor.getLookupFromPostcodeToCensusCode;
@@ -102,11 +103,25 @@ import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor
  */
 public class DW_DensityMaps extends DW_Maps {
 
-    public DW_DensityMaps() {
-    }
+    protected Grids_Environment ge;
+    protected ESRIAsciiGridExporter eage;
+    protected ImageExporter ie;
+    protected Grid2DSquareCellProcessorGWS gp;
+    protected Grid2DSquareCellDoubleFactory gf;
+    protected AbstractGrid2DSquareCellDoubleChunkFactory gcf;
+    protected long nrows;
+    protected long ncols;
+    protected int chunkNRows;
+    protected int chunkNCols;
+    protected double cellsize;
+    protected BigDecimal[] dimensions;
+    protected long xllcorner;
+    protected long yllcorner;
+    protected TreeMap<String, String> tLookupFromPostcodeToCensusCodes;
+    
+    protected boolean handleOutOfMemoryErrors;
 
-    public DW_DensityMaps(File digitalWelfareDir) {
-        this.digitalWelfareDir = digitalWelfareDir;
+    public DW_DensityMaps() {
     }
 
     /**
@@ -114,8 +129,7 @@ public class DW_DensityMaps extends DW_Maps {
      */
     public static void main(String[] args) {
         try {
-            File digitalWelfareDir = new File("/scratch02/DigitalWelfare/");
-            new DW_DensityMaps(digitalWelfareDir).run();
+            new DW_DensityMaps().run();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -137,13 +151,11 @@ public class DW_DensityMaps extends DW_Maps {
      *
      */
     public void run() {
-        String classificationFunctionName;
         // If showMapsInJMapPane is true, the maps are presented in individual 
         // JMapPanes
-        boolean showMapsInJMapPane = false;
-
+        showMapsInJMapPane = false;
+        imageWidth = 1000;
         init_ONSPDLookup();
-
         // Initialise styleParameters
         /*
          * YlOrRd,PRGn,PuOr,RdGy,Spectral,Grays,PuBuGn,RdPu,BuPu,YlOrBr,Greens,
@@ -157,135 +169,84 @@ public class DW_DensityMaps extends DW_Maps {
 //        for (int i = 0; i < paletteNames.length; i++) {
 //            System.out.println(paletteNames[i]);
 //        }
-        int nClasses = 9;
-        String paletteName = "Reds";
-        boolean addWhiteForZero = true;
-        File densityMapDirectory = new File(
+        styleParameters = new DW_StyleParameters();
+        styleParameters.setnClasses(9);
+        styleParameters.setPaletteName("Reds");
+        styleParameters.setAddWhiteForZero(true);
+        styleParameters.setForegroundStyleTitle0("Foreground Style 0");
+        styleParameters.setForegroundStyle0(DW_Style.createDefaultPointStyle());
+        styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
+                Color.GREEN,
+                Color.WHITE));
+        styleParameters.setForegroundStyleTitle1("Foreground Style 1");
+
+        mapDirectory = new File(
                 DW_Files.getOutputAdviceLeedsMapsDir(),
                 "density");
-        int imageWidth = 1000;
+        imageWidth = 1000;
 
-        ShapefileDataStoreFactory sdsf;
         sdsf = new ShapefileDataStoreFactory();
+        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefile();
 
-        boolean commonlyStyled;
-        boolean individuallyStyled;
+        /*Grid Parameters
+         *_____________________________________________________________________
+         */
+        handleOutOfMemoryErrors = true;
+        File processorDir = new File(
+                mapDirectory,
+                "processor");
+        processorDir.mkdirs();
+        ge = new Grids_Environment();
+        eage = new ESRIAsciiGridExporter();
+        ie = new ImageExporter(ge);
+        gp = new Grid2DSquareCellProcessorGWS(ge);
+        gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
+        gcf = new Grid2DSquareCellDoubleChunkArrayFactory();
+        chunkNRows = 300;//250; //64
+        chunkNCols = 350;//300; //64
+        gf = new Grid2DSquareCellDoubleFactory(
+                processorDir,
+                chunkNRows,
+                chunkNCols,
+                gcf,
+                -9999d,
+                ge,
+                handleOutOfMemoryErrors);
 
-        String tAdviceLeedsPointName = "AllAdviceLeedsPoints";
-        File tAdviceLeedsPointShapefileDir;
-        tAdviceLeedsPointShapefileDir = new File(
-                DW_Files.getGeneratedAdviceLeedsDir(),
-                tAdviceLeedsPointName);
-        String tAdviceLeedsPointShapefileFilename;
-        tAdviceLeedsPointShapefileFilename = tAdviceLeedsPointName + ".shp";
-        File tAdviceLeedsPointShapefile;
-        tAdviceLeedsPointShapefile = createAdviceLeedsPointShapefileIfItDoesNotExist(
-                tAdviceLeedsPointShapefileDir,
-                tAdviceLeedsPointShapefileFilename);
-
+        cellsize = 50;//100;//50; //100;
+        
         // Equal Interval runs
-        classificationFunctionName = "EqualInterval";
+        styleParameters.setClassificationFunctionName("EqualInterval");
         commonlyStyled = true;
         individuallyStyled = true;
-        runAll(showMapsInJMapPane,
-                commonlyStyled,
-                individuallyStyled,
-                tAdviceLeedsPointShapefile,
-                nClasses,
-                paletteName,
-                addWhiteForZero,
-                imageWidth,
-                densityMapDirectory,
-                classificationFunctionName,
-                sdsf);
+        runAll();
     }
 
-    public void runAll(
-            boolean showMapsInJMapPane,
-            boolean commonlyStyled,
-            boolean individuallyStyled,
-            File tAdviceLeedsPointShapefile,
-            int nClasses,
-            String paletteName,
-            boolean addWhiteForZero,
-            int imageWidth,
-            File densityMapDirectory,
-            String classificationFunctionName,
-            ShapefileDataStoreFactory sdsf) {
+    public void runAll() {
 
         // General parameters
         // Property for selecting
         String targetPropertyName = "LSOA11CD";
-        String level = "LSOA";
+        level = "LSOA";
         // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
         DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
         tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
                 level, targetPropertyName, sdsf);
-
-        TreeMap<String, String> tLookupFromPostcodeToCensusCodes;
         tLookupFromPostcodeToCensusCodes = getLookupFromPostcodeToCensusCode(
                 level, 2011);
 
-//        Style backgroundStyle = DW_Style.createDefaultPolygonStyle(
-//                Color.BLACK,
-//                Color.WHITE);
-        Style backgroundStyle = DW_Style.createDefaultPolygonStyle(
-                Color.BLACK,//YELLOW,
-                null);
-        String backgroundStyle_String = "Default Background Style";
-        DW_StyleParameters styleParameters;
-        styleParameters = new DW_StyleParameters(
-                classificationFunctionName,
-                nClasses,
-                paletteName,
-                addWhiteForZero,
-                backgroundStyle,
-                backgroundStyle_String);
-
-        Object[] tLSOAData;
-        String png_String;
-        png_String = "png";
         TreeMap<String, Deprivation_DataRecord> deprivationRecords;
 
-//        // Map SHBE data
-//        deprivationRecords = null;
-//        generateIndividuallyStyledSHBE(
-//                sdsf,
-//                classificationFunctionName,
-//                styleParameters,
-//                showMapsInJMapPane,
-//                imageWidth,
-//                deprivationRecords,
-//                targetPropertyName,
-//                level,
-//                tLSOACodesAndLeedsLSOAShapefile,
-//                //String[] tLeedsCABFilenames,
-//                png_String);
-//        deprivationRecords = DW_Processor.getDeprivation_Data();
-//        generateIndividuallyStyledSHBE(
-//                sdsf,
-//                classificationFunctionName,
-//                styleParameters,
-//                showMapsInJMapPane,
-//                imageWidth,
-//                deprivationRecords,
-//                targetPropertyName,
-//                level,
-//                tLSOACodesAndLeedsLSOAShapefile,
-//                //String[] tLeedsCABFilenames,
-//                png_String);
         // Map CAB data
         boolean scaleToFirst;
 
         // Grids parameters
-        boolean handleOutOfMemoryErrors;
-        handleOutOfMemoryErrors = true;
-
+        
         // Filter just for specific outlets
         HashSet<String> outlets;
         outlets = new HashSet<String>();
         outlets.add("OTLEY - LS21 1BG");
-        //outlets = null; // Set outlets null to run for all outlets
+        outlets = null; // Set outlets null to run for all outlets
 
         /*
          * (filter == 0) Clip all results to Leeds LAD
@@ -298,65 +259,63 @@ public class DW_DensityMaps extends DW_Maps {
             deprivationRecords = null;
             if (individuallyStyled) {
                 scaleToFirst = false;
-                runCAB(sdsf,
-                        showMapsInJMapPane, styleParameters,
-                        tAdviceLeedsPointShapefile,
-                        imageWidth, deprivationRecords, outlets, densityMapDirectory,
-                        classificationFunctionName, targetPropertyName, level,
-                        tLSOACodesAndLeedsLSOAShapefile, tLookupFromPostcodeToCensusCodes,
-                        png_String, filter, scaleToFirst, handleOutOfMemoryErrors);
+                runCAB(deprivationRecords,
+                        outlets,
+                        targetPropertyName,
+                        tLSOACodesAndLeedsLSOAShapefile,
+                        tLookupFromPostcodeToCensusCodes,
+                        filter,
+                        scaleToFirst,
+                        handleOutOfMemoryErrors);
             }
             if (commonlyStyled) {
                 scaleToFirst = true;
-                runCAB(sdsf,
-                        showMapsInJMapPane, styleParameters,
-                        tAdviceLeedsPointShapefile,
-                        imageWidth, deprivationRecords, outlets, densityMapDirectory,
-                        classificationFunctionName, targetPropertyName, level,
-                        tLSOACodesAndLeedsLSOAShapefile, tLookupFromPostcodeToCensusCodes,
-                        png_String, filter, scaleToFirst, handleOutOfMemoryErrors);
+                runCAB(deprivationRecords,
+                        outlets,
+                        targetPropertyName,
+                        tLSOACodesAndLeedsLSOAShapefile,
+                        tLookupFromPostcodeToCensusCodes,
+                        filter,
+                        scaleToFirst,
+                        handleOutOfMemoryErrors);
             }
 
             // Get deprivation data
             deprivationRecords = DW_Processor.getDeprivation_Data();
             if (individuallyStyled) {
                 scaleToFirst = false;
-                runCAB(sdsf,
-                        showMapsInJMapPane, styleParameters,
-                        tAdviceLeedsPointShapefile,
-                        imageWidth, deprivationRecords, outlets, densityMapDirectory,
-                        classificationFunctionName, targetPropertyName, level,
-                        tLSOACodesAndLeedsLSOAShapefile, tLookupFromPostcodeToCensusCodes,
-                        png_String, filter, scaleToFirst, handleOutOfMemoryErrors);
+                runCAB(deprivationRecords,
+                        outlets,
+                        targetPropertyName,
+                        tLSOACodesAndLeedsLSOAShapefile,
+                        tLookupFromPostcodeToCensusCodes,
+                        filter,
+                        scaleToFirst,
+                        handleOutOfMemoryErrors);
             }
             if (commonlyStyled) {
                 scaleToFirst = true;
-                runCAB(sdsf,
-                        showMapsInJMapPane, styleParameters,
-                        tAdviceLeedsPointShapefile,
-                        imageWidth, deprivationRecords, outlets, densityMapDirectory,
-                        classificationFunctionName, targetPropertyName, level,
-                        tLSOACodesAndLeedsLSOAShapefile, tLookupFromPostcodeToCensusCodes,
-                        png_String, filter, scaleToFirst, handleOutOfMemoryErrors);
+                runCAB(deprivationRecords,
+                        outlets,
+                        targetPropertyName,
+                        tLSOACodesAndLeedsLSOAShapefile,
+                        tLookupFromPostcodeToCensusCodes,
+                        filter,
+                        scaleToFirst,
+                        handleOutOfMemoryErrors);
             }
         }
+        // Tidy up
+        tLSOACodesAndLeedsLSOAShapefile.dispose();
     }
 
     public void runCAB(
-            ShapefileDataStoreFactory sdsf,
-            boolean showMapsInJMapPane,
-            DW_StyleParameters styleParameters,
-            File tAdviceLeedsPointShapefile,
-            int imageWidth,
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
             HashSet<String> outlets,
-            File densityMapDirectory,
-            String classificationFunctionName,
             String targetPropertyName,
-            String level,
+            //            String level,
             DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile,
             TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
-            String png_String,
             int filter,
             boolean scaleToFirst,
             boolean handleOutOfMemoryErrors) {
@@ -369,31 +328,23 @@ public class DW_DensityMaps extends DW_Maps {
         }
         File dir;
         dir = new File(
-                densityMapDirectory,
-                style + "/" + classificationFunctionName);
+                mapDirectory,
+                style + "/" + styleParameters.getClassificationFunctionName());
 
-        mapCountsForLSOAs(
-                sdsf,
-                tAdviceLeedsPointShapefile,
+        mapCounts(
                 tLSOACodesAndLeedsLSOAShapefile,
                 tLookupFromPostcodeToCensusCodes,
                 deprivationRecords,
                 outlets,
                 dir,
                 targetPropertyName,
-                png_String,
-                imageWidth,
                 filter,
                 scaleToFirst,
-                styleParameters,
-                showMapsInJMapPane,
                 handleOutOfMemoryErrors);
     }
 
     /**
      * Uses a file dialog to select a file and then
-     *
-     * @param sdsf
      * @param tLSOACodesAndLeedsLSOAShapefile
      * @param tLookupFromPostcodeToCensusCodes
      * @param outlets // May be null, but if not null then filters and only
@@ -401,47 +352,23 @@ public class DW_DensityMaps extends DW_Maps {
      * @param deprivationRecords
      * @param dir
      * @param targetPropertyName
-     * @param png_String
-     * @param imageWidth
      * @param filter
      * @param scaleToFirst If scaleToFirst == true then all maps are shaded with
      * the styles provided by the first map.
      * @param handleOutOfMemoryErrors
-     * @param styleParameters
-     * @param showMapsInJMapPane
      */
-    public void mapCountsForLSOAs(
-            ShapefileDataStoreFactory sdsf,
-            File tAdviceLeedsPointShapefile,
+    public void mapCounts(
             DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile,
             TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
             HashSet<String> outlets,
             File dir,
             String targetPropertyName,
-            String png_String,
-            int imageWidth,
             int filter,
             boolean scaleToFirst,
-            DW_StyleParameters styleParameters,
-            boolean showMapsInJMapPane,
             boolean handleOutOfMemoryErrors) {
-
-//        StyleFactory sf;
-//        sf = CommonFactoryFinder.getStyleFactory();
-//        FilterFactory2 ff;
-//        ff = CommonFactoryFinder.getFilterFactory2();
-        long nrows;// = 600;//250;//500;//250;
-        long ncols;// = 700;//300;//600;//300;
-        long cellsize = 50;//100;//50; //100;
-        long xllcorner;// = 413000;
-        long yllcorner;// = 422000;
-
-        File backgroundShapefile;
-        TreeSet<String> tLSOACodes;
         if (filter == 0) {
-            tLSOACodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsCensusAreaCodes();
-            backgroundShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADShapefile(); // LAD
+            backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
             nrows = 554;
             ncols = 680;
             xllcorner = 413000;
@@ -460,8 +387,7 @@ public class DW_DensityMaps extends DW_Maps {
             yllcorner = 422500;
         } else {
             if (filter == 1) {
-                tLSOACodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsCensusAreaCodes();
-                backgroundShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsShapefile();
+                backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsDW_Shapefile();
                 nrows = 1654;
                 ncols = 1530;
                 xllcorner = 396000;
@@ -479,8 +405,7 @@ public class DW_DensityMaps extends DW_Maps {
                 // (maxYRounded - minYRounded) / cellsize = 1654
                 yllcorner = 402500;
             } else {
-                tLSOACodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes();
-                backgroundShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsAndCravenAndYorkShapefile();
+                backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile();
                 nrows = 1652;
                 ncols = 2188;
                 xllcorner = 363100;
@@ -499,44 +424,7 @@ public class DW_DensityMaps extends DW_Maps {
                 yllcorner = 402500;
             }
         }
-
-        Style backgroundStyle = styleParameters.getBackgroundStyle();
-
-        /*Grid Parameters
-         *_____________________________________________________________________
-         */
-        File densityDir = new File(
-                DW_Files.getOutputAdviceLeedsMapsDir(),
-                "density");
-        densityDir.mkdirs();
-        File processorDir = new File(
-                densityDir,
-                "processor");
-        Grids_Environment ge;
-        ge = new Grids_Environment();
-        ESRIAsciiGridExporter eage;
-        eage = new ESRIAsciiGridExporter();
-        ImageExporter ie;
-        ie = new ImageExporter(ge);
-        processorDir.mkdirs();
-        Grid2DSquareCellProcessorGWS gp;
-        gp = new Grid2DSquareCellProcessorGWS(ge);
-        gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
-
-        Grid2DSquareCellDoubleChunkArrayFactory gcf;
-        gcf = new Grid2DSquareCellDoubleChunkArrayFactory();
-        int chunkNRows = 300;//250; //64
-        int chunkNCols = 350;//300; //64
-
-        Grid2DSquareCellDoubleFactory gf;
-        gf = new Grid2DSquareCellDoubleFactory(
-                processorDir,
-                chunkNRows,
-                chunkNCols,
-                gcf,
-                -9999d,
-                ge,
-                handleOutOfMemoryErrors);
+        foregroundDW_Shapefile1 = backgroundDW_Shapefile;
 
         // Get the CAB Client Data
         ArrayList<String> tChapeltownCABData;
@@ -545,9 +433,8 @@ public class DW_DensityMaps extends DW_Maps {
         tLeedsCABData = getLeedsCABDataPostcodes();
         tLeedsCABData.put("Chapeltown", tChapeltownCABData);
         // Initialise grid paramters
-        long xurcorner = xllcorner + (nrows * cellsize);
-        long yurcorner = yllcorner + (ncols * cellsize);
-        BigDecimal[] dimensions;
+        long xurcorner = xllcorner + (long) (nrows * cellsize);
+        long yurcorner = yllcorner + (long) (ncols * cellsize);
         dimensions = new BigDecimal[5];
         dimensions[0] = new BigDecimal("" + cellsize); //cellsize
         dimensions[1] = new BigDecimal("" + xllcorner); //xllcorner
@@ -567,10 +454,10 @@ public class DW_DensityMaps extends DW_Maps {
             while (ite.hasNext()) {
                 Integer deprivationKey = ite.next();
                 Integer deprivationClass = deprivationClasses.get(deprivationKey);
-                File mapDirectory = new File(
+                File mapDirectory2 = new File(
                         dir,
                         "" + deprivationClass);
-                mapDirectory.mkdirs();
+                mapDirectory2.mkdirs();
 
                 // Iterate over the outlets;
                 Iterator<String> ite2;
@@ -587,14 +474,15 @@ public class DW_DensityMaps extends DW_Maps {
                     }
                     if (process) {
                         processForOutlet(
-                                outlet, outlets, mapDirectory, nameOfGrid, gf, gcf,
-                                nrows, ncols, maxCellDistanceForGeneralisation,
-                                cellsize, dimensions, ge, eage, tLeedsCABData,
-                                ie, gp, tLookupFromPostcodeToCensusCodes,
-                                tAdviceLeedsPointShapefile, backgroundShapefile, backgroundStyle,
-                                deprivationRecords, deprivationClasses,
-                                deprivationClass, png_String, imageWidth,
-                                showMapsInJMapPane, handleOutOfMemoryErrors);
+                                mapDirectory2,
+                                outlet,
+                                outlets,
+                                nameOfGrid,
+                                maxCellDistanceForGeneralisation,
+                                tLeedsCABData,
+                                deprivationRecords,
+                                deprivationClasses,
+                                deprivationClass);
                     }
                 }
                 if (!scaleToFirst) {
@@ -602,23 +490,25 @@ public class DW_DensityMaps extends DW_Maps {
                 }
             }
         } else {
-            File mapDirectory = new File(
+            File mapDirectory2 = new File(
                     dir,
                     "all");
-            mapDirectory.mkdirs();
+            mapDirectory2.mkdirs();
             // Iterate over the outlets;
             Iterator<String> ite2;
             ite2 = tLeedsCABData.keySet().iterator();
             while (ite2.hasNext()) {
                 String outlet = ite2.next();
                 processForOutlet(
-                        outlet, outlets, mapDirectory, nameOfGrid, gf, gcf,
-                        nrows, ncols, maxCellDistanceForGeneralisation,
-                        cellsize, dimensions, ge, eage, tLeedsCABData, ie, gp,
-                        tLookupFromPostcodeToCensusCodes, tAdviceLeedsPointShapefile, backgroundShapefile,
-                        backgroundStyle, deprivationRecords, null, chunkNCols,
-                        png_String, imageWidth, showMapsInJMapPane,
-                        handleOutOfMemoryErrors);
+                        mapDirectory2,
+                        outlet,
+                        outlets,
+                        nameOfGrid,
+                        maxCellDistanceForGeneralisation,
+                        tLeedsCABData,
+                        deprivationRecords,
+                        null,
+                        null);
             }
             if (!scaleToFirst) {
                 styleParameters.setStyle(null);
@@ -627,42 +517,16 @@ public class DW_DensityMaps extends DW_Maps {
     }
 
     private void processForOutlet(
+            File mapDirectory2,
             String outlet,
             HashSet<String> outlets,
-            File mapDirectory,
             String nameOfGrid,
-            Grid2DSquareCellDoubleFactory gf,
-            AbstractGrid2DSquareCellDoubleChunkFactory gcf,
-            long nrows,
-            long ncols,
             int maxCellDistanceForGeneralisation,
-            double cellsize,
-            BigDecimal[] dimensions,
-            Grids_Environment ge,
-            ESRIAsciiGridExporter eage,
             TreeMap<String, ArrayList<String>> tLeedsCABData,
-            ImageExporter ie,
-            Grid2DSquareCellProcessorGWS gp,
-            TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
-            //FeatureLayer backgroundFeatureLayer,
-            File tAdviceLeedsPointShapefile,
-            File backgroundShapefile,
-            Style backgroundStyle,
-            //            ShapefileDataStoreFactory sdsf,
-            //            Object[] tLSOACodesAndLeedsLSOAShapefile,
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
-            //            HashSet<String> outlets,
-            //            File dir,
-            //            String targetPropertyName,
             TreeMap<Integer, Integer> deprivationClasses,
-            Integer deprivationClass,
-            String png_String,
-            int imageWidth,
-            //            int filter,
-            //            boolean scaleToFirst,
-            //            Object[] styleParameters,
-            boolean showMapsInJMapPane,
-            boolean handleOutOfMemoryErrors) {
+            Integer deprivationClass) {
+
         boolean process = false;
         if (outlets != null) {
             if (outlets.contains(outlet)) {
@@ -674,7 +538,7 @@ public class DW_DensityMaps extends DW_Maps {
         if (process) {
             System.out.println("Outlet " + outlet);
             File outletmapDirectory = new File(
-                    mapDirectory,
+                    mapDirectory2,
                     outlet);
             outletmapDirectory.mkdirs();
             File grid = new File(
@@ -756,29 +620,15 @@ public class DW_DensityMaps extends DW_Maps {
 
             eage.toAsciiFile(g, asciigridFile, handleOutOfMemoryErrors);
 
-            FeatureLayer foregroundFeatureLayer;
-            foregroundFeatureLayer = DW_GeoTools.getFeatureLayer(
-                    tAdviceLeedsPointShapefile,
-                    DW_Style.createDefaultPointStyle());
             
-            // Had hoped that this could be done once and then passed in 
-            FeatureLayer backgroundFeatureLayer;
-            backgroundFeatureLayer = DW_GeoTools.getFeatureLayer(
-                    backgroundShapefile,
-                    backgroundStyle);
-
             //----------------------------------------------------------
             // outputGridToImageUsingGeoTools - this styles everything too
             outputGridToImageUsingGeoTools(
-                    (double) Math.PI * cellsize * cellsize,
+                    1.0d,//(double) Math.PI * cellsize * cellsize,
                     g,
                     asciigridFile,
                     outletmapDirectory,
-                    foregroundFeatureLayer,
-                    backgroundFeatureLayer,
-                    nameOfGrid,
-                    png_String,
-                    imageWidth, sf, ff, showMapsInJMapPane);
+                    nameOfGrid);
 
             // Generalise the grid
             // Generate some geographically weighted statsitics
@@ -831,45 +681,32 @@ public class DW_DensityMaps extends DW_Maps {
                     eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
                     i++;
 
-                    // Had hoped that this could be done once and then passed in 
-                    foregroundFeatureLayer = DW_GeoTools.getFeatureLayer(
-                    tAdviceLeedsPointShapefile,
-                    DW_Style.createDefaultPointStyle());
-                    
-                    backgroundFeatureLayer = DW_GeoTools.getFeatureLayer(
-                            backgroundShapefile,
-                            backgroundStyle);
-
+//                    // Had hoped that this could be done once and then passed in 
+//                    foregroundFeatureLayer = foregroundSDS.getFeatureLayer(
+//                    tAdviceLeedsPointShapefile,
+//                    DW_Style.createDefaultPointStyle());
+//                    backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
+//                            backgroundShapefile,
+//                            backgroundStyle);
                     //----------------------------------------------------------
                     // outputGridToImageUsingGeoTools - this styles everything too
                     outputGridToImageUsingGeoTools(
-                            (double) Math.PI * cellDistanceForGeneralisation * cellDistanceForGeneralisation,
+                            1.0d,//(double) Math.PI * cellDistanceForGeneralisation * cellDistanceForGeneralisation,
                             gwsgrid,
                             asciigridFile,
                             outletmapDirectory,
-                            foregroundFeatureLayer,
-                            backgroundFeatureLayer,
-                            outputName,
-                            png_String,
-                            imageWidth, sf, ff, showMapsInJMapPane);
+                            outputName);
                 }
             }
         }
     }
 
-    public static void outputGridToImageUsingGeoTools(
+    public void outputGridToImageUsingGeoTools(
             double normalisation,
             AbstractGrid2DSquareCell g,
             File asciigridFile,
             File dir,
-            FeatureLayer foregroundFeatureLayer,
-            FeatureLayer backgroundFeatureLayer,
-            String nameOfGrid,
-            String png_String,
-            int imageWidth,
-            StyleFactory sf,
-            FilterFactory2 ff,
-            boolean showMapsInJMapPane) {
+            String nameOfGrid) {
         //----------------------------------------------------------
         // Create GeoTools GridCoverage
         // Two ways to read the asciigridFile into a GridCoverage
@@ -888,8 +725,9 @@ public class DW_DensityMaps extends DW_Maps {
         GridCoverage2D gc = null;
         try {
 //            gc = reader.read(null);
-            gc = aArcGridReader.read(null);
-
+            if (aArcGridReader != null) {
+                gc = aArcGridReader.read(null);
+            }
         } catch (IOException ex) {
             Logger.getLogger(DW_DensityMaps.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -898,12 +736,12 @@ public class DW_DensityMaps extends DW_Maps {
         String outname = nameOfGrid + "GeoToolsOutput";
         //showMapsInJMapPane = true;
 
-        Object[] styleAndLegendItems = DW_Style.getStyleAndLegendItems(
-                normalisation, g, gc, "Quantile", ff, 9, "Reds", true);
+//        Object[] styleAndLegendItems = DW_Style.getStyleAndLegendItems(
+//                normalisation, g, gc, "Quantile", ff, 9, "Reds", true);
         //Style style = createGreyscaleStyle(gc, null, sf, ff);
 
         ReferencedEnvelope re;
-        re = backgroundFeatureLayer.getBounds();
+        re = backgroundDW_Shapefile.getFeatureLayer().getBounds();
         double minX = re.getMinX();
         double maxX = re.getMaxX();
         double minY = re.getMinY();
@@ -914,13 +752,15 @@ public class DW_DensityMaps extends DW_Maps {
         System.out.println("maxY " + maxY);
 
         DW_GeoTools.outputToImage(
+                normalisation,
+                styleParameters,
                 outname,
+                g,
                 gc,
-                foregroundFeatureLayer,
-                backgroundFeatureLayer,
-                styleAndLegendItems,
+                foregroundDW_Shapefile0,
+                foregroundDW_Shapefile1,
+                backgroundDW_Shapefile,
                 dir,
-                png_String,
                 imageWidth,
                 showMapsInJMapPane);
 //        try {
@@ -928,7 +768,9 @@ public class DW_DensityMaps extends DW_Maps {
 //        } catch (IOException ex) {
 //            Logger.getLogger(DW_DensityMaps.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        aArcGridReader.dispose();
+        if (aArcGridReader != null) {
+            aArcGridReader.dispose();
+        }
     }
 
     public static TreeMap<String, ArrayList<DW_Point>> getLeedsCABDataPoints() {
@@ -1041,8 +883,8 @@ public class DW_DensityMaps extends DW_Maps {
         return result;
     }
 
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory();
-    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    private final StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+    private final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
     private JMapFrame frame;
     private GridCoverage2DReader reader;

@@ -18,7 +18,6 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import org.geotools.styling.Style;
 
@@ -27,16 +26,19 @@ import org.geotools.styling.Style;
  * @author geoagdt
  */
 public class DW_StyleParameters {
-    
+
     private Style style;
     private String classificationFunctionName;
     private int nClasses;
     private String paletteName;
-    private boolean addWhiteForZero = false;
+    private boolean addWhiteForZero;
     private Style backgroundStyle;
     private String backgroundStyleTitle;
-    private Style foregroundStyle;
-    private String foregroundStyleTitle;
+    private boolean drawBoundaries;
+    private Style foregroundStyle0;
+    private String foregroundStyleTitle0;
+    private Style foregroundStyle1;
+    private String foregroundStyleTitle1;
     private ArrayList<DW_LegendItem> legendItems;
 
     /**
@@ -138,33 +140,61 @@ public class DW_StyleParameters {
     }
 
     /**
-     * @return the foregroundStyle
+     * @return the foregroundStyle0
      */
-    public Style getForegroundStyle() {
-        return foregroundStyle;
+    public Style getForegroundStyle0() {
+        return foregroundStyle0;
     }
 
     /**
-     * @param foregroundStyle the foregroundStyle to set
+     * @param foregroundStyle0 the foregroundStyle0 to set
      */
-    public void setForegroundStyle(Style foregroundStyle) {
-        this.foregroundStyle = foregroundStyle;
+    public void setForegroundStyle0(Style foregroundStyle0) {
+        this.foregroundStyle0 = foregroundStyle0;
     }
 
     /**
-     * @return the foregroundStyleTitle
+     * @return the foregroundStyleTitle0
      */
-    public String getForegroundStyleTitle() {
-        return foregroundStyleTitle;
+    public String getForegroundStyleTitle0() {
+        return foregroundStyleTitle0;
     }
 
     /**
-     * @param foregroundStyleTitle the foregroundStyleTitle to set
+     * @param foregroundStyleTitle0 the foregroundStyleTitle0 to set
      */
-    public void setForegroundStyleTitle(String foregroundStyleTitle) {
-        this.foregroundStyleTitle = foregroundStyleTitle;
+    public void setForegroundStyleTitle0(String foregroundStyleTitle0) {
+        this.foregroundStyleTitle0 = foregroundStyleTitle0;
     }
 
+    /**
+     * @return the foregroundStyle1
+     */
+    public Style getForegroundStyle1() {
+        return foregroundStyle1;
+    }
+
+    /**
+     * @param foregroundStyle1 the foregroundStyle1 to set
+     */
+    public void setForegroundStyle1(Style foregroundStyle1) {
+        this.foregroundStyle1 = foregroundStyle1;
+    }
+
+    /**
+     * @return the foregroundStyleTitle0
+     */
+    public String getForegroundStyleTitle1() {
+        return foregroundStyleTitle1;
+    }
+
+    /**
+     * @param foregroundStyleTitle1 the foregroundStyleTitle1 to set
+     */
+    public void setForegroundStyleTitle1(String foregroundStyleTitle1) {
+        this.foregroundStyleTitle1 = foregroundStyleTitle1;
+    }
+    
     /**
      * @return the legendItems
      */
@@ -178,7 +208,7 @@ public class DW_StyleParameters {
     public void setLegendItems(ArrayList<DW_LegendItem> legendItems) {
         this.legendItems = legendItems;
     }
-    
+
     public DW_StyleParameters() {
 //        this.classificationFunctionName = "";
 //        this.nClasses = 0;
@@ -187,41 +217,56 @@ public class DW_StyleParameters {
 //        this.backgroundStyle = null;
 //        this.backgroundStyleTitle = "";
     }
-    
+
     public DW_StyleParameters(
             String classificationFunctionName,
             int nClasses,
             String paletteName,
             boolean addWhiteForZero,
             Style backgroundStyle,
-            String backgroundStyleTitle) {
+            String backgroundStyleTitle,
+            boolean drawBoundaries) {
+        this.classificationFunctionName = classificationFunctionName;
+        this.nClasses = nClasses;
+        this.paletteName = paletteName;
         this.addWhiteForZero = addWhiteForZero;
-       this.backgroundStyle = backgroundStyle;
-       this.backgroundStyleTitle = backgroundStyleTitle;
-       this.classificationFunctionName = classificationFunctionName;
-       this.paletteName = paletteName;
+        this.backgroundStyle = backgroundStyle;
+        this.backgroundStyleTitle = backgroundStyleTitle;
+        this.drawBoundaries = drawBoundaries;
     }
 
     /**
-     * Initialise styleParameters.
-     * No deep copying.
-     * 
+     * Initialise styleParameters. No deep copying.
+     *
      * @param styleParameters
      * @return
      */
     public DW_StyleParameters(DW_StyleParameters styleParameters) {
-       this.addWhiteForZero = styleParameters.addWhiteForZero;
-       this.backgroundStyle = styleParameters.backgroundStyle;
-       this.backgroundStyleTitle = styleParameters.backgroundStyleTitle;
-       this.classificationFunctionName = styleParameters.classificationFunctionName;
-       this.foregroundStyle = styleParameters.foregroundStyle;
-       this.foregroundStyleTitle = styleParameters.foregroundStyleTitle;
-       this.legendItems = styleParameters.legendItems;
-       this.nClasses = styleParameters.nClasses;
-       this.paletteName = styleParameters.paletteName;
-       this.style = styleParameters.style;
+        this.addWhiteForZero = styleParameters.addWhiteForZero;
+        this.backgroundStyle = styleParameters.backgroundStyle;
+        this.backgroundStyleTitle = styleParameters.backgroundStyleTitle;
+        this.classificationFunctionName = styleParameters.classificationFunctionName;
+        this.foregroundStyle0 = styleParameters.foregroundStyle0;
+        this.foregroundStyleTitle0 = styleParameters.foregroundStyleTitle0;
+        this.legendItems = styleParameters.legendItems;
+        this.nClasses = styleParameters.nClasses;
+        this.paletteName = styleParameters.paletteName;
+        this.style = styleParameters.style;
+        this.drawBoundaries = styleParameters.drawBoundaries;
     }
 
-    
-    
+    /**
+     * @return the drawBoundaries
+     */
+    public boolean isDrawBoundaries() {
+        return drawBoundaries;
+    }
+
+    /**
+     * @param drawBoundaries the drawBoundaries to set
+     */
+    public void setDrawBoundaries(boolean drawBoundaries) {
+        this.drawBoundaries = drawBoundaries;
+    }
+
 }

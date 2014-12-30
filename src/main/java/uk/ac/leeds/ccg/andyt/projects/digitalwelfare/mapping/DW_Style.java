@@ -68,9 +68,9 @@ import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
  */
 public class DW_Style {
 
-    static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
-    static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
-
+    public static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+    public static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+    public static StyleBuilder styleBuilder = new StyleBuilder(styleFactory, filterFactory);
     
 
     /**
@@ -265,25 +265,20 @@ public class DW_Style {
      *
      * @param featureCollection
      * @param attributeName
-     * @param nClasses Should be restricted. Values in the range 0 to 8 should
-     * work depending on paletteName.
-     * @param classificationFunctionName Known valid names: "EqualInterval",
-     * "Jenks", "StandardDeviation", "Quantile"
-     * @param paletteName Known valid names: "Reds", "Grays", "PuBuGn"; To find
-     * valid palette names use:
-     * <code>String[] paletteNames = brewer.getPaletteNames(); for (int i = 0; i < paletteNames.length; i++) {System.out.println(paletteNames[i]);}</code>
-     * @param addWhiteForZero @return
+     * @param styleParameters
      */
     public static Object[] createPolygonStyle(
             FeatureCollection featureCollection,
             String attributeName,
-            int nClasses,
-            String classificationFunctionName,
-            String paletteName,
-            boolean addWhiteForZero
-    ) {
+            DW_StyleParameters styleParameters) {
         Object[] result = new Object[2];
 
+        // Unpack styleParamters
+        int nClasses = styleParameters.getnClasses();
+        boolean addWhiteForZero = styleParameters.isAddWhiteForZero();
+        String paletteName = styleParameters.getPaletteName();
+        String classificationFunctionName = styleParameters.getClassificationFunctionName();
+        
         // STEP 0 Set up Color Brewer
         ColorBrewer brewer = ColorBrewer.instance();
 
@@ -378,8 +373,16 @@ public class DW_Style {
         opacity = 0.95; //0.5;//1.0; //1.0; //0.95
         int elsemode;
         elsemode = StyleGenerator.ELSEMODE_IGNORE;
-        Stroke defaultStroke;
-        defaultStroke = null; //getDefaultStroke(); We can set this to not draw outlines?
+        Stroke stroke;
+        if (styleParameters.isDrawBoundaries()) {
+            stroke = styleFactory.getDefaultStroke();
+        } else {
+            stroke = null;
+//            stroke = styleFactory.createStroke(
+//                    filterFactory.literal(Color.TRANSLUCENT),
+//                    filterFactory.literal(0),
+//                    filterFactory.literal(1.0));
+        }
         String typeID;
         typeID = "Generated FeatureTypeStyle for " + nClasses + " "
                 + classificationFunctionName + " classes in palette "
@@ -392,7 +395,7 @@ public class DW_Style {
         style = styleFactory.createStyle();
         if (groups != null) {
             FeatureTypeStyle featureTypeStyle;
-            featureTypeStyle = StyleGenerator.createFeatureTypeStyle(
+            featureTypeStyle = DW_StyleGenerator.createFeatureTypeStyle(
                     groups,
                     propertyName,
                     colorsForRenderingFeatures,
@@ -400,7 +403,7 @@ public class DW_Style {
                     geometryDescriptor,
                     elsemode,
                     opacity,
-                    defaultStroke);
+                    stroke);
             style.featureTypeStyles().add(featureTypeStyle);
         }
 //        List<FeatureTypeStyle> ftss = style.featureTypeStyles();
@@ -428,8 +431,6 @@ public class DW_Style {
     public static Style getStyle(
             AbstractGrid2DSquareCell g,
             GridCoverage cov,
-            String classificationFunctionName,
-            FilterFactory2 ff,
             int nClasses,
             String paletteName,
             boolean addWhiteForZero) {
@@ -445,7 +446,7 @@ public class DW_Style {
             nClasses++;
             classNames = new String[nClasses];
             breaks = new double[nClasses];
-            classNames[0] = "0 - 0.1";
+            classNames[0] = "0";
             minInterval = 0.0d;
             maxInterval = 0.1d;//Math.nextUp(minInterval);
             breaks[0] = minInterval;
@@ -531,8 +532,6 @@ public class DW_Style {
      * @param normalisation
      * @param g
      * @param cov
-     * @param classificationFunctionName
-     * @param ff
      * @param nClasses
      * @param paletteName
      * @param addWhiteForZero
@@ -542,8 +541,6 @@ public class DW_Style {
             double normalisation,
             AbstractGrid2DSquareCell g,
             GridCoverage cov,
-            String classificationFunctionName,
-            FilterFactory2 ff,
             int nClasses,
             String paletteName,
             boolean addWhiteForZero) {

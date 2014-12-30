@@ -26,6 +26,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.SHBE_DataRecord_H
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.UnderOccupiedReport_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.UnderOccupiedReport_DataRecord_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeGeocoder;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  * This is the main class for the Digital Welfare Project. For more details of
@@ -51,43 +52,54 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
     }
 
     /**
-     * @param args args[0] is for specifying the _DW_directory path to the project
- data. If nothing is passed in the default:
- "/scratch02/DW_Processor/SHBEData/" is used.
+     * @param args args[0] is for specifying the _DW_directory path to the
+     * project data. If nothing is passed in the default:
+     * "/scratch02/DW_Processor/SHBEData/" is used.
      */
     @Override
     public void run(String[] args) {
         init_SHBE_DataHandler(args);
-        init_OutputTextFiles("DigitalWelfare");
-        Object[] underOccupiedReportData = loadUnderOccupiedReportData(args);
+
+//        init_OutputTextFilePrintWriter(
+//                DW_Files.getOutputSHBETablesDir(),
+//                "DigitalWelfare");
+//        Object[] underOccupiedReportData = loadUnderOccupiedReportData(args);
 //        processSHBEReportData(underOccupiedReportData);
 //        processSHBEReportDataForSarah(underOccupiedReportData, args);
-        processSHBEReportDataIntoMigrationMatricesForApril(underOccupiedReportData);
+//        processSHBEReportDataIntoMigrationMatricesForApril(underOccupiedReportData);
         //processforChangeInTenancyForMoversMatrixesForApril(underOccupiedReportData);
         //processforChangeInTenancyMatrixesForApril();
         //getTotalClaimantsByTenancyType();
-        //aggregateClientsToLSOA();
-        pw.close();
-        pw2.close();
+        String level;
+        //level = "LSOA";
+        //aggregateClients(level);
+//        level = "OA";
+//        aggregateClients(level);
+        level = "MSOA";
+        aggregateClients(level);
     }
 
     /**
      *
      */
-    public void aggregateClientsToLSOA() {
+    public void aggregateClients(String level) {
+        
+        File outputDir;
+        outputDir = new File(
+                DW_Files.getGeneratedSHBEDir(),
+                level);
+        String allClaimants_String = "AllClaimants";
+        
+        File dir = new File(
+        outputDir,
+        allClaimants_String);
+        dir.mkdirs();
+                            
         String[] allSHBEFilenames = getSHBEFilenamesAll();
-
-        /*
-         * Keys are postcodes and values are:-----------------------------------
-         * values[0] = rec.getOa01();-------------------------------------------
-         * values[1] = rec.getMsoa01();-----------------------------------------
-         * values[2] = rec.getOa11();-------------------------------------------
-         * values[3] = rec.getMsoa11();-----------------------------------------
-         */
-        String level = "LSOA";
-        TreeMap<String, String[]> tLookupFromPostcodeToCensusCodes;
-        //tLookupFromPostcodeToCensusCodes = initLookupFromPostcodeToCensusCodes();
-        tLookupFromPostcodeToCensusCodes = getLookupFromPostcodeToCensusCodes(level);
+        TreeMap<String, String> tLookupFromPostcodeToCensusCode;
+        tLookupFromPostcodeToCensusCode = getLookupFromPostcodeToCensusCode(
+                level,
+                2011);
 
         // 0,2,4,7,11,17 are April data for 2008, 2009, 2010, 2011, 2012 and 2013 respectively
         int startIndex;
@@ -123,32 +135,34 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 SHBE_DataRecord DRecord = DRecords.get(claimID);
                 String postcode = DRecord.getClaimantsPostcode();
                 String formattedPostcode = formatPostcodeForONSPDLookup(postcode);
-                String[] censusCodes = tLookupFromPostcodeToCensusCodes.get(formattedPostcode);
-                if (censusCodes != null) {
-                    //String LSOA = censusCodes[3];
-                    String LSOA = censusCodes[3];
-                    if (claimantsCountByLSOA.containsKey(LSOA)) {
-                        int currentCount = claimantsCountByLSOA.get(LSOA);
+                String censusCode;
+                censusCode = tLookupFromPostcodeToCensusCode.get(
+                        formattedPostcode);
+                if (censusCode != null) {
+                    if (claimantsCountByLSOA.containsKey(censusCode)) {
+                        int currentCount = claimantsCountByLSOA.get(censusCode);
                         int newCount = currentCount + 1;
-                        claimantsCountByLSOA.put(LSOA, newCount);
+                        claimantsCountByLSOA.put(censusCode, newCount);
                     } else {
-                        claimantsCountByLSOA.put(LSOA, 1);
+                        claimantsCountByLSOA.put(censusCode, 1);
                     }
                 } else {
                     System.out.println("No Census code for postcode: " + postcode);
                 }
             }
             //Write out result
-            PrintWriter pw1;
-            pw1 = init_OutputTextFilePrintWriter("LSOAAllClaimants" + year + month + ".csv");
-            pw1.println("LSOA, Count");
+            PrintWriter pw;
+            pw = init_OutputTextFilePrintWriter(
+                    dir,
+                    year + month + ".csv");
+            pw.println(level + ", Count");
             Iterator<String> ite2 = claimantsCountByLSOA.keySet().iterator();
             while (ite2.hasNext()) {
                 String LSOA = ite2.next();
                 Integer Count = claimantsCountByLSOA.get(LSOA);
-                pw1.println(LSOA + ", " + Count);
+                pw.println(LSOA + ", " + Count);
             }
-            pw1.close();
+            pw.close();
 //            //Write out result
 //            pw1 = init_OutputTextFilePrintWriter("HBTenancyType" + year + month + ".csv");
 //            pw1.println("TenancyType, Count");
@@ -206,28 +220,32 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                     }
                 }
             }
-            PrintWriter pw1;
+            PrintWriter pw;
             Iterator<Integer> ite2;
             //Write out result
-            pw1 = init_OutputTextFilePrintWriter("AllTenancyType" + year + month + ".csv");
-            pw1.println("TenancyType, Count");
+            pw = init_OutputTextFilePrintWriter(
+                    DW_Files.getOutputSHBETablesDir(),
+                    "AllTenancyType" + year + month + ".csv");
+            pw.println("TenancyType, Count");
             ite2 = ymAllResult.keySet().iterator();
             while (ite2.hasNext()) {
                 Integer aTenancyType = ite2.next();
                 Integer Count = ymAllResult.get(aTenancyType);
-                pw1.println(aTenancyType + ", " + Count);
+                pw.println(aTenancyType + ", " + Count);
             }
-            pw1.close();
+            pw.close();
             //Write out result
-            pw1 = init_OutputTextFilePrintWriter("HBTenancyType" + year + month + ".csv");
-            pw1.println("TenancyType, Count");
+            pw = init_OutputTextFilePrintWriter(
+                    DW_Files.getOutputSHBETablesDir(),
+                    "HBTenancyType" + year + month + ".csv");
+            pw.println("TenancyType, Count");
             ite2 = ymHBResult.keySet().iterator();
             while (ite2.hasNext()) {
                 Integer aTenancyType = ite2.next();
                 Integer Count = ymHBResult.get(aTenancyType);
-                pw1.println(aTenancyType + ", " + Count);
+                pw.println(aTenancyType + ", " + Count);
             }
-            pw1.close();
+            pw.close();
         }
 //        return result;
     }
@@ -283,8 +301,10 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
     public void processforChangeInTenancyForMoversMatrixesForApril(
             Object[] underOccupiedReportData) {
 
-        PrintWriter pw1;
-        pw1 = init_OutputTextFilePrintWriter("CountOfClaimsByDates.txt");
+        PrintWriter pw;
+        pw = init_OutputTextFilePrintWriter(
+                DW_Files.getOutputSHBETablesDir(),
+                "CountOfClaimsByDates.txt");
 
         String[] allSHBEFilenames = getSHBEFilenamesAll();
         // 0,2,4,7,11,17 are April data for 2008, 2009, 2010, 2011, 2012 and 2013 respectively
@@ -343,7 +363,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 AllNINOOfClaimants2008,
                 AllNINOOfClaimants2009,
                 AllNationalInsuranceNumbersAndDatesOfClaims);
-        pw1.println("2009 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
+        pw.println("2009 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
 
         // 2009 2010
         startIndex = 2;
@@ -373,7 +393,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 AllNINOOfClaimants2009,
                 AllNINOOfClaimants2010,
                 AllNationalInsuranceNumbersAndDatesOfClaims);
-        pw1.println("2010 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
+        pw.println("2010 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
 
         // 2010 2011
         startIndex = 4;
@@ -403,7 +423,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 AllNINOOfClaimants2010,
                 AllNINOOfClaimants2011,
                 AllNationalInsuranceNumbersAndDatesOfClaims);
-        pw1.println("2011 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
+        pw.println("2011 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
 
         // 2011 2012
         startIndex = 7;
@@ -433,7 +453,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 AllNINOOfClaimants2011,
                 AllNINOOfClaimants2012,
                 AllNationalInsuranceNumbersAndDatesOfClaims);
-        pw1.println("2012 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
+        pw.println("2012 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
 
         // 2012 2013
         startIndex = 11;
@@ -476,7 +496,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
 //            Integer count = countOfClaimsByDate.get(dates);
 //            pw.println(dates + " " + count);
 //        }
-        pw1.close();
+        pw.close();
 
     }
 
@@ -999,65 +1019,30 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
         TreeMap<String, UnderOccupiedReport_DataRecord>[] RSLRecords = new TreeMap[numberOfUnderOccupiedReportFiles];
         result[1] = RSLRecords;
         aUnderOccupiedReport_DataHandler = new UnderOccupiedReport_DataRecord_Handler();
-        if (args.length == 0) {
-            //directory = new File(System.getProperty("user.dir"));
-            _DW_directory = new File("/scratch02/DigitalWelfare/SHBEData/");
-        } else {
-            if (args.length == 1) {
-                _DW_directory = new File(args[0]);
-            }
-        }
-        init_OutputTextFiles("DigitalWelfareOutputUnderOccupiedReport");
+        File dir;
+        dir = DW_Files.getInputUnderOccupiedDir();
         String filename;
         filename = "2013 14 Under Occupied Report For University Year Start Council Tenants.csv";
-        councilRecords[0] = aUnderOccupiedReport_DataHandler.loadInputData(_DW_directory, filename, pw);
-        pw.println("" + councilRecords[0].size() + " records loaded from " + filename);
+        councilRecords[0] = aUnderOccupiedReport_DataHandler.loadInputData(
+                dir,
+                filename);
+        System.out.println("" + councilRecords[0].size() + " records loaded from " + filename);
         filename = "2013 14 Under Occupied Report For University Year Start RSLs.csv";
-        RSLRecords[0] = aUnderOccupiedReport_DataHandler.loadInputData(_DW_directory, filename, pw);
-        pw.println("" + RSLRecords[0].size() + " records loaded from " + filename);
+        RSLRecords[0] = aUnderOccupiedReport_DataHandler.loadInputData(
+                dir,
+                filename);
+        System.out.println("" + RSLRecords[0].size() + " records loaded from " + filename);
         for (int i = 1; i < numberOfUnderOccupiedReportFiles; i++) {
             filename = "2013 14 Under Occupied Report For University Month " + i + " Council Tenants.csv";
-            councilRecords[i] = aUnderOccupiedReport_DataHandler.loadInputData(_DW_directory, filename, pw);
-            pw.println("" + councilRecords[i].size() + " records loaded from " + filename);
+            councilRecords[i] = aUnderOccupiedReport_DataHandler.loadInputData(
+                    dir,
+                    filename);
+            System.out.println("" + councilRecords[i].size() + " records loaded from " + filename);
             filename = "2013 14 Under Occupied Report For University Month " + i + " RSLs.csv";
-            RSLRecords[i] = aUnderOccupiedReport_DataHandler.loadInputData(_DW_directory, filename, pw);
-            pw.println("" + RSLRecords[i].size() + " records loaded from " + filename);
-        }
-        return result;
-    }
-
-    /**
-     * initialises output text files for reporting.
-     *
-     * @param filename
-     */
-    private void init_OutputTextFiles(String filename) {
-        pw = init_OutputTextFilePrintWriter(filename + "1.txt");
-        pw2 = init_OutputTextFilePrintWriter(filename + "2.txt");
-    }
-
-    /**
-     * Initialises a PrintWriter for pushing output to.
-     *
-     * @param filename The name of the file to be initialised for writing to.
-     * @return PrintWriter for pushing output to.
-     */
-    private PrintWriter init_OutputTextFilePrintWriter(String filename) {
-        PrintWriter result = null;
-        File outputTextFile = new File(_DW_directory, filename);
-        try {
-            outputTextFile.createNewFile();
-
-        } catch (IOException ex) {
-            Logger.getLogger(DW_Processor.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            result = new PrintWriter(outputTextFile);
-
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DW_Processor.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            RSLRecords[i] = aUnderOccupiedReport_DataHandler.loadInputData(
+                    dir,
+                    filename);
+            System.out.println("" + RSLRecords[i].size() + " records loaded from " + filename);
         }
         return result;
     }
@@ -1068,12 +1053,15 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
      * @param underOccupiedReportData
      */
     public void processSHBEReportData(Object[] underOccupiedReportData) {
-        TreeMap<String, UnderOccupiedReport_DataRecord>[] councilRecords = (TreeMap<String, UnderOccupiedReport_DataRecord>[]) underOccupiedReportData[0];
+        TreeMap<String, UnderOccupiedReport_DataRecord>[] councilRecords;
+        councilRecords = (TreeMap<String, UnderOccupiedReport_DataRecord>[]) underOccupiedReportData[0];
         //TreeMap<String, UnderOccupiedReport_DataRecord>[] RSLRecords = (TreeMap<String, UnderOccupiedReport_DataRecord>[]) underOccupiedReportData[1];
 
         int underOccupancyMonth = 2;
-
-        init_OutputTextFiles("DigitalWelfareOutput");
+        PrintWriter pw;
+        pw = init_OutputTextFilePrintWriter(
+                DW_Files.getOutputUnderOccupiedDir(),
+                "DigitalWelfareOutputUnderOccupiedReport");
         String[] filenames = getSHBEFilenamesSome();
         String filename = filenames[2];
         Object[] SHBEData;
@@ -1166,6 +1154,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
             // Write answer
             pw.println(postcode + ", " + claims + ", " + arrears.setScale(2, RoundingMode.HALF_UP));
         }
+        pw.close();
     }
 
     /**
@@ -1175,14 +1164,6 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
      */
     private void init_SHBE_DataHandler(String[] args) {
         aSHBE_DataHandler = new SHBE_DataRecord_Handler();
-        if (args.length == 0) {
-            //directory = new File(System.getProperty("user.dir"));
-            _DW_directory = new File("/scratch02/DigitalWelfare/SHBEData/");
-        } else {
-            if (args.length == 1) {
-                _DW_directory = new File(args[0]);
-            }
-        }
     }
 
     /**
@@ -1193,24 +1174,34 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
      */
     public void processSHBEReportDataForSarah(
             Object[] underOccupiedReportData) {
+        File dir = new File(
+                DW_Files.getOutputDir(),
+                "Sarah");
+        File outputDir = new File(
+                dir,
+                "DigitalWelfareOutputReportForSarah");
         TreeMap<String, UnderOccupiedReport_DataRecord>[] councilRecords;
         councilRecords = (TreeMap<String, UnderOccupiedReport_DataRecord>[]) underOccupiedReportData[0];
         TreeMap<String, UnderOccupiedReport_DataRecord>[] RSLRecords;
         RSLRecords = (TreeMap<String, UnderOccupiedReport_DataRecord>[]) underOccupiedReportData[1];
-        init_OutputTextFiles("DigitalWelfareOutputReportForSarah");
+        PrintWriter outPW;
+        outPW = init_OutputTextFilePrintWriter(
+                outputDir,
+                "DigitalWelfareOutputReportForSarah");
         String[] tSHBEfilenames = getSHBEFilenamesSome();
 
         String level = "MSOA";
-        TreeMap<String, String[]> lookupFromPostcodeToCensusCodes;
-        lookupFromPostcodeToCensusCodes = getLookupFromPostcodeToCensusCodes(
-                level);
+        TreeMap<String, String> lookupFromPostcodeToCensusCode;
+        lookupFromPostcodeToCensusCode = getLookupFromPostcodeToCensusCode(
+                level,
+                2011);
         // Council Records
-        pw2.println("Council Records");
+        outPW.println("Council Records");
         reportBedroomTaxChanges(
                 councilRecords,
                 tSHBEfilenames);
         // RSL Records
-        pw2.println("RSL Records");
+        outPW.println("RSL Records");
         reportBedroomTaxChanges(
                 RSLRecords,
                 tSHBEfilenames);
@@ -1226,40 +1217,60 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
         Iterator<String> ite;
 //        HashMap<String, TreeMap<String, Integer>> councilRecordAggregatedData = getUnderOccupiedbyPostcode(
 //              councilRecords, tSHBEfilenames);
-        HashMap<String, TreeMap<String, Integer>> councilRecordAggregatedData = getUnderOccupiedbyMSOA(
-                councilRecords, tSHBEfilenames, lookupFromPostcodeToCensusCodes);
+        HashMap<String, TreeMap<String, Integer>> councilRecordAggregatedData;
+        councilRecordAggregatedData = getUnderOccupiedbyMSOA(
+                councilRecords, tSHBEfilenames, lookupFromPostcodeToCensusCode);
         name = "DigitalWelfareOutputReportForSarahCouncilRecordUnderOccupiedGeneralisation";
         ite = councilRecordAggregatedData.keySet().iterator();
         while (ite.hasNext()) {
             String month = ite.next();
             System.out.println("Writeout month " + month);
             TreeMap<String, Integer> aCouncilRecordgeneralisation = councilRecordAggregatedData.get(month);
-            createCSV(aCouncilRecordgeneralisation, name + month, "Postcode", "Count");
+            createCSV(
+                    outputDir,
+                    aCouncilRecordgeneralisation,
+                    name + month,
+                    "Postcode",
+                    "Count");
         }
         // RSLRecordsAggregation
 //        HashMap<String, TreeMap<String, Integer>> RSLRecordAggregatedData = getUnderOccupiedbyPostcode(
 //                RSLRecords, tSHBEfilenames);
         HashMap<String, TreeMap<String, Integer>> RSLRecordAggregatedData = getUnderOccupiedbyMSOA(
-                RSLRecords, tSHBEfilenames, lookupFromPostcodeToCensusCodes);
+                RSLRecords, tSHBEfilenames, lookupFromPostcodeToCensusCode);
         name = "DigitalWelfareOutputReportForSarahRSLRecordUnderOccupiedGeneralisation";
         ite = RSLRecordAggregatedData.keySet().iterator();
         while (ite.hasNext()) {
             String month = ite.next();
             System.out.println("Writeout month " + month);
             TreeMap<String, Integer> aRSLRecordgeneralisation = RSLRecordAggregatedData.get(month);
-            createCSV(aRSLRecordgeneralisation, name + month, "Postcode", "Count");
+            createCSV(
+                    outputDir,
+                    aRSLRecordgeneralisation,
+                    name + month,
+                    "Postcode",
+                    "Count");
         }
         // Summarise SHBE data by postcode
         // Unit postcodes such as "LS2 9JT" are aggregated to "LS2 9"
 //       HashMap<String, TreeMap<String, Integer>> allMonthsSHBEgeneralisation = getCouncilTaxClaimCountByPostcode(tSHBEfilenames);
-        HashMap<String, TreeMap<String, Integer>> allMonthsSHBEgeneralisation = getCouncilTaxClaimCountByMSOA(tSHBEfilenames, lookupFromPostcodeToCensusCodes);
+        HashMap<String, TreeMap<String, Integer>> allMonthsSHBEgeneralisation;
+        allMonthsSHBEgeneralisation = getCouncilTaxClaimCountByMSOA(
+                tSHBEfilenames,
+                lookupFromPostcodeToCensusCode);
         name = "DigitalWelfareOutputReportForSarahSHBEGeneralisation";
         ite = allMonthsSHBEgeneralisation.keySet().iterator();
         while (ite.hasNext()) {
             String month = ite.next();
             System.out.println("Writeout month " + month);
-            TreeMap<String, Integer> aMonthsSHBEgeneralisation = allMonthsSHBEgeneralisation.get(month);
-            createCSV(aMonthsSHBEgeneralisation, name + month, "Postcode", "Count");
+            TreeMap<String, Integer> aMonthsSHBEgeneralisation;
+            aMonthsSHBEgeneralisation = allMonthsSHBEgeneralisation.get(month);
+            createCSV(
+                    outputDir,
+                    aMonthsSHBEgeneralisation,
+                    name + month,
+                    "Postcode",
+                    "Count");
         }
         String header;
         // header = "postcode,allClaimCount,CouncilUnderOccupiedCount,RSLUnderOccupiedCount,TotalUnderOccupiedCount,Proportion";
@@ -1275,7 +1286,9 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
             TreeMap<String, Integer> aCouncilRecordgeneralisation = councilRecordAggregatedData.get(month);
             TreeMap<String, Integer> aRSLRecordgeneralisation = RSLRecordAggregatedData.get(month);
 
-            createCSV(aMonthsSHBEgeneralisation,
+            createCSV(
+                    outputDir,
+                    aMonthsSHBEgeneralisation,
                     aCouncilRecordgeneralisation,
                     aRSLRecordgeneralisation, name, header);
         }
@@ -1323,9 +1336,10 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
      */
     public void processSHBEReportDataIntoMigrationMatricesForApril(
             Object[] underOccupiedReportData) {
-
-        PrintWriter pw1 = init_OutputTextFilePrintWriter("CountOfClaimsByDates.txt");
-
+        PrintWriter pw;
+        pw = init_OutputTextFilePrintWriter(
+                DW_Files.getOutputSHBETablesDir(),
+                "CountOfClaimsByDates.txt");
         String[] allSHBEFilenames = getSHBEFilenamesAll();
         // 0,2,4,7,11,17 are April data for 2008, 2009, 2010, 2011, 2012 and 2013 respectively
         int startIndex;
@@ -1383,7 +1397,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 AllNINOOfClaimants2008,
                 AllNINOOfClaimants2009,
                 AllNationalInsuranceNumbersAndDatesOfClaims);
-        pw1.println("2009 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
+        pw.println("2009 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
 
         // 2009 2010
         startIndex = 2;
@@ -1413,7 +1427,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 AllNINOOfClaimants2009,
                 AllNINOOfClaimants2010,
                 AllNationalInsuranceNumbersAndDatesOfClaims);
-        pw1.println("2010 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
+        pw.println("2010 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
 
         // 2010 2011
         startIndex = 4;
@@ -1443,7 +1457,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 AllNINOOfClaimants2010,
                 AllNINOOfClaimants2011,
                 AllNationalInsuranceNumbersAndDatesOfClaims);
-        pw1.println("2011 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
+        pw.println("2011 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
 
         // 2011 2012
         startIndex = 7;
@@ -1473,7 +1487,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 AllNINOOfClaimants2011,
                 AllNINOOfClaimants2012,
                 AllNationalInsuranceNumbersAndDatesOfClaims);
-        pw1.println("2012 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
+        pw.println("2012 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
 
         // 2012 2013
         startIndex = 11;
@@ -1503,21 +1517,20 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 AllNINOOfClaimants2012,
                 AllNINOOfClaimants2013,
                 AllNationalInsuranceNumbersAndDatesOfClaims);
-        pw1.println("2013 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
+        pw.println("2013 countOfNewButPreviousClaimant " + countOfNewButPreviousClaimant);
 
         TreeMap<String, Integer> countOfClaimsByDate = getCountOfClaimsByDates(
                 AllNationalInsuranceNumbersAndDatesOfClaims);
         // writeout countOfClaimsByDate
-        pw1.println("CountOfClaimsByDates");
-        pw1.println("Dates,CountOfClaims");
+        pw.println("CountOfClaimsByDates");
+        pw.println("Dates,CountOfClaims");
         Iterator<String> ite = countOfClaimsByDate.keySet().iterator();
         while (ite.hasNext()) {
             String dates = ite.next();
             Integer count = countOfClaimsByDate.get(dates);
-            pw1.println(dates + " " + count);
+            pw.println(dates + " " + count);
         }
-        pw1.close();
-
+        pw.close();
     }
 
     public int getCountOfNewButPreviousClaimant(
@@ -1720,7 +1733,10 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
         String endMonth = getMonth(endName);
         String endYear = getYear(endName);
 
-        PrintWriter printWriter = init_OutputTextFilePrintWriter("TenancyTypeTransition_" + type + "__Start_" + startMonth + "" + startYear + "_End_" + endMonth + "" + endYear + ".csv");
+        PrintWriter pw;
+        pw = init_OutputTextFilePrintWriter(
+                DW_Files.getOutputSHBETablesDir(),
+                "TenancyTypeTransition_" + type + "__Start_" + startMonth + "" + startYear + "_End_" + endMonth + "" + endYear + ".csv");
 
         TreeMap<Integer, TreeMap<Integer, Integer>> migrationMatrix = (TreeMap<Integer, TreeMap<Integer, Integer>>) migrationData[0];
         TreeSet<Integer> originsAndDestinations = (TreeSet<Integer>) migrationData[1];
@@ -1730,7 +1746,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
             Integer t = ite.next();
             header += "," + t;
         }
-        printWriter.println(header);
+        pw.println(header);
         ite = originsAndDestinations.iterator();
         while (ite.hasNext()) {
             Integer startTenancyType = ite.next();
@@ -1749,10 +1765,10 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                     }
                     line += "," + count.toString();
                 }
-                printWriter.println(line);
+                pw.println(line);
             }
         }
-        printWriter.close();
+        pw.close();
     }
 
     public void writeOutMigrationMatrix(
@@ -1769,7 +1785,10 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
         String endMonth = getMonth(endName);
         String endYear = getYear(endName);
 
-        PrintWriter printWriter = init_OutputTextFilePrintWriter("migration_" + type + "__Start_" + startMonth + "" + startYear + "_End_" + endMonth + "" + endYear + ".csv");
+        PrintWriter pw;
+        pw = init_OutputTextFilePrintWriter(
+                DW_Files.getOutputSHBETablesDir(),
+                "migration_" + type + "__Start_" + startMonth + "" + startYear + "_End_" + endMonth + "" + endYear + ".csv");
         TreeMap<String, TreeMap<String, Integer>> migrationMatrix = (TreeMap<String, TreeMap<String, Integer>>) migrationData[0];
         //TreeSet<String> originsAndDestinations = (TreeSet<String>) migrationData[1];
 
@@ -1781,7 +1800,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 header += "," + district;
             }
         }
-        printWriter.println(header);
+        pw.println(header);
         ite = getExpectedPostcodes().iterator();
         while (ite.hasNext()) {
             String district = ite.next();
@@ -1805,10 +1824,10 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                         line += "," + count.toString();
                     }
                 }
-                printWriter.println(line);
+                pw.println(line);
             }
         }
-        printWriter.close();
+        pw.close();
     }
 
 //     public void writeOutMigrationMatrix(
@@ -2185,6 +2204,11 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
     public void reportBedroomTaxChanges(
             TreeMap<String, UnderOccupiedReport_DataRecord>[] underOccupancyRecords,
             String[] tSHBEfilenames) {
+        PrintWriter pw;
+        pw = init_OutputTextFilePrintWriter(
+                DW_Files.getOutputSHBETablesDir(),
+                "BedroomTaxChanges.txt");
+        
         //TreeMap<String,TreeMap<String,>>
         Object[] SHBEDataMonth1 = loadSHBEData(tSHBEfilenames[0]);
         for (int month = 0; month < tSHBEfilenames.length - 1; month++) {
@@ -2256,15 +2280,16 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
             s.removeAll(underOccupancyRecords[underOccupancyMonth2].keySet());
             countOfNoLongerUnderOccupancyClaimants = s.size();
             // Report
-            pw2.println("Bedroom Tax " + getMonth(tSHBEfilenames[month + 1]));
-            pw2.println("countOfNewClaimantsThatAreUnderOccupiers " + countOfNewClaimantsThatAreUnderOccupiers);
-            pw2.println("countOfRemainingClaimantsThatAreUnderOccupiers " + countOfRemainingClaimantsThatAreUnderOccupiers);
-            pw2.println("countOfRemainingClaimantsThatAreStillUnderOccupiersThatHaveMoved " + countOfRemainingClaimantsThatAreStillUnderOccupiersThatHaveMoved);
-            pw2.println("countOfUnderOccupancyClaimantsThatAreNoLongerClaimantsInLeeds " + countOfUnderOccupancyClaimantsThatAreNoLongerClaimantsInLeeds);
-            pw2.println("countOfNoLongerUnderOccupancyClaimants " + countOfNoLongerUnderOccupancyClaimants);
-            pw2.println("countOfRemainingClaimantsThatAreNoLongerUnderOccupiers " + countOfRemainingClaimantsThatAreNoLongerUnderOccupiers);
-            pw2.println("countOfRemainingClaimantsThatAreNoLongerUnderOccupiersThatHaveMovedWithinLeeds " + countOfRemainingClaimantsThatAreNoLongerUnderOccupiersThatHaveMovedWithinLeeds);
+            pw.println("Bedroom Tax " + getMonth(tSHBEfilenames[month + 1]));
+            pw.println("countOfNewClaimantsThatAreUnderOccupiers " + countOfNewClaimantsThatAreUnderOccupiers);
+            pw.println("countOfRemainingClaimantsThatAreUnderOccupiers " + countOfRemainingClaimantsThatAreUnderOccupiers);
+            pw.println("countOfRemainingClaimantsThatAreStillUnderOccupiersThatHaveMoved " + countOfRemainingClaimantsThatAreStillUnderOccupiersThatHaveMoved);
+            pw.println("countOfUnderOccupancyClaimantsThatAreNoLongerClaimantsInLeeds " + countOfUnderOccupancyClaimantsThatAreNoLongerClaimantsInLeeds);
+            pw.println("countOfNoLongerUnderOccupancyClaimants " + countOfNoLongerUnderOccupancyClaimants);
+            pw.println("countOfRemainingClaimantsThatAreNoLongerUnderOccupiers " + countOfRemainingClaimantsThatAreNoLongerUnderOccupiers);
+            pw.println("countOfRemainingClaimantsThatAreNoLongerUnderOccupiersThatHaveMovedWithinLeeds " + countOfRemainingClaimantsThatAreNoLongerUnderOccupiersThatHaveMovedWithinLeeds);
             SHBEDataMonth1 = SHBEDataMonth2;
+            pw.close();
         }
     }
 
@@ -2381,9 +2406,11 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
      * result[6] is a HashSet<String> of AllHouseholdNationalInsuranceNumberIDs.
      */
     public Object[] loadSHBEData(String filename) {
-        Object[] result = aSHBE_DataHandler.loadInputData(_DW_directory, filename, pw);
+        Object[] result = aSHBE_DataHandler.loadInputData(
+                DW_Files.getInputSHBEDir(),
+                filename);
         TreeMap<String, SHBE_DataRecord> tSHBE_Records = (TreeMap<String, SHBE_DataRecord>) result[0];
-        pw.println("" + tSHBE_Records.size() + " DRecords loaded from " + filename);
+        System.out.println("" + tSHBE_Records.size() + " DRecords loaded from " + filename);
         return result;
     }
 
@@ -2406,7 +2433,10 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
             String monthString = getMonth(tSHBEfilenames[month + 1]);
             TreeMap<String, SHBE_DataRecord> DRecords = (TreeMap<String, SHBE_DataRecord>) SHBEDataMonth1[0];
             TreeMap<String, SHBE_DataRecord> SRecords = (TreeMap<String, SHBE_DataRecord>) SHBEDataMonth1[1];
-            PrintWriter reportPW = init_OutputTextFilePrintWriter("DigitalWelfareOutputReportForSarahUnderOccupied" + monthString + ".txt");
+            PrintWriter pw;
+            pw = init_OutputTextFilePrintWriter(
+                    DW_Files.getOutputUnderOccupiedDir(),
+                    "DigitalWelfareOutputReportForSarahUnderOccupied" + monthString + ".txt");
             // Iterate over councilRecords and join these with SHBE records
             // Aggregate totalRentArrears by postcode
             int countOfUnderOccupiedClaimantsInArrears = 0;
@@ -2466,20 +2496,20 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 }
             }
             // Report
-            reportPW.println("totalRentArrears " + totalRentArrears_BigDecimal.setScale(2, RoundingMode.HALF_UP));
-            reportPW.println("countOfUnderOccupiedClaimantsInArrears " + countOfUnderOccupiedClaimantsInArrears);
+            pw.println("totalRentArrears " + totalRentArrears_BigDecimal.setScale(2, RoundingMode.HALF_UP));
+            pw.println("countOfUnderOccupiedClaimantsInArrears " + countOfUnderOccupiedClaimantsInArrears);
             BigDecimal averageArrearsOfThoseInArrears = Generic_BigDecimal.divideRoundIfNecessary(
                     totalRentArrears_BigDecimal,
                     BigInteger.valueOf(countOfUnderOccupiedClaimantsInArrears),
                     2,
                     RoundingMode.HALF_UP);
-            reportPW.println("averageArrearsOfThoseInArrears " + averageArrearsOfThoseInArrears);
-            reportPW.println("totalClaimsWithDRecords " + totalClaimsWithDRecords);
-            reportPW.println("aggregations " + aggregations);
-            reportPW.println("countMissingDRecords " + countMissingDRecords);
-            reportPW.println("countOfSRecordsWithNoDRecord " + countOfSRecordsWithNoDRecord);
-            reportPW.println("totalSRecordCount " + totalSRecordCount);
-            reportPW.println("postcode, claims, arrears, average");
+            pw.println("averageArrearsOfThoseInArrears " + averageArrearsOfThoseInArrears);
+            pw.println("totalClaimsWithDRecords " + totalClaimsWithDRecords);
+            pw.println("aggregations " + aggregations);
+            pw.println("countMissingDRecords " + countMissingDRecords);
+            pw.println("countOfSRecordsWithNoDRecord " + countOfSRecordsWithNoDRecord);
+            pw.println("totalSRecordCount " + totalSRecordCount);
+            pw.println("postcode, claims, arrears, average");
             ite = postcodeTotalArrears.keySet().iterator();
             while (ite.hasNext()) {
                 String postcode = ite.next();
@@ -2494,9 +2524,9 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                         BigInteger.valueOf(claims),
                         2,
                         RoundingMode.UP);
-                reportPW.println(postcode + ", " + claims + ", " + arrears.setScale(2, RoundingMode.HALF_UP) + ", " + average.setScale(2, RoundingMode.HALF_UP));
+                pw.println(postcode + ", " + claims + ", " + arrears.setScale(2, RoundingMode.HALF_UP) + ", " + average.setScale(2, RoundingMode.HALF_UP));
             }
-            reportPW.close();
+            pw.close();
         }
     }
 
@@ -2567,7 +2597,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
     public HashMap<String, TreeMap<String, Integer>> getUnderOccupiedbyMSOA(
             TreeMap<String, UnderOccupiedReport_DataRecord>[] records,
             String[] tSHBEfilenames,
-            TreeMap<String, String[]> lookupFromPostcodeToCensusCodes) {
+            TreeMap<String, String> lookupFromPostcodeToCensusCode) {
         HashMap<String, TreeMap<String, Integer>> result = new HashMap<String, TreeMap<String, Integer>>();
         Object[] SHBEDataMonth1 = loadSHBEData(tSHBEfilenames[0]);
         for (int month = 0; month < tSHBEfilenames.length - 1; month++) {
@@ -2602,18 +2632,17 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                         postcode = postcode.substring(0, 2) + " " + postcode.substring(3, 6);
                     }
 
-                    String[] censusCodes = lookupFromPostcodeToCensusCodes.get(postcode);
-                    if (censusCodes == null) {
+                    String censusCode;
+                    censusCode = lookupFromPostcodeToCensusCode.get(postcode);
+                    if (censusCode == null) {
                         System.out.println("No MSOA for underoccupancy postcode " + postcode);
                         countOfRecordsNotAggregatedDueToUnrecognisedPostcode++;
                     } else {
-                        String MSOA = censusCodes[3];
-
-                        if (aggregatedClaims.containsKey(MSOA)) {
-                            int current = aggregatedClaims.get(MSOA);
-                            aggregatedClaims.put(MSOA, current + 1);
+                        if (aggregatedClaims.containsKey(censusCode)) {
+                            int current = aggregatedClaims.get(censusCode);
+                            aggregatedClaims.put(censusCode, current + 1);
                         } else {
-                            aggregatedClaims.put(MSOA, 1);
+                            aggregatedClaims.put(censusCode, 1);
                         }
                     }
                 }
@@ -2700,7 +2729,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
      */
     protected HashMap<String, TreeMap<String, Integer>> getCouncilTaxClaimCountByMSOA(
             String[] tSHBEfilenames,
-            TreeMap<String, String[]> lookupFromPostcodeToCensusCodes) {
+            TreeMap<String, String> lookupFromPostcodeToCensusCode) {
         HashMap<String, TreeMap<String, Integer>> result = new HashMap<String, TreeMap<String, Integer>>();
         for (int month = 0; month < tSHBEfilenames.length - 1; month++) {
 
@@ -2735,21 +2764,19 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                         postcode = postcode.substring(0, 2) + " " + postcode.substring(3, 6);
                     }
 
-                    String[] censusCodes = lookupFromPostcodeToCensusCodes.get(postcode);
-                    if (censusCodes == null) {
+                    String censusCode;
+                    censusCode = lookupFromPostcodeToCensusCode.get(postcode);
+                    if (censusCode == null) {
                         System.out.println("No census Code for SHBE postcode " + postcode);
                         countOfRecordsNotAggregatedDueToUnrecognisedPostcode++;
 
                     } else {
-
-                        String MSOA = censusCodes[3];
-
-                        if (monthsResult.containsKey(MSOA)) {
-                            Integer count = monthsResult.get(MSOA);
+                        if (monthsResult.containsKey(censusCode)) {
+                            Integer count = monthsResult.get(censusCode);
                             Integer newcount = count + 1;
-                            monthsResult.put(MSOA, newcount);
+                            monthsResult.put(censusCode, newcount);
                         } else {
-                            monthsResult.put(MSOA, 1);
+                            monthsResult.put(censusCode, 1);
                         }
                     }
                 }
@@ -3018,9 +3045,11 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
 ////recordIDsNotLoaded_October2012.size() 12192
 //        
         filename = "hb9803_SHBE_530243k January 2013.csv";
-        Object[] tSHBE_January2013 = aSHBE_DataHandler.loadInputData(_DW_directory, filename, pw);
+        Object[] tSHBE_January2013 = aSHBE_DataHandler.loadInputData(
+                DW_Files.getInputSHBEDir(),
+                filename);
         HashSet<SHBE_DataRecord> tSHBE_January2013_Records = (HashSet<SHBE_DataRecord>) tSHBE_January2013[0];
-        pw.println("" + tSHBE_January2013_Records.size() + " records loaded from " + filename);
+        System.out.println("" + tSHBE_January2013_Records.size() + " records loaded from " + filename);
 //totalCouncilTaxBenefitClaims 87541
 //totalCouncilTaxAndHousingBenefitClaims 71221
 //totalHousingBenefitClaims 71221
@@ -3035,9 +3064,11 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
 //87541 records loaded from hb9803_SHBE_530243k January 2013.csv
 
         filename = "hb9803_SHBE_536123k February 2013.csv";
-        Object[] tSHBE_February2013 = aSHBE_DataHandler.loadInputData(_DW_directory, filename, pw);
+        Object[] tSHBE_February2013 = aSHBE_DataHandler.loadInputData(
+                DW_Files.getInputSHBEDir(),
+                filename);
         HashSet<SHBE_DataRecord> tSHBE_February2013_Records = (HashSet<SHBE_DataRecord>) tSHBE_February2013[0];
-        pw.println("" + tSHBE_February2013_Records.size() + " records loaded from " + filename);
+        System.out.println("" + tSHBE_February2013_Records.size() + " records loaded from " + filename);
 //totalCouncilTaxBenefitClaims 87764
 //totalCouncilTaxAndHousingBenefitClaims 71497
 //totalHousingBenefitClaims 71497
@@ -3050,8 +3081,11 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
 //Count of Unique NonDependentsNationalInsuranceNumberIDs 1466
 //Count of Unique AllHouseholdNationalInsuranceNumberIDs 108988
 //87764 records loaded from hb9803_SHBE_536123k February 2013.csv
-
+        PrintWriter pw = init_OutputTextFilePrintWriter(
+                DW_Files.getOutputSHBETablesDir(),
+                "DifferencesJanuary2013_to_February2013.txt");
         reportDifferences(tSHBE_January2013, tSHBE_February2013, pw);
+        pw.close();
 //totalRepeatClaimantsByClaimantNationalInsuranceNumberID 86108
 //totalNewClaimantsByClaimantNationalInsuranceNumberID 1628
 
@@ -3102,7 +3136,6 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
 //        HashSet<SHBE_DataRecord> tSHBE_October2013_Records = (HashSet<SHBE_DataRecord>) tSHBE_October2013[0];
 //        System.out.println("" + tSHBE_October2013_Records.size() + " records loaded from " + filename);
 //        
-        pw.close();
     }
 
     public void reportDifferences(
@@ -3140,8 +3173,8 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 totalNewClaimantsByClaimantNationalInsuranceNumberID++;
             }
         }
-        pw.println("totalRepeatClaimantsByClaimantNationalInsuranceNumberID " + totalRepeatClaimantsByClaimantNationalInsuranceNumberID);
-        pw.println("totalNewClaimantsByClaimantNationalInsuranceNumberID " + totalNewClaimantsByClaimantNationalInsuranceNumberID);
+        System.out.println("totalRepeatClaimantsByClaimantNationalInsuranceNumberID " + totalRepeatClaimantsByClaimantNationalInsuranceNumberID);
+        System.out.println("totalNewClaimantsByClaimantNationalInsuranceNumberID " + totalNewClaimantsByClaimantNationalInsuranceNumberID);
 
         // Report totalRepeatClaimantsByClaimantNationalInsuranceNumberID and totalNewClaimantsByClaimantNationalInsuranceNumberID
         int totalClaimantsBecomingPartners = 0;

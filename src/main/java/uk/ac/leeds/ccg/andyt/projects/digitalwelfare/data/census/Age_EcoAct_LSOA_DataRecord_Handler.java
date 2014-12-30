@@ -47,16 +47,20 @@ public class Age_EcoAct_LSOA_DataRecord_Handler {
      * @return TreeMap<String,LeedsCAB_DataRecord> representing records
      */
     public TreeMap<String,Age_EcoAct_LSOA_DataRecord> loadInputData(
-            String filename,
-            PrintWriter pw) {
+            String filename) {
         System.out.println("Loading " + filename);
         TreeMap<String,Age_EcoAct_LSOA_DataRecord> result;
         result = new TreeMap<String,Age_EcoAct_LSOA_DataRecord>();
         
-        File directory = DW_Files.getInputCensus2011Dir("LSOA");
+        File attributeDir = new File(
+                DW_Files.getInputCensus2011Dir("LSOA"),
+                "AttributeData");
+        File dir = new File(
+            attributeDir,
+                filename.substring(5,filename.length() - 4));
         
         File inputFile = new File(
-                directory,
+                dir,
                 filename);
         BufferedReader br;
         br = Generic_StaticIO.getBufferedReader(inputFile);

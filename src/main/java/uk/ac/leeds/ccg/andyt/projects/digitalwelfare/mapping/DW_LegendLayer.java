@@ -34,6 +34,9 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
+import org.geotools.styling.Stroke;
+import org.geotools.styling.StyleFactory;
+import org.opengis.filter.expression.Expression;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_double;
 
 /**
@@ -44,6 +47,8 @@ import uk.ac.leeds.ccg.andyt.generic.math.Generic_double;
  *
  */
 public class DW_LegendLayer extends DirectLayer {
+
+    private DW_StyleParameters styleParameters;
 
     private List<DW_LegendItem> legendItems;
     private MapContent mc;
@@ -59,14 +64,14 @@ public class DW_LegendLayer extends DirectLayer {
     private FontRenderContext frc;
     private final Font mapTitleFont;
     //private final FontMetrics mapTitleFontMetrics;
-    
+
     private final Font legendTitleFont;
     //private final FontMetrics legendTitleFontMetrics;
-    
+
     private final Font legendItemFont;
     private int legendItemFontHeight;
     //private final FontMetrics legendItemFontMetrics;
-    
+
     private final Color backgroundColor = Color.WHITE;
 
     private static final int marginWidth = 2;  // horizontal margin between edge and contents
@@ -95,10 +100,8 @@ public class DW_LegendLayer extends DirectLayer {
     private int legendUpperLeftX;
     private int legendUpperLeftY;
 
-    
-    
-
     public DW_LegendLayer(
+            DW_StyleParameters styleParameters,
             String mapTitle,
             String legendTitle,
             List<DW_LegendItem> legendItems,
@@ -106,6 +109,7 @@ public class DW_LegendLayer extends DirectLayer {
             int imageWidth,
             int imageHeight,
             boolean addLegendToTheSide) {
+        this.styleParameters = styleParameters;
         this.mapTitleFont = new Font("Ariel", Font.BOLD, 14);
         //this.mapTitleFontMetrics = new FontMetrics(mapTitleFont);
         this.legendTitleFont = new Font("Ariel", Font.BOLD, 12);
@@ -123,22 +127,22 @@ public class DW_LegendLayer extends DirectLayer {
             AffineTransform at) {
         this.at = at;
         this.frc = new FontRenderContext(
-            at,
-            RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT,
-            RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT);
+                at,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT,
+                RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT);
         buildLegendParams();
         initBounds();
     }
-    
+
     /**
-     * 
+     *
      * @param mapTitle
      * @param legendTitle
      * @param legendItems
      * @param mc
      * @param imageWidth
      * @param imageHeight
-     * @param addLegendToTheSide 
+     * @param addLegendToTheSide
      */
     public final void init(
             String mapTitle,
@@ -149,9 +153,9 @@ public class DW_LegendLayer extends DirectLayer {
             int imageHeight,
             boolean addLegendToTheSide) {
         this.frc = new FontRenderContext(
-            at,
-            RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT,
-            RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT);
+                at,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT,
+                RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT);
         this.mapTitle = mapTitle;
         this.legendTitle = legendTitle;
         this.legendItems = legendItems;
@@ -168,13 +172,13 @@ public class DW_LegendLayer extends DirectLayer {
         legendTitleMaxWidthAndHeight = getLegendTitleMaxWidthAndHeight();
         legendTitleWidth = legendTitleMaxWidthAndHeight[0];
         legendTitleHeight = legendTitleMaxWidthAndHeight[1];
-        
+
         int[] legendItemLabelMaxWidthAndHeight;
         legendItemLabelMaxWidthAndHeight = getLegendItemLabelMaxWidthAndHeight();
         legendItemLabelMaxWidth = legendItemLabelMaxWidthAndHeight[0];
         legendItemLabelMaxHeight = legendItemLabelMaxWidthAndHeight[1];
         legendIconWidth = legendItemLabelMaxHeight;
-        
+
         legendWidth = Math.max(
                 legendTitleWidth + (2 * marginWidth),
                 legendIconWidth + spaceWidth + legendItemLabelMaxWidth + (2 * marginWidth));
@@ -191,14 +195,14 @@ public class DW_LegendLayer extends DirectLayer {
         } else {
             this.legendUpperLeftX = legendInsetWidth;
         }
-        
+
         //this.legendUpperLeftY = newImageHeight - legendHeight - legendInsetHeight;
     }
-    
+
     /**
      * @TODO Move to somewhere general.
      * @param r
-     * @return 
+     * @return
      */
     public static int getMaxHeight(
             Rectangle2D r) {
@@ -208,11 +212,11 @@ public class DW_LegendLayer extends DirectLayer {
         result = Generic_double.roundUpToNearestInt(h);
         return result;
     }
-    
+
     /**
-     * 
+     *
      * @param r
-     * @return 
+     * @return
      */
     public static int getMaxWidth(
             Rectangle2D r) {
@@ -222,10 +226,12 @@ public class DW_LegendLayer extends DirectLayer {
         result = Generic_double.roundUpToNearestInt(w);
         return result;
     }
-    
+
     /**
-     * For some reason, this seems to by returning incorrect width and possibly height!
-     * @return 
+     * For some reason, this seems to by returning incorrect width and possibly
+     * height!
+     *
+     * @return
      */
     public int[] getLegendTitleMaxWidthAndHeight() {
         int[] result = new int[2];
@@ -252,8 +258,8 @@ public class DW_LegendLayer extends DirectLayer {
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public int[] getLegendItemLabelMaxWidthAndHeight() {
         int[] result = new int[2];
@@ -300,15 +306,15 @@ public class DW_LegendLayer extends DirectLayer {
 //		 	
 //			//Create the segments of the scale bar
 //			Rectangle scrRect = viewport.getScreenArea();	
-            
-            AffineTransform at = graphics.getTransform(); 
+
+            AffineTransform at = graphics.getTransform();
             init(at);
-            
+
             newImageHeight = originalImageHeight; // This is true until title is added
             this.legendUpperLeftY = legendInsetHeight;
 //            this.legendUpperLeftY = newImageHeight - legendHeight - legendInsetHeight;
 //            this.legendUpperLeftY -= 10; // Terrible hack
-            
+
             int x;
             int y;
             // constructor args: x/y of upper left corner
@@ -320,7 +326,8 @@ public class DW_LegendLayer extends DirectLayer {
 //            graphics.draw(bounds);
             // Draw Legend title and set font for drawing items
             graphics.setFont(legendTitleFont);
-            
+            graphics.setColor(Color.BLACK);
+
             int startLegendX;
             startLegendX = legendUpperLeftX + marginWidth;
             int startLegendTitleY;
@@ -346,9 +353,19 @@ public class DW_LegendLayer extends DirectLayer {
                         startLegendX + legendIconWidth + spaceWidth, // For end placement
                         startLegendTitleY + spaceHeight + (i * (spaceHeight + legendItemLabelMaxHeight)) + legendItemLabelMaxHeight);
                 if (legendItems.get(i).getColor() != null) {
-                    graphics.setColor(legendItems.get(i).getColor());
+                    Color c = legendItems.get(i).getColor();
+                    graphics.setColor(c);
                     graphics.fill(regionIcon);
-                    graphics.setColor(Color.BLACK);
+                    if (styleParameters.isDrawBoundaries()) {
+                        c = Color.BLACK;
+                        //DW_Style.getDefaultStroke(Color.BLACK);
+//                    } else {
+//                        Stroke stroke = DW_Style.styleBuilder.createStroke(
+//                                DW_Style.styleBuilder.literalExpression(c),
+//                                DW_Style.styleBuilder.literalExpression(0),
+//                                DW_Style.styleBuilder.literalExpression(0));
+                    }
+                    graphics.setColor(c);
                     graphics.draw(regionIcon);
                 }
             }

@@ -35,15 +35,15 @@ public class DW_CensusAreaCodesAndShapefiles {
     private final TreeSet<String> leedsCensusAreaCodes;
     private final TreeSet<String> leedsAndNeighbouringLADsCensusAreaCodes;
     private final TreeSet<String> leedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes;
-    private final File levelShapefile;
+    private final DW_Shapefile levelDW_Shapefile;
     private final FeatureCollection levelFC;
     private final SimpleFeatureType levelSFT;
-    private final File leedsLevelShapefile;
+    private final DW_Shapefile leedsLevelDW_Shapefile;
     private final FeatureCollection leedsLADFC;
     private final SimpleFeatureType leedsLADSFT;
-    private final File leedsLADShapefile;
-    private final File leedsAndNeighbouringLADsShapefile;
-    private final File leedsAndNeighbouringLADsAndCravenAndYorkShapefile;
+    private final DW_Shapefile leedsLADDW_Shapefile;
+    private final DW_Shapefile leedsAndNeighbouringLADsDW_Shapefile;
+    private final DW_Shapefile leedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile;
 
     /**
      *
@@ -61,38 +61,45 @@ public class DW_CensusAreaCodesAndShapefiles {
         String tLeedsAndNeighbouringLADsAndCravenAndYorkString;
         tLeedsAndNeighbouringLADsAndCravenAndYorkString = "LeedsAndNeighbouringLADsAndCravenAndYork";
         String tCODEString = "CODE";
-                
+
         // Read area level Census Codes
-        leedsCensusAreaCodes = DW_Census.getLADCensusCodes(tLeedsString, level);
+        leedsCensusAreaCodes = DW_Census.getCensusCodes(
+                tLeedsString, 
+                level);
         // Read Census Boundary Data of level
-        levelShapefile = getCensusBoundaryShapefile(level);
-        Object[] levelFeatureCollectionAndType;
-        levelFeatureCollectionAndType = DW_GeoTools.getFeatureCollectionAndType(
-                levelShapefile);
-        levelFC = (FeatureCollection) levelFeatureCollectionAndType[0];
-        levelSFT = (SimpleFeatureType) levelFeatureCollectionAndType[1];
+        File levelShapefile = getCensusBoundaryShapefile(level);
+        levelDW_Shapefile = new DW_Shapefile(levelShapefile);
+        levelFC = levelDW_Shapefile.getFeatureCollection();
+        levelSFT = levelDW_Shapefile.getSimpleFeatureType();
+
         /*
          * Filter Leeds LAD LSOAs and write new Shapefile if it does not exist
          * and set this Leeds LAD LSOA Boundary Data Shapefile as the
          * backgroundShapefile
          */
-        leedsLevelShapefile = getCensusBoundaryShapefile(
+        File leedsLevelShapefile = getCensusBoundaryShapefile(
                 tLeedsString,
                 level);
+        leedsLevelDW_Shapefile = new DW_Shapefile(leedsLevelShapefile);
         if (!leedsLevelShapefile.exists()) {
-            DW_Maps.selectAndCreateNewShapefile(sdsf, levelFC, levelSFT, leedsCensusAreaCodes,
-                    targetPropertyName, leedsLevelShapefile);
+            DW_Maps.selectAndCreateNewShapefile(
+                    sdsf,
+                    levelFC,
+                    levelSFT,
+                    leedsCensusAreaCodes,
+                    targetPropertyName,
+                    leedsLevelShapefile);
         }
         //result[4] = leedsShapefile;
 
         // Read Leeds and neighbouring District LADs Census Codes for level
-        leedsAndNeighbouringLADsCensusAreaCodes = DW_Census.getLADCensusCodes(
-                tLeedsAndNeighbouringLADsString, level);
-        //result[5] = leedsAndNeighbouringLADsCensusAreaCodes;
-
+        leedsAndNeighbouringLADsCensusAreaCodes = DW_Census.getCensusCodes(
+                tLeedsAndNeighbouringLADsString, 
+                level);
         // Read Leeds and neighbouring District LADs and Craven And York Census Codes
-        leedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes = DW_Census.getLADCensusCodes(
-                tLeedsAndNeighbouringLADsAndCravenAndYorkString, level);
+        leedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes = DW_Census.getCensusCodes(
+                tLeedsAndNeighbouringLADsAndCravenAndYorkString, 
+                level);
 
         // Get LAD shapefiles
         String levelLAD = "LAD";
@@ -104,26 +111,26 @@ public class DW_CensusAreaCodesAndShapefiles {
 
         // Read LAD Census Boundary Data
         File tLADShapefile = getCensusBoundaryShapefile(levelLAD);
-        Object[] tLADFeatureCollectionAndType;
-        tLADFeatureCollectionAndType = DW_GeoTools.getFeatureCollectionAndType(tLADShapefile);
-        leedsLADFC = (FeatureCollection) tLADFeatureCollectionAndType[0];
-        leedsLADSFT = (SimpleFeatureType) tLADFeatureCollectionAndType[1];
+        DW_Shapefile tLADSDS;
+        tLADSDS = new DW_Shapefile(tLADShapefile);
+        leedsLADFC = tLADSDS.getFeatureCollection();
+        leedsLADSFT = tLADSDS.getSimpleFeatureType();
 
         // Select Leeds from LAD Census Boundary Data
-        leedsLADShapefile = getCensusBoundaryShapefile(
+        File leedsLADShapefile = getCensusBoundaryShapefile(
                 tLeedsString,
                 levelLAD);
+        leedsLADDW_Shapefile = new DW_Shapefile(leedsLADShapefile);
         if (!leedsLADShapefile.exists()) {
-            DW_Maps.selectAndCreateNewShapefile(sdsf, leedsLADFC, leedsLADSFT, tLeedsLADCensusAreaCodes,
-                    tCODEString, leedsLADShapefile);
+            DW_Maps.selectAndCreateNewShapefile(
+                    sdsf, 
+                    leedsLADFC,
+                    leedsLADSFT,
+                    tLeedsLADCensusAreaCodes,
+                    tCODEString,
+                    leedsLADShapefile);
         }
 
-        // Select LeedsAndNeighbouringLADs from LAD Census Boundary Data
-        // Code for Selby 36UH = E07000169
-        // Code for Bradford 00CX = E08000032
-        // Code for Kirklees 00CZ = E08000034
-        // Code for Wakefield 00DB = E08000036
-        // Code for Harrogate 36UD = E07000165
         TreeSet<String> tLeedsAndNeighbouringLADsLADCodes;
         tLeedsAndNeighbouringLADsLADCodes = new TreeSet<String>();
         tLeedsAndNeighbouringLADsLADCodes.addAll(leedsCensusAreaCodes);
@@ -132,31 +139,54 @@ public class DW_CensusAreaCodesAndShapefiles {
         tLeedsAndNeighbouringLADsLADCodes.add("E08000034");
         tLeedsAndNeighbouringLADsLADCodes.add("E08000036");
         tLeedsAndNeighbouringLADsLADCodes.add("E07000165");
-        leedsAndNeighbouringLADsShapefile = getCensusBoundaryShapefile(
-               tLeedsAndNeighbouringLADsString,
-                levelLAD);
-        if (!leedsAndNeighbouringLADsShapefile.exists()) {
-            DW_Maps.selectAndCreateNewShapefile(sdsf, leedsLADFC, leedsLADSFT,
-                    tLeedsAndNeighbouringLADsLADCodes,
-                    tCODEString, leedsAndNeighbouringLADsShapefile);
+        if (leedsAndNeighbouringLADsCensusAreaCodes != null) {
+            // Select LeedsAndNeighbouringLADs from LAD Census Boundary Data
+            // Code for Selby 36UH = E07000169
+            // Code for Bradford 00CX = E08000032
+            // Code for Kirklees 00CZ = E08000034
+            // Code for Wakefield 00DB = E08000036
+            // Code for Harrogate 36UD = E07000165
+            File leedsAndNeighbouringLADsShapefile = getCensusBoundaryShapefile(
+                    tLeedsAndNeighbouringLADsString,
+                    levelLAD);
+            leedsAndNeighbouringLADsDW_Shapefile = new DW_Shapefile(
+                    leedsAndNeighbouringLADsShapefile);
+            if (!leedsAndNeighbouringLADsShapefile.exists()) {
+                DW_Maps.selectAndCreateNewShapefile(
+                        sdsf, 
+                        leedsLADFC,
+                        leedsLADSFT,
+                        tLeedsAndNeighbouringLADsLADCodes,
+                        tCODEString,
+                        leedsAndNeighbouringLADsShapefile);
+            }
+        } else {
+            leedsAndNeighbouringLADsDW_Shapefile = null;
         }
-        // Code for Calderdale 00CY = E08000033
-        // Code for Craven 36UB = E07000163
-        // Code for York 00FF = E06000014
-        TreeSet<String> tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes;
-        tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes = new TreeSet<String>();
-        tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes.addAll(
-                tLeedsAndNeighbouringLADsLADCodes);
-        tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes.add("E08000033");
-        tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes.add("E07000163");
-        tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes.add("E06000014");
-        leedsAndNeighbouringLADsAndCravenAndYorkShapefile = getCensusBoundaryShapefile(
-                tLeedsAndNeighbouringLADsAndCravenAndYorkString,
-                levelLAD);
-        if (!leedsAndNeighbouringLADsAndCravenAndYorkShapefile.exists()) {
-            DW_Maps.selectAndCreateNewShapefile(sdsf, leedsLADFC, leedsLADSFT,
-                    tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes,
-                    tCODEString, leedsAndNeighbouringLADsAndCravenAndYorkShapefile);
+        if (leedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes != null) {
+            // Code for Calderdale 00CY = E08000033
+            // Code for Craven 36UB = E07000163
+            // Code for York 00FF = E06000014
+            TreeSet<String> tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes;
+            tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes = new TreeSet<String>();
+            tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes.addAll(
+                    tLeedsAndNeighbouringLADsLADCodes);
+            tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes.add("E08000033");
+            tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes.add("E07000163");
+            tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes.add("E06000014");
+            File leedsAndNeighbouringLADsAndCravenAndYorkShapefile = getCensusBoundaryShapefile(
+                    tLeedsAndNeighbouringLADsAndCravenAndYorkString,
+                    levelLAD);
+            leedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile = new DW_Shapefile(
+                    leedsAndNeighbouringLADsAndCravenAndYorkShapefile);
+            if (!leedsAndNeighbouringLADsAndCravenAndYorkShapefile.exists()) {
+                DW_Maps.selectAndCreateNewShapefile(sdsf, leedsLADFC, leedsLADSFT,
+                        tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes,
+                        tCODEString,
+                        leedsAndNeighbouringLADsAndCravenAndYorkShapefile);
+            }
+        } else {
+            leedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile = null;
         }
     }
 
@@ -184,8 +214,8 @@ public class DW_CensusAreaCodesAndShapefiles {
     /**
      * @return the levelShapefile
      */
-    public File getLevelShapefile() {
-        return levelShapefile;
+    public DW_Shapefile getLevelDW_Shapefile() {
+        return levelDW_Shapefile;
     }
 
     /**
@@ -203,10 +233,10 @@ public class DW_CensusAreaCodesAndShapefiles {
     }
 
     /**
-     * @return the leedsLevelShapefile
+     * @return the leedsLevelDW_Shapefile
      */
-    public File getLeedsLevelShapefile() {
-        return leedsLevelShapefile;
+    public DW_Shapefile getLeedsLevelDW_Shapefile() {
+        return leedsLevelDW_Shapefile;
     }
 
     /**
@@ -224,25 +254,50 @@ public class DW_CensusAreaCodesAndShapefiles {
     }
 
     /**
-     * @return the leedsLADShapefile
+     * @return the leedsLADDW_Shapefile
      */
-    public File getLeedsLADShapefile() {
-        return leedsLADShapefile;
+    public DW_Shapefile getLeedsLADDW_Shapefile() {
+        return leedsLADDW_Shapefile;
     }
 
     /**
-     * @return the leedsAndNeighbouringLADsShapefile
+     * @return the leedsAndNeighbouringLADsDW_Shapefile
      */
-    public File getLeedsAndNeighbouringLADsShapefile() {
-        return leedsAndNeighbouringLADsShapefile;
+    public DW_Shapefile getLeedsAndNeighbouringLADsDW_Shapefile() {
+        return leedsAndNeighbouringLADsDW_Shapefile;
     }
 
     /**
-     * @return the leedsAndNeighbouringLADsAndCravenAndYorkShapefile
+     * @return the leedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile
      */
-    public File getLeedsAndNeighbouringLADsAndCravenAndYorkShapefile() {
-        return leedsAndNeighbouringLADsAndCravenAndYorkShapefile;
+    public DW_Shapefile getLeedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile() {
+        return leedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile;
     }
-    
-    
+
+    /**
+     * For disposing of resources once used.
+     */
+    public void dispose() {
+        DW_Shapefile tDW_Shapefile;
+        tDW_Shapefile = getLeedsLevelDW_Shapefile();
+        if (tDW_Shapefile != null) {
+            tDW_Shapefile.dispose();
+        }
+        tDW_Shapefile = getLeedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile();
+        if (tDW_Shapefile != null) {
+            tDW_Shapefile.dispose();
+        }
+        tDW_Shapefile = getLeedsAndNeighbouringLADsDW_Shapefile();
+        if (tDW_Shapefile != null) {
+            tDW_Shapefile.dispose();
+        }
+        tDW_Shapefile = getLeedsLADDW_Shapefile();
+        if (tDW_Shapefile != null) {
+            tDW_Shapefile.dispose();
+        }
+        tDW_Shapefile = getLevelDW_Shapefile();
+        if (tDW_Shapefile != null) {
+            tDW_Shapefile.dispose();
+        }
+    }
 }

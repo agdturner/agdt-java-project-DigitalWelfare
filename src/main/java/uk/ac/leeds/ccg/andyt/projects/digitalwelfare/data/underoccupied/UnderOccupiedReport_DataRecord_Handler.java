@@ -55,8 +55,7 @@ public class UnderOccupiedReport_DataRecord_Handler {
      */
     public TreeMap<String, UnderOccupiedReport_DataRecord> loadInputData(
             File directory,
-            String filename,
-            PrintWriter pw) {
+            String filename) {
         TreeMap<String, UnderOccupiedReport_DataRecord> result = new TreeMap<String, UnderOccupiedReport_DataRecord>();
         File inputFile = new File(
                 directory,
@@ -92,9 +91,9 @@ public class UnderOccupiedReport_DataRecord_Handler {
                             Object o = result.put(aUnderOccupiedReport_DataRecord.getClaimReferenceNumber(), aUnderOccupiedReport_DataRecord);
                             if (o != null) {
                                 UnderOccupiedReport_DataRecord existingUnderOccupiedReport_DataRecord = (UnderOccupiedReport_DataRecord) o;
-                                pw.println("existingUnderOccupiedReport_DataRecord " + existingUnderOccupiedReport_DataRecord);
-                                pw.println("replacementUnderOccupiedReport_DataRecord " + aUnderOccupiedReport_DataRecord);
-                                pw.println("RecordID " + RecordID);
+                                System.out.println("existingUnderOccupiedReport_DataRecord " + existingUnderOccupiedReport_DataRecord);
+                                System.out.println("replacementUnderOccupiedReport_DataRecord " + aUnderOccupiedReport_DataRecord);
+                                System.out.println("RecordID " + RecordID);
                                 replacementEntriesCount ++;
                             }
                         } catch (Exception e) {
@@ -107,7 +106,7 @@ public class UnderOccupiedReport_DataRecord_Handler {
                 }
                 tokenType = st.nextToken();
             }
-            pw.println("replacementEntriesCount " + replacementEntriesCount);                               
+            System.out.println("replacementEntriesCount " + replacementEntriesCount);                               
             br.close();
         } catch (IOException ex) {
             Logger.getLogger(UnderOccupiedReport_DataRecord_Handler.class.getName()).log(Level.SEVERE, null, ex);

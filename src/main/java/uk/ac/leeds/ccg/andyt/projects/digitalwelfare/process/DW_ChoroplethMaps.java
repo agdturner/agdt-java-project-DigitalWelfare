@@ -26,8 +26,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.map.FeatureLayer;
-import org.geotools.styling.Style;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
@@ -43,11 +41,12 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
  */
 public class DW_ChoroplethMaps extends DW_Maps {
 
-    public DW_ChoroplethMaps() {
-    }
+    /**
+     * For storing property for selecting
+     */
+    private String targetPropertyName;
 
-    public DW_ChoroplethMaps(File digitalWelfareDir) {
-        this.digitalWelfareDir = digitalWelfareDir;
+    public DW_ChoroplethMaps() {
     }
 
     /**
@@ -55,8 +54,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
      */
     public static void main(String[] args) {
         try {
-            File digitalWelfareDir = new File("/scratch02/DigitalWelfare/");
-            new DW_ChoroplethMaps(digitalWelfareDir).run();
+            new DW_ChoroplethMaps().run();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -78,11 +76,10 @@ public class DW_ChoroplethMaps extends DW_Maps {
      *
      */
     public void run() {
-        String classificationFunctionName;
-        // If showMapsInJMapPane is true, the maps are presented in individual 
-        // JMapPanes
-        boolean showMapsInJMapPane = false;
-        // Initialise styleParameters
+        showMapsInJMapPane = false;//true;//false;
+        imageWidth = 1000;
+        // Initialise Parameters
+        // Style Parameters
         /*
          * YlOrRd,PRGn,PuOr,RdGy,Spectral,Grays,PuBuGn,RdPu,BuPu,YlOrBr,Greens,
          * BuGn,Accents,GnBu,PuRd,Purples,RdYlGn,Paired,Blues,RdBu,Oranges,
@@ -95,119 +92,92 @@ public class DW_ChoroplethMaps extends DW_Maps {
 //        for (int i = 0; i < paletteNames.length; i++) {
 //            System.out.println(paletteNames[i]);
 //        }
-        int nClasses = 9;
-        String paletteName = "Reds";
-        boolean addWhiteForZero = true;
-        File choroplethMapDirectory = new File(
+        styleParameters = new DW_StyleParameters();
+        styleParameters.setnClasses(9);
+        styleParameters.setPaletteName("Reds");
+        styleParameters.setAddWhiteForZero(true);
+        styleParameters.setForegroundStyleTitle0("Foreground Style 0");
+        styleParameters.setForegroundStyle0(DW_Style.createDefaultPointStyle());
+        styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
+                Color.GREEN,
+                Color.WHITE));
+        styleParameters.setForegroundStyleTitle1("Foreground Style 1");
+        styleParameters.setBackgroundStyle(DW_Style.createDefaultPolygonStyle(
+                Color.BLACK,
+                Color.WHITE));
+        styleParameters.setBackgroundStyleTitle("Background Style");
+        
+        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefile();
+        
+        // Switches for different outputs
+        commonlyStyled = true;
+        individuallyStyled = true;
+
+        // General
+        mapDirectory = new File(
                 DW_Files.getOutputAdviceLeedsMapsDir(),
                 "choropleth");
-        int imageWidth = 1000;
-
-        ShapefileDataStoreFactory sdsf;
         sdsf = new ShapefileDataStoreFactory();
 
-        boolean commonlyStyled;
-        boolean individuallyStyled;
+        styleParameters.setDrawBoundaries(false);
 
-        // Quantile runs
-        commonlyStyled = true;
-        individuallyStyled = true;
+        String classificationFunctionName;
+        //boolean drawBoundaries;
+
+        // Jenks runs
         classificationFunctionName = "Jenks";
-        runAll(showMapsInJMapPane,
-                commonlyStyled,
-                individuallyStyled,
-                nClasses, paletteName, addWhiteForZero,
-                imageWidth, choroplethMapDirectory, classificationFunctionName, sdsf);
-
-        
+        runAll(true, classificationFunctionName);
+        runAll(false, classificationFunctionName);
         // Quantile runs
-        commonlyStyled = true;
-        individuallyStyled = true;
         classificationFunctionName = "Quantile";
-        runAll(showMapsInJMapPane,
-                commonlyStyled,
-                individuallyStyled,
-                nClasses, paletteName, addWhiteForZero,
-                imageWidth, choroplethMapDirectory, classificationFunctionName, sdsf);
+        runAll(true, classificationFunctionName);
+        runAll(false, classificationFunctionName);
 
         // EqualInterval runs
         classificationFunctionName = "EqualInterval";
-        commonlyStyled = true;
-        individuallyStyled = true;
-        runAll(showMapsInJMapPane,
-                commonlyStyled,
-                individuallyStyled,
-                nClasses, paletteName, addWhiteForZero,
-                imageWidth, choroplethMapDirectory, classificationFunctionName, sdsf);
-
+        runAll(true, classificationFunctionName);
+        runAll(false, classificationFunctionName);
     }
 
     public void runAll(
-            boolean showMapsInJMapPane,
-            boolean commonlyStyled,
-            boolean individuallyStyled,
-            int nClasses,
-            String paletteName,
-            boolean addWhiteForZero,
-            int imageWidth,
-            File choroplethMapDirectory,
-            String classificationFunctionName,
-            ShapefileDataStoreFactory sdsf) {
+            boolean drawBoundaries,
+            String classificationFunctionName) {
+        styleParameters.setClassificationFunctionName(classificationFunctionName);
+        styleParameters.setDrawBoundaries(drawBoundaries);
 
-        // General parameters
-        // Property for selecting
-        String targetPropertyName = "LSOA11CD";
-        String level = "LSOA";
-        // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
+        // OA
+        level = "OA";
+        targetPropertyName = "CODE";
+        runAllLevel();
+        // LSOA
+        level = "LSOA";
+        targetPropertyName = "LSOA11CD";
+        runAllLevel();
+        // MSOA
+        level = "MSOA";
+        targetPropertyName = "MSOA11CD";
+        runAllLevel();
+    }
+
+    public void runAllLevel() {
         DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
+        // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
         tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
-                level, targetPropertyName, sdsf);
-
-        Style backgroundStyle = DW_Style.createDefaultPolygonStyle(
-                Color.BLACK,
-                Color.WHITE);
-        String backgroundStyle_String = "Default Background Style";
-        DW_StyleParameters styleParameters;
-        styleParameters = new DW_StyleParameters(
-                classificationFunctionName,
-                nClasses,
-                paletteName,
-                addWhiteForZero,
-                backgroundStyle,
-                backgroundStyle_String);
-
-        Object[] tLSOAData;
-        String png_String;
-        png_String = "png";
+                level,
+                targetPropertyName,
+                sdsf);
+        Object[] levelData;
         TreeMap<String, Deprivation_DataRecord> deprivationRecords;
 
-//        // Map SHBE data
-//        deprivationRecords = null;
-//        generateIndividuallyStyledSHBE(
-//                sdsf,
-//                classificationFunctionName,
-//                styleParameters,
-//                showMapsInJMapPane,
-//                imageWidth,
-//                deprivationRecords,
-//                targetPropertyName,
-//                level,
-//                tLSOACodesAndLeedsLSOAShapefile,
-//                //String[] tLeedsCABFilenames,
-//                png_String);
-//        deprivationRecords = DW_Processor.getDeprivation_Data();
-//        generateIndividuallyStyledSHBE(
-//                sdsf,
-//                classificationFunctionName,
-//                styleParameters,
-//                showMapsInJMapPane,
-//                imageWidth,
-//                deprivationRecords,
-//                targetPropertyName,
-//                level,
-//                tLSOACodesAndLeedsLSOAShapefile,
-//                //String[] tLeedsCABFilenames,
-//                png_String);
+        // Map SHBE data
+        deprivationRecords = null;
+        runSHBE(
+                deprivationRecords,
+                tLSOACodesAndLeedsLSOAShapefile);
+        deprivationRecords = DW_Processor.getDeprivation_Data();
+        runSHBE(
+                deprivationRecords,
+                tLSOACodesAndLeedsLSOAShapefile);
         // Map CAB data
         File generatedAdviceLeedsDir;
         String[] tLeedsCABFilenames;
@@ -215,13 +185,15 @@ public class DW_ChoroplethMaps extends DW_Maps {
         generatedAdviceLeedsDir = new File(
                 DW_Files.getGeneratedAdviceLeedsDir(),
                 "CombinedCAB");
+        generatedAdviceLeedsDir = new File(
+                generatedAdviceLeedsDir,
+                level);
         tLeedsCABFilenames = getLeedsCABFilenames();
-        tLSOAData = getLSOAData(
+        levelData = getLevelData(
                 generatedAdviceLeedsDir,
                 tLeedsCABFilenames);
-        int max = (Integer) tLSOAData[1];
+        int max = (Integer) levelData[1];
         System.out.println("Max clients in any area = " + max);
-
         boolean scaleToFirst;
 
         /*
@@ -235,60 +207,43 @@ public class DW_ChoroplethMaps extends DW_Maps {
             deprivationRecords = null;
             if (individuallyStyled) {
                 scaleToFirst = false;
-                runCAB(sdsf,
-                        showMapsInJMapPane, styleParameters,
-                        imageWidth, deprivationRecords, choroplethMapDirectory,
-                        classificationFunctionName, targetPropertyName, level,
+                runCAB(deprivationRecords,
                         tLSOACodesAndLeedsLSOAShapefile, tLeedsCABFilenames,
-                        tLSOAData, png_String, filter, scaleToFirst);
+                        levelData, filter, scaleToFirst);
             }
             if (commonlyStyled) {
                 scaleToFirst = true;
-                runCAB(sdsf,
-                        showMapsInJMapPane, styleParameters,
-                        imageWidth, deprivationRecords, choroplethMapDirectory,
-                        classificationFunctionName, targetPropertyName, level,
+                runCAB(deprivationRecords,
                         tLSOACodesAndLeedsLSOAShapefile, tLeedsCABFilenames,
-                        tLSOAData, png_String, filter, scaleToFirst);
+                        levelData, filter, scaleToFirst);
             }
 
             // Get deprivation data
             deprivationRecords = DW_Processor.getDeprivation_Data();
             if (individuallyStyled) {
                 scaleToFirst = false;
-                runCAB(sdsf,
-                        showMapsInJMapPane, styleParameters,
-                        imageWidth, deprivationRecords, choroplethMapDirectory,
-                        classificationFunctionName, targetPropertyName, level,
+                runCAB(deprivationRecords,
                         tLSOACodesAndLeedsLSOAShapefile, tLeedsCABFilenames,
-                        tLSOAData, png_String, filter, scaleToFirst);
+                        levelData, filter, scaleToFirst);
             }
             if (commonlyStyled) {
                 scaleToFirst = true;
-                runCAB(sdsf,
-                        showMapsInJMapPane, styleParameters,
-                        imageWidth, deprivationRecords, choroplethMapDirectory,
-                        classificationFunctionName, targetPropertyName, level,
+                runCAB(deprivationRecords,
                         tLSOACodesAndLeedsLSOAShapefile, tLeedsCABFilenames,
-                        tLSOAData, png_String, filter, scaleToFirst);
+                        levelData, filter, scaleToFirst);
             }
         }
+//        if (!showMapsInJMapPane) {
+//            // Tidy up
+//            tLSOACodesAndLeedsLSOAShapefile.dispose();
+//        }
     }
 
     public void runCAB(
-            ShapefileDataStoreFactory sdsf,
-            boolean showMapsInJMapPane,
-            DW_StyleParameters styleParameters,
-            int imageWidth,
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
-            File choroplethMapDirectory,
-            String classificationFunctionName,
-            String targetPropertyName,
-            String level,
             DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile,
             String[] tLeedsCABFilenames,
-            Object[] tLSOAData,
-            String png_String,
+            Object[] levelData,
             int filter,
             boolean scaleToFirst) {
 
@@ -300,124 +255,132 @@ public class DW_ChoroplethMaps extends DW_Maps {
         }
         File dir;
         dir = new File(
-                choroplethMapDirectory,
-                style + "/" + classificationFunctionName);
+                mapDirectory,
+                level);
+        if (styleParameters.isDrawBoundaries()) {
+            dir = new File(
+                    dir,
+                    "WithBoundaries");
+        } else {
+            dir = new File(
+                    dir,
+                    "WithoutBoundaries");
+        }
+        dir = new File(
+                dir,
+                style + "/" + styleParameters.getClassificationFunctionName());
 
-        mapCountsForLSOAs(
-                sdsf,
+        mapCountsForLevel(
                 tLSOACodesAndLeedsLSOAShapefile,
                 tLeedsCABFilenames,
-                tLSOAData,
+                levelData,
                 deprivationRecords,
                 dir,
-                targetPropertyName,
-                png_String,
-                imageWidth,
                 filter,
-                scaleToFirst,
-                styleParameters,
-                showMapsInJMapPane);
+                scaleToFirst);
     }
 
-    public void generateIndividuallyStyledSHBE(
-            ShapefileDataStoreFactory sdsf,
-            String classificationFunctionName,
-            DW_StyleParameters styleParameters,
-            boolean showMapsInJMapPane,
-            int imageWidth,
+    public void runSHBE(
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
-            String targetPropertyName,
-            String level,
-            DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile,
-            //String[] tLeedsCABFilenames,
-            String png_String) {
+            DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile) {
         int filter;
         boolean scaleToFirst;// Map SHBE data
         // Initiailise filenames of files of claimants to map and get LSOA data
         // to map
         filter = 0; // clip/filter to Leeds LAD
+        String AllClaimants_String = "AllClaimants";
+        int year = 2011;
         File generatedSHBEDir;
         generatedSHBEDir = new File(
-                DW_Files.getGeneratedSHBEDir(),
-                "LSOAAllClaimants");
+                DW_Files.getGeneratedSHBEDir(level),
+                AllClaimants_String);
+
         String[] tLeedsCABFilenames;
         tLeedsCABFilenames = new String[1];
-        tLeedsCABFilenames[0] = "LSOAAllClaimants2012April.csv";
-        Object[] tLSOAData;
-        tLSOAData = getLSOAData(
+        //tLeedsCABFilenames[0] = level + AllClaimants_String + year + "April.csv";
+        tLeedsCABFilenames[0] = year + "April.csv";
+        Object[] levelData;
+        levelData = getLevelData(
                 generatedSHBEDir,
                 tLeedsCABFilenames);
 
-        File dir = new File(
+        File tSHBEMapsLeveldir = new File(
                 DW_Files.getOutputSHBEMapsDir(),
-                "LSOAAllClaimants");
+                level);
+        File dir = new File(
+                tSHBEMapsLeveldir,
+                AllClaimants_String);
+
+        if (styleParameters.isDrawBoundaries()) {
+            dir = new File(dir,
+                    "WithBoundaries");
+        } else {
+            dir = new File(dir,
+                    "WithoutBoundaries");
+        }
+
+        dir = new File(
+                dir,
+                styleParameters.getClassificationFunctionName());
+
         // Rates
         scaleToFirst = false;
-        mapRatesForLSOAs(
-                sdsf, tLSOACodesAndLeedsLSOAShapefile, tLeedsCABFilenames, tLSOAData,
-                dir, targetPropertyName, png_String, imageWidth,
-                imageWidth, filter, scaleToFirst, styleParameters,
-                showMapsInJMapPane);
+        int max;
+        max = 0;
+
+        File dirForRates = new File(
+                dir,
+                "Rates");
+        double multiplier = 1000.0d;
+        mapRatesForLevel(
+                tLSOACodesAndLeedsLSOAShapefile, tLeedsCABFilenames, levelData,
+                dirForRates, multiplier, max, filter, scaleToFirst);
         // Counts
         scaleToFirst = false;
-        mapCountsForLSOAs(
-                sdsf,
+        File dirForCounts = new File(
+                dir,
+                "Counts");
+        mapCountsForLevel(
                 tLSOACodesAndLeedsLSOAShapefile,
                 tLeedsCABFilenames,
-                tLSOAData,
+                levelData,
                 deprivationRecords,
-                dir,
-                targetPropertyName,
-                png_String,
-                imageWidth,
+                dirForCounts,
                 filter,
-                scaleToFirst,
-                styleParameters,
-                showMapsInJMapPane);
+                scaleToFirst);
     }
 
     /**
-     * @param sdsf
      * @param tLSOACodesAndLeedsLSOAShapefile
      * @param tLeedsCABFilenames
-     * @param tLSOAData
+     * @param levelData
      * @param dir
-     * @param targetPropertyName
-     * @param png_String
-     * @param imageWidth
+     * @param multiplier
      * @param max
      * @param filter
      * @param scaleToFirst
-     * @param styleParameters
-     * @param showMapsInJMapPane
      */
-    public void mapRatesForLSOAs(
-            ShapefileDataStoreFactory sdsf,
+    public void mapRatesForLevel(
             DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile,
             String[] tLeedsCABFilenames,
-            Object[] tLSOAData,
+            Object[] levelData,
             File dir,
-            String targetPropertyName,
-            String png_String,
-            int imageWidth,
+            double multiplier,
             int max,
             int filter,
-            boolean scaleToFirst,
-            DW_StyleParameters styleParameters,
-            boolean showMapsInJMapPane) {
+            boolean scaleToFirst) {
 
-        TreeSet<String> tLSOACodes;
-        tLSOACodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsCensusAreaCodes();
+        TreeSet<String> censusCodes;
+        censusCodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsCensusAreaCodes();
         //File tLSOAShapefile = (File) tLSOACodesAndLeedsLSOAShapefile[1];
         FeatureCollection tLSOAFeatureCollection;
         tLSOAFeatureCollection = tLSOACodesAndLeedsLSOAShapefile.getLevelFC();
         SimpleFeatureType tLSOAFeatureType;
         tLSOAFeatureType = tLSOACodesAndLeedsLSOAShapefile.getLevelSFT();
-        File leedsLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
-        File backgroundShapefile = leedsLSOAShapefile;
 
-        Style backgroundStyle = styleParameters.getBackgroundStyle();
-        FeatureLayer backgroundFeatureLayer;
+        backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelDW_Shapefile();
+
+        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
 
         // attributeName is the attribute name used in naming attribute in 
         // resulting shapefile
@@ -433,12 +396,19 @@ public class DW_ChoroplethMaps extends DW_Maps {
                 attributeName,
                 name);
 
-        // Read LSOA population data
-        TreeMap<String, Integer> pop = getPopData("LSOA");
+        // Read level population data
+        String area;
+        if (level.equalsIgnoreCase("LSOA")) {
+            area = "England";
+        } else {
+            area = "GreatBritain";
+        }
+        TreeMap<String, Integer> pop = getPopData(
+                level,
+                area);
 
         for (int i = 0; i < tLeedsCABFilenames.length; i++) {
-            Object[] aLSOAData = (Object[]) tLSOAData[0];
-            //for (int i = 0; i < 2; i++) {
+            Object[] aLSOAData = (Object[]) levelData[0];
             String filename = tLeedsCABFilenames[i];
             Object[] bLSOAData = (Object[]) aLSOAData[i];
             TreeMap<String, Integer> cLSOAData;
@@ -448,30 +418,27 @@ public class DW_ChoroplethMaps extends DW_Maps {
             File outputShapefile = DW_GeoTools.getOutputShapefile(
                     dir,
                     outname);
-
-            // Had hoped that this could be done once and then passed in 
-            backgroundFeatureLayer = DW_GeoTools.getFeatureLayer(
-                    backgroundShapefile,
-                    backgroundStyle);
-
-            // cLSOAData Leeds LSOA Codes from all LSOA shapefile and create a new one
+            // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
             selectAndCreateNewShapefile(
                     sdsf,
                     tLSOAFeatureCollection,
                     outputFeatureType,
-                    tLSOACodes,
+                    censusCodes,
                     cLSOAData,
                     pop,
+                    multiplier,
                     //attributeName,
                     targetPropertyName,
                     outputShapefile,
                     max,
                     filter);
+            // Output to image
             DW_GeoTools.outputToImage(
                     outname,
                     outputShapefile,
-                    backgroundFeatureLayer,
-                    //backgroundShapefile,
+                    foregroundDW_Shapefile0,
+                    foregroundDW_Shapefile1,
+                    backgroundDW_Shapefile,
                     attributeName,
                     dir,
                     png_String,
@@ -484,60 +451,44 @@ public class DW_ChoroplethMaps extends DW_Maps {
         }
     }
 
-
     /**
      * Uses a file dialog to select a file and then
      *
-     * @param sdsf
      * @param tLSOACodesAndLeedsLSOAShapefile
      * @param tLeedsCABFilenames
-     * @param tLSOAData
+     * @param levelData
      * @param deprivationRecords
      * @param dir
-     * @param targetPropertyName
-     * @param png_String
-     * @param imageWidth
      * @param filter
      * @param scaleToFirst If scaleToFirst == true then all maps are shaded with
      * the styles provided by the first map.
-     * @param styleParameters
-     * @param showMapsInJMapPane
      */
-    public void mapCountsForLSOAs(
-            ShapefileDataStoreFactory sdsf,
+    public void mapCountsForLevel(
             DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile,
             String[] tLeedsCABFilenames,
-            Object[] tLSOAData,
+            Object[] levelData,
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
             File dir,
-            String targetPropertyName,
-            String png_String,
-            int imageWidth,
             int filter,
-            boolean scaleToFirst,
-            DW_StyleParameters styleParameters,
-            boolean showMapsInJMapPane) {
-
-        TreeSet<String> tLSOACodes;
+            boolean scaleToFirst) {
+        TreeSet<String> censusCodes;
         if (filter == 0) {
-            tLSOACodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsCensusAreaCodes();
+            censusCodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsCensusAreaCodes();
+            foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
         } else {
             if (filter == 1) {
-                tLSOACodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsCensusAreaCodes();
+                censusCodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsCensusAreaCodes();
+                foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsDW_Shapefile();
             } else {
-                tLSOACodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes();
+                censusCodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes();
+                foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile();
             }
         }
-        //File tLSOAShapefile = (File) tLSOACodesAndLeedsLSOAShapefile[1];
-        FeatureCollection tLSOAFeatureCollection;
-        tLSOAFeatureCollection = tLSOACodesAndLeedsLSOAShapefile.getLevelFC();
-        SimpleFeatureType tLSOAFeatureType;
-        tLSOAFeatureType = tLSOACodesAndLeedsLSOAShapefile.getLevelSFT();
-        File leedsLSOAShapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelShapefile();
-        File backgroundShapefile = leedsLSOAShapefile;
-
-        Style backgroundStyle = styleParameters.getBackgroundStyle();
-        FeatureLayer backgroundFeatureLayer;
+        FeatureCollection levelFC;
+        levelFC = tLSOACodesAndLeedsLSOAShapefile.getLevelFC();
+        SimpleFeatureType levelSFT;
+        levelSFT = tLSOACodesAndLeedsLSOAShapefile.getLevelSFT();
+        backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLevelDW_Shapefile();
 
         // attributeName is the attribute name used in naming attribute in 
         // resulting shapefile
@@ -547,7 +498,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
         String name = attributeName + "FeatureType";
         SimpleFeatureType outputFeatureType;
         outputFeatureType = getFeatureType(
-                tLSOAFeatureType,
+                levelSFT,
                 Integer.class,
                 attributeName,
                 name);
@@ -561,103 +512,91 @@ public class DW_ChoroplethMaps extends DW_Maps {
                 Integer deprivationKey = ite.next();
                 Integer deprivationClass = deprivationClasses.get(deprivationKey);
 
-                File mapDirectory = new File(
+                File mapDirectory2 = new File(
                         dir,
                         "" + deprivationClass);
-                mapDirectory.mkdirs();
+                mapDirectory2.mkdirs();
                 for (int i = 0; i < tLeedsCABFilenames.length; i++) {
-                    Object[] aLSOAData = (Object[]) tLSOAData[0];
+                    Object[] aLSOAData = (Object[]) levelData[0];
                     String filename = tLeedsCABFilenames[i];
                     Object[] bLSOAData = (Object[]) aLSOAData[i];
                     TreeMap<String, Integer> cLSOAData;
                     cLSOAData = (TreeMap<String, Integer>) bLSOAData[0];
                     String outname;
                     outname = getOutName(filename, attributeName, filter);
-                    File outputshapeFile = DW_GeoTools.getOutputShapefile(
-                            mapDirectory,
+                    File outputShapefile = DW_GeoTools.getOutputShapefile(
+                            mapDirectory2,
                             outname);
-
-                    // Had hoped that this could be done once and then passed in 
-                    backgroundFeatureLayer = DW_GeoTools.getFeatureLayer(
-                            backgroundShapefile,
-                            backgroundStyle);
-
-                    // cLSOAData Leeds LSOA Codes from all LSOA shapefile and create a new one
+                    // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
                     selectAndCreateNewShapefile(
                             sdsf,
-                            tLSOAFeatureCollection,
+                            levelFC,
                             outputFeatureType,
-                            tLSOACodes,
+                            censusCodes,
                             cLSOAData,
                             //attributeName,
                             targetPropertyName,
-                            outputshapeFile,
+                            outputShapefile,
                             filter,
                             deprivationClasses,
                             deprivationRecords,
                             deprivationClass);
+                    // Output to image
                     DW_GeoTools.outputToImage(
                             outname,
-                            outputshapeFile,
-                            backgroundFeatureLayer,
-                            //backgroundShapefile,
+                            outputShapefile,
+                            foregroundDW_Shapefile0,
+                            foregroundDW_Shapefile1,
+                            backgroundDW_Shapefile,
                             attributeName,
-                            mapDirectory,
+                            mapDirectory2,
                             png_String,
                             imageWidth,
                             styleParameters,
                             showMapsInJMapPane);
                     if (!scaleToFirst) {
-                                        styleParameters.setStyle(null);
+                        styleParameters.setStyle(null);
                     }
                 }
             }
         } else {
-            File mapDirectory = new File(
+            File mapDirectory2 = new File(
                     dir,
                     "all");
-            mapDirectory.mkdirs();
+            mapDirectory2.mkdirs();
             for (int i = 0; i < tLeedsCABFilenames.length; i++) {
-                Object[] aLSOAData = (Object[]) tLSOAData[0];
+                Object[] levelData0 = (Object[]) levelData[0];
                 String filename = tLeedsCABFilenames[i];
-                Object[] bLSOAData = (Object[]) aLSOAData[i];
-                TreeMap<String, Integer> cLSOAData;
-                cLSOAData = (TreeMap<String, Integer>) bLSOAData[0];
+                Object[] levelData0i = (Object[]) levelData0[i];
+                TreeMap<String, Integer> levelData0i0;
+                levelData0i0 = (TreeMap<String, Integer>) levelData0i[0];
                 String outname;
                 outname = getOutName(filename, attributeName, filter);
-                File outputshapeFile = DW_GeoTools.getOutputShapefile(
-                        mapDirectory,
+                File outputShapefile = DW_GeoTools.getOutputShapefile(
+                        mapDirectory2,
                         outname);
-
-                // Had hoped that this could be done once and then passed in 
-                backgroundFeatureLayer = DW_GeoTools.getFeatureLayer(
-                        backgroundShapefile,
-                        backgroundStyle);
-
-                // cLSOAData Leeds LSOA Codes from all LSOA shapefile and create a new one
+                // Select cLSOAData Leeds LSOA Codes from all LSOA shapefile and create a new one
                 selectAndCreateNewShapefile(
                         sdsf,
-                        tLSOAFeatureCollection,
+                        levelFC,
                         outputFeatureType,
-                        tLSOACodes,
-                        cLSOAData,
+                        censusCodes,
+                        levelData0i0,
                         //attributeName,
                         targetPropertyName,
-                        outputshapeFile,
+                        outputShapefile,
                         filter);
+                // Output to image
                 DW_GeoTools.outputToImage(
                         outname,
-                        outputshapeFile,
-                        backgroundFeatureLayer,
-                        //backgroundShapefile,
-                        attributeName,
-                        mapDirectory,
-                        png_String,
-                        imageWidth,
-                        styleParameters,
-                        showMapsInJMapPane);
+                        outputShapefile,
+                        foregroundDW_Shapefile0,
+                        foregroundDW_Shapefile1,
+                        backgroundDW_Shapefile,
+                        attributeName, mapDirectory2, png_String,
+                        imageWidth, styleParameters, showMapsInJMapPane);
                 if (!scaleToFirst) {
-                                    styleParameters.setStyle(null);
+                    styleParameters.setStyle(null);
                 }
             }
         }
