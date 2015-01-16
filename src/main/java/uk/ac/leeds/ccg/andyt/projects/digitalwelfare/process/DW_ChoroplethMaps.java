@@ -97,7 +97,8 @@ public class DW_ChoroplethMaps extends DW_Maps {
         styleParameters.setPaletteName("Reds");
         styleParameters.setAddWhiteForZero(true);
         styleParameters.setForegroundStyleTitle0("Foreground Style 0");
-        styleParameters.setForegroundStyle0(DW_Style.createDefaultPointStyle());
+//        styleParameters.setForegroundStyle0(DW_Style.createDefaultPointStyle());
+        styleParameters.setForegroundStyle0(DW_Style.createAdviceLeedsPointStyles());
         styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
                 Color.GREEN,
                 Color.WHITE));
@@ -107,7 +108,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                 Color.WHITE));
         styleParameters.setBackgroundStyleTitle("Background Style");
         
-        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefile();
+        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefiles();
         
         // Switches for different outputs
         commonlyStyled = true;
@@ -117,7 +118,6 @@ public class DW_ChoroplethMaps extends DW_Maps {
         mapDirectory = new File(
                 DW_Files.getOutputAdviceLeedsMapsDir(),
                 "choropleth");
-        sdsf = new ShapefileDataStoreFactory();
 
         styleParameters.setDrawBoundaries(false);
 
@@ -160,12 +160,12 @@ public class DW_ChoroplethMaps extends DW_Maps {
     }
 
     public void runAllLevel() {
-        DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
+        DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLevelShapefile;
         // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
-        tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
+        tLSOACodesAndLeedsLevelShapefile = new DW_CensusAreaCodesAndShapefiles(
                 level,
                 targetPropertyName,
-                sdsf);
+                getShapefileDataStoreFactory());
         Object[] levelData;
         TreeMap<String, Deprivation_DataRecord> deprivationRecords;
 
@@ -173,11 +173,11 @@ public class DW_ChoroplethMaps extends DW_Maps {
         deprivationRecords = null;
         runSHBE(
                 deprivationRecords,
-                tLSOACodesAndLeedsLSOAShapefile);
+                tLSOACodesAndLeedsLevelShapefile);
         deprivationRecords = DW_Processor.getDeprivation_Data();
         runSHBE(
                 deprivationRecords,
-                tLSOACodesAndLeedsLSOAShapefile);
+                tLSOACodesAndLeedsLevelShapefile);
         // Map CAB data
         File generatedAdviceLeedsDir;
         String[] tLeedsCABFilenames;
@@ -199,22 +199,23 @@ public class DW_ChoroplethMaps extends DW_Maps {
         /*
          * (filter == 0) Clip all results to Leeds LAD
          * (filter == 1) Clip all results to Leeds And Neighbouring LADs (showing results for all Leeds LAD)
-         * (filter == 2) Clip all results to Leeds And Neighbouring LADs and Craven and York (showing results for all Leeds LAD)
+         * (filter == 2) Clip all results to Leeds And Near Neighbouring LADs (showing results for all Leeds LAD)
          * (filter == 3) No clipping
          */
         for (int filter = 0; filter < 4; filter++) {
+        //for (int filter = 2; filter < 3; filter++) {
             //int filter = 2;
             deprivationRecords = null;
             if (individuallyStyled) {
                 scaleToFirst = false;
                 runCAB(deprivationRecords,
-                        tLSOACodesAndLeedsLSOAShapefile, tLeedsCABFilenames,
+                        tLSOACodesAndLeedsLevelShapefile, tLeedsCABFilenames,
                         levelData, filter, scaleToFirst);
             }
             if (commonlyStyled) {
                 scaleToFirst = true;
                 runCAB(deprivationRecords,
-                        tLSOACodesAndLeedsLSOAShapefile, tLeedsCABFilenames,
+                        tLSOACodesAndLeedsLevelShapefile, tLeedsCABFilenames,
                         levelData, filter, scaleToFirst);
             }
 
@@ -223,13 +224,13 @@ public class DW_ChoroplethMaps extends DW_Maps {
             if (individuallyStyled) {
                 scaleToFirst = false;
                 runCAB(deprivationRecords,
-                        tLSOACodesAndLeedsLSOAShapefile, tLeedsCABFilenames,
+                        tLSOACodesAndLeedsLevelShapefile, tLeedsCABFilenames,
                         levelData, filter, scaleToFirst);
             }
             if (commonlyStyled) {
                 scaleToFirst = true;
                 runCAB(deprivationRecords,
-                        tLSOACodesAndLeedsLSOAShapefile, tLeedsCABFilenames,
+                        tLSOACodesAndLeedsLevelShapefile, tLeedsCABFilenames,
                         levelData, filter, scaleToFirst);
             }
         }
@@ -282,7 +283,8 @@ public class DW_ChoroplethMaps extends DW_Maps {
 
     public void runSHBE(
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
-            DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile) {
+            DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile
+    ) {
         int filter;
         boolean scaleToFirst;// Map SHBE data
         // Initiailise filenames of files of claimants to map and get LSOA data
@@ -420,7 +422,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                     outname);
             // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
             selectAndCreateNewShapefile(
-                    sdsf,
+                    getShapefileDataStoreFactory(),
                     tLSOAFeatureCollection,
                     outputFeatureType,
                     censusCodes,
@@ -444,9 +446,10 @@ public class DW_ChoroplethMaps extends DW_Maps {
                     png_String,
                     imageWidth,
                     styleParameters,
+                    0,
                     showMapsInJMapPane);
             if (!scaleToFirst) {
-                styleParameters.setStyle(null);
+                styleParameters.setStyle(null, 0);
             }
         }
     }
@@ -480,8 +483,8 @@ public class DW_ChoroplethMaps extends DW_Maps {
                 censusCodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsCensusAreaCodes();
                 foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsDW_Shapefile();
             } else {
-                censusCodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes();
-                foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile();
+                censusCodes = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNearNeighbouringLADsCensusAreaCodes();
+                foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNearNeighbouringLADsDW_Shapefile();
             }
         }
         FeatureCollection levelFC;
@@ -529,7 +532,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                             outname);
                     // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
                     selectAndCreateNewShapefile(
-                            sdsf,
+                            getShapefileDataStoreFactory(),
                             levelFC,
                             outputFeatureType,
                             censusCodes,
@@ -553,9 +556,10 @@ public class DW_ChoroplethMaps extends DW_Maps {
                             png_String,
                             imageWidth,
                             styleParameters,
+                            0,
                             showMapsInJMapPane);
                     if (!scaleToFirst) {
-                        styleParameters.setStyle(null);
+                        styleParameters.setStyle(null,0);
                     }
                 }
             }
@@ -577,7 +581,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                         outname);
                 // Select cLSOAData Leeds LSOA Codes from all LSOA shapefile and create a new one
                 selectAndCreateNewShapefile(
-                        sdsf,
+                        getShapefileDataStoreFactory(),
                         levelFC,
                         outputFeatureType,
                         censusCodes,
@@ -593,10 +597,15 @@ public class DW_ChoroplethMaps extends DW_Maps {
                         foregroundDW_Shapefile0,
                         foregroundDW_Shapefile1,
                         backgroundDW_Shapefile,
-                        attributeName, mapDirectory2, png_String,
-                        imageWidth, styleParameters, showMapsInJMapPane);
+                        attributeName,
+                        mapDirectory2,
+                        png_String,
+                        imageWidth,
+                        styleParameters,
+                        0,
+                        showMapsInJMapPane);
                 if (!scaleToFirst) {
-                    styleParameters.setStyle(null);
+                    styleParameters.setStyle(null,0);
                 }
             }
         }

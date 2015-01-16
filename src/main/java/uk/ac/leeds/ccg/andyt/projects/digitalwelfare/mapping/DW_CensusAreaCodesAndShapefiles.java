@@ -34,7 +34,7 @@ public class DW_CensusAreaCodesAndShapefiles {
 
     private final TreeSet<String> leedsCensusAreaCodes;
     private final TreeSet<String> leedsAndNeighbouringLADsCensusAreaCodes;
-    private final TreeSet<String> leedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes;
+    private final TreeSet<String> leedsAndNearNeighbouringLADsCensusAreaCodes;
     private final DW_Shapefile levelDW_Shapefile;
     private final FeatureCollection levelFC;
     private final SimpleFeatureType levelSFT;
@@ -43,7 +43,7 @@ public class DW_CensusAreaCodesAndShapefiles {
     private final SimpleFeatureType leedsLADSFT;
     private final DW_Shapefile leedsLADDW_Shapefile;
     private final DW_Shapefile leedsAndNeighbouringLADsDW_Shapefile;
-    private final DW_Shapefile leedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile;
+    private final DW_Shapefile leedsAndNearNeighbouringLADsDW_Shapefile;
 
     /**
      *
@@ -58,8 +58,8 @@ public class DW_CensusAreaCodesAndShapefiles {
         String tLeedsString = "Leeds";
         String tLeedsAndNeighbouringLADsString;
         tLeedsAndNeighbouringLADsString = "LeedsAndNeighbouringLADs";
-        String tLeedsAndNeighbouringLADsAndCravenAndYorkString;
-        tLeedsAndNeighbouringLADsAndCravenAndYorkString = "LeedsAndNeighbouringLADsAndCravenAndYork";
+        String tLeedsAndNearNeighbouringLADsString;
+        tLeedsAndNearNeighbouringLADsString = "LeedsAndNearNeighbouringLADs";
         String tCODEString = "CODE";
 
         // Read area level Census Codes
@@ -97,8 +97,8 @@ public class DW_CensusAreaCodesAndShapefiles {
                 tLeedsAndNeighbouringLADsString, 
                 level);
         // Read Leeds and neighbouring District LADs and Craven And York Census Codes
-        leedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes = DW_Census.getCensusCodes(
-                tLeedsAndNeighbouringLADsAndCravenAndYorkString, 
+        leedsAndNearNeighbouringLADsCensusAreaCodes = DW_Census.getCensusCodes(
+                tLeedsAndNearNeighbouringLADsString, 
                 level);
 
         // Get LAD shapefiles
@@ -163,7 +163,7 @@ public class DW_CensusAreaCodesAndShapefiles {
         } else {
             leedsAndNeighbouringLADsDW_Shapefile = null;
         }
-        if (leedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes != null) {
+        if (leedsAndNearNeighbouringLADsCensusAreaCodes != null) {
             // Code for Calderdale 00CY = E08000033
             // Code for Craven 36UB = E07000163
             // Code for York 00FF = E06000014
@@ -175,9 +175,9 @@ public class DW_CensusAreaCodesAndShapefiles {
             tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes.add("E07000163");
             tLeedsAndNeighbouringLADsAndCravenAndYorkLADCodes.add("E06000014");
             File leedsAndNeighbouringLADsAndCravenAndYorkShapefile = getCensusBoundaryShapefile(
-                    tLeedsAndNeighbouringLADsAndCravenAndYorkString,
+                    tLeedsAndNearNeighbouringLADsString,
                     levelLAD);
-            leedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile = new DW_Shapefile(
+            leedsAndNearNeighbouringLADsDW_Shapefile = new DW_Shapefile(
                     leedsAndNeighbouringLADsAndCravenAndYorkShapefile);
             if (!leedsAndNeighbouringLADsAndCravenAndYorkShapefile.exists()) {
                 DW_Maps.selectAndCreateNewShapefile(sdsf, leedsLADFC, leedsLADSFT,
@@ -186,7 +186,7 @@ public class DW_CensusAreaCodesAndShapefiles {
                         leedsAndNeighbouringLADsAndCravenAndYorkShapefile);
             }
         } else {
-            leedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile = null;
+            leedsAndNearNeighbouringLADsDW_Shapefile = null;
         }
     }
 
@@ -207,8 +207,8 @@ public class DW_CensusAreaCodesAndShapefiles {
     /**
      * @return the leedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes
      */
-    public TreeSet<String> getLeedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes() {
-        return leedsAndNeighbouringLADsAndCravenAndYorkCensusAreaCodes;
+    public TreeSet<String> getLeedsAndNearNeighbouringLADsCensusAreaCodes() {
+        return leedsAndNearNeighbouringLADsCensusAreaCodes;
     }
 
     /**
@@ -268,10 +268,10 @@ public class DW_CensusAreaCodesAndShapefiles {
     }
 
     /**
-     * @return the leedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile
+     * @return the leedsAndNearNeighbouringLADsDW_Shapefile
      */
-    public DW_Shapefile getLeedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile() {
-        return leedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile;
+    public DW_Shapefile getLeedsAndNearNeighbouringLADsDW_Shapefile() {
+        return leedsAndNearNeighbouringLADsDW_Shapefile;
     }
 
     /**
@@ -283,7 +283,7 @@ public class DW_CensusAreaCodesAndShapefiles {
         if (tDW_Shapefile != null) {
             tDW_Shapefile.dispose();
         }
-        tDW_Shapefile = getLeedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile();
+        tDW_Shapefile = getLeedsAndNearNeighbouringLADsDW_Shapefile();
         if (tDW_Shapefile != null) {
             tDW_Shapefile.dispose();
         }

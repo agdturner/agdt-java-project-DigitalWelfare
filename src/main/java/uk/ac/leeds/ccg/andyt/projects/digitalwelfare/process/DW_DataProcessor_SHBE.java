@@ -2669,9 +2669,9 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
         File outputDirectory = new File("/scratch02/DigitalWelfare/ONSPD/processed");
         String outputFilename = "PostcodeLookUp_TreeMap_String_Strings.thisFile";
         File outFile = new File(outputDirectory, outputFilename);
-        //new PostcodeGeocoder(inFile, outFile).generatePostCodePointLookup();
+        //new PostcodeGeocoder(inFile, outFile).getPostcodeUnitPointLookup();
         //new PostcodeGeocoder(inFile, outFile).run1();
-        TreeMap<String, String[]> result = new PostcodeGeocoder(inFile, outFile).generatePostcodeStringsLookup();
+        TreeMap<String, String[]> result = new PostcodeGeocoder(inFile, outFile).getPostcodeUnitCensusCodesLookup();
         return result;
     }
 

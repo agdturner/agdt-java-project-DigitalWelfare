@@ -27,6 +27,8 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.TreeMap;
 import org.geotools.brewer.color.BrewerPalette;
 import org.geotools.brewer.color.ColorBrewer;
 import org.geotools.brewer.color.StyleGenerator;
@@ -61,6 +63,7 @@ import org.opengis.filter.expression.PropertyName;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_double;
 import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 
 /**
  *
@@ -71,7 +74,6 @@ public class DW_Style {
     public static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
     public static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
     public static StyleBuilder styleBuilder = new StyleBuilder(styleFactory, filterFactory);
-    
 
     /**
      *
@@ -151,6 +153,143 @@ public class DW_Style {
      * @return A Style to draw point features as circles with blue outlines and
      * cyan fill.
      */
+    public static ArrayList<Style> createAdviceLeedsPointStyles() {
+//        StyleBuilder sb = new StyleBuilder();
+//        PointSymbolizer ps = sb.createPointSymbolizer();
+//        FilterFactory2 ff = sb.getFilterFactory();
+//        StyleFactory sf = sb.getStyleFactory();
+//        sf.
+        ArrayList<Style> result;
+        result = new ArrayList<Style>();
+        Mark mark;
+        int size;
+        String type;
+        Color fill;
+        Color outline;
+        outline = Color.BLUE;
+        // Order of styles added is in the order of DW_Processor.getAdviceLeedsServiceNames()
+//        ArrayList<String> tAdviceLeedsServiceNames;
+//        tAdviceLeedsServiceNames = DW_Processor.getAdviceLeedsServiceNames();
+        // CAB as crosses
+        size = 9;
+        type = "Cross";
+        fill = Color.GRAY;
+        Style GeneralCABStyle;
+        GeneralCABStyle = getPointStyle(size, type, fill, outline);
+        //  Otley
+        result.add(GeneralCABStyle);
+        //  Morley
+        result.add(GeneralCABStyle);
+        //  Crossgates
+        result.add(GeneralCABStyle);
+        //  Pudsey
+        result.add(GeneralCABStyle);
+        // Leeds CAB
+        fill = Color.WHITE;
+        result.add(getPointStyle(size, type, fill, outline));
+        // Chapeltown CAB
+        fill = Color.LIGHT_GRAY;
+        result.add(getPointStyle(size, type, fill, outline));
+
+        // Charities
+        size = 5;
+        type = "Square";
+        // Ebor Gardens
+        fill = Color.BLUE;
+        result.add(getPointStyle(size, type, fill, outline));
+        // St Vincents
+        fill = Color.CYAN;
+        result.add(getPointStyle(size, type, fill, outline));
+
+        // Leeds Law Centre
+        size = 10;
+        type = "X";
+        fill = Color.GRAY;
+        result.add(getPointStyle(size, type, fill, outline));
+
+        // Others
+        size = 8;
+        type = "Triangle";
+        // BLC
+        fill = Color.CYAN;
+        result.add(getPointStyle(size, type, fill, outline));
+        // LCC_WRU
+        fill = Color.BLUE;
+        result.add(getPointStyle(size, type, fill, outline));
+        return result;
+    }
+
+    public static Style getPointStyle(
+            int size,
+            String type,
+            Color fill,
+            Color outline) {
+        Style result;
+        Mark mark;
+        if (type.equalsIgnoreCase("Cross")) {
+            mark = styleFactory.getCrossMark();
+        } else {
+            if (type.equalsIgnoreCase("Triangle")) {
+                mark = styleFactory.getTriangleMark();
+            } else {
+                if (type.equalsIgnoreCase("Square")) {
+                    mark = styleFactory.getSquareMark();
+                } else {
+                    if (type.equalsIgnoreCase("X")) {
+                        mark = styleFactory.getXMark();
+                    } else {
+                        if (type.equalsIgnoreCase("Cross")) {
+                            mark = styleFactory.getCrossMark();
+                        } else {
+                            mark = styleFactory.getCircleMark();
+                        }
+                    }
+                }
+            }
+        }
+        mark.setStroke(styleFactory.createStroke(
+                filterFactory.literal(outline), filterFactory.literal(1)));
+        mark.setFill(styleFactory.createFill(filterFactory.literal(fill)));
+        result = createPointStyle(mark, size);
+        return result;
+    }
+
+    /**
+     * Create and returns a Style to draw point features as circles with blue
+     * outlines and cyan fill.
+     *
+     * @param mark
+     * @param size
+     * @return A Style to draw point features as circles with blue outlines and
+     * cyan fill.
+     */
+    public static Style createPointStyle(
+            Mark mark,
+            int size) {
+        Graphic gr = styleFactory.createDefaultGraphic();
+        gr.graphicalSymbols().clear();
+        gr.graphicalSymbols().add(mark);
+        gr.setSize(filterFactory.literal(size));
+        /*
+         * Setting the geometryPropertyName arg to null signals that we want to
+         * draw the default geometry of features.
+         */
+        PointSymbolizer sym = styleFactory.createPointSymbolizer(gr, null);
+        Rule rule = styleFactory.createRule();
+        rule.symbolizers().add(sym);
+        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});
+        Style style = styleFactory.createStyle();
+        style.featureTypeStyles().add(fts);
+        return style;
+    }
+
+    /**
+     * Create and returns a Style to draw point features as circles with blue
+     * outlines and cyan fill.
+     *
+     * @return A Style to draw point features as circles with blue outlines and
+     * cyan fill.
+     */
     public static Style createDefaultPointStyle() {
         Graphic gr = styleFactory.createDefaultGraphic();
         Mark mark = styleFactory.getCircleMark();
@@ -180,9 +319,7 @@ public class DW_Style {
      */
     public static Style createDefaultLineStyle() {
         Style style;
-        Stroke stroke = styleFactory.createStroke(
-                filterFactory.literal(Color.BLUE),
-                filterFactory.literal(1));
+        Stroke stroke = getDefaultStroke(Color.BLUE);
         /*
          * Setting the geometryPropertyName arg to null signals that we want to
          * draw the default geometry of features.
@@ -266,6 +403,7 @@ public class DW_Style {
      * @param featureCollection
      * @param attributeName
      * @param styleParameters
+     * @return 
      */
     public static Object[] createPolygonStyle(
             FeatureCollection featureCollection,
@@ -278,7 +416,7 @@ public class DW_Style {
         boolean addWhiteForZero = styleParameters.isAddWhiteForZero();
         String paletteName = styleParameters.getPaletteName();
         String classificationFunctionName = styleParameters.getClassificationFunctionName();
-        
+
         // STEP 0 Set up Color Brewer
         ColorBrewer brewer = ColorBrewer.instance();
 
@@ -421,8 +559,6 @@ public class DW_Style {
      *
      * @param g
      * @param cov
-     * @param classificationFunctionName
-     * @param ff
      * @param nClasses
      * @param paletteName
      * @param addWhiteForZero
@@ -525,7 +661,7 @@ public class DW_Style {
 //        style = sb.createStyle(sb.createRasterSymbolizer(map, 1));
 //        return style;
     }
-    
+
     /**
      * Assuming min is 0.
      *
@@ -568,21 +704,21 @@ public class DW_Style {
             for (int i = 1; i < nClasses; i++) {
                 if (i < nClasses - 1) {
                     double roundedMinInterval;
-                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100/normalisation), 2, RoundingMode.UP).doubleValue();
-                    
+                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
+
                     double roundedMaxInterval;
-                    roundedMaxInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + maxInterval * 100/normalisation), 2, RoundingMode.UP).doubleValue();
-                    
+                    roundedMaxInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + maxInterval * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
+
                     classNames[i] = "" + roundedMinInterval + " - " + roundedMaxInterval;
                     breaks[i] = minInterval;
                     minInterval += interval;
                     maxInterval += interval;
                 } else {
                     double roundedMinInterval;
-                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100/normalisation), 2, RoundingMode.UP).doubleValue();
-                    
+                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
+
                     double roundedMax;
-                    roundedMax = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + max * 100/normalisation), 2, RoundingMode.UP).doubleValue();
+                    roundedMax = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + max * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
                     classNames[i] = "" + roundedMinInterval + " - " + roundedMax;
                     breaks[i] = minInterval;
                 }
@@ -592,24 +728,23 @@ public class DW_Style {
             breaks = new double[nClasses];
             for (int i = 0; i < nClasses; i++) {
                 if (i < nClasses - 1) {
-                    
-                    
+
                     double roundedMinInterval;
-                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100/normalisation), 2, RoundingMode.UP).doubleValue();
-                    
+                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
+
                     double roundedMaxInterval;
-                    roundedMaxInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + maxInterval * 100/normalisation), 2, RoundingMode.UP).doubleValue();
-                    
+                    roundedMaxInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + maxInterval * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
+
                     classNames[i] = "" + roundedMinInterval + " - " + roundedMaxInterval;
                     breaks[i] = minInterval;
                     minInterval += interval;
                     maxInterval += interval;
                 } else {
                     double roundedMinInterval;
-                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100/normalisation), 2, RoundingMode.UP).doubleValue();
-                    
+                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
+
                     double roundedMax;
-                    roundedMax = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + max * 100/normalisation), 2, RoundingMode.UP).doubleValue();
+                    roundedMax = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + max * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
                     classNames[i] = "" + roundedMinInterval + " - " + roundedMax;
                     breaks[i] = minInterval;
                 }
@@ -636,9 +771,9 @@ public class DW_Style {
         style = sb.createStyle(sb.createRasterSymbolizer(cm, 1));
         result[0] = style;
         for (int i = 0; i < nClasses; i++) {
-             DW_LegendItem li;
-                    li = new DW_LegendItem(classNames[i],colors[i]);
-                    legendItems.add(li);
+            DW_LegendItem li;
+            li = new DW_LegendItem(classNames[i], colors[i]);
+            legendItems.add(li);
         }
         result[1] = legendItems;
         return result;

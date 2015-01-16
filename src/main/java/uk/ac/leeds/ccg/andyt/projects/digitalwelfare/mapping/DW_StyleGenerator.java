@@ -272,9 +272,16 @@ public class DW_StyleGenerator extends StyleGenerator {
         }
     }
     
-    private static Rule createRuleExplicit(ExplicitClassifier explicit, Expression expression,
-        Set value, GeometryDescriptor geometryAttrType, int i, int elseMode, Color[] colors,
-        double opacity, Stroke defaultStroke) {
+    private static Rule createRuleExplicit(
+            ExplicitClassifier explicit, 
+            Expression expression,
+        Set value, 
+        GeometryDescriptor geometryAttrType, 
+        int i, 
+        int elseMode, 
+        Color[] colors,
+        double opacity, 
+        Stroke defaultStroke) {
         // create a sub filter for each unique value, and merge them
         // into the logic filter
         Object[] items = value.toArray();
@@ -334,8 +341,11 @@ public class DW_StyleGenerator extends StyleGenerator {
      * @param defaultStroke stroke used for borders
      *
      */
-    private static Symbolizer createSymbolizer(GeometryDescriptor geometryAttrType, Color color,
-        double opacity, Stroke defaultStroke) {
+    private static Symbolizer createSymbolizer(
+            GeometryDescriptor geometryAttrType, 
+            Color color,
+        double opacity, 
+        Stroke defaultStroke) {
         Symbolizer symb;
 
         if (defaultStroke == null) {

@@ -17,16 +17,14 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.ONSPDRecord_Aug_2013_UK_0;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.io.StreamTokenizer;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -87,37 +85,68 @@ public class PostcodeGeocoder implements Serializable {
         File processedFile;
         if (args.length == 0) {
             inputFilename = "ONSPD_AUG_2013_UK_O.csv";
-            processedFilename = "PostcodeLookUp_TreeMap_String_Point.thisFile"; // For generatePostCodePointLookup()
+            processedFilename = "PostcodeLookUp_TreeMap_String_Point.thisFile"; // For getPostcodeUnitPointLookup()
         }
         inputFile = new File(inputONSPDDir, inputFilename);
         processedFile = new File(processedONSPDDir, processedFilename);
-        new PostcodeGeocoder(inputFile, processedFile).generatePostCodePointLookup();
+        boolean ignorePointsAtOrigin = true;
+        new PostcodeGeocoder(inputFile, processedFile).getPostcodeUnitPointLookup(ignorePointsAtOrigin);
         //new PostcodeGeocoder(inputFile, processedFile).run1();
-        //new PostcodeGeocoder(inputFile, processedFile).generatePostcodeStringsLookup();
+        //new PostcodeGeocoder(inputFile, processedFile).getPostcodeUnitCensusCodesLookup();
         //new PostcodeGeocoder(inputFile, processedFile).run3();
     }
 
-    public TreeMap<String, DW_Point> generatePostCodePointLookup() {
-        // Read NPD into a lookup
-        TreeMap<String, DW_Point> lookup;
-        lookup = readONSPDIntoTreeMapPostcodePoint(
-                inputFile);
+    public TreeMap<String, DW_Point> getPostcodeSectorPointLookup(
+            boolean ignorePointsAtOrigin,
+            String outputFilename,
+            TreeMap<String, DW_Point> postcodeUnitPointLookup) {
+        TreeMap<String, DW_Point> result;
+        File outputFile2;
+        outputFile2 = new File(
+                outputFile.getParentFile(),
+                outputFilename);
+        result = initPostcodeSectorPointLookup(
+                postcodeUnitPointLookup,
+                ignorePointsAtOrigin);
+        String postcode;
+        // Test some postcodes
+        postcode = "LS17 2";
+        printTest0(
+                result,
+                postcode);
+        postcode = "LS2 9";
+        printTest0(
+                result,
+                postcode);
+        Generic_StaticIO.writeObject(result, outputFile2);
+//        // For testing reading back in
+//        result = (TreeMap<String, DW_Point>) Generic_StaticIO.readObject(outputFile2);
+        return result;
+    }
+
+    public TreeMap<String, DW_Point> getPostcodeUnitPointLookup(
+            boolean ignorePointsAtOrigin) {
+        TreeMap<String, DW_Point> result;
+        result = initPostcodeUnitPointLookup(
+                inputFile,
+                ignorePointsAtOrigin);
         // Test some postcodes
         String postcode;
         postcode = "LS7 2EU";
         printTest0(
-                lookup,
+                result,
                 postcode);
         postcode = "LS2 9JT";
         printTest0(
-                lookup,
+                result,
                 postcode);
-        Generic_StaticIO.writeObject(lookup, outputFile);
-        lookup = (TreeMap<String, DW_Point>) Generic_StaticIO.readObject(outputFile);
-        return lookup;
+        Generic_StaticIO.writeObject(result, outputFile);
+//        // For testing reading back in
+//        result = (TreeMap<String, DW_Point>) Generic_StaticIO.readObject(outputFile);
+        return result;
     }
 
-    public TreeMap<String, ONSPDRecord_Aug_2013_UK_0> generatePostCodeONSPDRecordLookup() {
+    public TreeMap<String, ONSPDRecord_Aug_2013_UK_0> getPostcodeUnitONSPDRecordLookup() {
         // Read NPD into a lookup
         TreeMap<String, ONSPDRecord_Aug_2013_UK_0> lookup;
         lookup = readONSPDIntoTreeMapPostcodeONSPDRecord(
@@ -137,7 +166,7 @@ public class PostcodeGeocoder implements Serializable {
         return lookup;
     }
 
-    public TreeMap<String, String[]> generatePostcodeStringsLookup() {
+    public TreeMap<String, String[]> getPostcodeUnitCensusCodesLookup() {
         // Read NPD into a lookup
         TreeMap<String, String[]> lookup;
         lookup = readONSPDIntoTreeMapPostcodeStrings(
@@ -157,7 +186,13 @@ public class PostcodeGeocoder implements Serializable {
         return lookup;
     }
 
-    public TreeMap<String, String> generatePostcodeStringLookup(
+    /**
+     *
+     * @param level "OA", "LSOA", "MSOA"
+     * @param year
+     * @return
+     */
+    public TreeMap<String, String> getPostcodeUnitCensusCodeLookup(
             String level,
             int year) {
         // Read NPD into a lookup
@@ -267,15 +302,15 @@ public class PostcodeGeocoder implements Serializable {
         return result;
     }
 
-    public static TreeMap<String, DW_Point> getLookupPointFromPostcode(File file) {
+    public static TreeMap<String, DW_Point> getStringToDW_PointLookup(File file) {
         return (TreeMap<String, DW_Point>) Generic_StaticIO.readObject(file);
     }
 
-    public static TreeMap<String, String[]> getLookupStringsFromPostcode(File file) {
+    public static TreeMap<String, String[]> getStringToStringArrayLookup(File file) {
         return (TreeMap<String, String[]>) Generic_StaticIO.readObject(file);
     }
 
-    public static HashMap<String, String> getLookupStringFromString(File file) {
+    public static HashMap<String, String> getStringToStringLookup(File file) {
         return (HashMap<String, String>) Generic_StaticIO.readObject(file);
     }
 
@@ -283,9 +318,13 @@ public class PostcodeGeocoder implements Serializable {
             TreeMap<String, DW_Point> lookup,
             String postcode) {
         DW_Point p = lookup.get(postcode);
-        int lon = p.getX();
-        int lat = p.getY();
-        System.out.println(postcode + ", " + lon + ", " + lat);
+        if (p != null) {
+            int lon = p.getX();
+            int lat = p.getY();
+            System.out.println(postcode + ", " + lon + ", " + lat);
+        } else {
+            System.out.println(postcode + ", no point!");
+        }
     }
 
     public static void printTest1(
@@ -302,8 +341,108 @@ public class PostcodeGeocoder implements Serializable {
         System.out.println(postcode + ", " + values[0] + ", " + values[1] + ", " + values[2] + ", " + values[3]);
     }
 
-    public TreeMap<String, DW_Point> readONSPDIntoTreeMapPostcodePoint(
-            File file) {
+    /**
+     * Once all Unit Postcodes are read, then postcode sectors and postcode area
+     * centroids are also added.
+     *
+     * http://en.wikipedia.org/wiki/Postcodes_in_the_United_Kingdom Postcode
+     * area is part of the outward code. The postcode area is between one and
+     * two characters long and is all letters. Examples of postcode areas
+     * include "L" for Liverpool, "RH" for Redhill and "EH" Edinburgh. A postal
+     * area may cover a wide area, for example "RH" covers north Sussex, (which
+     * has little to do with Redhill historically apart from the railway links),
+     * and "BT" (Belfast) covers the whole of Northern Ireland.
+     *
+     * Postcode district is part of the outward code. It is one or two digits
+     * (and sometimes a final letter) that are added to the end of the postcode
+     * area. the outward code is between two and four characters long. Examples
+     * of postcode districts include "W1A", "RH1", "RH10" or "SE1P".
+     *
+     * Postcode sector is made up of the postcode district, the single space,
+     * and the first character of the inward code. It is between four and six
+     * characters long (including the single space). Examples of postcode
+     * sectors include "SW1W 0", "PO16 7", "GU16 7", or "L1 8".
+     *
+     * Postcode unit is two characters added to the end of the postcode sector.
+     * Each postcode unit generally represents a street, part of a street, a
+     * single address, a group of properties, a single property, a sub-section
+     * of the property, an individual organisation or (for instance Driver and
+     * Vehicle Licensing Agency) a subsection of the organisation. The level of
+     * discrimination is often based on the amount of mail received by the
+     * premises or business. Examples of postcode units include "SW1W 0NY",
+     * "PO16 7GZ", "GU16 7HF", or "L1 8JQ".
+     *
+     * @param file
+     * @param postcodeUnitPointLookup
+     * @return
+     */
+    private TreeMap<String, DW_Point> initPostcodeSectorPointLookup(
+            TreeMap<String, DW_Point> postcodeUnitPointLookup,
+            boolean ignorePointsAtOrigin) {
+        TreeMap<String, DW_Point> result;
+        result = new TreeMap<String, DW_Point>();
+        // Aggregate by postcode
+        // Create postcodeSector to unitPostcodes look up
+        TreeMap<String, HashSet<String>> postcodeSectorsAndUnitPostcodes;
+        postcodeSectorsAndUnitPostcodes = new TreeMap<String, HashSet<String>>();
+        Iterator<String> ite;
+        ite = postcodeUnitPointLookup.keySet().iterator();
+        while (ite.hasNext()) {
+            String unitPostcode = ite.next();
+            String postcodeSector = getPostcodeSector(unitPostcode);
+            if (postcodeSectorsAndUnitPostcodes.containsKey(postcodeSector)) {
+                postcodeSectorsAndUnitPostcodes.get(postcodeSector).add(
+                        unitPostcode);
+            } else {
+                postcodeSectorsAndUnitPostcodes.put(
+                        postcodeSector, new HashSet<String>());
+            }
+        }
+        // Average points to get postcode sector centroids
+        ite = postcodeSectorsAndUnitPostcodes.keySet().iterator();
+        while (ite.hasNext()) {
+            String postcodeSector = ite.next();
+            HashSet<String> postcodes = postcodeSectorsAndUnitPostcodes.get(
+                    postcodeSector);
+            double sumx = 0;
+            double sumy = 0;
+            double n = postcodes.size();
+            Iterator<String> ite2;
+            ite2 = postcodes.iterator();
+            while (ite2.hasNext()) {
+                String unitPostcode = ite2.next();
+                DW_Point p = postcodeUnitPointLookup.get(unitPostcode);
+                sumx += p.getX();
+                sumy += p.getY();
+            }
+            int x = (int) (sumx / n);
+            int y = (int) (sumy / n);
+            DW_Point postcodeSectorPoint = new DW_Point(x, y);
+            if (ignorePointsAtOrigin) {
+                if (!(x < 1 || y < 1)) {
+                    result.put(postcodeSector, postcodeSectorPoint);
+                }
+            } else {
+                result.put(postcodeSector, postcodeSectorPoint);
+            }
+        }
+        return result;
+    }
+
+    public String getPostcodeSector(String ONSPDPostcodeUnit) {
+        String result;
+        int length = ONSPDPostcodeUnit.length();
+        result = ONSPDPostcodeUnit.substring(0,length - 2);
+//        // With a Space
+//        String outward = ONSPDPostcodeUnit.substring(length - 3);
+//        String inward = ONSPDPostcodeUnit.substring(0,length - 4).trim();
+//        result = outward + " " + inward.substring(0, 1);
+        return result;
+    }
+
+    public TreeMap<String, DW_Point> initPostcodeUnitPointLookup(
+            File file,
+            boolean ignorePointsAtOrigin) {
         TreeMap<String, DW_Point> result = new TreeMap<String, DW_Point>();
         try {
             int lineCounter = 0;
@@ -317,9 +456,31 @@ public class PostcodeGeocoder implements Serializable {
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
-                        ONSPDRecord_Aug_2013_UK_0 rec = new ONSPDRecord_Aug_2013_UK_0(line);
-                        DW_Point point = new DW_Point(rec.getOseast1m(), rec.getOsnrth1m());
-                        result.put(rec.getPcd(), point);
+                        ONSPDRecord_Aug_2013_UK_0 rec;
+                        rec = new ONSPDRecord_Aug_2013_UK_0(line);
+                        int easting = rec.getOseast1m();
+                        int northing = rec.getOsnrth1m();
+                        DW_Point point;
+                        point = new DW_Point(easting, northing);
+                        String postcode = rec.getPcd();
+                        if (ignorePointsAtOrigin) {
+                            // Test for orgin point (postcodes ending ZZ are usually at origin, but some others are too.)
+//                            if (!(easting == 0 && northing == 0)) {
+//                                result.put(rec.getPcd(), point);
+//                            } else {
+//                                int debug = 1;
+//                            }
+                            if (easting < 1 || northing < 1) {
+                                int debug = 1;
+                            } else {
+                                result.put(rec.getPcd(), point);
+                            }
+//                            if (postcode.endsWith("ZZ")) {
+//                                int debug = 1;
+//                            }
+                        } else {
+                            result.put(rec.getPcd(), point);
+                        }
                         lineCounter++;
                         if (lineCounter % 100000 == 0) {
                             System.out.println("Read " + lineCounter + " lines out of 2550320");

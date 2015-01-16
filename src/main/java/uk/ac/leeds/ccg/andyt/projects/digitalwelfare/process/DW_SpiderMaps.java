@@ -129,13 +129,12 @@ public class DW_SpiderMaps extends DW_Maps {
     private void init() {
         level = "MSOA";
         initStyleParameters();
-        sdsf = new ShapefileDataStoreFactory();
         mapDirectory = DW_Files.getOutputAdviceLeedsMapsDir();
         // init tLSOACodesAndLeedsLSOAShapefile
         initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         // init tMSOACodesAndLeedsMSOAShapefile
         initMSOACodesAndLeedsMSOAShapefile(targetPropertyNameMSOA);
-        init_ONSPDLookup();
+        initONSPDLookups();
         initCABOutletPoints();
         aCAB_DataRecord2_Handler = new CAB_DataRecord2_Handler();
         tCAB_DataRecord0_Handler = new CAB_DataRecord0_Handler();
@@ -153,7 +152,8 @@ public class DW_SpiderMaps extends DW_Maps {
 //        styleParameters.setPaletteName("Reds");
 //        styleParameters.setAddWhiteForZero(true);
         styleParameters.setForegroundStyleTitle0("Foreground Style 0");
-        styleParameters.setForegroundStyle0(DW_Style.createDefaultPointStyle());
+//        styleParameters.setForegroundStyle0(DW_Style.createDefaultPointStyle());
+        styleParameters.setForegroundStyle0(DW_Style.createAdviceLeedsPointStyles());
         styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
                 Color.GREEN,
                 Color.WHITE));
@@ -167,13 +167,13 @@ public class DW_SpiderMaps extends DW_Maps {
     private void initLSOACodesAndLeedsLSOAShapefile(
             String targetPropertyNameLSOA) {
         tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
-                "LSOA", targetPropertyNameLSOA, sdsf);
+                "LSOA", targetPropertyNameLSOA, getShapefileDataStoreFactory());
     }
 
     private void initMSOACodesAndLeedsMSOAShapefile(
             String targetPropertyNameMSOA) {
         tMSOACodesAndLeedsMSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
-                "MSOA", targetPropertyNameMSOA, sdsf);
+                "MSOA", targetPropertyNameMSOA, getShapefileDataStoreFactory());
     }
 
     private void initCABOutletPoints() {
@@ -579,7 +579,7 @@ public class DW_SpiderMaps extends DW_Maps {
                     outputShapefile,
                     aLineSFT,
                     tsfc,
-                    sdsf);
+                    getShapefileDataStoreFactory());
 
 //            // @TODO Hoped to get away with doing this once.
 //            FeatureLayer backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
@@ -596,6 +596,7 @@ public class DW_SpiderMaps extends DW_Maps {
                     png_String,
                     imageWidth,
                     styleParameters,
+                    0,
                     showMapsInJMapPane);
 
         }
@@ -846,7 +847,7 @@ public class DW_SpiderMaps extends DW_Maps {
                     outputShapefile,
                     aLineSFT,
                     tsfc,
-                    sdsf);
+                    getShapefileDataStoreFactory());
             DW_GeoTools.outputToImage(
                     tCABOutlet,
                     outputShapefile,
@@ -858,6 +859,7 @@ public class DW_SpiderMaps extends DW_Maps {
                     png_String,
                     imageWidth,
                     styleParameters,
+                    0,
                     showMapsInJMapPane);
         }
     }
@@ -1052,7 +1054,8 @@ public class DW_SpiderMaps extends DW_Maps {
             DW_Shapefile.transact(
                     outputShapeFile,
                     aLineSFT,
-                    tsfc, sdsf);
+                    tsfc,
+                    getShapefileDataStoreFactory());
 
 //            // Had Hoped to getting away with doing this once
 //            FeatureLayer backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
@@ -1069,6 +1072,7 @@ public class DW_SpiderMaps extends DW_Maps {
                     png_String,
                     imageWidth,
                     styleParameters,
+                    0,
                     showMapsInJMapPane);
         }
     }

@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.geotools.styling.Style;
 
 /**
@@ -27,7 +28,8 @@ import org.geotools.styling.Style;
  */
 public class DW_StyleParameters {
 
-    private Style style;
+    private List<Style> styles;
+    //private Style style;
     private String classificationFunctionName;
     private int nClasses;
     private String paletteName;
@@ -35,26 +37,66 @@ public class DW_StyleParameters {
     private Style backgroundStyle;
     private String backgroundStyleTitle;
     private boolean drawBoundaries;
-    private Style foregroundStyle0;
+    private ArrayList<Style> foregroundStyle0;
+    //private Style foregroundStyle0;
     private String foregroundStyleTitle0;
     private Style foregroundStyle1;
     private String foregroundStyleTitle1;
-    private ArrayList<DW_LegendItem> legendItems;
+    private ArrayList<ArrayList<DW_LegendItem>> legendItems;
 
     /**
+     * @param index
+     * @return the style at styleIndex
+     */
+    public Style getStyle(int index) {
+        Style result;
+        List<Style> styles0 = getStyles();
+        try {
+            result = styles0.get(index);
+        } catch (IndexOutOfBoundsException e) {
+            int i = styles0.size();
+            while (i <= index) {
+                //styles0.set(index, null); // Fails
+                styles0.add(i, null);
+                i++;
+            }
+            return null;
+        }
+        return result;
+    }
+
+    /**
+     * @param style
+     * @param index
      * @return the style
      */
-    public Style getStyle() {
-        return style;
+    public Style setStyle(Style style, int index) {
+        Style result;
+        result = getStyle(index); // This ensures that styles is initialised to the right length.
+        getStyles().set(index, style);
+        return result;
     }
 
-    /**
-     * @param style the style to set
-     */
-    public void setStyle(Style style) {
-        this.style = style;
+    public List<Style> getStyles() {
+        if (styles == null) {
+            styles = new ArrayList<Style>();
+        }
+        return styles;
     }
 
+//    /**
+//     * @return the style
+//     */
+//    public Style getStyle() {
+//        return style;
+//    }
+//    
+//    /**
+//     * @param style the style to set
+//     */
+//    public void setStyle(Style style) {
+//        this.style = style;
+//    }
     /**
      * @return the classificationFunctionName
      */
@@ -139,20 +181,36 @@ public class DW_StyleParameters {
         this.backgroundStyleTitle = backgroundStyleTitle;
     }
 
+//    /**
+//     * @return the foregroundStyle0
+//     */
+//    public Style getForegroundStyle0() {
+//        return foregroundStyle0;
+//    }
+
     /**
      * @return the foregroundStyle0
      */
-    public Style getForegroundStyle0() {
+    public ArrayList<Style> getForegroundStyle0() {
         return foregroundStyle0;
     }
+    
+//    /**
+//     * @param foregroundStyle0 the foregroundStyle0 to set
+//     */
+//    public void setForegroundStyle0(Style foregroundStyle0) {
+//        this.foregroundStyle0 = foregroundStyle0;
+//    }
 
     /**
      * @param foregroundStyle0 the foregroundStyle0 to set
      */
-    public void setForegroundStyle0(Style foregroundStyle0) {
+    public void setForegroundStyle0(ArrayList<Style> foregroundStyle0) {
         this.foregroundStyle0 = foregroundStyle0;
     }
 
+    
+            
     /**
      * @return the foregroundStyleTitle0
      */
@@ -194,18 +252,59 @@ public class DW_StyleParameters {
     public void setForegroundStyleTitle1(String foregroundStyleTitle1) {
         this.foregroundStyleTitle1 = foregroundStyleTitle1;
     }
-    
+
+    /**
+     * @param index
+     * @return a specific list of legendItems
+     */
+    public ArrayList<DW_LegendItem> getLegendItems(int index) {
+        ArrayList<DW_LegendItem> result;
+        ArrayList<ArrayList<DW_LegendItem>> legendItems0;
+        legendItems0 = getLegendItems();
+        try {
+            result = legendItems0.get(index);
+        } catch (IndexOutOfBoundsException e) {
+            result = null;
+            int i = legendItems0.size();
+            while (i <= index) {
+                ArrayList<DW_LegendItem> newLegendItem;
+                newLegendItem = new ArrayList<DW_LegendItem>();
+                legendItems0.add(i, result);
+                i++;
+                result = newLegendItem;
+            }
+        }
+        return result;
+    }
+        
+        
+    /**
+     * @param legendItems the legendItems to set
+     * @param index
+     * @return 
+     */
+    public ArrayList<DW_LegendItem> setLegendItems(
+            ArrayList<DW_LegendItem> legendItems, int index) {
+        ArrayList<DW_LegendItem> result;
+        result = getLegendItems(index); // This ensures that legendItems is initialised to the right length.
+        getLegendItems().set(index, legendItems);
+        return result;
+    }
+
     /**
      * @return the legendItems
      */
-    public ArrayList<DW_LegendItem> getLegendItems() {
+    public ArrayList<ArrayList<DW_LegendItem>> getLegendItems() {
+        if (legendItems == null) {
+            legendItems = new ArrayList<ArrayList<DW_LegendItem>>();
+        }
         return legendItems;
     }
 
     /**
      * @param legendItems the legendItems to set
      */
-    public void setLegendItems(ArrayList<DW_LegendItem> legendItems) {
+    public void setLegendItems(ArrayList<ArrayList<DW_LegendItem>> legendItems) {
         this.legendItems = legendItems;
     }
 
@@ -239,7 +338,6 @@ public class DW_StyleParameters {
      * Initialise styleParameters. No deep copying.
      *
      * @param styleParameters
-     * @return
      */
     public DW_StyleParameters(DW_StyleParameters styleParameters) {
         this.addWhiteForZero = styleParameters.addWhiteForZero;
@@ -251,7 +349,8 @@ public class DW_StyleParameters {
         this.legendItems = styleParameters.legendItems;
         this.nClasses = styleParameters.nClasses;
         this.paletteName = styleParameters.paletteName;
-        this.style = styleParameters.style;
+        //this.style = styleParameters.style;
+        this.styles = styleParameters.styles;
         this.drawBoundaries = styleParameters.drawBoundaries;
     }
 

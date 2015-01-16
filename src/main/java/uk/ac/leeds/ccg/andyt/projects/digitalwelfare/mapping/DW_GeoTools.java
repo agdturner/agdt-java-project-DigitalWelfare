@@ -37,6 +37,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FileDataStore;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
@@ -51,7 +52,9 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps.getOutputImageFile;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 
 /**
  * A class for holding various useful methods for doing things with DW_GeoTools
@@ -75,10 +78,11 @@ public class DW_GeoTools {
     public static void outputToImage(
             double normalisation,
             DW_StyleParameters styleParameters,
+            int index,
             String outname,
             AbstractGrid2DSquareCell g,
             GridCoverage2D gc,
-            DW_Shapefile foregroundDW_Shapefile0,
+            ArrayList<DW_Shapefile> foregroundDW_Shapefile0,
             DW_Shapefile foregroundDW_Shapefile1,
             DW_Shapefile backgroundDW_Shapefile,
             File outputDir,
@@ -92,10 +96,11 @@ public class DW_GeoTools {
                 foregroundDW_Shapefile1,
                 backgroundDW_Shapefile,
                 imageWidth,
-                styleParameters);
+                styleParameters,
+                index);
         // Add a legendLayer
         ArrayList<DW_LegendItem> legendItems;
-        legendItems = styleParameters.getLegendItems();
+        legendItems = styleParameters.getLegendItems(index);
         if (legendItems != null) {
             boolean addLegendToTheSide = true;
             DW_LegendLayer ll = new DW_LegendLayer(
@@ -117,7 +122,11 @@ public class DW_GeoTools {
                 DW_Maps.png_String);
         File outputImageFile = getOutputImageFile(
                 outputFile, DW_Maps.png_String);
+
+        // OOME here!
+        // This is fairly easy to deal with as we can get rid of the grid or at least swap it out at this stage. 
         DW_GeoTools.writeImageFile(
+                g._Grids_Environment,
                 mc,
                 imageWidth,
                 imageHeight,
@@ -153,16 +162,17 @@ public class DW_GeoTools {
             double normalisation,
             AbstractGrid2DSquareCell g,
             GridCoverage2D gc,
-            DW_Shapefile foregroundDW_Shapefile0,
+            ArrayList<DW_Shapefile> foregroundDW_Shapefile0,
             DW_Shapefile foregroundDW_Shapefile1,
             DW_Shapefile backgroundDW_Shapefile,
             int imageWidth,
-            DW_StyleParameters styleParameters) {
+            DW_StyleParameters styleParameters,
+            int index) {
         MapContent result;
         result = new MapContent();
         // Unbox styleParameters
         Style style;
-        style = styleParameters.getStyle();
+        style = styleParameters.getStyle(index);
         ArrayList<DW_LegendItem> legendItems = null;
 
         if (styleParameters.isDrawBoundaries()) {
@@ -176,7 +186,6 @@ public class DW_GeoTools {
         // ----------------
         // If input style is null then create a basic Style to render the 
         // features
-        
         if (style == null) {
             Object[] styleAndLegendItems;
             styleAndLegendItems = DW_Style.getStyleAndLegendItems(
@@ -187,21 +196,19 @@ public class DW_GeoTools {
                     styleParameters.getPaletteName(),
                     styleParameters.isAddWhiteForZero());
             style = (Style) styleAndLegendItems[0];
-            styleParameters.setStyle(style);
+            styleParameters.setStyle(style, index);
             legendItems = (ArrayList<DW_LegendItem>) styleAndLegendItems[1];
-            styleParameters.setLegendItems(legendItems);
+            styleParameters.setLegendItems(legendItems, index);
         }
         GridCoverageLayer gcl = new GridCoverageLayer(gc, style);
         result.addLayer(gcl);
 
         // Add foreground0
         // ---------------
-        if (foregroundDW_Shapefile0 != null) {
-            FeatureLayer foregroundFeatureLayer0;
-            foregroundFeatureLayer0 = foregroundDW_Shapefile0.getFeatureLayer(
-                    styleParameters.getForegroundStyle0());
-            result.addLayer(foregroundFeatureLayer0);
-        }
+        addForeground0(
+                result,
+                styleParameters,
+                foregroundDW_Shapefile0);
 
         // Add foreground1
         // ---------------
@@ -233,6 +240,27 @@ public class DW_GeoTools {
         return result;
     }
 
+    // Add foreground0
+    // ---------------
+    private static void addForeground0(
+            MapContent result,
+            DW_StyleParameters styleParameters,
+            ArrayList<DW_Shapefile> foregroundDW_Shapefile0) {
+        if (foregroundDW_Shapefile0 != null) {
+            Iterator<DW_Shapefile> ite;
+            ite = foregroundDW_Shapefile0.iterator();
+            int indexx = 0;
+            while (ite.hasNext()) {
+                DW_Shapefile sf = ite.next();
+                FeatureLayer foregroundFeatureLayer0;
+                foregroundFeatureLayer0 = sf.getFeatureLayer(
+                        styleParameters.getForegroundStyle0().get(indexx));
+                result.addLayer(foregroundFeatureLayer0);
+                indexx++;
+            }
+        }
+    }
+
     /**
      * Outputs outputShapefile MapContent as an image. Modifies
      * styleParameters[0] if this is currently null using the remaining
@@ -249,12 +277,13 @@ public class DW_GeoTools {
      * @param imageWidth
      * @param styleParameters styleParameters[0] may be null, but if it is not
      * null then (Style) styleParameters[0] is used to render features.
+     * @param styleIndex
      * @param showMapsInJMapPane
      */
     public static void outputToImage(
             String outname,
             File outputShapefile,
-            DW_Shapefile foregroundDW_Shapefile0,
+            ArrayList<DW_Shapefile> foregroundDW_Shapefile0,
             DW_Shapefile foregroundDW_Shapefile1,
             DW_Shapefile backgroundDW_Shapefile,
             String attributeName,
@@ -262,6 +291,7 @@ public class DW_GeoTools {
             String png_String,
             int imageWidth,
             DW_StyleParameters styleParameters,
+            int styleIndex,
             boolean showMapsInJMapPane) {
         //Style resultStyle;
         DW_Shapefile outputDW_Shapefile;
@@ -275,20 +305,50 @@ public class DW_GeoTools {
                 foregroundDW_Shapefile1,
                 backgroundDW_Shapefile,
                 imageWidth,
-                styleParameters);
+                styleParameters,
+                styleIndex);
+        outputToImage(
+                mc,
+                outname,
+                outputShapefile,
+                outputDir,
+                imageWidth,
+                showMapsInJMapPane);
+    }
+
+    /**
+     * Outputs outputShapefile MapContent as an image. Modifies
+     * styleParameters[0] if this is currently null using the remaining
+     * styleParameters.
+     *
+     * @param ou
+     * @param mctname
+     * @param outputShapefile
+     * @param outputDir
+     * @param imageWidth
+     * @param showMapsInJMapPane
+     */
+    public static void outputToImage(
+            MapContent mc,
+            String outname,
+            File outputShapefile,
+            File outputDir,
+            int imageWidth,
+            boolean showMapsInJMapPane) {
+        DW_Shapefile outputDW_Shapefile;
+        outputDW_Shapefile = new DW_Shapefile(outputShapefile);
         int imageHeight = getMapContentImageHeight(mc, imageWidth);
-        // Output mc as an image
         File outputFile = getOutputFile(
                 outputDir,
                 outname,
-                png_String);
-        File outputImageFile = getOutputImageFile(outputFile, png_String);
+                DW_Maps.png_String);
+        File outputImageFile = getOutputImageFile(outputFile, DW_Maps.png_String);
         DW_GeoTools.writeImageFile(
                 mc,
                 imageWidth,
                 imageHeight,
                 outputImageFile,
-                png_String);
+                DW_Maps.png_String);
         System.out.println("Written " + outputImageFile);
         // Dispose of MapContent to prevent memory leaks
         if (showMapsInJMapPane) {
@@ -336,16 +396,17 @@ public class DW_GeoTools {
             DW_Shapefile outputDW_Shapefile,
             String title,
             String attributeName,
-            DW_Shapefile foregroundDW_Shapefile0,
+            ArrayList<DW_Shapefile> foregroundDW_Shapefile0,
             DW_Shapefile foregroundDW_Shapefile1,
             DW_Shapefile backgroundDW_Shapefile,
             int imageWidth,
-            DW_StyleParameters styleParameters) {
+            DW_StyleParameters styleParameters,
+            int styleIndex) {
         MapContent result;
         result = new MapContent();
         // Unbox styleParameters
         Style style;
-        style = styleParameters.getStyle();
+        style = styleParameters.getStyle(styleIndex);
         ArrayList<DW_LegendItem> legendItems = null;
 
         if (styleParameters.isDrawBoundaries()) {
@@ -369,9 +430,9 @@ public class DW_GeoTools {
                     attributeName,
                     styleParameters);
             style = (Style) styleAndLegendItems[0];
-            styleParameters.setStyle(style);
+            styleParameters.setStyle(style, styleIndex);
             legendItems = (ArrayList<DW_LegendItem>) styleAndLegendItems[1];
-            styleParameters.setLegendItems(legendItems);
+            styleParameters.setLegendItems(legendItems, styleIndex);
         }
         // Add the features and the associated Style object to mc as a new 
         // Layer
@@ -380,12 +441,7 @@ public class DW_GeoTools {
 
         // Add foreground0
         // ---------------
-        if (foregroundDW_Shapefile0 != null) {
-            FeatureLayer foregroundFeatureLayer0;
-            foregroundFeatureLayer0 = foregroundDW_Shapefile0.getFeatureLayer(
-                    styleParameters.getForegroundStyle0());
-            result.addLayer(foregroundFeatureLayer0);
-        }
+        addForeground0(result, styleParameters, foregroundDW_Shapefile0);
 
         // Add foreground1
         // ---------------
@@ -413,6 +469,121 @@ public class DW_GeoTools {
                     addLegendToTheSide);
             result.addLayer(ll);
         }
+        return result;
+    }
+
+    /**
+     * @param polygon0
+     * @param points0
+     * @param points1
+     * @return
+     */
+    public static MapContent createMapContent(
+            DW_Shapefile polygon0,
+            DW_Shapefile polygon1,
+            DW_Shapefile polygon2,
+            DW_Shapefile polygon3,
+            DW_Shapefile polygon4,
+            DW_Shapefile line0,
+            DW_Shapefile points0,
+            DW_Shapefile points1) {
+        MapContent result;
+        result = new MapContent();
+
+        if (polygon0 != null) {
+            // Add polygon layer 0 to mc
+            // -------------------------
+            Style polygon0Style;
+            polygon0Style = DW_Style.createDefaultPolygonStyle(
+                    Color.BLUE, Color.WHITE);
+            FeatureLayer polygon0layer = new FeatureLayer(
+                    polygon0.getFeatureSource(), polygon0Style);
+            result.addLayer(polygon0layer);
+        }
+
+        if (polygon1 != null) {
+            // Add polygon layer 1 to mc
+            // -------------------------
+            Style polygon1Style;
+            polygon1Style = DW_Style.createDefaultPolygonStyle(
+                    Color.LIGHT_GRAY, null);
+            FeatureLayer polygon1layer = new FeatureLayer(
+                    polygon1.getFeatureSource(), polygon1Style);
+            result.addLayer(polygon1layer);
+        }
+
+        if (polygon2 != null) {
+            // Add polygon layer 2 to mc
+            // -------------------------
+            Style polygon2Style;
+            polygon2Style = DW_Style.createDefaultPolygonStyle(
+                    Color.GRAY, null);
+            FeatureLayer polygon2layer = new FeatureLayer(
+                    polygon2.getFeatureSource(), polygon2Style);
+            result.addLayer(polygon2layer);
+        }
+
+        if (polygon3 != null) {
+            // Add polygon layer 3 to mc
+            // -------------------------
+            Style polygon3Style;
+            polygon3Style = DW_Style.createDefaultPolygonStyle(
+                    Color.DARK_GRAY, null);
+            FeatureLayer polygon3layer = new FeatureLayer(
+                    polygon3.getFeatureSource(), polygon3Style);
+            result.addLayer(polygon3layer);
+        }
+
+        if (polygon4 != null) {
+            // Add polygon layer 4 to mc
+            // -------------------------
+            Style polygon4Style;
+            polygon4Style = DW_Style.createDefaultPolygonStyle(
+                    Color.BLACK, null);
+            FeatureLayer polygon4layer = new FeatureLayer(
+                    polygon4.getFeatureSource(), polygon4Style);
+            result.addLayer(polygon4layer);
+        }
+
+        if (line0 != null) {
+            // Add line layer 0 to mc
+            // -------------------------
+            Style line0Style;
+            line0Style = DW_Style.createDefaultLineStyle();
+            FeatureLayer line0layer = new FeatureLayer(
+                    line0.getFeatureSource(), line0Style);
+            result.addLayer(line0layer);
+        }
+
+        // Add point layer 0 to mc
+        // -----------------------
+        Style pointStyle0;
+        pointStyle0 = DW_Style.createDefaultPointStyle();
+        FeatureLayer pointsFeatureLayer0;
+        pointsFeatureLayer0 = points0.getFeatureLayer(
+                pointStyle0);
+        result.addLayer(pointsFeatureLayer0);
+
+        // Add point layer 1 to mc
+        // -----------------------
+        int size;
+        size = 6;
+        String type;
+        type = "Circle";
+        Color fill;
+        fill = Color.GREEN;
+        Color outline;
+        outline = Color.DARK_GRAY;
+        Style pointStyle1;
+        pointStyle1 = DW_Style.getPointStyle(
+                size,
+                type,
+                fill,
+                outline);
+        FeatureLayer pointsFeatureLayer1;
+        pointsFeatureLayer1 = points1.getFeatureLayer(
+                pointStyle1);
+        result.addLayer(pointsFeatureLayer1);
         return result;
     }
 
@@ -502,21 +673,33 @@ public class DW_GeoTools {
     public static File getOutputShapefile(
             File dir,
             String name) {
+        File result;
         File outDirectory = new File(
                 dir,
                 name);
         outDirectory.mkdirs();
-        String fileAndDirectoryName = name + ".shp";
-        File shapefileDirectory = new File(
-                outDirectory,
-                fileAndDirectoryName);
-        if (!shapefileDirectory.exists()) {
-            shapefileDirectory.mkdirs();
+        String shapefileFilename = name + ".shp";
+        result = getShapefile(dir, shapefileFilename);
+        return result;
+    }
+
+    public static File getShapefile(
+            File dir,
+            String shapefileFilename) {
+        File result;
+        File shapefileDir;
+        shapefileDir = new File(
+                dir,
+                shapefileFilename);
+        // Could add extra logic here to deal with issues if directory or a file 
+        // of this name already exists...
+        if (!shapefileDir.exists()) {
+            shapefileDir.mkdirs();
         }
-        File file = new File(
-                shapefileDirectory,
-                fileAndDirectoryName);
-        return file;
+        result = new File(
+                shapefileDir,
+                shapefileFilename);
+        return result;
     }
 
 //    public static void addFeatureLayer(
@@ -572,6 +755,47 @@ public class DW_GeoTools {
     }
 
     /**
+     * 
+     * @param ge
+     * @param mapContent
+     * @param imageWidth
+     * @param imageHeight
+     * @param outputImageFile
+     * @param outputType 
+     */
+    public static void writeImageFile(
+            Grids_Environment ge,
+            MapContent mapContent,
+            int imageWidth,
+            int imageHeight,
+            File outputImageFile,
+            String outputType) {
+        try {
+            writeImageFile(
+                    mapContent,
+                    imageWidth,
+                    imageHeight,
+                    outputImageFile,
+                    outputType);
+        } catch (OutOfMemoryError oome) {
+            if (ge._HandleOutOfMemoryError_boolean) {
+                ge.clear_MemoryReserve();
+                ge.swapToFile_Grid2DSquareCellChunk(true);
+                ge.init_MemoryReserve(true);
+                writeImageFile(
+                        ge,
+                        mapContent,
+                        imageWidth,
+                        imageHeight,
+                        outputImageFile,
+                        outputType);
+            } else {
+                throw oome;
+            }
+        }
+    }
+
+    /**
      * Render and output the mapContent and save to a file.
      *
      * @param mapContent The map to be written.
@@ -610,4 +834,15 @@ public class DW_GeoTools {
         Generic_Visualisation.saveImage(bufferedImage, outputType, outputImageFile);
         graphics2D.dispose();
     }
+
+//    public static GridCoverage2D vectorToRaster(
+//            DW_Shapefile polygons,
+//            long nrows,
+//            long ncols,
+//            double xllcorner,
+//            double yllcorner,
+//            double cellsize) {
+//        
+//        
+//    }
 }

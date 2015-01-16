@@ -53,15 +53,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.gce.arcgrid.ArcGridReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -92,7 +87,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_CensusAreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_GeoTools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Point;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor.getLookupFromPostcodeToCensusCode;
@@ -119,6 +113,9 @@ public class DW_DensityMaps extends DW_Maps {
     protected long yllcorner;
     protected TreeMap<String, String> tLookupFromPostcodeToCensusCodes;
     
+    protected int maxCellDistanceForGeneralisation;
+    
+    //protected boolean outputESRIAsciigrids;
     protected boolean handleOutOfMemoryErrors;
 
     public DW_DensityMaps() {
@@ -154,8 +151,9 @@ public class DW_DensityMaps extends DW_Maps {
         // If showMapsInJMapPane is true, the maps are presented in individual 
         // JMapPanes
         showMapsInJMapPane = false;
+        //outputESRIAsciigrids = false;
         imageWidth = 1000;
-        init_ONSPDLookup();
+        initONSPDLookups();
         // Initialise styleParameters
         /*
          * YlOrRd,PRGn,PuOr,RdGy,Spectral,Grays,PuBuGn,RdPu,BuPu,YlOrBr,Greens,
@@ -174,7 +172,8 @@ public class DW_DensityMaps extends DW_Maps {
         styleParameters.setPaletteName("Reds");
         styleParameters.setAddWhiteForZero(true);
         styleParameters.setForegroundStyleTitle0("Foreground Style 0");
-        styleParameters.setForegroundStyle0(DW_Style.createDefaultPointStyle());
+//        styleParameters.setForegroundStyle0(DW_Style.createDefaultPointStyle());
+        styleParameters.setForegroundStyle0(DW_Style.createAdviceLeedsPointStyles());
         styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
                 Color.GREEN,
                 Color.WHITE));
@@ -185,8 +184,7 @@ public class DW_DensityMaps extends DW_Maps {
                 "density");
         imageWidth = 1000;
 
-        sdsf = new ShapefileDataStoreFactory();
-        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefile();
+        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefiles();
 
         /*Grid Parameters
          *_____________________________________________________________________
@@ -213,13 +211,28 @@ public class DW_DensityMaps extends DW_Maps {
                 ge,
                 handleOutOfMemoryErrors);
 
-        cellsize = 50;//100;//50; //100;
+        cellsize = 100;//50;//100;//50; //100;
+        
+        maxCellDistanceForGeneralisation = 8;//32; // add a min too for top up runs.
+                
+        // Jenks runs
+        styleParameters.setClassificationFunctionName("Jenks");
+        commonlyStyled = true;
+        individuallyStyled = true;
+        runAll();
+
+        // Quantile runs
+        styleParameters.setClassificationFunctionName("Quantile");
+        commonlyStyled = true;
+        individuallyStyled = true;
+        runAll();
         
         // Equal Interval runs
         styleParameters.setClassificationFunctionName("EqualInterval");
         commonlyStyled = true;
         individuallyStyled = true;
         runAll();
+        
     }
 
     public void runAll() {
@@ -231,7 +244,7 @@ public class DW_DensityMaps extends DW_Maps {
         // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
         DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
         tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
-                level, targetPropertyName, sdsf);
+                level, targetPropertyName, getShapefileDataStoreFactory());
         tLookupFromPostcodeToCensusCodes = getLookupFromPostcodeToCensusCode(
                 level, 2011);
 
@@ -241,7 +254,6 @@ public class DW_DensityMaps extends DW_Maps {
         boolean scaleToFirst;
 
         // Grids parameters
-        
         // Filter just for specific outlets
         HashSet<String> outlets;
         outlets = new HashSet<String>();
@@ -251,14 +263,16 @@ public class DW_DensityMaps extends DW_Maps {
         /*
          * (filter == 0) Clip all results to Leeds LAD
          * (filter == 1) Clip all results to Leeds And Neighbouring LADs (showing results for all Leeds LAD)
-         * (filter == 2) Clip all results to Leeds And Neighbouring LADs and Craven and York (showing results for all Leeds LAD)
+         * (filter == 2) Clip all results to Leeds And Near Neighbouring LADs (showing results for all Leeds LAD)
          * (filter == 3) No clipping
          */
-        for (int filter = 0; filter < 4; filter++) {
+        for (int filter = 0; filter < 3; filter++) {
+            if (filter == 0 || filter == 2) {
+        //for (int filter = 2; filter < 3; filter++) {
             //int filter = 0;
             deprivationRecords = null;
-            if (individuallyStyled) {
-                scaleToFirst = false;
+            if (commonlyStyled) {
+                scaleToFirst = true;
                 runCAB(deprivationRecords,
                         outlets,
                         targetPropertyName,
@@ -268,8 +282,8 @@ public class DW_DensityMaps extends DW_Maps {
                         scaleToFirst,
                         handleOutOfMemoryErrors);
             }
-            if (commonlyStyled) {
-                scaleToFirst = true;
+            if (individuallyStyled) {
+                scaleToFirst = false;
                 runCAB(deprivationRecords,
                         outlets,
                         targetPropertyName,
@@ -280,30 +294,31 @@ public class DW_DensityMaps extends DW_Maps {
                         handleOutOfMemoryErrors);
             }
 
-            // Get deprivation data
-            deprivationRecords = DW_Processor.getDeprivation_Data();
-            if (individuallyStyled) {
-                scaleToFirst = false;
-                runCAB(deprivationRecords,
-                        outlets,
-                        targetPropertyName,
-                        tLSOACodesAndLeedsLSOAShapefile,
-                        tLookupFromPostcodeToCensusCodes,
-                        filter,
-                        scaleToFirst,
-                        handleOutOfMemoryErrors);
-            }
-            if (commonlyStyled) {
-                scaleToFirst = true;
-                runCAB(deprivationRecords,
-                        outlets,
-                        targetPropertyName,
-                        tLSOACodesAndLeedsLSOAShapefile,
-                        tLookupFromPostcodeToCensusCodes,
-                        filter,
-                        scaleToFirst,
-                        handleOutOfMemoryErrors);
-            }
+//            // Get deprivation data
+//            deprivationRecords = DW_Processor.getDeprivation_Data();
+//            if (commonlyStyled) {
+//                scaleToFirst = true;
+//                runCAB(deprivationRecords,
+//                        outlets,
+//                        targetPropertyName,
+//                        tLSOACodesAndLeedsLSOAShapefile,
+//                        tLookupFromPostcodeToCensusCodes,
+//                        filter,
+//                        scaleToFirst,
+//                        handleOutOfMemoryErrors);
+//            }
+//            if (individuallyStyled) {
+//                scaleToFirst = false;
+//                runCAB(deprivationRecords,
+//                        outlets,
+//                        targetPropertyName,
+//                        tLSOACodesAndLeedsLSOAShapefile,
+//                        tLookupFromPostcodeToCensusCodes,
+//                        filter,
+//                        scaleToFirst,
+//                        handleOutOfMemoryErrors);
+//            }
+        }
         }
         // Tidy up
         tLSOACodesAndLeedsLSOAShapefile.dispose();
@@ -345,6 +360,7 @@ public class DW_DensityMaps extends DW_Maps {
 
     /**
      * Uses a file dialog to select a file and then
+     *
      * @param tLSOACodesAndLeedsLSOAShapefile
      * @param tLookupFromPostcodeToCensusCodes
      * @param outlets // May be null, but if not null then filters and only
@@ -369,8 +385,8 @@ public class DW_DensityMaps extends DW_Maps {
             boolean handleOutOfMemoryErrors) {
         if (filter == 0) {
             backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
-            nrows = 554;
-            ncols = 680;
+            nrows = 277;//554;
+            ncols = 340;//680;
             xllcorner = 413000;
             //minX 413220.095
             //minXRounded = 413200
@@ -388,8 +404,8 @@ public class DW_DensityMaps extends DW_Maps {
         } else {
             if (filter == 1) {
                 backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsDW_Shapefile();
-                nrows = 1654;
-                ncols = 1530;
+                nrows = 827;//1654;
+                ncols = 765;//1530;
                 xllcorner = 396000;
                 //minX 396065.904
                 //minXRounded = 396000
@@ -405,9 +421,9 @@ public class DW_DensityMaps extends DW_Maps {
                 // (maxYRounded - minYRounded) / cellsize = 1654
                 yllcorner = 402500;
             } else {
-                backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsAndCravenAndYorkDW_Shapefile();
-                nrows = 1652;
-                ncols = 2188;
+                backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNearNeighbouringLADsDW_Shapefile();
+                nrows = 827;//1654;
+                ncols = 1027;//2188;
                 xllcorner = 363100;
                 //minX = 363191.767
                 //minXRounded = 363100
@@ -444,7 +460,7 @@ public class DW_DensityMaps extends DW_Maps {
         String nameOfGrid;
         nameOfGrid = "gridNrows" + Long.toString(nrows) + "Ncols" + Long.toString(ncols);
         // Grid generalisation paramters
-        int maxCellDistanceForGeneralisation = 32;
+        
 
         if (deprivationRecords != null) {
             TreeMap<Integer, Integer> deprivationClasses = null;
@@ -459,7 +475,19 @@ public class DW_DensityMaps extends DW_Maps {
                         "" + deprivationClass);
                 mapDirectory2.mkdirs();
 
-                // Iterate over the outlets;
+                // Process for all outlets
+                process(
+                        mapDirectory2,
+                        "all",
+                        outlets,
+                        nameOfGrid,
+                        maxCellDistanceForGeneralisation,
+                        tLeedsCABData,
+                        deprivationRecords,
+                        deprivationClasses,
+                        deprivationClass,
+                        scaleToFirst);
+                // Process for each outlet in turn
                 Iterator<String> ite2;
                 ite2 = tLeedsCABData.keySet().iterator();
                 while (ite2.hasNext()) {
@@ -473,7 +501,7 @@ public class DW_DensityMaps extends DW_Maps {
                         process = true;
                     }
                     if (process) {
-                        processForOutlet(
+                        process(
                                 mapDirectory2,
                                 outlet,
                                 outlets,
@@ -482,24 +510,37 @@ public class DW_DensityMaps extends DW_Maps {
                                 tLeedsCABData,
                                 deprivationRecords,
                                 deprivationClasses,
-                                deprivationClass);
+                                deprivationClass,
+                                scaleToFirst);
                     }
                 }
-                if (!scaleToFirst) {
-                    styleParameters.setStyle(null);
-                }
+//                if (!scaleToFirst) { // Done in process(...) above.
+//                    styleParameters.setStyle(null,0);
+//                }
             }
         } else {
             File mapDirectory2 = new File(
                     dir,
                     "all");
             mapDirectory2.mkdirs();
-            // Iterate over the outlets;
+            // Process for all outlets
+            process(
+                    mapDirectory2,
+                    "all",
+                    outlets,
+                    nameOfGrid,
+                    maxCellDistanceForGeneralisation,
+                    tLeedsCABData,
+                    deprivationRecords,
+                    null,
+                    null,
+                    scaleToFirst);
+            // Process for each outlet in turn
             Iterator<String> ite2;
             ite2 = tLeedsCABData.keySet().iterator();
             while (ite2.hasNext()) {
                 String outlet = ite2.next();
-                processForOutlet(
+                process(
                         mapDirectory2,
                         outlet,
                         outlets,
@@ -508,15 +549,16 @@ public class DW_DensityMaps extends DW_Maps {
                         tLeedsCABData,
                         deprivationRecords,
                         null,
-                        null);
+                        null,
+                        scaleToFirst);
             }
-            if (!scaleToFirst) {
-                styleParameters.setStyle(null);
-            }
+//            if (!scaleToFirst) { // Done in process(...) above.
+//                styleParameters.setStyle(null,0);
+//            }
         }
     }
 
-    private void processForOutlet(
+    private void process(
             File mapDirectory2,
             String outlet,
             HashSet<String> outlets,
@@ -525,18 +567,18 @@ public class DW_DensityMaps extends DW_Maps {
             TreeMap<String, ArrayList<String>> tLeedsCABData,
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
             TreeMap<Integer, Integer> deprivationClasses,
-            Integer deprivationClass) {
-
+            Integer deprivationClass,
+            boolean scaleToFirst) {
         boolean process = false;
         if (outlets != null) {
-            if (outlets.contains(outlet)) {
+            if (outlets.contains(outlet) || outlet.equalsIgnoreCase("all")) {
                 process = true;
             }
         } else {
             process = true;
         }
         if (process) {
-            System.out.println("Outlet " + outlet);
+            // Initialise
             File outletmapDirectory = new File(
                     mapDirectory2,
                     outlet);
@@ -545,68 +587,48 @@ public class DW_DensityMaps extends DW_Maps {
                     outletmapDirectory,
                     nameOfGrid);
             grid.mkdirs();
-            // Initialise grid
-            Grid2DSquareCellDouble g;
-            g = (Grid2DSquareCellDouble) gf.create(
-                    new GridStatistics0(),
-                    outletmapDirectory,
-                    gcf,
-                    nrows,
-                    ncols,
-                    dimensions,
-                    ge,
-                    handleOutOfMemoryErrors);
-            System.out.println("" + g.toString(handleOutOfMemoryErrors));
-            for (int row = 0; row < nrows; row++) {
-                for (int col = 0; col < ncols; col++) {
-                    g.setCell(row, col, 0, handleOutOfMemoryErrors); // set all values to 0;
+            Grid2DSquareCellDouble g = initiliseGrid(grid);
+            if (outlet.equalsIgnoreCase("all")) {
+                // Combine for all outlets
+                System.out.println("All Outlets");
+                // Add to grid
+                Iterator<String> ite;
+                if (outlets == null) {
+                    ite = tLeedsCABData.keySet().iterator(); // Assume outlets is null
+                } else {
+                    ite = outlets.iterator();
                 }
-            }
-            // Add to grid
-            ArrayList<String> postcodes;
-            postcodes = tLeedsCABData.get(outlet);
-            int countNonMatchingPostcodes = 0;
-            Iterator<String> itep = postcodes.iterator();
-            while (itep.hasNext()) {
-                String postcode = itep.next();
-                String aLSOACode;
-                aLSOACode = tLookupFromPostcodeToCensusCodes.get(postcode);
-                if (aLSOACode != null) {
-                    if (deprivationRecords == null) {
-                        DW_Point aPoint = get_ONSPDlookup().get(postcode);
-                        if (aPoint != null) {
-                            int x = aPoint.getX();
-                            int y = aPoint.getY();
-                            g.addToCell((double) x, (double) y, 1.0, handleOutOfMemoryErrors);
-                        } else {
-                            countNonMatchingPostcodes++;
-                        }
-                    } else {
-                        //Convert postcode to LSOA code
-                        Deprivation_DataRecord aDeprivation_DataRecord;
-                        aDeprivation_DataRecord = deprivationRecords.get(aLSOACode);
-                        // aDeprivation_DataRecord might be null as deprivation data comes from 2001 census...
-                        if (aDeprivation_DataRecord != null) {
-                            Integer thisDeprivationClass;
-                            thisDeprivationClass = Deprivation_DataHandler.getDeprivationClass(
-                                    deprivationClasses,
-                                    aDeprivation_DataRecord);
-                            if (thisDeprivationClass == deprivationClass.intValue()) {
-                                DW_Point aPoint = get_ONSPDlookup().get(postcode);
-                                if (aPoint != null) {
-                                    int x = aPoint.getX();
-                                    int y = aPoint.getY();
-                                    g.addToCell((double) x, (double) y, 1.0, handleOutOfMemoryErrors);
-                                } else {
-                                    countNonMatchingPostcodes++;
-                                }
-                            }
-                        }
-                    }
+                int countNonMatchingPostcodes = 0;
+                while (ite.hasNext()) {
+                    String outletToAdd = ite.next();
+                    ArrayList<String> postcodes;
+                    postcodes = tLeedsCABData.get(outletToAdd);
+                    // Add from postcodes
+                    countNonMatchingPostcodes += addFromPostcodes(
+                            g,
+                            postcodes,
+                            deprivationRecords,
+                            deprivationClasses,
+                            deprivationClass);
                 }
+                System.out.println("" + g.toString(handleOutOfMemoryErrors));
+                System.out.println("" + countNonMatchingPostcodes);
+            } else {
+                System.out.println("Outlet " + outlet);
+                // Add to grid
+                ArrayList<String> postcodes;
+                postcodes = tLeedsCABData.get(outlet);
+                int countNonMatchingPostcodes;
+                // Add from postcodes
+                countNonMatchingPostcodes = addFromPostcodes(
+                        g,
+                        postcodes,
+                        deprivationRecords,
+                        deprivationClasses,
+                        deprivationClass);
+                System.out.println("" + g.toString(handleOutOfMemoryErrors));
+                System.out.println("" + countNonMatchingPostcodes);
             }
-            System.out.println("" + g.toString(handleOutOfMemoryErrors));
-            System.out.println("" + countNonMatchingPostcodes);
             // output the grid
 //                    File imageFile;
 //                    imageFile = new File(
@@ -617,18 +639,22 @@ public class DW_DensityMaps extends DW_Maps {
             asciigridFile = new File(
                     outletmapDirectory,
                     nameOfGrid + ".asc");
-
             eage.toAsciiFile(g, asciigridFile, handleOutOfMemoryErrors);
-
             
-            //----------------------------------------------------------
-            // outputGridToImageUsingGeoTools - this styles everything too
-            outputGridToImageUsingGeoTools(
+            int index;
+
+            // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
+            index = 0;
+            outputGridToImageUsingGeoToolsAndSetCommonStyle(
                     1.0d,//(double) Math.PI * cellsize * cellsize,
                     g,
                     asciigridFile,
                     outletmapDirectory,
-                    nameOfGrid);
+                    nameOfGrid,
+                    index);
+            if (!scaleToFirst) {
+                styleParameters.setStyle(null, index);
+            }
 
             // Generalise the grid
             // Generate some geographically weighted statsitics
@@ -636,6 +662,7 @@ public class DW_DensityMaps extends DW_Maps {
             stats.add("WSum");
             for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
                     cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
+                index++;
                 double distance = cellDistanceForGeneralisation * cellsize;
                 double weightIntersect = 1.0d;
                 double weightFactor = 2.0d;
@@ -665,81 +692,137 @@ public class DW_DensityMaps extends DW_Maps {
                         gf);
                 Iterator<AbstractGrid2DSquareCell> itegws;
                 itegws = gws.iterator();
-                int i = 0;
-                while (itegws.hasNext()) {
-                    AbstractGrid2DSquareCell gwsgrid = itegws.next();
-                    String outputName;
-                    outputName = nameOfGrid + "GWS_" + cellDistanceForGeneralisation + "_" + i;
+                // Skip over the normaliser part of the result
+                itegws.next();
+                AbstractGrid2DSquareCell gwsgrid = itegws.next();
+                String outputName;
+                outputName = nameOfGrid + "GWS_" + cellDistanceForGeneralisation;// + "_" + i;
 //                        imageFile = new File(
 //                                outletmapDirectory,
 //                                outputName + ".png");
 //                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png", handleOutOfMemoryErrors);
 
-                    asciigridFile = new File(
-                            outletmapDirectory,
-                            outputName + ".asc");
-                    eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
-                    i++;
-
-//                    // Had hoped that this could be done once and then passed in 
-//                    foregroundFeatureLayer = foregroundSDS.getFeatureLayer(
-//                    tAdviceLeedsPointShapefile,
-//                    DW_Style.createDefaultPointStyle());
-//                    backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
-//                            backgroundShapefile,
-//                            backgroundStyle);
-                    //----------------------------------------------------------
-                    // outputGridToImageUsingGeoTools - this styles everything too
-                    outputGridToImageUsingGeoTools(
-                            1.0d,//(double) Math.PI * cellDistanceForGeneralisation * cellDistanceForGeneralisation,
-                            gwsgrid,
-                            asciigridFile,
-                            outletmapDirectory,
-                            outputName);
+                asciigridFile = new File(
+                        outletmapDirectory,
+                        outputName + ".asc");
+                eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+                
+                // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
+                outputGridToImageUsingGeoToolsAndSetCommonStyle(
+                        1.0d,//(double) Math.PI * cellDistanceForGeneralisation * cellDistanceForGeneralisation,
+                        gwsgrid,
+                        asciigridFile,
+                        outletmapDirectory,
+                        outputName,
+                        index);
+                if (!scaleToFirst) {
+                    styleParameters.setStyle(null, index);
                 }
             }
         }
     }
 
-    public void outputGridToImageUsingGeoTools(
+    // Add from postcodes
+    private int addFromPostcodes(
+            Grid2DSquareCellDouble g,
+            ArrayList<String> postcodes,
+            TreeMap<String, Deprivation_DataRecord> deprivationRecords,
+            TreeMap<Integer, Integer> deprivationClasses,
+            Integer deprivationClass) {
+        int countNonMatchingPostcodes = 0;
+        Iterator<String> itep = postcodes.iterator();
+        while (itep.hasNext()) {
+            String postcode = itep.next();
+            String aLSOACode;
+            aLSOACode = tLookupFromPostcodeToCensusCodes.get(postcode);
+            if (aLSOACode != null) {
+                if (deprivationRecords == null) {
+                    DW_Point aPoint = getONSPDlookups()[0].get(postcode);
+                    if (aPoint != null) {
+                        int x = aPoint.getX();
+                        int y = aPoint.getY();
+                        g.addToCell((double) x, (double) y, 1.0, handleOutOfMemoryErrors);
+                    } else {
+                        countNonMatchingPostcodes++;
+                    }
+                } else {
+                    //Convert postcode to LSOA code
+                    Deprivation_DataRecord aDeprivation_DataRecord;
+                    aDeprivation_DataRecord = deprivationRecords.get(aLSOACode);
+                    // aDeprivation_DataRecord might be null as deprivation data comes from 2001 census...
+                    if (aDeprivation_DataRecord != null) {
+                        Integer thisDeprivationClass;
+                        thisDeprivationClass = Deprivation_DataHandler.getDeprivationClass(
+                                deprivationClasses,
+                                aDeprivation_DataRecord);
+                        if (thisDeprivationClass == deprivationClass.intValue()) {
+                            DW_Point aPoint = getONSPDlookups()[0].get(postcode);
+                            if (aPoint != null) {
+                                int x = aPoint.getX();
+                                int y = aPoint.getY();
+                                g.addToCell((double) x, (double) y, 1.0, handleOutOfMemoryErrors);
+                            } else {
+                                countNonMatchingPostcodes++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return countNonMatchingPostcodes;
+    }
+
+    /**
+     * Initialise and return a grid
+     *
+     * @param dir
+     * @return
+     */
+    public Grid2DSquareCellDouble initiliseGrid(File dir) {
+        Grid2DSquareCellDouble result = (Grid2DSquareCellDouble) gf.create(
+                new GridStatistics0(),
+                dir,
+                gcf,
+                nrows,
+                ncols,
+                dimensions,
+                ge,
+                handleOutOfMemoryErrors);
+        //System.out.println("" + result.toString(handleOutOfMemoryErrors));
+        for (int row = 0; row < nrows; row++) {
+            for (int col = 0; col < ncols; col++) {
+                result.setCell(row, col, 0, handleOutOfMemoryErrors); // set all values to 0;
+            }
+        }
+        return result;
+    }
+
+    public void outputGridToImageUsingGeoToolsAndSetCommonStyle(
             double normalisation,
             AbstractGrid2DSquareCell g,
             File asciigridFile,
             File dir,
-            String nameOfGrid) {
+            String nameOfGrid,
+            int styleIndex) {
         //----------------------------------------------------------
         // Create GeoTools GridCoverage
         // Two ways to read the asciigridFile into a GridCoverage
         // 1.
         // Reading the coverage through a file
-        ArcGridReader aArcGridReader = null;
-        try {
-            aArcGridReader = new ArcGridReader(asciigridFile);
-        } catch (DataSourceException ex) {
-            Logger.getLogger(DW_DensityMaps.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("asciigridFile.toString()" + asciigridFile.toString());
-        }
+        ArcGridReader agr;
+        agr = getArcGridReader(asciigridFile);
 //        // 2.
 //        AbstractGridFormat format = GridFormatFinder.findFormat(asciigridFile);
 //        GridCoverage2DReader reader = format.getReader(asciigridFile);
-        GridCoverage2D gc = null;
-        try {
-//            gc = reader.read(null);
-            if (aArcGridReader != null) {
-                gc = aArcGridReader.read(null);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(DW_DensityMaps.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-
+        GridCoverage2D gc;
+        gc = getGridCoverage2D(agr);
+        
         String outname = nameOfGrid + "GeoToolsOutput";
         //showMapsInJMapPane = true;
 
 //        Object[] styleAndLegendItems = DW_Style.getStyleAndLegendItems(
 //                normalisation, g, gc, "Quantile", ff, 9, "Reds", true);
         //Style style = createGreyscaleStyle(gc, null, sf, ff);
-
         ReferencedEnvelope re;
         re = backgroundDW_Shapefile.getFeatureLayer().getBounds();
         double minX = re.getMinX();
@@ -754,6 +837,7 @@ public class DW_DensityMaps extends DW_Maps {
         DW_GeoTools.outputToImage(
                 normalisation,
                 styleParameters,
+                styleIndex,
                 outname,
                 g,
                 gc,
@@ -768,10 +852,12 @@ public class DW_DensityMaps extends DW_Maps {
 //        } catch (IOException ex) {
 //            Logger.getLogger(DW_DensityMaps.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        if (aArcGridReader != null) {
-            aArcGridReader.dispose();
+        if (agr != null) {
+            agr.dispose();
         }
     }
+    
+    
 
     public static TreeMap<String, ArrayList<DW_Point>> getLeedsCABDataPoints() {
         TreeMap<String, ArrayList<DW_Point>> result;
@@ -791,7 +877,7 @@ public class DW_DensityMaps extends DW_Maps {
             String postcode = value.getPostcode();
             String outlet = value.getOutlet();
             String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
-            DW_Point aPoint = get_ONSPDlookup().get(formattedpostcode);
+            DW_Point aPoint = getONSPDlookups()[0].get(formattedpostcode);
             if (aPoint != null) {
                 if (result.containsKey(outlet)) {
                     result.get(outlet).add(aPoint);
@@ -853,7 +939,7 @@ public class DW_DensityMaps extends DW_Maps {
             CAB_DataRecord0 value = tChapeltownCABData.get(key);
             String postcode = value.getPostcode();
             String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
-            DW_Point aPoint = get_ONSPDlookup().get(formattedpostcode);
+            DW_Point aPoint = getONSPDlookups()[0].get(formattedpostcode);
             if (aPoint != null) {
                 result.add(aPoint);
             } else {

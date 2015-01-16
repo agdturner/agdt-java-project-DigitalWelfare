@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -58,14 +59,13 @@ public abstract class DW_Processor {
         DW_Point result;
         String formattedPostcode;
         formattedPostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
-        result = DW_Maps.get_ONSPDlookup().get(formattedPostcode);
+        result = DW_Maps.getONSPDlookups()[0].get(formattedPostcode);
         return result;
     }
 
 //    protected File _DW_directory;
 //    protected PrintWriter pw;
 //    protected PrintWriter pw2;
-
     public DW_Processor() {
     }
 
@@ -85,7 +85,6 @@ public abstract class DW_Processor {
 //        pw = init_OutputTextFilePrintWriter(filename + "1.txt");
 //        pw2 = init_OutputTextFilePrintWriter(filename + "2.txt");
 //    }
-
     /**
      * Initialises a PrintWriter for pushing output to.
      *
@@ -434,7 +433,6 @@ public abstract class DW_Processor {
 //        }
 //        return result;
 //    }
-
     /**
      * @param generatedONSPDDir
      * @param level If level is "OA" returns OutputArea codes. If level is
@@ -498,14 +496,14 @@ public abstract class DW_Processor {
         if (level.equalsIgnoreCase("MSOA")) {
             outputFilename = "PostcodeLookUp_TreeMap_String_Strings.thisFile";
             outFile = new File(outputDirectory, outputFilename);
-            //new PostcodeGeocoder(inFile, outFile).generatePostCodePointLookup();
+            //new PostcodeGeocoder(inFile, outFile).getPostcodeUnitPointLookup();
             //new PostcodeGeocoder(inFile, outFile).run1();
-            result = new PostcodeGeocoder(inFile, outFile).generatePostcodeStringsLookup();
+            result = new PostcodeGeocoder(inFile, outFile).getPostcodeUnitCensusCodesLookup();
         }
         if (level.equalsIgnoreCase("LSOA")) {
             outputFilename = "PostcodeToLSOALookUp_TreeMap_String_Strings.thisFile";
             outFile = new File(outputDirectory, outputFilename);
-            //new PostcodeGeocoder(inFile, outFile).generatePostCodePointLookup();
+            //new PostcodeGeocoder(inFile, outFile).getPostcodeUnitPointLookup();
             //new PostcodeGeocoder(inFile, outFile).run1();
             result = new PostcodeGeocoder(inFile, outFile).run4();
         }
@@ -522,7 +520,7 @@ public abstract class DW_Processor {
             String level,
             int year) {
         TreeMap<String, String> result = null;
-        result = new PostcodeGeocoder(tONSPD_NOV_2013DataFile, outFile).generatePostcodeStringLookup(
+        result = new PostcodeGeocoder(tONSPD_NOV_2013DataFile, outFile).getPostcodeUnitCensusCodeLookup(
                 level,
                 year);
         return result;
@@ -574,25 +572,25 @@ public abstract class DW_Processor {
         result.put("Chapeltown", "LS7 4BZ");
         return result;
     }
-    
+
     public static TreeMap<String, DW_Point> getOutletsAndPoints() {
         TreeMap<String, DW_Point> result;
         result = postcodeToPoints(getOutletsAndPostcodes());
         return result;
     }
-    
+
     /**
-     * @param input TreeMap<String, String> where values are postcodes for which 
+     * @param input TreeMap<String, String> where values are postcodes for which
      * the coordinates are to be returned as a DW_Point.
-     * @return TreeMap<String, DW_Point> with the keys as in input and values 
-     * calculated using getPointFromPostcode(value). If no look up is found for 
+     * @return TreeMap<String, DW_Point> with the keys as in input and values
+     * calculated using getPointFromPostcode(value). If no look up is found for
      * a postcode its key does not get put into the result.
      */
     public static TreeMap<String, DW_Point> postcodeToPoints(
             TreeMap<String, String> input) {
-         TreeMap<String, DW_Point> result;
-         result = new  TreeMap<String, DW_Point>();
-         Iterator<String> ite_String = input.keySet().iterator();
+        TreeMap<String, DW_Point> result;
+        result = new TreeMap<String, DW_Point>();
+        Iterator<String> ite_String = input.keySet().iterator();
         while (ite_String.hasNext()) {
             String key = ite_String.next();
             String postcode = input.get(key);
@@ -605,27 +603,73 @@ public abstract class DW_Processor {
         }
         return result;
     }
-    
+
     public static TreeMap<String, String> getAdviceLeedsNamesAndPostcodes() {
         TreeMap<String, String> result;
         result = new TreeMap<String, String>();
-        // Postcodes in data from Leeds CAB
-        result.put("Leeds CAB Otley", "LS21 1BG");
-        result.put("Leeds CAB Morley", "LS27 9DY");
-        result.put("Leeds CAB Crossgates", "LS15 8QR");
-        result.put("Leeds CAB Pudsey", "LS28 7AB");
-        result.put("Leeds CAB City", "LS2 7DT");
-        // http://www.citizensadvice.org.uk/bureau_detail.htm?serialnumber=100610
-        result.put("Chapeltown CAB", "LS7 4BZ");
-        // http://www.adviceleeds.org.uk/partmembers.htm
-        result.put("Ebor Gardens", "LS9 7UT");
-        result.put("St Vincents", "LS9 9AA");
-        result.put("Better Leeds Communities", "LS6 1QF");
-        result.put("Leeds City Council - Welfare Rights Unit", "LS9 7BG");
-        result.put("Leeds Law Centre", "LS8 4HS");
+        ArrayList<String> tAdviceLeedsServiceNames;
+        tAdviceLeedsServiceNames = getAdviceLeedsServiceNames();
+        ArrayList<String> tAdviceLeedsServicePostcodes;
+        tAdviceLeedsServicePostcodes = getAdviceLeedsServicePostcodes();
+        for (int i = 0; i < tAdviceLeedsServiceNames.size(); i++) {
+            result.put(tAdviceLeedsServiceNames.get(i),
+                    tAdviceLeedsServicePostcodes.get(i));
+        }
         return result;
     }
-    
+
+    /**
+     * Postcodes are in the same order as names from
+     * getAdviceLeedsServiceNames().
+     *
+     * @return
+     */
+    public static ArrayList<String> getAdviceLeedsServicePostcodes() {
+        ArrayList<String> result;
+        result = new ArrayList<String>();
+        // Postcodes in data from Leeds CAB
+        result.add("LS21 1BG");
+        result.add("LS27 9DY");
+        result.add("LS15 8QR");
+        result.add("LS28 7AB");
+        result.add("LS2 7DT");
+        // http://www.citizensadvice.org.uk/bureau_detail.htm?serialnumber=100610
+        result.add("LS7 4BZ");
+        // http://www.adviceleeds.org.uk/partmembers.htm
+        result.add("LS9 7UT");
+        result.add("LS9 9AA");
+        result.add("LS6 1QF");
+        result.add("LS9 7BG");
+        result.add("LS8 4HS");
+        return result;
+    }
+
+    /**
+     * Names are in the same order as postcodes from
+     * getAdviceLeedsServiceNames().
+     *
+     * @return
+     */
+    public static ArrayList<String> getAdviceLeedsServiceNames() {
+        ArrayList<String> result;
+        result = new ArrayList<String>();
+        // Postcodes in data from Leeds CAB
+        result.add("Leeds CAB Otley");
+        result.add("Leeds CAB Morley");
+        result.add("Leeds CAB Crossgates");
+        result.add("Leeds CAB Pudsey");
+        result.add("Leeds CAB City");
+        // http://www.citizensadvice.org.uk/bureau_detail.htm?serialnumber=100610
+        result.add("Chapeltown CAB");
+        // http://www.adviceleeds.org.uk/partmembers.htm
+        result.add("Ebor Gardens");
+        result.add("St Vincents");
+        result.add("Better Leeds Communities");
+        result.add("LCC - Welfare Rights Unit");
+        result.add("Leeds Law Centre");
+        return result;
+    }
+
     public static TreeMap<String, DW_Point> getAdviceLeedsNamesAndPoints() {
         TreeMap<String, DW_Point> result;
         result = postcodeToPoints(getAdviceLeedsNamesAndPostcodes());
