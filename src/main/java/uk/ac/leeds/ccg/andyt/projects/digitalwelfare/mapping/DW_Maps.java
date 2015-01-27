@@ -54,6 +54,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeGeocoder;
@@ -171,6 +172,7 @@ public abstract class DW_Maps {
 
     /**
      * Simple convenience method.
+     *
      * @param type
      * @param srid
      * @return null if type is not one of "Point", "LineString", or "Polygon"
@@ -717,7 +719,7 @@ public abstract class DW_Maps {
      * @param filter If filter == true then result is clipped to the LSOA
      * boundary.
      */
-    public void selectAndCreateNewShapefile(
+    public TreeMap<Integer, Integer> selectAndCreateNewShapefile(
             ShapefileDataStoreFactory sdsf,
             FeatureCollection fc,
             SimpleFeatureType sft,
@@ -726,7 +728,16 @@ public abstract class DW_Maps {
             //String attributeName, 
             String targetPropertyName,
             File outputFile,
-            int filter) {
+            int filter,
+            boolean countClientsInAndOutOfRegion) {
+
+        TreeMap<Integer, Integer> inAndOutOfRegionCount = null;
+        if (countClientsInAndOutOfRegion) {
+            inAndOutOfRegionCount = new TreeMap<Integer, Integer>();
+            inAndOutOfRegionCount.put(0, 0);
+            inAndOutOfRegionCount.put(1, 0);
+        }
+
         //        summariseAttributes(sft);
         // Initialise the collection of new Features
         TreeSetFeatureCollection tsfc;
@@ -757,6 +768,7 @@ public abstract class DW_Maps {
                     String valueString = value.toString();
                     if (filter < 3) {
                         if (levelCodes.contains(valueString)) {
+                            // Add to inAndOutOfRegionCount
                             Integer clientCount = levelData.get(valueString);
                             //                            if (clientCount == null) {
                             //                                clientCount = 0;
@@ -766,6 +778,20 @@ public abstract class DW_Maps {
                                 addFeatureAttributeAndAddToFeatureCollection(
                                         (SimpleFeature) inputFeature, sfb, clientCount, tsfc, id);
                                 id_int++;
+                                if (countClientsInAndOutOfRegion) {
+                                    Generic_Collections.addToTreeMapIntegerInteger(
+                                            inAndOutOfRegionCount, 1, clientCount);
+                                }
+                            }
+                        } else {
+                            // Add to inAndOutOfRegionCount
+                            Integer clientCount = levelData.get(valueString);
+                            if (clientCount != null) {
+                                // Add to inAndOutOfRegionCount
+                                if (countClientsInAndOutOfRegion) {
+                                    Generic_Collections.addToTreeMapIntegerInteger(
+                                            inAndOutOfRegionCount, 0, clientCount);
+                                }
                             }
                         }
                     } else {
@@ -779,6 +805,12 @@ public abstract class DW_Maps {
                                 addFeatureAttributeAndAddToFeatureCollection(
                                         (SimpleFeature) inputFeature, sfb, clientCount, tsfc, id);
                                 id_int++;
+                                // Add to inAndOutOfRegionCount
+                                if (countClientsInAndOutOfRegion) {
+                                    Generic_Collections.addToTreeMapIntegerInteger(
+                                            inAndOutOfRegionCount, 1, clientCount);
+                                }
+
                             }
                         }
                     }
@@ -787,6 +819,7 @@ public abstract class DW_Maps {
         }
         featureIterator.close();
         DW_Shapefile.transact(outputFile, sft, tsfc, sdsf);
+        return inAndOutOfRegionCount;
     }
 
     /*
@@ -1040,7 +1073,7 @@ public abstract class DW_Maps {
         SimpleFeature feature = sfb.buildFeature(null);
         tsfc.add(feature);
     }
-    
+
     protected static void addQuadFeature(
             DW_Point p1,
             DW_Point p2,
@@ -1051,11 +1084,12 @@ public abstract class DW_Maps {
             String name,
             TreeSetFeatureCollection tsfc) {
         Coordinate[] coordinates;
-        coordinates = new Coordinate[4];
+        coordinates = new Coordinate[5];
         coordinates[0] = new Coordinate(p1.getX(), p1.getY());
         coordinates[1] = new Coordinate(p2.getX(), p2.getY());
-        coordinates[1] = new Coordinate(p3.getX(), p3.getY());
-        coordinates[1] = new Coordinate(p4.getX(), p4.getY());
+        coordinates[2] = new Coordinate(p3.getX(), p3.getY());
+        coordinates[3] = new Coordinate(p4.getX(), p4.getY());
+        coordinates[4] = new Coordinate(p1.getX(), p1.getY());
         Polygon quad = gf.createPolygon(coordinates);
         sfb.add(quad);
         sfb.add(name);
@@ -1063,7 +1097,7 @@ public abstract class DW_Maps {
         tsfc.add(feature);
     }
 
-    public static TreeSetFeatureCollection getGridLineFeatureCollection(
+    public static TreeSetFeatureCollection getLineGridFeatureCollection(
             SimpleFeatureType sft,
             long nrows,
             long ncols,
@@ -1073,7 +1107,7 @@ public abstract class DW_Maps {
         TreeSetFeatureCollection result;
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
         SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(sft);
-        result = getGridLineFeatureCollection(
+        result = getLineGridFeatureCollection(
                 sft,
                 nrows,
                 ncols,
@@ -1085,7 +1119,7 @@ public abstract class DW_Maps {
         return result;
     }
 
-    public static TreeSetFeatureCollection getGridLineFeatureCollection(
+    public static TreeSetFeatureCollection getLineGridFeatureCollection(
             SimpleFeatureType sft,
             long nrows,
             long ncols,
@@ -1122,8 +1156,8 @@ public abstract class DW_Maps {
         }
         return result;
     }
-    
-    public static TreeSetFeatureCollection getGridPolyFeatureCollection(
+
+    public static TreeSetFeatureCollection getPolyGridFeatureCollection(
             SimpleFeatureType sft,
             long nrows,
             long ncols,
@@ -1133,7 +1167,7 @@ public abstract class DW_Maps {
         TreeSetFeatureCollection result;
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
         SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(sft);
-        result = getGridPolyFeatureCollection(
+        result = getPolyGridFeatureCollection(
                 sft,
                 nrows,
                 ncols,
@@ -1145,7 +1179,7 @@ public abstract class DW_Maps {
         return result;
     }
 
-    public static TreeSetFeatureCollection getGridPolyFeatureCollection(
+    public static TreeSetFeatureCollection getPolyGridFeatureCollection(
             SimpleFeatureType sft,
             long nrows,
             long ncols,
@@ -1283,7 +1317,7 @@ public abstract class DW_Maps {
         return result;
     }
 
-    public static File createGridLineShapefileIfItDoesNotExist(
+    public static File createLineGridShapefileIfItDoesNotExist(
             File dir,
             String shapefileFilename, // Better to internally generate this from other parameters?
             long nrows,
@@ -1295,7 +1329,7 @@ public abstract class DW_Maps {
         SimpleFeatureType sft;
         sft = getLineSimpleFeatureType(getDefaultSRID());
         TreeSetFeatureCollection fc;
-        fc = getGridLineFeatureCollection(
+        fc = DW_Maps.getLineGridFeatureCollection(
                 sft,
                 nrows,
                 ncols,
@@ -1310,7 +1344,7 @@ public abstract class DW_Maps {
         return result;
     }
 
-    public static File createPolygonShapefileIfItDoesNotExist(
+    public static File createPolyGridShapefileIfItDoesNotExist(
             File dir,
             String shapefileFilename, // Better to internally generate this from other parameters?
             long nrows,
@@ -1322,7 +1356,7 @@ public abstract class DW_Maps {
         SimpleFeatureType sft;
         sft = getPolygonSimpleFeatureType(getDefaultSRID());
         TreeSetFeatureCollection fc;
-        fc = getGridPolyFeatureCollection(
+        fc = getPolyGridFeatureCollection(
                 sft,
                 nrows,
                 ncols,
@@ -1406,7 +1440,7 @@ public abstract class DW_Maps {
         }
         return result;
     }
-    
+
     /**
      * @param f
      * @return ArcGridReader
@@ -1421,14 +1455,14 @@ public abstract class DW_Maps {
         }
         return result;
     }
-    
+
     /**
-     * 
+     *
      * @param agr
-     * @return 
+     * @return
      */
     public static GridCoverage2D getGridCoverage2D(
-        ArcGridReader agr) {
+            ArcGridReader agr) {
         GridCoverage2D result = null;
         try {
             if (agr != null) {

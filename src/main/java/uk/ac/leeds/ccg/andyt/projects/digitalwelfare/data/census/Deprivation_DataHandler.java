@@ -181,10 +181,10 @@ public class Deprivation_DataHandler {
         int clientsWithoutARecognisedPostcode = 0;
         TreeMap<Integer, Integer> deprivationClassCountOfCABClients = new TreeMap<Integer, Integer>();
         if (type == 0) {
-            Iterator<EnquiryClientBureauOutletID> ite;
+            Iterator ite;
             ite = tCABData.keySet().iterator();
             while (ite.hasNext()) {
-                EnquiryClientBureauOutletID id = ite.next();
+                Object id = ite.next();
                 CAB_DataRecord2 aLeedsCABData_DataRecord = (CAB_DataRecord2) tCABData.get(id);
                 String postcode = aLeedsCABData_DataRecord.getPostcode();
                 postcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);

@@ -80,6 +80,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRe
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord0_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord2;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord2_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.ClientBureauOutletID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.EnquiryClientBureauOutletID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
@@ -215,27 +216,34 @@ public class DW_DensityMaps extends DW_Maps {
         
         maxCellDistanceForGeneralisation = 8;//32; // add a min too for top up runs.
                 
-        // Jenks runs
-        styleParameters.setClassificationFunctionName("Jenks");
-        commonlyStyled = true;
-        individuallyStyled = true;
-        runAll();
-
+        Object IDType;
+        //IDType = new ClientBureauOutletID();
+        IDType = new EnquiryClientBureauOutletID();
+        
+//        Currently only equal interval implemented
+//        // Jenks runs
+//        styleParameters.setClassificationFunctionName("Jenks");
+//        commonlyStyled = true;
+//        individuallyStyled = true;
+//        runAll(IDType);
+//
         // Quantile runs
         styleParameters.setClassificationFunctionName("Quantile");
+        styleParameters.setStylesNull();
         commonlyStyled = true;
         individuallyStyled = true;
-        runAll();
+        runAll(IDType);
         
-        // Equal Interval runs
-        styleParameters.setClassificationFunctionName("EqualInterval");
-        commonlyStyled = true;
-        individuallyStyled = true;
-        runAll();
+//        // Equal Interval runs
+//        styleParameters.setClassificationFunctionName("EqualInterval");
+//        styleParameters.setStylesNull();
+//        commonlyStyled = true;
+//        individuallyStyled = true;
+//        runAll(IDType);
         
     }
 
-    public void runAll() {
+    public void runAll(Object IDType) {
 
         // General parameters
         // Property for selecting
@@ -267,7 +275,8 @@ public class DW_DensityMaps extends DW_Maps {
          * (filter == 3) No clipping
          */
         for (int filter = 0; filter < 3; filter++) {
-            if (filter == 0 || filter == 2) {
+            if (filter == 0) {
+            //if (filter == 0 || filter == 2) {
         //for (int filter = 2; filter < 3; filter++) {
             //int filter = 0;
             deprivationRecords = null;
@@ -280,6 +289,7 @@ public class DW_DensityMaps extends DW_Maps {
                         tLookupFromPostcodeToCensusCodes,
                         filter,
                         scaleToFirst,
+                        IDType,
                         handleOutOfMemoryErrors);
             }
             if (individuallyStyled) {
@@ -291,6 +301,7 @@ public class DW_DensityMaps extends DW_Maps {
                         tLookupFromPostcodeToCensusCodes,
                         filter,
                         scaleToFirst,
+                        IDType,
                         handleOutOfMemoryErrors);
             }
 
@@ -333,6 +344,7 @@ public class DW_DensityMaps extends DW_Maps {
             TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
             int filter,
             boolean scaleToFirst,
+            Object IDType,
             boolean handleOutOfMemoryErrors) {
 
         String style;
@@ -355,6 +367,7 @@ public class DW_DensityMaps extends DW_Maps {
                 targetPropertyName,
                 filter,
                 scaleToFirst,
+                IDType,
                 handleOutOfMemoryErrors);
     }
 
@@ -382,6 +395,7 @@ public class DW_DensityMaps extends DW_Maps {
             String targetPropertyName,
             int filter,
             boolean scaleToFirst,
+            Object IDType,
             boolean handleOutOfMemoryErrors) {
         if (filter == 0) {
             backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
@@ -446,7 +460,7 @@ public class DW_DensityMaps extends DW_Maps {
         ArrayList<String> tChapeltownCABData;
         tChapeltownCABData = getChapeltownCABDataPostcodes();
         TreeMap<String, ArrayList<String>> tLeedsCABData;
-        tLeedsCABData = getLeedsCABDataPostcodes();
+        tLeedsCABData = getLeedsCABDataPostcodes(IDType);
         tLeedsCABData.put("Chapeltown", tChapeltownCABData);
         // Initialise grid paramters
         long xurcorner = xllcorner + (long) (nrows * cellsize);
@@ -514,9 +528,6 @@ public class DW_DensityMaps extends DW_Maps {
                                 scaleToFirst);
                     }
                 }
-//                if (!scaleToFirst) { // Done in process(...) above.
-//                    styleParameters.setStyle(null,0);
-//                }
             }
         } else {
             File mapDirectory2 = new File(
@@ -552,10 +563,11 @@ public class DW_DensityMaps extends DW_Maps {
                         null,
                         scaleToFirst);
             }
-//            if (!scaleToFirst) { // Done in process(...) above.
-//                styleParameters.setStyle(null,0);
-//            }
         }
+        // Set style back to null so that it is recomputed for the next set of 
+        // maps.
+        // Style could be set to be returned if it is important.
+        styleParameters.setStylesNull();
     }
 
     private void process(
@@ -651,7 +663,8 @@ public class DW_DensityMaps extends DW_Maps {
                     asciigridFile,
                     outletmapDirectory,
                     nameOfGrid,
-                    index);
+                    index,
+                    scaleToFirst);
             if (!scaleToFirst) {
                 styleParameters.setStyle(null, index);
             }
@@ -709,12 +722,13 @@ public class DW_DensityMaps extends DW_Maps {
                 
                 // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
                 outputGridToImageUsingGeoToolsAndSetCommonStyle(
-                        1.0d,//(double) Math.PI * cellDistanceForGeneralisation * cellDistanceForGeneralisation,
+                        100.0d,//(double) Math.PI * cellDistanceForGeneralisation * cellDistanceForGeneralisation,
                         gwsgrid,
                         asciigridFile,
                         outletmapDirectory,
                         outputName,
-                        index);
+                        index,
+                        scaleToFirst);
                 if (!scaleToFirst) {
                     styleParameters.setStyle(null, index);
                 }
@@ -803,7 +817,8 @@ public class DW_DensityMaps extends DW_Maps {
             File asciigridFile,
             File dir,
             String nameOfGrid,
-            int styleIndex) {
+            int styleIndex,
+            boolean scaleToFirst) {
         //----------------------------------------------------------
         // Create GeoTools GridCoverage
         // Two ways to read the asciigridFile into a GridCoverage
@@ -820,7 +835,7 @@ public class DW_DensityMaps extends DW_Maps {
         String outname = nameOfGrid + "GeoToolsOutput";
         //showMapsInJMapPane = true;
 
-//        Object[] styleAndLegendItems = DW_Style.getStyleAndLegendItems(
+//        Object[] styleAndLegendItems = DW_Style.getEqualIntervalStyleAndLegendItems(
 //                normalisation, g, gc, "Quantile", ff, 9, "Reds", true);
         //Style style = createGreyscaleStyle(gc, null, sf, ff);
         ReferencedEnvelope re;
@@ -834,7 +849,7 @@ public class DW_DensityMaps extends DW_Maps {
         System.out.println("minY " + minY);
         System.out.println("maxY " + maxY);
 
-        DW_GeoTools.outputToImage(
+        DW_GeoTools.outputToImageUsingGeoToolsAndSetCommonStyle(
                 normalisation,
                 styleParameters,
                 styleIndex,
@@ -846,7 +861,8 @@ public class DW_DensityMaps extends DW_Maps {
                 backgroundDW_Shapefile,
                 dir,
                 imageWidth,
-                showMapsInJMapPane);
+                showMapsInJMapPane,
+                scaleToFirst);
 //        try {
 //            reader.dispose();
 //        } catch (IOException ex) {
@@ -859,20 +875,28 @@ public class DW_DensityMaps extends DW_Maps {
     
     
 
-    public static TreeMap<String, ArrayList<DW_Point>> getLeedsCABDataPoints() {
+    public static TreeMap<String, ArrayList<DW_Point>> getLeedsCABDataPoints(
+    Object IDType) {
         TreeMap<String, ArrayList<DW_Point>> result;
         result = new TreeMap<String, ArrayList<DW_Point>>();
         String filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
-        CAB_DataRecord2_Handler tCAB_DataRecord2_Handler;
-        tCAB_DataRecord2_Handler = new CAB_DataRecord2_Handler();
-        TreeMap<EnquiryClientBureauOutletID, CAB_DataRecord2> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData(
-                filename, tCAB_DataRecord2_Handler);
+        CAB_DataRecord2_Handler aCAB_DataRecord2_Handler;
+        aCAB_DataRecord2_Handler = new CAB_DataRecord2_Handler();
+        TreeMap<Object, CAB_DataRecord2> tLeedsCABData;
+        if (IDType instanceof EnquiryClientBureauOutletID) {
+            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_EnquiryClientBureauOutletID_CAB_DataRecord2(
+                    filename,
+                    aCAB_DataRecord2_Handler);
+        } else {
+            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_ClientBureauOutletID_CAB_DataRecord2(
+                    filename,
+                    aCAB_DataRecord2_Handler);
+        }
         int countNonMatchingPostcodes = 0;
-        Iterator<EnquiryClientBureauOutletID> ite;
+        Iterator ite;
         ite = tLeedsCABData.keySet().iterator();
         while (ite.hasNext()) {
-            EnquiryClientBureauOutletID key = ite.next();
+            Object key = ite.next();
             CAB_DataRecord2 value = tLeedsCABData.get(key);
             String postcode = value.getPostcode();
             String outlet = value.getOutlet();
@@ -895,19 +919,27 @@ public class DW_DensityMaps extends DW_Maps {
         return result;
     }
 
-    public static TreeMap<String, ArrayList<String>> getLeedsCABDataPostcodes() {
+    public static TreeMap<String, ArrayList<String>> getLeedsCABDataPostcodes(
+        Object IDType) {
         TreeMap<String, ArrayList<String>> result;
         result = new TreeMap<String, ArrayList<String>>();
         String filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
-        CAB_DataRecord2_Handler tCAB_DataRecord2_Handler;
-        tCAB_DataRecord2_Handler = new CAB_DataRecord2_Handler();
-        TreeMap<EnquiryClientBureauOutletID, CAB_DataRecord2> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData(
-                filename, tCAB_DataRecord2_Handler);
-        Iterator<EnquiryClientBureauOutletID> ite;
+        CAB_DataRecord2_Handler aCAB_DataRecord2_Handler;
+        aCAB_DataRecord2_Handler = new CAB_DataRecord2_Handler();
+        TreeMap<Object, CAB_DataRecord2> tLeedsCABData;
+        if (IDType instanceof EnquiryClientBureauOutletID) {
+            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_EnquiryClientBureauOutletID_CAB_DataRecord2(
+                    filename,
+                    aCAB_DataRecord2_Handler);
+        } else {
+            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_ClientBureauOutletID_CAB_DataRecord2(
+                    filename,
+                    aCAB_DataRecord2_Handler);
+        }
+        Iterator ite;
         ite = tLeedsCABData.keySet().iterator();
         while (ite.hasNext()) {
-            EnquiryClientBureauOutletID key = ite.next();
+            Object key = ite.next();
             CAB_DataRecord2 value = tLeedsCABData.get(key);
             String postcode = value.getPostcode();
             String outlet = value.getOutlet();

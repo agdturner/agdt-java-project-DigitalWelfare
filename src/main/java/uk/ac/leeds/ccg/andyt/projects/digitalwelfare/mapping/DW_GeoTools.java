@@ -35,9 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.FileDataStore;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
@@ -54,7 +52,6 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps.getOutputImageFile;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 
 /**
  * A class for holding various useful methods for doing things with DW_GeoTools
@@ -75,7 +72,22 @@ public class DW_GeoTools {
         return result;
     }
 
-    public static void outputToImage(
+    /**
+     * Warning this will set g to null.
+     * @param normalisation
+     * @param styleParameters
+     * @param index
+     * @param outname
+     * @param g
+     * @param gc
+     * @param foregroundDW_Shapefile0
+     * @param foregroundDW_Shapefile1
+     * @param backgroundDW_Shapefile
+     * @param outputDir
+     * @param imageWidth
+     * @param showMapsInJMapPane 
+     */
+    public static void outputToImageUsingGeoToolsAndSetCommonStyle(
             double normalisation,
             DW_StyleParameters styleParameters,
             int index,
@@ -87,7 +99,8 @@ public class DW_GeoTools {
             DW_Shapefile backgroundDW_Shapefile,
             File outputDir,
             int imageWidth,
-            boolean showMapsInJMapPane) {
+            boolean showMapsInJMapPane,
+            boolean scaleToFirst) {
         MapContent mc = DW_GeoTools.createMapContent(
                 normalisation,
                 g,
@@ -97,23 +110,11 @@ public class DW_GeoTools {
                 backgroundDW_Shapefile,
                 imageWidth,
                 styleParameters,
-                index);
-        // Add a legendLayer
-        ArrayList<DW_LegendItem> legendItems;
-        legendItems = styleParameters.getLegendItems(index);
-        if (legendItems != null) {
-            boolean addLegendToTheSide = true;
-            DW_LegendLayer ll = new DW_LegendLayer(
-                    styleParameters,
-                    "Map title.................................",
-                    "Legend",
-                    legendItems,
-                    mc,
-                    imageWidth,
-                    0,
-                    addLegendToTheSide);
-            mc.addLayer(ll);
-        }
+                index,
+                scaleToFirst);
+        // Set g to null as it is no longer needed. 
+        // This is done to prevent any unwanted OutOfMemory Errors being encountered.
+        g = null;
 
         int imageHeight = getMapContentImageHeight(mc, imageWidth);
         File outputFile = getOutputFile(
@@ -123,10 +124,8 @@ public class DW_GeoTools {
         File outputImageFile = getOutputImageFile(
                 outputFile, DW_Maps.png_String);
 
-        // OOME here!
-        // This is fairly easy to deal with as we can get rid of the grid or at least swap it out at this stage. 
         DW_GeoTools.writeImageFile(
-                g._Grids_Environment,
+                //g._Grids_Environment,
                 mc,
                 imageWidth,
                 imageHeight,
@@ -167,7 +166,8 @@ public class DW_GeoTools {
             DW_Shapefile backgroundDW_Shapefile,
             int imageWidth,
             DW_StyleParameters styleParameters,
-            int index) {
+            int index,
+            boolean scaleToFirst) {
         MapContent result;
         result = new MapContent();
         // Unbox styleParameters
@@ -188,10 +188,12 @@ public class DW_GeoTools {
         // features
         if (style == null) {
             Object[] styleAndLegendItems;
+//            styleAndLegendItems = DW_Style.getEqualIntervalStyleAndLegendItems(
             styleAndLegendItems = DW_Style.getStyleAndLegendItems(
                     normalisation,
                     g,
                     gc,
+                    styleParameters.getClassificationFunctionName(),
                     styleParameters.getnClasses(),
                     styleParameters.getPaletteName(),
                     styleParameters.isAddWhiteForZero());
@@ -199,6 +201,10 @@ public class DW_GeoTools {
             styleParameters.setStyle(style, index);
             legendItems = (ArrayList<DW_LegendItem>) styleAndLegendItems[1];
             styleParameters.setLegendItems(legendItems, index);
+        } else {
+            if (scaleToFirst) {
+                legendItems = styleParameters.getLegendItems(index);
+            }
         }
         GridCoverageLayer gcl = new GridCoverageLayer(gc, style);
         result.addLayer(gcl);
@@ -321,8 +327,8 @@ public class DW_GeoTools {
      * styleParameters[0] if this is currently null using the remaining
      * styleParameters.
      *
-     * @param ou
-     * @param mctname
+     * @param mc
+     * @param outname
      * @param outputShapefile
      * @param outputDir
      * @param imageWidth
@@ -389,6 +395,7 @@ public class DW_GeoTools {
      * @param imageWidth
      * @param styleParameters styleParameters[0] may be null, but if it is not
      * null then (Style) styleParameters[0] is used to render features.
+     * @param styleIndex
      * @return
      */
     protected static MapContent createMapContent(
@@ -474,6 +481,11 @@ public class DW_GeoTools {
 
     /**
      * @param polygon0
+     * @param polygon1
+     * @param polygon2
+     * @param polygon3
+     * @param polygon4
+     * @param line0
      * @param points0
      * @param points1
      * @return

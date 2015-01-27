@@ -35,30 +35,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_Dat
 public class CAB_DataRecord2_Handler {
 
     public CAB_DataRecord2_Handler() {}
-
-    /**
-     * Loads LeedsCAB data from a file in directory, filename reporting progress of
-     * loading to PrintWriter pw.
-     *
-     * @param directory
-     * @param filename
-     * @param pw
-     * @return TreeMap<String,CAB_DataRecord1> representing records
-     */
-    public TreeMap<EnquiryClientBureauOutletID,CAB_DataRecord2> loadInputData(
-            File directory,
-            String filename) {
-        System.out.println("Loading " + filename);
-        TreeMap<EnquiryClientBureauOutletID,CAB_DataRecord2> result;
-        result = new TreeMap<EnquiryClientBureauOutletID,CAB_DataRecord2>();
-        File inputFile = new File(
-                directory,
-                filename);
-        BufferedReader br;
-        br = Generic_StaticIO.getBufferedReader(inputFile);
-        StreamTokenizer st;
-        st = new StreamTokenizer(br);
-        Generic_StaticIO.setStreamTokenizerSyntax5(st);
+    
+    public void setStreamTokenizerSyntax(StreamTokenizer st) {
+            Generic_StaticIO.setStreamTokenizerSyntax5(st);
         st.wordChars('`', '`');
         st.wordChars('\'', '\'');
         st.wordChars('(', '(');
@@ -75,6 +54,103 @@ public class CAB_DataRecord2_Handler {
         st.wordChars('#', '#');
         st.wordChars(':', ':');
         st.wordChars(';', ';');
+    }
+
+    /**
+     * Loads LeedsCAB data from a file in directory, filename.
+     * 
+     * @param directory
+     * @param filename
+     * @return TreeMap<EnquiryClientBureauOutletID,CAB_DataRecord2> representing records
+     */
+    public TreeMap<Object,CAB_DataRecord2> loadInputData_TreeMap_ClientBureauOutletID_CAB_DataRecord2(
+            File directory,
+            String filename) {
+        System.out.println("Loading " + filename);
+        TreeMap<Object,CAB_DataRecord2> result;
+        result = new TreeMap<Object,CAB_DataRecord2>();
+        File inputFile = new File(
+                directory,
+                filename);
+        BufferedReader br;
+        br = Generic_StaticIO.getBufferedReader(inputFile);
+        StreamTokenizer st;
+        st = new StreamTokenizer(br);
+        setStreamTokenizerSyntax(st);
+        String line = "";
+        long RecordID = 0;
+        try {
+            // Skip the header
+            int headerLines = 2;
+            for (int i = 0; i < headerLines; i ++) {
+                Generic_StaticIO.skipline(st);
+            }
+            // Read data
+            int tokenType;
+            tokenType = st.nextToken();
+            while (tokenType != StreamTokenizer.TT_EOF) {
+
+                // For debugging
+                if (RecordID == 10) {
+                    int debug = 1;
+                }
+
+                switch (tokenType) {
+                    case StreamTokenizer.TT_EOL:
+                        //System.out.println(line);
+                        break;
+                    case StreamTokenizer.TT_WORD:
+                        line = st.sval;
+                            try { 
+                                CAB_DataRecord2 record = new CAB_DataRecord2(RecordID, line, this);
+                                String client_ref = record.getClient_ref();
+                                String bureau = record.getBureau();
+                                String outlet = record.getOutlet();
+                                ClientBureauOutletID id;
+                                id = new ClientBureauOutletID(client_ref, bureau, outlet);
+                                if (result.containsKey(id)) {
+                                    System.out.println("Additional record for " + id);
+                                } else {
+                                    result.put(id, record);
+                                }
+                            } catch (Exception e) {
+                                System.err.println(line);
+                                System.err.println("RecordID " + RecordID);
+                                System.err.println(e.getLocalizedMessage());
+                         }
+                        RecordID++;
+                        break;
+                }
+                tokenType = st.nextToken();
+            }
+            br.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Deprivation_DataHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    /**
+     * Loads LeedsCAB data from a file in directory, filename.
+     * 
+     * @param directory
+     * @param filename
+     * @return TreeMap<EnquiryClientBureauOutletID,CAB_DataRecord2> representing records
+     */
+    public TreeMap<Object,CAB_DataRecord2> loadInputData_TreeMap_EnquiryClientBureauOutletID_CAB_DataRecord2(
+            File directory,
+            String filename) {
+        System.out.println("Loading " + filename);
+        TreeMap<Object,CAB_DataRecord2> result;
+        result = new TreeMap<Object,CAB_DataRecord2>();
+        File inputFile = new File(
+                directory,
+                filename);
+        BufferedReader br;
+        br = Generic_StaticIO.getBufferedReader(inputFile);
+        StreamTokenizer st;
+        st = new StreamTokenizer(br);
+        setStreamTokenizerSyntax(st);
         String line = "";
         long RecordID = 0;
         try {

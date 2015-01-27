@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.geotools.styling.Style;
 
@@ -65,6 +66,26 @@ public class DW_StyleParameters {
         return result;
     }
 
+    public void setStylesNull() {
+        if (styles != null) {
+            if (!styles.isEmpty()) {
+                int size = styles.size();
+//                for (int i = 0; i < size; i ++) {
+//                    setStyle(null,i);
+//                }
+                styles.clear();
+                for (int i = 0; i < size; i ++) {
+                    styles.add(null);
+                }
+//                Iterator<Style> ite = styles.iterator();
+//                while (ite.hasNext()) {
+//                    Style style = ite.next();
+//                    style = null;
+//                }
+            }
+        }
+    }
+
     /**
      * @param style
      * @param index
@@ -84,19 +105,6 @@ public class DW_StyleParameters {
         return styles;
     }
 
-//    /**
-//     * @return the style
-//     */
-//    public Style getStyle() {
-//        return style;
-//    }
-//    
-//    /**
-//     * @param style the style to set
-//     */
-//    public void setStyle(Style style) {
-//        this.style = style;
-//    }
     /**
      * @return the classificationFunctionName
      */

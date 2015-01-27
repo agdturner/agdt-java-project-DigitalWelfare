@@ -141,8 +141,6 @@ public class DW_PostcodeMaps extends DW_Maps {
         DW_Shapefile MSOA_Shapefile;
         MSOA_Shapefile = tMSOACodesAndLeedsLevelShapefile.getLeedsLevelDW_Shapefile();
 
-        // Grid of lines
-        DW_Shapefile gridOfLines;
         long nrows;
         long ncols;
         double xllcorner;
@@ -153,7 +151,13 @@ public class DW_PostcodeMaps extends DW_Maps {
         xllcorner = 413000;
         yllcorner = 422500;
         cellsize = 200;//100;//50;
-        gridOfLines = getGridOfLines(
+        // LineGrid
+        DW_Shapefile lineGrid;
+        lineGrid = getLineGrid(
+                nrows, ncols, xllcorner, yllcorner, cellsize);
+        // PolyGrid
+        DW_Shapefile polyGrid;
+        polyGrid = getPolyGrid(
                 nrows, ncols, xllcorner, yllcorner, cellsize);
 
         String outname = "outname";
@@ -163,8 +167,8 @@ public class DW_PostcodeMaps extends DW_Maps {
                 OA_Shapefile,
                 null,//LSOA_Shapefile,
                 null,//MSOA_Shapefile,
-                null,
-                gridOfLines,//null,//LAD_Shapefile,
+                polyGrid,
+                null,//lineGrid,//null,//LAD_Shapefile,
                 new DW_Shapefile(aPostcodeUnitPointShapefile),
                 new DW_Shapefile(aPostcodeSectorPointShapefile));
 
@@ -180,7 +184,7 @@ public class DW_PostcodeMaps extends DW_Maps {
 
     }
 
-    public static DW_Shapefile getGridOfLines(
+    public static DW_Shapefile getPolyGrid(
             long nrows,
             long ncols,
             double xllcorner,
@@ -195,7 +199,34 @@ public class DW_PostcodeMaps extends DW_Maps {
                 DW_Files.getGeneratedDir(),
                 "LineGrids");
         dir.mkdirs();
-        File shapefile = createGridLineShapefileIfItDoesNotExist(
+        File shapefile = createPolyGridShapefileIfItDoesNotExist(
+                dir,
+                filename,
+                nrows,
+                ncols,
+                xllcorner,
+                yllcorner,
+                cellsize);
+        result = new DW_Shapefile(shapefile);
+        return result;
+    }
+    
+    public static DW_Shapefile getLineGrid(
+            long nrows,
+            long ncols,
+            double xllcorner,
+            double yllcorner,
+            double cellsize) {
+        DW_Shapefile result;
+        String filename;
+        filename = "Gridlines_" + nrows + "_" + ncols + "_" + xllcorner + "_"
+                + yllcorner + "_" + cellsize + "_" + ".shp";
+        File dir;
+        dir = new File(
+                DW_Files.getGeneratedDir(),
+                "LineGrids");
+        dir.mkdirs();
+        File shapefile = createLineGridShapefileIfItDoesNotExist(
                 dir,
                 filename,
                 nrows,

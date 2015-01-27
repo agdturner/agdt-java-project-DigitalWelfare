@@ -27,6 +27,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import org.geotools.brewer.color.BrewerPalette;
@@ -63,6 +64,10 @@ import org.opengis.filter.expression.PropertyName;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_double;
 import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.AbstractGridStatistics;
+import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.GridStatistics0;
+import uk.ac.leeds.ccg.andyt.grids.core.GridStatistics1;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 
 /**
@@ -403,7 +408,7 @@ public class DW_Style {
      * @param featureCollection
      * @param attributeName
      * @param styleParameters
-     * @return 
+     * @return
      */
     public static Object[] createPolygonStyle(
             FeatureCollection featureCollection,
@@ -677,6 +682,46 @@ public class DW_Style {
             double normalisation,
             AbstractGrid2DSquareCell g,
             GridCoverage cov,
+            String type,
+            int nClasses,
+            String paletteName,
+            boolean addWhiteForZero) {
+        if (type.equalsIgnoreCase("EqualInterval")) {
+            return getEqualIntervalStyleAndLegendItems(
+                    normalisation,
+                    g,
+                    cov,
+                    nClasses,
+                    paletteName,
+                    addWhiteForZero);
+        }
+        if (type.equalsIgnoreCase("Quantile")) {
+            return getQuantileStyleAndLegendItems(
+                    normalisation,
+                    (Grid2DSquareCellDouble) g,
+                    cov,
+                    nClasses,
+                    paletteName,
+                    addWhiteForZero);
+        }
+        return null;
+    }
+
+    /**
+     * Assuming min is 0.
+     *
+     * @param normalisation
+     * @param g
+     * @param cov
+     * @param nClasses
+     * @param paletteName
+     * @param addWhiteForZero
+     * @return
+     */
+    public static Object[] getEqualIntervalStyleAndLegendItems(
+            double normalisation,
+            AbstractGrid2DSquareCell g,
+            GridCoverage cov,
             int nClasses,
             String paletteName,
             boolean addWhiteForZero) {
@@ -704,21 +749,26 @@ public class DW_Style {
             for (int i = 1; i < nClasses; i++) {
                 if (i < nClasses - 1) {
                     double roundedMinInterval;
-                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
-
+                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(
+                            new BigDecimal("" + minInterval * 100 / normalisation),
+                            2, RoundingMode.UP).doubleValue();
                     double roundedMaxInterval;
-                    roundedMaxInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + maxInterval * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
-
+                    roundedMaxInterval = Generic_BigDecimal.roundIfNecessary(
+                            new BigDecimal("" + maxInterval * 100 / normalisation),
+                            2, RoundingMode.UP).doubleValue();
                     classNames[i] = "" + roundedMinInterval + " - " + roundedMaxInterval;
                     breaks[i] = minInterval;
                     minInterval += interval;
                     maxInterval += interval;
                 } else {
                     double roundedMinInterval;
-                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
-
+                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(
+                            new BigDecimal("" + minInterval * 100 / normalisation),
+                            2, RoundingMode.UP).doubleValue();
                     double roundedMax;
-                    roundedMax = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + max * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
+                    roundedMax = Generic_BigDecimal.roundIfNecessary(
+                            new BigDecimal("" + max * 100 / normalisation),
+                            2, RoundingMode.UP).doubleValue();
                     classNames[i] = "" + roundedMinInterval + " - " + roundedMax;
                     breaks[i] = minInterval;
                 }
@@ -728,23 +778,28 @@ public class DW_Style {
             breaks = new double[nClasses];
             for (int i = 0; i < nClasses; i++) {
                 if (i < nClasses - 1) {
-
                     double roundedMinInterval;
-                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
-
+                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(
+                            new BigDecimal("" + minInterval * 100 / normalisation),
+                            2, RoundingMode.UP).doubleValue();
                     double roundedMaxInterval;
-                    roundedMaxInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + maxInterval * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
-
+                    roundedMaxInterval = Generic_BigDecimal.roundIfNecessary(
+                            new BigDecimal("" + maxInterval * 100 / normalisation),
+                            2, RoundingMode.UP).doubleValue();
                     classNames[i] = "" + roundedMinInterval + " - " + roundedMaxInterval;
                     breaks[i] = minInterval;
                     minInterval += interval;
                     maxInterval += interval;
                 } else {
                     double roundedMinInterval;
-                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + minInterval * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
+                    roundedMinInterval = Generic_BigDecimal.roundIfNecessary(
+                            new BigDecimal("" + minInterval * 100 / normalisation),
+                            2, RoundingMode.UP).doubleValue();
 
                     double roundedMax;
-                    roundedMax = Generic_BigDecimal.roundIfNecessary(new BigDecimal("" + max * 100 / normalisation), 2, RoundingMode.UP).doubleValue();
+                    roundedMax = Generic_BigDecimal.roundIfNecessary(
+                            new BigDecimal("" + max * 100 / normalisation),
+                            2, RoundingMode.UP).doubleValue();
                     classNames[i] = "" + roundedMinInterval + " - " + roundedMax;
                     breaks[i] = minInterval;
                 }
@@ -778,4 +833,187 @@ public class DW_Style {
         result[1] = legendItems;
         return result;
     }
+
+    /**
+     * Assuming min is 0.
+     *
+     * @param normalisation
+     * @param g
+     * @param cov
+     * @param nClasses
+     * @param paletteName
+     * @param addWhiteForZero
+     * @return
+     */
+    public static Object[] getQuantileStyleAndLegendItems(
+            double normalisation,
+            //AbstractGrid2DSquareCell g,
+            Grid2DSquareCellDouble g,
+            GridCoverage cov,
+            int nClasses,
+            String paletteName,
+            boolean addWhiteForZero) {
+        Object[] result = new Object[2];
+        ArrayList<DW_LegendItem> legendItems;
+        legendItems = new ArrayList<DW_LegendItem>();
+        String[] classNames;
+        double[] breaks;
+        Generic_double d = new Generic_double();
+        boolean handleOutOfMemoryError = true;
+        AbstractGridStatistics gs;
+        GridStatistics1 gs1;
+        GridStatistics0 gs0;
+        //gs1.
+        gs = g.getGridStatistics(handleOutOfMemoryError);
+        long nonZeroAndNonNoDataValueCount;
+        nonZeroAndNonNoDataValueCount = gs.getNonZeroAndNonNoDataValueCountLong(
+                handleOutOfMemoryError);
+        System.out.println("nonZeroAndNonNoDataValueCount " + nonZeroAndNonNoDataValueCount);
+        Object[] quantileClassMap;
+        quantileClassMap = gs.getQuantileClassMap(nClasses, handleOutOfMemoryError);
+        TreeMap<Integer, Double> minDouble;
+        minDouble = (TreeMap<Integer, Double>) quantileClassMap[0];
+        TreeMap<Integer, Double> maxDouble;
+        maxDouble = (TreeMap<Integer, Double>) quantileClassMap[1];
+        
+        TreeMap<Integer, TreeMap<Double, Long>> classMap;
+        classMap = (TreeMap<Integer, TreeMap<Double, Long>>) quantileClassMap[2];
+        // Get the true number of classes in the classMap
+        int newClassCount = 0;
+        Iterator<Integer> ite;
+        ite = classMap.keySet().iterator();
+        while (ite.hasNext()) {
+            Integer key = ite.next();
+            if (!classMap.get(key).isEmpty()) {
+                newClassCount ++;
+            }
+        }
+        
+        
+        
+        if (newClassCount < nClasses) {
+            // Subdivide any end classes into smaller ones?
+            // It might be better to ask for a larger number of classes in the 
+            // first instance and then group these? 
+        }
+        
+        
+        
+        nClasses = newClassCount;
+        double min = gs.getMinDouble(true);
+        double max = gs.getMaxDouble(true);
+        if (addWhiteForZero) {
+            nClasses++;
+            classNames = new String[nClasses];
+            breaks = new double[nClasses];
+            classNames[0] = "0";
+            for (int i = 1; i < nClasses; i++) {
+                if (i < nClasses - 1) {
+                    String roundedMinInterval;
+                    double minInterval;
+                    minInterval = minDouble.get(i - 1);
+                    roundedMinInterval = getRoundedValue(
+                            normalisation,
+                            minInterval);
+                    String roundedMaxInterval;
+                    double maxInterval;
+                    maxInterval = maxDouble.get(i - 1);
+                    roundedMaxInterval  = getRoundedValue(
+                            normalisation,
+                            maxInterval);
+                    classNames[i] = "" + roundedMinInterval + " - " + roundedMaxInterval;
+                    breaks[i] = minInterval;
+                } else {
+                    String roundedMinInterval;
+                    double minInterval;
+                    minInterval = minDouble.get(i - 1);
+                    roundedMinInterval = getRoundedValue(
+                            normalisation,
+                            minInterval);
+                    String roundedMax = getRoundedValue(
+                            normalisation,
+                            max);
+                    classNames[i] = "" + roundedMinInterval + " - " + roundedMax;
+                    breaks[i] = minInterval;
+                }
+            }
+        } else {
+            classNames = new String[nClasses];
+            breaks = new double[nClasses];
+            for (int i = 0; i < nClasses; i++) {
+                if (i < nClasses - 1) {
+                    String roundedMinInterval;
+                    double minInterval;
+                    minInterval = minDouble.get(i);
+                    roundedMinInterval = getRoundedValue(
+                            normalisation,
+                            minInterval);
+                    String roundedMaxInterval;
+                    double maxInterval;
+                    maxInterval = maxDouble.get(i);
+                    roundedMaxInterval  = getRoundedValue(
+                            normalisation,
+                            maxInterval);
+                    classNames[i] = "" + roundedMinInterval + " - " + roundedMaxInterval;
+                    breaks[i] = minInterval;
+                } else {
+                    String roundedMinInterval;
+                    double minInterval;
+                    minInterval = minDouble.get(i);
+                    roundedMinInterval = getRoundedValue(
+                            normalisation,
+                            minInterval);
+                    String roundedMax = getRoundedValue(
+                            normalisation,
+                            max);
+                    classNames[i] = "" + roundedMinInterval + " - " + roundedMax;
+                    breaks[i] = minInterval;
+                }
+            }
+        }
+        ColorBrewer cb;
+        cb = ColorBrewer.instance();
+        BrewerPalette bp;
+        bp = cb.getPalette(paletteName);
+        Color[] colors;
+        if (addWhiteForZero) {
+            Color[] dummyColors = bp.getColors(nClasses - 1);
+            colors = new Color[nClasses];
+            colors[0] = Color.WHITE;
+            System.arraycopy(dummyColors, 0, colors, 1, nClasses - 1);
+        } else {
+            colors = bp.getColors(nClasses);
+        }
+        StyleBuilder sb;
+        sb = new StyleBuilder();
+        ColorMap cm;
+        cm = sb.createColorMap(classNames, breaks, colors, ColorMap.TYPE_RAMP);
+        Style style;
+        style = sb.createStyle(sb.createRasterSymbolizer(cm, 1));
+        result[0] = style;
+        for (int i = 0; i < nClasses; i++) {
+            DW_LegendItem li;
+            li = new DW_LegendItem(classNames[i], colors[i]);
+            legendItems.add(li);
+        }
+        result[1] = legendItems;
+        return result;
+    }
+
+    private static String getRoundedValue(
+            double normalisation,
+            double interval) {
+        String result;
+        if (interval == Double.NEGATIVE_INFINITY
+                || interval == Double.POSITIVE_INFINITY
+                || interval == Double.NaN) {
+            result = "NaN";
+        } else {
+            result = Double.toString(Generic_BigDecimal.roundIfNecessary(
+                    new BigDecimal("" + interval * normalisation),
+                    2, RoundingMode.UP).doubleValue());
+        }
+        return result;
+    }
+    
 }
