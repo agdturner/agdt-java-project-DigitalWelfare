@@ -59,7 +59,7 @@ public class DW_DataProcessor_CAB extends DW_Processor {
         init_tCAB_DataRecord0_Handler(args);
 
         Object otype;
-//        otype = new EnquiryClientBureauOutletID();
+        //otype = new EnquiryClientBureauOutletID();
         otype = new ClientBureauOutletID();
 
         level = "OA";
@@ -216,10 +216,10 @@ public class DW_DataProcessor_CAB extends DW_Processor {
         Age_EcoAct_LSOA_DataRecord_Handler aAge_EcoAct_LSOA_DataHandler;
         aAge_EcoAct_LSOA_DataHandler = new Age_EcoAct_LSOA_DataRecord_Handler();
         String censusFilename = "Data_AGE_ECOACT_UNIT.csv";
-        TreeMap<String, Age_EcoAct_LSOA_DataRecord> censusData;
-        censusData = aAge_EcoAct_LSOA_DataHandler.loadInputData(
-                censusFilename);
-
+//        TreeMap<String, Age_EcoAct_LSOA_DataRecord> censusData;
+//        censusData = aAge_EcoAct_LSOA_DataHandler.loadInputData(
+//                censusFilename);
+//
 //        System.out.println("There are " + censusData.size() + " LSOAs in Leeds in 2011");
 //        System.out.println("LSOACode,"
 //                + "PopAge16to74,"
@@ -253,7 +253,7 @@ public class DW_DataProcessor_CAB extends DW_Processor {
 //            } else {
 //                outputline += ",,";
 //            }
-//            Integer I = tChapeltownDataLSOACounts.get(LSOACode);
+//            Integer I = tChapeltownCABDatapeltownDataLSOACounts.get(LSOACode);
 //            if (I != null) {
 //                outputline += "," + I.toString();
 //            } else {

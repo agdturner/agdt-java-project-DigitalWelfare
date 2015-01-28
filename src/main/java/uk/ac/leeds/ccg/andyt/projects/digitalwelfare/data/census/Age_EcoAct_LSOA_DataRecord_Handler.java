@@ -38,12 +38,9 @@ public class Age_EcoAct_LSOA_DataRecord_Handler {
     public Age_EcoAct_LSOA_DataRecord_Handler() {}
 
     /**
-     * Loads LeedsCAB data from a file in directory, filename reporting progress of
-     * loading to PrintWriter pw.
+     * Loads LeedsCAB data from a filename.
      *
-     * @param directory
      * @param filename
-     * @param pw
      * @return TreeMap<String,LeedsCAB_DataRecord> representing records
      */
     public TreeMap<String,Age_EcoAct_LSOA_DataRecord> loadInputData(
@@ -54,7 +51,7 @@ public class Age_EcoAct_LSOA_DataRecord_Handler {
         
         File attributeDir = new File(
                 DW_Files.getInputCensus2011Dir("LSOA"),
-                "AttributeData");
+                "AttributeData/Leeds");
         File dir = new File(
             attributeDir,
                 filename.substring(5,filename.length() - 4));
@@ -108,7 +105,9 @@ public class Age_EcoAct_LSOA_DataRecord_Handler {
                     case StreamTokenizer.TT_WORD:
                         line = st.sval;
                             try { 
-                                Age_EcoAct_LSOA_DataRecord record = new Age_EcoAct_LSOA_DataRecord(RecordID, line, this);
+                                Age_EcoAct_LSOA_DataRecord record;
+                                record = new Age_EcoAct_LSOA_DataRecord(
+                                        RecordID, line, this);
                                 String LSOACode = record.getLSOACode();
                                 if (result.containsKey(LSOACode)) {
                                     System.out.println("Additional record for LSOACode " + LSOACode);

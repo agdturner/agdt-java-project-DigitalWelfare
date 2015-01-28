@@ -31,6 +31,7 @@ import org.geotools.feature.FeatureCollection;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.ClientBureauOutletID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -49,6 +50,11 @@ public class DW_ChoroplethMaps extends DW_Maps {
      * For storing property for selecting
      */
     private String targetPropertyName;
+    
+    /**
+     * Either EnquiryClientBureauOutletID or ClientBureauOutletID
+     */
+    private Object IDType;
 
     public DW_ChoroplethMaps() {
     }
@@ -125,6 +131,10 @@ public class DW_ChoroplethMaps extends DW_Maps {
 
         styleParameters.setDrawBoundaries(false);
 
+        
+        IDType = new ClientBureauOutletID();
+        //IDType = new EnquiryClientBureauOutletID();
+        
         String classificationFunctionName;
         //boolean drawBoundaries;
 
@@ -207,6 +217,10 @@ public class DW_ChoroplethMaps extends DW_Maps {
         generatedAdviceLeedsDir = new File(
                 generatedAdviceLeedsDir,
                 level);
+        generatedAdviceLeedsDir = new File(
+                generatedAdviceLeedsDir,
+                IDType.getClass().getSimpleName());
+        
         tLeedsCABFilenames = getLeedsCABFilenames();
         tLevelData = getLevelData(
                 generatedAdviceLeedsDir,
@@ -230,8 +244,11 @@ public class DW_ChoroplethMaps extends DW_Maps {
             if (individuallyStyled) {
                 scaleToFirst = false;
                 runCAB(deprivationRecords,
-                        tCensusCodesAndShapefiles, tLeedsCABFilenames,
-                        tLevelData, filter, scaleToFirst,
+                        tCensusCodesAndShapefiles, 
+                        tLeedsCABFilenames,
+                        tLevelData, 
+                        filter, 
+                        scaleToFirst,
                         countClientsInAndOutOfRegion);
             }
 //            if (commonlyStyled) {
