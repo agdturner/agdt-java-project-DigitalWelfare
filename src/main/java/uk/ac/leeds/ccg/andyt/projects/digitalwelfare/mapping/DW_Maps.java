@@ -1012,7 +1012,7 @@ public abstract class DW_Maps {
             result += "ClippedToLeedsAndNeighbouringLADs";
         }
         if (filter == 2) {
-            result += "ClippedToLeedsAndNeighbouringLADsAndCravenAndYork";
+            result += "ClippedToLeedsAndNearNeighbouringLADs";
         }
         if (filter == 3) {
             result += "";

@@ -31,7 +31,8 @@ import org.geotools.feature.FeatureCollection;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.ClientBureauOutletID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletEnquiryID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -50,11 +51,17 @@ public class DW_ChoroplethMaps extends DW_Maps {
      * For storing property for selecting
      */
     private String targetPropertyName;
-    
+
     /**
-     * Either EnquiryClientBureauOutletID or ClientBureauOutletID
+     * Either an instance of DW_ID_ClientOutletEnquiryID or ClientBureauOutletID
      */
     private Object IDType;
+
+    /**
+     * Either "DW_ID_ClientOutletEnquiryID" or "ClientBureauOutletID" depending
+ on IDType
+     */
+    private String IDTypeName;
 
     public DW_ChoroplethMaps() {
     }
@@ -117,41 +124,48 @@ public class DW_ChoroplethMaps extends DW_Maps {
                 Color.BLACK,
                 Color.WHITE));
         styleParameters.setBackgroundStyleTitle("Background Style");
-        
+
         foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefiles();
-        
+
         // Switches for different outputs
         commonlyStyled = true;
         individuallyStyled = true;
 
         // General
-        mapDirectory = new File(
-                DW_Files.getOutputAdviceLeedsMapsDir(),
-                "choropleth");
+        for (int i = 0; i < 2; i++) {
+            if (i == 0) {
+                IDType = new DW_ID_ClientOutletID();
+            } else {
+                IDType = new DW_ID_ClientOutletEnquiryID();
+            }
+            IDTypeName = IDType.getClass().getSimpleName();
+            mapDirectory = new File(
+                    DW_Files.getOutputAdviceLeedsMapsDir(),
+                    "choropleth");
+            mapDirectory = new File(
+                    mapDirectory,
+                    IDTypeName);
 
-        styleParameters.setDrawBoundaries(false);
+            styleParameters.setDrawBoundaries(false);
 
-        
-        IDType = new ClientBureauOutletID();
-        //IDType = new EnquiryClientBureauOutletID();
-        
-        String classificationFunctionName;
-        //boolean drawBoundaries;
+            String classificationFunctionName;
+            //boolean drawBoundaries;
 
-        // Jenks runs
-        classificationFunctionName = "Jenks";
-        runAll(true, classificationFunctionName);
-//        runAll(false, classificationFunctionName);
-//        
-//        // Quantile runs
-//        classificationFunctionName = "Quantile";
-//        runAll(true, classificationFunctionName);
-//        runAll(false, classificationFunctionName);
-//
-//        // EqualInterval runs
-//        classificationFunctionName = "EqualInterval";
-//        runAll(true, classificationFunctionName);
-//        runAll(false, classificationFunctionName);
+            // Jenks runs
+            classificationFunctionName = "Jenks";
+            runAll(true, classificationFunctionName);
+            runAll(false, classificationFunctionName);
+
+            // Quantile runs
+            classificationFunctionName = "Quantile";
+            runAll(true, classificationFunctionName);
+            runAll(false, classificationFunctionName);
+
+            // EqualInterval runs
+            classificationFunctionName = "EqualInterval";
+            runAll(true, classificationFunctionName);
+            runAll(false, classificationFunctionName);
+        }
     }
 
     public void runAll(
@@ -160,40 +174,39 @@ public class DW_ChoroplethMaps extends DW_Maps {
         styleParameters.setClassificationFunctionName(classificationFunctionName);
         styleParameters.setDrawBoundaries(drawBoundaries);
 
-//        // OA
-//        level = "OA";
-//        targetPropertyName = "CODE";
-//        runAllLevel(false);
-//        // LSOA
-//        level = "LSOA";
-//        targetPropertyName = "LSOA11CD";
-//        runAllLevel(false);
+        // OA
+        level = "OA";
+        targetPropertyName = "CODE";
+        runAllLevel(false);
+        // LSOA
+        level = "LSOA";
+        targetPropertyName = "LSOA11CD";
+        runAllLevel(false);
         // MSOA
         level = "MSOA";
         targetPropertyName = "MSOA11CD";
         runAllLevel(true);
-        
+
 //        // Postcode Sector
 //        level = "PostcodeSector";
 //        postcodes = 
 //        targetPropertyName = "Code";
 //        runAllLevel(false);
-        
     }
 
     public void runAllLevel(boolean countClientsInAndOutOfRegion) {
         DW_CensusAreaCodesAndShapefiles tCensusCodesAndShapefiles;
         // Get Census Codes and Shapefiles
         if (level.equalsIgnoreCase("PostCodeSector")) {
-        tCensusCodesAndShapefiles = new DW_CensusAreaCodesAndShapefiles(
-                "MSOA",
-                "MSOA11CD",
-                getShapefileDataStoreFactory());
+            tCensusCodesAndShapefiles = new DW_CensusAreaCodesAndShapefiles(
+                    "MSOA",
+                    "MSOA11CD",
+                    getShapefileDataStoreFactory());
         } else {
-        tCensusCodesAndShapefiles = new DW_CensusAreaCodesAndShapefiles(
-                level,
-                targetPropertyName,
-                getShapefileDataStoreFactory());
+            tCensusCodesAndShapefiles = new DW_CensusAreaCodesAndShapefiles(
+                    level,
+                    targetPropertyName,
+                    getShapefileDataStoreFactory());
         }
         Object[] tLevelData;
         TreeMap<String, Deprivation_DataRecord> deprivationRecords;
@@ -220,7 +233,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
         generatedAdviceLeedsDir = new File(
                 generatedAdviceLeedsDir,
                 IDType.getClass().getSimpleName());
-        
+
         tLeedsCABFilenames = getLeedsCABFilenames();
         tLevelData = getLevelData(
                 generatedAdviceLeedsDir,
@@ -236,27 +249,31 @@ public class DW_ChoroplethMaps extends DW_Maps {
          * (filter == 3) No clipping
          */
         //for (int filter = 0; filter < 4; filter++) {
-        for (int filter = 0; filter < 1; filter++) {
-        //for (int filter = 2; filter < 3; filter++) {
-            //int filter = 2;
-            
-            deprivationRecords = null;
-            if (individuallyStyled) {
-                scaleToFirst = false;
-                runCAB(deprivationRecords,
-                        tCensusCodesAndShapefiles, 
-                        tLeedsCABFilenames,
-                        tLevelData, 
-                        filter, 
-                        scaleToFirst,
-                        countClientsInAndOutOfRegion);
-            }
-//            if (commonlyStyled) {
-//                scaleToFirst = true;
-//                runCAB(deprivationRecords,
-//                        tCensusCodesAndShapefiles, tLeedsCABFilenames,
-//                        tLevelData, filter, scaleToFirst);
-//            }
+        for (int filter = 0; filter < 3; filter++) {
+            //for (int filter = 2; filter < 3; filter++) {
+            if (filter == 0 || filter == 2) {
+
+                deprivationRecords = null;
+                if (individuallyStyled) {
+                    scaleToFirst = false;
+                    runCAB(deprivationRecords,
+                            tCensusCodesAndShapefiles,
+                            tLeedsCABFilenames,
+                            tLevelData,
+                            filter,
+                            scaleToFirst,
+                            countClientsInAndOutOfRegion);
+                }
+                if (commonlyStyled) {
+                    scaleToFirst = true;
+                    runCAB(deprivationRecords,
+                            tCensusCodesAndShapefiles,
+                            tLeedsCABFilenames,
+                            tLevelData,
+                            filter,
+                            scaleToFirst,
+                            false);
+                }
 
 //            // Get deprivation data
 //            deprivationRecords = DW_Processor.getDeprivation_Data();
@@ -272,11 +289,12 @@ public class DW_ChoroplethMaps extends DW_Maps {
 //                        tCensusCodesAndLeedsLevelShapefile, tLeedsCABFilenames,
 //                        levelData, filter, scaleToFirst);
 //            }
+            }
+//            if (!showMapsInJMapPane) {
+//                // Tidy up
+//                tCensusCodesAndShapefiles.dispose();
+//            }
         }
-//        if (!showMapsInJMapPane) {
-//            // Tidy up
-//            tCensusCodesAndLeedsLevelShapefile.dispose();
-//        }
     }
 
     public void runCAB(
@@ -322,13 +340,24 @@ public class DW_ChoroplethMaps extends DW_Maps {
                 scaleToFirst,
                 doInAndOutOfRegionCounts);
         if (doInAndOutOfRegionCounts) {
-            File outputInAndOutOfRegionCounts;
-            outputInAndOutOfRegionCounts = new File(
-                DW_Files.getOutputAdviceLeedsTablesDir(),
-                "InAndOutOfRegionCounts" + filter + ".csv");
+            String IDTypeName;
+            IDTypeName = IDType.getClass().getSimpleName();
+            File outputInAndOutOfRegionCountsDir;
+            outputInAndOutOfRegionCountsDir = new File(
+                    DW_Files.getOutputAdviceLeedsTablesDir(),
+                    IDTypeName);
+            outputInAndOutOfRegionCountsDir.mkdirs();
+            File outputInAndOutOfRegionCountsFile;
+            outputInAndOutOfRegionCountsFile = new File(
+                    outputInAndOutOfRegionCountsDir,
+                    "InAndOutOfRegionCounts" + filter + ".csv");
             PrintWriter pw;
-            pw = Generic_StaticIO.getPrintWriter(outputInAndOutOfRegionCounts, false);
-            pw.println("Year AdviceLeeds Service Region,ClientCountOutOfRegion,ClientCountInRegion,PercentageOutOfRegion");
+            pw = Generic_StaticIO.getPrintWriter(outputInAndOutOfRegionCountsFile, false);
+            if (IDType instanceof DW_ID_ClientOutletEnquiryID) {
+                pw.println("Year AdviceLeeds Service Region,EnquiryClientCountOutOfRegion,EnquiryClientCountInRegion,PercentageOutOfRegion");
+            } else {
+                pw.println("Year AdviceLeeds Service Region,ClientCountOutOfRegion,ClientCountInRegion,PercentageOutOfRegion");
+            }
             Iterator<String> ite;
             ite = inAndOutOfRegionCounts.keySet().iterator();
             while (ite.hasNext()) {
@@ -558,6 +587,8 @@ public class DW_ChoroplethMaps extends DW_Maps {
      * @param filter
      * @param scaleToFirst If scaleToFirst == true then all maps are shaded with
      * the styles provided by the first map.
+     * @param countClientsInAndOutOfRegion
+     * @return
      */
     public TreeMap<String, TreeMap<Integer, Integer>> mapCountsForLevel(
             DW_CensusAreaCodesAndShapefiles tCensusCodesAndShapefiles,
@@ -570,10 +601,10 @@ public class DW_ChoroplethMaps extends DW_Maps {
             boolean countClientsInAndOutOfRegion) {
         // Initialise result
         TreeMap<String, TreeMap<Integer, Integer>> result = null;
-            if (countClientsInAndOutOfRegion) {
-                result = new TreeMap<String, TreeMap<Integer, Integer>>();
-            }
-            TreeSet<String> censusCodes;
+        if (countClientsInAndOutOfRegion) {
+            result = new TreeMap<String, TreeMap<Integer, Integer>>();
+        }
+        TreeSet<String> censusCodes;
         if (filter == 0) {
             censusCodes = tCensusCodesAndShapefiles.getLeedsCensusAreaCodes();
             foregroundDW_Shapefile1 = tCensusCodesAndShapefiles.getLeedsLADDW_Shapefile();
@@ -595,7 +626,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
         // attributeName is the attribute name used in naming attribute in 
         // resulting shapefile
         String attributeName = "Count";
-        
+
         // Get output feature types
         String name = attributeName + "FeatureType";
         SimpleFeatureType outputFeatureType;
@@ -605,8 +636,6 @@ public class DW_ChoroplethMaps extends DW_Maps {
                 attributeName,
                 name);
 
-        
-            
         if (deprivationRecords != null) {
             TreeMap<Integer, Integer> deprivationClasses = null;
             deprivationClasses = Deprivation_DataHandler.getDeprivationClasses(
@@ -660,7 +689,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                             0,
                             showMapsInJMapPane);
                     if (!scaleToFirst) {
-                        styleParameters.setStyle(null,0);
+                        styleParameters.setStyle(null, 0);
                     }
                 }
             }
@@ -693,7 +722,9 @@ public class DW_ChoroplethMaps extends DW_Maps {
                         outputShapefile,
                         filter,
                         countClientsInAndOutOfRegion);
-                result.put(outname, inAndOutOfRegionCount);
+                if (countClientsInAndOutOfRegion) {
+                    result.put(outname, inAndOutOfRegionCount);
+                }
                 // Output to image
                 DW_GeoTools.outputToImage(
                         outname,
@@ -709,7 +740,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                         0,
                         showMapsInJMapPane);
                 if (!scaleToFirst) {
-                    styleParameters.setStyle(null,0);
+                    styleParameters.setStyle(null, 0);
                 }
             }
         }

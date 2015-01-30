@@ -76,12 +76,12 @@ import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorGWS;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord0;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord0_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord2;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord2_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.ClientBureauOutletID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.EnquiryClientBureauOutletID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletEnquiryID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -113,9 +113,9 @@ public class DW_DensityMaps extends DW_Maps {
     protected long xllcorner;
     protected long yllcorner;
     protected TreeMap<String, String> tLookupFromPostcodeToCensusCodes;
-    
+
     protected int maxCellDistanceForGeneralisation;
-    
+
     //protected boolean outputESRIAsciigrids;
     protected boolean handleOutOfMemoryErrors;
 
@@ -213,13 +213,13 @@ public class DW_DensityMaps extends DW_Maps {
                 handleOutOfMemoryErrors);
 
         cellsize = 100;//50;//100;//50; //100;
-        
+
         maxCellDistanceForGeneralisation = 8;//32; // add a min too for top up runs.
-                
+
         Object IDType;
         //IDType = new ClientBureauOutletID();
-        IDType = new EnquiryClientBureauOutletID();
-        
+        IDType = new DW_ID_ClientOutletEnquiryID();
+
 //        Currently only equal interval implemented
 //        // Jenks runs
 //        styleParameters.setClassificationFunctionName("Jenks");
@@ -233,14 +233,13 @@ public class DW_DensityMaps extends DW_Maps {
         commonlyStyled = true;
         individuallyStyled = true;
         runAll(IDType);
-        
+
 //        // Equal Interval runs
 //        styleParameters.setClassificationFunctionName("EqualInterval");
 //        styleParameters.setStylesNull();
 //        commonlyStyled = true;
 //        individuallyStyled = true;
 //        runAll(IDType);
-        
     }
 
     public void runAll(Object IDType) {
@@ -277,33 +276,33 @@ public class DW_DensityMaps extends DW_Maps {
         for (int filter = 0; filter < 3; filter++) {
             if (filter == 0) {
             //if (filter == 0 || filter == 2) {
-        //for (int filter = 2; filter < 3; filter++) {
-            //int filter = 0;
-            deprivationRecords = null;
-            if (commonlyStyled) {
-                scaleToFirst = true;
-                runCAB(deprivationRecords,
-                        outlets,
-                        targetPropertyName,
-                        tLSOACodesAndLeedsLSOAShapefile,
-                        tLookupFromPostcodeToCensusCodes,
-                        filter,
-                        scaleToFirst,
-                        IDType,
-                        handleOutOfMemoryErrors);
-            }
-            if (individuallyStyled) {
-                scaleToFirst = false;
-                runCAB(deprivationRecords,
-                        outlets,
-                        targetPropertyName,
-                        tLSOACodesAndLeedsLSOAShapefile,
-                        tLookupFromPostcodeToCensusCodes,
-                        filter,
-                        scaleToFirst,
-                        IDType,
-                        handleOutOfMemoryErrors);
-            }
+                //for (int filter = 2; filter < 3; filter++) {
+                //int filter = 0;
+                deprivationRecords = null;
+                if (commonlyStyled) {
+                    scaleToFirst = true;
+                    runCAB(deprivationRecords,
+                            outlets,
+                            targetPropertyName,
+                            tLSOACodesAndLeedsLSOAShapefile,
+                            tLookupFromPostcodeToCensusCodes,
+                            filter,
+                            scaleToFirst,
+                            IDType,
+                            handleOutOfMemoryErrors);
+                }
+                if (individuallyStyled) {
+                    scaleToFirst = false;
+                    runCAB(deprivationRecords,
+                            outlets,
+                            targetPropertyName,
+                            tLSOACodesAndLeedsLSOAShapefile,
+                            tLookupFromPostcodeToCensusCodes,
+                            filter,
+                            scaleToFirst,
+                            IDType,
+                            handleOutOfMemoryErrors);
+                }
 
 //            // Get deprivation data
 //            deprivationRecords = DW_Processor.getDeprivation_Data();
@@ -329,7 +328,7 @@ public class DW_DensityMaps extends DW_Maps {
 //                        scaleToFirst,
 //                        handleOutOfMemoryErrors);
 //            }
-        }
+            }
         }
         // Tidy up
         tLSOACodesAndLeedsLSOAShapefile.dispose();
@@ -458,7 +457,7 @@ public class DW_DensityMaps extends DW_Maps {
 
         // Get the CAB Client Data
         ArrayList<String> tChapeltownCABData;
-        tChapeltownCABData = getChapeltownCABDataPostcodes();
+        tChapeltownCABData = getChapeltownCABDataPostcodes(IDType);
         TreeMap<String, ArrayList<String>> tLeedsCABData;
         tLeedsCABData = getLeedsCABDataPostcodes(IDType);
         tLeedsCABData.put("Chapeltown", tChapeltownCABData);
@@ -474,7 +473,6 @@ public class DW_DensityMaps extends DW_Maps {
         String nameOfGrid;
         nameOfGrid = "gridNrows" + Long.toString(nrows) + "Ncols" + Long.toString(ncols);
         // Grid generalisation paramters
-        
 
         if (deprivationRecords != null) {
             TreeMap<Integer, Integer> deprivationClasses = null;
@@ -652,7 +650,7 @@ public class DW_DensityMaps extends DW_Maps {
                     outletmapDirectory,
                     nameOfGrid + ".asc");
             eage.toAsciiFile(g, asciigridFile, handleOutOfMemoryErrors);
-            
+
             int index;
 
             // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
@@ -719,7 +717,7 @@ public class DW_DensityMaps extends DW_Maps {
                         outletmapDirectory,
                         outputName + ".asc");
                 eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
-                
+
                 // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
                 outputGridToImageUsingGeoToolsAndSetCommonStyle(
                         100.0d,//(double) Math.PI * cellDistanceForGeneralisation * cellDistanceForGeneralisation,
@@ -831,7 +829,7 @@ public class DW_DensityMaps extends DW_Maps {
 //        GridCoverage2DReader reader = format.getReader(asciigridFile);
         GridCoverage2D gc;
         gc = getGridCoverage2D(agr);
-        
+
         String outname = nameOfGrid + "GeoToolsOutput";
         //showMapsInJMapPane = true;
 
@@ -872,32 +870,25 @@ public class DW_DensityMaps extends DW_Maps {
             agr.dispose();
         }
     }
-    
-    
 
     public static TreeMap<String, ArrayList<DW_Point>> getLeedsCABDataPoints(
-    Object IDType) {
+            Object IDType) {
         TreeMap<String, ArrayList<DW_Point>> result;
         result = new TreeMap<String, ArrayList<DW_Point>>();
         String filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
-        CAB_DataRecord2_Handler aCAB_DataRecord2_Handler;
-        aCAB_DataRecord2_Handler = new CAB_DataRecord2_Handler();
-        TreeMap<Object, CAB_DataRecord2> tLeedsCABData;
-        if (IDType instanceof EnquiryClientBureauOutletID) {
-            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_EnquiryClientBureauOutletID_CAB_DataRecord2(
-                    filename,
-                    aCAB_DataRecord2_Handler);
-        } else {
-            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_ClientBureauOutletID_CAB_DataRecord2(
-                    filename,
-                    aCAB_DataRecord2_Handler);
-        }
+        DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
+        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler();
+        TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
+        tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData(
+                filename,
+                aCAB_DataRecord2_Handler,
+                IDType);
         int countNonMatchingPostcodes = 0;
         Iterator ite;
         ite = tLeedsCABData.keySet().iterator();
         while (ite.hasNext()) {
             Object key = ite.next();
-            CAB_DataRecord2 value = tLeedsCABData.get(key);
+            DW_Data_CAB2_Record value = tLeedsCABData.get(key);
             String postcode = value.getPostcode();
             String outlet = value.getOutlet();
             String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
@@ -920,27 +911,22 @@ public class DW_DensityMaps extends DW_Maps {
     }
 
     public static TreeMap<String, ArrayList<String>> getLeedsCABDataPostcodes(
-        Object IDType) {
+            Object IDType) {
         TreeMap<String, ArrayList<String>> result;
         result = new TreeMap<String, ArrayList<String>>();
         String filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
-        CAB_DataRecord2_Handler aCAB_DataRecord2_Handler;
-        aCAB_DataRecord2_Handler = new CAB_DataRecord2_Handler();
-        TreeMap<Object, CAB_DataRecord2> tLeedsCABData;
-        if (IDType instanceof EnquiryClientBureauOutletID) {
-            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_EnquiryClientBureauOutletID_CAB_DataRecord2(
-                    filename,
-                    aCAB_DataRecord2_Handler);
-        } else {
-            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_ClientBureauOutletID_CAB_DataRecord2(
-                    filename,
-                    aCAB_DataRecord2_Handler);
-        }
+        DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
+        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler();
+        TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
+        tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData(
+                filename,
+                aCAB_DataRecord2_Handler,
+                IDType);
         Iterator ite;
         ite = tLeedsCABData.keySet().iterator();
         while (ite.hasNext()) {
             Object key = ite.next();
-            CAB_DataRecord2 value = tLeedsCABData.get(key);
+            DW_Data_CAB2_Record value = tLeedsCABData.get(key);
             String postcode = value.getPostcode();
             String outlet = value.getOutlet();
             String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
@@ -956,19 +942,22 @@ public class DW_DensityMaps extends DW_Maps {
         return result;
     }
 
-    public static ArrayList<DW_Point> getChapeltownCABDataPoints() {
+    public static ArrayList<DW_Point> getChapeltownCABDataPoints(
+            Object IDType) {
         ArrayList<DW_Point> result;
         result = new ArrayList<DW_Point>();
-        CAB_DataRecord0_Handler tCAB_DataRecord0_Handler;
-        tCAB_DataRecord0_Handler = new CAB_DataRecord0_Handler();
-        TreeMap<String, CAB_DataRecord0> tChapeltownCABData;
-        tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(tCAB_DataRecord0_Handler);
+        DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
+        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler();
+        TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
+        tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(
+                tCAB_DataRecord0_Handler,
+                IDType);
         int countNonMatchingPostcodes = 0;
-        Iterator<String> ite;
+        Iterator ite;
         ite = tChapeltownCABData.keySet().iterator();
         while (ite.hasNext()) {
-            String key = ite.next();
-            CAB_DataRecord0 value = tChapeltownCABData.get(key);
+            Object key = ite.next();
+            DW_Data_CAB0_Record value = tChapeltownCABData.get(key);
             String postcode = value.getPostcode();
             String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
             DW_Point aPoint = getONSPDlookups()[0].get(formattedpostcode);
@@ -982,18 +971,21 @@ public class DW_DensityMaps extends DW_Maps {
         return result;
     }
 
-    public static ArrayList<String> getChapeltownCABDataPostcodes() {
+    public static ArrayList<String> getChapeltownCABDataPostcodes(
+            Object IDType) {
         ArrayList<String> result;
         result = new ArrayList<String>();
-        CAB_DataRecord0_Handler tCAB_DataRecord0_Handler;
-        tCAB_DataRecord0_Handler = new CAB_DataRecord0_Handler();
-        TreeMap<String, CAB_DataRecord0> tChapeltownCABData;
-        tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(tCAB_DataRecord0_Handler);
-        Iterator<String> ite;
+        DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
+        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler();
+        TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
+        tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(
+                tCAB_DataRecord0_Handler,
+                IDType);
+        Iterator<DW_ID_ClientID> ite;
         ite = tChapeltownCABData.keySet().iterator();
         while (ite.hasNext()) {
-            String key = ite.next();
-            CAB_DataRecord0 value = tChapeltownCABData.get(key);
+            DW_ID_ClientID key = ite.next();
+            DW_Data_CAB0_Record value = tChapeltownCABData.get(key);
             String postcode = value.getPostcode();
             String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
             result.add(formattedpostcode);

@@ -28,34 +28,35 @@ import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
-public class LCC_WRU_DataRecord_Handler {
+public class DW_Data_BLC_Handler {
 
-    public LCC_WRU_DataRecord_Handler() {
+    public DW_Data_BLC_Handler() {
     }
 
     public static void main(String[] args) {
-       new LCC_WRU_DataRecord_Handler().run();
+        new DW_Data_BLC_Handler().run();
     }
-    
+
     public void run() {
-        String filename = "WelfareRights - Data Extract.csv";
-        TreeMap<String, LCC_WRU_DataRecord> data;
+        String filename = "Burley Lodge Amalgamated 2012-2013.csv";
+        TreeMap<String, DW_Data_BLC_Record> data;
         data = loadInputData(filename);
     }
-    
+
     /**
-     * Loads LCC_WRU data from a file in directory, filename.
+     * Loads BLC data from a file in directory, filename.
+     *
      * @param filename
-     * @return 
+     * @return
      */
-    public TreeMap<String, LCC_WRU_DataRecord> loadInputData(
+    public TreeMap<String, DW_Data_BLC_Record> loadInputData(
             String filename) {
         System.out.println("Loading " + filename);
-        TreeMap<String, LCC_WRU_DataRecord> result;
-        result = new TreeMap<String, LCC_WRU_DataRecord>();
+        TreeMap<String, DW_Data_BLC_Record> result;
+        result = new TreeMap<String, DW_Data_BLC_Record>();
         File directory = new File(
                 DW_Files.getInputAdviceLeedsDir(),
-                "LCC_WRU");
+                "BurleyLodgeCentre");
         File inputFile = new File(
                 directory,
                 filename);
@@ -80,13 +81,14 @@ public class LCC_WRU_DataRecord_Handler {
         st.wordChars('#', '#');
         st.wordChars(':', ':');
         st.wordChars('�', '�');
+        st.wordChars('!', '!');
         String line = "";
         long RecordID = 0;
         int recordsLoaded = 0;
         int additionalRecordsForClientsThatAreIgnored = 0;
         try {
             // Skip the header
-            int headerLines = 3;
+            int headerLines = 8;
             for (int i = 0; i < headerLines; i++) {
                 Generic_StaticIO.skipline(st);
             }
@@ -94,34 +96,33 @@ public class LCC_WRU_DataRecord_Handler {
             int tokenType;
             tokenType = st.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
-                
-//                // For debugging
-//                if (RecordID == 403) {
-//                //if (RecordID % 400 == 0) {
-//                //if (RecordID > 399) {
-//                    System.out.println("RecordID " + RecordID);
-//                    //int debug = 1;
-//                }
-                
+
                 switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
                         //System.out.println(line);
                         break;
                     case StreamTokenizer.TT_WORD:
                         line = st.sval;
+                        //434,Yes, , ,,,,,,,02/04/2012,03/04/2012,Female,D. 35-49,A. White: British,Yes,B. Buying Home (mortgage etc.),B. Married /cohabiting/civil partnership,C. Part-Time,35855,No ,Yes,No ,No ,No ,No ,No ,No ,No ,No ,A/C,None,No ,Yes,Yes,No ,No ,LS10 4,3,A. Face to Face,B. One-off,Yes,,,Male,,Yes,A. Own outright,A. Face to Face,,,,,,,,,,
+
+                        // For debugging
+                        //if (RecordID == 20) {
+                        if (RecordID % 100 == 0) {
+                            System.out.println("RecordID " + RecordID);
+                        }
+
                         try {
-                            LCC_WRU_DataRecord record;
-                                record = new LCC_WRU_DataRecord(RecordID, line, this);
-                            //String enquiryReferenceNumber = record.getEnquiryReferenceNumber();
-                                //1-102J,20-Sep-1936,Not Stated,Refused,LS6 1LS,2-464768375,2-7SFJ2M,Welfare Rights,Home Visit (MacMillan),05-Dec-2011,Blue Badge,-,75,77.11
-    
-                            String uniqueCustomerRef = record.getUniqueCustomerRef();
-                            if (result.containsKey(uniqueCustomerRef)) {
+                            DW_Data_BLC_Record record;
+                            record = new DW_Data_BLC_Record(RecordID, line, this);
+                            String clientReference = record.getClientReference();
+                            if (!clientReference.equalsIgnoreCase("")) {
+                                if (result.containsKey(clientReference)) {
 //                                System.out.println("Additional record for client " + aClient_Ref);
-                                additionalRecordsForClientsThatAreIgnored ++;
-                            } else {
-                                result.put(uniqueCustomerRef, record);
-                                recordsLoaded ++;
+                                    additionalRecordsForClientsThatAreIgnored++;
+                                } else {
+                                    result.put(clientReference, record);
+                                    recordsLoaded++;
+                                }
                             }
                         } catch (Exception e) {
                             System.err.println(line);
@@ -142,4 +143,5 @@ public class LCC_WRU_DataRecord_Handler {
         System.out.println("Number of additional records for clients that are ignored " + additionalRecordsForClientsThatAreIgnored);
         return result;
     }
+
 }

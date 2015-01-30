@@ -22,12 +22,8 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
  *
  * @author geoagdt
  */
-public class CAB_DataRecord1 {
+public class DW_Data_CAB1_Record extends DW_Data_Postcode_Record {
 
-    /**
-     * 0 RecordID
-     */
-    protected long RecordID;
     /**
      * 0 1 RecordType
      */
@@ -62,7 +58,7 @@ public class CAB_DataRecord1 {
     private String MaritalStatus;
     private String ChildDependantsUnder14;
     private String ChildDependantsOver14;
-    private String PostalCode;
+//    private String PostalCode;
     private String LocalAuthority;
     private String LocalAuthorityWard;
     private String ParliamentaryConstituency;
@@ -77,9 +73,9 @@ public class CAB_DataRecord1 {
      *
      * @param RecordID
      */
-    public CAB_DataRecord1(
+    public DW_Data_CAB1_Record(
             long RecordID) {
-        this.RecordID = RecordID;
+        setRecordID(RecordID);
     }
 
     /**
@@ -88,11 +84,11 @@ public class CAB_DataRecord1 {
      * @param handler
      * @throws java.lang.Exception
      */
-    public CAB_DataRecord1(
+    public DW_Data_CAB1_Record(
             long RecordID,
             String line,
-            CAB_DataRecord1_Handler handler) throws Exception {
-        this.RecordID = RecordID;
+            DW_Data_CAB1_Handler handler) throws Exception {
+        setRecordID(RecordID);
         String[] fields = line.split(",");
         if (fields.length != 36) {
                     System.out.println("fields.length " + fields.length);
@@ -150,7 +146,7 @@ public class CAB_DataRecord1 {
         n++;
         ChildDependantsOver14 = fields[n];
         n++;
-        PostalCode = fields[n];
+        setPostcode(fields[n]);
         n++;
         LocalAuthority = fields[n];
         n++;
@@ -171,7 +167,7 @@ public class CAB_DataRecord1 {
 
     @Override
     public String toString() {
-        return "RecordID " + RecordID
+        return super.toString()
                 + ",ClientGUID " + ClientGUID
                 + ",AgeGroup " + AgeGroup
                 + ",Age " + Age
@@ -196,7 +192,7 @@ public class CAB_DataRecord1 {
                 + ",MaritalStatus " + MaritalStatus
                 + ",ChildDependantsUnder14 " + ChildDependantsUnder14
                 + ",ChildDependantsOver14 " + ChildDependantsOver14
-                + ",PostalCode " + PostalCode
+//                + ",PostalCode " + PostalCode
                 + ",LocalAuthority " + LocalAuthority
                 + ",LocalAuthorityWard " + LocalAuthorityWard
                 + ",ParliamentaryConstituency " + ParliamentaryConstituency
@@ -205,14 +201,6 @@ public class CAB_DataRecord1 {
                 + ",DateOfBirth " + DateOfBirth
                 + ",Religion " + Religion
                 + ",SexualOrientation " + SexualOrientation;
-    }
-
-    public long getRecordID() {
-        return RecordID;
-    }
-
-    public void setRecordID(long RecordID) {
-        this.RecordID = RecordID;
     }
 
     public String getRecordType() {
@@ -421,14 +409,6 @@ public class CAB_DataRecord1 {
 
     public void setChildDependantsOver14(String ChildDependantsOver14) {
         this.ChildDependantsOver14 = ChildDependantsOver14;
-    }
-
-    public String getPostalCode() {
-        return PostalCode;
-    }
-
-    public void setPostalCode(String PostalCode) {
-        this.PostalCode = PostalCode;
     }
 
     public String getLocalAuthority() {

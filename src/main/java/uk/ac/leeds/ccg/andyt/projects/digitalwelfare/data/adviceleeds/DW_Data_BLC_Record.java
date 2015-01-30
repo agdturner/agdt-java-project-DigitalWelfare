@@ -24,7 +24,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_StaticIO;
  *
  * @author geoagdt
  */
-public class BLC_DataRecord {
+public class DW_Data_BLC_Record extends DW_Data_Postcode_Record {
 
     // Header
     //Client Reference,Does the client agree to be contact for evaluation / market research?,Client's first name,Client's second name,1st Line of Address,2nd Line of Address,Town/City,Postcode,Telephone Number,Email address,Date of first contact,Date case is closed,1. Gender,2. Age,3. Ethnicity,4. State Benefits (Excluding child benefit),5. Housing Tenure,6. Marital Status,7. Employment Status,8. Total amount of debts,A. Referred to telephone provider for debt solution,B. Self help,C. DRO,D. Bankruptcy,E. Referred to IVA provider,F. CASHflow,G. Client represented in Court,H. Negotiation with Creditors by Debt Adviser,I. Income maximisation,J. Other,A. No Bank Account                                                                                                                                                                                                      (NONE = No Bank Account /                                   A/C = Account is held),B. No Savings Held                                                                                                                                                             (NONE = No Savings Held /                                              SAV = Savings Held),C. User of High Interest Credit,D. Priority Debts Owed,"E. Individual Income < �14,500","F. Household Income < �15,600",G. No Home Contents Insurance,H. First Half of Postcode plus one digit,Number of Financial Exclusion Indicators,11. Initial channel used to deliver debt advice,12. Type of Advice,13. Agreeable to Evaluation,,,,,,,,,,,,,,,,,
@@ -32,10 +32,7 @@ public class BLC_DataRecord {
     //434,Yes, , ,,,,,,,02/04/2012,03/04/2012,Female,D. 35-49,A. White: British,Yes,B. Buying Home (mortgage etc.),B. Married /cohabiting/civil partnership,C. Part-Time,35855,No ,Yes,No ,No ,No ,No ,No ,No ,No ,No ,A/C,None,No ,Yes,Yes,No ,No ,LS10 4,3,A. Face to Face,B. One-off,Yes,,,Male,,Yes,A. Own outright,A. Face to Face,,,,,,,,,,
     // Somehow the formula in the final line of the cell adds the following to the csv for the example record shown: ",,,Male,,Yes,A. Own outright,A. Face to Face,,,,,,,,,,"
     // The additional part of the line is ignored for the time being.
-    /**
-     * RecordID
-     */
-    private long RecordID;
+    
     private String ClientReference;
     private String DoesTheClientAgreeToBeContactForEvaluationOrMarketResearch;
     private String ClientFirstName;
@@ -43,7 +40,7 @@ public class BLC_DataRecord {
     private String FirstLineOfAddress;
     private String SecondLineOfAddress;
     private String TownOrCity;
-    private String Postcode;
+//    private String Postcode;
     private String TelephoneNumber;
     private String EmailAddress;
     private String DateOfFirstContact;
@@ -79,7 +76,7 @@ public class BLC_DataRecord {
     private String TypeOfAdvice;
     private String AgreeableToEvaluation;
 
-    public BLC_DataRecord() {
+    public DW_Data_BLC_Record() {
     }
 
     /**
@@ -87,9 +84,9 @@ public class BLC_DataRecord {
      *
      * @param RecordID
      */
-    public BLC_DataRecord(
+    public DW_Data_BLC_Record(
             long RecordID) {
-        this.RecordID = RecordID;
+        setRecordID(RecordID);
     }
 
     /**
@@ -98,11 +95,11 @@ public class BLC_DataRecord {
      * @param handler
      * @throws java.lang.Exception
      */
-    public BLC_DataRecord(
+    public DW_Data_BLC_Record(
             long RecordID,
             String line,
-            BLC_DataRecord_Handler handler) throws Exception {
-        this.RecordID = RecordID;
+            DW_Data_BLC_Handler handler) throws Exception {
+        setRecordID(RecordID);
         String[] fields;
         fields = DW_StaticIO.splitWithQuotesThenCommas(line);
         int fieldCount = fields.length;
@@ -116,7 +113,7 @@ public class BLC_DataRecord {
             FirstLineOfAddress = fields[4];
             SecondLineOfAddress = fields[5];
             TownOrCity = fields[6];
-            Postcode = fields[7];
+            setPostcode(fields[7]);
             TelephoneNumber = fields[8];
             EmailAddress = fields[9];
             DateOfFirstContact = fields[10];
@@ -154,19 +151,7 @@ public class BLC_DataRecord {
         }
     }
 
-    /**
-     * @return the RecordID
-     */
-    public long getRecordID() {
-        return RecordID;
-    }
-
-    /**
-     * @param RecordID the RecordID to set
-     */
-    public void setRecordID(long RecordID) {
-        this.RecordID = RecordID;
-    }
+    
 
     /**
      * @return the ClientReference
@@ -265,20 +250,6 @@ public class BLC_DataRecord {
      */
     public void setTownOrCity(String TownOrCity) {
         this.TownOrCity = TownOrCity;
-    }
-
-    /**
-     * @return the Postcode
-     */
-    public String getPostcode() {
-        return Postcode;
-    }
-
-    /**
-     * @param Postcode the Postcode to set
-     */
-    public void setPostcode(String Postcode) {
-        this.Postcode = Postcode;
     }
 
     /**

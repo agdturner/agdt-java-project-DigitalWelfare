@@ -64,6 +64,7 @@ public class DW_Shapefile {
 //            getFileDataStore().dispose();
 //        }
         if (fileDataStore != null) {
+            //fileDataStore.preDispose(); // Perhaps there should be a predispose method.
             fileDataStore.dispose();
         }
     }

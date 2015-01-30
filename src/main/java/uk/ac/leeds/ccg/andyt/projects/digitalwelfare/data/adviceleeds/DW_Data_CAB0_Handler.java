@@ -28,67 +28,55 @@ import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
-public class BLC_DataRecord_Handler {
+/**
+ * For Handling data from Petra.
+ * @author geoagdt
+ */
+public class DW_Data_CAB0_Handler extends DW_Data_Abstract_Handler {
 
-    public BLC_DataRecord_Handler() {
+    public DW_Data_CAB0_Handler() {
     }
 
-    public static void main(String[] args) {
-        new BLC_DataRecord_Handler().run();
+    @Override
+    public TreeMap loadInputData(File dir, String filename, Object IDType) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    public void run() {
-        String filename = "Burley Lodge Amalgamated 2012-2013.csv";
-        TreeMap<String, BLC_DataRecord> data;
-        data = loadInputData(filename);
-    }
-
+    
     /**
-     * Loads BLC data from a file in directory, filename.
+     * Loads Chapeltown CAB data.
      *
+     * @param type 
+     * if (type == 0) {
+   record = new DW_Data_CAB0_Record(RecordID, line, this);
+ } else {
+   record = new DW_Data_CAB0_Record1(RecordID, line, this);
+ }
      * @param filename
-     * @return
+     * @return TreeMap<String,DW_Data_CAB0_Record> representing records
      */
-    public TreeMap<String, BLC_DataRecord> loadInputData(
-            String filename) {
-        System.out.println("Loading " + filename);
-        TreeMap<String, BLC_DataRecord> result;
-        result = new TreeMap<String, BLC_DataRecord>();
+    public TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> loadInputData(
+            int type,
+            String filename,
+            Object IDType) {
+        TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> result;
+        result = new TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record>();
         File directory = new File(
                 DW_Files.getInputAdviceLeedsDir(),
-                "BurleyLodgeCentre");
+                "ChapeltownCAB");
         File inputFile = new File(
                 directory,
                 filename);
         BufferedReader br;
         br = Generic_StaticIO.getBufferedReader(inputFile);
         StreamTokenizer st;
-        st = new StreamTokenizer(br);
-        Generic_StaticIO.setStreamTokenizerSyntax5(st);
-        st.wordChars('`', '`');
-        st.wordChars('(', '(');
-        st.wordChars(')', ')');
-        st.wordChars('\'', '\'');
-        st.wordChars('\"', '\"');
-        st.wordChars('*', '*');
-        st.wordChars('\\', '\\');
-        st.wordChars('/', '/');
-        st.wordChars('&', '&');
-        st.wordChars('£', '£');
-        st.wordChars('<', '<');
-        st.wordChars('>', '>');
-        st.wordChars('=', '=');
-        st.wordChars('#', '#');
-        st.wordChars(':', ':');
-        st.wordChars('�', '�');
-        st.wordChars('!', '!');
+        st = getStreamTokenizer(br);
         String line = "";
         long RecordID = 0;
         int recordsLoaded = 0;
-        int additionalRecordsForClientsThatAreIgnored = 0;
+        int countOfAdditionalRecordsThatAreIgnored = 0;
         try {
             // Skip the header
-            int headerLines = 8;
+            int headerLines = 1;
             for (int i = 0; i < headerLines; i++) {
                 Generic_StaticIO.skipline(st);
             }
@@ -96,33 +84,29 @@ public class BLC_DataRecord_Handler {
             int tokenType;
             tokenType = st.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
-
                 switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
                         //System.out.println(line);
                         break;
                     case StreamTokenizer.TT_WORD:
                         line = st.sval;
-                        //434,Yes, , ,,,,,,,02/04/2012,03/04/2012,Female,D. 35-49,A. White: British,Yes,B. Buying Home (mortgage etc.),B. Married /cohabiting/civil partnership,C. Part-Time,35855,No ,Yes,No ,No ,No ,No ,No ,No ,No ,No ,A/C,None,No ,Yes,Yes,No ,No ,LS10 4,3,A. Face to Face,B. One-off,Yes,,,Male,,Yes,A. Own outright,A. Face to Face,,,,,,,,,,
-
-                        // For debugging
-                        //if (RecordID == 20) {
-                        if (RecordID % 100 == 0) {
-                            System.out.println("RecordID " + RecordID);
-                        }
-
                         try {
-                            BLC_DataRecord record;
-                            record = new BLC_DataRecord(RecordID, line, this);
-                            String clientReference = record.getClientReference();
-                            if (!clientReference.equalsIgnoreCase("")) {
-                                if (result.containsKey(clientReference)) {
+                            DW_Data_CAB0_Record rec;
+                            if (type == 0) {
+                                rec = new DW_Data_CAB0_Record(RecordID, line, this);
+                            } else {
+                                rec = new DW_Data_CAB0_Record1(RecordID, line, this);
+                            }
+                            String client_ref;
+                            client_ref = rec.getClient_Ref();
+                            DW_ID_ClientID id;
+                            id = new DW_ID_ClientID(client_ref);
+                            if (result.containsKey(id)) {
 //                                System.out.println("Additional record for client " + aClient_Ref);
-                                    additionalRecordsForClientsThatAreIgnored++;
-                                } else {
-                                    result.put(clientReference, record);
-                                    recordsLoaded++;
-                                }
+                                countOfAdditionalRecordsThatAreIgnored ++;
+                            } else {
+                                result.put(id, rec);
+                                recordsLoaded ++;
                             }
                         } catch (Exception e) {
                             System.err.println(line);
@@ -140,8 +124,32 @@ public class BLC_DataRecord_Handler {
         }
         System.out.println("Number of records loaded " + recordsLoaded);
         System.out.println("Number of records not loaded " + (RecordID - recordsLoaded));
-        System.out.println("Number of additional records for clients that are ignored " + additionalRecordsForClientsThatAreIgnored);
+        System.out.println("Number of additional records for clients that are ignored " + countOfAdditionalRecordsThatAreIgnored);
         return result;
     }
 
+    public StreamTokenizer getStreamTokenizer(BufferedReader br){
+        StreamTokenizer result;
+        result = new StreamTokenizer(br);
+        Generic_StaticIO.setStreamTokenizerSyntax5(result);
+        result.wordChars('`', '`');
+        result.wordChars('(', '(');
+        result.wordChars(')', ')');
+        result.wordChars('\'', '\'');
+        result.wordChars('\"', '\"');
+        result.wordChars('*', '*');
+        result.wordChars('\\', '\\');
+        result.wordChars('/', '/');
+        result.wordChars('&', '&');
+        result.wordChars('£', '£');
+        result.wordChars('<', '<');
+        result.wordChars('>', '>');
+        result.wordChars('=', '=');
+        result.wordChars('#', '#');
+        result.wordChars(':', ':');
+        result.wordChars('�', '�');
+        return result;
+    }
+
+    
 }

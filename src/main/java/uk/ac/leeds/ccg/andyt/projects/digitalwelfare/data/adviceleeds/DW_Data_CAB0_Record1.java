@@ -24,7 +24,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_StaticIO;
  *
  * @author geoagdt
  */
-public class CAB_DataRecord01 extends CAB_DataRecord0 {
+public class DW_Data_CAB0_Record1 extends DW_Data_CAB0_Record {
 
     private String Last_Updated_By;
     private String Last_Updated;
@@ -34,9 +34,9 @@ public class CAB_DataRecord01 extends CAB_DataRecord0 {
      *
      * @param RecordID
      */
-    public CAB_DataRecord01(
+    public DW_Data_CAB0_Record1(
             long RecordID) {
-        this.RecordID = RecordID;
+        setRecordID(RecordID);
     }
 
     /**
@@ -45,11 +45,11 @@ public class CAB_DataRecord01 extends CAB_DataRecord0 {
      * @param handler
      * @throws java.lang.Exception
      */
-    public CAB_DataRecord01(
+    public DW_Data_CAB0_Record1(
             long RecordID,
             String line,
-            CAB_DataRecord0_Handler handler) throws Exception {
-        this.RecordID = RecordID;
+            DW_Data_CAB0_Handler handler) throws Exception {
+        setRecordID(RecordID);
         String[] fields;
         fields = DW_StaticIO.splitWithQuotesThenCommas(line);
         int fieldCount = fields.length;

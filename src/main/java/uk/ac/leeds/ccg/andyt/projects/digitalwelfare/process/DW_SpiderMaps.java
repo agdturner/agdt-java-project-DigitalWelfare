@@ -41,12 +41,14 @@ import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord0;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord0_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord2;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.CAB_DataRecord2_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.ClientBureauOutletID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.EnquiryClientBureauOutletID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletEnquiryID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_LCC_WRU_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_GeoTools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -71,8 +73,9 @@ public class DW_SpiderMaps extends DW_Maps {
     private TreeMap<String, Point> aMSOAToCentroidLookupTable;
     private TreeMap<String, String> tCABOutletPostcodes;
     private TreeMap<String, DW_Point> tCABOutletPoints;
-    private CAB_DataRecord2_Handler aCAB_DataRecord2_Handler;
-    private CAB_DataRecord0_Handler tCAB_DataRecord0_Handler;
+    private DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
+    private DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
+private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
 
     /**
      * @param args the command line arguments
@@ -106,8 +109,8 @@ public class DW_SpiderMaps extends DW_Maps {
         init();
 
         Object IDType;
-        IDType = new ClientBureauOutletID();
-        //IDType = new EnquiryClientBureauOutletID();
+        IDType = new DW_ID_ClientOutletID();
+        //IDType = new DW_ID_ClientOutletEnquiryID();
 
         // postcodeToOutletMaps run
         //showMapsInJMapPane = false;
@@ -141,8 +144,9 @@ public class DW_SpiderMaps extends DW_Maps {
         initMSOACodesAndLeedsMSOAShapefile(targetPropertyNameMSOA);
         initONSPDLookups();
         initCABOutletPoints();
-        aCAB_DataRecord2_Handler = new CAB_DataRecord2_Handler();
-        tCAB_DataRecord0_Handler = new CAB_DataRecord0_Handler();
+        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler();
+        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler();
+        tLCC_WRU_DataRecord_Handler = new DW_Data_LCC_WRU_Handler();
         aLSOAToCentroidLookupTable = getCentroidLookupTable(
                 "LSOA",
                 targetPropertyNameLSOA);
@@ -223,20 +227,16 @@ public class DW_SpiderMaps extends DW_Maps {
         year = "1213";
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
-        TreeMap<Object, CAB_DataRecord2> tLeedsCABData;
-        if (IDType instanceof EnquiryClientBureauOutletID) {
-            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_EnquiryClientBureauOutletID_CAB_DataRecord2(
+        TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
+        tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData(
                     filename,
-                    aCAB_DataRecord2_Handler);
-        } else {
-            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_ClientBureauOutletID_CAB_DataRecord2(
-                    filename,
-                    aCAB_DataRecord2_Handler);
-        }
+                    aCAB_DataRecord2_Handler,
+                    IDType);
         // Load Chapeltown CAB data
-        TreeMap<String, CAB_DataRecord0> tChapeltownCABData;
+        TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(
-                tCAB_DataRecord0_Handler);
+                tCAB_DataRecord0_Handler,
+                IDType);
 
         // Step 3.
         SimpleFeatureType aLineSFT = DataUtilities.createType(
@@ -313,7 +313,7 @@ public class DW_SpiderMaps extends DW_Maps {
         ite2 = tLeedsCABData.keySet().iterator();
         while (ite2.hasNext()) {
             Object key = ite2.next();
-            CAB_DataRecord2 r = tLeedsCABData.get(key);
+            DW_Data_CAB2_Record r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
             DW_Point origin = DW_Processor.getPointFromPostcode(postcode);
@@ -448,11 +448,11 @@ public class DW_SpiderMaps extends DW_Maps {
         countPostcodesWithPointsWithoutCensusCodes = 0;
         countPostcodesWithPointsAndOutlets = 0;
         countPostcodesWithoutPoints = 0;
-        Iterator<String> ite2_String;
+        Iterator<DW_ID_ClientID> ite2_String;
         ite2_String = tChapeltownCABData.keySet().iterator();
         while (ite2_String.hasNext()) {
-            String key = ite2_String.next();
-            CAB_DataRecord0 r = tChapeltownCABData.get(key);
+            DW_ID_ClientID key = ite2_String.next();
+            DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
             DW_Point origin = DW_Processor.getPointFromPostcode(postcode);
@@ -643,20 +643,16 @@ public class DW_SpiderMaps extends DW_Maps {
         // year 2012-2013
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
-        TreeMap<Object, CAB_DataRecord2> tLeedsCABData;
-        if (IDType instanceof EnquiryClientBureauOutletID) {
-            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_EnquiryClientBureauOutletID_CAB_DataRecord2(
+        TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
+        tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData(
                     filename,
-                    aCAB_DataRecord2_Handler);
-        } else {
-            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_ClientBureauOutletID_CAB_DataRecord2(
-                    filename,
-                    aCAB_DataRecord2_Handler);
-        }
+                    aCAB_DataRecord2_Handler,
+                    IDType);
         // Load Chapeltown CAB data
-        TreeMap<String, CAB_DataRecord0> tChapeltownCABData;
+        TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(
-                tCAB_DataRecord0_Handler);
+                tCAB_DataRecord0_Handler,
+                IDType);
 
         // Step 3.
         SimpleFeatureType aLineSFT = DataUtilities.createType(
@@ -691,11 +687,11 @@ public class DW_SpiderMaps extends DW_Maps {
         countPostcodesWithPointsAndOutlets = 0;
         countPostcodesWithoutPoints = 0;
         //String targetCABOutlet = "Pudsey";
-        Iterator ite2;
+        Iterator<DW_ID_ClientID> ite2;
         ite2 = tLeedsCABData.keySet().iterator();
         while (ite2.hasNext()) {
-            Object key = ite2.next();
-            CAB_DataRecord2 r = tLeedsCABData.get(key);
+            DW_ID_ClientID key = ite2.next();
+            DW_Data_CAB2_Record r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
             DW_Point origin = DW_Processor.getPointFromPostcode(postcode);
@@ -777,11 +773,10 @@ public class DW_SpiderMaps extends DW_Maps {
         countPostcodesWithPointsWithoutCensusCodes = 0;
         countPostcodesWithPointsAndOutlets = 0;
         countPostcodesWithoutPoints = 0;
-        Iterator<String> ite2_String;
-        ite2_String = tChapeltownCABData.keySet().iterator();
-        while (ite2_String.hasNext()) {
-            String key = ite2_String.next();
-            CAB_DataRecord0 r = tChapeltownCABData.get(key);
+        ite2 = tChapeltownCABData.keySet().iterator();
+        while (ite2.hasNext()) {
+            DW_ID_ClientID key = ite2.next();
+            DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
             DW_Point origin = DW_Processor.getPointFromPostcode(postcode);
@@ -900,20 +895,16 @@ public class DW_SpiderMaps extends DW_Maps {
         // year 2012-2013
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
-        TreeMap<Object, CAB_DataRecord2> tLeedsCABData;
-        if (IDType instanceof EnquiryClientBureauOutletID) {
-            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_EnquiryClientBureauOutletID_CAB_DataRecord2(
+        TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
+        tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData(
                     filename,
-                    aCAB_DataRecord2_Handler);
-        } else {
-            tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData_TreeMap_ClientBureauOutletID_CAB_DataRecord2(
-                    filename,
-                    aCAB_DataRecord2_Handler);
-        }
+                    aCAB_DataRecord2_Handler,
+                    IDType);
         // Load Chapeltown CAB data
-        TreeMap<String, CAB_DataRecord0> tChapeltownCABData;
+        TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(
-                tCAB_DataRecord0_Handler);
+                tCAB_DataRecord0_Handler,
+                IDType);
 
         // Step 3.
         SimpleFeatureType aLineSFT = DataUtilities.createType(
@@ -953,7 +944,7 @@ public class DW_SpiderMaps extends DW_Maps {
         ite2 = tLeedsCABData.keySet().iterator();
         while (ite2.hasNext()) {
             Object key = ite2.next();
-            CAB_DataRecord2 r = tLeedsCABData.get(key);
+            DW_Data_CAB2_Record r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
             DW_Point origin = DW_Processor.getPointFromPostcode(postcode);
@@ -1014,11 +1005,11 @@ public class DW_SpiderMaps extends DW_Maps {
         countPostcodesWithPointsAndOutlets = 0;
         countPostcodesWithoutPoints = 0;
         //String targetCABOutlet = "Pudsey";
-        Iterator<String> ite2_String;
+        Iterator<DW_ID_ClientID> ite2_String;
         ite2_String = tChapeltownCABData.keySet().iterator();
         while (ite2_String.hasNext()) {
-            String key = ite2_String.next();
-            CAB_DataRecord0 r = tChapeltownCABData.get(key);
+            DW_ID_ClientID key = ite2_String.next();
+            DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
             DW_Point origin = DW_Processor.getPointFromPostcode(postcode);

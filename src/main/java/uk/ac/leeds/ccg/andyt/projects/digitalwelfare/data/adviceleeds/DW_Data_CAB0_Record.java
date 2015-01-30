@@ -24,12 +24,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_StaticIO;
  *
  * @author geoagdt
  */
-public class CAB_DataRecord0 {
+public class DW_Data_CAB0_Record extends DW_Data_Postcode_Record {
 
-    /**
-     * 0 RecordID
-     */
-    protected long RecordID;
     /**
      * 0 1 RecordType
      */
@@ -63,7 +59,7 @@ public class CAB_DataRecord0 {
     protected String Marital_Status;
     protected String Child_Dependents;
     protected String Adult_Dependents;
-    protected String Postcode;
+//    protected String Postcode;
     protected String Local_Authority_Name;
     protected String Local_Authority_Ward;
     protected String Constituency;
@@ -78,7 +74,7 @@ public class CAB_DataRecord0 {
     protected String no_in_household;
     protected String DOB;
 
-    public CAB_DataRecord0() {
+    public DW_Data_CAB0_Record() {
     }
 
     /**
@@ -86,9 +82,9 @@ public class CAB_DataRecord0 {
      *
      * @param RecordID
      */
-    public CAB_DataRecord0(
+    public DW_Data_CAB0_Record(
             long RecordID) {
-        this.RecordID = RecordID;
+        setRecordID(RecordID);
     }
 
     /**
@@ -97,11 +93,11 @@ public class CAB_DataRecord0 {
      * @param handler
      * @throws java.lang.Exception
      */
-    public CAB_DataRecord0(
+    public DW_Data_CAB0_Record(
             long RecordID,
             String line,
-            CAB_DataRecord0_Handler handler) throws Exception {
-        this.RecordID = RecordID;
+            DW_Data_CAB0_Handler handler) throws Exception {
+        setRecordID(RecordID);
 //        if (RecordID == 233) {
 //            int debug = 1;
 //        }
@@ -209,7 +205,7 @@ public class CAB_DataRecord0 {
         }
         n++;
         if (n < fieldCount) {
-            Postcode = fields[n];
+            setPostcode(fields[n]);
         }
         n++;
         if (n < fieldCount) {
@@ -268,7 +264,7 @@ public class CAB_DataRecord0 {
     }
 
     protected String toStringPart1() {
-        return "RecordID " + RecordID
+        return super.toString()
                 + ",Financial_Year_Display " + Financial_Year_Display
                 + ",Quarter_In_Fin_Year " + Quarter_In_Fin_Year
                 + ",Client_Ref " + Client_Ref
@@ -291,7 +287,7 @@ public class CAB_DataRecord0 {
                 + ",Marital_Status " + Marital_Status
                 + ",Child_Dependents " + Child_Dependents
                 + ",Adult_Dependents " + Adult_Dependents
-                + ",Postcode " + Postcode
+//                + ",Postcode " + Postcode
                 + ",Local_Authority_Name " + Local_Authority_Name
                 + ",Local_Authority_Ward " + Local_Authority_Ward
                 + ",Constituency " + Constituency
@@ -304,14 +300,6 @@ public class CAB_DataRecord0 {
                 + ",Spare_Field_1 " + Spare_Field_1
                 + ",Spare_Field_2 " + Spare_Field_2
                 + ",no_in_household " + no_in_household;
-    }
-
-    public long getRecordID() {
-        return RecordID;
-    }
-
-    public void setRecordID(long RecordID) {
-        this.RecordID = RecordID;
     }
 
     public String getRecordType() {
@@ -496,14 +484,6 @@ public class CAB_DataRecord0 {
 
     public void setAdult_Dependents(String Adult_Dependents) {
         this.Adult_Dependents = Adult_Dependents;
-    }
-
-    public String getPostcode() {
-        return Postcode;
-    }
-
-    public void setPostcode(String Postcode) {
-        this.Postcode = Postcode;
     }
 
     public String getLocal_Authority_Name() {

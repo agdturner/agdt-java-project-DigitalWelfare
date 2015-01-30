@@ -24,12 +24,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_StaticIO;
  *
  * @author geoagdt
  */
-public class CAB_DataRecord2 {
+public class DW_Data_CAB2_Record extends DW_Data_Postcode_Record {
 
-    /**
-     * 0 RecordID
-     */
-    protected long RecordID;
     //enquiry_ref,client_ref,bureau,outlet,suboutlet,date_opened,enquiry_type,work_level,enquiry_project_funder,next_step,directed_to,Postcode,appt_location,Local_Authority_Name,Local_Authority_Ward_Name,Primary_Care_Trust_Name,Parliamentary_Const_Name,dob,transferred_in,client_seen_after_transfer,transferred_out,total_contacts,total_contacts_current_bureau,total_non_client_contacts_current_bureau
     private String enquiry_ref;
     private String client_ref;
@@ -42,7 +38,7 @@ public class CAB_DataRecord2 {
     private String enquiry_project_funder;
     private String next_step;
     private String directed_to;
-    private String Postcode;
+//    private String Postcode;
     private String appt_location;
     private String Local_Authority_Name;
     private String Local_Authority_Ward_Name;
@@ -61,9 +57,9 @@ public class CAB_DataRecord2 {
      *
      * @param RecordID
      */
-    public CAB_DataRecord2(
+    public DW_Data_CAB2_Record(
             long RecordID) {
-        this.RecordID = RecordID;
+        setRecordID(RecordID);
     }
 
     /**
@@ -72,11 +68,11 @@ public class CAB_DataRecord2 {
      * @param handler
      * @throws java.lang.Exception
      */
-    public CAB_DataRecord2(
+    public DW_Data_CAB2_Record(
             long RecordID,
             String line,
-            CAB_DataRecord2_Handler handler) throws Exception {
-        this.RecordID = RecordID;
+            DW_Data_CAB2_Handler handler) throws Exception {
+        setRecordID(RecordID);
         
         //if (RecordID ==2925) {
         //if (RecordID ==2969) {
@@ -114,7 +110,7 @@ public class CAB_DataRecord2 {
         n++;
         directed_to = fields[n];
         n++;
-        Postcode = fields[n];
+        setPostcode(fields[n]);
         n++;
         appt_location = fields[n];
         n++;
@@ -143,7 +139,7 @@ public class CAB_DataRecord2 {
 
     @Override
     public String toString() {
-        return "RecordID " + RecordID
+        return super.toString()
                 + ",enquiry_ref " + enquiry_ref
                 + ",client_ref " + client_ref
                 + ",bureau " + bureau
@@ -155,7 +151,7 @@ public class CAB_DataRecord2 {
                 + ",enquiry_project_funder " + enquiry_project_funder
                 + ",next_step " + next_step
                 + ",directed_to " + directed_to
-                + ",Postcode " + Postcode
+//                + ",Postcode " + Postcode
                 + ",appt_location " + appt_location
                 + ",Local_Authority_Name " + Local_Authority_Name
                 + ",Local_Authority_Ward_Name " + Local_Authority_Ward_Name
@@ -168,14 +164,6 @@ public class CAB_DataRecord2 {
                 + ",total_contacts " + total_contacts
                 + ",total_contacts_current_bureau " + total_contacts_current_bureau
                 + ",total_non_client_contacts_current_bureau " + total_non_client_contacts_current_bureau;
-    }
-
-    public long getRecordID() {
-        return RecordID;
-    }
-
-    public void setRecordID(long RecordID) {
-        this.RecordID = RecordID;
     }
 
     public String getEnquiry_ref() {
@@ -264,14 +252,6 @@ public class CAB_DataRecord2 {
 
     public void setDirected_to(String directed_to) {
         this.directed_to = directed_to;
-    }
-
-    public String getPostcode() {
-        return Postcode;
-    }
-
-    public void setPostcode(String Postcode) {
-        this.Postcode = Postcode;
     }
 
     public String getAppt_location() {

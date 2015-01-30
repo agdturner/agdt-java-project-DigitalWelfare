@@ -24,7 +24,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_StaticIO;
  *
  * @author geoagdt
  */
-public class LCC_WRU_DataRecord {
+public class DW_Data_LCC_WRU_Record extends DW_Data_Postcode_Record {
 
     // Header
     //Unique Customer Ref,Date of Birth,Ethnicity Type,Ethnicity Sub Type,Postcode,Enquiry Reference Number,Activity Ref,Type,Interview Location,Interview Date,Benefit Type,Disability,AgeAtInterview,Age Now
@@ -33,12 +33,11 @@ public class LCC_WRU_DataRecord {
     /**
      * RecordID
      */
-    private long RecordID;
     private String UniqueCustomerRef;
     private String DateOfBirth;
     private String EthnicityType;
     private String EthnicitySubType;
-    private String Postcode;
+//    private String Postcode;
     private String EnquiryReferenceNumber;
     private String ActivityRef;
     private String Type;
@@ -49,7 +48,7 @@ public class LCC_WRU_DataRecord {
     private String AgeAtInterview;
     private String AgeNow;
 
-    public LCC_WRU_DataRecord() {
+    public DW_Data_LCC_WRU_Record() {
     }
 
     /**
@@ -57,9 +56,9 @@ public class LCC_WRU_DataRecord {
      *
      * @param RecordID
      */
-    public LCC_WRU_DataRecord(
+    public DW_Data_LCC_WRU_Record(
             long RecordID) {
-        this.RecordID = RecordID;
+        setRecordID(RecordID);
     }
 
     /**
@@ -68,11 +67,11 @@ public class LCC_WRU_DataRecord {
      * @param handler
      * @throws java.lang.Exception
      */
-    public LCC_WRU_DataRecord(
+    public DW_Data_LCC_WRU_Record(
             long RecordID,
             String line,
-            LCC_WRU_DataRecord_Handler handler) throws Exception {
-        this.RecordID = RecordID;
+            DW_Data_LCC_WRU_Handler handler) throws Exception {
+        setRecordID(RecordID);
         String[] fields;
         fields = DW_StaticIO.splitWithQuotesThenCommas(line);
         int fieldCount = fields.length;
@@ -83,7 +82,7 @@ public class LCC_WRU_DataRecord {
         DateOfBirth = fields[1];
         EthnicityType = fields[2];
         EthnicitySubType = fields[3];
-        Postcode = fields[4];
+        setPostcode(fields[4]);
         EnquiryReferenceNumber = fields[5];
         ActivityRef = fields[6];
         Type = fields[7];
@@ -93,20 +92,6 @@ public class LCC_WRU_DataRecord {
         Disability = fields[11];
         AgeAtInterview = fields[12];
         AgeNow = fields[13];
-    }
-
-    /**
-     * @return the RecordID
-     */
-    public long getRecordID() {
-        return RecordID;
-    }
-
-    /**
-     * @param RecordID the RecordID to set
-     */
-    public void setRecordID(long RecordID) {
-        this.RecordID = RecordID;
     }
 
     /**
@@ -163,20 +148,6 @@ public class LCC_WRU_DataRecord {
      */
     public void setEthnicitySubType(String EthnicitySubType) {
         this.EthnicitySubType = EthnicitySubType;
-    }
-
-    /**
-     * @return the Postcode
-     */
-    public String getPostcode() {
-        return Postcode;
-    }
-
-    /**
-     * @param Postcode the Postcode to set
-     */
-    public void setPostcode(String Postcode) {
-        this.Postcode = Postcode;
     }
 
     /**

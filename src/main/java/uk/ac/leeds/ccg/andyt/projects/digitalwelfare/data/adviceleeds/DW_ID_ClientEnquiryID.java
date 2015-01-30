@@ -22,41 +22,35 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
  *
  * @author geoagdt
  */
-public class ClientBureauOutletID implements Comparable {
+public class DW_ID_ClientEnquiryID extends DW_ID_ClientID implements Comparable {
 
-    protected String client_ref;
-    protected String bureau;
-    protected String outlet;
+    protected String enquiry_ref;
 
-    public ClientBureauOutletID() {
+    public DW_ID_ClientEnquiryID() {
     }
 
-    public ClientBureauOutletID(
+    public DW_ID_ClientEnquiryID(
             String client_ref,
-            String bureau,
-            String outlet) {
+            String enquiry_ref) {
         this.client_ref = client_ref;
-        this.bureau = bureau;
-        this.outlet = outlet;
+        this.enquiry_ref = enquiry_ref;
     }
 
     @Override
     public String toString() {
-        return "EnquiryClientBureauOutletID("
-                + "client_ref " + client_ref + ", "
-                + "bureau " + bureau + ", "
-                + "outlet " + outlet + ")";
+        return "DW_ID_ClientEnquiryID("
+                + super.toString()
+                + ", enquiry_ref " + enquiry_ref + ")";
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof ClientBureauOutletID) {
-            ClientBureauOutletID oC;
-            oC = (ClientBureauOutletID) o;
+        if (o instanceof DW_ID_ClientEnquiryID) {
+            DW_ID_ClientEnquiryID oC;
+            oC = (DW_ID_ClientEnquiryID) o;
             if (hashCode() == oC.hashCode()) {
                 if (client_ref.equalsIgnoreCase(oC.client_ref)
-                        && bureau.equalsIgnoreCase(oC.bureau)
-                        && outlet.equalsIgnoreCase(oC.outlet)) {
+                        && enquiry_ref.equalsIgnoreCase(oC.enquiry_ref)) {
                     return true;
                 }
             }
@@ -67,30 +61,25 @@ public class ClientBureauOutletID implements Comparable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 79 * hash + (this.client_ref != null ? this.client_ref.hashCode() : 0);
-        hash = 79 * hash + (this.bureau != null ? this.bureau.hashCode() : 0);
-        hash = 79 * hash + (this.outlet != null ? this.outlet.hashCode() : 0);
+        hash = 97 * hash + (this.enquiry_ref != null ? this.enquiry_ref.hashCode() : 0);
         return hash;
     }
+    
+    
 
     @Override
     public int compareTo(Object o) {
-        if (o instanceof ClientBureauOutletID) {
+        if (o instanceof DW_ID_ClientEnquiryID) {
             if (this.equals(o)) {
                 return 0;
             }
-            ClientBureauOutletID oC;
-            oC = (ClientBureauOutletID) o;
-            int comp2 = client_ref.compareTo(oC.client_ref);
-                if (comp2 == 0) {
-                    int comp3 = bureau.compareTo(oC.bureau);
-                    if (comp3 == 0) {
-                        return outlet.compareTo(oC.outlet);
-                    } else {
-                        return comp3;
-                    }
+            DW_ID_ClientEnquiryID oC;
+            oC = (DW_ID_ClientEnquiryID) o;
+            int comp0 = client_ref.compareTo(oC.client_ref);
+                if (comp0 == 0) {
+                    return enquiry_ref.compareTo(oC.enquiry_ref);
                 } else {
-                    return comp2;
+                    return comp0;
                 }
         }
         return -1;

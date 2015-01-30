@@ -32,9 +32,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_Dat
 /**
  * For handling data from CASE.
  */
-public class CAB_DataRecord1_Handler {
+public class DW_Data_CAB1_Handler {
 
-    public CAB_DataRecord1_Handler() {}
+    public DW_Data_CAB1_Handler() {}
 
     /**
      * Loads LeedsCAB data from a file in directory, filename reporting progress of
@@ -43,15 +43,15 @@ public class CAB_DataRecord1_Handler {
      * @param directory
      * @param filename
      * @param pw
-     * @return TreeMap<String,CAB_DataRecord1> representing records
+     * @return TreeMap<String,DW_Data_CAB1_Record> representing records
      */
-    public TreeMap<String,CAB_DataRecord1> loadInputData(
+    public TreeMap<String,DW_Data_CAB1_Record> loadInputData(
             File directory,
             String filename,
             PrintWriter pw) {
         System.out.println("Loading " + filename);
-        TreeMap<String,CAB_DataRecord1> result;
-        result = new TreeMap<String,CAB_DataRecord1>();
+        TreeMap<String,DW_Data_CAB1_Record> result;
+        result = new TreeMap<String,DW_Data_CAB1_Record>();
         File inputFile = new File(
                 directory,
                 filename);
@@ -99,7 +99,7 @@ public class CAB_DataRecord1_Handler {
                     case StreamTokenizer.TT_WORD:
                         line = st.sval;
                             try { 
-                                CAB_DataRecord1 record = new CAB_DataRecord1(RecordID, line, this);
+                                DW_Data_CAB1_Record record = new DW_Data_CAB1_Record(RecordID, line, this);
                                 String clientProfileID = record.getClientProfileID();
                                 if (result.containsKey(clientProfileID)) {
                                     System.out.println("Additional record for client " + clientProfileID);
