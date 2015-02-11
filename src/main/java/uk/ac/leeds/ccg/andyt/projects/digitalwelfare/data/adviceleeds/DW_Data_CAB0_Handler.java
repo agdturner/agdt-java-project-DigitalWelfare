@@ -52,6 +52,7 @@ public class DW_Data_CAB0_Handler extends DW_Data_Abstract_Handler {
    record = new DW_Data_CAB0_Record1(RecordID, line, this);
  }
      * @param filename
+     * @param IDType
      * @return TreeMap<String,DW_Data_CAB0_Record> representing records
      */
     public TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> loadInputData(

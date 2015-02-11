@@ -86,6 +86,7 @@ public class DW_GeoTools {
      * @param outputDir
      * @param imageWidth
      * @param showMapsInJMapPane 
+     * @param scaleToFirst 
      */
     public static void outputToImageUsingGeoToolsAndSetCommonStyle(
             double normalisation,
@@ -414,7 +415,8 @@ public class DW_GeoTools {
         // Unbox styleParameters
         Style style;
         style = styleParameters.getStyle(styleIndex);
-        ArrayList<DW_LegendItem> legendItems = null;
+        ArrayList<DW_LegendItem> legendItems;
+        legendItems = styleParameters.getLegendItems(styleIndex);
 
         if (styleParameters.isDrawBoundaries()) {
             FeatureLayer backgroundFeatureLayer;
@@ -480,6 +482,14 @@ public class DW_GeoTools {
     }
 
     /**
+     * polygon0 PostcodeSector
+     * polygon1 OA
+     * polygon2 LSOA
+     * polygon3 postcodeUnitPoly / MSOA
+     * polygon4 polyGrid,
+     * line0 lineGrid
+     * points0 PostcodeUnitPoint
+     * points1 PostcodeSectorPoint
      * @param polygon0
      * @param polygon1
      * @param polygon2
@@ -513,12 +523,27 @@ public class DW_GeoTools {
             result.addLayer(polygon0layer);
         }
 
+        if (polygon3 != null) {
+            // Add polygon layer 3 to mc
+            // -------------------------
+            Color c;
+            //c = Color.DARK_GRAY;
+            c = Color.PINK;
+            Style polygon3Style;
+            polygon3Style = DW_Style.createDefaultPolygonStyle(c, null);
+            FeatureLayer polygon3layer = new FeatureLayer(
+                    polygon3.getFeatureSource(), polygon3Style);
+            result.addLayer(polygon3layer);
+        }
+        
         if (polygon1 != null) {
             // Add polygon layer 1 to mc
             // -------------------------
+            Color c;
+            //c = Color.LIGHT_GRAY;
+            c = Color.BLACK;
             Style polygon1Style;
-            polygon1Style = DW_Style.createDefaultPolygonStyle(
-                    Color.LIGHT_GRAY, null);
+            polygon1Style = DW_Style.createDefaultPolygonStyle(c, null);
             FeatureLayer polygon1layer = new FeatureLayer(
                     polygon1.getFeatureSource(), polygon1Style);
             result.addLayer(polygon1layer);
@@ -535,23 +560,16 @@ public class DW_GeoTools {
             result.addLayer(polygon2layer);
         }
 
-        if (polygon3 != null) {
-            // Add polygon layer 3 to mc
-            // -------------------------
-            Style polygon3Style;
-            polygon3Style = DW_Style.createDefaultPolygonStyle(
-                    Color.DARK_GRAY, null);
-            FeatureLayer polygon3layer = new FeatureLayer(
-                    polygon3.getFeatureSource(), polygon3Style);
-            result.addLayer(polygon3layer);
-        }
+        
 
         if (polygon4 != null) {
             // Add polygon layer 4 to mc
             // -------------------------
+            Color c;
+            //c = Color.BLACK;
+            c = Color.LIGHT_GRAY;
             Style polygon4Style;
-            polygon4Style = DW_Style.createDefaultPolygonStyle(
-                    Color.BLACK, null);
+            polygon4Style = DW_Style.createDefaultPolygonStyle(c, null);
             FeatureLayer polygon4layer = new FeatureLayer(
                     polygon4.getFeatureSource(), polygon4Style);
             result.addLayer(polygon4layer);

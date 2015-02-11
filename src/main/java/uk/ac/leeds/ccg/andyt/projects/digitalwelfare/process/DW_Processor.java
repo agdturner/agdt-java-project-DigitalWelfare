@@ -69,12 +69,7 @@ public abstract class DW_Processor {
     public DW_Processor() {
     }
 
-    /**
-     * @param args args[0] is for specifying the _DW_directory path to the
-     * project data. If nothing is passed in the default:
-     * "/scratch02/DW_Processor/SHBEData/" is used.
-     */
-    public abstract void run(String[] args);
+    public abstract void run();
 
 //    /**
 //     * initialises output text files for reporting.
@@ -88,6 +83,7 @@ public abstract class DW_Processor {
     /**
      * Initialises a PrintWriter for pushing output to.
      *
+     * @param dir
      * @param filename The name of the file to be initialised for writing to.
      * @return PrintWriter for pushing output to.
      */
@@ -321,6 +317,7 @@ public abstract class DW_Processor {
     /**
      * Initialise a file and to write rectangular csv records to.
      *
+     * @param dir
      * @param aSHBEgeneralisation The data to be written out in order of the
      * keys.
      * @param name The first part of the filename.
@@ -352,6 +349,7 @@ public abstract class DW_Processor {
      * aCouncilRecordgeneralisation, and aRSLRecordgeneralisation some sums and
      * proportions are calculated.
      *
+     * @param dir
      * @param aSHBEgeneralisation Data to be written out in order of the keys.
      * @param aCouncilRecordgeneralisation Data to be written out in order of
      * the keys.
@@ -434,7 +432,6 @@ public abstract class DW_Processor {
 //        return result;
 //    }
     /**
-     * @param generatedONSPDDir
      * @param level If level is "OA" returns OutputArea codes. If level is
      * "LSOA" returns Lower-layer Super Output Area codes. If level is "MSOA"
      * returns Middle-layer Super Output Area codes.

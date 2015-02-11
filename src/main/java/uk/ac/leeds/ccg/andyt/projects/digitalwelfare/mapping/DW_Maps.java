@@ -19,10 +19,14 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -81,8 +85,9 @@ public abstract class DW_Maps {
      */
     protected boolean showMapsInJMapPane;
     protected int imageWidth;
-    protected boolean commonlyStyled;
-    protected boolean individuallyStyled;
+    protected boolean commonStyling;
+    protected boolean individualStyling;
+    protected ArrayList<String> classificationFunctionNames;
     protected File mapDirectory;
     private ShapefileDataStoreFactory sdsf;
     protected DW_StyleParameters styleParameters;
@@ -91,9 +96,10 @@ public abstract class DW_Maps {
     protected DW_Shapefile backgroundDW_Shapefile;
 
     /**
-     * For storing census data level (OA, LSOA, MSOA, ...)
+     * For storing level(s) (OA, LSOA, MSOA, PostcodeSector, PostcodeUnit, ...)
      */
     protected String level;
+    protected ArrayList<String> levels;
 
     public DW_Maps() {
     }
@@ -168,6 +174,92 @@ public abstract class DW_Maps {
                     tONSPDProcessedFilename2,
                     ONSPDlookups[0]);
         }
+    }
+
+    public static DW_Shapefile getPostcodeUnitPoly_DW_Shapefile(
+            ShapefileDataStoreFactory sdsf) {
+        DW_Shapefile result;
+        // Code Point Boundaries
+        TreeSet<String> postcodes;
+        postcodes = new TreeSet<String>();
+        postcodes.add("ls");
+        postcodes.add("hg");
+        postcodes.add("yo");
+        postcodes.add("wf");
+        postcodes.add("bd");
+        postcodes.add("hd");
+        postcodes.add("hx");
+        String postcodeUnitPolyShapefilename;
+        postcodeUnitPolyShapefilename = "LS_HG_YO_WF_BD_HD_HX_Postcodes.shp";
+        String year;
+        year = "2012";
+        File generatedCodePointDir;
+        generatedCodePointDir = new File(
+                DW_Files.getGeneratedCodePointDir(),
+                year);
+        File postcodeUnitPolyShapefile = new File(
+                generatedCodePointDir,
+                postcodeUnitPolyShapefilename);
+        postcodeUnitPolyShapefile.mkdirs();
+        postcodeUnitPolyShapefile = new File(
+                postcodeUnitPolyShapefile,
+                postcodeUnitPolyShapefilename);
+        result = getPostcodeUnitPoly_DW_Shapefile(
+                sdsf,
+                postcodeUnitPolyShapefile,
+                generatedCodePointDir,
+                postcodes);
+        return result;
+    }
+
+    public static DW_Shapefile getPostcodeUnitPoly_DW_Shapefile(
+            ShapefileDataStoreFactory sdsf,
+            File aPostcodeUnitPolyShapefile,
+            File generatedCodePointDir,
+            TreeSet<String> postcodes) {
+        DW_Shapefile result;
+        if (!aPostcodeUnitPolyShapefile.exists()) {
+            // Put it together from source...
+            TreeSetFeatureCollection tsfc;
+            tsfc = new TreeSetFeatureCollection();
+            SimpleFeatureType sft = null;
+            SimpleFeatureBuilder sfb = null;
+            Iterator<String> ite;
+            ite = postcodes.iterator();
+            while (ite.hasNext()) {
+                String postcode;
+                postcode = ite.next();
+                File aShapefile;
+                aShapefile = new File(
+                        generatedCodePointDir,
+                        postcode + ".shp");
+                aShapefile = new File(
+                        aShapefile,
+                        postcode + ".shp");
+                DW_Shapefile aDW_Shapefile;
+                aDW_Shapefile = new DW_Shapefile(aShapefile);
+                FeatureCollection fc;
+                fc = aDW_Shapefile.getFeatureCollection();
+                FeatureIterator fi;
+                fi = fc.features();
+                if (sft == null) {
+                    sft = (SimpleFeatureType) fc.getSchema();
+                }
+                if (sfb == null) {
+                    sfb = new SimpleFeatureBuilder(sft);
+                }
+                while (fi.hasNext()) {
+                    SimpleFeature sf;
+                    sf = (SimpleFeature) fi.next();
+                    tsfc.add(sf);
+                }
+                //fi.close();
+            }
+            DW_Shapefile.transact(aPostcodeUnitPolyShapefile, sft, tsfc, sdsf);
+        }
+        result = new DW_Shapefile(
+                aPostcodeUnitPolyShapefile);
+        return result;
     }
 
     /**
@@ -634,31 +726,44 @@ public abstract class DW_Maps {
      * @param level
      * @return File
      */
-    protected static File getCensusBoundaryShapefile(
+    protected static File getAreaBoundaryShapefile(
             String level) {
         File result;
         String name;
-        if (level.equalsIgnoreCase("LAD")) {
-            name = "England_lad_2011_gen_clipped.shp";
-        } else {
-            if (level.equalsIgnoreCase("OA")) {
-                name = "England_oa_2011_gen_clipped.shp";
+        if (level.startsWith("Postcode")) {
+            if (level.equalsIgnoreCase("PostcodeUnit")) {
+                // Get Postcode Unit Boundaries
+                DW_Shapefile postcodeUnitPoly_DW_Shapefile;
+                postcodeUnitPoly_DW_Shapefile = DW_Maps.getPostcodeUnitPoly_DW_Shapefile(
+                        new ShapefileDataStoreFactory());
+                result = postcodeUnitPoly_DW_Shapefile.getFile();
             } else {
-                name = level + "_2011_EW_BGC.shp";
+                throw new UnsupportedOperationException();
+                //name = "PostcodeSectors";
             }
-        }
-        ///scratch02/DigitalWelfare/Input/Census/2011/LSOA/BoundaryData/
-        File censusDirectory = DW_Files.getInputCensus2011Dir(level);
-        File boundaryDirectory = new File(
-                censusDirectory,
-                "/BoundaryData/");
-        File shapefileDirectory = new File(
-                boundaryDirectory,
-                name);
+        } else {
+            if (level.equalsIgnoreCase("LAD")) {
+                name = "England_lad_2011_gen_clipped.shp";
+            } else {
+                if (level.equalsIgnoreCase("OA")) {
+                    name = "England_oa_2011_gen_clipped.shp";
+                } else {
+                    name = level + "_2011_EW_BGC.shp";
+                }
+            }
+            ///scratch02/DigitalWelfare/Input/Census/2011/LSOA/BoundaryData/
+            File censusDirectory = DW_Files.getInputCensus2011Dir(level);
+            File boundaryDirectory = new File(
+                    censusDirectory,
+                    "/BoundaryData/");
+            File shapefileDirectory = new File(
+                    boundaryDirectory,
+                    name);
 //        File boundaryDirectory = new File(
 //                digitalWelfareDir,
 //                "/BoundaryData/" + level + "/" + name);
-        result = new File(shapefileDirectory, name);
+            result = new File(shapefileDirectory, name);
+        }
         return result;
     }
 
@@ -1082,7 +1187,8 @@ public abstract class DW_Maps {
             GeometryFactory gf,
             SimpleFeatureBuilder sfb,
             String name,
-            TreeSetFeatureCollection tsfc) {
+            TreeSetFeatureCollection tsfc,
+            CoordinateSequenceFactory csf) {
         Coordinate[] coordinates;
         coordinates = new Coordinate[5];
         coordinates[0] = new Coordinate(p1.getX(), p1.getY());
@@ -1090,7 +1196,13 @@ public abstract class DW_Maps {
         coordinates[2] = new Coordinate(p3.getX(), p3.getY());
         coordinates[3] = new Coordinate(p4.getX(), p4.getY());
         coordinates[4] = new Coordinate(p1.getX(), p1.getY());
-        Polygon quad = gf.createPolygon(coordinates);
+        CoordinateSequence cs;
+        cs = csf.create(coordinates);
+        LinearRing lr;
+        lr = new LinearRing(cs, gf);
+        Polygon quad;
+        //quad = gf.createPolygon(coordinates);
+        quad = gf.createPolygon(lr, null);
         sfb.add(quad);
         sfb.add(name);
         SimpleFeature feature = sfb.buildFeature(null);
@@ -1190,6 +1302,8 @@ public abstract class DW_Maps {
             SimpleFeatureBuilder sfb) {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
+        CoordinateSequenceFactory csf;
+        csf = CoordinateArraySequenceFactory.instance();
         // add row lines
         for (long row = 0; row < nrows; row++) {
             for (long col = 0; col < ncols; col++) {
@@ -1209,7 +1323,7 @@ public abstract class DW_Maps {
                 p2 = new DW_Point((int) x2, (int) y1);
                 p3 = new DW_Point((int) x2, (int) y2);
                 p4 = new DW_Point((int) x1, (int) y2);
-                addQuadFeature(p1, p2, p3, p4, gf, sfb, "", result);
+                addQuadFeature(p1, p2, p3, p4, gf, sfb, "", result, csf);
             }
         }
         return result;

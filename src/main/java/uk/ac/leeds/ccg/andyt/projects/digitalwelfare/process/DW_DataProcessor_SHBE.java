@@ -44,17 +44,12 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        new DW_DataProcessor_SHBE().run(args);
+        new DW_DataProcessor_SHBE().run();
     }
 
-    /**
-     * @param args args[0] is for specifying the _DW_directory path to the
-     * project data. If nothing is passed in the default:
-     * "/scratch02/DW_Processor/SHBEData/" is used.
-     */
     @Override
-    public void run(String[] args) {
-        init_SHBE_DataHandler(args);
+    public void run() {
+        init_SHBE_DataHandler();
 
 //        init_OutputTextFilePrintWriter(
 //                DW_Files.getOutputSHBETablesDir(),
@@ -77,6 +72,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
 
     /**
      *
+     * @param level
      */
     public void aggregateClients(String level) {
         
@@ -197,7 +193,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
                 String claimID = ite.next();
                 SHBE_DataRecord DRecord = DRecords.get(claimID);
                 int aTenancyType = DRecord.getTenancyType();
-                Integer aTenancyTypeInteger = new Integer(aTenancyType);
+                Integer aTenancyTypeInteger = aTenancyType;
                 if (ymAllResult.containsKey(aTenancyTypeInteger)) {
                     int count = ymAllResult.get(aTenancyTypeInteger);
                     count++;
@@ -1158,7 +1154,7 @@ public class DW_DataProcessor_SHBE extends DW_Processor {
      *
      * @param args
      */
-    private void init_SHBE_DataHandler(String[] args) {
+    private void init_SHBE_DataHandler() {
         aSHBE_DataHandler = new SHBE_DataRecord_Handler();
     }
 

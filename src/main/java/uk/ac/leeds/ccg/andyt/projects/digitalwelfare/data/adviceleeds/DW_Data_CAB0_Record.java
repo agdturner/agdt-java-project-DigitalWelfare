@@ -104,14 +104,16 @@ public class DW_Data_CAB0_Record extends DW_Data_Postcode_Record {
         String[] fields;
         fields = DW_StaticIO.splitWithQuotesThenCommas(line);
         int fieldCount = fields.length;
-        if (fieldCount != 36) {
+//        if (fieldCount != 36) {
+        if (fieldCount != 38) {
             System.out.println("RecordID " + RecordID + ", fieldCount" + fieldCount);
         }
         int n = initMostFields(fields, fieldCount);
-        n++;
-        if (n < fieldCount) {
-            DOB = fields[n];
-        }
+//        n++;
+//        if (n < fieldCount) {
+//            DOB = fields[n];
+//        }
+        DOB = fields[fieldCount - 1];
     }
 
     protected final int initMostFields(

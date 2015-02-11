@@ -39,6 +39,11 @@ public class DW_Data_Postcode_Record extends DW_Data_Abstract_Record {
     public final void setPostcode(String Postcode) {
         this.Postcode = Postcode;
     }
+    
+    @Override
+    public String toString() {
+        return super.toString() + ", Postcode " + Postcode;
+    }
 
     
 }

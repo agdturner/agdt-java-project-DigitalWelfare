@@ -85,7 +85,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_Clie
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_CensusAreaCodesAndShapefiles;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_GeoTools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
@@ -223,22 +223,22 @@ public class DW_DensityMaps extends DW_Maps {
 //        Currently only equal interval implemented
 //        // Jenks runs
 //        styleParameters.setClassificationFunctionName("Jenks");
-//        commonlyStyled = true;
-//        individuallyStyled = true;
+//        commonStyling = true;
+//        individualStyling = true;
 //        runAll(IDType);
 //
         // Quantile runs
         styleParameters.setClassificationFunctionName("Quantile");
         styleParameters.setStylesNull();
-        commonlyStyled = true;
-        individuallyStyled = true;
+        commonStyling = true;
+        individualStyling = true;
         runAll(IDType);
 
 //        // Equal Interval runs
 //        styleParameters.setClassificationFunctionName("EqualInterval");
 //        styleParameters.setStylesNull();
-//        commonlyStyled = true;
-//        individuallyStyled = true;
+//        commonStyling = true;
+//        individualStyling = true;
 //        runAll(IDType);
     }
 
@@ -249,8 +249,8 @@ public class DW_DensityMaps extends DW_Maps {
         String targetPropertyName = "LSOA11CD";
         level = "LSOA";
         // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
-        DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
-        tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
+        DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
+        tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
                 level, targetPropertyName, getShapefileDataStoreFactory());
         tLookupFromPostcodeToCensusCodes = getLookupFromPostcodeToCensusCode(
                 level, 2011);
@@ -279,7 +279,7 @@ public class DW_DensityMaps extends DW_Maps {
                 //for (int filter = 2; filter < 3; filter++) {
                 //int filter = 0;
                 deprivationRecords = null;
-                if (commonlyStyled) {
+                if (commonStyling) {
                     scaleToFirst = true;
                     runCAB(deprivationRecords,
                             outlets,
@@ -291,7 +291,7 @@ public class DW_DensityMaps extends DW_Maps {
                             IDType,
                             handleOutOfMemoryErrors);
                 }
-                if (individuallyStyled) {
+                if (individualStyling) {
                     scaleToFirst = false;
                     runCAB(deprivationRecords,
                             outlets,
@@ -306,7 +306,7 @@ public class DW_DensityMaps extends DW_Maps {
 
 //            // Get deprivation data
 //            deprivationRecords = DW_Processor.getDeprivation_Data();
-//            if (commonlyStyled) {
+//            if (commonStyling) {
 //                scaleToFirst = true;
 //                runCAB(deprivationRecords,
 //                        outlets,
@@ -317,7 +317,7 @@ public class DW_DensityMaps extends DW_Maps {
 //                        scaleToFirst,
 //                        handleOutOfMemoryErrors);
 //            }
-//            if (individuallyStyled) {
+//            if (individualStyling) {
 //                scaleToFirst = false;
 //                runCAB(deprivationRecords,
 //                        outlets,
@@ -339,7 +339,7 @@ public class DW_DensityMaps extends DW_Maps {
             HashSet<String> outlets,
             String targetPropertyName,
             //            String level,
-            DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile,
+            DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile,
             TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
             int filter,
             boolean scaleToFirst,
@@ -386,7 +386,7 @@ public class DW_DensityMaps extends DW_Maps {
      * @param handleOutOfMemoryErrors
      */
     public void mapCounts(
-            DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile,
+            DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile,
             TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
             HashSet<String> outlets,
@@ -416,7 +416,7 @@ public class DW_DensityMaps extends DW_Maps {
             yllcorner = 422500;
         } else {
             if (filter == 1) {
-                backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADsDW_Shapefile();
+                backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADDW_Shapefile();
                 nrows = 827;//1654;
                 ncols = 765;//1530;
                 xllcorner = 396000;
@@ -434,7 +434,7 @@ public class DW_DensityMaps extends DW_Maps {
                 // (maxYRounded - minYRounded) / cellsize = 1654
                 yllcorner = 402500;
             } else {
-                backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNearNeighbouringLADsDW_Shapefile();
+                backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNearNeighbouringLADDW_Shapefile();
                 nrows = 827;//1654;
                 ncols = 1027;//2188;
                 xllcorner = 363100;
@@ -879,7 +879,7 @@ public class DW_DensityMaps extends DW_Maps {
         DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
         aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler();
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData(
+        tLeedsCABData = DW_DataProcessor_AdviceLeeds.loadLeedsCABData(
                 filename,
                 aCAB_DataRecord2_Handler,
                 IDType);
@@ -918,7 +918,7 @@ public class DW_DensityMaps extends DW_Maps {
         DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
         aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler();
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData(
+        tLeedsCABData = DW_DataProcessor_AdviceLeeds.loadLeedsCABData(
                 filename,
                 aCAB_DataRecord2_Handler,
                 IDType);
@@ -949,7 +949,7 @@ public class DW_DensityMaps extends DW_Maps {
         DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
         tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler();
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
-        tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(
+        tChapeltownCABData = DW_DataProcessor_AdviceLeeds.getChapeltownCABData(
                 tCAB_DataRecord0_Handler,
                 IDType);
         int countNonMatchingPostcodes = 0;
@@ -978,7 +978,7 @@ public class DW_DensityMaps extends DW_Maps {
         DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
         tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler();
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
-        tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(
+        tChapeltownCABData = DW_DataProcessor_AdviceLeeds.getChapeltownCABData(
                 tCAB_DataRecord0_Handler,
                 IDType);
         Iterator<DW_ID_ClientID> ite;

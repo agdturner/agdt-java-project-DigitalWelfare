@@ -43,4 +43,9 @@ public abstract class DW_Data_Abstract_Record {
         this.RecordID = RecordID;
     }
     
+    @Override
+    public String toString() {
+        return "RecordID " + RecordID;
+    }
+
 }

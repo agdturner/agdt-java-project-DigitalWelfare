@@ -30,6 +30,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB1_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletEnquiryID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 
@@ -178,20 +179,20 @@ public class Deprivation_DataHandler {
             TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
             TreeMap<Integer, Integer> deprivationClasses) {
         Object[] result = new Object[2];
-        int clientsWithoutARecognisedPostcode = 0;
+        int recsWithoutARecognisedPostcode = 0;
         TreeMap<Integer, Integer> deprivationClassCountOfCABClients = new TreeMap<Integer, Integer>();
         if (type == 0) {
-            Iterator ite;
+            Iterator<DW_ID_ClientID> ite;
             ite = tCABData.keySet().iterator();
             while (ite.hasNext()) {
-                Object id = ite.next();
+                DW_ID_ClientID id = ite.next();
                 DW_Data_CAB2_Record aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) tCABData.get(id);
                 String postcode = aLeedsCABData_DataRecord.getPostcode();
                 postcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
                 if (!postcode.isEmpty()) {
                     String SOACode = tLookupFromPostcodeToCensusCodes.get(postcode);
                     if (SOACode == null) {
-                        clientsWithoutARecognisedPostcode++;
+                        recsWithoutARecognisedPostcode++;
                     } else {
                         Deprivation_DataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
                         if (aDeprivation_DataRecord != null) {
@@ -209,21 +210,21 @@ public class Deprivation_DataHandler {
                     }
                 } else {
                     int debug = 1;
-                    clientsWithoutARecognisedPostcode++;
+                    recsWithoutARecognisedPostcode++;
                 }
             }
         } else {
-            Iterator<String> ite;
+            Iterator<DW_ID_ClientID> ite;
             ite = tCABData.keySet().iterator();
             while (ite.hasNext()) {
-                String clientProfileID = ite.next();
-                DW_Data_CAB0_Record aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) tCABData.get(clientProfileID);
+                DW_ID_ClientID id = ite.next();
+                DW_Data_CAB0_Record aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) tCABData.get(id);
                 String postcode = aLeedsCABData_DataRecord.getPostcode();
                 postcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
                 if (!postcode.isEmpty()) {
                     String SOACode = tLookupFromPostcodeToCensusCodes.get(postcode);
                     if (SOACode == null) {
-                        clientsWithoutARecognisedPostcode++;
+                        recsWithoutARecognisedPostcode++;
                     } else {
                         Deprivation_DataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
                         if (aDeprivation_DataRecord != null) {
@@ -241,12 +242,12 @@ public class Deprivation_DataHandler {
                     }
                 } else {
                     int debug = 1;
-                    clientsWithoutARecognisedPostcode++;
+                    recsWithoutARecognisedPostcode++;
                 }
             }
         }
         result[0] = deprivationClassCountOfCABClients;
-        result[1] = clientsWithoutARecognisedPostcode;
+        result[1] = recsWithoutARecognisedPostcode;
         return result;
     }
 

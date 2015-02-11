@@ -21,18 +21,38 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
 import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.geotools.data.FileDataStore;
 import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.data.shapefile.shp.JTSUtilities;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.map.MapContent;
+import org.geotools.resources.coverage.IntersectUtils;
+import org.opengis.feature.Feature;
+import org.opengis.feature.Property;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_CensusAreaCodesAndShapefiles;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_GeoTools;
+import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps.addFeatureAttributeAndAddToFeatureCollection;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps.getPointSimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
@@ -96,7 +116,12 @@ public class DW_PostcodeMaps extends DW_Maps {
                 aLeedsPostcodeUnitPointShapefile,
                 "LS");
 
-        // Density of postcodes
+        // Get Postcode Unit Boundaries
+        DW_Shapefile postcodeUnitPoly_DW_Shapefile;
+        postcodeUnitPoly_DW_Shapefile = DW_Maps.getPostcodeUnitPoly_DW_Shapefile(
+            new ShapefileDataStoreFactory());
+
+
         // Postcode Sector Centroids
         String aLeedsPostcodeSectorPointShapefile;
         aLeedsPostcodeSectorPointShapefile = "LeedsPostcodeSectorPointShapefile.shp";
@@ -109,8 +134,8 @@ public class DW_PostcodeMaps extends DW_Maps {
         // OA
         level = "OA";
         targetPropertyName = "CODE";
-        DW_CensusAreaCodesAndShapefiles tOACodesAndLeedsLevelShapefile;
-        tOACodesAndLeedsLevelShapefile = new DW_CensusAreaCodesAndShapefiles(
+        DW_AreaCodesAndShapefiles tOACodesAndLeedsLevelShapefile;
+        tOACodesAndLeedsLevelShapefile = new DW_AreaCodesAndShapefiles(
                 level,
                 targetPropertyName,
                 sdsf);
@@ -122,8 +147,8 @@ public class DW_PostcodeMaps extends DW_Maps {
         // LSOA
         level = "LSOA";
         targetPropertyName = "LSOA11CD";
-        DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLevelShapefile;
-        tLSOACodesAndLeedsLevelShapefile = new DW_CensusAreaCodesAndShapefiles(
+        DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLevelShapefile;
+        tLSOACodesAndLeedsLevelShapefile = new DW_AreaCodesAndShapefiles(
                 level,
                 targetPropertyName,
                 sdsf);
@@ -133,8 +158,8 @@ public class DW_PostcodeMaps extends DW_Maps {
         // MSOA
         level = "MSOA";
         targetPropertyName = "MSOA11CD";
-        DW_CensusAreaCodesAndShapefiles tMSOACodesAndLeedsLevelShapefile;
-        tMSOACodesAndLeedsLevelShapefile = new DW_CensusAreaCodesAndShapefiles(
+        DW_AreaCodesAndShapefiles tMSOACodesAndLeedsLevelShapefile;
+        tMSOACodesAndLeedsLevelShapefile = new DW_AreaCodesAndShapefiles(
                 level,
                 targetPropertyName,
                 sdsf);
@@ -161,12 +186,24 @@ public class DW_PostcodeMaps extends DW_Maps {
                 nrows, ncols, xllcorner, yllcorner, cellsize);
 
         String outname = "outname";
+        Grid2DSquareCellDoubleFactory gf;
+        gf = new Grid2DSquareCellDoubleFactory(new Grids_Environment(),true);
+        Grid2DSquareCellDouble grid;
+        grid = toGrid(
+                polyGrid,
+                nrows,
+                ncols,
+                xllcorner,
+                yllcorner,
+                cellsize,
+                postcodeUnitPoly_DW_Shapefile,
+                gf);
 
         MapContent mc = DW_GeoTools.createMapContent(
                 new DW_Shapefile(aLeedsPostcodeSectorShapefile),
                 OA_Shapefile,
                 null,//LSOA_Shapefile,
-                null,//MSOA_Shapefile,
+                postcodeUnitPoly_DW_Shapefile,//null,//MSOA_Shapefile,
                 polyGrid,
                 null,//lineGrid,//null,//LAD_Shapefile,
                 new DW_Shapefile(aPostcodeUnitPointShapefile),
@@ -182,6 +219,43 @@ public class DW_PostcodeMaps extends DW_Maps {
                 imageWidth,
                 showMapsInJMapPane);
 
+    }
+    
+    public Grid2DSquareCellDouble toGrid(
+            DW_Shapefile polyGrid,
+            long nrows,
+            long ncols,
+            double xllcorner,
+            double yllcorner,
+            double cellsize,
+            DW_Shapefile postcodeUnitPoly_DW_Shapefile,
+            Grid2DSquareCellDoubleFactory f) {
+        Grid2DSquareCellDouble result;
+        BigDecimal[] dimensions;
+        dimensions = new BigDecimal[5];
+        dimensions[0] = new BigDecimal(cellsize);
+        dimensions[1] = new BigDecimal(xllcorner);
+        dimensions[2] = new BigDecimal(yllcorner);
+        dimensions[3] = new BigDecimal(xllcorner + cellsize * ncols);
+        dimensions[4] = new BigDecimal(yllcorner + cellsize * nrows);
+        result = (Grid2DSquareCellDouble) f.create(nrows, ncols, dimensions);
+        
+        FeatureCollection cells;
+        cells = polyGrid.getFeatureCollection();
+        
+//        IntersectUtils.intersection(null, null)
+//        JTS. ${geotools.version}
+//       JTS.unionintersects
+//        
+//        FeatureIterator fi;
+//        fi = cells.features();
+//        while (fi.hasNext()) {
+//            SimpleFeature sf;
+//            sf = (SimpleFeature) fi.next();
+//            Geometry intersection;
+//            intersection = sf.i
+//        }
+        return result;
     }
 
     public static DW_Shapefile getPolyGrid(
@@ -210,7 +284,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         result = new DW_Shapefile(shapefile);
         return result;
     }
-    
+
     public static DW_Shapefile getLineGrid(
             long nrows,
             long ncols,
@@ -316,4 +390,5 @@ public class DW_PostcodeMaps extends DW_Maps {
         }
         return result;
     }
+
 }

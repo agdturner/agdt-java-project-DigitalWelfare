@@ -429,10 +429,23 @@ public class PostcodeGeocoder implements Serializable {
         return result;
     }
 
-    public String getPostcodeSector(String ONSPDPostcodeUnit) {
+    public static boolean isValidPostcode(String postcode) {
+        if (postcode.length() > 5) {
+            String[] split;
+            split = postcode.split(" ");
+            if (split.length == 2) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
+    public static String getPostcodeSector(String ONSPDPostcodeUnit) {
         String result;
         int length = ONSPDPostcodeUnit.length();
         result = ONSPDPostcodeUnit.substring(0,length - 2);
+        result = result.trim();
 //        // With a Space
 //        String outward = ONSPDPostcodeUnit.substring(length - 3);
 //        String inward = ONSPDPostcodeUnit.substring(0,length - 4).trim();

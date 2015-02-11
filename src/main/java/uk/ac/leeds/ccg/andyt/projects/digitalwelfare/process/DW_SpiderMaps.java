@@ -52,7 +52,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_Clie
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_GeoTools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_CensusAreaCodesAndShapefiles;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
@@ -67,8 +67,8 @@ public class DW_SpiderMaps extends DW_Maps {
     private static final String targetPropertyNameLSOA = "LSOA11CD";
     private TreeMap<String, String> tLookupFromPostcodeToLSOACensusCodes;
     private TreeMap<String, String> tLookupFromPostcodeToMSOACensusCodes;
-    private DW_CensusAreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
-    private DW_CensusAreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
+    private DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
+    private DW_AreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
     private TreeMap<String, Point> aLSOAToCentroidLookupTable;
     private TreeMap<String, Point> aMSOAToCentroidLookupTable;
     private TreeMap<String, String> tCABOutletPostcodes;
@@ -175,13 +175,13 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
 
     private void initLSOACodesAndLeedsLSOAShapefile(
             String targetPropertyNameLSOA) {
-        tLSOACodesAndLeedsLSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
+        tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
                 "LSOA", targetPropertyNameLSOA, getShapefileDataStoreFactory());
     }
 
     private void initMSOACodesAndLeedsMSOAShapefile(
             String targetPropertyNameMSOA) {
-        tMSOACodesAndLeedsMSOAShapefile = new DW_CensusAreaCodesAndShapefiles(
+        tMSOACodesAndLeedsMSOAShapefile = new DW_AreaCodesAndShapefiles(
                 "MSOA", targetPropertyNameMSOA, getShapefileDataStoreFactory());
     }
 
@@ -228,13 +228,13 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData(
+        tLeedsCABData = DW_DataProcessor_AdviceLeeds.loadLeedsCABData(
                     filename,
                     aCAB_DataRecord2_Handler,
                     IDType);
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
-        tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(
+        tChapeltownCABData = DW_DataProcessor_AdviceLeeds.getChapeltownCABData(
                 tCAB_DataRecord0_Handler,
                 IDType);
 
@@ -644,13 +644,13 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData(
+        tLeedsCABData = DW_DataProcessor_AdviceLeeds.loadLeedsCABData(
                     filename,
                     aCAB_DataRecord2_Handler,
                     IDType);
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
-        tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(
+        tChapeltownCABData = DW_DataProcessor_AdviceLeeds.getChapeltownCABData(
                 tCAB_DataRecord0_Handler,
                 IDType);
 
@@ -896,13 +896,13 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessor_CAB.loadLeedsCABData(
+        tLeedsCABData = DW_DataProcessor_AdviceLeeds.loadLeedsCABData(
                     filename,
                     aCAB_DataRecord2_Handler,
                     IDType);
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
-        tChapeltownCABData = DW_DataProcessor_CAB.getChapeltownCABData(
+        tChapeltownCABData = DW_DataProcessor_AdviceLeeds.getChapeltownCABData(
                 tCAB_DataRecord0_Handler,
                 IDType);
 

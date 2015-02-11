@@ -7,6 +7,8 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,6 +16,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB1_Handler;
@@ -29,25 +33,32 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Age_EcoAct_LSOA
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Age_EcoAct_LSOA_DataRecord_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeGeocoder;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  * For processing data from the Citizens Advice Bureau branches
  */
-public class DW_DataProcessor_CAB extends DW_Processor {
+public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
 
     private DW_Data_CAB2_Handler tCAB_DataRecord2_Handler;
     private DW_Data_CAB1_Handler tCAB_DataRecord1_Handler;
     private DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
     private DW_Data_LCC_WRU_Handler tDW_Data_LCC_WRU_Handler;
     private String level;
+    private ArrayList<String> levels;
+    /**
+     * The keys are levels and the values are the target property names for
+     * those.
+     */
+    private HashMap<String, String> targetPropertyNames;
 
     /**
      * Either DW_ID_ClientOutletEnquiryID or ClientBureauOutletID
      */
     private Object IDType;
 
-    public DW_DataProcessor_CAB(File tDW_directory) {
+    public DW_DataProcessor_AdviceLeeds(File tDW_directory) {
     }
 
     /**
@@ -56,33 +67,62 @@ public class DW_DataProcessor_CAB extends DW_Processor {
     public static void main(String[] args) {
         // TODO code application logic here
         File tDW_Directory = new File("/scratch02/DigitalWelfare/");
-        new DW_DataProcessor_CAB(tDW_Directory).run(args);
+        new DW_DataProcessor_AdviceLeeds(tDW_Directory).run();
     }
 
-    /**
-     * @param args args[0] is for specifying the _DW_directory path to the
-     * project data. If nothing is passed in the default:
-     * "/scratch02/DigitalWelfare/SHBEData/" is used.
-     */
     @Override
-    public void run(String[] args) {
+    public void run() {
         init_tCAB_DataRecord2_Handler();
         init_tCAB_DataRecord0_Handler();
         init_tDW_Data_LCC_WRU_Handler();
-
-//        IDType = new DW_ID_ClientOutletEnquiryID();
-        IDType = new DW_ID_ClientOutletID();
-//        IDType = new DW_ID_ClientEnquiryID();
-//        IDType = new DW_ID_ClientID();
-
-        level = "OA";
-        runLevel();
-        level = "LSOA";
-        runLevel();
+        // Initialise tDW_ID_ClientTypes
+        ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes;
+        tDW_ID_ClientTypes = new ArrayList<DW_ID_ClientID>();
+        tDW_ID_ClientTypes.add(new DW_ID_ClientID());
+//        tDW_ID_ClientTypes.add(new DW_ID_ClientOutletID());
+//        tDW_ID_ClientTypes.add(new DW_ID_ClientOutletEnquiryID());
+//        tDW_ID_ClientTypes.add(new DW_ID_ClientEnquiryID());
+        // Initialise levels and targetPropertyNames. 
+        levels = new ArrayList<String>();
+        targetPropertyNames = new HashMap<String, String>();
+//        // OA
+//        level = "OA";
+//        levels.add(level);
+//        targetPropertyNames.put(level, "CODE");
+//        // LSOA
+//        level = "LSOA";
+//        levels.add(level);
+//        targetPropertyNames.put(level, "LSOA11CD");
+        // MSOA
         level = "MSOA";
-        runLevel();
+        levels.add(level);
+        targetPropertyNames.put(level, "MSOA11CD");
+//        // Postcode Sector
+//        level = "PostcodeSector";
+//        levels.add(level);
+//        targetPropertyNames.put(level, "RMSect");
+//        // Postcodes Unit 
+//        level = "PostcodeUnit";
+//        levels.add(level);
+//        targetPropertyNames.put(level, "POSTCODE");
+        run(tDW_ID_ClientTypes);
+    }
 
-        //runOld(args);
+    /**
+     * @param tDW_ID_ClientTypes
+     */
+    public void run(ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes) {
+        Iterator<DW_ID_ClientID> ite;
+        ite = tDW_ID_ClientTypes.iterator();
+        while (ite.hasNext()) {
+            IDType = ite.next();
+            Iterator<String> ite2;
+            ite2 = levels.iterator();
+            while (ite2.hasNext()) {
+                level = ite2.next();
+                runLevel();
+            }
+        }
     }
 
     public void runLevel() {
@@ -95,7 +135,9 @@ public class DW_DataProcessor_CAB extends DW_Processor {
                 "LSOA", 2011);
         // Get postcode to level lookup
         TreeMap<String, String> tLookupFromPostcodeToCensusCode;
-        if (level.equalsIgnoreCase("LSOA")) {
+        if (level.equalsIgnoreCase("PostcodeSector")
+                || level.equalsIgnoreCase("PostcodeUnit")
+                || level.equalsIgnoreCase("LSOA")) {
             tLookupFromPostcodeToCensusCode = tLookupFromPostcodeToLSOACensusCode;
         } else {
             tLookupFromPostcodeToCensusCode = getLookupFromPostcodeToCensusCode(
@@ -127,7 +169,7 @@ public class DW_DataProcessor_CAB extends DW_Processor {
         leedsCABData1213 = (TreeMap<String, Object[]>) allLeedsCABData1213[1];
         Set<String> leedsCABOutlets1213 = leedsCABData1213.keySet();
         // Get Chapeltown CAB Data for 2012-2013
-                System.out.println("Get Chapeltown CAB Data 2012 to 2013");
+        System.out.println("Get Chapeltown CAB Data 2012 to 2013");
 
         String Q1Filename;
         String Q2Filename;
@@ -156,7 +198,7 @@ public class DW_DataProcessor_CAB extends DW_Processor {
         Set<String> chapeltownOutlets1213 = chapeltownCABData1213.keySet();
 
         // Load Leeds CAB Data
-                        System.out.println("Load Leeds CAB Data 2012 to 2013");
+        System.out.println("Load Leeds CAB Data 2012 to 2013");
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         //TreeMap<?, DW_Data_CAB2_Record> tLeedsCABData1213;
         tLeedsCABData1213 = loadLeedsCABData(
@@ -183,11 +225,12 @@ public class DW_DataProcessor_CAB extends DW_Processor {
         File generatedAdviceLeedsDir;
         generatedAdviceLeedsDir = new File(
                 DW_Files.getGeneratedAdviceLeedsDir(),
-                "CombinedCAB");
+                "Combined");
         generatedAdviceLeedsDir = new File(
                 generatedAdviceLeedsDir,
                 level);
-        generatedAdviceLeedsDir = new File(generatedAdviceLeedsDir,
+        generatedAdviceLeedsDir = new File(
+                generatedAdviceLeedsDir,
                 IDType.getClass().getSimpleName());
         generatedAdviceLeedsDir.mkdirs();
         // Write out some tables here to map. All this code should move. Instead 
@@ -532,7 +575,7 @@ public class DW_DataProcessor_CAB extends DW_Processor {
 
         // Get Client count data for level
         TreeMap<String, TreeMap<String, Integer>> chapeltownCABData1;
-        chapeltownCABData1 = aggregateClientCountsByLSOA(
+        chapeltownCABData1 = aggregateClientCountsByLevel(
                 1,
                 tChapeltownCABData,
                 tLookupFromPostcodeToLevelCensusCode);
@@ -544,7 +587,10 @@ public class DW_DataProcessor_CAB extends DW_Processor {
 
         // Write out some tables here to map. All this code should move. Instead 
         // of writing out data we want to produce some maps.
-        writeOutAggregateCounts(year, generatedAdviceLeedsDir, chapeltownCABData1);
+        writeOutAggregateCounts(
+                year,
+                generatedAdviceLeedsDir,
+                chapeltownCABData1);
 
         result[2] = chapeltownCABData1;
 
@@ -914,9 +960,9 @@ public class DW_DataProcessor_CAB extends DW_Processor {
                 deprivationClasses);
         result[1] = leedsCABData0;
 
-        // Get Client count data for LSOA
-        TreeMap<String, TreeMap<String, Integer>> leedsCABData1;
-        leedsCABData1 = aggregateClientCountsByLSOA(
+        // Get Client count data for level
+        TreeMap<String, TreeMap<String, Integer>> tAdviceLeedsData;
+        tAdviceLeedsData = aggregateClientCountsByLevel(
                 0,
                 tLeedsCABData,
                 tLookupFromPostcodeToLSOACensusCode);
@@ -925,18 +971,17 @@ public class DW_DataProcessor_CAB extends DW_Processor {
         generatedAdviceLeedsDir = new File(
                 DW_Files.getGeneratedAdviceLeedsDir(),
                 LeedsCAB_String);
-        if (IDType instanceof DW_ID_ClientOutletEnquiryID) {
-            generatedAdviceLeedsDir = new File(generatedAdviceLeedsDir,
-                    "EnquiryClientBureauOutletID");
-        } else {
-            generatedAdviceLeedsDir = new File(generatedAdviceLeedsDir,
-                    "ClientBureauOutletID");
-        }
+        generatedAdviceLeedsDir = new File(
+                generatedAdviceLeedsDir,
+                IDType.getClass().getSimpleName());
         // Write out some tables here to map. All this code should move. Instead 
         // of writing out data we want to produce some maps.
-        writeOutAggregateCounts(outputFilename, generatedAdviceLeedsDir, leedsCABData1);
+        writeOutAggregateCounts(
+                outputFilename,
+                generatedAdviceLeedsDir,
+                tAdviceLeedsData);
 
-        result[2] = leedsCABData1;
+        result[2] = tAdviceLeedsData;
         System.out.println("</processLeedsCABData>");
         return result;
     }
@@ -944,11 +989,17 @@ public class DW_DataProcessor_CAB extends DW_Processor {
     public void writeOutAggregateCounts(
             String firstPartFilename,
             File dir,
-            TreeMap<String, TreeMap<String, Integer>> leedsCABData1) {
+            TreeMap<String, TreeMap<String, Integer>> tAdviceLeedsData) {
         dir.mkdirs();
         // Write out some tables here to map. All this code should move. Instead 
         // of writing out data we want to produce some maps.
-        Iterator<String> outletIterator = leedsCABData1.keySet().iterator();
+        // Calculate max and min and mean values for mapping
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        TreeMap<String, Integer> sums;
+        sums = new TreeMap<String, Integer>();
+
+        Iterator<String> outletIterator = tAdviceLeedsData.keySet().iterator();
         String line;
         while (outletIterator.hasNext()) {
             String outlet = outletIterator.next();
@@ -956,21 +1007,91 @@ public class DW_DataProcessor_CAB extends DW_Processor {
             File outFile = new File(dir, filenameOut);
             PrintWriter pw3;
             pw3 = Generic_StaticIO.getPrintWriter(outFile, false);
-            TreeMap<String, Integer> counts = leedsCABData1.get(outlet);
+            TreeMap<String, Integer> counts = tAdviceLeedsData.get(outlet);
             Iterator<String> ite = counts.keySet().iterator();
             System.out.println("Outlet " + outlet);
-            line = "LSOA, clientCount";
+            line = "Area, Count";
             System.out.println(line);
             pw3.println(line);
             while (ite.hasNext()) {
-                String LSOA = ite.next();
-                Integer clientCount = counts.get(LSOA);
-                line = "" + LSOA + ", " + clientCount;
+                String area = ite.next();
+                Integer count = counts.get(area);
+                line = "" + area + ", " + count;
                 System.out.println(line);
                 pw3.println(line);
+                if (!(outlet.equalsIgnoreCase("AllLeedsCAB"))) {
+                    max = Math.max(max, count);
+                    min = Math.min(min, count);
+                    Generic_Collections.addToTreeMapStringInteger(
+                            sums,
+                            area,
+                            count);
+                }
             }
             pw3.close();
         }
+        double n = tAdviceLeedsData.keySet().size() - 1;
+        int maxSum;
+        maxSum = Integer.MIN_VALUE;
+        int minSum;
+        minSum = Integer.MAX_VALUE;
+        Iterator<String> ite;
+        ite = sums.keySet().iterator();
+        while (ite.hasNext()) {
+            String area = ite.next();
+            Integer sum = sums.get(area);
+            maxSum = Math.max(maxSum, sum);
+            minSum = Math.min(minSum, sum);
+        }
+        String minArea = "";
+        String maxArea = "";
+        ite = sums.keySet().iterator();
+        while (ite.hasNext()) {
+            String LSOA = ite.next();
+            Integer sum = sums.get(LSOA);
+            if (sum == maxSum) {
+                maxArea = LSOA;
+            }
+            if (sum == minSum) {
+                minArea = LSOA;
+            }
+        }
+        ite = sums.keySet().iterator();
+        while (ite.hasNext()) {
+            String area = ite.next();
+            Integer sum = sums.get(area);
+            // It might be better to use the median or the value half way between the min and the max here instead!
+            BigDecimal mean;
+            mean = new BigDecimal(((double) sum / n));
+            sums.put(
+                    area,
+                    Generic_BigDecimal.roundIfNecessary(
+                    mean, 0, RoundingMode.HALF_EVEN).intValue());
+            if (area.equalsIgnoreCase(maxArea)) {
+                sums.put(area, max);
+            }
+            if (area.equalsIgnoreCase(minArea)) {
+                sums.put(area, min);
+            }
+        }
+        String outlet = "Scale";
+        String filenameOut = firstPartFilename + outlet + ".csv";
+        File outFile = new File(dir, filenameOut);
+        PrintWriter pw3;
+        pw3 = Generic_StaticIO.getPrintWriter(outFile, false);
+        System.out.println("Outlet " + outlet);
+        line = "Area, Count";
+        System.out.println(line);
+        pw3.println(line);
+        ite = sums.keySet().iterator();
+        while (ite.hasNext()) {
+            String area = ite.next();
+            Integer count = sums.get(area);
+            line = "" + area + ", " + count;
+            System.out.println(line);
+            pw3.println(line);
+        }
+        pw3.close();
     }
 
     /**
@@ -1003,7 +1124,7 @@ public class DW_DataProcessor_CAB extends DW_Processor {
         allAdviceLeedsIDs = new HashSet<DW_ID_ClientID>();
 
         // AllCABCounts
-        String allCABString = "AllCABString";
+        String allCABString = "AllCAB";
         TreeMap<String, Integer> allCABCounts;
         allCABCounts = new TreeMap<String, Integer>();
         result.put(allCABString, allCABCounts);
@@ -1034,78 +1155,93 @@ public class DW_DataProcessor_CAB extends DW_Processor {
             DW_Data_CAB2_Record aLeedsCABData_DataRecord = tLeedsCABData.get(id);
             outlet = aLeedsCABData_DataRecord.getOutlet();
             String postcode = aLeedsCABData_DataRecord.getPostcode();
-            String formattedPostcode = formatPostcodeForONSPDLookup(postcode);
-            String censusCode = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
-            if (censusCode == null) {
-                // unrecognised postcode
-                if (!postcode.isEmpty()) {
-                    System.out.println("Unrecognised postcode \"" + postcode + "\"");
+            String key = "";
+            if (level.equalsIgnoreCase("PostcodeSector")
+                    || level.equalsIgnoreCase("PostcodeUnit")) {
+                if (level.equalsIgnoreCase("PostcodeSector")) {
+                    if (PostcodeGeocoder.isValidPostcode(postcode)) {
+                        key = PostcodeGeocoder.getPostcodeSector(postcode);
+//                    } else {
+//                        key = "";
+                    }
+                }
+                if (level.equalsIgnoreCase("PostcodeUnit")) {
+                    if (PostcodeGeocoder.isValidPostcode(postcode)) {
+                        key = postcode;
+//                    } else {
+//                        key = "";
+                    }
                 }
             } else {
-                // Add to counts for specific outlet
-                if (result.containsKey(outlet)) {
-                    TreeMap<String, Integer> d;
-                    d = result.get(outlet);
-                    if (d.keySet().contains(censusCode)) {
-                        int count = d.get(censusCode);
-                        count++;
-                        d.put(censusCode, count);
-                    } else {
-                        d.put(censusCode, 1);
-                    }
+                String formattedPostcode = formatPostcodeForONSPDLookup(postcode);
+                key = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
+                if (key == null) {
+                    key = "";
+                }
+            }
+            // Add to counts for specific outlet
+            if (result.containsKey(outlet)) {
+                TreeMap<String, Integer> d;
+                d = result.get(outlet);
+                if (d.keySet().contains(key)) {
+                    int count = d.get(key);
+                    count++;
+                    d.put(key, count);
                 } else {
-                    TreeMap<String, Integer> d;
-                    d = new TreeMap<String, Integer>();
-                    d.put(censusCode, 1);
-                    result.put(outlet, d);
+                    d.put(key, 1);
                 }
-                // Add to allAdviceLeedsCounts
-                if (!allAdviceLeedsIDs.contains(id)) {
-                    allAdviceLeedsIDs.add(id);
-                    if (allCABCounts.keySet().contains(censusCode)) {
-                        int count = allCABCounts.get(censusCode);
-                        count++;
-                        allCABCounts.put(censusCode, count);
-                    } else {
-                        allCABCounts.put(censusCode, 1);
-                    }
-                }
-                // Add to allCABCounts
-                if (!allCABIDs.contains(id)) {
-                    allCABIDs.add(id);
-                    if (allCABCounts.keySet().contains(censusCode)) {
-                        int count = allCABCounts.get(censusCode);
-                        count++;
-                        allCABCounts.put(censusCode, count);
-                    } else {
-                        allCABCounts.put(censusCode, 1);
-                    }
-                }
-                // Add to allCABOutletCounts or allCABNonOutletCounts
-                String tCABOutletString = DW_Processor.getCABOutletString(outlet);
-                if (outletsAndPostcodes.keySet().contains(tCABOutletString)) {
-                    // Add to allCABOutletCounts
-                    if (!allCABOutletIDs.contains(id)) {
-                        allCABOutletIDs.add(id);
-                        if (allCABOutletCounts.keySet().contains(censusCode)) {
-                            int count = allCABOutletCounts.get(censusCode);
-                            count++;
-                            allCABOutletCounts.put(censusCode, count);
-                        } else {
-                            allCABOutletCounts.put(censusCode, 1);
-                        }
-                    }
+            } else {
+                TreeMap<String, Integer> d;
+                d = new TreeMap<String, Integer>();
+                d.put(key, 1);
+                result.put(outlet, d);
+            }
+            // Add to allAdviceLeedsCounts
+            if (!allAdviceLeedsIDs.contains(id)) {
+                allAdviceLeedsIDs.add(id);
+                if (allCABCounts.keySet().contains(key)) {
+                    int count = allCABCounts.get(key);
+                    count++;
+                    allCABCounts.put(key, count);
                 } else {
-                    // Add to allCABNonOutletCounts
-                    if (!allCABNonOutletIDs.contains(id)) {
-                        allCABNonOutletIDs.add(id);
-                        if (allCABNonOutletCounts.keySet().contains(censusCode)) {
-                            int count = allCABNonOutletCounts.get(censusCode);
-                            count++;
-                            allCABNonOutletCounts.put(censusCode, count);
-                        } else {
-                            allCABNonOutletCounts.put(censusCode, 1);
-                        }
+                    allCABCounts.put(key, 1);
+                }
+            }
+            // Add to allCABCounts
+            if (!allCABIDs.contains(id)) {
+                allCABIDs.add(id);
+                if (allCABCounts.keySet().contains(key)) {
+                    int count = allCABCounts.get(key);
+                    count++;
+                    allCABCounts.put(key, count);
+                } else {
+                    allCABCounts.put(key, 1);
+                }
+            }
+            // Add to allCABOutletCounts or allCABNonOutletCounts
+            String tCABOutletString = DW_Processor.getCABOutletString(outlet);
+            if (outletsAndPostcodes.keySet().contains(tCABOutletString)) {
+                // Add to allCABOutletCounts
+                if (!allCABOutletIDs.contains(id)) {
+                    allCABOutletIDs.add(id);
+                    if (allCABOutletCounts.keySet().contains(key)) {
+                        int count = allCABOutletCounts.get(key);
+                        count++;
+                        allCABOutletCounts.put(key, count);
+                    } else {
+                        allCABOutletCounts.put(key, 1);
+                    }
+                }
+            } else {
+                // Add to allCABNonOutletCounts
+                if (!allCABNonOutletIDs.contains(id)) {
+                    allCABNonOutletIDs.add(id);
+                    if (allCABNonOutletCounts.keySet().contains(key)) {
+                        int count = allCABNonOutletCounts.get(key);
+                        count++;
+                        allCABNonOutletCounts.put(key, count);
+                    } else {
+                        allCABNonOutletCounts.put(key, 1);
                     }
                 }
             }
@@ -1118,68 +1254,83 @@ public class DW_DataProcessor_CAB extends DW_Processor {
             DW_Data_CAB0_Record aCAB_DataRecord0 = tChapeltownCABData.get(id);
             //outlet = aCAB_DataRecord0.getOutlet();
             String postcode = aCAB_DataRecord0.getPostcode();
-            String formattedPostcode = formatPostcodeForONSPDLookup(postcode);
-            String censusCode = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
-            if (censusCode == null) {
-                // unrecognised postcode
-                if (!postcode.isEmpty()) {
-                    System.out.println("Unrecognised postcode \"" + postcode + "\"");
+            String key = "";
+            if (level.equalsIgnoreCase("PostcodeSector")
+                    || level.equalsIgnoreCase("PostcodeUnit")) {
+                if (level.equalsIgnoreCase("PostcodeSector")) {
+                    if (PostcodeGeocoder.isValidPostcode(postcode)) {
+                        key = PostcodeGeocoder.getPostcodeSector(postcode);
+//                    } else {
+//                        key = "";
+                    }
+                }
+                if (level.equalsIgnoreCase("PostcodeUnit")) {
+                    if (PostcodeGeocoder.isValidPostcode(postcode)) {
+                        key = postcode;
+//                    } else {
+//                        key = "";
+                    }
                 }
             } else {
-                // Add to counts for specific outlet
-                outlet = "CHAPELTOWN"; // Outlet always Chapeltown for Chapeltown data
-                if (result.containsKey(outlet)) {
-                    TreeMap<String, Integer> d;
-                    d = result.get(outlet);
-                    if (d.keySet().contains(censusCode)) {
-                        int count = d.get(censusCode);
-                        count++;
-                        d.put(censusCode, count);
-                    } else {
-                        d.put(censusCode, 1);
-                    }
-                } else {
-                    TreeMap<String, Integer> d;
-                    d = new TreeMap<String, Integer>();
-                    d.put(censusCode, 1);
-                    result.put(outlet, d);
+                String formattedPostcode = formatPostcodeForONSPDLookup(postcode);
+                key = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
+                if (key == null) {
+                    key = "";
                 }
-                // Add to allAdviceLeedsCounts
-                if (allAdviceLeedsCounts.keySet().contains(censusCode)) {
-                    int count = allCABCounts.get(censusCode);
+            }
+            // Add to counts for specific outlet
+            outlet = "CHAPELTOWN"; // Outlet always Chapeltown for Chapeltown data
+            if (result.containsKey(outlet)) {
+                TreeMap<String, Integer> d;
+                d = result.get(outlet);
+                if (d.keySet().contains(key)) {
+                    int count = d.get(key);
                     count++;
-                    allAdviceLeedsCounts.put(censusCode, count);
+                    d.put(key, count);
                 } else {
-                    allAdviceLeedsCounts.put(censusCode, 1);
+                    d.put(key, 1);
                 }
-                // Add to allCABCounts
-                if (allCABCounts.keySet().contains(censusCode)) {
-                    int count = allCABCounts.get(censusCode);
+            } else {
+                TreeMap<String, Integer> d;
+                d = new TreeMap<String, Integer>();
+                d.put(key, 1);
+                result.put(outlet, d);
+            }
+            // Add to allAdviceLeedsCounts
+            if (allAdviceLeedsCounts.keySet().contains(key)) {
+                int count = allCABCounts.get(key);
+                count++;
+                allAdviceLeedsCounts.put(key, count);
+            } else {
+                allAdviceLeedsCounts.put(key, 1);
+            }
+            // Add to allCABCounts
+            if (allCABCounts.keySet().contains(key)) {
+                int count = allCABCounts.get(key);
+                count++;
+                allCABCounts.put(key, count);
+            } else {
+                allCABCounts.put(key, 1);
+            }
+            // Add to allCABOutletCounts or allCABNonOutletCounts
+            String tCABOutletString = DW_Processor.getCABOutletString(outlet);
+            if (outletsAndPostcodes.keySet().contains(tCABOutletString)) {
+                // Add to allCABOutletCounts
+                if (allCABOutletCounts.keySet().contains(key)) {
+                    int count = allCABOutletCounts.get(key);
                     count++;
-                    allCABCounts.put(censusCode, count);
+                    allCABOutletCounts.put(key, count);
                 } else {
-                    allCABCounts.put(censusCode, 1);
+                    allCABOutletCounts.put(key, 1);
                 }
-                // Add to allCABOutletCounts or allCABNonOutletCounts
-                String tCABOutletString = DW_Processor.getCABOutletString(outlet);
-                if (outletsAndPostcodes.keySet().contains(tCABOutletString)) {
-                    // Add to allCABOutletCounts
-                    if (allCABOutletCounts.keySet().contains(censusCode)) {
-                        int count = allCABOutletCounts.get(censusCode);
-                        count++;
-                        allCABOutletCounts.put(censusCode, count);
-                    } else {
-                        allCABOutletCounts.put(censusCode, 1);
-                    }
+            } else {
+                // Add to allCABNonOutletCounts
+                if (allCABNonOutletCounts.keySet().contains(key)) {
+                    int count = allCABNonOutletCounts.get(key);
+                    count++;
+                    allCABNonOutletCounts.put(key, count);
                 } else {
-                    // Add to allCABNonOutletCounts
-                    if (allCABNonOutletCounts.keySet().contains(censusCode)) {
-                        int count = allCABNonOutletCounts.get(censusCode);
-                        count++;
-                        allCABNonOutletCounts.put(censusCode, count);
-                    } else {
-                        allCABNonOutletCounts.put(censusCode, 1);
-                    }
+                    allCABNonOutletCounts.put(key, 1);
                 }
             }
         }
@@ -1192,40 +1343,55 @@ public class DW_DataProcessor_CAB extends DW_Processor {
             rec = tLCC_WRUData.get(id);
             //outlet = aCAB_DataRecord0.getOutlet();
             String postcode = rec.getPostcode();
-            String formattedPostcode = formatPostcodeForONSPDLookup(postcode);
-            String censusCode = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
-            if (censusCode == null) {
-                // unrecognised postcode
-                if (!postcode.isEmpty()) {
-                    System.out.println("Unrecognised postcode \"" + postcode + "\"");
+            String key = "";
+            if (level.equalsIgnoreCase("PostcodeSector")
+                    || level.equalsIgnoreCase("PostcodeUnit")) {
+                if (level.equalsIgnoreCase("PostcodeSector")) {
+                    if (PostcodeGeocoder.isValidPostcode(postcode)) {
+                        key = PostcodeGeocoder.getPostcodeSector(postcode);
+//                    } else {
+//                        key = "";
+                    }
+                }
+                if (level.equalsIgnoreCase("PostcodeUnit")) {
+                    if (PostcodeGeocoder.isValidPostcode(postcode)) {
+                        key = postcode;
+//                    } else {
+//                        key = "";
+                    }
                 }
             } else {
-                // Add to counts for specific outlet
-                outlet = "LCC_WRU"; // Outlet always LCC_WRU
-                if (result.containsKey(outlet)) {
-                    TreeMap<String, Integer> d;
-                    d = result.get(outlet);
-                    if (d.keySet().contains(censusCode)) {
-                        int count = d.get(censusCode);
-                        count++;
-                        d.put(censusCode, count);
-                    } else {
-                        d.put(censusCode, 1);
-                    }
-                } else {
-                    TreeMap<String, Integer> d;
-                    d = new TreeMap<String, Integer>();
-                    d.put(censusCode, 1);
-                    result.put(outlet, d);
+                String formattedPostcode = formatPostcodeForONSPDLookup(postcode);
+                key = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
+                if (key == null) {
+                    key = "";
                 }
-                // Add to allAdviceLeedsCounts
-                if (allAdviceLeedsCounts.keySet().contains(censusCode)) {
-                    int count = allCABCounts.get(censusCode);
+            }
+            // Add to counts for specific outlet
+            outlet = "LCC_WRU"; // Outlet always LCC_WRU
+            if (result.containsKey(outlet)) {
+                TreeMap<String, Integer> d;
+                d = result.get(outlet);
+                if (d.keySet().contains(key)) {
+                    int count = d.get(key);
                     count++;
-                    allAdviceLeedsCounts.put(censusCode, count);
+                    d.put(key, count);
                 } else {
-                    allAdviceLeedsCounts.put(censusCode, 1);
+                    d.put(key, 1);
                 }
+            } else {
+                TreeMap<String, Integer> d;
+                d = new TreeMap<String, Integer>();
+                d.put(key, 1);
+                result.put(outlet, d);
+            }
+            // Add to allAdviceLeedsCounts
+            if (allAdviceLeedsCounts.keySet().contains(key)) {
+                int count = allAdviceLeedsCounts.get(key);
+                count++;
+                allAdviceLeedsCounts.put(key, count);
+            } else {
+                allAdviceLeedsCounts.put(key, 1);
             }
         }
         return result;
@@ -1233,70 +1399,141 @@ public class DW_DataProcessor_CAB extends DW_Processor {
 
     /**
      * @param type
-     * @param tLeedsCABData tLookupFromPostcodeToCensusCode
-     * tLookupFromPostcodeToLSOACensusCode TreeMap<String, String>
+     * @param data
      * @param tLookupFromPostcodeToCensusCode
      * @return
      */
-    protected TreeMap<String, TreeMap<String, Integer>> aggregateClientCountsByLSOA(
+    protected TreeMap<String, TreeMap<String, Integer>> aggregateClientCountsByLevel(
             int type,
             //String outputFilename,
-            TreeMap tLeedsCABData,
+            TreeMap data,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         TreeMap<String, TreeMap<String, Integer>> result;
         result = new TreeMap<String, TreeMap<String, Integer>>();
         String outlet;
-
         String outletAllLeedsCAB = "AllLeedsCAB";
-        TreeMap<String, Integer> allLeedsCABCounts;
-        allLeedsCABCounts = new TreeMap<String, Integer>();
-        result.put(outletAllLeedsCAB, allLeedsCABCounts);
+        TreeMap<String, Integer> allAdviceLeedsCounts;
+        allAdviceLeedsCounts = new TreeMap<String, Integer>();
+        result.put(outletAllLeedsCAB, allAdviceLeedsCounts);
         Iterator<Object> ite;
-        ite = tLeedsCABData.keySet().iterator();
-        if (type == 0) {
-            while (ite.hasNext()) {
-                Object id = ite.next();
-                DW_Data_CAB2_Record aLeedsCABData_DataRecord;
-                aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) tLeedsCABData.get(id);
-                outlet = aLeedsCABData_DataRecord.getOutlet();
-                String postcode = aLeedsCABData_DataRecord.getPostcode();
-                String censusCode = getCensusCode(
-                        postcode, tLookupFromPostcodeToCensusCode);
-                if (censusCode == null) {
-                    // unrecognised postcode
-                    if (!postcode.isEmpty()) {
-                        System.out.println("Unrecognised postcode \"" + postcode + "\"");
+        ite = data.keySet().iterator();
+        if (level.equalsIgnoreCase("PostcodeSector")
+                || level.equalsIgnoreCase("PostcodeUnit")) {
+            if (level.equalsIgnoreCase("PostcodeSector")) {
+                if (type == 0) {
+                    while (ite.hasNext()) {
+                        Object id = ite.next();
+                        DW_Data_CAB2_Record aLeedsCABData_DataRecord;
+                        aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) data.get(id);
+                        outlet = aLeedsCABData_DataRecord.getOutlet();
+                        String postcode = aLeedsCABData_DataRecord.getPostcode();
+                        if (PostcodeGeocoder.isValidPostcode(postcode)) {
+                            String postcodeSector;
+                            postcodeSector = PostcodeGeocoder.getPostcodeSector(postcode);
+                            // Add to counts
+                            addToCounts(
+                                    result,
+                                    allAdviceLeedsCounts,
+                                    outlet,
+                                    postcodeSector);
+                        }
                     }
                 } else {
-                    // Add to counts
-                    addToCounts(
-                            result,
-                            allLeedsCABCounts,
-                            outlet,
-                            censusCode);
+                    while (ite.hasNext()) {
+                        Object id = ite.next();
+                        DW_Data_CAB0_Record aLeedsCABData_DataRecord;
+                        aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) data.get(id);
+                        outlet = "CHAPELTOWN";
+                        String postcode = aLeedsCABData_DataRecord.getPostcode();
+                        if (PostcodeGeocoder.isValidPostcode(postcode)) {
+                            String postcodeSector;
+                            postcodeSector = PostcodeGeocoder.getPostcodeSector(postcode);
+                            // Add to counts
+                            addToCounts(
+                                    result,
+                                    allAdviceLeedsCounts,
+                                    outlet,
+                                    postcodeSector);
+                        }
+                    }
+                }
+            } else {
+                if (type == 0) {
+                    while (ite.hasNext()) {
+                        Object id = ite.next();
+                        DW_Data_CAB2_Record aLeedsCABData_DataRecord;
+                        aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) data.get(id);
+                        outlet = aLeedsCABData_DataRecord.getOutlet();
+                        String postcode = aLeedsCABData_DataRecord.getPostcode();
+                        // Add to counts
+                        addToCounts(
+                                result,
+                                allAdviceLeedsCounts,
+                                outlet,
+                                postcode);
+                    }
+                } else {
+                    while (ite.hasNext()) {
+                        Object id = ite.next();
+                        DW_Data_CAB0_Record aLeedsCABData_DataRecord;
+                        aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) data.get(id);
+                        outlet = "CHAPELTOWN";
+                        String postcode = aLeedsCABData_DataRecord.getPostcode();
+                        // Add to counts
+                        addToCounts(
+                                result,
+                                allAdviceLeedsCounts,
+                                outlet,
+                                postcode);
+                    }
                 }
             }
         } else {
-            while (ite.hasNext()) {
-                Object id = ite.next();
-                DW_Data_CAB0_Record aLeedsCABData_DataRecord;
-                aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) tLeedsCABData.get(id);
-                outlet = "CHAPELTOWN";
-                String postcode = aLeedsCABData_DataRecord.getPostcode();
-                String censusCode = getCensusCode(
-                        postcode, tLookupFromPostcodeToCensusCode);
-                if (censusCode == null) {
-                    // unrecognised postcode
-                    if (!postcode.isEmpty()) {
-                        System.out.println("Unrecognised postcode \"" + postcode + "\"");
+            if (type == 0) {
+                while (ite.hasNext()) {
+                    Object id = ite.next();
+                    DW_Data_CAB2_Record aLeedsCABData_DataRecord;
+                    aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) data.get(id);
+                    outlet = aLeedsCABData_DataRecord.getOutlet();
+                    String postcode = aLeedsCABData_DataRecord.getPostcode();
+                    String censusCode = getCensusCode(
+                            postcode, tLookupFromPostcodeToCensusCode);
+                    if (censusCode == null) {
+                        // unrecognised postcode
+                        if (!postcode.isEmpty()) {
+                            System.out.println("Unrecognised postcode \"" + postcode + "\"");
+                        }
+                    } else {
+                        // Add to counts
+                        addToCounts(
+                                result,
+                                allAdviceLeedsCounts,
+                                outlet,
+                                censusCode);
                     }
-                } else {
-                    // Add to counts
-                    addToCounts(
-                            result,
-                            allLeedsCABCounts,
-                            outlet,
-                            censusCode);
+                }
+            } else {
+                while (ite.hasNext()) {
+                    Object id = ite.next();
+                    DW_Data_CAB0_Record aLeedsCABData_DataRecord;
+                    aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) data.get(id);
+                    outlet = "CHAPELTOWN";
+                    String postcode = aLeedsCABData_DataRecord.getPostcode();
+                    String censusCode = getCensusCode(
+                            postcode, tLookupFromPostcodeToCensusCode);
+                    if (censusCode == null) {
+                        // unrecognised postcode
+                        if (!postcode.isEmpty()) {
+                            System.out.println("Unrecognised postcode \"" + postcode + "\"");
+                        }
+                    } else {
+                        // Add to counts
+                        addToCounts(
+                                result,
+                                allAdviceLeedsCounts,
+                                outlet,
+                                censusCode);
+                    }
                 }
             }
         }
@@ -1315,31 +1552,31 @@ public class DW_DataProcessor_CAB extends DW_Processor {
             TreeMap<String, TreeMap<String, Integer>> aggregateCounts,
             TreeMap<String, Integer> allLeedsCABCounts,
             String outlet,
-            String censusCode) {
+            String areaCode) {
         // Add to counts for specific outlet
         if (aggregateCounts.containsKey(outlet)) {
             TreeMap<String, Integer> d;
             d = aggregateCounts.get(outlet);
-            if (d.keySet().contains(censusCode)) {
-                int count = d.get(censusCode);
+            if (d.keySet().contains(areaCode)) {
+                int count = d.get(areaCode);
                 count++;
-                d.put(censusCode, count);
+                d.put(areaCode, count);
             } else {
-                d.put(censusCode, 1);
+                d.put(areaCode, 1);
             }
         } else {
             TreeMap<String, Integer> d;
             d = new TreeMap<String, Integer>();
-            d.put(censusCode, 1);
+            d.put(areaCode, 1);
             aggregateCounts.put(outlet, d);
         }
         // Add to outletAllLeedsCAB
-        if (allLeedsCABCounts.keySet().contains(censusCode)) {
-            int count = allLeedsCABCounts.get(censusCode);
+        if (allLeedsCABCounts.keySet().contains(areaCode)) {
+            int count = allLeedsCABCounts.get(areaCode);
             count++;
-            allLeedsCABCounts.put(censusCode, count);
+            allLeedsCABCounts.put(areaCode, count);
         } else {
-            allLeedsCABCounts.put(censusCode, 1);
+            allLeedsCABCounts.put(areaCode, 1);
         }
     }
 
@@ -1361,7 +1598,7 @@ public class DW_DataProcessor_CAB extends DW_Processor {
      */
     protected TreeMap<String, Object[]> generaliseByLSOADeprivationClass(
             int type,
-            TreeMap tCABData,
+            TreeMap<DW_ID_ClientID, ?> tCABData,
             TreeMap<String, Deprivation_DataRecord> tDeprivationData,
             TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
             TreeMap<Integer, Integer> deprivationClasses) {
@@ -1393,21 +1630,21 @@ public class DW_DataProcessor_CAB extends DW_Processor {
             // TreeMap<String, TreeMap<Object, DW_Data_CAB2_Record>>
             // where the keys are EnquiryClientBureauOutletIDs or 
             // ClientBureauOutletIDs and the values are CAB_DataRecord2s
-            Iterator<Object> ite;
-            TreeMap<String, TreeMap<Object, DW_Data_CAB2_Record>> outletLeedsCABData;
-            outletLeedsCABData = new TreeMap<String, TreeMap<Object, DW_Data_CAB2_Record>>();
+            Iterator<DW_ID_ClientID> ite;
+            TreeMap<String, TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record>> outletLeedsCABData;
+            outletLeedsCABData = new TreeMap<String, TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record>>();
             ite = tCABData.keySet().iterator();
             while (ite.hasNext()) {
-                Object id = ite.next();
+                DW_ID_ClientID id = ite.next();
                 DW_Data_CAB2_Record aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) tCABData.get(id);
                 outlet = aLeedsCABData_DataRecord.getOutlet();
                 if (outletLeedsCABData.containsKey(outlet)) {
-                    TreeMap<Object, DW_Data_CAB2_Record> d;
+                    TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> d;
                     d = outletLeedsCABData.get(outlet);
                     d.put(id, aLeedsCABData_DataRecord);
                 } else {
-                    TreeMap<Object, DW_Data_CAB2_Record> d;
-                    d = new TreeMap<Object, DW_Data_CAB2_Record>();
+                    TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> d;
+                    d = new TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record>();
                     d.put(id, aLeedsCABData_DataRecord);
                     outletLeedsCABData.put(outlet, d);
                 }
@@ -1429,21 +1666,21 @@ public class DW_DataProcessor_CAB extends DW_Processor {
                 result.put(outlet, deprivationClassCountOfCABClientsETC);
             }
         } else {
-            Iterator<String> ite;
-            TreeMap<String, TreeMap<String, DW_Data_CAB0_Record>> outletChapeltownCABData;
-            outletChapeltownCABData = new TreeMap<String, TreeMap<String, DW_Data_CAB0_Record>>();
+            Iterator<DW_ID_ClientID> ite;
+            TreeMap<String, TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record>> outletChapeltownCABData;
+            outletChapeltownCABData = new TreeMap<String, TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record>>();
             ite = tCABData.keySet().iterator();
             while (ite.hasNext()) {
-                String id = ite.next();
+                DW_ID_ClientID id = ite.next();
                 DW_Data_CAB0_Record aCABData_DataRecord = (DW_Data_CAB0_Record) tCABData.get(id);
                 outlet = "Chapeltown";
                 if (outletChapeltownCABData.containsKey(outlet)) {
-                    TreeMap<String, DW_Data_CAB0_Record> d;
+                    TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> d;
                     d = outletChapeltownCABData.get(outlet);
                     d.put(id, aCABData_DataRecord);
                 } else {
-                    TreeMap<String, DW_Data_CAB0_Record> d;
-                    d = new TreeMap<String, DW_Data_CAB0_Record>();
+                    TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> d;
+                    d = new TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record>();
                     d.put(id, aCABData_DataRecord);
                     outletChapeltownCABData.put(outlet, d);
                 }
@@ -1556,6 +1793,7 @@ public class DW_DataProcessor_CAB extends DW_Processor {
      * Load LeedsCABData.
      *
      * @param filename
+     * @param IDType
      * @param tCAB_DataRecord2_Handler
      * @return
      */
@@ -1572,10 +1810,10 @@ public class DW_DataProcessor_CAB extends DW_Processor {
 //        System.out.println(LeedsCABData.firstKey());
 //        System.out.println(LeedsCABData.firstEntry().getValue());
         int countRecordsWithNoPostcode = 0;
-        Iterator ite;
+        Iterator<DW_ID_ClientID> ite;
         ite = result.keySet().iterator();
         while (ite.hasNext()) {
-            Object id = ite.next();
+            DW_ID_ClientID id = ite.next();
             DW_Data_CAB2_Record aCABData_DataRecord = result.get(id);
             String postcode = aCABData_DataRecord.getPostcode();
             if (postcode.isEmpty()) {
@@ -1601,18 +1839,21 @@ public class DW_DataProcessor_CAB extends DW_Processor {
             DW_Data_LCC_WRU_Handler handler,
             Object IDType) {
         TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> result;
+//        File dir = new File(
+//                DW_Files.getGeneratedAdviceLeedsDir(),
+//                "LCC - Welfare Rights Unit");
         File dir = new File(
-                DW_Files.getGeneratedAdviceLeedsDir(),
-                "LeedsCAB");
+                DW_Files.getInputAdviceLeedsDir(),
+                "LCC_WRU");
         result = handler.loadInputData(
                 dir, filename, IDType);
 //        System.out.println(LeedsCABData.firstKey());
 //        System.out.println(LeedsCABData.firstEntry().getValue());
         int countRecordsWithNoPostcode = 0;
-        Iterator ite;
+        Iterator<DW_ID_ClientID> ite;
         ite = result.keySet().iterator();
         while (ite.hasNext()) {
-            Object id = ite.next();
+            DW_ID_ClientID id = ite.next();
             DW_Data_LCC_WRU_Record rec = result.get(id);
             String postcode = rec.getPostcode();
             if (postcode.isEmpty()) {
@@ -1630,6 +1871,7 @@ public class DW_DataProcessor_CAB extends DW_Processor {
      *
      * @param filename
      * @param tCAB_DataRecord2_Handler
+     * @param IDType
      * @return
      */
     public static TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> loadLeedsCABData(
@@ -1645,10 +1887,10 @@ public class DW_DataProcessor_CAB extends DW_Processor {
 //        System.out.println(LeedsCABData.firstKey());
 //        System.out.println(LeedsCABData.firstEntry().getValue());
         int countRecordsWithNoPostcode = 0;
-        Iterator ite;
+        Iterator<DW_ID_ClientID> ite;
         ite = result.keySet().iterator();
         while (ite.hasNext()) {
-            Object id = ite.next();
+            DW_ID_ClientID id = ite.next();
             DW_Data_CAB2_Record aCABData_DataRecord = result.get(id);
             String postcode = aCABData_DataRecord.getPostcode();
             if (postcode.isEmpty()) {
@@ -1688,10 +1930,10 @@ public class DW_DataProcessor_CAB extends DW_Processor {
 //        System.out.println(LeedsCABData.firstEntry().getValue());
         int countRecordsWithNoPostcode = 0;
         //Iterator<EnquiryClientBureauOutletID> ite;
-        Iterator ite;
+        Iterator<DW_ID_ClientID> ite;
         ite = result.keySet().iterator();
         while (ite.hasNext()) {
-            Object id;
+            DW_ID_ClientID id;
             id = ite.next();
             DW_Data_CAB0_Record aCABData_DataRecord;
             aCABData_DataRecord = result.get(id);
@@ -1846,7 +2088,7 @@ public class DW_DataProcessor_CAB extends DW_Processor {
         Iterator<Integer> ite2 = deprivationClasses.keySet().iterator();
 
         //Iterator<Integer> ite2 = deprivationClassCountOfCABClients.keySet().iterator();
-        System.out.println("DeprivationClass,1213");
+        System.out.println("DeprivationClass, 1213");
         Integer previousDeprivationClass = 0;
         while (ite2.hasNext()) {
             Integer deprivationClassKey = ite2.next();
@@ -1854,19 +2096,19 @@ public class DW_DataProcessor_CAB extends DW_Processor {
             Integer countOfCABClients = deprivationClassCountOfCABClients.get(deprivationClassValue);
             if (countOfCABClients == null) {
                 System.out.println(
-                        "Clients in the " + previousDeprivationClass.toString()
+                        "Count in the " + previousDeprivationClass.toString()
                         + "% to " + deprivationClassValue.toString() + "% deprived LSOAs"
-                        + ",0");
+                        + ", 0");
             } else {
                 System.out.println(
-                        "Clients in the " + previousDeprivationClass.toString()
+                        "Count in the " + previousDeprivationClass.toString()
                         + "% to " + deprivationClassValue.toString() + "% deprived LSOAs"
-                        + "," + countOfCABClients);
+                        + ", " + countOfCABClients);
             }
             previousDeprivationClass = deprivationClassValue;
         }
-        System.out.println("Clients without a recognised postcode"
-                + "," + ((Integer) deprivationClassCountOfCABClientsETC[1]).toString()
+        System.out.println("Count without a recognised postcode"
+                + ", " + ((Integer) deprivationClassCountOfCABClientsETC[1]).toString()
         );
         return deprivationClassCountOfCABClientsETC;
     }
