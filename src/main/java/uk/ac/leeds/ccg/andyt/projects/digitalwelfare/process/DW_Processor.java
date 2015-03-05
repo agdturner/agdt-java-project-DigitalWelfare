@@ -23,7 +23,7 @@ import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeGeocoder;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Point;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 
 /**
  * This is the main class for the Digital Welfare Project. For more details of
@@ -55,8 +55,8 @@ public abstract class DW_Processor {
         return result;
     }
 
-    public static DW_Point getPointFromPostcode(String postcode) {
-        DW_Point result;
+    public static AGDT_Point getPointFromPostcode(String postcode) {
+        AGDT_Point result;
         String formattedPostcode;
         formattedPostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
         result = DW_Maps.getONSPDlookups()[0].get(formattedPostcode);
@@ -570,28 +570,28 @@ public abstract class DW_Processor {
         return result;
     }
 
-    public static TreeMap<String, DW_Point> getOutletsAndPoints() {
-        TreeMap<String, DW_Point> result;
+    public static TreeMap<String, AGDT_Point> getOutletsAndPoints() {
+        TreeMap<String, AGDT_Point> result;
         result = postcodeToPoints(getOutletsAndPostcodes());
         return result;
     }
 
     /**
      * @param input TreeMap<String, String> where values are postcodes for which
-     * the coordinates are to be returned as a DW_Point.
-     * @return TreeMap<String, DW_Point> with the keys as in input and values
+ the coordinates are to be returned as a AGDT_Point.
+     * @return TreeMap<String, AGDT_Point> with the keys as in input and values
      * calculated using getPointFromPostcode(value). If no look up is found for
      * a postcode its key does not get put into the result.
      */
-    public static TreeMap<String, DW_Point> postcodeToPoints(
+    public static TreeMap<String, AGDT_Point> postcodeToPoints(
             TreeMap<String, String> input) {
-        TreeMap<String, DW_Point> result;
-        result = new TreeMap<String, DW_Point>();
+        TreeMap<String, AGDT_Point> result;
+        result = new TreeMap<String, AGDT_Point>();
         Iterator<String> ite_String = input.keySet().iterator();
         while (ite_String.hasNext()) {
             String key = ite_String.next();
             String postcode = input.get(key);
-            DW_Point p = getPointFromPostcode(postcode);
+            AGDT_Point p = getPointFromPostcode(postcode);
             if (p == null) {
                 System.out.println("No point for postcode " + postcode);
             } else {
@@ -667,8 +667,8 @@ public abstract class DW_Processor {
         return result;
     }
 
-    public static TreeMap<String, DW_Point> getAdviceLeedsNamesAndPoints() {
-        TreeMap<String, DW_Point> result;
+    public static TreeMap<String, AGDT_Point> getAdviceLeedsNamesAndPoints() {
+        TreeMap<String, AGDT_Point> result;
         result = postcodeToPoints(getAdviceLeedsNamesAndPostcodes());
         return result;
     }

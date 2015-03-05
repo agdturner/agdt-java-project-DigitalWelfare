@@ -28,7 +28,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Point;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 
 /**
  * A class for adding coordinate data and area codes for UK postcodes.
@@ -48,7 +48,7 @@ public class PostcodeGeocoder implements Serializable {
      * File which data are written to.
      */
     private File outputFile;
-    //public TreeMap<String, DW_Point> lookup;
+    //public TreeMap<String, AGDT_Point> lookup;
 
     public PostcodeGeocoder() {
     }
@@ -96,11 +96,11 @@ public class PostcodeGeocoder implements Serializable {
         //new PostcodeGeocoder(inputFile, processedFile).run3();
     }
 
-    public TreeMap<String, DW_Point> getPostcodeSectorPointLookup(
+    public TreeMap<String, AGDT_Point> getPostcodeSectorPointLookup(
             boolean ignorePointsAtOrigin,
             String outputFilename,
-            TreeMap<String, DW_Point> postcodeUnitPointLookup) {
-        TreeMap<String, DW_Point> result;
+            TreeMap<String, AGDT_Point> postcodeUnitPointLookup) {
+        TreeMap<String, AGDT_Point> result;
         File outputFile2;
         outputFile2 = new File(
                 outputFile.getParentFile(),
@@ -120,13 +120,13 @@ public class PostcodeGeocoder implements Serializable {
                 postcode);
         Generic_StaticIO.writeObject(result, outputFile2);
 //        // For testing reading back in
-//        result = (TreeMap<String, DW_Point>) Generic_StaticIO.readObject(outputFile2);
+//        result = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(outputFile2);
         return result;
     }
 
-    public TreeMap<String, DW_Point> getPostcodeUnitPointLookup(
+    public TreeMap<String, AGDT_Point> getPostcodeUnitPointLookup(
             boolean ignorePointsAtOrigin) {
-        TreeMap<String, DW_Point> result;
+        TreeMap<String, AGDT_Point> result;
         result = initPostcodeUnitPointLookup(
                 inputFile,
                 ignorePointsAtOrigin);
@@ -142,7 +142,7 @@ public class PostcodeGeocoder implements Serializable {
                 postcode);
         Generic_StaticIO.writeObject(result, outputFile);
 //        // For testing reading back in
-//        result = (TreeMap<String, DW_Point>) Generic_StaticIO.readObject(outputFile);
+//        result = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(outputFile);
         return result;
     }
 
@@ -162,7 +162,7 @@ public class PostcodeGeocoder implements Serializable {
                 lookup,
                 postcode);
         Generic_StaticIO.writeObject(lookup, outputFile);
-        //lookup = (TreeMap<String, DW_Point>) Generic_StaticIO.readObject(lookupFile);
+        //lookup = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(lookupFile);
         return lookup;
     }
 
@@ -182,7 +182,7 @@ public class PostcodeGeocoder implements Serializable {
                 lookup,
                 postcode);
         Generic_StaticIO.writeObject(lookup, outputFile);
-        //lookup = (TreeMap<String, DW_Point>) Generic_StaticIO.readObject(lookupFile);
+        //lookup = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(lookupFile);
         return lookup;
     }
 
@@ -199,7 +199,7 @@ public class PostcodeGeocoder implements Serializable {
         TreeMap<String, String> lookup;
         lookup = readONSPDIntoTreeMapPostcodeString(inputFile, level, year);
         Generic_StaticIO.writeObject(lookup, outputFile);
-        //lookup = (TreeMap<String, DW_Point>) Generic_StaticIO.readObject(lookupFile);
+        //lookup = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(lookupFile);
         return lookup;
     }
 
@@ -242,7 +242,7 @@ public class PostcodeGeocoder implements Serializable {
                 lookup,
                 postcode);
         Generic_StaticIO.writeObject(lookup, outputFile);
-        //lookup = (TreeMap<String, DW_Point>) Generic_StaticIO.readObject(lookupFile);
+        //lookup = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(lookupFile);
         return lookup;
     }
 
@@ -302,8 +302,8 @@ public class PostcodeGeocoder implements Serializable {
         return result;
     }
 
-    public static TreeMap<String, DW_Point> getStringToDW_PointLookup(File file) {
-        return (TreeMap<String, DW_Point>) Generic_StaticIO.readObject(file);
+    public static TreeMap<String, AGDT_Point> getStringToDW_PointLookup(File file) {
+        return (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(file);
     }
 
     public static TreeMap<String, String[]> getStringToStringArrayLookup(File file) {
@@ -315,9 +315,9 @@ public class PostcodeGeocoder implements Serializable {
     }
 
     public static void printTest0(
-            TreeMap<String, DW_Point> lookup,
+            TreeMap<String, AGDT_Point> lookup,
             String postcode) {
-        DW_Point p = lookup.get(postcode);
+        AGDT_Point p = lookup.get(postcode);
         if (p != null) {
             int lon = p.getX();
             int lat = p.getY();
@@ -376,11 +376,11 @@ public class PostcodeGeocoder implements Serializable {
      * @param postcodeUnitPointLookup
      * @return
      */
-    private TreeMap<String, DW_Point> initPostcodeSectorPointLookup(
-            TreeMap<String, DW_Point> postcodeUnitPointLookup,
+    private TreeMap<String, AGDT_Point> initPostcodeSectorPointLookup(
+            TreeMap<String, AGDT_Point> postcodeUnitPointLookup,
             boolean ignorePointsAtOrigin) {
-        TreeMap<String, DW_Point> result;
-        result = new TreeMap<String, DW_Point>();
+        TreeMap<String, AGDT_Point> result;
+        result = new TreeMap<String, AGDT_Point>();
         // Aggregate by postcode
         // Create postcodeSector to unitPostcodes look up
         TreeMap<String, HashSet<String>> postcodeSectorsAndUnitPostcodes;
@@ -411,13 +411,13 @@ public class PostcodeGeocoder implements Serializable {
             ite2 = postcodes.iterator();
             while (ite2.hasNext()) {
                 String unitPostcode = ite2.next();
-                DW_Point p = postcodeUnitPointLookup.get(unitPostcode);
+                AGDT_Point p = postcodeUnitPointLookup.get(unitPostcode);
                 sumx += p.getX();
                 sumy += p.getY();
             }
             int x = (int) (sumx / n);
             int y = (int) (sumy / n);
-            DW_Point postcodeSectorPoint = new DW_Point(x, y);
+            AGDT_Point postcodeSectorPoint = new AGDT_Point(x, y);
             if (ignorePointsAtOrigin) {
                 if (!(x < 1 || y < 1)) {
                     result.put(postcodeSector, postcodeSectorPoint);
@@ -427,6 +427,32 @@ public class PostcodeGeocoder implements Serializable {
             }
         }
         return result;
+    }
+
+//    public static String formatPostcodeForMapping(String postcode) {
+//        String[] split = postcode.split(" ");
+//        if (split.length == 2) {
+//            return postcode;
+//        }
+//        int length = postcode.length();
+//        String firstPartPostcode;
+//        firstPartPostcode = postcode.substring(0,length - 3);
+//        String secondPartPostcode;
+//        secondPartPostcode = postcode.substring(length - 3);
+//        return firstPartPostcode + " " + secondPartPostcode;        
+//    }
+    public static String formatPostcodeForMapping(String postcode) {
+        String[] split = postcode.split(" ");
+        if (split.length == 2) {
+            if (split[0].length() == 3) {
+                return postcode;
+            } else {
+                return split[0] + split[1];
+            }
+        } else {
+            int debug = 1;
+        }
+        return postcode;
     }
 
     public static boolean isValidPostcode(String postcode) {
@@ -439,12 +465,11 @@ public class PostcodeGeocoder implements Serializable {
         }
         return false;
     }
-    
-    
+
     public static String getPostcodeSector(String ONSPDPostcodeUnit) {
         String result;
         int length = ONSPDPostcodeUnit.length();
-        result = ONSPDPostcodeUnit.substring(0,length - 2);
+        result = ONSPDPostcodeUnit.substring(0, length - 2);
         result = result.trim();
 //        // With a Space
 //        String outward = ONSPDPostcodeUnit.substring(length - 3);
@@ -453,10 +478,10 @@ public class PostcodeGeocoder implements Serializable {
         return result;
     }
 
-    public TreeMap<String, DW_Point> initPostcodeUnitPointLookup(
+    public TreeMap<String, AGDT_Point> initPostcodeUnitPointLookup(
             File file,
             boolean ignorePointsAtOrigin) {
-        TreeMap<String, DW_Point> result = new TreeMap<String, DW_Point>();
+        TreeMap<String, AGDT_Point> result = new TreeMap<String, AGDT_Point>();
         try {
             int lineCounter = 0;
             int recordCounter = 0;
@@ -473,8 +498,8 @@ public class PostcodeGeocoder implements Serializable {
                         rec = new ONSPDRecord_Aug_2013_UK_0(line);
                         int easting = rec.getOseast1m();
                         int northing = rec.getOsnrth1m();
-                        DW_Point point;
-                        point = new DW_Point(easting, northing);
+                        AGDT_Point point;
+                        point = new AGDT_Point(easting, northing);
                         String postcode = rec.getPcd();
                         if (ignorePointsAtOrigin) {
                             // Test for orgin point (postcodes ending ZZ are usually at origin, but some others are too.)

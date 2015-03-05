@@ -21,40 +21,26 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
 import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.geotools.data.FileDataStore;
 import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
-import org.geotools.data.shapefile.shp.JTSUtilities;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.map.MapContent;
-import org.geotools.resources.coverage.IntersectUtils;
-import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_GeoTools;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps.addFeatureAttributeAndAddToFeatureCollection;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Geotools;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps.getPointSimpleFeatureType;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Point;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
 
 /**
@@ -199,7 +185,7 @@ public class DW_PostcodeMaps extends DW_Maps {
                 postcodeUnitPoly_DW_Shapefile,
                 gf);
 
-        MapContent mc = DW_GeoTools.createMapContent(
+        MapContent mc = AGDT_Geotools.createMapContent(
                 new DW_Shapefile(aLeedsPostcodeSectorShapefile),
                 OA_Shapefile,
                 null,//LSOA_Shapefile,
@@ -211,7 +197,7 @@ public class DW_PostcodeMaps extends DW_Maps {
 
         File outputDir = mapDirectory;
 
-        DW_GeoTools.outputToImage(
+        DW_Geotools.outputToImage(
                 mc,
                 outname,
                 aLeedsPostcodeSectorShapefile,
@@ -372,7 +358,7 @@ public class DW_PostcodeMaps extends DW_Maps {
             String target) {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
-        TreeMap<String, DW_Point> tONSPDlookup = getONSPDlookups()[index];
+        TreeMap<String, AGDT_Point> tONSPDlookup = getONSPDlookups()[index];
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
          * using a Point object for the location.
@@ -383,7 +369,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         while (ite.hasNext()) {
             String postcode = ite.next();
             if (postcode.startsWith(target)) {
-                DW_Point p = tONSPDlookup.get(postcode);
+                AGDT_Point p = tONSPDlookup.get(postcode);
                 String name = postcode;
                 addPointFeature(p, gf, sfb, name, result);
             }

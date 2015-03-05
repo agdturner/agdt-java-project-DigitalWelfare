@@ -80,14 +80,19 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CA
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_LCC_WRU_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_LCC_WRU_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientEnquiryID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletEnquiryID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_GeoTools;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Point;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Geotools;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor.getLookupFromPostcodeToCensusCode;
@@ -151,7 +156,8 @@ public class DW_DensityMaps extends DW_Maps {
     public void run() {
         // If showMapsInJMapPane is true, the maps are presented in individual 
         // JMapPanes
-        showMapsInJMapPane = false;
+        //showMapsInJMapPane = false;
+        showMapsInJMapPane = true;
         //outputESRIAsciigrids = false;
         imageWidth = 1000;
         initONSPDLookups();
@@ -212,13 +218,14 @@ public class DW_DensityMaps extends DW_Maps {
                 ge,
                 handleOutOfMemoryErrors);
 
-        cellsize = 100;//50;//100;//50; //100;
-
-        maxCellDistanceForGeneralisation = 8;//32; // add a min too for top up runs.
-
-        Object IDType;
-        //IDType = new ClientBureauOutletID();
-        IDType = new DW_ID_ClientOutletEnquiryID();
+        
+        // Initialise tDW_ID_ClientTypes
+        ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes;
+        tDW_ID_ClientTypes = new ArrayList<DW_ID_ClientID>();
+        tDW_ID_ClientTypes.add(new DW_ID_ClientID());
+//        tDW_ID_ClientTypes.add(new DW_ID_ClientOutletID());
+//        tDW_ID_ClientTypes.add(new DW_ID_ClientOutletEnquiryID());
+//        tDW_ID_ClientTypes.add(new DW_ID_ClientEnquiryID());
 
 //        Currently only equal interval implemented
 //        // Jenks runs
@@ -226,83 +233,92 @@ public class DW_DensityMaps extends DW_Maps {
 //        commonStyling = true;
 //        individualStyling = true;
 //        runAll(IDType);
-//
-        // Quantile runs
-        styleParameters.setClassificationFunctionName("Quantile");
-        styleParameters.setStylesNull();
-        commonStyling = true;
-        individualStyling = true;
-        runAll(IDType);
 
-//        // Equal Interval runs
-//        styleParameters.setClassificationFunctionName("EqualInterval");
+//        // Quantile runs
+//        styleParameters.setClassificationFunctionName("Quantile");
 //        styleParameters.setStylesNull();
 //        commonStyling = true;
 //        individualStyling = true;
-//        runAll(IDType);
+//        runAll(tDW_ID_ClientTypes);
+
+        // Equal Interval runs
+        styleParameters.setClassificationFunctionName("EqualInterval");
+        styleParameters.setStylesNull();
+//        commonStyling = true;
+        individualStyling = true;
+        //cellsize = 800;//400;//200;//50;//100;//50; //100;
+        //maxCellDistanceForGeneralisation = 2;//4;//8;//16;//32; // add a min too for top up runs.
+        for (maxCellDistanceForGeneralisation = 4; maxCellDistanceForGeneralisation <= 32; maxCellDistanceForGeneralisation *= 2) {
+            cellsize = 1600 / maxCellDistanceForGeneralisation;
+            runAll(tDW_ID_ClientTypes);
+        }
     }
 
-    public void runAll(Object IDType) {
+    public void runAll(ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes) {
+        Iterator<DW_ID_ClientID> ite;
+        ite = tDW_ID_ClientTypes.iterator();
+        while (ite.hasNext()) {
+            Object IDType;
+            IDType = ite.next();
+            // General parameters
+            // Property for selecting
+            String targetPropertyName = "LSOA11CD";
+            level = "LSOA";
+            // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
+            DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
+            tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
+                    level, targetPropertyName, getShapefileDataStoreFactory());
+            tLookupFromPostcodeToCensusCodes = getLookupFromPostcodeToCensusCode(
+                    level, 2011);
 
-        // General parameters
-        // Property for selecting
-        String targetPropertyName = "LSOA11CD";
-        level = "LSOA";
-        // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
-        DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
-        tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                level, targetPropertyName, getShapefileDataStoreFactory());
-        tLookupFromPostcodeToCensusCodes = getLookupFromPostcodeToCensusCode(
-                level, 2011);
+            TreeMap<String, Deprivation_DataRecord> deprivationRecords;
 
-        TreeMap<String, Deprivation_DataRecord> deprivationRecords;
-
-        // Map CAB data
-        boolean scaleToFirst;
+            // Map CAB data
+            boolean scaleToFirst;
 
         // Grids parameters
-        // Filter just for specific outlets
-        HashSet<String> outlets;
-        outlets = new HashSet<String>();
-        outlets.add("OTLEY - LS21 1BG");
-        outlets = null; // Set outlets null to run for all outlets
+            // Filter just for specific outlets
+            HashSet<String> outlets;
+            outlets = new HashSet<String>();
+            outlets.add("OTLEY - LS21 1BG");
+            outlets = null; // Set outlets null to run for all outlets
 
-        /*
-         * (filter == 0) Clip all results to Leeds LAD
-         * (filter == 1) Clip all results to Leeds And Neighbouring LADs (showing results for all Leeds LAD)
-         * (filter == 2) Clip all results to Leeds And Near Neighbouring LADs (showing results for all Leeds LAD)
-         * (filter == 3) No clipping
-         */
-        for (int filter = 0; filter < 3; filter++) {
-            if (filter == 0) {
-            //if (filter == 0 || filter == 2) {
+            /*
+             * (filter == 0) Clip all results to Leeds LAD
+             * (filter == 1) Clip all results to Leeds And Neighbouring LADs (showing results for all Leeds LAD)
+             * (filter == 2) Clip all results to Leeds And Near Neighbouring LADs (showing results for all Leeds LAD)
+             * (filter == 3) No clipping
+             */
+            for (int filter = 0; filter < 3; filter++) {
+                if (filter == 0) {
+                //if (filter == 0 || filter == 2) {
                 //for (int filter = 2; filter < 3; filter++) {
-                //int filter = 0;
-                deprivationRecords = null;
-                if (commonStyling) {
-                    scaleToFirst = true;
-                    runCAB(deprivationRecords,
-                            outlets,
-                            targetPropertyName,
-                            tLSOACodesAndLeedsLSOAShapefile,
-                            tLookupFromPostcodeToCensusCodes,
-                            filter,
-                            scaleToFirst,
-                            IDType,
-                            handleOutOfMemoryErrors);
-                }
-                if (individualStyling) {
-                    scaleToFirst = false;
-                    runCAB(deprivationRecords,
-                            outlets,
-                            targetPropertyName,
-                            tLSOACodesAndLeedsLSOAShapefile,
-                            tLookupFromPostcodeToCensusCodes,
-                            filter,
-                            scaleToFirst,
-                            IDType,
-                            handleOutOfMemoryErrors);
-                }
+                    //int filter = 0;
+                    deprivationRecords = null;
+                    if (commonStyling) {
+                        scaleToFirst = true;
+                        runCAB(deprivationRecords,
+                                outlets,
+                                targetPropertyName,
+                                tLSOACodesAndLeedsLSOAShapefile,
+                                tLookupFromPostcodeToCensusCodes,
+                                filter,
+                                scaleToFirst,
+                                IDType,
+                                handleOutOfMemoryErrors);
+                    }
+                    if (individualStyling) {
+                        scaleToFirst = false;
+                        runCAB(deprivationRecords,
+                                outlets,
+                                targetPropertyName,
+                                tLSOACodesAndLeedsLSOAShapefile,
+                                tLookupFromPostcodeToCensusCodes,
+                                filter,
+                                scaleToFirst,
+                                IDType,
+                                handleOutOfMemoryErrors);
+                    }
 
 //            // Get deprivation data
 //            deprivationRecords = DW_Processor.getDeprivation_Data();
@@ -328,10 +344,11 @@ public class DW_DensityMaps extends DW_Maps {
 //                        scaleToFirst,
 //                        handleOutOfMemoryErrors);
 //            }
+                }
             }
+            // Tidy up
+            tLSOACodesAndLeedsLSOAShapefile.dispose();
         }
-        // Tidy up
-        tLSOACodesAndLeedsLSOAShapefile.dispose();
     }
 
     public void runCAB(
@@ -383,6 +400,7 @@ public class DW_DensityMaps extends DW_Maps {
      * @param filter
      * @param scaleToFirst If scaleToFirst == true then all maps are shaded with
      * the styles provided by the first map.
+     * @param IDType
      * @param handleOutOfMemoryErrors
      */
     public void mapCounts(
@@ -396,10 +414,12 @@ public class DW_DensityMaps extends DW_Maps {
             boolean scaleToFirst,
             Object IDType,
             boolean handleOutOfMemoryErrors) {
+        int multiplier;
+        multiplier = (int) (400 / cellsize); 
         if (filter == 0) {
             backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
-            nrows = 277;//554;
-            ncols = 340;//680;
+            nrows = 70 * multiplier; //139 * multiplier; //277 * multiplier;
+            ncols = 135 * multiplier; //170 * multiplier; //340 * multiplier;
             xllcorner = 413000;
             //minX 413220.095
             //minXRounded = 413200
@@ -417,8 +437,8 @@ public class DW_DensityMaps extends DW_Maps {
         } else {
             if (filter == 1) {
                 backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNeighbouringLADDW_Shapefile();
-                nrows = 827;//1654;
-                ncols = 765;//1530;
+                nrows = 212 * multiplier;//414 * multiplier;//827 * multiplier;
+                ncols = 192 * multiplier;//383 * multiplier;//765 * multiplier;
                 xllcorner = 396000;
                 //minX 396065.904
                 //minXRounded = 396000
@@ -435,8 +455,8 @@ public class DW_DensityMaps extends DW_Maps {
                 yllcorner = 402500;
             } else {
                 backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsAndNearNeighbouringLADDW_Shapefile();
-                nrows = 827;//1654;
-                ncols = 1027;//2188;
+                nrows = 212 * multiplier;//414 * multiplier;//827 * multiplier;
+                ncols = 257 * multiplier;//514 * multiplier;//1027 * multiplier;
                 xllcorner = 363100;
                 //minX = 363191.767
                 //minXRounded = 363100
@@ -456,11 +476,14 @@ public class DW_DensityMaps extends DW_Maps {
         foregroundDW_Shapefile1 = backgroundDW_Shapefile;
 
         // Get the CAB Client Data
-        ArrayList<String> tChapeltownCABData;
-        tChapeltownCABData = getChapeltownCABDataPostcodes(IDType);
         TreeMap<String, ArrayList<String>> tLeedsCABData;
         tLeedsCABData = getLeedsCABDataPostcodes(IDType);
+        ArrayList<String> tChapeltownCABData;
+        tChapeltownCABData = getChapeltownCABDataPostcodes(IDType);
         tLeedsCABData.put("Chapeltown", tChapeltownCABData);
+        ArrayList<String> tLCC_WRUData;
+        tLCC_WRUData = getLCC_WRUDataPostcodes(IDType);
+        tLeedsCABData.put("LCC_WRU", tLCC_WRUData);
         // Initialise grid paramters
         long xurcorner = xllcorner + (long) (nrows * cellsize);
         long yurcorner = yllcorner + (long) (ncols * cellsize);
@@ -599,8 +622,8 @@ public class DW_DensityMaps extends DW_Maps {
             grid.mkdirs();
             Grid2DSquareCellDouble g = initiliseGrid(grid);
             if (outlet.equalsIgnoreCase("all")) {
-                // Combine for all outlets
-                System.out.println("All Outlets");
+                // Combine for all Advice Leeds
+                System.out.println("All Advice Leeds");
                 // Add to grid
                 Iterator<String> ite;
                 if (outlets == null) {
@@ -611,6 +634,8 @@ public class DW_DensityMaps extends DW_Maps {
                 int countNonMatchingPostcodes = 0;
                 while (ite.hasNext()) {
                     String outletToAdd = ite.next();
+//                    // Check not adding multiple times
+//                    System.out.println("outlet added to all: " + outletToAdd);
                     ArrayList<String> postcodes;
                     postcodes = tLeedsCABData.get(outletToAdd);
                     // Add from postcodes
@@ -656,7 +681,7 @@ public class DW_DensityMaps extends DW_Maps {
             // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
             index = 0;
             outputGridToImageUsingGeoToolsAndSetCommonStyle(
-                    1.0d,//(double) Math.PI * cellsize * cellsize,
+                    100.0d,//1.0d,//(double) Math.PI * cellsize * cellsize,
                     g,
                     asciigridFile,
                     outletmapDirectory,
@@ -749,7 +774,7 @@ public class DW_DensityMaps extends DW_Maps {
             aLSOACode = tLookupFromPostcodeToCensusCodes.get(postcode);
             if (aLSOACode != null) {
                 if (deprivationRecords == null) {
-                    DW_Point aPoint = getONSPDlookups()[0].get(postcode);
+                    AGDT_Point aPoint = getONSPDlookups()[0].get(postcode);
                     if (aPoint != null) {
                         int x = aPoint.getX();
                         int y = aPoint.getY();
@@ -768,7 +793,7 @@ public class DW_DensityMaps extends DW_Maps {
                                 deprivationClasses,
                                 aDeprivation_DataRecord);
                         if (thisDeprivationClass == deprivationClass.intValue()) {
-                            DW_Point aPoint = getONSPDlookups()[0].get(postcode);
+                            AGDT_Point aPoint = getONSPDlookups()[0].get(postcode);
                             if (aPoint != null) {
                                 int x = aPoint.getX();
                                 int y = aPoint.getY();
@@ -847,7 +872,7 @@ public class DW_DensityMaps extends DW_Maps {
         System.out.println("minY " + minY);
         System.out.println("maxY " + maxY);
 
-        DW_GeoTools.outputToImageUsingGeoToolsAndSetCommonStyle(
+        DW_Geotools.outputToImageUsingGeoToolsAndSetCommonStyle(
                 normalisation,
                 styleParameters,
                 styleIndex,
@@ -871,10 +896,10 @@ public class DW_DensityMaps extends DW_Maps {
         }
     }
 
-    public static TreeMap<String, ArrayList<DW_Point>> getLeedsCABDataPoints(
+    public static TreeMap<String, ArrayList<AGDT_Point>> getLeedsCABDataPoints(
             Object IDType) {
-        TreeMap<String, ArrayList<DW_Point>> result;
-        result = new TreeMap<String, ArrayList<DW_Point>>();
+        TreeMap<String, ArrayList<AGDT_Point>> result;
+        result = new TreeMap<String, ArrayList<AGDT_Point>>();
         String filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
         aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler();
@@ -892,13 +917,13 @@ public class DW_DensityMaps extends DW_Maps {
             String postcode = value.getPostcode();
             String outlet = value.getOutlet();
             String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
-            DW_Point aPoint = getONSPDlookups()[0].get(formattedpostcode);
+            AGDT_Point aPoint = getONSPDlookups()[0].get(formattedpostcode);
             if (aPoint != null) {
                 if (result.containsKey(outlet)) {
                     result.get(outlet).add(aPoint);
                 } else {
-                    ArrayList<DW_Point> a;
-                    a = new ArrayList<DW_Point>();
+                    ArrayList<AGDT_Point> a;
+                    a = new ArrayList<AGDT_Point>();
                     a.add(aPoint);
                     result.put(outlet, a);
                 }
@@ -942,10 +967,10 @@ public class DW_DensityMaps extends DW_Maps {
         return result;
     }
 
-    public static ArrayList<DW_Point> getChapeltownCABDataPoints(
+    public static ArrayList<AGDT_Point> getChapeltownCABDataPoints(
             Object IDType) {
-        ArrayList<DW_Point> result;
-        result = new ArrayList<DW_Point>();
+        ArrayList<AGDT_Point> result;
+        result = new ArrayList<AGDT_Point>();
         DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
         tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler();
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
@@ -960,7 +985,7 @@ public class DW_DensityMaps extends DW_Maps {
             DW_Data_CAB0_Record value = tChapeltownCABData.get(key);
             String postcode = value.getPostcode();
             String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
-            DW_Point aPoint = getONSPDlookups()[0].get(formattedpostcode);
+            AGDT_Point aPoint = getONSPDlookups()[0].get(formattedpostcode);
             if (aPoint != null) {
                 result.add(aPoint);
             } else {
@@ -970,7 +995,29 @@ public class DW_DensityMaps extends DW_Maps {
         System.out.println("countNonMatchingPostcodes " + countNonMatchingPostcodes);
         return result;
     }
-
+    
+    public static ArrayList<String> getLCC_WRUDataPostcodes(
+            Object IDType) {
+        ArrayList<String> result;
+        result = new ArrayList<String>();
+        DW_Data_LCC_WRU_Handler h;
+        h = new DW_Data_LCC_WRU_Handler();
+        TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> data;
+        data = DW_DataProcessor_AdviceLeeds.getLCC_WRUData(
+                h,
+                IDType);
+        Iterator<DW_ID_ClientID> ite;
+        ite = data.keySet().iterator();
+        while (ite.hasNext()) {
+            DW_ID_ClientID key = ite.next();
+            DW_Data_LCC_WRU_Record value = data.get(key);
+            String postcode = value.getPostcode();
+            String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
+            result.add(formattedpostcode);
+        }
+        return result;
+    }
+    
     public static ArrayList<String> getChapeltownCABDataPostcodes(
             Object IDType) {
         ArrayList<String> result;

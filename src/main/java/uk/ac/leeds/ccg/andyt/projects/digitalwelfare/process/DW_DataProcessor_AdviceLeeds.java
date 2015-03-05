@@ -93,14 +93,14 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
 //        level = "LSOA";
 //        levels.add(level);
 //        targetPropertyNames.put(level, "LSOA11CD");
-        // MSOA
-        level = "MSOA";
-        levels.add(level);
-        targetPropertyNames.put(level, "MSOA11CD");
-//        // Postcode Sector
-//        level = "PostcodeSector";
+//        // MSOA
+//        level = "MSOA";
 //        levels.add(level);
-//        targetPropertyNames.put(level, "RMSect");
+//        targetPropertyNames.put(level, "MSOA11CD");
+        // Postcode Sector
+        level = "PostcodeSector";
+        levels.add(level);
+        targetPropertyNames.put(level, "RMSect");
 //        // Postcodes Unit 
 //        level = "PostcodeUnit";
 //        levels.add(level);
@@ -998,6 +998,10 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
         int max = Integer.MIN_VALUE;
         TreeMap<String, Integer> sums;
         sums = new TreeMap<String, Integer>();
+        TreeMap<String, Integer> mins;
+        mins = new TreeMap<String, Integer>();
+        TreeMap<String, Integer> maxs;
+        maxs = new TreeMap<String, Integer>();
 
         Iterator<String> outletIterator = tAdviceLeedsData.keySet().iterator();
         String line;
@@ -1026,10 +1030,21 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                             sums,
                             area,
                             count);
+                    Generic_Collections.setMaxValueTreeMapStringInteger(
+                            maxs,
+                            area,
+                            count);
+                    Generic_Collections.setMinValueTreeMapStringInteger(
+                            mins,
+                            area,
+                            count);
                 }
             }
             pw3.close();
         }
+        TreeMap<String, Integer> midminmaxs;
+        midminmaxs = new TreeMap<String, Integer>();
+
         double n = tAdviceLeedsData.keySet().size() - 1;
         int maxSum;
         maxSum = Integer.MIN_VALUE;
@@ -1042,6 +1057,14 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
             Integer sum = sums.get(area);
             maxSum = Math.max(maxSum, sum);
             minSum = Math.min(minSum, sum);
+            Integer minArea = mins.get(area);
+            Integer maxArea = maxs.get(area);
+            BigDecimal midminmax = new BigDecimal(
+                    (double) (minArea + maxArea) / (double) 2);
+            midminmaxs.put(
+                    area,
+                    Generic_BigDecimal.roundIfNecessary(
+                            midminmax, 0, RoundingMode.HALF_EVEN).intValue());
         }
         String minArea = "";
         String maxArea = "";
@@ -1060,18 +1083,19 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
         while (ite.hasNext()) {
             String area = ite.next();
             Integer sum = sums.get(area);
-            // It might be better to use the median or the value half way between the min and the max here instead!
             BigDecimal mean;
-            mean = new BigDecimal(((double) sum / n));
+            mean = new BigDecimal(((double) sum / (double) n));
             sums.put(
                     area,
                     Generic_BigDecimal.roundIfNecessary(
-                    mean, 0, RoundingMode.HALF_EVEN).intValue());
+                            mean, 0, RoundingMode.HALF_EVEN).intValue());
             if (area.equalsIgnoreCase(maxArea)) {
                 sums.put(area, max);
+                midminmaxs.put(area, max);
             }
             if (area.equalsIgnoreCase(minArea)) {
                 sums.put(area, min);
+                midminmaxs.put(area, min);
             }
         }
         String outlet = "Scale";
@@ -1086,7 +1110,12 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
         ite = sums.keySet().iterator();
         while (ite.hasNext()) {
             String area = ite.next();
-            Integer count = sums.get(area);
+            // Using the value half way between the min and the max here instead
+            // of the mean, so calculation of the mean is unnecessary as things
+            // are. It might be better to use the median or a truncated mean or
+            // some other mid range value. 
+//            Integer count = sums.get(area);
+            Integer count = midminmaxs.get(area);
             line = "" + area + ", " + count;
             System.out.println(line);
             pw3.println(line);
@@ -1167,7 +1196,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                 }
                 if (level.equalsIgnoreCase("PostcodeUnit")) {
                     if (PostcodeGeocoder.isValidPostcode(postcode)) {
-                        key = postcode;
+                        key = PostcodeGeocoder.formatPostcodeForMapping(postcode);
 //                    } else {
 //                        key = "";
                     }
@@ -1266,7 +1295,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                 }
                 if (level.equalsIgnoreCase("PostcodeUnit")) {
                     if (PostcodeGeocoder.isValidPostcode(postcode)) {
-                        key = postcode;
+                        key = PostcodeGeocoder.formatPostcodeForMapping(postcode);
 //                    } else {
 //                        key = "";
                     }
@@ -1355,7 +1384,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                 }
                 if (level.equalsIgnoreCase("PostcodeUnit")) {
                     if (PostcodeGeocoder.isValidPostcode(postcode)) {
-                        key = postcode;
+                        key = PostcodeGeocoder.formatPostcodeForMapping(postcode);
 //                    } else {
 //                        key = "";
                     }
@@ -1465,6 +1494,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                         aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) data.get(id);
                         outlet = aLeedsCABData_DataRecord.getOutlet();
                         String postcode = aLeedsCABData_DataRecord.getPostcode();
+                        postcode = PostcodeGeocoder.formatPostcodeForMapping(postcode);
                         // Add to counts
                         addToCounts(
                                 result,
@@ -1479,6 +1509,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                         aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) data.get(id);
                         outlet = "CHAPELTOWN";
                         String postcode = aLeedsCABData_DataRecord.getPostcode();
+                        postcode = PostcodeGeocoder.formatPostcodeForMapping(postcode);
                         // Add to counts
                         addToCounts(
                                 result,
@@ -2221,11 +2252,20 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
         tDW_Data_LCC_WRU_Handler = new DW_Data_LCC_WRU_Handler();
     }
 
+    public static TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> getLCC_WRUData(
+            DW_Data_LCC_WRU_Handler h,
+            Object IDType) {
+        TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> result;
+        String filename = "WelfareRights - Data Extract.csv";
+        result = h.loadInputData(
+                filename, IDType);
+        return result;
+    }
+
     public static TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> getChapeltownCABData(
             DW_Data_CAB0_Handler tCAB_DataRecord0_Handler,
             Object IDType) {
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> result;
-        String[] args = new String[0];
         String Q1Filename = "Q1.csv";
         String Q2Filename = "Q2.csv";
         String Q3Filename = "Q3.csv";

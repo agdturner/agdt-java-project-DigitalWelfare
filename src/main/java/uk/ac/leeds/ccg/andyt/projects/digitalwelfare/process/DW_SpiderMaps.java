@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.TreeSetFeatureCollection;
-import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -46,13 +45,14 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CA
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletEnquiryID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_LCC_WRU_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_GeoTools;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Point;
+//import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_AreaCodesAndShapefiles;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
@@ -72,10 +72,10 @@ public class DW_SpiderMaps extends DW_Maps {
     private TreeMap<String, Point> aLSOAToCentroidLookupTable;
     private TreeMap<String, Point> aMSOAToCentroidLookupTable;
     private TreeMap<String, String> tCABOutletPostcodes;
-    private TreeMap<String, DW_Point> tCABOutletPoints;
+    private TreeMap<String, AGDT_Point> tCABOutletPoints;
     private DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
     private DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
-private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
+    private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
 
     /**
      * @param args the command line arguments
@@ -187,12 +187,12 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
 
     private void initCABOutletPoints() {
         tCABOutletPostcodes = DW_Processor.getOutletsAndPostcodes();
-        tCABOutletPoints = new TreeMap<String, DW_Point>();
+        tCABOutletPoints = new TreeMap<String, AGDT_Point>();
         Iterator<String> ite_String = tCABOutletPostcodes.keySet().iterator();
         while (ite_String.hasNext()) {
             String outletName = ite_String.next();
             String postcode = tCABOutletPostcodes.get(outletName);
-            DW_Point p = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point p = DW_Processor.getPointFromPostcode(postcode);
             if (p == null) {
                 System.out.println("No point for postcode " + postcode);
             } else {
@@ -316,7 +316,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
             DW_Data_CAB2_Record r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
-            DW_Point origin = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point origin = DW_Processor.getPointFromPostcode(postcode);
             if (origin != null) {
                 String tCABOutletString = DW_Processor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
@@ -338,9 +338,9 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    DW_Point outletPoint = null;
+                    AGDT_Point outletPoint = null;
                     outletPoint = tCABOutletPoints.get(tCABOutletString);
-//                    DW_Point a_DW_Point;
+//                    AGDT_Point a_DW_Point;
 //                    a_DW_Point = outletPoint;
 //                    destinationx = a_DW_Point.getX();
 //                    destinationy = a_DW_Point.getY();
@@ -455,7 +455,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
             DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
-            DW_Point origin = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point origin = DW_Processor.getPointFromPostcode(postcode);
             if (origin != null) {
                 String tCABOutletString = DW_Processor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
@@ -477,9 +477,9 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    DW_Point outletPoint = null;
+                    AGDT_Point outletPoint = null;
                     outletPoint = tCABOutletPoints.get(tCABOutletString);
-//                    DW_Point a_DW_Point;
+//                    AGDT_Point a_DW_Point;
 //                    a_DW_Point = outletPoint;
 //                    destinationx = a_DW_Point.getX();
 //                    destinationy = a_DW_Point.getY();
@@ -585,7 +585,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             TreeSetFeatureCollection tsfc = tsfcs.get(tCABOutlet);
-            File outputShapefile = DW_GeoTools.getOutputShapefile(
+            File outputShapefile = AGDT_Geotools.getOutputShapefile(
                     spiderMapDirectory,
                     tCABOutlet);
             DW_Shapefile.transact(
@@ -598,7 +598,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
 //            FeatureLayer backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
 //                backgroundShapefile,
 //                backgroundStyle);
-            DW_GeoTools.outputToImage(
+            DW_Geotools.outputToImage(
                     tCABOutlet,
                     outputShapefile,
                     foregroundDW_Shapefile0,
@@ -694,7 +694,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
             DW_Data_CAB2_Record r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
-            DW_Point origin = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point origin = DW_Processor.getPointFromPostcode(postcode);
             if (origin != null) {
                 String tCABOutletString = DW_Processor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
@@ -710,7 +710,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    DW_Point outletPoint = null;
+                    AGDT_Point outletPoint = null;
                     outletPoint = tCABOutletPoints.get(tCABOutletString);
                     String formattedPostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
                     String aLSOACode = tLookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
@@ -779,7 +779,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
             DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
-            DW_Point origin = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point origin = DW_Processor.getPointFromPostcode(postcode);
             if (origin != null) {
                 String tCABOutletString = DW_Processor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
@@ -795,7 +795,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    DW_Point outletPoint = null;
+                    AGDT_Point outletPoint = null;
                     outletPoint = tCABOutletPoints.get(tCABOutletString);
                     String formattedPostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
                     String aLSOACode = tLookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
@@ -856,7 +856,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             TreeSetFeatureCollection tsfc = tsfcs.get(tCABOutlet);
-            File outputShapefile = DW_GeoTools.getOutputShapefile(
+            File outputShapefile = AGDT_Geotools.getOutputShapefile(
                     spiderMapDirectory,
                     tCABOutlet);
             DW_Shapefile.transact(
@@ -864,7 +864,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
                     aLineSFT,
                     tsfc,
                     getShapefileDataStoreFactory());
-            DW_GeoTools.outputToImage(
+            DW_Geotools.outputToImage(
                     tCABOutlet,
                     outputShapefile,
                     foregroundDW_Shapefile0,
@@ -947,7 +947,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
             DW_Data_CAB2_Record r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
-            DW_Point origin = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point origin = DW_Processor.getPointFromPostcode(postcode);
             if (origin != null) {
                 String tCABOutletString = DW_Processor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
@@ -969,7 +969,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    DW_Point outletPoint = null;
+                    AGDT_Point outletPoint = null;
                     outletPoint = tCABOutletPoints.get(tCABOutletString);
                     destinationx = outletPoint.getX();
                     destinationy = outletPoint.getY();
@@ -1012,7 +1012,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
             DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
-            DW_Point origin = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point origin = DW_Processor.getPointFromPostcode(postcode);
             if (origin != null) {
                 String tCABOutletString = DW_Processor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
@@ -1034,7 +1034,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    DW_Point outletPoint = null;
+                    AGDT_Point outletPoint = null;
                     outletPoint = tCABOutletPoints.get(tCABOutletString);
                     destinationx = outletPoint.getX();
                     destinationy = outletPoint.getY();
@@ -1067,7 +1067,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             TreeSetFeatureCollection tsfc = tsfcs.get(tCABOutlet);
-            File outputShapeFile = DW_GeoTools.getOutputShapefile(
+            File outputShapeFile = AGDT_Geotools.getOutputShapefile(
                     spiderMapDirectory,
                     tCABOutlet);
             DW_Shapefile.transact(
@@ -1080,7 +1080,7 @@ private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
 //            FeatureLayer backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
 //                backgroundShapefile,
 //                backgroundStyle);
-            DW_GeoTools.outputToImage(
+            DW_Geotools.outputToImage(
                     tCABOutlet,
                     outputShapeFile,
                     foregroundDW_Shapefile0,

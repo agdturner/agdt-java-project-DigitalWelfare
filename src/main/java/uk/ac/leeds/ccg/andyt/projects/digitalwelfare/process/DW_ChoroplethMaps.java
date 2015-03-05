@@ -41,7 +41,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_Dat
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_GeoTools;
+//import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
 
@@ -107,7 +109,8 @@ public class DW_ChoroplethMaps extends DW_Maps {
      *
      */
     public void run() {
-        showMapsInJMapPane = false;//true;//false;
+        showMapsInJMapPane = false;
+//        showMapsInJMapPane = true;
         imageWidth = 1000;
         // Initialise Parameters
         // Style Parameters
@@ -153,7 +156,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
         // -------------------------------
         // commonStyling is where all maps are produced according to a common
         // classification
-        commonStyling = true;
+//        commonStyling = true;
         // individualStyling is where all maps are produced according to an 
         // individual classification
         individualStyling = true;
@@ -172,14 +175,14 @@ public class DW_ChoroplethMaps extends DW_Maps {
         // Initialise levels and targetPropertyNames. 
         levels = new ArrayList<String>();
         targetPropertyNames = new HashMap<String, String>();
-//        // OA
-//        level = "OA";
-//        levels.add(level);
-//        targetPropertyNames.put(level, "CODE");
-//        // LSOA
-//        level = "LSOA";
-//        levels.add(level);
-//        targetPropertyNames.put(level, "LSOA11CD");
+        // OA
+        level = "OA";
+        levels.add(level);
+        targetPropertyNames.put(level, "CODE");
+        // LSOA
+        level = "LSOA";
+        levels.add(level);
+        targetPropertyNames.put(level, "LSOA11CD");
         // MSOA
         level = "MSOA";
         levels.add(level);
@@ -188,14 +191,14 @@ public class DW_ChoroplethMaps extends DW_Maps {
 //        level = "PostcodeSector";
 //        levels.add(level);
 //        targetPropertyNames.put(level, "RMSect");
-//        // Postcodes Unit 
-//        level = "PostcodeUnit";
-//        levels.add(level);
-//        targetPropertyNames.put(level, "POSTCODE");
+        // Postcodes Unit 
+        level = "PostcodeUnit";
+        levels.add(level);
+        targetPropertyNames.put(level, "POSTCODE");
         
         // Currently counting only done for level.equalsIgnoreCase("MSOA")
-//        countInAndOutOfRegion = true;
-        countInAndOutOfRegion = false;
+        countInAndOutOfRegion = true;
+        //countInAndOutOfRegion = false;
         
         run(tDW_ID_ClientTypes);
     }
@@ -252,18 +255,18 @@ public class DW_ChoroplethMaps extends DW_Maps {
         }
         DW_AreaCodesAndShapefiles tAreaCodesAndShapefiles;
         // Get Census Codes and Shapefiles
-        if (level.equalsIgnoreCase("PostCodeSector")
-                || level.equalsIgnoreCase("PostCodeUnit")) {
-            tAreaCodesAndShapefiles = new DW_AreaCodesAndShapefiles(
-                    "MSOA",
-                    "MSOA11CD",
-                    getShapefileDataStoreFactory());
-        } else {
+//        if (level.equalsIgnoreCase("PostCodeSector")
+//                || level.equalsIgnoreCase("PostCodeUnit")) {
+//            tAreaCodesAndShapefiles = new DW_AreaCodesAndShapefiles(
+//                    "MSOA",
+//                    "MSOA11CD",
+//                    getShapefileDataStoreFactory());
+//        } else {
             tAreaCodesAndShapefiles = new DW_AreaCodesAndShapefiles(
                     level,
                     targetPropertyName,
                     getShapefileDataStoreFactory());
-        }
+//        }
         Object[] tLevelData;
         TreeMap<String, Deprivation_DataRecord> deprivationRecords;
 
@@ -307,7 +310,8 @@ public class DW_ChoroplethMaps extends DW_Maps {
         //for (int filter = 0; filter < 4; filter++) {
         for (int filter = 0; filter < 3; filter++) {
             //for (int filter = 2; filter < 3; filter++) {
-            if (filter == 0 || filter == 2) {
+            //if (filter == 0 || filter == 2) {
+            if (filter == 0) {
 
                 deprivationRecords = null;
                 if (individualStyling) {
@@ -386,7 +390,16 @@ public class DW_ChoroplethMaps extends DW_Maps {
                 style + "/" + styleParameters.getClassificationFunctionName());
 
         TreeMap<String, TreeMap<Integer, Integer>> inAndOutOfRegionCounts;
-        inAndOutOfRegionCounts = mapCountsForLevel(
+//        inAndOutOfRegionCounts = mapCountsForLevel(
+//                tCensusCodesAndShapefiles,
+//                tLeedsCABFilenames,
+//                tLevelData,
+//                deprivationRecords,
+//                dir,
+//                filter,
+//                scaleToFirst,
+//                doInAndOutOfRegionCounts);
+        inAndOutOfRegionCounts = mapDensitiesForLevel(
                 tCensusCodesAndShapefiles,
                 tLeedsCABFilenames,
                 tLevelData,
@@ -395,6 +408,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                 filter,
                 scaleToFirst,
                 doInAndOutOfRegionCounts);
+        
         if (doInAndOutOfRegionCounts) {
             String aIDTypeName;
             aIDTypeName = IDType.getClass().getSimpleName();
@@ -519,12 +533,21 @@ public class DW_ChoroplethMaps extends DW_Maps {
                 dir,
                 "Counts");
         TreeMap<String, TreeMap<Integer, Integer>> inAndOutOfRegionCounts;
-        inAndOutOfRegionCounts = mapCountsForLevel(
+//        inAndOutOfRegionCounts = mapCountsForLevel(
+//                tCensusCodesAndShapefiles,
+//                tLeedsCABFilenames,
+//                tLevelData,
+//                deprivationRecords,
+//                dirForCounts,
+//                filter,
+//                scaleToFirst,
+//                false);
+        inAndOutOfRegionCounts = mapDensitiesForLevel(
                 tCensusCodesAndShapefiles,
                 tLeedsCABFilenames,
                 tLevelData,
                 deprivationRecords,
-                dirForCounts,
+                dir,
                 filter,
                 scaleToFirst,
                 false);
@@ -550,8 +573,8 @@ public class DW_ChoroplethMaps extends DW_Maps {
             int filter,
             boolean scaleToFirst) {
 
-        TreeSet<String> censusCodes;
-        censusCodes = tAreaCodesAndShapefiles.getLeedsAreaCodes();
+        TreeSet<String> areaCodes;
+        areaCodes = tAreaCodesAndShapefiles.getLeedsAreaCodes();
         //File tLSOAShapefile = (File) tLSOACodesAndLeedsLSOAShapefile[1];
         FeatureCollection tLSOAFeatureCollection;
         tLSOAFeatureCollection = tAreaCodesAndShapefiles.getLevelFC();
@@ -595,7 +618,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
             cLSOAData = (TreeMap<String, Integer>) bLSOAData[0];
             String outname;
             outname = getOutName(filename, attributeName, filter);
-            File outputShapefile = DW_GeoTools.getOutputShapefile(
+            File outputShapefile = AGDT_Geotools.getOutputShapefile(
                     dir,
                     outname);
             // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
@@ -603,7 +626,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                     getShapefileDataStoreFactory(),
                     tLSOAFeatureCollection,
                     outputFeatureType,
-                    censusCodes,
+                    areaCodes,
                     cLSOAData,
                     pop,
                     multiplier,
@@ -613,7 +636,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                     max,
                     filter);
             // Output to image
-            DW_GeoTools.outputToImage(
+            DW_Geotools.outputToImage(
                     outname,
                     outputShapefile,
                     foregroundDW_Shapefile0,
@@ -660,16 +683,16 @@ public class DW_ChoroplethMaps extends DW_Maps {
         if (countClientsInAndOutOfRegion) {
             result = new TreeMap<String, TreeMap<Integer, Integer>>();
         }
-        TreeSet<String> censusCodes;
+        TreeSet<String> areaCodes;
         if (filter == 0) {
-            censusCodes = tCensusCodesAndShapefiles.getLeedsAreaCodes();
+            areaCodes = tCensusCodesAndShapefiles.getLeedsAreaCodes();
             foregroundDW_Shapefile1 = tCensusCodesAndShapefiles.getLeedsLADDW_Shapefile();
         } else {
             if (filter == 1) {
-                censusCodes = tCensusCodesAndShapefiles.getLeedsAndNeighbouringLADAreaCodes();
+                areaCodes = tCensusCodesAndShapefiles.getLeedsAndNeighbouringLADAreaCodes();
                 foregroundDW_Shapefile1 = tCensusCodesAndShapefiles.getLeedsAndNeighbouringLADDW_Shapefile();
             } else {
-                censusCodes = tCensusCodesAndShapefiles.getLeedsAndNearNeighbouringLADAreaCodes();
+                areaCodes = tCensusCodesAndShapefiles.getLeedsAndNearNeighbouringLADAreaCodes();
                 foregroundDW_Shapefile1 = tCensusCodesAndShapefiles.getLeedsAndNearNeighbouringLADDW_Shapefile();
             }
         }
@@ -713,7 +736,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                     cLevelData = (TreeMap<String, Integer>) bLevelData[0];
                     String outname;
                     outname = getOutName(filename, attributeName, filter);
-                    File outputShapefile = DW_GeoTools.getOutputShapefile(
+                    File outputShapefile = AGDT_Geotools.getOutputShapefile(
                             mapDirectory2,
                             outname);
                     // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
@@ -721,7 +744,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                             getShapefileDataStoreFactory(),
                             levelFC,
                             outputFeatureType,
-                            censusCodes,
+                            areaCodes,
                             cLevelData,
                             //attributeName,
                             targetPropertyName,
@@ -731,7 +754,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                             deprivationRecords,
                             deprivationClass);
                     // Output to image
-                    DW_GeoTools.outputToImage(
+                    DW_Geotools.outputToImage(
                             outname,
                             outputShapefile,
                             foregroundDW_Shapefile0,
@@ -762,7 +785,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                 levelData0i0 = (TreeMap<String, Integer>) levelData0i[0];
                 String outname;
                 outname = getOutName(filename, attributeName, filter);
-                File outputShapefile = DW_GeoTools.getOutputShapefile(
+                File outputShapefile = AGDT_Geotools.getOutputShapefile(
                         mapDirectory2,
                         outname);
                 // Select levelData0i0 Census Codes from all LSOA shapefile and create a new one
@@ -771,7 +794,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
                         getShapefileDataStoreFactory(),
                         levelFC,
                         outputFeatureType,
-                        censusCodes,
+                        areaCodes,
                         levelData0i0,
                         //attributeName,
                         targetPropertyName,
@@ -782,7 +805,180 @@ public class DW_ChoroplethMaps extends DW_Maps {
                     result.put(outname, inAndOutOfRegionCount);
                 }
                 // Output to image
-                DW_GeoTools.outputToImage(
+                DW_Geotools.outputToImage(
+                        outname,
+                        outputShapefile,
+                        foregroundDW_Shapefile0,
+                        foregroundDW_Shapefile1,
+                        backgroundDW_Shapefile,
+                        attributeName,
+                        mapDirectory2,
+                        png_String,
+                        imageWidth,
+                        styleParameters,
+                        0,
+                        showMapsInJMapPane);
+                if (!scaleToFirst) {
+                    styleParameters.setStyle(null, 0);
+                }
+            }
+        }
+        return result;
+    }
+    
+    /**
+     * Uses a file dialog to select a file and then
+     *
+     * @param tCensusCodesAndShapefiles
+     * @param tLeedsCABFilenames
+     * @param tLevelData
+     * @param deprivationRecords
+     * @param dir
+     * @param filter
+     * @param scaleToFirst If scaleToFirst == true then all maps are shaded with
+     * the styles provided by the first map.
+     * @param countClientsInAndOutOfRegion
+     * @return
+     */
+    public TreeMap<String, TreeMap<Integer, Integer>> mapDensitiesForLevel(
+            DW_AreaCodesAndShapefiles tCensusCodesAndShapefiles,
+            String[] tLeedsCABFilenames,
+            Object[] tLevelData,
+            TreeMap<String, Deprivation_DataRecord> deprivationRecords,
+            File dir,
+            int filter,
+            boolean scaleToFirst,
+            boolean countClientsInAndOutOfRegion) {
+        // Initialise result
+        TreeMap<String, TreeMap<Integer, Integer>> result = null;
+        if (countClientsInAndOutOfRegion) {
+            result = new TreeMap<String, TreeMap<Integer, Integer>>();
+        }
+        TreeSet<String> areaCodes;
+        if (filter == 0) {
+            areaCodes = tCensusCodesAndShapefiles.getLeedsAreaCodes();
+            foregroundDW_Shapefile1 = tCensusCodesAndShapefiles.getLeedsLADDW_Shapefile();
+        } else {
+            if (filter == 1) {
+                areaCodes = tCensusCodesAndShapefiles.getLeedsAndNeighbouringLADAreaCodes();
+                foregroundDW_Shapefile1 = tCensusCodesAndShapefiles.getLeedsAndNeighbouringLADDW_Shapefile();
+            } else {
+                areaCodes = tCensusCodesAndShapefiles.getLeedsAndNearNeighbouringLADAreaCodes();
+                foregroundDW_Shapefile1 = tCensusCodesAndShapefiles.getLeedsAndNearNeighbouringLADDW_Shapefile();
+            }
+        }
+        FeatureCollection levelFC;
+        levelFC = tCensusCodesAndShapefiles.getLevelFC();
+        SimpleFeatureType levelSFT;
+        levelSFT = tCensusCodesAndShapefiles.getLevelSFT();
+        backgroundDW_Shapefile = tCensusCodesAndShapefiles.getLeedsLevelDW_Shapefile();
+
+        // attributeName is the attribute name used in naming attribute in 
+        // resulting shapefile
+        String attributeName = "Density";
+
+        // Get output feature types
+        String name = attributeName + "FeatureType";
+        SimpleFeatureType outputFeatureType;
+        outputFeatureType = getFeatureType(
+                levelSFT,
+                Double.class,
+                attributeName,
+                name);
+
+        if (deprivationRecords != null) {
+            TreeMap<Integer, Integer> deprivationClasses = null;
+            deprivationClasses = Deprivation_DataHandler.getDeprivationClasses(
+                    deprivationRecords);
+            Iterator<Integer> ite = deprivationClasses.keySet().iterator();
+            while (ite.hasNext()) {
+                Integer deprivationKey = ite.next();
+                Integer deprivationClass = deprivationClasses.get(deprivationKey);
+
+                File mapDirectory2 = new File(
+                        dir,
+                        "" + deprivationClass);
+                mapDirectory2.mkdirs();
+                for (int i = 0; i < tLeedsCABFilenames.length; i++) {
+                    Object[] aLevelData = (Object[]) tLevelData[0];
+                    String filename = tLeedsCABFilenames[i];
+                    Object[] bLevelData = (Object[]) aLevelData[i];
+                    TreeMap<String, Integer> cLevelData;
+                    cLevelData = (TreeMap<String, Integer>) bLevelData[0];
+                    String outname;
+                    outname = getOutName(filename, attributeName, filter);
+                    File outputShapefile = AGDT_Geotools.getOutputShapefile(
+                            mapDirectory2,
+                            outname);
+                    // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
+                    selectAndCreateNewShapefile(
+                            getShapefileDataStoreFactory(),
+                            levelFC,
+                            outputFeatureType,
+                            areaCodes,
+                            cLevelData,
+                            //attributeName,
+                            targetPropertyName,
+                            outputShapefile,
+                            filter,
+                            deprivationClasses,
+                            deprivationRecords,
+                            deprivationClass,
+                            true);
+                    // Output to image
+                    DW_Geotools.outputToImage(
+                            outname,
+                            outputShapefile,
+                            foregroundDW_Shapefile0,
+                            foregroundDW_Shapefile1,
+                            backgroundDW_Shapefile,
+                            attributeName,
+                            mapDirectory2,
+                            png_String,
+                            imageWidth,
+                            styleParameters,
+                            0,
+                            showMapsInJMapPane);
+                    if (!scaleToFirst) {
+                        styleParameters.setStyle(null, 0);
+                    }
+                }
+            }
+        } else {
+            File mapDirectory2 = new File(
+                    dir,
+                    "all");
+            mapDirectory2.mkdirs();
+            for (int i = 0; i < tLeedsCABFilenames.length; i++) {
+                Object[] levelData0 = (Object[]) tLevelData[0];
+                String filename = tLeedsCABFilenames[i];
+                Object[] levelData0i = (Object[]) levelData0[i];
+                TreeMap<String, Integer> levelData0i0;
+                levelData0i0 = (TreeMap<String, Integer>) levelData0i[0];
+                String outname;
+                outname = getOutName(filename, attributeName, filter);
+                File outputShapefile = AGDT_Geotools.getOutputShapefile(
+                        mapDirectory2,
+                        outname);
+                // Select levelData0i0 Census Codes from all LSOA shapefile and create a new one
+                TreeMap<Integer, Integer> inAndOutOfRegionCount;
+                inAndOutOfRegionCount = selectAndCreateNewShapefile(
+                        getShapefileDataStoreFactory(),
+                        levelFC,
+                        outputFeatureType,
+                        areaCodes,
+                        levelData0i0,
+                        //attributeName,
+                        targetPropertyName,
+                        outputShapefile,
+                        filter,
+                        countClientsInAndOutOfRegion,
+                            true);
+                if (countClientsInAndOutOfRegion) {
+                    result.put(outname, inAndOutOfRegionCount);
+                }
+                // Output to image
+                DW_Geotools.outputToImage(
                         outname,
                         outputShapefile,
                         foregroundDW_Shapefile0,

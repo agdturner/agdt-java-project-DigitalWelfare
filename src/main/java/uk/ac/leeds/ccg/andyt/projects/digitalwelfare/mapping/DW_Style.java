@@ -69,16 +69,18 @@ import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.GridStatistics0;
 import uk.ac.leeds.ccg.andyt.grids.core.GridStatistics1;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Style;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_Style {
-
-    public static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
-    public static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
-    public static StyleBuilder styleBuilder = new StyleBuilder(styleFactory, filterFactory);
+public class DW_Style extends AGDT_Style {
+////public class DW_Style {
+//
+//    public static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+//    public static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+//    public static StyleBuilder styleBuilder = new StyleBuilder(styleFactory, filterFactory);
 
     /**
      *
@@ -113,43 +115,28 @@ public class DW_Style {
         return null;
     }
 
-    /**
-     * Create a DW_Style object from a definition in a SLD document
-     */
-    private static org.geotools.styling.Style createFromSLD(File sld) {
-        try {
-            SLDParser stylereader = new SLDParser(styleFactory, sld.toURI().toURL());
-            org.geotools.styling.Style[] style = stylereader.readXML();
-            return style[0];
-
-        } catch (Exception e) {
-            JExceptionReporter.showDialog(e, "Problem creating style");
-        }
-        return null;
-    }
-
-    /**
-     * @param featureSource
-     * @return
-     */
-    public static Style createStyle(
-            FeatureSource featureSource) {
-        SimpleFeatureType schema = (SimpleFeatureType) featureSource.getSchema();
-        Class geomType = schema.getGeometryDescriptor().getType().getBinding();
-
-        if (Polygon.class.isAssignableFrom(geomType)
-                || MultiPolygon.class.isAssignableFrom(geomType)) {
-            return createDefaultPolygonStyle(
-                    Color.BLUE,
-                    Color.CYAN);
-        } else if (LineString.class.isAssignableFrom(geomType)
-                || MultiLineString.class.isAssignableFrom(geomType)) {
-            return createDefaultLineStyle();
-
-        } else {
-            return createDefaultPointStyle();
-        }
-    }
+//    /**
+//     * @param featureSource
+//     * @return
+//     */
+//    public static Style createStyle(
+//            FeatureSource featureSource) {
+//        SimpleFeatureType schema = (SimpleFeatureType) featureSource.getSchema();
+//        Class geomType = schema.getGeometryDescriptor().getType().getBinding();
+//
+//        if (Polygon.class.isAssignableFrom(geomType)
+//                || MultiPolygon.class.isAssignableFrom(geomType)) {
+//            return createDefaultPolygonStyle(
+//                    Color.BLUE,
+//                    Color.CYAN);
+//        } else if (LineString.class.isAssignableFrom(geomType)
+//                || MultiLineString.class.isAssignableFrom(geomType)) {
+//            return createDefaultLineStyle();
+//
+//        } else {
+//            return createDefaultPointStyle();
+//        }
+//    }
 
     /**
      * Create and returns a Style to draw point features as circles with blue

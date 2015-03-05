@@ -108,7 +108,6 @@ public class DW_Data_LCC_WRU_Handler extends DW_Data_Abstract_Handler {
                             rec = new DW_Data_LCC_WRU_Record(RecordID, line, this);
                             //String enquiryReferenceNumber = record.getEnquiryReferenceNumber();
                                 //1-102J,20-Sep-1936,Not Stated,Refused,LS6 1LS,2-464768375,2-7SFJ2M,Welfare Rights,Home Visit (MacMillan),05-Dec-2011,Blue Badge,-,75,77.11
-    
                             String client_ref;
                             client_ref = rec.getUniqueCustomerRef();
                             DW_ID_ClientID id;

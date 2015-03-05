@@ -48,29 +48,32 @@ import org.geotools.swing.JMapFrame;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps.getOutputImageFile;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_LegendItem;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_LegendLayer;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_LegendItem;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_LegendLayer;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps.getOutputImageFile;
 
 /**
- * A class for holding various useful methods for doing things with DW_GeoTools
- * Objects.
+ * A class for holding various useful methods for doing things with AGDT_Geotools
+ Objects.
  *
  * @author geoagdt
  */
-public class DW_GeoTools {
-
-    public static int getMapContentImageHeight(MapContent mc, int imageWidth) {
-        int result;
-        ReferencedEnvelope re = mc.getMaxBounds();
-        double height = re.getHeight();
-        double width = re.getWidth();
-        //System.out.println("height " + height + ", width " + width);
-        double heightToWidth = height / width;
-        result = (int) (imageWidth * heightToWidth);
-        return result;
-    }
+public class DW_Geotools extends AGDT_Geotools {
 
     /**
      * Warning this will set g to null.
@@ -95,14 +98,14 @@ public class DW_GeoTools {
             String outname,
             AbstractGrid2DSquareCell g,
             GridCoverage2D gc,
-            ArrayList<DW_Shapefile> foregroundDW_Shapefile0,
-            DW_Shapefile foregroundDW_Shapefile1,
-            DW_Shapefile backgroundDW_Shapefile,
+            ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0,
+            AGDT_Shapefile foregroundDW_Shapefile1,
+            AGDT_Shapefile backgroundDW_Shapefile,
             File outputDir,
             int imageWidth,
             boolean showMapsInJMapPane,
             boolean scaleToFirst) {
-        MapContent mc = DW_GeoTools.createMapContent(
+        MapContent mc = createMapContent(
                 normalisation,
                 g,
                 gc,
@@ -122,10 +125,10 @@ public class DW_GeoTools {
                 outputDir,
                 outname,
                 DW_Maps.png_String);
-        File outputImageFile = getOutputImageFile(
+        File outputImageFile = DW_Maps.getOutputImageFile(
                 outputFile, DW_Maps.png_String);
 
-        DW_GeoTools.writeImageFile(
+        AGDT_Geotools.writeImageFile(
                 //g._Grids_Environment,
                 mc,
                 imageWidth,
@@ -162,9 +165,9 @@ public class DW_GeoTools {
             double normalisation,
             AbstractGrid2DSquareCell g,
             GridCoverage2D gc,
-            ArrayList<DW_Shapefile> foregroundDW_Shapefile0,
-            DW_Shapefile foregroundDW_Shapefile1,
-            DW_Shapefile backgroundDW_Shapefile,
+            ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0,
+            AGDT_Shapefile foregroundDW_Shapefile1,
+            AGDT_Shapefile backgroundDW_Shapefile,
             int imageWidth,
             DW_StyleParameters styleParameters,
             int index,
@@ -252,13 +255,13 @@ public class DW_GeoTools {
     private static void addForeground0(
             MapContent result,
             DW_StyleParameters styleParameters,
-            ArrayList<DW_Shapefile> foregroundDW_Shapefile0) {
+            ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0) {
         if (foregroundDW_Shapefile0 != null) {
-            Iterator<DW_Shapefile> ite;
+            Iterator<AGDT_Shapefile> ite;
             ite = foregroundDW_Shapefile0.iterator();
             int indexx = 0;
             while (ite.hasNext()) {
-                DW_Shapefile sf = ite.next();
+                AGDT_Shapefile sf = ite.next();
                 FeatureLayer foregroundFeatureLayer0;
                 foregroundFeatureLayer0 = sf.getFeatureLayer(
                         styleParameters.getForegroundStyle0().get(indexx));
@@ -290,9 +293,9 @@ public class DW_GeoTools {
     public static void outputToImage(
             String outname,
             File outputShapefile,
-            ArrayList<DW_Shapefile> foregroundDW_Shapefile0,
-            DW_Shapefile foregroundDW_Shapefile1,
-            DW_Shapefile backgroundDW_Shapefile,
+            ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0,
+            AGDT_Shapefile foregroundDW_Shapefile1,
+            AGDT_Shapefile backgroundDW_Shapefile,
             String attributeName,
             File outputDir,
             String png_String,
@@ -349,8 +352,8 @@ public class DW_GeoTools {
                 outputDir,
                 outname,
                 DW_Maps.png_String);
-        File outputImageFile = getOutputImageFile(outputFile, DW_Maps.png_String);
-        DW_GeoTools.writeImageFile(
+        File outputImageFile = DW_Maps.getOutputImageFile(outputFile, DW_Maps.png_String);
+        AGDT_Geotools.writeImageFile(
                 mc,
                 imageWidth,
                 imageHeight,
@@ -404,9 +407,9 @@ public class DW_GeoTools {
             DW_Shapefile outputDW_Shapefile,
             String title,
             String attributeName,
-            ArrayList<DW_Shapefile> foregroundDW_Shapefile0,
-            DW_Shapefile foregroundDW_Shapefile1,
-            DW_Shapefile backgroundDW_Shapefile,
+            ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0,
+            AGDT_Shapefile foregroundDW_Shapefile1,
+            AGDT_Shapefile backgroundDW_Shapefile,
             int imageWidth,
             DW_StyleParameters styleParameters,
             int styleIndex) {
@@ -481,141 +484,141 @@ public class DW_GeoTools {
         return result;
     }
 
-    /**
-     * polygon0 PostcodeSector
-     * polygon1 OA
-     * polygon2 LSOA
-     * polygon3 postcodeUnitPoly / MSOA
-     * polygon4 polyGrid,
-     * line0 lineGrid
-     * points0 PostcodeUnitPoint
-     * points1 PostcodeSectorPoint
-     * @param polygon0
-     * @param polygon1
-     * @param polygon2
-     * @param polygon3
-     * @param polygon4
-     * @param line0
-     * @param points0
-     * @param points1
-     * @return
-     */
-    public static MapContent createMapContent(
-            DW_Shapefile polygon0,
-            DW_Shapefile polygon1,
-            DW_Shapefile polygon2,
-            DW_Shapefile polygon3,
-            DW_Shapefile polygon4,
-            DW_Shapefile line0,
-            DW_Shapefile points0,
-            DW_Shapefile points1) {
-        MapContent result;
-        result = new MapContent();
-
-        if (polygon0 != null) {
-            // Add polygon layer 0 to mc
-            // -------------------------
-            Style polygon0Style;
-            polygon0Style = DW_Style.createDefaultPolygonStyle(
-                    Color.BLUE, Color.WHITE);
-            FeatureLayer polygon0layer = new FeatureLayer(
-                    polygon0.getFeatureSource(), polygon0Style);
-            result.addLayer(polygon0layer);
-        }
-
-        if (polygon3 != null) {
-            // Add polygon layer 3 to mc
-            // -------------------------
-            Color c;
-            //c = Color.DARK_GRAY;
-            c = Color.PINK;
-            Style polygon3Style;
-            polygon3Style = DW_Style.createDefaultPolygonStyle(c, null);
-            FeatureLayer polygon3layer = new FeatureLayer(
-                    polygon3.getFeatureSource(), polygon3Style);
-            result.addLayer(polygon3layer);
-        }
-        
-        if (polygon1 != null) {
-            // Add polygon layer 1 to mc
-            // -------------------------
-            Color c;
-            //c = Color.LIGHT_GRAY;
-            c = Color.BLACK;
-            Style polygon1Style;
-            polygon1Style = DW_Style.createDefaultPolygonStyle(c, null);
-            FeatureLayer polygon1layer = new FeatureLayer(
-                    polygon1.getFeatureSource(), polygon1Style);
-            result.addLayer(polygon1layer);
-        }
-
-        if (polygon2 != null) {
-            // Add polygon layer 2 to mc
-            // -------------------------
-            Style polygon2Style;
-            polygon2Style = DW_Style.createDefaultPolygonStyle(
-                    Color.GRAY, null);
-            FeatureLayer polygon2layer = new FeatureLayer(
-                    polygon2.getFeatureSource(), polygon2Style);
-            result.addLayer(polygon2layer);
-        }
-
-        
-
-        if (polygon4 != null) {
-            // Add polygon layer 4 to mc
-            // -------------------------
-            Color c;
-            //c = Color.BLACK;
-            c = Color.LIGHT_GRAY;
-            Style polygon4Style;
-            polygon4Style = DW_Style.createDefaultPolygonStyle(c, null);
-            FeatureLayer polygon4layer = new FeatureLayer(
-                    polygon4.getFeatureSource(), polygon4Style);
-            result.addLayer(polygon4layer);
-        }
-
-        if (line0 != null) {
-            // Add line layer 0 to mc
-            // -------------------------
-            Style line0Style;
-            line0Style = DW_Style.createDefaultLineStyle();
-            FeatureLayer line0layer = new FeatureLayer(
-                    line0.getFeatureSource(), line0Style);
-            result.addLayer(line0layer);
-        }
-
-        // Add point layer 0 to mc
-        // -----------------------
-        Style pointStyle0;
-        pointStyle0 = DW_Style.createDefaultPointStyle();
-        FeatureLayer pointsFeatureLayer0;
-        pointsFeatureLayer0 = points0.getFeatureLayer(
-                pointStyle0);
-        result.addLayer(pointsFeatureLayer0);
-
-        // Add point layer 1 to mc
-        // -----------------------
-        int size;
-        size = 6;
-        String type;
-        type = "Circle";
-        Color fill;
-        fill = Color.GREEN;
-        Color outline;
-        outline = Color.DARK_GRAY;
-        Style pointStyle1;
-        pointStyle1 = DW_Style.getPointStyle(
-                size,
-                type,
-                fill,
-                outline);
-        FeatureLayer pointsFeatureLayer1;
-        pointsFeatureLayer1 = points1.getFeatureLayer(
-                pointStyle1);
-        result.addLayer(pointsFeatureLayer1);
-        return result;
-    }
+//    /**
+//     * polygon0 PostcodeSector
+//     * polygon1 OA
+//     * polygon2 LSOA
+//     * polygon3 postcodeUnitPoly / MSOA
+//     * polygon4 polyGrid,
+//     * line0 lineGrid
+//     * points0 PostcodeUnitPoint
+//     * points1 PostcodeSectorPoint
+//     * @param polygon0
+//     * @param polygon1
+//     * @param polygon2
+//     * @param polygon3
+//     * @param polygon4
+//     * @param line0
+//     * @param points0
+//     * @param points1
+//     * @return
+//     */
+//    public static MapContent createMapContent(
+//            DW_Shapefile polygon0,
+//            DW_Shapefile polygon1,
+//            DW_Shapefile polygon2,
+//            DW_Shapefile polygon3,
+//            DW_Shapefile polygon4,
+//            DW_Shapefile line0,
+//            DW_Shapefile points0,
+//            DW_Shapefile points1) {
+//        MapContent result;
+//        result = new MapContent();
+//
+//        if (polygon0 != null) {
+//            // Add polygon layer 0 to mc
+//            // -------------------------
+//            Style polygon0Style;
+//            polygon0Style = DW_Style.createDefaultPolygonStyle(
+//                    Color.BLUE, Color.WHITE);
+//            FeatureLayer polygon0layer = new FeatureLayer(
+//                    polygon0.getFeatureSource(), polygon0Style);
+//            result.addLayer(polygon0layer);
+//        }
+//
+//        if (polygon3 != null) {
+//            // Add polygon layer 3 to mc
+//            // -------------------------
+//            Color c;
+//            //c = Color.DARK_GRAY;
+//            c = Color.PINK;
+//            Style polygon3Style;
+//            polygon3Style = DW_Style.createDefaultPolygonStyle(c, null);
+//            FeatureLayer polygon3layer = new FeatureLayer(
+//                    polygon3.getFeatureSource(), polygon3Style);
+//            result.addLayer(polygon3layer);
+//        }
+//        
+//        if (polygon1 != null) {
+//            // Add polygon layer 1 to mc
+//            // -------------------------
+//            Color c;
+//            //c = Color.LIGHT_GRAY;
+//            c = Color.BLACK;
+//            Style polygon1Style;
+//            polygon1Style = DW_Style.createDefaultPolygonStyle(c, null);
+//            FeatureLayer polygon1layer = new FeatureLayer(
+//                    polygon1.getFeatureSource(), polygon1Style);
+//            result.addLayer(polygon1layer);
+//        }
+//
+//        if (polygon2 != null) {
+//            // Add polygon layer 2 to mc
+//            // -------------------------
+//            Style polygon2Style;
+//            polygon2Style = DW_Style.createDefaultPolygonStyle(
+//                    Color.GRAY, null);
+//            FeatureLayer polygon2layer = new FeatureLayer(
+//                    polygon2.getFeatureSource(), polygon2Style);
+//            result.addLayer(polygon2layer);
+//        }
+//
+//        
+//
+//        if (polygon4 != null) {
+//            // Add polygon layer 4 to mc
+//            // -------------------------
+//            Color c;
+//            //c = Color.BLACK;
+//            c = Color.LIGHT_GRAY;
+//            Style polygon4Style;
+//            polygon4Style = DW_Style.createDefaultPolygonStyle(c, null);
+//            FeatureLayer polygon4layer = new FeatureLayer(
+//                    polygon4.getFeatureSource(), polygon4Style);
+//            result.addLayer(polygon4layer);
+//        }
+//
+//        if (line0 != null) {
+//            // Add line layer 0 to mc
+//            // -------------------------
+//            Style line0Style;
+//            line0Style = DW_Style.createDefaultLineStyle();
+//            FeatureLayer line0layer = new FeatureLayer(
+//                    line0.getFeatureSource(), line0Style);
+//            result.addLayer(line0layer);
+//        }
+//
+//        // Add point layer 0 to mc
+//        // -----------------------
+//        Style pointStyle0;
+//        pointStyle0 = DW_Style.createDefaultPointStyle();
+//        FeatureLayer pointsFeatureLayer0;
+//        pointsFeatureLayer0 = points0.getFeatureLayer(
+//                pointStyle0);
+//        result.addLayer(pointsFeatureLayer0);
+//
+//        // Add point layer 1 to mc
+//        // -----------------------
+//        int size;
+//        size = 6;
+//        String type;
+//        type = "Circle";
+//        Color fill;
+//        fill = Color.GREEN;
+//        Color outline;
+//        outline = Color.DARK_GRAY;
+//        Style pointStyle1;
+//        pointStyle1 = DW_Style.getPointStyle(
+//                size,
+//                type,
+//                fill,
+//                outline);
+//        FeatureLayer pointsFeatureLayer1;
+//        pointsFeatureLayer1 = points1.getFeatureLayer(
+//                pointStyle1);
+//        result.addLayer(pointsFeatureLayer1);
+//        return result;
+//    }
 
     /**
      * Here is a programmatic alternative to using JSimpleStyleDialog to get a
@@ -635,7 +638,7 @@ public class DW_GeoTools {
             try {
                 fc = fs.getFeatures();
             } catch (IOException ex) {
-                Logger.getLogger(DW_GeoTools.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AGDT_Geotools.class.getName()).log(Level.SEVERE, null, ex);
                 return null;
             }
             return DW_Style.createPolygonStyle(

@@ -18,12 +18,20 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping;
 
+//import uk.ac.leeds.ccg.andyt.agdtgeotools.DW_Shapefile;
+//import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.AGDT_Geotools;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
@@ -57,6 +65,9 @@ import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.PropertyDescriptor;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Maps;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
@@ -69,49 +80,21 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
  *
  * @author geoagdt
  */
-public abstract class DW_Maps {
+public abstract class DW_Maps extends AGDT_Maps {
 
-    public static final String png_String = "png";
-    public static final String defaultSRID = "27700";
-
-    private static TreeMap<String, DW_Point>[] ONSPDlookups;
-
-    private static HashMap<String, SimpleFeatureType> pointSimpleFeatureTypes;
-    private static HashMap<String, SimpleFeatureType> lineSimpleFeatureTypes;
-    private static HashMap<String, SimpleFeatureType> polygonSimpleFeatureTypes;
-
-    /**
-     * If showMapsInJMapPane is true, maps are presented in individual JMapPanes
-     */
-    protected boolean showMapsInJMapPane;
-    protected int imageWidth;
-    protected boolean commonStyling;
-    protected boolean individualStyling;
-    protected ArrayList<String> classificationFunctionNames;
-    protected File mapDirectory;
-    private ShapefileDataStoreFactory sdsf;
-    protected DW_StyleParameters styleParameters;
-    protected ArrayList<DW_Shapefile> foregroundDW_Shapefile0;
-    protected DW_Shapefile foregroundDW_Shapefile1;
-    protected DW_Shapefile backgroundDW_Shapefile;
+    private static TreeMap<String, AGDT_Point>[] ONSPDlookups;
 
     /**
      * For storing level(s) (OA, LSOA, MSOA, PostcodeSector, PostcodeUnit, ...)
      */
     protected String level;
     protected ArrayList<String> levels;
-
+    protected DW_StyleParameters styleParameters;
+    
     public DW_Maps() {
     }
 
-    public ShapefileDataStoreFactory getShapefileDataStoreFactory() {
-        if (sdsf == null) {
-            sdsf = new ShapefileDataStoreFactory();
-        }
-        return sdsf;
-    }
-
-    public static TreeMap<String, DW_Point>[] getONSPDlookups() {
+    public static TreeMap<String, AGDT_Point>[] getONSPDlookups() {
         if (ONSPDlookups == null) {
             initONSPDLookups();
         }
@@ -189,24 +172,24 @@ public abstract class DW_Maps {
         postcodes.add("bd");
         postcodes.add("hd");
         postcodes.add("hx");
-        String postcodeUnitPolyShapefilename;
-        postcodeUnitPolyShapefilename = "LS_HG_YO_WF_BD_HD_HX_Postcodes.shp";
+        String polyShapefilename;
+        polyShapefilename = "LS_HG_YO_WF_BD_HD_HX_PostcodeUnit.shp";
         String year;
         year = "2012";
         File generatedCodePointDir;
         generatedCodePointDir = new File(
                 DW_Files.getGeneratedCodePointDir(),
                 year);
-        File postcodeUnitPolyShapefile = new File(
+        File polyShapefile = new File(
                 generatedCodePointDir,
-                postcodeUnitPolyShapefilename);
-        postcodeUnitPolyShapefile.mkdirs();
-        postcodeUnitPolyShapefile = new File(
-                postcodeUnitPolyShapefile,
-                postcodeUnitPolyShapefilename);
+                polyShapefilename);
+        polyShapefile.mkdirs();
+        polyShapefile = new File(
+                polyShapefile,
+                polyShapefilename);
         result = getPostcodeUnitPoly_DW_Shapefile(
                 sdsf,
-                postcodeUnitPolyShapefile,
+                polyShapefile,
                 generatedCodePointDir,
                 postcodes);
         return result;
@@ -214,11 +197,11 @@ public abstract class DW_Maps {
 
     public static DW_Shapefile getPostcodeUnitPoly_DW_Shapefile(
             ShapefileDataStoreFactory sdsf,
-            File aPostcodeUnitPolyShapefile,
+            File file,
             File generatedCodePointDir,
             TreeSet<String> postcodes) {
         DW_Shapefile result;
-        if (!aPostcodeUnitPolyShapefile.exists()) {
+        if (!file.exists()) {
             // Put it together from source...
             TreeSetFeatureCollection tsfc;
             tsfc = new TreeSetFeatureCollection();
@@ -255,114 +238,42 @@ public abstract class DW_Maps {
                 }
                 //fi.close();
             }
-            DW_Shapefile.transact(aPostcodeUnitPolyShapefile, sft, tsfc, sdsf);
+            DW_Shapefile.transact(file, sft, tsfc, sdsf);
         }
         result = new DW_Shapefile(
-                aPostcodeUnitPolyShapefile);
+                file);
         return result;
     }
 
     /**
-     * Simple convenience method.
+     * level = "District", "Sector" or "Area"
      *
-     * @param type
-     * @param srid
-     * @return null if type is not one of "Point", "LineString", or "Polygon"
+     * @param level
+     * @return
      */
-    public static SimpleFeatureType getSimpleFeatureType(
-            String type,
-            String srid) {
-        if (srid == null) {
-            srid = getDefaultSRID();
-        }
-        if (type.equalsIgnoreCase("Point")) {
-            return getPointSimpleFeatureType(srid);
-        }
-        if (type.equalsIgnoreCase("LineString")) {
-            return getLineSimpleFeatureType(srid);
-        }
-        if (type.equalsIgnoreCase("Polygon")) {
-            return getPolygonSimpleFeatureType(srid);
-        }
-        return null;
-    }
-
-    public static String getDefaultSRID() {
-        return defaultSRID;//"27700";
-    }
-
-    public static HashMap<String, SimpleFeatureType> getPointSimpleFeatureTypes() {
-        if (pointSimpleFeatureTypes == null) {
-            pointSimpleFeatureTypes = new HashMap<String, SimpleFeatureType>();
-            //pointSimpleFeatureTypes = initPointSimpleFeatureTypes();
-        }
-        return pointSimpleFeatureTypes;
-    }
-
-    public static SimpleFeatureType getPointSimpleFeatureType(String srid) {
-        if (!getPointSimpleFeatureTypes().containsKey(srid)) {
-            SimpleFeatureType sft;
-            sft = initSimpleFeatureType(
-                    "Point", srid);
-            pointSimpleFeatureTypes.put(
-                    srid, sft);
-            return sft;
-        }
-        return pointSimpleFeatureTypes.get(srid);
-    }
-
-    private static SimpleFeatureType initSimpleFeatureType(
-            String type,
-            String srid) {
-        SimpleFeatureType result = null;
-        try {
-            result = DataUtilities.createType(
-                    "Location",
-                    "the_geom:" + type + ":srid=" + srid + "," + // <- the geometry attribute
-                    "name:String," // <- a String attribute
-            );
-        } catch (SchemaException ex) {
-            Logger.getLogger(DW_Maps.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public static DW_Shapefile getPostcodePoly_DW_Shapefile(
+            String level) {
+        DW_Shapefile result;
+        File dir;
+        dir = new File(
+                DW_Files.getInputPostcodeDir(),
+                "BoundaryData");
+        dir = new File(
+                dir,
+                "GBPostcodeAreaSectorDistrict");
+        dir = new File(
+                dir,
+                "GB_Postcodes");
+        String name;
+        name = "Postal" + level + ".shp";
+        dir = new File(
+                dir,
+                name);
+        File file = new File(
+                dir,
+                name);
+        result = new DW_Shapefile(file);
         return result;
-    }
-
-    public static HashMap<String, SimpleFeatureType> getLineSimpleFeatureTypes() {
-        if (lineSimpleFeatureTypes == null) {
-            lineSimpleFeatureTypes = new HashMap<String, SimpleFeatureType>();
-        }
-        return lineSimpleFeatureTypes;
-    }
-
-    public static SimpleFeatureType getLineSimpleFeatureType(String srid) {
-        if (!getLineSimpleFeatureTypes().containsKey(srid)) {
-            SimpleFeatureType sft;
-            sft = initSimpleFeatureType(
-                    "LineString", srid);
-            lineSimpleFeatureTypes.put(
-                    srid, sft);
-            return sft;
-        }
-        return lineSimpleFeatureTypes.get(srid);
-    }
-
-    public static HashMap<String, SimpleFeatureType> getPolygonSimpleFeatureTypes() {
-        if (polygonSimpleFeatureTypes == null) {
-            polygonSimpleFeatureTypes = new HashMap<String, SimpleFeatureType>();
-        }
-        return polygonSimpleFeatureTypes;
-    }
-
-    public static SimpleFeatureType getPolygonSimpleFeatureType(String srid) {
-        if (!getPolygonSimpleFeatureTypes().containsKey(srid)) {
-            SimpleFeatureType sft;
-            sft = initSimpleFeatureType(
-                    "Polygon", srid);
-            polygonSimpleFeatureTypes.put(
-                    srid, sft);
-            return sft;
-        }
-        return polygonSimpleFeatureTypes.get(srid);
     }
 
     /*
@@ -430,26 +341,6 @@ public abstract class DW_Maps {
         DW_Shapefile.transact(outputFile, sft, tsfc, sdsf);
     }
 
-    public SimpleFeatureType getFeatureType(
-            SimpleFeatureType sft,
-            Class<?> binding,
-            String attributeName,
-            String name) {
-        SimpleFeatureType result = null;
-        SimpleFeatureTypeBuilder sftb;
-        sftb = getNewSimpleFeatureTypeBuilder(sft, name);
-        if (binding.equals(Integer.class)) {
-            // Add the new attribute
-            sftb.add(attributeName, Integer.class);
-        }
-        if (binding.equals(Double.class)) {
-            // Add the new attribute
-            sftb.add(attributeName, Double.class);
-        }
-        result = sftb.buildFeatureType();
-        return result;
-    }
-
     public static File getOutputImageFile(
             File outputFile,
             String outputType) {
@@ -464,115 +355,6 @@ public abstract class DW_Maps {
         return result;
     }
 
-    /**
-     *
-     * @param sft
-     * @param name
-     * @return
-     */
-    public SimpleFeatureTypeBuilder getNewSimpleFeatureTypeBuilder(
-            SimpleFeatureType sft,
-            String name) {
-        SimpleFeatureTypeBuilder result = new SimpleFeatureTypeBuilder();
-        result.init(sft);
-        result.setName(name);
-        return result;
-    }
-
-    public void summariseAttributes(SimpleFeatureType sft) {
-        int attributeCount = sft.getAttributeCount();
-        System.out.println("attributeIndex,attributeDescriptor");
-        for (int i = 0; i < attributeCount; i++) {
-            AttributeDescriptor attributeDescriptor;
-            attributeDescriptor = sft.getDescriptor(i);
-            System.out.println("" + i + "," + attributeDescriptor.getLocalName());
-        }
-    }
-
-    /**
-     * Adds sf attributes and value to sfb and builds a new SimpleFeature with
-     * id.
-     *
-     * @param sf The SimpleFeature from which the new SimpleFeature is based.
-     * @param sfb The SimpleFeatureBuilder for building the new SimpleFeature.
-     * @param value The value to be assigned as an additional attribute in the
-     * new SimpleFeature
-     * @param fc The TreeSetFeatureCollection to which the new SimpleFeature is
-     * added.
-     * @param id Null permitted. This will be the id assigned to the built
-     * feature.
-     */
-    public static void addFeatureAttributeAndAddToFeatureCollection(
-            SimpleFeature sf,
-            SimpleFeatureBuilder sfb,
-            Integer value,
-            TreeSetFeatureCollection fc,
-            String id) {
-        sfb.addAll(sf.getAttributes());
-        sfb.add(value);
-        fc.add(sfb.buildFeature(id));
-    }
-
-    /**
-     * Adds sf attributes and value to sfb and builds a new SimpleFeature with
-     * id.
-     *
-     * @param sf The SimpleFeature from which the new SimpleFeature is based.
-     * @param sfb The SimpleFeatureBuilder for building the new SimpleFeature.
-     * @param value The value to be assigned as an additional attribute in the
-     * new SimpleFeature
-     * @param fc The TreeSetFeatureCollection to which the new SimpleFeature is
-     * added.
-     * @param id Null permitted. This will be the id assigned to the built
-     * feature.
-     */
-    public static void addFeatureAttributeAndAddToFeatureCollection(
-            SimpleFeature sf,
-            SimpleFeatureBuilder sfb,
-            Double value,
-            TreeSetFeatureCollection fc,
-            String id) {
-        sfb.addAll(sf.getAttributes());
-        sfb.add(value);
-        fc.add(sfb.buildFeature(id));
-    }
-
-    /**
-     * Adds sf attributes to sfb and builds a new SimpleFeature with id.
-     *
-     * @param sf The SimpleFeature from which the new SimpleFeature is based.
-     * @param sfb The SimpleFeatureBuilder for building the new SimpleFeature.
-     * @param fc The TreeSetFeatureCollection to which the new SimpleFeature is
-     * added.
-     * @param id Null permitted. This will be the id assigned to the built
-     * feature.
-     */
-    public static void addFeatureToFeatureCollection(
-            SimpleFeature sf,
-            SimpleFeatureBuilder sfb,
-            TreeSetFeatureCollection fc,
-            String id) {
-        sfb.addAll(sf.getAttributes());
-        fc.add(sfb.buildFeature(id));
-    }
-
-//    public SimpleFeatureType getOutputSimpleFeatureType(
-//            SimpleFeatureType inputSimpleFeatureType) {
-//        SimpleFeatureType result;
-//        SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
-//        b.setName("Name");
-//        //b.add(inType.getName());
-//        //b.add("Name", org.opengis.feature.type.Name.class);
-//        //b.add(Name);
-//        //b.add("name", org.opengis.feature.type.Name.class);
-//        //b.add("Name", PropertyType.class);
-//        b.add(inputSimpleFeatureType.getGeometryDescriptor());
-//        b.addAll(inputSimpleFeatureType.getAttributeDescriptors());
-//        //b.add("clients", Integer.class);
-//        b.add("clients", String.class);
-//        result = b.buildFeatureType();
-//        return result;
-//    }
     /**
      * @param dir
      * @param filenames
@@ -738,8 +520,11 @@ public abstract class DW_Maps {
                         new ShapefileDataStoreFactory());
                 result = postcodeUnitPoly_DW_Shapefile.getFile();
             } else {
-                throw new UnsupportedOperationException();
-                //name = "PostcodeSectors";
+                // Get PostcodeSector Boundaries
+                DW_Shapefile postcodeSectorPoly_DW_Shapefile;
+                postcodeSectorPoly_DW_Shapefile = DW_Maps.getPostcodePoly_DW_Shapefile(
+                        "Sector");
+                result = postcodeSectorPoly_DW_Shapefile.getFile();
             }
         } else {
             if (level.equalsIgnoreCase("LAD")) {
@@ -824,122 +609,6 @@ public abstract class DW_Maps {
      * @param filter If filter == true then result is clipped to the LSOA
      * boundary.
      */
-    public TreeMap<Integer, Integer> selectAndCreateNewShapefile(
-            ShapefileDataStoreFactory sdsf,
-            FeatureCollection fc,
-            SimpleFeatureType sft,
-            TreeSet<String> levelCodes,
-            TreeMap<String, Integer> levelData,
-            //String attributeName, 
-            String targetPropertyName,
-            File outputFile,
-            int filter,
-            boolean countClientsInAndOutOfRegion) {
-
-        TreeMap<Integer, Integer> inAndOutOfRegionCount = null;
-        if (countClientsInAndOutOfRegion) {
-            inAndOutOfRegionCount = new TreeMap<Integer, Integer>();
-            inAndOutOfRegionCount.put(0, 0);
-            inAndOutOfRegionCount.put(1, 0);
-        }
-
-        //        summariseAttributes(sft);
-        // Initialise the collection of new Features
-        TreeSetFeatureCollection tsfc;
-        tsfc = new TreeSetFeatureCollection();
-        // Create SimpleFeatureBuilder
-        //FeatureFactory ff = FactoryFinder.getGeometryFactories();
-        SimpleFeatureBuilder sfb;
-        sfb = new SimpleFeatureBuilder(sft);
-        Set<String> keySet = levelData.keySet();
-        FeatureIterator featureIterator;
-        featureIterator = fc.features();
-        int id_int = 0;
-        while (featureIterator.hasNext()) {
-            Feature inputFeature = featureIterator.next();
-            Collection<Property> properties;
-            properties = inputFeature.getProperties();
-            Iterator<Property> itep = properties.iterator();
-            while (itep.hasNext()) {
-                Property p = itep.next();
-                //System.out.println("Property " + p.toString());
-                String propertyName = p.getName().toString();
-                //System.out.println("PropertyName " + propertyName);
-                if (propertyName.equalsIgnoreCase(targetPropertyName)) {
-                    //PropertyType propertyType = p.getType();
-                    //System.out.println("PropertyType " + propertyType);
-                    Object value = p.getValue();
-                    //System.out.println("PropertyValue " + value);
-                    String valueString = value.toString();
-                    if (filter < 3) {
-                        if (levelCodes.contains(valueString)) {
-                            // Add to inAndOutOfRegionCount
-                            Integer clientCount = levelData.get(valueString);
-                            //                            if (clientCount == null) {
-                            //                                clientCount = 0;
-                            //                            }
-                            if (clientCount != null) {
-                                String id = "" + id_int;
-                                addFeatureAttributeAndAddToFeatureCollection(
-                                        (SimpleFeature) inputFeature, sfb, clientCount, tsfc, id);
-                                id_int++;
-                                if (countClientsInAndOutOfRegion) {
-                                    Generic_Collections.addToTreeMapIntegerInteger(
-                                            inAndOutOfRegionCount, 1, clientCount);
-                                }
-                            }
-                        } else {
-                            // Add to inAndOutOfRegionCount
-                            Integer clientCount = levelData.get(valueString);
-                            if (clientCount != null) {
-                                // Add to inAndOutOfRegionCount
-                                if (countClientsInAndOutOfRegion) {
-                                    Generic_Collections.addToTreeMapIntegerInteger(
-                                            inAndOutOfRegionCount, 0, clientCount);
-                                }
-                            }
-                        }
-                    } else {
-                        if (keySet.contains(valueString) || levelCodes.contains(valueString)) {
-                            Integer clientCount = levelData.get(valueString);
-                            //                            if (clientCount == null) {
-                            //                                clientCount = 0;
-                            //                            }
-                            if (clientCount != null) {
-                                String id = "" + id_int;
-                                addFeatureAttributeAndAddToFeatureCollection(
-                                        (SimpleFeature) inputFeature, sfb, clientCount, tsfc, id);
-                                id_int++;
-                                // Add to inAndOutOfRegionCount
-                                if (countClientsInAndOutOfRegion) {
-                                    Generic_Collections.addToTreeMapIntegerInteger(
-                                            inAndOutOfRegionCount, 1, clientCount);
-                                }
-
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        featureIterator.close();
-        DW_Shapefile.transact(outputFile, sft, tsfc, sdsf);
-        return inAndOutOfRegionCount;
-    }
-
-    /*
-     * Select and create a new shapefile.
-     *
-     * @param fc
-     * @param sft
-     * @param tLSOACodes
-     * @param tLSOAData
-     * @param attributeName
-     * @param outputFile
-     * @param max
-     * @param filter If filter == true then result is clipped to the LSOA
-     * boundary.
-     */
     public void selectAndCreateNewShapefile(
             ShapefileDataStoreFactory sdsf,
             FeatureCollection fc,
@@ -981,7 +650,6 @@ public abstract class DW_Maps {
                     Object value = p.getValue();
                     //System.out.println("PropertyValue " + value);
                     String valueString = value.toString();
-
                     Deprivation_DataRecord aDeprivation_DataRecord;
                     aDeprivation_DataRecord = deprivationDataRecords.get(valueString);
                     // aDeprivation_DataRecord might be null as deprivation data comes from 2001 census...
@@ -1028,36 +696,80 @@ public abstract class DW_Maps {
     }
 
     /*
-     * Get an output file name and create the new shapefile
+     * Select and create a new shapefile.
+     *
+     * @param fc
+     * @param sft
+     * @param tLSOACodes
+     * @param tLSOAData
+     * @param attributeName
+     * @param outputFile
+     * @param max
+     * @param filter If filter == true then result is clipped to the LSOA
+     * boundary.
      */
     public void selectAndCreateNewShapefile(
             ShapefileDataStoreFactory sdsf,
             FeatureCollection fc,
             SimpleFeatureType sft,
-            TreeSet<String> levelCodes,
+            TreeSet<String> censusCodes,
             TreeMap<String, Integer> levelData,
-            TreeMap<String, Integer> pop,
-            double multiplier,
-            //String attributeName,
+            //String attributeName, 
             String targetPropertyName,
             File outputFile,
-            int max,
-            int filter) {
+            int filter,
+            TreeMap<Integer, Integer> deprivationClasses,
+            TreeMap<String, Deprivation_DataRecord> deprivationDataRecords,
+            Integer deprivationClass,
+            boolean density) {
+        //        summariseAttributes(sft);
+        // Initialise the collection of new Features
         TreeSetFeatureCollection tsfc;
         tsfc = new TreeSetFeatureCollection();
         // Create SimpleFeatureBuilder
         //FeatureFactory ff = FactoryFinder.getGeometryFactories();
         SimpleFeatureBuilder sfb;
         sfb = new SimpleFeatureBuilder(sft);
-        int id_int = 0;
+        Set<String> keySet = levelData.keySet();
         FeatureIterator featureIterator;
         featureIterator = fc.features();
-        Set<String> keySet = levelData.keySet();
+        int id_int = 0;
         while (featureIterator.hasNext()) {
             Feature inputFeature = featureIterator.next();
             Collection<Property> properties;
             properties = inputFeature.getProperties();
-            Iterator<Property> itep = properties.iterator();
+            Iterator<Property> itep;
+            // get Area
+            double area = 0;
+            itep = properties.iterator();
+            while (itep.hasNext()) {
+                Property p = itep.next();
+                //System.out.println("Property " + p.toString());
+                String propertyName = p.getName().toString();
+                //System.out.println("PropertyName " + propertyName);
+//                PropertyDescriptor pd;
+//                pd = p.getDescriptor();
+                if (propertyName.equalsIgnoreCase("the_geom")) {
+                    Geometry g;
+                    g = (Geometry) p.getValue();
+                    area = g.getArea();
+                    try {
+                        Polygon poly;
+                        poly = (Polygon) g;
+                        area = poly.getArea();
+                    } catch (ClassCastException e) {
+                        int debug = 1;
+                    }
+                    try {
+                        MultiPolygon multipoly;
+                        multipoly = (MultiPolygon) g;
+                        area = multipoly.getArea();
+                    } catch (ClassCastException e) {
+                        int debug = 1;
+                    }
+                }
+            }
+            itep = properties.iterator();
             while (itep.hasNext()) {
                 Property p = itep.next();
                 //System.out.println("Property " + p.toString());
@@ -1069,34 +781,42 @@ public abstract class DW_Maps {
                     Object value = p.getValue();
                     //System.out.println("PropertyValue " + value);
                     String valueString = value.toString();
-                    if (filter < 3) {
-                        if (levelCodes.contains(valueString)) {
-                            Integer clientCount = levelData.get(valueString);
-                            //                            if (clientCount == null) {
-                            //                                clientCount = 0;
-                            //                            }
-                            if (clientCount != null) {
-                                Integer population = pop.get(valueString);
-                                double clientRate = (double) clientCount * multiplier / (double) population;
-                                String id = "" + id_int;
-                                addFeatureAttributeAndAddToFeatureCollection(
-                                        (SimpleFeature) inputFeature, sfb, clientRate, tsfc, id);
-                                id_int++;
-                            }
-                        }
-                    } else {
-                        if (keySet.contains(valueString) || levelCodes.contains(valueString)) {
-                            Integer clientCount = levelData.get(valueString);
-                            //                            if (clientCount == null) {
-                            //                                clientCount = 0;
-                            //                            }
-                            if (clientCount != null) {
-                                Integer population = pop.get(valueString);
-                                double clientRate = (double) clientCount * multiplier / (double) population;
-                                String id = "" + id_int;
-                                addFeatureAttributeAndAddToFeatureCollection(
-                                        (SimpleFeature) inputFeature, sfb, clientRate, tsfc, id);
-                                id_int++;
+                    Deprivation_DataRecord aDeprivation_DataRecord;
+                    aDeprivation_DataRecord = deprivationDataRecords.get(valueString);
+                    // aDeprivation_DataRecord might be null as deprivation data comes from 2001 census...
+                    if (aDeprivation_DataRecord != null) {
+                        Integer thisDeprivationClass;
+                        thisDeprivationClass = Deprivation_DataHandler.getDeprivationClass(
+                                deprivationClasses,
+                                aDeprivation_DataRecord);
+                        if (thisDeprivationClass == deprivationClass.intValue()) {
+                            if (filter < 3) {
+                                if (censusCodes.contains(valueString)) {
+                                    Integer clientCount = levelData.get(valueString);
+                                    if (clientCount != null) {
+                                        double densityValue;
+                                        densityValue = (clientCount * 1000000) / area; // * 1000000 for 100 hectares
+                                        String id = "" + id_int;
+                                        addFeatureAttributeAndAddToFeatureCollection(
+                                                (SimpleFeature) inputFeature, sfb, densityValue, tsfc, id);
+                                        id_int++;
+                                    }
+                                }
+                            } else {
+                                if (keySet.contains(valueString) || censusCodes.contains(valueString)) {
+                                    Integer clientCount = levelData.get(valueString);
+                                    //                            if (clientCount == null) {
+                                    //                                clientCount = 0;
+                                    //                            }
+                                    if (clientCount != null) {
+                                        double densityValue;
+                                        densityValue = (clientCount * 1000000) / area; // * 1000000 for 100 hectares
+                                        String id = "" + id_int;
+                                        addFeatureAttributeAndAddToFeatureCollection(
+                                                (SimpleFeature) inputFeature, sfb, densityValue, tsfc, id);
+                                        id_int++;
+                                    }
+                                }
                             }
                         }
                     }
@@ -1107,6 +827,7 @@ public abstract class DW_Maps {
         DW_Shapefile.transact(outputFile, sft, tsfc, sdsf);
     }
 
+    @Override
     public String getOutName(String filename, String attributeName, int filter) {
         String result = filename.substring(0, filename.length() - 4);
         result += attributeName;
@@ -1128,9 +849,9 @@ public abstract class DW_Maps {
     public static TreeSetFeatureCollection getAdviceLeedsPointFeatureCollection(
             SimpleFeatureType sft) {
         TreeSetFeatureCollection result;
-        TreeMap<String, DW_Point> tAdviceLeedsNamesAndPoints;
+        TreeMap<String, AGDT_Point> tAdviceLeedsNamesAndPoints;
         tAdviceLeedsNamesAndPoints = DW_Processor.getAdviceLeedsNamesAndPoints();
-        TreeMap<String, DW_Point> map = tAdviceLeedsNamesAndPoints;
+        TreeMap<String, AGDT_Point> map = tAdviceLeedsNamesAndPoints;
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
          * using a Point object for the location.
@@ -1142,189 +863,8 @@ public abstract class DW_Maps {
         while (ite.hasNext()) {
             String outlet = ite.next();
             String name = outlet;
-            DW_Point p = map.get(outlet);
+            AGDT_Point p = map.get(outlet);
             addPointFeature(p, gf, sfb, name, result);
-        }
-        return result;
-    }
-
-    protected static void addPointFeature(
-            DW_Point p,
-            GeometryFactory gf,
-            SimpleFeatureBuilder sfb,
-            String name,
-            TreeSetFeatureCollection tsfc) {
-        Point point = gf.createPoint(new Coordinate(p.getX(), p.getY()));
-        sfb.add(point);
-        sfb.add(name);
-        SimpleFeature feature = sfb.buildFeature(null);
-        tsfc.add(feature);
-    }
-
-    protected static void addLineFeature(
-            DW_Point p1,
-            DW_Point p2,
-            GeometryFactory gf,
-            SimpleFeatureBuilder sfb,
-            String name,
-            TreeSetFeatureCollection tsfc) {
-        Coordinate[] coordinates;
-        coordinates = new Coordinate[2];
-        coordinates[0] = new Coordinate(p1.getX(), p1.getY());
-        coordinates[1] = new Coordinate(p2.getX(), p2.getY());
-        LineString line = gf.createLineString(coordinates);
-        sfb.add(line);
-        sfb.add(name);
-        SimpleFeature feature = sfb.buildFeature(null);
-        tsfc.add(feature);
-    }
-
-    protected static void addQuadFeature(
-            DW_Point p1,
-            DW_Point p2,
-            DW_Point p3,
-            DW_Point p4,
-            GeometryFactory gf,
-            SimpleFeatureBuilder sfb,
-            String name,
-            TreeSetFeatureCollection tsfc,
-            CoordinateSequenceFactory csf) {
-        Coordinate[] coordinates;
-        coordinates = new Coordinate[5];
-        coordinates[0] = new Coordinate(p1.getX(), p1.getY());
-        coordinates[1] = new Coordinate(p2.getX(), p2.getY());
-        coordinates[2] = new Coordinate(p3.getX(), p3.getY());
-        coordinates[3] = new Coordinate(p4.getX(), p4.getY());
-        coordinates[4] = new Coordinate(p1.getX(), p1.getY());
-        CoordinateSequence cs;
-        cs = csf.create(coordinates);
-        LinearRing lr;
-        lr = new LinearRing(cs, gf);
-        Polygon quad;
-        //quad = gf.createPolygon(coordinates);
-        quad = gf.createPolygon(lr, null);
-        sfb.add(quad);
-        sfb.add(name);
-        SimpleFeature feature = sfb.buildFeature(null);
-        tsfc.add(feature);
-    }
-
-    public static TreeSetFeatureCollection getLineGridFeatureCollection(
-            SimpleFeatureType sft,
-            long nrows,
-            long ncols,
-            double xllcorner,
-            double yllcorner,
-            double cellsize) {
-        TreeSetFeatureCollection result;
-        GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(sft);
-        result = getLineGridFeatureCollection(
-                sft,
-                nrows,
-                ncols,
-                xllcorner,
-                yllcorner,
-                cellsize,
-                gf,
-                sfb);
-        return result;
-    }
-
-    public static TreeSetFeatureCollection getLineGridFeatureCollection(
-            SimpleFeatureType sft,
-            long nrows,
-            long ncols,
-            double xllcorner,
-            double yllcorner,
-            double cellsize,
-            GeometryFactory gf,
-            SimpleFeatureBuilder sfb) {
-        TreeSetFeatureCollection result;
-        result = new TreeSetFeatureCollection();
-        // add row lines
-        for (long row = 0; row <= nrows; row++) {
-            double y;
-            y = yllcorner + (row * cellsize);
-            double x;
-            x = xllcorner + (ncols * cellsize);
-            DW_Point p1;
-            DW_Point p2;
-            p1 = new DW_Point((int) xllcorner, (int) y);
-            p2 = new DW_Point((int) x, (int) y);
-            addLineFeature(p1, p2, gf, sfb, "", result);
-        }
-        // add col lines
-        for (long col = 0; col <= ncols; col++) {
-            double x;
-            x = xllcorner + (col * cellsize);
-            DW_Point p1;
-            DW_Point p2;
-            double y;
-            y = yllcorner + (nrows * cellsize);
-            p1 = new DW_Point((int) x, (int) yllcorner);
-            p2 = new DW_Point((int) x, (int) y);
-            addLineFeature(p1, p2, gf, sfb, "", result);
-        }
-        return result;
-    }
-
-    public static TreeSetFeatureCollection getPolyGridFeatureCollection(
-            SimpleFeatureType sft,
-            long nrows,
-            long ncols,
-            double xllcorner,
-            double yllcorner,
-            double cellsize) {
-        TreeSetFeatureCollection result;
-        GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(sft);
-        result = getPolyGridFeatureCollection(
-                sft,
-                nrows,
-                ncols,
-                xllcorner,
-                yllcorner,
-                cellsize,
-                gf,
-                sfb);
-        return result;
-    }
-
-    public static TreeSetFeatureCollection getPolyGridFeatureCollection(
-            SimpleFeatureType sft,
-            long nrows,
-            long ncols,
-            double xllcorner,
-            double yllcorner,
-            double cellsize,
-            GeometryFactory gf,
-            SimpleFeatureBuilder sfb) {
-        TreeSetFeatureCollection result;
-        result = new TreeSetFeatureCollection();
-        CoordinateSequenceFactory csf;
-        csf = CoordinateArraySequenceFactory.instance();
-        // add row lines
-        for (long row = 0; row < nrows; row++) {
-            for (long col = 0; col < ncols; col++) {
-                double y1;
-                double y2;
-                double x1;
-                double x2;
-                y1 = yllcorner + (row * cellsize);
-                y2 = y1 + cellsize;
-                x1 = xllcorner + (col * cellsize);
-                x2 = x1 + cellsize;
-                DW_Point p1;
-                DW_Point p2;
-                DW_Point p3;
-                DW_Point p4;
-                p1 = new DW_Point((int) x1, (int) y1);
-                p2 = new DW_Point((int) x2, (int) y1);
-                p3 = new DW_Point((int) x2, (int) y2);
-                p4 = new DW_Point((int) x1, (int) y2);
-                addQuadFeature(p1, p2, p3, p4, gf, sfb, "", result, csf);
-            }
         }
         return result;
     }
@@ -1350,67 +890,17 @@ public abstract class DW_Maps {
             SimpleFeatureBuilder sfb) {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
-        TreeMap<String, DW_Point> tAdviceLeedsNamesAndPoints;
+        TreeMap<String, AGDT_Point> tAdviceLeedsNamesAndPoints;
         tAdviceLeedsNamesAndPoints = DW_Processor.getAdviceLeedsNamesAndPoints();
-        TreeMap<String, DW_Point> map = tAdviceLeedsNamesAndPoints;
+        TreeMap<String, AGDT_Point> map = tAdviceLeedsNamesAndPoints;
         Iterator<String> ite = map.keySet().iterator();
         while (ite.hasNext()) {
             String outlet = ite.next();
             if (outlet.equalsIgnoreCase(outletTarget)) {
-                DW_Point p = map.get(outlet);
+                AGDT_Point p = map.get(outlet);
                 String name = outlet;
                 addPointFeature(p, gf, sfb, name, result);
             }
-        }
-        return result;
-    }
-
-    /**
-     * @param dir The directory in which the shapefile is stored.
-     * @param shapefileFilename The shapefile filename.
-     * @param fc The feature collection to be turned into a shapefile.
-     * @param sft
-     * @return shapefile File
-     */
-    public static File createShapefileIfItDoesNotExist(
-            File dir,
-            String shapefileFilename,
-            TreeSetFeatureCollection fc,
-            SimpleFeatureType sft) {
-        File result;
-        ShapefileDataStoreFactory sdsf;
-        sdsf = new ShapefileDataStoreFactory();
-        result = createShapefileIfItDoesNotExist(
-                dir,
-                shapefileFilename,
-                fc,
-                sft,
-                sdsf);
-        return result;
-    }
-
-    /**
-     * @param dir The directory in which the shapefile is stored.
-     * @param shapefileFilename The shapefile filename.
-     * @param fc The feature collection to be turned into a shapefile.
-     * @param sft
-     * @param sdsf
-     * @return shapefile File
-     */
-    public static File createShapefileIfItDoesNotExist(
-            File dir,
-            String shapefileFilename,
-            TreeSetFeatureCollection fc,
-            SimpleFeatureType sft,
-            ShapefileDataStoreFactory sdsf) {
-        File result;
-        result = DW_GeoTools.getShapefile(dir, shapefileFilename);
-        if (!result.exists()) {
-            DW_Shapefile.transact(
-                    result,
-                    sft,
-                    fc,
-                    sdsf);
         }
         return result;
     }
@@ -1423,60 +913,6 @@ public abstract class DW_Maps {
         sft = getPointSimpleFeatureType(getDefaultSRID());
         TreeSetFeatureCollection fc;
         fc = getAdviceLeedsPointFeatureCollection(sft);
-        result = createShapefileIfItDoesNotExist(
-                dir,
-                shapefileFilename,
-                fc,
-                sft);
-        return result;
-    }
-
-    public static File createLineGridShapefileIfItDoesNotExist(
-            File dir,
-            String shapefileFilename, // Better to internally generate this from other parameters?
-            long nrows,
-            long ncols,
-            double xllcorner,
-            double yllcorner,
-            double cellsize) {
-        File result;
-        SimpleFeatureType sft;
-        sft = getLineSimpleFeatureType(getDefaultSRID());
-        TreeSetFeatureCollection fc;
-        fc = DW_Maps.getLineGridFeatureCollection(
-                sft,
-                nrows,
-                ncols,
-                xllcorner,
-                yllcorner,
-                cellsize);
-        result = createShapefileIfItDoesNotExist(
-                dir,
-                shapefileFilename,
-                fc,
-                sft);
-        return result;
-    }
-
-    public static File createPolyGridShapefileIfItDoesNotExist(
-            File dir,
-            String shapefileFilename, // Better to internally generate this from other parameters?
-            long nrows,
-            long ncols,
-            double xllcorner,
-            double yllcorner,
-            double cellsize) {
-        File result;
-        SimpleFeatureType sft;
-        sft = getPolygonSimpleFeatureType(getDefaultSRID());
-        TreeSetFeatureCollection fc;
-        fc = getPolyGridFeatureCollection(
-                sft,
-                nrows,
-                ncols,
-                xllcorner,
-                yllcorner,
-                cellsize);
         result = createShapefileIfItDoesNotExist(
                 dir,
                 shapefileFilename,
@@ -1530,9 +966,9 @@ public abstract class DW_Maps {
     /**
      * @return
      */
-    public static ArrayList<DW_Shapefile> getAdviceLeedsPointDW_Shapefiles() {
-        ArrayList<DW_Shapefile> result;
-        result = new ArrayList<DW_Shapefile>();
+    public static ArrayList<AGDT_Shapefile> getAdviceLeedsPointDW_Shapefiles() {
+        ArrayList<AGDT_Shapefile> result;
+        result = new ArrayList<AGDT_Shapefile>();
         ArrayList<String> tAdviceLeedsServiceNames;
         tAdviceLeedsServiceNames = DW_Processor.getAdviceLeedsServiceNames();
         Iterator<String> ite;
@@ -1550,42 +986,9 @@ public abstract class DW_Maps {
                     tAdviceLeedsPointShapefileDir,
                     tAdviceLeedsPointShapefileFilename,
                     tAdviceLeedsPointName);
-            result.add(new DW_Shapefile(tAdviceLeedsPointShapefile));
+            result.add(new AGDT_Shapefile(tAdviceLeedsPointShapefile));
         }
         return result;
     }
 
-    /**
-     * @param f
-     * @return ArcGridReader
-     */
-    public static ArcGridReader getArcGridReader(File f) {
-        ArcGridReader result = null;
-        try {
-            result = new ArcGridReader(f);
-        } catch (DataSourceException ex) {
-            Logger.getLogger(DW_Maps.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("f.toString()" + f.toString());
-        }
-        return result;
-    }
-
-    /**
-     *
-     * @param agr
-     * @return
-     */
-    public static GridCoverage2D getGridCoverage2D(
-            ArcGridReader agr) {
-        GridCoverage2D result = null;
-        try {
-            if (agr != null) {
-                result = agr.read(null);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(DW_Maps.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-        return result;
-    }
 }
