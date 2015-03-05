@@ -18,6 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping;
 
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendItem;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -43,7 +44,7 @@ public class DW_StyleParameters {
     private String foregroundStyleTitle0;
     private Style foregroundStyle1;
     private String foregroundStyleTitle1;
-    private ArrayList<ArrayList<DW_LegendItem>> legendItems;
+    private ArrayList<ArrayList<AGDT_LegendItem>> legendItems;
 
     /**
      * @param index
@@ -265,9 +266,9 @@ public class DW_StyleParameters {
      * @param index
      * @return a specific list of legendItems
      */
-    public ArrayList<DW_LegendItem> getLegendItems(int index) {
-        ArrayList<DW_LegendItem> result;
-        ArrayList<ArrayList<DW_LegendItem>> legendItems0;
+    public ArrayList<AGDT_LegendItem> getLegendItems(int index) {
+        ArrayList<AGDT_LegendItem> result;
+        ArrayList<ArrayList<AGDT_LegendItem>> legendItems0;
         legendItems0 = getLegendItems();
         try {
             result = legendItems0.get(index);
@@ -275,8 +276,8 @@ public class DW_StyleParameters {
             result = null;
             int i = legendItems0.size();
             while (i <= index) {
-                ArrayList<DW_LegendItem> newLegendItem;
-                newLegendItem = new ArrayList<DW_LegendItem>();
+                ArrayList<AGDT_LegendItem> newLegendItem;
+                newLegendItem = new ArrayList<AGDT_LegendItem>();
                 legendItems0.add(i, result);
                 i++;
                 result = newLegendItem;
@@ -291,9 +292,9 @@ public class DW_StyleParameters {
      * @param index
      * @return 
      */
-    public ArrayList<DW_LegendItem> setLegendItems(
-            ArrayList<DW_LegendItem> legendItems, int index) {
-        ArrayList<DW_LegendItem> result;
+    public ArrayList<AGDT_LegendItem> setLegendItems(
+            ArrayList<AGDT_LegendItem> legendItems, int index) {
+        ArrayList<AGDT_LegendItem> result;
         result = getLegendItems(index); // This ensures that legendItems is initialised to the right length.
         getLegendItems().set(index, legendItems);
         return result;
@@ -302,9 +303,9 @@ public class DW_StyleParameters {
     /**
      * @return the legendItems
      */
-    public ArrayList<ArrayList<DW_LegendItem>> getLegendItems() {
+    public ArrayList<ArrayList<AGDT_LegendItem>> getLegendItems() {
         if (legendItems == null) {
-            legendItems = new ArrayList<ArrayList<DW_LegendItem>>();
+            legendItems = new ArrayList<ArrayList<AGDT_LegendItem>>();
         }
         return legendItems;
     }
@@ -312,7 +313,7 @@ public class DW_StyleParameters {
     /**
      * @param legendItems the legendItems to set
      */
-    public void setLegendItems(ArrayList<ArrayList<DW_LegendItem>> legendItems) {
+    public void setLegendItems(ArrayList<ArrayList<AGDT_LegendItem>> legendItems) {
         this.legendItems = legendItems;
     }
 

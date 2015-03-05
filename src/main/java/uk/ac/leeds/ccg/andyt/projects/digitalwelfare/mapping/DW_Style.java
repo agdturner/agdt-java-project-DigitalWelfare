@@ -18,6 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping;
 
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleGenerator;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendItem;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -445,11 +447,11 @@ public class DW_Style extends AGDT_Style {
                     colorsForLegend = colorsForRenderingFeatures;
                 }
                 // STEP 2b Sort Legend Items
-                ArrayList<DW_LegendItem> legendItems = new ArrayList<DW_LegendItem>();
+                ArrayList<AGDT_LegendItem> legendItems = new ArrayList<AGDT_LegendItem>();
                 if (addWhiteForZero) {
                     String newLabel = "0";
-                    DW_LegendItem li;
-                    li = new DW_LegendItem(
+                    AGDT_LegendItem li;
+                    li = new AGDT_LegendItem(
                             newLabel,
                             colorsForLegend[0]);
                     legendItems.add(li);
@@ -482,11 +484,11 @@ public class DW_Style extends AGDT_Style {
 
                     //legendItemName = "title " + title + ", min " + min + ", max " + max;
                     //System.out.println(legendItemName);
-                    DW_LegendItem li;
+                    AGDT_LegendItem li;
                     if (addWhiteForZero) {
-                        li = new DW_LegendItem(newLabel, colorsForLegend[i + 1]);
+                        li = new AGDT_LegendItem(newLabel, colorsForLegend[i + 1]);
                     } else {
-                        li = new DW_LegendItem(newLabel, colorsForLegend[i]);
+                        li = new AGDT_LegendItem(newLabel, colorsForLegend[i]);
                     }
                     legendItems.add(li);
                 }
@@ -525,7 +527,7 @@ public class DW_Style extends AGDT_Style {
         style = styleFactory.createStyle();
         if (groups != null) {
             FeatureTypeStyle featureTypeStyle;
-            featureTypeStyle = DW_StyleGenerator.createFeatureTypeStyle(
+            featureTypeStyle = AGDT_StyleGenerator.createFeatureTypeStyle(
                     groups,
                     propertyName,
                     colorsForRenderingFeatures,
@@ -713,8 +715,8 @@ public class DW_Style extends AGDT_Style {
             String paletteName,
             boolean addWhiteForZero) {
         Object[] result = new Object[2];
-        ArrayList<DW_LegendItem> legendItems;
-        legendItems = new ArrayList<DW_LegendItem>();
+        ArrayList<AGDT_LegendItem> legendItems;
+        legendItems = new ArrayList<AGDT_LegendItem>();
         String[] classNames;
         double[] breaks;
         Generic_double d = new Generic_double();
@@ -813,8 +815,8 @@ public class DW_Style extends AGDT_Style {
         style = sb.createStyle(sb.createRasterSymbolizer(cm, 1));
         result[0] = style;
         for (int i = 0; i < nClasses; i++) {
-            DW_LegendItem li;
-            li = new DW_LegendItem(classNames[i], colors[i]);
+            AGDT_LegendItem li;
+            li = new AGDT_LegendItem(classNames[i], colors[i]);
             legendItems.add(li);
         }
         result[1] = legendItems;
@@ -841,8 +843,8 @@ public class DW_Style extends AGDT_Style {
             String paletteName,
             boolean addWhiteForZero) {
         Object[] result = new Object[2];
-        ArrayList<DW_LegendItem> legendItems;
-        legendItems = new ArrayList<DW_LegendItem>();
+        ArrayList<AGDT_LegendItem> legendItems;
+        legendItems = new ArrayList<AGDT_LegendItem>();
         String[] classNames;
         double[] breaks;
         Generic_double d = new Generic_double();
@@ -979,8 +981,8 @@ public class DW_Style extends AGDT_Style {
         style = sb.createStyle(sb.createRasterSymbolizer(cm, 1));
         result[0] = style;
         for (int i = 0; i < nClasses; i++) {
-            DW_LegendItem li;
-            li = new DW_LegendItem(classNames[i], colors[i]);
+            AGDT_LegendItem li;
+            li = new AGDT_LegendItem(classNames[i], colors[i]);
             legendItems.add(li);
         }
         result[1] = legendItems;

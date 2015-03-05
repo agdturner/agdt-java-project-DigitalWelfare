@@ -18,6 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping;
 
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendItem;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -50,7 +51,7 @@ public class DW_LegendLayer extends DirectLayer {
 
     private DW_StyleParameters styleParameters;
 
-    private List<DW_LegendItem> legendItems;
+    private List<AGDT_LegendItem> legendItems;
     private MapContent mc;
     ReferencedEnvelope bounds;
 
@@ -104,7 +105,7 @@ public class DW_LegendLayer extends DirectLayer {
             DW_StyleParameters styleParameters,
             String mapTitle,
             String legendTitle,
-            List<DW_LegendItem> legendItems,
+            List<AGDT_LegendItem> legendItems,
             MapContent mc,
             int imageWidth,
             int imageHeight,
@@ -147,7 +148,7 @@ public class DW_LegendLayer extends DirectLayer {
     public final void init(
             String mapTitle,
             String legendTitle,
-            List<DW_LegendItem> legendItems,
+            List<AGDT_LegendItem> legendItems,
             MapContent mc,
             int imageWidth,
             int imageHeight,
@@ -266,7 +267,7 @@ public class DW_LegendLayer extends DirectLayer {
         int maxWidth = 0;
         int maxHeight = 0;
         for (int i = 0; i < legendItems.size(); i++) {
-            DW_LegendItem li = legendItems.get(i);
+            AGDT_LegendItem li = legendItems.get(i);
             Rectangle2D b;
             b = legendItemFont.getStringBounds(
                     li.getLabel(),

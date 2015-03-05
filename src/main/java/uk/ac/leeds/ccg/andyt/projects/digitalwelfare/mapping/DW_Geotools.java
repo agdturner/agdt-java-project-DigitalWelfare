@@ -53,13 +53,13 @@ import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_LegendItem;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendItem;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_LegendLayer;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
-//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_LegendItem;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.AGDT_LegendItem;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_LegendLayer;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
@@ -177,7 +177,7 @@ public class DW_Geotools extends AGDT_Geotools {
         // Unbox styleParameters
         Style style;
         style = styleParameters.getStyle(index);
-        ArrayList<DW_LegendItem> legendItems = null;
+        ArrayList<AGDT_LegendItem> legendItems = null;
 
         if (styleParameters.isDrawBoundaries()) {
             FeatureLayer backgroundFeatureLayer;
@@ -203,7 +203,7 @@ public class DW_Geotools extends AGDT_Geotools {
                     styleParameters.isAddWhiteForZero());
             style = (Style) styleAndLegendItems[0];
             styleParameters.setStyle(style, index);
-            legendItems = (ArrayList<DW_LegendItem>) styleAndLegendItems[1];
+            legendItems = (ArrayList<AGDT_LegendItem>) styleAndLegendItems[1];
             styleParameters.setLegendItems(legendItems, index);
         } else {
             if (scaleToFirst) {
@@ -418,7 +418,7 @@ public class DW_Geotools extends AGDT_Geotools {
         // Unbox styleParameters
         Style style;
         style = styleParameters.getStyle(styleIndex);
-        ArrayList<DW_LegendItem> legendItems;
+        ArrayList<AGDT_LegendItem> legendItems;
         legendItems = styleParameters.getLegendItems(styleIndex);
 
         if (styleParameters.isDrawBoundaries()) {
@@ -443,7 +443,7 @@ public class DW_Geotools extends AGDT_Geotools {
                     styleParameters);
             style = (Style) styleAndLegendItems[0];
             styleParameters.setStyle(style, styleIndex);
-            legendItems = (ArrayList<DW_LegendItem>) styleAndLegendItems[1];
+            legendItems = (ArrayList<AGDT_LegendItem>) styleAndLegendItems[1];
             styleParameters.setLegendItems(legendItems, styleIndex);
         }
         // Add the features and the associated Style object to mc as a new 
