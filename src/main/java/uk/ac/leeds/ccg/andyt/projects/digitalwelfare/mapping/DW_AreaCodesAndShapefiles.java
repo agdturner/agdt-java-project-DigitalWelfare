@@ -39,7 +39,7 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Census;
+import uk.ac.leeds.ccg.andyt.agdtcensus.AGDT_Census;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps.getCensusBoundaryShapefile;
 
@@ -122,6 +122,9 @@ public class DW_AreaCodesAndShapefiles {
                 tLeedsAndNearNeighbouringLADsString,
                 tLeedsAndNearNeighbouringLADCodes,
                 sdsf);
+        File censusDataDirectory = new File(
+                DW_Files.getInputCensus2011AttributeDataDir(level),
+                tLeedsString);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
                 || level.equalsIgnoreCase("MSOA")) {
@@ -130,17 +133,20 @@ public class DW_AreaCodesAndShapefiles {
             _LevelDW_Shapefile = new DW_Shapefile(levelShapefile);
 
             // Read area level Census Codes
-            _LeedsAreaCodes = DW_Census.getCensusCodes(
+            _LeedsAreaCodes = AGDT_Census.getCensusCodes(
                     tLeedsString,
-                    level);
+                    level,
+                    censusDataDirectory);
             // Read Leeds and neighbouring District LADs Census Codes for level
-            _LeedsAndNeighbouringLADAreaCodes = DW_Census.getCensusCodes(
+            _LeedsAndNeighbouringLADAreaCodes = AGDT_Census.getCensusCodes(
                     tLeedsAndNeighbouringLADsString,
-                    level);
+                    level,
+                    censusDataDirectory);
             // Read Leeds and neighbouring District LADs and Craven And York Census Codes
-            _LeedsAndNearNeighbouringLADAreaCodes = DW_Census.getCensusCodes(
+            _LeedsAndNearNeighbouringLADAreaCodes = AGDT_Census.getCensusCodes(
                     tLeedsAndNearNeighbouringLADsString,
-                    level);
+                    level,
+                    censusDataDirectory);
 
             FeatureCollection levelFC;
             SimpleFeatureType levelSFT;
@@ -199,12 +205,16 @@ public class DW_AreaCodesAndShapefiles {
             DW_Shapefile tLeedsLADDW_Shapefile,
             DW_Shapefile tLevelDW_Shapefile) {
         TreeSet<String> result;
+        File censusDataDirectory = new File(
+                DW_Files.getInputCensus2011AttributeDataDir(level),
+                area);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
                 || level.equalsIgnoreCase("MSOA")) {
-            result = DW_Census.getCensusCodes(
+            result = AGDT_Census.getCensusCodes(
                     area,
-                    level);
+                    level,
+                    censusDataDirectory);
         } else {
             File tPostcodeShapefile;
             tPostcodeShapefile = getPostcodeShapefile(

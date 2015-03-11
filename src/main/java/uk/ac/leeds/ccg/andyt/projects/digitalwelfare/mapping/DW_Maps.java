@@ -22,6 +22,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping;
 //import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.AGDT_Geotools;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 import com.vividsolutions.jts.geom.Coordinate;
@@ -70,8 +71,8 @@ import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Maps;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
+import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
+import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeGeocoder;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
@@ -89,7 +90,7 @@ public abstract class DW_Maps extends AGDT_Maps {
      */
     protected String level;
     protected ArrayList<String> levels;
-    protected DW_StyleParameters styleParameters;
+    protected AGDT_StyleParameters styleParameters;
     
     public DW_Maps() {
     }

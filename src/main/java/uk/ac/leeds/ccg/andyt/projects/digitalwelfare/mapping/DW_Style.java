@@ -18,6 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping;
 
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleGenerator;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendItem;
 import com.vividsolutions.jts.geom.LineString;
@@ -402,7 +403,7 @@ public class DW_Style extends AGDT_Style {
     public static Object[] createPolygonStyle(
             FeatureCollection featureCollection,
             String attributeName,
-            DW_StyleParameters styleParameters) {
+            AGDT_StyleParameters styleParameters) {
         Object[] result = new Object[2];
 
         // Unpack styleParamters

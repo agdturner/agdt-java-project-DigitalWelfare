@@ -29,10 +29,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_LC
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientEnquiryID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Age_EcoAct_LSOA_DataRecord;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Age_EcoAct_LSOA_DataRecord_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
+import uk.ac.leeds.ccg.andyt.agdtcensus.Age_EcoAct_LSOA_DataRecord;
+import uk.ac.leeds.ccg.andyt.agdtcensus.Age_EcoAct_LSOA_DataRecord_Handler;
+import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
+import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeGeocoder;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
@@ -414,10 +415,19 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
 
         Age_EcoAct_LSOA_DataRecord_Handler aAge_EcoAct_LSOA_DataHandler;
         aAge_EcoAct_LSOA_DataHandler = new Age_EcoAct_LSOA_DataRecord_Handler();
+        
         String censusFilename = "Data_AGE_ECOACT_UNIT.csv";
+                File attributeDir = new File(
+                DW_Files.getInputCensus2011Dir("LSOA"),
+                "AttributeData/Leeds");
+        File censusDir = new File(
+            attributeDir,
+                filename.substring(5,filename.length() - 4));
+
         TreeMap<String, Age_EcoAct_LSOA_DataRecord> censusData;
         censusData = aAge_EcoAct_LSOA_DataHandler.loadInputData(
-                censusFilename);
+                censusFilename,
+                censusDir);
 
         System.out.println("There are " + censusData.size() + " LSOAs in Leeds in 2011");
         System.out.println("LSOACode,"
@@ -2106,7 +2116,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
             TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
             TreeMap<Integer, Integer> deprivationClasses) {
         Object[] deprivationClassCountOfCABClientsETC;
-        deprivationClassCountOfCABClientsETC = Deprivation_DataHandler.getDeprivationClassCountOfCABClients(
+        deprivationClassCountOfCABClientsETC = DW_Deprivation_DataHandler.getDeprivationClassCountOfCABClients(
                 type,
                 tCABData,
                 tDeprivationData,

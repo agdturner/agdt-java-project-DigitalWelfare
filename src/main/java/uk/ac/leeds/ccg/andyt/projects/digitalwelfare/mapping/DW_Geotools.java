@@ -54,19 +54,18 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendItem;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_LegendLayer;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendLayer;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.AGDT_LegendItem;
-//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_LegendLayer;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.AGDT_LegendLayer;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
-//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.AGDT_StyleParameters;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps.getOutputImageFile;
-
 /**
  * A class for holding various useful methods for doing things with AGDT_Geotools
  Objects.
@@ -93,7 +92,7 @@ public class DW_Geotools extends AGDT_Geotools {
      */
     public static void outputToImageUsingGeoToolsAndSetCommonStyle(
             double normalisation,
-            DW_StyleParameters styleParameters,
+            AGDT_StyleParameters styleParameters,
             int index,
             String outname,
             AbstractGrid2DSquareCell g,
@@ -169,7 +168,7 @@ public class DW_Geotools extends AGDT_Geotools {
             AGDT_Shapefile foregroundDW_Shapefile1,
             AGDT_Shapefile backgroundDW_Shapefile,
             int imageWidth,
-            DW_StyleParameters styleParameters,
+            AGDT_StyleParameters styleParameters,
             int index,
             boolean scaleToFirst) {
         MapContent result;
@@ -235,7 +234,7 @@ public class DW_Geotools extends AGDT_Geotools {
         // ------------
         if (legendItems != null) {
             boolean addLegendToTheSide = true;
-            DW_LegendLayer ll = new DW_LegendLayer(
+            AGDT_LegendLayer ll = new AGDT_LegendLayer(
                     styleParameters,
                     "Map title.................................",
                     "Legend",
@@ -254,7 +253,7 @@ public class DW_Geotools extends AGDT_Geotools {
     // ---------------
     private static void addForeground0(
             MapContent result,
-            DW_StyleParameters styleParameters,
+            AGDT_StyleParameters styleParameters,
             ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0) {
         if (foregroundDW_Shapefile0 != null) {
             Iterator<AGDT_Shapefile> ite;
@@ -300,7 +299,7 @@ public class DW_Geotools extends AGDT_Geotools {
             File outputDir,
             String png_String,
             int imageWidth,
-            DW_StyleParameters styleParameters,
+            AGDT_StyleParameters styleParameters,
             int styleIndex,
             boolean showMapsInJMapPane) {
         //Style resultStyle;
@@ -404,6 +403,7 @@ public class DW_Geotools extends AGDT_Geotools {
      */
     protected static MapContent createMapContent(
             //File file,
+            //File file,
             DW_Shapefile outputDW_Shapefile,
             String title,
             String attributeName,
@@ -411,7 +411,7 @@ public class DW_Geotools extends AGDT_Geotools {
             AGDT_Shapefile foregroundDW_Shapefile1,
             AGDT_Shapefile backgroundDW_Shapefile,
             int imageWidth,
-            DW_StyleParameters styleParameters,
+            AGDT_StyleParameters styleParameters,
             int styleIndex) {
         MapContent result;
         result = new MapContent();
@@ -470,7 +470,7 @@ public class DW_Geotools extends AGDT_Geotools {
         // ------------
         if (legendItems != null) {
             boolean addLegendToTheSide = true;
-            DW_LegendLayer ll = new DW_LegendLayer(
+            AGDT_LegendLayer ll = new AGDT_LegendLayer(
                     styleParameters,
                     "Map title.................................",
                     "Legend",
@@ -628,7 +628,7 @@ public class DW_Geotools extends AGDT_Geotools {
     private static Object[] getStyleAndLegendItems(
             FeatureSource fs,
             String attributeName,
-            DW_StyleParameters styleParameters) {
+            AGDT_StyleParameters styleParameters) {
         SimpleFeatureType schema = (SimpleFeatureType) fs.getSchema();
         Class geomType = schema.getGeometryDescriptor().getType().getBinding();
 

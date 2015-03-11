@@ -5,8 +5,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataRecord;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
+import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
+import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

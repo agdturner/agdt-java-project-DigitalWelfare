@@ -27,7 +27,7 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.Deprivation_DataHandler;
+import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 
 /**
  * For handling data from CASE.

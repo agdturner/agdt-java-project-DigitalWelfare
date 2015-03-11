@@ -18,150 +18,20 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.StreamTokenizer;
 import java.util.Iterator;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
+import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB1_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletEnquiryID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 
 /**
  *
  * @author geoagdt
  */
-public class Deprivation_DataHandler {
-
-    // most deprived areas are those with highest IMDSCore and lowest IMDRank
-    public static Integer getDeprivationClass(
-            TreeMap<Integer, Integer> deprivationClasses, 
-            Deprivation_DataRecord aDeprivation_DataRecord) {
-        String rankOfIMDScoreForEngland = aDeprivation_DataRecord.getRankOfIMDScoreForEngland();
-        Integer rankOfIMDScoreForEnglandInteger;
-        int thisRank = 0;
-        if (rankOfIMDScoreForEngland != null) {
-            rankOfIMDScoreForEnglandInteger = Integer.valueOf(rankOfIMDScoreForEngland);
-            thisRank = rankOfIMDScoreForEnglandInteger;
-        } else {
-            int debug = 1;
-        }
-        Integer deprivationClass = null;
-        Integer key = deprivationClasses.higherKey(thisRank);
-        if (key == null) {
-            deprivationClass = 3;
-        } else {
-            deprivationClass = deprivationClasses.get(key);
-        }
-        return deprivationClass;
-    }
-
-    public static TreeMap<Integer, Integer> getDeprivationClasses(
-            TreeMap<String, Deprivation_DataRecord> tDeprivationData) {
-        TreeMap<Integer, Integer> result;
-        int count = tDeprivationData.size();
-        double percentageClassWidth = count / (double) 100;
-        result = new TreeMap<Integer, Integer>();
-        result.put(new Double(3.0 * percentageClassWidth).intValue(), 3);
-        result.put(new Double(5.0 * percentageClassWidth).intValue(), 5);
-        result.put(new Double(10.0 * percentageClassWidth).intValue(), 10);
-        result.put(new Double(15.0 * percentageClassWidth).intValue(), 15);
-        result.put(new Double(20.0 * percentageClassWidth).intValue(), 20);
-        result.put(new Double(25.0 * percentageClassWidth).intValue(), 25);
-        result.put(new Double(30.0 * percentageClassWidth).intValue(), 30);
-        result.put(new Double(35.0 * percentageClassWidth).intValue(), 35);
-        result.put(new Double(40.0 * percentageClassWidth).intValue(), 40);
-        result.put(new Double(45.0 * percentageClassWidth).intValue(), 45);
-        result.put(new Double(50.0 * percentageClassWidth).intValue(), 50);
-        result.put(Integer.MAX_VALUE, 100);
-        return result;
-    }
-
-    public Deprivation_DataHandler() {
-    }
-
-    /**
-     * Loads LeedsCAB data from a file in directory, filename reporting progress
-     * of loading to PrintWriter pw.
-     *
-     * @param directory
-     * @param filename
-     * @return TreeMap<String,LeedsCAB_DataRecord> representing records
-     */
-    public TreeMap<String, Deprivation_DataRecord> loadInputData(
-            File directory,
-            String filename) {
-        TreeMap<String, Deprivation_DataRecord> result;
-        result = new TreeMap<String, Deprivation_DataRecord>();
-        File inputFile = new File(
-                directory,
-                filename);
-        BufferedReader br;
-        br = Generic_StaticIO.getBufferedReader(inputFile);
-        StreamTokenizer st;
-        st = new StreamTokenizer(br);
-        Generic_StaticIO.setStreamTokenizerSyntax5(st);
-        st.wordChars('`', '`');
-        st.wordChars('\'', '\'');
-        st.wordChars('*', '*');
-        st.wordChars('\\', '\\');
-        st.wordChars('/', '/');
-        st.wordChars('&', '&');
-        String line = "";
-        long RecordID = 0;
-        try {
-            // Skip the header
-            int headerLines = 1;
-            for (int i = 0; i < headerLines; i++) {
-                Generic_StaticIO.skipline(st);
-            }
-            // Read data
-            int tokenType;
-            tokenType = st.nextToken();
-            while (tokenType != StreamTokenizer.TT_EOF) {
-
-                // For debugging
-                if (RecordID == 10) {
-                    int debug = 1;
-                }
-
-                switch (tokenType) {
-                    case StreamTokenizer.TT_EOL:
-                        //System.out.println(line);
-                        break;
-                    case StreamTokenizer.TT_WORD:
-                        line = st.sval;
-                        try {
-                            Deprivation_DataRecord record = new Deprivation_DataRecord(RecordID, line, this);
-                            String LSOACode = record.getLSOACode();
-                            if (result.containsKey(LSOACode)) {
-                                System.out.println("Additional record for LSOACode " + LSOACode);
-                            } else {
-                                result.put(LSOACode, record);
-                            }
-                        } catch (Exception e) {
-                            System.err.println(line);
-                            System.err.println("RecordID " + RecordID);
-                            System.err.println(e.getLocalizedMessage());
-                        }
-                        RecordID++;
-                        break;
-                }
-                tokenType = st.nextToken();
-            }
-            br.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Deprivation_DataHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return result;
-    }
+public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
 
     /**
      *

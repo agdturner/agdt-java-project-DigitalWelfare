@@ -55,7 +55,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_AreaCodesAndShap
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_StyleParameters;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 
 /**
  *
@@ -156,7 +156,7 @@ public class DW_SpiderMaps extends DW_Maps {
     }
 
     private void initStyleParameters() {
-        styleParameters = new DW_StyleParameters();
+        styleParameters = new AGDT_StyleParameters();
 //        styleParameters.setnClasses(9);
 //        styleParameters.setPaletteName("Reds");
 //        styleParameters.setAddWhiteForZero(true);
