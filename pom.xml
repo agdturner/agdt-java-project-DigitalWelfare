@@ -23,10 +23,11 @@
         <geotools.version>12-SNAPSHOT</geotools.version>
         <geotools.version>12.0.1</geotools.version>
         <geotools.version>12.1</geotools.version>
-        <geotools.version>13-SNAPSHOT</geotools.version>
         -->
         <jts.version>1.12</jts.version>
         <geotools.version>13-SNAPSHOT</geotools.version>
+        <agdtgeotools.version>0.1.0-SNAPSHOT</agdtgeotools.version>
+        <agdtcensus.version>0.1.0-SNAPSHOT</agdtcensus.version>
         <generic.version>1.0-SNAPSHOT</generic.version>
         <grids.version>1.0-SNAPSHOT</grids.version>
         <web.version>1.0-SNAPSHOT</web.version>
@@ -97,6 +98,16 @@
             <version>${geotools.version}</version>
         </dependency>
         <dependency>
+            <groupId>uk.ac.leeds.ccg.andyt</groupId>
+            <artifactId>agdt-geotools</artifactId>
+            <version>${agdtgeotools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>uk.ac.leeds.ccg.andyt</groupId>
+            <artifactId>agdt-census</artifactId>
+            <version>${agdtcensus.version}</version>
+        </dependency>
+        <dependency>
             <!--
             <groupId>uk.ac.leeds.ccg.andyt.generic</groupId>
             -->
@@ -106,7 +117,7 @@
         </dependency>
         <dependency>
             <!--
-            <groupId>uk.ac.leeds.ccg.andyt.generic</groupId>
+            <groupId>uk.ac.leeds.ccg.andyt.grids</groupId>
             -->
             <groupId>uk.ac.leeds.ccg.andyt</groupId>
             <artifactId>grids</artifactId>
@@ -123,7 +134,7 @@
     
     <repositories>
         <repository>
-            <id>agdturner</id>
+            <id>generic</id>
             <name>GitHub agdturner generic Repository</name>
             <!--
             <url>https://github.com/agdturner/generic/agdturner-generic-3.0.0</url>
@@ -132,7 +143,16 @@
             https://github.com/agdturner/generic/tree/master/agdturner-generic-3.0.0/java
             -->
             <url>https://github.com/agdturner/generic</url>
-         
+        </repository>
+        <repository>
+            <id>agdt-geotools</id>
+            <name>GitHub agdturner agdt-geotools Repository</name>
+            <url>https://github.com/agdturner/agdt-geotools</url>
+        </repository>
+        <repository>
+            <id>agdt-census</id>
+            <name>GitHub agdturner agdt-census Repository</name>
+            <url>https://github.com/agdturner/agdt-census</url>
         </repository>
         <!--
         <repository>
