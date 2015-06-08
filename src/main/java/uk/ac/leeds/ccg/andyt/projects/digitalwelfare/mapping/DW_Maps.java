@@ -24,56 +24,37 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.AGDT_Geotools;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.gce.arcgrid.ArcGridReader;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.PropertyDescriptor;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Maps;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeGeocoder;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 
@@ -83,7 +64,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
  */
 public abstract class DW_Maps extends AGDT_Maps {
 
-    private static TreeMap<String, AGDT_Point>[] ONSPDlookups;
+    //private static TreeMap<String, AGDT_Point>[] ONSPDlookups;
+    private static TreeMap<String, TreeMap<String, AGDT_Point>> tONSPDlookups;
 
     /**
      * For storing level(s) (OA, LSOA, MSOA, PostcodeSector, PostcodeUnit, ...)
@@ -91,72 +73,56 @@ public abstract class DW_Maps extends AGDT_Maps {
     protected String level;
     protected ArrayList<String> levels;
     protected AGDT_StyleParameters styleParameters;
+
+    protected boolean doDebug;
     
     public DW_Maps() {
     }
 
-    public static TreeMap<String, AGDT_Point>[] getONSPDlookups() {
-        if (ONSPDlookups == null) {
+    //public static TreeMap<String, AGDT_Point>[] getONSPDlookups() {
+    public static TreeMap<String, TreeMap<String, AGDT_Point>> getONSPDlookups() {
+        if (tONSPDlookups == null) {
             initONSPDLookups();
         }
-        return ONSPDlookups;
+        return tONSPDlookups;
     }
 
     public static void initONSPDLookups() {
-        ONSPDlookups = new TreeMap[2];
+        tONSPDlookups = new TreeMap<String, TreeMap<String, AGDT_Point>>();
         File generatedONSPDDir = DW_Files.getGeneratedONSPDDir();
-        String tONSPDProcessedFilename;
-        String tONSPDProcessedFilename2;
-        //tONSPDProcessedFilename = "PostcodeLookUp_TreeMap_String_Point.thisFile";
-        tONSPDProcessedFilename = "PostcodeUnitLookUp_TreeMap_String_Point.thisFile";
-        tONSPDProcessedFilename2 = "PostcodeSectorLookUp_TreeMap_String_Point.thisFile";
-        File tONSPDProcessedFile = new File(
-                generatedONSPDDir,
-                tONSPDProcessedFilename);
-        File tONSPDProcessedFile2 = new File(
-                generatedONSPDDir,
-                tONSPDProcessedFilename2);
-        if (tONSPDProcessedFile.exists()) {
-            ONSPDlookups[0] = PostcodeGeocoder.getStringToDW_PointLookup(
-                    tONSPDProcessedFile);
-        } else {
-            File tONSPDNov2013Dir = new File(
-                    DW_Files.getInputONSPDDir(),
-                    "ONSPD_NOV_2013");
-            File tONSPDNov2013DataDir = new File(
-                    tONSPDNov2013Dir,
-                    "Data");
-            File tONSPDNov2013DataFile = new File(
-                    tONSPDNov2013DataDir,
-                    "ONSPD_NOV_2013_UK.csv");
-            PostcodeGeocoder pg = new PostcodeGeocoder(
-                    tONSPDNov2013DataFile,
-                    tONSPDProcessedFile);
-            boolean ignorePointsAtOrigin = true;
-            ONSPDlookups[0] = pg.getPostcodeUnitPointLookup(
-                    ignorePointsAtOrigin);
-        }
-        if (tONSPDProcessedFile2.exists()) {
-            ONSPDlookups[1] = PostcodeGeocoder.getStringToDW_PointLookup(
-                    tONSPDProcessedFile2);
-        } else {
-            File tONSPDNov2013Dir = new File(
-                    DW_Files.getInputONSPDDir(),
-                    "ONSPD_NOV_2013");
-            File tONSPDNov2013DataDir = new File(
-                    tONSPDNov2013Dir,
-                    "Data");
-            File tONSPDNov2013DataFile = new File(
-                    tONSPDNov2013DataDir,
-                    "ONSPD_NOV_2013_UK.csv");
-            PostcodeGeocoder pg = new PostcodeGeocoder(
-                    tONSPDNov2013DataFile,
-                    tONSPDProcessedFile);
-            boolean ignorePointsAtOrigin = true;
-            ONSPDlookups[1] = pg.getPostcodeSectorPointLookup(
-                    ignorePointsAtOrigin,
-                    tONSPDProcessedFilename2,
-                    ONSPDlookups[0]);
+        ArrayList<String> levels;
+        levels = new ArrayList<String>();
+        levels.add("Unit");
+        levels.add("Sector");
+        levels.add("Area");
+        Iterator<String> ite;
+        ite = levels.iterator();
+        while (ite.hasNext()) {
+            String level = ite.next();
+            File f = new File(
+                    generatedONSPDDir,
+                    "Postcode" + level + "LookUp_TreeMap_String_Point.thisFile");
+            TreeMap<String, AGDT_Point> lookup;
+            if (f.exists()) {
+                lookup = DW_Postcode_Handler.getStringToDW_PointLookup(f);
+            } else {
+                File tONSPDNov2013Dir = new File(
+                        DW_Files.getInputONSPDDir(),
+                        "ONSPD_NOV_2013");
+                File tONSPDNov2013DataDir = new File(
+                        tONSPDNov2013Dir,
+                        "Data");
+                File tONSPDNov2013DataFile = new File(
+                        tONSPDNov2013DataDir,
+                        "ONSPD_NOV_2013_UK.csv");
+                DW_Postcode_Handler pg = new DW_Postcode_Handler(
+                        tONSPDNov2013DataFile,
+                        f);
+                boolean ignorePointsAtOrigin = true;
+                lookup = pg.getPostcodeUnitPointLookup(
+                        ignorePointsAtOrigin);
+            }
+            tONSPDlookups.put(level, lookup);
         }
     }
 
@@ -402,6 +368,9 @@ public abstract class DW_Maps extends AGDT_Maps {
         File file = new File(
                 dir,
                 filename);
+        
+        System.out.println("Reading data from file " + file);
+        
         BufferedReader br = Generic_StaticIO.getBufferedReader(file);
         StreamTokenizer st = new StreamTokenizer(br);
         Generic_StaticIO.setStreamTokenizerSyntax1(st);
@@ -511,7 +480,7 @@ public abstract class DW_Maps extends AGDT_Maps {
      */
     protected static File getAreaBoundaryShapefile(
             String level) {
-        File result;
+        File result = null;
         String name;
         if (level.startsWith("Postcode")) {
             if (level.equalsIgnoreCase("PostcodeUnit")) {
@@ -520,11 +489,19 @@ public abstract class DW_Maps extends AGDT_Maps {
                 postcodeUnitPoly_DW_Shapefile = DW_Maps.getPostcodeUnitPoly_DW_Shapefile(
                         new ShapefileDataStoreFactory());
                 result = postcodeUnitPoly_DW_Shapefile.getFile();
-            } else {
+            }
+            if (level.equalsIgnoreCase("PostcodeSector")) {
                 // Get PostcodeSector Boundaries
                 DW_Shapefile postcodeSectorPoly_DW_Shapefile;
                 postcodeSectorPoly_DW_Shapefile = DW_Maps.getPostcodePoly_DW_Shapefile(
                         "Sector");
+                result = postcodeSectorPoly_DW_Shapefile.getFile();
+            }
+            if (level.equalsIgnoreCase("PostcodeDistrict")) {
+                // Get PostcodeSector Boundaries
+                DW_Shapefile postcodeSectorPoly_DW_Shapefile;
+                postcodeSectorPoly_DW_Shapefile = DW_Maps.getPostcodePoly_DW_Shapefile(
+                        "District");
                 result = postcodeSectorPoly_DW_Shapefile.getFile();
             }
         } else {
@@ -597,104 +574,104 @@ public abstract class DW_Maps extends AGDT_Maps {
         return result;
     }
 
-    /*
-     * Select and create a new shapefile.
-     *
-     * @param fc
-     * @param sft
-     * @param tLSOACodes
-     * @param tLSOAData
-     * @param attributeName
-     * @param outputFile
-     * @param max
-     * @param filter If filter == true then result is clipped to the LSOA
-     * boundary.
-     */
-    public void selectAndCreateNewShapefile(
-            ShapefileDataStoreFactory sdsf,
-            FeatureCollection fc,
-            SimpleFeatureType sft,
-            TreeSet<String> censusCodes,
-            TreeMap<String, Integer> levelData,
-            //String attributeName, 
-            String targetPropertyName,
-            File outputFile,
-            int filter,
-            TreeMap<Integer, Integer> deprivationClasses,
-            TreeMap<String, Deprivation_DataRecord> deprivationDataRecords,
-            Integer deprivationClass) {
-        //        summariseAttributes(sft);
-        // Initialise the collection of new Features
-        TreeSetFeatureCollection tsfc;
-        tsfc = new TreeSetFeatureCollection();
-        // Create SimpleFeatureBuilder
-        //FeatureFactory ff = FactoryFinder.getGeometryFactories();
-        SimpleFeatureBuilder sfb;
-        sfb = new SimpleFeatureBuilder(sft);
-        Set<String> keySet = levelData.keySet();
-        FeatureIterator featureIterator;
-        featureIterator = fc.features();
-        int id_int = 0;
-        while (featureIterator.hasNext()) {
-            Feature inputFeature = featureIterator.next();
-            Collection<Property> properties;
-            properties = inputFeature.getProperties();
-            Iterator<Property> itep = properties.iterator();
-            while (itep.hasNext()) {
-                Property p = itep.next();
-                //System.out.println("Property " + p.toString());
-                String propertyName = p.getName().toString();
-                //System.out.println("PropertyName " + propertyName);
-                if (propertyName.equalsIgnoreCase(targetPropertyName)) {
-                    //PropertyType propertyType = p.getType();
-                    //System.out.println("PropertyType " + propertyType);
-                    Object value = p.getValue();
-                    //System.out.println("PropertyValue " + value);
-                    String valueString = value.toString();
-                    Deprivation_DataRecord aDeprivation_DataRecord;
-                    aDeprivation_DataRecord = deprivationDataRecords.get(valueString);
-                    // aDeprivation_DataRecord might be null as deprivation data comes from 2001 census...
-                    if (aDeprivation_DataRecord != null) {
-                        Integer thisDeprivationClass;
-                        thisDeprivationClass = Deprivation_DataHandler.getDeprivationClass(
-                                deprivationClasses,
-                                aDeprivation_DataRecord);
-                        if (thisDeprivationClass == deprivationClass.intValue()) {
-                            if (filter < 3) {
-                                if (censusCodes.contains(valueString)) {
-                                    Integer clientCount = levelData.get(valueString);
-                                    //                            if (clientCount == null) {
-                                    //                                clientCount = 0;
-                                    //                            }
-                                    if (clientCount != null) {
-                                        String id = "" + id_int;
-                                        addFeatureAttributeAndAddToFeatureCollection(
-                                                (SimpleFeature) inputFeature, sfb, clientCount, tsfc, id);
-                                        id_int++;
-                                    }
-                                }
-                            } else {
-                                if (keySet.contains(valueString) || censusCodes.contains(valueString)) {
-                                    Integer clientCount = levelData.get(valueString);
-                                    //                            if (clientCount == null) {
-                                    //                                clientCount = 0;
-                                    //                            }
-                                    if (clientCount != null) {
-                                        String id = "" + id_int;
-                                        addFeatureAttributeAndAddToFeatureCollection(
-                                                (SimpleFeature) inputFeature, sfb, clientCount, tsfc, id);
-                                        id_int++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        featureIterator.close();
-        DW_Shapefile.transact(outputFile, sft, tsfc, sdsf);
-    }
+//    /*
+//     * Select and create a new shapefile.
+//     *
+//     * @param fc
+//     * @param sft
+//     * @param tLSOACodes
+//     * @param tLSOAData
+//     * @param attributeName
+//     * @param outputFile
+//     * @param max
+//     * @param filter If filter == true then result is clipped to the LSOA
+//     * boundary.
+//     */
+//    public void selectAndCreateNewShapefile(
+//            ShapefileDataStoreFactory sdsf,
+//            FeatureCollection fc,
+//            SimpleFeatureType sft,
+//            TreeSet<String> censusCodes,
+//            TreeMap<String, Integer> levelData,
+//            //String attributeName, 
+//            String targetPropertyName,
+//            File outputFile,
+//            int filter,
+//            TreeMap<Integer, Integer> deprivationClasses,
+//            TreeMap<String, Deprivation_DataRecord> deprivationDataRecords,
+//            Integer deprivationClass) {
+//        //        summariseAttributes(sft);
+//        // Initialise the collection of new Features
+//        TreeSetFeatureCollection tsfc;
+//        tsfc = new TreeSetFeatureCollection();
+//        // Create SimpleFeatureBuilder
+//        //FeatureFactory ff = FactoryFinder.getGeometryFactories();
+//        SimpleFeatureBuilder sfb;
+//        sfb = new SimpleFeatureBuilder(sft);
+//        Set<String> keySet = levelData.keySet();
+//        FeatureIterator featureIterator;
+//        featureIterator = fc.features();
+//        int id_int = 0;
+//        while (featureIterator.hasNext()) {
+//            Feature inputFeature = featureIterator.next();
+//            Collection<Property> properties;
+//            properties = inputFeature.getProperties();
+//            Iterator<Property> itep = properties.iterator();
+//            while (itep.hasNext()) {
+//                Property p = itep.next();
+//                //System.out.println("Property " + p.toString());
+//                String propertyName = p.getName().toString();
+//                //System.out.println("PropertyName " + propertyName);
+//                if (propertyName.equalsIgnoreCase(targetPropertyName)) {
+//                    //PropertyType propertyType = p.getType();
+//                    //System.out.println("PropertyType " + propertyType);
+//                    Object value = p.getValue();
+//                    //System.out.println("PropertyValue " + value);
+//                    String valueString = value.toString();
+//                    Deprivation_DataRecord aDeprivation_DataRecord;
+//                    aDeprivation_DataRecord = deprivationDataRecords.get(valueString);
+//                    // aDeprivation_DataRecord might be null as deprivation data comes from 2001 census...
+//                    if (aDeprivation_DataRecord != null) {
+//                        Integer thisDeprivationClass;
+//                        thisDeprivationClass = Deprivation_DataHandler.getDeprivationClass(
+//                                deprivationClasses,
+//                                aDeprivation_DataRecord);
+//                        if (thisDeprivationClass == deprivationClass.intValue()) {
+//                            if (filter < 3) {
+//                                if (censusCodes.contains(valueString)) {
+//                                    Integer clientCount = levelData.get(valueString);
+//                                    //                            if (clientCount == null) {
+//                                    //                                clientCount = 0;
+//                                    //                            }
+//                                    if (clientCount != null) {
+//                                        String id = "" + id_int;
+//                                        addFeatureAttributeAndAddToFeatureCollection(
+//                                                (SimpleFeature) inputFeature, sfb, clientCount, tsfc, id);
+//                                        id_int++;
+//                                    }
+//                                }
+//                            } else {
+//                                if (keySet.contains(valueString) || censusCodes.contains(valueString)) {
+//                                    Integer clientCount = levelData.get(valueString);
+//                                    //                            if (clientCount == null) {
+//                                    //                                clientCount = 0;
+//                                    //                            }
+//                                    if (clientCount != null) {
+//                                        String id = "" + id_int;
+//                                        addFeatureAttributeAndAddToFeatureCollection(
+//                                                (SimpleFeature) inputFeature, sfb, clientCount, tsfc, id);
+//                                        id_int++;
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        featureIterator.close();
+//        DW_Shapefile.transact(outputFile, sft, tsfc, sdsf);
+//    }
 
     /*
      * Select and create a new shapefile.
@@ -709,20 +686,43 @@ public abstract class DW_Maps extends AGDT_Maps {
      * @param filter If filter == true then result is clipped to the LSOA
      * boundary.
      */
-    public void selectAndCreateNewShapefile(
+    /**
+     *
+     * @param sdsf
+     * @param fc
+     * @param sft
+     * @param areaCodes For filtering.
+     * @param levelData Keys are areaCodes.
+     * @param attributeName Expected to be either "Count", "Density" or "Rate"
+     * @param targetPropertyName
+     * @param population Can be null. Keys are areaCodes.
+     * @param populationMultiplier For multiplying count by before dividing by
+     * population
+     * @param outputFile
+     * @param filter If filter &lt; 3 only those areas in areaCodes are mapped.
+     * Otherwise additional areas for areaCodes in levelData are also mapped.
+     * @param deprivationClasses
+     * @param deprivationDataRecords
+     * @param deprivationClass
+     * @return
+     */
+    public TreeMap<Integer, Integer> selectAndCreateNewShapefile(
             ShapefileDataStoreFactory sdsf,
             FeatureCollection fc,
             SimpleFeatureType sft,
-            TreeSet<String> censusCodes,
+            TreeSet<String> areaCodes,
             TreeMap<String, Integer> levelData,
-            //String attributeName, 
+            String attributeName,
             String targetPropertyName,
+            TreeMap<String, Integer> population,
+            double populationMultiplier,
             File outputFile,
             int filter,
             TreeMap<Integer, Integer> deprivationClasses,
             TreeMap<String, Deprivation_DataRecord> deprivationDataRecords,
             Integer deprivationClass,
-            boolean density) {
+            boolean countClientsInAndOutOfRegion) {
+        TreeMap<Integer, Integer> inAndOutOfRegionCount = null;
         //        summariseAttributes(sft);
         // Initialise the collection of new Features
         TreeSetFeatureCollection tsfc;
@@ -731,12 +731,18 @@ public abstract class DW_Maps extends AGDT_Maps {
         //FeatureFactory ff = FactoryFinder.getGeometryFactories();
         SimpleFeatureBuilder sfb;
         sfb = new SimpleFeatureBuilder(sft);
+        if (countClientsInAndOutOfRegion) {
+            inAndOutOfRegionCount = new TreeMap<Integer, Integer>();
+            inAndOutOfRegionCount.put(0, 0);
+            inAndOutOfRegionCount.put(1, 0);
+        }
         Set<String> keySet = levelData.keySet();
         FeatureIterator featureIterator;
         featureIterator = fc.features();
         int id_int = 0;
         while (featureIterator.hasNext()) {
             Feature inputFeature = featureIterator.next();
+            SimpleFeature sf;
             Collection<Property> properties;
             properties = inputFeature.getProperties();
             Iterator<Property> itep;
@@ -782,50 +788,227 @@ public abstract class DW_Maps extends AGDT_Maps {
                     Object value = p.getValue();
                     //System.out.println("PropertyValue " + value);
                     String valueString = value.toString();
-                    Deprivation_DataRecord aDeprivation_DataRecord;
-                    aDeprivation_DataRecord = deprivationDataRecords.get(valueString);
-                    // aDeprivation_DataRecord might be null as deprivation data comes from 2001 census...
-                    if (aDeprivation_DataRecord != null) {
-                        Integer thisDeprivationClass;
-                        thisDeprivationClass = Deprivation_DataHandler.getDeprivationClass(
-                                deprivationClasses,
-                                aDeprivation_DataRecord);
-                        if (thisDeprivationClass == deprivationClass.intValue()) {
-                            if (filter < 3) {
-                                if (censusCodes.contains(valueString)) {
-                                    Integer clientCount = levelData.get(valueString);
-                                    if (clientCount != null) {
-                                        double densityValue;
-                                        densityValue = (clientCount * 1000000) / area; // * 1000000 for 100 hectares
-                                        String id = "" + id_int;
-                                        addFeatureAttributeAndAddToFeatureCollection(
-                                                (SimpleFeature) inputFeature, sfb, densityValue, tsfc, id);
-                                        id_int++;
-                                    }
-                                }
-                            } else {
-                                if (keySet.contains(valueString) || censusCodes.contains(valueString)) {
-                                    Integer clientCount = levelData.get(valueString);
-                                    //                            if (clientCount == null) {
-                                    //                                clientCount = 0;
-                                    //                            }
-                                    if (clientCount != null) {
-                                        double densityValue;
-                                        densityValue = (clientCount * 1000000) / area; // * 1000000 for 100 hectares
-                                        String id = "" + id_int;
-                                        addFeatureAttributeAndAddToFeatureCollection(
-                                                (SimpleFeature) inputFeature, sfb, densityValue, tsfc, id);
-                                        id_int++;
-                                    }
-                                }
+                    if (deprivationDataRecords != null) {
+                        Deprivation_DataRecord aDeprivation_DataRecord;
+                        aDeprivation_DataRecord = deprivationDataRecords.get(valueString);
+                        // aDeprivation_DataRecord might be null as deprivation data comes from 2001 census...
+                        if (aDeprivation_DataRecord != null) {
+                            Integer thisDeprivationClass;
+                            thisDeprivationClass = Deprivation_DataHandler.getDeprivationClass(
+                                    deprivationClasses,
+                                    aDeprivation_DataRecord);
+                            if (thisDeprivationClass == deprivationClass.intValue()) {
+                                sf = (SimpleFeature) inputFeature;
+                                id_int = calculate0(
+                                        filter,
+                                        areaCodes,
+                                        levelData,
+                                        keySet,
+                                        attributeName,
+                                        sf,
+                                        sfb,
+                                        tsfc,
+                                        id_int,
+                                        area,
+                                        population,
+                                        valueString,
+                                        populationMultiplier,
+                                        countClientsInAndOutOfRegion,
+                                        inAndOutOfRegionCount);
                             }
+                        } else {
+                            int debug = 1;
                         }
+                    } else {
+                        sf = (SimpleFeature) inputFeature;
+                        id_int = calculate0(
+                                filter,
+                                areaCodes,
+                                levelData,
+                                keySet,
+                                attributeName,
+                                sf,
+                                sfb,
+                                tsfc,
+                                id_int,
+                                area,
+                                population,
+                                valueString,
+                                populationMultiplier,
+                                countClientsInAndOutOfRegion,
+                                inAndOutOfRegionCount);
                     }
                 }
             }
         }
         featureIterator.close();
         DW_Shapefile.transact(outputFile, sft, tsfc, sdsf);
+        return inAndOutOfRegionCount;
+    }
+
+    /**
+     *
+     * @param filter
+     * @param areaCodes
+     * @param levelData
+     * @param levelDataKeySet
+     * @param attributeName
+     * @param sf
+     * @param sfb
+     * @param tsfc
+     * @param id_int
+     * @param area
+     * @param population
+     * @param areaCode
+     * @param populationMultiplier
+     * @param countClientsInAndOutOfRegion
+     * @param inAndOutOfRegionCount
+     */
+    private int calculate0(
+            int filter,
+            TreeSet<String> areaCodes,
+            TreeMap<String, Integer> levelData,
+            Set<String> levelDataKeySet,
+            String attributeName,
+            SimpleFeature sf,
+            SimpleFeatureBuilder sfb,
+            TreeSetFeatureCollection tsfc,
+            int id_int,
+            double area,
+            TreeMap<String, Integer> population,
+            String areaCode,
+            double populationMultiplier,
+            boolean countClientsInAndOutOfRegion,
+            TreeMap<Integer, Integer> inAndOutOfRegionCount) {
+        Integer clientCount = levelData.get(areaCode);
+        if (clientCount == null) {
+            clientCount = 0;
+        }
+        
+//        if (areaCode.equalsIgnoreCase("LS7")) {
+//            if (doDebug) {
+//                int debug = 1;
+//            }
+//        }
+        
+        //if (clientCount != null) {
+        if (filter < 3) {
+            if (areaCodes.contains(areaCode)) {
+                id_int = calculate(
+                        clientCount,
+                        attributeName,
+                        sf,
+                        sfb,
+                        tsfc,
+                        id_int,
+                        area,
+                        population,
+                        areaCode,
+                        populationMultiplier,
+                        countClientsInAndOutOfRegion,
+                        inAndOutOfRegionCount);
+            } else {
+                if (countClientsInAndOutOfRegion) {
+                    Generic_Collections.addToTreeMapIntegerInteger(
+                            inAndOutOfRegionCount, 0, clientCount);
+                }
+            }
+        } else {
+            if (levelDataKeySet.contains(areaCode) || areaCodes.contains(areaCode)) {
+                id_int = calculate(
+                        clientCount,
+                        attributeName,
+                        sf,
+                        sfb,
+                        tsfc,
+                        id_int,
+                        area,
+                        population,
+                        areaCode,
+                        populationMultiplier,
+                        countClientsInAndOutOfRegion,
+                        inAndOutOfRegionCount);
+            } else {
+                if (countClientsInAndOutOfRegion) {
+                    Generic_Collections.addToTreeMapIntegerInteger(
+                            inAndOutOfRegionCount, 0, clientCount);
+                }
+            }
+        }
+        //}
+        return id_int;
+    }
+
+    /**
+     *
+     * @param clientCount
+     * @param attributeName
+     * @param inputFeature
+     * @param sfb
+     * @param tsfc
+     * @param id_int
+     * @param area
+     * @param population
+     * @param areaCode
+     * @param populationMultiplier
+     * @param countClientsInAndOutOfRegion
+     * @param inAndOutOfRegionCount
+     * @return
+     */
+    private int calculate(
+            Integer clientCount,
+            String attributeName,
+            SimpleFeature inputFeature,
+            SimpleFeatureBuilder sfb,
+            TreeSetFeatureCollection tsfc,
+            int id_int,
+            double area,
+            TreeMap<String, Integer> population,
+            String areaCode,
+            double populationMultiplier,
+            boolean countClientsInAndOutOfRegion,
+            TreeMap<Integer, Integer> inAndOutOfRegionCount) {
+        String id = "" + id_int;
+        if (attributeName.equalsIgnoreCase("Count")) {
+//            if (id_int == 0) {
+//                System.out.println("id, areaCode, clientCount");
+//            }
+            addFeatureAttributeAndAddToFeatureCollection(
+                    (SimpleFeature) inputFeature, sfb, clientCount, tsfc, id);
+//            System.out.println("" + id_int + ", " + areaCode + ", " + clientCount);
+        }
+        if (attributeName.equalsIgnoreCase("Density")) {
+//            if (id_int == 0) {
+//                System.out.println("id, areaCode, clientCount, area, density");
+//            }
+            double densityValue;
+            densityValue = ((double) clientCount / area) * 1000000.0D; // * 1000000 for 100 hectares
+            addFeatureAttributeAndAddToFeatureCollection(
+                    (SimpleFeature) inputFeature, sfb, densityValue, tsfc, id);
+//            if (densityValue < 0) {
+//                int debug = 1;
+//            }
+//            System.out.println("" + id_int + ", " + areaCode + ", " + clientCount + ", " + area + ", " + densityValue);
+        }
+        if (attributeName.equalsIgnoreCase("Rate")) {
+//            if (id_int == 0) {
+//                System.out.println("id, areaCode, clientCount, area, pop");
+//            }
+            double rate;
+            Integer pop = population.get(areaCode);
+            rate = ((double) clientCount / (double) pop) * populationMultiplier;
+            addFeatureAttributeAndAddToFeatureCollection(
+                    (SimpleFeature) inputFeature, sfb, rate, tsfc, id);
+//            System.out.println("" + id_int + ", " + areaCode + ", " + clientCount + ", " + area + ", " + pop);
+        }
+        if (countClientsInAndOutOfRegion) {
+            Generic_Collections.addToTreeMapIntegerInteger(
+                    inAndOutOfRegionCount,
+                    1,
+                    clientCount);
+        }
+        id_int++;
+        return id_int;
     }
 
     @Override

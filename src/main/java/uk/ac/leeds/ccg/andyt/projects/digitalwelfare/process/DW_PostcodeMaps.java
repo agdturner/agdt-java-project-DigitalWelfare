@@ -90,29 +90,39 @@ public class DW_PostcodeMaps extends DW_Maps {
 
         ShapefileDataStoreFactory sdsf = getShapefileDataStoreFactory();
 
-        // Postcode Sector Boundaries
+        // Boundaries
+        // Postcode Sectors
         File aLeedsPostcodeSectorShapefile = getLeedsPostcodeSectorShapefile();
-
-        // Postcode Unit Centroids
-        String aLeedsPostcodeUnitPointShapefile;
-        aLeedsPostcodeUnitPointShapefile = "LeedsPostcodeUnitPointShapefile.shp";
-        File aPostcodeUnitPointShapefile = createPostcodePointShapefileIfItDoesNotExist(
-                0,
-                mapDirectory,
-                aLeedsPostcodeUnitPointShapefile,
-                "LS");
-
-        // Get Postcode Unit Boundaries
+        // Postcode Units
         DW_Shapefile postcodeUnitPoly_DW_Shapefile;
         postcodeUnitPoly_DW_Shapefile = DW_Maps.getPostcodeUnitPoly_DW_Shapefile(
             new ShapefileDataStoreFactory());
 
-
+        String postcodeLevel;
+        // Postcode Unit Centroids
+        postcodeLevel = "Unit";
+        String aLeedsPostcodeUnitPointShapefile;
+        aLeedsPostcodeUnitPointShapefile = "LeedsPostcode" + postcodeLevel + "PointShapefile.shp";
+        File aPostcodeUnitPointShapefile = createPostcodePointShapefileIfItDoesNotExist(
+                postcodeLevel,
+                mapDirectory,
+                aLeedsPostcodeUnitPointShapefile,
+                "LS");
         // Postcode Sector Centroids
+        postcodeLevel = "Sector";
         String aLeedsPostcodeSectorPointShapefile;
-        aLeedsPostcodeSectorPointShapefile = "LeedsPostcodeSectorPointShapefile.shp";
+        aLeedsPostcodeSectorPointShapefile = "LeedsPostcode" + postcodeLevel + "PointShapefile.shp";
         File aPostcodeSectorPointShapefile = createPostcodePointShapefileIfItDoesNotExist(
-                1,
+                postcodeLevel,
+                mapDirectory,
+                aLeedsPostcodeSectorPointShapefile,
+                "LS");
+        // Postcode District Centroids
+        postcodeLevel = "District";
+        String aLeedsPostcodeDistrictPointShapefile;
+        aLeedsPostcodeDistrictPointShapefile = "LeedsPostcode" + postcodeLevel + "PointShapefile.shp";
+        File aPostcodeDistrictPointShapefile = createPostcodePointShapefileIfItDoesNotExist(
+                postcodeLevel,
                 mapDirectory,
                 aLeedsPostcodeSectorPointShapefile,
                 "LS");
@@ -306,23 +316,26 @@ public class DW_PostcodeMaps extends DW_Maps {
         result = new ArrayList<DW_Shapefile>();
         File dir;
         dir = DW_Files.getGeneratedPostcodeDir();
-        // Create LS Postcode points
-        String sf_name;
-        sf_name = "LS_PostcodesUnitCentroidsPoint.shp";
-        File sf_File;
-        sf_File = createPostcodePointShapefileIfItDoesNotExist(
-                0,
+        ArrayList<String> postCodeLevels;
+        postCodeLevels = new ArrayList<String>();
+        postCodeLevels.add("Unit");
+        postCodeLevels.add("Sector");
+        postCodeLevels.add("District");
+        Iterator<String> ite;
+        ite = postCodeLevels.iterator();
+        while (ite.hasNext()) {
+            String postcodeLevel = ite.next();
+            // Create LS Postcode points
+            String sf_name;
+            sf_name = "LS_Postcodes" + postcodeLevel + "CentroidsPoint.shp";
+            File sf_File;
+            sf_File = createPostcodePointShapefileIfItDoesNotExist(
+                postcodeLevel,
                 dir,
                 sf_name,
                 "LS");
-        result.add(new DW_Shapefile(sf_File));
-        sf_name = "LS_PostcodesSectorCentroidsPoint.shp";
-        sf_File = createPostcodePointShapefileIfItDoesNotExist(
-                1,
-                dir,
-                sf_name,
-                "LS");
-        result.add(new DW_Shapefile(sf_File));
+            result.add(new DW_Shapefile(sf_File));
+        }
         return result;
     }
 
@@ -334,7 +347,7 @@ public class DW_PostcodeMaps extends DW_Maps {
      * @return
      */
     public static File createPostcodePointShapefileIfItDoesNotExist(
-            int index,
+            String postcodeLevel,
             File dir,
             String shapefileFilename,
             String target) {
@@ -343,7 +356,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         sft = getPointSimpleFeatureType(getDefaultSRID());
         TreeSetFeatureCollection fc;
         fc = getPostcodePointFeatureCollection(
-                index, sft, target);
+                postcodeLevel, sft, target);
         result = createShapefileIfItDoesNotExist(
                 dir,
                 shapefileFilename,
@@ -353,12 +366,12 @@ public class DW_PostcodeMaps extends DW_Maps {
     }
 
     public static TreeSetFeatureCollection getPostcodePointFeatureCollection(
-            int index,
+            String postcodeLevel,
             SimpleFeatureType sft,
             String target) {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
-        TreeMap<String, AGDT_Point> tONSPDlookup = getONSPDlookups()[index];
+        TreeMap<String, AGDT_Point> tONSPDlookup = getONSPDlookups().get(postcodeLevel);
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
          * using a Point object for the location.

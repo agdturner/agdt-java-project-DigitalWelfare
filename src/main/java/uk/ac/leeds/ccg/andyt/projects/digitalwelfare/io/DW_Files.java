@@ -38,6 +38,10 @@ public class DW_Files {
     private static File _DW_inputSHBEDir;
     private static File _DW_inputUnderOccupiedDir;
 
+    private static File _DW_swapDir;
+    private static File _DW_swapLCCDir;
+    private static File _DW_swapSHBEDir;
+    
     private static File _DW_generatedDir;
     private static File _DW_generatedAdviceLeedsDir;
     private static File _DW_generatedCensusDir;
@@ -189,6 +193,36 @@ public class DW_Files {
         return _DW_inputUnderOccupiedDir;
     }
 
+    public static File getSwapDir() {
+        if (_DW_swapDir == null) {
+            _DW_swapDir = new File(
+                    getDigitalWelfareDir(),
+                    "Swap");
+            _DW_swapDir.mkdirs();
+        }
+        return _DW_swapDir;
+    }
+    
+    public static File getSwapLCCDir() {
+        if (_DW_swapLCCDir == null) {
+            _DW_swapLCCDir = new File(
+                    getSwapDir(),
+                    "LCC");
+            _DW_swapLCCDir.mkdirs();
+        }
+        return _DW_swapLCCDir;
+    }
+    
+    public static File getSwapSHBEDir() {
+        if (_DW_swapSHBEDir == null) {
+            _DW_swapSHBEDir = new File(
+                    getSwapLCCDir(),
+                    "SHBE");
+            _DW_swapSHBEDir.mkdirs();
+        }
+        return _DW_swapSHBEDir;
+    }
+    
     public static File getGeneratedDir() {
         if (_DW_generatedDir == null) {
             _DW_generatedDir = new File(

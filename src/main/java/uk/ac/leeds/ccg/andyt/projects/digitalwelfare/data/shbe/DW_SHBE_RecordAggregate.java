@@ -22,7 +22,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
  *
  * @author geoagdt
  */
-public class Aggregate_SHBE_DataRecord {
+public class DW_SHBE_RecordAggregate {
 
     private int totalClaimCount;
     private int totalHBClaimCount;
@@ -289,7 +289,7 @@ public class Aggregate_SHBE_DataRecord {
     //private String WRAGPremiumFlag;
     //private String SCGPremiumFlag;
     //private int SubRecordType;
-    public Aggregate_SHBE_DataRecord() {
+    public DW_SHBE_RecordAggregate() {
     }
 
     @Override

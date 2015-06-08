@@ -34,7 +34,7 @@ import uk.ac.leeds.ccg.andyt.agdtcensus.Age_EcoAct_LSOA_DataRecord_Handler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_DataHandler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeGeocoder;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
@@ -98,8 +98,11 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
 //        level = "MSOA";
 //        levels.add(level);
 //        targetPropertyNames.put(level, "MSOA11CD");
-        // Postcode Sector
-        level = "PostcodeSector";
+//        // Postcode Sector
+//        level = "PostcodeSector";
+//        levels.add(level);
+//        targetPropertyNames.put(level, "RMSect");
+        level = "PostcodeDistrict";
         levels.add(level);
         targetPropertyNames.put(level, "RMSect");
 //        // Postcodes Unit 
@@ -136,7 +139,8 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                 "LSOA", 2011);
         // Get postcode to level lookup
         TreeMap<String, String> tLookupFromPostcodeToCensusCode;
-        if (level.equalsIgnoreCase("PostcodeSector")
+        if (level.equalsIgnoreCase("PostcodeDistrict")
+                || level.equalsIgnoreCase("PostcodeSector")
                 || level.equalsIgnoreCase("PostcodeUnit")
                 || level.equalsIgnoreCase("LSOA")) {
             tLookupFromPostcodeToCensusCode = tLookupFromPostcodeToLSOACensusCode;
@@ -415,14 +419,14 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
 
         Age_EcoAct_LSOA_DataRecord_Handler aAge_EcoAct_LSOA_DataHandler;
         aAge_EcoAct_LSOA_DataHandler = new Age_EcoAct_LSOA_DataRecord_Handler();
-        
+
         String censusFilename = "Data_AGE_ECOACT_UNIT.csv";
-                File attributeDir = new File(
+        File attributeDir = new File(
                 DW_Files.getInputCensus2011Dir("LSOA"),
                 "AttributeData/Leeds");
         File censusDir = new File(
-            attributeDir,
-                filename.substring(5,filename.length() - 4));
+                attributeDir,
+                filename.substring(5, filename.length() - 4));
 
         TreeMap<String, Age_EcoAct_LSOA_DataRecord> censusData;
         censusData = aAge_EcoAct_LSOA_DataHandler.loadInputData(
@@ -1194,30 +1198,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
             DW_Data_CAB2_Record aLeedsCABData_DataRecord = tLeedsCABData.get(id);
             outlet = aLeedsCABData_DataRecord.getOutlet();
             String postcode = aLeedsCABData_DataRecord.getPostcode();
-            String key = "";
-            if (level.equalsIgnoreCase("PostcodeSector")
-                    || level.equalsIgnoreCase("PostcodeUnit")) {
-                if (level.equalsIgnoreCase("PostcodeSector")) {
-                    if (PostcodeGeocoder.isValidPostcode(postcode)) {
-                        key = PostcodeGeocoder.getPostcodeSector(postcode);
-//                    } else {
-//                        key = "";
-                    }
-                }
-                if (level.equalsIgnoreCase("PostcodeUnit")) {
-                    if (PostcodeGeocoder.isValidPostcode(postcode)) {
-                        key = PostcodeGeocoder.formatPostcodeForMapping(postcode);
-//                    } else {
-//                        key = "";
-                    }
-                }
-            } else {
-                String formattedPostcode = formatPostcodeForONSPDLookup(postcode);
-                key = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
-                if (key == null) {
-                    key = "";
-                }
-            }
+            String key = getKey(postcode, tLookupFromPostcodeToCensusCode);
             // Add to counts for specific outlet
             if (result.containsKey(outlet)) {
                 TreeMap<String, Integer> d;
@@ -1293,30 +1274,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
             DW_Data_CAB0_Record aCAB_DataRecord0 = tChapeltownCABData.get(id);
             //outlet = aCAB_DataRecord0.getOutlet();
             String postcode = aCAB_DataRecord0.getPostcode();
-            String key = "";
-            if (level.equalsIgnoreCase("PostcodeSector")
-                    || level.equalsIgnoreCase("PostcodeUnit")) {
-                if (level.equalsIgnoreCase("PostcodeSector")) {
-                    if (PostcodeGeocoder.isValidPostcode(postcode)) {
-                        key = PostcodeGeocoder.getPostcodeSector(postcode);
-//                    } else {
-//                        key = "";
-                    }
-                }
-                if (level.equalsIgnoreCase("PostcodeUnit")) {
-                    if (PostcodeGeocoder.isValidPostcode(postcode)) {
-                        key = PostcodeGeocoder.formatPostcodeForMapping(postcode);
-//                    } else {
-//                        key = "";
-                    }
-                }
-            } else {
-                String formattedPostcode = formatPostcodeForONSPDLookup(postcode);
-                key = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
-                if (key == null) {
-                    key = "";
-                }
-            }
+            String key = getKey(postcode, tLookupFromPostcodeToCensusCode);
             // Add to counts for specific outlet
             outlet = "CHAPELTOWN"; // Outlet always Chapeltown for Chapeltown data
             if (result.containsKey(outlet)) {
@@ -1382,30 +1340,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
             rec = tLCC_WRUData.get(id);
             //outlet = aCAB_DataRecord0.getOutlet();
             String postcode = rec.getPostcode();
-            String key = "";
-            if (level.equalsIgnoreCase("PostcodeSector")
-                    || level.equalsIgnoreCase("PostcodeUnit")) {
-                if (level.equalsIgnoreCase("PostcodeSector")) {
-                    if (PostcodeGeocoder.isValidPostcode(postcode)) {
-                        key = PostcodeGeocoder.getPostcodeSector(postcode);
-//                    } else {
-//                        key = "";
-                    }
-                }
-                if (level.equalsIgnoreCase("PostcodeUnit")) {
-                    if (PostcodeGeocoder.isValidPostcode(postcode)) {
-                        key = PostcodeGeocoder.formatPostcodeForMapping(postcode);
-//                    } else {
-//                        key = "";
-                    }
-                }
-            } else {
-                String formattedPostcode = formatPostcodeForONSPDLookup(postcode);
-                key = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
-                if (key == null) {
-                    key = "";
-                }
-            }
+            String key = getKey(postcode, tLookupFromPostcodeToCensusCode);
             // Add to counts for specific outlet
             outlet = "LCC_WRU"; // Outlet always LCC_WRU
             if (result.containsKey(outlet)) {
@@ -1437,6 +1372,50 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
     }
 
     /**
+     * 
+     * @param postcode
+     * @param tLookupFromPostcodeToCensusCode
+     * @return 
+     */
+    private String getKey(
+            String postcode,
+            TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
+        String key = "";
+        if (level.equalsIgnoreCase("PostcodeDistrict")
+                    || level.equalsIgnoreCase("PostcodeSector")
+                    || level.equalsIgnoreCase("PostcodeUnit")) {
+                if (level.equalsIgnoreCase("PostcodeDistrict")) {
+                    if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                        key = DW_Postcode_Handler.getPostcodeDistrict(postcode);
+//                    } else {
+//                        key = "";
+                    }
+                }
+                if (level.equalsIgnoreCase("PostcodeSector")) {
+                    if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                        key = DW_Postcode_Handler.getPostcodeSector(postcode);
+//                    } else {
+//                        key = "";
+                    }
+                }
+                if (level.equalsIgnoreCase("PostcodeUnit")) {
+                    if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                        key = DW_Postcode_Handler.formatPostcodeForMapping(postcode);
+//                    } else {
+//                        key = "";
+                    }
+                }
+            } else {
+                String formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
+                key = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
+                if (key == null) {
+                    key = "";
+                }
+            }
+        return key;
+    }
+
+    /**
      * @param type
      * @param data
      * @param tLookupFromPostcodeToCensusCode
@@ -1456,9 +1435,10 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
         result.put(outletAllLeedsCAB, allAdviceLeedsCounts);
         Iterator<Object> ite;
         ite = data.keySet().iterator();
-        if (level.equalsIgnoreCase("PostcodeSector")
+        if (level.equalsIgnoreCase("PostcodeDistrict")
+                || level.equalsIgnoreCase("PostcodeSector")
                 || level.equalsIgnoreCase("PostcodeUnit")) {
-            if (level.equalsIgnoreCase("PostcodeSector")) {
+            if (level.equalsIgnoreCase("PostcodeDistrict")) {
                 if (type == 0) {
                     while (ite.hasNext()) {
                         Object id = ite.next();
@@ -1466,15 +1446,15 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                         aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) data.get(id);
                         outlet = aLeedsCABData_DataRecord.getOutlet();
                         String postcode = aLeedsCABData_DataRecord.getPostcode();
-                        if (PostcodeGeocoder.isValidPostcode(postcode)) {
-                            String postcodeSector;
-                            postcodeSector = PostcodeGeocoder.getPostcodeSector(postcode);
+                        if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                            String postcodeDistrict;
+                            postcodeDistrict = DW_Postcode_Handler.getPostcodeDistrict(postcode);
                             // Add to counts
                             addToCounts(
                                     result,
                                     allAdviceLeedsCounts,
                                     outlet,
-                                    postcodeSector);
+                                    postcodeDistrict);
                         }
                     }
                 } else {
@@ -1484,48 +1464,88 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                         aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) data.get(id);
                         outlet = "CHAPELTOWN";
                         String postcode = aLeedsCABData_DataRecord.getPostcode();
-                        if (PostcodeGeocoder.isValidPostcode(postcode)) {
-                            String postcodeSector;
-                            postcodeSector = PostcodeGeocoder.getPostcodeSector(postcode);
+                        if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                            String postcodeDistrict;
+                            postcodeDistrict = DW_Postcode_Handler.getPostcodeDistrict(postcode);
                             // Add to counts
                             addToCounts(
                                     result,
                                     allAdviceLeedsCounts,
                                     outlet,
-                                    postcodeSector);
+                                    postcodeDistrict);
                         }
                     }
                 }
             } else {
-                if (type == 0) {
-                    while (ite.hasNext()) {
-                        Object id = ite.next();
-                        DW_Data_CAB2_Record aLeedsCABData_DataRecord;
-                        aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) data.get(id);
-                        outlet = aLeedsCABData_DataRecord.getOutlet();
-                        String postcode = aLeedsCABData_DataRecord.getPostcode();
-                        postcode = PostcodeGeocoder.formatPostcodeForMapping(postcode);
-                        // Add to counts
-                        addToCounts(
-                                result,
-                                allAdviceLeedsCounts,
-                                outlet,
-                                postcode);
+                if (level.equalsIgnoreCase("PostcodeSector")) {
+                    if (type == 0) {
+                        while (ite.hasNext()) {
+                            Object id = ite.next();
+                            DW_Data_CAB2_Record aLeedsCABData_DataRecord;
+                            aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) data.get(id);
+                            outlet = aLeedsCABData_DataRecord.getOutlet();
+                            String postcode = aLeedsCABData_DataRecord.getPostcode();
+                            if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                                String postcodeSector;
+                                postcodeSector = DW_Postcode_Handler.getPostcodeSector(postcode);
+                                // Add to counts
+                                addToCounts(
+                                        result,
+                                        allAdviceLeedsCounts,
+                                        outlet,
+                                        postcodeSector);
+                            }
+                        }
+                    } else {
+                        while (ite.hasNext()) {
+                            Object id = ite.next();
+                            DW_Data_CAB0_Record aLeedsCABData_DataRecord;
+                            aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) data.get(id);
+                            outlet = "CHAPELTOWN";
+                            String postcode = aLeedsCABData_DataRecord.getPostcode();
+                            if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                                String postcodeSector;
+                                postcodeSector = DW_Postcode_Handler.getPostcodeSector(postcode);
+                                // Add to counts
+                                addToCounts(
+                                        result,
+                                        allAdviceLeedsCounts,
+                                        outlet,
+                                        postcodeSector);
+                            }
+                        }
                     }
                 } else {
-                    while (ite.hasNext()) {
-                        Object id = ite.next();
-                        DW_Data_CAB0_Record aLeedsCABData_DataRecord;
-                        aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) data.get(id);
-                        outlet = "CHAPELTOWN";
-                        String postcode = aLeedsCABData_DataRecord.getPostcode();
-                        postcode = PostcodeGeocoder.formatPostcodeForMapping(postcode);
-                        // Add to counts
-                        addToCounts(
-                                result,
-                                allAdviceLeedsCounts,
-                                outlet,
-                                postcode);
+                    if (type == 0) {
+                        while (ite.hasNext()) {
+                            Object id = ite.next();
+                            DW_Data_CAB2_Record aLeedsCABData_DataRecord;
+                            aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) data.get(id);
+                            outlet = aLeedsCABData_DataRecord.getOutlet();
+                            String postcode = aLeedsCABData_DataRecord.getPostcode();
+                            postcode = DW_Postcode_Handler.formatPostcodeForMapping(postcode);
+                            // Add to counts
+                            addToCounts(
+                                    result,
+                                    allAdviceLeedsCounts,
+                                    outlet,
+                                    postcode);
+                        }
+                    } else {
+                        while (ite.hasNext()) {
+                            Object id = ite.next();
+                            DW_Data_CAB0_Record aLeedsCABData_DataRecord;
+                            aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) data.get(id);
+                            outlet = "CHAPELTOWN";
+                            String postcode = aLeedsCABData_DataRecord.getPostcode();
+                            postcode = DW_Postcode_Handler.formatPostcodeForMapping(postcode);
+                            // Add to counts
+                            addToCounts(
+                                    result,
+                                    allAdviceLeedsCounts,
+                                    outlet,
+                                    postcode);
+                        }
                     }
                 }
             }
@@ -1584,7 +1604,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
     private String getCensusCode(String postcode,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         String result;
-        String formattedPostcode = formatPostcodeForONSPDLookup(postcode);
+        String formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
         result = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
         return result;
     }
@@ -2182,7 +2202,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
             String clientProfileID = ite.next();
             DW_Data_CAB0_Record aLeedsCABData_DataRecord = tChapeltownCABData.get(clientProfileID);
             String postcode = aLeedsCABData_DataRecord.getPostcode();
-            postcode = formatPostcodeForONSPDLookup(postcode);
+            postcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
             if (!postcode.isEmpty()) {
                 String[] codes = tLookupFromPostcodeToCensusCodes.get(postcode);
                 if (codes == null) {

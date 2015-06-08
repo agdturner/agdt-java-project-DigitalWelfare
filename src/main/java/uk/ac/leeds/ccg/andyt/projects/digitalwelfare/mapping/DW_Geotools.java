@@ -74,6 +74,8 @@ import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
  */
 public class DW_Geotools extends AGDT_Geotools {
 
+    public static boolean doDebug = true;
+    
     /**
      * Warning this will set g to null.
      * @param normalisation
@@ -106,6 +108,7 @@ public class DW_Geotools extends AGDT_Geotools {
             boolean scaleToFirst) {
         MapContent mc = createMapContent(
                 normalisation,
+                outname,
                 g,
                 gc,
                 foregroundDW_Shapefile0,
@@ -162,6 +165,7 @@ public class DW_Geotools extends AGDT_Geotools {
 
     private static MapContent createMapContent(
             double normalisation,
+            String name,
             AbstractGrid2DSquareCell g,
             GridCoverage2D gc,
             ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0,
@@ -175,7 +179,7 @@ public class DW_Geotools extends AGDT_Geotools {
         result = new MapContent();
         // Unbox styleParameters
         Style style;
-        style = styleParameters.getStyle(index);
+        style = styleParameters.getStyle(name, index);
         ArrayList<AGDT_LegendItem> legendItems = null;
 
         if (styleParameters.isDrawBoundaries()) {
@@ -201,7 +205,7 @@ public class DW_Geotools extends AGDT_Geotools {
                     styleParameters.getPaletteName(),
                     styleParameters.isAddWhiteForZero());
             style = (Style) styleAndLegendItems[0];
-            styleParameters.setStyle(style, index);
+            styleParameters.setStyle(name, style, index);
             legendItems = (ArrayList<AGDT_LegendItem>) styleAndLegendItems[1];
             styleParameters.setLegendItems(legendItems, index);
         } else {
@@ -417,7 +421,7 @@ public class DW_Geotools extends AGDT_Geotools {
         result = new MapContent();
         // Unbox styleParameters
         Style style;
-        style = styleParameters.getStyle(styleIndex);
+        style = styleParameters.getStyle(attributeName, styleIndex);
         ArrayList<AGDT_LegendItem> legendItems;
         legendItems = styleParameters.getLegendItems(styleIndex);
 
@@ -442,7 +446,7 @@ public class DW_Geotools extends AGDT_Geotools {
                     attributeName,
                     styleParameters);
             style = (Style) styleAndLegendItems[0];
-            styleParameters.setStyle(style, styleIndex);
+            styleParameters.setStyle(attributeName, style, styleIndex);
             legendItems = (ArrayList<AGDT_LegendItem>) styleAndLegendItems[1];
             styleParameters.setLegendItems(legendItems, styleIndex);
         }
@@ -644,7 +648,8 @@ public class DW_Geotools extends AGDT_Geotools {
             return DW_Style.createPolygonStyle(
                     fc,
                     attributeName,
-                    styleParameters);
+                    styleParameters,
+                    doDebug);
         }
         if (LineString.class.isAssignableFrom(geomType)
                 || MultiLineString.class.isAssignableFrom(geomType)) {

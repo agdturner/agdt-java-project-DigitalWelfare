@@ -25,6 +25,7 @@ import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 
 /**
@@ -58,7 +59,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
                 DW_ID_ClientID id = ite.next();
                 DW_Data_CAB2_Record aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) tCABData.get(id);
                 String postcode = aLeedsCABData_DataRecord.getPostcode();
-                postcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
+                postcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
                 if (!postcode.isEmpty()) {
                     String SOACode = tLookupFromPostcodeToCensusCodes.get(postcode);
                     if (SOACode == null) {
@@ -90,7 +91,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
                 DW_ID_ClientID id = ite.next();
                 DW_Data_CAB0_Record aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) tCABData.get(id);
                 String postcode = aLeedsCABData_DataRecord.getPostcode();
-                postcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
+                postcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
                 if (!postcode.isEmpty()) {
                     String SOACode = tLookupFromPostcodeToCensusCodes.get(postcode);
                     if (SOACode == null) {

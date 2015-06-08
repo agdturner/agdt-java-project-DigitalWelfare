@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -30,16 +31,18 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  *
  * @author geoagdt
  */
-public class SHBE_DataRecord_Handler {
+public class DW_SHBE_Handler {
 
     private HashSet<String> RecordTypes;
 
-    public SHBE_DataRecord_Handler() {
+    public DW_SHBE_Handler() {
         initRecordTypes();
     }
 
@@ -66,15 +69,50 @@ public class SHBE_DataRecord_Handler {
     }
 
     /**
-     * Loads SHBE data from a file in directory, filename reporting progress of
-     * loading to PrintWriter pw.
+     * Attempts to load all SHBE collections.
+     *
+     * @return ArrayList<Object[]> result where:--------------------------------
+     *
+     */
+    public ArrayList<Object[]> loadSHBEData() {
+
+        DW_Environment env;
+        env = new DW_Environment();
+        env._Directory = DW_Files.getGeneratedDir();
+
+        ArrayList<Object[]> result;
+        result = new ArrayList();
+        File dir;
+        dir = DW_Files.getInputSHBEDir();
+        String[] filenames = getSHBEFilenamesAll();
+        for (String filename : filenames) {
+            System.out.println("Loading SHBE data from " + filename + " ...");
+            File collectionDir = new File(
+                    DW_Files.getSwapSHBEDir(),
+                    filename);
+            DW_SHBE_CollectionHandler handler;
+            handler = new DW_SHBE_CollectionHandler(
+                    env,
+                    collectionDir);
+            Object[] SHBEData;
+            SHBEData = loadInputData(dir, filename, handler);
+            //SHBEData = loadInputData(dir, filename);
+            result.add(SHBEData);
+            System.out.println("... loaded SHBE data from " + filename + ".");
+        }
+        return result;
+    }
+
+    /**
+     * Loads SHBE collections from a file in directory, filename reporting
+     * progress of loading to PrintWriter pw.
      *
      * @param directory
      * @param filename
      * @return Object[7] result where: ----------------------------------------
-     * result[0] is a TreeMap<String,SHBE_DataRecord> representing records with
+     * result[0] is a TreeMap<String,DW_SHBE_Record> representing records with
      * DRecords, --------------------------------------------------------------
-     * result[1] is a TreeMap<String, SHBE_DataRecord> representing records
+     * result[1] is a TreeMap<String, DW_SHBE_Record> representing records
      * without DRecords, ------------------------------------------------------
      * result[2] is a HashSet<String> of ClaimantNationalInsuranceNumberIDs,
      * result[3] is a HashSet<String> of PartnerNationalInsuranceNumberIDs,
@@ -99,10 +137,12 @@ public class SHBE_DataRecord_Handler {
         int totalCouncilTaxBenefitClaims = 0;
         int totalCouncilTaxAndHousingBenefitClaims = 0;
         int totalHousingBenefitClaims = 0;
-        TreeMap<String, SHBE_DataRecord> recordsWithDRecords = new TreeMap<String, SHBE_DataRecord>();
-        result[0] = recordsWithDRecords;
-        TreeMap<String, SHBE_DataRecord> recordsWithoutDRecords = new TreeMap<String, SHBE_DataRecord>();
-        result[1] = recordsWithoutDRecords;
+        TreeMap<String, DW_SHBE_Record> DRecords;
+        DRecords = new TreeMap<String, DW_SHBE_Record>();
+        result[0] = DRecords;;
+        TreeMap<String, DW_SHBE_Record> SRecordsWithoutDRecords;
+        SRecordsWithoutDRecords = new TreeMap<String, DW_SHBE_Record>();
+        result[1] = SRecordsWithoutDRecords;
         HashSet<String> ClaimantNationalInsuranceNumberIDs = new HashSet<String>();
         result[2] = ClaimantNationalInsuranceNumberIDs;
         HashSet<String> PartnerNationalInsuranceNumberIDs = new HashSet<String>();
@@ -126,13 +166,13 @@ public class SHBE_DataRecord_Handler {
             int type = readAndCheckFirstLine(directory, filename);
             // Skip the first line
             Generic_StaticIO.skipline(st);
-            // Read data
+            // Read collections
             int tokenType;
             tokenType = st.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
 
                 // For debugging
-                if (RecordID == 10) {
+                if (RecordID == 1771) {
                     int debug = 1;
                 }
 
@@ -144,24 +184,24 @@ public class SHBE_DataRecord_Handler {
                         line = st.sval;
                         if (line.startsWith("S")) {
                             try {
-                                SHBE_DataRecord SRecord = new SHBE_DataRecord(RecordID, type, line, this);
+                                DW_SHBE_Record SRecord = new DW_SHBE_Record(RecordID, type, line, this);
                                 String councilTaxBenefitClaimReferenceNumber = SRecord.getCouncilTaxBenefitClaimReferenceNumber();
-                                if (recordsWithDRecords.containsKey(councilTaxBenefitClaimReferenceNumber)) {
+                                if (DRecords.containsKey(councilTaxBenefitClaimReferenceNumber)) {
                                     //get Drecord and add S record
-                                    SHBE_DataRecord DRecord = recordsWithDRecords.get(councilTaxBenefitClaimReferenceNumber);
+                                    DW_SHBE_Record DRecord = DRecords.get(councilTaxBenefitClaimReferenceNumber);
                                     if (!DRecord.getSRecords().add(SRecord)) {
                                         throw new Exception("Duplicate SRecord " + SRecord);
                                     }
                                 } else {
                                     //throw new Exception("There is no existing DRecord for SRecord " + SRecord);
                                     countOfSRecordsWithoutDRecord++;
-                                    SHBE_DataRecord DRecord;
-                                    if (recordsWithoutDRecords.containsKey(councilTaxBenefitClaimReferenceNumber)) {
-                                        DRecord = recordsWithoutDRecords.get(councilTaxBenefitClaimReferenceNumber);
+                                    DW_SHBE_Record DRecord;
+                                    if (SRecordsWithoutDRecords.containsKey(councilTaxBenefitClaimReferenceNumber)) {
+                                        DRecord = SRecordsWithoutDRecords.get(councilTaxBenefitClaimReferenceNumber);
                                     } else {
                                         // Create DRecord
-                                        DRecord = new SHBE_DataRecord(RecordID);
-                                        DRecord.SRecords = new HashSet<SHBE_DataRecord>();
+                                        DRecord = new DW_SHBE_Record(RecordID);
+                                        DRecord.SRecords = new HashSet<DW_SHBE_Record>();
                                         DRecord.setCouncilTaxBenefitClaimReferenceNumber(councilTaxBenefitClaimReferenceNumber);
                                     }
                                     DRecord.SRecords.add(SRecord);
@@ -186,13 +226,257 @@ public class SHBE_DataRecord_Handler {
                         } else {
                             // line.startsWith("D")
                             try {
-                                SHBE_DataRecord aSHBE_DataRecord = new SHBE_DataRecord(RecordID, type, line, this);
-                                Object o = recordsWithDRecords.put(aSHBE_DataRecord.getCouncilTaxBenefitClaimReferenceNumber(), aSHBE_DataRecord);
+                                DW_SHBE_Record aSHBE_DataRecord = new DW_SHBE_Record(RecordID, type, line, this);
+                                Object o = DRecords.put(aSHBE_DataRecord.getCouncilTaxBenefitClaimReferenceNumber(), aSHBE_DataRecord);
                                 if (o != null) {
-                                    SHBE_DataRecord existingSHBE_DataRecord = (SHBE_DataRecord) o;
+                                    DW_SHBE_Record existingSHBE_DataRecord = (DW_SHBE_Record) o;
                                     System.out.println("existingSHBE_DataRecord" + existingSHBE_DataRecord);
                                     System.out.println("replacementSHBE_DataRecord" + aSHBE_DataRecord);
                                 }
+                                // Count Council Tax and Housing Benefits and combined claims
+                                if (!aSHBE_DataRecord.getCouncilTaxBenefitClaimReferenceNumber().trim().isEmpty()) {
+                                    totalCouncilTaxBenefitClaims++;
+                                    if (!aSHBE_DataRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
+                                        totalCouncilTaxAndHousingBenefitClaims++;
+                                        totalHousingBenefitClaims++;
+                                    }
+                                } else {
+                                    if (!aSHBE_DataRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
+                                        totalHousingBenefitClaims++;
+                                    }
+                                }
+                                // aSHBE_DataRecord.getNonDependantStatus 11
+                                // aSHBE_DataRecord.getSubRecordType() 284
+                                String claimantsNationalInsuranceNumber = aSHBE_DataRecord.getClaimantsNationalInsuranceNumber();
+                                if (claimantsNationalInsuranceNumber.length() > 0) {
+                                    ClaimantNationalInsuranceNumberIDs.add(claimantsNationalInsuranceNumber);
+                                    AllHouseholdNationalInsuranceNumberIDs.add(claimantsNationalInsuranceNumber);
+//                                // aSHBE_DataRecord.getPartnerFlag() 118
+                                    if (aSHBE_DataRecord.getPartnerFlag() > 0) {
+                                        String partnersNationalInsuranceNumber = aSHBE_DataRecord.getPartnersNationalInsuranceNumber();
+                                        PartnerNationalInsuranceNumberIDs.add(partnersNationalInsuranceNumber);
+                                        AllHouseholdNationalInsuranceNumberIDs.add(partnersNationalInsuranceNumber);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                System.err.println(line);
+                                System.err.println("RecordID " + RecordID);
+                                System.err.println(e.getMessage());
+                                System.err.println(e.getLocalizedMessage());
+                                recordIDsNotLoaded.add(RecordID);
+                            }
+                            countDRecords++;
+                        }
+                        RecordID++;
+                        break;
+                }
+                tokenType = st.nextToken();
+            }
+            br.close();
+        } catch (IOException ex) {
+            Logger.getLogger(DW_SHBE_Handler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // Add all SRecords from recordsWithoutDRecords that actually do have 
+        // DRecords, it just so happened that the DRecord was read after the 
+        // first SRecord
+        int countDRecordsInUnexpectedOrder = 0;
+        Set<String> s = DRecords.keySet();
+        Iterator<String> ite = SRecordsWithoutDRecords.keySet().iterator();
+        HashSet<String> rem = new HashSet<String>();
+        while (ite.hasNext()) {
+            String councilTaxBenefitClaimReferenceNumber = ite.next();
+            if (s.contains(councilTaxBenefitClaimReferenceNumber)) {
+                DW_SHBE_Record DRecord = DRecords.get(councilTaxBenefitClaimReferenceNumber);
+                DRecord.SRecords.addAll(DRecords.get(councilTaxBenefitClaimReferenceNumber).getSRecords());
+                rem.add(councilTaxBenefitClaimReferenceNumber);
+                countDRecordsInUnexpectedOrder++;
+            }
+        }
+        //System.out.println("SRecords that came before DRecords count " + countDRecordsInUnexpectedOrder);
+        ite = rem.iterator();
+        while (ite.hasNext()) {
+            SRecordsWithoutDRecords.remove(ite.next());
+        }
+        // Summary report of load
+        System.out.println("totalCouncilTaxBenefitClaims " + totalCouncilTaxBenefitClaims);
+        System.out.println("totalCouncilTaxAndHousingBenefitClaims " + totalCouncilTaxAndHousingBenefitClaims);
+        System.out.println("totalHousingBenefitClaims " + totalHousingBenefitClaims);
+        System.out.println("countDRecords " + DRecords.size());
+        System.out.println("countSRecords " + countSRecords);
+        System.out.println("countOfSRecordsWithoutDRecord " + SRecordsWithoutDRecords.size());
+        System.out.println("countDRecordsInUnexpectedOrder " + countDRecordsInUnexpectedOrder);
+        System.out.println("recordIDsNotLoaded.size() " + recordIDsNotLoaded.size());
+        System.out.println("Count of Unique ClaimantNationalInsuranceNumberIDs " + ClaimantNationalInsuranceNumberIDs.size());
+        System.out.println("Count of Unique PartnerNationalInsuranceNumberIDs " + PartnerNationalInsuranceNumberIDs.size());
+        System.out.println("Count of Unique DependentsNationalInsuranceNumberIDs " + DependentsNationalInsuranceNumberIDs.size());
+        System.out.println("Count of Unique NonDependentsNationalInsuranceNumberIDs " + NonDependentsNationalInsuranceNumberIDs.size());
+        System.out.println("Count of Unique AllHouseholdNationalInsuranceNumberIDs " + AllHouseholdNationalInsuranceNumberIDs.size());
+        return result;
+    }
+
+    /**
+     * Loads SHBE collections from a file in directory, filename reporting
+     * progress of loading to PrintWriter pw.
+     *
+     * @param directory
+     * @param filename
+     * @param handler
+     * @return Object[7] result where: ----------------------------------------
+     * result[0] is handler--------------------------------------------------
+     * result[1] is a TreeMap<String, DW_SHBE_Record> representing records
+     * without DRecords, ------------------------------------------------------
+     * result[2] is a HashSet<String> of ClaimantNationalInsuranceNumberIDs,
+     * result[3] is a HashSet<String> of PartnerNationalInsuranceNumberIDs,
+     * result[4] is a HashSet<String> of DependentsNationalInsuranceNumberIDs
+     * result[5] is a HashSet<String> of NonDependentsNationalInsuranceNumberIDs
+     * result[6] is a HashSet<String> of AllHouseholdNationalInsuranceNumberIDs
+     */
+    public Object[] loadInputData(
+            File directory,
+            String filename,
+            DW_SHBE_CollectionHandler handler) {
+        Object[] result = new Object[7];
+        File inputFile = new File(
+                directory,
+                filename);
+        BufferedReader br;
+        br = Generic_StaticIO.getBufferedReader(inputFile);
+        StreamTokenizer st;
+        st = new StreamTokenizer(br);
+        Generic_StaticIO.setStreamTokenizerSyntax5(st);
+        st.wordChars('`', '`');
+        st.wordChars('*', '*');
+        String line = "";
+        int totalCouncilTaxBenefitClaims = 0;
+        int totalCouncilTaxAndHousingBenefitClaims = 0;
+        int totalHousingBenefitClaims = 0;
+
+//        TreeMap<String, DW_SHBE_Record> DRecords;
+//        DRecords = new TreeMap<String, DW_SHBE_Record>();
+//        result[0] = DRecords;
+        result[0] = handler;
+        long recordID = 0L;
+        long collectionID = 0L;
+
+        DW_SHBE_Collection collection;
+        collection = new DW_SHBE_Collection(collectionID, handler);
+        handler.add(collection);
+
+        TreeMap<String, DW_SHBE_Record> SRecordsWithoutDRecords;
+        SRecordsWithoutDRecords = new TreeMap<String, DW_SHBE_Record>();
+        result[1] = SRecordsWithoutDRecords;
+        HashSet<String> ClaimantNationalInsuranceNumberIDs = new HashSet<String>();
+        result[2] = ClaimantNationalInsuranceNumberIDs;
+        HashSet<String> PartnerNationalInsuranceNumberIDs = new HashSet<String>();
+        result[3] = PartnerNationalInsuranceNumberIDs;
+        HashSet<String> DependentsNationalInsuranceNumberIDs = new HashSet<String>();
+        result[4] = DependentsNationalInsuranceNumberIDs;
+        HashSet<String> NonDependentsNationalInsuranceNumberIDs = new HashSet<String>();
+        result[5] = NonDependentsNationalInsuranceNumberIDs;
+        HashSet<String> AllHouseholdNationalInsuranceNumberIDs = new HashSet<String>();
+        result[6] = AllHouseholdNationalInsuranceNumberIDs;
+
+        TreeSet<Long> recordIDsNotLoaded = new TreeSet<Long>();
+
+        long RecordID = 0;
+
+        long DRecordID = 0;
+
+        int countSRecords = 0;
+        int countDRecords = 0;
+        int countOfSRecordsWithoutDRecord = 0;
+
+        try {
+            // Read firstline and check format
+            int type = readAndCheckFirstLine(directory, filename);
+            // Skip the first line
+            Generic_StaticIO.skipline(st);
+            // Read collections
+            int tokenType;
+            tokenType = st.nextToken();
+            while (tokenType != StreamTokenizer.TT_EOF) {
+
+                // For debugging
+                if (RecordID == 10) {
+                    int debug = 1;
+                }
+
+                switch (tokenType) {
+                    case StreamTokenizer.TT_EOL:
+                        //System.out.println(line);
+                        break;
+                    case StreamTokenizer.TT_WORD:
+                        line = st.sval;
+                        if (line.startsWith("S")) {
+                            try {
+                                DW_SHBE_Record SRecord = new DW_SHBE_Record(RecordID, type, line, this);
+                                String councilTaxBenefitClaimReferenceNumber = SRecord.getCouncilTaxBenefitClaimReferenceNumber();
+                                if (handler.lookup.containsKey(councilTaxBenefitClaimReferenceNumber)) {
+                                    //                               if (DRecords.containsKey(councilTaxBenefitClaimReferenceNumber)) {
+                                    //get Drecord and add S record
+//                                    DW_SHBE_Record DRecord = DRecords.get(councilTaxBenefitClaimReferenceNumber);
+                                    long lookupID = handler.lookup.get(councilTaxBenefitClaimReferenceNumber);
+                                    DW_SHBE_Record DRecord = collection.data.get(lookupID);
+                                    if (!DRecord.getSRecords().add(SRecord)) {
+                                        throw new Exception("Duplicate SRecord " + SRecord);
+                                    }
+                                } else {
+                                    //throw new Exception("There is no existing DRecord for SRecord " + SRecord);
+                                    countOfSRecordsWithoutDRecord++;
+                                    DW_SHBE_Record DRecord;
+                                    if (SRecordsWithoutDRecords.containsKey(councilTaxBenefitClaimReferenceNumber)) {
+                                        DRecord = SRecordsWithoutDRecords.get(councilTaxBenefitClaimReferenceNumber);
+                                    } else {
+                                        // Create DRecord
+                                        DRecord = new DW_SHBE_Record(RecordID);
+                                        DRecord.SRecords = new HashSet<DW_SHBE_Record>();
+                                        DRecord.setCouncilTaxBenefitClaimReferenceNumber(councilTaxBenefitClaimReferenceNumber);
+                                    }
+                                    DRecord.SRecords.add(SRecord);
+                                }
+                                String subRecordChildReferenceNumberOrNINO = SRecord.getSubRecordChildReferenceNumberOrNINO();
+                                if (subRecordChildReferenceNumberOrNINO.length() > 0) {
+                                    if (SRecord.getSubRecordType() == 2) {
+                                        NonDependentsNationalInsuranceNumberIDs.add(subRecordChildReferenceNumberOrNINO);
+                                        AllHouseholdNationalInsuranceNumberIDs.add(subRecordChildReferenceNumberOrNINO);
+                                    } else {
+                                        DependentsNationalInsuranceNumberIDs.add(subRecordChildReferenceNumberOrNINO);
+                                        AllHouseholdNationalInsuranceNumberIDs.add(subRecordChildReferenceNumberOrNINO);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                System.err.println(line);
+                                System.err.println("RecordID " + RecordID);
+                                System.err.println(e.getLocalizedMessage());
+                                recordIDsNotLoaded.add(RecordID);
+                            }
+                            countSRecords++;
+                        } else {
+                            // line.startsWith("D")
+                            try {
+                                handler.nextID = DRecordID + 1L;
+
+                                if (handler.nextID % handler._MaximumNumberPerCollection == 0) {
+                                    collectionID++;
+                                    handler.swapToFile_Collection(collection);
+                                    collection = new DW_SHBE_Collection(collectionID, handler);
+                                }
+
+                                DW_SHBE_Record aSHBE_DataRecord;
+                                aSHBE_DataRecord = new DW_SHBE_Record(
+                                        RecordID, type, line, this);
+
+                                collection.addRecord(aSHBE_DataRecord);
+
+//                                Object o;
+//                                o = DRecords.put(
+//                                        aSHBE_DataRecord.getCouncilTaxBenefitClaimReferenceNumber(),
+//                                        aSHBE_DataRecord);
+//                                if (o != null) {
+//                                    DW_SHBE_Record existingSHBE_DataRecord = (DW_SHBE_Record) o;
+//                                    System.out.println("existingSHBE_DataRecord" + existingSHBE_DataRecord);
+//                                    System.out.println("replacementSHBE_DataRecord" + aSHBE_DataRecord);
+//                                }
                                 // Count Council Tax and Housing Benefits and combined claims
                                 if (!aSHBE_DataRecord.getCouncilTaxBenefitClaimReferenceNumber().trim().isEmpty()) {
                                     totalCouncilTaxBenefitClaims++;
@@ -225,6 +509,7 @@ public class SHBE_DataRecord_Handler {
                                 recordIDsNotLoaded.add(RecordID);
                             }
                             countDRecords++;
+                            DRecordID++;
                         }
                         RecordID++;
                         break;
@@ -233,34 +518,51 @@ public class SHBE_DataRecord_Handler {
             }
             br.close();
         } catch (IOException ex) {
-            Logger.getLogger(SHBE_DataRecord_Handler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DW_SHBE_Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
         // Add all SRecords from recordsWithoutDRecords that actually do have 
         // DRecords, it just so happened that the DRecord was read after the 
         // first SRecord
         int countDRecordsInUnexpectedOrder = 0;
-        Set<String> s = recordsWithDRecords.keySet();
-        Iterator<String> ite = recordsWithoutDRecords.keySet().iterator();
+
+        Iterator<Long> collectionsIDIterator;
+        collectionsIDIterator = handler.collections.keySet().iterator();
+        while (collectionsIDIterator.hasNext()) {
+            collectionID = collectionsIDIterator.next();
+            collection = handler.getCollection(collectionID);
+
+        }
+
+        //Set<String> s = DRecords.keySet();
+        Iterator<String> ite = SRecordsWithoutDRecords.keySet().iterator();
         HashSet<String> rem = new HashSet<String>();
         while (ite.hasNext()) {
             String councilTaxBenefitClaimReferenceNumber = ite.next();
-            if (s.contains(councilTaxBenefitClaimReferenceNumber)) {
-                SHBE_DataRecord DRecord = recordsWithDRecords.get(councilTaxBenefitClaimReferenceNumber);
-                DRecord.SRecords.addAll(recordsWithDRecords.get(councilTaxBenefitClaimReferenceNumber).getSRecords());
+            if (handler.lookup.keySet().contains(councilTaxBenefitClaimReferenceNumber)) {
+                //if (s.contains(councilTaxBenefitClaimReferenceNumber)) {
+                //    DW_SHBE_Record DRecord = DRecords.get(councilTaxBenefitClaimReferenceNumber);
+                DRecordID = handler.lookup.get(councilTaxBenefitClaimReferenceNumber);
+                collectionID = handler.getCollection_ID(DRecordID);
+                collection = handler.getCollection(collectionID);
+                DW_SHBE_Record DRecord = collection.getRecord(DRecordID);
+                //DRecord.SRecords.addAll(DRecords.get(councilTaxBenefitClaimReferenceNumber).getSRecords());
+                DRecord.SRecords.add(SRecordsWithoutDRecords.get(councilTaxBenefitClaimReferenceNumber));
                 rem.add(councilTaxBenefitClaimReferenceNumber);
-                countDRecordsInUnexpectedOrder ++;
+                countDRecordsInUnexpectedOrder++;
             }
         }
+        //System.out.println("SRecords that came before DRecords count " + countDRecordsInUnexpectedOrder);
         ite = rem.iterator();
         while (ite.hasNext()) {
-            recordsWithoutDRecords.remove(ite.next());
+            SRecordsWithoutDRecords.remove(ite.next());
         }
+        // Summary report of load
         System.out.println("totalCouncilTaxBenefitClaims " + totalCouncilTaxBenefitClaims);
         System.out.println("totalCouncilTaxAndHousingBenefitClaims " + totalCouncilTaxAndHousingBenefitClaims);
         System.out.println("totalHousingBenefitClaims " + totalHousingBenefitClaims);
-        System.out.println("countDRecords " + countDRecords);
+        System.out.println("countDRecords " + handler.getNextID(true));
         System.out.println("countSRecords " + countSRecords);
-        System.out.println("countOfSRecordsWithoutDRecord " + countOfSRecordsWithoutDRecord);
+        System.out.println("countOfSRecordsWithoutDRecord " + SRecordsWithoutDRecords.size());
         System.out.println("countDRecordsInUnexpectedOrder " + countDRecordsInUnexpectedOrder);
         System.out.println("recordIDsNotLoaded.size() " + recordIDsNotLoaded.size());
         System.out.println("Count of Unique ClaimantNationalInsuranceNumberIDs " + ClaimantNationalInsuranceNumberIDs.size());
@@ -281,8 +583,46 @@ public class SHBE_DataRecord_Handler {
             File directory,
             String filename) {
         int type = 0;
-        String type0Header = "1,2,3,4,8,9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,284,285,286,287,290,291,292,293,294,295,296,297,298,299,308,309,310,311,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341";
-        String type1Header = "1,2,3,4,8,9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,284,285,286,287,290,291,292,293,294,295,296,297,298,299,307,308,309,310,311,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341";
+        String type0Header = "1,2,3,4,8,9,11,12,13,14,15,16,17,18,19,20,21,22,"
+                + "23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,"
+                + "43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,"
+                + "63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,"
+                + "83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,"
+                + "102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,"
+                + "117,118,119,120,121,122,123,124,125,126,130,131,132,133,134,"
+                + "135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,"
+                + "150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,"
+                + "165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,"
+                + "180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,"
+                + "195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,"
+                + "210,211,213,214,215,216,217,218,219,220,221,222,223,224,225,"
+                + "226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,"
+                + "241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,"
+                + "256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,"
+                + "271,272,273,274,275,276,277,278,284,285,286,287,290,291,292,"
+                + "293,294,295,296,297,298,299,308,309,310,311,316,317,318,319,"
+                + "320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,"
+                + "335,336,337,338,339,340,341";
+        String type1Header = "1,2,3,4,8,9,11,12,13,14,15,16,17,18,19,20,21,22,"
+                + "23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,"
+                + "43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,"
+                + "63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,"
+                + "83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,"
+                + "102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,"
+                + "117,118,119,120,121,122,123,124,125,126,130,131,132,133,134,"
+                + "135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,"
+                + "150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,"
+                + "165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,"
+                + "180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,"
+                + "195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,"
+                + "210,211,213,214,215,216,217,218,219,220,221,222,223,224,225,"
+                + "226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,"
+                + "241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,"
+                + "256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,"
+                + "271,272,273,274,275,276,277,278,284,285,286,287,290,291,292,"
+                + "293,294,295,296,297,298,299,307,308,309,310,311,315,316,317,"
+                + "318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,"
+                + "333,334,335,336,337,338,339,340,341";
         File inputFile = new File(
                 directory,
                 filename);
@@ -304,35 +644,37 @@ public class SHBE_DataRecord_Handler {
                 tokenType = st.nextToken();
             }
             br.close();
-            if (line.equalsIgnoreCase(type0Header)) {
+            if (line.startsWith(type0Header)) {
                 return 0;
             }
-            if (line.equalsIgnoreCase(type1Header)) {
+            if (line.startsWith(type1Header)) {
                 return 1;
             } else {
                 String[] lineSplit = line.split(",");
                 System.err.println("Unrecognised header");
                 System.out.println("Number of fields in header " + lineSplit.length);
+                System.out.println("header:");
+                System.out.println(line);
             }
         } catch (IOException ex) {
-            Logger.getLogger(SHBE_DataRecord_Handler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DW_SHBE_Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 2;
     }
 
-    public static Aggregate_SHBE_DataRecord aggregate(HashSet<SHBE_DataRecord> records) {
-        Aggregate_SHBE_DataRecord result = new Aggregate_SHBE_DataRecord();
-        Iterator<SHBE_DataRecord> ite = records.iterator();
+    public static DW_SHBE_RecordAggregate aggregate(HashSet<DW_SHBE_Record> records) {
+        DW_SHBE_RecordAggregate result = new DW_SHBE_RecordAggregate();
+        Iterator<DW_SHBE_Record> ite = records.iterator();
         while (ite.hasNext()) {
-            SHBE_DataRecord aSHBE_DataRecord = ite.next();
+            DW_SHBE_Record aSHBE_DataRecord = ite.next();
             aggregate(aSHBE_DataRecord, result);
         }
         return result;
     }
 
     public static void aggregate(
-            SHBE_DataRecord aSHBE_DataRecord,
-            Aggregate_SHBE_DataRecord a_Aggregate_SHBE_DataRecord) {
+            DW_SHBE_Record aSHBE_DataRecord,
+            DW_SHBE_RecordAggregate a_Aggregate_SHBE_DataRecord) {
         a_Aggregate_SHBE_DataRecord.setTotalClaimCount(a_Aggregate_SHBE_DataRecord.getTotalClaimCount() + 1);
         if (aSHBE_DataRecord.getHousingBenefitClaimReferenceNumber().length() > 2) {
             a_Aggregate_SHBE_DataRecord.setTotalHBClaimCount(a_Aggregate_SHBE_DataRecord.getTotalHBClaimCount() + 1);
@@ -834,7 +1176,7 @@ public class SHBE_DataRecord_Handler {
     }
 
     public static long getClaimantsIncomeTotal(
-            SHBE_DataRecord DRecord) {
+            DW_SHBE_Record DRecord) {
         long result = 0L;
         result += DRecord.getClaimantsIncomeFromAttendanceAllowance();
         result += DRecord.getClaimantsIncomeFromBereavementAllowance();
@@ -875,7 +1217,7 @@ public class SHBE_DataRecord_Handler {
     }
 
     public static long getPartnersIncomeTotal(
-            SHBE_DataRecord DRecord) {
+            DW_SHBE_Record DRecord) {
         long result = 0L;
         result += DRecord.getPartnersIncomeFromAttendanceAllowance();
         result += DRecord.getPartnersIncomeFromBereavementAllowance();
@@ -915,13 +1257,13 @@ public class SHBE_DataRecord_Handler {
     }
 
     public static long getIncomeTotal(
-            SHBE_DataRecord DRecord) {
+            DW_SHBE_Record DRecord) {
         long result = getClaimantsIncomeTotal(DRecord) + getPartnersIncomeTotal(DRecord);
         return result;
     }
 
     public static boolean getUnderOccupancy(
-            SHBE_DataRecord DRecord) {
+            DW_SHBE_Record DRecord) {
         int numberOfBedroomsForLHARolloutCasesOnly = DRecord.getNumberOfBedroomsForLHARolloutCasesOnly();
         if (numberOfBedroomsForLHARolloutCasesOnly > 0) {
             if (numberOfBedroomsForLHARolloutCasesOnly
@@ -934,7 +1276,7 @@ public class SHBE_DataRecord_Handler {
     }
 
     public static int getUnderOccupancyAmount(
-            SHBE_DataRecord DRecord) {
+            DW_SHBE_Record DRecord) {
         int result = 0;
         int numberOfBedroomsForLHARolloutCasesOnly = DRecord.getNumberOfBedroomsForLHARolloutCasesOnly();
         if (numberOfBedroomsForLHARolloutCasesOnly > 0) {
@@ -942,6 +1284,126 @@ public class SHBE_DataRecord_Handler {
                     - DRecord.getNumberOfChildDependents()
                     - DRecord.getNumberOfNonDependents();
         }
+        return result;
+    }
+
+    /**
+     * Method for getting SHBE collections filenames in an array
+     *
+     * @return String[] result of SHBE collections filenames
+     * where--------------------- result[0] = "hb9803_SHBE_206728k April
+     * 2008.csv";------------------------ result[1] = "hb9803_SHBE_234696k
+     * October 2008.csv";---------------------- result[2] = "hb9803_SHBE_265149k
+     * April 2009.csv";------------------------ result[3] = "hb9803_SHBE_295723k
+     * October 2009.csv";---------------------- result[4] = "hb9803_SHBE_329509k
+     * April 2010.csv";------------------------ result[5] = "hb9803_SHBE_363186k
+     * October 2010.csv";---------------------- result[6] = "hb9803_SHBE_391746k
+     * March 2011.csv";------------------------ result[7] = "hb9803_SHBE_397524k
+     * April 2011.csv";------------------------ result[8] = "hb9803_SHBE_415181k
+     * July 2011.csv";------------------------- result[9] = "hb9803_SHBE_433970k
+     * October 2011.csv";---------------------- result[11] =
+     * "hb9803_SHBE_470742k April 2012.csv";----------------------- result[12] =
+     * "hb9803_SHBE_490903k July 2012.csv";------------------------ result[13] =
+     * "hb9803_SHBE_511038k October 2012.csv";--------------------- result[14] =
+     * "hb9803_SHBE_530243k January 2013.csv";--------------------- result[15] =
+     * "hb9803_SHBE_536123k February 2013.csv";-------------------- result[16] =
+     * "hb9991_SHBE_543169k March 2013.csv";----------------------- result[17] =
+     * "hb9991_SHBE_549416k April 2013.csv";----------------------- result[18] =
+     * "hb9991_SHBE_555086k May 2013.csv";------------------------- result[19] =
+     * "hb9991_SHBE_562036k June 2013.csv";------------------------ result[20] =
+     * "hb9991_SHBE_568694k July 2013.csv";------------------------ result[21] =
+     * "hb9991_SHBE_576432k August 2013.csv";---------------------- result[22] =
+     * "hb9991_SHBE_582832k September 2013.csv";------------------- result[23] =
+     * "hb9991_SHBE_589664k Oct 2013.csv";-------------------------- result[24]
+     * = "hb9991_SHBE_596500k Nov 2013.csv";------------------------- result[25]
+     * = "hb9991_SHBE_603335k Dec 2013.csv";------------------------- result[26]
+     * = "hb9991_SHBE_609791k Jan 2014.csv";------------------------- result[27]
+     * = "hb9991_SHBE_615103k Feb 2014.csv";------------------------- result[28]
+     * = "hb9991_SHBE_621666k Mar 2014.csv";------------------------- result[29]
+     * = "hb9991_SHBE_629066k Apr 2014.csv";-------------------------
+     */
+    public static String[] getSHBEFilenamesAll() {
+        String[] result = new String[42];
+        result[0] = "hb9803_SHBE_206728k April 2008.csv";
+        result[1] = "hb9803_SHBE_234696k October 2008.csv";
+        result[2] = "hb9803_SHBE_265149k April 2009.csv";
+        result[3] = "hb9803_SHBE_295723k October 2009.csv";
+        result[4] = "hb9803_SHBE_329509k April 2010.csv";
+        result[5] = "hb9803_SHBE_363186k October 2010.csv";
+        result[6] = "hb9803_SHBE_391746k March 2011.csv"; // This almost certainly should be January!
+        result[7] = "hb9803_SHBE_397524k April 2011.csv";
+        result[8] = "hb9803_SHBE_415181k July 2011.csv";
+        result[9] = "hb9803_SHBE_433970k October 2011.csv";
+        result[10] = "hb9803_SHBE_451836k January 2012.csv";
+        result[11] = "hb9803_SHBE_470742k April 2012.csv";
+        result[12] = "hb9803_SHBE_490903k July 2012.csv";
+        result[13] = "hb9803_SHBE_511038k October 2012.csv";
+        result[14] = "hb9803_SHBE_530243k January 2013.csv";
+        result[15] = "hb9803_SHBE_536123k February 2013.csv";
+        result[16] = "hb9991_SHBE_543169k March 2013.csv";
+        result[17] = "hb9991_SHBE_549416k April 2013.csv";
+        result[18] = "hb9991_SHBE_555086k May 2013.csv";
+        result[19] = "hb9991_SHBE_562036k June 2013.csv";
+        result[20] = "hb9991_SHBE_568694k July 2013.csv";
+        result[21] = "hb9991_SHBE_576432k August 2013.csv";
+        result[22] = "hb9991_SHBE_582832k September 2013.csv";
+        result[23] = "hb9991_SHBE_589664k Oct 2013.csv";
+        result[24] = "hb9991_SHBE_596500k Nov 2013.csv";
+        result[25] = "hb9991_SHBE_603335k Dec 2013.csv";
+        result[26] = "hb9991_SHBE_609791k Jan 2014.csv";
+        result[27] = "hb9991_SHBE_615103k Feb 2014.csv";
+        result[28] = "hb9991_SHBE_621666k Mar 2014.csv";
+        result[29] = "hb9991_SHBE_629066k Apr 2014.csv";
+        result[30] = "hb9991_SHBE_635115k May 2014.csv";
+        result[31] = "hb9991_SHBE_641800k June 2014.csv";
+        result[32] = "hb9991_SHBE_648859k July 2014.csv";
+        result[33] = "hb9991_SHBE_656520k August 2014.csv";
+        result[34] = "hb9991_SHBE_663169k September 2014.csv";
+        result[35] = "hb9991_SHBE_670535k October 2014.csv";
+        result[36] = "hb9991_SHBE_677543k November 2014.csv";
+        result[37] = "hb9991_SHBE_684519k December 2014.csv";
+        result[38] = "hb9991_SHBE_691401k January 2015.csv";
+        result[39] = "hb9991_SHBE_697933k February 2015.csv";
+        result[40] = "hb9991_SHBE_705679k March 2015.csv";
+        result[41] = "hb9991_SHBE_712197k April 2015.csv";
+        return result;
+    }
+
+    /**
+     * For example for SHBEFilename "hb9991_SHBE_555086k May 2013.csv", this
+     * returns "May"
+     *
+     * @param SHBEFilename
+     * @return
+     */
+    public static String getMonth(String SHBEFilename) {
+        return SHBEFilename.split(" ")[1];
+    }
+
+    /**
+     * For example for SHBEFilename "hb9991_SHBE_555086k May 2013.csv", this
+     * returns "2013"
+     *
+     * @param SHBEFilename
+     * @return
+     */
+    public static String getYear(String SHBEFilename) {
+        return SHBEFilename.split(" ")[2].substring(0, 4);
+    }
+
+    /**
+     * Method for getting SHBE collections filenames in an array
+     *
+     * @return String[] SHBE collections filenames
+     */
+    public static String[] getSHBEFilenamesSome() {
+        String[] result = new String[6];
+        result[0] = "hb9991_SHBE_549416k April 2013.csv";
+        result[1] = "hb9991_SHBE_555086k May 2013.csv";
+        result[2] = "hb9991_SHBE_562036k June 2013.csv";
+        result[3] = "hb9991_SHBE_568694k July 2013.csv";
+        result[4] = "hb9991_SHBE_576432k August 2013.csv";
+        result[5] = "hb9991_SHBE_582832k September 2013.csv";
         return result;
     }
 }

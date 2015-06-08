@@ -22,14 +22,14 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied;
  *
  * @author geoagdt
  */
-public class UnderOccupiedReport_DataRecord {
+public class DW_UnderOccupiedReport_Record {
 
     /**
      * 0 RecordID
      */
     private long RecordID;
     /**
-     * If ClaimREferenceNumber ends in X this is X otherwise this is blank
+     * If ClaimReferenceNumber ends in X this is X otherwise this is blank
      */
     private String RecordType;
     /**
@@ -77,10 +77,10 @@ public class UnderOccupiedReport_DataRecord {
      */
     private double TotalRentArrears;
 
-    public UnderOccupiedReport_DataRecord(
+    public DW_UnderOccupiedReport_Record(
             long RecordID,
             String line,
-            UnderOccupiedReport_DataRecord_Handler aUnderOccupiedReport_DataHandler) throws Exception {
+            DW_UnderOccupiedReport_Handler aUnderOccupiedReport_DataHandler) throws Exception {
         this.RecordID = RecordID;
         String[] fields = line.split(",");
         int n = 0;
@@ -317,6 +317,58 @@ public class UnderOccupiedReport_DataRecord {
         this.TotalRentArrears = TotalRentArrears;
     }
 
-    
-    
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 83 * hash + (this.ClaimReferenceNumber != null ? this.ClaimReferenceNumber.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DW_UnderOccupiedReport_Record other = (DW_UnderOccupiedReport_Record) obj;
+        if ((this.RecordType == null) ? (other.RecordType != null) : !this.RecordType.equals(other.RecordType)) {
+            return false;
+        }
+        if ((this.ClaimReferenceNumber == null) ? (other.ClaimReferenceNumber != null) : !this.ClaimReferenceNumber.equals(other.ClaimReferenceNumber)) {
+            return false;
+        }
+        if (this.BedroomRequirement != other.BedroomRequirement) {
+            return false;
+        }
+        if (this.BedroomsInProperty != other.BedroomsInProperty) {
+            return false;
+        }
+        if (this.MaleChildrenUnder10 != other.MaleChildrenUnder10) {
+            return false;
+        }
+        if (this.FemaleChildrenUnder10 != other.FemaleChildrenUnder10) {
+            return false;
+        }
+        if (this.MaleChildren10to16 != other.MaleChildren10to16) {
+            return false;
+        }
+        if (this.FemaleChildren10to16 != other.FemaleChildren10to16) {
+            return false;
+        }
+        if (this.ChildrenOver16 != other.ChildrenOver16) {
+            return false;
+        }
+        if (this.TotalDependentChildren != other.TotalDependentChildren) {
+            return false;
+        }
+        if (this.NonDependents != other.NonDependents) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.TotalRentArrears) != Double.doubleToLongBits(other.TotalRentArrears)) {
+            return false;
+        }
+        return true;
+    }
 }

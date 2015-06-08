@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeGeocoder;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
@@ -55,13 +55,6 @@ public abstract class DW_Processor {
         return result;
     }
 
-    public static AGDT_Point getPointFromPostcode(String postcode) {
-        AGDT_Point result;
-        String formattedPostcode;
-        formattedPostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
-        result = DW_Maps.getONSPDlookups()[0].get(formattedPostcode);
-        return result;
-    }
 
 //    protected File _DW_directory;
 //    protected PrintWriter pw;
@@ -166,152 +159,6 @@ public abstract class DW_Processor {
             initOddPostcodes();
         }
         return oddPostcodes;
-    }
-
-    protected String formatPostcodeDistrict(String postcodeDistrict) {
-        String formattedPostcode = formatOddPostcodes(postcodeDistrict);
-        if (getExpectedPostcodes().contains(formattedPostcode)) {
-            return formattedPostcode;
-        } else {
-            return "NotLS";
-//            if (formattedPostcode.equalsIgnoreCase(postcodeDistrict)) {
-//                return "NotLS";
-//            } 
-        }
-    }
-
-    protected String formatOddPostcodes(String postcodeDistrict) {
-        if (getOddPostcodes().contains(postcodeDistrict)) {
-            if (postcodeDistrict.equalsIgnoreCase("")) {
-                return "NotRecorded";
-            }
-//            if (postcodeDistrict.equalsIgnoreCase("DL8")) {
-//                return "NotLS";
-//            }
-//            if (postcodeDistrict.equalsIgnoreCase("G71")) {
-//                return "NotLS";
-//            }
-            if (postcodeDistrict.equalsIgnoreCase("L1")) {
-                return "LS1";
-            }
-            if (postcodeDistrict.equalsIgnoreCase("LS06")) {
-                return "LS6";
-            }
-            if (postcodeDistrict.equalsIgnoreCase("LS08")) {
-                return "LS8";
-            }
-            if (postcodeDistrict.equalsIgnoreCase("LS09")) {
-                return "LS9";
-            }
-            if (postcodeDistrict.equalsIgnoreCase("LS104UH")) {
-                return "LS10";
-            }
-            if (postcodeDistrict.equalsIgnoreCase("LS83")) {
-                return "LS8";
-            }
-            if (postcodeDistrict.equalsIgnoreCase("LS97")) {
-                return "LS9";
-            }
-//            if (postcodeDistrict.equalsIgnoreCase("TF9")) {
-//                return "NotLS";
-//            }
-//            if (postcodeDistrict.equalsIgnoreCase("TW5")) {
-//                return "NotLS";
-//            }
-        }
-        return postcodeDistrict;
-    }
-
-    /**
-     *
-     * @param unformattedUnitPostcode
-     * @return A better format of the unformattedUnitPostcode
-     */
-    public static String formatPostcode(String unformattedUnitPostcode) {
-        String result = unformattedUnitPostcode.trim();
-        String[] postcodeSplit = result.split(" ");
-        if (postcodeSplit.length > 3) {
-            System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " cannot be formatted into a unit postcode");
-        } else {
-            if (postcodeSplit.length == 3) {
-                result = postcodeSplit[0] + postcodeSplit[1] + " " + postcodeSplit[2];
-                if (postcodeSplit[2].length() != 3) {
-                    //This is not of the form NAA and so is not a unit postcode
-                    //System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " cannot be formatted into a unit postcode");
-                }
-            } else {
-                if (postcodeSplit.length == 2) {
-                    result = postcodeSplit[0] + " " + postcodeSplit[1];
-                    if (postcodeSplit[1].length() != 3) {
-                        //This is not of the form NAA and so is not a unit postcode
-                        //System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " cannot be formatted into a unit postcode");
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    /**
-     * @param unformattedUnitPostcode
-     * @return A format of the unformattedUnitPostcode for ONSPD lookups For
-     * example this will return "LS11OJS" for an unformattedUnitPostcode = "LS11
-     * 0JS"
-     */
-    public static String formatPostcodeForONSPDLookup(String unformattedUnitPostcode) {
-        String result = unformattedUnitPostcode.trim();
-        String[] postcodeSplit = result.split(" ");
-        if (postcodeSplit.length > 3) {
-            System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " cannot be formatted into a unit postcode");
-        } else {
-            if (postcodeSplit.length == 3) {
-                result = postcodeSplit[0] + postcodeSplit[1] + " " + postcodeSplit[2];
-                if (postcodeSplit[2].length() != 3) {
-                    //This is not of the form NAA and so is not a unit postcode
-                    //System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " cannot be formatted into a unit postcode");
-                }
-            } else {
-                if (postcodeSplit.length == 2) {
-                    result = postcodeSplit[0] + " " + postcodeSplit[1];
-                    if (postcodeSplit[1].length() != 3) {
-                        //This is not of the form NAA and so is not a unit postcode
-                        //System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " cannot be formatted into a unit postcode");
-                    }
-                }
-            }
-        }
-        if (result.length() == 8) {
-            result = result.replaceAll(" ", "");
-        }
-        result = Generic_StaticString.getUpperCase(result);
-        return result;
-    }
-
-    /**
-     * For Unit Postcode "LS2 9JT": Postcode Sector = "LS2 9"
-     *
-     * @param unitPostcode
-     * @return
-     * @throws java.lang.Exception
-     */
-    public static String getPostcodeSector(String unitPostcode) throws Exception {
-        String[] postcodeParts = unitPostcode.split(" ");
-        if (postcodeParts.length != 2) {
-            throw new Exception("postcode format exception in getPostcodeSector(" + unitPostcode + " )");
-        }
-        String result = postcodeParts[0] + " " + postcodeParts[1].substring(0, 1);
-        //return unitPostcode.substring(0, unitPostcode.length() - 2);
-        return result;
-    }
-
-    /**
-     * For Unit Postcode "LS2 9JT": Postcode District = "LS2";
-     *
-     * @param unitPostcode
-     * @return
-     */
-    public static String getPostcodeDistrict(String unitPostcode) {
-        return unitPostcode.split(" ")[0];
     }
 
     /**
@@ -469,43 +316,43 @@ public abstract class DW_Processor {
         return result;
     }
 
-    /**
-     * @return TreeMap<String, String[]> result where:--------------------------
-     * Keys are postcodes; values are for level "MSOA" are:---------------------
-     * values[0] = rec.getOa01();-----------------------------------------------
-     * values[1] = rec.getMsoa01();---------------------------------------------
-     * values[2] = rec.getOa11();-----------------------------------------------
-     * values[3] = rec.getMsoa11();---------------------------------------------
-     * values are for level "LSOA" are:-----------------------------------------
-     * values[0] = rec.getOa01();-----------------------------------------------
-     * values[1] = rec.getLsoa01();---------------------------------------------
-     * values[2] = rec.getOa11();-----------------------------------------------
-     * values[3] = rec.getLsoa11();---------------------------------------------
-     */
-    private static TreeMap<String, String[]> initLookupFromPostcodeToCensusCodes(String level) {
-        TreeMap<String, String[]> result = null;
-        File inputDirectory = new File("/scratch01/Work/Projects/NewEnclosures/ONSPD/Data/");
-        String inputFilename = inputFilename = "ONSPD_AUG_2013_UK_O.csv";
-        File inFile = new File(inputDirectory, inputFilename);
-        File outputDirectory = new File("/scratch02/DigitalWelfare/ONSPD/processed");
-        String outputFilename;
-        File outFile;
-        if (level.equalsIgnoreCase("MSOA")) {
-            outputFilename = "PostcodeLookUp_TreeMap_String_Strings.thisFile";
-            outFile = new File(outputDirectory, outputFilename);
-            //new PostcodeGeocoder(inFile, outFile).getPostcodeUnitPointLookup();
-            //new PostcodeGeocoder(inFile, outFile).run1();
-            result = new PostcodeGeocoder(inFile, outFile).getPostcodeUnitCensusCodesLookup();
-        }
-        if (level.equalsIgnoreCase("LSOA")) {
-            outputFilename = "PostcodeToLSOALookUp_TreeMap_String_Strings.thisFile";
-            outFile = new File(outputDirectory, outputFilename);
-            //new PostcodeGeocoder(inFile, outFile).getPostcodeUnitPointLookup();
-            //new PostcodeGeocoder(inFile, outFile).run1();
-            result = new PostcodeGeocoder(inFile, outFile).run4();
-        }
-        return result;
-    }
+//    /**
+//     * @return TreeMap<String, String[]> result where:--------------------------
+//     * Keys are postcodes; values are for level "MSOA" are:---------------------
+//     * values[0] = rec.getOa01();-----------------------------------------------
+//     * values[1] = rec.getMsoa01();---------------------------------------------
+//     * values[2] = rec.getOa11();-----------------------------------------------
+//     * values[3] = rec.getMsoa11();---------------------------------------------
+//     * values are for level "LSOA" are:-----------------------------------------
+//     * values[0] = rec.getOa01();-----------------------------------------------
+//     * values[1] = rec.getLsoa01();---------------------------------------------
+//     * values[2] = rec.getOa11();-----------------------------------------------
+//     * values[3] = rec.getLsoa11();---------------------------------------------
+//     */
+//    private static TreeMap<String, String[]> initLookupFromPostcodeToCensusCodes(String level) {
+//        TreeMap<String, String[]> result = null;
+//        File inputDirectory = new File("/scratch01/Work/Projects/NewEnclosures/ONSPD/Data/");
+//        String inputFilename = inputFilename = "ONSPD_AUG_2013_UK_O.csv";
+//        File inFile = new File(inputDirectory, inputFilename);
+//        File outputDirectory = new File("/scratch02/DigitalWelfare/ONSPD/processed");
+//        String outputFilename;
+//        File outFile;
+//        if (level.equalsIgnoreCase("MSOA")) {
+//            outputFilename = "PostcodeLookUp_TreeMap_String_Strings.thisFile";
+//            outFile = new File(outputDirectory, outputFilename);
+//            //new DW_Postcode_Handler(inFile, outFile).getPostcodeUnitPointLookup();
+//            //new DW_Postcode_Handler(inFile, outFile).run1();
+//            result = new DW_Postcode_Handler(inFile, outFile).getPostcodeUnitCensusCodesLookup();
+//        }
+//        if (level.equalsIgnoreCase("LSOA")) {
+//            outputFilename = "PostcodeToLSOALookUp_TreeMap_String_Strings.thisFile";
+//            outFile = new File(outputDirectory, outputFilename);
+//            //new DW_Postcode_Handler(inFile, outFile).getPostcodeUnitPointLookup();
+//            //new DW_Postcode_Handler(inFile, outFile).run1();
+//            result = new DW_Postcode_Handler(inFile, outFile).run4();
+//        }
+//        return result;
+//    }
 
     /**
      * @return TreeMap<String, String> result where:----------------------------
@@ -517,7 +364,7 @@ public abstract class DW_Processor {
             String level,
             int year) {
         TreeMap<String, String> result = null;
-        result = new PostcodeGeocoder(tONSPD_NOV_2013DataFile, outFile).getPostcodeUnitCensusCodeLookup(
+        result = new DW_Postcode_Handler(tONSPD_NOV_2013DataFile, outFile).getPostcodeUnitCensusCodeLookup(
                 level,
                 year);
         return result;
@@ -572,34 +419,10 @@ public abstract class DW_Processor {
 
     public static TreeMap<String, AGDT_Point> getOutletsAndPoints() {
         TreeMap<String, AGDT_Point> result;
-        result = postcodeToPoints(getOutletsAndPostcodes());
+        result = DW_Postcode_Handler.postcodeToPoints(DW_Processor.getOutletsAndPostcodes());
         return result;
     }
 
-    /**
-     * @param input TreeMap<String, String> where values are postcodes for which
- the coordinates are to be returned as a AGDT_Point.
-     * @return TreeMap<String, AGDT_Point> with the keys as in input and values
-     * calculated using getPointFromPostcode(value). If no look up is found for
-     * a postcode its key does not get put into the result.
-     */
-    public static TreeMap<String, AGDT_Point> postcodeToPoints(
-            TreeMap<String, String> input) {
-        TreeMap<String, AGDT_Point> result;
-        result = new TreeMap<String, AGDT_Point>();
-        Iterator<String> ite_String = input.keySet().iterator();
-        while (ite_String.hasNext()) {
-            String key = ite_String.next();
-            String postcode = input.get(key);
-            AGDT_Point p = getPointFromPostcode(postcode);
-            if (p == null) {
-                System.out.println("No point for postcode " + postcode);
-            } else {
-                result.put(key, p);
-            }
-        }
-        return result;
-    }
 
     public static TreeMap<String, String> getAdviceLeedsNamesAndPostcodes() {
         TreeMap<String, String> result;
@@ -669,7 +492,49 @@ public abstract class DW_Processor {
 
     public static TreeMap<String, AGDT_Point> getAdviceLeedsNamesAndPoints() {
         TreeMap<String, AGDT_Point> result;
-        result = postcodeToPoints(getAdviceLeedsNamesAndPostcodes());
+        result = DW_Postcode_Handler.postcodeToPoints(DW_Processor.getAdviceLeedsNamesAndPostcodes());
         return result;
+    }
+
+    public String formatPostcodeDistrict(String postcodeDistrict) {
+        String formattedPostcode = formatOddPostcodes(postcodeDistrict);
+        if (this.getExpectedPostcodes().contains(formattedPostcode)) {
+            return formattedPostcode;
+        } else {
+            return "NotLS";
+            //            if (formattedPostcode.equalsIgnoreCase(postcodeDistrict)) {
+            //                return "NotLS";
+            //            }
+        }
+    }
+
+    protected String formatOddPostcodes(String postcodeDistrict) {
+        if (this.getOddPostcodes().contains(postcodeDistrict)) {
+            if (postcodeDistrict.equalsIgnoreCase("")) {
+                return "NotRecorded";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("L1")) {
+                return "LS1";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("LS06")) {
+                return "LS6";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("LS08")) {
+                return "LS8";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("LS09")) {
+                return "LS9";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("LS104UH")) {
+                return "LS10";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("LS83")) {
+                return "LS8";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("LS97")) {
+                return "LS9";
+            }
+        }
+        return postcodeDistrict;
     }
 }

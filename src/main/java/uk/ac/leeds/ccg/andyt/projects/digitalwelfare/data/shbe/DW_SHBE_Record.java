@@ -18,18 +18,19 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
 /**
  *
  * @author geoagdt
  */
-public class SHBE_DataRecord {
+public class DW_SHBE_Record implements Serializable {
 
     /**
      * SRecords associated with a DRecord
      */
-    protected HashSet<SHBE_DataRecord> SRecords;
+    protected HashSet<DW_SHBE_Record> SRecords;
     /**
      * 0 RecordID
      */
@@ -1171,9 +1172,10 @@ public class SHBE_DataRecord {
 
     /**
      * Creates a null record in case this is needed
-     * @param RecordID 
+     *
+     * @param RecordID
      */
-    public SHBE_DataRecord(
+    public DW_SHBE_Record(
             long RecordID) {
         this.RecordID = RecordID;
     }
@@ -1260,52 +1262,77 @@ public class SHBE_DataRecord {
      * 310,311,315,316,317,318,319, 320,321,322,323,324,325,326,327,328,329,
      * 330,331,332,333,334,335,336,337,338,339, 340,341
      * @param line
-     * @param aSHBE_DataHandler
+     * @param handler
      * @throws java.lang.Exception
      */
-    public SHBE_DataRecord(
+    public DW_SHBE_Record(
             long RecordID,
             int type,
             String line,
-            SHBE_DataRecord_Handler aSHBE_DataHandler) throws Exception {
+            DW_SHBE_Handler handler) throws Exception {
+        this.RecordID = RecordID;
         if (line.startsWith("S")) {
-            //System.out.println("S record");
-            this.RecordID = RecordID;
-            String[] fields = line.split(",");
-            if (fields.length != 275) {
-                if (fields.length > 284) {
-                    if (fields.length > 290) {
-                        System.out.println("fields.length " + fields.length);
-                        System.out.println("RecordID " + RecordID);
-                        System.out.println(line);
-                    }
-                }
-            }
-            int n = 0;
+            //System.out.println("S Record");
+            generateSRecord(
+                    type,
+                    line,
+                    handler);
+        } else {
+            //line.startsWith("D");
+            //System.out.println("D Record");
+            generateDRecord(
+                    type,
+                    line,
+                    handler);
+        }
+    }
+
+    private void generateSRecord(
+            int type,
+            String line,
+            DW_SHBE_Handler handler) throws Exception {
+        String[] fields = line.split(",");
+        int n = 0;
+        int expectedFieldsLength = 290;
+        try {
+//            if (fields.length != expectedFieldsLength) {
+//                System.out.println("fields.length " + fields.length);
+//                System.out.println("RecordID " + RecordID);
+//                System.out.println(line);
+//            }
             RecordType = fields[n];
-            if (!aSHBE_DataHandler.getRecordTypes().contains(RecordType)) {
-//            System.out.println("RecordType " + RecordType);
-//            System.out.println("!aSHBE_DataHandler.getRecordTypes().contains(RecordType)");
-                throw new Exception("!aSHBE_DataHandler.getRecordTypes().contains(RecordType)");
+            if (!handler.getRecordTypes().contains(RecordType)) {
+                System.out.println("RecordType " + RecordType);
+                System.out.println("!handler.getRecordTypes().contains(RecordType)");
+                System.out.println("handler.toString() " + handler.toString());
+                throw new Exception("!handler.getRecordTypes().contains(RecordType)");
             }
             n++;
-            HousingBenefitClaimReferenceNumber = fields[n];
-            //HousingBenefitClaimReferenceNumber = Long.valueOf(fields[n]);
+            if (n < fields.length) {
+                setHousingBenefitClaimReferenceNumber(fields[n]);
+            }
             n++;
-            CouncilTaxBenefitClaimReferenceNumber = fields[n];
-            //CouncilTaxBenefitClaimReferenceNumber = Long.valueOf(fields[n]);
+            if (n < fields.length) {
+                setCouncilTaxBenefitClaimReferenceNumber(fields[n]);
+            }
             n++;
-            ClaimantsNationalInsuranceNumber = fields[n];
+            if (n < fields.length) {
+                ClaimantsNationalInsuranceNumber = fields[n];
+            }
             //ClaimantsTitle = fields[n];
             //ClaimantsSurname = fields[n];
             //ClaimantsFirstForename = fields[n;
             n++;
-            ClaimantsDateOfBirth = fields[n];
+            if (n < fields.length) {
+                ClaimantsDateOfBirth = fields[n];
+            }
             n++;
-            if (fields[n].isEmpty()) {
-                TenancyType = -999;
-            } else {
-                TenancyType = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].isEmpty()) {
+                    TenancyType = -999;
+                } else {
+                    TenancyType = Integer.valueOf(fields[n]);
+                }
             }
 //            if (TenancyType > 9 || TenancyType < 1) {
 ////            System.out.println("TenancyType " + TenancyType);
@@ -1314,12 +1341,16 @@ public class SHBE_DataRecord {
 //            }
             //ClaimantsAddressLine1 = fields[n];
             n++;
-            ClaimantsPostcode = fields[n];
+            if (n < fields.length) {
+                ClaimantsPostcode = fields[n];
+            }
             n++; //7
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PassportedStandardIndicator = 0;
-            } else {
-                PassportedStandardIndicator = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PassportedStandardIndicator = 0;
+                } else {
+                    PassportedStandardIndicator = Integer.valueOf(fields[n]);
+                }
             }
 //            if (PassportedStandardIndicator > 5 || PassportedStandardIndicator < 0) {
 ////            System.out.println("PassportedStandardIndicator " + PassportedStandardIndicator);
@@ -1327,22 +1358,28 @@ public class SHBE_DataRecord {
 //                throw new Exception("PassportedStandardIndicator > 5 || PassportedStandardIndicator < 0");
 //            }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NumberOfChildDependents = 0;
-            } else {
-                NumberOfChildDependents = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NumberOfChildDependents = 0;
+                } else {
+                    NumberOfChildDependents = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NumberOfNonDependents = 0;
-            } else {
-                NumberOfNonDependents = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NumberOfNonDependents = 0;
+                } else {
+                    NumberOfNonDependents = Integer.valueOf(fields[n]);
+                }
             }
             n += 2; //10
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NonDependentStatus = 0;
-            } else {
-                NonDependentStatus = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NonDependentStatus = 0;
+                } else {
+                    NonDependentStatus = Integer.valueOf(fields[n]);
+                }
             }
 //            if (NonDependentStatus > 8 || NonDependentStatus < 0) {
 ////            System.out.println("NonDependentStatus " + NonDependentStatus);
@@ -1350,16 +1387,20 @@ public class SHBE_DataRecord {
 //                throw new Exception("NonDependentStatus > 8 || NonDependentStatus < 0");
 //            }
             n++; //12
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NonDependentDeductionAmountApplied = 0;
-            } else {
-                NonDependentDeductionAmountApplied = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NonDependentDeductionAmountApplied = 0;
+                } else {
+                    NonDependentDeductionAmountApplied = Integer.valueOf(fields[n]);
+                }
             }
             n = 28;
-            if (fields[n].isEmpty()) {
-                StatusOfHBClaimAtExtractDate = -999;
-            } else {
-                StatusOfHBClaimAtExtractDate = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].isEmpty()) {
+                    StatusOfHBClaimAtExtractDate = -999;
+                } else {
+                    StatusOfHBClaimAtExtractDate = Integer.valueOf(fields[n]);
+                }
             }
 //            if (StatusOfHBClaimAtExtractDate > 2 || StatusOfHBClaimAtExtractDate < 0) {
 ////            System.out.println("StatusOfHBClaimAtExtractDate " + StatusOfHBClaimAtExtractDate);
@@ -1367,10 +1408,12 @@ public class SHBE_DataRecord {
 //                throw new Exception("StatusOfHBClaimAtExtractDate > 2 || StatusOfHBClaimAtExtractDate < 0");
 //            }
             n++;
-            if (fields[n].isEmpty()) {
-                StatusOfCTBClaimAtExtractDate = -999;
-            } else {
-                StatusOfCTBClaimAtExtractDate = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].isEmpty()) {
+                    StatusOfCTBClaimAtExtractDate = -999;
+                } else {
+                    StatusOfCTBClaimAtExtractDate = Integer.valueOf(fields[n]);
+                }
             }
 //            if (StatusOfCTBClaimAtExtractDate > 2 || StatusOfCTBClaimAtExtractDate < 0) {
 ////            System.out.println("StatusOfCTBClaimAtExtractDate " + StatusOfCTBClaimAtExtractDate);
@@ -1378,18 +1421,28 @@ public class SHBE_DataRecord {
 //                throw new Exception("StatusOfCTBClaimAtExtractDate > 2 || StatusOfCTBClaimAtExtractDate < 0");
 //            }
             n++; //30
-            DateMostRecentHBClaimWasReceived = fields[n];
+            if (n < fields.length) {
+                DateMostRecentHBClaimWasReceived = fields[n];
+            }
             n++;
-            DateMostRecentCTBClaimWasReceived = fields[n];
+            if (n < fields.length) {
+                DateMostRecentCTBClaimWasReceived = fields[n];
+            }
             n++;
-            DateOfFirstDecisionOnMostRecentHBClaim = fields[n];
+            if (n < fields.length) {
+                DateOfFirstDecisionOnMostRecentHBClaim = fields[n];
+            }
             n++;
-            DateOfFirstDecisionOnMostRecentCTBClaim = fields[n];
+            if (n < fields.length) {
+                DateOfFirstDecisionOnMostRecentCTBClaim = fields[n];
+            }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                OutcomeOfFirstDecisionOnMostRecentHBClaim = 0;
-            } else {
-                OutcomeOfFirstDecisionOnMostRecentHBClaim = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    OutcomeOfFirstDecisionOnMostRecentHBClaim = 0;
+                } else {
+                    OutcomeOfFirstDecisionOnMostRecentHBClaim = Integer.valueOf(fields[n]);
+                }
             }
 //            if (OutcomeOfFirstDecisionOnMostRecentHBClaim > 6 || OutcomeOfFirstDecisionOnMostRecentHBClaim < 0) {
 ////            System.out.println("OutcomeOfFirstDecisionOnMostRecentHBClaim " + OutcomeOfFirstDecisionOnMostRecentHBClaim);
@@ -1408,35 +1461,47 @@ public class SHBE_DataRecord {
 //                throw new Exception("OutcomeOfFirstDecisionOnMostRecentCTBClaim > 6 || OutcomeOfFirstDecisionOnMostRecentCTBClaim < 0");
 //            }
             n++;
-            HBClaimEntitlementStartDate = fields[n];
+            if (n < fields.length) {
+                HBClaimEntitlementStartDate = fields[n];
+            }
             n += 2;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyHousingBenefitEntitlement = 0;
-            } else {
-                WeeklyHousingBenefitEntitlement = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyHousingBenefitEntitlement = 0;
+                } else {
+                    WeeklyHousingBenefitEntitlement = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyCouncilTaxBenefitEntitlement = 0;
-            } else {
-                WeeklyCouncilTaxBenefitEntitlement = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyCouncilTaxBenefitEntitlement = 0;
+                } else {
+                    WeeklyCouncilTaxBenefitEntitlement = Integer.valueOf(fields[n]);
+                }
             }
             n++; //40
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                FrequencyOfPaymentOfHB = 0;
-            } else {
-                FrequencyOfPaymentOfHB = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    FrequencyOfPaymentOfHB = 0;
+                } else {
+                    FrequencyOfPaymentOfHB = Integer.valueOf(fields[n]);
+                }
             }
-            if (FrequencyOfPaymentOfHB > 99 || FrequencyOfPaymentOfHB < 0) {
+            if (n < fields.length) {
+                if (FrequencyOfPaymentOfHB > 99 || FrequencyOfPaymentOfHB < 0) {
 //            System.out.println("FrequencyOfPaymentOfHB " + FrequencyOfPaymentOfHB);
 //            System.out.println("FrequencyOfPaymentOfHB > 99 || FrequencyOfPaymentOfHB < 0");
-                throw new Exception("FrequencyOfPaymentOfHB > 99 || FrequencyOfPaymentOfHB < 0");
+                    throw new Exception("FrequencyOfPaymentOfHB > 99 || FrequencyOfPaymentOfHB < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                FrequencyOfPaymentOfCTB = 0;
-            } else {
-                FrequencyOfPaymentOfCTB = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    FrequencyOfPaymentOfCTB = 0;
+                } else {
+                    FrequencyOfPaymentOfCTB = Integer.valueOf(fields[n]);
+                }
             }
             if (FrequencyOfPaymentOfCTB != 3 && FrequencyOfPaymentOfCTB != 0) {
 //            System.out.println("FrequencyOfPaymentOfCTB " + FrequencyOfPaymentOfCTB);
@@ -1444,88 +1509,114 @@ public class SHBE_DataRecord {
                 throw new Exception("FrequencyOfPaymentOfCTB != 3 && FrequencyOfPaymentOfCTB != 0");
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PreDeterminationAmountOfHB = 0;
-            } else {
-                PreDeterminationAmountOfHB = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PreDeterminationAmountOfHB = 0;
+                } else {
+                    PreDeterminationAmountOfHB = Integer.valueOf(fields[n]);
+                }
             }
             n++; //43
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PreDeterminationAmountOfCTB = 0;
-            } else {
-                PreDeterminationAmountOfCTB = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PreDeterminationAmountOfCTB = 0;
+                } else {
+                    PreDeterminationAmountOfCTB = Integer.valueOf(fields[n]);
+                }
             }
             n += 2; //45
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyHBEntitlementBeforeChange = 0;
-            } else {
-                WeeklyHBEntitlementBeforeChange = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyHBEntitlementBeforeChange = 0;
+                } else {
+                    WeeklyHBEntitlementBeforeChange = Integer.valueOf(fields[n]);
+                }
             }
             n += 2; //47
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyCTBEntitlementBeforeChange = 0;
-            } else {
-                WeeklyCTBEntitlementBeforeChange = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyCTBEntitlementBeforeChange = 0;
+                } else {
+                    WeeklyCTBEntitlementBeforeChange = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ReasonForDirectPayment = 0;
-            } else {
-                ReasonForDirectPayment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ReasonForDirectPayment = 0;
+                } else {
+                    ReasonForDirectPayment = Integer.valueOf(fields[n]);
+                }
             }
 //            if (ReasonForDirectPayment > 7 || ReasonForDirectPayment < 0) {
 //                throw new Exception("ReasonForDirectPayment " + ReasonForDirectPayment + " > 7 || < 0");
 //            }
-            if (ReasonForDirectPayment > 8 || ReasonForDirectPayment < 0) {
-                throw new Exception("ReasonForDirectPayment " + ReasonForDirectPayment + " > 8 || < 0");
+            if (n < fields.length) {
+                if (ReasonForDirectPayment > 8 || ReasonForDirectPayment < 0) {
+                    throw new Exception("ReasonForDirectPayment " + ReasonForDirectPayment + " > 8 || < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TimingOfPaymentOfRentAllowance = 0;
-            } else {
-                TimingOfPaymentOfRentAllowance = Integer.valueOf(fields[n]);
-            }
-            if (TimingOfPaymentOfRentAllowance > 4 || TimingOfPaymentOfRentAllowance < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TimingOfPaymentOfRentAllowance = 0;
+                } else {
+                    TimingOfPaymentOfRentAllowance = Integer.valueOf(fields[n]);
+                }
+                if (TimingOfPaymentOfRentAllowance > 4 || TimingOfPaymentOfRentAllowance < 0) {
 //            System.out.println("TimingOfPaymentOfRentAllowance " + TimingOfPaymentOfRentAllowance);
 //            System.out.println("TimingOfPaymentOfRentAllowance > 4 || TimingOfPaymentOfRentAllowance < 0");
-                throw new Exception("TimingOfPaymentOfRentAllowance > 4 || TimingOfPaymentOfRentAllowance < 0");
+                    throw new Exception("TimingOfPaymentOfRentAllowance > 4 || TimingOfPaymentOfRentAllowance < 0");
+                }
             }
             n++; //50
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ExtendedPaymentCase = 0;
-            } else {
-                ExtendedPaymentCase = Integer.valueOf(fields[n]);
-            }
-            if (ExtendedPaymentCase > 4 || ExtendedPaymentCase < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ExtendedPaymentCase = 0;
+                } else {
+                    ExtendedPaymentCase = Integer.valueOf(fields[n]);
+                }
+                if (ExtendedPaymentCase > 4 || ExtendedPaymentCase < 0) {
 //            System.out.println("ExtendedPaymentCase " + ExtendedPaymentCase);
 //            System.out.println("ExtendedPaymentCase > 4 || ExtendedPaymentCase < 0");
-                throw new Exception("ExtendedPaymentCase > 4 || ExtendedPaymentCase < 0");
+                    throw new Exception("ExtendedPaymentCase > 4 || ExtendedPaymentCase < 0");
+                }
             }
             n++;
-            CouncilTaxBand = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyEligibleRentAmount = 0;
-            } else {
-                WeeklyEligibleRentAmount = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                CouncilTaxBand = fields[n];
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyEligibleCouncilTaxAmount = 0;
-            } else {
-                WeeklyEligibleCouncilTaxAmount = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyEligibleRentAmount = 0;
+                } else {
+                    WeeklyEligibleRentAmount = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("Y")) {
-                ClaimantsStudentIndicator = "Y";
-            } else {
-                ClaimantsStudentIndicator = "N";
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyEligibleCouncilTaxAmount = 0;
+                } else {
+                    WeeklyEligibleCouncilTaxAmount = Integer.valueOf(fields[n]);
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("Y")) {
+                    ClaimantsStudentIndicator = "Y";
+                } else {
+                    ClaimantsStudentIndicator = "N";
+                }
             }
             n++; //55
-            if (fields[n].isEmpty()) {
-                SecondAdultRebate = -999;
-            } else {
-                SecondAdultRebate = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].isEmpty()) {
+                    SecondAdultRebate = -999;
+                } else {
+                    SecondAdultRebate = Integer.valueOf(fields[n]);
+                }
             }
 //            if (SecondAdultRebate > 2 || SecondAdultRebate < 0) {
 ////            System.out.println("SecondAdultRebate " + SecondAdultRebate);
@@ -1533,1239 +1624,1623 @@ public class SHBE_DataRecord {
 //                throw new Exception("SecondAdultRebate > 2 || SecondAdultRebate < 1");
 //            }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                RebatePercentageWhereASecondAdultRebateHasBeenAwarded = 0;
-            } else {
-                RebatePercentageWhereASecondAdultRebateHasBeenAwarded = Integer.valueOf(fields[n]);
-            }
-            if (RebatePercentageWhereASecondAdultRebateHasBeenAwarded > 4 || RebatePercentageWhereASecondAdultRebateHasBeenAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    RebatePercentageWhereASecondAdultRebateHasBeenAwarded = 0;
+                } else {
+                    RebatePercentageWhereASecondAdultRebateHasBeenAwarded = Integer.valueOf(fields[n]);
+                }
+                if (RebatePercentageWhereASecondAdultRebateHasBeenAwarded > 4 || RebatePercentageWhereASecondAdultRebateHasBeenAwarded < 0) {
 //            System.out.println("RebatePercentageWhereASecondAdultRebateHasBeenAwarded " + RebatePercentageWhereASecondAdultRebateHasBeenAwarded);
 //            System.out.println("RebatePercentageWhereASecondAdultRebateHasBeenAwarded > 4 || RebatePercentageWhereASecondAdultRebateHasBeenAwarded < 0");
-                throw new Exception("RebatePercentageWhereASecondAdultRebateHasBeenAwarded > 4 || RebatePercentageWhereASecondAdultRebateHasBeenAwarded < 0");
+                    throw new Exception("RebatePercentageWhereASecondAdultRebateHasBeenAwarded > 4 || RebatePercentageWhereASecondAdultRebateHasBeenAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                LHARegulationsApplied = "No";
-            } else {
-                LHARegulationsApplied = "Yes";
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    LHARegulationsApplied = "No";
+                } else {
+                    LHARegulationsApplied = "Yes";
+                }
             }
             n++;
-            if (fields[n].isEmpty()) {
-                IsThisCaseSubjectToLRROrSRRSchemes = -999;
-            } else {
-                IsThisCaseSubjectToLRROrSRRSchemes = Integer.valueOf(fields[n]);
-            }
+            if (n < fields.length) {
+                if (fields[n].isEmpty()) {
+                    IsThisCaseSubjectToLRROrSRRSchemes = -999;
+                } else {
+                    IsThisCaseSubjectToLRROrSRRSchemes = Integer.valueOf(fields[n]);
+                }
 //            if (IsThisCaseSubjectToLRROrSRRSchemes > 4 || IsThisCaseSubjectToLRROrSRRSchemes < 1) {
 ////            System.out.println("IsThisCaseSubjectToLRROrSRRSchemes " + IsThisCaseSubjectToLRROrSRRSchemes);
 ////            System.out.println("IsThisCaseSubjectToLRROrSRRSchemes > 4 || IsThisCaseSubjectToLRROrSRRSchemes < 1");
 //                throw new Exception("IsThisCaseSubjectToLRROrSRRSchemes > 4 || IsThisCaseSubjectToLRROrSRRSchemes < 1");
 //            }
+            }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyLocalReferenceRent = 0;
-            } else {
-                WeeklyLocalReferenceRent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyLocalReferenceRent = 0;
+                } else {
+                    WeeklyLocalReferenceRent = Integer.valueOf(fields[n]);
+                }
             }
             n++; //60
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklySingleRoomRent = 0;
-            } else {
-                WeeklySingleRoomRent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklySingleRoomRent = 0;
+                } else {
+                    WeeklySingleRoomRent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeelklyClaimRelatedRent = 0;
-            } else {
-                WeelklyClaimRelatedRent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeelklyClaimRelatedRent = 0;
+                } else {
+                    WeelklyClaimRelatedRent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                RentOfficerDeterminationOfIneligibleCharges = 0;
-            } else {
-                RentOfficerDeterminationOfIneligibleCharges = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    RentOfficerDeterminationOfIneligibleCharges = 0;
+                } else {
+                    RentOfficerDeterminationOfIneligibleCharges = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyMaximumRent = 0;
-            } else {
-                WeeklyMaximumRent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyMaximumRent = 0;
+                } else {
+                    WeeklyMaximumRent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TotalDeductionForMeals = 0;
-            } else {
-                TotalDeductionForMeals = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TotalDeductionForMeals = 0;
+                } else {
+                    TotalDeductionForMeals = Integer.valueOf(fields[n]);
+                }
             }
             n++; //65
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyAdditionalDiscretionaryPayment = 0;
-            } else {
-                WeeklyAdditionalDiscretionaryPayment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyAdditionalDiscretionaryPayment = 0;
+                } else {
+                    WeeklyAdditionalDiscretionaryPayment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ThirteenOrFiftyTwoWeekProtectionApplies = 0;
-            } else {
-                ThirteenOrFiftyTwoWeekProtectionApplies = Integer.valueOf(fields[n]);
-            }
-            if (ThirteenOrFiftyTwoWeekProtectionApplies > 1 || ThirteenOrFiftyTwoWeekProtectionApplies < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ThirteenOrFiftyTwoWeekProtectionApplies = 0;
+                } else {
+                    ThirteenOrFiftyTwoWeekProtectionApplies = Integer.valueOf(fields[n]);
+                }
+                if (ThirteenOrFiftyTwoWeekProtectionApplies > 1 || ThirteenOrFiftyTwoWeekProtectionApplies < 0) {
 //            System.out.println("ThirteenOrFiftyTwoWeekProtectionApplies " + ThirteenOrFiftyTwoWeekProtectionApplies);
 //            System.out.println("ThirteenOrFiftyTwoWeekProtectionApplies > 1 || ThirteenOrFiftyTwoWeekProtectionApplies < 0");
-                throw new Exception("ThirteenOrFiftyTwoWeekProtectionApplies > 1 || ThirteenOrFiftyTwoWeekProtectionApplies < 0");
+                    throw new Exception("ThirteenOrFiftyTwoWeekProtectionApplies > 1 || ThirteenOrFiftyTwoWeekProtectionApplies < 0");
+                }
             }
             n++;
-            DateOfFirstPaymentOnMostRecentHBClaimFollowingAFullDecision = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsAssessedIncomeFigure = 0;
-            } else {
-                ClaimantsAssessedIncomeFigure = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DateOfFirstPaymentOnMostRecentHBClaimFollowingAFullDecision = fields[n];
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsAdjustedAssessedIncomeFigure = 0;
-            } else {
-                ClaimantsAdjustedAssessedIncomeFigure = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsAssessedIncomeFigure = 0;
+                } else {
+                    ClaimantsAssessedIncomeFigure = Integer.valueOf(fields[n]);
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsAdjustedAssessedIncomeFigure = 0;
+                } else {
+                    ClaimantsAdjustedAssessedIncomeFigure = Integer.valueOf(fields[n]);
+                }
             }
             n++; //70
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsTotalCapital = 0;
-            } else {
-                ClaimantsTotalCapital = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsTotalCapital = 0;
+                } else {
+                    ClaimantsTotalCapital = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsGrossWeeklyIncomeFromEmployment = 0;
-            } else {
-                ClaimantsGrossWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsGrossWeeklyIncomeFromEmployment = 0;
+                } else {
+                    ClaimantsGrossWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsNetWeeklyIncomeFromEmployment = 0;
-            } else {
-                ClaimantsNetWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsNetWeeklyIncomeFromEmployment = 0;
+                } else {
+                    ClaimantsNetWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsGrossWeeklyIncomeFromSelfEmployment = 0;
-            } else {
-                ClaimantsGrossWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsGrossWeeklyIncomeFromSelfEmployment = 0;
+                } else {
+                    ClaimantsGrossWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsNetWeeklyIncomeFromSelfEmployment = 0;
-            } else {
-                ClaimantsNetWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsNetWeeklyIncomeFromSelfEmployment = 0;
+                } else {
+                    ClaimantsNetWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++; //75
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsTotalAmountOfEarningsDisregarded = 0;
-            } else {
-                ClaimantsTotalAmountOfEarningsDisregarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsTotalAmountOfEarningsDisregarded = 0;
+                } else {
+                    ClaimantsTotalAmountOfEarningsDisregarded = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = 0;
-            } else {
-                ClaimantsIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = 0;
+                } else {
+                    ClaimantsIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromAttendanceAllowance = 0;
-            } else {
-                ClaimantsIncomeFromAttendanceAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromAttendanceAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromAttendanceAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromBusinessStartUpAllowance = 0;
-            } else {
-                ClaimantsIncomeFromBusinessStartUpAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromBusinessStartUpAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromBusinessStartUpAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromChildBenefit = 0;
-            } else {
-                ClaimantsIncomeFromChildBenefit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromChildBenefit = 0;
+                } else {
+                    ClaimantsIncomeFromChildBenefit = Integer.valueOf(fields[n]);
+                }
             }
             n++; //80
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromOneParentBenefitChildBenefitLoneParent = 0;
-            } else {
-                ClaimantsIncomeFromOneParentBenefitChildBenefitLoneParent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromOneParentBenefitChildBenefitLoneParent = 0;
+                } else {
+                    ClaimantsIncomeFromOneParentBenefitChildBenefitLoneParent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromPersonalPension = 0;
-            } else {
-                ClaimantsIncomeFromPersonalPension = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromPersonalPension = 0;
+                } else {
+                    ClaimantsIncomeFromPersonalPension = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromSevereDisabilityAllowance = 0;
-            } else {
-                ClaimantsIncomeFromSevereDisabilityAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromSevereDisabilityAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromSevereDisabilityAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromMaternityAllowance = 0;
-            } else {
-                ClaimantsIncomeFromMaternityAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromMaternityAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromMaternityAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromContributionBasedJobSeekersAllowance = 0;
-            } else {
-                ClaimantsIncomeFromContributionBasedJobSeekersAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromContributionBasedJobSeekersAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromContributionBasedJobSeekersAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++; //85
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromStudentGrantLoan = 0;
-            } else {
-                ClaimantsIncomeFromStudentGrantLoan = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromStudentGrantLoan = 0;
+                } else {
+                    ClaimantsIncomeFromStudentGrantLoan = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromSubTenants = 0;
-            } else {
-                ClaimantsIncomeFromSubTenants = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromSubTenants = 0;
+                } else {
+                    ClaimantsIncomeFromSubTenants = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromBoarders = 0;
-            } else {
-                ClaimantsIncomeFromBoarders = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromBoarders = 0;
+                } else {
+                    ClaimantsIncomeFromBoarders = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromTrainingForWorkCommunityAction = 0;
-            } else {
-                ClaimantsIncomeFromTrainingForWorkCommunityAction = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromTrainingForWorkCommunityAction = 0;
+                } else {
+                    ClaimantsIncomeFromTrainingForWorkCommunityAction = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromIncapacityBenefitShortTermLower = 0;
-            } else {
-                ClaimantsIncomeFromIncapacityBenefitShortTermLower = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromIncapacityBenefitShortTermLower = 0;
+                } else {
+                    ClaimantsIncomeFromIncapacityBenefitShortTermLower = Integer.valueOf(fields[n]);
+                }
             }
             n++; //90
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromIncapacityBenefitShortTermHigher = 0;
-            } else {
-                ClaimantsIncomeFromIncapacityBenefitShortTermHigher = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromIncapacityBenefitShortTermHigher = 0;
+                } else {
+                    ClaimantsIncomeFromIncapacityBenefitShortTermHigher = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromIncapacityBenefitLongTerm = 0;
-            } else {
-                ClaimantsIncomeFromIncapacityBenefitLongTerm = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromIncapacityBenefitLongTerm = 0;
+                } else {
+                    ClaimantsIncomeFromIncapacityBenefitLongTerm = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromNewDeal50PlusEmploymentCredit = 0;
-            } else {
-                ClaimantsIncomeFromNewDeal50PlusEmploymentCredit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromNewDeal50PlusEmploymentCredit = 0;
+                } else {
+                    ClaimantsIncomeFromNewDeal50PlusEmploymentCredit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromNewTaxCredits = 0;
-            } else {
-                ClaimantsIncomeFromNewTaxCredits = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromNewTaxCredits = 0;
+                } else {
+                    ClaimantsIncomeFromNewTaxCredits = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromDisabilityLivingAllowanceCareComponent = 0;
-            } else {
-                ClaimantsIncomeFromDisabilityLivingAllowanceCareComponent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromDisabilityLivingAllowanceCareComponent = 0;
+                } else {
+                    ClaimantsIncomeFromDisabilityLivingAllowanceCareComponent = Integer.valueOf(fields[n]);
+                }
             }
             n++; //95
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromDisabilityLivingAllowanceMobilityComponent = 0;
-            } else {
-                ClaimantsIncomeFromDisabilityLivingAllowanceMobilityComponent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromDisabilityLivingAllowanceMobilityComponent = 0;
+                } else {
+                    ClaimantsIncomeFromDisabilityLivingAllowanceMobilityComponent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromGovernemntTraining = 0;
-            } else {
-                ClaimantsIncomeFromGovernemntTraining = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromGovernemntTraining = 0;
+                } else {
+                    ClaimantsIncomeFromGovernemntTraining = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromIndustrialInjuriesDisablementBenefit = 0;
-            } else {
-                ClaimantsIncomeFromIndustrialInjuriesDisablementBenefit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromIndustrialInjuriesDisablementBenefit = 0;
+                } else {
+                    ClaimantsIncomeFromIndustrialInjuriesDisablementBenefit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromCarersAllowance = 0;
-            } else {
-                ClaimantsIncomeFromCarersAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromCarersAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromCarersAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromStatutoryMaternityPaternityPay = 0;
-            } else {
-                ClaimantsIncomeFromStatutoryMaternityPaternityPay = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromStatutoryMaternityPaternityPay = 0;
+                } else {
+                    ClaimantsIncomeFromStatutoryMaternityPaternityPay = Integer.valueOf(fields[n]);
+                }
             }
             n++; //100
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = 0;
-            } else {
-                ClaimantsIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = 0;
+                } else {
+                    ClaimantsIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromWarDisablementPensionArmedForcesGIP = 0;
-            } else {
-                ClaimantsIncomeFromWarDisablementPensionArmedForcesGIP = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromWarDisablementPensionArmedForcesGIP = 0;
+                } else {
+                    ClaimantsIncomeFromWarDisablementPensionArmedForcesGIP = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromWarMobilitySupplement = 0;
-            } else {
-                ClaimantsIncomeFromWarMobilitySupplement = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromWarMobilitySupplement = 0;
+                } else {
+                    ClaimantsIncomeFromWarMobilitySupplement = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromWidowsWidowersPension = 0;
-            } else {
-                ClaimantsIncomeFromWidowsWidowersPension = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromWidowsWidowersPension = 0;
+                } else {
+                    ClaimantsIncomeFromWidowsWidowersPension = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromBereavementAllowance = 0;
-            } else {
-                ClaimantsIncomeFromBereavementAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromBereavementAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromBereavementAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++; //105
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromWidowedParentsAllowance = 0;
-            } else {
-                ClaimantsIncomeFromWidowedParentsAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromWidowedParentsAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromWidowedParentsAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromYouthTrainingScheme = 0;
-            } else {
-                ClaimantsIncomeFromYouthTrainingScheme = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromYouthTrainingScheme = 0;
+                } else {
+                    ClaimantsIncomeFromYouthTrainingScheme = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromStatuatorySickPay = 0;
-            } else {
-                ClaimantsIncomeFromStatuatorySickPay = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromStatuatorySickPay = 0;
+                } else {
+                    ClaimantsIncomeFromStatuatorySickPay = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsOtherIncome = 0;
-            } else {
-                ClaimantsOtherIncome = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsOtherIncome = 0;
+                } else {
+                    ClaimantsOtherIncome = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsTotalAmountOfIncomeDisregarded = 0;
-            } else {
-                ClaimantsTotalAmountOfIncomeDisregarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsTotalAmountOfIncomeDisregarded = 0;
+                } else {
+                    ClaimantsTotalAmountOfIncomeDisregarded = Integer.valueOf(fields[n]);
+                }
             }
             n++; //110
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                FamilyPremiumAwarded = 0;
-            } else {
-                FamilyPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (FamilyPremiumAwarded > 1 || FamilyPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    FamilyPremiumAwarded = 0;
+                } else {
+                    FamilyPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (FamilyPremiumAwarded > 1 || FamilyPremiumAwarded < 0) {
 //            System.out.println("FamilyPremiumAwarded " + FamilyPremiumAwarded);
 //            System.out.println("FamilyPremiumAwarded > 1 || FamilyPremiumAwarded < 0");
-                throw new Exception("FamilyPremiumAwarded > 1 || FamilyPremiumAwarded < 0");
+                    throw new Exception("FamilyPremiumAwarded > 1 || FamilyPremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                FamilyLoneParentPremiumAwarded = 0;
-            } else {
-                FamilyLoneParentPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (FamilyLoneParentPremiumAwarded > 1 || FamilyLoneParentPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    FamilyLoneParentPremiumAwarded = 0;
+                } else {
+                    FamilyLoneParentPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (FamilyLoneParentPremiumAwarded > 1 || FamilyLoneParentPremiumAwarded < 0) {
 //            System.out.println("FamilyLoneParentPremiumAwarded " + FamilyLoneParentPremiumAwarded);
 //            System.out.println("FamilyLoneParentPremiumAwarded > 1 || FamilyLoneParentPremiumAwarded < 0");
-                throw new Exception("FamilyLoneParentPremiumAwarded > 1 || FamilyLoneParentPremiumAwarded < 0");
+                    throw new Exception("FamilyLoneParentPremiumAwarded > 1 || FamilyLoneParentPremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                DisabilityPremiumAwarded = 0;
-            } else {
-                DisabilityPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (DisabilityPremiumAwarded > 1 || DisabilityPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    DisabilityPremiumAwarded = 0;
+                } else {
+                    DisabilityPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (DisabilityPremiumAwarded > 1 || DisabilityPremiumAwarded < 0) {
 //            System.out.println("DisabilityPremiumAwarded " + DisabilityPremiumAwarded);
 //            System.out.println("DisabilityPremiumAwarded > 1 || DisabilityPremiumAwarded < 0");
-                throw new Exception("DisabilityPremiumAwarded > 1 || DisabilityPremiumAwarded < 0");
+                    throw new Exception("DisabilityPremiumAwarded > 1 || DisabilityPremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                SevereDisabilityPremiumAwarded = 0;
-            } else {
-                SevereDisabilityPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (SevereDisabilityPremiumAwarded > 1 || SevereDisabilityPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    SevereDisabilityPremiumAwarded = 0;
+                } else {
+                    SevereDisabilityPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (SevereDisabilityPremiumAwarded > 1 || SevereDisabilityPremiumAwarded < 0) {
 //            System.out.println("SevereDisabilityPremiumAwarded " + SevereDisabilityPremiumAwarded);
 //            System.out.println("SevereDisabilityPremiumAwarded > 1 || SevereDisabilityPremiumAwarded < 0");
-                throw new Exception("SevereDisabilityPremiumAwarded > 1 || SevereDisabilityPremiumAwarded < 0");
+                    throw new Exception("SevereDisabilityPremiumAwarded > 1 || SevereDisabilityPremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                DisabledChildPremiumAwarded = 0;
-            } else {
-                DisabledChildPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (DisabledChildPremiumAwarded > 1 || DisabledChildPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    DisabledChildPremiumAwarded = 0;
+                } else {
+                    DisabledChildPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (DisabledChildPremiumAwarded > 1 || DisabledChildPremiumAwarded < 0) {
 //            System.out.println("DisabledChildPremiumAwarded " + DisabledChildPremiumAwarded);
 //            System.out.println("DisabledChildPremiumAwarded > 1 || DisabiledChildPremiumAwarded < 0");
-                throw new Exception("DisabledChildPremiumAwarded > 1 || DisabiledChildPremiumAwarded < 0");
+                    throw new Exception("DisabledChildPremiumAwarded > 1 || DisabiledChildPremiumAwarded < 0");
+                }
             }
             n++; //115
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                CarePremiumAwarded = 0;
-            } else {
-                CarePremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (CarePremiumAwarded > 1 || CarePremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    CarePremiumAwarded = 0;
+                } else {
+                    CarePremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (CarePremiumAwarded > 1 || CarePremiumAwarded < 0) {
 //            System.out.println("CarePremiumAwarded " + CarePremiumAwarded);
 //            System.out.println("CarePremiumAwarded > 1 || CarePremiumAwarded < 0");
-                throw new Exception("CarePremiumAwarded > 1 || CarePremiumAwarded < 0");
+                    throw new Exception("CarePremiumAwarded > 1 || CarePremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                EnhancedDisabilityPremiumAwarded = 0;
-            } else {
-                EnhancedDisabilityPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (EnhancedDisabilityPremiumAwarded > 1 || EnhancedDisabilityPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    EnhancedDisabilityPremiumAwarded = 0;
+                } else {
+                    EnhancedDisabilityPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (EnhancedDisabilityPremiumAwarded > 1 || EnhancedDisabilityPremiumAwarded < 0) {
 //            System.out.println("EnhancedDisabilityPremiumAwarded " + EnhancedDisabilityPremiumAwarded);
 //            System.out.println("EnhancedDisabilityPremiumAwarded > 1 || EnhancedDisabilityPremiumAwarded < 0");
-                throw new Exception("EnhancedDisabilityPremiumAwarded > 1 || EnhancedDisabilityPremiumAwarded < 0");
+                    throw new Exception("EnhancedDisabilityPremiumAwarded > 1 || EnhancedDisabilityPremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                BereavementPremiumAwarded = 0;
-            } else {
-                BereavementPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (BereavementPremiumAwarded > 1 || BereavementPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    BereavementPremiumAwarded = 0;
+                } else {
+                    BereavementPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (BereavementPremiumAwarded > 1 || BereavementPremiumAwarded < 0) {
 //            System.out.println("BereavementPremiumAwarded " + BereavementPremiumAwarded);
 //            System.out.println("BereavementPremiumAwarded > 1 || BereavementPremiumAwarded < 0");
-                throw new Exception("BereavementPremiumAwarded > 1 || BereavementPremiumAwarded < 0");
+                    throw new Exception("BereavementPremiumAwarded > 1 || BereavementPremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnerFlag = 0;
-            } else {
-                PartnerFlag = Integer.valueOf(fields[n]);
-            }
-            if (PartnerFlag > 2 || PartnerFlag < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnerFlag = 0;
+                } else {
+                    PartnerFlag = Integer.valueOf(fields[n]);
+                }
+                if (PartnerFlag > 2 || PartnerFlag < 0) {
 //            System.out.println("PartnerFlag " + PartnerFlag);
 //            System.out.println("PartnerFlag > 2 || PartnerFlag < 0");
-                throw new Exception("PartnerFlag > 2 || PartnerFlag < 0");
+                    throw new Exception("PartnerFlag > 2 || PartnerFlag < 0");
+                }
             }
             n++;
-            PartnersStartDate = fields[n];
+            if (n < fields.length) {
+                PartnersStartDate = fields[n];
+            }
             n++; //120
-            PartnersEndDate = fields[n];
-            n++;
-            PartnersNationalInsuranceNumber = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersStudentIndicator = "N";
-            } else {
-                PartnersStudentIndicator = "Y";
+            if (n < fields.length) {
+                PartnersEndDate = fields[n];
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersAssessedIncomeFigure = 0;
-            } else {
-                PartnersAssessedIncomeFigure = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                PartnersNationalInsuranceNumber = fields[n];
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersAdjustedAssessedIncomeFigure = 0;
-            } else {
-                PartnersAdjustedAssessedIncomeFigure = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersStudentIndicator = "N";
+                } else {
+                    PartnersStudentIndicator = "Y";
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersAssessedIncomeFigure = 0;
+                } else {
+                    PartnersAssessedIncomeFigure = Integer.valueOf(fields[n]);
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersAdjustedAssessedIncomeFigure = 0;
+                } else {
+                    PartnersAdjustedAssessedIncomeFigure = Integer.valueOf(fields[n]);
+                }
             }
             n++; //125
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersGrossWeeklyIncomeFromEmployment = 0;
-            } else {
-                PartnersGrossWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersGrossWeeklyIncomeFromEmployment = 0;
+                } else {
+                    PartnersGrossWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersNetWeeklyIncomeFromEmployment = 0;
-            } else {
-                PartnersNetWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersNetWeeklyIncomeFromEmployment = 0;
+                } else {
+                    PartnersNetWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersGrossWeeklyIncomeFromSelfEmployment = 0;
-            } else {
-                PartnersGrossWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersGrossWeeklyIncomeFromSelfEmployment = 0;
+                } else {
+                    PartnersGrossWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersNetWeeklyIncomeFromSelfEmployment = 0;
-            } else {
-                PartnersNetWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersNetWeeklyIncomeFromSelfEmployment = 0;
+                } else {
+                    PartnersNetWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersTotalAmountOfEarningsDisregarded = 0;
-            } else {
-                PartnersTotalAmountOfEarningsDisregarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersTotalAmountOfEarningsDisregarded = 0;
+                } else {
+                    PartnersTotalAmountOfEarningsDisregarded = Integer.valueOf(fields[n]);
+                }
             }
             n++; //130
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = 0;
-            } else {
-                PartnersIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = 0;
+                } else {
+                    PartnersIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromAttendanceAllowance = 0;
-            } else {
-                PartnersIncomeFromAttendanceAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromAttendanceAllowance = 0;
+                } else {
+                    PartnersIncomeFromAttendanceAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromBusinessStartUpAllowance = 0;
-            } else {
-                PartnersIncomeFromBusinessStartUpAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromBusinessStartUpAllowance = 0;
+                } else {
+                    PartnersIncomeFromBusinessStartUpAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromChildBenefit = 0;
-            } else {
-                PartnersIncomeFromChildBenefit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromChildBenefit = 0;
+                } else {
+                    PartnersIncomeFromChildBenefit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromPersonalPension = 0;
-            } else {
-                PartnersIncomeFromPersonalPension = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromPersonalPension = 0;
+                } else {
+                    PartnersIncomeFromPersonalPension = Integer.valueOf(fields[n]);
+                }
             }
             n++; //135
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromSevereDisabilityAllowance = 0;
-            } else {
-                PartnersIncomeFromSevereDisabilityAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromSevereDisabilityAllowance = 0;
+                } else {
+                    PartnersIncomeFromSevereDisabilityAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromMaternityAllowance = 0;
-            } else {
-                PartnersIncomeFromMaternityAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromMaternityAllowance = 0;
+                } else {
+                    PartnersIncomeFromMaternityAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromContributionBasedJobSeekersAllowance = 0;
-            } else {
-                PartnersIncomeFromContributionBasedJobSeekersAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromContributionBasedJobSeekersAllowance = 0;
+                } else {
+                    PartnersIncomeFromContributionBasedJobSeekersAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromStudentGrantLoan = 0;
-            } else {
-                PartnersIncomeFromStudentGrantLoan = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromStudentGrantLoan = 0;
+                } else {
+                    PartnersIncomeFromStudentGrantLoan = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromSubTenants = 0;
-            } else {
-                PartnersIncomeFromSubTenants = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromSubTenants = 0;
+                } else {
+                    PartnersIncomeFromSubTenants = Integer.valueOf(fields[n]);
+                }
             }
             n++; //140
-            if (fields[140].equalsIgnoreCase("")) {
-                PartnersIncomeFromBoarders = 0;
-            } else {
-                PartnersIncomeFromBoarders = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[140].equalsIgnoreCase("")) {
+                    PartnersIncomeFromBoarders = 0;
+                } else {
+                    PartnersIncomeFromBoarders = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromTrainingForWorkCommunityAction = 0;
-            } else {
-                PartnersIncomeFromTrainingForWorkCommunityAction = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromTrainingForWorkCommunityAction = 0;
+                } else {
+                    PartnersIncomeFromTrainingForWorkCommunityAction = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromIncapacityBenefitShortTermLower = 0;
-            } else {
-                PartnersIncomeFromIncapacityBenefitShortTermLower = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromIncapacityBenefitShortTermLower = 0;
+                } else {
+                    PartnersIncomeFromIncapacityBenefitShortTermLower = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromIncapacityBenefitShortTermHigher = 0;
-            } else {
-                PartnersIncomeFromIncapacityBenefitShortTermHigher = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromIncapacityBenefitShortTermHigher = 0;
+                } else {
+                    PartnersIncomeFromIncapacityBenefitShortTermHigher = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromIncapacityBenefitLongTerm = 0;
-            } else {
-                PartnersIncomeFromIncapacityBenefitLongTerm = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromIncapacityBenefitLongTerm = 0;
+                } else {
+                    PartnersIncomeFromIncapacityBenefitLongTerm = Integer.valueOf(fields[n]);
+                }
             }
             n++; //145
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromNewDeal50PlusEmploymentCredit = 0;
-            } else {
-                PartnersIncomeFromNewDeal50PlusEmploymentCredit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromNewDeal50PlusEmploymentCredit = 0;
+                } else {
+                    PartnersIncomeFromNewDeal50PlusEmploymentCredit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromNewTaxCredits = 0;
-            } else {
-                PartnersIncomeFromNewTaxCredits = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromNewTaxCredits = 0;
+                } else {
+                    PartnersIncomeFromNewTaxCredits = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromDisabilityLivingAllowanceCareComponent = 0;
-            } else {
-                PartnersIncomeFromDisabilityLivingAllowanceCareComponent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromDisabilityLivingAllowanceCareComponent = 0;
+                } else {
+                    PartnersIncomeFromDisabilityLivingAllowanceCareComponent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromDisabilityLivingAllowanceMobilityComponent = 0;
-            } else {
-                PartnersIncomeFromDisabilityLivingAllowanceMobilityComponent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromDisabilityLivingAllowanceMobilityComponent = 0;
+                } else {
+                    PartnersIncomeFromDisabilityLivingAllowanceMobilityComponent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromGovernemntTraining = 0;
-            } else {
-                PartnersIncomeFromGovernemntTraining = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromGovernemntTraining = 0;
+                } else {
+                    PartnersIncomeFromGovernemntTraining = Integer.valueOf(fields[n]);
+                }
             }
             n++; //150
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromIndustrialInjuriesDisablementBenefit = 0;
-            } else {
-                PartnersIncomeFromIndustrialInjuriesDisablementBenefit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromIndustrialInjuriesDisablementBenefit = 0;
+                } else {
+                    PartnersIncomeFromIndustrialInjuriesDisablementBenefit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromCarersAllowance = 0;
-            } else {
-                PartnersIncomeFromCarersAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromCarersAllowance = 0;
+                } else {
+                    PartnersIncomeFromCarersAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromStatuatorySickPay = 0;
-            } else {
-                PartnersIncomeFromStatuatorySickPay = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromStatuatorySickPay = 0;
+                } else {
+                    PartnersIncomeFromStatuatorySickPay = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromStatutoryMaternityPaternityPay = 0;
-            } else {
-                PartnersIncomeFromStatutoryMaternityPaternityPay = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromStatutoryMaternityPaternityPay = 0;
+                } else {
+                    PartnersIncomeFromStatutoryMaternityPaternityPay = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = 0;
-            } else {
-                PartnersIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = 0;
+                } else {
+                    PartnersIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = Integer.valueOf(fields[n]);
+                }
             }
             n++; //155
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromWarDisablementPensionArmedForcesGIP = 0;
-            } else {
-                PartnersIncomeFromWarDisablementPensionArmedForcesGIP = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromWarDisablementPensionArmedForcesGIP = 0;
+                } else {
+                    PartnersIncomeFromWarDisablementPensionArmedForcesGIP = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromWarMobilitySupplement = 0;
-            } else {
-                PartnersIncomeFromWarMobilitySupplement = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromWarMobilitySupplement = 0;
+                } else {
+                    PartnersIncomeFromWarMobilitySupplement = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromWidowsWidowersPension = 0;
-            } else {
-                PartnersIncomeFromWidowsWidowersPension = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromWidowsWidowersPension = 0;
+                } else {
+                    PartnersIncomeFromWidowsWidowersPension = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromBereavementAllowance = 0;
-            } else {
-                PartnersIncomeFromBereavementAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromBereavementAllowance = 0;
+                } else {
+                    PartnersIncomeFromBereavementAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromWidowedParentsAllowance = 0;
-            } else {
-                PartnersIncomeFromWidowedParentsAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromWidowedParentsAllowance = 0;
+                } else {
+                    PartnersIncomeFromWidowedParentsAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++; //160
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromYouthTrainingScheme = 0;
-            } else {
-                PartnersIncomeFromYouthTrainingScheme = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromYouthTrainingScheme = 0;
+                } else {
+                    PartnersIncomeFromYouthTrainingScheme = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersOtherIncome = 0;
-            } else {
-                PartnersOtherIncome = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersOtherIncome = 0;
+                } else {
+                    PartnersOtherIncome = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersTotalAmountOfIncomeDisregarded = 0;
-            } else {
-                PartnersTotalAmountOfIncomeDisregarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersTotalAmountOfIncomeDisregarded = 0;
+                } else {
+                    PartnersTotalAmountOfIncomeDisregarded = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            DateOverPaymentDetectionActivityInitiatedOnCase = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                MethodOfOverpayentDetectionActivity = 0;
-            } else {
-                MethodOfOverpayentDetectionActivity = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DateOverPaymentDetectionActivityInitiatedOnCase = fields[n];
             }
-            if (MethodOfOverpayentDetectionActivity > 99 || MethodOfOverpayentDetectionActivity < 0) {
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    MethodOfOverpayentDetectionActivity = 0;
+                } else {
+                    MethodOfOverpayentDetectionActivity = Integer.valueOf(fields[n]);
+                }
+                if (MethodOfOverpayentDetectionActivity > 99 || MethodOfOverpayentDetectionActivity < 0) {
 //            System.out.println("MethodOfOverpayentDetectionActivity " + MethodOfOverpayentDetectionActivity);
 //            System.out.println("MethodOfOverpayentDetectionActivity > 99 || MethodOfOverpayentDetectionActivity < 0");
-                throw new Exception("MethodOfOverpayentDetectionActivity > 99 || MethodOfOverpayentDetectionActivity < 0");
+                    throw new Exception("MethodOfOverpayentDetectionActivity > 99 || MethodOfOverpayentDetectionActivity < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ReasonForOverpaymentDetectionActivity = 0;
-            } else {
-                ReasonForOverpaymentDetectionActivity = Integer.valueOf(fields[n]);
-            }
-            if (ReasonForOverpaymentDetectionActivity > 99 || ReasonForOverpaymentDetectionActivity < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ReasonForOverpaymentDetectionActivity = 0;
+                } else {
+                    ReasonForOverpaymentDetectionActivity = Integer.valueOf(fields[n]);
+                }
+                if (ReasonForOverpaymentDetectionActivity > 99 || ReasonForOverpaymentDetectionActivity < 0) {
 //            System.out.println("ReasonForOverpaymentDetectionActivity " + ReasonForOverpaymentDetectionActivity);
 //            System.out.println("ReasonForOverpaymentDetectionActivity > 99 || ReasonForOverpaymentDetectionActivity < 0");
-                throw new Exception("ReasonForOverpaymentDetectionActivity > 99 || ReasonForOverpaymentDetectionActivity < 0");
+                    throw new Exception("ReasonForOverpaymentDetectionActivity > 99 || ReasonForOverpaymentDetectionActivity < 0");
+                }
             }
             n++;
-            DoesTheOverpaymentDetectionActivityConstituteAFullReview = fields[n];
-            n++;
-            DateOverPaymentDetectionActivityIsCompleted = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                OutcomeOfOverPaymentDetectionActivity = 0;
-            } else {
-                OutcomeOfOverPaymentDetectionActivity = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DoesTheOverpaymentDetectionActivityConstituteAFullReview = fields[n];
             }
-            if (OutcomeOfOverPaymentDetectionActivity > 99 || OutcomeOfOverPaymentDetectionActivity < 0) {
+            n++;
+            if (n < fields.length) {
+                DateOverPaymentDetectionActivityIsCompleted = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    OutcomeOfOverPaymentDetectionActivity = 0;
+                } else {
+                    OutcomeOfOverPaymentDetectionActivity = Integer.valueOf(fields[n]);
+                }
+                if (OutcomeOfOverPaymentDetectionActivity > 99 || OutcomeOfOverPaymentDetectionActivity < 0) {
 //            System.out.println("OutcomeOfOverPaymentDetectionActivity " + OutcomeOfOverPaymentDetectionActivity);
 //            System.out.println("OutcomeOfOverPaymentDetectionActivity > 99 || OutcomeOfOverPaymentDetectionActivity < 0");
-                throw new Exception("OutcomeOfOverPaymentDetectionActivity > 99 || OutcomeOfOverPaymentDetectionActivity < 0");
+                    throw new Exception("OutcomeOfOverPaymentDetectionActivity > 99 || OutcomeOfOverPaymentDetectionActivity < 0");
+                }
             }
             n++;
-            ClaimantsGender = fields[n];
+            if (n < fields.length) {
+                ClaimantsGender = fields[n];
+            }
             n++; //170
-            PartnersDateOfBirth = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                RentAllowanceMethodOfPayment = 0;
-            } else {
-                RentAllowanceMethodOfPayment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                PartnersDateOfBirth = fields[n];
             }
-            if (RentAllowanceMethodOfPayment > 99 || RentAllowanceMethodOfPayment < 0) {
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    RentAllowanceMethodOfPayment = 0;
+                } else {
+                    RentAllowanceMethodOfPayment = Integer.valueOf(fields[n]);
+                }
+                if (RentAllowanceMethodOfPayment > 99 || RentAllowanceMethodOfPayment < 0) {
 //            System.out.println("RentAllowanceMethodOfPayment " + RentAllowanceMethodOfPayment);
 //            System.out.println("RentAllowanceMethodOfPayment > 99 || RentAllowanceMethodOfPayment < 0");
-                throw new Exception("RentAllowanceMethodOfPayment > 99 || RentAllowanceMethodOfPayment < 0");
+                    throw new Exception("RentAllowanceMethodOfPayment > 99 || RentAllowanceMethodOfPayment < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                RentAllowancePaymentDestination = 0;
-            } else {
-                RentAllowancePaymentDestination = Integer.valueOf(fields[n]);
-            }
-            if (RentAllowancePaymentDestination > 99 || RentAllowancePaymentDestination < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    RentAllowancePaymentDestination = 0;
+                } else {
+                    RentAllowancePaymentDestination = Integer.valueOf(fields[n]);
+                }
+                if (RentAllowancePaymentDestination > 99 || RentAllowancePaymentDestination < 0) {
 //            System.out.println("RentAllowancePaymentDestination " + RentAllowancePaymentDestination);
 //            System.out.println("RentAllowancePaymentDestination > 99 || RentAllowancePaymentDestination < 0");
-                throw new Exception("RentAllowancePaymentDestination > 99 || RentAllowancePaymentDestination < 0");
+                    throw new Exception("RentAllowancePaymentDestination > 99 || RentAllowancePaymentDestination < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ContractualRentAmount = 0;
-            } else {
-                ContractualRentAmount = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ContractualRentAmount = 0;
+                } else {
+                    ContractualRentAmount = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TimePeriodContractualRentFigureCovers = 0;
-            } else {
-                TimePeriodContractualRentFigureCovers = Integer.valueOf(fields[n]);
-            }
-            if (TimePeriodContractualRentFigureCovers > 99 || TimePeriodContractualRentFigureCovers < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TimePeriodContractualRentFigureCovers = 0;
+                } else {
+                    TimePeriodContractualRentFigureCovers = Integer.valueOf(fields[n]);
+                }
+                if (TimePeriodContractualRentFigureCovers > 99 || TimePeriodContractualRentFigureCovers < 0) {
 //            System.out.println("TimePeriodContractualRentFigureCovers " + TimePeriodContractualRentFigureCovers);
 //            System.out.println("TimePeriodContractualRentFigureCovers > 99 || TimePeriodContractualRentFigureCovers < 0");
-                throw new Exception("TimePeriodContractualRentFigureCovers > 99 || TimePeriodContractualRentFigureCovers < 0");
+                    throw new Exception("TimePeriodContractualRentFigureCovers > 99 || TimePeriodContractualRentFigureCovers < 0");
+                }
             }
             n++; //175
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromPensionCreditSavingsCredit = 0;
-            } else {
-                ClaimantsIncomeFromPensionCreditSavingsCredit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromPensionCreditSavingsCredit = 0;
+                } else {
+                    ClaimantsIncomeFromPensionCreditSavingsCredit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromPensionCreditSavingsCredit = 0;
-            } else {
-                PartnersIncomeFromPensionCreditSavingsCredit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromPensionCreditSavingsCredit = 0;
+                } else {
+                    PartnersIncomeFromPensionCreditSavingsCredit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromMaintenancePayments = 0;
-            } else {
-                ClaimantsIncomeFromMaintenancePayments = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromMaintenancePayments = 0;
+                } else {
+                    ClaimantsIncomeFromMaintenancePayments = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromMaintenancePayments = 0;
-            } else {
-                PartnersIncomeFromMaintenancePayments = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromMaintenancePayments = 0;
+                } else {
+                    PartnersIncomeFromMaintenancePayments = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromOccupationalPension = 0;
-            } else {
-                ClaimantsIncomeFromOccupationalPension = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromOccupationalPension = 0;
+                } else {
+                    ClaimantsIncomeFromOccupationalPension = Integer.valueOf(fields[n]);
+                }
             }
             n++; //180
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromOccupationalPension = 0;
-            } else {
-                PartnersIncomeFromOccupationalPension = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromOccupationalPension = 0;
+                } else {
+                    PartnersIncomeFromOccupationalPension = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromWidowsBenefit = 0;
-            } else {
-                ClaimantsIncomeFromWidowsBenefit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromWidowsBenefit = 0;
+                } else {
+                    ClaimantsIncomeFromWidowsBenefit = Integer.valueOf(fields[n]);
+                }
             }
             n++; //182
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromWidowsBenefit = 0;
-            } else {
-                PartnersIncomeFromWidowsBenefit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromWidowsBenefit = 0;
+                } else {
+                    PartnersIncomeFromWidowsBenefit = Integer.valueOf(fields[n]);
+                }
             }
             n = 193; //193
-            CTBClaimEntitlementStartDate = fields[n];
+            if (n < fields.length) {
+                CTBClaimEntitlementStartDate = fields[n];
+            }
             n++;
-            DateHBClaimClosedWithdrawnDecidedUnsuccessfulDefective = fields[n];
+            if (n < fields.length) {
+                DateHBClaimClosedWithdrawnDecidedUnsuccessfulDefective = fields[n];
+            }
             n++; //195
-            DateCTBClaimClosedWithdrawnDecidedUnsuccessfulDefective = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TotalNumberOfRooms = 0;
-            } else {
-                TotalNumberOfRooms = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DateCTBClaimClosedWithdrawnDecidedUnsuccessfulDefective = fields[n];
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NonSelfContainedAccomodation = 0;
-            } else {
-                NonSelfContainedAccomodation = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TotalNumberOfRooms = 0;
+                } else {
+                    TotalNumberOfRooms = Integer.valueOf(fields[n]);
+                }
             }
-            if (NonSelfContainedAccomodation > 1 || NonSelfContainedAccomodation < 0) {
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NonSelfContainedAccomodation = 0;
+                } else {
+                    NonSelfContainedAccomodation = Integer.valueOf(fields[n]);
+                }
+                if (NonSelfContainedAccomodation > 1 || NonSelfContainedAccomodation < 0) {
 //            System.out.println("NonSelfContainedAccomodation " + NonSelfContainedAccomodation);
 //            System.out.println("NonSelfContainedAccomodation > 1 || NonSelfContainedAccomodation < 0");
-                throw new Exception("NonSelfContainedAccomodation > 1 || NonSelfContainedAccomodation < 0");
+                    throw new Exception("NonSelfContainedAccomodation > 1 || NonSelfContainedAccomodation < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TypeOfLHANumberOfRoomsEntitedTo = 0;
-            } else {
-                TypeOfLHANumberOfRoomsEntitedTo = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TypeOfLHANumberOfRoomsEntitedTo = 0;
+                } else {
+                    TypeOfLHANumberOfRoomsEntitedTo = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TransitionalProtectionFormNationalRolloutOfLHA = 0;
-            } else {
-                TransitionalProtectionFormNationalRolloutOfLHA = Integer.valueOf(fields[n]);
-            }
-            if (TransitionalProtectionFormNationalRolloutOfLHA > 1 || TransitionalProtectionFormNationalRolloutOfLHA < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TransitionalProtectionFormNationalRolloutOfLHA = 0;
+                } else {
+                    TransitionalProtectionFormNationalRolloutOfLHA = Integer.valueOf(fields[n]);
+                }
+                if (TransitionalProtectionFormNationalRolloutOfLHA > 1 || TransitionalProtectionFormNationalRolloutOfLHA < 0) {
 //            System.out.println("TransitionalProtectionFormNationalRolloutOfLHA " + TransitionalProtectionFormNationalRolloutOfLHA);
 //            System.out.println("TransitionalProtectionFormNationalRolloutOfLHA > 1 || TransitionalProtectionFormNationalRolloutOfLHA < 0");
-                throw new Exception("TransitionalProtectionFormNationalRolloutOfLHA > 1 || TransitionalProtectionFormNationalRolloutOfLHA < 0");
+                    throw new Exception("TransitionalProtectionFormNationalRolloutOfLHA > 1 || TransitionalProtectionFormNationalRolloutOfLHA < 0");
+                }
             }
             n++; //200
-            Locality = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ValueOfLHA = 0;
-            } else {
-                ValueOfLHA = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                Locality = fields[n];
+                n++;
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ValueOfLHA = 0;
+                } else {
+                    ValueOfLHA = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = 0;
-            } else {
-                ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = Integer.valueOf(fields[n]);
-            }
-            if (ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = 0;
+                } else {
+                    ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = Integer.valueOf(fields[n]);
+                }
+                if (ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0) {
 //            System.out.println("ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective " + ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective);
 //            System.out.println("ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0");
-                throw new Exception("ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0");
+                    throw new Exception("ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = 0;
-            } else {
-                ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = Integer.valueOf(fields[n]);
-            }
-            if (ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = 0;
+                } else {
+                    ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = Integer.valueOf(fields[n]);
+                }
+                if (ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0) {
 //            System.out.println("ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective " + ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective);
 //            System.out.println("ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0");
-                throw new Exception("ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0");
+                    throw new Exception("ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0");
+                }
             }
             n++;
-            PartnersGender = fields[n];
+            if (n < fields.length) {
+                PartnersGender = fields[n];
+            }
             n++; //205
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NonDependantGrossWeeklyIncomeFromRemunerativeWork = 0;
-            } else {
-                NonDependantGrossWeeklyIncomeFromRemunerativeWork = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NonDependantGrossWeeklyIncomeFromRemunerativeWork = 0;
+                } else {
+                    NonDependantGrossWeeklyIncomeFromRemunerativeWork = Integer.valueOf(fields[n]);
+                }
             }
             n = 211;
-            HBClaimTreatAsDateMade = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                SourceOfMostRecentHBClaim = 0;
-            } else {
-                SourceOfMostRecentHBClaim = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                HBClaimTreatAsDateMade = fields[n];
             }
-            if (SourceOfMostRecentHBClaim > 99 || SourceOfMostRecentHBClaim < 0) {
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    SourceOfMostRecentHBClaim = 0;
+                } else {
+                    SourceOfMostRecentHBClaim = Integer.valueOf(fields[n]);
+                }
+                if (SourceOfMostRecentHBClaim > 99 || SourceOfMostRecentHBClaim < 0) {
 //            System.out.println("SourceOfMostRecentHBClaim " + SourceOfMostRecentHBClaim);
 //            System.out.println("SourceOfMostRecentHBClaim > 99 || SourceOfMostRecentHBClaim < 0");
-                throw new Exception("SourceOfMostRecentHBClaim > 99 || SourceOfMostRecentHBClaim < 0");
+                    throw new Exception("SourceOfMostRecentHBClaim > 99 || SourceOfMostRecentHBClaim < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim = 0;
-            } else {
-                DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim = Integer.valueOf(fields[n]);
-            }
-            if (DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim = 0;
+                } else {
+                    DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim = Integer.valueOf(fields[n]);
+                }
+                if (DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim < 0) {
 //            System.out.println("DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim " + DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim);
 //            System.out.println("DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim < 0");
-                throw new Exception("DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim < 0");
+                    throw new Exception("DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim < 0");
+                }
             }
             n++;
-            DateOfFirstHBPaymentRentAllowanceOnly = fields[n];
-            n++; //215
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly = 0;
-            } else {
-                WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly = Integer.valueOf(fields[n]);
-            }
-            if (WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly > 1 || WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly < 0) {
+            if (n < fields.length) {
+                DateOfFirstHBPaymentRentAllowanceOnly = fields[n];
+                n++; //215
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly = 0;
+                } else {
+                    WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly = Integer.valueOf(fields[n]);
+                }
+                if (WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly > 1 || WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly < 0) {
 //            System.out.println("WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly " + WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly);
 //            System.out.println("WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly > 1 || WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly < 0");
-                throw new Exception("WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly > 1 || WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly < 0");
+                    throw new Exception("WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly > 1 || WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WasThereABackdatedAwardMadeOnTheHBClaim = 0;
-            } else {
-                WasThereABackdatedAwardMadeOnTheHBClaim = Integer.valueOf(fields[n]);
-            }
-            if (WasThereABackdatedAwardMadeOnTheHBClaim > 1 || WasThereABackdatedAwardMadeOnTheHBClaim < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WasThereABackdatedAwardMadeOnTheHBClaim = 0;
+                } else {
+                    WasThereABackdatedAwardMadeOnTheHBClaim = Integer.valueOf(fields[n]);
+                }
+                if (WasThereABackdatedAwardMadeOnTheHBClaim > 1 || WasThereABackdatedAwardMadeOnTheHBClaim < 0) {
 //            System.out.println("WasThereABackdatedAwardMadeOnTheHBClaim " + WasThereABackdatedAwardMadeOnTheHBClaim);
 //            System.out.println("WasThereABackdatedAwardMadeOnTheHBClaim > 1 || WasThereABackdatedAwardMadeOnTheHBClaim < 0");
-                throw new Exception("WasThereABackdatedAwardMadeOnTheHBClaim > 1 || WasThereABackdatedAwardMadeOnTheHBClaim < 0");
+                    throw new Exception("WasThereABackdatedAwardMadeOnTheHBClaim > 1 || WasThereABackdatedAwardMadeOnTheHBClaim < 0");
+                }
             }
             n++;
-            DateHBBackdatingFrom = fields[n];
+            if (n < fields.length) {
+                DateHBBackdatingFrom = fields[n];
+            }
             n++;
-            DateHBBackdatingTo = fields[n];
+            if (n < fields.length) {
+                DateHBBackdatingTo = fields[n];
+            }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TotalAmountOfBackdatedHBAwarded = 0;
-            } else {
-                TotalAmountOfBackdatedHBAwarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TotalAmountOfBackdatedHBAwarded = 0;
+                } else {
+                    TotalAmountOfBackdatedHBAwarded = Integer.valueOf(fields[n]);
+                }
             }
             n++; //220
-            CTBClaimTreatAsMadeDate = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                SourceOfTheMostRecentCTBClaim = 0;
-            } else {
-                SourceOfTheMostRecentCTBClaim = Integer.valueOf(fields[n]);
-            }
-            if (SourceOfTheMostRecentCTBClaim > 99 || SourceOfTheMostRecentCTBClaim < 0) {
+            if (n < fields.length) {
+                CTBClaimTreatAsMadeDate = fields[n];
+                n++;
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    SourceOfTheMostRecentCTBClaim = 0;
+                } else {
+                    SourceOfTheMostRecentCTBClaim = Integer.valueOf(fields[n]);
+                }
+                if (SourceOfTheMostRecentCTBClaim > 99 || SourceOfTheMostRecentCTBClaim < 0) {
 //            System.out.println("SourceOfTheMostRecentCTBClaim " + SourceOfTheMostRecentCTBClaim);
 //            System.out.println("SourceOfTheMostRecentCTBClaim > 99 || SourceOfTheMostRecentCTBClaim < 0");
-                throw new Exception("SourceOfTheMostRecentCTBClaim > 99 || SourceOfTheMostRecentCTBClaim < 0");
+                    throw new Exception("SourceOfTheMostRecentCTBClaim > 99 || SourceOfTheMostRecentCTBClaim < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim = 0;
-            } else {
-                DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim = Integer.valueOf(fields[n]);
-            }
-            if (DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim = 0;
+                } else {
+                    DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim = Integer.valueOf(fields[n]);
+                }
+                if (DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim < 0) {
 //            System.out.println("DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim " + DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim);
 //            System.out.println("DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim > 10 || DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim < 0");
-                throw new Exception("DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim > 10 || DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim < 0");
+                    throw new Exception("DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim > 10 || DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WasThereABackdatedAwardMadeOnTheCTBClaim = 0;
-            } else {
-                WasThereABackdatedAwardMadeOnTheCTBClaim = Integer.valueOf(fields[n]);
-            }
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WasThereABackdatedAwardMadeOnTheCTBClaim = 0;
+                } else {
+                    WasThereABackdatedAwardMadeOnTheCTBClaim = Integer.valueOf(fields[n]);
+                }
 //        if (WasThereABackdatedAwardMadeOnTheCTBClaim > 1 || WasThereABackdatedAwardMadeOnTheCTBClaim < 0) {
 ////            System.out.println("WasThereABackdatedAwardMadeOnTheCTBClaim " + WasThereABackdatedAwardMadeOnTheCTBClaim);
 ////            System.out.println("WasThereABackdatedAwardMadeOnTheCTBClaim > 1 || WasThereABackdatedAwardMadeOnTheCTBClaim < 0");
 //            throw new Exception("WasThereABackdatedAwardMadeOnTheCTBClaim > 1 || WasThereABackdatedAwardMadeOnTheCTBClaim < 0");
 //        }
+            }
             n++;
-            DateCTBBackdatingFrom = fields[n];
+            if (n < fields.length) {
+                DateCTBBackdatingFrom = fields[n];
+            }
             n++; //225
-            DateCTBBackdatingTo = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TotalAmountOfBackdatedCTBAwarded = 0;
-            } else {
-                TotalAmountOfBackdatedCTBAwarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DateCTBBackdatingTo = fields[n];
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly = 0;
-            } else {
-                InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TotalAmountOfBackdatedCTBAwarded = 0;
+                } else {
+                    TotalAmountOfBackdatedCTBAwarded = Integer.valueOf(fields[n]);
+                }
             }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly = 0;
+                } else {
+                    InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly = Integer.valueOf(fields[n]);
+                }
 //        if (InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly > 1 || InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly < 0) {
 ////            System.out.println("InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly " + InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly);
 ////            System.out.println("InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly > 1 || InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly < 0");
 //            throw new Exception("InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly > 1 || InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly < 0");
 //        }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation = 0;
-            } else {
-                IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation = Integer.valueOf(fields[n]);
             }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation = 0;
+                } else {
+                    IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation = Integer.valueOf(fields[n]);
+                }
 //        if (IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation > 99 || IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation < 0) {
 ////            System.out.println("IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation " + IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation);
 ////            System.out.println("IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation > 99 || IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation < 0");
 //            throw new Exception("IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation > 99 || IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation < 0");
 //        }
+            }
             n++;
-            DateOfTransferFromLocalAuthorityLandlordToHousingAssociationRSLIfSubjectToStockTRansferOrLSVT = fields[n];
+            if (n < fields.length) {
+                DateOfTransferFromLocalAuthorityLandlordToHousingAssociationRSLIfSubjectToStockTRansferOrLSVT = fields[n];
+            }
             n++; //230
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersTotalCapital = 0;
-            } else {
-                PartnersTotalCapital = Integer.valueOf(fields[n]);
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyNotionalIncomeFromCapitalClaimantAndPartnerCombinedFigure = 0;
-            } else {
-                WeeklyNotionalIncomeFromCapitalClaimantAndPartnerCombinedFigure = Integer.valueOf(fields[n]);
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsTotalHoursOfRemunerativeWorkPerWeek = 0;
-            } else {
-                try {
-                    ClaimantsTotalHoursOfRemunerativeWorkPerWeek = Double.valueOf(fields[n]);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace(System.err);
-                    throw e;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersTotalCapital = 0;
+                } else {
+                    PartnersTotalCapital = Integer.valueOf(fields[n]);
                 }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ") || fields[n].equalsIgnoreCase("  ")) {
-                PartnersTotalHoursOfRemunerativeWorkPerWeek = 0;
-            } else {
-                try {
-                    PartnersTotalHoursOfRemunerativeWorkPerWeek = Double.valueOf(fields[n]);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace(System.err);
-                    throw e;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyNotionalIncomeFromCapitalClaimantAndPartnerCombinedFigure = 0;
+                } else {
+                    WeeklyNotionalIncomeFromCapitalClaimantAndPartnerCombinedFigure = Integer.valueOf(fields[n]);
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsTotalHoursOfRemunerativeWorkPerWeek = 0;
+                } else {
+                    try {
+                        ClaimantsTotalHoursOfRemunerativeWorkPerWeek = Double.valueOf(fields[n]);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace(System.err);
+                        throw e;
+                    }
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ") || fields[n].equalsIgnoreCase("  ")) {
+                    PartnersTotalHoursOfRemunerativeWorkPerWeek = 0;
+                } else {
+                    try {
+                        PartnersTotalHoursOfRemunerativeWorkPerWeek = Double.valueOf(fields[n]);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace(System.err);
+                        throw e;
+                    }
                 }
             }
             n = 236;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TotalHBPaymentsCreditsSinceLastExtract = 0;
-            } else {
-                TotalHBPaymentsCreditsSinceLastExtract = Integer.valueOf(fields[n]);
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TotalCTBPaymentsCreditsSinceLastExtract = 0;
-            } else {
-                TotalCTBPaymentsCreditsSinceLastExtract = Integer.valueOf(fields[n]);
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsEthnicGroup = 0;
-            } else {
-                ClaimantsEthnicGroup = Integer.valueOf(fields[n]);
-            }
-            if (ClaimantsEthnicGroup > 99 || ClaimantsEthnicGroup < 0) {
-//            System.out.println("ClaimantsEthnicGroup " + ClaimantsEthnicGroup);
-//            System.out.println("ClaimantsEthnicGroup > 99 || ClaimantsEthnicGroup < 0");
-                throw new Exception("ClaimantsEthnicGroup > 99 || ClaimantsEthnicGroup < 0");
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NewWeeklyHBEntitlementAfterTheChange = 0;
-            } else {
-                NewWeeklyHBEntitlementAfterTheChange = Integer.valueOf(fields[n]);
-            }
-            n++; //240
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NewWeeklyCTBEntitlementAfterTheChange = 0;
-            } else {
-                NewWeeklyCTBEntitlementAfterTheChange = Integer.valueOf(fields[n]);
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TypeOfChange = 0;
-            } else {
-                TypeOfChange = Integer.valueOf(fields[n]);
-            }
-            if (TypeOfChange > 2 || TypeOfChange < 0) {
-//            System.out.println("TypeOfChange " + TypeOfChange);
-//            System.out.println("TypeOfChange > 2 || TypeOfChange < 0");
-                throw new Exception("TypeOfChange > 2 || TypeOfChange < 0");
-            }
-            n++;
-            DateLAFirstNotifiedOfChangeInClaimDetails = fields[n];
-            n += 2;
-            DateChangeOfDetailsAreEffectiveFrom = fields[n];
-            n++; //245
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                IfNotAnnualUpratingHowWasTheChangeIdentified = 0;
-            } else {
-                IfNotAnnualUpratingHowWasTheChangeIdentified = Integer.valueOf(fields[n]);
-            }
-            if (IfNotAnnualUpratingHowWasTheChangeIdentified > 99 || IfNotAnnualUpratingHowWasTheChangeIdentified < 0) {
-//            System.out.println("IfNotAnnualUpratingHowWasTheChangeIdentified " + IfNotAnnualUpratingHowWasTheChangeIdentified);
-//            System.out.println("IfNotAnnualUpratingHowWasTheChangeIdentified > 99 || IfNotAnnualUpratingHowWasTheChangeIdentified < 0");
-                throw new Exception("IfNotAnnualUpratingHowWasTheChangeIdentified > 99 || IfNotAnnualUpratingHowWasTheChangeIdentified < 0");
-            }
-            n++;
-            DateSupercessionDecisionWasMadeOnTheHBClaim = fields[n];
-            n++;
-            DateSupercessionDecisionWasMadeOnTheCTBClaim = fields[n];
-            n += 3; //250
-            DateApplicationForRevisionReconsiderationReceived = fields[n];
-            n++;
-            DateClaimantNotifiedAboutTheDecisionOfTheRevisionReconsideration = fields[n];
-            n++;
-            DateAppealApplicationWasLodged = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                OutcomeOfAppealApplication = 0;
-            } else {
-                OutcomeOfAppealApplication = Integer.valueOf(fields[n]);
-            }
-            if (OutcomeOfAppealApplication > 99 || OutcomeOfAppealApplication < 0) {
-//            System.out.println("OutcomeOfAppealApplication " + OutcomeOfAppealApplication);
-//            System.out.println("OutcomeOfAppealApplication > 99 || OutcomeOfAppealApplication < 0");
-                throw new Exception("OutcomeOfAppealApplication > 99 || OutcomeOfAppealApplication < 0");
-            }
-            n++; //254
-            DateOfOutcomeOfAppealApplication = fields[n];
-            n += 6; //260
-            DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentHBClaim = fields[n];
-            n++;
-            DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim = fields[n];
-            n++;
-            DateCouncilTaxPayable = fields[n];
-            n++;
-            DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentCTBClaim = fields[n];
-            n++;
-            DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentCTBClaim = fields[n];
-            n++; //265
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                SoftwareProvider = 0;
-            } else {
-                SoftwareProvider = Integer.valueOf(fields[n]);
-            }
-            if (SoftwareProvider > 3 || SoftwareProvider < 0) {
-//            System.out.println("SoftwareProvider " + SoftwareProvider);
-//            System.out.println("SoftwareProvider > 3 || SoftwareProvider < 0");
-                throw new Exception("SoftwareProvider > 3 || SoftwareProvider < 0");
-            }
-            n++;
-            StaffingFTE = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ContractingOutHandlingAndMaintenanceOfHBCTB = 0;
-            } else {
-                ContractingOutHandlingAndMaintenanceOfHBCTB = Integer.valueOf(fields[n]);
-            }
-            if (ContractingOutHandlingAndMaintenanceOfHBCTB > 9 || ContractingOutHandlingAndMaintenanceOfHBCTB < 0) {
-//            System.out.println("ContractingOutHandlingAndMaintenanceOfHBCTB " + ContractingOutHandlingAndMaintenanceOfHBCTB);
-//            System.out.println("ContractingOutHandlingAndMaintenanceOfHBCTB > 9 || ContractingOutHandlingAndMaintenanceOfHBCTB < 0");
-                throw new Exception("ContractingOutHandlingAndMaintenanceOfHBCTB > 9 || ContractingOutHandlingAndMaintenanceOfHBCTB < 0");
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ContractingOutCounterFraudWorkRelatingToHBCTB = 0;
-            } else {
-                ContractingOutCounterFraudWorkRelatingToHBCTB = Integer.valueOf(fields[n]);
-            }
-            if (ContractingOutCounterFraudWorkRelatingToHBCTB > 9 || ContractingOutCounterFraudWorkRelatingToHBCTB < 0) {
-//            System.out.println("ContractingOutCounterFraudWorkRelatingToHBCTB " + ContractingOutCounterFraudWorkRelatingToHBCTB);
-//            System.out.println("ContractingOutCounterFraudWorkRelatingToHBCTB > 9 || ContractingOutCounterFraudWorkRelatingToHBCTB < 0");
-                throw new Exception("ContractingOutCounterFraudWorkRelatingToHBCTB > 9 || ContractingOutCounterFraudWorkRelatingToHBCTB < 0");
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NumberOfBedroomsForLHARolloutCasesOnly = 0;
-            } else {
-                NumberOfBedroomsForLHARolloutCasesOnly = Integer.valueOf(fields[n]);
-            }
-            n++; //270
-            PartnersDateOfDeath = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                JointTenancyFlag = 0;
-            } else {
-                JointTenancyFlag = Integer.valueOf(fields[n]);
-            }
-            if (JointTenancyFlag > 2 || JointTenancyFlag < 0) {
-//            System.out.println("JointTenancyFlag " + JointTenancyFlag);
-//            System.out.println("JointTenancyFlag > 2 || JointTenancyFlag < 0");
-                throw new Exception("JointTenancyFlag > 2 || JointTenancyFlag < 0");
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                AppointeeFlag = 0;
-            } else {
-                AppointeeFlag = Integer.valueOf(fields[n]);
-            }
-            if (AppointeeFlag > 2 || AppointeeFlag < 0) {
-//            System.out.println("AppointeeFlag " + AppointeeFlag);
-//            System.out.println("AppointeeFlag > 2 || AppointeeFlag < 0");
-                throw new Exception("AppointeeFlag > 2 || AppointeeFlag < 0");
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                RentFreeWeeksIndicator = 0;
-            } else {
-                RentFreeWeeksIndicator = Integer.valueOf(fields[n]);
-            }
-            n++; //274
-            if (fields.length > n) {
-                LastPaidToDate = fields[n];
-            }
-            n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                    WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0;
+                    TotalHBPaymentsCreditsSinceLastExtract = 0;
                 } else {
-                    WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = Integer.valueOf(fields[n]);
+                    TotalHBPaymentsCreditsSinceLastExtract = Integer.valueOf(fields[n]);
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TotalCTBPaymentsCreditsSinceLastExtract = 0;
+                } else {
+                    TotalCTBPaymentsCreditsSinceLastExtract = Integer.valueOf(fields[n]);
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsEthnicGroup = 0;
+                } else {
+                    ClaimantsEthnicGroup = Integer.valueOf(fields[n]);
+                }
+                if (ClaimantsEthnicGroup > 99 || ClaimantsEthnicGroup < 0) {
+//            System.out.println("ClaimantsEthnicGroup " + ClaimantsEthnicGroup);
+//            System.out.println("ClaimantsEthnicGroup > 99 || ClaimantsEthnicGroup < 0");
+                    throw new Exception("ClaimantsEthnicGroup > 99 || ClaimantsEthnicGroup < 0");
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NewWeeklyHBEntitlementAfterTheChange = 0;
+                } else {
+                    NewWeeklyHBEntitlementAfterTheChange = Integer.valueOf(fields[n]);
+                }
+            }
+            n++; //240
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NewWeeklyCTBEntitlementAfterTheChange = 0;
+                } else {
+                    NewWeeklyCTBEntitlementAfterTheChange = Integer.valueOf(fields[n]);
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TypeOfChange = 0;
+                } else {
+                    TypeOfChange = Integer.valueOf(fields[n]);
+                }
+                if (TypeOfChange > 2 || TypeOfChange < 0) {
+//            System.out.println("TypeOfChange " + TypeOfChange);
+//            System.out.println("TypeOfChange > 2 || TypeOfChange < 0");
+                    throw new Exception("TypeOfChange > 2 || TypeOfChange < 0");
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                DateLAFirstNotifiedOfChangeInClaimDetails = fields[n];
+                n += 2;
+            }
+            if (n < fields.length) {
+                DateChangeOfDetailsAreEffectiveFrom = fields[n];
+            }
+            n++; //245
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    IfNotAnnualUpratingHowWasTheChangeIdentified = 0;
+                } else {
+                    IfNotAnnualUpratingHowWasTheChangeIdentified = Integer.valueOf(fields[n]);
+                }
+                if (IfNotAnnualUpratingHowWasTheChangeIdentified > 99 || IfNotAnnualUpratingHowWasTheChangeIdentified < 0) {
+//            System.out.println("IfNotAnnualUpratingHowWasTheChangeIdentified " + IfNotAnnualUpratingHowWasTheChangeIdentified);
+//            System.out.println("IfNotAnnualUpratingHowWasTheChangeIdentified > 99 || IfNotAnnualUpratingHowWasTheChangeIdentified < 0");
+                    throw new Exception("IfNotAnnualUpratingHowWasTheChangeIdentified > 99 || IfNotAnnualUpratingHowWasTheChangeIdentified < 0");
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                DateSupercessionDecisionWasMadeOnTheHBClaim = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateSupercessionDecisionWasMadeOnTheCTBClaim = fields[n];
+            }
+            n += 3; //250
+            if (n < fields.length) {
+                DateApplicationForRevisionReconsiderationReceived = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateClaimantNotifiedAboutTheDecisionOfTheRevisionReconsideration = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateAppealApplicationWasLodged = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    OutcomeOfAppealApplication = 0;
+                } else {
+                    OutcomeOfAppealApplication = Integer.valueOf(fields[n]);
+                }
+                if (OutcomeOfAppealApplication > 99 || OutcomeOfAppealApplication < 0) {
+//            System.out.println("OutcomeOfAppealApplication " + OutcomeOfAppealApplication);
+//            System.out.println("OutcomeOfAppealApplication > 99 || OutcomeOfAppealApplication < 0");
+                    throw new Exception("OutcomeOfAppealApplication > 99 || OutcomeOfAppealApplication < 0");
+                }
+            }
+            n++; //254
+            if (n < fields.length) {
+                DateOfOutcomeOfAppealApplication = fields[n];
+            }
+            n += 6; //260
+            if (n < fields.length) {
+                DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentHBClaim = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateCouncilTaxPayable = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentCTBClaim = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentCTBClaim = fields[n];
+            }
+            n++; //265
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    SoftwareProvider = 0;
+                } else {
+                    SoftwareProvider = Integer.valueOf(fields[n]);
+                }
+                if (SoftwareProvider > 3 || SoftwareProvider < 0) {
+//            System.out.println("SoftwareProvider " + SoftwareProvider);
+//            System.out.println("SoftwareProvider > 3 || SoftwareProvider < 0");
+                    throw new Exception("SoftwareProvider > 3 || SoftwareProvider < 0");
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                StaffingFTE = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ContractingOutHandlingAndMaintenanceOfHBCTB = 0;
+                } else {
+                    ContractingOutHandlingAndMaintenanceOfHBCTB = Integer.valueOf(fields[n]);
+                }
+                if (ContractingOutHandlingAndMaintenanceOfHBCTB > 9 || ContractingOutHandlingAndMaintenanceOfHBCTB < 0) {
+//            System.out.println("ContractingOutHandlingAndMaintenanceOfHBCTB " + ContractingOutHandlingAndMaintenanceOfHBCTB);
+//            System.out.println("ContractingOutHandlingAndMaintenanceOfHBCTB > 9 || ContractingOutHandlingAndMaintenanceOfHBCTB < 0");
+                    throw new Exception("ContractingOutHandlingAndMaintenanceOfHBCTB > 9 || ContractingOutHandlingAndMaintenanceOfHBCTB < 0");
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ContractingOutCounterFraudWorkRelatingToHBCTB = 0;
+                } else {
+                    ContractingOutCounterFraudWorkRelatingToHBCTB = Integer.valueOf(fields[n]);
+                }
+                if (ContractingOutCounterFraudWorkRelatingToHBCTB > 9 || ContractingOutCounterFraudWorkRelatingToHBCTB < 0) {
+//            System.out.println("ContractingOutCounterFraudWorkRelatingToHBCTB " + ContractingOutCounterFraudWorkRelatingToHBCTB);
+//            System.out.println("ContractingOutCounterFraudWorkRelatingToHBCTB > 9 || ContractingOutCounterFraudWorkRelatingToHBCTB < 0");
+                    throw new Exception("ContractingOutCounterFraudWorkRelatingToHBCTB > 9 || ContractingOutCounterFraudWorkRelatingToHBCTB < 0");
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NumberOfBedroomsForLHARolloutCasesOnly = 0;
+                } else {
+                    NumberOfBedroomsForLHARolloutCasesOnly = Integer.valueOf(fields[n]);
+                }
+            }
+            n++; //270
+            if (n < fields.length) {
+                PartnersDateOfDeath = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    JointTenancyFlag = 0;
+                } else {
+                    JointTenancyFlag = Integer.valueOf(fields[n]);
+                }
+                if (JointTenancyFlag > 2 || JointTenancyFlag < 0) {
+//            System.out.println("JointTenancyFlag " + JointTenancyFlag);
+//            System.out.println("JointTenancyFlag > 2 || JointTenancyFlag < 0");
+                    throw new Exception("JointTenancyFlag > 2 || JointTenancyFlag < 0");
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    AppointeeFlag = 0;
+                } else {
+                    AppointeeFlag = Integer.valueOf(fields[n]);
+                }
+                if (AppointeeFlag > 2 || AppointeeFlag < 0) {
+//            System.out.println("AppointeeFlag " + AppointeeFlag);
+//            System.out.println("AppointeeFlag > 2 || AppointeeFlag < 0");
+                    throw new Exception("AppointeeFlag > 2 || AppointeeFlag < 0");
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    RentFreeWeeksIndicator = 0;
+                } else {
+                    RentFreeWeeksIndicator = Integer.valueOf(fields[n]);
+                }
+            }
+            n++; //274
+            if (n < fields.length) {
+                if (n < fields.length) {
+                    LastPaidToDate = fields[n];
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (n < fields.length) {
+                    if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                        WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0;
+                    } else {
+                        WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = Integer.valueOf(fields[n]);
+                    }
+                }
+            }
+            n++;
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     ClaimantsWeeklyIncomeFromESABasicElement = 0;
                 } else {
@@ -2773,7 +3248,7 @@ public class SHBE_DataRecord {
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     PartnersWeeklyIncomeFromESABasicElement = 0;
                 } else {
@@ -2781,7 +3256,7 @@ public class SHBE_DataRecord {
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     ClaimantsWeeklyIncomeFromESAWRAGElement = 0;
                 } else {
@@ -2789,7 +3264,7 @@ public class SHBE_DataRecord {
                 }
             }
             n++; //279
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     PartnersWeeklyIncomeFromESAWRAGElement = 0;
                 } else {
@@ -2797,7 +3272,7 @@ public class SHBE_DataRecord {
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     ClaimantsWeeklyIncomeFromESASCGElement = 0;
                 } else {
@@ -2805,7 +3280,7 @@ public class SHBE_DataRecord {
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     PartnersWeeklyIncomeFromESASCGElement = 0;
                 } else {
@@ -2813,21 +3288,21 @@ public class SHBE_DataRecord {
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 WRAGPremiumFlag = fields[n];
             }
             n++; //283
-            if (fields.length > n) {
+            if (n < fields.length) {
                 SCGPremiumFlag = fields[n];
             }
             if (type == 1) {
                 n++;
-                if (fields.length > n) {
+                if (n < fields.length) {
                     LandlordPostcode = fields[n];
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     SubRecordType = 0;
                 } else {
@@ -2847,114 +3322,114 @@ public class SHBE_DataRecord {
             }
             if (type == 1) {
                 n++;
-                if (fields.length > n) {
+                if (n < fields.length) {
                     SubRecordDateOfBirth = fields[n];
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 SubRecordChildReferenceNumberOrNINO = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 SubRecordStartDate = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 SubRecordEndDate = fields[n];
             }
             if (type == 1) {
                 n++;
-                if (fields.length > n) {
+                if (n < fields.length) {
                     SubRecordDateOfBirth = fields[n];
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 IfThisActivityResolvesAnHBMSReferralProvideRMSNumber = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 HBMSRuleScanID = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 DateOfHBMSMatch = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 IfResolutionOfHBMSReferralDoesNotResultInAFinancialAdjustmentPleaseIndicateTheReasonWhy = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 UniqueTRecordIdentifier = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonCapital = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonClaimentPartnersEarnedIncome = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonNonDependentsEarnedIncome = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonPassportingStatus = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonIncomeFromDWPBenefits = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonTaxCredits = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonOtherIncome = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonLivingTogetherAsHusbandAndWife = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonNumberOfNonDependents = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonNumberOfDependents = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonNonResidence = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonEligibleRentCouncilTax = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonIneligible = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonIdentityDeath = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonOther = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 BenefitThatThisPaymentErrorRelatesTo = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     TotalValueOfPaymentError = 0;
                 } else {
@@ -2967,41 +3442,52 @@ public class SHBE_DataRecord {
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 WeeklyBenefitDiscrepancyAtStartOfPaymentError = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 StartDateOfPaymentErrorPeriod = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 EndDateOfPaymentErrorPeriod = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 WhatWasTheCauseOfTheOverPayment = fields[n];
             }
-        } else {
-            //line.startsWith("D");
-            //System.out.println("S record");
-            this.RecordID = RecordID;
-            String[] fields = line.split(",");
-            if (fields.length != 275) {
-                if (fields.length > 284) {
-                    if (fields.length > 290) {
-                        System.out.println("fields.length " + fields.length);
-                        System.out.println("RecordID " + RecordID);
-                        System.out.println(line);
-                    }
-                }
-            }
-            int n = 0;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            int debug = 1;
+            System.err.println("RecordID " + RecordID);
+            System.err.println(e.getMessage());
+            System.err.println("Expected " + expectedFieldsLength + " fields");
+            System.err.println("fields.length = " + fields.length);
+            System.err.println("n = " + n);
+        }
+    }
+
+    private void generateDRecord(
+            int type,
+            String line,
+            DW_SHBE_Handler handler) throws Exception {
+        String[] fields = line.split(",");
+        int n = 0;
+        int expectedFieldsLength = 275;
+        try {
+            // Normal record length is 275
+//            if (fields.length < 250) {
+////            if (fields.length < expectedFieldsLength) {
+//                System.out.println("fields.length " + fields.length);
+//                System.out.println("RecordID " + RecordID);
+//                System.out.println(line);
+//            }
             RecordType = fields[n];
-            if (!aSHBE_DataHandler.getRecordTypes().contains(RecordType)) {
-//            System.out.println("RecordType " + RecordType);
-//            System.out.println("!aSHBE_DataHandler.getRecordTypes().contains(RecordType)");
-                throw new Exception("!aSHBE_DataHandler.getRecordTypes().contains(RecordType)");
+            if (!handler.getRecordTypes().contains(RecordType)) {
+                System.out.println("RecordType " + RecordType);
+                System.out.println("!handler.getRecordTypes().contains(RecordType)");
+                System.out.println("handler.toString() " + handler.toString());
+                throw new Exception("!handler.getRecordTypes().contains(RecordType)");
             }
             n++;
             HousingBenefitClaimReferenceNumber = fields[n];
@@ -3015,1464 +3501,1912 @@ public class SHBE_DataRecord {
             //ClaimantsSurname = fields[n];
             //ClaimantsFirstForename = fields[n;
             n++;
-            ClaimantsDateOfBirth = fields[n];
-            n++;
-            if (fields[n].isEmpty()) {
-                TenancyType = -999;
-            } else {
-                TenancyType = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                ClaimantsDateOfBirth = fields[n];
             }
-            if (TenancyType > 9 || TenancyType < 1) {
+            n++;
+            if (n < fields.length) {
+                if (fields[n].isEmpty()) {
+                    TenancyType = -999;
+                } else {
+                    TenancyType = Integer.valueOf(fields[n]);
+                }
+                if (TenancyType > 9 || TenancyType < 1) {
 //            System.out.println("TenancyType " + TenancyType);
 //            System.out.println("TenancyType > 9 || TenancyType < 1");
-                throw new Exception("TenancyType > 9 || TenancyType < 1");
+                    throw new Exception("TenancyType > 9 || TenancyType < 1");
+                }
+                //ClaimantsAddressLine1 = fields[n];
             }
-            //ClaimantsAddressLine1 = fields[n];
             n++;
-            ClaimantsPostcode = fields[n];
-            n++; //7
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PassportedStandardIndicator = 0;
-            } else {
-                PassportedStandardIndicator = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                ClaimantsPostcode = fields[n];
             }
-            if (PassportedStandardIndicator > 5 || PassportedStandardIndicator < 0) {
+            n++; //7
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PassportedStandardIndicator = 0;
+                } else {
+                    PassportedStandardIndicator = Integer.valueOf(fields[n]);
+                }
+                if (PassportedStandardIndicator > 5 || PassportedStandardIndicator < 0) {
 //            System.out.println("PassportedStandardIndicator " + PassportedStandardIndicator);
 //            System.out.println("PassportedStandardIndicator > 5 || PassportedStandardIndicator < 0");
-                throw new Exception("PassportedStandardIndicator > 5 || PassportedStandardIndicator < 0");
+                    throw new Exception("PassportedStandardIndicator > 5 || PassportedStandardIndicator < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NumberOfChildDependents = 0;
-            } else {
-                NumberOfChildDependents = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NumberOfChildDependents = 0;
+                } else {
+                    NumberOfChildDependents = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NumberOfNonDependents = 0;
-            } else {
-                NumberOfNonDependents = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NumberOfNonDependents = 0;
+                } else {
+                    NumberOfNonDependents = Integer.valueOf(fields[n]);
+                }
             }
             n += 2; //10
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NonDependentStatus = 0;
-            } else {
-                NonDependentStatus = Integer.valueOf(fields[n]);
-            }
-            if (NonDependentStatus > 8 || NonDependentStatus < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NonDependentStatus = 0;
+                } else {
+                    NonDependentStatus = Integer.valueOf(fields[n]);
+                }
+                if (NonDependentStatus > 8 || NonDependentStatus < 0) {
 //            System.out.println("NonDependentStatus " + NonDependentStatus);
 //            System.out.println("NonDependentStatus > 8 || NonDependentStatus < 0");
-                throw new Exception("NonDependentStatus > 8 || NonDependentStatus < 0");
+                    throw new Exception("NonDependentStatus > 8 || NonDependentStatus < 0");
+                }
             }
             n++; //12
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NonDependentDeductionAmountApplied = 0;
-            } else {
-                NonDependentDeductionAmountApplied = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NonDependentDeductionAmountApplied = 0;
+                } else {
+                    NonDependentDeductionAmountApplied = Integer.valueOf(fields[n]);
+                }
             }
             n = 28;
-            if (fields[n].isEmpty()) {
-                StatusOfHBClaimAtExtractDate = -999;
-            } else {
-                StatusOfHBClaimAtExtractDate = Integer.valueOf(fields[n]);
-            }
-            if (StatusOfHBClaimAtExtractDate > 2 || StatusOfHBClaimAtExtractDate < 0) {
+            if (n < fields.length) {
+                if (fields[n].isEmpty()) {
+                    StatusOfHBClaimAtExtractDate = -999;
+                } else {
+                    StatusOfHBClaimAtExtractDate = Integer.valueOf(fields[n]);
+                }
+                if (StatusOfHBClaimAtExtractDate > 2 || StatusOfHBClaimAtExtractDate < 0) {
 //            System.out.println("StatusOfHBClaimAtExtractDate " + StatusOfHBClaimAtExtractDate);
 //            System.out.println("StatusOfHBClaimAtExtractDate > 2 || StatusOfHBClaimAtExtractDate < 0");
-                throw new Exception("StatusOfHBClaimAtExtractDate > 2 || StatusOfHBClaimAtExtractDate < 0");
+                    throw new Exception("StatusOfHBClaimAtExtractDate > 2 || StatusOfHBClaimAtExtractDate < 0");
+                }
             }
             n++;
-            if (fields[n].isEmpty()) {
-                StatusOfCTBClaimAtExtractDate = -999;
-            } else {
-                StatusOfCTBClaimAtExtractDate = Integer.valueOf(fields[n]);
-            }
-            if (StatusOfCTBClaimAtExtractDate > 2 || StatusOfCTBClaimAtExtractDate < 0) {
+            if (n < fields.length) {
+                if (fields[n].isEmpty()) {
+                    StatusOfCTBClaimAtExtractDate = -999;
+                } else {
+                    StatusOfCTBClaimAtExtractDate = Integer.valueOf(fields[n]);
+                }
+                if (StatusOfCTBClaimAtExtractDate > 2 || StatusOfCTBClaimAtExtractDate < 0) {
 //            System.out.println("StatusOfCTBClaimAtExtractDate " + StatusOfCTBClaimAtExtractDate);
 //            System.out.println("StatusOfCTBClaimAtExtractDate > 2 || StatusOfCTBClaimAtExtractDate < 0");
-                throw new Exception("StatusOfCTBClaimAtExtractDate > 2 || StatusOfCTBClaimAtExtractDate < 0");
+                    throw new Exception("StatusOfCTBClaimAtExtractDate > 2 || StatusOfCTBClaimAtExtractDate < 0");
+                }
             }
             n++; //30
-            DateMostRecentHBClaimWasReceived = fields[n];
-            n++;
-            DateMostRecentCTBClaimWasReceived = fields[n];
-            n++;
-            DateOfFirstDecisionOnMostRecentHBClaim = fields[n];
-            n++;
-            DateOfFirstDecisionOnMostRecentCTBClaim = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                OutcomeOfFirstDecisionOnMostRecentHBClaim = 0;
-            } else {
-                OutcomeOfFirstDecisionOnMostRecentHBClaim = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DateMostRecentHBClaimWasReceived = fields[n];
             }
-            if (OutcomeOfFirstDecisionOnMostRecentHBClaim > 6 || OutcomeOfFirstDecisionOnMostRecentHBClaim < 0) {
+            n++;
+            if (n < fields.length) {
+                DateMostRecentCTBClaimWasReceived = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateOfFirstDecisionOnMostRecentHBClaim = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateOfFirstDecisionOnMostRecentCTBClaim = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    OutcomeOfFirstDecisionOnMostRecentHBClaim = 0;
+                } else {
+                    OutcomeOfFirstDecisionOnMostRecentHBClaim = Integer.valueOf(fields[n]);
+                }
+                if (OutcomeOfFirstDecisionOnMostRecentHBClaim > 6 || OutcomeOfFirstDecisionOnMostRecentHBClaim < 0) {
 //            System.out.println("OutcomeOfFirstDecisionOnMostRecentHBClaim " + OutcomeOfFirstDecisionOnMostRecentHBClaim);
 //            System.out.println("OutcomeOfFirstDecisionOnMostRecentHBClaim > 6 || OutcomeOfFirstDecisionOnMostRecentHBClaim < 0");
-                throw new Exception("OutcomeOfFirstDecisionOnMostRecentHBClaim > 6 || OutcomeOfFirstDecisionOnMostRecentHBClaim < 0");
+                    throw new Exception("OutcomeOfFirstDecisionOnMostRecentHBClaim > 6 || OutcomeOfFirstDecisionOnMostRecentHBClaim < 0");
+                }
             }
             n++; //35
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                OutcomeOfFirstDecisionOnMostRecentCTBClaim = 0;
-            } else {
-                OutcomeOfFirstDecisionOnMostRecentCTBClaim = Integer.valueOf(fields[n]);
-            }
-            if (OutcomeOfFirstDecisionOnMostRecentCTBClaim > 6 || OutcomeOfFirstDecisionOnMostRecentCTBClaim < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    OutcomeOfFirstDecisionOnMostRecentCTBClaim = 0;
+                } else {
+                    OutcomeOfFirstDecisionOnMostRecentCTBClaim = Integer.valueOf(fields[n]);
+                }
+                if (OutcomeOfFirstDecisionOnMostRecentCTBClaim > 6 || OutcomeOfFirstDecisionOnMostRecentCTBClaim < 0) {
 //            System.out.println("OutcomeOfFirstDecisionOnMostRecentCTBClaim " + OutcomeOfFirstDecisionOnMostRecentCTBClaim);
 //            System.out.println("OutcomeOfFirstDecisionOnMostRecentCTBClaim > 6 || OutcomeOfFirstDecisionOnMostRecentCTBClaim < 0");
-                throw new Exception("OutcomeOfFirstDecisionOnMostRecentCTBClaim > 6 || OutcomeOfFirstDecisionOnMostRecentCTBClaim < 0");
+                    throw new Exception("OutcomeOfFirstDecisionOnMostRecentCTBClaim > 6 || OutcomeOfFirstDecisionOnMostRecentCTBClaim < 0");
+                }
             }
             n++;
-            HBClaimEntitlementStartDate = fields[n];
+            if (n < fields.length) {
+                HBClaimEntitlementStartDate = fields[n];
+            }
             n += 2;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyHousingBenefitEntitlement = 0;
-            } else {
-                WeeklyHousingBenefitEntitlement = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyHousingBenefitEntitlement = 0;
+                } else {
+                    WeeklyHousingBenefitEntitlement = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyCouncilTaxBenefitEntitlement = 0;
-            } else {
-                WeeklyCouncilTaxBenefitEntitlement = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyCouncilTaxBenefitEntitlement = 0;
+                } else {
+                    WeeklyCouncilTaxBenefitEntitlement = Integer.valueOf(fields[n]);
+                }
             }
             n++; //40
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                FrequencyOfPaymentOfHB = 0;
-            } else {
-                FrequencyOfPaymentOfHB = Integer.valueOf(fields[n]);
-            }
-            if (FrequencyOfPaymentOfHB > 99 || FrequencyOfPaymentOfHB < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    FrequencyOfPaymentOfHB = 0;
+                } else {
+                    FrequencyOfPaymentOfHB = Integer.valueOf(fields[n]);
+                }
+                if (FrequencyOfPaymentOfHB > 99 || FrequencyOfPaymentOfHB < 0) {
 //            System.out.println("FrequencyOfPaymentOfHB " + FrequencyOfPaymentOfHB);
 //            System.out.println("FrequencyOfPaymentOfHB > 99 || FrequencyOfPaymentOfHB < 0");
-                throw new Exception("FrequencyOfPaymentOfHB > 99 || FrequencyOfPaymentOfHB < 0");
+                    throw new Exception("FrequencyOfPaymentOfHB > 99 || FrequencyOfPaymentOfHB < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                FrequencyOfPaymentOfCTB = 0;
-            } else {
-                FrequencyOfPaymentOfCTB = Integer.valueOf(fields[n]);
-            }
-            if (FrequencyOfPaymentOfCTB != 3 && FrequencyOfPaymentOfCTB != 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    FrequencyOfPaymentOfCTB = 0;
+                } else {
+                    FrequencyOfPaymentOfCTB = Integer.valueOf(fields[n]);
+                }
+                if (FrequencyOfPaymentOfCTB != 3 && FrequencyOfPaymentOfCTB != 0) {
 //            System.out.println("FrequencyOfPaymentOfCTB " + FrequencyOfPaymentOfCTB);
 //            System.out.println("FrequencyOfPaymentOfCTB != 3 && FrequencyOfPaymentOfCTB != 0");
-                throw new Exception("FrequencyOfPaymentOfCTB != 3 && FrequencyOfPaymentOfCTB != 0");
+                    throw new Exception("FrequencyOfPaymentOfCTB != 3 && FrequencyOfPaymentOfCTB != 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PreDeterminationAmountOfHB = 0;
-            } else {
-                PreDeterminationAmountOfHB = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PreDeterminationAmountOfHB = 0;
+                } else {
+                    PreDeterminationAmountOfHB = Integer.valueOf(fields[n]);
+                }
             }
             n++; //43
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PreDeterminationAmountOfCTB = 0;
-            } else {
-                PreDeterminationAmountOfCTB = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PreDeterminationAmountOfCTB = 0;
+                } else {
+                    PreDeterminationAmountOfCTB = Integer.valueOf(fields[n]);
+                }
             }
             n += 2; //45
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyHBEntitlementBeforeChange = 0;
-            } else {
-                WeeklyHBEntitlementBeforeChange = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyHBEntitlementBeforeChange = 0;
+                } else {
+                    WeeklyHBEntitlementBeforeChange = Integer.valueOf(fields[n]);
+                }
             }
             n += 2; //47
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyCTBEntitlementBeforeChange = 0;
-            } else {
-                WeeklyCTBEntitlementBeforeChange = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyCTBEntitlementBeforeChange = 0;
+                } else {
+                    WeeklyCTBEntitlementBeforeChange = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ReasonForDirectPayment = 0;
-            } else {
-                ReasonForDirectPayment = Integer.valueOf(fields[n]);
-            }
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ReasonForDirectPayment = 0;
+                } else {
+                    ReasonForDirectPayment = Integer.valueOf(fields[n]);
+                }
 //            if (ReasonForDirectPayment > 7 || ReasonForDirectPayment < 0) {
 //                throw new Exception("ReasonForDirectPayment " + ReasonForDirectPayment + " > 7 || < 0");
 //            }
-            if (ReasonForDirectPayment > 8 || ReasonForDirectPayment < 0) {
-                throw new Exception("ReasonForDirectPayment " + ReasonForDirectPayment + " > 8 || < 0");
+                if (ReasonForDirectPayment > 8 || ReasonForDirectPayment < 0) {
+                    throw new Exception("ReasonForDirectPayment " + ReasonForDirectPayment + " > 8 || < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TimingOfPaymentOfRentAllowance = 0;
-            } else {
-                TimingOfPaymentOfRentAllowance = Integer.valueOf(fields[n]);
-            }
-            if (TimingOfPaymentOfRentAllowance > 4 || TimingOfPaymentOfRentAllowance < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TimingOfPaymentOfRentAllowance = 0;
+                } else {
+                    TimingOfPaymentOfRentAllowance = Integer.valueOf(fields[n]);
+                }
+                if (TimingOfPaymentOfRentAllowance > 4 || TimingOfPaymentOfRentAllowance < 0) {
 //            System.out.println("TimingOfPaymentOfRentAllowance " + TimingOfPaymentOfRentAllowance);
 //            System.out.println("TimingOfPaymentOfRentAllowance > 4 || TimingOfPaymentOfRentAllowance < 0");
-                throw new Exception("TimingOfPaymentOfRentAllowance > 4 || TimingOfPaymentOfRentAllowance < 0");
+                    throw new Exception("TimingOfPaymentOfRentAllowance > 4 || TimingOfPaymentOfRentAllowance < 0");
+                }
             }
             n++; //50
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ExtendedPaymentCase = 0;
-            } else {
-                ExtendedPaymentCase = Integer.valueOf(fields[n]);
-            }
-            if (ExtendedPaymentCase > 4 || ExtendedPaymentCase < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ExtendedPaymentCase = 0;
+                } else {
+                    ExtendedPaymentCase = Integer.valueOf(fields[n]);
+                }
+                if (ExtendedPaymentCase > 4 || ExtendedPaymentCase < 0) {
 //            System.out.println("ExtendedPaymentCase " + ExtendedPaymentCase);
 //            System.out.println("ExtendedPaymentCase > 4 || ExtendedPaymentCase < 0");
-                throw new Exception("ExtendedPaymentCase > 4 || ExtendedPaymentCase < 0");
+                    throw new Exception("ExtendedPaymentCase > 4 || ExtendedPaymentCase < 0");
+                }
             }
             n++;
-            CouncilTaxBand = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyEligibleRentAmount = 0;
-            } else {
-                WeeklyEligibleRentAmount = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                CouncilTaxBand = fields[n];
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyEligibleCouncilTaxAmount = 0;
-            } else {
-                WeeklyEligibleCouncilTaxAmount = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyEligibleRentAmount = 0;
+                } else {
+                    WeeklyEligibleRentAmount = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("Y")) {
-                ClaimantsStudentIndicator = "Y";
-            } else {
-                ClaimantsStudentIndicator = "N";
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyEligibleCouncilTaxAmount = 0;
+                } else {
+                    WeeklyEligibleCouncilTaxAmount = Integer.valueOf(fields[n]);
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("Y")) {
+                    ClaimantsStudentIndicator = "Y";
+                } else {
+                    ClaimantsStudentIndicator = "N";
+                }
             }
             n++; //55
-            if (fields[n].isEmpty()) {
-                SecondAdultRebate = -999;
-            } else {
-                SecondAdultRebate = Integer.valueOf(fields[n]);
-            }
-            if (SecondAdultRebate > 2 || SecondAdultRebate < 0) {
+            if (n < fields.length) {
+                if (fields[n].isEmpty()) {
+                    SecondAdultRebate = -999;
+                } else {
+                    SecondAdultRebate = Integer.valueOf(fields[n]);
+                }
+                if (SecondAdultRebate > 2 || SecondAdultRebate < 0) {
 //            System.out.println("SecondAdultRebate " + SecondAdultRebate);
 //            System.out.println("SecondAdultRebate > 2 || SecondAdultRebate < 1");
-                throw new Exception("SecondAdultRebate > 2 || SecondAdultRebate < 1");
+                    throw new Exception("SecondAdultRebate > 2 || SecondAdultRebate < 1");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                RebatePercentageWhereASecondAdultRebateHasBeenAwarded = 0;
-            } else {
-                RebatePercentageWhereASecondAdultRebateHasBeenAwarded = Integer.valueOf(fields[n]);
-            }
-            if (RebatePercentageWhereASecondAdultRebateHasBeenAwarded > 4 || RebatePercentageWhereASecondAdultRebateHasBeenAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    RebatePercentageWhereASecondAdultRebateHasBeenAwarded = 0;
+                } else {
+                    RebatePercentageWhereASecondAdultRebateHasBeenAwarded = Integer.valueOf(fields[n]);
+                }
+                if (RebatePercentageWhereASecondAdultRebateHasBeenAwarded > 4 || RebatePercentageWhereASecondAdultRebateHasBeenAwarded < 0) {
 //            System.out.println("RebatePercentageWhereASecondAdultRebateHasBeenAwarded " + RebatePercentageWhereASecondAdultRebateHasBeenAwarded);
 //            System.out.println("RebatePercentageWhereASecondAdultRebateHasBeenAwarded > 4 || RebatePercentageWhereASecondAdultRebateHasBeenAwarded < 0");
-                throw new Exception("RebatePercentageWhereASecondAdultRebateHasBeenAwarded > 4 || RebatePercentageWhereASecondAdultRebateHasBeenAwarded < 0");
+                    throw new Exception("RebatePercentageWhereASecondAdultRebateHasBeenAwarded > 4 || RebatePercentageWhereASecondAdultRebateHasBeenAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                LHARegulationsApplied = "No";
-            } else {
-                LHARegulationsApplied = "Yes";
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    LHARegulationsApplied = "No";
+                } else {
+                    LHARegulationsApplied = "Yes";
+                }
             }
             n++;
-            if (fields[n].isEmpty()) {
-                IsThisCaseSubjectToLRROrSRRSchemes = -999;
-            } else {
-                IsThisCaseSubjectToLRROrSRRSchemes = Integer.valueOf(fields[n]);
-            }
-            if (IsThisCaseSubjectToLRROrSRRSchemes > 4 || IsThisCaseSubjectToLRROrSRRSchemes < 1) {
+            if (n < fields.length) {
+                if (fields[n].isEmpty()) {
+                    IsThisCaseSubjectToLRROrSRRSchemes = -999;
+                } else {
+                    IsThisCaseSubjectToLRROrSRRSchemes = Integer.valueOf(fields[n]);
+                }
+                if (IsThisCaseSubjectToLRROrSRRSchemes > 4 || IsThisCaseSubjectToLRROrSRRSchemes < 1) {
 //            System.out.println("IsThisCaseSubjectToLRROrSRRSchemes " + IsThisCaseSubjectToLRROrSRRSchemes);
 //            System.out.println("IsThisCaseSubjectToLRROrSRRSchemes > 4 || IsThisCaseSubjectToLRROrSRRSchemes < 1");
-                throw new Exception("IsThisCaseSubjectToLRROrSRRSchemes > 4 || IsThisCaseSubjectToLRROrSRRSchemes < 1");
+                    throw new Exception("IsThisCaseSubjectToLRROrSRRSchemes > 4 || IsThisCaseSubjectToLRROrSRRSchemes < 1");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyLocalReferenceRent = 0;
-            } else {
-                WeeklyLocalReferenceRent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyLocalReferenceRent = 0;
+                } else {
+                    WeeklyLocalReferenceRent = Integer.valueOf(fields[n]);
+                }
             }
             n++; //60
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklySingleRoomRent = 0;
-            } else {
-                WeeklySingleRoomRent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklySingleRoomRent = 0;
+                } else {
+                    WeeklySingleRoomRent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeelklyClaimRelatedRent = 0;
-            } else {
-                WeelklyClaimRelatedRent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeelklyClaimRelatedRent = 0;
+                } else {
+                    WeelklyClaimRelatedRent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                RentOfficerDeterminationOfIneligibleCharges = 0;
-            } else {
-                RentOfficerDeterminationOfIneligibleCharges = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    RentOfficerDeterminationOfIneligibleCharges = 0;
+                } else {
+                    RentOfficerDeterminationOfIneligibleCharges = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyMaximumRent = 0;
-            } else {
-                WeeklyMaximumRent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyMaximumRent = 0;
+                } else {
+                    WeeklyMaximumRent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TotalDeductionForMeals = 0;
-            } else {
-                TotalDeductionForMeals = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TotalDeductionForMeals = 0;
+                } else {
+                    TotalDeductionForMeals = Integer.valueOf(fields[n]);
+                }
             }
             n++; //65
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyAdditionalDiscretionaryPayment = 0;
-            } else {
-                WeeklyAdditionalDiscretionaryPayment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyAdditionalDiscretionaryPayment = 0;
+                } else {
+                    WeeklyAdditionalDiscretionaryPayment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ThirteenOrFiftyTwoWeekProtectionApplies = 0;
-            } else {
-                ThirteenOrFiftyTwoWeekProtectionApplies = Integer.valueOf(fields[n]);
-            }
-            if (ThirteenOrFiftyTwoWeekProtectionApplies > 1 || ThirteenOrFiftyTwoWeekProtectionApplies < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ThirteenOrFiftyTwoWeekProtectionApplies = 0;
+                } else {
+                    ThirteenOrFiftyTwoWeekProtectionApplies = Integer.valueOf(fields[n]);
+                }
+                if (ThirteenOrFiftyTwoWeekProtectionApplies > 1 || ThirteenOrFiftyTwoWeekProtectionApplies < 0) {
 //            System.out.println("ThirteenOrFiftyTwoWeekProtectionApplies " + ThirteenOrFiftyTwoWeekProtectionApplies);
 //            System.out.println("ThirteenOrFiftyTwoWeekProtectionApplies > 1 || ThirteenOrFiftyTwoWeekProtectionApplies < 0");
-                throw new Exception("ThirteenOrFiftyTwoWeekProtectionApplies > 1 || ThirteenOrFiftyTwoWeekProtectionApplies < 0");
+                    throw new Exception("ThirteenOrFiftyTwoWeekProtectionApplies > 1 || ThirteenOrFiftyTwoWeekProtectionApplies < 0");
+                }
             }
             n++;
-            DateOfFirstPaymentOnMostRecentHBClaimFollowingAFullDecision = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsAssessedIncomeFigure = 0;
-            } else {
-                ClaimantsAssessedIncomeFigure = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DateOfFirstPaymentOnMostRecentHBClaimFollowingAFullDecision = fields[n];
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsAdjustedAssessedIncomeFigure = 0;
-            } else {
-                ClaimantsAdjustedAssessedIncomeFigure = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsAssessedIncomeFigure = 0;
+                } else {
+                    ClaimantsAssessedIncomeFigure = Integer.valueOf(fields[n]);
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsAdjustedAssessedIncomeFigure = 0;
+                } else {
+                    ClaimantsAdjustedAssessedIncomeFigure = Integer.valueOf(fields[n]);
+                }
             }
             n++; //70
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsTotalCapital = 0;
-            } else {
-                ClaimantsTotalCapital = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsTotalCapital = 0;
+                } else {
+                    ClaimantsTotalCapital = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsGrossWeeklyIncomeFromEmployment = 0;
-            } else {
-                ClaimantsGrossWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsGrossWeeklyIncomeFromEmployment = 0;
+                } else {
+                    ClaimantsGrossWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsNetWeeklyIncomeFromEmployment = 0;
-            } else {
-                ClaimantsNetWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsNetWeeklyIncomeFromEmployment = 0;
+                } else {
+                    ClaimantsNetWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsGrossWeeklyIncomeFromSelfEmployment = 0;
-            } else {
-                ClaimantsGrossWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsGrossWeeklyIncomeFromSelfEmployment = 0;
+                } else {
+                    ClaimantsGrossWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsNetWeeklyIncomeFromSelfEmployment = 0;
-            } else {
-                ClaimantsNetWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsNetWeeklyIncomeFromSelfEmployment = 0;
+                } else {
+                    ClaimantsNetWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++; //75
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsTotalAmountOfEarningsDisregarded = 0;
-            } else {
-                ClaimantsTotalAmountOfEarningsDisregarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsTotalAmountOfEarningsDisregarded = 0;
+                } else {
+                    ClaimantsTotalAmountOfEarningsDisregarded = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = 0;
-            } else {
-                ClaimantsIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = 0;
+                } else {
+                    ClaimantsIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromAttendanceAllowance = 0;
-            } else {
-                ClaimantsIncomeFromAttendanceAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromAttendanceAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromAttendanceAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromBusinessStartUpAllowance = 0;
-            } else {
-                ClaimantsIncomeFromBusinessStartUpAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromBusinessStartUpAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromBusinessStartUpAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromChildBenefit = 0;
-            } else {
-                ClaimantsIncomeFromChildBenefit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromChildBenefit = 0;
+                } else {
+                    ClaimantsIncomeFromChildBenefit = Integer.valueOf(fields[n]);
+                }
             }
             n++; //80
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromOneParentBenefitChildBenefitLoneParent = 0;
-            } else {
-                ClaimantsIncomeFromOneParentBenefitChildBenefitLoneParent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromOneParentBenefitChildBenefitLoneParent = 0;
+                } else {
+                    ClaimantsIncomeFromOneParentBenefitChildBenefitLoneParent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromPersonalPension = 0;
-            } else {
-                ClaimantsIncomeFromPersonalPension = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromPersonalPension = 0;
+                } else {
+                    ClaimantsIncomeFromPersonalPension = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromSevereDisabilityAllowance = 0;
-            } else {
-                ClaimantsIncomeFromSevereDisabilityAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromSevereDisabilityAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromSevereDisabilityAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromMaternityAllowance = 0;
-            } else {
-                ClaimantsIncomeFromMaternityAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromMaternityAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromMaternityAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromContributionBasedJobSeekersAllowance = 0;
-            } else {
-                ClaimantsIncomeFromContributionBasedJobSeekersAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromContributionBasedJobSeekersAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromContributionBasedJobSeekersAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++; //85
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromStudentGrantLoan = 0;
-            } else {
-                ClaimantsIncomeFromStudentGrantLoan = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromStudentGrantLoan = 0;
+                } else {
+                    ClaimantsIncomeFromStudentGrantLoan = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromSubTenants = 0;
-            } else {
-                ClaimantsIncomeFromSubTenants = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromSubTenants = 0;
+                } else {
+                    ClaimantsIncomeFromSubTenants = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromBoarders = 0;
-            } else {
-                ClaimantsIncomeFromBoarders = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromBoarders = 0;
+                } else {
+                    ClaimantsIncomeFromBoarders = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromTrainingForWorkCommunityAction = 0;
-            } else {
-                ClaimantsIncomeFromTrainingForWorkCommunityAction = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromTrainingForWorkCommunityAction = 0;
+                } else {
+                    ClaimantsIncomeFromTrainingForWorkCommunityAction = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromIncapacityBenefitShortTermLower = 0;
-            } else {
-                ClaimantsIncomeFromIncapacityBenefitShortTermLower = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromIncapacityBenefitShortTermLower = 0;
+                } else {
+                    ClaimantsIncomeFromIncapacityBenefitShortTermLower = Integer.valueOf(fields[n]);
+                }
             }
             n++; //90
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromIncapacityBenefitShortTermHigher = 0;
-            } else {
-                ClaimantsIncomeFromIncapacityBenefitShortTermHigher = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromIncapacityBenefitShortTermHigher = 0;
+                } else {
+                    ClaimantsIncomeFromIncapacityBenefitShortTermHigher = Integer.valueOf(fields[n]);
+                }
+                n++;
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromIncapacityBenefitLongTerm = 0;
+                } else {
+                    ClaimantsIncomeFromIncapacityBenefitLongTerm = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromIncapacityBenefitLongTerm = 0;
-            } else {
-                ClaimantsIncomeFromIncapacityBenefitLongTerm = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromNewDeal50PlusEmploymentCredit = 0;
+                } else {
+                    ClaimantsIncomeFromNewDeal50PlusEmploymentCredit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromNewDeal50PlusEmploymentCredit = 0;
-            } else {
-                ClaimantsIncomeFromNewDeal50PlusEmploymentCredit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromNewTaxCredits = 0;
+                } else {
+                    ClaimantsIncomeFromNewTaxCredits = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromNewTaxCredits = 0;
-            } else {
-                ClaimantsIncomeFromNewTaxCredits = Integer.valueOf(fields[n]);
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromDisabilityLivingAllowanceCareComponent = 0;
-            } else {
-                ClaimantsIncomeFromDisabilityLivingAllowanceCareComponent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromDisabilityLivingAllowanceCareComponent = 0;
+                } else {
+                    ClaimantsIncomeFromDisabilityLivingAllowanceCareComponent = Integer.valueOf(fields[n]);
+                }
             }
             n++; //95
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromDisabilityLivingAllowanceMobilityComponent = 0;
-            } else {
-                ClaimantsIncomeFromDisabilityLivingAllowanceMobilityComponent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromDisabilityLivingAllowanceMobilityComponent = 0;
+                } else {
+                    ClaimantsIncomeFromDisabilityLivingAllowanceMobilityComponent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromGovernemntTraining = 0;
-            } else {
-                ClaimantsIncomeFromGovernemntTraining = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromGovernemntTraining = 0;
+                } else {
+                    ClaimantsIncomeFromGovernemntTraining = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromIndustrialInjuriesDisablementBenefit = 0;
-            } else {
-                ClaimantsIncomeFromIndustrialInjuriesDisablementBenefit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromIndustrialInjuriesDisablementBenefit = 0;
+                } else {
+                    ClaimantsIncomeFromIndustrialInjuriesDisablementBenefit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromCarersAllowance = 0;
-            } else {
-                ClaimantsIncomeFromCarersAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromCarersAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromCarersAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromStatutoryMaternityPaternityPay = 0;
-            } else {
-                ClaimantsIncomeFromStatutoryMaternityPaternityPay = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromStatutoryMaternityPaternityPay = 0;
+                } else {
+                    ClaimantsIncomeFromStatutoryMaternityPaternityPay = Integer.valueOf(fields[n]);
+                }
             }
             n++; //100
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = 0;
-            } else {
-                ClaimantsIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = 0;
+                } else {
+                    ClaimantsIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromWarDisablementPensionArmedForcesGIP = 0;
-            } else {
-                ClaimantsIncomeFromWarDisablementPensionArmedForcesGIP = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromWarDisablementPensionArmedForcesGIP = 0;
+                } else {
+                    ClaimantsIncomeFromWarDisablementPensionArmedForcesGIP = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromWarMobilitySupplement = 0;
-            } else {
-                ClaimantsIncomeFromWarMobilitySupplement = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromWarMobilitySupplement = 0;
+                } else {
+                    ClaimantsIncomeFromWarMobilitySupplement = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromWidowsWidowersPension = 0;
-            } else {
-                ClaimantsIncomeFromWidowsWidowersPension = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromWidowsWidowersPension = 0;
+                } else {
+                    ClaimantsIncomeFromWidowsWidowersPension = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromBereavementAllowance = 0;
-            } else {
-                ClaimantsIncomeFromBereavementAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromBereavementAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromBereavementAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++; //105
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromWidowedParentsAllowance = 0;
-            } else {
-                ClaimantsIncomeFromWidowedParentsAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromWidowedParentsAllowance = 0;
+                } else {
+                    ClaimantsIncomeFromWidowedParentsAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromYouthTrainingScheme = 0;
-            } else {
-                ClaimantsIncomeFromYouthTrainingScheme = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromYouthTrainingScheme = 0;
+                } else {
+                    ClaimantsIncomeFromYouthTrainingScheme = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromStatuatorySickPay = 0;
-            } else {
-                ClaimantsIncomeFromStatuatorySickPay = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromStatuatorySickPay = 0;
+                } else {
+                    ClaimantsIncomeFromStatuatorySickPay = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsOtherIncome = 0;
-            } else {
-                ClaimantsOtherIncome = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsOtherIncome = 0;
+                } else {
+                    ClaimantsOtherIncome = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsTotalAmountOfIncomeDisregarded = 0;
-            } else {
-                ClaimantsTotalAmountOfIncomeDisregarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsTotalAmountOfIncomeDisregarded = 0;
+                } else {
+                    ClaimantsTotalAmountOfIncomeDisregarded = Integer.valueOf(fields[n]);
+                }
             }
             n++; //110
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                FamilyPremiumAwarded = 0;
-            } else {
-                FamilyPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (FamilyPremiumAwarded > 1 || FamilyPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    FamilyPremiumAwarded = 0;
+                } else {
+                    FamilyPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (FamilyPremiumAwarded > 1 || FamilyPremiumAwarded < 0) {
 //            System.out.println("FamilyPremiumAwarded " + FamilyPremiumAwarded);
 //            System.out.println("FamilyPremiumAwarded > 1 || FamilyPremiumAwarded < 0");
-                throw new Exception("FamilyPremiumAwarded > 1 || FamilyPremiumAwarded < 0");
+                    throw new Exception("FamilyPremiumAwarded > 1 || FamilyPremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                FamilyLoneParentPremiumAwarded = 0;
-            } else {
-                FamilyLoneParentPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (FamilyLoneParentPremiumAwarded > 1 || FamilyLoneParentPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    FamilyLoneParentPremiumAwarded = 0;
+                } else {
+                    FamilyLoneParentPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (FamilyLoneParentPremiumAwarded > 1 || FamilyLoneParentPremiumAwarded < 0) {
 //            System.out.println("FamilyLoneParentPremiumAwarded " + FamilyLoneParentPremiumAwarded);
 //            System.out.println("FamilyLoneParentPremiumAwarded > 1 || FamilyLoneParentPremiumAwarded < 0");
-                throw new Exception("FamilyLoneParentPremiumAwarded > 1 || FamilyLoneParentPremiumAwarded < 0");
+                    throw new Exception("FamilyLoneParentPremiumAwarded > 1 || FamilyLoneParentPremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                DisabilityPremiumAwarded = 0;
-            } else {
-                DisabilityPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (DisabilityPremiumAwarded > 1 || DisabilityPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    DisabilityPremiumAwarded = 0;
+                } else {
+                    DisabilityPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (DisabilityPremiumAwarded > 1 || DisabilityPremiumAwarded < 0) {
 //            System.out.println("DisabilityPremiumAwarded " + DisabilityPremiumAwarded);
 //            System.out.println("DisabilityPremiumAwarded > 1 || DisabilityPremiumAwarded < 0");
-                throw new Exception("DisabilityPremiumAwarded > 1 || DisabilityPremiumAwarded < 0");
+                    throw new Exception("DisabilityPremiumAwarded > 1 || DisabilityPremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                SevereDisabilityPremiumAwarded = 0;
-            } else {
-                SevereDisabilityPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (SevereDisabilityPremiumAwarded > 1 || SevereDisabilityPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    SevereDisabilityPremiumAwarded = 0;
+                } else {
+                    SevereDisabilityPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (SevereDisabilityPremiumAwarded > 1 || SevereDisabilityPremiumAwarded < 0) {
 //            System.out.println("SevereDisabilityPremiumAwarded " + SevereDisabilityPremiumAwarded);
 //            System.out.println("SevereDisabilityPremiumAwarded > 1 || SevereDisabilityPremiumAwarded < 0");
-                throw new Exception("SevereDisabilityPremiumAwarded > 1 || SevereDisabilityPremiumAwarded < 0");
+                    throw new Exception("SevereDisabilityPremiumAwarded > 1 || SevereDisabilityPremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                DisabledChildPremiumAwarded = 0;
-            } else {
-                DisabledChildPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (DisabledChildPremiumAwarded > 1 || DisabledChildPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    DisabledChildPremiumAwarded = 0;
+                } else {
+                    DisabledChildPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (DisabledChildPremiumAwarded > 1 || DisabledChildPremiumAwarded < 0) {
 //            System.out.println("DisabledChildPremiumAwarded " + DisabledChildPremiumAwarded);
 //            System.out.println("DisabledChildPremiumAwarded > 1 || DisabiledChildPremiumAwarded < 0");
-                throw new Exception("DisabledChildPremiumAwarded > 1 || DisabiledChildPremiumAwarded < 0");
+                    throw new Exception("DisabledChildPremiumAwarded > 1 || DisabiledChildPremiumAwarded < 0");
+                }
             }
             n++; //115
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                CarePremiumAwarded = 0;
-            } else {
-                CarePremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (CarePremiumAwarded > 1 || CarePremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    CarePremiumAwarded = 0;
+                } else {
+                    CarePremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (CarePremiumAwarded > 1 || CarePremiumAwarded < 0) {
 //            System.out.println("CarePremiumAwarded " + CarePremiumAwarded);
 //            System.out.println("CarePremiumAwarded > 1 || CarePremiumAwarded < 0");
-                throw new Exception("CarePremiumAwarded > 1 || CarePremiumAwarded < 0");
+                    throw new Exception("CarePremiumAwarded > 1 || CarePremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                EnhancedDisabilityPremiumAwarded = 0;
-            } else {
-                EnhancedDisabilityPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (EnhancedDisabilityPremiumAwarded > 1 || EnhancedDisabilityPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    EnhancedDisabilityPremiumAwarded = 0;
+                } else {
+                    EnhancedDisabilityPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (EnhancedDisabilityPremiumAwarded > 1 || EnhancedDisabilityPremiumAwarded < 0) {
 //            System.out.println("EnhancedDisabilityPremiumAwarded " + EnhancedDisabilityPremiumAwarded);
 //            System.out.println("EnhancedDisabilityPremiumAwarded > 1 || EnhancedDisabilityPremiumAwarded < 0");
-                throw new Exception("EnhancedDisabilityPremiumAwarded > 1 || EnhancedDisabilityPremiumAwarded < 0");
+                    throw new Exception("EnhancedDisabilityPremiumAwarded > 1 || EnhancedDisabilityPremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                BereavementPremiumAwarded = 0;
-            } else {
-                BereavementPremiumAwarded = Integer.valueOf(fields[n]);
-            }
-            if (BereavementPremiumAwarded > 1 || BereavementPremiumAwarded < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    BereavementPremiumAwarded = 0;
+                } else {
+                    BereavementPremiumAwarded = Integer.valueOf(fields[n]);
+                }
+                if (BereavementPremiumAwarded > 1 || BereavementPremiumAwarded < 0) {
 //            System.out.println("BereavementPremiumAwarded " + BereavementPremiumAwarded);
 //            System.out.println("BereavementPremiumAwarded > 1 || BereavementPremiumAwarded < 0");
-                throw new Exception("BereavementPremiumAwarded > 1 || BereavementPremiumAwarded < 0");
+                    throw new Exception("BereavementPremiumAwarded > 1 || BereavementPremiumAwarded < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnerFlag = 0;
-            } else {
-                PartnerFlag = Integer.valueOf(fields[n]);
-            }
-            if (PartnerFlag > 2 || PartnerFlag < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnerFlag = 0;
+                } else {
+                    PartnerFlag = Integer.valueOf(fields[n]);
+                }
+                if (PartnerFlag > 2 || PartnerFlag < 0) {
 //            System.out.println("PartnerFlag " + PartnerFlag);
 //            System.out.println("PartnerFlag > 2 || PartnerFlag < 0");
-                throw new Exception("PartnerFlag > 2 || PartnerFlag < 0");
+                    throw new Exception("PartnerFlag > 2 || PartnerFlag < 0");
+                }
             }
             n++;
-            PartnersStartDate = fields[n];
+            if (n < fields.length) {
+                PartnersStartDate = fields[n];
+            }
             n++; //120
-            PartnersEndDate = fields[n];
-            n++;
-            PartnersNationalInsuranceNumber = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersStudentIndicator = "N";
-            } else {
-                PartnersStudentIndicator = "Y";
+            if (n < fields.length) {
+                PartnersEndDate = fields[n];
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersAssessedIncomeFigure = 0;
-            } else {
-                PartnersAssessedIncomeFigure = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                PartnersNationalInsuranceNumber = fields[n];
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersAdjustedAssessedIncomeFigure = 0;
-            } else {
-                PartnersAdjustedAssessedIncomeFigure = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersStudentIndicator = "N";
+                } else {
+                    PartnersStudentIndicator = "Y";
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersAssessedIncomeFigure = 0;
+                } else {
+                    PartnersAssessedIncomeFigure = Integer.valueOf(fields[n]);
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersAdjustedAssessedIncomeFigure = 0;
+                } else {
+                    PartnersAdjustedAssessedIncomeFigure = Integer.valueOf(fields[n]);
+                }
             }
             n++; //125
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersGrossWeeklyIncomeFromEmployment = 0;
-            } else {
-                PartnersGrossWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersGrossWeeklyIncomeFromEmployment = 0;
+                } else {
+                    PartnersGrossWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersNetWeeklyIncomeFromEmployment = 0;
-            } else {
-                PartnersNetWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersNetWeeklyIncomeFromEmployment = 0;
+                } else {
+                    PartnersNetWeeklyIncomeFromEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersGrossWeeklyIncomeFromSelfEmployment = 0;
-            } else {
-                PartnersGrossWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersGrossWeeklyIncomeFromSelfEmployment = 0;
+                } else {
+                    PartnersGrossWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersNetWeeklyIncomeFromSelfEmployment = 0;
-            } else {
-                PartnersNetWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersNetWeeklyIncomeFromSelfEmployment = 0;
+                } else {
+                    PartnersNetWeeklyIncomeFromSelfEmployment = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersTotalAmountOfEarningsDisregarded = 0;
-            } else {
-                PartnersTotalAmountOfEarningsDisregarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersTotalAmountOfEarningsDisregarded = 0;
+                } else {
+                    PartnersTotalAmountOfEarningsDisregarded = Integer.valueOf(fields[n]);
+                }
             }
             n++; //130
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = 0;
-            } else {
-                PartnersIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = 0;
+                } else {
+                    PartnersIfChildcareDisregardAllowedWeeklyAmountBeingDisregarded = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromAttendanceAllowance = 0;
-            } else {
-                PartnersIncomeFromAttendanceAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromAttendanceAllowance = 0;
+                } else {
+                    PartnersIncomeFromAttendanceAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromBusinessStartUpAllowance = 0;
-            } else {
-                PartnersIncomeFromBusinessStartUpAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromBusinessStartUpAllowance = 0;
+                } else {
+                    PartnersIncomeFromBusinessStartUpAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromChildBenefit = 0;
-            } else {
-                PartnersIncomeFromChildBenefit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromChildBenefit = 0;
+                } else {
+                    PartnersIncomeFromChildBenefit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromPersonalPension = 0;
-            } else {
-                PartnersIncomeFromPersonalPension = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromPersonalPension = 0;
+                } else {
+                    PartnersIncomeFromPersonalPension = Integer.valueOf(fields[n]);
+                }
             }
             n++; //135
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromSevereDisabilityAllowance = 0;
-            } else {
-                PartnersIncomeFromSevereDisabilityAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromSevereDisabilityAllowance = 0;
+                } else {
+                    PartnersIncomeFromSevereDisabilityAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromMaternityAllowance = 0;
-            } else {
-                PartnersIncomeFromMaternityAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromMaternityAllowance = 0;
+                } else {
+                    PartnersIncomeFromMaternityAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromContributionBasedJobSeekersAllowance = 0;
-            } else {
-                PartnersIncomeFromContributionBasedJobSeekersAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromContributionBasedJobSeekersAllowance = 0;
+                } else {
+                    PartnersIncomeFromContributionBasedJobSeekersAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromStudentGrantLoan = 0;
-            } else {
-                PartnersIncomeFromStudentGrantLoan = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromStudentGrantLoan = 0;
+                } else {
+                    PartnersIncomeFromStudentGrantLoan = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromSubTenants = 0;
-            } else {
-                PartnersIncomeFromSubTenants = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromSubTenants = 0;
+                } else {
+                    PartnersIncomeFromSubTenants = Integer.valueOf(fields[n]);
+                }
             }
             n++; //140
-            if (fields[140].equalsIgnoreCase("")) {
-                PartnersIncomeFromBoarders = 0;
-            } else {
-                PartnersIncomeFromBoarders = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[140].equalsIgnoreCase("")) {
+                    PartnersIncomeFromBoarders = 0;
+                } else {
+                    PartnersIncomeFromBoarders = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromTrainingForWorkCommunityAction = 0;
-            } else {
-                PartnersIncomeFromTrainingForWorkCommunityAction = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromTrainingForWorkCommunityAction = 0;
+                } else {
+                    PartnersIncomeFromTrainingForWorkCommunityAction = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromIncapacityBenefitShortTermLower = 0;
-            } else {
-                PartnersIncomeFromIncapacityBenefitShortTermLower = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromIncapacityBenefitShortTermLower = 0;
+                } else {
+                    PartnersIncomeFromIncapacityBenefitShortTermLower = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromIncapacityBenefitShortTermHigher = 0;
-            } else {
-                PartnersIncomeFromIncapacityBenefitShortTermHigher = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromIncapacityBenefitShortTermHigher = 0;
+                } else {
+                    PartnersIncomeFromIncapacityBenefitShortTermHigher = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromIncapacityBenefitLongTerm = 0;
-            } else {
-                PartnersIncomeFromIncapacityBenefitLongTerm = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromIncapacityBenefitLongTerm = 0;
+                } else {
+                    PartnersIncomeFromIncapacityBenefitLongTerm = Integer.valueOf(fields[n]);
+                }
             }
             n++; //145
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromNewDeal50PlusEmploymentCredit = 0;
-            } else {
-                PartnersIncomeFromNewDeal50PlusEmploymentCredit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromNewDeal50PlusEmploymentCredit = 0;
+                } else {
+                    PartnersIncomeFromNewDeal50PlusEmploymentCredit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromNewTaxCredits = 0;
-            } else {
-                PartnersIncomeFromNewTaxCredits = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromNewTaxCredits = 0;
+                } else {
+                    PartnersIncomeFromNewTaxCredits = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromDisabilityLivingAllowanceCareComponent = 0;
-            } else {
-                PartnersIncomeFromDisabilityLivingAllowanceCareComponent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromDisabilityLivingAllowanceCareComponent = 0;
+                } else {
+                    PartnersIncomeFromDisabilityLivingAllowanceCareComponent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromDisabilityLivingAllowanceMobilityComponent = 0;
-            } else {
-                PartnersIncomeFromDisabilityLivingAllowanceMobilityComponent = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromDisabilityLivingAllowanceMobilityComponent = 0;
+                } else {
+                    PartnersIncomeFromDisabilityLivingAllowanceMobilityComponent = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromGovernemntTraining = 0;
-            } else {
-                PartnersIncomeFromGovernemntTraining = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromGovernemntTraining = 0;
+                } else {
+                    PartnersIncomeFromGovernemntTraining = Integer.valueOf(fields[n]);
+                }
             }
             n++; //150
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromIndustrialInjuriesDisablementBenefit = 0;
-            } else {
-                PartnersIncomeFromIndustrialInjuriesDisablementBenefit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromIndustrialInjuriesDisablementBenefit = 0;
+                } else {
+                    PartnersIncomeFromIndustrialInjuriesDisablementBenefit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromCarersAllowance = 0;
-            } else {
-                PartnersIncomeFromCarersAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromCarersAllowance = 0;
+                } else {
+                    PartnersIncomeFromCarersAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromStatuatorySickPay = 0;
-            } else {
-                PartnersIncomeFromStatuatorySickPay = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromStatuatorySickPay = 0;
+                } else {
+                    PartnersIncomeFromStatuatorySickPay = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromStatutoryMaternityPaternityPay = 0;
-            } else {
-                PartnersIncomeFromStatutoryMaternityPaternityPay = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromStatutoryMaternityPaternityPay = 0;
+                } else {
+                    PartnersIncomeFromStatutoryMaternityPaternityPay = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = 0;
-            } else {
-                PartnersIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = 0;
+                } else {
+                    PartnersIncomeFromStateRetirementPensionIncludingSERPsGraduatedPensionetc = Integer.valueOf(fields[n]);
+                }
             }
             n++; //155
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromWarDisablementPensionArmedForcesGIP = 0;
-            } else {
-                PartnersIncomeFromWarDisablementPensionArmedForcesGIP = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromWarDisablementPensionArmedForcesGIP = 0;
+                } else {
+                    PartnersIncomeFromWarDisablementPensionArmedForcesGIP = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromWarMobilitySupplement = 0;
-            } else {
-                PartnersIncomeFromWarMobilitySupplement = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromWarMobilitySupplement = 0;
+                } else {
+                    PartnersIncomeFromWarMobilitySupplement = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromWidowsWidowersPension = 0;
-            } else {
-                PartnersIncomeFromWidowsWidowersPension = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromWidowsWidowersPension = 0;
+                } else {
+                    PartnersIncomeFromWidowsWidowersPension = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromBereavementAllowance = 0;
-            } else {
-                PartnersIncomeFromBereavementAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromBereavementAllowance = 0;
+                } else {
+                    PartnersIncomeFromBereavementAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromWidowedParentsAllowance = 0;
-            } else {
-                PartnersIncomeFromWidowedParentsAllowance = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromWidowedParentsAllowance = 0;
+                } else {
+                    PartnersIncomeFromWidowedParentsAllowance = Integer.valueOf(fields[n]);
+                }
             }
             n++; //160
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromYouthTrainingScheme = 0;
-            } else {
-                PartnersIncomeFromYouthTrainingScheme = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromYouthTrainingScheme = 0;
+                } else {
+                    PartnersIncomeFromYouthTrainingScheme = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersOtherIncome = 0;
-            } else {
-                PartnersOtherIncome = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersOtherIncome = 0;
+                } else {
+                    PartnersOtherIncome = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersTotalAmountOfIncomeDisregarded = 0;
-            } else {
-                PartnersTotalAmountOfIncomeDisregarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersTotalAmountOfIncomeDisregarded = 0;
+                } else {
+                    PartnersTotalAmountOfIncomeDisregarded = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            DateOverPaymentDetectionActivityInitiatedOnCase = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                MethodOfOverpayentDetectionActivity = 0;
-            } else {
-                MethodOfOverpayentDetectionActivity = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DateOverPaymentDetectionActivityInitiatedOnCase = fields[n];
             }
-            if (MethodOfOverpayentDetectionActivity > 99 || MethodOfOverpayentDetectionActivity < 0) {
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    MethodOfOverpayentDetectionActivity = 0;
+                } else {
+                    MethodOfOverpayentDetectionActivity = Integer.valueOf(fields[n]);
+                }
+                if (MethodOfOverpayentDetectionActivity > 99 || MethodOfOverpayentDetectionActivity < 0) {
 //            System.out.println("MethodOfOverpayentDetectionActivity " + MethodOfOverpayentDetectionActivity);
 //            System.out.println("MethodOfOverpayentDetectionActivity > 99 || MethodOfOverpayentDetectionActivity < 0");
-                throw new Exception("MethodOfOverpayentDetectionActivity > 99 || MethodOfOverpayentDetectionActivity < 0");
+                    throw new Exception("MethodOfOverpayentDetectionActivity > 99 || MethodOfOverpayentDetectionActivity < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ReasonForOverpaymentDetectionActivity = 0;
-            } else {
-                ReasonForOverpaymentDetectionActivity = Integer.valueOf(fields[n]);
-            }
-            if (ReasonForOverpaymentDetectionActivity > 99 || ReasonForOverpaymentDetectionActivity < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ReasonForOverpaymentDetectionActivity = 0;
+                } else {
+                    ReasonForOverpaymentDetectionActivity = Integer.valueOf(fields[n]);
+                }
+                if (ReasonForOverpaymentDetectionActivity > 99 || ReasonForOverpaymentDetectionActivity < 0) {
 //            System.out.println("ReasonForOverpaymentDetectionActivity " + ReasonForOverpaymentDetectionActivity);
 //            System.out.println("ReasonForOverpaymentDetectionActivity > 99 || ReasonForOverpaymentDetectionActivity < 0");
-                throw new Exception("ReasonForOverpaymentDetectionActivity > 99 || ReasonForOverpaymentDetectionActivity < 0");
+                    throw new Exception("ReasonForOverpaymentDetectionActivity > 99 || ReasonForOverpaymentDetectionActivity < 0");
+                }
             }
             n++;
-            DoesTheOverpaymentDetectionActivityConstituteAFullReview = fields[n];
-            n++;
-            DateOverPaymentDetectionActivityIsCompleted = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                OutcomeOfOverPaymentDetectionActivity = 0;
-            } else {
-                OutcomeOfOverPaymentDetectionActivity = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DoesTheOverpaymentDetectionActivityConstituteAFullReview = fields[n];
             }
-            if (OutcomeOfOverPaymentDetectionActivity > 99 || OutcomeOfOverPaymentDetectionActivity < 0) {
+            n++;
+            if (n < fields.length) {
+                DateOverPaymentDetectionActivityIsCompleted = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    OutcomeOfOverPaymentDetectionActivity = 0;
+                } else {
+                    OutcomeOfOverPaymentDetectionActivity = Integer.valueOf(fields[n]);
+                }
+                if (OutcomeOfOverPaymentDetectionActivity > 99 || OutcomeOfOverPaymentDetectionActivity < 0) {
 //            System.out.println("OutcomeOfOverPaymentDetectionActivity " + OutcomeOfOverPaymentDetectionActivity);
 //            System.out.println("OutcomeOfOverPaymentDetectionActivity > 99 || OutcomeOfOverPaymentDetectionActivity < 0");
-                throw new Exception("OutcomeOfOverPaymentDetectionActivity > 99 || OutcomeOfOverPaymentDetectionActivity < 0");
+                    throw new Exception("OutcomeOfOverPaymentDetectionActivity > 99 || OutcomeOfOverPaymentDetectionActivity < 0");
+                }
             }
             n++;
-            ClaimantsGender = fields[n];
+            if (n < fields.length) {
+                ClaimantsGender = fields[n];
+            }
             n++; //170
-            PartnersDateOfBirth = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                RentAllowanceMethodOfPayment = 0;
-            } else {
-                RentAllowanceMethodOfPayment = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                PartnersDateOfBirth = fields[n];
             }
-            if (RentAllowanceMethodOfPayment > 99 || RentAllowanceMethodOfPayment < 0) {
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    RentAllowanceMethodOfPayment = 0;
+                } else {
+                    RentAllowanceMethodOfPayment = Integer.valueOf(fields[n]);
+                }
+                if (RentAllowanceMethodOfPayment > 99 || RentAllowanceMethodOfPayment < 0) {
 //            System.out.println("RentAllowanceMethodOfPayment " + RentAllowanceMethodOfPayment);
 //            System.out.println("RentAllowanceMethodOfPayment > 99 || RentAllowanceMethodOfPayment < 0");
-                throw new Exception("RentAllowanceMethodOfPayment > 99 || RentAllowanceMethodOfPayment < 0");
+                    throw new Exception("RentAllowanceMethodOfPayment > 99 || RentAllowanceMethodOfPayment < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                RentAllowancePaymentDestination = 0;
-            } else {
-                RentAllowancePaymentDestination = Integer.valueOf(fields[n]);
-            }
-            if (RentAllowancePaymentDestination > 99 || RentAllowancePaymentDestination < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    RentAllowancePaymentDestination = 0;
+                } else {
+                    RentAllowancePaymentDestination = Integer.valueOf(fields[n]);
+                }
+                if (RentAllowancePaymentDestination > 99 || RentAllowancePaymentDestination < 0) {
 //            System.out.println("RentAllowancePaymentDestination " + RentAllowancePaymentDestination);
 //            System.out.println("RentAllowancePaymentDestination > 99 || RentAllowancePaymentDestination < 0");
-                throw new Exception("RentAllowancePaymentDestination > 99 || RentAllowancePaymentDestination < 0");
+                    throw new Exception("RentAllowancePaymentDestination > 99 || RentAllowancePaymentDestination < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ContractualRentAmount = 0;
-            } else {
-                ContractualRentAmount = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ContractualRentAmount = 0;
+                } else {
+                    ContractualRentAmount = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TimePeriodContractualRentFigureCovers = 0;
-            } else {
-                TimePeriodContractualRentFigureCovers = Integer.valueOf(fields[n]);
-            }
-            if (TimePeriodContractualRentFigureCovers > 99 || TimePeriodContractualRentFigureCovers < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TimePeriodContractualRentFigureCovers = 0;
+                } else {
+                    TimePeriodContractualRentFigureCovers = Integer.valueOf(fields[n]);
+                }
+                if (TimePeriodContractualRentFigureCovers > 99 || TimePeriodContractualRentFigureCovers < 0) {
 //            System.out.println("TimePeriodContractualRentFigureCovers " + TimePeriodContractualRentFigureCovers);
 //            System.out.println("TimePeriodContractualRentFigureCovers > 99 || TimePeriodContractualRentFigureCovers < 0");
-                throw new Exception("TimePeriodContractualRentFigureCovers > 99 || TimePeriodContractualRentFigureCovers < 0");
+                    throw new Exception("TimePeriodContractualRentFigureCovers > 99 || TimePeriodContractualRentFigureCovers < 0");
+                }
             }
             n++; //175
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromPensionCreditSavingsCredit = 0;
-            } else {
-                ClaimantsIncomeFromPensionCreditSavingsCredit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromPensionCreditSavingsCredit = 0;
+                } else {
+                    ClaimantsIncomeFromPensionCreditSavingsCredit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromPensionCreditSavingsCredit = 0;
-            } else {
-                PartnersIncomeFromPensionCreditSavingsCredit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromPensionCreditSavingsCredit = 0;
+                } else {
+                    PartnersIncomeFromPensionCreditSavingsCredit = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromMaintenancePayments = 0;
-            } else {
-                ClaimantsIncomeFromMaintenancePayments = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromMaintenancePayments = 0;
+                } else {
+                    ClaimantsIncomeFromMaintenancePayments = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromMaintenancePayments = 0;
-            } else {
-                PartnersIncomeFromMaintenancePayments = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromMaintenancePayments = 0;
+                } else {
+                    PartnersIncomeFromMaintenancePayments = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromOccupationalPension = 0;
-            } else {
-                ClaimantsIncomeFromOccupationalPension = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromOccupationalPension = 0;
+                } else {
+                    ClaimantsIncomeFromOccupationalPension = Integer.valueOf(fields[n]);
+                }
             }
             n++; //180
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromOccupationalPension = 0;
-            } else {
-                PartnersIncomeFromOccupationalPension = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromOccupationalPension = 0;
+                } else {
+                    PartnersIncomeFromOccupationalPension = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsIncomeFromWidowsBenefit = 0;
-            } else {
-                ClaimantsIncomeFromWidowsBenefit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsIncomeFromWidowsBenefit = 0;
+                } else {
+                    ClaimantsIncomeFromWidowsBenefit = Integer.valueOf(fields[n]);
+                }
             }
             n++; //182
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersIncomeFromWidowsBenefit = 0;
-            } else {
-                PartnersIncomeFromWidowsBenefit = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersIncomeFromWidowsBenefit = 0;
+                } else {
+                    PartnersIncomeFromWidowsBenefit = Integer.valueOf(fields[n]);
+                }
             }
             n = 193; //193
-            CTBClaimEntitlementStartDate = fields[n];
+            if (n < fields.length) {
+                CTBClaimEntitlementStartDate = fields[n];
+            }
             n++;
-            DateHBClaimClosedWithdrawnDecidedUnsuccessfulDefective = fields[n];
+            if (n < fields.length) {
+                DateHBClaimClosedWithdrawnDecidedUnsuccessfulDefective = fields[n];
+            }
             n++; //195
-            DateCTBClaimClosedWithdrawnDecidedUnsuccessfulDefective = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TotalNumberOfRooms = 0;
-            } else {
-                TotalNumberOfRooms = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DateCTBClaimClosedWithdrawnDecidedUnsuccessfulDefective = fields[n];
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NonSelfContainedAccomodation = 0;
-            } else {
-                NonSelfContainedAccomodation = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TotalNumberOfRooms = 0;
+                } else {
+                    TotalNumberOfRooms = Integer.valueOf(fields[n]);
+                }
             }
-            if (NonSelfContainedAccomodation > 1 || NonSelfContainedAccomodation < 0) {
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NonSelfContainedAccomodation = 0;
+                } else {
+                    NonSelfContainedAccomodation = Integer.valueOf(fields[n]);
+                }
+                if (NonSelfContainedAccomodation > 1 || NonSelfContainedAccomodation < 0) {
 //            System.out.println("NonSelfContainedAccomodation " + NonSelfContainedAccomodation);
 //            System.out.println("NonSelfContainedAccomodation > 1 || NonSelfContainedAccomodation < 0");
-                throw new Exception("NonSelfContainedAccomodation > 1 || NonSelfContainedAccomodation < 0");
+                    throw new Exception("NonSelfContainedAccomodation > 1 || NonSelfContainedAccomodation < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TypeOfLHANumberOfRoomsEntitedTo = 0;
-            } else {
-                TypeOfLHANumberOfRoomsEntitedTo = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TypeOfLHANumberOfRoomsEntitedTo = 0;
+                } else {
+                    TypeOfLHANumberOfRoomsEntitedTo = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TransitionalProtectionFormNationalRolloutOfLHA = 0;
-            } else {
-                TransitionalProtectionFormNationalRolloutOfLHA = Integer.valueOf(fields[n]);
-            }
-            if (TransitionalProtectionFormNationalRolloutOfLHA > 1 || TransitionalProtectionFormNationalRolloutOfLHA < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TransitionalProtectionFormNationalRolloutOfLHA = 0;
+                } else {
+                    TransitionalProtectionFormNationalRolloutOfLHA = Integer.valueOf(fields[n]);
+                }
+                if (TransitionalProtectionFormNationalRolloutOfLHA > 1 || TransitionalProtectionFormNationalRolloutOfLHA < 0) {
 //            System.out.println("TransitionalProtectionFormNationalRolloutOfLHA " + TransitionalProtectionFormNationalRolloutOfLHA);
 //            System.out.println("TransitionalProtectionFormNationalRolloutOfLHA > 1 || TransitionalProtectionFormNationalRolloutOfLHA < 0");
-                throw new Exception("TransitionalProtectionFormNationalRolloutOfLHA > 1 || TransitionalProtectionFormNationalRolloutOfLHA < 0");
+                    throw new Exception("TransitionalProtectionFormNationalRolloutOfLHA > 1 || TransitionalProtectionFormNationalRolloutOfLHA < 0");
+                }
             }
             n++; //200
-            Locality = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ValueOfLHA = 0;
-            } else {
-                ValueOfLHA = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                Locality = fields[n];
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = 0;
-            } else {
-                ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ValueOfLHA = 0;
+                } else {
+                    ValueOfLHA = Integer.valueOf(fields[n]);
+                }
             }
-            if (ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0) {
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = 0;
+                } else {
+                    ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = Integer.valueOf(fields[n]);
+                }
+                if (ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0) {
 //            System.out.println("ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective " + ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective);
 //            System.out.println("ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0");
-                throw new Exception("ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0");
+                    throw new Exception("ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = 0;
-            } else {
-                ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = Integer.valueOf(fields[n]);
-            }
-            if (ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = 0;
+                } else {
+                    ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = Integer.valueOf(fields[n]);
+                }
+                if (ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0) {
 //            System.out.println("ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective " + ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective);
 //            System.out.println("ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0");
-                throw new Exception("ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0");
+                    throw new Exception("ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective > 9 || ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective < 0");
+                }
             }
             n++;
-            PartnersGender = fields[n];
+            if (n < fields.length) {
+                PartnersGender = fields[n];
+            }
             n++; //205
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NonDependantGrossWeeklyIncomeFromRemunerativeWork = 0;
-            } else {
-                NonDependantGrossWeeklyIncomeFromRemunerativeWork = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NonDependantGrossWeeklyIncomeFromRemunerativeWork = 0;
+                } else {
+                    NonDependantGrossWeeklyIncomeFromRemunerativeWork = Integer.valueOf(fields[n]);
+                }
             }
             n = 211;
-            HBClaimTreatAsDateMade = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                SourceOfMostRecentHBClaim = 0;
-            } else {
-                SourceOfMostRecentHBClaim = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                HBClaimTreatAsDateMade = fields[n];
             }
-            if (SourceOfMostRecentHBClaim > 99 || SourceOfMostRecentHBClaim < 0) {
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    SourceOfMostRecentHBClaim = 0;
+                } else {
+                    SourceOfMostRecentHBClaim = Integer.valueOf(fields[n]);
+                }
+                if (SourceOfMostRecentHBClaim > 99 || SourceOfMostRecentHBClaim < 0) {
 //            System.out.println("SourceOfMostRecentHBClaim " + SourceOfMostRecentHBClaim);
 //            System.out.println("SourceOfMostRecentHBClaim > 99 || SourceOfMostRecentHBClaim < 0");
-                throw new Exception("SourceOfMostRecentHBClaim > 99 || SourceOfMostRecentHBClaim < 0");
+                    throw new Exception("SourceOfMostRecentHBClaim > 99 || SourceOfMostRecentHBClaim < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim = 0;
-            } else {
-                DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim = Integer.valueOf(fields[n]);
-            }
-            if (DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim = 0;
+                } else {
+                    DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim = Integer.valueOf(fields[n]);
+                }
+                if (DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim < 0) {
 //            System.out.println("DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim " + DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim);
 //            System.out.println("DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim < 0");
-                throw new Exception("DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim < 0");
+                    throw new Exception("DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim < 0");
+                }
             }
             n++;
-            DateOfFirstHBPaymentRentAllowanceOnly = fields[n];
-            n++; //215
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly = 0;
-            } else {
-                WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DateOfFirstHBPaymentRentAllowanceOnly = fields[n];
             }
-            if (WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly > 1 || WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly < 0) {
+            n++; //215
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly = 0;
+                } else {
+                    WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly = Integer.valueOf(fields[n]);
+                }
+                if (WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly > 1 || WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly < 0) {
 //            System.out.println("WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly " + WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly);
 //            System.out.println("WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly > 1 || WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly < 0");
-                throw new Exception("WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly > 1 || WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly < 0");
+                    throw new Exception("WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly > 1 || WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WasThereABackdatedAwardMadeOnTheHBClaim = 0;
-            } else {
-                WasThereABackdatedAwardMadeOnTheHBClaim = Integer.valueOf(fields[n]);
-            }
-            if (WasThereABackdatedAwardMadeOnTheHBClaim > 1 || WasThereABackdatedAwardMadeOnTheHBClaim < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WasThereABackdatedAwardMadeOnTheHBClaim = 0;
+                } else {
+                    WasThereABackdatedAwardMadeOnTheHBClaim = Integer.valueOf(fields[n]);
+                }
+                if (WasThereABackdatedAwardMadeOnTheHBClaim > 1 || WasThereABackdatedAwardMadeOnTheHBClaim < 0) {
 //            System.out.println("WasThereABackdatedAwardMadeOnTheHBClaim " + WasThereABackdatedAwardMadeOnTheHBClaim);
 //            System.out.println("WasThereABackdatedAwardMadeOnTheHBClaim > 1 || WasThereABackdatedAwardMadeOnTheHBClaim < 0");
-                throw new Exception("WasThereABackdatedAwardMadeOnTheHBClaim > 1 || WasThereABackdatedAwardMadeOnTheHBClaim < 0");
+                    throw new Exception("WasThereABackdatedAwardMadeOnTheHBClaim > 1 || WasThereABackdatedAwardMadeOnTheHBClaim < 0");
+                }
             }
             n++;
-            DateHBBackdatingFrom = fields[n];
+            if (n < fields.length) {
+                DateHBBackdatingFrom = fields[n];
+            }
             n++;
-            DateHBBackdatingTo = fields[n];
+            if (n < fields.length) {
+                DateHBBackdatingTo = fields[n];
+            }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TotalAmountOfBackdatedHBAwarded = 0;
-            } else {
-                TotalAmountOfBackdatedHBAwarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TotalAmountOfBackdatedHBAwarded = 0;
+                } else {
+                    TotalAmountOfBackdatedHBAwarded = Integer.valueOf(fields[n]);
+                }
             }
             n++; //220
-            CTBClaimTreatAsMadeDate = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                SourceOfTheMostRecentCTBClaim = 0;
-            } else {
-                SourceOfTheMostRecentCTBClaim = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                CTBClaimTreatAsMadeDate = fields[n];
             }
-            if (SourceOfTheMostRecentCTBClaim > 99 || SourceOfTheMostRecentCTBClaim < 0) {
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    SourceOfTheMostRecentCTBClaim = 0;
+                } else {
+                    SourceOfTheMostRecentCTBClaim = Integer.valueOf(fields[n]);
+                }
+                if (SourceOfTheMostRecentCTBClaim > 99 || SourceOfTheMostRecentCTBClaim < 0) {
 //            System.out.println("SourceOfTheMostRecentCTBClaim " + SourceOfTheMostRecentCTBClaim);
 //            System.out.println("SourceOfTheMostRecentCTBClaim > 99 || SourceOfTheMostRecentCTBClaim < 0");
-                throw new Exception("SourceOfTheMostRecentCTBClaim > 99 || SourceOfTheMostRecentCTBClaim < 0");
+                    throw new Exception("SourceOfTheMostRecentCTBClaim > 99 || SourceOfTheMostRecentCTBClaim < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim = 0;
-            } else {
-                DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim = Integer.valueOf(fields[n]);
-            }
-            if (DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim = 0;
+                } else {
+                    DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim = Integer.valueOf(fields[n]);
+                }
+                if (DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim > 1 || DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim < 0) {
 //            System.out.println("DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim " + DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim);
 //            System.out.println("DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim > 10 || DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim < 0");
-                throw new Exception("DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim > 10 || DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim < 0");
+                    throw new Exception("DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim > 10 || DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WasThereABackdatedAwardMadeOnTheCTBClaim = 0;
-            } else {
-                WasThereABackdatedAwardMadeOnTheCTBClaim = Integer.valueOf(fields[n]);
-            }
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WasThereABackdatedAwardMadeOnTheCTBClaim = 0;
+                } else {
+                    WasThereABackdatedAwardMadeOnTheCTBClaim = Integer.valueOf(fields[n]);
+                }
 //        if (WasThereABackdatedAwardMadeOnTheCTBClaim > 1 || WasThereABackdatedAwardMadeOnTheCTBClaim < 0) {
 ////            System.out.println("WasThereABackdatedAwardMadeOnTheCTBClaim " + WasThereABackdatedAwardMadeOnTheCTBClaim);
 ////            System.out.println("WasThereABackdatedAwardMadeOnTheCTBClaim > 1 || WasThereABackdatedAwardMadeOnTheCTBClaim < 0");
 //            throw new Exception("WasThereABackdatedAwardMadeOnTheCTBClaim > 1 || WasThereABackdatedAwardMadeOnTheCTBClaim < 0");
 //        }
+            }
             n++;
-            DateCTBBackdatingFrom = fields[n];
+            if (n < fields.length) {
+                DateCTBBackdatingFrom = fields[n];
+            }
             n++; //225
-            DateCTBBackdatingTo = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TotalAmountOfBackdatedCTBAwarded = 0;
-            } else {
-                TotalAmountOfBackdatedCTBAwarded = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DateCTBBackdatingTo = fields[n];
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly = 0;
-            } else {
-                InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TotalAmountOfBackdatedCTBAwarded = 0;
+                } else {
+                    TotalAmountOfBackdatedCTBAwarded = Integer.valueOf(fields[n]);
+                }
             }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly = 0;
+                } else {
+                    InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly = Integer.valueOf(fields[n]);
+                }
 //        if (InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly > 1 || InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly < 0) {
 ////            System.out.println("InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly " + InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly);
 ////            System.out.println("InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly > 1 || InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly < 0");
 //            throw new Exception("InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly > 1 || InThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly < 0");
 //        }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation = 0;
-            } else {
-                IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation = Integer.valueOf(fields[n]);
             }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation = 0;
+                } else {
+                    IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation = Integer.valueOf(fields[n]);
+                }
 //        if (IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation > 99 || IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation < 0) {
 ////            System.out.println("IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation " + IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation);
 ////            System.out.println("IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation > 99 || IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation < 0");
 //            throw new Exception("IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation > 99 || IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation < 0");
 //        }
+            }
             n++;
-            DateOfTransferFromLocalAuthorityLandlordToHousingAssociationRSLIfSubjectToStockTRansferOrLSVT = fields[n];
+            if (n < fields.length) {
+                DateOfTransferFromLocalAuthorityLandlordToHousingAssociationRSLIfSubjectToStockTRansferOrLSVT = fields[n];
+            }
             n++; //230
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                PartnersTotalCapital = 0;
-            } else {
-                PartnersTotalCapital = Integer.valueOf(fields[n]);
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                WeeklyNotionalIncomeFromCapitalClaimantAndPartnerCombinedFigure = 0;
-            } else {
-                WeeklyNotionalIncomeFromCapitalClaimantAndPartnerCombinedFigure = Integer.valueOf(fields[n]);
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsTotalHoursOfRemunerativeWorkPerWeek = 0;
-            } else {
-                try {
-                    ClaimantsTotalHoursOfRemunerativeWorkPerWeek = Double.valueOf(fields[n]);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace(System.err);
-                    throw e;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    PartnersTotalCapital = 0;
+                } else {
+                    PartnersTotalCapital = Integer.valueOf(fields[n]);
                 }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ") || fields[n].equalsIgnoreCase("  ")) {
-                PartnersTotalHoursOfRemunerativeWorkPerWeek = 0;
-            } else {
-                try {
-                    PartnersTotalHoursOfRemunerativeWorkPerWeek = Double.valueOf(fields[n]);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace(System.err);
-                    throw e;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    WeeklyNotionalIncomeFromCapitalClaimantAndPartnerCombinedFigure = 0;
+                } else {
+                    WeeklyNotionalIncomeFromCapitalClaimantAndPartnerCombinedFigure = Integer.valueOf(fields[n]);
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsTotalHoursOfRemunerativeWorkPerWeek = 0;
+                } else {
+                    try {
+                        ClaimantsTotalHoursOfRemunerativeWorkPerWeek = Double.valueOf(fields[n]);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace(System.err);
+                        throw e;
+                    }
+                }
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ") || fields[n].equalsIgnoreCase("  ")) {
+                    PartnersTotalHoursOfRemunerativeWorkPerWeek = 0;
+                } else {
+                    try {
+                        PartnersTotalHoursOfRemunerativeWorkPerWeek = Double.valueOf(fields[n]);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace(System.err);
+                        throw e;
+                    }
                 }
             }
             n = 236;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TotalHBPaymentsCreditsSinceLastExtract = 0;
-            } else {
-                TotalHBPaymentsCreditsSinceLastExtract = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TotalHBPaymentsCreditsSinceLastExtract = 0;
+                } else {
+                    TotalHBPaymentsCreditsSinceLastExtract = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TotalCTBPaymentsCreditsSinceLastExtract = 0;
-            } else {
-                TotalCTBPaymentsCreditsSinceLastExtract = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TotalCTBPaymentsCreditsSinceLastExtract = 0;
+                } else {
+                    TotalCTBPaymentsCreditsSinceLastExtract = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ClaimantsEthnicGroup = 0;
-            } else {
-                ClaimantsEthnicGroup = Integer.valueOf(fields[n]);
-            }
-            if (ClaimantsEthnicGroup > 99 || ClaimantsEthnicGroup < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ClaimantsEthnicGroup = 0;
+                } else {
+                    ClaimantsEthnicGroup = Integer.valueOf(fields[n]);
+                }
+                if (ClaimantsEthnicGroup > 99 || ClaimantsEthnicGroup < 0) {
 //            System.out.println("ClaimantsEthnicGroup " + ClaimantsEthnicGroup);
 //            System.out.println("ClaimantsEthnicGroup > 99 || ClaimantsEthnicGroup < 0");
-                throw new Exception("ClaimantsEthnicGroup > 99 || ClaimantsEthnicGroup < 0");
+                    throw new Exception("ClaimantsEthnicGroup > 99 || ClaimantsEthnicGroup < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NewWeeklyHBEntitlementAfterTheChange = 0;
-            } else {
-                NewWeeklyHBEntitlementAfterTheChange = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NewWeeklyHBEntitlementAfterTheChange = 0;
+                } else {
+                    NewWeeklyHBEntitlementAfterTheChange = Integer.valueOf(fields[n]);
+                }
             }
             n++; //240
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NewWeeklyCTBEntitlementAfterTheChange = 0;
-            } else {
-                NewWeeklyCTBEntitlementAfterTheChange = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NewWeeklyCTBEntitlementAfterTheChange = 0;
+                } else {
+                    NewWeeklyCTBEntitlementAfterTheChange = Integer.valueOf(fields[n]);
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                TypeOfChange = 0;
-            } else {
-                TypeOfChange = Integer.valueOf(fields[n]);
-            }
-            if (TypeOfChange > 2 || TypeOfChange < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    TypeOfChange = 0;
+                } else {
+                    TypeOfChange = Integer.valueOf(fields[n]);
+                }
+                if (TypeOfChange > 2 || TypeOfChange < 0) {
 //            System.out.println("TypeOfChange " + TypeOfChange);
 //            System.out.println("TypeOfChange > 2 || TypeOfChange < 0");
-                throw new Exception("TypeOfChange > 2 || TypeOfChange < 0");
+                    throw new Exception("TypeOfChange > 2 || TypeOfChange < 0");
+                }
             }
             n++;
-            DateLAFirstNotifiedOfChangeInClaimDetails = fields[n];
-            n += 2;
-            DateChangeOfDetailsAreEffectiveFrom = fields[n];
-            n++; //245
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                IfNotAnnualUpratingHowWasTheChangeIdentified = 0;
-            } else {
-                IfNotAnnualUpratingHowWasTheChangeIdentified = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DateLAFirstNotifiedOfChangeInClaimDetails = fields[n];
             }
-            if (IfNotAnnualUpratingHowWasTheChangeIdentified > 99 || IfNotAnnualUpratingHowWasTheChangeIdentified < 0) {
+            n += 2;
+            if (n < fields.length) {
+                DateChangeOfDetailsAreEffectiveFrom = fields[n];
+            }
+            n++; //245
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    IfNotAnnualUpratingHowWasTheChangeIdentified = 0;
+                } else {
+                    IfNotAnnualUpratingHowWasTheChangeIdentified = Integer.valueOf(fields[n]);
+                }
+                if (IfNotAnnualUpratingHowWasTheChangeIdentified > 99 || IfNotAnnualUpratingHowWasTheChangeIdentified < 0) {
 //            System.out.println("IfNotAnnualUpratingHowWasTheChangeIdentified " + IfNotAnnualUpratingHowWasTheChangeIdentified);
 //            System.out.println("IfNotAnnualUpratingHowWasTheChangeIdentified > 99 || IfNotAnnualUpratingHowWasTheChangeIdentified < 0");
-                throw new Exception("IfNotAnnualUpratingHowWasTheChangeIdentified > 99 || IfNotAnnualUpratingHowWasTheChangeIdentified < 0");
+                    throw new Exception("IfNotAnnualUpratingHowWasTheChangeIdentified > 99 || IfNotAnnualUpratingHowWasTheChangeIdentified < 0");
+                }
             }
             n++;
-            DateSupercessionDecisionWasMadeOnTheHBClaim = fields[n];
+            if (n < fields.length) {
+                DateSupercessionDecisionWasMadeOnTheHBClaim = fields[n];
+            }
             n++;
-            DateSupercessionDecisionWasMadeOnTheCTBClaim = fields[n];
+            if (n < fields.length) {
+                DateSupercessionDecisionWasMadeOnTheCTBClaim = fields[n];
+            }
             n += 3; //250
-            DateApplicationForRevisionReconsiderationReceived = fields[n];
-            n++;
-            DateClaimantNotifiedAboutTheDecisionOfTheRevisionReconsideration = fields[n];
-            n++;
-            DateAppealApplicationWasLodged = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                OutcomeOfAppealApplication = 0;
-            } else {
-                OutcomeOfAppealApplication = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DateApplicationForRevisionReconsiderationReceived = fields[n];
             }
-            if (OutcomeOfAppealApplication > 99 || OutcomeOfAppealApplication < 0) {
+            n++;
+            if (n < fields.length) {
+                DateClaimantNotifiedAboutTheDecisionOfTheRevisionReconsideration = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateAppealApplicationWasLodged = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    OutcomeOfAppealApplication = 0;
+                } else {
+                    OutcomeOfAppealApplication = Integer.valueOf(fields[n]);
+                }
+                if (OutcomeOfAppealApplication > 99 || OutcomeOfAppealApplication < 0) {
 //            System.out.println("OutcomeOfAppealApplication " + OutcomeOfAppealApplication);
 //            System.out.println("OutcomeOfAppealApplication > 99 || OutcomeOfAppealApplication < 0");
-                throw new Exception("OutcomeOfAppealApplication > 99 || OutcomeOfAppealApplication < 0");
+                    throw new Exception("OutcomeOfAppealApplication > 99 || OutcomeOfAppealApplication < 0");
+                }
             }
             n++; //254
-            DateOfOutcomeOfAppealApplication = fields[n];
-            n += 6; //260
-            DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentHBClaim = fields[n];
-            n++;
-            DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim = fields[n];
-            n++;
-            DateCouncilTaxPayable = fields[n];
-            n++;
-            DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentCTBClaim = fields[n];
-            n++;
-            DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentCTBClaim = fields[n];
-            n++; //265
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                SoftwareProvider = 0;
-            } else {
-                SoftwareProvider = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                DateOfOutcomeOfAppealApplication = fields[n];
             }
-            if (SoftwareProvider > 3 || SoftwareProvider < 0) {
+            n += 6; //260
+            if (n < fields.length) {
+                DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentHBClaim = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateCouncilTaxPayable = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentCTBClaim = fields[n];
+            }
+            n++;
+            if (n < fields.length) {
+                DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentCTBClaim = fields[n];
+            }
+            n++; //265
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    SoftwareProvider = 0;
+                } else {
+                    SoftwareProvider = Integer.valueOf(fields[n]);
+                }
+                if (SoftwareProvider > 3 || SoftwareProvider < 0) {
 //            System.out.println("SoftwareProvider " + SoftwareProvider);
 //            System.out.println("SoftwareProvider > 3 || SoftwareProvider < 0");
-                throw new Exception("SoftwareProvider > 3 || SoftwareProvider < 0");
+                    throw new Exception("SoftwareProvider > 3 || SoftwareProvider < 0");
+                }
             }
             n++;
-            StaffingFTE = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ContractingOutHandlingAndMaintenanceOfHBCTB = 0;
-            } else {
-                ContractingOutHandlingAndMaintenanceOfHBCTB = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                StaffingFTE = fields[n];
             }
-            if (ContractingOutHandlingAndMaintenanceOfHBCTB > 9 || ContractingOutHandlingAndMaintenanceOfHBCTB < 0) {
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ContractingOutHandlingAndMaintenanceOfHBCTB = 0;
+                } else {
+                    ContractingOutHandlingAndMaintenanceOfHBCTB = Integer.valueOf(fields[n]);
+                }
+                if (ContractingOutHandlingAndMaintenanceOfHBCTB > 9 || ContractingOutHandlingAndMaintenanceOfHBCTB < 0) {
 //            System.out.println("ContractingOutHandlingAndMaintenanceOfHBCTB " + ContractingOutHandlingAndMaintenanceOfHBCTB);
 //            System.out.println("ContractingOutHandlingAndMaintenanceOfHBCTB > 9 || ContractingOutHandlingAndMaintenanceOfHBCTB < 0");
-                throw new Exception("ContractingOutHandlingAndMaintenanceOfHBCTB > 9 || ContractingOutHandlingAndMaintenanceOfHBCTB < 0");
-            }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                ContractingOutCounterFraudWorkRelatingToHBCTB = 0;
-            } else {
-                ContractingOutCounterFraudWorkRelatingToHBCTB = Integer.valueOf(fields[n]);
-            }
-            if (ContractingOutCounterFraudWorkRelatingToHBCTB > 9 || ContractingOutCounterFraudWorkRelatingToHBCTB < 0) {
+                    throw new Exception("ContractingOutHandlingAndMaintenanceOfHBCTB > 9 || ContractingOutHandlingAndMaintenanceOfHBCTB < 0");
+                }
+                n++;
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    ContractingOutCounterFraudWorkRelatingToHBCTB = 0;
+                } else {
+                    ContractingOutCounterFraudWorkRelatingToHBCTB = Integer.valueOf(fields[n]);
+                }
+                if (ContractingOutCounterFraudWorkRelatingToHBCTB > 9 || ContractingOutCounterFraudWorkRelatingToHBCTB < 0) {
 //            System.out.println("ContractingOutCounterFraudWorkRelatingToHBCTB " + ContractingOutCounterFraudWorkRelatingToHBCTB);
 //            System.out.println("ContractingOutCounterFraudWorkRelatingToHBCTB > 9 || ContractingOutCounterFraudWorkRelatingToHBCTB < 0");
-                throw new Exception("ContractingOutCounterFraudWorkRelatingToHBCTB > 9 || ContractingOutCounterFraudWorkRelatingToHBCTB < 0");
+                    throw new Exception("ContractingOutCounterFraudWorkRelatingToHBCTB > 9 || ContractingOutCounterFraudWorkRelatingToHBCTB < 0");
+                }
             }
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                NumberOfBedroomsForLHARolloutCasesOnly = 0;
-            } else {
-                NumberOfBedroomsForLHARolloutCasesOnly = Integer.valueOf(fields[n]);
+            n++; //269
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    NumberOfBedroomsForLHARolloutCasesOnly = 0;
+                } else {
+                    NumberOfBedroomsForLHARolloutCasesOnly = Integer.valueOf(fields[n]);
+                }
             }
             n++; //270
-            PartnersDateOfDeath = fields[n];
-            n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                JointTenancyFlag = 0;
-            } else {
-                JointTenancyFlag = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                PartnersDateOfDeath = fields[n];
             }
-            if (JointTenancyFlag > 2 || JointTenancyFlag < 0) {
+            n++;
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    JointTenancyFlag = 0;
+                } else {
+                    JointTenancyFlag = Integer.valueOf(fields[n]);
+                }
+                if (JointTenancyFlag > 2 || JointTenancyFlag < 0) {
 //            System.out.println("JointTenancyFlag " + JointTenancyFlag);
 //            System.out.println("JointTenancyFlag > 2 || JointTenancyFlag < 0");
-                throw new Exception("JointTenancyFlag > 2 || JointTenancyFlag < 0");
+                    throw new Exception("JointTenancyFlag > 2 || JointTenancyFlag < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                AppointeeFlag = 0;
-            } else {
-                AppointeeFlag = Integer.valueOf(fields[n]);
-            }
-            if (AppointeeFlag > 2 || AppointeeFlag < 0) {
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    AppointeeFlag = 0;
+                } else {
+                    AppointeeFlag = Integer.valueOf(fields[n]);
+                }
+                if (AppointeeFlag > 2 || AppointeeFlag < 0) {
 //            System.out.println("AppointeeFlag " + AppointeeFlag);
 //            System.out.println("AppointeeFlag > 2 || AppointeeFlag < 0");
-                throw new Exception("AppointeeFlag > 2 || AppointeeFlag < 0");
+                    throw new Exception("AppointeeFlag > 2 || AppointeeFlag < 0");
+                }
             }
             n++;
-            if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
-                RentFreeWeeksIndicator = 0;
-            } else {
-                RentFreeWeeksIndicator = Integer.valueOf(fields[n]);
+            if (n < fields.length) {
+                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                    RentFreeWeeksIndicator = 0;
+                } else {
+                    RentFreeWeeksIndicator = Integer.valueOf(fields[n]);
+                }
             }
             n++; //274
-            if (fields.length > n) {
+            if (n < fields.length) {
                 LastPaidToDate = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0;
                 } else {
@@ -4480,7 +5414,7 @@ public class SHBE_DataRecord {
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     ClaimantsWeeklyIncomeFromESABasicElement = 0;
                 } else {
@@ -4488,7 +5422,7 @@ public class SHBE_DataRecord {
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     PartnersWeeklyIncomeFromESABasicElement = 0;
                 } else {
@@ -4496,7 +5430,7 @@ public class SHBE_DataRecord {
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     ClaimantsWeeklyIncomeFromESAWRAGElement = 0;
                 } else {
@@ -4504,7 +5438,7 @@ public class SHBE_DataRecord {
                 }
             }
             n++; //279
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     PartnersWeeklyIncomeFromESAWRAGElement = 0;
                 } else {
@@ -4512,7 +5446,7 @@ public class SHBE_DataRecord {
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     ClaimantsWeeklyIncomeFromESASCGElement = 0;
                 } else {
@@ -4520,7 +5454,7 @@ public class SHBE_DataRecord {
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     PartnersWeeklyIncomeFromESASCGElement = 0;
                 } else {
@@ -4528,30 +5462,46 @@ public class SHBE_DataRecord {
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 WRAGPremiumFlag = fields[n];
             }
             n++; //283
-            if (fields.length > n) {
+            if (n < fields.length) {
                 SCGPremiumFlag = fields[n];
             }
             if (type == 1) {
                 n++;
-                if (fields.length > n) {
+                if (n < fields.length) {
                     LandlordPostcode = fields[n];
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     SubRecordType = 0;
                 } else {
                     try {
                         SubRecordType = Integer.valueOf(fields[n]);
                     } catch (NumberFormatException e) {
-                        System.err.println("RecordID " + RecordID + " SubRecordType " + SubRecordType + " not converted to Integer");
-                        e.printStackTrace(System.err);
-                        throw e;
+                        // In 2008 October some records were not loading for Leeds SHBE
+                        if (LandlordPostcode.trim().equalsIgnoreCase("WEST YORKSHIRE")) {
+                            LandlordPostcode = fields[n];
+                            n++;
+                            if (n < fields.length) {
+                                if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
+                                    SubRecordType = 0;
+                                } else {
+                                    try {
+                                        SubRecordType = Integer.valueOf(fields[n]);
+                                    } catch (NumberFormatException e2) {
+                                        System.err.println("RecordID " + RecordID);
+                                        System.err.println("SubRecordType " + fields[n] + " not converted to Integer");
+                                        e2.printStackTrace(System.err);
+                                        throw e;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 if (SubRecordType > 2 || SubRecordType < 0) {
@@ -4562,141 +5512,150 @@ public class SHBE_DataRecord {
             }
             if (type == 1) {
                 n++;
-                if (fields.length > n) {
+                if (n < fields.length) {
                     SubRecordDateOfBirth = fields[n];
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 SubRecordChildReferenceNumberOrNINO = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 SubRecordStartDate = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 SubRecordEndDate = fields[n];
             }
             if (type == 1) {
                 n++;
-                if (fields.length > n) {
+                if (n < fields.length) {
                     SubRecordDateOfBirth = fields[n];
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 IfThisActivityResolvesAnHBMSReferralProvideRMSNumber = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 HBMSRuleScanID = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 DateOfHBMSMatch = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 IfResolutionOfHBMSReferralDoesNotResultInAFinancialAdjustmentPleaseIndicateTheReasonWhy = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 UniqueTRecordIdentifier = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonCapital = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonClaimentPartnersEarnedIncome = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonNonDependentsEarnedIncome = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonPassportingStatus = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonIncomeFromDWPBenefits = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonTaxCredits = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonOtherIncome = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonLivingTogetherAsHusbandAndWife = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonNumberOfNonDependents = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonNumberOfDependents = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonNonResidence = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonEligibleRentCouncilTax = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonIneligible = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonIdentityDeath = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 OverpaymentReasonOther = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 BenefitThatThisPaymentErrorRelatesTo = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 if (fields[n].equalsIgnoreCase("") || fields[n].isEmpty() || fields[n].equalsIgnoreCase(" ")) {
                     TotalValueOfPaymentError = 0;
                 } else {
                     try {
                         TotalValueOfPaymentError = Integer.valueOf(fields[n]);
                     } catch (NumberFormatException e) {
+                        System.err.println("RecordID " + RecordID);
+                        System.err.println("TotalValueOfPaymentError " + fields[n]);
                         e.printStackTrace(System.err);
                         throw e;
                     }
                 }
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 WeeklyBenefitDiscrepancyAtStartOfPaymentError = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 StartDateOfPaymentErrorPeriod = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 EndDateOfPaymentErrorPeriod = fields[n];
             }
             n++;
-            if (fields.length > n) {
+            if (n < fields.length) {
                 WhatWasTheCauseOfTheOverPayment = fields[n];
             }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            int debug = 1;
+            System.err.println("RecordID " + RecordID);
+            System.err.println(e.getMessage());
+            System.err.println("Expected " + expectedFieldsLength + " fields");
+            System.err.println("fields.length = " + fields.length);
+            System.err.println("n = " + n);
         }
     }
 
@@ -4705,8 +5664,6 @@ public class SHBE_DataRecord {
         return "RecordID " + RecordID
                 + ",RecordType " + RecordType
                 + ",HousingBenefitClaimReferenceNumber " + HousingBenefitClaimReferenceNumber
-                + ",HousingBenefitClaimReferenceNumber " + HousingBenefitClaimReferenceNumber
-                + ",CouncilTaxBenefitClaimReferenceNumber " + CouncilTaxBenefitClaimReferenceNumber
                 + ",CouncilTaxBenefitClaimReferenceNumber " + CouncilTaxBenefitClaimReferenceNumber
                 + ",ClaimantsNationalInsuranceNumber " + ClaimantsNationalInsuranceNumber
                 + ",ClaimantsDateOfBirth " + ClaimantsDateOfBirth
@@ -8811,9 +9768,9 @@ public class SHBE_DataRecord {
     /**
      * @return the SRecords
      */
-    public HashSet<SHBE_DataRecord> getSRecords() {
+    public HashSet<DW_SHBE_Record> getSRecords() {
         if (SRecords == null) {
-            SRecords = new HashSet<SHBE_DataRecord>();
+            SRecords = new HashSet<DW_SHBE_Record>();
         }
         return SRecords;
     }
@@ -8821,7 +9778,7 @@ public class SHBE_DataRecord {
     /**
      * @param SRecords the SRecords to set
      */
-    public void setSRecords(HashSet<SHBE_DataRecord> SRecords) {
+    public void setSRecords(HashSet<DW_SHBE_Record> SRecords) {
         this.SRecords = SRecords;
     }
 

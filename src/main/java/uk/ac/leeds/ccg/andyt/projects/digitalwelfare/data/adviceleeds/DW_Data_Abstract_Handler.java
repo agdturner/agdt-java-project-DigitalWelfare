@@ -19,9 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
 
 import java.io.File;
-import java.io.StreamTokenizer;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 
 /**
  * For handling data from CASE.
@@ -34,6 +32,7 @@ public abstract class DW_Data_Abstract_Handler {
     /**
      * For loading data from a file.
      *
+     * @param dir
      * @param filename
      * @param IDType
      * @return TreeMap

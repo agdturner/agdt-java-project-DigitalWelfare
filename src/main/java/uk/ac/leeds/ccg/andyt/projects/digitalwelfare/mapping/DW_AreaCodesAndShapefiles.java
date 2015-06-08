@@ -172,6 +172,9 @@ public class DW_AreaCodesAndShapefiles {
             }
         } else {
             File levelShapefile = DW_Maps.getAreaBoundaryShapefile(level);
+            if (levelShapefile == null) {
+                int debug = 1;
+            }
             _LevelDW_Shapefile = new DW_Shapefile(levelShapefile);
             _LeedsAreaCodes = getAreaCodesAndShapefile(
                     tLeedsString,

@@ -95,6 +95,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor.getLookupFromPostcodeToCensusCode;
 
 /**
@@ -218,7 +219,6 @@ public class DW_DensityMaps extends DW_Maps {
                 ge,
                 handleOutOfMemoryErrors);
 
-        
         // Initialise tDW_ID_ClientTypes
         ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes;
         tDW_ID_ClientTypes = new ArrayList<DW_ID_ClientID>();
@@ -233,14 +233,12 @@ public class DW_DensityMaps extends DW_Maps {
 //        commonStyling = true;
 //        individualStyling = true;
 //        runAll(IDType);
-
 //        // Quantile runs
 //        styleParameters.setClassificationFunctionName("Quantile");
 //        styleParameters.setStylesNull();
 //        commonStyling = true;
 //        individualStyling = true;
 //        runAll(tDW_ID_ClientTypes);
-
         // Equal Interval runs
         styleParameters.setClassificationFunctionName("EqualInterval");
         styleParameters.setStylesNull();
@@ -276,7 +274,7 @@ public class DW_DensityMaps extends DW_Maps {
             // Map CAB data
             boolean scaleToFirst;
 
-        // Grids parameters
+            // Grids parameters
             // Filter just for specific outlets
             HashSet<String> outlets;
             outlets = new HashSet<String>();
@@ -292,7 +290,7 @@ public class DW_DensityMaps extends DW_Maps {
             for (int filter = 0; filter < 3; filter++) {
                 if (filter == 0) {
                 //if (filter == 0 || filter == 2) {
-                //for (int filter = 2; filter < 3; filter++) {
+                    //for (int filter = 2; filter < 3; filter++) {
                     //int filter = 0;
                     deprivationRecords = null;
                     if (commonStyling) {
@@ -415,7 +413,7 @@ public class DW_DensityMaps extends DW_Maps {
             Object IDType,
             boolean handleOutOfMemoryErrors) {
         int multiplier;
-        multiplier = (int) (400 / cellsize); 
+        multiplier = (int) (400 / cellsize);
         if (filter == 0) {
             backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
             nrows = 70 * multiplier; //139 * multiplier; //277 * multiplier;
@@ -689,7 +687,7 @@ public class DW_DensityMaps extends DW_Maps {
                     index,
                     scaleToFirst);
             if (!scaleToFirst) {
-                styleParameters.setStyle(null, index);
+                styleParameters.setStyle(nameOfGrid, null, index);
             }
 
             // Generalise the grid
@@ -753,7 +751,7 @@ public class DW_DensityMaps extends DW_Maps {
                         index,
                         scaleToFirst);
                 if (!scaleToFirst) {
-                    styleParameters.setStyle(null, index);
+                    styleParameters.setStyle(nameOfGrid, null, index);
                 }
             }
         }
@@ -774,7 +772,9 @@ public class DW_DensityMaps extends DW_Maps {
             aLSOACode = tLookupFromPostcodeToCensusCodes.get(postcode);
             if (aLSOACode != null) {
                 if (deprivationRecords == null) {
-                    AGDT_Point aPoint = getONSPDlookups()[0].get(postcode);
+                    String postcodeLevel;
+                    postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(postcode);
+                    AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(postcode);
                     if (aPoint != null) {
                         int x = aPoint.getX();
                         int y = aPoint.getY();
@@ -793,7 +793,9 @@ public class DW_DensityMaps extends DW_Maps {
                                 deprivationClasses,
                                 aDeprivation_DataRecord);
                         if (thisDeprivationClass == deprivationClass.intValue()) {
-                            AGDT_Point aPoint = getONSPDlookups()[0].get(postcode);
+                            String postcodeLevel;
+                            postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(postcode);
+                            AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(postcode);
                             if (aPoint != null) {
                                 int x = aPoint.getX();
                                 int y = aPoint.getY();
@@ -916,8 +918,10 @@ public class DW_DensityMaps extends DW_Maps {
             DW_Data_CAB2_Record value = tLeedsCABData.get(key);
             String postcode = value.getPostcode();
             String outlet = value.getOutlet();
-            String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
-            AGDT_Point aPoint = getONSPDlookups()[0].get(formattedpostcode);
+            String formattedpostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
+            String postcodeLevel;
+            postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(formattedpostcode);
+            AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(formattedpostcode);
             if (aPoint != null) {
                 if (result.containsKey(outlet)) {
                     result.get(outlet).add(aPoint);
@@ -954,7 +958,7 @@ public class DW_DensityMaps extends DW_Maps {
             DW_Data_CAB2_Record value = tLeedsCABData.get(key);
             String postcode = value.getPostcode();
             String outlet = value.getOutlet();
-            String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
+            String formattedpostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
             if (result.containsKey(outlet)) {
                 result.get(outlet).add(formattedpostcode);
             } else {
@@ -984,8 +988,10 @@ public class DW_DensityMaps extends DW_Maps {
             Object key = ite.next();
             DW_Data_CAB0_Record value = tChapeltownCABData.get(key);
             String postcode = value.getPostcode();
-            String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
-            AGDT_Point aPoint = getONSPDlookups()[0].get(formattedpostcode);
+            String formattedpostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
+            String postcodeLevel;
+            postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(formattedpostcode);
+            AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(formattedpostcode);
             if (aPoint != null) {
                 result.add(aPoint);
             } else {
@@ -995,7 +1001,7 @@ public class DW_DensityMaps extends DW_Maps {
         System.out.println("countNonMatchingPostcodes " + countNonMatchingPostcodes);
         return result;
     }
-    
+
     public static ArrayList<String> getLCC_WRUDataPostcodes(
             Object IDType) {
         ArrayList<String> result;
@@ -1012,12 +1018,12 @@ public class DW_DensityMaps extends DW_Maps {
             DW_ID_ClientID key = ite.next();
             DW_Data_LCC_WRU_Record value = data.get(key);
             String postcode = value.getPostcode();
-            String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
+            String formattedpostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
             result.add(formattedpostcode);
         }
         return result;
     }
-    
+
     public static ArrayList<String> getChapeltownCABDataPostcodes(
             Object IDType) {
         ArrayList<String> result;
@@ -1034,7 +1040,7 @@ public class DW_DensityMaps extends DW_Maps {
             DW_ID_ClientID key = ite.next();
             DW_Data_CAB0_Record value = tChapeltownCABData.get(key);
             String postcode = value.getPostcode();
-            String formattedpostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
+            String formattedpostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
             result.add(formattedpostcode);
         }
         return result;

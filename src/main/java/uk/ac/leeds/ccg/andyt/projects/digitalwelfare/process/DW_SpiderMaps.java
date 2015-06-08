@@ -56,6 +56,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 
 /**
  *
@@ -192,7 +193,7 @@ public class DW_SpiderMaps extends DW_Maps {
         while (ite_String.hasNext()) {
             String outletName = ite_String.next();
             String postcode = tCABOutletPostcodes.get(outletName);
-            AGDT_Point p = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point p = DW_Postcode_Handler.getPointFromPostcode(postcode);
             if (p == null) {
                 System.out.println("No point for postcode " + postcode);
             } else {
@@ -316,7 +317,7 @@ public class DW_SpiderMaps extends DW_Maps {
             DW_Data_CAB2_Record r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
-            AGDT_Point origin = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(postcode);
             if (origin != null) {
                 String tCABOutletString = DW_Processor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
@@ -344,7 +345,7 @@ public class DW_SpiderMaps extends DW_Maps {
 //                    a_DW_Point = outletPoint;
 //                    destinationx = a_DW_Point.getX();
 //                    destinationy = a_DW_Point.getY();
-                    String formattedPostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
+                    String formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
                     String aLSOACode = tLookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
                     String aMSOACode = tLookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
                     if (aLSOACode.equalsIgnoreCase("") || aMSOACode.equalsIgnoreCase("")) {
@@ -455,7 +456,7 @@ public class DW_SpiderMaps extends DW_Maps {
             DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
-            AGDT_Point origin = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(postcode);
             if (origin != null) {
                 String tCABOutletString = DW_Processor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
@@ -483,7 +484,7 @@ public class DW_SpiderMaps extends DW_Maps {
 //                    a_DW_Point = outletPoint;
 //                    destinationx = a_DW_Point.getX();
 //                    destinationy = a_DW_Point.getY();
-                    String formattedPostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
+                    String formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
                     String aLSOACode = tLookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
                     String aMSOACode = tLookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
                     if (aLSOACode.equalsIgnoreCase("") || aMSOACode.equalsIgnoreCase("")) {
@@ -694,7 +695,7 @@ public class DW_SpiderMaps extends DW_Maps {
             DW_Data_CAB2_Record r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
-            AGDT_Point origin = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(postcode);
             if (origin != null) {
                 String tCABOutletString = DW_Processor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
@@ -712,7 +713,7 @@ public class DW_SpiderMaps extends DW_Maps {
                     double destinationy;
                     AGDT_Point outletPoint = null;
                     outletPoint = tCABOutletPoints.get(tCABOutletString);
-                    String formattedPostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
+                    String formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
                     String aLSOACode = tLookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
                     String aMSOACode = tLookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
                     if (aLSOACode.equalsIgnoreCase("") || aMSOACode.equalsIgnoreCase("")) {
@@ -779,7 +780,7 @@ public class DW_SpiderMaps extends DW_Maps {
             DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
-            AGDT_Point origin = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(postcode);
             if (origin != null) {
                 String tCABOutletString = DW_Processor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
@@ -797,7 +798,7 @@ public class DW_SpiderMaps extends DW_Maps {
                     double destinationy;
                     AGDT_Point outletPoint = null;
                     outletPoint = tCABOutletPoints.get(tCABOutletString);
-                    String formattedPostcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
+                    String formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
                     String aLSOACode = tLookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
                     String aMSOACode = tLookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
                     if (aLSOACode.equalsIgnoreCase("") || aMSOACode.equalsIgnoreCase("")) {
@@ -947,7 +948,7 @@ public class DW_SpiderMaps extends DW_Maps {
             DW_Data_CAB2_Record r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
-            AGDT_Point origin = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(postcode);
             if (origin != null) {
                 String tCABOutletString = DW_Processor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
@@ -1012,7 +1013,7 @@ public class DW_SpiderMaps extends DW_Maps {
             DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
-            AGDT_Point origin = DW_Processor.getPointFromPostcode(postcode);
+            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(postcode);
             if (origin != null) {
                 String tCABOutletString = DW_Processor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
