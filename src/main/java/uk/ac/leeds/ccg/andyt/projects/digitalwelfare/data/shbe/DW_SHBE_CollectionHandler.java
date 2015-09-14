@@ -362,7 +362,7 @@ public class DW_SHBE_CollectionHandler
         return true;
     }
 
-    public DW_SHBE_Record getDRecord(String councilTaxClaimNumber){
+    public DW_SHBE_Record getRecord(String councilTaxClaimNumber){
         DW_SHBE_Record result;
         Long DRecordID;
         DRecordID = lookup.get(councilTaxClaimNumber);
@@ -377,7 +377,7 @@ public class DW_SHBE_CollectionHandler
         result = collection.getRecord(DRecordID);
         return result;
     }
-    
+
     private static void log(
             String message) {
         log(DW_Log.DW_DefaultLogLevel, message);

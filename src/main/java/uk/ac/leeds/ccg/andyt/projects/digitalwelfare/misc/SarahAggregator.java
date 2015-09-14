@@ -100,6 +100,7 @@ public class SarahAggregator {
             }
             tokenType = st.nextToken();
         }
+        br.close();
         return result;
     }
 }

@@ -34,17 +34,18 @@ public class DW_Data_LCC_WRU_Handler extends DW_Data_Abstract_Handler {
     }
 
     public static void main(String[] args) {
-       new DW_Data_LCC_WRU_Handler().run();
+        new DW_Data_LCC_WRU_Handler().run();
     }
-    
+
     public void run() {
         String filename = "WelfareRights - Data Extract.csv";
         TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> data;
         data = loadInputData(filename, null);
     }
-    
+
     /**
      * Loads LCC_WRU data from a file in directory, filename.
+     *
      * @param filename
      * @param IDType
      * @return
@@ -56,13 +57,14 @@ public class DW_Data_LCC_WRU_Handler extends DW_Data_Abstract_Handler {
                 DW_Files.getInputAdviceLeedsDir(),
                 "LCC_WRU");
         return loadInputData(
-             directory,
-             filename,
-             IDType);
+                directory,
+                filename,
+                IDType);
     }
-    
+
     /**
      * Loads LCC_WRU data from a file in directory, filename.
+     *
      * @param dir
      * @param filename
      * @param IDType
@@ -71,23 +73,22 @@ public class DW_Data_LCC_WRU_Handler extends DW_Data_Abstract_Handler {
     public TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> loadInputData(
             File dir,
             String filename,
-            Object IDType) {    
+            Object IDType) {
         System.out.println("Loading " + filename);
         TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> result;
         result = new TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record>();
-        
         File inputFile = new File(
                 dir,
                 filename);
-        BufferedReader br;
-        br = Generic_StaticIO.getBufferedReader(inputFile);
-        StreamTokenizer st;
-        st = getStreamTokenizer(br);
-        String line = "";
         long RecordID = 0;
         int recordsLoaded = 0;
         int countOfAdditionalRecordsThatAreIgnored = 0;
+        BufferedReader br;
         try {
+            br = Generic_StaticIO.getBufferedReader(inputFile);
+            StreamTokenizer st;
+            st = getStreamTokenizer(br);
+            String line = "";
             // Skip the header
             int headerLines = 3;
             for (int i = 0; i < headerLines; i++) {
@@ -97,7 +98,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Data_Abstract_Handler {
             int tokenType;
             tokenType = st.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
-               switch (tokenType) {
+                switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
                         //System.out.println(line);
                         break;
@@ -107,7 +108,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Data_Abstract_Handler {
                             DW_Data_LCC_WRU_Record rec;
                             rec = new DW_Data_LCC_WRU_Record(RecordID, line, this);
                             //String enquiryReferenceNumber = record.getEnquiryReferenceNumber();
-                                //1-102J,20-Sep-1936,Not Stated,Refused,LS6 1LS,2-464768375,2-7SFJ2M,Welfare Rights,Home Visit (MacMillan),05-Dec-2011,Blue Badge,-,75,77.11
+                            //1-102J,20-Sep-1936,Not Stated,Refused,LS6 1LS,2-464768375,2-7SFJ2M,Welfare Rights,Home Visit (MacMillan),05-Dec-2011,Blue Badge,-,75,77.11
                             String client_ref;
                             client_ref = rec.getUniqueCustomerRef();
                             DW_ID_ClientID id;
@@ -121,11 +122,11 @@ public class DW_Data_LCC_WRU_Handler extends DW_Data_Abstract_Handler {
                             }
                             if (result.containsKey(id)) {
 //                                System.out.println("Additional record for client " + aClient_Ref);
-                                countOfAdditionalRecordsThatAreIgnored ++;
+                                countOfAdditionalRecordsThatAreIgnored++;
                             } else {
                                 result.put(id, rec);
-                                recordsLoaded ++;
-                            }               
+                                recordsLoaded++;
+                            }
                         } catch (Exception e) {
                             System.err.println(line);
                             System.err.println("RecordID " + RecordID);
@@ -145,7 +146,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Data_Abstract_Handler {
         System.out.println("Number of additional records for clients that are ignored " + countOfAdditionalRecordsThatAreIgnored);
         return result;
     }
-    
+
     public StreamTokenizer getStreamTokenizer(BufferedReader br) {
         StreamTokenizer result;
         result = new StreamTokenizer(br);

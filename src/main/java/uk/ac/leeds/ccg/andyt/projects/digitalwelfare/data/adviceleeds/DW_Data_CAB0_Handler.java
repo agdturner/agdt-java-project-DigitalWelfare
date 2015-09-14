@@ -30,6 +30,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  * For Handling data from Petra.
+ *
  * @author geoagdt
  */
 public class DW_Data_CAB0_Handler extends DW_Data_Abstract_Handler {
@@ -41,16 +42,13 @@ public class DW_Data_CAB0_Handler extends DW_Data_Abstract_Handler {
     public TreeMap loadInputData(File dir, String filename, Object IDType) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     /**
      * Loads Chapeltown CAB data.
      *
-     * @param type 
-     * if (type == 0) {
-   record = new DW_Data_CAB0_Record(RecordID, line, this);
- } else {
-   record = new DW_Data_CAB0_Record1(RecordID, line, this);
- }
+     * @param type if (type == 0) { record = new DW_Data_CAB0_Record(RecordID,
+     * line, this); } else { record = new DW_Data_CAB0_Record1(RecordID, line,
+     * this); }
      * @param filename
      * @param IDType
      * @return TreeMap<String,DW_Data_CAB0_Record> representing records
@@ -67,15 +65,15 @@ public class DW_Data_CAB0_Handler extends DW_Data_Abstract_Handler {
         File inputFile = new File(
                 directory,
                 filename);
-        BufferedReader br;
-        br = Generic_StaticIO.getBufferedReader(inputFile);
-        StreamTokenizer st;
-        st = getStreamTokenizer(br);
-        String line = "";
-        long RecordID = 0;
-        int recordsLoaded = 0;
-        int countOfAdditionalRecordsThatAreIgnored = 0;
         try {
+            BufferedReader br;
+            br = Generic_StaticIO.getBufferedReader(inputFile);
+            StreamTokenizer st;
+            st = getStreamTokenizer(br);
+            String line = "";
+            long RecordID = 0;
+            int recordsLoaded = 0;
+            int countOfAdditionalRecordsThatAreIgnored = 0;
             // Skip the header
             int headerLines = 1;
             for (int i = 0; i < headerLines; i++) {
@@ -104,10 +102,10 @@ public class DW_Data_CAB0_Handler extends DW_Data_Abstract_Handler {
                             id = new DW_ID_ClientID(client_ref);
                             if (result.containsKey(id)) {
 //                                System.out.println("Additional record for client " + aClient_Ref);
-                                countOfAdditionalRecordsThatAreIgnored ++;
+                                countOfAdditionalRecordsThatAreIgnored++;
                             } else {
                                 result.put(id, rec);
-                                recordsLoaded ++;
+                                recordsLoaded++;
                             }
                         } catch (Exception e) {
                             System.err.println(line);
@@ -120,16 +118,16 @@ public class DW_Data_CAB0_Handler extends DW_Data_Abstract_Handler {
                 tokenType = st.nextToken();
             }
             br.close();
+            System.out.println("Number of records loaded " + recordsLoaded);
+            System.out.println("Number of records not loaded " + (RecordID - recordsLoaded));
+            System.out.println("Number of additional records for clients that are ignored " + countOfAdditionalRecordsThatAreIgnored);
         } catch (IOException ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Number of records loaded " + recordsLoaded);
-        System.out.println("Number of records not loaded " + (RecordID - recordsLoaded));
-        System.out.println("Number of additional records for clients that are ignored " + countOfAdditionalRecordsThatAreIgnored);
         return result;
     }
 
-    public StreamTokenizer getStreamTokenizer(BufferedReader br){
+    public StreamTokenizer getStreamTokenizer(BufferedReader br) {
         StreamTokenizer result;
         result = new StreamTokenizer(br);
         Generic_StaticIO.setStreamTokenizerSyntax5(result);
@@ -152,5 +150,4 @@ public class DW_Data_CAB0_Handler extends DW_Data_Abstract_Handler {
         return result;
     }
 
-    
 }

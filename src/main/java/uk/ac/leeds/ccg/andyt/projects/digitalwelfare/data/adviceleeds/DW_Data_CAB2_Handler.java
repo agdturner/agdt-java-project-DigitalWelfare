@@ -55,13 +55,13 @@ public class DW_Data_CAB2_Handler extends DW_Data_Abstract_Handler {
         File inputFile = new File(
                 directory,
                 filename);
+        try {
         BufferedReader br;
         br = Generic_StaticIO.getBufferedReader(inputFile);
         StreamTokenizer st;
         st = getStreamTokenizerSyntax(br);
         String line = "";
         long RecordID = 0;
-        try {
             // Skip the header
             int headerLines = 2;
             for (int i = 0; i < headerLines; i++) {

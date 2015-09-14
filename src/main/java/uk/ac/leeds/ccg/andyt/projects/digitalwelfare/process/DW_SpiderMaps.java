@@ -18,7 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -51,10 +51,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_Clie
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Geotools;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 
@@ -210,11 +210,11 @@ public class DW_SpiderMaps extends DW_Maps {
         foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
         int year_int = 2011;
         // init postcode to LSOA lookup
-        tLookupFromPostcodeToLSOACensusCodes = DW_Processor.getLookupFromPostcodeToCensusCode(
+        tLookupFromPostcodeToLSOACensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
                 "LSOA",
                 year_int);
         // init postcode to MSOA lookup
-        tLookupFromPostcodeToMSOACensusCodes = DW_Processor.getLookupFromPostcodeToCensusCode(
+        tLookupFromPostcodeToMSOACensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
                 "MSOA",
                 year_int);
         // Other variables for selecting and output
@@ -611,6 +611,7 @@ public class DW_SpiderMaps extends DW_Maps {
                     imageWidth,
                     styleParameters,
                     0,
+                    Double.POSITIVE_INFINITY,
                     showMapsInJMapPane);
 
         }
@@ -626,11 +627,11 @@ public class DW_SpiderMaps extends DW_Maps {
         foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
         int year_int = 2011;
         // Get postcode to LSOA lookup
-        tLookupFromPostcodeToLSOACensusCodes = DW_Processor.getLookupFromPostcodeToCensusCode(
+        tLookupFromPostcodeToLSOACensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
                 "LSOA",
                 year_int);
         // Get postcode to LSOA lookup
-        tLookupFromPostcodeToMSOACensusCodes = DW_Processor.getLookupFromPostcodeToCensusCode(
+        tLookupFromPostcodeToMSOACensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
                 "MSOA",
                 year_int);
         // Other variables for selecting and output
@@ -877,6 +878,7 @@ public class DW_SpiderMaps extends DW_Maps {
                     imageWidth,
                     styleParameters,
                     0,
+                    Double.POSITIVE_INFINITY,
                     showMapsInJMapPane);
         }
     }
@@ -1093,6 +1095,7 @@ public class DW_SpiderMaps extends DW_Maps {
                     imageWidth,
                     styleParameters,
                     0,
+                    Double.POSITIVE_INFINITY,
                     showMapsInJMapPane);
         }
     }

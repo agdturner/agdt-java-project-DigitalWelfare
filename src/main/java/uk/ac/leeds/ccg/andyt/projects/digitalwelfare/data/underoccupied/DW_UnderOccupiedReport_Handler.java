@@ -64,17 +64,17 @@ public class DW_UnderOccupiedReport_Handler {
         File inputFile = new File(
                 directory,
                 filename);
-        BufferedReader br = Generic_StaticIO.getBufferedReader(inputFile);
-        StreamTokenizer st
-                = new StreamTokenizer(br);
-        Generic_StaticIO.setStreamTokenizerSyntax5(st);
-        st.wordChars('`', '`');
-        st.wordChars('*', '*');
-        String line = "";
-        //int duplicateEntriesCount = 0;
-        int replacementEntriesCount = 0;
-        long RecordID = 0;
         try {
+            BufferedReader br = Generic_StaticIO.getBufferedReader(inputFile);
+            StreamTokenizer st
+                    = new StreamTokenizer(br);
+            Generic_StaticIO.setStreamTokenizerSyntax5(st);
+            st.wordChars('`', '`');
+            st.wordChars('*', '*');
+            String line = "";
+            //int duplicateEntriesCount = 0;
+            int replacementEntriesCount = 0;
+            long RecordID = 0;
             // Read firstline and check format
             //int type = readAndCheckFirstLine(directory, filename);
             // Skip the first line

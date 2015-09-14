@@ -44,7 +44,7 @@ import org.geotools.util.KVP;
 import org.opengis.style.ContrastMethod;
 
 import java.awt.Color;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -89,14 +89,14 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_Clie
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_AreaCodesAndShapefiles;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Geotools;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor.getLookupFromPostcodeToCensusCode;
+import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor.getLookupFromPostcodeToLevelCode;
 
 /**
  *
@@ -266,7 +266,7 @@ public class DW_DensityMaps extends DW_Maps {
             DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
             tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
                     level, targetPropertyName, getShapefileDataStoreFactory());
-            tLookupFromPostcodeToCensusCodes = getLookupFromPostcodeToCensusCode(
+            tLookupFromPostcodeToCensusCodes = getLookupFromPostcodeToLevelCode(
                     level, 2011);
 
             TreeMap<String, Deprivation_DataRecord> deprivationRecords;

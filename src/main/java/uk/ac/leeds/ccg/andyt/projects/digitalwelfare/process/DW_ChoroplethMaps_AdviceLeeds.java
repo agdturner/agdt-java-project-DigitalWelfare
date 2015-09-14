@@ -39,11 +39,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_Clie
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_AreaCodesAndShapefiles;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 //import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Geotools;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 
 /**
@@ -294,7 +294,8 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
         tAdviceLeedsFilenames = getAdviceLeedsFilenames();
         tLevelData = getLevelData(
                 generatedAdviceLeedsDir,
-                tAdviceLeedsFilenames);
+                tAdviceLeedsFilenames,
+                null);
         int max = (Integer) tLevelData[1];
         System.out.println("Max clients in any area = " + max);
         boolean scaleToFirst;
@@ -317,6 +318,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
                             tLevelData,
                             filter,
                             scaleToFirst,
+                            (Double) tLevelData[1],
                             thisCountClientsInAndOutOfRegion);
                 }
                 if (commonStyling) {
@@ -328,6 +330,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
                             tLevelData,
                             filter,
                             scaleToFirst,
+                            (Double) tLevelData[1],
                             false);
                 }
                 if (doDeprivation) {
@@ -342,6 +345,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
                                 tLevelData,
                                 filter,
                                 scaleToFirst,
+                            (Double) tLevelData[1],
                                 thisCountClientsInAndOutOfRegion);
                     }
                     if (commonStyling) {
@@ -353,6 +357,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
                                 tLevelData,
                                 filter,
                                 scaleToFirst,
+                            (Double) tLevelData[1],
                                 false);
                     }
                 }
@@ -371,6 +376,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
             Object[] tLevelData,
             int filter,
             boolean scaleToFirst,
+            double max,
             boolean doInAndOutOfRegionCounts) {
 
         String style;
@@ -402,8 +408,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
         if (doCount) {
             attributeName = "Count";
             binding = Integer.class;
-            inAndOutOfRegionCounts = mapCountsForLevel(
-                    tAreaCodesAndShapefiles,
+            inAndOutOfRegionCounts = mapCountsForLevel(tAreaCodesAndShapefiles,
                     tLeedsCABFilenames,
                     tLevelData,
                     deprivationRecords,
@@ -412,9 +417,18 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
                     binding,
                     filter,
                     scaleToFirst,
+                    max,
                     doInAndOutOfRegionCounts);
         }
         if (doDensity) {
+            /*
+             * May want to set max to something different. This will always be 
+             * honest. The maz is used to set the label in the legend, so until 
+             * we have caluclated the densities for each map, we do not know 
+             * what the max is, so it is hard to set to something precise at the 
+             * outset without it being erroneous. Ideally it would be set to be 
+             * something specific.
+             */
             attributeName = "Density";
             binding = Double.class;
             inAndOutOfRegionCounts = mapDensitiesForLevel(
@@ -427,6 +441,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
                     binding,
                     filter,
                     scaleToFirst,
+                    Double.POSITIVE_INFINITY,
                     doInAndOutOfRegionCounts);
         }
         if (doInAndOutOfRegionCounts) {

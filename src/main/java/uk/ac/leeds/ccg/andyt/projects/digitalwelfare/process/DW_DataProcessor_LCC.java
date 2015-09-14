@@ -6,9 +6,11 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,15 +19,20 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
+import uk.ac.leeds.ccg.andyt.generic.math.Generic_double;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_StaticCollections;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_CollectionHandler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_S_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
@@ -39,6 +46,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 
     private DW_SHBE_Handler tDW_SHBE_Handler;
     private DW_UnderOccupiedReport_Handler tDW_UnderOccupiedReport_Handler;
+    //private double distanceThreshold;
 
     public DW_DataProcessor_LCC() {
     }
@@ -60,10 +68,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        // Load Data
 //        ArrayList<Object[]> SHBEData;
 //        SHBEData = tDW_SHBE_Handler.loadSHBEData();
-//
 //        ArrayList<DW_UnderOccupiedReport_Set>[] underOccupiedReport_Sets;
 //        underOccupiedReport_Sets = tDW_UnderOccupiedReport_Handler.loadUnderOccupiedReportData();
-
 //        // Data generalisation and output
 //        processSHBEReportData(
 //                SHBEData,
@@ -80,278 +86,1778 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        processforChangeInTenancyMatrixesForApril(
 //                SHBEData);
 //        getTotalClaimantsByTenancyType();
-        String level;
-        String[] types;
-        types = new String[4];
-        types[0] = "NewEntrant";
-        types[1] = "Stable";
-        types[2] = "Churn";
-        types[3] = "Unknown";
-        for (int i = 0; i < types.length; i++) {
-//            level = "OA";
-//            aggregateClaimants(level, types[i]);
-            level = "LSOA";
-            aggregateClaimants(level, types[i]);
-//            level = "MSOA";
-//            aggregateClaimants(level, types[i]);
+        String[] SHBEFilenames;
+        SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
+        ArrayList<String> claimantTypes;
+        claimantTypes = new ArrayList<String>();
+        claimantTypes.add("HB");
+        claimantTypes.add("CTB");
+        ArrayList<String> levels;
+        levels = new ArrayList<String>();
+        levels.add("OA");
+        levels.add("LSOA");
+        levels.add("MSOA");
+        levels.add("PostcodeUnit");
+        levels.add("PostcodeSector");
+        levels.add("PostcodeDistrict");
+
+        ArrayList<String> types;
+        types = new ArrayList<String>();
+        types.add("All"); // Count of all claimants
+////                allTypes.add("NewEntrant"); // New entrants will include people already from Leeds. Will this also include people new to Leeds? - Probably...
+        types.add("OnFlow"); // These are people not claiming the previous month and that have not claimed before.
+        types.add("ReturnFlow"); // These are people not claiming the previous month but that have claimed before.
+        types.add("Stable"); // The popoulation of claimants who's postcode location is the same as in the previous month.
+        types.add("AllInChurn"); // A count of all claimants that have moved to this area (including all people moving within the area).
+        types.add("AllOutChurn"); // A count of all claimants that have moved that were living in this area (including all people moving within the area).
+
+        ArrayList<String> distanceTypes;
+        distanceTypes = new ArrayList<String>();
+        distanceTypes.add("InDistanceChurn"); // A count of all claimants that have moved within this area.
+        // A useful indication of places where displaced people from Leeds are placed?
+        distanceTypes.add("WithinDistanceChurn"); // A count of all claimants that have moved within this area.
+        distanceTypes.add("OutDistanceChurn"); // A count of all claimants that have moved out from this area.
+
+        // Tenure Type Groups
+        TreeMap<String, ArrayList<Integer>> tenureTypeGroups;
+        tenureTypeGroups = new TreeMap<String, ArrayList<Integer>>();
+        ArrayList<Integer> all;
+        all = DW_SHBE_Handler.getTenureTypeAll();
+        tenureTypeGroups.put("all", all);
+        ArrayList<Integer> regulated;
+        regulated = DW_SHBE_Handler.getTenureTypeRegulated();
+        tenureTypeGroups.put("regulated", regulated);
+        ArrayList<Integer> unregulated;
+        unregulated = new ArrayList<Integer>();
+        unregulated.add(3);
+        tenureTypeGroups.put("unregulated", unregulated);
+        ArrayList<String> tenureTypesGrouped;
+        tenureTypesGrouped = new ArrayList<String>();
+        tenureTypesGrouped.add("Regulated");
+        tenureTypesGrouped.add("Unregulated");
+        tenureTypesGrouped.add("Ungrouped");
+        tenureTypesGrouped.add("-999");
+
+        // Get Lookups from postcodes to level codes
+        TreeMap<String, TreeMap<String, String>> lookupsFromPostcodeToLevelCode;
+        lookupsFromPostcodeToLevelCode = getLookupsFromPostcodeToLevelCode(levels);
+
+        // A useful indication of places from where people are displaced?
+        //types.add("Unknown"); // Not worth doing?
+        int startIndex;
+        //startIndex = SHBEFilenames.length - 2; //this is for a normal carry on run
+        //startIndex = 33; //Deals with from the problem with October 2014
+        startIndex = 0; //From the beginning.
+
+        // Specifiy distances
+        ArrayList<Double> distances;
+        distances = new ArrayList<Double>();
+        for (double distance = 1000.0d; distance < 5000.0d; distance += 1000.0d) {
+//        for (double distance = 1000.0d; distance < 2000.0d; distance += 1000.0d) {
+            distances.add(distance);
         }
-//        level = "OA";
-//        aggregateClaimants(level);
-//        level = "LSOA";
-//        aggregateClaimants(level);
-//        level = "MSOA";
-//        aggregateClaimants(level);
-//        level = "PostcodeUnit";
-//        aggregateClaimants(level);
-//        level = "PostcodeSector";
-//        aggregateClaimants(level);
-//        level = "PostcodeDistrict";
-//        aggregateClaimants(level);
+        ArrayList<Integer> regulatedGroups;
+        regulatedGroups = DW_SHBE_Handler.getTenureTypeRegulated();
+        ArrayList<Integer> unregulatedGroups;
+        unregulatedGroups = DW_SHBE_Handler.getTenureTypeUnregulated();
+        aggregateClaimants(
+                lookupsFromPostcodeToLevelCode,
+                SHBEFilenames,
+                startIndex,
+                claimantTypes,
+                tenureTypeGroups,
+                tenureTypesGrouped,
+                regulatedGroups,
+                unregulatedGroups,
+                levels,
+                types,
+                distanceTypes,
+                distances);
     }
 
     /**
-     * @param level currently only for Census levels
-     * @param type type = NewEntrant type = Stable type = Churn
+     * @param levels A set of levels expected values include OA, LSOA, MSOA,
+     * PostcodeUnit, PostcodeSector, PostcodeDistrict
+     * @return A set of look ups from postcodes to each level input in levels.
      */
-    public void aggregateClaimants(
-            String level,
-            String type) {
-        File outputDir;
-        outputDir = new File(
-                DW_Files.getGeneratedSHBEDir(),
-                level);
-        File dir = new File(
-                outputDir,
-                type);
-        dir.mkdirs();
-        TreeMap<String, String> tLookupFromPostcodeToCensusCode;
-//        if (level.startsWith("Postcode")) {
-//            getA
-//        } else {
-        tLookupFromPostcodeToCensusCode = getLookupFromPostcodeToCensusCode(
-                level,
-                2011);
-//        }
-        // 0, 2, 4, 7, 11, 17, 29, 41 are April data for 2008, 2009, 2010, 2011,  
-        // 2012, 2013, 2014, 2015 respectively
-        String[] SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
-        //String SHBEFilename = SHBEFilenames[0];
-        Object[] SHBEData0;
-
-        //SHBEData0 = loadSHBEData(SHBEFilenames[35]); //Here to debug
-        SHBEData0 = loadSHBEData(SHBEFilenames[0]);
-
-        for (int i = 1; i < SHBEFilenames.length; i++) {
-            /*
-             * Counts storesa count of those data that are in some way unexpected/erroneous
-             */
-            TreeMap<String, Integer> counts;
-            counts = new TreeMap<String, Integer>();
-
-            Object[] SHBEData1 = loadSHBEData(SHBEFilenames[i]);
-            String year = DW_SHBE_Handler.getYear(SHBEFilenames[i]);
-            String month = DW_SHBE_Handler.getMonth(SHBEFilenames[i]);
-            TreeMap<String, Integer> claimantsCountByArea;
-            claimantsCountByArea = new TreeMap<String, Integer>();
-            /*
-             * result[0] is a TreeMap<String,DW_SHBE_Record> representing records with
-             * DRecords, --------------------------------------------------------------
-             * result[1] is a TreeMap<String, DW_SHBE_Record> representing records
-             * without DRecords, ------------------------------------------------------
-             * result[2] is a HashSet<String> of ClaimantNationalInsuranceNumberIDs,
-             * result[3] is a HashSet<String> of PartnerNationalInsuranceNumberIDs,
-             * result[4] is a HashSet<String> of DependentsNationalInsuranceNumberIDs
-             * result[5] is a HashSet<String> of NonDependentsNationalInsuranceNumberIDs
-             * result[6] is a HashSet<String> of AllHouseholdNationalInsuranceNumberIDs
-             */
-            TreeMap<String, DW_SHBE_Record> DRecords0;
-            DRecords0 = (TreeMap<String, DW_SHBE_Record>) SHBEData0[0];
-            TreeMap<String, DW_SHBE_Record> DRecords1;
-            DRecords1 = (TreeMap<String, DW_SHBE_Record>) SHBEData1[0];
-            Iterator<String> ite = DRecords1.keySet().iterator();
-            while (ite.hasNext()) {
-                String claimID = ite.next();
-                DW_SHBE_Record DRecord1 = DRecords1.get(claimID);
-                String postcode1 = DRecord1.getClaimantsPostcode();
-                if (postcode1 != null) {
-                    String formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode1);
-                    String censusCode;
-                    censusCode = tLookupFromPostcodeToCensusCode.get(
-                            formattedPostcode);
-                    if (censusCode != null) {
-                        DW_SHBE_Record DRecord0 = DRecords0.get(claimID);
-                        String postcode0;
-                        if (DRecord0 == null) {
-                            //This is a new entrant to the data
-                            if (type.equalsIgnoreCase("NewEntrant")) {
-                                Generic_Collections.addToTreeMapStringInteger(
-                                        claimantsCountByArea,
-                                        censusCode,
-                                        1);
-                            }
-                        } else {
-                            postcode0 = DRecord0.getClaimantsPostcode();
-                            if (postcode0 == null) {
-                                // Unknown
-                                if (type.equalsIgnoreCase("Unknown")) {
-                                    Generic_Collections.addToTreeMapStringInteger(
-                                            claimantsCountByArea,
-                                            censusCode,
-                                            1);
-                                }
-                            } else {
-                                if (postcode0.equalsIgnoreCase(postcode1)) {
-                                    //no change
-                                    if (type.equalsIgnoreCase("Stable")) {
-                                        Generic_Collections.addToTreeMapStringInteger(
-                                                claimantsCountByArea,
-                                                censusCode,
-                                                1);
-                                    }
-                                } else {
-                                    // Churn
-                                    if (type.equalsIgnoreCase("Churn")) {
-                                        Generic_Collections.addToTreeMapStringInteger(
-                                                claimantsCountByArea,
-                                                censusCode,
-                                                1);
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        //System.out.println("No Census code for postcode: " + postcode1);
-                        String firstPartPostcode;
-                        firstPartPostcode = postcode1.trim().split(" ")[0];
-                        Generic_Collections.addToTreeMapStringInteger(
-                                counts, firstPartPostcode, 1);
-                    }
-                } else {
-                    Generic_Collections.addToTreeMapStringInteger(
-                            counts, "null", 1);
-                }
-            }
-            //Write out result
-            PrintWriter pw;
-            pw = init_OutputTextFilePrintWriter(
-                    dir,
-                    year + month + ".csv");
-            pw.println(level + ", Count");
-            Iterator<String> ite2 = claimantsCountByArea.keySet().iterator();
-            while (ite2.hasNext()) {
-                String areaCode = ite2.next();
-                Integer Count = claimantsCountByArea.get(areaCode);
-                pw.println(areaCode + ", " + Count);
-            }
-            pw.close();
-            SHBEData0 = SHBEData1;
-//            //Write out result
-//            pw1 = init_OutputTextFilePrintWriter("HBTenancyType" + year + month + ".csv");
-//            pw1.println("TenancyType, Count");
-//            ite2 = ymHBResult.keySet().iterator();
-//            while (ite2.hasNext()) {
-//                Integer aTenancyType = ite2.next();
-//                Integer Count = ymHBResult.get(aTenancyType);
-//                pw1.println(aTenancyType + ", " + Count);
-//            }
-//            pw1.close();
-            // Report counts
-            System.out.println("code,count");
-            ite2 = counts.keySet().iterator();
-            while (ite2.hasNext()) {
-                String code = ite2.next();
-                Integer count = counts.get(code);
-                System.out.println("" + code + ", " + count);
-            }
+    public static TreeMap<String, TreeMap<String, String>> getLookupsFromPostcodeToLevelCode(
+            ArrayList<String> levels) {
+        TreeMap<String, TreeMap<String, String>> result;
+        result = new TreeMap<String, TreeMap<String, String>>();
+        Iterator<String> ite = levels.iterator();
+        while (ite.hasNext()) {
+            String level = ite.next();
+            TreeMap<String, String> tLookupFromPostcodeToLevelCode;
+            tLookupFromPostcodeToLevelCode = getLookupFromPostcodeToLevelCode(
+                    level,
+                    2011);
+            result.put(level, tLookupFromPostcodeToLevelCode);
         }
-//        return result;
+        return result;
     }
 
     /**
-     * currently only for Census levels
+     * For the postcode input, this returns the area code for the level input
+     * using tLookupFromPostcodeToCensusCode.
      *
      * @param level
+     * @param postcode
+     * @param tLookupFromPostcodeToCensusCode
+     * @return The area code for level from tLookupFromPostcodeToCensusCode for
+     * postcode. This may return "" or null.
      */
-    public void aggregateClaimants(String level) {
-        File outputDir;
-        outputDir = new File(
-                DW_Files.getGeneratedSHBEDir(),
-                level);
-        String allClaimants_String = "AllClaimants";
-        File dir = new File(
-                outputDir,
-                allClaimants_String);
-        dir.mkdirs();
-        TreeMap<String, String> tLookupFromPostcodeToCensusCode;
-        tLookupFromPostcodeToCensusCode = getLookupFromPostcodeToCensusCode(
+    public static String getAreaCode(
+            String level,
+            String postcode,
+            TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
+        String result = "";
+        // Special Case
+        if (postcode.trim().isEmpty()) {
+            return result;
+        }
+        if (level.equalsIgnoreCase("OA")
+                || level.equalsIgnoreCase("LSOA")
+                || level.equalsIgnoreCase("MSOA")) {
+            String formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
+            result = tLookupFromPostcodeToCensusCode.get(
+                    formattedPostcode);
+            if (result == null) {
+                result = "";
+            }
+        } else {
+            if (level.equalsIgnoreCase("PostcodeUnit")
+                    || level.equalsIgnoreCase("PostcodeSector")
+                    || level.equalsIgnoreCase("PostcodeDistrict")) {
+                if (level.equalsIgnoreCase("PostcodeUnit")) {
+                    result = postcode;
+                }
+                if (level.equalsIgnoreCase("PostcodeSector")) {
+                    result = DW_Postcode_Handler.getPostcodeSector(postcode);
+                }
+                if (level.equalsIgnoreCase("PostcodeDistrict")) {
+                    result = DW_Postcode_Handler.getPostcodeDistrict(postcode);
+                }
+            } else {
+                // Unrecognised level
+                int debug = 1;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @param claimantNINO1
+     * @param i
+     * @param claimantNationalInsuranceNumberIndexes
+     * @return True iff claimantNINO1 is in
+     * claimantNationalInsuranceNumberIndexes in any index from 0 to i - 1.
+     */
+    private boolean getHasClaimantBeenSeenBefore(
+            String claimantNINO1,
+            int i,
+            ArrayList<HashSet<String>> claimantNationalInsuranceNumberIndexes) {
+        boolean result = false;
+        for (int index = i - 1; index > 0; index--) {
+            //for (int index = 0; index < i; index++) {
+            HashSet<String> claimantNationalInsuranceNumberIndex;
+            claimantNationalInsuranceNumberIndex = claimantNationalInsuranceNumberIndexes.get(index);
+            if (claimantNationalInsuranceNumberIndex.contains(claimantNINO1)) {
+                return true;
+            }
+        }
+        return result;
+    }
+
+    public static String getLastMonth_yearMonth(
+            String year,
+            String month,
+            String[] SHBEFilenames,
+            int i,
+            int startIndex) {
+        String result = null;
+        if (i > startIndex + 2) {
+            String lastMonthYear = DW_SHBE_Handler.getYear(SHBEFilenames[i - 1]);
+            int yearInt = Integer.parseInt(year);
+            int lastMonthYearInt = Integer.parseInt(lastMonthYear);
+            if (!(yearInt == lastMonthYearInt || yearInt == lastMonthYearInt + 1)) {
+                return null;
+            }
+            String lastMonthMonth = DW_SHBE_Handler.getMonth(SHBEFilenames[i - 1]);
+            result = lastMonthYear + lastMonthMonth;
+        }
+
+        return result;
+    }
+
+    public static String getLastYear_yearMonth(
+            String year,
+            String month,
+            String[] SHBEFilenames,
+            int i,
+            int startIndex) {
+        String result = null;
+        if (i > startIndex + 13) {
+            String lastYearYear = DW_SHBE_Handler.getYear(SHBEFilenames[i - 12]);
+            String lastYearMonth = DW_SHBE_Handler.getMonth(SHBEFilenames[i - 12]);
+            int yearInt = Integer.parseInt(year);
+            int lastYearYearInt = Integer.parseInt(lastYearYear);
+            if (!(yearInt == lastYearYearInt + 1)) {
+                return null;
+            }
+            if (!(lastYearMonth.contains(month) || month.contains(lastYearMonth))) {
+                return null;
+            }
+            result = lastYearYear + lastYearMonth;
+        }
+        return result;
+    }
+
+    /**
+     * TODO: We want to be able to distinguish those claimants that have been:
+     * continually claiming; claiming for at least 3 months; claiming for at
+     * least 3 months, then stopped, then started claiming again.
+     *
+     * @param lookupsFromPostcodeToLevelCode
+     * @param SHBEFilenames
+     * @param claimantTypes
+     * @param levels
+     * @param types type = NewEntrant type = Stable type = Churn
+     * @param distanceTypes
+     * @param tenureTypeGroups
+     * @param startIndex
+     * @param distances
+     */
+    public void aggregateClaimants(
+            TreeMap<String, TreeMap<String, String>> lookupsFromPostcodeToLevelCode,
+            String[] SHBEFilenames,
+            int startIndex,
+            ArrayList<String> claimantTypes,
+            TreeMap<String, ArrayList<Integer>> tenureTypeGroups,
+            ArrayList<String> tenureTypesGrouped,
+            ArrayList<Integer> regulatedGroups,
+            ArrayList<Integer> unregulatedGroups,
+            ArrayList<String> levels,
+            ArrayList<String> types,
+            ArrayList<String> distanceTypes,
+            ArrayList<Double> distances) {
+        TreeMap<String, File> outputDirs;
+        outputDirs = DW_Files.getGeneratedSHBELevelDirsTreeMap(levels);
+
+        // Declare iterators
+        Iterator<String> claimantTypesIte;
+        Iterator<String> tenureIte;
+        Iterator<String> levelsIte;
+        Iterator<String> typesIte;
+        Iterator<String> distanceTypesIte;
+        Iterator<Double> distancesIte;
+
+        // Load first data
+        Object[] SHBEData0;
+        SHBEData0 = loadSHBEData(SHBEFilenames[startIndex]);
+        HashMap<String, String> nationalInsuranceNumberByPostcode0;
+        nationalInsuranceNumberByPostcode0 = (HashMap<String, String>) SHBEData0[8];
+        HashMap<String, Integer> nationalInsuranceNumberByTenure0;
+        nationalInsuranceNumberByTenure0 = (HashMap<String, Integer>) SHBEData0[9];
+
+        String year0;
+        year0 = DW_SHBE_Handler.getYear(SHBEFilenames[startIndex]);
+        String month0;
+        month0 = DW_SHBE_Handler.getMonth(SHBEFilenames[startIndex]);
+
+        // Get Top 10 areas
+        TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>> yearMonthClaimantTypeTenureLevelTypeCountAreas;
+        yearMonthClaimantTypeTenureLevelTypeCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>>();
+
+        TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>> yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas;
+        yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>>();
+
+        // Initialise claimantNationalInsuranceNumberIndexes
+        ArrayList<HashSet<String>> claimantNationalInsuranceNumberIndexes;
+        claimantNationalInsuranceNumberIndexes = new ArrayList<HashSet<String>>();
+        if (true) {
+            HashSet<String> claimantNationalInsuranceNumberID_HashSet;
+            claimantNationalInsuranceNumberID_HashSet = (HashSet<String>) SHBEData0[2];
+            claimantNationalInsuranceNumberIndexes.add(claimantNationalInsuranceNumberID_HashSet);
+        }
+
+        for (int i = startIndex + 1; i < SHBEFilenames.length; i++) {
+
+            // Load next data
+            Object[] SHBEData1;
+            SHBEData1 = loadSHBEData(SHBEFilenames[i]);
+            HashMap<String, String> nationalInsuranceNumberByPostcode1;
+            nationalInsuranceNumberByPostcode1 = (HashMap<String, String>) SHBEData1[8];
+            HashMap<String, Integer> nationalInsuranceNumberByTenure1;
+            nationalInsuranceNumberByTenure1 = (HashMap<String, Integer>) SHBEData1[9];
+
+            // Set Year and Month variables
+            String year = DW_SHBE_Handler.getYear(SHBEFilenames[i]);
+            String month = DW_SHBE_Handler.getMonth(SHBEFilenames[i]);
+            String yearMonth = year + month;
+            String lastMonth_yearMonth;
+            lastMonth_yearMonth = getLastMonth_yearMonth(
+                    year,
+                    month,
+                    SHBEFilenames,
+                    i,
+                    startIndex);
+            String lastYear_yearMonth;
+            lastYear_yearMonth = getLastYear_yearMonth(
+                    year,
+                    month,
+                    SHBEFilenames,
+                    i,
+                    startIndex);
+            if (true) {
+                HashSet<String> claimantNationalInsuranceNumberID_HashSet;
+                claimantNationalInsuranceNumberID_HashSet = (HashSet<String>) SHBEData1[2];
+                claimantNationalInsuranceNumberIndexes.add(claimantNationalInsuranceNumberID_HashSet);
+            }
+
+            // Get TenancyTypeTranistionMatrix
+            TreeMap<Integer, TreeMap<Integer, Integer>> tenancyTypeTranistionMatrix;
+            tenancyTypeTranistionMatrix = getTenancyTypeTranistionMatrix(
+                    nationalInsuranceNumberByTenure0,
+                    nationalInsuranceNumberByTenure1);
+            writeTenancyTypeTransitionMatrix(
+                    tenancyTypeTranistionMatrix, year0, month0, year, month, "All");
+            TreeMap<String, TreeMap<String, Integer>> tenancyTypeTranistionMatrixGrouped;
+            tenancyTypeTranistionMatrixGrouped = getTenancyTypeTranistionMatrixGrouped(
+                    nationalInsuranceNumberByTenure0,
+                    nationalInsuranceNumberByTenure1,
+                    regulatedGroups,
+                    unregulatedGroups);
+
+            writeTenancyTypeTransitionMatrixGrouped(
+                    tenancyTypeTranistionMatrixGrouped, tenureTypesGrouped, year0, month0, year, month, "All");
+
+            year0 = year;
+            month0 = month;
+            nationalInsuranceNumberByTenure0 = nationalInsuranceNumberByTenure1;
+
+            TreeMap<String, DW_SHBE_Record> records0;
+            records0 = (TreeMap<String, DW_SHBE_Record>) SHBEData0[0];
+            TreeMap<String, DW_SHBE_Record> records1;
+            records1 = (TreeMap<String, DW_SHBE_Record>) SHBEData1[0];
+
+//            /* Initialise A:
+//             * output directories;
+//             * claimantTypeTenureLevelTypeDirs;
+//             * tenureLevelTypeDistanceDirs;
+//             * tenureTypeAreaCount;
+//             * tenureTypeDistanceAreaCount.
+//             */
+//            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, File>>>> claimantTypeTenureLevelTypeDirs;
+//            claimantTypeTenureLevelTypeDirs = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, File>>>>();
+//            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, File>>>>> claimantTypeTenureLevelTypeDistanceDirs;
+//            claimantTypeTenureLevelTypeDistanceDirs = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, File>>>>>();
+//            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>> claimantTypeTenureLevelTypeAreaCounts;
+//            claimantTypeTenureLevelTypeAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>>();
+//            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>>>> claimantTypeTenureLevelTypeDistanceAreaCounts;
+//            claimantTypeTenureLevelTypeDistanceAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>>>>();
+//            /* Initialise B:
+//             * claimantTypeLevelTypeTenureCounts;
+//             * claimantTypeLevelTypeDistanceTenureCounts;
+//             */
+//            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>>> claimantTypeTenureLevelTypeTenureCounts;
+//            claimantTypeTenureLevelTypeTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>>>();
+//            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>>>> claimantTypeTenureLevelTypeDistanceTenureCounts;
+//            claimantTypeTenureLevelTypeDistanceTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>>>>();
+//            // claimantTypeLoop
+//            claimantTypesIte = claimantTypes.iterator();
+//            while (claimantTypesIte.hasNext()) {
+//                String claimantType;
+//                claimantType = claimantTypesIte.next();
+//                // Initialise Dirs
+//                TreeMap<String, TreeMap<String, TreeMap<String, File>>> tenureLevelTypeDirs;
+//                tenureLevelTypeDirs = new TreeMap<String, TreeMap<String, TreeMap<String, File>>>();
+//                TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, File>>>> tenureLevelTypeDistanceDirs;
+//                tenureLevelTypeDistanceDirs = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, File>>>>();
+//                // Initialise AreaCounts
+//                TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>> tenureLevelTypeAreaCounts;
+//                tenureLevelTypeAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>();
+//                TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>>> tenureLevelTypeDistanceAreaCounts;
+//                tenureLevelTypeDistanceAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>>>();
+//                // Initialise TenureCounts
+//                TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>> tenureLevelTypeTenureCounts;
+//                tenureLevelTypeTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>>();
+//                TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>>> tenureLevelTypeDistanceTenureCounts;
+//                tenureLevelTypeDistanceTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>>>();
+//                tenureIte = tenureTypeGroups.keySet().iterator();
+//                while (tenureIte.hasNext()) {
+//                    String tenure = tenureIte.next();
+//                    // Initialise Dirs
+//                    TreeMap<String, TreeMap<String, File>> levelTypeDirs;
+//                    levelTypeDirs = new TreeMap<String, TreeMap<String, File>>();
+//                    TreeMap<String, TreeMap<String, TreeMap<Double, File>>> levelTypeDistanceDirs;
+//                    levelTypeDistanceDirs = new TreeMap<String, TreeMap<String, TreeMap<Double, File>>>();
+//                    // Initialise AreaCounts
+//                    TreeMap<String, TreeMap<String, TreeMap<String, Integer>>> levelTypeAreaCounts;
+//                    levelTypeAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>();
+//                    TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>> levelTypeDistanceAreaCounts;
+//                    levelTypeDistanceAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>>();
+//                    // Initialise TenureCounts
+//                    TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>> levelTypeTenureCounts;
+//                    levelTypeTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>();
+//                    TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>> levelTypeDistanceTenureCounts;
+//                    levelTypeDistanceTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>>();
+//                    levelsIte = levels.iterator();
+//                    while (levelsIte.hasNext()) {
+//                        String level = levelsIte.next();
+//                        // Initialise Dirs
+//                        File outputDir = outputDirs.get(level);
+//                        TreeMap<String, File> typeDirs;
+//                        typeDirs = new TreeMap<String, File>();
+//                        TreeMap<String, TreeMap<Double, File>> typeDistanceDirs;
+//                        typeDistanceDirs = new TreeMap<String, TreeMap<Double, File>>();
+//                        // Initialise AreaCounts
+//                        TreeMap<String, TreeMap<String, Integer>> typeAreaCounts;
+//                        typeAreaCounts = new TreeMap<String, TreeMap<String, Integer>>();
+//                        TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>> typeDistanceAreaCounts;
+//                        typeDistanceAreaCounts = new TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>();
+//                        // Initialise TenureCounts
+//                        TreeMap<String, TreeMap<Integer, Integer>> typeTenureCounts;
+//                        typeTenureCounts = new TreeMap<String, TreeMap<Integer, Integer>>();
+//                        TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>> typeDistanceTenureCounts;
+//                        typeDistanceTenureCounts = new TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>();
+//                        typesIte = types.iterator();
+//                        while (typesIte.hasNext()) {
+//                            String type;
+//                            type = typesIte.next();
+//                            // Initialise Dirs
+//                            File dir = new File(
+//                                    outputDir,
+//                                    type);
+//                            dir = new File(
+//                                    dir,
+//                                    claimantType);
+//                            dir = new File(
+//                                    dir,
+//                                    tenure);
+//                            dir.mkdirs();
+//                            typeDirs.put(type, dir);
+//                            // Initialise AreaCounts
+//                            TreeMap<String, Integer> areaCount;
+//                            areaCount = new TreeMap<String, Integer>();
+//                            typeAreaCounts.put(type, areaCount);
+//                            // Initialise TenureCounts
+//                            TreeMap<Integer, Integer> tenureCounts;
+//                            tenureCounts = new TreeMap<Integer, Integer>();
+//                            typeTenureCounts.put(type, tenureCounts);
+//                        }
+//                        levelTypeDirs.put(level, typeDirs);
+//                        levelTypeAreaCounts.put(level, typeAreaCounts);
+//                        levelTypeTenureCounts.put(level, typeTenureCounts);
+//                        distanceTypesIte = distanceTypes.iterator();
+//                        while (distanceTypesIte.hasNext()) {
+//                            String distanceType;
+//                            distanceType = distanceTypesIte.next();
+//                            // Initialise Dirs
+//                            TreeMap<Double, File> distanceDirs;
+//                            distanceDirs = new TreeMap<Double, File>();
+//                            // Initialise AreaCounts
+//                            TreeMap<Double, TreeMap<String, Integer>> distanceAreaCounts;
+//                            distanceAreaCounts = new TreeMap<Double, TreeMap<String, Integer>>();
+//                            // Initialise TenureCounts
+//                            TreeMap<Double, TreeMap<Integer, Integer>> distanceTenureCounts;
+//                            distanceTenureCounts = new TreeMap<Double, TreeMap<Integer, Integer>>();
+//                            distancesIte = distances.iterator();
+//                            while (distancesIte.hasNext()) {
+//                                double distance = distancesIte.next();
+//                                // Initialise Dirs
+//                                File dir = new File(
+//                                        outputDir,
+//                                        distanceType);
+//                                dir = new File(
+//                                        dir,
+//                                        claimantType);
+//                                dir = new File(
+//                                        dir,
+//                                        tenure);
+//                                dir = new File(
+//                                        dir,
+//                                        "" + distance);
+//                                dir.mkdirs();
+//                                distanceDirs.put(distance, dir);
+//                                // Initialise AreaCounts
+//                                TreeMap<String, Integer> areaCounts;
+//                                areaCounts = new TreeMap<String, Integer>();
+//                                distanceAreaCounts.put(distance, areaCounts);
+//                                // Initialise TenureCounts
+//                                TreeMap<Integer, Integer> tenureCounts;
+//                                tenureCounts = new TreeMap<Integer, Integer>();
+//                                distanceTenureCounts.put(distance, tenureCounts);
+//                            }
+//                            typeDistanceDirs.put(distanceType, distanceDirs);
+//                            typeDistanceAreaCounts.put(distanceType, distanceAreaCounts);
+//                            typeDistanceTenureCounts.put(distanceType, distanceTenureCounts);
+//                        }
+//                        levelTypeDistanceDirs.put(level, typeDistanceDirs);
+//                        levelTypeDistanceAreaCounts.put(level, typeDistanceAreaCounts);
+//                        levelTypeDistanceTenureCounts.put(level, typeDistanceTenureCounts);
+//                    }
+//                    tenureLevelTypeDirs.put(tenure, levelTypeDirs);
+//                    tenureLevelTypeDistanceDirs.put(tenure, levelTypeDistanceDirs);
+//                    tenureLevelTypeAreaCounts.put(tenure, levelTypeAreaCounts);
+//                    tenureLevelTypeDistanceAreaCounts.put(tenure, levelTypeDistanceAreaCounts);
+//                    tenureLevelTypeTenureCounts.put(tenure, levelTypeTenureCounts);
+//                    tenureLevelTypeDistanceTenureCounts.put(tenure, levelTypeDistanceTenureCounts);
+//                }
+//                claimantTypeTenureLevelTypeDirs.put(claimantType, tenureLevelTypeDirs);
+//                claimantTypeTenureLevelTypeDistanceDirs.put(claimantType, tenureLevelTypeDistanceDirs);
+//                claimantTypeTenureLevelTypeAreaCounts.put(claimantType, tenureLevelTypeAreaCounts);
+//                claimantTypeTenureLevelTypeDistanceAreaCounts.put(claimantType, tenureLevelTypeDistanceAreaCounts);
+//                claimantTypeTenureLevelTypeTenureCounts.put(claimantType, tenureLevelTypeTenureCounts);
+//                claimantTypeTenureLevelTypeDistanceTenureCounts.put(claimantType, tenureLevelTypeDistanceTenureCounts);
+//            }
+//            // Initialise levelUnexpectedCounts
+//            TreeMap<String, TreeMap<String, Integer>> levelUnexpectedCounts;
+//            levelUnexpectedCounts = new TreeMap<String, TreeMap<String, Integer>>();
+//            levelsIte = levels.iterator();
+//            while (levelsIte.hasNext()) {
+//                String level;
+//                level = levelsIte.next();
+//                TreeMap<String, Integer> unexpectedCounts;
+//                unexpectedCounts = new TreeMap<String, Integer>();
+//                levelUnexpectedCounts.put(level, unexpectedCounts);
+//            }
+//            // Iterator over records
+//            Iterator<String> recordsIte;
+//            recordsIte = records1.keySet().iterator();
+//            while (recordsIte.hasNext()) {
+//                String claimID = recordsIte.next();
+//                DW_SHBE_D_Record DRecord1 = records1.get(claimID).getDRecord();
+//                String postcode1 = DRecord1.getClaimantsPostcode();
+//                Integer tenancyType1 = DRecord1.getTenancyType();
+//                tenureIte = tenureTypeGroups.keySet().iterator();
+//                while (tenureIte.hasNext()) {
+//                    String tenure = tenureIte.next();
+//                    ArrayList<Integer> tenureTypes;
+//                    tenureTypes = tenureTypeGroups.get(tenure);
+//                    if (tenureTypes.contains(tenancyType1)) {
+//                        levelsIte = levels.iterator();
+//                        while (levelsIte.hasNext()) {
+//                            String level = levelsIte.next();
+//                            TreeMap<String, String> tLookupFromPostcodeToLevelCode;
+//                            tLookupFromPostcodeToLevelCode = lookupsFromPostcodeToLevelCode.get(level);
+//                            TreeMap<String, Integer> unexpectedCounts;
+//                            unexpectedCounts = levelUnexpectedCounts.get(level);
+//                            String housingBenefitClaimReferenceNumber1;
+//                            housingBenefitClaimReferenceNumber1 = DRecord1.getHousingBenefitClaimReferenceNumber();
+//                            String claimantNINO1 = DRecord1.getClaimantsNationalInsuranceNumber();
+//                            String claimantType;
+//                            if (housingBenefitClaimReferenceNumber1 == null) {
+//                                claimantType = "CTB";
+//                            } else {
+//                                if (housingBenefitClaimReferenceNumber1.isEmpty()) {
+//                                    claimantType = "CTB";
+//                                } else {
+//                                    claimantType = "HB";
+//                                }
+//                            }
+//                            Integer tenancyType = DRecord1.getTenancyType();
+//                            if (postcode1 != null) {
+//                                String areaCode;
+//                                areaCode = getAreaCode(
+//                                        level,
+//                                        postcode1,
+//                                        tLookupFromPostcodeToLevelCode);
+//                                String type;
+//                                type = "All";
+//                                if (types.contains(type)) {
+//                                    addToResult(
+//                                            claimantTypeTenureLevelTypeAreaCounts,
+//                                            claimantTypeTenureLevelTypeTenureCounts,
+//                                            areaCode,
+//                                            claimantType,
+//                                            tenure,
+//                                            level,
+//                                            type,
+//                                            tenancyType);
+//                                }
+//                                if (areaCode != null) {
+//                                    DW_SHBE_Record record0 = records0.get(claimID);
+//                                    String postcode0;
+//                                    if (record0 == null) {
+////                                        //This is a new entrant to the data
+////                                        type = "NewEntrant";
+//                                        // If this claimantNINO has never been seen before it is an OnFlow
+//                                        boolean hasBeenSeenBefore;
+//                                        hasBeenSeenBefore = getHasClaimantBeenSeenBefore(
+//                                                claimantNINO1,
+//                                                i,
+//                                                claimantNationalInsuranceNumberIndexes);
+//                                        if (!hasBeenSeenBefore) {
+//                                            type = "OnFlow";
+//                                            if (types.contains(type)) {
+//                                                addToResult(
+//                                                        claimantTypeTenureLevelTypeAreaCounts,
+//                                                        claimantTypeTenureLevelTypeTenureCounts,
+//                                                        areaCode,
+//                                                        claimantType,
+//                                                        tenure,
+//                                                        level,
+//                                                        type,
+//                                                        tenancyType);
+//                                            }
+//                                        } else {
+//                                            // If this claimantNINO has been seen before it is a ReturnFlow
+//                                            type = "ReturnFlow";
+//                                            if (types.contains(type)) {
+//                                                addToResult(
+//                                                        claimantTypeTenureLevelTypeAreaCounts,
+//                                                        claimantTypeTenureLevelTypeTenureCounts,
+//                                                        areaCode,
+//                                                        claimantType,
+//                                                        tenure,
+//                                                        level,
+//                                                        type,
+//                                                        tenancyType);
+//                                            }
+//// Here we could also try to work out for those Return flows, have any moved from previous claim postcode or changed tenure.
+////                                addToType(type, types, claimantCountsByArea, areaCode);
+////                                type = "ReturnFlowMoved";
+////                                addToType(type, types, claimantCountsByArea, areaCode);
+////                                type = "ReturnFlowNotmoved";
+////                                addToType(type, types, claimantCountsByArea, areaCode);
+////                                type = "ReturnFlowMovedAndChangedTenure";
+////                                addToType(type, types, claimantCountsByArea, areaCode);
+//                                        }
+//                                    } else {
+//                                        DW_SHBE_D_Record DRecord0 = record0.getDRecord();
+//                                        postcode0 = DRecord0.getClaimantsPostcode();
+//                                        if (postcode0 == null) {
+//                                            // Unknown
+//                                            type = "Unknown";
+//                                            if (types.contains(type)) {
+//                                                addToResult(
+//                                                        claimantTypeTenureLevelTypeAreaCounts,
+//                                                        claimantTypeTenureLevelTypeTenureCounts,
+//                                                        areaCode,
+//                                                        claimantType,
+//                                                        tenure,
+//                                                        level,
+//                                                        type,
+//                                                        tenancyType);
+//                                            }
+//                                        } else {
+////areaCode0 used to be used to determine WithinChurn, but now a distance is calculated
+////                                        String areaCode0;
+////                                        areaCode0 = getAreaCode(
+////                                                level,
+////                                                postcode0,
+////                                                tLookupFromPostcodeToLevelCode);
+//                                        /*
+//                                             * There is an issue here as it seems that sometimes a postcode is misrecorded 
+//                                             * initially and is then corrected. Some thought is needed about how to identify
+//                                             * and deal with this and discern if this has any significant effect on the 
+//                                             * results.
+//                                             */
+//                                            if (postcode0.equalsIgnoreCase(postcode1)) {
+//                                                // Stable
+//                                                type = "Stable";
+//                                                if (types.contains(type)) {
+//                                                    addToResult(
+//                                                            claimantTypeTenureLevelTypeAreaCounts,
+//                                                            claimantTypeTenureLevelTypeTenureCounts,
+//                                                            areaCode,
+//                                                            claimantType,
+//                                                            tenure,
+//                                                            level,
+//                                                            type,
+//                                                            tenancyType);
+//                                                }
+//                                            } else {
+//                                                // AllInChurn
+//                                                type = "AllInChurn";
+//                                                if (types.contains(type)) {
+//                                                    addToResult(
+//                                                            claimantTypeTenureLevelTypeAreaCounts,
+//                                                            claimantTypeTenureLevelTypeTenureCounts,
+//                                                            areaCode,
+//                                                            claimantType,
+//                                                            tenure,
+//                                                            level,
+//                                                            type,
+//                                                            tenancyType);
+//                                                }
+//                                                // AllOutChurn
+//                                                type = "AllOutChurn";
+//                                                if (types.contains(type)) {
+//                                                    addToResult(
+//                                                            claimantTypeTenureLevelTypeAreaCounts,
+//                                                            claimantTypeTenureLevelTypeTenureCounts,
+//                                                            areaCode,
+//                                                            claimantType,
+//                                                            tenure,
+//                                                            level,
+//                                                            type,
+//                                                            tenancyType);
+//                                                }
+//                                                double distance;
+//                                                distance = DW_Postcode_Handler.getDistanceBetweenPostcodes(
+//                                                        postcode0,
+//                                                        postcode1);
+//                                                Iterator<Double> ite3;
+//                                                ite3 = distances.iterator();
+//                                                while (ite3.hasNext()) {
+//                                                    double distanceThreshold = ite3.next();
+//                                                    if (distance > distanceThreshold) {
+//                                                        // InDistanceChurn
+//                                                        type = "InDistanceChurn";
+//                                                        if (distanceTypes.contains(type)) {
+//                                                            addToResult(
+//                                                                    claimantTypeTenureLevelTypeDistanceAreaCounts,
+//                                                                    claimantTypeTenureLevelTypeDistanceTenureCounts,
+//                                                                    areaCode,
+//                                                                    claimantType,
+//                                                                    tenure,
+//                                                                    level,
+//                                                                    type,
+//                                                                    tenancyType,
+//                                                                    distanceThreshold);
+//                                                        }
+//                                                        // OutDistanceChurn
+//                                                        type = "OutDistanceChurn";
+//                                                        if (distanceTypes.contains(type)) {
+//                                                            addToResult(
+//                                                                    claimantTypeTenureLevelTypeDistanceAreaCounts,
+//                                                                    claimantTypeTenureLevelTypeDistanceTenureCounts,
+//                                                                    areaCode,
+//                                                                    claimantType,
+//                                                                    tenure,
+//                                                                    level,
+//                                                                    type,
+//                                                                    tenancyType,
+//                                                                    distanceThreshold);
+//                                                        }
+//                                                    } else {
+//                                                        // WithinDistanceChurn
+//                                                        type = "WithinDistanceChurn";
+//                                                        if (distanceTypes.contains(type)) {
+//                                                            addToResult(
+//                                                                    claimantTypeTenureLevelTypeDistanceAreaCounts,
+//                                                                    claimantTypeTenureLevelTypeDistanceTenureCounts,
+//                                                                    areaCode,
+//                                                                    claimantType,
+//                                                                    tenure,
+//                                                                    level,
+//                                                                    type,
+//                                                                    tenancyType,
+//                                                                    distanceThreshold);
+//                                                        }
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                } else {
+//                                    //System.out.println("No Census code for postcode: " + postcode1);
+//                                    String firstPartPostcode;
+//                                    firstPartPostcode = postcode1.trim().split(" ")[0];
+//                                    Generic_StaticCollections.addToTreeMapStringInteger(
+//                                            unexpectedCounts, firstPartPostcode, 1);
+//                                }
+//                            } else {
+//                                Generic_StaticCollections.addToTreeMapStringInteger(
+//                                        unexpectedCounts, "null", 1);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            // Write out results
+//            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>> claimantTypeTenureLevelTypeCountAreas;
+//            claimantTypeTenureLevelTypeCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>();
+//            yearMonthClaimantTypeTenureLevelTypeCountAreas.put(yearMonth, claimantTypeTenureLevelTypeCountAreas);
+//            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>> claimantTypeTenureLevelDistanceTypeDistanceCountAreas;
+//            claimantTypeTenureLevelDistanceTypeDistanceCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>();
+//            yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas.put(yearMonth, claimantTypeTenureLevelDistanceTypeDistanceCountAreas);
+//            // claimantTypeLoop
+//            claimantTypesIte = claimantTypes.iterator();
+//            while (claimantTypesIte.hasNext()) {
+//                String claimantType = claimantTypesIte.next();
+//                TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>> tenureLevelTypeCountAreas;
+//                tenureLevelTypeCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>();
+//                claimantTypeTenureLevelTypeCountAreas.put(claimantType, tenureLevelTypeCountAreas);
+//                TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>> tenureLevelDistanceTypeDistanceCountAreas;
+//                tenureLevelDistanceTypeDistanceCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>();
+//                claimantTypeTenureLevelDistanceTypeDistanceCountAreas.put(claimantType, tenureLevelDistanceTypeDistanceCountAreas);
+//                tenureIte = tenureTypeGroups.keySet().iterator();
+//                while (tenureIte.hasNext()) {
+//                    String tenure = tenureIte.next();
+//                    TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>> levelTypeCountAreas;
+//                    levelTypeCountAreas = new TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>();
+//                    tenureLevelTypeCountAreas.put(tenure, levelTypeCountAreas);
+//                    TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>> levelDistanceTypeDistanceCountAreas;
+//                    levelDistanceTypeDistanceCountAreas = new TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>();
+//                    tenureLevelDistanceTypeDistanceCountAreas.put(tenure, levelDistanceTypeDistanceCountAreas);
+//                    levelsIte = levels.iterator();
+//                    while (levelsIte.hasNext()) {
+//                        String level = levelsIte.next();
+//                        TreeMap<String, TreeMap<Integer, TreeSet<String>>> typeCountAreas;
+//                        typeCountAreas = new TreeMap<String, TreeMap<Integer, TreeSet<String>>>();
+//                        levelTypeCountAreas.put(level, typeCountAreas);
+//                        typesIte = types.iterator();
+//                        while (typesIte.hasNext()) {
+//                            String type;
+//                            type = typesIte.next();
+//                            TreeMap<String, Integer> areaCounts;
+//                            TreeMap<Integer, TreeSet<String>> lastYearCountAreas;
+//                            TreeMap<Integer, TreeSet<String>> lastMonthCountAreas;
+//                            TreeMap<Integer, Integer> tenureCounts;
+//                            File dir;
+//                            areaCounts = claimantTypeTenureLevelTypeAreaCounts.get(claimantType).get(tenure).get(level).get(type);
+//                            if (lastYear_yearMonth != null) {
+//                                lastYearCountAreas = yearMonthClaimantTypeTenureLevelTypeCountAreas.get(lastYear_yearMonth).get(claimantType).get(tenure).get(level).get(type);
+//                            } else {
+//                                lastYearCountAreas = null;
+//                            }
+//                            if (lastMonth_yearMonth != null) {
+//                                lastMonthCountAreas = yearMonthClaimantTypeTenureLevelTypeCountAreas.get(lastMonth_yearMonth).get(claimantType).get(tenure).get(level).get(type);
+//                            } else {
+//                                lastMonthCountAreas = null;
+//                            }
+//                            tenureCounts = claimantTypeTenureLevelTypeTenureCounts.get(claimantType).get(tenure).get(level).get(type);
+//                            dir = claimantTypeTenureLevelTypeDirs.get(claimantType).get(tenure).get(level).get(type);
+//                            TreeMap<Integer, TreeSet<String>> countAreas;
+//                            countAreas = writeResults(
+//                                    areaCounts,
+//                                    lastYearCountAreas,
+//                                    lastYear_yearMonth,
+//                                    lastMonthCountAreas,
+//                                    lastMonth_yearMonth,
+//                                    tenureCounts,
+//                                    level,
+//                                    dir,
+//                                    year,
+//                                    month);
+//                            typeCountAreas.put(type, countAreas);
+//                        }
+//                        TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>> distanceTypeDistanceCountAreas;
+//                        distanceTypeDistanceCountAreas = new TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>();
+//                        levelDistanceTypeDistanceCountAreas.put(level, distanceTypeDistanceCountAreas);
+//                        distanceTypesIte = distanceTypes.iterator();
+//                        while (distanceTypesIte.hasNext()) {
+//                            String distanceType;
+//                            distanceType = distanceTypesIte.next();
+//                            TreeMap<Double, TreeMap<Integer, TreeSet<String>>> distanceCountAreas;
+//                            distanceCountAreas = new TreeMap<Double, TreeMap<Integer, TreeSet<String>>>();
+//                            distanceTypeDistanceCountAreas.put(distanceType, distanceCountAreas);
+//                            distancesIte = distances.iterator();
+//                            while (distancesIte.hasNext()) {
+//                                double distance = distancesIte.next();
+//                                TreeMap<String, Integer> areaCounts;
+//                                TreeMap<Integer, TreeSet<String>> lastYearCountAreas;
+//                                TreeMap<Integer, TreeSet<String>> lastMonthCountAreas;
+//                                TreeMap<Integer, Integer> tenureCounts;
+//                                File dir;
+//                                areaCounts = claimantTypeTenureLevelTypeDistanceAreaCounts.get(claimantType).get(tenure).get(level).get(distanceType).get(distance);
+//                                if (lastYear_yearMonth != null) {
+//                                    lastYearCountAreas = yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas.get(lastYear_yearMonth).get(claimantType).get(tenure).get(level).get(distanceType).get(distance);
+//                                } else {
+//                                    lastYearCountAreas = null;
+//                                }
+//                                if (lastMonth_yearMonth != null) {
+//                                    lastMonthCountAreas = yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas.get(lastMonth_yearMonth).get(claimantType).get(tenure).get(level).get(distanceType).get(distance);
+//                                } else {
+//                                    lastMonthCountAreas = null;
+//                                }
+//                                tenureCounts = claimantTypeTenureLevelTypeDistanceTenureCounts.get(claimantType).get(tenure).get(level).get(distanceType).get(distance);
+//                                dir = claimantTypeTenureLevelTypeDistanceDirs.get(claimantType).get(tenure).get(level).get(distanceType).get(distance);
+//                                TreeMap<Integer, TreeSet<String>> countAreas;
+//                                countAreas = writeResults(
+//                                        areaCounts,
+//                                        lastYearCountAreas,
+//                                        lastYear_yearMonth,
+//                                        lastMonthCountAreas,
+//                                        lastMonth_yearMonth,
+//                                        tenureCounts,
+//                                        level,
+//                                        dir,
+//                                        year,
+//                                        month);
+//                                distanceCountAreas.put(distance, countAreas);
+//                            }
+//                        }
+//                        //Report unexpectedCounts
+//                        // Currently this is only written to stdout and is not captured in a
+//                        // file per se.
+//                        TreeMap<String, Integer> unexpectedCounts;
+//                        unexpectedCounts = levelUnexpectedCounts.get(level);
+//                        System.out.println("Unexpected Counts for:"
+//                                + " Claimant Type " + claimantType
+//                                + " Tenure " + tenure
+//                                + " Level " + level);
+//                        System.out.println("code,count");
+//                        Iterator<String> unexpectedCountsIte;
+//                        unexpectedCountsIte = unexpectedCounts.keySet().iterator();
+//                        while (unexpectedCountsIte.hasNext()) {
+//                            String code = unexpectedCountsIte.next();
+//                            Integer count = unexpectedCounts.get(code);
+//                            System.out.println("" + code + ", " + count);
+//                        }
+//                    }
+//                }
+//            }
+            SHBEData0 = SHBEData1;
+        }
+    }
+
+    protected static TreeMap<Integer, TreeSet<String>> writeResults(
+            TreeMap<String, Integer> areaCounts,
+            TreeMap<Integer, TreeSet<String>> lastYearCountAreas,
+            String lastYear_yearMonth,
+            TreeMap<Integer, TreeSet<String>> lastMonthCountAreas,
+            String lastMonth_yearMonth,
+            TreeMap<Integer, Integer> tenureCounts,
+            String level,
+            File dir,
+            String year,
+            String month) {
+
+        int num = 5;
+
+        TreeMap<Integer, TreeSet<String>> result;
+        // Write out counts by area
+        result = writeCountsByArea(
+                areaCounts,
                 level,
-                2011);
-        // 0, 2, 4, 7, 11, 17, 29, 41 are April data for 2008, 2009, 2010, 2011,  
-        // 2012, 2013, 2014, 2015 respectively
-        String[] SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
-        //String SHBEFilename = SHBEFilenames[0];
-        for (String SHBEFilename : SHBEFilenames) {
-            Object[] SHBEData = loadSHBEData(SHBEFilename);
-            String year = DW_SHBE_Handler.getYear(SHBEFilename);
-            String month = DW_SHBE_Handler.getMonth(SHBEFilename);
-            TreeMap<String, Integer> claimantsCountByArea;
-            claimantsCountByArea = new TreeMap<String, Integer>();
-            /* 
-             * SHBEData[0] is a TreeMap<String, DW_SHBE_Record> representing DRecords,---
-             * SHBEData[1] is a TreeMap<String, DW_SHBE_Record> representing SRecords,---
-             * SHBEData[3] is a HashSet<String> of ClaimantNationalInsuranceNumberIDs,----
-             * SHBEData[4] is a HashSet<String> of DependentsNationalInsuranceNumberIDs,--
-             * SHBEData[5] is a HashSet<String> of
-             * NonDependentsNationalInsuranceNumberIDs,---------------------------------
-             * SHBEData[6] is a HashSet<String> of AllHouseholdNationalInsuranceNumberIDs.
-             */
-            TreeMap<String, DW_SHBE_Record> DRecords = (TreeMap<String, DW_SHBE_Record>) SHBEData[0];
-            Iterator<String> ite = DRecords.keySet().iterator();
+                dir,
+                year,
+                month);
+        // Write out areas with highest counts
+        writeAreasWithHighestNumbersOfClaimants(
+                result,
+                num,
+                dir,
+                year,
+                month);
+        // Write out areas with biggest increases from last year
+        writeExtremeAreaChanges(
+                result,
+                lastYearCountAreas,
+                "LastYear",
+                num,
+                dir,
+                year,
+                month);
+        // Write out areas with biggest increases from last month
+        writeExtremeAreaChanges(
+                result,
+                lastMonthCountAreas,
+                "LastMonth",
+                num,
+                dir,
+                year,
+                month);
+        // Write out counts by tenure
+        writeCountsByTenure(
+                tenureCounts,
+                dir,
+                year,
+                month);
+        return result;
+    }
+
+    protected static void writeExtremeAreaChanges(
+            TreeMap<Integer, TreeSet<String>> countAreas,
+            TreeMap<Integer, TreeSet<String>> lastTimeCountAreas,
+            String lastTime,
+            int num,
+            File dir,
+            String year,
+            String month) {
+        if (lastTimeCountAreas != null) {
+            TreeMap<String, Integer> areaCounts;
+            areaCounts = getAreaCounts(countAreas);
+            TreeMap<String, Integer> lastTimeAreaCounts;
+            lastTimeAreaCounts = getAreaCounts(lastTimeCountAreas);
+            int n = 2;
+            TreeMap<String, Double> areaAbsoluteDiffs;
+            areaAbsoluteDiffs = new TreeMap<String, Double>();
+            TreeMap<String, Double> areaRelativeDiffs;
+            areaRelativeDiffs = new TreeMap<String, Double>();
+            TreeSet<String> allAreas;
+            allAreas = new TreeSet<String>();
+            allAreas.addAll(areaCounts.keySet());
+            allAreas.addAll(lastTimeAreaCounts.keySet());
+            Iterator<String> ite;
+            ite = allAreas.iterator();
             while (ite.hasNext()) {
-                String claimID = ite.next();
-                DW_SHBE_Record DRecord = DRecords.get(claimID);
-                String postcode = DRecord.getClaimantsPostcode();
-                String formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
-                String censusCode;
-                censusCode = tLookupFromPostcodeToCensusCode.get(
-                        formattedPostcode);
-                if (censusCode != null) {
-                    if (claimantsCountByArea.containsKey(censusCode)) {
-                        int currentCount = claimantsCountByArea.get(censusCode);
-                        int newCount = currentCount + 1;
-                        claimantsCountByArea.put(censusCode, newCount);
-                    } else {
-                        claimantsCountByArea.put(censusCode, 1);
+                String area;
+                area = ite.next();
+                int count;
+                if (areaCounts.get(area) == null) {
+                    count = 0;
+                } else {
+                    count = areaCounts.get(area);
+                }
+                int lastTimeCount;
+                if (lastTimeAreaCounts.get(area) == null) {
+                    lastTimeCount = 0;
+                } else {
+                    lastTimeCount = lastTimeAreaCounts.get(area);
+                }
+                double absoluteDifference;
+                absoluteDifference = count - lastTimeCount;
+                areaAbsoluteDiffs.put(area, absoluteDifference);
+                double relativeDifference;
+                relativeDifference = getRelativeDifference(count, lastTimeCount, n);
+                areaRelativeDiffs.put(area, relativeDifference);
+            }
+            TreeMap<Double, TreeSet<String>> absoluteDiffsAreas;
+            absoluteDiffsAreas = getCountAreas(areaAbsoluteDiffs);
+            writeDiffs(
+                    absoluteDiffsAreas,
+                    "Absolute",
+                    lastTime,
+                    num,
+                    dir,
+                    year,
+                    month);
+            TreeMap<Double, TreeSet<String>> relativeDiffsAreas;
+            relativeDiffsAreas = getCountAreas(areaRelativeDiffs);
+            writeDiffs(
+                    relativeDiffsAreas,
+                    "Relative",
+                    lastTime,
+                    num,
+                    dir,
+                    year,
+                    month);
+        }
+    }
+
+    /**
+     *
+     * @param a
+     * @param b
+     * @param n
+     * @return
+     */
+    public static double getRelativeDifference(
+            double a,
+            double b,
+            int n) {
+        double result;
+        if (a == b) {
+            return 0.0d;
+        }
+        double delta = a - b;
+        double num;
+//        num = delta;
+//        num = (delta * delta * delta) * (b + 1);
+//        num = delta * delta * delta * delta * delta;
+//        num = delta * delta * (b + 1) * (a + 1);
+        num = delta * (b + 1) * (a + 1);
+        double denom;
+//        denom = (a + b) / 2;
+//        denom = Math.max(a, b);
+        denom = (a + b);
+//        denom *= denom;
+        result = num / denom;
+//        result *= 100;
+//        if (b > a) {
+//            result *= -1.0d;
+//        }
+
+        return result;
+    }
+
+    protected static void writeDiffs(
+            TreeMap<Double, TreeSet<String>> diffsAreas,
+            String name,
+            String lastTime,
+            int num,
+            File dir,
+            String year,
+            String month) {
+        PrintWriter pw;
+        String type;
+        type = "Increases";
+        pw = init_OutputTextFilePrintWriter(
+                dir,
+                "ExtremeAreaChanges" + name + type + lastTime + year + month + ".csv");
+        Iterator<Double> iteD;
+        iteD = diffsAreas.descendingKeySet().iterator();
+        writeDiffs(
+                diffsAreas,
+                num,
+                type,
+                pw,
+                iteD);
+        type = "Decreases";
+        pw = init_OutputTextFilePrintWriter(
+                dir,
+                "ExtremeAreaChanges" + name + type + lastTime + year + month + ".csv");
+        iteD = diffsAreas.keySet().iterator();
+        writeDiffs(
+                diffsAreas,
+                num,
+                type,
+                pw,
+                iteD);
+    }
+
+    protected static void writeDiffs(
+            TreeMap<Double, TreeSet<String>> diffsAreas,
+            int num,
+            String type,
+            PrintWriter pw,
+            Iterator<Double> iteD) {
+        MathContext mc;
+        mc = new MathContext(5, RoundingMode.HALF_UP);
+        pw.println("Area, " + type);
+        int counter;
+        counter = 0;
+        while (iteD.hasNext()) {
+            Double count = iteD.next();
+            if (count != Double.NaN) {
+                if (counter < num) {
+                    TreeSet<String> areas;
+                    areas = diffsAreas.get(count);
+                    Iterator<String> ite2;
+                    ite2 = areas.iterator();
+                    while (ite2.hasNext()) {
+                        String area;
+                        area = ite2.next();
+                        BigDecimal roundedCount;
+                        roundedCount = new BigDecimal(count);
+                        roundedCount = roundedCount.round(mc);
+                        pw.println(area + ", " + roundedCount.toPlainString());
+                        //pw.println(count + ", " + area);
+                        counter++;
                     }
                 } else {
-                    System.out.println("No Census code for postcode: " + postcode);
+                    break;
                 }
             }
-            //Write out result
-            PrintWriter pw;
-            pw = init_OutputTextFilePrintWriter(
-                    dir,
-                    year + month + ".csv");
-            pw.println(level + ", Count");
-            Iterator<String> ite2 = claimantsCountByArea.keySet().iterator();
-            while (ite2.hasNext()) {
-                String areaCode = ite2.next();
-                Integer Count = claimantsCountByArea.get(areaCode);
-                pw.println(areaCode + ", " + Count);
-            }
-            pw.close();
-//            //Write out result
-//            pw1 = init_OutputTextFilePrintWriter("HBTenancyType" + year + month + ".csv");
-//            pw1.println("TenancyType, Count");
-//            ite2 = ymHBResult.keySet().iterator();
-//            while (ite2.hasNext()) {
-//                Integer aTenancyType = ite2.next();
-//                Integer Count = ymHBResult.get(aTenancyType);
-//                pw1.println(aTenancyType + ", " + Count);
-//            }
-//            pw1.close();
         }
-//        return result;
+        pw.close();
+    }
+
+    protected static TreeMap<String, Integer> getAreaCounts(
+            TreeMap<Integer, TreeSet<String>> countAreas) {
+        TreeMap<String, Integer> result;
+        result = new TreeMap<String, Integer>();
+        Iterator<Integer> ite;
+        ite = countAreas.keySet().iterator();
+        while (ite.hasNext()) {
+            Integer count = ite.next();
+            if (count == null) {
+                count = 0;
+            }
+            if (count == Double.NaN) {
+                count = 0;
+            }
+            TreeSet<String> areas;
+            areas = countAreas.get(count);
+            Iterator<String> ite2;
+            ite2 = areas.iterator();
+            while (ite2.hasNext()) {
+                String area;
+                area = ite2.next();
+                result.put(area, count);
+            }
+        }
+        return result;
+    }
+
+    protected static TreeMap<Double, TreeSet<String>> getCountAreas(
+            TreeMap<String, Double> areaCounts) {
+        TreeMap<Double, TreeSet<String>> result;
+        result = new TreeMap<Double, TreeSet<String>>();
+        Iterator<String> ite;
+        ite = areaCounts.keySet().iterator();
+        while (ite.hasNext()) {
+            String area = ite.next();
+            Double count = areaCounts.get(area);
+            if (count == null) {
+                count = 0.0d;
+            }
+            if (count == Double.NaN) {
+                count = 0.0d;
+            }
+            TreeSet<String> areas;
+            areas = result.get(count);
+            if (areas == null) {
+                areas = new TreeSet<String>();
+                areas.add(area);
+                result.put(count, areas);
+            } else {
+                areas.add(area);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Writes the top num countAreas to file.
+     *
+     * @param countAreas
+     * @param num
+     * @param dir
+     * @param year
+     * @param month
+     */
+    protected static void writeAreasWithHighestNumbersOfClaimants(
+            TreeMap<Integer, TreeSet<String>> countAreas,
+            int num,
+            File dir,
+            String year,
+            String month) {
+        PrintWriter pw;
+        pw = init_OutputTextFilePrintWriter(
+                dir,
+                "HighestClaimants" + year + month + ".csv");
+        pw.println("Area, Count");
+        int counter;
+        counter = 0;
+        Iterator<Integer> ite;
+        ite = countAreas.descendingKeySet().iterator();
+        while (ite.hasNext()) {
+            Integer count = ite.next();
+            if (counter < num) {
+                TreeSet<String> areas;
+                areas = countAreas.get(count);
+                Iterator<String> ite2;
+                ite2 = areas.iterator();
+                while (ite2.hasNext()) {
+                    String area;
+                    area = ite2.next();
+                    pw.println(area + ", " + count);
+                    counter++;
+                }
+            } else {
+                break;
+            }
+        }
+        pw.close();
+    }
+
+    /**
+     *
+     * @param areaCounts
+     * @param level
+     * @param dir
+     * @param year
+     * @param month
+     * @return {@code TreeMap<Integer, TreeSet<String>>} count by list of areas.
+     * This is an ordered list from minimum to maximum counts.
+     */
+    protected static TreeMap<Integer, TreeSet<String>> writeCountsByArea(
+            TreeMap<String, Integer> areaCounts,
+            String level,
+            File dir,
+            String year,
+            String month) {
+        TreeMap<Integer, TreeSet<String>> result;
+        result = new TreeMap<Integer, TreeSet<String>>();
+        PrintWriter pw;
+        pw = init_OutputTextFilePrintWriter(
+                dir,
+                year + month + ".csv");
+        pw.println(level + ", Count");
+        Iterator<String> ite;
+        ite = areaCounts.keySet().iterator();
+        while (ite.hasNext()) {
+            String areaCode = ite.next().trim();
+            if (level.equalsIgnoreCase("PostcodeUnit")) {
+                if (areaCode.length() != 7) {
+                    areaCode = areaCode.replace(" ", "");
+                }
+            }
+            Integer count = areaCounts.get(areaCode);
+            if (count == null) {
+                count = 0;
+            }
+            TreeSet<String> set;
+            set = result.get(count);
+            if (set == null) {
+                set = new TreeSet<String>();
+                set.add(areaCode);
+                result.put(count, set);
+            } else {
+                set.add(areaCode);
+            }
+            pw.println(areaCode + ", " + count);
+        }
+        pw.close();
+        return result;
+    }
+
+    private static void writeCountsByTenure(
+            TreeMap<Integer, Integer> tenureCounts,
+            File dir,
+            String year,
+            String month) {
+        PrintWriter pw;
+        pw = init_OutputTextFilePrintWriter(
+                dir,
+                "CountsByTenure" + year + month + ".csv");
+        pw.println("Tenure, Count");
+        Iterator<Integer> ite;
+        ite = tenureCounts.keySet().iterator();
+        while (ite.hasNext()) {
+            Integer tenure0 = ite.next();
+            Integer count = tenureCounts.get(tenure0);
+            pw.println(tenure0 + ", " + count);
+        }
+        pw.close();
+    }
+
+    private static void addToResult(
+            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>> claimantTypeTenureLevelTypeAreaCounts,
+            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>>> claimantTypeTenureLevelTypeTenureCounts,
+            String areaCode,
+            String claimantType,
+            String tenure,
+            String level,
+            String type,
+            Integer tenancyType) {
+        addToAreaCount(claimantTypeTenureLevelTypeAreaCounts, areaCode, claimantType, tenure, level, type);
+        TreeMap<Integer, Integer> tenureCounts = claimantTypeTenureLevelTypeTenureCounts.get(claimantType).get(tenure).get(level).get(type);
+        Generic_StaticCollections.addToTreeMapIntegerInteger(
+                tenureCounts,
+                tenancyType,
+                1);
+    }
+
+    private static void addToResult(
+            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>>>> claimantTypeTenureLevelTypeDistanceAreaCounts,
+            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>>>> claimantTypeTenureLevelTypeDistanceTenureCounts,
+            String areaCode,
+            String claimantType,
+            String tenure,
+            String level,
+            String type,
+            Integer tenancyType,
+            double distance) {
+        addToAreaCount(claimantTypeTenureLevelTypeDistanceAreaCounts, areaCode, claimantType, tenure, level, type, distance);
+        TreeMap<Integer, Integer> tenureCounts = claimantTypeTenureLevelTypeDistanceTenureCounts.get(claimantType).get(tenure).get(level).get(type).get(distance);
+        Generic_StaticCollections.addToTreeMapIntegerInteger(
+                tenureCounts,
+                tenancyType,
+                1);
+    }
+
+    private static void addToAreaCount(
+            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>> claimantTypeTenureLevelTypeAreaCounts,
+            String areaCode,
+            String claimantType,
+            String tenure,
+            String level,
+            String type) {
+        TreeMap<String, Integer> areaCounts = claimantTypeTenureLevelTypeAreaCounts.get(claimantType).get(tenure).get(level).get(type);
+        Generic_StaticCollections.addToTreeMapStringInteger(
+                areaCounts,
+                areaCode,
+                1);
+    }
+
+    private static void addToAreaCount(
+            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>>>> claimantTypeTenureLevelTypeDistanceAreaCounts,
+            String areaCode,
+            String claimantType,
+            String tenure,
+            String level,
+            String type,
+            Double distance) {
+        TreeMap<String, Integer> areaCounts = claimantTypeTenureLevelTypeDistanceAreaCounts.get(claimantType).get(tenure).get(level).get(type).get(distance);
+//        //Debug
+//        if (areaCounts == null) {
+//            // No area counts for distance
+//            System.out.println("No area counts for distance " + distance);
+//            System.out.println("claimantType " + claimantType);
+//            System.out.println("tenure " + tenure);
+//            System.out.println("level " + level);
+//            System.out.println("type " + type);
+//        }
+        Generic_StaticCollections.addToTreeMapStringInteger(
+                areaCounts,
+                areaCode,
+                1);
+    }
+
+    /**
+     *
+     * @param nationalInsuranceNumberByTenure0 Before
+     * @param nationalInsuranceNumberByTenure1 Now
+     * @return A count matrix of tenure changes null null null null null null
+     * null null null null     {@code 
+     * TreeMap<Integer, TreeMap<Integer, Integer>>
+     * Tenure1, Tenure2, Count
+     * }
+     */
+    public TreeMap<Integer, TreeMap<Integer, Integer>> getTenancyTypeTranistionMatrix(
+            HashMap<String, Integer> nationalInsuranceNumberByTenure0,
+            HashMap<String, Integer> nationalInsuranceNumberByTenure1) {
+        TreeMap<Integer, TreeMap<Integer, Integer>> result;
+        result = new TreeMap<Integer, TreeMap<Integer, Integer>>();
+        Iterator<String> ite;
+        ite = nationalInsuranceNumberByTenure1.keySet().iterator();
+        while (ite.hasNext()) {
+            String nationalInsuranceNumber;
+            nationalInsuranceNumber = ite.next();
+            Integer tenure1 = nationalInsuranceNumberByTenure1.get(nationalInsuranceNumber);
+            Integer tenure0 = nationalInsuranceNumberByTenure0.get(nationalInsuranceNumber);
+            if (tenure0 == null) {
+                tenure0 = -999;
+            }
+            if (result.containsKey(tenure1)) {
+                TreeMap<Integer, Integer> tenureCount;
+                tenureCount = result.get(tenure1);
+                Generic_StaticCollections.addToTreeMapIntegerInteger(tenureCount, tenure0, 1);
+            } else {
+                TreeMap<Integer, Integer> tenureCount;
+                tenureCount = new TreeMap<Integer, Integer>();
+                tenureCount.put(tenure0, 1);
+                result.put(tenure1, tenureCount);
+            }
+        }
+        Set<String> set;
+        set = nationalInsuranceNumberByTenure1.keySet();
+        ite = nationalInsuranceNumberByTenure0.keySet().iterator();
+        while (ite.hasNext()) {
+            String nationalInsuranceNumber;
+            nationalInsuranceNumber = ite.next();
+            if (!set.contains(nationalInsuranceNumber)) {
+            Integer tenure0 = nationalInsuranceNumberByTenure0.get(nationalInsuranceNumber);
+            if (tenure0 == null) {
+                tenure0 = -999;
+            }
+            Integer tenure1;
+            tenure1 = -999;
+            if (result.containsKey(tenure1)) {
+                TreeMap<Integer, Integer> tenureCount;
+                tenureCount = result.get(tenure1);
+                Generic_StaticCollections.addToTreeMapIntegerInteger(tenureCount, tenure0, 1);
+            } else {
+                TreeMap<Integer, Integer> tenureCount;
+                tenureCount = new TreeMap<Integer, Integer>();
+                tenureCount.put(tenure0, 1);
+                result.put(tenure1, tenureCount);
+            }
+            }
+        }
+        return result;
+    }
+
+    public String getTenancyTypeGroup(
+            ArrayList<Integer> regulatedGroups,
+            ArrayList<Integer> unregulatedGroups,
+            Integer tenure) {
+        String result;
+        result = "Ungrouped";
+        if (regulatedGroups.contains(tenure)) {
+            result = "Regulated";
+        }
+        if (unregulatedGroups.contains(tenure)) {
+            result = "Unregulated";
+        }
+        return result;
+    }
+
+    public TreeMap<String, TreeMap<String, Integer>> getTenancyTypeTranistionMatrixGrouped(
+            HashMap<String, Integer> nationalInsuranceNumberByTenure0,
+            HashMap<String, Integer> nationalInsuranceNumberByTenure1,
+            ArrayList<Integer> regulatedGroups,
+            ArrayList<Integer> unregulatedGroups) {
+
+        TreeMap<String, TreeMap<String, Integer>> result;
+        result = new TreeMap<String, TreeMap<String, Integer>>();
+        Iterator<String> ite;
+        ite = nationalInsuranceNumberByTenure1.keySet().iterator();
+        while (ite.hasNext()) {
+            String nationalInsuranceNumber;
+            nationalInsuranceNumber = ite.next();
+            Integer tenure1;
+            tenure1 = nationalInsuranceNumberByTenure1.get(
+                    nationalInsuranceNumber);
+            String tenureType1;
+            tenureType1 = getTenancyTypeGroup(
+                    regulatedGroups,
+                    unregulatedGroups,
+                    tenure1);
+            Integer tenure0;
+            tenure0 = nationalInsuranceNumberByTenure0.get(
+                    nationalInsuranceNumber);
+            String tenureType0;
+            if (tenure0 == null) {
+                tenureType0 = "-999";
+            } else {
+                tenureType0 = getTenancyTypeGroup(
+                        regulatedGroups,
+                        unregulatedGroups,
+                        tenure0);
+            }
+            if (result.containsKey(tenureType1)) {
+                TreeMap<String, Integer> tenureCount;
+                tenureCount = result.get(tenureType1);
+                Generic_StaticCollections.addToTreeMapStringInteger(
+                        tenureCount, tenureType0, 1);
+            } else {
+                TreeMap<String, Integer> tenureCount;
+                tenureCount = new TreeMap<String, Integer>();
+                tenureCount.put(tenureType0, 1);
+                result.put(tenureType1, tenureCount);
+            }
+        }
+        Set<String> set;
+        set = nationalInsuranceNumberByTenure1.keySet();
+        ite = nationalInsuranceNumberByTenure0.keySet().iterator();
+        while (ite.hasNext()) {
+            String nationalInsuranceNumber;
+            nationalInsuranceNumber = ite.next();
+            if (set.contains(nationalInsuranceNumber)) {
+            Integer tenure0;
+            tenure0 = nationalInsuranceNumberByTenure0.get(
+                    nationalInsuranceNumber);
+            String tenureType0;
+            if (tenure0 == null) {
+                tenureType0 = "-999";
+            } else {
+                tenureType0 = getTenancyTypeGroup(
+                        regulatedGroups,
+                        unregulatedGroups,
+                        tenure0);
+            }
+            String tenureType1;
+            tenureType1 = "-999";
+            if (result.containsKey(tenureType1)) {
+                TreeMap<String, Integer> tenureCount;
+                tenureCount = result.get(tenureType1);
+                Generic_StaticCollections.addToTreeMapStringInteger(
+                        tenureCount, tenureType0, 1);
+            } else {
+                TreeMap<String, Integer> tenureCount;
+                tenureCount = new TreeMap<String, Integer>();
+                tenureCount.put(tenureType0, 1);
+                result.put(tenureType1, tenureCount);
+            }
+            }
+        }
+        return result;
+    }
+
+    public void writeTenancyTypeTransitionMatrix(
+            TreeMap<Integer, TreeMap<Integer, Integer>> tenureMatrix,
+            String year0,
+            String month0,
+            String year1,
+            String month1,
+            String type) {
+        File dir;
+        dir = new File(
+                DW_Files.getOutputSHBETablesDir(),
+                "Tenancy");
+        dir = new File(
+                dir,
+                type);
+        dir = new File(
+                dir,
+                "TenancyTypeTransition");
+        File fout;
+        fout = new File(
+                dir,
+                "TenancyTypeTransition_" + type
+                + "_Start_" + year0 + month0
+                + "_End_" + year1 + month1 + ".csv");
+        ArrayList<Integer> tenureTypes;
+        tenureTypes = DW_SHBE_Handler.getTenureTypeAll();
+        PrintWriter pw;
+        try {
+            pw = new PrintWriter(fout);
+            String line;
+            line = "TenureNow|TenureBefore";
+            Iterator<Integer> ite;
+            ite = tenureTypes.iterator();
+            while (ite.hasNext()) {
+                line += "," + ite.next().toString();
+            }
+            line += ",-999";
+            pw.println(line);
+            ite = tenureTypes.iterator();
+            while (ite.hasNext()) {
+                Integer tenure1;
+                tenure1 = ite.next();
+                line = tenure1.toString();
+                TreeMap<Integer, Integer> tenureCounts;
+                tenureCounts = tenureMatrix.get(tenure1);
+                if (tenureCounts == null) {
+                    for (int i = 0; i < tenureTypes.size(); i++) {
+                        line += ",0";
+                    }
+                    line += ",0";
+                } else {
+                    Iterator<Integer> ite2;
+                    ite2 = tenureTypes.iterator();
+                    while (ite2.hasNext()) {
+                        Integer tenure0;
+                        tenure0 = ite2.next();
+                        Integer count;
+                        count = tenureCounts.get(tenure0);
+                        if (count == null) {
+                            line += ",0";
+                        } else {
+                            line += "," + count.toString();
+                        }
+                    }
+                    Integer tenure0 = -999;
+                    Integer nullCount = tenureCounts.get(tenure0);
+                    if (nullCount == null) {
+                        line += ",0";
+                    } else {
+                        line += "," + nullCount.toString();
+                    }
+                }
+                pw.println(line);
+            }
+
+            TreeMap<Integer, Integer> tenureCounts;
+            tenureCounts = tenureMatrix.get(-999);
+            line = "-999";
+            if (tenureCounts == null) {
+                for (Integer tenureType : tenureTypes) {
+                    line += ",0";
+                }
+                line += ",0";
+            } else {
+                Iterator<Integer> ite2;
+                ite2 = tenureTypes.iterator();
+                while (ite2.hasNext()) {
+                    Integer tenure0;
+                    tenure0 = ite2.next();
+                    Integer count;
+                    count = tenureCounts.get(tenure0);
+                    if (count == null) {
+                        line += ",0";
+                    } else {
+                        line += "," + count.toString();
+                    }
+                }
+                Integer tenure0 = -999;
+                Integer nullCount = tenureCounts.get(tenure0);
+                if (nullCount == null) {
+                    line += ",0";
+                } else {
+                    line += nullCount.toString();
+                }
+            }
+            pw.println(line);
+            pw.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DW_DataProcessor_LCC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void writeTenancyTypeTransitionMatrixGrouped(
+            TreeMap<String, TreeMap<String, Integer>> tenureMatrix,
+            ArrayList<String> tenureTypesGrouped,
+            String year0,
+            String month0,
+            String year1,
+            String month1,
+            String type) {
+        File dir;
+        dir = new File(
+                DW_Files.getOutputSHBETablesDir(),
+                "Tenancy");
+        dir = new File(
+                dir,
+                type);
+        dir = new File(
+                dir,
+                "TenancyTypeTransition");
+        File fout;
+        fout = new File(
+                dir,
+                "TenancyTypeTransitionGrouped_" + type
+                + "_Start_" + year0 + month0
+                + "_End_" + year1 + month1 + ".csv");
+
+//        tenureTypes = DW_SHBE_Handler.getTenureTypeAll();
+        PrintWriter pw;
+        try {
+            pw = new PrintWriter(fout);
+            String line;
+            line = "TenureNow|TenureBefore";
+            Iterator<String> ite;
+            ite = tenureTypesGrouped.iterator();
+            while (ite.hasNext()) {
+                line += "," + ite.next().toString();
+            }
+            pw.println(line);
+            ite = tenureTypesGrouped.iterator();
+            while (ite.hasNext()) {
+                String tenure1;
+                tenure1 = ite.next();
+                line = tenure1;
+                TreeMap<String, Integer> tenureCounts;
+                tenureCounts = tenureMatrix.get(tenure1);
+                if (tenureCounts == null) {
+                    for (int i = 0; i < tenureTypesGrouped.size(); i++) {
+                        line += ",0";
+                    }
+                } else {
+                    Iterator<String> ite2;
+                    ite2 = tenureTypesGrouped.iterator();
+                    while (ite2.hasNext()) {
+                        String tenure0;
+                        tenure0 = ite2.next();
+                        Integer count;
+                        count = tenureCounts.get(tenure0);
+                        if (count == null) {
+                            line += ",0";
+                        } else {
+                            line += "," + count.toString();
+                        }
+                    }
+//                    String tenure0 = "-999";
+//                    Integer nullCount = tenureCounts.get(tenure0);
+//                    if (nullCount == null) {
+//                        line += ",0";
+//                    } else {
+//                        line += "," + nullCount.toString();
+//                    }
+                }
+                pw.println(line);
+            }
+//            TreeMap<String, Integer> tenureCounts;
+//            tenureCounts = tenureMatrix.get("-999");
+//            line = "-999";
+//            if (tenureCounts == null) {
+//                for (String tenureTypeGroup : tenureTypesGrouped) {
+//                    line += ",0";
+//                }
+//            } else {
+//                Iterator<String> ite2;
+//                ite2 = tenureTypesGrouped.iterator();
+//                while (ite2.hasNext()) {
+//                    String tenure0;
+//                    tenure0 = ite2.next();
+//                    Integer count;
+//                    count = tenureCounts.get(tenure0);
+//                    if (count == null) {
+//                        line += ",0";
+//                    } else {
+//                        line += "," + count.toString();
+//                    }
+//                }
+//                String tenure0 = "-999";
+//                Integer nullCount = tenureCounts.get(tenure0);
+//                if (nullCount == null) {
+//                    line += ",0";
+//                } else {
+//                    line += nullCount.toString();
+//                }
+//            }
+//            pw.println(line);
+            pw.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DW_DataProcessor_LCC.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void getTotalClaimantsByTenancyType() {
@@ -372,11 +1878,11 @@ public class DW_DataProcessor_LCC extends DW_Processor {
              * NonDependentsNationalInsuranceNumberIDs,---------------------------------
              * result[6] is a HashSet<String> of AllHouseholdNationalInsuranceNumberIDs.
              */
-            TreeMap<String, DW_SHBE_Record> DRecords = (TreeMap<String, DW_SHBE_Record>) SHBEData[0];
+            TreeMap<String, DW_SHBE_D_Record> DRecords = (TreeMap<String, DW_SHBE_D_Record>) SHBEData[0];
             Iterator<String> ite = DRecords.keySet().iterator();
             while (ite.hasNext()) {
                 String claimID = ite.next();
-                DW_SHBE_Record DRecord = DRecords.get(claimID);
+                DW_SHBE_D_Record DRecord = DRecords.get(claimID);
                 int aTenancyType = DRecord.getTenancyType();
                 Integer aTenancyTypeInteger = aTenancyType;
                 if (ymAllResult.containsKey(aTenancyTypeInteger)) {
@@ -472,8 +1978,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        return result;
 //    }
     /**
-     *
-     * @param underOccupiedReportData
+     * @param SHBEData
+     * @param aUnderOccupiedReport_Set
      */
     public void processforChangeInTenancyForMoversMatrixesForApril(
             ArrayList<Object[]> SHBEData,
@@ -490,7 +1996,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 
         // 0, 2, 4, 7, 11, 17, 29, 41 are April data for 2008, 2009, 2010, 2011,  
         // 2012, 2013, 2014, 2015 respectively
-        String[] allSHBEFilenames = tDW_SHBE_Handler.getSHBEFilenamesAll();
+        String[] allSHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
         int startIndex;
         int endIndex;
         HashMap<String, TreeSet<String>> AllNationalInsuranceNumbersAndDatesOfClaims;
@@ -745,6 +2251,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 
     /**
      *
+     * @param SHBEData
      */
     public void processforChangeInTenancyMatrixesForApril(
             ArrayList<Object[]> SHBEData) {
@@ -753,7 +2260,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 
         // 0, 2, 4, 7, 11, 17, 29, 41 are April data for 2008, 2009, 2010, 2011,  
         // 2012, 2013, 2014, 2015 respectively
-        String[] allSHBEFilenames = tDW_SHBE_Handler.getSHBEFilenamesAll();
+        String[] allSHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
         int startIndex;
         int endIndex;
         String startMonth;
@@ -919,7 +2426,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 endMonth,
                 startIndex,
                 endIndex);
-        writeOutTenancyTypeTransitionMatrix(
+        writeTenancyTypeTransitionMatrix(
                 allSHBEFilenames,
                 migrationData,
                 startIndex,
@@ -940,7 +2447,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                endMonth,
 //                startIndex,
 //                endIndex);
-//        writeOutMigrationMatrix(
+//        writeMigrationMatrix(
 //                allSHBEFilenames,
 //                migrationData,
 //                startIndex,
@@ -969,7 +2476,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 endMonth,
                 startIndex,
                 endIndex);
-        writeOutTenancyTypeTransitionMatrix(
+        writeTenancyTypeTransitionMatrix(
                 allSHBEFilenames,
                 migrationData,
                 startIndex,
@@ -995,7 +2502,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * @return Object[] result where: ------------------------------------------
      * result[0] is a <code>TreeMap<Integer, TreeMap<String, Integer>></code>
      * Migration Matrix; -------------------------------------------------------
-     * result[1] is a <code>TreeSet<String></code> of origins/destinations; ----
+     * result[1] is a <code>TreeSet\<String\></code> of origins/destinations;
+     * ----
      */
     public Object[] getChangeInTenancyForMovers(
             String[] tSHBEfilenames,
@@ -1026,10 +2534,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         originsAndDestinations.add(-999);
         result[1] = originsAndDestinations;
         Object[] SHBEDataStart = loadSHBEData(tSHBEfilenames[startIndex]);
-        TreeMap<String, DW_SHBE_Record> DRecordsStart = (TreeMap<String, DW_SHBE_Record>) SHBEDataStart[0];
+        TreeMap<String, DW_SHBE_D_Record> DRecordsStart = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataStart[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsStart = (TreeMap<String, DW_SHBE_Record>) SHBEDataStart[1];
         Object[] SHBEDataEnd = loadSHBEData(tSHBEfilenames[endIndex]);
-        TreeMap<String, DW_SHBE_Record> DRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[0];
+        TreeMap<String, DW_SHBE_D_Record> DRecordsEnd = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataEnd[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<Integer, Integer> destinationCounts;
@@ -1038,7 +2546,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         String councilTaxClaimNumber;
         while (ite.hasNext()) {
             councilTaxClaimNumber = ite.next();
-            DW_SHBE_Record startDRecord = DRecordsStart.get(councilTaxClaimNumber);
+            DW_SHBE_D_Record startDRecord = DRecordsStart.get(councilTaxClaimNumber);
             if (startDRecord != null) {
                 String postcodeStart = startDRecord.getClaimantsPostcode();
                 postcodeStart = DW_Postcode_Handler.formatPostcode(postcodeStart);
@@ -1064,7 +2572,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     //originsAndDestinations.add(startPostcodeDistrict);
                 }
 
-                DW_SHBE_Record endDRecord = DRecordsEnd.get(councilTaxClaimNumber);
+                DW_SHBE_D_Record endDRecord = DRecordsEnd.get(councilTaxClaimNumber);
                 //String destinationPostcodeDistrict;
                 Integer endTenancyType;
                 String destinationPostcode = null;
@@ -1114,9 +2622,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         ite = DRecordsEnd.keySet().iterator();
         while (ite.hasNext()) {
             councilTaxClaimNumber = ite.next();
-            DW_SHBE_Record DRecordEnd = DRecordsEnd.get(councilTaxClaimNumber);
+            DW_SHBE_D_Record DRecordEnd = DRecordsEnd.get(councilTaxClaimNumber);
             if (DRecordEnd != null) {
-                DW_SHBE_Record DRecordStart = DRecordsStart.get(councilTaxClaimNumber);
+                DW_SHBE_D_Record DRecordStart = DRecordsStart.get(councilTaxClaimNumber);
                 if (DRecordStart == null) {
                     //String startPostcodeDistrict = "unknown";
                     Integer startTenancyType = -999;
@@ -1183,10 +2691,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * @param endMonth
      * @param endIndex
      * @return Object[] result where: ------------------------------------------
-     * result[0] is a TreeMap<Integer, TreeMap<String, Integer>> Matrix
-     * where:--- keys are the starts or origins; and values Maps with keys being
+     * result[0] is a {@code TreeMap<Integer, TreeMap<String, Integer>>} Matrix
+     * where: keys are the starts or origins; and values Maps with keys being
      * the ends or destinations and values being the counts;--------------------
-     * result[1] is a <code>TreeSet<String></code> of origins/destinations;-----
+     * result[1] is a {@code TreeSet<String>} of origins/destinations;
      */
     public Object[] getChangeInTenancy(
             String[] tSHBEfilenames,
@@ -1212,10 +2720,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         originsAndDestinations.add(-999);
         result[1] = originsAndDestinations;
         Object[] SHBEDataStart = loadSHBEData(tSHBEfilenames[startIndex]);
-        TreeMap<String, DW_SHBE_Record> startDRecords = (TreeMap<String, DW_SHBE_Record>) SHBEDataStart[0];
+        TreeMap<String, DW_SHBE_D_Record> startDRecords = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataStart[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsStart = (TreeMap<String, DW_SHBE_Record>) SHBEDataStart[1];
         Object[] SHBEDataEnd = loadSHBEData(tSHBEfilenames[endIndex]);
-        TreeMap<String, DW_SHBE_Record> endDRecords = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[0];
+        TreeMap<String, DW_SHBE_D_Record> endDRecords = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataEnd[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<Integer, Integer> destinationCounts;
@@ -1224,7 +2732,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         String councilTaxClaimNumber;
         while (ite.hasNext()) {
             councilTaxClaimNumber = ite.next();
-            DW_SHBE_Record startDRecord = startDRecords.get(councilTaxClaimNumber);
+            DW_SHBE_D_Record startDRecord = startDRecords.get(councilTaxClaimNumber);
             if (startDRecord != null) {
                 int startTenancyType = startDRecord.getTenancyType();
                 if (resultMatrix.containsKey(startTenancyType)) {
@@ -1234,7 +2742,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     resultMatrix.put(startTenancyType, destinationCounts);
                     originsAndDestinations.add(startTenancyType);
                 }
-                DW_SHBE_Record endDRecord = endDRecords.get(councilTaxClaimNumber);
+                DW_SHBE_D_Record endDRecord = endDRecords.get(councilTaxClaimNumber);
                 Integer endTenancyType;
                 if (endDRecord == null) {
                     endTenancyType = -999;
@@ -1254,9 +2762,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         ite = endDRecords.keySet().iterator();
         while (ite.hasNext()) {
             councilTaxClaimNumber = ite.next();
-            DW_SHBE_Record endDRecord = endDRecords.get(councilTaxClaimNumber);
+            DW_SHBE_D_Record endDRecord = endDRecords.get(councilTaxClaimNumber);
             if (endDRecord != null) {
-                DW_SHBE_Record DRecordStart = startDRecords.get(councilTaxClaimNumber);
+                DW_SHBE_D_Record DRecordStart = startDRecords.get(councilTaxClaimNumber);
                 if (DRecordStart == null) {
                     //String startPostcodeDistrict = "unknown";
                     Integer startTenancyType = -999;
@@ -1399,8 +2907,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             DW_SHBE_CollectionHandler handler;
             handler = (DW_SHBE_CollectionHandler) SHBESet[0];
 
-            TreeMap<String, DW_SHBE_Record> SRecordsWithoutDRecord;
-            SRecordsWithoutDRecord = (TreeMap<String, DW_SHBE_Record>) SHBESet[1];
+            TreeMap<String, DW_SHBE_S_Record> SRecordsWithoutDRecord;
+            SRecordsWithoutDRecord = (TreeMap<String, DW_SHBE_S_Record>) SHBESet[1];
             // Iterate over councilRecords and join these with SHBE records
             // Aggregate totalRentArrears by postcode
             int aggregations = 0;
@@ -1421,15 +2929,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 double rentArrears = underOccupiedReport_DataRecord.getTotalRentArrears();
                 BigDecimal rentArrears_BigDecimal = new BigDecimal(rentArrears);
                 totalRentArrears_BigDecimal = totalRentArrears_BigDecimal.add(rentArrears_BigDecimal);
-                DW_SHBE_Record DRecord;
-
-                //DRecord = DRecords.get(councilTaxClaimNumber);
-                DRecord = handler.getDRecord(councilTaxClaimNumber);
-
+                DW_SHBE_Record record;
+                record = handler.getRecord(councilTaxClaimNumber);
+                DW_SHBE_D_Record DRecord;
+                DRecord = record.getDRecord();
                 if (DRecord == null) {
                     System.out.println("Warning: No DRecord for underOccupiedReport_DataRecord " + underOccupiedReport_DataRecord);
                     countMissingDRecords++;
-                    DW_SHBE_Record SRecord = SRecordsWithoutDRecord.get(councilTaxClaimNumber);
+                    DW_SHBE_S_Record SRecord = SRecordsWithoutDRecord.get(councilTaxClaimNumber);
                     if (SRecord != null) {
                         int dosomething = 1;
                         System.out.println("There is a SRecord without a DRecord for underOccupiedReport_DataRecord " + underOccupiedReport_DataRecord);
@@ -1438,7 +2945,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     countNotMissingDRecords++;
                     String postcode = DRecord.getClaimantsPostcode();
                     String truncatedPostcode = postcode.substring(0, postcode.length() - 2);
-                    int SRecordCount = DRecord.getSRecords().size();
+                    int SRecordCount = record.getSRecords().size();
                     totalSRecordCount += SRecordCount;
                     if (rentArrears < 0) {
                         int debug = 0;
@@ -1551,7 +3058,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * Method for reporting how many bedroom tax people have moved from one
      * month to the next.
      *
-     * @param aUnderOccupiedReport_Set
+     * @param SHBE_Sets
+     * @param underOccupiedReport_Sets
      */
     public void processSHBEReportDataForSarah(
             ArrayList<Object[]> SHBE_Sets,
@@ -1650,7 +3158,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 "DigitalWelfareOutputReportForSarah");
         String level = "MSOA";
         TreeMap<String, String> lookupFromPostcodeToCensusCode;
-        lookupFromPostcodeToCensusCode = getLookupFromPostcodeToCensusCode(
+        lookupFromPostcodeToCensusCode = getLookupFromPostcodeToLevelCode(
                 level,
                 2011);
         int UnderoccupancyIndex;
@@ -1795,7 +3303,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         aRSLRecordgeneralisation, name, header);
             }
 
-            String[] allSHBEFilenames = tDW_SHBE_Handler.getSHBEFilenamesAll();
+            String[] allSHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
             int startIndex = 0;
             int endIndex = allSHBEFilenames.length - 1;
             HashSet<String> AllNINOOfClaimantsStartYear = new HashSet<String>();
@@ -1824,7 +3332,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     endIndex);
 
             String type = "all";
-            writeOutMigrationMatrix(
+            writeMigrationMatrix(
                     allSHBEFilenames,
                     migrationData,
                     startIndex,
@@ -1835,6 +3343,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 
     /**
      *
+     * @param SHBEData
      * @param underOccupiedReport_Sets
      */
     public void processSHBEReportDataIntoMigrationMatricesForApril(
@@ -1850,7 +3359,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 "CountOfClaimsByDates.txt");
         // 0, 2, 4, 7, 11, 17, 29, 41 are April data for 2008, 2009, 2010, 2011,  
         // 2012, 2013, 2014, 2015 respectively
-        String[] allSHBEFilenames = tDW_SHBE_Handler.getSHBEFilenamesAll();
+        String[] allSHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
         int startIndex;
         int endIndex;
         HashMap<String, TreeSet<String>> AllNationalInsuranceNumbersAndDatesOfClaims;
@@ -2260,7 +3769,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         String type;
         Object[] migrationData;
         // Allmigration
-        type = "all";
+        type = "All";
         migrationData = getAllClaimantMigrationData(
                 allSHBEFilenames,
                 AllNINOOfClaimantsStartYear,
@@ -2274,7 +3783,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 endMonth,
                 startIndex,
                 endIndex);
-        writeOutMigrationMatrix(
+        writeMigrationMatrix(
                 allSHBEFilenames,
                 migrationData,
                 startIndex,
@@ -2295,7 +3804,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 endMonth,
                 startIndex,
                 endIndex);
-        writeOutMigrationMatrix(
+        writeMigrationMatrix(
                 allSHBEFilenames,
                 migrationData,
                 startIndex,
@@ -2304,7 +3813,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         return result;
     }
 
-    public void writeOutTenancyTypeTransitionMatrix(
+    public void writeTenancyTypeTransitionMatrix(
             String[] allSHBEFilenames,
             Object[] migrationData,
             int startIndex,
@@ -2317,11 +3826,21 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         String endName = allSHBEFilenames[endIndex];
         String endMonth = DW_SHBE_Handler.getMonth(endName);
         String endYear = DW_SHBE_Handler.getYear(endName);
+        File dir;
+        dir = new File(
+                DW_Files.getOutputSHBETablesDir(),
+                "Tenancy");
+        dir = new File(
+                dir,
+                type);
+        dir = new File(
+                dir,
+                "TenancyTypeTransition");
 
         PrintWriter pw;
         pw = init_OutputTextFilePrintWriter(
-                DW_Files.getOutputSHBETablesDir(),
-                "TenancyTypeTransition_" + type + "__Start_" + startMonth + "" + startYear + "_End_" + endMonth + "" + endYear + ".csv");
+                dir,
+                "TenancyTypeTransition_" + type + "_Start_" + startMonth + "" + startYear + "_End_" + endMonth + "" + endYear + ".csv");
 
         TreeMap<Integer, TreeMap<Integer, Integer>> migrationMatrix = (TreeMap<Integer, TreeMap<Integer, Integer>>) migrationData[0];
         TreeSet<Integer> originsAndDestinations = (TreeSet<Integer>) migrationData[1];
@@ -2364,7 +3883,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * @param endIndex
      * @param type
      */
-    public void writeOutMigrationMatrix(
+    public void writeMigrationMatrix(
             String[] allSHBEFilenames,
             Object[] migrationData,
             int startIndex,
@@ -2377,14 +3896,19 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         String endName = allSHBEFilenames[endIndex];
         String endMonth = DW_SHBE_Handler.getMonth(endName);
         String endYear = DW_SHBE_Handler.getYear(endName);
-
+        File dir;
+        dir = new File(
+                DW_Files.getOutputSHBETablesDir(),
+                "Migration");
+        dir = new File(
+                dir,
+                type);
         PrintWriter pw;
         pw = init_OutputTextFilePrintWriter(
-                DW_Files.getOutputSHBETablesDir(),
-                "migration_" + type + "__Start_" + startMonth + "" + startYear + "_End_" + endMonth + "" + endYear + ".csv");
+                dir,
+                "Migration_" + type + "_Start_" + startMonth + "" + startYear + "_End_" + endMonth + "" + endYear + ".csv");
         TreeMap<String, TreeMap<String, Integer>> migrationMatrix = (TreeMap<String, TreeMap<String, Integer>>) migrationData[0];
         //TreeSet<String> originsAndDestinations = (TreeSet<String>) migrationData[1];
-
         Iterator<String> ite = getExpectedPostcodes().iterator();
         String header = "PostcodeDistrictMigrationMatrix";
         while (ite.hasNext()) {
@@ -2423,7 +3947,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         pw.close();
     }
 
-//     public void writeOutMigrationMatrix(
+//     public void writeMigrationMatrix(
 //            String[] allSHBEFilenames,
 //            Object[] migrationData,
 //            int startIndex,
@@ -2437,7 +3961,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        String endMonth = DW_SHBE_Handler.getMonth(endName);
 //        String endYear = DW_SHBE_Handler.getYear(endName);
 //
-//        PrintWriter printWriter = init_OutputTextFilePrintWriter("migration_" + type + "__Start_" + startMonth + "" + startYear + "_End_" + endMonth + "" + endYear + ".csv");
+//        PrintWriter printWriter = init_OutputTextFilePrintWriter("Migration_" + type + "_Start_" + startMonth + "" + startYear + "_End_" + endMonth + "" + endYear + ".csv");
 //        TreeMap<String, TreeMap<String, Integer>> migrationMatrix = (TreeMap<String, TreeMap<String, Integer>>) migrationData[0];
 //        TreeSet<String> originsAndDestinations = (TreeSet<String>) migrationData[1];
 //        Iterator<String> ite = originsAndDestinations.iterator();
@@ -2485,10 +4009,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * @param startIndex
      * @param endMonth
      * @param endIndex
-     * @return Object[] result where: ------------------------------------------
-     * result[0] is a TreeMap<String, TreeMap<String, Integer>> Migration
-     * Matrix;------------------------------------------------------------------
-     * result[1] is a TreeSet<String> of origins/destinations;------------------
+     * @return Object[] result where: result[0] is a
+     * {@code TreeMap<String, TreeMap<String, Integer>>} Migration Matrix;
+     * result[1] is a {@code TreeSet<String>} of origins/destinations.
      */
     public Object[] getAllClaimantMigrationData(
             String[] tSHBEfilenames,
@@ -2511,10 +4034,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         originsAndDestinations = new TreeSet<String>();
         result[1] = originsAndDestinations;
         Object[] SHBEDataStart = loadSHBEData(tSHBEfilenames[startIndex]);
-        TreeMap<String, DW_SHBE_Record> DRecordsStart = (TreeMap<String, DW_SHBE_Record>) SHBEDataStart[0];
+        TreeMap<String, DW_SHBE_D_Record> DRecordsStart = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataStart[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsStart = (TreeMap<String, DW_SHBE_Record>) SHBEDataStart[1];
         Object[] SHBEDataEnd = loadSHBEData(tSHBEfilenames[endIndex]);
-        TreeMap<String, DW_SHBE_Record> DRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[0];
+        TreeMap<String, DW_SHBE_D_Record> DRecordsEnd = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataEnd[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<String, Integer> destinationCounts;
@@ -2524,7 +4047,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         int stayPutCount = 0;
         while (ite.hasNext()) {
             councilTaxClaimNumber = ite.next();
-            DW_SHBE_Record DRecordStart = DRecordsStart.get(councilTaxClaimNumber);
+            DW_SHBE_D_Record DRecordStart = DRecordsStart.get(councilTaxClaimNumber);
             if (DRecordStart != null) {
                 String postcodeStart = DRecordStart.getClaimantsPostcode();
                 postcodeStart = DW_Postcode_Handler.formatPostcode(postcodeStart);
@@ -2551,7 +4074,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     //originsAndDestinations.add(startPostcodeDistrict);
                 }
 
-                DW_SHBE_Record DRecordEnd = DRecordsEnd.get(councilTaxClaimNumber);
+                DW_SHBE_D_Record DRecordEnd = DRecordsEnd.get(councilTaxClaimNumber);
                 String destinationPostcodeDistrict;
                 String destinationPostcode = null;
                 if (DRecordEnd == null) {
@@ -2608,9 +4131,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         ite = DRecordsEnd.keySet().iterator();
         while (ite.hasNext()) {
             councilTaxClaimNumber = ite.next();
-            DW_SHBE_Record DRecordEnd = DRecordsEnd.get(councilTaxClaimNumber);
+            DW_SHBE_D_Record DRecordEnd = DRecordsEnd.get(councilTaxClaimNumber);
             if (DRecordEnd != null) {
-                DW_SHBE_Record DRecordStart = DRecordsStart.get(councilTaxClaimNumber);
+                DW_SHBE_D_Record DRecordStart = DRecordsStart.get(councilTaxClaimNumber);
                 if (DRecordStart == null) {
                     String startPostcodeDistrict = "unknown";
                     //boolean claimantAlreadyHasBeenClaimant = false;
@@ -2683,10 +4206,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * @param endYear
      * @param startIndex
      * @param endIndex
-     * @return Object[] result where: ------------------------------------------
-     * result[0] is a TreeMap<String, TreeMap<String, Integer>> Migration
-     * Matrix;------------------------------------------------------------------
-     * result[1] is a TreeSet<String> of origins/destinations;------------------
+     * @return Object[] result where: result[0] is a
+     * {@code TreeMap<String, TreeMap<String, Integer>>} Migration Matrix;
+     * result[1] is a {@code TreeSet<String>} of origins/destinations.
      */
     public Object[] getHBClaimantOnlyMigrationData(
             String[] tSHBEfilenames,
@@ -2707,10 +4229,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         TreeSet<String> originsAndDestinations = new TreeSet<String>();
         result[1] = originsAndDestinations;
         Object[] SHBEDataStart = loadSHBEData(tSHBEfilenames[startIndex]);
-        TreeMap<String, DW_SHBE_Record> DRecordsStart = (TreeMap<String, DW_SHBE_Record>) SHBEDataStart[0];
+        TreeMap<String, DW_SHBE_D_Record> DRecordsStart = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataStart[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsStart = (TreeMap<String, DW_SHBE_Record>) SHBEDataStart[1];
         Object[] SHBEDataEnd = loadSHBEData(tSHBEfilenames[endIndex]);
-        TreeMap<String, DW_SHBE_Record> DRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[0];
+        TreeMap<String, DW_SHBE_D_Record> DRecordsEnd = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataEnd[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<String, Integer> destinationCounts;
@@ -2719,7 +4241,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         String councilTaxClaimNumber;
         while (ite.hasNext()) {
             councilTaxClaimNumber = ite.next();
-            DW_SHBE_Record DRecordStart = DRecordsStart.get(councilTaxClaimNumber);
+            DW_SHBE_D_Record DRecordStart = DRecordsStart.get(councilTaxClaimNumber);
             if (DRecordStart != null) {
                 // Filter for only Housing Benefit Claimants
                 if (!DRecordStart.getHousingBenefitClaimReferenceNumber().isEmpty()) {
@@ -2735,7 +4257,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         resultMatrix.put(startPostcodeDistrict, destinationCounts);
                         //originsAndDestinations.add(startPostcodeDistrict);
                     }
-                    DW_SHBE_Record DRecordEnd = DRecordsEnd.get(councilTaxClaimNumber);
+                    DW_SHBE_D_Record DRecordEnd = DRecordsEnd.get(councilTaxClaimNumber);
                     // Filter for only Housing Benefit Claimants
                     if (!DRecordStart.getHousingBenefitClaimReferenceNumber().isEmpty()) {
                         String destinationPostcodeDistrict;
@@ -2770,9 +4292,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         ite = DRecordsEnd.keySet().iterator();
         while (ite.hasNext()) {
             councilTaxClaimNumber = ite.next();
-            DW_SHBE_Record DRecordEnd = DRecordsEnd.get(councilTaxClaimNumber);
+            DW_SHBE_D_Record DRecordEnd = DRecordsEnd.get(councilTaxClaimNumber);
             if (DRecordEnd != null) {
-                DW_SHBE_Record DRecordStart = DRecordsStart.get(councilTaxClaimNumber);
+                DW_SHBE_D_Record DRecordStart = DRecordsStart.get(councilTaxClaimNumber);
                 if (DRecordStart == null) {
                     String startPostcodeDistrict = "unknown";
                     String destinationPostcode = DRecordEnd.getClaimantsPostcode();
@@ -2806,8 +4328,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * A method for looking at changes between consecutive months in the Under-
      * Occupancy Report data.
      *
-     * @param underOccupancyRecords
-     * @param tSHBEfilenames
+     * @param date1
+     * @param date2
+     * @param SHBESet
+     * @param SHBESet2
+     * @param underOccupiedReportSet
+     * @param underOccupiedReportSet2
      */
     public void reportBedroomTaxChanges(
             String date1,
@@ -2843,15 +4369,15 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         ite = potentiallyMoved.iterator();
         while (ite.hasNext()) {
             councilTaxClaimNumber = ite.next();
-            DW_SHBE_Record DRecordMonth2;
+            DW_SHBE_D_Record DRecordMonth2;
 //            DRecordMonth2 = DRecordsMonth2.get(councilTaxClaimNumber);
-            DRecordMonth2 = DRecordsMonth2.getDRecord(councilTaxClaimNumber);
+            DRecordMonth2 = DRecordsMonth2.getRecord(councilTaxClaimNumber).getDRecord();
             if (DRecordMonth2 == null) {
                 countOfUnderOccupancyClaimantsThatAreNoLongerClaimantsInLeeds++;
             } else {
-                DW_SHBE_Record DRecordMonth1;
+                DW_SHBE_D_Record DRecordMonth1;
 //                DRecordMonth1 = DRecordsMonth1.get(councilTaxClaimNumber);
-                DRecordMonth1 = DRecordsMonth1.getDRecord(councilTaxClaimNumber);
+                DRecordMonth1 = DRecordsMonth1.getRecord(councilTaxClaimNumber).getDRecord();
                 String postcode1 = DRecordMonth1.getClaimantsPostcode();
                 String postcode2 = DRecordMonth2.getClaimantsPostcode();
                 if (!postcode1.equalsIgnoreCase(postcode2)) {
@@ -2870,12 +4396,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         ite = underOccupiedReportSet2.getSet().keySet().iterator();
         while (ite.hasNext()) {
             councilTaxClaimNumber = ite.next();
-            DW_SHBE_Record DRecordMonth1;
+            DW_SHBE_D_Record DRecordMonth1;
 //                DRecordMonth1 = DRecordsMonth1.get(councilTaxClaimNumber);
-            DRecordMonth1 = DRecordsMonth1.getDRecord(councilTaxClaimNumber);
-            DW_SHBE_Record DRecordMonth2;
+            DRecordMonth1 = DRecordsMonth1.getRecord(councilTaxClaimNumber).getDRecord();
+            DW_SHBE_D_Record DRecordMonth2;
 //            DRecordMonth2 = DRecordsMonth2.get(councilTaxClaimNumber);
-            DRecordMonth2 = DRecordsMonth2.getDRecord(councilTaxClaimNumber);
+            DRecordMonth2 = DRecordsMonth2.getRecord(councilTaxClaimNumber).getDRecord();
             if (s.contains(councilTaxClaimNumber)) {
                 countOfRemainingClaimantsThatAreUnderOccupiers++;
                 String postcode1 = "";
@@ -2915,42 +4441,26 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * Loads SHBE Data from filename.
      *
      * @param filename
-     * @return Object[7] result where:------------------------------------------
-     * result[0] is a TreeMap<String,DW_SHBE_Record> representing records with
-     * DRecords, --------------------------------------------------------------
+     * @return Object[9] result where: null null null null null null null null
+     * null null null     {@code
+     * result[0] = TreeMap<String,DW_SHBE_Record> representing records with
+     * DRecords;
      * result[1] is a TreeMap<String, DW_SHBE_Record> representing records
-     * without DRecords, ------------------------------------------------------
-     * result[2] is a HashSet<String> of ClaimantNationalInsuranceNumberIDs,
-     * result[3] is a HashSet<String> of PartnerNationalInsuranceNumberIDs,
-     * result[4] is a HashSet<String> of DependentsNationalInsuranceNumberIDs
-     * result[5] is a HashSet<String> of NonDependentsNationalInsuranceNumberIDs
-     * result[6] is a HashSet<String> of AllHouseholdNationalInsuranceNumberIDs
+     * without DRecords;
+     * result[2] is a HashSet<String> of ClaimantNationalInsuranceNumberIDs;
+     * result[3] is a HashSet<String> of PartnerNationalInsuranceNumberIDs;
+     * result[4] is a HashSet<String> of DependentsNationalInsuranceNumberIDs;
+     * result[5] is a HashSet<String> of NonDependentsNationalInsuranceNumberIDs;
+     * result[6] is a HashSet<String> of AllHouseholdNationalInsuranceNumberIDs;
+     * result[7] is a HashMap<String, String> of NationalInsuranceNumberIDsToPostcode;
+     * result[8] is a HashMap<String, Integer> of NationalInsuranceNumberIDsToTenure.
+     * }
      */
     public Object[] loadSHBEData(String filename) {
+        System.out.println("Loading SHBE from " + filename);
         Object[] result = tDW_SHBE_Handler.loadInputData(
                 DW_Files.getInputSHBEDir(),
                 filename);
-//        TreeMap<String, DW_SHBE_Record> tDRecords;
-//        tDRecords = (TreeMap<String, DW_SHBE_Record>) result[0];
-//        System.out.println("" + tDRecords.size() + " records with DRecords loaded from " + filename);
-//        TreeMap<String, DW_SHBE_Record> tSRecords;
-//        tSRecords = (TreeMap<String, DW_SHBE_Record>) result[1];
-//        System.out.println("" + tSRecords.size() + " records without DRecords loaded from " + filename);
-//        HashSet<String> tClaimantNationalInsuranceNumberIDs;
-//        tClaimantNationalInsuranceNumberIDs = (HashSet<String>) result[2];
-//        System.out.println("Unique Claimant National Insurance Numbers count " + tClaimantNationalInsuranceNumberIDs.size());
-//        HashSet<String> tPartnerNationalInsuranceNumberIDs;
-//        tPartnerNationalInsuranceNumberIDs = (HashSet<String>) result[3];
-//        System.out.println("Unique Partner National Insurance Numbers count " + tPartnerNationalInsuranceNumberIDs.size());
-//        HashSet<String> tDependentNationalInsuranceNumberIDs;
-//        tDependentNationalInsuranceNumberIDs = (HashSet<String>) result[4];
-//        System.out.println("Unique Dependent National Insurance Numbers count " + tDependentNationalInsuranceNumberIDs.size());
-//        HashSet<String> tNonDependentNationalInsuranceNumberIDs;
-//        tNonDependentNationalInsuranceNumberIDs = (HashSet<String>) result[5];
-//        System.out.println("Unique NonDependent National Insurance Numbers count " + tNonDependentNationalInsuranceNumberIDs.size());
-//        HashSet<String> tAllHouseholdNationalInsuranceNumberIDs;
-//        tAllHouseholdNationalInsuranceNumberIDs = (HashSet<String>) result[6];
-//        System.out.println("Unique All Households National Insurance Numbers count " + tAllHouseholdNationalInsuranceNumberIDs.size());
         return result;
     }
 
@@ -2958,8 +4468,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * Writes to files aggregated details about rent arrears totals and by
      * aggregated postcode.
      *
-     * @param underOccupiedReportData
-     * @param tSHBEfilenames
+     * @param date1
+     * @param date2
+     * @param SHBESet
+     * @param SHBESet2
+     * @param underOccupiedReportSet
+     * @param underOccupiedReportSet2
      */
     public void reportUnderOccupiedIndebtedness(
             String date1,
@@ -2977,12 +4491,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //            int underOccupancyMonth = month;
 //            //int underOccupancyMonth = month + 2;
 //            String monthString = DW_SHBE_Handler.getMonth(tSHBEfilenames[month + 1]);
-        DW_SHBE_CollectionHandler DRecords;
-        DRecords = (DW_SHBE_CollectionHandler) SHBESet[0];
+        DW_SHBE_CollectionHandler records;
+        records = (DW_SHBE_CollectionHandler) SHBESet[0];
 //        TreeMap<String, DW_SHBE_Record> DRecords;
 //        DRecords = (TreeMap<String, DW_SHBE_Record>) SHBESet[0];
-        TreeMap<String, DW_SHBE_Record> SRecords;
-        SRecords = (TreeMap<String, DW_SHBE_Record>) SHBESet2[1];
+        TreeMap<String, DW_SHBE_S_Record> SRecords;
+        SRecords = (TreeMap<String, DW_SHBE_S_Record>) SHBESet2[1];
         PrintWriter pw;
         pw = init_OutputTextFilePrintWriter(
                 DW_Files.getOutputUnderOccupiedDir(),
@@ -3011,13 +4525,15 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 rentArrears_BigDecimal = new BigDecimal(rentArrears);
                 totalRentArrears_BigDecimal = totalRentArrears_BigDecimal.add(rentArrears_BigDecimal);
             }
-            DW_SHBE_Record DRecord;
+            DW_SHBE_Record record;
+            record = records.getRecord(councilTaxClaimNumber);
+            DW_SHBE_D_Record DRecord;
 //            DRecord = DRecords.get(councilTaxClaimNumber);
-            DRecord = DRecords.getDRecord(councilTaxClaimNumber);
+            DRecord = record.getDRecord();
             if (DRecord == null) {
                 System.out.println("No DRecord for underOccupiedReport_DataRecord " + underOccupiedReport_Record);
                 countMissingDRecords++;
-                DW_SHBE_Record SRecord = SRecords.get(councilTaxClaimNumber);
+                DW_SHBE_S_Record SRecord = SRecords.get(councilTaxClaimNumber);
                 if (SRecord != null) {
                     countOfSRecordsWithNoDRecord++;
                 }
@@ -3025,11 +4541,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                    DRecord.getClaimantsIncomeFromAttendanceAllowance()
 //                                        DRecord.getTotalNumberOfRooms()
 //                            
-
                 totalClaimsWithDRecords++;
                 String postcode = DRecord.getClaimantsPostcode();
                 String truncatedPostcode = postcode.substring(0, postcode.length() - 2);
-                int SRecordCount = DRecord.getSRecords().size();
+                int SRecordCount = record.getSRecords().size();
                 totalSRecordCount += SRecordCount;
                 if (postcodeTotalArrears.containsKey(truncatedPostcode)) {
                     BigDecimal current = postcodeTotalArrears.get(truncatedPostcode);
@@ -3101,8 +4616,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             int underOccupancyMonth = month;
             //int underOccupancyMonth = month + 2;
             String monthString = DW_SHBE_Handler.getMonth(tSHBEfilenames[month]);
-            TreeMap<String, DW_SHBE_Record> DRecords = (TreeMap<String, DW_SHBE_Record>) SHBEDataMonth1[0];
-            TreeMap<String, DW_SHBE_Record> SRecords = (TreeMap<String, DW_SHBE_Record>) SHBEDataMonth1[1];
+            TreeMap<String, DW_SHBE_D_Record> DRecords = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataMonth1[0];
+            TreeMap<String, DW_SHBE_D_Record> SRecords = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataMonth1[1];
             // Iterate over records and join these with SHBE records to get postcodes
             TreeMap<String, Integer> postcodeClaims = new TreeMap<String, Integer>();
             result.put(monthString, postcodeClaims);
@@ -3111,7 +4626,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             String councilTaxClaimNumber;
             while (ite.hasNext()) {
                 councilTaxClaimNumber = ite.next();
-                DW_SHBE_Record DRecord = DRecords.get(councilTaxClaimNumber);
+                DW_SHBE_D_Record DRecord = DRecords.get(councilTaxClaimNumber);
                 if (DRecord != null) {
                     String postcode = DRecord.getClaimantsPostcode();
                     // Format postcode
@@ -3158,8 +4673,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        TreeMap<String, DW_SHBE_Record> DRecords;
 //        DRecords = (TreeMap<String, DW_SHBE_Record>) SHBESet[0];
 
-        TreeMap<String, DW_SHBE_Record> SRecords;
-        SRecords = (TreeMap<String, DW_SHBE_Record>) SHBESet[1];
+        TreeMap<String, DW_SHBE_S_Record> SRecords;
+        SRecords = (TreeMap<String, DW_SHBE_S_Record>) SHBESet[1];
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<String, Integer> aggregatedClaims = new TreeMap<String, Integer>();
         result.put(date, aggregatedClaims);
@@ -3168,9 +4683,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         String councilTaxClaimNumber;
         while (ite.hasNext()) {
             councilTaxClaimNumber = ite.next();
-            DW_SHBE_Record DRecord;
+            DW_SHBE_D_Record DRecord;
 //            DRecord = DRecords.get(councilTaxClaimNumber);
-            DRecord = DRecords.getDRecord(councilTaxClaimNumber);
+            DRecord = DRecords.getRecord(councilTaxClaimNumber).getDRecord();
             if (DRecord != null) {
                 String postcode = DRecord.getClaimantsPostcode();
                 // Format postcode
@@ -3240,13 +4755,13 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             String monthString = DW_SHBE_Handler.getMonth(tSHBEfilenames[month]);
             result.put(monthString, monthsResult);
             Object[] SHBEData = loadSHBEData(tSHBEfilenames[month]);
-            TreeMap<String, DW_SHBE_Record> DRecords = (TreeMap<String, DW_SHBE_Record>) SHBEData[0];
+            TreeMap<String, DW_SHBE_D_Record> DRecords = (TreeMap<String, DW_SHBE_D_Record>) SHBEData[0];
             //TreeMap<String, DW_SHBE_Record> SRecordsWithoutDRecords = (TreeMap<String, DW_SHBE_Record>) SHBEData[1];
             Iterator<String> ite = DRecords.keySet().iterator();
             String postcode;
             while (ite.hasNext()) {
                 String councilTaxClaimNumber = ite.next();
-                DW_SHBE_Record rec = DRecords.get(councilTaxClaimNumber);
+                DW_SHBE_D_Record rec = DRecords.get(councilTaxClaimNumber);
                 postcode = rec.getClaimantsPostcode();
                 String[] partsOfPostcode = postcode.trim().split(" ");
                 if (partsOfPostcode.length == 2) {
@@ -3290,8 +4805,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         DW_SHBE_CollectionHandler DRecords;
         DRecords = (DW_SHBE_CollectionHandler) SHBESet[0];
 
-        TreeMap<String, DW_SHBE_Record> SRecords;
-        SRecords = (TreeMap<String, DW_SHBE_Record>) SHBESet[1];
+        TreeMap<String, DW_SHBE_D_Record> SRecords;
+        SRecords = (TreeMap<String, DW_SHBE_D_Record>) SHBESet[1];
         int countOfRecordsNotAggregatedDueToUnrecognisedPostcode = 0;
         TreeMap<String, Integer> monthsResult = new TreeMap<String, Integer>();
         result.put(date, monthsResult);
@@ -3302,9 +4817,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         String postcode;
         while (ite.hasNext()) {
             String councilTaxClaimNumber = ite.next();
-            DW_SHBE_Record rec;
+            DW_SHBE_D_Record rec;
 //            rec = DRecords.get(councilTaxClaimNumber);
-            rec = DRecords.getDRecord(councilTaxClaimNumber);
+            rec = DRecords.getRecord(councilTaxClaimNumber).getDRecord();
             postcode = rec.getClaimantsPostcode();
             String[] partsOfPostcode = postcode.trim().split(" ");
             if (partsOfPostcode.length == 2) {
@@ -3605,7 +5120,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         Object[] tSHBE_January2013 = tDW_SHBE_Handler.loadInputData(
                 DW_Files.getInputSHBEDir(),
                 filename);
-        HashSet<DW_SHBE_Record> tSHBE_January2013_Records = (HashSet<DW_SHBE_Record>) tSHBE_January2013[0];
+        HashSet<DW_SHBE_D_Record> tSHBE_January2013_Records = (HashSet<DW_SHBE_D_Record>) tSHBE_January2013[0];
         System.out.println("" + tSHBE_January2013_Records.size() + " records loaded from " + filename);
 //totalCouncilTaxBenefitClaims 87541
 //totalCouncilTaxAndHousingBenefitClaims 71221
@@ -3624,7 +5139,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         Object[] tSHBE_February2013 = tDW_SHBE_Handler.loadInputData(
                 DW_Files.getInputSHBEDir(),
                 filename);
-        HashSet<DW_SHBE_Record> tSHBE_February2013_Records = (HashSet<DW_SHBE_Record>) tSHBE_February2013[0];
+        HashSet<DW_SHBE_D_Record> tSHBE_February2013_Records = (HashSet<DW_SHBE_D_Record>) tSHBE_February2013[0];
         System.out.println("" + tSHBE_February2013_Records.size() + " records loaded from " + filename);
 //totalCouncilTaxBenefitClaims 87764
 //totalCouncilTaxAndHousingBenefitClaims 71497
@@ -3700,16 +5215,16 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             Object[] tSHBE_time2,
             PrintWriter reportingPW) {
 
-        HashSet<DW_SHBE_Record> tSHBE_time1DRecords = (HashSet<DW_SHBE_Record>) tSHBE_time1[0];
-        HashSet<DW_SHBE_Record> tSHBE_time1SRecords = (HashSet<DW_SHBE_Record>) tSHBE_time1[1];
+        HashSet<DW_SHBE_D_Record> tSHBE_time1DRecords = (HashSet<DW_SHBE_D_Record>) tSHBE_time1[0];
+        HashSet<DW_SHBE_D_Record> tSHBE_time1SRecords = (HashSet<DW_SHBE_D_Record>) tSHBE_time1[1];
         HashSet<String> tSHBE_time1ClaimantNationalInsuranceNumberIDs = (HashSet<String>) tSHBE_time1[2];
         HashSet<String> tSHBE_time1PartnerNationalInsuranceNumberIDs = (HashSet<String>) tSHBE_time1[3];
         HashSet<String> tSHBE_time1DependentsNationalInsuranceNumberIDs = (HashSet<String>) tSHBE_time1[4];
         HashSet<String> tSHBE_time1NonDependentsNationalInsuranceNumberIDs = (HashSet<String>) tSHBE_time1[5];
         HashSet<String> tSHBE_time1AllHouseholdNationalInsuranceNumberIDs = (HashSet<String>) tSHBE_time1[6];
 
-        HashSet<DW_SHBE_Record> tSHBE_time2DRecords = (HashSet<DW_SHBE_Record>) tSHBE_time2[0];
-        HashSet<DW_SHBE_Record> tSHBE_time2SRecords = (HashSet<DW_SHBE_Record>) tSHBE_time2[1];
+        HashSet<DW_SHBE_D_Record> tSHBE_time2DRecords = (HashSet<DW_SHBE_D_Record>) tSHBE_time2[0];
+        HashSet<DW_SHBE_D_Record> tSHBE_time2SRecords = (HashSet<DW_SHBE_D_Record>) tSHBE_time2[1];
         HashSet<String> tSHBE_time2ClaimantNationalInsuranceNumberIDs = (HashSet<String>) tSHBE_time2[2];
         HashSet<String> tSHBE_time2PartnerNationalInsuranceNumberIDs = (HashSet<String>) tSHBE_time2[3];
         HashSet<String> tSHBE_time2DependentsNationalInsuranceNumberIDs = (HashSet<String>) tSHBE_time2[4];

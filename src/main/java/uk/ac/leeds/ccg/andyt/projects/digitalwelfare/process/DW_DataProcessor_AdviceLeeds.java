@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_StaticCollections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB1_Handler;
@@ -135,7 +135,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
         tDeprivationData = getDeprivation_Data();
         // Get postcode to LSOA lookup
         TreeMap<String, String> tLookupFromPostcodeToLSOACensusCode;
-        tLookupFromPostcodeToLSOACensusCode = getLookupFromPostcodeToCensusCode(
+        tLookupFromPostcodeToLSOACensusCode = getLookupFromPostcodeToLevelCode(
                 "LSOA", 2011);
         // Get postcode to level lookup
         TreeMap<String, String> tLookupFromPostcodeToCensusCode;
@@ -145,7 +145,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                 || level.equalsIgnoreCase("LSOA")) {
             tLookupFromPostcodeToCensusCode = tLookupFromPostcodeToLSOACensusCode;
         } else {
-            tLookupFromPostcodeToCensusCode = getLookupFromPostcodeToCensusCode(
+            tLookupFromPostcodeToCensusCode = getLookupFromPostcodeToLevelCode(
                     level, 2011);
         }
         TreeMap<Integer, Integer> deprivationClasses;
@@ -326,14 +326,14 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
         // Get postcode to LSOA lookup
         String level = "LSOA";
         TreeMap<String, String> tLookupFromPostcodeToLSOACensusCode;
-        tLookupFromPostcodeToLSOACensusCode = getLookupFromPostcodeToCensusCode(
+        tLookupFromPostcodeToLSOACensusCode = getLookupFromPostcodeToLevelCode(
                 level, 2011);
         // Get postcode to level lookup
         TreeMap<String, String> tLookupFromPostcodeToCensusCode;
         if (level.equalsIgnoreCase("LSOA")) {
             tLookupFromPostcodeToCensusCode = tLookupFromPostcodeToLSOACensusCode;
         } else {
-            tLookupFromPostcodeToCensusCode = getLookupFromPostcodeToCensusCode(
+            tLookupFromPostcodeToCensusCode = getLookupFromPostcodeToLevelCode(
                     level, 2011);
         }
         // Get deprivationClasses
@@ -806,7 +806,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
 //
 //        String level = "MSOA";
 //        TreeMap<String, String> tLookupFromPostcodeToCensusCodes;
-//        tLookupFromPostcodeToCensusCodes = getLookupFromPostcodeToCensusCode(level, 2011);
+//        tLookupFromPostcodeToCensusCodes = getLookupFromPostcodeToLevelCode(level, 2011);
 //        
 //        TreeMap<String, CAB_DataRecord1> tQ11314LeedsCABData;
 //        tQ11314LeedsCABData = tCAB_DataRecord1_Handler.loadInputData_EnquiryClientOutletID(
@@ -1040,15 +1040,15 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                 if (!(outlet.equalsIgnoreCase("AllLeedsCAB"))) {
                     max = Math.max(max, count);
                     min = Math.min(min, count);
-                    Generic_Collections.addToTreeMapStringInteger(
+                    Generic_StaticCollections.addToTreeMapStringInteger(
                             sums,
                             area,
                             count);
-                    Generic_Collections.setMaxValueTreeMapStringInteger(
+                    Generic_StaticCollections.setMaxValueTreeMapStringInteger(
                             maxs,
                             area,
                             count);
-                    Generic_Collections.setMinValueTreeMapStringInteger(
+                    Generic_StaticCollections.setMinValueTreeMapStringInteger(
                             mins,
                             area,
                             count);

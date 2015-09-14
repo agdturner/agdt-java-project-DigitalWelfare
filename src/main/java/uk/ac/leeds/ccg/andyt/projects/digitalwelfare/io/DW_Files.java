@@ -19,6 +19,9 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.TreeMap;
 
 /**
  *
@@ -63,6 +66,7 @@ public class DW_Files {
     private static File _DW_outputSHBEDir;
     private static File _DW_outputSHBEMapsDir;
     private static File _DW_outputSHBETablesDir;
+    private static File _DW_outputSHBEPlotsDir;
     private static File _DW_outputAdviceLeedsTablesDir;
     private static File _DW_outputUnderOccupiedDir;
 
@@ -338,7 +342,39 @@ public class DW_Files {
                 getGeneratedSHBEDir(),
                 level);
     }
+    
+    public static ArrayList<File> getGeneratedSHBELevelDirsArrayList(
+            ArrayList<String> levels) {
+        ArrayList<File> result;
+        result = new ArrayList<File>();
+        Iterator<String> ite;
+        ite = levels.iterator();
+        while (ite.hasNext()) {
+            String level = ite.next();
+            File outputDir = new File(
+                    DW_Files.getGeneratedSHBEDir(),
+                    level);
+            result.add(outputDir);
+        }
+        return result;
+    }
 
+    public static TreeMap<String, File> getGeneratedSHBELevelDirsTreeMap(
+            ArrayList<String> levels) {
+        TreeMap<String, File> result;
+        result = new TreeMap<String, File>();
+        Iterator<String> ite;
+        ite = levels.iterator();
+        while (ite.hasNext()) {
+            String level = ite.next();
+            File outputDir = new File(
+                    DW_Files.getGeneratedSHBEDir(),
+                    level);
+            result.put(level,outputDir);
+        }
+        return result;
+    }
+    
     public static File getGeneratedUnderOccupiedDir() {
         if (_DW_generatedUnderOccupiedDir == null) {
             _DW_generatedUnderOccupiedDir = new File(
@@ -457,6 +493,16 @@ public class DW_Files {
             _DW_outputSHBETablesDir.mkdirs();
         }
         return _DW_outputSHBETablesDir;
+    }
+
+    public static File getOutputSHBEPlotsDir() {
+        if (_DW_outputSHBEPlotsDir == null) {
+            _DW_outputSHBEPlotsDir = new File(
+                    getOutputSHBEDir(),
+                    "Plots");
+            _DW_outputSHBEPlotsDir.mkdirs();
+        }
+        return _DW_outputSHBEPlotsDir;
     }
 
     public static File getOutputSHBEChoroplethDir() {

@@ -17,15 +17,17 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jts.version>1.12</jts.version>
+        <geotools.version>13-SNAPSHOT</geotools.version>
         <!--
+        <geotools.version>14-SNAPSHOT</geotools.version>
+        <geotools.version>13.1</geotools.version>
         <geotools.version>12</geotools.version>
         <geotools.version>12-RC1</geotools.version>
         <geotools.version>12-SNAPSHOT</geotools.version>
         <geotools.version>12.0.1</geotools.version>
         <geotools.version>12.1</geotools.version>
         -->
-        <jts.version>1.12</jts.version>
-        <geotools.version>13-SNAPSHOT</geotools.version>
         <agdtgeotools.version>0.1.0-SNAPSHOT</agdtgeotools.version>
         <agdtcensus.version>0.1.0-SNAPSHOT</agdtcensus.version>
         <generic.version>1.0-SNAPSHOT</generic.version>
@@ -123,13 +125,11 @@
             <artifactId>grids</artifactId>
             <version>${grids.version}</version>
         </dependency>
-        <!--
         <dependency>
             <groupId>uk.ac.leeds.ccg.andyt</groupId>
             <artifactId>web</artifactId>
             <version>${web.version}</version>
         </dependency>
-        -->
     </dependencies>
     
     <repositories>

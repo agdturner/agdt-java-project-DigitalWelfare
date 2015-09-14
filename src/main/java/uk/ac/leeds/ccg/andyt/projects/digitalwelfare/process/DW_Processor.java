@@ -22,7 +22,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 
 /**
@@ -80,7 +80,7 @@ public abstract class DW_Processor {
      * @param filename The name of the file to be initialised for writing to.
      * @return PrintWriter for pushing output to.
      */
-    protected PrintWriter init_OutputTextFilePrintWriter(
+    protected static PrintWriter init_OutputTextFilePrintWriter(
             File dir,
             String filename) {
         PrintWriter result = null;
@@ -287,7 +287,7 @@ public abstract class DW_Processor {
      * @return TreeMap<String, String> result where:--------------------------
      * Keys are postcodes; values are census area codes.
      */
-    public static TreeMap<String, String> getLookupFromPostcodeToCensusCode(
+    public static TreeMap<String, String> getLookupFromPostcodeToLevelCode(
             String level,
             int year) {
         TreeMap<String, String> result;

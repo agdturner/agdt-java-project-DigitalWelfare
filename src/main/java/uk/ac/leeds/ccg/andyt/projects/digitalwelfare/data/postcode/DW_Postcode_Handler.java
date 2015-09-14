@@ -30,7 +30,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 
 /**
@@ -44,6 +44,31 @@ public class DW_Postcode_Handler implements Serializable {
      */
     private static final String className = "PostcodeGeocoder";
 
+    public static double getDistanceBetweenPostcodes(
+            String aPostcode,
+            String bPostcode) {
+        double result = 0.0d;
+        AGDT_Point aPoint;
+        aPoint = getPointFromPostcode(aPostcode);
+        AGDT_Point bPoint;
+        bPoint = getPointFromPostcode(bPostcode);
+        if (aPoint != null && bPoint != null) {
+            result = aPoint.getDistance(bPoint);
+        } else {
+            System.out.println("<Issue calculating distance between postcodes: " + aPostcode + " and " + bPostcode + "/>");
+//            System.out.println("<Issue calculating distance between postcodes: " + aPostcode + " and " + bPostcode + ">");
+//            if (aPoint == null) {
+//                System.out.println("No point look up for " + aPostcode);
+//            }
+//            if (bPoint == null) {
+//                System.out.println("No point look up for " + bPostcode);                
+//            }
+//            System.out.println("</Issue calculating distance between postcodes: " + aPostcode + " and " + bPostcode + ">");
+//            int debug = 1;
+        }
+        return result;
+    }
+
     /**
      *
      * @param level Expects either "Unit", "Sector" or "Area"
@@ -51,6 +76,9 @@ public class DW_Postcode_Handler implements Serializable {
      * @return
      */
     public static AGDT_Point getPointFromPostcode(String level, String postcode) {
+        if (level == null) {
+            return null;
+        }
         AGDT_Point result;
         String formattedPostcode;
         formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
@@ -157,7 +185,38 @@ public class DW_Postcode_Handler implements Serializable {
      * @return
      */
     public static String getPostcodeDistrict(String unitPostcode) {
-        return unitPostcode.split(" ")[0];
+        String result = "";
+        String p;
+        p = unitPostcode.trim();
+        if (p.length() < 3) {
+            //throw new Exception("Postcode format exception 1 in getPostcodeSector(" + unitPostcode + " )");
+            return result;
+        } else {
+            String[] pp = p.split(" ");
+            if (pp.length == 2) {
+                result = pp[0];
+                return result;
+            } else {
+                if (pp.length == 1) {
+                    int length = p.length();
+                    result = p.substring(0, length - 2);
+                    result = result.trim();
+                    if (result.length() < 3) {
+                        return "";
+                    }
+                    return result;
+                } else {
+                    //throw new Exception("Postcode format exception 2 in getPostcodeSector(" + unitPostcode + " )");
+                    // Put the first and second parts together.
+                    result += pp[0];
+                    result += pp[1];
+                    if (result.length() < 3) {
+                        return "";
+                    }
+                    return result;
+                }
+            }
+        }
     }
 
     /**
@@ -174,8 +233,6 @@ public class DW_Postcode_Handler implements Serializable {
     }
 
     /**
-     * Creates a new instance of this class using directory.
-     *
      * @param inputFile
      * @param outputFile
      */
@@ -334,6 +391,23 @@ public class DW_Postcode_Handler implements Serializable {
             return null;
         }
         String[] pa;
+        if (p.contains("  ")) {
+            pa = p.split("  ");
+            if (p.length() == 1) {
+                return "Area";
+            }
+            if (pa.length == 2) {
+                String pa1;
+                pa1 = pa[1];
+                if (pa1.length() == 3) {
+                    return "Unit";
+                }
+                if (pa1.length() == 1) {
+                    return "Sector";
+                }
+            }
+            return null;
+        }
         pa = p.split(" ");
         if (p.length() == 1) {
             return "Area";
@@ -341,6 +415,19 @@ public class DW_Postcode_Handler implements Serializable {
         if (pa.length == 2) {
             String pa1;
             pa1 = pa[1];
+            if (pa1.length() == 3) {
+                return "Unit";
+            }
+            if (pa1.length() == 1) {
+                return "Sector";
+            }
+        }
+        if (pa.length > 2) {
+            // Assume the first two parts should be joined together as the 
+            // outward part of the postcode and the third part is the inward 
+            // part.
+            String pa1;
+            pa1 = pa[2];
             if (pa1.length() == 3) {
                 return "Unit";
             }
@@ -415,8 +502,10 @@ public class DW_Postcode_Handler implements Serializable {
         HashMap<String, String> result = new HashMap<String, String>();
         try {
             int lineCounter = 0;
-            int recordCounter = 0;
-            StreamTokenizer aStreamTokenizer = getStreamTokeniser(file);
+            //int recordCounter = 0;
+            BufferedReader br;
+            br = Generic_StaticIO.getBufferedReader(file);
+            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
@@ -441,6 +530,7 @@ public class DW_Postcode_Handler implements Serializable {
                 }
                 tokenType = aStreamTokenizer.nextToken();
             }
+            br.close();
         } catch (IOException aIOException) {
             System.err.println(aIOException.getMessage() + " in "
                     + this.getClass().getName()
@@ -710,27 +800,40 @@ public class DW_Postcode_Handler implements Serializable {
      * @throws java.lang.Exception
      */
     public static String getPostcodeSector(String unitPostcode) {
-        String result;
+        String result = "";
         String p;
         p = unitPostcode.trim();
-        if (p.length() < 2) {
+        if (p.length() < 5) {
             //throw new Exception("Postcode format exception 1 in getPostcodeSector(" + unitPostcode + " )");
-            result = null;
-        }
-        String[] pp = p.split(" ");
-        if (pp.length == 2) {
-            result = pp[0] + " " + pp[1].substring(0, 1);
+            return result;
         } else {
-            if (pp.length == 1) {
-                int length = p.length();
-                result = p.substring(0, length - 2);
-                result = result.trim();
+            String[] pp = p.split(" ");
+            if (pp.length == 2) {
+                result = pp[0] + " " + pp[1].substring(0, 1);
+                return result;
             } else {
-                //throw new Exception("Postcode format exception 2 in getPostcodeSector(" + unitPostcode + " )");
-                result = null;
+                if (pp.length == 1) {
+                    int length = p.length();
+                    result = p.substring(0, length - 2);
+                    result = result.trim();
+                    if (result.length() < 5) {
+                        return "";
+                    }
+                    return result;
+                } else {
+                    //throw new Exception("Postcode format exception 2 in getPostcodeSector(" + unitPostcode + " )");
+                    // Put the first and second parts together and add the first part of the third
+                    result += pp[0];
+                    result += pp[1] + " ";
+                    result += pp[2].substring(0, 1);
+                    if (result.length() < 5) {
+                        return "";
+                    }
+                    return result;
+                }
             }
         }
-        return result;
+        //return result;
     }
 
     public static String getPostcodeArea(String ONSPDPostcodeUnit) {
@@ -752,7 +855,9 @@ public class DW_Postcode_Handler implements Serializable {
         try {
             int lineCounter = 0;
             int recordCounter = 0;
-            StreamTokenizer aStreamTokenizer = getStreamTokeniser(file);
+            BufferedReader br;
+            br = Generic_StaticIO.getBufferedReader(file);
+            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
@@ -797,6 +902,7 @@ public class DW_Postcode_Handler implements Serializable {
                 }
                 tokenType = aStreamTokenizer.nextToken();
             }
+            br.close();
         } catch (IOException aIOException) {
             System.err.println(aIOException.getMessage() + " in "
                     + this.getClass().getName()
@@ -812,7 +918,9 @@ public class DW_Postcode_Handler implements Serializable {
         try {
             int lineCounter = 0;
             int recordCounter = 0;
-            StreamTokenizer aStreamTokenizer = getStreamTokeniser(file);
+            BufferedReader br;
+            br = Generic_StaticIO.getBufferedReader(file);
+            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
@@ -834,6 +942,7 @@ public class DW_Postcode_Handler implements Serializable {
                 }
                 tokenType = aStreamTokenizer.nextToken();
             }
+            br.close();
         } catch (IOException aIOException) {
             System.err.println(aIOException.getMessage() + " in "
                     + this.getClass().getName()
@@ -855,7 +964,9 @@ public class DW_Postcode_Handler implements Serializable {
         try {
             int lineCounter = 0;
             int recordCounter = 0;
-            StreamTokenizer aStreamTokenizer = getStreamTokeniser(file);
+            BufferedReader br;
+            br = Generic_StaticIO.getBufferedReader(file);
+            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
@@ -882,6 +993,7 @@ public class DW_Postcode_Handler implements Serializable {
                 }
                 tokenType = aStreamTokenizer.nextToken();
             }
+            br.close();
         } catch (IOException aIOException) {
             System.err.println(aIOException.getMessage() + " in "
                     + this.getClass().getName()
@@ -907,7 +1019,9 @@ public class DW_Postcode_Handler implements Serializable {
         try {
             int lineCounter = 0;
             int recordCounter = 0;
-            StreamTokenizer aStreamTokenizer = getStreamTokeniser(file);
+            BufferedReader br;
+            br = Generic_StaticIO.getBufferedReader(file);
+            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
@@ -945,6 +1059,16 @@ public class DW_Postcode_Handler implements Serializable {
                                 }
                             }
                         }
+                        String postcode = rec.getPcd();
+                        if (level.equalsIgnoreCase("PostcodeUnit")) {
+                            value = postcode;
+                        }
+                        if (level.equalsIgnoreCase("PostcodeSector")) {
+                            value = getPostcodeSector(postcode);
+                        }
+                        if (level.equalsIgnoreCase("PostcodeDistrict")) {
+                            value = getPostcodeDistrict(postcode);
+                        }
                         result.put(rec.getPcd(), value);
                         lineCounter++;
                         if (lineCounter % 100000 == 0) {
@@ -957,6 +1081,7 @@ public class DW_Postcode_Handler implements Serializable {
                 }
                 tokenType = aStreamTokenizer.nextToken();
             }
+            br.close();
         } catch (IOException aIOException) {
             System.err.println(aIOException.getMessage() + " in "
                     + this.getClass().getName()
@@ -978,7 +1103,9 @@ public class DW_Postcode_Handler implements Serializable {
         try {
             int lineCounter = 0;
             int recordCounter = 0;
-            StreamTokenizer aStreamTokenizer = getStreamTokeniser(file);
+            BufferedReader br;
+            br = Generic_StaticIO.getBufferedReader(file);
+            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
@@ -1005,6 +1132,7 @@ public class DW_Postcode_Handler implements Serializable {
                 }
                 tokenType = aStreamTokenizer.nextToken();
             }
+            br.close();
         } catch (IOException aIOException) {
             System.err.println(aIOException.getMessage() + " in "
                     + this.getClass().getName()
@@ -1014,10 +1142,8 @@ public class DW_Postcode_Handler implements Serializable {
         return result;
     }
 
-    private StreamTokenizer getStreamTokeniser(File file) {
+    private StreamTokenizer getStreamTokeniser(BufferedReader br) {
         StreamTokenizer result = null;
-        BufferedReader br;
-        br = Generic_StaticIO.getBufferedReader(file);
         result = new StreamTokenizer(br);
         result.resetSyntax();
         result.wordChars(',', ',');

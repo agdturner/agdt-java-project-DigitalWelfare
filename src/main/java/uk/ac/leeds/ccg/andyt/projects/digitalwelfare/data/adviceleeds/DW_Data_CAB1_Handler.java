@@ -34,52 +34,53 @@ import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
  */
 public class DW_Data_CAB1_Handler {
 
-    public DW_Data_CAB1_Handler() {}
+    public DW_Data_CAB1_Handler() {
+    }
 
     /**
-     * Loads LeedsCAB data from a file in directory, filename reporting progress of
-     * loading to PrintWriter pw.
+     * Loads LeedsCAB data from a file in directory, filename reporting progress
+     * of loading to PrintWriter pw.
      *
      * @param directory
      * @param filename
      * @param pw
      * @return TreeMap<String,DW_Data_CAB1_Record> representing records
      */
-    public TreeMap<String,DW_Data_CAB1_Record> loadInputData(
+    public TreeMap<String, DW_Data_CAB1_Record> loadInputData(
             File directory,
             String filename,
             PrintWriter pw) {
         System.out.println("Loading " + filename);
-        TreeMap<String,DW_Data_CAB1_Record> result;
-        result = new TreeMap<String,DW_Data_CAB1_Record>();
+        TreeMap<String, DW_Data_CAB1_Record> result;
+        result = new TreeMap<String, DW_Data_CAB1_Record>();
         File inputFile = new File(
                 directory,
                 filename);
-        BufferedReader br;
-        br = Generic_StaticIO.getBufferedReader(inputFile);
-        StreamTokenizer st;
-        st = new StreamTokenizer(br);
-        Generic_StaticIO.setStreamTokenizerSyntax5(st);
-        st.wordChars('`', '`');
-        st.wordChars('(', '(');
-        st.wordChars(')', ')');
-        st.wordChars('\'', '\'');
-        st.wordChars('*', '*');
-        st.wordChars('\\', '\\');
-        st.wordChars('/', '/');
-        st.wordChars('&', '&');
-        st.wordChars('£', '£');
-        st.wordChars('<', '<');
-        st.wordChars('>', '>');
-        st.wordChars('=', '=');
-        st.wordChars('#', '#');
-        st.wordChars(':', ':');
-        String line = "";
-        long RecordID = 0;
         try {
+            BufferedReader br;
+            br = Generic_StaticIO.getBufferedReader(inputFile);
+            StreamTokenizer st;
+            st = new StreamTokenizer(br);
+            Generic_StaticIO.setStreamTokenizerSyntax5(st);
+            st.wordChars('`', '`');
+            st.wordChars('(', '(');
+            st.wordChars(')', ')');
+            st.wordChars('\'', '\'');
+            st.wordChars('*', '*');
+            st.wordChars('\\', '\\');
+            st.wordChars('/', '/');
+            st.wordChars('&', '&');
+            st.wordChars('£', '£');
+            st.wordChars('<', '<');
+            st.wordChars('>', '>');
+            st.wordChars('=', '=');
+            st.wordChars('#', '#');
+            st.wordChars(':', ':');
+            String line = "";
+            long RecordID = 0;
             // Skip the header
             int headerLines = 16;
-            for (int i = 0; i < headerLines; i ++) {
+            for (int i = 0; i < headerLines; i++) {
                 Generic_StaticIO.skipline(st);
             }
             // Read data
@@ -98,19 +99,19 @@ public class DW_Data_CAB1_Handler {
                         break;
                     case StreamTokenizer.TT_WORD:
                         line = st.sval;
-                            try { 
-                                DW_Data_CAB1_Record record = new DW_Data_CAB1_Record(RecordID, line, this);
-                                String clientProfileID = record.getClientProfileID();
-                                if (result.containsKey(clientProfileID)) {
-                                    System.out.println("Additional record for client " + clientProfileID);
-                                } else {
-                                    result.put(clientProfileID, record);
-                                }
-                            } catch (Exception e) {
-                                System.err.println(line);
-                                System.err.println("RecordID " + RecordID);
-                                System.err.println(e.getLocalizedMessage());
-                         }
+                        try {
+                            DW_Data_CAB1_Record record = new DW_Data_CAB1_Record(RecordID, line, this);
+                            String clientProfileID = record.getClientProfileID();
+                            if (result.containsKey(clientProfileID)) {
+                                System.out.println("Additional record for client " + clientProfileID);
+                            } else {
+                                result.put(clientProfileID, record);
+                            }
+                        } catch (Exception e) {
+                            System.err.println(line);
+                            System.err.println("RecordID " + RecordID);
+                            System.err.println(e.getLocalizedMessage());
+                        }
                         RecordID++;
                         break;
                 }

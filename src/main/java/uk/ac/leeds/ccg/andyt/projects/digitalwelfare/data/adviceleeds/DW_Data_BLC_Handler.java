@@ -60,33 +60,33 @@ public class DW_Data_BLC_Handler {
         File inputFile = new File(
                 directory,
                 filename);
-        BufferedReader br;
-        br = Generic_StaticIO.getBufferedReader(inputFile);
-        StreamTokenizer st;
-        st = new StreamTokenizer(br);
-        Generic_StaticIO.setStreamTokenizerSyntax5(st);
-        st.wordChars('`', '`');
-        st.wordChars('(', '(');
-        st.wordChars(')', ')');
-        st.wordChars('\'', '\'');
-        st.wordChars('\"', '\"');
-        st.wordChars('*', '*');
-        st.wordChars('\\', '\\');
-        st.wordChars('/', '/');
-        st.wordChars('&', '&');
-        st.wordChars('£', '£');
-        st.wordChars('<', '<');
-        st.wordChars('>', '>');
-        st.wordChars('=', '=');
-        st.wordChars('#', '#');
-        st.wordChars(':', ':');
-        st.wordChars('�', '�');
-        st.wordChars('!', '!');
-        String line = "";
-        long RecordID = 0;
-        int recordsLoaded = 0;
-        int additionalRecordsForClientsThatAreIgnored = 0;
         try {
+            BufferedReader br;
+            br = Generic_StaticIO.getBufferedReader(inputFile);
+            StreamTokenizer st;
+            st = new StreamTokenizer(br);
+            Generic_StaticIO.setStreamTokenizerSyntax5(st);
+            st.wordChars('`', '`');
+            st.wordChars('(', '(');
+            st.wordChars(')', ')');
+            st.wordChars('\'', '\'');
+            st.wordChars('\"', '\"');
+            st.wordChars('*', '*');
+            st.wordChars('\\', '\\');
+            st.wordChars('/', '/');
+            st.wordChars('&', '&');
+            st.wordChars('£', '£');
+            st.wordChars('<', '<');
+            st.wordChars('>', '>');
+            st.wordChars('=', '=');
+            st.wordChars('#', '#');
+            st.wordChars(':', ':');
+            st.wordChars('�', '�');
+            st.wordChars('!', '!');
+            String line = "";
+            long RecordID = 0;
+            int recordsLoaded = 0;
+            int additionalRecordsForClientsThatAreIgnored = 0;
             // Skip the header
             int headerLines = 8;
             for (int i = 0; i < headerLines; i++) {
@@ -135,12 +135,12 @@ public class DW_Data_BLC_Handler {
                 tokenType = st.nextToken();
             }
             br.close();
+            System.out.println("Number of records loaded " + recordsLoaded);
+            System.out.println("Number of records not loaded " + (RecordID - recordsLoaded));
+            System.out.println("Number of additional records for clients that are ignored " + additionalRecordsForClientsThatAreIgnored);
         } catch (IOException ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Number of records loaded " + recordsLoaded);
-        System.out.println("Number of records not loaded " + (RecordID - recordsLoaded));
-        System.out.println("Number of additional records for clients that are ignored " + additionalRecordsForClientsThatAreIgnored);
         return result;
     }
 
