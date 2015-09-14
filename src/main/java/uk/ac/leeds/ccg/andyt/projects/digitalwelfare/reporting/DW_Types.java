@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_StaticTime;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 public class DW_Types extends DW_HTMLPage {
@@ -187,7 +187,7 @@ public class DW_Types extends DW_HTMLPage {
         String baseReportDir = mainDirectoryName + "/" + reportName + "/" + "Definitions/";
         String baseURLString0 = "http://www.geog.leeds.ac.uk/people/a.turner/"
                 + projectName + "/" + baseReportDir;
-        String date = Generic_StaticTime.getDate();
+        String date = Generic_Time.getDate();
 
         File dir = new File(
                 DW_Files.getOutputDir(),

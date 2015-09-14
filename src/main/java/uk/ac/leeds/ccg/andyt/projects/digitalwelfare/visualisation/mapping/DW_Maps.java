@@ -51,7 +51,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Maps;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_StaticCollections;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
@@ -922,7 +922,7 @@ public abstract class DW_Maps extends AGDT_Maps {
                         inAndOutOfRegionCount);
             } else {
                 if (countClientsInAndOutOfRegion) {
-                    Generic_StaticCollections.addToTreeMapIntegerInteger(
+                    Generic_Collections.addToTreeMapIntegerInteger(
                             inAndOutOfRegionCount, 0, clientCount);
                 }
                 
@@ -948,7 +948,7 @@ public abstract class DW_Maps extends AGDT_Maps {
                         inAndOutOfRegionCount);
             } else {
                 if (countClientsInAndOutOfRegion) {
-                    Generic_StaticCollections.addToTreeMapIntegerInteger(
+                    Generic_Collections.addToTreeMapIntegerInteger(
                             inAndOutOfRegionCount, 0, clientCount);
                 }
             }
@@ -1020,7 +1020,7 @@ public abstract class DW_Maps extends AGDT_Maps {
 //            System.out.println("" + id_int + ", " + areaCode + ", " + clientCount + ", " + area + ", " + pop);
         }
         if (countClientsInAndOutOfRegion) {
-            Generic_StaticCollections.addToTreeMapIntegerInteger(
+            Generic_Collections.addToTreeMapIntegerInteger(
                     inAndOutOfRegionCount,
                     1,
                     clientCount);

@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_double;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_StaticCollections;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Record;
@@ -855,11 +855,11 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                                    //System.out.println("No Census code for postcode: " + postcode1);
 //                                    String firstPartPostcode;
 //                                    firstPartPostcode = postcode1.trim().split(" ")[0];
-//                                    Generic_StaticCollections.addToTreeMapStringInteger(
+//                                    Generic_Collections.addToTreeMapStringInteger(
 //                                            unexpectedCounts, firstPartPostcode, 1);
 //                                }
 //                            } else {
-//                                Generic_StaticCollections.addToTreeMapStringInteger(
+//                                Generic_Collections.addToTreeMapStringInteger(
 //                                        unexpectedCounts, "null", 1);
 //                            }
 //                        }
@@ -1418,7 +1418,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             Integer tenancyType) {
         addToAreaCount(claimantTypeTenureLevelTypeAreaCounts, areaCode, claimantType, tenure, level, type);
         TreeMap<Integer, Integer> tenureCounts = claimantTypeTenureLevelTypeTenureCounts.get(claimantType).get(tenure).get(level).get(type);
-        Generic_StaticCollections.addToTreeMapIntegerInteger(
+        Generic_Collections.addToTreeMapIntegerInteger(
                 tenureCounts,
                 tenancyType,
                 1);
@@ -1436,7 +1436,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             double distance) {
         addToAreaCount(claimantTypeTenureLevelTypeDistanceAreaCounts, areaCode, claimantType, tenure, level, type, distance);
         TreeMap<Integer, Integer> tenureCounts = claimantTypeTenureLevelTypeDistanceTenureCounts.get(claimantType).get(tenure).get(level).get(type).get(distance);
-        Generic_StaticCollections.addToTreeMapIntegerInteger(
+        Generic_Collections.addToTreeMapIntegerInteger(
                 tenureCounts,
                 tenancyType,
                 1);
@@ -1450,7 +1450,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             String level,
             String type) {
         TreeMap<String, Integer> areaCounts = claimantTypeTenureLevelTypeAreaCounts.get(claimantType).get(tenure).get(level).get(type);
-        Generic_StaticCollections.addToTreeMapStringInteger(
+        Generic_Collections.addToTreeMapStringInteger(
                 areaCounts,
                 areaCode,
                 1);
@@ -1474,7 +1474,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //            System.out.println("level " + level);
 //            System.out.println("type " + type);
 //        }
-        Generic_StaticCollections.addToTreeMapStringInteger(
+        Generic_Collections.addToTreeMapStringInteger(
                 areaCounts,
                 areaCode,
                 1);
@@ -1508,7 +1508,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             if (result.containsKey(tenure1)) {
                 TreeMap<Integer, Integer> tenureCount;
                 tenureCount = result.get(tenure1);
-                Generic_StaticCollections.addToTreeMapIntegerInteger(tenureCount, tenure0, 1);
+                Generic_Collections.addToTreeMapIntegerInteger(tenureCount, tenure0, 1);
             } else {
                 TreeMap<Integer, Integer> tenureCount;
                 tenureCount = new TreeMap<Integer, Integer>();
@@ -1532,7 +1532,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             if (result.containsKey(tenure1)) {
                 TreeMap<Integer, Integer> tenureCount;
                 tenureCount = result.get(tenure1);
-                Generic_StaticCollections.addToTreeMapIntegerInteger(tenureCount, tenure0, 1);
+                Generic_Collections.addToTreeMapIntegerInteger(tenureCount, tenure0, 1);
             } else {
                 TreeMap<Integer, Integer> tenureCount;
                 tenureCount = new TreeMap<Integer, Integer>();
@@ -1595,7 +1595,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             if (result.containsKey(tenureType1)) {
                 TreeMap<String, Integer> tenureCount;
                 tenureCount = result.get(tenureType1);
-                Generic_StaticCollections.addToTreeMapStringInteger(
+                Generic_Collections.addToTreeMapStringInteger(
                         tenureCount, tenureType0, 1);
             } else {
                 TreeMap<String, Integer> tenureCount;
@@ -1628,7 +1628,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             if (result.containsKey(tenureType1)) {
                 TreeMap<String, Integer> tenureCount;
                 tenureCount = result.get(tenureType1);
-                Generic_StaticCollections.addToTreeMapStringInteger(
+                Generic_Collections.addToTreeMapStringInteger(
                         tenureCount, tenureType0, 1);
             } else {
                 TreeMap<String, Integer> tenureCount;

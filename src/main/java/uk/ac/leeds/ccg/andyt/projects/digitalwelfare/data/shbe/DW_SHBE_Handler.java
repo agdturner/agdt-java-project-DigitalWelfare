@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,6 +33,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
@@ -109,7 +111,7 @@ public class DW_SHBE_Handler {
      *
      * @param directory
      * @param filename
-     * @return Object[9] result where:      {@code
+     * @return Object[9] result where: null null null     {@code
      * result[0] = TreeMap<String,DW_SHBE_Record> representing records with
      * DRecords;
      * result[1] is a TreeMap<String, DW_SHBE_Record> representing records
@@ -1561,6 +1563,68 @@ public class DW_SHBE_Handler {
         result[41] = "hb9991_SHBE_712197k April 2015.csv";
         result[42] = "hb9991_SHBE_718782k May 2015.csv";
         result[43] = "hb9991_SHBE_725465k June 2015.csv";
+        return result;
+    }
+
+    /**
+     * 
+     * @return 
+     * {@code
+        Object[] result;
+        result = new Object[2];
+        TreeMap<BigDecimal, String> valueLabel;
+        valueLabel = new TreeMap<BigDecimal, String>();
+        TreeMap<String, BigDecimal> fileLabelValue;
+        fileLabelValue = new TreeMap<String, BigDecimal>();
+        result[0] = valueLabel;
+        result[1] = fileLabelValue;     
+       }
+     */
+    public static Object[] getTreeMapDateLabelSHBEFilenames() {
+        Object[] result;
+        result = new Object[2];
+        TreeMap<BigDecimal, String> valueLabel;
+        valueLabel = new TreeMap<BigDecimal, String>();
+        TreeMap<String, BigDecimal> fileLabelValue;
+        fileLabelValue = new TreeMap<String, BigDecimal>();
+        result[0] = valueLabel;
+        result[1] = fileLabelValue;
+        ArrayList<String> month3Letters;
+        month3Letters = Generic_Time.getMonths3Letters();
+        BigDecimal startTime;
+        startTime = BigDecimal.ZERO;
+        int startYear = 0;
+        int startMonth = 0;
+        boolean first = true;
+        String[] tSHBEFilenamesAll;
+        tSHBEFilenamesAll = getSHBEFilenamesAll();
+        for (int i = 0; i < tSHBEFilenamesAll.length; i++) {
+            String year;
+            int yearInt;
+            String month;
+            int monthInt;
+            year = getYear(tSHBEFilenamesAll[i]);
+            month = getMonth(tSHBEFilenamesAll[i]);
+            yearInt = Integer.valueOf(year);
+            String m3;
+            m3 = month.substring(0, 3);
+            monthInt = month3Letters.indexOf(m3) + 1;
+            if (first) {
+                startYear = yearInt;
+                startMonth = monthInt;
+                first = false;
+            } else {
+                BigDecimal timeSinceStart;
+                timeSinceStart = BigDecimal.valueOf(Generic_Time.getMonthDiff(
+                        startYear, yearInt, startMonth, monthInt));
+                valueLabel.put(
+                        timeSinceStart,
+                        year + " " + m3);
+                fileLabelValue.put(
+                        year + "_" + month,
+                        timeSinceStart);
+            }
+        }
         return result;
     }
 

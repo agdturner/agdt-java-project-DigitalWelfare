@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_StaticTime;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMaps_SHBE;
@@ -105,7 +105,7 @@ public class DW_Report extends DW_HTMLPage {
         baseReportDir = mainDirectoryName + "/" + reportName;
         baseURLString0 = "http://www.geog.leeds.ac.uk/people/a.turner/projects/"
                 + projectName + "/" + baseReportDir + "/";
-        date = Generic_StaticTime.getDate();
+        date = Generic_Time.getDate();
 
         Iterator<String> levelsIte;
         levelsIte = levelsCopy.iterator();

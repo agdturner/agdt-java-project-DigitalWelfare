@@ -36,6 +36,7 @@ import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Execution;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.charts.Generic_BarChart;
+import uk.ac.leeds.ccg.andyt.generic.visualisation.charts.Generic_LineGraph;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -44,16 +45,16 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  *
  * @author geoagdt
  */
-public class DW_BarChart extends Generic_BarChart {
+public class DW_LineGraph extends Generic_LineGraph {
 
     private int dataWidth;
     private int dataHeight;
     private String xAxisLabel;
     private String yAxisLabel;
-    private int barGap;
-    private int xIncrement;
-    private int numberOfBars;
-    private int numberOfYAxisTicks;
+//    private int barGap;
+//    private int xIncrement;
+//    private int numberOfBars;
+//    private int numberOfYAxisTicks;
     private BigDecimal yPin;
     private BigDecimal yMax;
     private BigDecimal yIncrement;
@@ -61,7 +62,7 @@ public class DW_BarChart extends Generic_BarChart {
     private int decimalPlacePrecisionForDisplay;
     private RoundingMode roundingMode;
     private MathContext mc;
-    private ExecutorService executorService;
+//    private ExecutorService executorService;
 
     HashMap<String, HashSet<String>> areaCodes;
 
@@ -69,20 +70,15 @@ public class DW_BarChart extends Generic_BarChart {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new DW_BarChart().run(args);
+        new DW_LineGraph().run(args);
     }
 
     public void run(String[] args) {
         Generic_Visualisation.getHeadlessEnvironment();
         dataWidth = 400;
         dataHeight = 200;
-        xAxisLabel = "Claimant Count";
-        yAxisLabel = "Count of Areas";
-        //boolean drawOriginLinesOnPlot = true;
-        barGap = 1;
-//        xIncrement = 10;
-//        numberOfBars = 50;
-        numberOfYAxisTicks = 5;
+        xAxisLabel = "Dates";
+        yAxisLabel = "Y";
         yPin = BigDecimal.ZERO;
 //        yMax = new BigDecimal(700);
         yMax = null;
@@ -145,8 +141,18 @@ public class DW_BarChart extends Generic_BarChart {
             distances.add(distance);
         }
 
-        generateBarCharts(
+        Object[] treeMapDateLabelSHBEFilename;
+        treeMapDateLabelSHBEFilename = DW_SHBE_Handler.getTreeMapDateLabelSHBEFilenames();
+        
+        TreeMap<BigDecimal, String> valueLabel;
+        valueLabel = (TreeMap<BigDecimal, String>) treeMapDateLabelSHBEFilename[0];
+        TreeMap<String, BigDecimal> fileLabelValue;
+        fileLabelValue = (TreeMap<String, BigDecimal>) treeMapDateLabelSHBEFilename[1];
+        
+        generateLineGraphs(
                 SHBEFilenames,
+                valueLabel,
+                fileLabelValue,
                 0,
                 levels,
                 claimantTypes,
@@ -156,8 +162,10 @@ public class DW_BarChart extends Generic_BarChart {
                 distances);
     }
 
-    public void generateBarCharts(
+    public void generateLineGraphs(
             String[] SHBEFilenames,
+            TreeMap<BigDecimal, String> valueLabel,
+            TreeMap<String, BigDecimal> fileLabelValue,
             int startIndex,
             ArrayList<String> levels,
             ArrayList<String> claimantTypes,
@@ -175,10 +183,34 @@ public class DW_BarChart extends Generic_BarChart {
         Iterator<String> distanceTypesIte;
         Iterator<Double> distancesIte;
 
+        File dirIn;
+        dirIn = new File(
+                DW_Files.getOutputSHBETablesDir(),
+                "Tenancy");
+        dirIn = new File(
+                dirIn,
+                "All");
+        dirIn = new File(
+                dirIn,
+                "TenancyTypeTransition");
+
+        TreeMap<BigDecimal, TreeMap<Integer, TreeMap<Integer, Integer>>> bigMatrix;
+        bigMatrix = new TreeMap<BigDecimal, TreeMap<Integer, TreeMap<Integer, Integer>>>();
+        
         for (int i = startIndex + 1; i < SHBEFilenames.length; i++) {
-            String aSHBEFilename = SHBEFilenames[i];
-            String month = DW_SHBE_Handler.getMonth(aSHBEFilename);
-            String year = DW_SHBE_Handler.getYear(aSHBEFilename);
+            String aSHBEFilename0;
+            aSHBEFilename0 = SHBEFilenames[i - 1];
+            String month0;
+            month0 = DW_SHBE_Handler.getMonth(aSHBEFilename0);
+            String year0;
+            year0 = DW_SHBE_Handler.getYear(aSHBEFilename0);
+
+            String aSHBEFilename1;
+            aSHBEFilename1 = SHBEFilenames[i];
+            String month;
+            month = DW_SHBE_Handler.getMonth(aSHBEFilename1);
+            String year;
+            year = DW_SHBE_Handler.getYear(aSHBEFilename1);
 
             levelsIte = levels.iterator();
             while (levelsIte.hasNext()) {
@@ -231,7 +263,7 @@ public class DW_BarChart extends Generic_BarChart {
                             File fin = new File(
                                     dir,
                                     "" + year + month + ".csv");
-                            generateBarChart(
+                            generateLineGraph(
                                     level,
                                     fout,
                                     fin,
@@ -286,7 +318,7 @@ public class DW_BarChart extends Generic_BarChart {
                                 File fin = new File(
                                         dir,
                                         "" + year + month + ".csv");
-                                generateBarChart(
+                                generateLineGraph(
                                         level,
                                         fout,
                                         fin,
@@ -302,56 +334,59 @@ public class DW_BarChart extends Generic_BarChart {
                 executorService, future, this);
     }
 
-    private void generateBarChart(
+    private void generateLineGraph(
             String level,
             File fout,
             File fin,
             String format,
             String title) {
-        try {
-            Generic_BarChart chart = new Generic_BarChart(
-                    executorService,
-                    fout,
-                    format,
-                    title,
-                    dataWidth,
-                    dataHeight,
-                    xAxisLabel,
-                    yAxisLabel,
-                    false,
-                    barGap,
-                    xIncrement,
-                    yMax,
-                    yPin,
-                    yIncrement,
-                    numberOfYAxisTicks,
-                    decimalPlacePrecisionForCalculations,
-                    decimalPlacePrecisionForDisplay,
-                    roundingMode);
-            Object[] data = getData(level, fin, numberOfBars, mc);
-            if (data != null) {
-                chart.setData(data);
-                chart.run();
-                Future future = chart.future;
-            }
-        } catch (OutOfMemoryError e) {
-            long time;
-            //time = 60000L;
-            time = 120000L;
-            System.out.println("OutOfMemory, waiting " + time / 1000 + " secs "
-                    + "before trying to generate bar chart again...");
-            Generic_Execution.waitSychronized(this, time); // wait a minute
-            System.out.println("...on we go.");
-            generateBarChart(
-                    level,
-                    fout,
-                    fin,
-                    format,
-                    title);
-        }
+//        try {
+//            Generic_LineGraph chart = new Generic_LineGraph(
+//                    executorService,
+//                    fout,
+//                    format,
+//                    title,
+//                    dataWidth,
+//                    dataHeight,
+//                    xAxisLabel,
+//                    yAxisLabel,
+//                    false,
+//                    xIncrement,
+//                    yMax,
+//                    yPin,
+//                    yIncrement,
+//                    numberOfYAxisTicks,
+//                    decimalPlacePrecisionForCalculations,
+//                    decimalPlacePrecisionForDisplay,
+//                    roundingMode);
+//            Object[] data = getData(level, fin, numberOfBars, mc);
+//            if (data != null) {
+//                chart.setData(data);
+//                chart.run();
+//                Future future = chart.future;
+//            }
+//        } catch (OutOfMemoryError e) {
+//            long time;
+//            //time = 60000L;
+//            time = 120000L;
+//            System.out.println("OutOfMemory, waiting " + time / 1000 + " secs "
+//                    + "before trying to generate bar chart again...");
+//            Generic_Execution.waitSychronized(this, time); // wait a minute
+//            System.out.println("...on we go.");
+//            generateBarChart(
+//                    level,
+//                    fout,
+//                    fin,
+//                    format,
+//                    title);
+//        }
     }
 
-    public Object[] getData(String level, File f, int numberOfBars, MathContext mc) {
+    public Object[] getData(
+            String level,
+            File f,
+            int numberOfBars,
+            MathContext mc) {
         HashSet<String> areaCodes2;
         areaCodes2 = areaCodes.get(level);
 
@@ -493,4 +528,5 @@ public class DW_BarChart extends Generic_BarChart {
             areaCodes.put(level, areaCodesForLevel);
         }
     }
+
 }

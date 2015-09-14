@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_StaticCollections;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB1_Handler;
@@ -1040,15 +1040,15 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                 if (!(outlet.equalsIgnoreCase("AllLeedsCAB"))) {
                     max = Math.max(max, count);
                     min = Math.min(min, count);
-                    Generic_StaticCollections.addToTreeMapStringInteger(
+                    Generic_Collections.addToTreeMapStringInteger(
                             sums,
                             area,
                             count);
-                    Generic_StaticCollections.setMaxValueTreeMapStringInteger(
+                    Generic_Collections.setMaxValueTreeMapStringInteger(
                             maxs,
                             area,
                             count);
-                    Generic_StaticCollections.setMinValueTreeMapStringInteger(
+                    Generic_Collections.setMinValueTreeMapStringInteger(
                             mins,
                             area,
                             count);
