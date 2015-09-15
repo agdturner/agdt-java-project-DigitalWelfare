@@ -31,10 +31,10 @@ public class DW_MainProcessor {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new DW_DataProcessor_LCC().run();
+        //new DW_DataProcessor_LCC().run();
         //new DW_ChoroplethMaps_SHBE().run();
-        //new DW_BarChart().run(args);
-        new DW_Report().run();
+        new DW_BarChart().run(args);
+        //new DW_Report().run();
     }
     
 }

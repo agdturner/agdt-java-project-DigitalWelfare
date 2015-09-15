@@ -1553,8 +1553,8 @@ public class DW_SHBE_Handler {
         result[32] = "hb9991_SHBE_648859k July 2014.csv";
         result[33] = "hb9991_SHBE_656520k August 2014.csv";
         result[34] = "hb9991_SHBE_663169k September 2014.csv";
-        //result[35] = "hb9991_SHBE_670535k October 2014.csv";
-        result[35] = "hb9991_SHBE_670535k October 2014 v2.csv";
+        //result[35] = "hb9991_SHBE_670535k October 2014.csv"; // This file is a bit odd!
+        result[35] = "hb9991_SHBE_670535k October 2014 v2.csv"; // This file is a bit odd!
         result[36] = "hb9991_SHBE_677543k November 2014.csv";
         result[37] = "hb9991_SHBE_684519k December 2014.csv";
         result[38] = "hb9991_SHBE_691401k January 2015.csv";
