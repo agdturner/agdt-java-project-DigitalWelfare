@@ -57,11 +57,8 @@ public class DW_BarChart extends Generic_BarChart {
     private BigDecimal yPin;
     private BigDecimal yMax;
     private BigDecimal yIncrement;
-    private int decimalPlacePrecisionForCalculations;
-    private int decimalPlacePrecisionForDisplay;
-    private RoundingMode roundingMode;
-    private MathContext mc;
-    private ExecutorService executorService;
+//    private MathContext mc;
+    //private ExecutorService executorService;
 
     HashMap<String, HashSet<String>> areaCodes;
 
@@ -90,10 +87,9 @@ public class DW_BarChart extends Generic_BarChart {
 //        yIncrement = BigDecimal.ONE;
         yIncrement = null;
         //int yAxisStartOfEndInterval = 60;
-        decimalPlacePrecisionForCalculations = 20;
+        setDecimalPlacePrecisionForCalculations(20);
         //int decimalPlacePrecisionForDisplay = 3;
-        roundingMode = RoundingMode.HALF_UP;
-        mc = new MathContext(decimalPlacePrecisionForCalculations, roundingMode);
+        setRoundingMode(RoundingMode.HALF_UP);
         executorService = Executors.newSingleThreadExecutor();
 
         String[] SHBEFilenames;
@@ -145,9 +141,13 @@ public class DW_BarChart extends Generic_BarChart {
             distances.add(distance);
         }
 
+        int startIndex; // For restarting runs at a point.
+//        startIndex = 0;
+        startIndex = 19;
+
         generateBarCharts(
                 SHBEFilenames,
-                0,
+                startIndex,
                 levels,
                 claimantTypes,
                 tenureTypes,
@@ -325,10 +325,10 @@ public class DW_BarChart extends Generic_BarChart {
                     yPin,
                     yIncrement,
                     numberOfYAxisTicks,
-                    decimalPlacePrecisionForCalculations,
-                    decimalPlacePrecisionForDisplay,
-                    roundingMode);
-            Object[] data = getData(level, fin, numberOfBars, mc);
+                    getDecimalPlacePrecisionForCalculations(),
+                    getDecimalPlacePrecisionForDisplay(),
+                    getRoundingMode());
+            Object[] data = getData(level, fin, numberOfBars);
             if (data != null) {
                 chart.setData(data);
                 chart.run();
@@ -337,7 +337,8 @@ public class DW_BarChart extends Generic_BarChart {
         } catch (OutOfMemoryError e) {
             long time;
             //time = 60000L;
-            time = 120000L;
+            //time = 120000L;
+            time = 240000L;
             System.out.println("OutOfMemory, waiting " + time / 1000 + " secs "
                     + "before trying to generate bar chart again...");
             Generic_Execution.waitSychronized(this, time); // wait a minute
@@ -351,15 +352,19 @@ public class DW_BarChart extends Generic_BarChart {
         }
     }
 
-    public Object[] getData(String level, File f, int numberOfBars, MathContext mc) {
-        HashSet<String> areaCodes2;
-        areaCodes2 = areaCodes.get(level);
-
+    public Object[] getData(String level, File f, int numberOfBars) {
         Object[] result;
         result = new Object[3];
 
         ArrayList<String> lines;
         lines = DW_Table.readCSV(f);
+
+        MathContext mc;
+        mc = new MathContext(
+                getDecimalPlacePrecisionForCalculations(),
+                getRoundingMode());
+        HashSet<String> areaCodes2;
+        areaCodes2 = areaCodes.get(level);
 
         TreeMap<String, BigDecimal> map;
         map = new TreeMap<String, BigDecimal>();

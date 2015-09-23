@@ -48,23 +48,14 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_LineGraph extends Generic_LineGraph {
 
-    private int dataWidth;
-    private int dataHeight;
-    private String xAxisLabel;
-    private String yAxisLabel;
-//    private int barGap;
-//    private int xIncrement;
-//    private int numberOfBars;
-//    private int numberOfYAxisTicks;
-    private BigDecimal yPin;
-    private BigDecimal yMax;
-    private BigDecimal yIncrement;
-    private int decimalPlacePrecisionForCalculations;
-    private int decimalPlacePrecisionForDisplay;
-    private RoundingMode roundingMode;
-    private MathContext mc;
+//    private BigDecimal yPin;
+//    private BigDecimal yMax;
+//    private BigDecimal yIncrement;
+//    private int decimalPlacePrecisionForCalculations;
+//    private int decimalPlacePrecisionForDisplay;
+//    private RoundingMode roundingMode;
+//    private MathContext mc;
 //    private ExecutorService executorService;
-
     HashMap<String, HashSet<String>> areaCodes;
 
     public DW_LineGraph() {
@@ -79,9 +70,6 @@ public class DW_LineGraph extends Generic_LineGraph {
             int dataHeight,
             String xAxisLabel,
             String yAxisLabel,
-            boolean drawOriginLinesOnPlot, //Ignored
-            int barGap,
-            int xIncrement,
             BigDecimal yMax,
             BigDecimal yPin,
             BigDecimal yIncrement,
@@ -89,7 +77,10 @@ public class DW_LineGraph extends Generic_LineGraph {
             int decimalPlacePrecisionForCalculations,
             int decimalPlacePrecisionForDisplay,
             RoundingMode aRoundingMode) {
-        super(executorService, file, format, title, dataWidth, dataHeight, xAxisLabel, yAxisLabel, drawOriginLinesOnPlot, barGap, xIncrement, yMax, yPin, yIncrement, numberOfYAxisTicks, decimalPlacePrecisionForCalculations, decimalPlacePrecisionForDisplay, aRoundingMode);
+        super(executorService, file, format, title, dataWidth, dataHeight,
+                xAxisLabel, yAxisLabel, yMax, yPin, yIncrement,
+                numberOfYAxisTicks, decimalPlacePrecisionForCalculations,
+                decimalPlacePrecisionForDisplay, aRoundingMode);
     }
 
     /**
@@ -101,21 +92,22 @@ public class DW_LineGraph extends Generic_LineGraph {
 
     public void run(String[] args) {
         Generic_Visualisation.getHeadlessEnvironment();
-        dataWidth = 400;
-        dataHeight = 200;
-        xAxisLabel = "Dates";
-        yAxisLabel = "Y";
-        yPin = BigDecimal.ZERO;
+        setDataWidth(1300);
+        setDataHeight(500);
+        setxAxisLabel("Time Periods");
+//        setyPin(BigDecimal.ZERO);
+        setyPin(null);
 //        yMax = new BigDecimal(700);
-        yMax = null;
+        setyMax(null);
 //        yIncrement = BigDecimal.TEN;
 //        yIncrement = BigDecimal.ONE;
-        yIncrement = null;
+        setyIncrement(null);
         //int yAxisStartOfEndInterval = 60;
-        decimalPlacePrecisionForCalculations = 20;
-        //int decimalPlacePrecisionForDisplay = 3;
-        roundingMode = RoundingMode.HALF_UP;
-        mc = new MathContext(decimalPlacePrecisionForCalculations, roundingMode);
+        setDecimalPlacePrecisionForCalculations(20);
+        setDecimalPlacePrecisionForDisplay(3);
+        setRoundingMode(RoundingMode.HALF_UP);
+//        mc = new MathContext(decimalPlacePrecisionForCalculations, roundingMode);
+        setNumberOfYAxisTicks(10);
         executorService = Executors.newSingleThreadExecutor();
         String[] SHBEFilenames;
         SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
@@ -124,166 +116,389 @@ public class DW_LineGraph extends Generic_LineGraph {
 //        claimantTypes.add("HB");
 //        claimantTypes.add("CTB");
 
-        ArrayList<Integer> omit;
-        omit = new ArrayList<Integer>();
-        omit.add(35);
-        omit.add(36);
-        int startIndex = 0;
+        TreeMap<String, ArrayList<Integer>> includes;
+        includes = getIncludes();
 
-        Object[] treeMapDateLabelSHBEFilename;
-        treeMapDateLabelSHBEFilename = DW_SHBE_Handler.getTreeMapDateLabelSHBEFilenames();
+        TreeMap<String, HashSet<String>> allSelections;
+        allSelections = getAllSelections();
 
-        TreeMap<BigDecimal, String> valueLabel;
-        valueLabel = (TreeMap<BigDecimal, String>) treeMapDateLabelSHBEFilename[0];
-        TreeMap<String, BigDecimal> fileLabelValue;
-        fileLabelValue = (TreeMap<String, BigDecimal>) treeMapDateLabelSHBEFilename[1];
+        HashSet<Future> futures;
+        futures = new HashSet<Future>();
 
         String format = "PNG";
+        int startIndex = 0;
 
-        File dirIn;
-        dirIn = new File(
-                DW_Files.getOutputSHBETablesDir(),
-                "Tenancy");
-        dirIn = new File(
-                dirIn,
-                "All");
-        dirIn = new File(
-                dirIn,
-                "TenancyTypeTransition");
+        ArrayList<String> types;
+        types = new ArrayList<String>();
+        types.add("PostcodeChanged");
+        types.add("PostcodeUnchanged");
+        types.add("Multiple");
+        types.add("");
 
-        TreeMap<BigDecimal, TreeMap<Integer, TreeMap<Integer, BigDecimal>>> bigMatrix;
-        bigMatrix = new TreeMap<BigDecimal, TreeMap<Integer, TreeMap<Integer, BigDecimal>>>();
+        ArrayList<Boolean> bArray;
+        bArray = new ArrayList<Boolean>();
+        bArray.add(true);
+        bArray.add(false);
 
-        int size = Integer.MIN_VALUE;
-        Double min = Double.MAX_VALUE;
-        Double max = Double.MIN_VALUE;
-        
-        ArrayList<String> month3Letters;
-        month3Letters = Generic_Time.getMonths3Letters();
+        Iterator<String> ite;
+        ite = types.iterator();
+        while (ite.hasNext()) {
+            String type;
+            type = ite.next();
+            Iterator<Boolean> iteB;
+            iteB = bArray.iterator();
+            while (iteB.hasNext()) {
+                boolean checkPreviousTenure;
+                checkPreviousTenure = iteB.next();
+                doSumat(
+                        includes,
+                        allSelections,
+                        futures,
+                        format,
+                        SHBEFilenames,
+                        startIndex,
+                        type,
+                        checkPreviousTenure);
+            }
+        }
+        Generic_Execution.shutdownExecutorService(
+                executorService, futures, this);
+    }
 
-        for (int i = startIndex + 1; i < SHBEFilenames.length; i++) {
-            String aSHBEFilename0;
-            aSHBEFilename0 = SHBEFilenames[i - 1];
-            String month0;
-            month0 = DW_SHBE_Handler.getMonth(aSHBEFilename0);
-            String year0;
-            year0 = DW_SHBE_Handler.getYear(aSHBEFilename0);
+    private void doSumat(
+            TreeMap<String, ArrayList<Integer>> includes,
+            TreeMap<String, HashSet<String>> allSelections,
+            HashSet<Future> futures,
+            String format,
+            String[] SHBEFilenames,
+            int startIndex,
+            String multiple,
+            boolean checkPreviousTenure) {
+//        HashMap<String, Boolean> doneFirsts;
+//        doneFirsts = new HashMap<String, Boolean>();
 
-            String aSHBEFilename1;
-            aSHBEFilename1 = SHBEFilenames[i];
-            String month;
-            month = DW_SHBE_Handler.getMonth(aSHBEFilename1);
-            String year;
-            year = DW_SHBE_Handler.getYear(aSHBEFilename1);
+        Iterator<String> ite;
+        ite = includes.keySet().iterator();
+        while (ite.hasNext()) {
+            String includeKey;
+            includeKey = ite.next();
+//            doneFirsts.put(includeKey, false);
+            ArrayList<Integer> include;
+            include = includes.get(includeKey);
+            Object[] treeMapDateLabelSHBEFilename;
+            treeMapDateLabelSHBEFilename = DW_SHBE_Handler.getTreeMapDateLabelSHBEFilenames(
+                    SHBEFilenames,
+                    startIndex,
+                    include);
+            TreeMap<BigDecimal, String> xAxisLabels;
+            xAxisLabels = (TreeMap<BigDecimal, String>) treeMapDateLabelSHBEFilename[0];
+            TreeMap<String, BigDecimal> fileLabelValue;
+            fileLabelValue = (TreeMap<String, BigDecimal>) treeMapDateLabelSHBEFilename[1];
 
-            String filename;
-            filename = "TenancyTypeTransition_All_Start_" + year0 + month0 + "_End_" + year + month + ".csv";
-            File f;
-            f = new File(dirIn, filename);
-            if (!omit.contains(i + 1)) {
-                Object[] tenancyTypeTransitionMatrixMinMaxSize;
-                
-                double timeDiff;
-                timeDiff = Generic_Time.getMonthDiff(
-                        Integer.valueOf(year0), 
-                        Integer.valueOf(year),
-                        Generic_Time.getMonth(month0,month3Letters),
-                        Generic_Time.getMonth(month,month3Letters));
-                //timeDiff = 1;
-                tenancyTypeTransitionMatrixMinMaxSize = getTenancyTypeTransitionMatrixMinMaxSize(
-                        f,
-                        timeDiff);
-                TreeMap<Integer, TreeMap<Integer, BigDecimal>> tenancyTypeTransitionMatrix;
-                tenancyTypeTransitionMatrix = (TreeMap<Integer, TreeMap<Integer, BigDecimal>>) tenancyTypeTransitionMatrixMinMaxSize[0];
-                Double tenancyTypeTransitionMatrixMin;
-                tenancyTypeTransitionMatrixMin = (Double) tenancyTypeTransitionMatrixMinMaxSize[1];
-                min = Math.min(tenancyTypeTransitionMatrixMin, min);
-                Double tenancyTypeTransitionMatrixMax;
-                tenancyTypeTransitionMatrixMax = (Double) tenancyTypeTransitionMatrixMinMaxSize[2];
-                max = Math.max(tenancyTypeTransitionMatrixMax, max);
-                size = Math.max(size, (Integer) tenancyTypeTransitionMatrixMinMaxSize[3]);
-                String fileLabel;
-                fileLabel = year + "_" + month;
-                BigDecimal key;
-                key = fileLabelValue.get(fileLabel);
-                System.out.println("fileLabel " + fileLabel);
-                System.out.println("key " + key);
-                if (key != null) {
-                    bigMatrix.put(key, tenancyTypeTransitionMatrix);
+            File dirIn;
+            dirIn = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
+                    "All", 
+                    checkPreviousTenure);
+
+            TreeMap<BigDecimal, TreeMap<Integer, TreeMap<Integer, BigDecimal>>> bigMatrix;
+            bigMatrix = new TreeMap<BigDecimal, TreeMap<Integer, TreeMap<Integer, BigDecimal>>>();
+
+//            int size = Integer.MIN_VALUE;
+//            Double min = Double.MAX_VALUE;
+//            Double max = Double.MIN_VALUE;
+            ArrayList<String> month3Letters;
+            month3Letters = Generic_Time.getMonths3Letters();
+
+            boolean doneFirst;
+            doneFirst = false;
+
+            String month0 = "";
+            String year0 = "";
+            for (int i = startIndex; i < SHBEFilenames.length; i++) {
+                System.out.println("index " + i);
+                if (!doneFirst) {
+                    if (include.contains(i - 1) && (i - 1) >= 0) {
+                        String aSHBEFilename0;
+                        aSHBEFilename0 = SHBEFilenames[i - 1];
+                        month0 = DW_SHBE_Handler.getMonth(aSHBEFilename0);
+                        year0 = DW_SHBE_Handler.getYear(aSHBEFilename0);
+                        doneFirst = true;
+                    }
+                }
+                if (doneFirst) {
+                    String aSHBEFilename1;
+                    aSHBEFilename1 = SHBEFilenames[i];
+                    String month;
+                    month = DW_SHBE_Handler.getMonth(aSHBEFilename1);
+                    String year;
+                    year = DW_SHBE_Handler.getYear(aSHBEFilename1);
+                    String filename;
+                    filename = "TenancyTypeTransition_All_Start_" + year0 + month0 + "_End_" + year + month + ".csv";
+                    if (include.contains(i)) {
+                        System.out.println("Using file " + filename);
+                        File f;
+                        f = new File(
+                                dirIn,
+                                filename);
+                        double timeDiff;
+                        timeDiff = Generic_Time.getMonthDiff(
+                                Integer.valueOf(year0),
+                                Integer.valueOf(year),
+                                Generic_Time.getMonth(month0, month3Letters),
+                                Generic_Time.getMonth(month, month3Letters));
+                        //timeDiff = 1;
+                        TreeMap<Integer, TreeMap<Integer, BigDecimal>> tenancyTypeTransitionMap;
+                        tenancyTypeTransitionMap = getTenancyTypeTransitionMap(
+                                f,
+                                timeDiff);
+//                    Object[] tenancyTypeTransitionMatrixMinMaxSize;
+//                    tenancyTypeTransitionMatrixMinMaxSize = getTenancyTypeTransitionMap(
+//                            f,
+//                            timeDiff);
+//                    tenancyTypeTransitionMap = (TreeMap<Integer, TreeMap<Integer, BigDecimal>>) tenancyTypeTransitionMatrixMinMaxSize[0];
+//                    Double tenancyTypeTransitionMatrixMin;
+//                    tenancyTypeTransitionMatrixMin = (Double) tenancyTypeTransitionMatrixMinMaxSize[1];
+//                    min = Math.min(tenancyTypeTransitionMatrixMin, min);
+//                    Double tenancyTypeTransitionMatrixMax;
+//                    tenancyTypeTransitionMatrixMax = (Double) tenancyTypeTransitionMatrixMinMaxSize[2];
+//                    max = Math.max(tenancyTypeTransitionMatrixMax, max);
+//                    size = Math.max(size, (Integer) tenancyTypeTransitionMatrixMinMaxSize[3]);
+                        String fileLabel;
+                        fileLabel = getLabel(year0, month0, year, month);
+                        BigDecimal key;
+                        key = fileLabelValue.get(fileLabel);
+                        //System.out.println("fileLabel " + fileLabel);
+                        //System.out.println("key " + key);
+                        if (key != null) {
+                            bigMatrix.put(key, tenancyTypeTransitionMap);
 //                    System.out.println("max " + max);
 //                    System.out.println("min " + min);
 //                    System.out.println("size " + size);
+                        } else {
+                            System.out.println("No value for fileLabel " + fileLabel);
+                        }
+                        year0 = year;
+                        month0 = month;
+                    } else {
+                        System.out.println("Omitted file " + filename);
+                    }
                 }
-            } else {
-                System.out.println("omitting file " + f.toString());
+            }
+
+            Iterator<String> ite2;
+            ite2 = allSelections.keySet().iterator();
+            while (ite2.hasNext()) {
+                String selections = ite2.next();
+                HashSet<String> selection = allSelections.get(selections);
+                File dirOut;
+                dirOut = DW_Files.getOutputSHBEPlotsTenancyTypeTransitionDir(
+                        "All",
+                        checkPreviousTenure,
+                        multiple);
+                if (checkPreviousTenure) {
+                   dirOut = new File(
+                        dirOut,
+                        "CheckedPreviousTenure");
+                }
+                dirOut.mkdirs();
+                File fout;
+                fout = new File(
+                        dirOut,
+                        "TenancyTransitionLineGraph" + selections + "_" + includeKey + ".PNG");
+                setyAxisLabel("Tenancy Changes Per Month");
+                String title;
+                title = "Tenancy Transition Line Graph";
+                DW_LineGraph chart = new DW_LineGraph(
+                        executorService,
+                        fout,
+                        format,
+                        title,
+                        getDataWidth(),
+                        getDataHeight(),
+                        getxAxisLabel(),
+                        getyAxisLabel(),
+                        getyMax(),
+                        getyPin(),
+                        getyIncrement(),
+                        getNumberOfYAxisTicks(),
+                        getDecimalPlacePrecisionForCalculations(),
+                        getDecimalPlacePrecisionForDisplay(),
+                        getRoundingMode());
+                Object[] data = getData(
+                        bigMatrix,
+                        selection,
+                        xAxisLabels);
+                if (data != null) {
+                    chart.setData(data);
+                    chart.run();
+                    Future future = chart.future;
+                    futures.add(future);
+                } else {
+                    futures.add(chart.future);
+                }
             }
         }
+    }
 
-        System.out.println("max " + max);
-        System.out.println("min " + min);
+    protected static TreeMap<String, HashSet<String>> getAllSelections() {
+        TreeMap<String, HashSet<String>> result;
+        result = new TreeMap<String, HashSet<String>>();
+        String selections;
+        selections = "Council";
+        HashSet<String> selection;
+//        selection = new HashSet<String>();
+//        selection.add("1 - 2");
+//        selection.add("1 - 3");
+//        selection.add("1 - 4");
+//        //selection.add("1 - 5");
+//        selection.add("1 - 6");
+//        //selection.add("1 - 7");
+//        //selection.add("1 - 8");
+//        //selection.add("1 - 9");
+//        //selection.add("1 - -999");
+//        result.put(selections, selection);
+//        selection = new HashSet<String>();
+//        selections = "PrivateRegulated";
+//        selection.add("2 - 1");
+//        selection.add("2 - 3");
+//        selection.add("2 - 4");
+//        selection.add("2 - 6");
+//        result.put(selections, selection);
+//        selection = new HashSet<String>();
+//        selections = "PrivateDeregulated";
+//        selection.add("3 - 1");
+//        selection.add("3 - 2");
+//        selection.add("3 - 4");
+//        selection.add("3 - 6");
+//        result.put(selections, selection);
+//        selection = new HashSet<String>();
+//        selections = "PrivateHousingAssociation";
+//        selection.add("4 - 1");
+//        selection.add("4 - 2");
+//        selection.add("4 - 3");
+//        selection.add("4 - 6");
+//        result.put(selections, selection);
+//        selection = new HashSet<String>();
+//        selections = "PrivateOther";
+//        selection.add("6 - 1");
+//        selection.add("6 - 2");
+//        selection.add("6 - 3");
+//        selection.add("6 - 4");
+//        result.put(selections, selection);
+        selections = "CouncilPrivateDeregulatedPrivateHousingAssociation";
+        selection = new HashSet<String>();
+        selection.add("1 - 3");
+        selection.add("1 - 4");
+        selection.add("3 - 1");
+        selection.add("3 - 4");
+        selection.add("4 - 1");
+        selection.add("4 - 3");
+        result.put(selections, selection);
+        return result;
+    }
 
-        File fout;
-        fout = new File(
-                DW_Files.getOutputSHBEPlotsDir(),
-                "TenancyTransitionLineGraph.PNG");
-
-        String title;
-        title = "TenancyTransitionLineGraph";
-        int dataWidth = 500;
-        int dataHeight = 250;
-        String xAxisLabel = "X";
-        String yAxisLabel = "Y";
-        int numberOfYAxisTicks = 11;
-        BigDecimal yMax;
-        yMax = null;
-        BigDecimal yPin;
-//        yPin = BigDecimal.ZERO;
-        yPin = null;
-        BigDecimal yIncrement;
-//        yIncrement = BigDecimal.ONE;
-        yIncrement = null;
-        //int yAxisStartOfEndInterval = 60;
-        int decimalPlacePrecisionForCalculations = 10;
-        int decimalPlacePrecisionForDisplay = 3;
-        RoundingMode roundingMode = RoundingMode.HALF_UP;
-        DW_LineGraph chart = new DW_LineGraph(
-                executorService,
-                fout,
-                format,
-                title,
-                dataWidth,
-                dataHeight,
-                xAxisLabel,
-                yAxisLabel,
-                true,
-                dataWidth,
-                dataHeight,
-                yMax,
-                yPin,
-                yIncrement,
-                numberOfYAxisTicks,
-                decimalPlacePrecisionForCalculations,
-                decimalPlacePrecisionForDisplay,
-                roundingMode);
-        Object[] data = getData(
-                bigMatrix,
-                valueLabel,
-                BigDecimal.valueOf(min),
-                BigDecimal.valueOf(max));
-        if (data != null) {
-            chart.setData(data);
-            chart.run();
-            Future future = chart.future;
+    /**
+     * Negation of getOmits()
+     *
+     * @return
+     */
+    public static TreeMap<String, ArrayList<Integer>> getIncludes() {
+        TreeMap<String, ArrayList<Integer>> result;
+        result = new TreeMap<String, ArrayList<Integer>>();
+        TreeMap<String, ArrayList<Integer>> omits;
+        omits = getOmits();
+        Iterator<String> ite;
+        ite = omits.keySet().iterator();
+        while (ite.hasNext()) {
+            String omitKey;
+            omitKey = ite.next();
+            ArrayList<Integer> omit;
+            omit = omits.get(omitKey);
+            ArrayList<Integer> include;
+            include = DW_SHBE_Handler.getSHBEFilenamesIndexesExcept34();
+            include.removeAll(omit);
+            result.put(omitKey, include);
         }
-        Generic_Execution.shutdownExecutorService(
-                executorService, chart.future, this);
+        return result;
+    }
+
+    /**
+     * Negation of getIncludes()
+     *
+     * @return
+     */
+    public static TreeMap<String, ArrayList<Integer>> getOmits() {
+        TreeMap<String, ArrayList<Integer>> result;
+        result = new TreeMap<String, ArrayList<Integer>>();
+        String omitKey;
+        ArrayList<Integer> omitAll;
+        omitKey = "All";
+        omitAll = new ArrayList<Integer>();
+        omitAll.add(34);
+        result.put(omitKey, omitAll);
+        omitKey = "6Monthly";
+        ArrayList<Integer> omit6Monthly;
+        omit6Monthly = new ArrayList<Integer>();
+        omit6Monthly.add(6);
+        omit6Monthly.add(8);
+        omit6Monthly.add(10);
+        omit6Monthly.add(12);
+        omit6Monthly.add(14);
+        omit6Monthly.add(15);
+        omit6Monthly.add(16);
+        omit6Monthly.add(18);
+        omit6Monthly.add(19);
+        omit6Monthly.add(20);
+        omit6Monthly.add(21);
+        omit6Monthly.add(22);
+        omit6Monthly.add(24);
+        omit6Monthly.add(25);
+        omit6Monthly.add(26);
+        omit6Monthly.add(27);
+        omit6Monthly.add(28);
+        omit6Monthly.add(30);
+        omit6Monthly.add(31);
+        omit6Monthly.add(32);
+        omit6Monthly.add(33);
+        omit6Monthly.add(34);
+        omit6Monthly.add(36);
+        omit6Monthly.add(37);
+        omit6Monthly.add(38);
+        omit6Monthly.add(39);
+        omit6Monthly.add(40);
+        omit6Monthly.add(42);
+        omit6Monthly.add(43);
+        result.put(omitKey, omit6Monthly);
+        omitKey = "Monthly";
+        ArrayList<Integer> omitMonthly;
+        omitMonthly = new ArrayList<Integer>();
+        for (int i = 0; i < 14; i++) {
+            omitMonthly.add(i);
+        }
+        omitMonthly.add(34);
+        result.put(omitKey, omitMonthly);
+        return result;
+    }
+
+    public static String getLabel(
+            String year0,
+            String month0,
+            String year,
+            String month) {
+        String result;
+        result = year0 + " " + month0 + "_" + year + " " + month;
+        // System.out.println(result);
+        return result;
     }
 
     /**
      * TenureBefore, TenureNow Count
      *
      * @param f
-     * @return null null null null null null null null     {@code
+     * @param timeDiff Normaliser for counts.
+     * @return null null null null null null null null null null null null null
+     * null null null null null null null null null null null null null null
+     * null null     {@code
      * Object[] result;
      * result = new Object[3];
      * TreeMap<Integer, TreeMap<Integer, BigDecimal>> map;
@@ -296,17 +511,17 @@ public class DW_LineGraph extends Generic_LineGraph {
      * result[3] = size;
      * }
      */
-    public Object[] getTenancyTypeTransitionMatrixMinMaxSize(
+    public TreeMap<Integer, TreeMap<Integer, BigDecimal>> getTenancyTypeTransitionMap(
             File f,
             double timeDiff) {
-        Object[] result;
-        result = new Object[4];
+//        Object[] result;
+//        result = new Object[4];
         TreeMap<Integer, TreeMap<Integer, BigDecimal>> map;
         map = new TreeMap<Integer, TreeMap<Integer, BigDecimal>>();
-        result[0] = map;
-        Double min = Double.MAX_VALUE;
-        Double max = Double.MIN_VALUE;
-        int size = 0;
+//        result[0] = map;
+//        Double min = Double.MAX_VALUE;
+//        Double max = Double.MIN_VALUE;
+//        int size = 0;
         ArrayList<String> lines = DW_Table.readCSV(f);
         ArrayList<Integer> tenures;
         tenures = new ArrayList<Integer>();
@@ -320,17 +535,17 @@ public class DW_LineGraph extends Generic_LineGraph {
             split = line.split(",");
             if (first) {
                 for (int i = 1; i < split.length; i++) {
-                    Integer tenureBefore;
-                    tenureBefore = Integer.valueOf(split[i]);
+                    Integer tenancyStart;
+                    tenancyStart = Integer.valueOf(split[i]);
                     TreeMap<Integer, BigDecimal> transitions;
                     transitions = new TreeMap<Integer, BigDecimal>();
-                    map.put(tenureBefore, transitions);
-                    tenures.add(tenureBefore);
+                    map.put(tenancyStart, transitions);
+                    tenures.add(tenancyStart);
                 }
                 first = false;
             } else {
-                Integer tenureAfter;
-                tenureAfter = Integer.valueOf(split[0]);
+                Integer tenancyEnd;
+                tenancyEnd = Integer.valueOf(split[0]);
                 for (int i = 1; i < split.length; i++) {
                     Integer tenureBefore;
                     tenureBefore = tenures.get(i - 1);
@@ -338,35 +553,61 @@ public class DW_LineGraph extends Generic_LineGraph {
                     count = Integer.valueOf(split[i]);
                     Double rate;
                     rate = count / timeDiff;
-                    TreeMap<Integer, BigDecimal> transitions;
-                    transitions = map.get(tenureBefore);
-                    transitions.put(tenureAfter, BigDecimal.valueOf(rate));
-                    if (tenureBefore.compareTo(tenureAfter) != 0) {
-                        min = Math.min(min, rate);
-                        max = Math.max(max, rate);
-                        size++;
-                    }
+                    TreeMap<Integer, BigDecimal> tenancyTransition;
+                    tenancyTransition = map.get(tenureBefore);
+                    tenancyTransition.put(tenancyEnd, BigDecimal.valueOf(rate));
+//                    if (tenureBefore.compareTo(tenancyEnd) != 0) {
+//                        min = Math.min(min, rate);
+//                        max = Math.max(max, rate);
+//                        size++;
+//                    }
                 }
             }
         }
-        System.out.println("max " + max);
-        System.out.println("min " + min);
-        System.out.println("size " + size);
-        result[1] = min; // This has to be here because of unboxing!?
-        result[2] = max;
-        result[3] = size;
-        return result;
+//        System.out.println("max " + max);
+//        System.out.println("min " + min);
+//        System.out.println("size " + size);
+//        result[1] = min; // This has to be here because of unboxing!?
+//        result[2] = max;
+//        result[3] = size;
+//        return result;
+        return map;
     }
 
+    /**
+     * @param bigMatrix The bigMatrix to repack and select from. Keys are x
+     * values to be plot, the final values are y values, the Integer keys
+     * between are row and column indexes.
+     * @param selection A collection of Strings for selecting what data to get.
+     * @param xAxisLabels Passed in for packaging.
+     * @return {
+     * @code
+     * Object[] result;
+     * result = new Object[7];
+     * result[0] = maps; TreeMap<String, TreeMap<BigDecimal, BigDecimal>> // label, x, y maps
+     * result[1] = newMinY; // BigDecimal minimum y value in selection.
+     * result[2] = newMaxY; // BigDecimal maximum y value in selection.
+     * result[3] = newMinX; // BigDecimal minimum x value in selection.
+     * result[4] = newMaxX; // BigDecimal maximum x value in selection.
+     * result[5] = labels; // collection of strings: row index " - " column index
+     * result[6] = xAxisLabels;
+     */
     private Object[] getData(
             TreeMap<BigDecimal, TreeMap<Integer, TreeMap<Integer, BigDecimal>>> bigMatrix,
-            TreeMap<BigDecimal, String> xAxisLabels,
-            BigDecimal minY,
-            BigDecimal maxY) {
+            HashSet<String> selection,
+            TreeMap<BigDecimal, String> xAxisLabels) {
         Object[] result;
         result = new Object[7];
         TreeMap<String, TreeMap<BigDecimal, BigDecimal>> maps;
         maps = new TreeMap<String, TreeMap<BigDecimal, BigDecimal>>();
+        BigDecimal newMinX;
+        newMinX = BigDecimal.valueOf(Double.MAX_VALUE);
+        BigDecimal newMaxX;
+        newMaxX = BigDecimal.valueOf(Double.MIN_VALUE);
+        BigDecimal newMinY;
+        newMinY = BigDecimal.valueOf(Double.MAX_VALUE);
+        BigDecimal newMaxY;
+        newMaxY = BigDecimal.valueOf(Double.MIN_VALUE);
         Iterator<BigDecimal> ite;
         ite = bigMatrix.keySet().iterator();
         while (ite.hasNext()) {
@@ -386,24 +627,34 @@ public class DW_LineGraph extends Generic_LineGraph {
                     if (tenureNow.compareTo(tenureBefore) != 0) {
                         String key;
                         key = "" + tenureBefore + " - " + tenureNow;
-                        TreeMap<BigDecimal, BigDecimal> map;
-                        map = maps.get(key);
-                        if (map == null) {
-                            map = new TreeMap<BigDecimal, BigDecimal>();
-                            maps.put(key, map);
+                        if (selection.contains(key)) {
+                            TreeMap<BigDecimal, BigDecimal> map;
+                            map = maps.get(key);
+                            if (map == null) {
+                                map = new TreeMap<BigDecimal, BigDecimal>();
+                                maps.put(key, map);
+                            }
+                            BigDecimal y;
+                            y = omatrix.get(tenureBefore);
+                            newMinY = y.min(newMinY);
+                            newMaxY = y.max(newMaxY);
+                            newMinX = x.min(newMinX);
+                            newMaxX = x.max(newMaxX);
+                            map.put(x, y);
                         }
-                        map.put(x, omatrix.get(tenureBefore));
                     }
                 }
             }
         }
-        BigDecimal minX = bigMatrix.firstKey();
-        BigDecimal maxX = bigMatrix.lastKey();
+//        BigDecimal minX = bigMatrix.firstKey();
+//        BigDecimal maxX = bigMatrix.lastKey();
+//        BigDecimal minX = maps.firstKey();
+//        BigDecimal maxX = maps.lastKey();
         result[0] = maps;
-        result[1] = minY;
-        result[2] = maxY;
-        result[3] = minX;
-        result[4] = maxX;
+        result[1] = newMinY;
+        result[2] = newMaxY;
+        result[3] = newMinX;
+        result[4] = newMaxX;
 
         ArrayList<String> labels;
         labels = new ArrayList<String>();
@@ -413,7 +664,13 @@ public class DW_LineGraph extends Generic_LineGraph {
         while (iteS.hasNext()) {
             String label;
             label = iteS.next();
-            labels.add(label);
+            String[] tenancyTypes;
+            tenancyTypes = label.split(" - ");
+            String newLabel;
+            newLabel = DW_SHBE_Handler.getTenancyTypeName(Integer.valueOf(tenancyTypes[0]));
+            newLabel += " TO ";
+            newLabel += DW_SHBE_Handler.getTenancyTypeName(Integer.valueOf(tenancyTypes[1]));
+            labels.add(newLabel);
         }
         result[5] = labels;
         result[6] = xAxisLabels;

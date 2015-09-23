@@ -18,8 +18,10 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting.DW_Report;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_BarChart;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_LineGraph;
 
 /**
  *
@@ -31,9 +33,11 @@ public class DW_MainProcessor {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //new DW_DataProcessor_LCC().run();
+//        new DW_SHBE_Handler().run();
+        new DW_DataProcessor_LCC().run();
         //new DW_ChoroplethMaps_SHBE().run();
-        new DW_BarChart().run(args);
+        //new DW_BarChart().run(args);
+        //new DW_LineGraph().run(args);
         //new DW_Report().run();
     }
     

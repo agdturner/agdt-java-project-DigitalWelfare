@@ -49,6 +49,20 @@ public class DW_SHBE_Handler {
         initRecordTypes();
     }
 
+    public static void main(String[] args) {
+        new DW_SHBE_Handler().run();
+    }
+
+    public void run() {
+        String[] SHBEFilenames;
+        SHBEFilenames = getSHBEFilenamesAll();
+        File dir;
+        dir = DW_Files.getInputSHBEDir();
+        for (int i = 0; i < SHBEFilenames.length; i++) {
+            loadInputData(dir, SHBEFilenames[i]);
+        }
+    }
+
     public HashSet<String> getRecordTypes() {
         return RecordTypes;
     }
@@ -111,7 +125,7 @@ public class DW_SHBE_Handler {
      *
      * @param directory
      * @param filename
-     * @return Object[9] result where: null null null     {@code
+     * @return Object[9] result where: null null     {@code
      * result[0] = TreeMap<String,DW_SHBE_Record> representing records with
      * DRecords;
      * result[1] is a TreeMap<String, DW_SHBE_Record> representing records
@@ -181,17 +195,8 @@ public class DW_SHBE_Handler {
             result[6] = allHouseholdNationalInsuranceNumberIDs;
 
             // Initialise map and files for writing out 
-            String fn;
-            fn = filename.substring(0, filename.length() - 4);
-            fn += "ClaimantNationalInsuranceNumberIDs_HashSetString.thisFile";
-            claimantNationalInsuranceNumberIDsFile = new File(
-                    DW_Files.getGeneratedSHBEDir(),
-                    fn);
-            fn = filename.substring(0, filename.length() - 4);
-            fn += "ClaimantNationalInsuranceNumberIDToRecordIDLookup_HashMapStringLong.thisFile";
-            claimantNationalInsuranceNumberIDToRecordIDLookupFile = new File(
-                    DW_Files.getGeneratedSHBEDir(),
-                    fn);
+            claimantNationalInsuranceNumberIDsFile = getClaimantNationalInsuranceNumberIDsFile(filename);
+            claimantNationalInsuranceNumberIDToRecordIDLookupFile = getClaimantNationalInsuranceNumberIDToRecordIDLookupFile(filename);
             boolean doClaimantNationalInsuranceNumberIDToRecordIDLookup = true;
             if (claimantNationalInsuranceNumberIDToRecordIDLookupFile.exists()) {
                 claimantNationalInsuranceNumberIDToRecordIDLookup = (HashMap<String, Long>) Generic_StaticIO.readObject(claimantNationalInsuranceNumberIDToRecordIDLookupFile);
@@ -200,11 +205,7 @@ public class DW_SHBE_Handler {
                 claimantNationalInsuranceNumberIDToRecordIDLookup = new HashMap<String, Long>();
             }
             result[7] = claimantNationalInsuranceNumberIDToRecordIDLookup;
-            fn = filename.substring(0, filename.length() - 4);
-            fn += "ClaimantNationalInsuranceNumberIDToPostcodeLookup_HashMapStringString.thisFile";
-            claimantNationalInsuranceNumberIDToPostcodeLookupFile = new File(
-                    DW_Files.getGeneratedSHBEDir(),
-                    fn);
+            claimantNationalInsuranceNumberIDToPostcodeLookupFile = getClaimantNationalInsuranceNumberIDToPostcodeLookupFile(filename);
             boolean doClaimantNationalInsuranceNumberIDToPostcodeLookup = true;
             if (!claimantNationalInsuranceNumberIDToPostcodeLookupFile.exists()) {
                 claimantNationalInsuranceNumberIDToPostcodeLookup = new HashMap<String, String>();
@@ -213,11 +214,7 @@ public class DW_SHBE_Handler {
                 doClaimantNationalInsuranceNumberIDToPostcodeLookup = false;
             }
             result[8] = claimantNationalInsuranceNumberIDToPostcodeLookup;
-            fn = filename.substring(0, filename.length() - 4);
-            fn += "ClaimantNationalInsuranceNumberIDToTenureLookup_HashMapStringInteger.thisFile";
-            claimantNationalInsuranceNumberIDToTenureLookupFile = new File(
-                    DW_Files.getGeneratedSHBEDir(),
-                    fn);
+            claimantNationalInsuranceNumberIDToTenureLookupFile = getClaimantNationalInsuranceNumberIDToTenureLookupFile(filename);
             boolean doClaimantNationalInsuranceNumberIDToTenureLookup = true;
             if (!claimantNationalInsuranceNumberIDToTenureLookupFile.exists()) {
                 claimantNationalInsuranceNumberIDToTenureLookup = new HashMap<String, Integer>();
@@ -475,9 +472,9 @@ public class DW_SHBE_Handler {
             }
             // Store claimantNationalInsuranceNumberIDToPostcodeLookup on File
             if (doClaimantNationalInsuranceNumberIDToPostcodeLookup) {
-                Generic_StaticIO.writeObject(
-                        claimantNationalInsuranceNumberIDToPostcodeLookup,
-                        claimantNationalInsuranceNumberIDToPostcodeLookupFile);
+            Generic_StaticIO.writeObject(
+                    claimantNationalInsuranceNumberIDToPostcodeLookup,
+                    claimantNationalInsuranceNumberIDToPostcodeLookupFile);
             }
             // Store claimantNationalInsuranceNumberIDToTenureLookupFile on File
             if (doClaimantNationalInsuranceNumberIDToTenureLookup) {
@@ -1552,9 +1549,9 @@ public class DW_SHBE_Handler {
         result[31] = "hb9991_SHBE_641800k June 2014.csv";
         result[32] = "hb9991_SHBE_648859k July 2014.csv";
         result[33] = "hb9991_SHBE_656520k August 2014.csv";
-        result[34] = "hb9991_SHBE_663169k September 2014.csv";
-        //result[35] = "hb9991_SHBE_670535k October 2014.csv"; // This file is a bit odd!
-        result[35] = "hb9991_SHBE_670535k October 2014 v2.csv"; // This file is a bit odd!
+        result[34] = "hb9991_SHBE_663169k September 2014.csv"; // This is actually the odd file!!!!!!!!!!!! I had this wrong before and thought it was October 2014 that was wrong.
+        //result[35] = "hb9991_SHBE_670535k October 2014.csv";
+        result[35] = "hb9991_SHBE_670535k October 2014 v2.csv";
         result[36] = "hb9991_SHBE_677543k November 2014.csv";
         result[37] = "hb9991_SHBE_684519k December 2014.csv";
         result[38] = "hb9991_SHBE_691401k January 2015.csv";
@@ -1566,21 +1563,38 @@ public class DW_SHBE_Handler {
         return result;
     }
 
+    public static ArrayList<Integer> getSHBEFilenamesIndexesExcept34() {
+        ArrayList<Integer> result;
+        result = new ArrayList<Integer>();
+        String[] SHBEFilenames;
+        SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
+        for (int i = 0; i < SHBEFilenames.length; i++) {
+            result.add(i);
+        }
+        result.remove(34);
+        return result;
+    }
+
     /**
-     * 
-     * @return 
-     * {@code
-        Object[] result;
-        result = new Object[2];
-        TreeMap<BigDecimal, String> valueLabel;
-        valueLabel = new TreeMap<BigDecimal, String>();
-        TreeMap<String, BigDecimal> fileLabelValue;
-        fileLabelValue = new TreeMap<String, BigDecimal>();
-        result[0] = valueLabel;
-        result[1] = fileLabelValue;     
-       }
+     *
+     * @param tSHBEFilenames
+     * @param include
+     * @param startIndex
+     * @return * {@code
+     * Object[] result;
+     * result = new Object[2];
+     * TreeMap<BigDecimal, String> valueLabel;
+     * valueLabel = new TreeMap<BigDecimal, String>();
+     * TreeMap<String, BigDecimal> fileLabelValue;
+     * fileLabelValue = new TreeMap<String, BigDecimal>();
+     * result[0] = valueLabel;
+     * result[1] = fileLabelValue;
+     * }
      */
-    public static Object[] getTreeMapDateLabelSHBEFilenames() {
+    public static Object[] getTreeMapDateLabelSHBEFilenames(
+            String[] tSHBEFilenames,
+            int startIndex,
+            ArrayList<Integer> include) {
         Object[] result;
         result = new Object[2];
         TreeMap<BigDecimal, String> valueLabel;
@@ -1591,38 +1605,52 @@ public class DW_SHBE_Handler {
         result[1] = fileLabelValue;
         ArrayList<String> month3Letters;
         month3Letters = Generic_Time.getMonths3Letters();
-        BigDecimal startTime;
-        startTime = BigDecimal.ZERO;
-        int startYear = 0;
         int startMonth = 0;
+        int startYear = 0;
+        int yearInt0 = 0;
+        int month0Int = 0;
+        String month0 = "";
+        String m30 = "";
         boolean first = true;
-        String[] tSHBEFilenamesAll;
-        tSHBEFilenamesAll = getSHBEFilenamesAll();
-        for (int i = 0; i < tSHBEFilenamesAll.length; i++) {
-            String year;
-            int yearInt;
-            String month;
-            int monthInt;
-            year = getYear(tSHBEFilenamesAll[i]);
-            month = getMonth(tSHBEFilenamesAll[i]);
-            yearInt = Integer.valueOf(year);
-            String m3;
-            m3 = month.substring(0, 3);
-            monthInt = month3Letters.indexOf(m3) + 1;
-            if (first) {
-                startYear = yearInt;
-                startMonth = monthInt;
-                first = false;
-            } else {
-                BigDecimal timeSinceStart;
-                timeSinceStart = BigDecimal.valueOf(Generic_Time.getMonthDiff(
-                        startYear, yearInt, startMonth, monthInt));
-                valueLabel.put(
-                        timeSinceStart,
-                        year + " " + m3);
-                fileLabelValue.put(
-                        year + "_" + month,
-                        timeSinceStart);
+        for (int i = startIndex; i < tSHBEFilenames.length; i++) {
+            if (include.contains(i)) {
+                if (first) {
+                    yearInt0 = Integer.valueOf(getYear(tSHBEFilenames[i]));
+                    month0 = getMonth(tSHBEFilenames[i]);
+                    m30 = month0.substring(0, 3);
+                    month0Int = month3Letters.indexOf(m30) + 1;
+                    startMonth = month0Int;
+                    startYear = yearInt0;
+                    first = false;
+                } else {
+                    int yearInt;
+                    String month;
+                    int monthInt;
+                    String m3;
+                    month = getMonth(tSHBEFilenames[i]);
+                    yearInt = Integer.valueOf(getYear(tSHBEFilenames[i]));
+                    m3 = month.substring(0, 3);
+                    monthInt = month3Letters.indexOf(m3) + 1;
+                    BigDecimal timeSinceStart;
+                    timeSinceStart = BigDecimal.valueOf(
+                            Generic_Time.getMonthDiff(
+                                    startYear, yearInt, startMonth, monthInt));
+                    //System.out.println(timeSinceStart);
+                    valueLabel.put(
+                            timeSinceStart,
+                            yearInt0 + " " + m30 + " - " + yearInt + " " + m3);
+                    String fileLabel;
+                    fileLabel = yearInt0 + " " + month0 + "_" + yearInt + " " + month;
+                    fileLabelValue.put(
+                            fileLabel,
+                            timeSinceStart);
+
+                    //System.out.println(fileLabel);
+                    yearInt0 = yearInt;
+                    month0 = month;
+                    m30 = m3;
+                    month0Int = monthInt;
+                }
             }
         }
         return result;
@@ -1666,6 +1694,58 @@ public class DW_SHBE_Handler {
         return result;
     }
 
+    public static File getClaimantNationalInsuranceNumberIDsFile(
+            String filename) {
+        File result;
+        String partFilename = "ClaimantNationalInsuranceNumberIDs_HashSetString.thisFile";
+        result = getFile(
+                filename,
+                partFilename);
+        return result;
+    }
+
+    public static File getClaimantNationalInsuranceNumberIDToRecordIDLookupFile(
+            String filename) {
+        File result;
+        String partFilename = "ClaimantNationalInsuranceNumberIDToRecordIDLookup_HashMapStringLong.thisFile";
+        result = getFile(
+                filename,
+                partFilename);
+        return result;
+    }
+
+    public static File getClaimantNationalInsuranceNumberIDToPostcodeLookupFile(
+            String filename) {
+        File result;
+        String partFilename = "ClaimantNationalInsuranceNumberIDToPostcodeLookup_HashMapStringString.thisFile";
+        result = getFile(
+                filename,
+                partFilename);
+        return result;
+    }
+
+    public static File getClaimantNationalInsuranceNumberIDToTenureLookupFile(
+            String filename) {
+        File result;
+        String partFilename = "ClaimantNationalInsuranceNumberIDToTenureLookup_HashMapStringInteger.thisFile";
+        result = getFile(
+                filename,
+                partFilename);
+        return result;
+    }
+
+    public static File getFile(
+            String filename,
+            String partFilename) {
+        File result;
+        String fn = filename.substring(0, filename.length() - 4);
+        fn += partFilename;
+        result = new File(
+                DW_Files.getGeneratedSHBEDir(),
+                fn);
+        return result;
+    }
+
     public static ArrayList<Integer> getTenureTypeAll() {
         ArrayList<Integer> result;
         result = new ArrayList<Integer>();
@@ -1696,5 +1776,32 @@ public class DW_SHBE_Handler {
         result = new ArrayList<Integer>();
         result.add(3);
         return result;
+    }
+
+    public static String getTenancyTypeName(int tenancyType) {
+        switch (tenancyType) {
+            case 1:
+                return "Council Tenant HRA cases";
+            case 2:
+                return "Private Tenant Regulated, non-Housing Association cases";
+            case 3:
+                return "Private Tenant Deregulated, non-Housing Association cases";
+            case 4:
+                return "Private Tenant Housing Association cases";
+            case 5:
+                return "CTB only cases, where Claimant or Liable Person is set as the owner within Council Tax";
+            case 6:
+                return "Other Private Tenant cases";
+            case 7:
+                return "CTB only cases, where Claimant or Liable Person is not set as the owner within Council Tax";
+            case 8:
+                return "Council Tenant cases where the HRA flag is set to 'No'";
+            case 9:
+                return "Private Tenant, non-HA, non-Homeless cases where there is a Meals deduction";
+            case -999:
+                return "No Tenancy";
+            default:
+                return "Unknown";
+        }
     }
 }

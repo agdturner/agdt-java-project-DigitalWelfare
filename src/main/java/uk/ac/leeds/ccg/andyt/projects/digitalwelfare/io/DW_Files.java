@@ -44,7 +44,7 @@ public class DW_Files {
     private static File _DW_swapDir;
     private static File _DW_swapLCCDir;
     private static File _DW_swapSHBEDir;
-    
+
     private static File _DW_generatedDir;
     private static File _DW_generatedAdviceLeedsDir;
     private static File _DW_generatedCensusDir;
@@ -206,7 +206,7 @@ public class DW_Files {
         }
         return _DW_swapDir;
     }
-    
+
     public static File getSwapLCCDir() {
         if (_DW_swapLCCDir == null) {
             _DW_swapLCCDir = new File(
@@ -216,7 +216,7 @@ public class DW_Files {
         }
         return _DW_swapLCCDir;
     }
-    
+
     public static File getSwapSHBEDir() {
         if (_DW_swapSHBEDir == null) {
             _DW_swapSHBEDir = new File(
@@ -226,7 +226,7 @@ public class DW_Files {
         }
         return _DW_swapSHBEDir;
     }
-    
+
     public static File getGeneratedDir() {
         if (_DW_generatedDir == null) {
             _DW_generatedDir = new File(
@@ -342,7 +342,7 @@ public class DW_Files {
                 getGeneratedSHBEDir(),
                 level);
     }
-    
+
     public static ArrayList<File> getGeneratedSHBELevelDirsArrayList(
             ArrayList<String> levels) {
         ArrayList<File> result;
@@ -370,11 +370,11 @@ public class DW_Files {
             File outputDir = new File(
                     DW_Files.getGeneratedSHBEDir(),
                     level);
-            result.put(level,outputDir);
+            result.put(level, outputDir);
         }
         return result;
     }
-    
+
     public static File getGeneratedUnderOccupiedDir() {
         if (_DW_generatedUnderOccupiedDir == null) {
             _DW_generatedUnderOccupiedDir = new File(
@@ -495,6 +495,30 @@ public class DW_Files {
         return _DW_outputSHBETablesDir;
     }
 
+    public static File getOutputSHBETablesTenancyTypeTransitionDir(
+            String type,
+            boolean checkPreviousTenure) {
+        File result = new File(
+                DW_Files.getOutputSHBETablesDir(),
+                "Tenancy");
+        result = new File(
+                result,
+                type);
+        result = new File(
+                result,
+                "TenancyTypeTransition");
+        if (checkPreviousTenure) {
+            result = new File(
+                    result,
+                    "CheckedPreviousTenure");
+        } else {
+            result = new File(
+                    result,
+                    "NotCheckedPreviousTenure");
+        }
+        return result;
+    }
+
     public static File getOutputSHBEPlotsDir() {
         if (_DW_outputSHBEPlotsDir == null) {
             _DW_outputSHBEPlotsDir = new File(
@@ -503,6 +527,34 @@ public class DW_Files {
             _DW_outputSHBEPlotsDir.mkdirs();
         }
         return _DW_outputSHBEPlotsDir;
+    }
+
+    public static File getOutputSHBEPlotsTenancyTypeTransitionDir(
+            String type,
+            boolean checkPreviousTenure,
+            String type2) {
+        File result = new File(
+                DW_Files.getOutputSHBEPlotsDir(),
+                "Tenancy");
+        result = new File(
+                result,
+                type);
+        result = new File(
+                result,
+                "TenancyTypeTransitionLineGraphs");
+        if (checkPreviousTenure) {
+            result = new File(
+                    result,
+                    "CheckedPreviousTenure");
+        } else {
+            result = new File(
+                    result,
+                    "NotCheckedPreviousTenure");
+        }
+        result = new File(
+                result,
+                type2);
+        return result;
     }
 
     public static File getOutputSHBEChoroplethDir() {
