@@ -557,6 +557,12 @@ public class DW_Files {
         return result;
     }
 
+    public static File getOutputSHBELineMapsDir() {
+        return new File(
+                getOutputSHBEMapsDir(),
+                "Line");
+    }
+    
     public static File getOutputSHBEChoroplethDir() {
         return new File(
                 getOutputSHBEMapsDir(),

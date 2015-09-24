@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
-import uk.ac.leeds.ccg.andyt.generic.math.Generic_double;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
@@ -166,7 +165,6 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 
         Generic_UKPostcode_Handler postcodeHandler;
         postcodeHandler = new Generic_UKPostcode_Handler();
-
         ArrayList<Boolean> bArray;
         bArray = new ArrayList<Boolean>();
         bArray.add(true);
@@ -176,11 +174,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         while (iteB.hasNext()) {
             boolean checkPreviousTenure;
             checkPreviousTenure = iteB.next();
+            System.out.println("checkPreviousTenure " + checkPreviousTenure);
             Iterator<Boolean> iteB2;
             iteB2 = bArray.iterator();
             while (iteB2.hasNext()) {
                 boolean reportTenancyTransitionBreaks;
                 reportTenancyTransitionBreaks = iteB2.next();
+                reportTenancyTransitionBreaks = false;
+                System.out.println("reportTenancyTransitionBreaks " + reportTenancyTransitionBreaks);
                 tenancyChanges(
                         SHBEFilenames,
                         startIndex,
@@ -198,20 +199,27 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 while (iteB3.hasNext()) {
                     boolean postcodeChange;
                     postcodeChange = iteB3.next();
-                    tenancyTypeAndPostcodeChanges(
-                            postcodeHandler,
-                            SHBEFilenames,
-                            startIndex,
-                            tenureTypeGroups,
-                            tenureTypesGrouped,
-                            regulatedGroups,
-                            unregulatedGroups,
-                            includes,
-                            levels,
-                            loadData,
-                            postcodeChange,
-                            checkPreviousTenure,
-                            reportTenancyTransitionBreaks);
+                    Iterator<Boolean> iteB4;
+                    iteB4 = bArray.iterator();
+                    while (iteB4.hasNext()) {
+                        boolean checkPreviousPostcode;
+                        checkPreviousPostcode = iteB4.next();
+                        tenancyTypeAndPostcodeChanges(
+                                postcodeHandler,
+                                SHBEFilenames,
+                                startIndex,
+                                tenureTypeGroups,
+                                tenureTypesGrouped,
+                                regulatedGroups,
+                                unregulatedGroups,
+                                includes,
+                                levels,
+                                loadData,
+                                postcodeChange,
+                                checkPreviousPostcode,
+                                checkPreviousTenure,
+                                reportTenancyTransitionBreaks);
+                    }
                 }
             }
 //            multipleTenancyChanges(
@@ -392,6 +400,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * @param unregulatedGroups
      * @param includes
      * @param levels
+     * @param checkPreviousTenure
      */
     public void multipleTenancyChanges(
             String[] SHBEFilenames,
@@ -490,8 +499,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         nationalInsuranceNumberTenureChanges.put(i, nationalInsuranceNumberTenureChange);
                         writeTenancyTypeTransitionMatrix(
                                 tenancyTypeTranistionMatrix, year0, month0,
-                                year, month, "All",
-                                includeKey + "/Multiple",
+                                year, month, "All", "/Multiple", includeKey,
                                 checkPreviousTenure);
                         Object[] tenancyTypeTranistionMatrixGroupedEtc;
                         tenancyTypeTranistionMatrixGroupedEtc = getMultipleTenancyTypeTranistionMatrixGrouped(
@@ -510,8 +518,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         writeTenancyTypeTransitionMatrixGrouped(
                                 tenancyTypeTranistionMatrixGrouped,
                                 tenureTypesGrouped, year0, month0, year,
-                                month, "All",
-                                includeKey + "/Multiple",
+                                month, "All", "/Multiple", includeKey,
                                 checkPreviousTenure);
                         previousIndexs.put(includeKey, i);
                     }
@@ -530,6 +537,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * @param unregulatedGroups
      * @param includes
      * @param levels
+     * @param loadData
+     * @param checkPreviousTenure
+     * @param reportTenancyTransitionBreaks
      */
     public void tenancyChanges(
             String[] SHBEFilenames,
@@ -550,6 +560,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         nationalInsuranceNumberByTenures = new HashMap<Integer, HashMap<String, Integer>>();
         HashMap<String, Integer> nationalInsuranceNumberByTenure0;
         if (loadData) {
+            System.out.print("Loading " + filename + " ...");
             Object[] aSHBEData;
             aSHBEData = loadSHBEData(filename);
             nationalInsuranceNumberByTenure0 = (HashMap<String, Integer>) aSHBEData[9];
@@ -557,9 +568,11 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             File f;
             f = DW_SHBE_Handler.getClaimantNationalInsuranceNumberIDToTenureLookupFile(
                     filename);
+            System.out.print("Loading " + f + " ...");
             nationalInsuranceNumberByTenure0 = (HashMap<String, Integer>) Generic_StaticIO.readObject(
                     f);
         }
+        System.out.println("...done.");
         nationalInsuranceNumberByTenures.put(startIndex, nationalInsuranceNumberByTenure0);
         // Initialise initFirsts and previousIndexs
         HashMap<String, Boolean> initFirsts;
@@ -590,12 +603,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             } else {
                 initFirsts.put(includeKey, false);
             }
-        }//Main loop
+        }
+        //Main loop
         for (int i = startIndex + 1; i < SHBEFilenames.length; i++) {
             HashMap<String, Integer> nationalInsuranceNumberByTenure;
             filename = SHBEFilenames[i];
             // Load next data            
             if (loadData) {
+                System.out.print("Loading " + filename + " ...");
                 Object[] aSHBEData;
                 aSHBEData = loadSHBEData(filename);
                 nationalInsuranceNumberByTenure = (HashMap<String, Integer>) aSHBEData[9];
@@ -603,9 +618,11 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 File f;
                 f = DW_SHBE_Handler.getClaimantNationalInsuranceNumberIDToTenureLookupFile(
                         filename);
+                System.out.print("Loading " + f + " ...");
                 nationalInsuranceNumberByTenure = (HashMap<String, Integer>) Generic_StaticIO.readObject(
                         f);
             }
+            System.out.println("...done.");
             nationalInsuranceNumberByTenures.put(
                     i, nationalInsuranceNumberByTenure);
             ite = includes.keySet().iterator();
@@ -642,7 +659,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         String month = DW_SHBE_Handler.getMonth(SHBEFilenames[i]);
                         // Get TenancyTypeTranistionMatrix
                         TreeMap<Integer, TreeMap<Integer, Integer>> tenancyTypeTranistionMatrix;
-                        tenancyTypeTranistionMatrix = getTenancyTypeTranistionMatrix(
+                        tenancyTypeTranistionMatrix = getTenancyTypeTranistionMatrixAndRecordTenancyChange(
                                 nationalInsuranceNumberByTenure0,
                                 nationalInsuranceNumberByTenure,
                                 tenureChanges, year, month,
@@ -652,14 +669,17 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                 include);
                         writeTenancyTypeTransitionMatrix(
                                 tenancyTypeTranistionMatrix, year0, month0,
-                                year, month, "All", includeKey, checkPreviousTenure);
+                                year, month, "All", "TenureOnly", includeKey,
+                                checkPreviousTenure);
                         TreeMap<String, TreeMap<String, Integer>> tenancyTypeTranistionMatrixGrouped;
-                        tenancyTypeTranistionMatrixGrouped = getTenancyTypeTranistionMatrixGrouped(
+                        tenancyTypeTranistionMatrixGrouped = getTenancyTypeTranistionMatrixGroupedAndRecordTenancyChange(
                                 nationalInsuranceNumberByTenure0,
                                 nationalInsuranceNumberByTenure,
                                 regulatedGroups,
                                 unregulatedGroups,
-                                tenureChangesGrouped, year, month,
+                                tenureChangesGrouped,
+                                year,
+                                month,
                                 checkPreviousTenure,
                                 nationalInsuranceNumberByTenures,
                                 i,
@@ -667,20 +687,20 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         writeTenancyTypeTransitionMatrixGrouped(
                                 tenancyTypeTranistionMatrixGrouped,
                                 tenureTypesGrouped, year0, month0, year,
-                                month, "All", includeKey, checkPreviousTenure);
+                                month, "All", "TenureOnly", includeKey, checkPreviousTenure);
                         previousIndexs.put(includeKey, i);
                     }
                 }
             }
             nationalInsuranceNumberByTenure0 = nationalInsuranceNumberByTenure;
         }
-
         File dir;
         dir = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
                 "All",
                 checkPreviousTenure);
         TreeMap<String, TreeMap<String, Integer>> allTrans;
         // Calculate and write out Tenure Type transition frequencies
+        System.out.println("Calculate and write out Tenure Type transition frequencies");
         allTrans = new TreeMap<String, TreeMap<String, Integer>>();
         ite = includes.keySet().iterator();
         while (ite.hasNext()) {
@@ -731,10 +751,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         }
                     }
                 }
-                if (trans.containsKey(out)) {
-                    Generic_Collections.addToTreeMapStringInteger(trans, out, 1);
-                } else {
-                    trans.put(out, 1);
+                if (!out.isEmpty()) {
+                    if (trans.containsKey(out)) {
+                        Generic_Collections.addToTreeMapStringInteger(trans, out, 1);
+                    } else {
+                        trans.put(out, 1);
+                    }
                 }
 //                if (transitions.size() == max) {
 //                    out = "Transitions";
@@ -803,10 +825,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         }
                     }
                 }
-                if (trans.containsKey(out)) {
-                    Generic_Collections.addToTreeMapStringInteger(trans, out, 1);
-                } else {
-                    trans.put(out, 1);
+                if (!out.isEmpty()) {
+                    if (trans.containsKey(out)) {
+                        Generic_Collections.addToTreeMapStringInteger(trans, out, 1);
+                    } else {
+                        trans.put(out, 1);
+                    }
                 }
 //                if (transitions.size() == max) {
 //                    out = "Transitions Grouped";
@@ -903,6 +927,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * @param levels
      * @param loadData
      * @param postcodeChange
+     * @param checkPreviousPostcode
      * @param checkPreviousTenure
      * @param reportTenancyTransitionBreaks
      */
@@ -918,6 +943,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             ArrayList<String> levels,
             boolean loadData,
             boolean postcodeChange,
+            boolean checkPreviousPostcode,
             boolean checkPreviousTenure,
             boolean reportTenancyTransitionBreaks) {
         // Load first data
@@ -1036,7 +1062,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         String month = DW_SHBE_Handler.getMonth(SHBEFilenames[i]);
                         // Get TenancyTypeTranistionMatrix
                         TreeMap<Integer, TreeMap<Integer, Integer>> tenancyTypeTranistionMatrix;
-                        tenancyTypeTranistionMatrix = getTenancyTypeTranistionMatrix(
+                        tenancyTypeTranistionMatrix = getTenancyTypeTranistionMatrixAndMaybeWritePostcodeChanges(
                                 nationalInsuranceNumberByTenure0,
                                 nationalInsuranceNumberByTenure,
                                 nationalInsuranceNumberByPostcode0,
@@ -1048,33 +1074,43 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                 month,
                                 checkPreviousTenure,
                                 nationalInsuranceNumberByTenures,
+                                checkPreviousPostcode,
+                                nationalInsuranceNumberByPostcodes,
                                 i,
                                 include);
                         String type2;
                         if (postcodeChange) {
-                            type2 = includeKey + "/PostcodeChanged/";
+                            type2 = "/PostcodeChanged/";
                         } else {
-                            type2 = includeKey + "/PostcodeUnchanged/";
+                            type2 = "/PostcodeUnchanged/";
                         }
                         writeTenancyTypeTransitionMatrix(
                                 tenancyTypeTranistionMatrix, year0, month0,
-                                year, month, "All", type2, checkPreviousTenure);
+                                year, month, "All", type2, includeKey,
+                                checkPreviousTenure);
                         TreeMap<String, TreeMap<String, Integer>> tenancyTypeTranistionMatrixGrouped;
-                        tenancyTypeTranistionMatrixGrouped = getTenancyTypeTranistionMatrixGrouped(
+                        tenancyTypeTranistionMatrixGrouped = getTenancyTypeTranistionMatrixGroupedAndMaybeWritePostcodeChanges(
                                 nationalInsuranceNumberByTenure0,
                                 nationalInsuranceNumberByTenure,
+                                nationalInsuranceNumberByPostcode0,
+                                nationalInsuranceNumberByPostcode,
+                                postcodeHandler,
                                 regulatedGroups,
                                 unregulatedGroups,
-                                tenureChangesGrouped, year,
+                                tenureChangesGrouped,
+                                year,
                                 month,
                                 checkPreviousTenure,
                                 nationalInsuranceNumberByTenures,
+                                postcodeChange,
+                                checkPreviousPostcode,
+                                nationalInsuranceNumberByPostcodes,
                                 i,
                                 include);
                         writeTenancyTypeTransitionMatrixGrouped(
                                 tenancyTypeTranistionMatrixGrouped,
                                 tenureTypesGrouped, year0, month0, year, month,
-                                "All", type2, checkPreviousTenure);
+                                "All", type2, includeKey, checkPreviousTenure);
                         previousIndexs.put(includeKey, i);
                     }
                 }
@@ -1086,6 +1122,15 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         dir = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
                 "All",
                 checkPreviousTenure);
+        if (postcodeChange) {
+            dir = new File(
+                    dir,
+                    "/PostcodeChanged/");
+        } else {
+            dir = new File(
+                    dir,
+                    "/PostcodeUnchanged/");
+        }
         TreeMap<String, TreeMap<String, Integer>> allTrans;
         allTrans = new TreeMap<String, TreeMap<String, Integer>>();
         // Calculate and write out Tenure Type transition frequencies
@@ -1118,17 +1163,32 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     t = ite3.next();
                     String[] splitT;
                     splitT = t.split(":");
-                    if (!doneFirst) {
-                        out += splitT[0];
-                        doneFirst = true;
+                    if (reportTenancyTransitionBreaks) {
+                        if (!doneFirst) {
+                            out += splitT[0];
+                            doneFirst = true;
+                        } else {
+                            out += ", " + splitT[0];
+                        }
                     } else {
-                        out += ", " + splitT[0];
+                        if (!doneFirst) {
+                            if (!splitT[0].contains("-999")) {
+                                out += splitT[0];
+                                doneFirst = true;
+                            }
+                        } else {
+                            if (!splitT[0].contains("-999")) {
+                                out += ", " + splitT[0];
+                            }
+                        }
                     }
                 }
-                if (trans.containsKey(out)) {
-                    Generic_Collections.addToTreeMapStringInteger(trans, out, 1);
-                } else {
-                    trans.put(out, 1);
+                if (!out.isEmpty()) {
+                    if (trans.containsKey(out)) {
+                        Generic_Collections.addToTreeMapStringInteger(trans, out, 1);
+                    } else {
+                        trans.put(out, 1);
+                    }
                 }
 //                if (transitions.size() == max) {
 //                    out = "Transitions";
@@ -1177,17 +1237,32 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     t = ite3.next();
                     String[] splitT;
                     splitT = t.split(":");
-                    if (!doneFirst) {
-                        out += splitT[0];
-                        doneFirst = true;
+                    if (reportTenancyTransitionBreaks) {
+                        if (!doneFirst) {
+                            out += splitT[0];
+                            doneFirst = true;
+                        } else {
+                            out += ", " + splitT[0];
+                        }
                     } else {
-                        out += ", " + splitT[0];
+                        if (!doneFirst) {
+                            if (!splitT[0].contains("-999")) {
+                                out += splitT[0];
+                                doneFirst = true;
+                            }
+                        } else {
+                            if (!splitT[0].contains("-999")) {
+                                out += ", " + splitT[0];
+                            }
+                        }
                     }
                 }
-                if (trans.containsKey(out)) {
-                    Generic_Collections.addToTreeMapStringInteger(trans, out, 1);
-                } else {
-                    trans.put(out, 1);
+                if (!out.isEmpty()) {
+                    if (trans.containsKey(out)) {
+                        Generic_Collections.addToTreeMapStringInteger(trans, out, 1);
+                    } else {
+                        trans.put(out, 1);
+                    }
                 }
 //                if (transitions.size() == max) {
 //                    out = "Transitions Grouped";
@@ -1214,12 +1289,16 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      *
      * @param lookupsFromPostcodeToLevelCode
      * @param SHBEFilenames
+     * @param startIndex
      * @param claimantTypes
+     * @param tenureTypeGroups
+     * @param tenureTypesGrouped
+     * @param regulatedGroups
+     * @param unregulatedGroups
+     * @param includes
      * @param levels
      * @param types type = NewEntrant type = Stable type = Churn
      * @param distanceTypes
-     * @param tenureTypeGroups
-     * @param startIndex
      * @param distances
      */
     public void aggregateClaimants(
@@ -2428,6 +2507,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      *
      * @param nationalInsuranceNumberByTenure0 Before
      * @param nationalInsuranceNumberByTenure1 Now
+     * @param nationalInsuranceNumberByTenures
+     * @param include
+     * @param index
      * @return A count matrix of tenure changes {@code
      * TreeMap<Integer, TreeMap<Integer, Integer>>
      * Tenure1, Tenure2, Count
@@ -2522,11 +2604,13 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         return result;
     }
 
-    public Integer getPreviousTenure(
+    public int[] getPreviousTenure(
             String nationalInsuranceNumber,
             HashMap<Integer, HashMap<String, Integer>> nationalInsuranceNumberByTenures,
             int index,
             ArrayList<Integer> include) {
+        int[] result;
+        result = new int[2];
         for (int i = index - 1; i > -1; i--) {
             if (include.contains(i)) {
                 HashMap<String, Integer> nationalInsuranceNumberByTenure;
@@ -2535,29 +2619,35 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 tenure = nationalInsuranceNumberByTenure.get(nationalInsuranceNumber);
                 if (tenure != null) {
                     if (tenure != -999) {
-                        return tenure;
+                        result[0] = tenure;
+                        result[1] = i;
+                        return result;
                     }
                 }
             }
         }
-        return -999;
+        result[0] = -999;
+        result[1] = 0;
+        return result;
     }
 
     /**
      *
-     * @param nationalInsuranceNumberByTenure0 Before
-     * @param nationalInsuranceNumberByTenure1 Now
-     * @return A count matrix of tenure changes null null null null null null
-     * null null null null null null null null null null null null null null
-     * null null null null null null null null null null null null null null
-     * null null null null null null null null null null null null null null
-     * null null null null null null null null null null null null null null
-     * null null null null null null null null null null null null     {@code 
+     * @param nationalInsuranceNumberByTenure0
+     * @param nationalInsuranceNumberByTenure1
+     * @param tenureChanges
+     * @param year
+     * @param month
+     * @param checkPreviousTenure
+     * @param nationalInsuranceNumberByTenures
+     * @param index
+     * @param include
+     * @return {@code
      * TreeMap<Integer, TreeMap<Integer, Integer>>
      * Tenure1, Tenure2, Count
      * }
      */
-    public TreeMap<Integer, TreeMap<Integer, Integer>> getTenancyTypeTranistionMatrix(
+    public TreeMap<Integer, TreeMap<Integer, Integer>> getTenancyTypeTranistionMatrixAndRecordTenancyChange(
             HashMap<String, Integer> nationalInsuranceNumberByTenure0,
             HashMap<String, Integer> nationalInsuranceNumberByTenure1,
             HashMap<String, ArrayList<String>> tenureChanges,
@@ -2577,22 +2667,26 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             Integer tenure0 = nationalInsuranceNumberByTenure0.get(nationalInsuranceNumber);
             if (tenure0 == null) {
                 if (checkPreviousTenure) {
-                    tenure0 = getPreviousTenure(
+                    int[] previousTenure;
+                    previousTenure = getPreviousTenure(
                             nationalInsuranceNumber,
                             nationalInsuranceNumberByTenures,
                             index,
                             include);
+                    tenure0 = previousTenure[0];
                 } else {
                     tenure0 = -999;
                 }
             } else {
                 if (tenure0 == -999) {
                     if (checkPreviousTenure) {
-                        tenure0 = getPreviousTenure(
+                        int[] previousTenure;
+                        previousTenure = getPreviousTenure(
                                 nationalInsuranceNumber,
                                 nationalInsuranceNumberByTenures,
                                 index,
                                 include);
+                        tenure0 = previousTenure[0];
                     }
                 }
             }
@@ -2646,14 +2740,26 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 
     /**
      *
-     * @param nationalInsuranceNumberByTenure0 Before
-     * @param nationalInsuranceNumberByTenure1 Now
-     * @return A count matrix of tenure changes {@code
+     * @param nationalInsuranceNumberByTenure0
+     * @param nationalInsuranceNumberByTenure1
+     * @param nationalInsuranceNumberByPostcode0
+     * @param nationalInsuranceNumberByPostcode1
+     * @param postCodeHandler
+     * @param postcodeChange
+     * @param tenureChanges
+     * @param year
+     * @param month
+     * @param checkPreviousTenure
+     * @param nationalInsuranceNumberByTenures
+     * @param checkPreviousPostcode
+     * @param nationalInsuranceNumberByPostcodes
+     * @param index
+     * @param include
+     * @return {@code
      * TreeMap<Integer, TreeMap<Integer, Integer>>
-     * Tenure1, Tenure2, Count
-     * }
+     * Tenure1, Tenure2, Count}
      */
-    public TreeMap<Integer, TreeMap<Integer, Integer>> getTenancyTypeTranistionMatrix(
+    public TreeMap<Integer, TreeMap<Integer, Integer>> getTenancyTypeTranistionMatrixAndMaybeWritePostcodeChanges(
             HashMap<String, Integer> nationalInsuranceNumberByTenure0,
             HashMap<String, Integer> nationalInsuranceNumberByTenure1,
             HashMap<String, String> nationalInsuranceNumberByPostcode0,
@@ -2665,32 +2771,46 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             String month,
             boolean checkPreviousTenure,
             HashMap<Integer, HashMap<String, Integer>> nationalInsuranceNumberByTenures,
+            boolean checkPreviousPostcode,
+            HashMap<Integer, HashMap<String, String>> nationalInsuranceNumberByPostcodes,
             int index,
             ArrayList<Integer> include) {
         TreeMap<Integer, TreeMap<Integer, Integer>> result;
         result = new TreeMap<Integer, TreeMap<Integer, Integer>>();
+        ArrayList<String[]> postcodeChanges = null;
+        if (postcodeChange) {
+            postcodeChanges = new ArrayList<String[]>();
+        }
         Iterator<String> ite;
         ite = nationalInsuranceNumberByTenure1.keySet().iterator();
         while (ite.hasNext()) {
             String nationalInsuranceNumber;
             nationalInsuranceNumber = ite.next();
             Integer tenure0 = nationalInsuranceNumberByTenure0.get(nationalInsuranceNumber);
+            String postcode0;
+            postcode0 = nationalInsuranceNumberByPostcode0.get(nationalInsuranceNumber);
+            boolean isValidPostcodeFormPostcode0;
+            isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
             if (tenure0 == null) {
                 if (checkPreviousTenure) {
-                    tenure0 = getPreviousTenure(
+                    int[] previousTenure;
+                    previousTenure = getPreviousTenure(
                             nationalInsuranceNumber,
                             nationalInsuranceNumberByTenures,
                             index,
                             include);
+                    tenure0 = previousTenure[0];
+                    int indexOfLastKnownTenureOrNot;
+                    indexOfLastKnownTenureOrNot = previousTenure[1];
+                    if (!isValidPostcodeFormPostcode0 && checkPreviousPostcode) {
+                        postcode0 = nationalInsuranceNumberByPostcodes.get(indexOfLastKnownTenureOrNot).get(nationalInsuranceNumber);
+                        isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
+                    }
                 } else {
                     tenure0 = -999;
                 }
             }
             Integer tenure1 = nationalInsuranceNumberByTenure1.get(nationalInsuranceNumber);
-            String postcode0;
-            postcode0 = nationalInsuranceNumberByPostcode0.get(nationalInsuranceNumber);
-            boolean isValidPostcodeFormPostcode0;
-            isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
             String postcode1;
             postcode1 = nationalInsuranceNumberByPostcode1.get(nationalInsuranceNumber);
             boolean isValidPostcodeFormPostcode1;
@@ -2698,23 +2818,28 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             if (isValidPostcodeFormPostcode0 && isValidPostcodeFormPostcode1) {
                 boolean doCount;
                 if (postcodeChange) {
-                    if (!postcode0.equalsIgnoreCase(postcode1)) {
-                        doCount = true;
-                    } else {
-                        doCount = false;
-                    }
+                    doCount = !postcode0.equalsIgnoreCase(postcode1);
                 } else {
-                    if (postcode0.equalsIgnoreCase(postcode1)) {
-                        doCount = true;
-                    } else {
-                        doCount = false;
-                    }
+                    doCount = postcode0.equalsIgnoreCase(postcode1);
                 }
                 if (doCount) {
                     if (tenure0.compareTo(tenure1) != 0) {
                         String tenureChange;
                         tenureChange = getTenureChange(tenure0, tenure1);
                         recordTenureChanges(nationalInsuranceNumber, tenureChanges, year, month, tenureChange);
+
+                        if (postcodeChange) {
+                            String[] resultItem;
+                            resultItem = new String[6];
+                            resultItem[0] = nationalInsuranceNumber;
+                            resultItem[1] = year;
+                            resultItem[2] = month;
+                            resultItem[3] = tenureChange;
+                            resultItem[4] = postcode0;
+                            resultItem[5] = postcode1;
+                            postcodeChanges.add(resultItem);
+                        }
+
                     }
                     if (result.containsKey(tenure1)) {
                         TreeMap<Integer, Integer> tenureCount;
@@ -2756,19 +2881,30 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 if (isValidPostcodeFormPostcode0 && isValidPostcodeFormPostcode1) {
                     boolean doCount;
                     if (postcodeChange) {
-                        if (!postcode0.equalsIgnoreCase(postcode1)) {
-                            doCount = true;
-                        } else {
-                            doCount = false;
-                        }
+                        doCount = !postcode0.equalsIgnoreCase(postcode1);
                     } else {
-                        if (postcode0.equalsIgnoreCase(postcode1)) {
-                            doCount = true;
-                        } else {
-                            doCount = false;
-                        }
+                        doCount = postcode0.equalsIgnoreCase(postcode1);
                     }
                     if (doCount) {
+
+                        if (tenure0.compareTo(tenure1) != 0) {
+                            String tenureChange;
+                            tenureChange = getTenureChange(tenure0, tenure1);
+                            recordTenureChanges(nationalInsuranceNumber, tenureChanges, year, month, tenureChange);
+
+                            if (postcodeChange) {
+                                String[] resultItem;
+                                resultItem = new String[6];
+                                resultItem[0] = nationalInsuranceNumber;
+                                resultItem[1] = year;
+                                resultItem[2] = month;
+                                resultItem[3] = tenureChange;
+                                resultItem[4] = postcode0;
+                                resultItem[5] = postcode1;
+                                postcodeChanges.add(resultItem);
+                            }
+
+                        }
                         if (result.containsKey(tenure1)) {
                             TreeMap<Integer, Integer> tenureCount;
                             tenureCount = result.get(tenure1);
@@ -2783,7 +2919,284 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 }
             }
         }
+        if (postcodeChange) {
+            writePostcodeChanges(
+                    postcodeChanges,
+                    checkPreviousTenure,
+                    checkPreviousPostcode,
+                    "Ungrouped");
+        }
         return result;
+    }
+
+    /**
+     *
+     * @param nationalInsuranceNumberByTenure0
+     * @param nationalInsuranceNumberByTenure1
+     * @param nationalInsuranceNumberByPostcode0
+     * @param nationalInsuranceNumberByPostcode1
+     * @param postCodeHandler
+     * @param postcodeChange
+     * @param tenureChanges
+     * @param year
+     * @param month
+     * @param checkPreviousTenure
+     * @param nationalInsuranceNumberByTenures
+     * @param index
+     * @param include
+     * @return {@code
+     * TreeMap<Integer, TreeMap<Integer, Integer>>
+     * Tenure1, Tenure2, Count}
+     */
+    public TreeMap<String, TreeMap<String, Integer>> getTenancyTypeTranistionMatrixGroupedAndMaybeWritePostcodeChanges(
+            HashMap<String, Integer> nationalInsuranceNumberByTenure0,
+            HashMap<String, Integer> nationalInsuranceNumberByTenure1,
+            HashMap<String, String> nationalInsuranceNumberByPostcode0,
+            HashMap<String, String> nationalInsuranceNumberByPostcode1,
+            Generic_UKPostcode_Handler postCodeHandler,
+            ArrayList<Integer> regulatedGroups,
+            ArrayList<Integer> unregulatedGroups,
+            HashMap<String, ArrayList<String>> tenureChanges,
+            String year,
+            String month,
+            boolean checkPreviousTenure,
+            HashMap<Integer, HashMap<String, Integer>> nationalInsuranceNumberByTenures,
+            boolean postcodeChange,
+            boolean checkPreviousPostcode,
+            HashMap<Integer, HashMap<String, String>> nationalInsuranceNumberByPostcodes,
+            int index,
+            ArrayList<Integer> include) {
+        TreeMap<String, TreeMap<String, Integer>> result;
+        result = new TreeMap<String, TreeMap<String, Integer>>();
+
+        ArrayList<String[]> postcodeChanges = null;
+        if (postcodeChange) {
+            postcodeChanges = new ArrayList<String[]>();
+        }
+
+        Iterator<String> ite;
+        ite = nationalInsuranceNumberByTenure1.keySet().iterator();
+        while (ite.hasNext()) {
+            String nationalInsuranceNumber;
+            nationalInsuranceNumber = ite.next();
+            Integer tenure0 = nationalInsuranceNumberByTenure0.get(nationalInsuranceNumber);
+            String postcode0;
+            postcode0 = nationalInsuranceNumberByPostcode0.get(nationalInsuranceNumber);
+            boolean isValidPostcodeFormPostcode0;
+            isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
+            if (tenure0 == null) {
+                if (checkPreviousTenure) {
+                    int[] previousTenure;
+                    previousTenure = getPreviousTenure(
+                            nationalInsuranceNumber,
+                            nationalInsuranceNumberByTenures,
+                            index,
+                            include);
+                    tenure0 = previousTenure[0];
+                    int indexOfLastKnownTenureOrNot;
+                    indexOfLastKnownTenureOrNot = previousTenure[1];
+                    if (!isValidPostcodeFormPostcode0 && checkPreviousPostcode) {
+                        postcode0 = nationalInsuranceNumberByPostcodes.get(indexOfLastKnownTenureOrNot).get(nationalInsuranceNumber);
+                        isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
+                    }
+                } else {
+                    tenure0 = -999;
+                }
+            }
+            String tenureType0;
+            tenureType0 = getTenancyTypeGroup(
+                    regulatedGroups,
+                    unregulatedGroups,
+                    tenure0);
+            Integer tenure1;
+            tenure1 = nationalInsuranceNumberByTenure1.get(nationalInsuranceNumber);
+            String tenureType1;
+            tenureType1 = getTenancyTypeGroup(
+                    regulatedGroups,
+                    unregulatedGroups,
+                    tenure1);
+            String postcode1;
+            postcode1 = nationalInsuranceNumberByPostcode1.get(nationalInsuranceNumber);
+            boolean isValidPostcodeFormPostcode1;
+            isValidPostcodeFormPostcode1 = postCodeHandler.isValidPostcodeForm(postcode1);
+            if (isValidPostcodeFormPostcode0 && isValidPostcodeFormPostcode1) {
+                boolean doCount;
+                if (postcodeChange) {
+                    doCount = !postcode0.equalsIgnoreCase(postcode1);
+                } else {
+                    doCount = postcode0.equalsIgnoreCase(postcode1);
+                }
+                if (doCount) {
+                    if (!tenureType0.equalsIgnoreCase(tenureType1)) {
+                        String tenureChange;
+                        tenureChange = getTenureChange(tenureType0, tenureType1);
+                        recordTenureChanges(nationalInsuranceNumber, tenureChanges, year, month, tenureChange);
+
+                        if (postcodeChange) {
+                            String[] resultItem;
+                            resultItem = new String[6];
+                            resultItem[0] = nationalInsuranceNumber;
+                            resultItem[1] = year;
+                            resultItem[2] = month;
+                            resultItem[3] = tenureChange;
+                            resultItem[4] = postcode0;
+                            resultItem[5] = postcode1;
+                            postcodeChanges.add(resultItem);
+                        }
+
+                    }
+                    if (result.containsKey(tenureType1)) {
+                        TreeMap<String, Integer> tenureCount;
+                        tenureCount = result.get(tenureType1);
+                        Generic_Collections.addToTreeMapStringInteger(
+                                tenureCount, tenureType0, 1);
+                    } else {
+                        TreeMap<String, Integer> tenureCount;
+                        tenureCount = new TreeMap<String, Integer>();
+                        tenureCount.put(tenureType0, 1);
+                        result.put(tenureType1, tenureCount);
+                    }
+                }
+            }
+        }
+        Set<String> set;
+        set = nationalInsuranceNumberByTenure1.keySet();
+        ite = nationalInsuranceNumberByTenure0.keySet().iterator();
+        while (ite.hasNext()) {
+            String nationalInsuranceNumber;
+            nationalInsuranceNumber = ite.next();
+            if (!set.contains(nationalInsuranceNumber)) {
+                Integer tenure0 = nationalInsuranceNumberByTenure0.get(
+                        nationalInsuranceNumber);
+                String tenureType0;
+                tenureType0 = getTenancyTypeGroup(
+                        regulatedGroups,
+                        unregulatedGroups,
+                        tenure0);
+                String tenureType1;
+                tenureType1 = "-999";
+                if (!tenureType0.equalsIgnoreCase(tenureType1)) {
+                    String tenureChange;
+                    tenureChange = getTenureChange(tenureType0, tenureType1);
+                    recordTenureChanges(nationalInsuranceNumber, tenureChanges, year, month, tenureChange);
+                }
+                String postcode0;
+                postcode0 = nationalInsuranceNumberByPostcode0.get(nationalInsuranceNumber);
+                boolean isValidPostcodeFormPostcode0;
+                isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
+                String postcode1;
+                postcode1 = nationalInsuranceNumberByPostcode1.get(nationalInsuranceNumber);
+                boolean isValidPostcodeFormPostcode1;
+                isValidPostcodeFormPostcode1 = postCodeHandler.isValidPostcodeForm(postcode1);
+                if (isValidPostcodeFormPostcode0 && isValidPostcodeFormPostcode1) {
+                    boolean doCount;
+                    if (postcodeChange) {
+                        doCount = !postcode0.equalsIgnoreCase(postcode1);
+                    } else {
+                        doCount = postcode0.equalsIgnoreCase(postcode1);
+                    }
+                    if (doCount) {
+                        if (!tenureType0.equalsIgnoreCase(tenureType1)) {
+                            String tenureChange;
+                            tenureChange = getTenureChange(tenureType0, tenureType1);
+                            recordTenureChanges(nationalInsuranceNumber, tenureChanges, year, month, tenureChange);
+
+                            if (postcodeChange) {
+                                String[] resultItem;
+                                resultItem = new String[6];
+                                resultItem[0] = nationalInsuranceNumber;
+                                resultItem[1] = year;
+                                resultItem[2] = month;
+                                resultItem[3] = tenureChange;
+                                resultItem[4] = postcode0;
+                                resultItem[5] = postcode1;
+                                postcodeChanges.add(resultItem);
+                            }
+
+                        }
+                        if (result.containsKey(tenureType1)) {
+                            TreeMap<String, Integer> tenureCount;
+                            tenureCount = result.get(tenureType1);
+                            Generic_Collections.addToTreeMapStringInteger(
+                                    tenureCount, tenureType0, 1);
+                        } else {
+                            TreeMap<String, Integer> tenureCount;
+                            tenureCount = new TreeMap<String, Integer>();
+                            tenureCount.put(tenureType0, 1);
+                            result.put(tenureType1, tenureCount);
+                        }
+                    }
+                }
+            }
+        }
+        if (postcodeChange) {
+            writePostcodeChanges(
+                    postcodeChanges,
+                    checkPreviousTenure,
+                    checkPreviousPostcode,
+                    "Grouped");
+        }
+        return result;
+    }
+
+    private void writePostcodeChanges(
+            ArrayList<String[]> postcodeChanges,
+            boolean checkPreviousTenure,
+            boolean checkPreviousPostcode,
+            String type) {
+        File dir;
+        dir = DW_Files.getOutputSHBETablesDir();
+        dir = new File(
+                dir,
+                "Tenancy");
+        dir = new File(
+                dir,
+                "All");
+        dir = new File(
+                dir,
+                "TenancyAndPostcodeChanges");
+        dir = new File(
+                dir,
+                type);
+        if (checkPreviousTenure) {
+            dir = new File(
+                    dir,
+                    "CheckedPreviousTenure");
+        } else {
+            dir = new File(
+                    dir,
+                    "NotCheckedPreviousTenure");
+        }
+        if (checkPreviousPostcode) {
+            dir = new File(
+                    dir,
+                    "CheckedPreviousPostcode");
+        } else {
+            dir = new File(
+                    dir,
+                    "NotCheckedPreviousPostcode");
+        }
+        dir.mkdirs();
+        File f;
+        f = new File(
+                dir,
+                "PostcodeChanges.csv");
+        PrintWriter pw;
+        pw = Generic_StaticIO.getPrintWriter(f, true);
+        Iterator<String[]> ite;
+        ite = postcodeChanges.iterator();
+        while (ite.hasNext()) {
+            String[] postcodeChange;
+            postcodeChange = ite.next();
+            String line;
+            line = postcodeChange[0];
+            for (int i = 1; i < postcodeChange.length; i++) {
+                line += ", " + postcodeChange[i];
+            }
+            pw.println(line);
+        }
+        pw.flush();
+        pw.close();
     }
 
     public String getTenancyTypeGroup(
@@ -2919,7 +3332,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         return result;
     }
 
-    public TreeMap<String, TreeMap<String, Integer>> getTenancyTypeTranistionMatrixGrouped(
+    public TreeMap<String, TreeMap<String, Integer>> getTenancyTypeTranistionMatrixGroupedAndRecordTenancyChange(
             HashMap<String, Integer> nationalInsuranceNumberByTenure0,
             HashMap<String, Integer> nationalInsuranceNumberByTenure1,
             ArrayList<Integer> regulatedGroups,
@@ -2952,11 +3365,13 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             String tenureType0;
             if (tenure0 == null) {
                 if (checkPreviousTenure) {
-                    tenure0 = getPreviousTenure(
+                    int[] previousTenure;
+                    previousTenure = getPreviousTenure(
                             nationalInsuranceNumber,
                             nationalInsuranceNumberByTenures,
                             index,
                             include);
+                    tenure0 = previousTenure[0];
                     tenureType0 = getTenancyTypeGroup(
                             regulatedGroups,
                             unregulatedGroups,
@@ -2967,17 +3382,33 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             } else {
                 if (tenure0 == -999) {
                     if (checkPreviousTenure) {
-                        tenure0 = getPreviousTenure(
+                        int[] previousTenure;
+                        previousTenure = getPreviousTenure(
                                 nationalInsuranceNumber,
                                 nationalInsuranceNumberByTenures,
                                 index,
                                 include);
+                        tenure0 = previousTenure[0];
                     }
                 }
                 tenureType0 = getTenancyTypeGroup(
-                                regulatedGroups,
-                                unregulatedGroups,
-                                tenure0);
+                        regulatedGroups,
+                        unregulatedGroups,
+                        tenure0);
+                if (result.containsKey(tenureType1)) {
+                    TreeMap<String, Integer> tenureCount;
+                    tenureCount = result.get(tenureType1);
+                    Generic_Collections.addToTreeMapStringInteger(tenureCount, tenureType0, 1);
+                } else {
+                    TreeMap<String, Integer> tenureCount;
+                    tenureCount = new TreeMap<String, Integer>();
+                    tenureCount.put(tenureType0, 1);
+                    result.put(tenureType1, tenureCount);
+                }
+                tenureType0 = getTenancyTypeGroup(
+                        regulatedGroups,
+                        unregulatedGroups,
+                        tenure0);
             }
             if (!tenureType0.equalsIgnoreCase(tenureType1)) {
                 String tenureChange;
@@ -3042,6 +3473,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             String month1,
             String type,
             String type2,
+            String type3,
             boolean checkPreviousTenure) {
         File dir;
         dir = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
@@ -3050,6 +3482,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         dir = new File(
                 dir,
                 type2);
+        dir = new File(
+                dir,
+                type3);
         dir.mkdirs();
         File fout;
         fout = new File(
@@ -3156,6 +3591,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             String month1,
             String type,
             String type2,
+            String type3,
             boolean checkPreviousTenure) {
         File dir;
         dir = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
@@ -3164,6 +3600,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         dir = new File(
                 dir,
                 type2);
+        dir = new File(
+                dir,
+                type3);
         dir.mkdirs();
         File fout;
         fout = new File(
@@ -5226,6 +5665,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      *
      * @param filename
      * @return Object[9] result where: null null null null null null null null
+     * null null null null null null null null null null null null null null
      * null null null null null null null null null null null null null null
      * null null null null null null null null null null null null null null
      * null null null null null null null null null null null null null null
