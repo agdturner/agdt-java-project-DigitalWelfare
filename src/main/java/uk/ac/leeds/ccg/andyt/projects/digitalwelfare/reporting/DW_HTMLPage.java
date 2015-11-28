@@ -29,23 +29,26 @@ public abstract class DW_HTMLPage {
 
     protected byte[] lineSeparator;
 
-    protected FileOutputStream fos;
+    protected FileOutputStream componentFOS;
+    protected FileOutputStream masterFOS;
 
     public DW_HTMLPage() {
     }
 
     public void writeStartOfBody(
             String baseURLString0,
-            String pageName) {
+            String pageName,
+            FileOutputStream fos) {
         try {
             fos.write(lineSeparator);
-            writeLine("<body>");
-            writeLine("<div><ul>");
+            writeLine("<body>", fos);
+            writeLine("<div><ul>", fos);
             writeLine("<li><h1><a href=\"" + baseURLString0 + "\" title=\""
                     + pageName + " Web Page @ School of Geography, University "
                     + "of Leeds\">" + pageName
-                    + " Web Page</a></h1></li>\n");
-            writeLine("</ul></div>");
+                    + " Web Page</a></h1></li>\n",
+                    fos);
+            writeLine("</ul></div>", fos);
         } catch (IOException e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
@@ -53,70 +56,76 @@ public abstract class DW_HTMLPage {
     }
 
     public void writeLine(
-            String line) throws IOException {
+            String line,
+            FileOutputStream fos) throws IOException {
         fos.write(line.getBytes());
         fos.write(lineSeparator);
     }
 
     public void writeHTMLHeader(
             String projectName,
-            String pageName) throws IOException {
-        writeLine("<!DOCTYPE html>");
+            String pageName,
+            FileOutputStream fos) throws IOException {
+        writeLine("<!DOCTYPE html>", fos);
         fos.write(lineSeparator);
-        writeLine("<html lang=en-GB>");
+        writeLine("<html lang=en-GB>", fos);
         fos.write(lineSeparator);
-        writeLine("<head>");
+        writeLine("<head>", fos);
         writeLine("<title>" + projectName + " Project " + pageName
-                + " Web Page @ School of Geography, University of Leeds</title>");
-        writeLine("<meta charset=\"UTF-8\">");
-        writeLine("<meta name=\"Keywords\" content=\"" + projectName + "\" />");
-        writeLine("<meta name=\"description\" content=\"Web Page\" />");
-        writeLine("<meta name=\"author\" content=\"Andy Turner\" />");
+                + " Web Page @ School of Geography, University of Leeds</title>",
+                fos);
+        writeLine("<meta charset=\"UTF-8\">", fos);
+        writeLine("<meta name=\"Keywords\" content=\"" + projectName + "\" />", fos);
+        writeLine("<meta name=\"description\" content=\"Web Page\" />", fos);
+        writeLine("<meta name=\"author\" content=\"Andy Turner\" />", fos);
         writeLine(
                 "<link rel=\"stylesheet\" "
                 + "href=\"http://www.geog.leeds.ac.uk/people/a.turner/style/SOGStyle1CSS2.1.css\" "
-                + "type=\"text/css\" />");
-        writeLine("</head>");
+                + "type=\"text/css\" />", fos);
+        writeLine("</head>", fos);
     }
 
     public void writeStartOfSection(
             String sectionTitle,
-            int headingLevel) throws IOException {
+            int headingLevel,
+            FileOutputStream fos) throws IOException {
         String sectionTitleNoSpaces;
         sectionTitleNoSpaces = sectionTitle.replaceAll(" ", "_");
-        writeLine("<div id=\"" + sectionTitleNoSpaces + "\">");
-        writeLine("<h" + headingLevel + ">" + sectionTitle + "</h" + headingLevel + ">");
+        writeLine("<div id=\"" + sectionTitleNoSpaces + "\">", fos);
+        writeLine("<h" + headingLevel + ">" + sectionTitle + "</h" + headingLevel + ">", fos);
     }
 
-    public void writeHTMLFooter(String date) throws IOException {
-        writeLine("<div id=\"Validation_and_Metadata\">");
-        writeLine("<!-- Begin Footer -->");
-        writeLine("<ul>");
-        writeLine("<li><h2>Validation and Metadata</h2>");
-        writeLine("<ul>");
-        writeLine("<!-- Begin Validation -->");
-        writeLine("<!-- For validating this page -->");
-        writeLine("<li>");
-        writeLine("<a href=\"http://validator.w3.org/check/referer\">");
-        writeLine("Check Page Source is Valid");
-        writeLine("</a>");
-        writeLine("</li>");
-        writeLine("<!-- For validating the CSS linked from the header-->");
-        writeLine("<li>");
-        writeLine("<a href=\"http://jigsaw.w3.org/css-validator/check/referer\">");
-        writeLine("Check Style Sheet is Valid");
-        writeLine("</a>");
-        writeLine("</li>");
-        writeLine("<!-- End Validation -->");
-        writeLine("<!-- Begin Footer -->");
-        writeLine("<li>Version 0.0.1 of this page published on " + date + ".</li>");
-        writeLine("<!-- For validating the CSS linked from the header-->");
-        writeLine("</ul></li>");
-        writeLine("</ul>");
-        writeLine("</div>");
-        writeLine("<!-- End Footer -->");
-        writeLine("</body>");
-        writeLine("</html>");
+    public void writeHTMLFooter(
+            String date,
+            FileOutputStream fos) throws IOException {
+        writeLine("<div id=\"Validation_and_Metadata\">", fos);
+        writeLine("<!-- Begin Footer -->", fos);
+        writeLine("<ul>", fos);
+        writeLine("<li><h2>Validation and Metadata</h2>", fos);
+        writeLine("<ul>", fos);
+        writeLine("<!-- Begin Validation -->", fos);
+        writeLine("<!-- For validating this page -->", fos);
+        writeLine("<li>", fos);
+        writeLine("<a href=\"http://validator.w3.org/check/referer\">", fos);
+        writeLine("Check Page Source is Valid", fos);
+        writeLine("</a>", fos);
+        writeLine("</li>", fos);
+        writeLine("<!-- For validating the CSS linked from the header-->", fos);
+        writeLine("<li>", fos);
+        writeLine("<a href=\"http://jigsaw.w3.org/css-validator/check/referer\">", fos);
+        writeLine("Check Style Sheet is Valid", fos);
+        writeLine("</a>", fos);
+        writeLine("</li>", fos);
+        writeLine("<!-- End Validation -->", fos);
+        writeLine("<!-- Begin Footer -->", fos);
+        writeLine("<li>Version 0.0.1 of this page published on " + date + ".</li>", fos);
+        writeLine("<!-- For validating the CSS linked from the header-->", fos);
+        writeLine("</ul></li>", fos);
+        writeLine("</ul>", fos);
+        writeLine("</div>", fos);
+        writeLine("<!-- End Footer -->", fos);
+        writeLine("</body>", fos);
+        writeLine("</html>", fos);
     }
 
     public static String getLink2(

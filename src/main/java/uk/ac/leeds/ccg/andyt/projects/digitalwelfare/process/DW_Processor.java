@@ -364,9 +364,11 @@ public abstract class DW_Processor {
             String level,
             int year) {
         TreeMap<String, String> result = null;
-        result = new DW_Postcode_Handler(tONSPD_NOV_2013DataFile, outFile).getPostcodeUnitCensusCodeLookup(
+        result = new DW_Postcode_Handler().getPostcodeUnitCensusCodeLookup(
                 level,
-                year);
+                year,
+                tONSPD_NOV_2013DataFile,
+                outFile);
         return result;
     }
 

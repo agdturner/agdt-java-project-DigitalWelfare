@@ -69,6 +69,10 @@ public class DW_BarChart extends Generic_BarChart {
         new DW_BarChart().run(args);
     }
 
+    /**
+     *
+     * @param args These are ignored!
+     */
     public void run(String[] args) {
         Generic_Visualisation.getHeadlessEnvironment();
         dataWidth = 400;
@@ -142,21 +146,56 @@ public class DW_BarChart extends Generic_BarChart {
         }
 
         int startIndex; // For restarting runs at a point.
-//        startIndex = 0;
-        startIndex = 19;
+        startIndex = 0;
+//        startIndex = 19;
 
-        generateBarCharts(
-                SHBEFilenames,
-                startIndex,
-                levels,
-                claimantTypes,
-                tenureTypes,
-                types,
-                distanceTypes,
-                distances);
+        ArrayList<Boolean> b;
+        b = new ArrayList<Boolean>();
+        b.add(true);
+        b.add(false);
+
+        Iterator<Boolean> iteb;
+        iteb = b.iterator();
+        while (iteb.hasNext()) {
+            boolean doUnderOccupied;
+            doUnderOccupied = iteb.next();
+            if (doUnderOccupied) {
+                Iterator<Boolean> iteb2;
+                iteb2 = b.iterator();
+                while (iteb2.hasNext()) {
+                    boolean doCouncil;
+                    doCouncil = iteb.next();
+                    generateBarCharts(
+                            doUnderOccupied,
+                            doCouncil,
+                            SHBEFilenames,
+                            startIndex,
+                            levels,
+                            claimantTypes,
+                            tenureTypes,
+                            types,
+                            distanceTypes,
+                            distances);
+                }
+            } else {
+                generateBarCharts(
+                        false,
+                        false,
+                        SHBEFilenames,
+                        startIndex,
+                        levels,
+                        claimantTypes,
+                        tenureTypes,
+                        types,
+                        distanceTypes,
+                        distances);
+            }
+        }
     }
 
     public void generateBarCharts(
+            boolean doUnderOccupied,
+            boolean doCouncil,
             String[] SHBEFilenames,
             int startIndex,
             ArrayList<String> levels,
@@ -167,7 +206,11 @@ public class DW_BarChart extends Generic_BarChart {
             ArrayList<Double> distances) {
 
         String format = "PNG";
-
+        File dirOut;
+        dirOut = new File(
+                DW_Files.getOutputSHBEPlotsDir(),
+                "BarCharts");
+        dirOut = DW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
         Iterator<String> levelsIte;
         Iterator<String> claimantTypesIte;
         Iterator<String> tenureTypesIte;
@@ -183,12 +226,16 @@ public class DW_BarChart extends Generic_BarChart {
             levelsIte = levels.iterator();
             while (levelsIte.hasNext()) {
                 String level = levelsIte.next();
-
+                File dirOut2 = new File(
+                        dirOut,
+                        level);
                 claimantTypesIte = claimantTypes.iterator();
                 while (claimantTypesIte.hasNext()) {
                     String claimantType;
                     claimantType = claimantTypesIte.next();
-
+                    File dirOut3 = new File(
+                            dirOut2,
+                            claimantType);
                     tenureTypesIte = tenureTypes.iterator();
                     while (tenureTypesIte.hasNext()) {
                         String tenure;
@@ -198,38 +245,34 @@ public class DW_BarChart extends Generic_BarChart {
                         while (typesIte.hasNext()) {
                             String type;
                             type = typesIte.next();
-                            File dir;
-                            dir = new File(
-                                    DW_Files.getOutputSHBEPlotsDir(),
-                                    level);
-                            dir = new File(
-                                    dir,
-                                    claimantType);
-                            dir = new File(
-                                    dir,
+                            File dirOut4 = new File(
+                                    dirOut3,
                                     type);
-                            dir = new File(
-                                    dir,
+                            dirOut4 = new File(
+                                    dirOut4,
                                     tenure);
-                            dir.mkdirs();
+                            dirOut4.mkdirs();
                             File fout;
                             fout = new File(
-                                    dir,
+                                    dirOut4,
                                     year + month + "BarChart.PNG");
                             String title;
                             title = year + " " + month + " Bar Chart";
                             xAxisLabel = type + " Count";
-                            dir = new File(
-                                    DW_Files.getGeneratedSHBEDir(level),
+                            File dirIn = new File(
+                                    DW_Files.getGeneratedSHBEDir(
+                                            level,
+                                            doUnderOccupied,
+                                            doCouncil),
                                     type);
-                            dir = new File(
-                                    dir,
+                            dirIn = new File(
+                                    dirIn,
                                     claimantType);
-                            dir = new File(
-                                    dir,
+                            dirIn = new File(
+                                    dirIn,
                                     tenure);
                             File fin = new File(
-                                    dir,
+                                    dirIn,
                                     "" + year + month + ".csv");
                             generateBarChart(
                                     level,
@@ -272,7 +315,10 @@ public class DW_BarChart extends Generic_BarChart {
                                 title = year + " " + month + " Bar Chart";
                                 xAxisLabel = distanceType + " " + distanceThreshold + " Count";
                                 dir = new File(
-                                        DW_Files.getGeneratedSHBEDir(level),
+                                        DW_Files.getGeneratedSHBEDir(
+                                                level,
+                                                doUnderOccupied,
+                                                doCouncil),
                                         distanceType);
                                 dir = new File(
                                         dir,

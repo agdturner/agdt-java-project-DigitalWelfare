@@ -29,7 +29,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_UnderOccupiedReport_Set {
     
-    TreeMap<String, DW_UnderOccupiedReport_Record> set;
+    /**
+     * aUnderOccupiedReport_Record.getClaimReferenceNumber(), aUnderOccupiedReport_Record
+     */ 
+    TreeMap<String, DW_UnderOccupiedReport_Record> map;
     
     public DW_UnderOccupiedReport_Set() {}
     
@@ -38,11 +41,10 @@ public class DW_UnderOccupiedReport_Set {
      * @param handler 
      */
     public DW_UnderOccupiedReport_Set(
-            String filename,
-            DW_UnderOccupiedReport_Handler handler) {
+            String filename) {
         File dir;
         dir = DW_Files.getInputUnderOccupiedDir();        
-        set = handler.loadInputData(
+        map = DW_UnderOccupiedReport_Handler.loadInputData(
                     dir,
                     filename);
     }
@@ -51,13 +53,13 @@ public class DW_UnderOccupiedReport_Set {
 //        result[0] = councilRecords;
 //        RSLRecords = new TreeMap[numberOfUnderOccupiedReportFiles];
 
-    public TreeMap<String, DW_UnderOccupiedReport_Record> getSet() {
-        return set;
+    public TreeMap<String, DW_UnderOccupiedReport_Record> getMap() {
+        return map;
     }
 
     public void setSet(
             TreeMap<String, DW_UnderOccupiedReport_Record> set) {
-        this.set = set;
+        this.map = set;
     }
     
 }

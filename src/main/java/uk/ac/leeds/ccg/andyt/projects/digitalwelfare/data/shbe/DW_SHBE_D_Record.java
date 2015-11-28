@@ -18,6 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+
 /**
  *
  * @author geoagdt
@@ -94,7 +96,9 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
                 setTenancyType(n, fields);
             } else {
                 if (exceptionalType == 1) {
-                    System.out.println("Ignoring fields " + n + ": " + fields[n]);
+                    System.out.println("Ignoring fields " + n + ": " 
+                            + fields[n] + " instead of a numerical Tenancy "
+                            + "Type getting something else RecordID " + RecordID);
                 }
             }
         } else {
@@ -102,7 +106,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
         }
         n++;
         if (n < fields.length) {
-            setClaimantsPostcode(fields[n]);
+            setClaimantsPostcode(DW_Postcode_Handler.formatPostcode(fields[n]));
         } else {
             return;
         }
@@ -2664,7 +2668,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
         }
         n++;
         if (n < fields.length) {
-            setLandlordPostcode(fields[n]);
+            setLandlordPostcode(DW_Postcode_Handler.formatPostcode(fields[n]));
         }
     }
 
@@ -6447,7 +6451,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
      * @param LandlordPostcode the LandlordPostcode to set
      */
     protected final void setLandlordPostcode(String LandlordPostcode) {
-        this.LandlordPostcode = LandlordPostcode;
+        this.LandlordPostcode = DW_Postcode_Handler.formatPostcode(LandlordPostcode);
     }
 
 }

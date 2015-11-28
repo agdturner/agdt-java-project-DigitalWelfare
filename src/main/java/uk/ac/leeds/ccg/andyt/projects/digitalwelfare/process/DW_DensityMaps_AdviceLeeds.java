@@ -18,60 +18,18 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
-
-import org.geotools.coverage.GridSampleDimension;
-import org.geotools.data.FileDataStore;
-import org.geotools.data.FileDataStoreFinder;
-import org.geotools.data.Parameter;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.map.GridReaderLayer;
-import org.geotools.map.Layer;
-import org.geotools.map.StyleLayer;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.SLD;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.swing.action.SafeAction;
-import org.geotools.swing.data.JParameterListWizard;
-import org.geotools.swing.wizard.JWizard;
-import org.geotools.util.KVP;
-import org.opengis.style.ContrastMethod;
-
 import java.awt.Color;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.gce.arcgrid.ArcGridReader;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.FeatureLayer;
-import org.geotools.map.MapContent;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.swing.JMapFrame;
-import org.opengis.filter.FilterFactory2;
 import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCellDoubleChunkFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleChunkArrayFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.GridStatistics0;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
@@ -82,16 +40,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CA
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_LCC_WRU_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_LCC_WRU_Record;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientEnquiryID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletEnquiryID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletID;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
@@ -102,30 +55,9 @@ import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor
  *
  * @author geoagdt
  */
-public class DW_DensityMaps extends DW_Maps {
+public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
 
-    protected Grids_Environment ge;
-    protected ESRIAsciiGridExporter eage;
-    protected ImageExporter ie;
-    protected Grid2DSquareCellProcessorGWS gp;
-    protected Grid2DSquareCellDoubleFactory gf;
-    protected AbstractGrid2DSquareCellDoubleChunkFactory gcf;
-    protected long nrows;
-    protected long ncols;
-    protected int chunkNRows;
-    protected int chunkNCols;
-    protected double cellsize;
-    protected BigDecimal[] dimensions;
-    protected long xllcorner;
-    protected long yllcorner;
-    protected TreeMap<String, String> tLookupFromPostcodeToCensusCodes;
-
-    protected int maxCellDistanceForGeneralisation;
-
-    //protected boolean outputESRIAsciigrids;
-    protected boolean handleOutOfMemoryErrors;
-
-    public DW_DensityMaps() {
+    public DW_DensityMaps_AdviceLeeds() {
     }
 
     /**
@@ -133,7 +65,7 @@ public class DW_DensityMaps extends DW_Maps {
      */
     public static void main(String[] args) {
         try {
-            new DW_DensityMaps().run();
+            new DW_DensityMaps_AdviceLeeds().run();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -179,9 +111,9 @@ public class DW_DensityMaps extends DW_Maps {
         styleParameters.setnClasses(9);
         styleParameters.setPaletteName("Reds");
         styleParameters.setAddWhiteForZero(true);
-        styleParameters.setForegroundStyleTitle0("Foreground Style 0");
-//        styleParameters.setForegroundStyle0(DW_Style.createDefaultPointStyle());
-        styleParameters.setForegroundStyle0(DW_Style.createAdviceLeedsPointStyles());
+        styleParameters.setForegroundStyleName(0,"Foreground Style 0");
+//        styleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
+        styleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
         styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
                 Color.GREEN,
                 Color.WHITE));
@@ -417,7 +349,7 @@ public class DW_DensityMaps extends DW_Maps {
         if (filter == 0) {
             backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
             nrows = 70 * multiplier; //139 * multiplier; //277 * multiplier;
-            ncols = 135 * multiplier; //170 * multiplier; //340 * multiplier;
+            ncols = 85 * multiplier; //170 * multiplier; //340 * multiplier;
             xllcorner = 413000;
             //minX 413220.095
             //minXRounded = 413200
@@ -589,7 +521,7 @@ public class DW_DensityMaps extends DW_Maps {
         styleParameters.setStylesNull();
     }
 
-    private void process(
+    protected void process(
             File mapDirectory2,
             String outlet,
             HashSet<String> outlets,
@@ -608,6 +540,8 @@ public class DW_DensityMaps extends DW_Maps {
         } else {
             process = true;
         }
+        String yM3;
+        yM3 = DW_Postcode_Handler.getDefaultYM3();
         if (process) {
             // Initialise
             File outletmapDirectory = new File(
@@ -642,7 +576,8 @@ public class DW_DensityMaps extends DW_Maps {
                             postcodes,
                             deprivationRecords,
                             deprivationClasses,
-                            deprivationClass);
+                            deprivationClass,
+                            yM3);
                 }
                 System.out.println("" + g.toString(handleOutOfMemoryErrors));
                 System.out.println("" + countNonMatchingPostcodes);
@@ -658,7 +593,8 @@ public class DW_DensityMaps extends DW_Maps {
                         postcodes,
                         deprivationRecords,
                         deprivationClasses,
-                        deprivationClass);
+                        deprivationClass,
+                        yM3);
                 System.out.println("" + g.toString(handleOutOfMemoryErrors));
                 System.out.println("" + countNonMatchingPostcodes);
             }
@@ -757,147 +693,6 @@ public class DW_DensityMaps extends DW_Maps {
         }
     }
 
-    // Add from postcodes
-    private int addFromPostcodes(
-            Grid2DSquareCellDouble g,
-            ArrayList<String> postcodes,
-            TreeMap<String, Deprivation_DataRecord> deprivationRecords,
-            TreeMap<Integer, Integer> deprivationClasses,
-            Integer deprivationClass) {
-        int countNonMatchingPostcodes = 0;
-        Iterator<String> itep = postcodes.iterator();
-        while (itep.hasNext()) {
-            String postcode = itep.next();
-            String aLSOACode;
-            aLSOACode = tLookupFromPostcodeToCensusCodes.get(postcode);
-            if (aLSOACode != null) {
-                if (deprivationRecords == null) {
-                    String postcodeLevel;
-                    postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(postcode);
-                    AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(postcode);
-                    if (aPoint != null) {
-                        int x = aPoint.getX();
-                        int y = aPoint.getY();
-                        g.addToCell((double) x, (double) y, 1.0, handleOutOfMemoryErrors);
-                    } else {
-                        countNonMatchingPostcodes++;
-                    }
-                } else {
-                    //Convert postcode to LSOA code
-                    Deprivation_DataRecord aDeprivation_DataRecord;
-                    aDeprivation_DataRecord = deprivationRecords.get(aLSOACode);
-                    // aDeprivation_DataRecord might be null as deprivation data comes from 2001 census...
-                    if (aDeprivation_DataRecord != null) {
-                        Integer thisDeprivationClass;
-                        thisDeprivationClass = Deprivation_DataHandler.getDeprivationClass(
-                                deprivationClasses,
-                                aDeprivation_DataRecord);
-                        if (thisDeprivationClass == deprivationClass.intValue()) {
-                            String postcodeLevel;
-                            postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(postcode);
-                            AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(postcode);
-                            if (aPoint != null) {
-                                int x = aPoint.getX();
-                                int y = aPoint.getY();
-                                g.addToCell((double) x, (double) y, 1.0, handleOutOfMemoryErrors);
-                            } else {
-                                countNonMatchingPostcodes++;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return countNonMatchingPostcodes;
-    }
-
-    /**
-     * Initialise and return a grid
-     *
-     * @param dir
-     * @return
-     */
-    public Grid2DSquareCellDouble initiliseGrid(File dir) {
-        Grid2DSquareCellDouble result = (Grid2DSquareCellDouble) gf.create(
-                new GridStatistics0(),
-                dir,
-                gcf,
-                nrows,
-                ncols,
-                dimensions,
-                ge,
-                handleOutOfMemoryErrors);
-        //System.out.println("" + result.toString(handleOutOfMemoryErrors));
-        for (int row = 0; row < nrows; row++) {
-            for (int col = 0; col < ncols; col++) {
-                result.setCell(row, col, 0, handleOutOfMemoryErrors); // set all values to 0;
-            }
-        }
-        return result;
-    }
-
-    public void outputGridToImageUsingGeoToolsAndSetCommonStyle(
-            double normalisation,
-            AbstractGrid2DSquareCell g,
-            File asciigridFile,
-            File dir,
-            String nameOfGrid,
-            int styleIndex,
-            boolean scaleToFirst) {
-        //----------------------------------------------------------
-        // Create GeoTools GridCoverage
-        // Two ways to read the asciigridFile into a GridCoverage
-        // 1.
-        // Reading the coverage through a file
-        ArcGridReader agr;
-        agr = getArcGridReader(asciigridFile);
-//        // 2.
-//        AbstractGridFormat format = GridFormatFinder.findFormat(asciigridFile);
-//        GridCoverage2DReader reader = format.getReader(asciigridFile);
-        GridCoverage2D gc;
-        gc = getGridCoverage2D(agr);
-
-        String outname = nameOfGrid + "GeoToolsOutput";
-        //showMapsInJMapPane = true;
-
-//        Object[] styleAndLegendItems = DW_Style.getEqualIntervalStyleAndLegendItems(
-//                normalisation, g, gc, "Quantile", ff, 9, "Reds", true);
-        //Style style = createGreyscaleStyle(gc, null, sf, ff);
-        ReferencedEnvelope re;
-        re = backgroundDW_Shapefile.getFeatureLayer().getBounds();
-        double minX = re.getMinX();
-        double maxX = re.getMaxX();
-        double minY = re.getMinY();
-        double maxY = re.getMaxY();
-        System.out.println("minX " + minX);
-        System.out.println("maxX " + maxX);
-        System.out.println("minY " + minY);
-        System.out.println("maxY " + maxY);
-
-        DW_Geotools.outputToImageUsingGeoToolsAndSetCommonStyle(
-                normalisation,
-                styleParameters,
-                styleIndex,
-                outname,
-                g,
-                gc,
-                foregroundDW_Shapefile0,
-                foregroundDW_Shapefile1,
-                backgroundDW_Shapefile,
-                dir,
-                imageWidth,
-                showMapsInJMapPane,
-                scaleToFirst);
-//        try {
-//            reader.dispose();
-//        } catch (IOException ex) {
-//            Logger.getLogger(DW_DensityMaps.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        if (agr != null) {
-            agr.dispose();
-        }
-    }
-
     public static TreeMap<String, ArrayList<AGDT_Point>> getLeedsCABDataPoints(
             Object IDType) {
         TreeMap<String, ArrayList<AGDT_Point>> result;
@@ -911,17 +706,17 @@ public class DW_DensityMaps extends DW_Maps {
                 aCAB_DataRecord2_Handler,
                 IDType);
         int countNonMatchingPostcodes = 0;
-        Iterator ite;
+        Iterator<DW_ID_ClientID> ite;
         ite = tLeedsCABData.keySet().iterator();
         while (ite.hasNext()) {
-            Object key = ite.next();
+            DW_ID_ClientID key = ite.next();
             DW_Data_CAB2_Record value = tLeedsCABData.get(key);
             String postcode = value.getPostcode();
             String outlet = value.getOutlet();
             String formattedpostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
             String postcodeLevel;
             postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(formattedpostcode);
-            AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(formattedpostcode);
+            AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(DW_Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
             if (aPoint != null) {
                 if (result.containsKey(outlet)) {
                     result.get(outlet).add(aPoint);
@@ -951,10 +746,10 @@ public class DW_DensityMaps extends DW_Maps {
                 filename,
                 aCAB_DataRecord2_Handler,
                 IDType);
-        Iterator ite;
+        Iterator<DW_ID_ClientID> ite;
         ite = tLeedsCABData.keySet().iterator();
         while (ite.hasNext()) {
-            Object key = ite.next();
+            DW_ID_ClientID key = ite.next();
             DW_Data_CAB2_Record value = tLeedsCABData.get(key);
             String postcode = value.getPostcode();
             String outlet = value.getOutlet();
@@ -982,16 +777,16 @@ public class DW_DensityMaps extends DW_Maps {
                 tCAB_DataRecord0_Handler,
                 IDType);
         int countNonMatchingPostcodes = 0;
-        Iterator ite;
+        Iterator<DW_ID_ClientID> ite;
         ite = tChapeltownCABData.keySet().iterator();
         while (ite.hasNext()) {
-            Object key = ite.next();
+            DW_ID_ClientID key = ite.next();
             DW_Data_CAB0_Record value = tChapeltownCABData.get(key);
             String postcode = value.getPostcode();
             String formattedpostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
             String postcodeLevel;
             postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(formattedpostcode);
-            AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(formattedpostcode);
+            AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(DW_Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
             if (aPoint != null) {
                 result.add(aPoint);
             } else {
@@ -1045,256 +840,4 @@ public class DW_DensityMaps extends DW_Maps {
         }
         return result;
     }
-
-    private final StyleFactory sf = CommonFactoryFinder.getStyleFactory();
-    private final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-
-    private JMapFrame frame;
-    private GridCoverage2DReader reader;
-
-    /**
-     * Prompts the user for a GeoTIFF file and a Shapefile and passes them to
-     * the displayLayers method
-     */
-    private void getLayersAndDisplay() throws Exception {
-        List<Parameter<?>> list = new ArrayList<Parameter<?>>();
-        list
-                .add(new Parameter<File>("image", File.class, "Image",
-                                "GeoTiff or World+Image to display as basemap",
-                                new KVP(Parameter.EXT, "tif", Parameter.EXT, "jpg")));
-        list.add(
-                new Parameter<File>("shape", File.class, "Shapefile",
-                        "Shapefile contents to display", new KVP(Parameter.EXT, "shp")));
-
-        JParameterListWizard wizard = new JParameterListWizard("Image Lab",
-                "Fill in the following layers", list);
-        int finish = wizard.showModalDialog();
-
-        if (finish != JWizard.FINISH) {
-            System.exit(0);
-        }
-        File imageFile = (File) wizard.getConnectionParameters().get("image");
-        File shapeFile = (File) wizard.getConnectionParameters().get("shape");
-
-        displayLayers(imageFile, shapeFile);
-    }
-
-    /**
-     * Displays a GeoTIFF file overlaid with a Shapefile
-     *
-     * @param rasterFile the GeoTIFF file
-     * @param shpFile the Shapefile
-     */
-    private void displayLayers(File rasterFile, File shpFile) throws Exception {
-        AbstractGridFormat format = GridFormatFinder.findFormat(rasterFile);
-        reader = format.getReader(rasterFile);
-
-        // Initially display the raster in greyscale using the
-        // data from the first image band
-        Style rasterStyle = createGreyscaleStyle(1, sf, ff);
-
-        // Connect to the shapefile
-        FileDataStore dataStore = FileDataStoreFinder.getDataStore(shpFile);
-        SimpleFeatureSource shapefileSource = dataStore
-                .getFeatureSource();
-
-        // Create a basic style with outlineColour coloured lines and no fill
-        Color outlineColour = Color.BLACK;//Color.YELLOW;
-        Style shpStyle = SLD.createPolygonStyle(
-                outlineColour,
-                null,
-                0.0f);
-
-        // Set up a MapContent with the two layers
-        final MapContent map = new MapContent();
-        map.setTitle("ImageLab");
-
-        Layer rasterLayer = new GridReaderLayer(reader, rasterStyle);
-        map.addLayer(rasterLayer);
-
-        Layer shpLayer = new FeatureLayer(shapefileSource, shpStyle);
-        map.addLayer(shpLayer);
-
-        // Create a JMapFrame with a menu to choose the display style for the
-        frame = new JMapFrame(map);
-        frame.setSize(800, 600);
-        frame.enableStatusBar(true);
-        //frame.enableTool(JMapFrame.Tool.ZOOM, JMapFrame.Tool.PAN, JMapFrame.Tool.RESET);
-        frame.enableToolBar(true);
-
-        JMenuBar menuBar = new JMenuBar();
-        frame.setJMenuBar(menuBar);
-        JMenu menu = new JMenu("Raster");
-        menuBar.add(menu);
-
-        menu.add(new SafeAction("Grayscale display") {
-            public void action(ActionEvent e) throws Throwable {
-                Style style = createGreyscaleStyle();
-                if (style != null) {
-                    ((StyleLayer) map.layers().get(0)).setStyle(style);
-                    frame.repaint();
-                }
-            }
-        });
-
-        menu.add(new SafeAction("RGB display") {
-            public void action(ActionEvent e) throws Throwable {
-                Style style = createRGBStyle();
-                if (style != null) {
-                    ((StyleLayer) map.layers().get(0)).setStyle(style);
-                    frame.repaint();
-                }
-            }
-        });
-        // Finally display the map frame.
-        // When it is closed the app will exit.
-        frame.setVisible(true);
-    }
-
-    /**
-     * Create a Style to display a selected band of the GeoTIFF image as a
-     * greyscale layer
-     *
-     * @return a new Style instance to render the image in greyscale
-     */
-    private Style createGreyscaleStyle() {
-        GridCoverage2D cov = null;
-        return createGreyscaleStyle(cov);
-    }
-
-    /**
-     * Create a Style to display a selected band of the GeoTIFF image as a
-     * greyscale layer
-     *
-     * @return a new Style instance to render the image in greyscale
-     */
-    private Style createGreyscaleStyle(
-            GridCoverage2D cov) {
-        return createGreyscaleStyle(cov, frame, sf, ff);
-    }
-
-    /**
-     * Create a Style to display a selected band of the GeoTIFF image as a
-     * greyscale layer
-     *
-     * @return a new Style instance to render the image in greyscale
-     */
-    private static Style createGreyscaleStyle(
-            GridCoverage2D cov,
-            JMapFrame frame,
-            StyleFactory sf,
-            FilterFactory2 ff) {
-        int numBands = cov.getNumSampleDimensions();
-        if (numBands == 1) {
-            return createGreyscaleStyle(1, sf, ff);
-        } else {
-            Integer[] bandNumbers = new Integer[numBands];
-            for (int i = 0; i < numBands; i++) {
-                bandNumbers[i] = i + 1;
-            }
-            Object selection = JOptionPane.showInputDialog(
-                    frame,
-                    "Band to use for greyscale display",
-                    "Select an image band",
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    bandNumbers,
-                    1);
-            if (selection != null) {
-                int band = ((Number) selection).intValue();
-                return createGreyscaleStyle(band, sf, ff);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Create a Style to display the specified band of the GeoTIFF image as a
-     * greyscale layer.
-     * <p>
-     * This method is a helper for createGreyScale() and is also called directly
-     * by the displayLayers() method when the application first starts.
-     *
-     * @param band the image band to use for the greyscale display
-     *
-     * @return a new Style instance to render the image in greyscale
-     */
-    private static Style createGreyscaleStyle(
-            int band,
-            StyleFactory sf,
-            FilterFactory2 ff) {
-        ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
-        SelectedChannelType sct = sf.createSelectedChannelType(String.valueOf(band), ce);
-
-        RasterSymbolizer sym = sf.getDefaultRasterSymbolizer();
-        ChannelSelection sel = sf.channelSelection(sct);
-        sym.setChannelSelection(sel);
-
-        return SLD.wrapSymbolizers(sym);
-    }
-
-    /**
-     * This method examines the names of the sample dimensions in the provided
-     * coverage looking for "red...", "green..." and "blue..." (case insensitive
-     * match). If these names are not found it uses bands 1, 2, and 3 for the
-     * red, green and blue channels. It then sets up a raster symbolizer and
-     * returns this wrapped in a Style.
-     *
-     * @return a new Style object containing a raster symbolizer set up for RGB
-     * image
-     */
-    private Style createRGBStyle() {
-        GridCoverage2D cov = null;
-        try {
-            cov = reader.read(null);
-        } catch (IOException giveUp) {
-            throw new RuntimeException(giveUp);
-        }
-        // We need at least three bands to create an RGB style
-        int numBands = cov.getNumSampleDimensions();
-        if (numBands < 3) {
-            return null;
-        }
-        // Get the names of the bands
-        String[] sampleDimensionNames = new String[numBands];
-        for (int i = 0; i < numBands; i++) {
-            GridSampleDimension dim = cov.getSampleDimension(i);
-            sampleDimensionNames[i] = dim.getDescription().toString();
-        }
-        final int RED = 0, GREEN = 1, BLUE = 2;
-        int[] channelNum = {-1, -1, -1};
-        // We examine the band names looking for "red...", "green...", "blue...".
-        // Note that the channel numbers we record are indexed from 1, not 0.
-        for (int i = 0; i < numBands; i++) {
-            String name = sampleDimensionNames[i].toLowerCase();
-            if (name != null) {
-                if (name.matches("red.*")) {
-                    channelNum[RED] = i + 1;
-                } else if (name.matches("green.*")) {
-                    channelNum[GREEN] = i + 1;
-                } else if (name.matches("blue.*")) {
-                    channelNum[BLUE] = i + 1;
-                }
-            }
-        }
-        // If we didn't find named bands "red...", "green...", "blue..."
-        // we fall back to using the first three bands in order
-        if (channelNum[RED] < 0 || channelNum[GREEN] < 0 || channelNum[BLUE] < 0) {
-            channelNum[RED] = 1;
-            channelNum[GREEN] = 2;
-            channelNum[BLUE] = 3;
-        }
-        // Now we create a RasterSymbolizer using the selected channels
-        SelectedChannelType[] sct = new SelectedChannelType[cov.getNumSampleDimensions()];
-        ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
-        for (int i = 0; i < 3; i++) {
-            sct[i] = sf.createSelectedChannelType(String.valueOf(channelNum[i]), ce);
-        }
-        RasterSymbolizer sym = sf.getDefaultRasterSymbolizer();
-        ChannelSelection sel = sf.channelSelection(sct[RED], sct[GREEN], sct[BLUE]);
-        sym.setChannelSelection(sel);
-
-        return SLD.wrapSymbolizers(sym);
-    }
-
 }

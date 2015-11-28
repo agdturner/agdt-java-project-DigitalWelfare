@@ -198,7 +198,7 @@ public class DW_Types extends DW_HTMLPage {
         File f = new File(
                 dir,
                 reportFilename);
-        fos = Generic_StaticIO.getFileOutputStream(f);
+        componentFOS = Generic_StaticIO.getFileOutputStream(f);
         write(type,
                 definitions,
                 projectName,
@@ -208,8 +208,8 @@ public class DW_Types extends DW_HTMLPage {
                 baseURLString0,
                 baseURLString1);
         try {
-            writeHTMLFooter(date);
-            fos.close();
+            writeHTMLFooter(date, componentFOS);
+            componentFOS.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
@@ -230,17 +230,17 @@ public class DW_Types extends DW_HTMLPage {
             String definition;
             definition = definitions.get(type);
             reportName += " " + type + " Definition";
-            writeHTMLHeader(projectName, reportName);
-            fos.write(lineSeparator);
-            writeStartOfBody(baseURLString0, reportName);
+            writeHTMLHeader(projectName, reportName, componentFOS);
+            componentFOS.write(lineSeparator);
+            writeStartOfBody(baseURLString0, reportName, componentFOS);
             //writeContents();
-            writeLine("<ul>");
-            writeLine("<li>");
-            writeStartOfSection(" " + type + " Definition", 2);
-            writeLine("<p>" + definition + "</p>");
-            writeLine("</li>");
-            writeLine("</ul>");
-            writeLine("</div>");
+            writeLine("<ul>", componentFOS);
+            writeLine("<li>", componentFOS);
+            writeStartOfSection(" " + type + " Definition", 2, componentFOS);
+            writeLine("<p>" + definition + "</p>", componentFOS);
+            writeLine("</li>", componentFOS);
+            writeLine("</ul>", componentFOS);
+            writeLine("</div>", componentFOS);
         } catch (IOException e) {
             System.err.println(e.getMessage());
             e.printStackTrace();

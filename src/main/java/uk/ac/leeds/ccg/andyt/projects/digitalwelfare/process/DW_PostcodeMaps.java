@@ -41,6 +41,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ar
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.getPointSimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 
 /**
@@ -98,12 +99,16 @@ public class DW_PostcodeMaps extends DW_Maps {
         postcodeUnitPoly_DW_Shapefile = DW_Maps.getPostcodeUnitPoly_DW_Shapefile(
             new ShapefileDataStoreFactory());
 
+        String yM3;
+        yM3 = DW_Postcode_Handler.getDefaultYM3();
+        
         String postcodeLevel;
         // Postcode Unit Centroids
         postcodeLevel = "Unit";
         String aLeedsPostcodeUnitPointShapefile;
         aLeedsPostcodeUnitPointShapefile = "LeedsPostcode" + postcodeLevel + "PointShapefile.shp";
         File aPostcodeUnitPointShapefile = createPostcodePointShapefileIfItDoesNotExist(
+                yM3,
                 postcodeLevel,
                 mapDirectory,
                 aLeedsPostcodeUnitPointShapefile,
@@ -113,6 +118,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         String aLeedsPostcodeSectorPointShapefile;
         aLeedsPostcodeSectorPointShapefile = "LeedsPostcode" + postcodeLevel + "PointShapefile.shp";
         File aPostcodeSectorPointShapefile = createPostcodePointShapefileIfItDoesNotExist(
+                yM3,
                 postcodeLevel,
                 mapDirectory,
                 aLeedsPostcodeSectorPointShapefile,
@@ -122,6 +128,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         String aLeedsPostcodeDistrictPointShapefile;
         aLeedsPostcodeDistrictPointShapefile = "LeedsPostcode" + postcodeLevel + "PointShapefile.shp";
         File aPostcodeDistrictPointShapefile = createPostcodePointShapefileIfItDoesNotExist(
+                yM3,
                 postcodeLevel,
                 mapDirectory,
                 aLeedsPostcodeSectorPointShapefile,
@@ -311,7 +318,8 @@ public class DW_PostcodeMaps extends DW_Maps {
     /**
      * @return
      */
-    public static ArrayList<DW_Shapefile> getPostcodePointDW_Shapefiles() {
+    public static ArrayList<DW_Shapefile> getPostcodePointDW_Shapefiles(
+    String yM3) {
         ArrayList<DW_Shapefile> result;
         result = new ArrayList<DW_Shapefile>();
         File dir;
@@ -330,7 +338,8 @@ public class DW_PostcodeMaps extends DW_Maps {
             sf_name = "LS_Postcodes" + postcodeLevel + "CentroidsPoint.shp";
             File sf_File;
             sf_File = createPostcodePointShapefileIfItDoesNotExist(
-                postcodeLevel,
+                yM3,
+                    postcodeLevel,
                 dir,
                 sf_name,
                 "LS");
@@ -347,6 +356,7 @@ public class DW_PostcodeMaps extends DW_Maps {
      * @return
      */
     public static File createPostcodePointShapefileIfItDoesNotExist(
+            String yM3,
             String postcodeLevel,
             File dir,
             String shapefileFilename,
@@ -356,7 +366,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         sft = getPointSimpleFeatureType(getDefaultSRID());
         TreeSetFeatureCollection fc;
         fc = getPostcodePointFeatureCollection(
-                postcodeLevel, sft, target);
+                yM3, postcodeLevel, sft, target);
         result = createShapefileIfItDoesNotExist(
                 dir,
                 shapefileFilename,
@@ -366,12 +376,13 @@ public class DW_PostcodeMaps extends DW_Maps {
     }
 
     public static TreeSetFeatureCollection getPostcodePointFeatureCollection(
+            String yM3,
             String postcodeLevel,
             SimpleFeatureType sft,
             String target) {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
-        TreeMap<String, AGDT_Point> tONSPDlookup = getONSPDlookups().get(postcodeLevel);
+        TreeMap<String, AGDT_Point> tONSPDlookup = getONSPDlookups().get(postcodeLevel).get(DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
          * using a Point object for the location.

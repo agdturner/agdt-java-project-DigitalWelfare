@@ -39,83 +39,178 @@ public class DW_UnderOccupiedReport_Record {
     /**
      * @param BedroomRequirement
      */
-    private int BedroomRequirement;
+    private Integer BedroomRequirement;
     /**
      * @param BedroomsInProperty
      */
-    private int BedroomsInProperty;
+    private Integer BedroomsInProperty;
     /**
      * @param MaleChildrenUnder10
      */
-    private int MaleChildrenUnder10;
+    private Integer MaleChildrenUnder10;
     /**
      * @param FemaleChildrenUnder10
      */
-    private int FemaleChildrenUnder10;
+    private Integer FemaleChildrenUnder10;
     /**
      * @param MaleChildren10to16
      */
-    private int MaleChildren10to16;
+    private Integer MaleChildren10to16;
     /**
      * @param FemaleChildren10to16
      */
-    private int FemaleChildren10to16;
+    private Integer FemaleChildren10to16;
     /**
      * @param ChildrenOver16
      */
-    private int ChildrenOver16;
+    private Integer ChildrenOver16;
     /**
      * @param TotalDependentChildren
      */
-    private int TotalDependentChildren;
+    private Integer TotalDependentChildren;
     /**
      * @param NonDependents
      */
-    private int NonDependents;
+    private Integer NonDependents;
     /**
      * @param TotalRentArrears
      */
-    private double TotalRentArrears;
+    private Double TotalRentArrears;
 
+    /**
+     * For RSL type we expect rectangular data with 9 or 10 columns. If there
+     * are 9 columns we assume that
+     *
+     * @param RecordID
+     * @param line
+     * @param type
+     * @throws Exception
+     */
     public DW_UnderOccupiedReport_Record(
             long RecordID,
             String line,
-            DW_UnderOccupiedReport_Handler aUnderOccupiedReport_DataHandler) throws Exception {
+            //String type
+            String[] fieldNames) throws Exception {
         this.RecordID = RecordID;
         String[] fields = line.split(",");
-        int n = 0;
-        this.ClaimReferenceNumber = fields[n];
-        if (ClaimReferenceNumber.endsWith("X")) {
-            this.RecordType = "X";
-        } else {
-            this.RecordType = "";
+        if (fields.length != fieldNames.length) {
+            System.err.println(this.getClass().getName() + ".DW_UnderOccupiedReport_Record(long,String,String[])");
+            System.err.println("RecordID " + RecordID);
+            System.err.println("fields.length != fieldNames.length");
+            System.err.println("" + fields.length + " != " + fieldNames.length);
+            for (int i = 0; i < fieldNames.length - 1; i++) {
+                System.err.print(fieldNames[i] + ", ");
+            }
+            System.err.println(fieldNames.length - 1);
+            System.err.println(line);
         }
-        n++;
-        this.BedroomRequirement = new Integer(fields[n]);
-        n++;
-        this.BedroomsInProperty = new Integer(fields[n]);
-        n++;
-        this.MaleChildrenUnder10 = new Integer(fields[n]);
-        n++;
-        this.FemaleChildrenUnder10 = new Integer(fields[n]);
-        n++;
-        this.MaleChildren10to16 = new Integer(fields[n]);
-        n++;
-        this.FemaleChildren10to16 = new Integer(fields[n]);
-        n++;
-        this.ChildrenOver16 = new Integer(fields[n]);
-        n++;
-        this.TotalDependentChildren = new Integer(fields[n]);
-        n++;
-        this.NonDependents = new Integer(fields[n]);
-        n++;
-        if (fields.length == 11) {
-            if (fields[n].isEmpty() || fields[n].trim().equalsIgnoreCase("")) {
-                this.TotalRentArrears = 0;
-            } else {
-                this.TotalRentArrears = new Double(fields[n]);
+        boolean doneMaleChildrenUnder10 = false;
+        boolean doneFemaleChildrenUnder10 = false;
+        for (int i = 0; i < fieldNames.length; i++) {
+            if (i < fields.length) { // This is because the data records are sometimes incomplete
+                if (fieldNames[i].equalsIgnoreCase("claim_ref")) {
+                    this.ClaimReferenceNumber = fields[i];
+                    if (ClaimReferenceNumber.endsWith("X")) {
+                        this.RecordType = "X";
+                    } else {
+                        this.RecordType = "";
+                    }
+                } else {
+                    if (fieldNames[i].equalsIgnoreCase("room_requirem")
+                            || fieldNames[i].equalsIgnoreCase("bedroom_requirement")) {
+                        this.BedroomRequirement = new Integer(fields[i]);
+                    } else {
+                        if (fieldNames[i].equalsIgnoreCase("bedrooms_in_p")
+                                || fieldNames[i].equalsIgnoreCase("bedrooms_in_property")) {
+                            this.BedroomsInProperty = new Integer(fields[i]);
+                        } else {
+                            if (fieldNames[i].equalsIgnoreCase("male_children under 10")) {
+                                this.MaleChildrenUnder10 = new Integer(fields[i]);
+                            } else {
+                                if (fieldNames[i].equalsIgnoreCase("male_children 10 to 16")) {
+                                    this.MaleChildren10to16 = new Integer(fields[i]);
+                                } else {
+                                    // This is because two fields are identically named in many of the files!
+                                    if (fieldNames[i].equalsIgnoreCase("male_children")) {
+                                        if (doneMaleChildrenUnder10) {
+                                            this.MaleChildren10to16 = new Integer(fields[i]);
+                                        } else {
+                                            this.MaleChildrenUnder10 = new Integer(fields[i]);
+                                            doneMaleChildrenUnder10 = true;
+                                        }
+                                    } else {
+                                        if (fieldNames[i].equalsIgnoreCase("female_children under 10")) {
+                                            this.FemaleChildrenUnder10 = new Integer(fields[i]);
+                                        } else {
+                                            if (fieldNames[i].equalsIgnoreCase("female_children 10 to 16")) {
+                                                this.FemaleChildren10to16 = new Integer(fields[i]);
+                                            } else {
+                                                if (fieldNames[i].equalsIgnoreCase("female_childr")) {
+                                                    if (doneFemaleChildrenUnder10) {
+                                                        this.FemaleChildren10to16 = new Integer(fields[i]);
+                                                    } else {
+                                                        this.FemaleChildrenUnder10 = new Integer(fields[i]);
+                                                        doneFemaleChildrenUnder10 = true;
+                                                    }
+                                                } else {
+                                                    if (fieldNames[i].equalsIgnoreCase("children_over")
+                                                            || fieldNames[i].equalsIgnoreCase("children_over 16")) {
+                                                        this.ChildrenOver16 = new Integer(fields[i]);
+                                                    } else {
+                                                        if (fieldNames[i].equalsIgnoreCase("TOTAL Dep Children")) {
+                                                            this.TotalDependentChildren = new Integer(fields[i]);
+                                                        } else {
+                                                            if (fieldNames[i].equalsIgnoreCase("nondependants")) {
+                                                                this.NonDependents = new Integer(fields[i]);
+                                                            } else {
+                                                                if (fieldNames[i].equalsIgnoreCase("total_rent")
+                                                                        || fieldNames[i].equalsIgnoreCase("total_rent arrears")) {
+                                                                    this.TotalRentArrears = new Double(fields[i]);
+                                                                } else {
+                                                                    System.err.println("Unrecognised field: " + fieldNames[i] + ". Debug needed of: " + this.getClass().getName());
+                                                                    int debug = 1;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
+//        n++;
+//        this.MaleChildren10to16 = new Integer(fields[n]);
+//        n++;
+//        this.FemaleChildren10to16 = new Integer(fields[n]);
+//        n++;
+//        this.ChildrenOver16 = new Integer(fields[n]);
+//        if (type.equalsIgnoreCase("RSL")) {
+//            if (fields.length == 10) {
+//                n++;
+//                this.TotalDependentChildren = new Integer(fields[n]);
+//            }
+//            n++;
+//            this.NonDependents = new Integer(fields[n]);
+//        } else {
+//            if (fields.length == 11) {
+//                n++;
+//                this.TotalDependentChildren = new Integer(fields[n]); // This field is not in all the data! In particular it is not in 2015 5
+//            }
+//            n++;
+//            this.NonDependents = new Integer(fields[n]);
+//            n++;
+//            if (fields[n].isEmpty() || fields[n].trim().equalsIgnoreCase("")) {
+//                this.TotalRentArrears = 0.0d;
+//            } else {
+//                this.TotalRentArrears = new Double(fields[n]);
+//            }
+//        }
     }
 
     @Override
@@ -180,140 +275,140 @@ public class DW_UnderOccupiedReport_Record {
     /**
      * @return the BedroomRequirement
      */
-    public int getBedroomRequirement() {
+    public Integer getBedroomRequirement() {
         return BedroomRequirement;
     }
 
     /**
      * @param BedroomRequirement the BedroomRequirement to set
      */
-    public void setBedroomRequirement(int BedroomRequirement) {
+    public void setBedroomRequirement(Integer BedroomRequirement) {
         this.BedroomRequirement = BedroomRequirement;
     }
 
     /**
      * @return the BedroomsInProperty
      */
-    public int getBedroomsInProperty() {
+    public Integer getBedroomsInProperty() {
         return BedroomsInProperty;
     }
 
     /**
      * @param BedroomsInProperty the BedroomsInProperty to set
      */
-    public void setBedroomsInProperty(int BedroomsInProperty) {
+    public void setBedroomsInProperty(Integer BedroomsInProperty) {
         this.BedroomsInProperty = BedroomsInProperty;
     }
 
     /**
      * @return the MaleChildrenUnder10
      */
-    public int getMaleChildrenUnder10() {
+    public Integer getMaleChildrenUnder10() {
         return MaleChildrenUnder10;
     }
 
     /**
      * @param MaleChildrenUnder10 the MaleChildrenUnder10 to set
      */
-    public void setMaleChildrenUnder10(int MaleChildrenUnder10) {
+    public void setMaleChildrenUnder10(Integer MaleChildrenUnder10) {
         this.MaleChildrenUnder10 = MaleChildrenUnder10;
     }
 
     /**
      * @return the FemaleChildrenUnder10
      */
-    public int getFemaleChildrenUnder10() {
+    public Integer getFemaleChildrenUnder10() {
         return FemaleChildrenUnder10;
     }
 
     /**
      * @param FemaleChildrenUnder10 the FemaleChildrenUnder10 to set
      */
-    public void setFemaleChildrenUnder10(int FemaleChildrenUnder10) {
+    public void setFemaleChildrenUnder10(Integer FemaleChildrenUnder10) {
         this.FemaleChildrenUnder10 = FemaleChildrenUnder10;
     }
 
     /**
      * @return the MaleChildren10to16
      */
-    public int getMaleChildren10to16() {
+    public Integer getMaleChildren10to16() {
         return MaleChildren10to16;
     }
 
     /**
      * @param MaleChildren10to16 the MaleChildren10to16 to set
      */
-    public void setMaleChildren10to16(int MaleChildren10to16) {
+    public void setMaleChildren10to16(Integer MaleChildren10to16) {
         this.MaleChildren10to16 = MaleChildren10to16;
     }
 
     /**
      * @return the FemaleChildren10to16
      */
-    public int getFemaleChildren10to16() {
+    public Integer getFemaleChildren10to16() {
         return FemaleChildren10to16;
     }
 
     /**
      * @param FemaleChildren10to16 the FemaleChildren10to16 to set
      */
-    public void setFemaleChildren10to16(int FemaleChildren10to16) {
+    public void setFemaleChildren10to16(Integer FemaleChildren10to16) {
         this.FemaleChildren10to16 = FemaleChildren10to16;
     }
 
     /**
      * @return the ChildrenOver16
      */
-    public int getChildrenOver16() {
+    public Integer getChildrenOver16() {
         return ChildrenOver16;
     }
 
     /**
      * @param ChildrenOver16 the ChildrenOver16 to set
      */
-    public void setChildrenOver16(int ChildrenOver16) {
+    public void setChildrenOver16(Integer ChildrenOver16) {
         this.ChildrenOver16 = ChildrenOver16;
     }
 
     /**
      * @return the TotalDependentChildren
      */
-    public int getTotalDependentChildren() {
+    public Integer getTotalDependentChildren() {
         return TotalDependentChildren;
     }
 
     /**
      * @param TotalDependentChildren the TotalDependentChildren to set
      */
-    public void setTotalDependentChildren(int TotalDependentChildren) {
+    public void setTotalDependentChildren(Integer TotalDependentChildren) {
         this.TotalDependentChildren = TotalDependentChildren;
     }
 
     /**
      * @return the NonDependents
      */
-    public int getNonDependents() {
+    public Integer getNonDependents() {
         return NonDependents;
     }
 
     /**
      * @param NonDependents the NonDependents to set
      */
-    public void setNonDependents(int NonDependents) {
+    public void setNonDependents(Integer NonDependents) {
         this.NonDependents = NonDependents;
     }
 
     /**
      * @return the TotalRentArrears
      */
-    public double getTotalRentArrears() {
+    public Double getTotalRentArrears() {
         return TotalRentArrears;
     }
 
     /**
      * @param TotalRentArrears the TotalRentArrears to set
      */
-    public void setTotalRentArrears(double TotalRentArrears) {
+    public void setTotalRentArrears(Double TotalRentArrears) {
         this.TotalRentArrears = TotalRentArrears;
     }
 
@@ -339,35 +434,53 @@ public class DW_UnderOccupiedReport_Record {
         if ((this.ClaimReferenceNumber == null) ? (other.ClaimReferenceNumber != null) : !this.ClaimReferenceNumber.equals(other.ClaimReferenceNumber)) {
             return false;
         }
-        if (this.BedroomRequirement != other.BedroomRequirement) {
+        if (this.BedroomRequirement.compareTo(other.BedroomRequirement) != 0) {
             return false;
         }
-        if (this.BedroomsInProperty != other.BedroomsInProperty) {
+        if (this.BedroomsInProperty.compareTo(other.BedroomsInProperty) != 0) {
             return false;
         }
-        if (this.MaleChildrenUnder10 != other.MaleChildrenUnder10) {
+        if (this.MaleChildrenUnder10.compareTo(other.MaleChildrenUnder10) != 0) {
             return false;
         }
-        if (this.FemaleChildrenUnder10 != other.FemaleChildrenUnder10) {
+        if (this.FemaleChildrenUnder10.compareTo(other.FemaleChildrenUnder10) != 0) {
             return false;
         }
-        if (this.MaleChildren10to16 != other.MaleChildren10to16) {
+        if (this.MaleChildren10to16.compareTo(other.MaleChildren10to16) != 0) {
             return false;
         }
-        if (this.FemaleChildren10to16 != other.FemaleChildren10to16) {
+        if (this.FemaleChildren10to16.compareTo(other.FemaleChildren10to16) != 0) {
             return false;
         }
-        if (this.ChildrenOver16 != other.ChildrenOver16) {
+        if (this.ChildrenOver16.compareTo(other.ChildrenOver16) != 0) {
             return false;
         }
-        if (this.TotalDependentChildren != other.TotalDependentChildren) {
+        if (this.TotalDependentChildren == null) {
+            if (other.TotalDependentChildren != null) {
+                return false;
+            }
+        } else {
+            if (other.TotalDependentChildren == null) {
+                return false;
+            }
+            if (this.TotalDependentChildren.compareTo(other.TotalDependentChildren) != 0) {
+                return false;
+            }
+        }
+        if (this.NonDependents.compareTo(other.NonDependents) != 0) {
             return false;
         }
-        if (this.NonDependents != other.NonDependents) {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.TotalRentArrears) != Double.doubleToLongBits(other.TotalRentArrears)) {
-            return false;
+        if (this.TotalRentArrears == null) {
+            if (other.TotalRentArrears != null) {
+                return false;
+            }
+        } else {
+            if (other.TotalRentArrears == null) {
+                return false;
+            }
+            if (this.TotalRentArrears.compareTo(other.TotalRentArrears) != 0) {
+                return false;
+            }
         }
         return true;
     }

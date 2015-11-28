@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
@@ -65,7 +66,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 public abstract class DW_Maps extends AGDT_Maps {
 
     //private static TreeMap<String, AGDT_Point>[] ONSPDlookups;
-    private static TreeMap<String, TreeMap<String, AGDT_Point>> tONSPDlookups;
+    //private static TreeMap<String, TreeMap<String, AGDT_Point>> tONSPDlookups;
+    private static TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> tONSPDlookups;
 
     /**
      * For storing level(s) (OA, LSOA, MSOA, PostcodeSector, PostcodeUnit, ...)
@@ -80,7 +82,7 @@ public abstract class DW_Maps extends AGDT_Maps {
     }
 
     //public static TreeMap<String, AGDT_Point>[] getONSPDlookups() {
-    public static TreeMap<String, TreeMap<String, AGDT_Point>> getONSPDlookups() {
+    public static TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> getONSPDlookups() {
         if (tONSPDlookups == null) {
             initONSPDLookups();
         }
@@ -88,41 +90,24 @@ public abstract class DW_Maps extends AGDT_Maps {
     }
 
     public static void initONSPDLookups() {
-        tONSPDlookups = new TreeMap<String, TreeMap<String, AGDT_Point>>();
-        File generatedONSPDDir = DW_Files.getGeneratedONSPDDir();
+        tONSPDlookups = new TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>>();
         ArrayList<String> levels;
         levels = new ArrayList<String>();
         levels.add("Unit");
-        levels.add("Sector");
-        levels.add("Area");
-        Iterator<String> ite;
-        ite = levels.iterator();
-        while (ite.hasNext()) {
-            String level = ite.next();
-            File f = new File(
-                    generatedONSPDDir,
-                    "Postcode" + level + "LookUp_TreeMap_String_Point.thisFile");
-            TreeMap<String, AGDT_Point> lookup;
-            if (f.exists()) {
-                lookup = DW_Postcode_Handler.getStringToDW_PointLookup(f);
-            } else {
-                File tONSPDNov2013Dir = new File(
-                        DW_Files.getInputONSPDDir(),
-                        "ONSPD_NOV_2013");
-                File tONSPDNov2013DataDir = new File(
-                        tONSPDNov2013Dir,
-                        "Data");
-                File tONSPDNov2013DataFile = new File(
-                        tONSPDNov2013DataDir,
-                        "ONSPD_NOV_2013_UK.csv");
-                DW_Postcode_Handler pg = new DW_Postcode_Handler(
-                        tONSPDNov2013DataFile,
-                        f);
-                boolean ignorePointsAtOrigin = true;
-                lookup = pg.getPostcodeUnitPointLookup(
-                        ignorePointsAtOrigin);
-            }
-            tONSPDlookups.put(level, lookup);
+        //levels.add("Sector");
+        //levels.add("Area");
+        TreeMap<String, File> ONSPDFiles;
+        ONSPDFiles = DW_Postcode_Handler.getONSPDFiles();
+        Iterator<String> ite2;
+        ite2 = levels.iterator();
+        while (ite2.hasNext()) {
+            String level = ite2.next();
+            TreeMap<String, TreeMap<String, AGDT_Point>> tONSPDlookup;
+            tONSPDlookup = DW_Postcode_Handler.getPostcodeUnitPointLookups(
+                    true,
+                    ONSPDFiles,
+                    DW_Postcode_Handler.getDefaultLookupFilename());
+            tONSPDlookups.put(level, tONSPDlookup);
         }
     }
 
@@ -421,7 +406,6 @@ public abstract class DW_Maps extends AGDT_Maps {
 //        }
 //        return result;
 //    }
-
     /**
      * @param level
      * @param area
@@ -439,9 +423,9 @@ public abstract class DW_Maps extends AGDT_Maps {
                 dir,
                 "pop.csv");
         try {
-        BufferedReader br = Generic_StaticIO.getBufferedReader(file);
-        StreamTokenizer st = new StreamTokenizer(br);
-        Generic_StaticIO.setStreamTokenizerSyntax1(st);
+            BufferedReader br = Generic_StaticIO.getBufferedReader(file);
+            StreamTokenizer st = new StreamTokenizer(br);
+            Generic_StaticIO.setStreamTokenizerSyntax1(st);
             int token = st.nextToken();
 //            //skip header (2 lines)
 //            st.nextToken();
@@ -925,11 +909,8 @@ public abstract class DW_Maps extends AGDT_Maps {
                     Generic_Collections.addToTreeMapIntegerInteger(
                             inAndOutOfRegionCount, 0, clientCount);
                 }
-                
+
                 //DEBUG
-                
-                
-                
             }
         } else {
             if (levelDataKeySet.contains(areaCode) || areaCodes.contains(areaCode)) {

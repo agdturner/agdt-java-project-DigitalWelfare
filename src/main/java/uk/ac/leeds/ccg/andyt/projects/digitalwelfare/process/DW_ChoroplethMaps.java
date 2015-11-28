@@ -20,6 +20,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -65,7 +66,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
      * @param tLeedsCABFilenames
      * @param tLevelData
      * @param deprivationRecords
-     * @param dir
+     * @param dirOut
      * @param attributeName
      * @param binding
      * @param filter
@@ -77,10 +78,11 @@ public class DW_ChoroplethMaps extends DW_Maps {
     public TreeMap<String, TreeMap<Integer, Integer>> mapCountsForLevel(
             DW_AreaCodesAndShapefiles tAreaCodesAndShapefiles,
             String[] tLeedsCABFilenames,
+            ArrayList<Integer> include,
             Object[] tLevelData,
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
-            File dir, 
-            String attributeName, 
+            File dirOut,
+            String attributeName,
             Class<?> binding,
             int filter,
             boolean scaleToFirst,
@@ -127,134 +129,164 @@ public class DW_ChoroplethMaps extends DW_Maps {
             while (ite.hasNext()) {
                 Integer deprivationKey = ite.next();
                 Integer deprivationClass = deprivationClasses.get(deprivationKey);
-                File mapDirectory2 = new File(
-                        dir,
+                File dirOut2 = new File(
+                        dirOut,
                         "" + deprivationClass);
-                mapDirectory2.mkdirs();
+                dirOut2.mkdirs();
                 for (int i = 0; i < tLeedsCABFilenames.length; i++) {
-                    String filename = tLeedsCABFilenames[i];
-                    Object[] aLevelData = (Object[]) tLevelData[0];
-                    Object[] bLevelData = (Object[]) aLevelData[i];
-                    if (bLevelData != null) {
-                        TreeMap<String, Integer> cLevelData;
-                        cLevelData = (TreeMap<String, Integer>) bLevelData[0];
-                        String outname;
-                        outname = getOutName(filename, attributeName, filter);
-                        File outputShapefile = AGDT_Geotools.getOutputShapefile(
-                                mapDirectory2,
-                                outname);
-                        // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
-                        selectAndCreateNewShapefile(
-                                getShapefileDataStoreFactory(),
-                                levelFC,
-                                outputFeatureType,
-                                areaCodes,
-                                cLevelData,
-                                attributeName,
-                                targetPropertyName,
-                                null,
-                                0.0d,
-                                outputShapefile,
-                                filter,
-                                deprivationClasses,
-                                deprivationRecords,
-                                deprivationClass,
-                                false);
-                        // Output to image
-                        DW_Geotools.outputToImage(
-                                outname,
-                                outputShapefile,
-                                foregroundDW_Shapefile0,
-                                foregroundDW_Shapefile1,
-                                backgroundDW_Shapefile,
-                                attributeName,
-                                mapDirectory2,
-                                png_String,
-                                imageWidth,
-                                styleParameters,
-                                0,
-                                //(Integer) bLevelData[1],
-                                max,
-                                showMapsInJMapPane);
-                        if (!scaleToFirst) {
-                            styleParameters.setStyle(attributeName, null, 0);
+                    boolean doLoop = false;
+                    if (include == null) {
+                        doLoop = true;
+                    } else {
+                        if (include.contains(i)) {
+                            doLoop = true;
+                        }
+                    }
+                    if (doLoop) {
+                        String filename = tLeedsCABFilenames[i];
+                        Object[] aLevelData = (Object[]) tLevelData[0];
+                        Object[] bLevelData = (Object[]) aLevelData[i];
+                        if (bLevelData != null) {
+                            TreeMap<String, Integer> cLevelData;
+                            cLevelData = (TreeMap<String, Integer>) bLevelData[0];
+                            if (cLevelData != null) {
+                                if (cLevelData.size() > 0) {
+                                    String outname;
+                                    outname = getOutName(filename, attributeName, filter);
+                                    File outputShapefile = AGDT_Geotools.getOutputShapefile(
+                                            dirOut2,
+                                            outname);
+                                    // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
+                                    selectAndCreateNewShapefile(
+                                            getShapefileDataStoreFactory(),
+                                            levelFC,
+                                            outputFeatureType,
+                                            areaCodes,
+                                            cLevelData,
+                                            attributeName,
+                                            targetPropertyName,
+                                            null,
+                                            0.0d,
+                                            outputShapefile,
+                                            filter,
+                                            deprivationClasses,
+                                            deprivationRecords,
+                                            deprivationClass,
+                                            false);
+                                    // Output to image
+                                    DW_Geotools.outputToImage(
+                                            outname,
+                                            outputShapefile,
+                                            foregroundDW_Shapefile0,
+                                            foregroundDW_Shapefile1,
+                                            backgroundDW_Shapefile,
+                                            attributeName,
+                                            dirOut2,
+                                            png_String,
+                                            imageWidth,
+                                            styleParameters,
+                                            0,
+                                            //(Integer) bLevelData[1],
+                                            max,
+                                            showMapsInJMapPane);
+                                    if (!scaleToFirst) {
+                                        styleParameters.setStyle(attributeName, null, 0);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         } else {
-            File mapDirectory2 = new File(
-                    dir,
+            File dirOut2 = new File(
+                    dirOut,
                     "all");
-            mapDirectory2.mkdirs();
+            dirOut2.mkdirs();
             for (int i = 0; i < tLeedsCABFilenames.length; i++) {
-                String filename = tLeedsCABFilenames[i];
-                Object[] levelData0 = (Object[]) tLevelData[0];
-                Object[] levelData0i = (Object[]) levelData0[i];
-                if (levelData0i != null) {
-                    TreeMap<String, Integer> levelData0i0;
-                    levelData0i0 = (TreeMap<String, Integer>) levelData0i[0];
-                    String outname;
-                    outname = getOutName(filename, attributeName, filter);
-                    File outputShapefile = AGDT_Geotools.getOutputShapefile(
-                            mapDirectory2,
-                            outname);
-                    // Select levelData0i0 Census Codes from all LSOA shapefile and create a new one
-                    TreeMap<Integer, Integer> inAndOutOfRegionCount;
-                    inAndOutOfRegionCount = selectAndCreateNewShapefile(
-                            getShapefileDataStoreFactory(),
-                            levelFC,
-                            outputFeatureType,
-                            areaCodes,
-                            levelData0i0,
-                            attributeName,
-                            targetPropertyName,
-                            null,
-                            0.0d,
-                            outputShapefile,
-                            filter,
-                            null,
-                            null,
-                            null,
-                            countClientsInAndOutOfRegion);
-                    if (countClientsInAndOutOfRegion) {
-                        result.put(outname, inAndOutOfRegionCount);
+                boolean doLoop = false;
+                if (include == null) {
+                    doLoop = true;
+                } else {
+                    if (include.contains(i)) {
+                        doLoop = true;
                     }
-                    // Output to image
-                    DW_Geotools.outputToImage(
-                            outname,
-                            outputShapefile,
-                            foregroundDW_Shapefile0,
-                            foregroundDW_Shapefile1,
-                            backgroundDW_Shapefile,
-                            attributeName,
-                            mapDirectory2,
-                            png_String,
-                            imageWidth,
-                            styleParameters,
-                            0,
-                            // (Integer) levelData0i[1],
-                            max,
-                            showMapsInJMapPane);
-                    // Output in
-                    Integer count;
-                    Integer inCount;
-                    Integer outCount;
-                    outCount = inAndOutOfRegionCount.get(0);
-                    inCount = inAndOutOfRegionCount.get(1);
-                    count = outCount + inCount;
-                    String outputString = "" + count + ", " + inCount + ", " + outCount;
-                    File outputFile = getOutputFile(
-                        mapDirectory2,
-                        outname,
-                        "txt");
-                    PrintWriter pw = Generic_StaticIO.getPrintWriter(outputFile, false);
-                    pw.println("Count, InCount, OutCount");
-                    pw.println(outputString);
-                    pw.flush();
-                    pw.close();
-                    if (!scaleToFirst) {
-                        styleParameters.setStyle(attributeName, null, 0);
+                }
+                if (doLoop) {
+                    String filename = tLeedsCABFilenames[i];
+                    Object[] levelData0 = (Object[]) tLevelData[0];
+                    if (levelData0 != null) {
+                        Object[] levelData0i = (Object[]) levelData0[i];
+                        if (levelData0i != null) {
+                            TreeMap<String, Integer> levelData0i0;
+                            levelData0i0 = (TreeMap<String, Integer>) levelData0i[0];
+                            if (levelData0i0 != null) {
+                                if (levelData0i0.size() > 0) {
+                                    String outname;
+                                    outname = getOutName(filename, attributeName, filter);
+                                    File outputShapefile = AGDT_Geotools.getOutputShapefile(
+                                            dirOut2,
+                                            outname);
+                                    // Select levelData0i0 Census Codes from all LSOA shapefile and create a new one
+                                    TreeMap<Integer, Integer> inAndOutOfRegionCount;
+                                    inAndOutOfRegionCount = selectAndCreateNewShapefile(
+                                            getShapefileDataStoreFactory(),
+                                            levelFC,
+                                            outputFeatureType,
+                                            areaCodes,
+                                            levelData0i0,
+                                            attributeName,
+                                            targetPropertyName,
+                                            null,
+                                            0.0d,
+                                            outputShapefile,
+                                            filter,
+                                            null,
+                                            null,
+                                            null,
+                                            countClientsInAndOutOfRegion);
+                                    if (countClientsInAndOutOfRegion) {
+                                        result.put(outname, inAndOutOfRegionCount);
+                                    }
+                                    // Output to image
+                                    DW_Geotools.outputToImage(
+                                            outname,
+                                            outputShapefile,
+                                            foregroundDW_Shapefile0,
+                                            foregroundDW_Shapefile1,
+                                            backgroundDW_Shapefile,
+                                            attributeName,
+                                            dirOut2,
+                                            png_String,
+                                            imageWidth,
+                                            styleParameters,
+                                            0,
+                                            // (Integer) levelData0i[1],
+                                            max,
+                                            showMapsInJMapPane);
+                                    // Output counts
+                                    Integer count;
+                                    Integer inCount;
+                                    Integer outCount;
+                                    outCount = inAndOutOfRegionCount.get(0);
+                                    inCount = inAndOutOfRegionCount.get(1);
+                                    count = outCount + inCount;
+                                    String outputString = "" + count + ", " + inCount + ", " + outCount;
+                                    File outputFile = getOutputFile(
+                                            dirOut2,
+                                            outname,
+                                            "txt");
+                                    PrintWriter pw = Generic_StaticIO.getPrintWriter(outputFile, false);
+                                    pw.println("Count, InCount, OutCount");
+                                    pw.println(outputString);
+                                    pw.flush();
+                                    pw.close();
+                                    if (!scaleToFirst) {
+                                        styleParameters.setStyle(attributeName, null, 0);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -284,6 +316,7 @@ public class DW_ChoroplethMaps extends DW_Maps {
     public TreeMap<String, TreeMap<Integer, Integer>> mapDensitiesForLevel(
             DW_AreaCodesAndShapefiles tAreaCodesAndShapefiles,
             String[] tLeedsCABFilenames,
+            ArrayList<Integer> include,
             Object[] tLevelData,
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
             File dir,
@@ -340,56 +373,60 @@ public class DW_ChoroplethMaps extends DW_Maps {
                         "" + deprivationClass);
                 mapDirectory2.mkdirs();
                 for (int i = 0; i < tLeedsCABFilenames.length; i++) {
-                    String filename = tLeedsCABFilenames[i];
-                    Object[] aLevelData = (Object[]) tLevelData[0];
-                    Object[] bLevelData = (Object[]) aLevelData[i];
-                    if (bLevelData != null) {
-                        TreeMap<String, Integer> cLevelData;
-                        cLevelData = (TreeMap<String, Integer>) bLevelData[0];
-                        String outname;
-                        outname = getOutName(filename, attributeName, filter);
-                        File outputShapefile = AGDT_Geotools.getOutputShapefile(
-                                mapDirectory2,
-                                outname);
-                        // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
-                        selectAndCreateNewShapefile(
-                                getShapefileDataStoreFactory(),
-                                levelFC,
-                                outputFeatureType,
-                                areaCodes,
-                                cLevelData,
-                                attributeName,
-                                targetPropertyName,
-                                null,
-                                0.0d,
-                                outputShapefile,
-                                filter,
-                                deprivationClasses,
-                                deprivationRecords,
-                                deprivationClass,
-                                countClientsInAndOutOfRegion);
-                        // Output to image
+                    if (include.contains(i)) {
+                        String filename = tLeedsCABFilenames[i];
+                        Object[] aLevelData = (Object[]) tLevelData[0];
+                        Object[] bLevelData = (Object[]) aLevelData[i];
+                        if (bLevelData != null) {
+                            TreeMap<String, Integer> cLevelData;
+                            cLevelData = (TreeMap<String, Integer>) bLevelData[0];
+                            if (cLevelData.size() > 0) {
+                                String outname;
+                                outname = getOutName(filename, attributeName, filter);
+                                File outputShapefile = AGDT_Geotools.getOutputShapefile(
+                                        mapDirectory2,
+                                        outname);
+                                // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
+                                selectAndCreateNewShapefile(
+                                        getShapefileDataStoreFactory(),
+                                        levelFC,
+                                        outputFeatureType,
+                                        areaCodes,
+                                        cLevelData,
+                                        attributeName,
+                                        targetPropertyName,
+                                        null,
+                                        0.0d,
+                                        outputShapefile,
+                                        filter,
+                                        deprivationClasses,
+                                        deprivationRecords,
+                                        deprivationClass,
+                                        countClientsInAndOutOfRegion);
+                                // Output to image
 
-                        if (doDebug) {
-                            DW_Geotools.doDebug = true;
-                        }
+                                if (doDebug) {
+                                    DW_Geotools.doDebug = true;
+                                }
 
-                        DW_Geotools.outputToImage(
-                                outname,
-                                outputShapefile,
-                                foregroundDW_Shapefile0,
-                                foregroundDW_Shapefile1,
-                                backgroundDW_Shapefile,
-                                attributeName,
-                                mapDirectory2,
-                                png_String,
-                                imageWidth,
-                                styleParameters,
-                                0,
-                                max,
-                                showMapsInJMapPane);
-                        if (!scaleToFirst) {
-                            styleParameters.setStyle(attributeName, null, 0);
+                                DW_Geotools.outputToImage(
+                                        outname,
+                                        outputShapefile,
+                                        foregroundDW_Shapefile0,
+                                        foregroundDW_Shapefile1,
+                                        backgroundDW_Shapefile,
+                                        attributeName,
+                                        mapDirectory2,
+                                        png_String,
+                                        imageWidth,
+                                        styleParameters,
+                                        0,
+                                        max,
+                                        showMapsInJMapPane);
+                                if (!scaleToFirst) {
+                                    styleParameters.setStyle(attributeName, null, 0);
+                                }
+                            }
                         }
                     }
                 }
@@ -400,61 +437,64 @@ public class DW_ChoroplethMaps extends DW_Maps {
                     "all");
             mapDirectory2.mkdirs();
             for (int i = 0; i < tLeedsCABFilenames.length; i++) {
-                String filename = tLeedsCABFilenames[i];
-                Object[] levelData0 = (Object[]) tLevelData[0];
-                Object[] levelData0i = (Object[]) levelData0[i];
-                if (levelData0i != null) {
-                    TreeMap<String, Integer> levelData0i0;
-                    levelData0i0 = (TreeMap<String, Integer>) levelData0i[0];
-                    String outname;
-                    outname = getOutName(filename, attributeName, filter);
+                if (include.contains(i)) {
+                    String filename = tLeedsCABFilenames[i];
+                    Object[] levelData0 = (Object[]) tLevelData[0];
+                    Object[] levelData0i = (Object[]) levelData0[i];
+                    if (levelData0i != null) {
+                        TreeMap<String, Integer> levelData0i0;
+                        levelData0i0 = (TreeMap<String, Integer>) levelData0i[0];
+                        if (levelData0i0.size() > 0) {
+                            String outname;
+                            outname = getOutName(filename, attributeName, filter);
+                            if (outname.startsWith("1213AllAdviceLeedsDensityClippedToLeedsLAD")) {
+                                int debug = 1;
+                                doDebug = true;
+                            }
 
-                    if (outname.startsWith("1213AllAdviceLeedsDensityClippedToLeedsLAD")) {
-                        int debug = 1;
-                        doDebug = true;
-                    }
-
-                    File outputShapefile = AGDT_Geotools.getOutputShapefile(
-                            mapDirectory2,
-                            outname);
-                    // Select levelData0i0 Census Codes from all LSOA shapefile and create a new one
-                    TreeMap<Integer, Integer> inAndOutOfRegionCount;
-                    inAndOutOfRegionCount = selectAndCreateNewShapefile(
-                            getShapefileDataStoreFactory(),
-                            levelFC,
-                            outputFeatureType,
-                            areaCodes,
-                            levelData0i0,
-                            attributeName,
-                            targetPropertyName,
-                            null,
-                            0.0d,
-                            outputShapefile,
-                            filter,
-                            null,
-                            deprivationRecords,
-                            null,
-                            countClientsInAndOutOfRegion);
-                    if (countClientsInAndOutOfRegion) {
-                        result.put(outname, inAndOutOfRegionCount);
-                    }
-                    // Output to image
-                    DW_Geotools.outputToImage(
-                            outname,
-                            outputShapefile,
-                            foregroundDW_Shapefile0,
-                            foregroundDW_Shapefile1,
-                            backgroundDW_Shapefile,
-                            attributeName,
-                            mapDirectory2,
-                            png_String,
-                            imageWidth,
-                            styleParameters,
-                            0,
-                            max,
-                            showMapsInJMapPane);
-                    if (!scaleToFirst) {
-                        styleParameters.setStyle(attributeName, null, 0);
+                            File outputShapefile = AGDT_Geotools.getOutputShapefile(
+                                    mapDirectory2,
+                                    outname);
+                            // Select levelData0i0 Census Codes from all LSOA shapefile and create a new one
+                            TreeMap<Integer, Integer> inAndOutOfRegionCount;
+                            inAndOutOfRegionCount = selectAndCreateNewShapefile(
+                                    getShapefileDataStoreFactory(),
+                                    levelFC,
+                                    outputFeatureType,
+                                    areaCodes,
+                                    levelData0i0,
+                                    attributeName,
+                                    targetPropertyName,
+                                    null,
+                                    0.0d,
+                                    outputShapefile,
+                                    filter,
+                                    null,
+                                    deprivationRecords,
+                                    null,
+                                    countClientsInAndOutOfRegion);
+                            if (countClientsInAndOutOfRegion) {
+                                result.put(outname, inAndOutOfRegionCount);
+                            }
+                            // Output to image
+                            DW_Geotools.outputToImage(
+                                    outname,
+                                    outputShapefile,
+                                    foregroundDW_Shapefile0,
+                                    foregroundDW_Shapefile1,
+                                    backgroundDW_Shapefile,
+                                    attributeName,
+                                    mapDirectory2,
+                                    png_String,
+                                    imageWidth,
+                                    styleParameters,
+                                    0,
+                                    max,
+                                    showMapsInJMapPane);
+                            if (!scaleToFirst) {
+                                styleParameters.setStyle(attributeName, null, 0);
+                            }
+                        }
                     }
                 }
             }

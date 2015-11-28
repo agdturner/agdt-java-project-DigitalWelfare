@@ -343,8 +343,86 @@ public class DW_Files {
                 level);
     }
 
+    public static File getGeneratedSHBEDir(
+            String level,
+            boolean doUnderOccupied,
+            boolean doCouncil) {
+        File result;
+        result = new File(
+                getGeneratedSHBEDir(),
+                level);
+        result = getUOFile(
+                result,
+                doUnderOccupied,
+                doCouncil);
+        return result;
+    }
+
+    public static File getUOFile(
+            File f,
+            boolean doUnderOccupied,
+            boolean doCouncil) {
+        File result;
+        if (doUnderOccupied) {
+            result = new File(
+                    f,
+                    "UO");
+            //"UnderOccupied");
+            if (doCouncil) {
+                result = new File(
+                        result,
+                        "Council");
+            } else {
+                result = new File(
+                        result,
+                        "RSL");
+            }
+        } else {
+            result = new File(
+                    f,
+                    "All");
+        }
+        return result;
+    }
+
+    public static File getUOFile(
+            File f,
+            boolean doUnderOccupied,
+            boolean doCouncil,
+            boolean doRSL) {
+        File result;
+        if (doUnderOccupied) {
+            result = new File(
+                    f,
+                    "UO");
+            //"UnderOccupied");
+            if (doCouncil & doRSL) {
+                result = new File(
+                        result,
+                        "All");
+            } else {
+                if (doCouncil) {
+                    result = new File(
+                            result,
+                            "Council");
+                } else {
+                    result = new File(
+                            result,
+                            "RSL");
+                }
+            }
+        } else {
+            result = new File(
+                    f,
+                    "All");
+        }
+        return result;
+    }
+
     public static ArrayList<File> getGeneratedSHBELevelDirsArrayList(
-            ArrayList<String> levels) {
+            ArrayList<String> levels,
+            boolean doUnderOccupied,
+            boolean doCouncil) {
         ArrayList<File> result;
         result = new ArrayList<File>();
         Iterator<String> ite;
@@ -354,13 +432,16 @@ public class DW_Files {
             File outputDir = new File(
                     DW_Files.getGeneratedSHBEDir(),
                     level);
+            outputDir = getUOFile(outputDir, doUnderOccupied, doCouncil);
             result.add(outputDir);
         }
         return result;
     }
 
     public static TreeMap<String, File> getGeneratedSHBELevelDirsTreeMap(
-            ArrayList<String> levels) {
+            ArrayList<String> levels,
+            boolean doUnderOccupied,
+            boolean doCouncil) {
         TreeMap<String, File> result;
         result = new TreeMap<String, File>();
         Iterator<String> ite;
@@ -370,6 +451,27 @@ public class DW_Files {
             File outputDir = new File(
                     DW_Files.getGeneratedSHBEDir(),
                     level);
+            outputDir = getUOFile(outputDir, doUnderOccupied, doCouncil);
+            result.put(level, outputDir);
+        }
+        return result;
+    }
+
+    public static TreeMap<String, File> getGeneratedSHBELevelDirsTreeMap(
+            ArrayList<String> levels,
+            boolean doUnderOccupied,
+            boolean doCouncil,
+            boolean doRSL) {
+        TreeMap<String, File> result;
+        result = new TreeMap<String, File>();
+        Iterator<String> ite;
+        ite = levels.iterator();
+        while (ite.hasNext()) {
+            String level = ite.next();
+            File outputDir = new File(
+                    DW_Files.getGeneratedSHBEDir(),
+                    level);
+            outputDir = getUOFile(outputDir, doUnderOccupied, doCouncil);
             result.put(level, outputDir);
         }
         return result;
@@ -531,8 +633,7 @@ public class DW_Files {
 
     public static File getOutputSHBEPlotsTenancyTypeTransitionDir(
             String type,
-            boolean checkPreviousTenure,
-            String type2) {
+            boolean checkPreviousTenure) {
         File result = new File(
                 DW_Files.getOutputSHBEPlotsDir(),
                 "Tenancy");
@@ -551,9 +652,6 @@ public class DW_Files {
                     result,
                     "NotCheckedPreviousTenure");
         }
-        result = new File(
-                result,
-                type2);
         return result;
     }
 
@@ -562,7 +660,7 @@ public class DW_Files {
                 getOutputSHBEMapsDir(),
                 "Line");
     }
-    
+
     public static File getOutputSHBEChoroplethDir() {
         return new File(
                 getOutputSHBEMapsDir(),

@@ -29,16 +29,17 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
+public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
 
     private double distanceThreshold;
 
-    public DW_ChoroplethMaps_SHBE() {
+    public DW_ChoroplethMaps_LCC() {
     }
 
     /**
@@ -46,7 +47,7 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
      */
     public static void main(String[] args) {
         try {
-            new DW_ChoroplethMaps_SHBE().run();
+            new DW_ChoroplethMaps_LCC().run();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -93,8 +94,8 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
 //        styleParameters.setDoForeground(true);
         styleParameters.setDoForeground(false);
 //        styleParameters.setForegroundStyleTitle0("Foreground Style 0");
-//        styleParameters.setForegroundStyle0(DW_Style.createDefaultPointStyle());
-//        styleParameters.setForegroundStyle0(DW_Style.createAdviceLeedsPointStyles());
+//        styleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
+//        styleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
         styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
                 Color.GREEN,
                 Color.WHITE));
@@ -109,12 +110,12 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
         // -------------------------------
         // commonStyling is where all maps are produced according to a common
         // classification
-        commonStyling = true;
-//        commonStyling = false;
+//        commonStyling = true;
+        commonStyling = false;
         // individualStyling is where all maps are produced according to an 
         // individual classification
-//        individualStyling = true;
-        individualStyling = false;
+        individualStyling = true;
+//        individualStyling = false;
         // withoutBoundariesStyling does not draw an outline to the boundaries  
         // of each region. 
         withoutBoundariesStyling = true;
@@ -217,44 +218,99 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
                 mapDirectory,
                 "Choropleth");
 
-        ArrayList<Integer> omit;
-
+        TreeMap<String, ArrayList<Integer>> includes;
+        includes = DW_SHBE_Handler.getIncludes();
+        ArrayList<Integer> include;
+        ArrayList<Integer> includea;
         // Run for consecutive monthly data
-        omit = new ArrayList<Integer>();
-        omit.add(0);
-        omit.add(1);
-        omit.add(2);
-        omit.add(3);
-        omit.add(4);
-        omit.add(5);
-        omit.add(6);
-        omit.add(7);
-        omit.add(8);
-        omit.add(9);
-        omit.add(10);
-        omit.add(11);
-        omit.add(12);
-        omit.add(13);
-        omit.add(14);
+        includea = includes.get("Monthly");
+        include = includea;
+//        // Run for all monthly data other than Monthly
+//        include = includes.get("All");
+//        include.removeAll(includea);
+
+        ArrayList<Boolean> b;
+        b = new ArrayList<Boolean>();
+        b.add(true);
+        b.add(false);
 
         String[] tFilenames;
         tFilenames = getFilenames();
 
-        if (withoutBoundariesStyling) {
-            runAll(false,
-                    omit, types, distanceTypes, distances, tenureTypeGroups,
-                    claimantTypes, tFilenames);
-        }
-        if (withBoundariesStyling) {
-            runAll(true,
-                    omit, types, distanceTypes, distances, tenureTypeGroups,
-                    claimantTypes, tFilenames);
+        Iterator<Boolean> iteb;
+        iteb = b.iterator();
+        while (iteb.hasNext()) {
+            boolean doUnderOcupied;
+            doUnderOcupied = iteb.next();
+            if (doUnderOcupied) {
+                Iterator<Boolean> iteb2;
+                iteb2 = b.iterator();
+                while (iteb2.hasNext()) {
+                    boolean doCouncil;
+                    doCouncil = iteb2.next();
+                    if (withoutBoundariesStyling) {
+                        runAll(
+                                doUnderOcupied,
+                                doCouncil,
+                                false,
+                                include,
+                                types,
+                                distanceTypes,
+                                distances,
+                                tenureTypeGroups,
+                                claimantTypes,
+                                tFilenames);
+                    }
+                    if (withBoundariesStyling) {
+                        runAll(
+                                doUnderOcupied,
+                                doCouncil,
+                                true,
+                                include,
+                                types,
+                                distanceTypes,
+                                distances,
+                                tenureTypeGroups,
+                                claimantTypes,
+                                tFilenames);
+                    }
+                }
+            } else {
+                if (withoutBoundariesStyling) {
+                    runAll(
+                            false,
+                            false,
+                            false,
+                            include,
+                            types,
+                            distanceTypes,
+                            distances,
+                            tenureTypeGroups,
+                            claimantTypes,
+                            tFilenames);
+                }
+                if (withBoundariesStyling) {
+                    runAll(
+                            false,
+                            false,
+                            true,
+                            include,
+                            types,
+                            distanceTypes,
+                            distances,
+                            tenureTypeGroups,
+                            claimantTypes,
+                            tFilenames);
+                }
+            }
         }
     }
 
     public void runAll(
+            boolean doUnderOccupied,
+            boolean doCouncil,
             boolean drawBoundaries,
-            ArrayList<Integer> omit,
+            ArrayList<Integer> include,
             ArrayList<String> types,
             ArrayList<String> distanceTypes,
             ArrayList<Double> distances,
@@ -316,30 +372,35 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
                         while (typesIte.hasNext()) {
                             String type;
                             type = typesIte.next();
-                            File dir = new File(
-                                    DW_Files.getGeneratedSHBEDir(level),
+                            File dirIn = new File(
+                                    DW_Files.getGeneratedSHBEDir(
+                                            level,
+                                            doUnderOccupied,
+                                            doCouncil),
                                     type);
-                            dir = new File(dir,
+                            dirIn = new File(dirIn,
                                     claimantType);
                             tenureTypeGroupsIte = tenureTypeGroups.iterator();
                             double max = Double.MIN_VALUE;
                             while (tenureTypeGroupsIte.hasNext()) {
                                 String tenure;
                                 tenure = tenureTypeGroupsIte.next();
-                                File dir2 = new File(
-                                        dir,
+                                File dirIn2 = new File(
+                                        dirIn,
                                         tenure);
                                 Object[] tLevelData = getLevelData(
-                                        dir2,
+                                        dirIn2,
                                         tFilenames,
-                                        omit);
-                                Object[] aLevelData = (Object[]) tLevelData[0];
-                                for (Object aLevelData1 : aLevelData) {
-                                    if (aLevelData1 != null) {
-                                        Object[] data;
-                                        data = (Object[]) aLevelData1;
-                                        Integer maxInt = (Integer) data[1];
-                                        max = Math.max(max, maxInt);
+                                        include);
+                                if (tLevelData != null) {
+                                    Object[] aLevelData = (Object[]) tLevelData[0];
+                                    for (Object aLevelData1 : aLevelData) {
+                                        if (aLevelData1 != null) {
+                                            Object[] data;
+                                            data = (Object[]) aLevelData1;
+                                            Integer maxInt = (Integer) data[1];
+                                            max = Math.max(max, maxInt);
+                                        }
                                     }
                                 }
 //                                System.out.println(
@@ -361,17 +422,20 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
                             TreeMap<Double, Double> distanceMax;
                             distanceMax = new TreeMap<Double, Double>();
                             distanceTypeDistanceMax.put(type, distanceMax);
-                            File dir = new File(
-                                    DW_Files.getGeneratedSHBEDir(level),
+                            File dirIn = new File(
+                                    DW_Files.getGeneratedSHBEDir(
+                                            level,
+                                            doUnderOccupied,
+                                            doCouncil),
                                     type);
-                            dir = new File(dir,
+                            dirIn = new File(dirIn,
                                     claimantType);
                             tenureTypeGroupsIte = tenureTypeGroups.iterator();
                             while (tenureTypeGroupsIte.hasNext()) {
                                 String tenure;
                                 tenure = tenureTypeGroupsIte.next();
-                                File dir2 = new File(
-                                        dir,
+                                File dirIn2 = new File(
+                                        dirIn,
                                         tenure);
                                 distancesIte = distances.iterator();
                                 while (distancesIte.hasNext()) {
@@ -380,28 +444,30 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
                                     if (distanceMax.containsKey(distanceThreshold)) {
                                         max = distanceMax.get(distanceThreshold);
                                     }
-                                    File dir3 = new File(
-                                            dir2,
+                                    File dirIn3 = new File(
+                                            dirIn2,
                                             "" + distanceThreshold);
                                     Object[] tLevelData = getLevelData(
-                                            dir3,
+                                            dirIn3,
                                             tFilenames,
-                                            omit);
-                                    Object[] aLevelData = (Object[]) tLevelData[0];
-                                    for (Object aLevelData1 : aLevelData) {
-                                        if (aLevelData1 != null) {
-                                            Object[] data;
-                                            data = (Object[]) aLevelData1;
-                                            Integer maxInt = (Integer) data[1];
-                                            max = Math.max(max, maxInt);
+                                            include);
+                                    if (tLevelData != null) {
+                                        Object[] aLevelData = (Object[]) tLevelData[0];
+                                        for (Object aLevelData1 : aLevelData) {
+                                            if (aLevelData1 != null) {
+                                                Object[] data;
+                                                data = (Object[]) aLevelData1;
+                                                Integer maxInt = (Integer) data[1];
+                                                max = Math.max(max, maxInt);
+                                            }
                                         }
-                                    }
-                                    distanceMax.put(distanceThreshold, max);
+                                        distanceMax.put(distanceThreshold, max);
 //                                    System.out.println(
 //                                            "Max " + max
 //                                            + ", Level " + level
 //                                            + ", Type " + type
 //                                            + ", Tenure " + tenure);
+                                    }
                                 }
                             }
                         }
@@ -416,88 +482,105 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
                     while (typesIte.hasNext()) {
                         String type;
                         type = typesIte.next();
-                        File dir = new File(
-                                DW_Files.getGeneratedSHBEDir(level),
+                        File dirIn = new File(
+                                DW_Files.getGeneratedSHBEDir(
+                                        level,
+                                        doUnderOccupied,
+                                        doCouncil),
                                 type);
                         tenureTypeGroupsIte = tenureTypeGroups.iterator();
                         while (tenureTypeGroupsIte.hasNext()) {
                             String tenure = tenureTypeGroupsIte.next();
                             boolean scaleToFirst;
-                            File dir2;
-                            dir2 = new File(dir,
+                            File dirIn2;
+                            dirIn2 = new File(
+                                    dirIn,
                                     claimantType);
-                            dir2 = new File(
-                                    dir2,
+                            dirIn2 = new File(
+                                    dirIn2,
                                     tenure);
-                            double max;
-                            max = claimantTypeTypeMax.get(claimantType).get(type);
                             Object[] tLevelData = getLevelData(
-                                    dir2,
+                                    dirIn2,
                                     tFilenames,
-                                    omit);
-                            if (individualStyling) {
-                                scaleToFirst = false;
-                                // Map SHBE data
-                                deprivationRecords = null;
-                                runSHBE(
-                                        deprivationRecords,
-                                        tAreaCodesAndShapefiles,
-                                        tFilenames,
-                                        tLevelData,
-                                        type,
-                                        scaleToFirst,
-                                        max,
-                                        tenure,
-                                        claimantType);
-                                if (doDeprivation) {
-                                    deprivationRecords = DW_Processor.getDeprivation_Data();
+                                    include);
+                            if (tLevelData != null) {
+                                if (individualStyling) {
+                                    scaleToFirst = false;
+                                    // Map SHBE data
+                                    deprivationRecords = null;
                                     runSHBE(
+                                            doUnderOccupied,
+                                            doCouncil,
                                             deprivationRecords,
                                             tAreaCodesAndShapefiles,
                                             tFilenames,
+                                            include,
+                                            tLevelData,
+                                            type,
+                                            scaleToFirst,
+                                            0, // Can be any value
+                                            tenure,
+                                            claimantType);
+                                    if (doDeprivation) {
+                                        deprivationRecords = DW_Processor.getDeprivation_Data();
+                                        runSHBE(
+                                                doUnderOccupied,
+                                                doCouncil,
+                                                deprivationRecords,
+                                                tAreaCodesAndShapefiles,
+                                                tFilenames,
+                                                include,
+                                                tLevelData,
+                                                type,
+                                                scaleToFirst,
+                                                0, // Can be any value
+                                                tenure,
+                                                claimantType);
+                                    }
+                                }
+                                if (commonStyling) {
+                                    scaleToFirst = true;
+                                    // Map SHBE data
+                                    deprivationRecords = null;
+                                    double max;
+                                    max = claimantTypeTypeMax.get(claimantType).get(type);
+                                    runSHBE(
+                                            doUnderOccupied,
+                                            doCouncil,
+                                            deprivationRecords,
+                                            tAreaCodesAndShapefiles,
+                                            tFilenames,
+                                            include,
                                             tLevelData,
                                             type,
                                             scaleToFirst,
                                             max,
                                             tenure,
                                             claimantType);
+                                    // Clear commonStyle?
+                                    if (doDeprivation) {
+                                        deprivationRecords = DW_Processor.getDeprivation_Data();
+                                        runSHBE(
+                                                doUnderOccupied,
+                                                doCouncil,
+                                                deprivationRecords,
+                                                tAreaCodesAndShapefiles,
+                                                tFilenames,
+                                                include,
+                                                tLevelData,
+                                                type,
+                                                scaleToFirst,
+                                                max,
+                                                tenure,
+                                                claimantType);
+                                        // Clear commonStyle?
+                                    }
                                 }
-                            }
-                            if (commonStyling) {
-                                scaleToFirst = true;
-                                // Map SHBE data
-                                deprivationRecords = null;
-                                runSHBE(
-                                        deprivationRecords,
-                                        tAreaCodesAndShapefiles,
-                                        tFilenames,
-                                        tLevelData,
-                                        type,
-                                        scaleToFirst,
-                                        max,
-                                        tenure,
-                                        claimantType);
-                                // Clear commonStyle
-
-                                if (doDeprivation) {
-                                    deprivationRecords = DW_Processor.getDeprivation_Data();
-                                    runSHBE(
-                                            deprivationRecords,
-                                            tAreaCodesAndShapefiles,
-                                            tFilenames,
-                                            tLevelData,
-                                            type,
-                                            scaleToFirst,
-                                            max,
-                                            tenure,
-                                            claimantType);
-                                    // Clear commonStyle
-                                }
-                            }
 //                            if (!showMapsInJMapPane) {
 //                                // Tidy up
 //                                tAreaCodesAndShapefiles.dispose();
 //                            }
+                            }
                         }
                         if (commonStyling) {
                             String attributeName;
@@ -516,81 +599,81 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
                     while (distanceTypesIte.hasNext()) {
                         String type;
                         type = distanceTypesIte.next();
-                        File dir = new File(
-                                DW_Files.getGeneratedSHBEDir(level),
+                        File dirIn = new File(
+                                DW_Files.getGeneratedSHBEDir(
+                                        level,
+                                        doUnderOccupied,
+                                        doCouncil),
                                 type);
                         tenureTypeGroupsIte = tenureTypeGroups.iterator();
                         while (tenureTypeGroupsIte.hasNext()) {
                             String tenure = tenureTypeGroupsIte.next();
                             boolean scaleToFirst;
-                            File dir2;
-                            dir2 = new File(dir,
+                            File dirIn2;
+                            dirIn2 = new File(
+                                    dirIn,
                                     claimantType);
-                            dir2 = new File(
-                                    dir2,
+                            dirIn2 = new File(
+                                    dirIn2,
                                     tenure);
                             distancesIte = distances.iterator();
                             while (distancesIte.hasNext()) {
                                 distanceThreshold = distancesIte.next();
-                                double max;
-                                max = claimantTypeDistanceTypeDistanceMax.get(claimantType).get(type).get(distanceThreshold);
-                                File dir3 = new File(
-                                        dir2,
+                                File dirIn3 = new File(
+                                        dirIn2,
                                         "" + distanceThreshold);
                                 Object[] tLevelData = getLevelData(
-                                        dir3,
+                                        dirIn3,
                                         tFilenames,
-                                        omit);
-                                if (individualStyling) {
-                                    scaleToFirst = false;
-                                    // Map SHBE data
-                                    deprivationRecords = null;
-                                    runSHBE(
-                                            deprivationRecords,
-                                            tAreaCodesAndShapefiles,
-                                            tFilenames,
-                                            tLevelData,
-                                            type,
-                                            scaleToFirst,
-                                            max,
-                                            tenure,
-                                            claimantType);
-                                    if (doDeprivation) {
-                                        deprivationRecords = DW_Processor.getDeprivation_Data();
+                                        include);
+                                if (tLevelData != null) {
+                                    if (individualStyling) {
+                                        scaleToFirst = false;
+                                        // Map SHBE data
+                                        deprivationRecords = null;
                                         runSHBE(
+                                                doUnderOccupied,
+                                                doCouncil,
                                                 deprivationRecords,
                                                 tAreaCodesAndShapefiles,
                                                 tFilenames,
+                                                include,
                                                 tLevelData,
                                                 type,
                                                 scaleToFirst,
-                                                max,
+                                                0, // Can be anything
                                                 tenure,
                                                 claimantType);
+                                        if (doDeprivation) {
+                                            deprivationRecords = DW_Processor.getDeprivation_Data();
+                                            runSHBE(
+                                                    doUnderOccupied,
+                                                    doCouncil,
+                                                    deprivationRecords,
+                                                    tAreaCodesAndShapefiles,
+                                                    tFilenames,
+                                                    include,
+                                                    tLevelData,
+                                                    type,
+                                                    scaleToFirst,
+                                                    0, // Can be anything
+                                                    tenure,
+                                                    claimantType);
+                                        }
                                     }
-                                }
-                                if (commonStyling) {
-                                    scaleToFirst = true;
-                                    // Map SHBE data
-                                    deprivationRecords = null;
-                                    runSHBE(
-                                            deprivationRecords,
-                                            tAreaCodesAndShapefiles,
-                                            tFilenames,
-                                            tLevelData,
-                                            type,
-                                            scaleToFirst,
-                                            max,
-                                            tenure,
-                                            claimantType);
-                                    // Clear commonStyle
-
-                                    if (doDeprivation) {
-                                        deprivationRecords = DW_Processor.getDeprivation_Data();
+                                    if (commonStyling) {
+                                        scaleToFirst = true;
+                                        // Map SHBE data
+                                        double max;
+                                        max = claimantTypeDistanceTypeDistanceMax.get(claimantType).get(type).get(distanceThreshold);
+                                        deprivationRecords = null;
                                         runSHBE(
+                                                doUnderOccupied,
+                                                doCouncil,
                                                 deprivationRecords,
                                                 tAreaCodesAndShapefiles,
                                                 tFilenames,
+                                                include,
                                                 tLevelData,
                                                 type,
                                                 scaleToFirst,
@@ -598,6 +681,24 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
                                                 tenure,
                                                 claimantType);
                                         // Clear commonStyle
+
+                                        if (doDeprivation) {
+                                            deprivationRecords = DW_Processor.getDeprivation_Data();
+                                            runSHBE(
+                                                    doUnderOccupied,
+                                                    doCouncil,
+                                                    deprivationRecords,
+                                                    tAreaCodesAndShapefiles,
+                                                    tFilenames,
+                                                    include,
+                                                    tLevelData,
+                                                    type,
+                                                    scaleToFirst,
+                                                    max,
+                                                    tenure,
+                                                    claimantType);
+                                            // Clear commonStyle
+                                        }
                                     }
                                 }
                             }
@@ -624,9 +725,12 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
     }
 
     public void runSHBE(
+            boolean doUnderOccupied,
+            boolean doCouncil,
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
             DW_AreaCodesAndShapefiles tAreaCodesAndShapefiles,
             String[] tFilenames,
+            ArrayList<Integer> include,
             Object[] tLevelData,
             String type,
             boolean scaleToFirst,
@@ -640,37 +744,38 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
         } else {
             style = "IndividuallyStyled";
         }
-        File dir;
-        dir = new File(
+        File dirOut;
+        dirOut = new File(
                 mapDirectory,
                 level);
-        dir = new File(
-                dir,
+        dirOut = DW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
+        dirOut = new File(
+                dirOut,
                 claimantType);
-        dir = new File(
-                dir,
+        dirOut = new File(
+                dirOut,
                 tenure);
-        dir = new File(
-                dir,
+        dirOut = new File(
+                dirOut,
                 type);
         if (styleParameters.isDrawBoundaries()) {
-            dir = new File(
-                    dir,
+            dirOut = new File(
+                    dirOut,
                     "WithBoundaries");
         } else {
-            dir = new File(
-                    dir,
+            dirOut = new File(
+                    dirOut,
                     "WithoutBoundaries");
         }
-        dir = new File(
-                dir,
+        dirOut = new File(
+                dirOut,
                 style);
-        dir = new File(
-                dir,
+        dirOut = new File(
+                dirOut,
                 styleParameters.getClassificationFunctionName());
         if (type.contains("Distance")) {
-            dir = new File(
-                    dir,
+            dirOut = new File(
+                    dirOut,
                     "" + distanceThreshold);
         }
         TreeMap<String, TreeMap<Integer, Integer>> inAndOutOfRegionCounts = null;
@@ -682,9 +787,10 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
             inAndOutOfRegionCounts = mapCountsForLevel(
                     tAreaCodesAndShapefiles,
                     tFilenames,
+                    include,
                     tLevelData,
                     deprivationRecords,
-                    dir,
+                    dirOut,
                     attributeName,
                     binding,
                     filter,
@@ -722,14 +828,14 @@ public class DW_ChoroplethMaps_SHBE extends DW_ChoroplethMaps {
              * something specific.
              */
             attributeName = "Density";
-            binding
-                    = Double.class;
+            binding = Double.class;
             inAndOutOfRegionCounts = mapDensitiesForLevel(
                     tAreaCodesAndShapefiles,
                     tFilenames,
+                    include,
                     tLevelData,
                     deprivationRecords,
-                    dir,
+                    dirOut,
                     attributeName,
                     binding,
                     filter,

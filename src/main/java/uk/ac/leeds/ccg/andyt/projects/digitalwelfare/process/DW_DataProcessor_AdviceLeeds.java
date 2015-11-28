@@ -1198,7 +1198,10 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
             DW_Data_CAB2_Record aLeedsCABData_DataRecord = tLeedsCABData.get(id);
             outlet = aLeedsCABData_DataRecord.getOutlet();
             String postcode = aLeedsCABData_DataRecord.getPostcode();
-            String key = getKey(postcode, tLookupFromPostcodeToCensusCode);
+            String key = getKey(
+                    DW_Postcode_Handler.getDefaultYM3(),
+                    postcode,
+                    tLookupFromPostcodeToCensusCode);
             // Add to counts for specific outlet
             if (result.containsKey(outlet)) {
                 TreeMap<String, Integer> d;
@@ -1274,7 +1277,10 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
             DW_Data_CAB0_Record aCAB_DataRecord0 = tChapeltownCABData.get(id);
             //outlet = aCAB_DataRecord0.getOutlet();
             String postcode = aCAB_DataRecord0.getPostcode();
-            String key = getKey(postcode, tLookupFromPostcodeToCensusCode);
+            String key = getKey(
+                    DW_Postcode_Handler.getDefaultYM3(),
+                    postcode,
+                    tLookupFromPostcodeToCensusCode);
             // Add to counts for specific outlet
             outlet = "CHAPELTOWN"; // Outlet always Chapeltown for Chapeltown data
             if (result.containsKey(outlet)) {
@@ -1340,7 +1346,10 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
             rec = tLCC_WRUData.get(id);
             //outlet = aCAB_DataRecord0.getOutlet();
             String postcode = rec.getPostcode();
-            String key = getKey(postcode, tLookupFromPostcodeToCensusCode);
+            String key = getKey(
+                    DW_Postcode_Handler.getDefaultYM3(),
+                    postcode,
+                    tLookupFromPostcodeToCensusCode);
             // Add to counts for specific outlet
             outlet = "LCC_WRU"; // Outlet always LCC_WRU
             if (result.containsKey(outlet)) {
@@ -1378,6 +1387,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
      * @return 
      */
     private String getKey(
+            String yM3,
             String postcode,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         String key = "";
@@ -1385,21 +1395,21 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                     || level.equalsIgnoreCase("PostcodeSector")
                     || level.equalsIgnoreCase("PostcodeUnit")) {
                 if (level.equalsIgnoreCase("PostcodeDistrict")) {
-                    if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                    if (DW_Postcode_Handler.isValidPostcode(yM3, postcode)) {
                         key = DW_Postcode_Handler.getPostcodeDistrict(postcode);
 //                    } else {
 //                        key = "";
                     }
                 }
                 if (level.equalsIgnoreCase("PostcodeSector")) {
-                    if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                    if (DW_Postcode_Handler.isValidPostcode(yM3, postcode)) {
                         key = DW_Postcode_Handler.getPostcodeSector(postcode);
 //                    } else {
 //                        key = "";
                     }
                 }
                 if (level.equalsIgnoreCase("PostcodeUnit")) {
-                    if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                    if (DW_Postcode_Handler.isValidPostcode(yM3, postcode)) {
                         key = DW_Postcode_Handler.formatPostcodeForMapping(postcode);
 //                    } else {
 //                        key = "";
@@ -1433,6 +1443,8 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
         TreeMap<String, Integer> allAdviceLeedsCounts;
         allAdviceLeedsCounts = new TreeMap<String, Integer>();
         result.put(outletAllLeedsCAB, allAdviceLeedsCounts);
+        String yM3;
+        yM3 = DW_Postcode_Handler.getDefaultYM3();
         Iterator<Object> ite;
         ite = data.keySet().iterator();
         if (level.equalsIgnoreCase("PostcodeDistrict")
@@ -1446,7 +1458,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                         aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) data.get(id);
                         outlet = aLeedsCABData_DataRecord.getOutlet();
                         String postcode = aLeedsCABData_DataRecord.getPostcode();
-                        if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                        if (DW_Postcode_Handler.isValidPostcode(yM3, postcode)) {
                             String postcodeDistrict;
                             postcodeDistrict = DW_Postcode_Handler.getPostcodeDistrict(postcode);
                             // Add to counts
@@ -1464,7 +1476,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                         aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) data.get(id);
                         outlet = "CHAPELTOWN";
                         String postcode = aLeedsCABData_DataRecord.getPostcode();
-                        if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                        if (DW_Postcode_Handler.isValidPostcode(yM3, postcode)) {
                             String postcodeDistrict;
                             postcodeDistrict = DW_Postcode_Handler.getPostcodeDistrict(postcode);
                             // Add to counts
@@ -1485,7 +1497,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                             aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) data.get(id);
                             outlet = aLeedsCABData_DataRecord.getOutlet();
                             String postcode = aLeedsCABData_DataRecord.getPostcode();
-                            if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                            if (DW_Postcode_Handler.isValidPostcode(yM3, postcode)) {
                                 String postcodeSector;
                                 postcodeSector = DW_Postcode_Handler.getPostcodeSector(postcode);
                                 // Add to counts
@@ -1503,7 +1515,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                             aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) data.get(id);
                             outlet = "CHAPELTOWN";
                             String postcode = aLeedsCABData_DataRecord.getPostcode();
-                            if (DW_Postcode_Handler.isValidPostcode(postcode)) {
+                            if (DW_Postcode_Handler.isValidPostcode(yM3, postcode)) {
                                 String postcodeSector;
                                 postcodeSector = DW_Postcode_Handler.getPostcodeSector(postcode);
                                 // Add to counts

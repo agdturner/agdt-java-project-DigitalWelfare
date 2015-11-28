@@ -1,16 +1,20 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.data.generated.DW_Table;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMaps_SHBE;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMaps_SHBE.getFilenames;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMaps_LCC;
+import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMaps_LCC.getFilenames;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_LineGraph;
 
 public class DW_Report extends DW_HTMLPage {
 
@@ -21,7 +25,7 @@ public class DW_Report extends DW_HTMLPage {
     protected ArrayList<Double> distances;
     protected ArrayList<String> types;
     protected ArrayList<String> distanceTypes;
-    protected ArrayList<Integer> omit;
+    protected TreeMap<String, ArrayList<Integer>> includes;
     protected String reportName;
     protected double distanceThreshold;
     protected String projectName;
@@ -85,66 +89,184 @@ public class DW_Report extends DW_HTMLPage {
         distanceTypes.add("OutDistanceChurn"); // A count of all claimants that have moved out from this area.
 
         // Run for consecutive monthly data
-        omit = new ArrayList<Integer>();
-        omit.add(0);
-        omit.add(1);
-        omit.add(2);
-        omit.add(3);
-        omit.add(4);
-        omit.add(5);
-        omit.add(6);
-        omit.add(7);
-        omit.add(8);
-        omit.add(9);
-        omit.add(10);
-        omit.add(11);
-        omit.add(12);
-        omit.add(13);
-        omit.add(14);
+        includes = DW_SHBE_Handler.getIncludes();
 
         baseReportDir = mainDirectoryName + "/" + reportName;
         baseURLString0 = "http://www.geog.leeds.ac.uk/people/a.turner/projects/"
                 + projectName + "/" + baseReportDir + "/";
         date = Generic_Time.getDate();
 
-        Iterator<String> levelsIte;
-        levelsIte = levelsCopy.iterator();
-        while (levelsIte.hasNext()) {
-            String level;
-            level = levelsIte.next();
-            System.out.println("Write out for level " + level);
-            levels.add(level);
-            levelsString = level;
-            write();
-            levels.remove(level);
-        }
+        ArrayList<Boolean> b;
+        b = new ArrayList<Boolean>();
+        b.add(true);
+        b.add(false);
 
-        boolean writeDefinitions = true;
-        if (writeDefinitions) {
-            new DW_Types().run();
+        Iterator<Boolean> iteb;
+        iteb = b.iterator();
+        while (iteb.hasNext()) {
+            boolean doUnderOccupied;
+            doUnderOccupied = iteb.next();
+            if (doUnderOccupied) {
+                Iterator<Boolean> iteb2;
+                iteb2 = b.iterator();
+                while (iteb2.hasNext()) {
+                    boolean doCouncil;
+                    doCouncil = iteb2.next();
+                    writeStartOfMaster(
+                            doUnderOccupied,
+                            doCouncil);
+                    Iterator<String> levelsIte;
+                    levelsIte = levelsCopy.iterator();
+                    while (levelsIte.hasNext()) {
+                        String level;
+                        level = levelsIte.next();
+                        System.out.println("Write out for level " + level);
+                        levels.add(level);
+                        levelsString = level;
+                        write(
+                                doUnderOccupied,
+                                doCouncil);
+                        writeToMaster();
+                        levels.remove(level);
+                    }
+                    writeEndOfMaster();
+                    boolean writeDefinitions = true;
+                    if (writeDefinitions) {
+                        new DW_Types().run();
+                    }
+                }
+            } else {
+                writeStartOfMaster(
+                        false,
+                        false);
+                Iterator<String> levelsIte;
+                levelsIte = levelsCopy.iterator();
+                while (levelsIte.hasNext()) {
+                    String level;
+                    level = levelsIte.next();
+                    System.out.println("Write out for level " + level);
+                    levels.add(level);
+                    levelsString = level;
+                    write(
+                            false,
+                            false);
+                    writeToMaster();
+                    levels.remove(level);
+                }
+                writeEndOfMaster();
+                boolean writeDefinitions = true;
+                if (writeDefinitions) {
+                    new DW_Types().run();
+                }
+            }
         }
     }
 
-    public void write() {
-        File dir0 = new File(
+    public void writeStartOfMaster(
+            boolean doUnderOccupied,
+            boolean doCouncil) {
+        try {
+            File dirOut = new File(
+                    DW_Files.getOutputDir(),
+                    baseReportDir);
+            dirOut = DW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
+            dirOut.mkdirs();
+            String pageTitle = "Results";
+            File f;
+            f = new File(dirOut,
+                    pageTitle + ".html");
+            masterFOS = Generic_StaticIO.getFileOutputStream(f);
+            writeHTMLHeader(
+                    projectName,
+                    pageTitle,
+                    masterFOS);
+            writeStartOfBody(
+                    baseURLString0,
+                    pageTitle,
+                    masterFOS);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void writeToMaster() {
+        try {
+            File dir0 = new File(
+                    DW_Files.getOutputDir(),
+                    baseReportDir);
+            File dir1 = new File(
+                    dir0,
+                    levelsString);
+            writeLine("<div>", masterFOS);
+            writeLine("<ul>", masterFOS);
+            writeLine("<li><h2>" + levelsString + "</h2>", masterFOS);
+            writeLine("<ul>", masterFOS);
+            //String[] tFilenames;
+            //tFilenames = getFilenames();
+            Iterator<String> claimantTypesIte;
+            claimantTypesIte = claimantTypes.iterator();
+            while (claimantTypesIte.hasNext()) {
+                String claimantType;
+                claimantType = claimantTypesIte.next();
+                String claimantType2 = Generic_StaticString.getCapitalFirstLetter(claimantType) + "Claimants";
+                File dir2 = new File(
+                        dir1,
+                        claimantType2);
+                writeLine("<li>" + claimantType2, masterFOS);
+                writeLine("<ul>", masterFOS);
+                //dir2.mkdirs();
+                Iterator<String> tenureIte;
+                tenureIte = tenureTypeGroups.iterator();
+                while (tenureIte.hasNext()) {
+                    String tenure = tenureIte.next();
+                    String tenure2 = Generic_StaticString.getCapitalFirstLetter(tenure) + "Tenure";
+                    String reportFilename = tenure2 + ".html";
+                    writeLine("<li><a href=\"./" + levelsString + "/" + claimantType2 + "/" + tenure2 + ".html\">"
+                            + tenure2 + "</a></li>", masterFOS);
+                }
+                writeLine("</ul></li>", masterFOS);
+            }
+            writeLine("</ul></li>", masterFOS);
+            writeLine("</ul></div>", masterFOS);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void writeEndOfMaster() {
+        try {
+            writeHTMLFooter(date, masterFOS);
+            masterFOS.close();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void write(
+            boolean doUnderOccupied,
+            boolean doCouncil) {
+        File dirOut = new File(
                 DW_Files.getOutputDir(),
                 baseReportDir);
-        File dir1 = new File(
-                dir0,
+        dirOut = new File(
+                dirOut,
                 levelsString);
+        dirOut = DW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
         String[] tFilenames;
         tFilenames = getFilenames();
-
         Iterator<String> claimantTypesIte;
         claimantTypesIte = claimantTypes.iterator();
         while (claimantTypesIte.hasNext()) {
             String claimantType;
             claimantType = claimantTypesIte.next();
             String claimantType2 = Generic_StaticString.getCapitalFirstLetter(claimantType) + "Claimants";
-            File dir2 = new File(
-                    dir1,
+            File dirOut2 = new File(
+                    dirOut,
                     claimantType2);
-            dir2.mkdirs();
+            dirOut2.mkdirs();
             Iterator<String> tenureIte;
             tenureIte = tenureTypeGroups.iterator();
             while (tenureIte.hasNext()) {
@@ -152,11 +274,11 @@ public class DW_Report extends DW_HTMLPage {
                 String tenure2 = Generic_StaticString.getCapitalFirstLetter(tenure) + "Tenure";
                 String reportFilename = tenure2 + ".html";
                 File f = new File(
-                        dir2,
+                        dirOut2,
                         reportFilename);
                 int filePathDepth;
-                filePathDepth = Generic_StaticIO.getFileDepth(dir2)
-                        - Generic_StaticIO.getFileDepth(dir0)
+                filePathDepth = Generic_StaticIO.getFileDepth(dirOut2)
+                        - Generic_StaticIO.getFileDepth(dirOut)
                         + Generic_StaticIO.getFileDepth(baseReportDir);
                 String relativeFilePath;
                 relativeFilePath = Generic_StaticIO.getRelativeFilePath(
@@ -166,10 +288,13 @@ public class DW_Report extends DW_HTMLPage {
 //                        filePathDepth + 1);
                 String definitionsPath;
                 definitionsPath = relativeFilePath + baseReportDir + "/Definitions/";
-                fos = Generic_StaticIO.getFileOutputStream(f);
+                componentFOS = Generic_StaticIO.getFileOutputStream(f);
                 String pageTitle;
                 pageTitle = reportName + " " + claimantType2 + " " + tenure2;
-                write(definitionsPath,
+                write(
+                        doUnderOccupied,
+                        doCouncil,
+                        definitionsPath,
                         relativeFilePath,
                         //distanceRelativeFilePath,
                         pageTitle,
@@ -180,8 +305,8 @@ public class DW_Report extends DW_HTMLPage {
                         reportFilename,
                         tFilenames);
                 try {
-                    writeHTMLFooter(date);
-                    fos.close();
+                    writeHTMLFooter(date, componentFOS);
+                    componentFOS.close();
                 } catch (IOException e) {
                     System.err.println(e.getMessage());
                     e.printStackTrace();
@@ -191,6 +316,8 @@ public class DW_Report extends DW_HTMLPage {
     }
 
     public void write(
+            boolean doUnderOccupied,
+            boolean doCouncil,
             String definitionsPath,
             String relativeFilePath,
             //String distanceRelativeFilePath,
@@ -204,10 +331,12 @@ public class DW_Report extends DW_HTMLPage {
         try {
             writeHTMLHeader(
                     projectName,
-                    pageTitle);
+                    pageTitle,
+                    componentFOS);
             writeStartOfBody(
                     baseURLString0,
-                    pageTitle);
+                    pageTitle,
+                    componentFOS);
             Iterator<String> typesIte;
             Iterator<String> distanceTypesIte;
             Iterator<String> levelsIte;
@@ -222,133 +351,152 @@ public class DW_Report extends DW_HTMLPage {
                     tenure2,
                     definitionsPath);
 
-            writeLine("<div>");
-            writeLine("<ul>");
-            writeLine("<li><h2>Definitions</h2>");
-            writeLine("<ul>");
-            writeLine("<li>" + claimantTypeLink + "</li>");
+            writeLine("<div>", componentFOS);
+            writeLine("<ul>", componentFOS);
+            writeLine("<li><h2>Definitions</h2>", componentFOS);
+            writeLine("<ul>", componentFOS);
+            writeLine("<li>" + claimantTypeLink + "</li>", componentFOS);
             link = getLink2(
                     tenure2,
                     definitionsPath);
-            writeLine("<li>" + link + "</li>");
-            writeLine("<li>Types");
-            writeLine("<ul>");
+            writeLine("<li>" + link + "</li>", componentFOS);
+            writeLine("<li>Types", componentFOS);
+            writeLine("<ul>", componentFOS);
             typesIte = types.iterator();
             while (typesIte.hasNext()) {
                 link = getLink2(
                         typesIte.next() + "Claimants",
                         definitionsPath);
-                writeLine("<li>" + link + "</li>");
+                writeLine("<li>" + link + "</li>", componentFOS);
             }
-            writeLine("</ul></li>");
-            writeLine("<li>Distance Types");
-            writeLine("<ul>");
+            writeLine("</ul></li>", componentFOS);
+            writeLine("<li>Distance Types", componentFOS);
+            writeLine("<ul>", componentFOS);
             distanceTypesIte = distanceTypes.iterator();
             while (distanceTypesIte.hasNext()) {
                 link = getLink2(
                         distanceTypesIte.next() + "Claimants",
                         definitionsPath);
-                writeLine("<li>" + link + "</li>");
+                writeLine("<li>" + link + "</li>", componentFOS);
             }
-            writeLine("</ul></li>");
-            writeLine("<li>Levels");
-            writeLine("<ul>");
+            writeLine("</ul></li>", componentFOS);
+            writeLine("<li>Levels", componentFOS);
+            writeLine("<ul>", componentFOS);
             levelsIte = levels.iterator();
             while (levelsIte.hasNext()) {
                 link = getLink2(
                         levelsIte.next(),
                         definitionsPath);
-                writeLine("<li>" + link + "</li>");
+                writeLine("<li>" + link + "</li>", componentFOS);
             }
-            writeLine("</ul></li>");
-            writeLine("</ul>");
-            writeLine("</div>");
-            writeContents(tFilenames, claimantType, claimantTypeLink);
+            writeLine("</ul></li>", componentFOS);
+            writeLine("</ul>", componentFOS);
+            writeLine("</div>", componentFOS);
+            writeContents(tFilenames, claimantType, claimantTypeLink, componentFOS);
 
-            for (int i = 0; i < tFilenames.length; i++) {
-                if (!omit.contains(i)) {
-                    String year;
-                    year = DW_ChoroplethMaps_SHBE.getFilenameYear(tFilenames[i]);
-                    String month;
-                    month = DW_ChoroplethMaps_SHBE.getFilenameMonth(tFilenames[i]);
-                    String yearMonth;
-                    yearMonth = year + " " + month;
-                    String idl;
-                    idl = yearMonth.replace(" ", "_");
-                    String idn;
-                    idn = yearMonth;
-                    writeLine("<div id=\"" + idl + "\">");
-                    writeLine("<ul>");
-                    writeLine("<li><h2>" + idn + "</h2>");
-                    typesIte = types.iterator();
-                    while (typesIte.hasNext()) {
-                        String type;
-                        type = typesIte.next();
-                        String type2;
-                        type2 = Generic_StaticString.getCapitalFirstLetter(type);
-                        type2 += "Claimants";
-                        idn = type2;
-                        idl = yearMonth.replace(" ", "_") + "_" + idn.replace(" ", "_");
-                        writeLine("<h3 id=\"" + idl + "\">" + idn + "</h3>");
-                        levelsIte = levels.iterator();
-                        while (levelsIte.hasNext()) {
-                            String level;
-                            level = levelsIte.next();
-                            idn = yearMonth + " " + type2;
-                            idn += " " + level;
-                            idl = idn.replace(" ", "_");
-                            writeStartOfSection(idn, 4);
-                            writeSection(
-                                    relativeFilePath,
-                                    claimantType,
-                                    tenure,
-                                    idn,
-                                    type,
-                                    level,
-                                    year,
-                                    month);
-                            writeLine("</div>");
-                        }
-                    }
-                    distanceTypesIte = distanceTypes.iterator();
-                    while (distanceTypesIte.hasNext()) {
-                        String distanceType;
-                        distanceType = distanceTypesIte.next();
-                        String type2;
-                        type2 = Generic_StaticString.getCapitalFirstLetter(distanceType);
-                        type2 += "Claimants";
-                        idn = yearMonth + " " + type2;
+            Iterator<String> includesIte;
+            includesIte = includes.keySet().iterator();
+            while (includesIte.hasNext()) {
+                String includeName;
+                includeName = includesIte.next();
+                ArrayList<Integer> include;
+                include = includes.get(includeName);
+                writeLine("<div id=\"" + includeName + "\">", componentFOS);
+                writeLine("<ul>", componentFOS);
+                writeLine("<li><h2>" + includeName + "</h2>", componentFOS);
+
+                for (int i = 0; i < tFilenames.length; i++) {
+                    if (include.contains(i)) {
+                        String year;
+                        year = DW_ChoroplethMaps_LCC.getFilenameYear(tFilenames[i]);
+                        String month;
+                        month = DW_ChoroplethMaps_LCC.getFilenameMonth(tFilenames[i]);
+                        String yearMonth;
+                        yearMonth = year + " " + month;
+                        String idn;
+                        idn = includeName + " " + yearMonth;
+                        String idl;
                         idl = idn.replace(" ", "_");
-                        writeLine("<h3 id=\"" + idl + "\">" + idn + "</h3>");
-                        distancesIte = distances.iterator();
-                        while (distancesIte.hasNext()) {
-                            distanceThreshold = distancesIte.next();
+                        writeLine("<div id=\"" + idl + "\">", componentFOS);
+                        writeLine("<ul>", componentFOS);
+                        writeLine("<li><h3>" + idn + "</h3>", componentFOS);
+                        typesIte = types.iterator();
+                        while (typesIte.hasNext()) {
+                            String type;
+                            type = typesIte.next();
+                            String type2;
+                            type2 = Generic_StaticString.getCapitalFirstLetter(type);
+                            type2 += "Claimants";
+                            idn = type2;
+                            idl = yearMonth.replace(" ", "_") + "_" + idn.replace(" ", "_");
+                            writeLine("<h4 id=\"" + idl + "\">" + idn + "</h4>", componentFOS);
                             levelsIte = levels.iterator();
                             while (levelsIte.hasNext()) {
                                 String level;
                                 level = levelsIte.next();
                                 idn = yearMonth + " " + type2;
-                                idn += " " + distanceThreshold + " Metres";
                                 idn += " " + level;
                                 idl = idn.replace(" ", "_");
-                                writeStartOfSection(idn, 4);
+                                writeStartOfSection(idn, 5, componentFOS);
                                 writeSection(
+                                        doUnderOccupied,
+                                        doCouncil,
                                         relativeFilePath,
                                         claimantType,
                                         tenure,
                                         idn,
-                                        distanceType,
+                                        type,
                                         level,
                                         year,
                                         month);
-                                writeLine("</div>");
+                                writeLine("</div>", componentFOS);
                             }
                         }
+                        distanceTypesIte = distanceTypes.iterator();
+                        while (distanceTypesIte.hasNext()) {
+                            String distanceType;
+                            distanceType = distanceTypesIte.next();
+                            String type2;
+                            type2 = Generic_StaticString.getCapitalFirstLetter(distanceType);
+                            type2 += "Claimants";
+                            idn = yearMonth + " " + type2;
+                            idl = idn.replace(" ", "_");
+                            writeLine("<h4 id=\"" + idl + "\">" + idn + "</h4>", componentFOS);
+                            distancesIte = distances.iterator();
+                            while (distancesIte.hasNext()) {
+                                distanceThreshold = distancesIte.next();
+                                levelsIte = levels.iterator();
+                                while (levelsIte.hasNext()) {
+                                    String level;
+                                    level = levelsIte.next();
+                                    idn = yearMonth + " " + type2;
+                                    idn += " " + distanceThreshold + " Metres";
+                                    idn += " " + level;
+                                    idl = idn.replace(" ", "_");
+                                    writeStartOfSection(idn, 5, componentFOS);
+                                    writeSection(
+                                            doUnderOccupied,
+                                            doCouncil,
+                                            relativeFilePath,
+                                            claimantType,
+                                            tenure,
+                                            idn,
+                                            distanceType,
+                                            level,
+                                            year,
+                                            month);
+                                    writeLine("</div>", componentFOS);
+                                }
+                            }
+                        }
+                        writeLine("</li>", componentFOS);
+                        writeLine("</ul>", componentFOS);
+                        writeLine("</div>", componentFOS);
                     }
-                    writeLine("</li>");
-                    writeLine("</ul>");
-                    writeLine("</div>");
                 }
+                writeLine("</li>", componentFOS);
+                writeLine("</ul>", componentFOS);
+                writeLine("</div>", componentFOS);
             }
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -357,6 +505,8 @@ public class DW_Report extends DW_HTMLPage {
     }
 
     public void writeSection(
+            boolean doUnderOccupied,
+            boolean doCouncil,
             String relativeFilePath,
             String claimantType,
             String tenure,
@@ -365,9 +515,9 @@ public class DW_Report extends DW_HTMLPage {
             String level,
             String year,
             String month) throws IOException {
-        writeLine("");
-        writeLine("<h5>Choropleth Map</h5>");
-        writeLine("");
+        writeLine("", componentFOS);
+        writeLine("<h5>Choropleth Map</h5>", componentFOS);
+        writeLine("", componentFOS);
         String imageSource;
         String name = year + month + "CountClippedToLeedsLAD";
         String filepath;
@@ -380,30 +530,32 @@ public class DW_Report extends DW_HTMLPage {
                 + name + "/";
         imageSource = relativeFilePath + "LCC/SHBE/Maps/Choropleth/"
                 + level + "/" + filepath + name + ".png";;
-        writeLine("<img src=\"" + imageSource + "\" alt=\"[" + imageSource + "]\" />");
-        writeLine("");
-        writeLine("");
+        writeLine("<img src=\"" + imageSource + "\" alt=\"[" + imageSource + "]\" />", componentFOS);
+        writeLine("", componentFOS);
+        writeLine("", componentFOS);
         File dir;
         File f;
         ArrayList<String> table;
         // Total, In and Out Count Table
-        writeLine("");
-        writeLine("<h5>Total, In and Out Count Table</h5>");
-        writeLine("");
         dir = new File(
                 DW_Files.getOutputSHBEChoroplethDir(level),
                 filepath);
         f = new File(
                 dir,
                 name + ".txt");
-        table = DW_Table.readCSV(f);
-        writeTable(table);
+        if (f.exists()) {
+            writeLine("", componentFOS);
+            writeLine("<h5>Total, In and Out Count Table</h5>", componentFOS);
+            writeLine("", componentFOS);
+            table = DW_Table.readCSV(f);
+            writeTable(table, componentFOS);
+        }
         // Counts By Tenure Table
-        writeLine("");
-        writeLine("<h5>Counts By Tenure Table</h5>");
-        writeLine("");
         dir = new File(
-                DW_Files.getGeneratedSHBEDir(level),
+                DW_Files.getGeneratedSHBEDir(
+                        level,
+                        doUnderOccupied,
+                        doCouncil),
                 type + "/" + claimantType + "/" + tenure);
         if (type.contains("Distance")) {
             dir = new File(
@@ -413,14 +565,19 @@ public class DW_Report extends DW_HTMLPage {
         f = new File(
                 dir,
                 "CountsByTenure" + year + month + ".csv");
-        table = DW_Table.readCSV(f);
-        writeTable(table);
+        if (f.exists()) {
+            writeLine("", componentFOS);
+            writeLine("<h5>Counts By Tenure Table</h5>", componentFOS);
+            writeLine("", componentFOS);
+            table = DW_Table.readCSV(f);
+            writeTable(table, componentFOS);
+        }
         // Top 10s
         // Top 10
         writeExtremeAreaTable(
-             dir,
-             year,
-             month);
+                dir,
+                year,
+                month);
 
         String type2;
         // Top 10 increases
@@ -447,18 +604,20 @@ public class DW_Report extends DW_HTMLPage {
             File dir,
             String year,
             String month) throws IOException {
-        writeLine("");
-        writeLine("<h5>Areas With The Highest Numbers of Claimants Table</h5>");
-        writeLine("");
         File f;
-        ArrayList<String> table;
         f = new File(
                 dir,
                 "HighestClaimants" + year + month + ".csv");
-        table = DW_Table.readCSV(f);
-            writeTable(table);
+        if (f.exists()) {
+            writeLine("", componentFOS);
+            writeLine("<h5>Areas With The Highest Numbers of Claimants Table</h5>", componentFOS);
+            writeLine("", componentFOS);
+            ArrayList<String> table;
+            table = DW_Table.readCSV(f);
+            writeTable(table, componentFOS);
+        }
     }
-    
+
     protected void writeExtremeAreaChangesTable(
             File dir,
             String name,
@@ -466,33 +625,36 @@ public class DW_Report extends DW_HTMLPage {
             String year,
             String month) throws IOException {
         File f;
-        ArrayList<String> table;
         f = new File(
                 dir,
                 "ExtremeAreaChanges" + name + type + "LastYear" + year + month + ".csv");
         if (f.exists()) {
-            writeLine("");
-            writeLine("<h5>Areas With The Largest " + name + " " + type + " In Numbers Of Claimants Table From Last Year</h5>");
-            writeLine("");
+            writeLine("", componentFOS);
+            writeLine("<h5>Areas With The Largest " + name + " " + type + " In Numbers Of Claimants Table From Last Year</h5>", componentFOS);
+            writeLine("", componentFOS);
+            ArrayList<String> table;
             table = DW_Table.readCSV(f);
-            writeTable(table);
+            writeTable(table, componentFOS);
         }
         f = new File(
                 dir,
                 "ExtremeAreaChanges" + name + type + "LastMonth" + year + month + ".csv");
         if (f.exists()) {
-            writeLine("");
-            writeLine("<h5>Areas With The Largest " + name + " " + type + " In Numbers Of Claimants Table From Last Month</h5>");
-            writeLine("");
+            writeLine("", componentFOS);
+            writeLine("<h5>Areas With The Largest " + name + " " + type + " In Numbers Of Claimants Table From Last Month</h5>", componentFOS);
+            writeLine("", componentFOS);
+            ArrayList<String> table;
             table = DW_Table.readCSV(f);
-            writeTable(table);
+            writeTable(table, componentFOS);
         }
     }
 
-    protected void writeTable(ArrayList<String> table) throws IOException {
+    protected void writeTable(
+            ArrayList<String> table,
+            FileOutputStream fos) throws IOException {
         //writeLine("<table style=\"width:100%\">");
         //writeLine("<table border=\"1\">");
-        writeLine("<table style=\"border:1px solid black\">");
+        writeLine("<table style=\"border:1px solid black\">", fos);
         Iterator<String> ite;
         ite = table.iterator();
         while (ite.hasNext()) {
@@ -500,105 +662,118 @@ public class DW_Report extends DW_HTMLPage {
             row = ite.next();
             String[] split;
             split = row.split(",");
-            writeLine("<tr>");
+            writeLine("<tr>", fos);
             for (String split1 : split) {
                 //writeLine("<td>" + split1 + "</td>");
-                writeLine("<td style=\"border:1px solid grey\">" + split1 + "</td>");
+                writeLine("<td style=\"border:1px solid grey\">" + split1 + "</td>", fos);
             }
-            writeLine("</tr>");
+            writeLine("</tr>", fos);
         }
-        writeLine("</table>");
-        writeLine("");
+        writeLine("</table>", fos);
+        writeLine("", fos);
     }
 
     public void writeContents(
             String[] tFilenames,
             String claimantType,
-            String claimantTypeLink) throws IOException {
-        writeLine("<div><ul>");
-        writeLine("<li><h2>Contents</h2>");
-        writeLine("<ul>");
+            String claimantTypeLink,
+            FileOutputStream fos) throws IOException {
+        writeLine("<div><ul>", fos);
+        writeLine("<li><h2>Contents</h2>", fos);
+        writeLine("<ul>", fos);
         Iterator<String> typesIte;
         Iterator<String> distanceTypesIte;
         Iterator<Double> distancesIte;
         Iterator<String> levelsIte;
-        for (int i = 0; i < tFilenames.length; i++) {
-            if (!omit.contains(i)) {
-                String year;
-                year = DW_ChoroplethMaps_SHBE.getFilenameYear(tFilenames[i]);
-                String month;
-                month = DW_ChoroplethMaps_SHBE.getFilenameMonth(tFilenames[i]);
-                typesIte = types.iterator();
-                String yearMonth;
-                yearMonth = year + " " + month;
-                String idn;
-                String idn0;
-                idn = yearMonth;
-                String idl;
-                idl = idn.replace(" ", "_");
-                writeLine("<li>" + getLink(idl, idn));
-                writeLine("<ul>");
-                while (typesIte.hasNext()) {
-                    String type;
-                    type = typesIte.next();
-                    String type2;
-                    type2 = Generic_StaticString.getCapitalFirstLetter(type);
-                    type2 += "Claimants";
-                    idn = yearMonth + " " + type2;
-                    idn0 = type2;
+        Iterator<String> includesIte;
+        includesIte = includes.keySet().iterator();
+        while (includesIte.hasNext()) {
+            String includeName;
+            includeName = includesIte.next();
+            ArrayList<Integer> include;
+            include = includes.get(includeName);
+            writeLine("<li>" + getLink(includeName, includeName), fos);
+            writeLine("<ul>", fos);
+            for (int i = 0; i < tFilenames.length; i++) {
+                if (include.contains(i)) {
+                    String year;
+                    year = DW_ChoroplethMaps_LCC.getFilenameYear(tFilenames[i]);
+                    String month;
+                    month = DW_ChoroplethMaps_LCC.getFilenameMonth(tFilenames[i]);
+                    typesIte = types.iterator();
+                    String yearMonth;
+                    yearMonth = year + " " + month;
+                    String idn;
+                    String idn0;
+                    idn = includeName + " " + yearMonth;
+                    String idl;
                     idl = idn.replace(" ", "_");
-                    //writeLine("<li>" + getLink(idl, idn));
-                    writeLine("<li>" + getLink(idl, idn0));
-                    writeLine("<ul>");
-                    levelsIte = levels.iterator();
-                    while (levelsIte.hasNext()) {
-                        String level;
-                        level = levelsIte.next();
-                        idn = yearMonth;
-                        idn += " " + type2;
-                        idn += " " + level;
+                    writeLine("<li>" + getLink(idl, idn), fos);
+                    writeLine("<ul>", fos);
+                    while (typesIte.hasNext()) {
+                        String type;
+                        type = typesIte.next();
+                        String type2;
+                        type2 = Generic_StaticString.getCapitalFirstLetter(type);
+                        type2 += "Claimants";
+                        idn = includeName + " " + yearMonth + " " + type2;
+                        idn0 = type2;
                         idl = idn.replace(" ", "_");
-                        writeLine("<li>" + getLink(idl, level) + "</li>");
-                    }
-                    writeLine("</ul>");
-                    writeLine("</li>");
-                }
-                distanceTypesIte = distanceTypes.iterator();
-                while (distanceTypesIte.hasNext()) {
-                    String distanceType;
-                    distanceType = distanceTypesIte.next();
-                    String type2;
-                    type2 = Generic_StaticString.getCapitalFirstLetter(distanceType);
-                    type2 += "Claimants";
-                    idn = yearMonth + " " + type2;
-                    idl = idn.replace(" ", "_");
-                    //writeLine("<li>" + getLink(idl, idn));
-                    writeLine("<li>" + getLink(idl, type2));
-                    writeLine("<ul>");
-                    distancesIte = distances.iterator();
-                    while (distancesIte.hasNext()) {
-                        distanceThreshold = distancesIte.next();
+                        //writeLine("<li>" + getLink(idl, idn));
+                        writeLine("<li>" + getLink(idl, idn0), fos);
+                        writeLine("<ul>", fos);
                         levelsIte = levels.iterator();
                         while (levelsIte.hasNext()) {
                             String level;
                             level = levelsIte.next();
-                            idn = yearMonth;
+                            idn = includeName + " " + yearMonth;
                             idn += " " + type2;
-                            idn += " " + distanceThreshold + " Metres";
                             idn += " " + level;
                             idl = idn.replace(" ", "_");
-                            writeLine("<li>" + getLink(idl, distanceThreshold + " Metres " + level) + "</li>");
+                            writeLine("<li>" + getLink(idl, level) + "</li>", fos);
                         }
+                        writeLine("</ul>", fos);
+                        writeLine("</li>", fos);
                     }
-                    writeLine("</ul>");
-                    writeLine("</li>");
+                    distanceTypesIte = distanceTypes.iterator();
+                    while (distanceTypesIte.hasNext()) {
+                        String distanceType;
+                        distanceType = distanceTypesIte.next();
+                        String type2;
+                        type2 = Generic_StaticString.getCapitalFirstLetter(distanceType);
+                        type2 += "Claimants";
+                        idn = includeName + " " + yearMonth + " " + type2;
+                        idl = idn.replace(" ", "_");
+                        //writeLine("<li>" + getLink(idl, idn));
+                        writeLine("<li>" + getLink(idl, type2), fos);
+                        writeLine("<ul>", fos);
+                        distancesIte = distances.iterator();
+                        while (distancesIte.hasNext()) {
+                            distanceThreshold = distancesIte.next();
+                            levelsIte = levels.iterator();
+                            while (levelsIte.hasNext()) {
+                                String level;
+                                level = levelsIte.next();
+                                idn = includeName + " " + yearMonth;
+                                idn += " " + type2;
+                                idn += " " + distanceThreshold + " Metres";
+                                idn += " " + level;
+                                idl = idn.replace(" ", "_");
+                                writeLine("<li>" + getLink(idl, distanceThreshold + " Metres " + level) + "</li>", fos);
+                            }
+                        }
+                        writeLine("</ul>", fos);
+                        writeLine("</li>", fos);
+                    }
+                    writeLine("</ul>", fos);
+                    writeLine("</li>", fos);
                 }
-                writeLine("</ul>");
-                writeLine("</li>");
             }
+            writeLine("</ul>", fos);
+            writeLine("</li>", fos);
         }
-        writeLine("</ul>");
-        writeLine("</li>");
-        writeLine("</ul></div>");
+        writeLine("</ul>", fos);
+        writeLine("</li>", fos);
+        writeLine("</ul></div>", fos);
     }
 }

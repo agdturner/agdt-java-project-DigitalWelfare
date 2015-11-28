@@ -116,9 +116,9 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
         styleParameters.setnClasses(9);
         styleParameters.setPaletteName("Reds");
         styleParameters.setAddWhiteForZero(true);
-        styleParameters.setForegroundStyleTitle0("Foreground Style 0");
-//        styleParameters.setForegroundStyle0(DW_Style.createDefaultPointStyle());
-        styleParameters.setForegroundStyle0(DW_Style.createAdviceLeedsPointStyles());
+        styleParameters.setForegroundStyleName(0,"Foreground Style 0");
+//        styleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
+        styleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
         styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
                 Color.GREEN,
                 Color.WHITE));
@@ -410,6 +410,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
             binding = Integer.class;
             inAndOutOfRegionCounts = mapCountsForLevel(tAreaCodesAndShapefiles,
                     tLeedsCABFilenames,
+                    null,
                     tLevelData,
                     deprivationRecords,
                     dir,
@@ -434,6 +435,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
             inAndOutOfRegionCounts = mapDensitiesForLevel(
                     tAreaCodesAndShapefiles,
                     tLeedsCABFilenames,
+                    null,
                     tLevelData,
                     deprivationRecords,
                     dir,

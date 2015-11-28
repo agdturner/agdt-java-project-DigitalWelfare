@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
 import java.io.Serializable;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 
 /**
  *
@@ -279,10 +280,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param ClaimantsPostcode the ClaimantsPostcode to set
      */
     protected void setClaimantsPostcode(String ClaimantsPostcode) {
-        this.ClaimantsPostcode = ClaimantsPostcode.trim();
-        while (this.ClaimantsPostcode.contains("  ")) {
-            this.ClaimantsPostcode = this.ClaimantsPostcode.replaceAll("  ", " ");
-        }
+        this.ClaimantsPostcode = DW_Postcode_Handler.formatPostcode(ClaimantsPostcode);
     }
 
     /**
