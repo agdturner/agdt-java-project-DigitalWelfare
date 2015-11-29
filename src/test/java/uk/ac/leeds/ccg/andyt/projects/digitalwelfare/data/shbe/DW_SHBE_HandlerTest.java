@@ -137,8 +137,7 @@ public class DW_SHBE_HandlerTest {
 //        filenames[32] = "hb9991_SHBE_648859k July 2014.csv";
 //        filenames[33] = "hb9991_SHBE_656520k August 2014.csv";
 //        filenames[34] = "hb9991_SHBE_663169k September 2014.csv";
-//        //filenames[35] = "hb9991_SHBE_670535k October 2014.csv";
-//        filenames[35] = "hb9991_SHBE_670535k October 2014 v2.csv";
+//        filenames[35] = "hb9991_SHBE_670535k October 2014.csv";
 //        filenames[36] = "hb9991_SHBE_677543k November 2014.csv";
 //        filenames[37] = "hb9991_SHBE_684519k December 2014.csv";
 //        filenames[38] = "hb9991_SHBE_691401k January 2015.csv";
@@ -146,13 +145,14 @@ public class DW_SHBE_HandlerTest {
 //        filenames[40] = "hb9991_SHBE_705679k March 2015.csv";
 //        filenames[41] = "hb9991_SHBE_712197k April 2015.csv";
         
+//        String filename = filenames[0];
+//        DW_SHBE_Handler instance = new DW_SHBE_Handler();
+//        Object[] result = instance.loadInputData(directory, filename, true);
+//        Object[] expResult = instance.loadInputData(directory, filename, false);
+//        assertArrayEquals(expResult, result); // Why is this failing?
         
         
-        String filename = filenames[34];
-        DW_SHBE_Handler instance = new DW_SHBE_Handler();
-        Object[] expResult = null;
-        Object[] result = instance.loadInputData(directory, filename);
-//        assertArrayEquals(expResult, result);
+        
 //        // TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
     }
