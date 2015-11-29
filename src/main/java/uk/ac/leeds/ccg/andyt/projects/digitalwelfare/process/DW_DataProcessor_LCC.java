@@ -26,7 +26,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
+//import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Handler;
@@ -41,7 +41,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.ID_TenancyType;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_LineGraph;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_LineGraph;
 
 /**
  * This is the main class for the Digital Welfare Project. For more details of
@@ -3488,11 +3488,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 }
             }
         }
-        if (yM300set && yM30set) {
-            result[0] = true;
-        } else {
-            result[0] = false;
-        }
+        result[0] = yM300set && yM30set;
         result[1] = yM300;
         result[2] = yM30;
         return result;
@@ -3500,6 +3496,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 
     /**
      *
+     * @param nTT
      * @param SHBEFilenames
      * @param include
      * @param yM31
@@ -3588,6 +3585,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 
     /**
      *
+     * @param nTT
      * @param SHBEFilenames
      * @param include
      * @param yM31
@@ -3706,6 +3704,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * Frequencies.
      *
      * @param SHBEFilenames
+     * @param tenancyTypes
      * @param tenancyTypesGrouped
      * @param regulatedGroups
      * @param unregulatedGroups
@@ -4001,6 +4000,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * Frequencies.
      *
      * @param SHBEFilenames A list of all SHBE filenames
+     * @param tenancyTypes
      * @param tenancyTypesGrouped
      * @param regulatedGroups
      * @param unregulatedGroups
@@ -4353,6 +4353,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * For counting where postcode has changed and reporting by tenancy type.
      *
      * @param SHBEFilenames
+     * @param tenancyTypes
      * @param tenancyTypesGrouped
      * @param regulatedGroups
      * @param unregulatedGroups
@@ -6882,10 +6883,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             String yM30) {
         HashMap<DW_ID, Integer> tIDByTenancyType;
         tIDByTenancyType = tIDByTenancyTypes.get(yM30);
-        if (tIDByTenancyType.containsKey(tID)) {
-            return true;
-        }
-        return false;
+        return tIDByTenancyType.containsKey(tID);
     }
 
     public static void recordTenancyTypeChanges(
@@ -6961,8 +6959,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * @param tIDByTenancyType0 Before
      * @param tIDByTenancyType1 Now
      * @param tIDByTenancyTypes
-     * @param include
-     * @param index
+     * @param yM30
      * @return A count matrix of tenancyType changes {@code
      * TreeMap<Integer, TreeMap<Integer, Integer>>
      * Tenure1, Tenure2, Count
@@ -7107,8 +7104,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * @param tIDByTenancyType0
      * @param tIDByTenancyType1
      * @param tenancyTypeChanges
-     * @param year
-     * @param month
+     * @param yM31
      * @param checkPreviousTenure
      * @param tIDByTenancyTypes
      * @param index
@@ -7169,11 +7165,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 doMainLoop = underOccupied0 != null || underOccupied1 != null;
             }
             if (doMainLoop) {
-                Integer tenancyType0Integer = null;
-                String tenancyType0 = null;
+                Integer tenancyType0Integer;
                 if (tIDByTenancyType0 != null) {
                     tenancyType0Integer = tIDByTenancyType0.get(tID);
-                    if (tenancyType0 == null) {
+                    if (tenancyType0Integer == null) {
                         if (checkPreviousTenure) {
                             Object[] previousTenure;
                             previousTenure = getPreviousTenure(
@@ -7201,7 +7196,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 } else {
                     tenancyType0Integer = -999;
                 }
-                Integer tenancyType1Integer = null;
+                String tenancyType0 = Integer.toString(tenancyType0Integer);
+                Integer tenancyType1Integer;
                 tenancyType1Integer = tIDByTenancyType1.get(tID);
                 String tenancyType1 = Integer.toString(tenancyType1Integer);
                 if (tenancyType1Integer != null) {
@@ -7228,9 +7224,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                 tenancyTypeChange);
                     }
                 }
-                if (result.containsKey(tenancyType1Integer)) {
+                if (result.containsKey(tenancyType1)) {
                     TreeMap<String, Integer> tenancyTypeCount;
-                    tenancyTypeCount = result.get(tenancyType1Integer);
+                    tenancyTypeCount = result.get(tenancyType1);
                     Generic_Collections.addToTreeMapStringInteger(
                             tenancyTypeCount,
                             tenancyType0,
@@ -7410,7 +7406,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     tenancyType0Integer = tIDByTenancyType0.get(tID);
                     postcode0 = tIDByPostcode0.get(tID);
                     isValidPostcode0 = DW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
-                    isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
+                    isValidPostcodeFormPostcode0 = Generic_UKPostcode_Handler.isValidPostcodeForm(postcode0);
                     if (tenancyType0Integer == null) {
                         if (checkPreviousTenure) {
                             Object[] previousTenure;
@@ -7426,7 +7422,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                                  System.out.println("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
                                 if (!isValidPostcodeFormPostcode0 && checkPreviousPostcode) {
                                     postcode0 = tIDByPostcodes.get(indexOfLastKnownTenureOrNot).get(tID);
-                                    isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
+                                    isValidPostcodeFormPostcode0 = Generic_UKPostcode_Handler.isValidPostcodeForm(postcode0);
                                 }
                             }
                         } else {
@@ -7603,10 +7599,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * @param tIDByTenancyType0
      * @param tIDByTenancyType1
      * @param tIDByTenancyTypes
-     * @param year0
-     * @param month0
-     * @param year1
-     * @param month1
+     * @param tenancyTypeChanges
+     * @param yM30
+     * @param yM31
      * @param checkPreviousTenure
      * @param i
      * @param include
@@ -7691,39 +7686,43 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 boolean isValidPostcode0 = false;
                 if (tIDByTenancyType0 != null) {
                     tenancyType0Integer = tIDByTenancyType0.get(tID);
-                    tenancyType0 = Integer.toString(tenancyType0Integer);
-                    boolean isValidPostcodeFormPostcode0 = false;
-                    postcode0 = tIDByPostcode0.get(tID);
-                    if (postcode0 != null) {
-                        isValidPostcode0 = DW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
-                        isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
-                    }
-                    if (tenancyType0 == null) {
-                        if (checkPreviousTenure) {
-                            Object[] previousTenure;
-                            previousTenure = getPreviousTenure(
-                                    tID,
-                                    tIDByTenancyTypes,
-                                    i,
-                                    include);
-                            tenancyType0 = (String) previousTenure[0];
-                            if (checkPreviousPostcode) {
-                                Integer indexOfLastKnownTenureOrNot;
-                                indexOfLastKnownTenureOrNot = (Integer) previousTenure[1];
-                                if (indexOfLastKnownTenureOrNot != null) {
+                    if (tenancyType0Integer != null) {
+                        tenancyType0 = Integer.toString(tenancyType0Integer);
+                        boolean isValidPostcodeFormPostcode0 = false;
+                        postcode0 = tIDByPostcode0.get(tID);
+                        if (postcode0 != null) {
+                            isValidPostcode0 = DW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
+                            isValidPostcodeFormPostcode0 = Generic_UKPostcode_Handler.isValidPostcodeForm(postcode0);
+                        }
+                        if (tenancyType0 == null) {
+                            if (checkPreviousTenure) {
+                                Object[] previousTenure;
+                                previousTenure = getPreviousTenure(
+                                        tID,
+                                        tIDByTenancyTypes,
+                                        i,
+                                        include);
+                                tenancyType0 = (String) previousTenure[0];
+                                if (checkPreviousPostcode) {
+                                    Integer indexOfLastKnownTenureOrNot;
+                                    indexOfLastKnownTenureOrNot = (Integer) previousTenure[1];
+                                    if (indexOfLastKnownTenureOrNot != null) {
 //                                       System.out.println("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
-                                    if (!isValidPostcodeFormPostcode0 && checkPreviousPostcode) {
-                                        postcode0 = tIDByPostcodes.get(indexOfLastKnownTenureOrNot).get(tID);
-                                        if (postcode0 != null) {
-                                            isValidPostcode0 = DW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
-                                            isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
+                                        if (!isValidPostcodeFormPostcode0 && checkPreviousPostcode) {
+                                            postcode0 = tIDByPostcodes.get(indexOfLastKnownTenureOrNot).get(tID);
+                                            if (postcode0 != null) {
+                                                isValidPostcode0 = DW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
+                                                isValidPostcodeFormPostcode0 = Generic_UKPostcode_Handler.isValidPostcodeForm(postcode0);
+                                            }
                                         }
                                     }
                                 }
+                            } else {
+                                tenancyType0 = "-999";
                             }
-                        } else {
-                            tenancyType0 = "-999";
                         }
+                    } else {
+                        tenancyType0 = "-999";
                     }
                 } else {
                     tenancyType0 = "-999";
@@ -8066,7 +8065,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     postcode0 = tIDByPostcode0.get(tID);
                     if (postcode0 != null) {
                         isValidPostcode0 = DW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
-                        isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
+                        isValidPostcodeFormPostcode0 = Generic_UKPostcode_Handler.isValidPostcodeForm(postcode0);
                     }
                     if (tenancyType0Integer == null) {
                         if (checkPreviousTenure) {
@@ -8086,7 +8085,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                         postcode0 = tIDByPostcodes.get(indexOfLastKnownTenureOrNot).get(tID);
                                         if (postcode0 != null) {
                                             isValidPostcode0 = DW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
-                                            isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
+                                            isValidPostcodeFormPostcode0 = Generic_UKPostcode_Handler.isValidPostcodeForm(postcode0);
                                         }
                                     }
                                 }
@@ -8276,10 +8275,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * @param regulatedGroups
      * @param unregulatedGroups
      * @param tenancyTypeChanges
-     * @param year0
-     * @param month0
-     * @param year1
-     * @param month1
+     * @param yM30
+     * @param yM31
      * @param checkPreviousTenure
      * @param index
      * @param include
@@ -8373,7 +8370,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     postcode0 = tIDByPostcode0.get(tID);
                     isValidPostcode0 = DW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
                     boolean isValidPostcodeFormPostcode0 = false;
-                    isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
+                    isValidPostcodeFormPostcode0 = Generic_UKPostcode_Handler.isValidPostcodeForm(postcode0);
                     if (tenancyType0Integer == null) {
                         if (checkPreviousTenure) {
                             Object[] previousTenure;
@@ -8389,7 +8386,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                 if (!isValidPostcodeFormPostcode0 && checkPreviousPostcode) {
                                     postcode0 = tIDByPostcodes.get(indexOfLastKnownTenureOrNot).get(tID);
                                     isValidPostcode0 = DW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
-                                    isValidPostcodeFormPostcode0 = postCodeHandler.isValidPostcodeForm(postcode0);
+                                    isValidPostcodeFormPostcode0 = Generic_UKPostcode_Handler.isValidPostcodeForm(postcode0);
                                 }
                             }
                         } else {
@@ -8943,13 +8940,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * TreeMap<String, TreeMap<String, Integer>>
      * Tenure0, Tenure1, Count
      * }
-     * @
-     * param year0
-     * @param month0
-     * @param year1
-     * @param month1
+     * @param yM30
+     * @param yM31
      * @param dirOut
-     * @param doUnderOccupiedData
+     * @param tenancyTypes
+     * @param grouped
+     * @param doUnderOccupiedData 
      */
     public void writeTenancyTypeTransitionMatrix(
             TreeMap<String, TreeMap<String, Integer>> tenancyTypeMatrix,
@@ -8976,14 +8972,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * TreeMap<String, TreeMap<String, Integer>>
      * Tenure0, Tenure1, Count
      * }
-     * @
-     * param year0
-     * @param month0
-     * @param year1
-     * @param month1
+     * @param yM30
+     * @param yM31
      * @param dirOut
-     * @param doUnderOccupiedData
-     * @param name
+     * @param grouped
+     * @param tenancyTypes
+     * @param name 
      */
     public void writeTransitionMatrix(
             TreeMap<String, TreeMap<String, Integer>> tenancyTypeMatrix,
