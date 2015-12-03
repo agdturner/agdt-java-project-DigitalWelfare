@@ -41,24 +41,36 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
  */
 public class DW_Postcode_Handler implements Serializable {
 
+    public static String TYPE_UNIT = "Unit";
+    public static String TYPE_SECTOR = "Sector";
+    public static String TYPE_DISTRICT = "District";
+    public static String TYPE_AREA = "Area";
+    
     /**
      * A name for exception and error handling
      */
     private static final String className = "PostcodeGeocoder";
 
     public static double getDistanceBetweenPostcodes(
-            String yM3,
-            String aPostcode,
-            String bPostcode) {
+            String yM30v,
+            String yM31v,
+            String postcode0,
+            String postcode1) {
         double result = 0.0d;
         AGDT_Point aPoint;
-        aPoint = getPointFromPostcode(yM3, aPostcode);
+        aPoint = getPointFromPostcode(
+                yM30v,
+                TYPE_UNIT,
+                postcode0);
         AGDT_Point bPoint;
-        bPoint = getPointFromPostcode(yM3, bPostcode);
+        bPoint = getPointFromPostcode(
+                yM31v,
+                TYPE_UNIT,
+                postcode1);
         if (aPoint != null && bPoint != null) {
             result = aPoint.getDistance(bPoint);
         } else {
-            System.out.println("<Issue calculating distance between postcodes: " + aPostcode + " and " + bPostcode + "/>");
+            System.out.println("<Issue calculating distance between postcodes: " + postcode0 + " and " + postcode1 + "/>");
 //            System.out.println("<Issue calculating distance between postcodes: " + aPostcode + " and " + bPostcode + ">");
 //            if (aPoint == null) {
 //                System.out.println("No point look up for " + aPostcode);
@@ -71,27 +83,22 @@ public class DW_Postcode_Handler implements Serializable {
         }
         return result;
     }
-
+    
     /**
      *
+     * @param yM3v
      * @param level Expects either "Unit", "Sector" or "Area"
      * @param postcode
      * @return
      */
     public static AGDT_Point getPointFromPostcode(
-            String yM3,
+            String yM3v,
             String level,
             String postcode) {
-        if (level == null) {
-            return null;
-        }
-        if (yM3 == null) {
-            yM3 = getDefaultYM3();
-        }
         AGDT_Point result;
         String formattedPostcode;
         formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
-        result = DW_Maps.getONSPDlookups().get(level).get(getNearestYM3ForONSPDLookup(yM3)).get(formattedPostcode);
+        result = DW_Maps.getONSPDlookups().get(level).get(getNearestYM3ForONSPDLookup(yM3v)).get(formattedPostcode);
         return result;
     }
 
@@ -240,16 +247,6 @@ public class DW_Postcode_Handler implements Serializable {
         return "2013_AUG";
     }
 
-    public static AGDT_Point getPointFromPostcode(
-            String yM3,
-            String postcode) {
-        AGDT_Point result;
-        String level;
-        level = DW_Postcode_Handler.getPostcodeLevel(postcode);
-        result = getPointFromPostcode(yM3, level, postcode);
-        return result;
-    }
-
     /**
      * @see also
      * @param unformattedUnitPostcode
@@ -352,19 +349,24 @@ public class DW_Postcode_Handler implements Serializable {
     /**
      * @param input TreeMap<String, String> where values are postcodes for which
      * the coordinates are to be returned as a AGDT_Point.
+     * @param yM3v
      * @return TreeMap<String, AGDT_Point> with the keys as in input and values
      * calculated using getPointFromPostcode(value). If no look up is found for
      * a postcode its key does not get put into the result.
      */
     public static TreeMap<String, AGDT_Point> postcodeToPoints(
-            TreeMap<String, String> input) {
+            TreeMap<String, String> input,
+            String yM3v) {
         TreeMap<String, AGDT_Point> result;
         result = new TreeMap<String, AGDT_Point>();
         Iterator<String> ite_String = input.keySet().iterator();
         while (ite_String.hasNext()) {
             String key = ite_String.next();
             String postcode = input.get(key);
-            AGDT_Point p = getPointFromPostcode(null, postcode);
+            AGDT_Point p = getPointFromPostcode(
+                    yM3v,
+                    TYPE_UNIT,
+                    postcode);
             if (p == null) {
                 System.out.println("No point for postcode " + postcode);
             } else {
@@ -590,9 +592,9 @@ public class DW_Postcode_Handler implements Serializable {
         }
         String p;
         p = postcode.trim();
-        if (p.length() < 2) {
-            return null;
-        }
+//        if (p.length() < 2) {
+//            return null;
+//        }
         while (p.contains("  ")) {
             p = p.replaceAll("  ", " ");
         }
@@ -602,7 +604,7 @@ public class DW_Postcode_Handler implements Serializable {
             String pType;
             pType = Generic_UKPostcode_Handler.getFirstPartPostcodeType(p);
             if (!pType.isEmpty()) {
-                return "Area";
+                return TYPE_AREA;
             } else {
                 return null;
             }
@@ -611,10 +613,10 @@ public class DW_Postcode_Handler implements Serializable {
             String pa1;
             pa1 = pa[1];
             if (pa1.length() == 3) {
-                return "Unit";
+                return TYPE_UNIT;
             }
             if (pa1.length() == 1) {
-                return "Sector";
+                return TYPE_SECTOR;
             }
         }
         if (pa.length > 2) {
@@ -624,10 +626,10 @@ public class DW_Postcode_Handler implements Serializable {
             String pa1;
             pa1 = pa[2];
             if (pa1.length() == 3) {
-                return "Unit";
+                return TYPE_UNIT;
             }
             if (pa1.length() == 1) {
-                return "Sector";
+                return TYPE_SECTOR;
             }
         }
         return null;
@@ -1004,18 +1006,18 @@ public class DW_Postcode_Handler implements Serializable {
 //                    return false;
 //                } else {
                 boolean isMappablePostcode;
-//                isMappablePostcode = DW_Maps.getONSPDlookups().get(getNearestYM3ForONSPDLookup(yM3)).get("Unit").containsKey(formattedPostcode);
+//                isMappablePostcode = DW_Maps.getONSPDlookups().get(getNearestYM3ForONSPDLookup(yM3)).get(TYPE_UNIT).containsKey(formattedPostcode);
                 TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> ONSPDLookups;
                 ONSPDLookups = DW_Maps.getONSPDlookups();
                 TreeMap<String, TreeMap<String, AGDT_Point>> unitPostcodeONSPDLookups;
-                unitPostcodeONSPDLookups = ONSPDLookups.get("Unit");
+                unitPostcodeONSPDLookups = ONSPDLookups.get(TYPE_UNIT);
                 TreeMap<String, AGDT_Point> yM3UnitPostcodeONSPDLookupsONS;
                 yM3UnitPostcodeONSPDLookupsONS = unitPostcodeONSPDLookups.get(yM3);
                 if (yM3UnitPostcodeONSPDLookupsONS == null) {
                     System.err.println("yM3UnitPostcodeONSPDLookupsONS == null for yM3 " + yM3);
                 }
                 isMappablePostcode = yM3UnitPostcodeONSPDLookupsONS.containsKey(formattedPostcode);
-                //isMappablePostcode = DW_Maps.getONSPDlookups().get("Unit").get(yM3).containsKey(formattedPostcode);
+                //isMappablePostcode = DW_Maps.getONSPDlookups().get(TYPE_UNIT).get(yM3).containsKey(formattedPostcode);
                 if (isMappablePostcode) {
                     return true;
                 } else {

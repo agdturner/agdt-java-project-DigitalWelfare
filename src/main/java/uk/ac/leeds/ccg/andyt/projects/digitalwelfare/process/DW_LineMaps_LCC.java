@@ -616,31 +616,31 @@ public class DW_LineMaps_LCC extends DW_Maps {
                                     boolean doGrouped;
                                     doGrouped = iteb3.next();
                                     if (doGrouped) {
-                                    postcodeMaps(
-                                            yM3s,
-                                            includeName,
-                                            include,
-                                            allTenancyTypeChangesGrouped.get(doUnderOccupancyData),
-                                            doTenancyTypeAndPostcodeChange,
-                                            doUnderOccupancyData,
-                                            false,
-                                            false,
-                                            doCheckedPreviousTenure,
-                                            doCheckedPreviousPostcode,
-                                            doGrouped);
+                                        postcodeMaps(
+                                                yM3s,
+                                                includeName,
+                                                include,
+                                                allTenancyTypeChangesGrouped.get(doUnderOccupancyData),
+                                                doTenancyTypeAndPostcodeChange,
+                                                doUnderOccupancyData,
+                                                false,
+                                                false,
+                                                doCheckedPreviousTenure,
+                                                doCheckedPreviousPostcode,
+                                                doGrouped);
                                     } else {
                                         postcodeMaps(
-                                            yM3s,
-                                            includeName,
-                                            include,
-                                            allTenancyTypeChanges.get(doUnderOccupancyData),
-                                            doTenancyTypeAndPostcodeChange,
-                                            doUnderOccupancyData,
-                                            false,
-                                            false,
-                                            doCheckedPreviousTenure,
-                                            doCheckedPreviousPostcode,
-                                            doGrouped);
+                                                yM3s,
+                                                includeName,
+                                                include,
+                                                allTenancyTypeChanges.get(doUnderOccupancyData),
+                                                doTenancyTypeAndPostcodeChange,
+                                                doUnderOccupancyData,
+                                                false,
+                                                false,
+                                                doCheckedPreviousTenure,
+                                                doCheckedPreviousPostcode,
+                                                doGrouped);
                                     }
                                 }
                             }
@@ -879,9 +879,9 @@ public class DW_LineMaps_LCC extends DW_Maps {
                         // Create SimpleFeatureBuilder
                         //FeatureFactory ff = FactoryFinder.getGeometryFactories();
                         GeometryFactory geometryFactory = new GeometryFactory();
-                        
-long count = 0;
-                    long notPCCount = 0;
+
+                        long count = 0;
+                        long notPCCount = 0;
 
                         Iterator<String> linesIte;
                         linesIte = lines.iterator();
@@ -890,20 +890,30 @@ long count = 0;
                             line = linesIte.next();
                             String[] lineSplit;
                             lineSplit = line.split(",");
-                            String nino;
-                            nino = lineSplit[0];
+                            //String yM30;
+                            yM30 = lineSplit[1].trim();
                             String yM31;
-                            yM31 = lineSplit[1].trim();
+                            yM31 = lineSplit[2].trim();
                             String tenancyTypeChange;
-                            tenancyTypeChange = lineSplit[2].trim();
+                            String yM30v;
+                            yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+                            String yM31v;
+                            yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+                            tenancyTypeChange = lineSplit[3].trim();
                             if (tenancyTypeChanges.contains(tenancyTypeChange)) {
                                 if (yMs.contains(yM31)) {
-                                    String postcode0 = lineSplit[3].trim();
-                                    String postcode1 = lineSplit[4].trim();
+                                    String postcode0 = lineSplit[4].trim();
+                                    String postcode1 = lineSplit[5].trim();
                                     AGDT_Point origin;
-                                    origin = DW_Postcode_Handler.getPointFromPostcode(null, postcode0);
+                                    origin = DW_Postcode_Handler.getPointFromPostcode(
+                                            yM30v,
+                                            DW_Postcode_Handler.TYPE_UNIT,
+                                            postcode0);
                                     AGDT_Point destination;
-                                    destination = DW_Postcode_Handler.getPointFromPostcode(null, postcode1);
+                                    destination = DW_Postcode_Handler.getPointFromPostcode(
+                                            yM31v,
+                                            DW_Postcode_Handler.TYPE_UNIT,
+                                            postcode1);
                                     TreeSetFeatureCollection tsfcS;
                                     tsfcS = tsfcSs.get(tenancyTypeChanges);
                                     if (tsfcS == null) {
@@ -1009,17 +1019,17 @@ long count = 0;
                                         tsfcE.add(feature);
                                         count++;
 
-                                } else {
-                                    notPCCount++;
-                                }
+                                    } else {
+                                        notPCCount++;
+                                    }
                                 }
                             }
                         }
                         String legendMessage;
-                    legendMessage = "Count " + count;
-                    System.out.println("line count = " + count);
-                    System.out.println("Postcode not valid count = " + notPCCount);
-                    TreeSetFeatureCollection tsfc;
+                        legendMessage = "Count " + count;
+                        System.out.println("line count = " + count);
+                        System.out.println("Postcode not valid count = " + notPCCount);
+                        TreeSetFeatureCollection tsfc;
                         name = getName(tenancyTypeChanges);
                         File dirOut3;
                         dirOut3 = new File(
@@ -1333,26 +1343,29 @@ long count = 0;
                         line = linesIte.next();
                         String[] lineSplit;
                         lineSplit = line.split(",");
-//                        String nino;
-//                        nino = lineSplit[0];
+                        yM30 = lineSplit[1].trim();
                         String yM31;
-                        yM31 = lineSplit[1].trim();
+                        yM31 = lineSplit[2].trim();
+                        String yM30v;
+                        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+                        String yM31v;
+                        yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
-                        tenancyTypeChange = lineSplit[2].trim();
+                        tenancyTypeChange = lineSplit[3].trim();
                         if (tenancyTypeChanges.contains(tenancyTypeChange)) {
                             if (yM3s.contains(yM31)) {
-                                String yM30v;
-                                yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-                                String yM31v;
-                                yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
-                                String postcode0 = lineSplit[3].trim();
-                                String postcode1 = lineSplit[4].trim();
+                                String postcode0 = lineSplit[4].trim();
+                                String postcode1 = lineSplit[5].trim();
                                 AGDT_Point origin;
                                 origin = DW_Postcode_Handler.getPointFromPostcode(
-                                        yM30v, postcode0);
+                                        yM30v,
+                                        DW_Postcode_Handler.TYPE_UNIT,
+                                        postcode0);
                                 AGDT_Point destination;
                                 destination = DW_Postcode_Handler.getPointFromPostcode(
-                                        yM31v, postcode1);
+                                        yM31v,
+                                        DW_Postcode_Handler.TYPE_UNIT,
+                                        postcode1);
                                 TreeSetFeatureCollection tsfcS;
                                 tsfcS = tsfcSs.get(tenancyTypeChanges);
                                 if (tsfcS == null) {

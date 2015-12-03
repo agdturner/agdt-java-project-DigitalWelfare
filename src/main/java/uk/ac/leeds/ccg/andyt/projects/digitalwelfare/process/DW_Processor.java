@@ -421,7 +421,9 @@ public abstract class DW_Processor {
 
     public static TreeMap<String, AGDT_Point> getOutletsAndPoints() {
         TreeMap<String, AGDT_Point> result;
-        result = DW_Postcode_Handler.postcodeToPoints(DW_Processor.getOutletsAndPostcodes());
+        result = DW_Postcode_Handler.postcodeToPoints(
+                DW_Processor.getOutletsAndPostcodes(),
+                DW_Postcode_Handler.getDefaultYM3());
         return result;
     }
 
@@ -494,7 +496,9 @@ public abstract class DW_Processor {
 
     public static TreeMap<String, AGDT_Point> getAdviceLeedsNamesAndPoints() {
         TreeMap<String, AGDT_Point> result;
-        result = DW_Postcode_Handler.postcodeToPoints(DW_Processor.getAdviceLeedsNamesAndPostcodes());
+        result = DW_Postcode_Handler.postcodeToPoints(
+                DW_Processor.getAdviceLeedsNamesAndPostcodes(),
+                DW_Postcode_Handler.getDefaultYM3());
         return result;
     }
 

@@ -141,6 +141,22 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     private int TotalCTBPaymentsCreditsSinceLastExtract;
     /**
      * 238 247 ClaimantsEthnicGroup
+     * 1 White: British
+     * 2 White: Irish
+     * 3 White: Any Other
+     * 4 Mixed: White and Black Caribbean
+     * 5 Mixed: White and Black African
+     * 6 Mixed: White and Asian
+     * 7 Mixed: Any Other
+     * 8 Asian or Asian British: Indian
+     * 9 Asian or Asian British: Pakistani
+     * 10 Asian or Asian British: Bangladeshi
+     * 11 Asian or Asian British: Any Other
+     * 12 Black or Black British: Caribbean
+     * 13 Black or Black British: African
+     * 14 Black or Black British: Any Other
+     * 15 Chinese
+     * 99 Any Other
      */
     private int ClaimantsEthnicGroup;
     /**
@@ -971,6 +987,9 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @return the ClaimantsEthnicGroup
      */
     public int getClaimantsEthnicGroup() {
+        if (ClaimantsEthnicGroup > 16 || ClaimantsEthnicGroup < 1) {
+            return 16;
+        }
         return ClaimantsEthnicGroup;
     }
 

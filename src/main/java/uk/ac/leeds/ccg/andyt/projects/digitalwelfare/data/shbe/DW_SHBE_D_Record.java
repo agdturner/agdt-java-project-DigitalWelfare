@@ -2950,26 +2950,38 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
     private int ClaimantsTotalAmountOfIncomeDisregarded;
     /**
      * 110 115 FamilyPremiumAwarded
+     * 0 Not Awarded
+     * 1 Awarded
      */
     private int FamilyPremiumAwarded;
     /**
      * 111 116 FamilyLoneParentPremiumAwarded
+     * 0 Not Awarded
+     * 1 Awarded
      */
     private int FamilyLoneParentPremiumAwarded;
     /**
      * 112 117 DisabilityPremiumAwarded
+     * 0 Not Awarded
+     * 1 Awarded
      */
     private int DisabilityPremiumAwarded;
     /**
      * 113 118 SevereDisabilityPremiumAwarded
+     * 0 Not Awarded
+     * 1 Awarded
      */
     private int SevereDisabilityPremiumAwarded;
     /**
      * 114 119 DisabledChildPremiumAwarded
+     * 0 Not Awarded
+     * 1 Awarded
      */
     private int DisabledChildPremiumAwarded;
     /**
      * 115 120 CarePremiumAwarded
+     * 0 Not Awarded
+     * 1 Awarded
      */
     private int CarePremiumAwarded;
     /**
@@ -4468,7 +4480,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
     /**
      * @return the ClaimantsIncomeFromGovernemntTraining
      */
-    public int getClaimantsIncomeFromGovernemntTraining() {
+    public int getClaimantsIncomeFromGovernmentTraining() {
         return ClaimantsIncomeFromGovernemntTraining;
     }
 
@@ -4577,7 +4589,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
     /**
      * @return the ClaimantsIncomeFromWidowsWidowersPension
      */
-    public int getClaimantsIncomeFromWidowsWidowersPension() {
+    public int getClaimantsIncomeFromWarWidowsWidowersPension() {
         return ClaimantsIncomeFromWidowsWidowersPension;
     }
 
@@ -4637,7 +4649,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
     /**
      * @return the ClaimantsIncomeFromStatuatorySickPay
      */
-    public int getClaimantsIncomeFromStatuatorySickPay() {
+    public int getClaimantsIncomeFromStatutorySickPay() {
         return ClaimantsIncomeFromStatuatorySickPay;
     }
 
@@ -5459,7 +5471,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
     /**
      * @return the PartnersIncomeFromGovernemntTraining
      */
-    public int getPartnersIncomeFromGovernemntTraining() {
+    public int getPartnersIncomeFromGovernmentTraining() {
         return PartnersIncomeFromGovernemntTraining;
     }
 
@@ -5504,7 +5516,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
     /**
      * @return the PartnersIncomeFromStatuatorySickPay
      */
-    public int getPartnersIncomeFromStatuatorySickPay() {
+    public int getPartnersIncomeFromStatutorySickPay() {
         return PartnersIncomeFromStatuatorySickPay;
     }
 
@@ -5583,7 +5595,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
     /**
      * @return the PartnersIncomeFromWidowsWidowersPension
      */
-    public int getPartnersIncomeFromWidowsWidowersPension() {
+    public int getPartnersIncomeFromWarWidowsWidowersPension() {
         return PartnersIncomeFromWidowsWidowersPension;
     }
 

@@ -28,11 +28,18 @@ public class DW_ID implements Serializable {
 
     private final int ID;
 
-    public DW_ID(int ID
+    public DW_ID(
+            int ID
     ) {
         this.ID = ID;
     }
 
+    public DW_ID(
+            String ID
+    ) {
+        this.ID = Integer.valueOf(ID);
+    }
+    
     /**
      * @return the DW_ID
      */

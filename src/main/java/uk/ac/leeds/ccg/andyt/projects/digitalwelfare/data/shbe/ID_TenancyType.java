@@ -65,7 +65,7 @@ public class ID_TenancyType implements Serializable {
             o = (ID_TenancyType) obj;
             if (hashCode() == o.hashCode()) {
                 if (TenancyType == o.TenancyType) {
-                    if (ID == o.ID) {
+                    if (ID.equals(o.ID)) {
                         return true;
                     }
                 }

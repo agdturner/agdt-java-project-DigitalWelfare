@@ -71,8 +71,8 @@ public class ID_TenancyType_PostcodeID implements Serializable {
             ID_TenancyType_PostcodeID o;
             o = (ID_TenancyType_PostcodeID) obj;
             if (this.hashCode() == o.hashCode()) {
-                if (PostcodeID == o.PostcodeID) {
-                    if (ID_TenancyType == o.ID_TenancyType) {
+                if (PostcodeID.equals(o.PostcodeID)) {
+                    if (ID_TenancyType.equals(o.ID_TenancyType)) {
                         return true;
                     }
                 }
