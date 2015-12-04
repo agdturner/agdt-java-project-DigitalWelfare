@@ -32,6 +32,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
@@ -73,6 +74,175 @@ public class Summary {
         result[0] = union;
         result[1] = set0Only;
         result[2] = set00AndSet1;
+        return result;
+    }
+
+    public static HashSet<ID_TenancyType> getID_TenancyTypeSet(
+            TreeMap<String, DW_SHBE_Record> D_Records,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet,
+            HashMap<String, DW_ID> NINOToIDLookup) {
+        HashSet<ID_TenancyType> result;
+        result = new HashSet<ID_TenancyType>();
+        TreeMap<String, DW_UnderOccupiedReport_Record> RSLMap;
+        RSLMap = RSLUnderOccupiedSet.getMap();
+        TreeMap<String, DW_UnderOccupiedReport_Record> councilMap;
+        councilMap = councilUnderOccupiedSet.getMap();
+        Iterator<String> ite;
+        ite = councilMap.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            if (D_Records.containsKey(CTBRef)) {
+                DW_SHBE_D_Record D_Record;
+                D_Record = D_Records.get(CTBRef).getDRecord();
+                DW_ID ID;
+                ID = NINOToIDLookup.get(D_Record.getClaimantsNationalInsuranceNumber());
+                int TenancyType;
+                TenancyType = D_Record.getTenancyType();
+                ID_TenancyType ID_TenancyType;
+                ID_TenancyType = new ID_TenancyType(ID, TenancyType);
+                result.add(ID_TenancyType);
+//            } else {
+//                // There are a few cases where a mapping to the SHBE does not exist!
+//                int debug = 1;//?
+            }
+        }
+        ite = RSLMap.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            if (D_Records.containsKey(CTBRef)) {
+                DW_SHBE_D_Record D_Record;
+                D_Record = D_Records.get(CTBRef).getDRecord();
+                DW_ID ID;
+                ID = NINOToIDLookup.get(D_Record.getClaimantsNationalInsuranceNumber());
+                int TenancyType;
+                TenancyType = D_Record.getTenancyType();
+                ID_TenancyType ID_TenancyType;
+                ID_TenancyType = new ID_TenancyType(ID, TenancyType);
+                result.add(ID_TenancyType);
+//            } else {
+//                // There are a few cases where a mapping to the SHBE does not exist!
+//                int debug = 1;//?
+            }
+        }
+        return result;
+    }
+
+    public static HashSet<ID_PostcodeID> getID_PostcodeIDSet(
+            TreeMap<String, DW_SHBE_Record> D_Records,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet,
+            HashMap<String, DW_ID> NINOToIDLookup,
+            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
+        HashSet<ID_PostcodeID> result;
+        result = new HashSet<ID_PostcodeID>();
+        TreeMap<String, DW_UnderOccupiedReport_Record> RSLMap;
+        RSLMap = RSLUnderOccupiedSet.getMap();
+        TreeMap<String, DW_UnderOccupiedReport_Record> councilMap;
+        councilMap = councilUnderOccupiedSet.getMap();
+        Iterator<String> ite;
+        ite = councilMap.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            DW_SHBE_D_Record D_Record;
+            if (D_Records.containsKey(CTBRef)) {
+                D_Record = D_Records.get(CTBRef).getDRecord();
+                DW_ID ID;
+                ID = NINOToIDLookup.get(D_Record.getClaimantsNationalInsuranceNumber());
+                DW_ID PostcodeID;
+                PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
+                ID_PostcodeID ID_PostcodeID;
+                ID_PostcodeID = new ID_PostcodeID(ID, PostcodeID);
+                result.add(ID_PostcodeID);
+//            } else {
+//                // There are a few cases where a mapping to the SHBE does not exist!
+//                int debug = 1;//?
+            }
+        }
+        ite = RSLMap.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            DW_SHBE_D_Record D_Record;
+            if (D_Records.containsKey(CTBRef)) {
+                D_Record = D_Records.get(CTBRef).getDRecord();
+                DW_ID ID;
+                ID = NINOToIDLookup.get(D_Record.getClaimantsNationalInsuranceNumber());
+                DW_ID PostcodeID;
+                PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
+                ID_PostcodeID ID_PostcodeID;
+                ID_PostcodeID = new ID_PostcodeID(ID, PostcodeID);
+                result.add(ID_PostcodeID);
+//            } else {
+//                // There are a few cases where a mapping to the SHBE does not exist!
+//                int debug = 1;//?
+            }
+        }
+        return result;
+    }
+
+    public static HashSet<ID_TenancyType_PostcodeID> getID_TenancyType_PostcodeIDSet(
+            TreeMap<String, DW_SHBE_Record> D_Records,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet,
+            HashMap<String, DW_ID> NINOToIDLookup,
+            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
+        HashSet<ID_TenancyType_PostcodeID> result;
+        result = new HashSet<ID_TenancyType_PostcodeID>();
+        TreeMap<String, DW_UnderOccupiedReport_Record> RSLMap;
+        RSLMap = RSLUnderOccupiedSet.getMap();
+        TreeMap<String, DW_UnderOccupiedReport_Record> councilMap;
+        councilMap = councilUnderOccupiedSet.getMap();
+        Iterator<String> ite;
+        ite = councilMap.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            if (D_Records.containsKey(CTBRef)) {
+                DW_SHBE_D_Record D_Record;
+                D_Record = D_Records.get(CTBRef).getDRecord();
+                DW_ID ID;
+                ID = NINOToIDLookup.get(D_Record.getClaimantsNationalInsuranceNumber());
+                int TenancyType;
+                TenancyType = D_Record.getTenancyType();
+                ID_TenancyType ID_TenancyType;
+                ID_TenancyType = new ID_TenancyType(ID, TenancyType);
+                DW_ID PostcodeID;
+                PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
+                ID_TenancyType_PostcodeID ID_TenancyType_PostcodeID;
+                ID_TenancyType_PostcodeID = new ID_TenancyType_PostcodeID(ID_TenancyType, PostcodeID);
+                result.add(ID_TenancyType_PostcodeID);
+//            } else {
+//                // There are a few cases where a mapping to the SHBE does not exist!
+//                int debug = 1;//?
+            }
+        }
+        ite = RSLMap.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            if (D_Records.containsKey(CTBRef)) {
+                DW_SHBE_D_Record D_Record;
+                D_Record = D_Records.get(CTBRef).getDRecord();
+                DW_ID ID;
+                ID = NINOToIDLookup.get(D_Record.getClaimantsNationalInsuranceNumber());
+                int TenancyType;
+                TenancyType = D_Record.getTenancyType();
+                ID_TenancyType ID_TenancyType;
+                ID_TenancyType = new ID_TenancyType(ID, TenancyType);
+                DW_ID PostcodeID;
+                PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
+                ID_TenancyType_PostcodeID ID_TenancyType_PostcodeID;
+                ID_TenancyType_PostcodeID = new ID_TenancyType_PostcodeID(ID_TenancyType, PostcodeID);
+                result.add(ID_TenancyType_PostcodeID);
+//            } else {
+//                // There are a few cases where a mapping to the SHBE does not exist!
+//                int debug = 1;//?
+            }
+        }
         return result;
     }
 
@@ -147,7 +317,6 @@ public class Summary {
 //        result[2] = set00AndSet1;
 //        return result;
 //    }
-
     /**
      *
      * @param nTT
@@ -162,8 +331,8 @@ public class Summary {
             int nTT,
             String[] SHBEFilenames,
             ArrayList<Integer> include,
-            String yM31, 
-            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTenancyTypes, 
+            String yM31,
+            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTenancyTypes,
             HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTenancyTypes1) {
         Object[] result;
         result = new Object[4];
@@ -192,8 +361,8 @@ public class Summary {
             Object[] memberships;
             //memberships = Summary.getMembershipsID_TenancyType_PostcodeID(tClaimantIDPostcodeTenancyTypes00, tClaimantIDPostcodeTenancyTypes0, tClaimantIDPostcodeTenancyTypes1);
             memberships = Summary.getMemberships(
-                    tClaimantIDPostcodeTenancyTypes00, 
-                    tClaimantIDPostcodeTenancyTypes0, 
+                    tClaimantIDPostcodeTenancyTypes00,
+                    tClaimantIDPostcodeTenancyTypes0,
                     tClaimantIDPostcodeTenancyTypes1);
             HashSet<ID_TenancyType_PostcodeID> III;
             III = (HashSet<ID_TenancyType_PostcodeID>) memberships[0];
@@ -245,9 +414,9 @@ public class Summary {
      * @return
      */
     public static Object[] getCountsIDTenancyType(
-            int nTT, String[] SHBEFilenames, 
-            ArrayList<Integer> include, 
-            String yM31, 
+            int nTT, String[] SHBEFilenames,
+            ArrayList<Integer> include,
+            String yM31,
             TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTenancyTypes,
             HashSet<ID_TenancyType> tClaimantIDTenancyTypes1) {
         Object[] result;
@@ -277,7 +446,7 @@ public class Summary {
             Object[] memberships;
             //memberships = Summary.getMembershipsID_TenancyType(tClaimantIDTenancyTypes00, tClaimantIDTenancyTypes0, tClaimantIDTenancyTypes1);
             memberships = Summary.getMemberships(
-                    tClaimantIDTenancyTypes00, 
+                    tClaimantIDTenancyTypes00,
                     tClaimantIDTenancyTypes0,
                     tClaimantIDTenancyTypes1);
             HashSet<ID_TenancyType> III;
@@ -329,9 +498,8 @@ public class Summary {
      * @return
      */
     public static Integer[] getCountsIDPostcode(
-            String[] SHBEFilenames, ArrayList<Integer> include, 
-            String yM31, TreeMap<String, 
-                    HashSet<ID_PostcodeID>> tClaimantIDPostcodeTypes, 
+            String[] SHBEFilenames, ArrayList<Integer> include,
+            String yM31, TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodeTypes,
             HashSet<ID_PostcodeID> tClaimantIDPostcodeTypes1) {
         Integer[] result;
         result = new Integer[3];
@@ -348,7 +516,7 @@ public class Summary {
             //memberships = Summary.getMembershipsID_PostcodeID(tClaimantIDTypes00, tClaimantIDTypes0, tClaimantIDPostcodeTypes1);
             memberships = Summary.getMemberships(
                     tClaimantIDTypes00,
-                    tClaimantIDTypes0, 
+                    tClaimantIDTypes0,
                     tClaimantIDPostcodeTypes1);
             result[0] = ((HashSet<ID_PostcodeID>) memberships[0]).size();
             result[1] = ((HashSet<ID_PostcodeID>) memberships[1]).size();
@@ -1667,6 +1835,12 @@ public class Summary {
          */
         // These could be returned to save time recreating them for other includes.
         // This would involve feeding them in to the method too per se.
+        String yM30v;
+        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+        String key;
+        key = DW_SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
+        HashMap<String, String> summary;
+        summary = result.get(key);
         TreeMap<String, HashSet<DW_ID>> tClaimantIDs;
         tClaimantIDs = new TreeMap<String, HashSet<DW_ID>>();
         TreeMap<String, HashSet<DW_ID>> tAllIDs;
@@ -1677,30 +1851,14 @@ public class Summary {
         tClaimantIDTenancyTypes = new TreeMap<String, HashSet<ID_TenancyType>>();
         TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTenancyTypes;
         tClaimantIDPostcodeTenancyTypes = new TreeMap<String, HashSet<ID_TenancyType_PostcodeID>>();
-
+        TreeMap<String, DW_SHBE_Record> tDRecords0;
+        tDRecords0 = (TreeMap<String, DW_SHBE_Record>) tSHBEData0[0];
         HashSet<DW_ID> tClaimantIDs0;
         tClaimantIDs0 = (HashSet<DW_ID>) tSHBEData0[2];
         tClaimantIDs.put(yM30, tClaimantIDs0);
-
         HashSet<DW_ID> tAllIDs0;
         tAllIDs0 = (HashSet<DW_ID>) tSHBEData0[6];
         tAllIDs.put(yM30, tAllIDs0);
-
-        HashSet<ID_PostcodeID> tClaimantIDPostcodes0;
-        tClaimantIDPostcodes0 = (HashSet<ID_PostcodeID>) tSHBEData0[13];
-        tClaimantIDPostcodes.put(yM30, tClaimantIDPostcodes0);
-
-        HashSet<ID_TenancyType> tClaimantIDTenancyType0;
-        tClaimantIDTenancyType0 = (HashSet<ID_TenancyType>) tSHBEData0[14];
-        tClaimantIDTenancyTypes.put(yM30, tClaimantIDTenancyType0);
-
-        HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTenancyTypes0;
-        tClaimantIDPostcodeTenancyTypes0 = (HashSet<ID_TenancyType_PostcodeID>) tSHBEData0[15];
-        tClaimantIDPostcodeTenancyTypes.put(yM30, tClaimantIDPostcodeTenancyTypes0);
-        String yM30v;
-        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-        TreeMap<String, DW_SHBE_Record> tDRecords0;
-        tDRecords0 = (TreeMap<String, DW_SHBE_Record>) tSHBEData0[0];
         HashMap<DW_ID, String> tIDByPostcode0;
         tIDByPostcode0 = (HashMap<DW_ID, String>) tSHBEData0[8];
         //tIDByPostcode0 = loadIDByPostcode(loadData, filename, i);
@@ -1709,14 +1867,19 @@ public class Summary {
         //tIDByTenancyType0 = loadIDByTenancyType(loadData, filename, i);
         HashMap<String, DW_ID> tCTBRefToIDLookup0;
         tCTBRefToIDLookup0 = (HashMap<String, DW_ID>) tSHBEData0[10];
-        //tCTBRefID0 = loadCTBRefByID(loadData, filename, i);
-        String key;
-        key = DW_SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
-        HashMap<String, String> summary;
-        summary = result.get(key);
+        //tCTBRefID0 = loadCTBRefByID(loadData, filename, i);        
         HashMap<String, Integer> tLoadSummary;
         tLoadSummary = (HashMap<String, Integer>) tSHBEData0[12];
         addToSummary(summary, tLoadSummary);
+        HashSet<ID_PostcodeID> tClaimantIDPostcodes0;
+        tClaimantIDPostcodes0 = (HashSet<ID_PostcodeID>) tSHBEData0[13];
+        tClaimantIDPostcodes.put(yM30, tClaimantIDPostcodes0);
+        HashSet<ID_TenancyType> tClaimantIDTenancyType0;
+        tClaimantIDTenancyType0 = (HashSet<ID_TenancyType>) tSHBEData0[14];
+        tClaimantIDTenancyTypes.put(yM30, tClaimantIDTenancyType0);
+        HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTenancyTypes0;
+        tClaimantIDPostcodeTenancyTypes0 = (HashSet<ID_TenancyType_PostcodeID>) tSHBEData0[15];
+        tClaimantIDPostcodeTenancyTypes.put(yM30, tClaimantIDPostcodeTenancyTypes0);
         // All
         initCounts(nTT, nEG);
         Iterator<String> ite;
@@ -1792,29 +1955,24 @@ public class Summary {
              */
             TreeMap<String, DW_SHBE_Record> tDRecords1;
             tDRecords1 = (TreeMap<String, DW_SHBE_Record>) tSHBEData1[0];
+            HashSet<DW_ID> tClaimantIDs1;
+            tClaimantIDs1 = (HashSet<DW_ID>) tSHBEData1[2];
+            tClaimantIDs.put(yM31, tClaimantIDs1);
+            HashSet<DW_ID> tAllIDs1;
+            tAllIDs1 = (HashSet<DW_ID>) tSHBEData1[6];
+            tAllIDs.put(yM31, tAllIDs1);
             HashMap<DW_ID, String> tIDByPostcode1;
             tIDByPostcode1 = (HashMap<DW_ID, String>) tSHBEData1[8];
             HashMap<DW_ID, Integer> tIDToTenancyType1;
             tIDToTenancyType1 = (HashMap<DW_ID, Integer>) tSHBEData1[9];
             HashMap<String, DW_ID> CTBRefToIDLookup1;
             CTBRefToIDLookup1 = (HashMap<String, DW_ID>) tSHBEData1[10];
-
-            HashSet<DW_ID> tClaimantIDs1;
-            tClaimantIDs1 = (HashSet<DW_ID>) tSHBEData1[2];
-            tClaimantIDs.put(yM31, tClaimantIDs1);
-
-            HashSet<DW_ID> tAllIDs1;
-            tAllIDs1 = (HashSet<DW_ID>) tSHBEData1[6];
-            tAllIDs.put(yM31, tAllIDs1);
-
             HashSet<ID_PostcodeID> tClaimantIDPostcodes1;
             tClaimantIDPostcodes1 = (HashSet<ID_PostcodeID>) tSHBEData1[13];
             tClaimantIDPostcodes.put(yM31, tClaimantIDPostcodes1);
-
             HashSet<ID_TenancyType> tClaimantIDTenancyType1;
             tClaimantIDTenancyType1 = (HashSet<ID_TenancyType>) tSHBEData1[14];
             tClaimantIDTenancyTypes.put(yM31, tClaimantIDTenancyType1);
-
             HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTenancyTypes1;
             tClaimantIDPostcodeTenancyTypes1 = (HashSet<ID_TenancyType_PostcodeID>) tSHBEData1[15];
             tClaimantIDPostcodeTenancyTypes.put(yM31, tClaimantIDPostcodeTenancyTypes1);
@@ -1931,9 +2089,155 @@ public class Summary {
             TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
             HashSet<ID_PostcodeID> tClaimantIDPostcodes1,
             TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTenancyTypes,
-            HashSet<ID_TenancyType> tClaimantIDTenancyType1,
+            HashSet<ID_TenancyType> tClaimantIDTenancyTypes1,
             TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTenancyTypes,
             HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTenancyTypes1
+    ) {
+        Integer[] counts;
+        counts = getCountsIDPostcode(
+                SHBEFilenames,
+                include,
+                yM31,
+                tClaimantIDPostcodes,
+                tClaimantIDPostcodes1);
+        summary.put(
+                SamePostcodeIIIString,
+                "" + counts[0]);
+        summary.put(
+                SamePostcodeIOIString,
+                "" + counts[1]);
+        summary.put(
+                SamePostcodeOIOString,
+                "" + counts[2]);
+        Object[] countsIDTenancyType = getCountsIDTenancyType(
+                nTT,
+                SHBEFilenames,
+                include,
+                yM31,
+                tClaimantIDTenancyTypes,
+                tClaimantIDTenancyTypes1);
+        Integer[] mainCounts;
+        mainCounts = (Integer[]) countsIDTenancyType[0];
+        Integer[] IIITTCounts;
+        Integer[] IOITTCounts;
+        Integer[] OIOTTCounts;
+        IIITTCounts = (Integer[]) countsIDTenancyType[1];
+        IOITTCounts = (Integer[]) countsIDTenancyType[2];
+        OIOTTCounts = (Integer[]) countsIDTenancyType[3];
+        if (mainCounts == null) { // If mainCounts is null, then so are other counts
+            summary.put(
+                    SameTenancyIIIString,
+                    null);
+            summary.put(
+                    SameTenancyIOIString,
+                    null);
+            summary.put(
+                    SameTenancyOIOString,
+                    null);
+            for (int TT = 1; TT < nTT; TT++) {
+                summary.put(
+                        SameTenancyIIITenancyTypeString[TT],
+                        null);
+                summary.put(
+                        SameTenancyIOITenancyTypeString[TT],
+                        null);
+                summary.put(
+                        SameTenancyOIOTenancyTypeString[TT],
+                        null);
+            }
+        } else {
+            summary.put(
+                    SameTenancyIIIString,
+                    "" + mainCounts[0]);
+            summary.put(
+                    SameTenancyIOIString,
+                    "" + mainCounts[1]);
+            summary.put(
+                    SameTenancyOIOString,
+                    "" + mainCounts[2]);
+            for (int TT = 1; TT < nTT; TT++) {
+                summary.put(
+                        SameTenancyIIITenancyTypeString[TT],
+                        "" + IIITTCounts[TT]);
+                summary.put(
+                        SameTenancyIOITenancyTypeString[TT],
+                        "" + IOITTCounts[TT]);
+                summary.put(
+                        SameTenancyOIOTenancyTypeString[TT],
+                        "" + OIOTTCounts[TT]);
+            }
+        }
+        Object[] countsIDPostcodeTenancyType = getCountsIDPostcodeTenancyType(
+                nTT,
+                SHBEFilenames,
+                include,
+                yM31,
+                tClaimantIDPostcodeTenancyTypes,
+                tClaimantIDPostcodeTenancyTypes1);
+        mainCounts = (Integer[]) countsIDPostcodeTenancyType[0];
+        IIITTCounts = (Integer[]) countsIDPostcodeTenancyType[1];
+        IOITTCounts = (Integer[]) countsIDPostcodeTenancyType[2];
+        OIOTTCounts = (Integer[]) countsIDPostcodeTenancyType[3];
+        if (mainCounts == null) { // If mainCounts is null, then so are other counts
+            summary.put(
+                    SameTenancyAndPostcodeIIIString,
+                    null);
+            summary.put(
+                    SameTenancyAndPostcodeIOIString,
+                    null);
+            summary.put(
+                    SameTenancyAndPostcodeOIOString,
+                    null);
+            for (int TT = 1; TT < nTT; TT++) {
+                summary.put(
+                        SameTenancyAndPostcodeIIITenancyTypeString[TT],
+                        null);
+                summary.put(
+                        SameTenancyAndPostcodeIOITenancyTypeString[TT],
+                        null);
+                summary.put(
+                        SameTenancyAndPostcodeOIOTenancyTypeString[TT],
+                        null);
+            }
+        } else {
+            summary.put(
+                    SameTenancyAndPostcodeIIIString,
+                    "" + mainCounts[0]);
+            summary.put(
+                    SameTenancyAndPostcodeIOIString,
+                    "" + mainCounts[1]);
+            summary.put(
+                    SameTenancyAndPostcodeOIOString,
+                    "" + mainCounts[2]);
+            for (int TT = 1; TT < nTT; TT++) {
+                summary.put(
+                        SameTenancyAndPostcodeIIITenancyTypeString[TT],
+                        "" + IIITTCounts[TT]);
+                summary.put(
+                        SameTenancyAndPostcodeIOITenancyTypeString[TT],
+                        "" + IOITTCounts[TT]);
+                summary.put(
+                        SameTenancyAndPostcodeOIOTenancyTypeString[TT],
+                        "" + OIOTTCounts[TT]);
+            }
+        }
+    }
+
+    public void doComparisonCount(
+            HashMap<String, String> summary,
+            int nTT,
+            String[] SHBEFilenames,
+            ArrayList<Integer> include,
+            String yM31,
+            TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
+            HashSet<ID_PostcodeID> tClaimantIDPostcodes1,
+            TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTenancyTypes,
+            HashSet<ID_TenancyType> tClaimantIDTenancyType1,
+            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTenancyTypes,
+            HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTenancyTypes1,
+            HashMap<String, DW_SHBE_D_Record> D_Records,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet
     ) {
         Integer[] counts;
         counts = getCountsIDPostcode(
@@ -2073,6 +2377,8 @@ public class Summary {
      * @param nTT
      * @param nEG
      * @param underOccupiedData
+     * @param NINOToIDLookup
+     * @param PostcodeToPostcodeIDLookup
      * @return
      */
     public TreeMap<String, HashMap<String, String>> getSummaryTable(
@@ -2081,17 +2387,18 @@ public class Summary {
             boolean forceNewSummaries,
             int nTT,
             int nEG,
-            Object[] underOccupiedData
+            Object[] underOccupiedData,
+            HashMap<String, DW_ID> NINOToIDLookup,
+            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup
     ) {
         // Initialise result
         TreeMap<String, HashMap<String, String>> result;
         result = new TreeMap<String, HashMap<String, String>>();
-
+        // Initialise UO
         TreeMap<String, DW_UnderOccupiedReport_Set> councilUnderOccupiedSets = null;
         TreeMap<String, DW_UnderOccupiedReport_Set> RSLUnderOccupiedSets = null;
         councilUnderOccupiedSets = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[0];
         RSLUnderOccupiedSets = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[1];
-
         // Initialise first data
         Iterator<Integer> includeIte;
         Object[] tSHBEData0 = null;
@@ -2118,7 +2425,6 @@ public class Summary {
         if (tSHBEData0 == null) {
             return result;
         }
-
         Object[] filenames;
         filenames = DW_UnderOccupiedReport_Handler.getFilenames();
         TreeMap<String, String> councilFilenames;
@@ -2135,7 +2441,7 @@ public class Summary {
             yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[j]);
             DW_UnderOccupiedReport_Set aCouncilUnderOccupiedSet0;
             aCouncilUnderOccupiedSet0 = councilUnderOccupiedSets.get(yM3);
-            if (councilUnderOccupiedSet0 != null) {
+            if (aCouncilUnderOccupiedSet0 != null) {
                 HashMap<String, String> summary;
                 summary = new HashMap<String, String>();
                 String key;
@@ -2143,7 +2449,6 @@ public class Summary {
                 result.put(key, summary);
             }
         }
-
         // These could be returned to save time recreating them for other includes.
         // This would involve feeding them in to the method too per se.
         TreeMap<String, HashSet<DW_ID>> tClaimantIDs;
@@ -2156,26 +2461,35 @@ public class Summary {
         tClaimantIDTenancyTypes = new TreeMap<String, HashSet<ID_TenancyType>>();
         TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTenancyTypes;
         tClaimantIDPostcodeTenancyTypes = new TreeMap<String, HashSet<ID_TenancyType_PostcodeID>>();
+
+        // Specify Data
+//        TreeMap<String, DW_SHBE_Record> tDRecords0;
+//        tDRecords0 = (TreeMap<String, DW_SHBE_Record>) tSHBEData0[0];
         HashSet<DW_ID> tClaimantIDs0;
         tClaimantIDs0 = (HashSet<DW_ID>) tSHBEData0[2];
         tClaimantIDs.put(yM30, tClaimantIDs0);
-
         HashSet<DW_ID> tAllIDs0;
         tAllIDs0 = (HashSet<DW_ID>) tSHBEData0[6];
         tAllIDs.put(yM30, tAllIDs0);
+//        HashMap<DW_ID, String> tIDByPostcode0;
+//        tIDByPostcode0 = (HashMap<DW_ID, String>) tSHBEData0[8];
+        //tIDByPostcode0 = loadIDByPostcode(loadData, filename, i);
+//        HashMap<DW_ID, Integer> tIDByTenancyType0;
+//        tIDByTenancyType0 = (HashMap<DW_ID, Integer>) tSHBEData0[9];
+        //tIDByTenancyType0 = loadIDByTenancyType(loadData, filename, i);
+//        HashMap<String, DW_ID> tCTBRefToIDLookup0;
+//        tCTBRefToIDLookup0 = (HashMap<String, DW_ID>) tSHBEData0[10];
+//        HashSet<ID_PostcodeID> tClaimantIDPostcodes0;
+//        tClaimantIDPostcodes0 = (HashSet<ID_PostcodeID>) tSHBEData0[13];
+//        tClaimantIDPostcodes.put(yM30, tClaimantIDPostcodes0);
+//        HashSet<ID_TenancyType> tClaimantIDTenancyType0;
+//        tClaimantIDTenancyType0 = (HashSet<ID_TenancyType>) tSHBEData0[14];
+//        tClaimantIDTenancyTypes.put(yM30, tClaimantIDTenancyType0);
+//        HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTenancyTypes0;
+//        tClaimantIDPostcodeTenancyTypes0 = (HashSet<ID_TenancyType_PostcodeID>) tSHBEData0[15];
+//        tClaimantIDPostcodeTenancyTypes.put(yM30, tClaimantIDPostcodeTenancyTypes0);
 
-        HashSet<ID_PostcodeID> tClaimantIDPostcodes0;
-        tClaimantIDPostcodes0 = (HashSet<ID_PostcodeID>) tSHBEData0[13];
-        tClaimantIDPostcodes.put(yM30, tClaimantIDPostcodes0);
-
-        HashSet<ID_TenancyType> tClaimantIDTenancyType0;
-        tClaimantIDTenancyType0 = (HashSet<ID_TenancyType>) tSHBEData0[14];
-        tClaimantIDTenancyTypes.put(yM30, tClaimantIDTenancyType0);
-
-        HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTenancyTypes0;
-        tClaimantIDPostcodeTenancyTypes0 = (HashSet<ID_TenancyType_PostcodeID>) tSHBEData0[15];
-        tClaimantIDPostcodeTenancyTypes.put(yM30, tClaimantIDPostcodeTenancyTypes0);
-
+        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
         partSummary0(
                 tSHBEData0,
                 yM30,
@@ -2188,19 +2502,13 @@ public class Summary {
                 RSLFilenames,
                 councilUnderOccupiedSet0,
                 RSLUnderOccupiedSet0,
-                result);
+                result,
+                tClaimantIDPostcodes,
+                tClaimantIDTenancyTypes,
+                tClaimantIDPostcodeTenancyTypes,
+                NINOToIDLookup,
+                PostcodeToPostcodeIDLookup);
 
-        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-        TreeMap<String, DW_SHBE_Record> tDRecords0;
-        tDRecords0 = (TreeMap<String, DW_SHBE_Record>) tSHBEData0[0];
-        HashMap<DW_ID, String> tIDByPostcode0;
-        tIDByPostcode0 = (HashMap<DW_ID, String>) tSHBEData0[8];
-        //tIDByPostcode0 = loadIDByPostcode(loadData, filename, i);
-        HashMap<DW_ID, Integer> tIDByTenancyType0;
-        tIDByTenancyType0 = (HashMap<DW_ID, Integer>) tSHBEData0[9];
-        //tIDByTenancyType0 = loadIDByTenancyType(loadData, filename, i);
-        HashMap<String, DW_ID> tCTBRefToIDLookup0;
-        tCTBRefToIDLookup0 = (HashMap<String, DW_ID>) tSHBEData0[10];
         if (!includeIte.hasNext()) {
             return result;
         }
@@ -2240,7 +2548,12 @@ public class Summary {
                 RSLUnderOccupiedSet0,
                 councilUnderOccupiedSet00,
                 RSLUnderOccupiedSet00,
-                result);
+                result,
+                tClaimantIDPostcodes,
+                tClaimantIDTenancyTypes,
+                tClaimantIDPostcodeTenancyTypes,
+                NINOToIDLookup,
+                PostcodeToPostcodeIDLookup);
 
         filename00 = filename0;
         yM300 = yM30;
@@ -2263,6 +2576,8 @@ public class Summary {
 
             //DO SOME SUMMARY
             partSummary2(
+                    SHBEFilenames,
+                    include,
                     tSHBEData1,
                     yM31,
                     yM31v,
@@ -2277,6 +2592,7 @@ public class Summary {
                     filename00,
                     forceNewSummaries,
                     nTT,
+                    nEG,
                     councilFilenames,
                     RSLFilenames,
                     councilUnderOccupiedSet1,
@@ -2285,8 +2601,12 @@ public class Summary {
                     RSLUnderOccupiedSet0,
                     councilUnderOccupiedSet00,
                     RSLUnderOccupiedSet00,
-                    result);
-
+                    result,
+                    tClaimantIDPostcodes,
+                    tClaimantIDTenancyTypes,
+                    tClaimantIDPostcodeTenancyTypes,
+                    NINOToIDLookup,
+                    PostcodeToPostcodeIDLookup);
             councilUnderOccupiedSet00 = councilUnderOccupiedSet0;
             councilUnderOccupiedSet0 = councilUnderOccupiedSet1;
             RSLUnderOccupiedSet00 = RSLUnderOccupiedSet0;
@@ -2304,6 +2624,8 @@ public class Summary {
     }
 
     private void partSummary2(
+            String[] SHBEFilenames,
+            ArrayList<Integer> include,
             Object[] tSHBEData1,
             String yM31,
             String yM31v,
@@ -2318,6 +2640,7 @@ public class Summary {
             String filename00,
             boolean forceNewSummaries,
             int nTT,
+            int nEG,
             TreeMap<String, String> councilFilenames,
             TreeMap<String, String> RSLFilenames,
             DW_UnderOccupiedReport_Set councilUnderOccupiedSet1,
@@ -2326,22 +2649,81 @@ public class Summary {
             DW_UnderOccupiedReport_Set RSLUnderOccupiedSet0,
             DW_UnderOccupiedReport_Set councilUnderOccupiedSet00,
             DW_UnderOccupiedReport_Set RSLUnderOccupiedSet00,
-            TreeMap<String, HashMap<String, String>> result) {
-//
-//        doComparisonCount(
-//                summary,
-//                nTT,
-//                SHBEFilenames,
-//                include,
-//                yM31,
-//                tClaimantIDPostcodes,
-//                tClaimantIDPostcodes1,
-//                tClaimantIDTenancyTypes,
-//                tClaimantIDTenancyType1,
-//                tClaimantIDPostcodeTenancyTypes,
-//                tClaimantIDPostcodeTenancyTypes1);
+            TreeMap<String, HashMap<String, String>> result,
+            TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
+            TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTenancyTypes,
+            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTenancyTypes,
+            HashMap<String, DW_ID> NINOToIDLookup,
+            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
+
+        HashMap<String, String> summary;
+        summary = result.get(DW_SHBE_Handler.getYearMonthNumber(filename1));
+
+        TreeMap<String, DW_SHBE_Record> tDRecords1;
+        tDRecords1 = (TreeMap<String, DW_SHBE_Record>) tSHBEData1[0];
+
+        addToSetsForComparisons(
+                yM31,
+                tDRecords1,
+                councilUnderOccupiedSet1,
+                RSLUnderOccupiedSet1,
+                tClaimantIDPostcodes,
+                tClaimantIDTenancyTypes,
+                tClaimantIDPostcodeTenancyTypes,
+                NINOToIDLookup,
+                PostcodeToPostcodeIDLookup);
+
+        HashSet<ID_PostcodeID> tClaimantIDPostcodes1;
+        tClaimantIDPostcodes1 = tClaimantIDPostcodes.get(yM31);
+        HashSet<ID_TenancyType> tClaimantIDTenancyTypes1;
+        tClaimantIDTenancyTypes1 = tClaimantIDTenancyTypes.get(yM31);
+        HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTenancyTypes1;
+        tClaimantIDPostcodeTenancyTypes1 = tClaimantIDPostcodeTenancyTypes.get(yM31);
+
+        partSummary1(
+                tSHBEData0, yM31, yM31v, filename1, tSHBEData0, yM30, yM30v,
+                filename0, forceNewSummaries, nTT, nEG, councilFilenames,
+                RSLFilenames, councilUnderOccupiedSet1, RSLUnderOccupiedSet1,
+                councilUnderOccupiedSet0, RSLUnderOccupiedSet0, result, tClaimantIDPostcodes, tClaimantIDTenancyTypes,
+                tClaimantIDPostcodeTenancyTypes, NINOToIDLookup, PostcodeToPostcodeIDLookup);
+
+        doComparisonCount(
+                summary,
+                nTT,
+                SHBEFilenames,
+                include,
+                yM31,
+                tClaimantIDPostcodes,
+                tClaimantIDPostcodes1,
+                tClaimantIDTenancyTypes,
+                tClaimantIDTenancyTypes1,
+                tClaimantIDPostcodeTenancyTypes,
+                tClaimantIDPostcodeTenancyTypes1);
     }
 
+    /**
+     * Bit odd but filename0 has the data for now. filename00 has the data for
+     * the previous time.
+     *
+     * @param tSHBEData0
+     * @param yM30
+     * @param yM30v
+     * @param filename0
+     * @param tSHBEData00
+     * @param yM300
+     * @param yM300v
+     * @param filename00
+     * @param forceNewSummaries
+     * @param nTT
+     * @param nEG
+     * @param councilFilenames
+     * @param RSLFilenames
+     * @param councilUnderOccupiedSet0
+     * @param RSLUnderOccupiedSet0
+     * @param councilUnderOccupiedSet00
+     * @param RSLUnderOccupiedSet00
+     * @param result
+     */
     private void partSummary1(
             Object[] tSHBEData0,
             String yM30,
@@ -2360,8 +2742,18 @@ public class Summary {
             DW_UnderOccupiedReport_Set RSLUnderOccupiedSet0,
             DW_UnderOccupiedReport_Set councilUnderOccupiedSet00,
             DW_UnderOccupiedReport_Set RSLUnderOccupiedSet00,
-            TreeMap<String, HashMap<String, String>> result) {
-        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+            TreeMap<String, HashMap<String, String>> result,
+            TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
+            TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTenancyTypes,
+            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTenancyTypes,
+            HashMap<String, DW_ID> NINOToIDLookup,
+            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
+
+        String key;
+        key = DW_SHBE_Handler.getYearMonthNumber(filename0);
+        HashMap<String, String> summary;
+        summary = result.get(key);
+
         TreeMap<String, DW_SHBE_Record> tDRecords0;
         tDRecords0 = (TreeMap<String, DW_SHBE_Record>) tSHBEData0[0];
         HashMap<DW_ID, String> tIDByPostcode0;
@@ -2373,23 +2765,65 @@ public class Summary {
         HashMap<String, DW_ID> tCTBRefToIDLookup0;
         tCTBRefToIDLookup0 = (HashMap<String, DW_ID>) tSHBEData0[10];
         //tCTBRefID0 = loadCTBRefByID(loadData, filename, i);
-        String key;
-        key = DW_SHBE_Handler.getYearMonthNumber(filename0);
-        HashMap<String, String> summary;
-        summary = result.get(key);
         HashMap<String, Integer> tLoadSummary;
         tLoadSummary = (HashMap<String, Integer>) tSHBEData0[12];
+
+        // Add to tClaimantIDPostcodes, tClaimantIDTenancyTypes, tClaimantIDPostcodeTenancyTypes for later comparisons
+        addToSetsForComparisons(
+                yM30,
+                tDRecords0,
+                councilUnderOccupiedSet0,
+                RSLUnderOccupiedSet0,
+                tClaimantIDPostcodes,
+                tClaimantIDTenancyTypes,
+                tClaimantIDPostcodeTenancyTypes,
+                NINOToIDLookup,
+                PostcodeToPostcodeIDLookup);
+
         addToSummary(summary, tLoadSummary);
         initCounts(nTT, nEG);
+
+        HashMap<DW_ID, String> tIDByPostcode00;
+        tIDByPostcode00 = (HashMap<DW_ID, String>) tSHBEData00[8];
+        //tIDByPostcode0 = loadIDByPostcode(loadData, filename, i);
+        HashMap<DW_ID, Integer> tIDByTenancyType00;
+        tIDByTenancyType00 = (HashMap<DW_ID, Integer>) tSHBEData00[9];
+        //tIDByTenancyType0 = loadIDByTenancyType(loadData, filename, i);
+        HashMap<String, DW_ID> tCTBRefToIDLookup00;
+        tCTBRefToIDLookup00 = (HashMap<String, DW_ID>) tSHBEData00[10];
+        //tCTBRefID0 = loadCTBRefByID(loadData, filename, i);
+//        HashMap<String, Integer> tLoadSummary00;
+//        tLoadSummary00 = (HashMap<String, Integer>) tSHBEData00[12];
+
         TreeMap<String, DW_UnderOccupiedReport_Record> councilUnderOccupiedSet0Map;
         councilUnderOccupiedSet0Map = councilUnderOccupiedSet0.getMap();
         TreeMap<String, DW_UnderOccupiedReport_Record> RSLUnderOccupiedSet0Map;
         RSLUnderOccupiedSet0Map = RSLUnderOccupiedSet0.getMap();
         // Loop over underoccupancy data
         // Loop over Council
-        doLoopOverSet0(councilUnderOccupiedSet0Map, tDRecords0, tCTBRefToIDLookup0, tIDByTenancyType0, tIDByPostcode0, yM30v);
+        doLoopOverSet1(
+                councilUnderOccupiedSet0Map,
+                tDRecords0,
+                tCTBRefToIDLookup00,
+                tCTBRefToIDLookup0,
+                tIDByTenancyType00,
+                tIDByTenancyType0,
+                tIDByPostcode00,
+                tIDByPostcode0,
+                yM300v,
+                yM30v);
         // Loop over RSL
-        doLoopOverSet0(RSLUnderOccupiedSet0Map, tDRecords0, tCTBRefToIDLookup0, tIDByTenancyType0, tIDByPostcode0, yM30v);
+        doLoopOverSet1(
+                RSLUnderOccupiedSet0Map,
+                tDRecords0,
+                tCTBRefToIDLookup00,
+                tCTBRefToIDLookup0,
+                tIDByTenancyType00,
+                tIDByTenancyType0,
+                tIDByPostcode00,
+                tIDByPostcode0,
+                yM300v,
+                yM30v);
         HashMap<String, BigDecimal> incomeAndRentSummary0;
         incomeAndRentSummary0 = DW_SHBE_Handler.getIncomeAndRentSummary(
                 tSHBEData0,
@@ -2400,6 +2834,7 @@ public class Summary {
         addToSummaryIncomeAndRent(
                 summary,
                 incomeAndRentSummary0);
+
         // All
         summary.put("filename0", filename00); // This looks wierd but is right!
         summary.put("filename1", filename0); // This looks wierd but is right!
@@ -2413,8 +2848,54 @@ public class Summary {
         addToSummaryRentArrears(summary);
     }
 
+    private void addToSetsForComparisons(
+            String yM3,
+            TreeMap<String, DW_SHBE_Record> D_Records,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet,
+            TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
+            TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTenancyTypes,
+            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTenancyTypes,
+            HashMap<String, DW_ID> NINOToIDLookup,
+            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup
+    ) {
+        HashSet<ID_PostcodeID> tClaimantIDPostcodes0;
+        HashSet<ID_TenancyType> tClaimantIDTenancyTypes0;
+        HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTenancyTypes0;
+        if (tClaimantIDPostcodes.containsKey(yM3)) {
+            tClaimantIDPostcodes0 = tClaimantIDPostcodes.get(yM3);
+        } else {
+            tClaimantIDPostcodes0 = getID_PostcodeIDSet(
+                    D_Records, councilUnderOccupiedSet, RSLUnderOccupiedSet, 
+                    NINOToIDLookup, PostcodeToPostcodeIDLookup);
+            tClaimantIDPostcodes.put(yM3, tClaimantIDPostcodes0);
+        }
+        if (tClaimantIDTenancyTypes.containsKey(yM3)) {
+            tClaimantIDTenancyTypes0 = tClaimantIDTenancyTypes.get(yM3);
+        } else {
+            tClaimantIDTenancyTypes0 = getID_TenancyTypeSet(
+                    D_Records, councilUnderOccupiedSet, RSLUnderOccupiedSet, 
+                    NINOToIDLookup);
+            tClaimantIDTenancyTypes.put(yM3, tClaimantIDTenancyTypes0);
+        }
+        if (tClaimantIDPostcodeTenancyTypes.containsKey(yM3)) {
+            tClaimantIDPostcodeTenancyTypes0 = tClaimantIDPostcodeTenancyTypes.get(yM3);
+        } else {
+            tClaimantIDPostcodeTenancyTypes0 = getID_TenancyType_PostcodeIDSet(
+                    D_Records, councilUnderOccupiedSet, RSLUnderOccupiedSet, 
+                    NINOToIDLookup, PostcodeToPostcodeIDLookup);
+            tClaimantIDPostcodeTenancyTypes.put(yM3, tClaimantIDPostcodeTenancyTypes0);
+        }
+    }
+
     private void partSummary0(
+            //            HashMap<String, String> summary,
             Object[] tSHBEData0,
+            //            TreeMap<String, DW_SHBE_Record> tDRecords0,
+            //            HashMap<DW_ID, String> tIDByPostcode0,
+            //            HashMap<DW_ID, Integer> tIDByTenancyType0,
+            //            HashMap<String, DW_ID> tCTBRefToIDLookup0,
+            //            HashMap<String, Integer> tLoadSummary,
             String yM30,
             String yM30v,
             String filename0,
@@ -2425,8 +2906,13 @@ public class Summary {
             TreeMap<String, String> RSLFilenames,
             DW_UnderOccupiedReport_Set councilUnderOccupiedSet0,
             DW_UnderOccupiedReport_Set RSLUnderOccupiedSet0,
-            TreeMap<String, HashMap<String, String>> result) {
-        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+            TreeMap<String, HashMap<String, String>> result,
+            TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
+            TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTenancyTypes,
+            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTenancyTypes,
+            HashMap<String, DW_ID> NINOToIDLookup,
+            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
+
         TreeMap<String, DW_SHBE_Record> tDRecords0;
         tDRecords0 = (TreeMap<String, DW_SHBE_Record>) tSHBEData0[0];
         HashMap<DW_ID, String> tIDByPostcode0;
@@ -2446,6 +2932,19 @@ public class Summary {
         tLoadSummary = (HashMap<String, Integer>) tSHBEData0[12];
         addToSummary(summary, tLoadSummary);
         initCounts(nTT, nEG);
+
+        // Add to tClaimantIDPostcodes, tClaimantIDTenancyTypes, tClaimantIDPostcodeTenancyTypes for later comparisons
+        addToSetsForComparisons(
+                yM30,
+                tDRecords0,
+                councilUnderOccupiedSet0,
+                RSLUnderOccupiedSet0,
+                tClaimantIDPostcodes,
+                tClaimantIDTenancyTypes,
+                tClaimantIDPostcodeTenancyTypes,
+                NINOToIDLookup,
+                PostcodeToPostcodeIDLookup);
+
         TreeMap<String, DW_UnderOccupiedReport_Record> councilUnderOccupiedSet0Map;
         councilUnderOccupiedSet0Map = councilUnderOccupiedSet0.getMap();
         TreeMap<String, DW_UnderOccupiedReport_Record> RSLUnderOccupiedSet0Map;
@@ -2465,6 +2964,7 @@ public class Summary {
         addToSummaryIncomeAndRent(
                 summary,
                 incomeAndRentSummary0);
+
         // All
         summary.put("filename1", filename0); // This looks wierd but is right!
         summary.put("CouncilFilename", councilFilenames.get(yM30));

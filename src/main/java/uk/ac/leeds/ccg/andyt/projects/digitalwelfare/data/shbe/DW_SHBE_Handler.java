@@ -81,10 +81,10 @@ public class DW_SHBE_Handler {
         IDToNINOLookupFile = getIDToNINOLookupFile();
         PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
         PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
-        HashMap<String, DW_ID> NINOToIDLookup;
-        HashMap<DW_ID, String> IDToNINOLookup;
-        HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
-        HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
+//        HashMap<String, DW_ID> NINOToIDLookup;
+//        HashMap<DW_ID, String> IDToNINOLookup;
+//        HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
+//        HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
 //        NINOToIDLookup = getNINOToIDLookup(NINOToIDLookupFile);
 //        IDToNINOLookup = getIDToNINOLookup(IDToNINOLookupFile);
         NINOToIDLookup = new HashMap<String, DW_ID>();
@@ -100,15 +100,15 @@ public class DW_SHBE_Handler {
             loadInputData(
                     dir,
                     SHBEFilenames[i],
-                    loadFromSource,
-                    NINOToIDLookupFile,
-                    IDToNINOLookupFile,
-                    PostcodeToPostcodeIDLookupFile,
-                    PostcodeIDToPostcodeLookupFile,
-                    NINOToIDLookup,
-                    IDToNINOLookup,
-                    PostcodeToPostcodeIDLookup,
-                    PostcodeIDToPostcodeLookup);
+                    loadFromSource);
+//                    NINOToIDLookupFile,
+//                    IDToNINOLookupFile,
+//                    PostcodeToPostcodeIDLookupFile,
+//                    PostcodeIDToPostcodeLookupFile,
+//                    NINOToIDLookup,
+//                    IDToNINOLookup,
+//                    PostcodeToPostcodeIDLookup,
+//                    PostcodeIDToPostcodeLookup);
         }
         // writeOutLookups
         Generic_StaticIO.writeObject(NINOToIDLookup, NINOToIDLookupFile);
@@ -134,33 +134,20 @@ public class DW_SHBE_Handler {
         IDToNINOLookupFile = getIDToNINOLookupFile();
         PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
         PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
-        HashMap<String, DW_ID> NINOToIDLookup;
-        HashMap<DW_ID, String> IDToNINOLookup;
-        HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
-        HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
+//        HashMap<String, DW_ID> NINOToIDLookup;
+//        HashMap<DW_ID, String> IDToNINOLookup;
+//        HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
+//        HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
         NINOToIDLookup = getNINOToIDLookup(NINOToIDLookupFile);
         IDToNINOLookup = getIDToNINOLookup(IDToNINOLookupFile);
         PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
                 PostcodeToPostcodeIDLookupFile);
         PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
                 PostcodeIDToPostcodeLookupFile);
-        loadInputData(
+        loadInputDataNew(
                 dir,
                 SHBEFilename,
-                loadFromSource,
-                NINOToIDLookupFile,
-                IDToNINOLookupFile,
-                PostcodeToPostcodeIDLookupFile,
-                PostcodeIDToPostcodeLookupFile,
-                NINOToIDLookup,
-                IDToNINOLookup,
-                PostcodeToPostcodeIDLookup,
-                PostcodeIDToPostcodeLookup);
-        // writeOutLookups
-        Generic_StaticIO.writeObject(NINOToIDLookup, NINOToIDLookupFile);
-        Generic_StaticIO.writeObject(IDToNINOLookup, IDToNINOLookupFile);
-        Generic_StaticIO.writeObject(PostcodeToPostcodeIDLookup, PostcodeToPostcodeIDLookupFile);
-        Generic_StaticIO.writeObject(PostcodeIDToPostcodeLookup, PostcodeIDToPostcodeLookupFile);
+                loadFromSource);
         //loadInputData(dir, SHBEFilenames[47], loadFromSource);
     }
 
@@ -245,6 +232,7 @@ public class DW_SHBE_Handler {
      * @param filename
      * @return
      */
+    
     public Object[] loadInputData(
             File directory,
             String filename,
@@ -280,10 +268,10 @@ public class DW_SHBE_Handler {
             IDToNINOLookupFile = getIDToNINOLookupFile();
             PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
             PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
-            HashMap<String, DW_ID> NINOToIDLookup;
-            HashMap<DW_ID, String> IDToNINOLookup;
-            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
-            HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
+//            HashMap<String, DW_ID> NINOToIDLookup;
+//            HashMap<DW_ID, String> IDToNINOLookup;
+//            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
+//            HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
             NINOToIDLookup = getNINOToIDLookup(NINOToIDLookupFile);
             IDToNINOLookup = getIDToNINOLookup(IDToNINOLookupFile);
             PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
@@ -484,7 +472,7 @@ public class DW_SHBE_Handler {
 
                                                 DW_ID postcodeID;
                                                 postcodeID = getIDAddIfNeeded(
-                                                        claimantNINO,
+                                                        postcode,
                                                         PostcodeToPostcodeIDLookup,
                                                         PostcodeIDToPostcodeLookup);
 
@@ -709,470 +697,461 @@ public class DW_SHBE_Handler {
      * @param directory
      * @param filename
      * @param loadFromSource
-     * @param NINOToIDLookupFile
-     * @param IDToNINOLookupFile
-     * @param PostcodeToPostcodeIDLookupFile
-     * @param PostcodeIDToPostcodeLookupFile
-     * @param NINOToIDLookup
-     * @param IDToNINOLookup
-     * @param PostcodeToPostcodeIDLookup
-     * @param PostcodeIDToPostcodeLookup
      * @return
      */
-    public Object[] loadInputData(
+    public Object[] loadInputDataNew(
             File directory,
             String filename,
-            boolean loadFromSource,
-            File NINOToIDLookupFile,
-            File IDToNINOLookupFile,
-            File PostcodeToPostcodeIDLookupFile,
-            File PostcodeIDToPostcodeLookupFile,
-            HashMap<String, DW_ID> NINOToIDLookup,
-            HashMap<DW_ID, String> IDToNINOLookup,
-            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup,
-            HashMap<DW_ID, String> PostcodeIDToPostcodeLookup) {
-        Object[] result = new Object[16];
-        File inputFile = new File(
-                directory,
-                filename);
-        File tDRecordsFile = getDRecordsFile(filename);
-        File tSRecordsWithoutDRecordsFile = getSRecordsWithoutDRecordsFile(filename);
-        File tClaimantIDsFile = getClaimantIDsFile(filename);
-        File tPartnerIDsFile = getPartnerIDsFile(filename);
-        File tDependentsIDsFile = getDependentsIDsFile(filename);
-        File tNonDependentsIDsFile = getNonDependentsIDsFile(filename);
-        File tAllHouseholdIDsFile = getAllHouseholdIDsFile(filename);
-        File tClaimantIDToRecordIDLookupFile = getClaimantIDToRecordIDLookupFile(filename);
-        File tClaimantIDToPostcodeLookupFile = getClaimantIDToPostcodeLookupFile(filename);
-        File tClaimantIDToTenancyTypeLookupFile = getClaimantIDToTenancyTypeLookupFile(filename);
-        File tCTBRefToClaimantIDLookupFile = getCTBRefToClaimantIDLookupFile(filename);
-        File tClaimantIDToCTBRefLookupFile = getClaimantIDToCTBRefLookupFile(filename);
-        File tLoadSummaryFile = getLoadSummaryFile(filename);
-        File tClaimantIDAndPostcodeFile = getClaimantIDPostcodeSetFile(filename);
-        File tClaimantIDAndTenancyTypeFile = getClaimantIDTenancyTypeSetFile(filename);
-        File tClaimantIDAndPostcodeAndTenancyTypeFile = getClaimantIDPostcodeTenancyTypeSetFile(filename);
-        if (loadFromSource) {
-            // Init NINOToIDLookup, IDToNINOLookup, PostcodeToPostcodeIDLookup, 
-            // PostcodeIDToPostcodeLookup;
-//            NINOToIDLookup = getNINOToIDLookup(NINOToIDLookupFile);
-//            IDToNINOLookup = getIDToNINOLookup(IDToNINOLookupFile);
-//            PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
-//                    PostcodeToPostcodeIDLookupFile);
-//            PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
-//                    PostcodeIDToPostcodeLookupFile);
-
-            TreeMap<String, DW_SHBE_Record> tDRecords;
-            TreeMap<String, DW_SHBE_S_Record> tSRecordsWithoutDRecords;
-            int totalCouncilTaxBenefitClaims = 0;
-            int totalCouncilTaxAndHousingBenefitClaims = 0;
-            int totalHousingBenefitClaims = 0;
-            int countSRecords = 0;
-//        int countDRecords = 0;
-//        int countOfSRecordsWithoutDRecord = 0;
-            long totalIncome = 0;
-            int totalIncomeGreaterThanZeroCount = 0;
-            long totalWeeklyEligibleRentAmount = 0;
-            int totalWeeklyEligibleRentAmountGreaterThanZeroCount = 0;
-            TreeSet<Long> tRecordIDsNotLoaded = new TreeSet<Long>();
-            HashSet<DW_ID> tClaimantIDs;
-            HashSet<DW_ID> tPartnerIDs;
-            HashSet<DW_ID> tDependentsIDs;
-            HashSet<DW_ID> tNonDependentsIDs;
-            HashSet<DW_ID> tAllHouseholdIDs;
-            HashMap<DW_ID, Long> tClaimantIDToRecordIDLookup;
-            HashMap<DW_ID, String> tClaimantIDToPostcodeLookup;
-            HashMap<DW_ID, Integer> tClaimantIDToTenancyTypeLookup;
-            HashMap<String, DW_ID> tCTBRefToClaimantIDLookup;
-            HashMap<DW_ID, String> tClaimantIDToCTBRefLookup;
-            HashMap<String, Integer> tLoadSummary;
-            HashSet<ID_PostcodeID> tClaimantIDAndPostcodeSet;
-            HashSet<ID_TenancyType> tClaimantIDAndTenancyTypeSet;
-            HashSet<ID_TenancyType_PostcodeID> tClaimantIDAndPostcodeAndTenancyTypeSet;
-            try {
-                BufferedReader br;
-                br = Generic_StaticIO.getBufferedReader(inputFile);
-                StreamTokenizer st
-                        = new StreamTokenizer(br);
-                Generic_StaticIO.setStreamTokenizerSyntax5(st);
-                st.wordChars('`', '`');
-                st.wordChars('*', '*');
-                String line = "";
-                // Initialise result
-                tDRecords = new TreeMap<String, DW_SHBE_Record>();
-                result[0] = tDRecords;
-                tSRecordsWithoutDRecords = new TreeMap<String, DW_SHBE_S_Record>();
-                result[1] = tSRecordsWithoutDRecords;
-                tClaimantIDs = new HashSet<DW_ID>();
-                result[2] = tClaimantIDs;
-                tPartnerIDs = new HashSet<DW_ID>();
-                result[3] = tPartnerIDs;
-                tDependentsIDs = new HashSet<DW_ID>();
-                result[4] = tDependentsIDs;
-                tNonDependentsIDs = new HashSet<DW_ID>();
-                result[5] = tNonDependentsIDs;
-                tAllHouseholdIDs = new HashSet<DW_ID>();
-                result[6] = tAllHouseholdIDs;
-                tClaimantIDToRecordIDLookup = new HashMap<DW_ID, Long>();
-                result[7] = tClaimantIDToRecordIDLookup;
-                tClaimantIDToPostcodeLookup = new HashMap<DW_ID, String>();
-                result[8] = tClaimantIDToPostcodeLookup;
-                tClaimantIDToTenancyTypeLookup = new HashMap<DW_ID, Integer>();
-                result[9] = tClaimantIDToTenancyTypeLookup;
-                tCTBRefToClaimantIDLookup = new HashMap<String, DW_ID>();
-                result[10] = tCTBRefToClaimantIDLookup;
-                tClaimantIDToCTBRefLookup = new HashMap<DW_ID, String>();
-                result[11] = tClaimantIDToCTBRefLookup;
-                tLoadSummary = new HashMap<String, Integer>();
-                result[12] = tLoadSummary;
-                tClaimantIDAndPostcodeSet = new HashSet<ID_PostcodeID>();
-                result[13] = tClaimantIDAndPostcodeSet;
-                tClaimantIDAndTenancyTypeSet = new HashSet<ID_TenancyType>();
-                result[14] = tClaimantIDAndTenancyTypeSet;
-                tClaimantIDAndPostcodeAndTenancyTypeSet = new HashSet<ID_TenancyType_PostcodeID>();
-                result[15] = tClaimantIDAndPostcodeAndTenancyTypeSet;
-                long RecordID = 0;
-                int lineCount = 0;
-                // Read firstline and check format
-                int type = readAndCheckFirstLine(directory, filename);
-                // Skip the first line
-                Generic_StaticIO.skipline(st);
-                // Read collections
-                int tokenType;
-                tokenType = st.nextToken();
-                while (tokenType != StreamTokenizer.TT_EOF) {
-                    switch (tokenType) {
-                        case StreamTokenizer.TT_EOL:
-                            //System.out.println(line);
-                            break;
-                        case StreamTokenizer.TT_WORD:
-                            line = st.sval;
-                            if (line.startsWith("S")) {
-                                try {
-                                    DW_SHBE_S_Record SRecord;
-                                    //SRecord = new DW_SHBE_S_Record(RecordID, type, line, this);
-                                    SRecord = new DW_SHBE_S_Record(RecordID, line, this);
-                                    String CTBRef;
-                                    CTBRef = SRecord.getCouncilTaxBenefitClaimReferenceNumber();
-                                    if (CTBRef != null) {
-                                        if (tDRecords.containsKey(CTBRef)) {
-                                            DW_SHBE_Record rec = tDRecords.get(CTBRef);
-                                            if (!rec.getSRecords().add(SRecord)) {
-                                                throw new Exception("Duplicate SRecord " + SRecord);
-                                            }
+            boolean loadFromSource
+    ) {
+        Object[] result = loadInputData(directory,
+             filename,
+             loadFromSource);
+//        Object[] result = new Object[16];
+//        File inputFile = new File(
+//                directory,
+//                filename);
+//        File tDRecordsFile = getDRecordsFile(filename);
+//        File tSRecordsWithoutDRecordsFile = getSRecordsWithoutDRecordsFile(filename);
+//        File tClaimantIDsFile = getClaimantIDsFile(filename);
+//        File tPartnerIDsFile = getPartnerIDsFile(filename);
+//        File tDependentsIDsFile = getDependentsIDsFile(filename);
+//        File tNonDependentsIDsFile = getNonDependentsIDsFile(filename);
+//        File tAllHouseholdIDsFile = getAllHouseholdIDsFile(filename);
+//        File tClaimantIDToRecordIDLookupFile = getClaimantIDToRecordIDLookupFile(filename);
+//        File tClaimantIDToPostcodeLookupFile = getClaimantIDToPostcodeLookupFile(filename);
+//        File tClaimantIDToTenancyTypeLookupFile = getClaimantIDToTenancyTypeLookupFile(filename);
+//        File tCTBRefToClaimantIDLookupFile = getCTBRefToClaimantIDLookupFile(filename);
+//        File tClaimantIDToCTBRefLookupFile = getClaimantIDToCTBRefLookupFile(filename);
+//        File tLoadSummaryFile = getLoadSummaryFile(filename);
+//        File tClaimantIDAndPostcodeFile = getClaimantIDPostcodeSetFile(filename);
+//        File tClaimantIDAndTenancyTypeFile = getClaimantIDTenancyTypeSetFile(filename);
+//        File tClaimantIDAndPostcodeAndTenancyTypeFile = getClaimantIDPostcodeTenancyTypeSetFile(filename);
+//        if (loadFromSource) {
+//            // Init NINOToIDLookup, IDToNINOLookup, PostcodeToPostcodeIDLookup, 
+//            // PostcodeIDToPostcodeLookup;
+////            NINOToIDLookup = getNINOToIDLookup(NINOToIDLookupFile);
+////            IDToNINOLookup = getIDToNINOLookup(IDToNINOLookupFile);
+////            PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
+////                    PostcodeToPostcodeIDLookupFile);
+////            PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
+////                    PostcodeIDToPostcodeLookupFile);
+//
+//            TreeMap<String, DW_SHBE_Record> tDRecords;
+//            TreeMap<String, DW_SHBE_S_Record> tSRecordsWithoutDRecords;
+//            int totalCouncilTaxBenefitClaims = 0;
+//            int totalCouncilTaxAndHousingBenefitClaims = 0;
+//            int totalHousingBenefitClaims = 0;
+//            int countSRecords = 0;
+////        int countDRecords = 0;
+////        int countOfSRecordsWithoutDRecord = 0;
+//            long totalIncome = 0;
+//            int totalIncomeGreaterThanZeroCount = 0;
+//            long totalWeeklyEligibleRentAmount = 0;
+//            int totalWeeklyEligibleRentAmountGreaterThanZeroCount = 0;
+//            TreeSet<Long> tRecordIDsNotLoaded = new TreeSet<Long>();
+//            HashSet<DW_ID> tClaimantIDs;
+//            HashSet<DW_ID> tPartnerIDs;
+//            HashSet<DW_ID> tDependentsIDs;
+//            HashSet<DW_ID> tNonDependentsIDs;
+//            HashSet<DW_ID> tAllHouseholdIDs;
+//            HashMap<DW_ID, Long> tClaimantIDToRecordIDLookup;
+//            HashMap<DW_ID, String> tClaimantIDToPostcodeLookup;
+//            HashMap<DW_ID, Integer> tClaimantIDToTenancyTypeLookup;
+//            HashMap<String, DW_ID> tCTBRefToClaimantIDLookup;
+//            HashMap<DW_ID, String> tClaimantIDToCTBRefLookup;
+//            HashMap<String, Integer> tLoadSummary;
+//            HashSet<ID_PostcodeID> tClaimantIDAndPostcodeSet;
+//            HashSet<ID_TenancyType> tClaimantIDAndTenancyTypeSet;
+//            HashSet<ID_TenancyType_PostcodeID> tClaimantIDAndPostcodeAndTenancyTypeSet;
+//            try {
+//                BufferedReader br;
+//                br = Generic_StaticIO.getBufferedReader(inputFile);
+//                StreamTokenizer st
+//                        = new StreamTokenizer(br);
+//                Generic_StaticIO.setStreamTokenizerSyntax5(st);
+//                st.wordChars('`', '`');
+//                st.wordChars('*', '*');
+//                String line = "";
+//                // Initialise result
+//                tDRecords = new TreeMap<String, DW_SHBE_Record>();
+//                result[0] = tDRecords;
+//                tSRecordsWithoutDRecords = new TreeMap<String, DW_SHBE_S_Record>();
+//                result[1] = tSRecordsWithoutDRecords;
+//                tClaimantIDs = new HashSet<DW_ID>();
+//                result[2] = tClaimantIDs;
+//                tPartnerIDs = new HashSet<DW_ID>();
+//                result[3] = tPartnerIDs;
+//                tDependentsIDs = new HashSet<DW_ID>();
+//                result[4] = tDependentsIDs;
+//                tNonDependentsIDs = new HashSet<DW_ID>();
+//                result[5] = tNonDependentsIDs;
+//                tAllHouseholdIDs = new HashSet<DW_ID>();
+//                result[6] = tAllHouseholdIDs;
+//                tClaimantIDToRecordIDLookup = new HashMap<DW_ID, Long>();
+//                result[7] = tClaimantIDToRecordIDLookup;
+//                tClaimantIDToPostcodeLookup = new HashMap<DW_ID, String>();
+//                result[8] = tClaimantIDToPostcodeLookup;
+//                tClaimantIDToTenancyTypeLookup = new HashMap<DW_ID, Integer>();
+//                result[9] = tClaimantIDToTenancyTypeLookup;
+//                tCTBRefToClaimantIDLookup = new HashMap<String, DW_ID>();
+//                result[10] = tCTBRefToClaimantIDLookup;
+//                tClaimantIDToCTBRefLookup = new HashMap<DW_ID, String>();
+//                result[11] = tClaimantIDToCTBRefLookup;
+//                tLoadSummary = new HashMap<String, Integer>();
+//                result[12] = tLoadSummary;
+//                tClaimantIDAndPostcodeSet = new HashSet<ID_PostcodeID>();
+//                result[13] = tClaimantIDAndPostcodeSet;
+//                tClaimantIDAndTenancyTypeSet = new HashSet<ID_TenancyType>();
+//                result[14] = tClaimantIDAndTenancyTypeSet;
+//                tClaimantIDAndPostcodeAndTenancyTypeSet = new HashSet<ID_TenancyType_PostcodeID>();
+//                result[15] = tClaimantIDAndPostcodeAndTenancyTypeSet;
+//                long RecordID = 0;
+//                int lineCount = 0;
+//                // Read firstline and check format
+//                int type = readAndCheckFirstLine(directory, filename);
+//                // Skip the first line
+//                Generic_StaticIO.skipline(st);
+//                // Read collections
+//                int tokenType;
+//                tokenType = st.nextToken();
+//                while (tokenType != StreamTokenizer.TT_EOF) {
+//                    switch (tokenType) {
+//                        case StreamTokenizer.TT_EOL:
+//                            //System.out.println(line);
+//                            break;
+//                        case StreamTokenizer.TT_WORD:
+//                            line = st.sval;
+//                            if (line.startsWith("S")) {
+//                                try {
+//                                    DW_SHBE_S_Record SRecord;
+//                                    //SRecord = new DW_SHBE_S_Record(RecordID, type, line, this);
+//                                    SRecord = new DW_SHBE_S_Record(RecordID, line, this);
+//                                    String CTBRef;
+//                                    CTBRef = SRecord.getCouncilTaxBenefitClaimReferenceNumber();
+//                                    if (CTBRef != null) {
+//                                        if (tDRecords.containsKey(CTBRef)) {
+//                                            DW_SHBE_Record rec = tDRecords.get(CTBRef);
+//                                            if (!rec.getSRecords().add(SRecord)) {
+//                                                throw new Exception("Duplicate SRecord " + SRecord);
+//                                            }
+////                                        } else {
+////                                            //throw new Exception("There is no existing DRecord for SRecord " + SRecord);
+////                                            countOfSRecordsWithoutDRecord++;
+//                                        }
+//                                        String subRecordChildReferenceNumberOrNINO;
+//                                        subRecordChildReferenceNumberOrNINO = SRecord.getSubRecordChildReferenceNumberOrNINO();
+//                                        if (subRecordChildReferenceNumberOrNINO.length() > 0) {
+//                                            DW_ID ID;
+//                                            ID = getIDAddIfNeeded(
+//                                                    subRecordChildReferenceNumberOrNINO,
+//                                                    NINOToIDLookup,
+//                                                    IDToNINOLookup);
+//                                            if (SRecord.getSubRecordType() == 2) {
+//                                                tNonDependentsIDs.add(ID);
+//                                                tAllHouseholdIDs.add(ID);
+//                                            } else {
+//                                                tDependentsIDs.add(ID);
+//                                                tAllHouseholdIDs.add(ID);
+//                                            }
+//                                        }
+//                                    } else {
+//                                        tRecordIDsNotLoaded.add(RecordID);
+//                                    }
+//                                } catch (Exception e) {
+//                                    System.err.println(line);
+//                                    System.err.println("RecordID " + RecordID);
+//                                    System.err.println(e.getLocalizedMessage());
+//                                    tRecordIDsNotLoaded.add(RecordID);
+//                                }
+//                                countSRecords++;
+//                            } else {
+//                                if (line.startsWith("D")) {
+//                                    try {
+//                                        DW_SHBE_Record rec;
+//                                        rec = new DW_SHBE_Record(RecordID);
+//                                        DW_SHBE_D_Record aDRecord;
+//                                        aDRecord = new DW_SHBE_D_Record(RecordID, line, this);
+//                                        rec.DRecord = aDRecord;
+//                                        totalIncome = getClaimantsAndPartnersIncomeTotal(aDRecord);
+//                                        if (totalIncome > 0) {
+//                                            totalIncomeGreaterThanZeroCount++;
+//                                        }
+//                                        totalWeeklyEligibleRentAmount = aDRecord.getWeeklyEligibleRentAmount();
+//                                        if (totalWeeklyEligibleRentAmount > 0) {
+//                                            totalWeeklyEligibleRentAmountGreaterThanZeroCount++;
+//                                        }
+//                                        String CTBRef;
+//                                        CTBRef = aDRecord.getCouncilTaxBenefitClaimReferenceNumber();
+//                                        if (CTBRef != null) {
+//                                            Object o = tDRecords.put(CTBRef, rec);
+//                                            if (o != null) {
+//                                                DW_SHBE_Record existingSHBE_DataRecord = (DW_SHBE_Record) o;
+//                                                System.out.println("existingSHBE_DataRecord" + existingSHBE_DataRecord);
+//                                                System.out.println("replacementSHBE_DataRecord" + aDRecord);
+//                                            }
+//                                            // Count Council Tax and Housing Benefits and combined claims
+//                                            if (!aDRecord.getCouncilTaxBenefitClaimReferenceNumber().trim().isEmpty()) {
+//                                                totalCouncilTaxBenefitClaims++;
+//                                                if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
+//                                                    totalCouncilTaxAndHousingBenefitClaims++;
+//                                                    totalHousingBenefitClaims++;
+//                                                }
+//                                            } else {
+//                                                if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
+//                                                    totalHousingBenefitClaims++;
+//                                                }
+//                                            }
+//                                            // aSHBE_DataRecord.getNonDependantStatus 11
+//                                            // aSHBE_DataRecord.getSubRecordType() 284
+//                                            String claimantNINO = aDRecord.getClaimantsNationalInsuranceNumber();
+//                                            DW_ID claimantID;
+//                                            if (claimantNINO.length() > 0) {
+//                                                claimantID = getIDAddIfNeeded(
+//                                                        claimantNINO,
+//                                                        NINOToIDLookup,
+//                                                        IDToNINOLookup);
+//                                                tClaimantIDs.add(claimantID);
+//                                                tCTBRefToClaimantIDLookup.put(
+//                                                        CTBRef,
+//                                                        claimantID);
+//                                                tClaimantIDToCTBRefLookup.put(
+//                                                        claimantID,
+//                                                        CTBRef);
+//                                                tClaimantIDToRecordIDLookup.put(
+//                                                        claimantID,
+//                                                        RecordID);
+//                                                String postcode;
+//                                                postcode = DW_Postcode_Handler.formatPostcode(
+//                                                        aDRecord.getClaimantsPostcode());
+//                                                tClaimantIDToPostcodeLookup.put(
+//                                                        claimantID,
+//                                                        postcode);
+//
+//                                                DW_ID postcodeID;
+//                                                postcodeID = getIDAddIfNeeded(
+//                                                        claimantNINO,
+//                                                        PostcodeToPostcodeIDLookup,
+//                                                        PostcodeIDToPostcodeLookup);
+//
+//                                                tClaimantIDAndPostcodeSet.add(
+//                                                        new ID_PostcodeID(
+//                                                                claimantID,
+//                                                                postcodeID));
+//                                                int TenancyType;
+//                                                TenancyType = aDRecord.getTenancyType();
+//                                                ID_TenancyType ID_TenancyType;
+//                                                ID_TenancyType = new ID_TenancyType(
+//                                                        claimantID,
+//                                                        TenancyType);
+//                                                tClaimantIDAndTenancyTypeSet.add(
+//                                                        ID_TenancyType);
+//                                                tClaimantIDAndPostcodeAndTenancyTypeSet.add(
+//                                                        new ID_TenancyType_PostcodeID(
+//                                                                ID_TenancyType,
+//                                                                postcodeID));
+//                                                tClaimantIDToTenancyTypeLookup.put(
+//                                                        claimantID,
+//                                                        TenancyType);
+//                                                tAllHouseholdIDs.add(claimantID);
+//                                                // aSHBE_DataRecord.getPartnerFlag() 118
+//                                                if (aDRecord.getPartnerFlag() > 0) {
+//                                                    String partnersNationalInsuranceNumber;
+//                                                    partnersNationalInsuranceNumber = aDRecord.getPartnersNationalInsuranceNumber();
+//                                                    DW_ID ID;
+//                                                    ID = getIDAddIfNeeded(
+//                                                            partnersNationalInsuranceNumber,
+//                                                            NINOToIDLookup,
+//                                                            IDToNINOLookup);
+//                                                    tPartnerIDs.add(ID);
+//                                                    tAllHouseholdIDs.add(ID);
+//                                                }
+//                                            }
 //                                        } else {
-//                                            //throw new Exception("There is no existing DRecord for SRecord " + SRecord);
-//                                            countOfSRecordsWithoutDRecord++;
-                                        }
-                                        String subRecordChildReferenceNumberOrNINO;
-                                        subRecordChildReferenceNumberOrNINO = SRecord.getSubRecordChildReferenceNumberOrNINO();
-                                        if (subRecordChildReferenceNumberOrNINO.length() > 0) {
-                                            DW_ID ID;
-                                            ID = getIDAddIfNeeded(
-                                                    subRecordChildReferenceNumberOrNINO,
-                                                    NINOToIDLookup,
-                                                    IDToNINOLookup);
-                                            if (SRecord.getSubRecordType() == 2) {
-                                                tNonDependentsIDs.add(ID);
-                                                tAllHouseholdIDs.add(ID);
-                                            } else {
-                                                tDependentsIDs.add(ID);
-                                                tAllHouseholdIDs.add(ID);
-                                            }
-                                        }
-                                    } else {
-                                        tRecordIDsNotLoaded.add(RecordID);
-                                    }
-                                } catch (Exception e) {
-                                    System.err.println(line);
-                                    System.err.println("RecordID " + RecordID);
-                                    System.err.println(e.getLocalizedMessage());
-                                    tRecordIDsNotLoaded.add(RecordID);
-                                }
-                                countSRecords++;
-                            } else {
-                                if (line.startsWith("D")) {
-                                    try {
-                                        DW_SHBE_Record rec;
-                                        rec = new DW_SHBE_Record(RecordID);
-                                        DW_SHBE_D_Record aDRecord;
-                                        aDRecord = new DW_SHBE_D_Record(RecordID, line, this);
-                                        rec.DRecord = aDRecord;
-                                        totalIncome = getClaimantsAndPartnersIncomeTotal(aDRecord);
-                                        if (totalIncome > 0) {
-                                            totalIncomeGreaterThanZeroCount++;
-                                        }
-                                        totalWeeklyEligibleRentAmount = aDRecord.getWeeklyEligibleRentAmount();
-                                        if (totalWeeklyEligibleRentAmount > 0) {
-                                            totalWeeklyEligibleRentAmountGreaterThanZeroCount++;
-                                        }
-                                        String CTBRef;
-                                        CTBRef = aDRecord.getCouncilTaxBenefitClaimReferenceNumber();
-                                        if (CTBRef != null) {
-                                            Object o = tDRecords.put(CTBRef, rec);
-                                            if (o != null) {
-                                                DW_SHBE_Record existingSHBE_DataRecord = (DW_SHBE_Record) o;
-                                                System.out.println("existingSHBE_DataRecord" + existingSHBE_DataRecord);
-                                                System.out.println("replacementSHBE_DataRecord" + aDRecord);
-                                            }
-                                            // Count Council Tax and Housing Benefits and combined claims
-                                            if (!aDRecord.getCouncilTaxBenefitClaimReferenceNumber().trim().isEmpty()) {
-                                                totalCouncilTaxBenefitClaims++;
-                                                if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
-                                                    totalCouncilTaxAndHousingBenefitClaims++;
-                                                    totalHousingBenefitClaims++;
-                                                }
-                                            } else {
-                                                if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
-                                                    totalHousingBenefitClaims++;
-                                                }
-                                            }
-                                            // aSHBE_DataRecord.getNonDependantStatus 11
-                                            // aSHBE_DataRecord.getSubRecordType() 284
-                                            String claimantNINO = aDRecord.getClaimantsNationalInsuranceNumber();
-                                            DW_ID claimantID;
-                                            if (claimantNINO.length() > 0) {
-                                                claimantID = getIDAddIfNeeded(
-                                                        claimantNINO,
-                                                        NINOToIDLookup,
-                                                        IDToNINOLookup);
-                                                tClaimantIDs.add(claimantID);
-                                                tCTBRefToClaimantIDLookup.put(
-                                                        CTBRef,
-                                                        claimantID);
-                                                tClaimantIDToCTBRefLookup.put(
-                                                        claimantID,
-                                                        CTBRef);
-                                                tClaimantIDToRecordIDLookup.put(
-                                                        claimantID,
-                                                        RecordID);
-                                                String postcode;
-                                                postcode = DW_Postcode_Handler.formatPostcode(
-                                                        aDRecord.getClaimantsPostcode());
-                                                tClaimantIDToPostcodeLookup.put(
-                                                        claimantID,
-                                                        postcode);
-
-                                                DW_ID postcodeID;
-                                                postcodeID = getIDAddIfNeeded(
-                                                        claimantNINO,
-                                                        PostcodeToPostcodeIDLookup,
-                                                        PostcodeIDToPostcodeLookup);
-
-                                                tClaimantIDAndPostcodeSet.add(
-                                                        new ID_PostcodeID(
-                                                                claimantID,
-                                                                postcodeID));
-                                                int TenancyType;
-                                                TenancyType = aDRecord.getTenancyType();
-                                                ID_TenancyType ID_TenancyType;
-                                                ID_TenancyType = new ID_TenancyType(
-                                                        claimantID,
-                                                        TenancyType);
-                                                tClaimantIDAndTenancyTypeSet.add(
-                                                        ID_TenancyType);
-                                                tClaimantIDAndPostcodeAndTenancyTypeSet.add(
-                                                        new ID_TenancyType_PostcodeID(
-                                                                ID_TenancyType,
-                                                                postcodeID));
-                                                tClaimantIDToTenancyTypeLookup.put(
-                                                        claimantID,
-                                                        TenancyType);
-                                                tAllHouseholdIDs.add(claimantID);
-                                                // aSHBE_DataRecord.getPartnerFlag() 118
-                                                if (aDRecord.getPartnerFlag() > 0) {
-                                                    String partnersNationalInsuranceNumber;
-                                                    partnersNationalInsuranceNumber = aDRecord.getPartnersNationalInsuranceNumber();
-                                                    DW_ID ID;
-                                                    ID = getIDAddIfNeeded(
-                                                            partnersNationalInsuranceNumber,
-                                                            NINOToIDLookup,
-                                                            IDToNINOLookup);
-                                                    tPartnerIDs.add(ID);
-                                                    tAllHouseholdIDs.add(ID);
-                                                }
-                                            }
-                                        } else {
-                                            tRecordIDsNotLoaded.add(RecordID);
-                                        }
-                                    } catch (Exception e) {
-                                        System.err.println(line);
-                                        System.err.println("RecordID " + RecordID);
-                                        //System.err.println(e.getMessage());
-                                        System.err.println(e.getLocalizedMessage());
-                                        e.printStackTrace();
-                                        tRecordIDsNotLoaded.add(RecordID);
-                                    }
-//                                    countDRecords++;
-                                }
-                            }
-                            lineCount++;
-                            RecordID++;
-                            break;
-                    }
-                    tokenType = st.nextToken();
-                }
-                br.close();
-                // Add all SRecords from recordsWithoutDRecords that actually do have 
-                // DRecords, it just so happened that the DRecord was read after the 
-                // first SRecord
-                int countDRecordsInUnexpectedOrder = 0;
-                Set<String> s = tDRecords.keySet();
-                Iterator<String> ite = tSRecordsWithoutDRecords.keySet().iterator();
-                HashSet<String> rem = new HashSet<String>();
-                while (ite.hasNext()) {
-                    String councilTaxBenefitClaimReferenceNumber = ite.next();
-                    if (s.contains(councilTaxBenefitClaimReferenceNumber)) {
-                        DW_SHBE_Record DRecord = tDRecords.get(councilTaxBenefitClaimReferenceNumber);
-                        DRecord.SRecords.addAll(tDRecords.get(councilTaxBenefitClaimReferenceNumber).getSRecords());
-                        rem.add(councilTaxBenefitClaimReferenceNumber);
-                        countDRecordsInUnexpectedOrder++;
-                    }
-                }
-                //System.out.println("SRecords that came before DRecords count " + countDRecordsInUnexpectedOrder);
-                ite = rem.iterator();
-                while (ite.hasNext()) {
-                    tSRecordsWithoutDRecords.remove(ite.next());
-                }
-                // Summary report of load
-                System.out.println("totalCouncilTaxBenefitClaims " + totalCouncilTaxBenefitClaims);
-                tLoadSummary.put("totalCouncilTaxBenefitClaims", totalCouncilTaxBenefitClaims);
-                System.out.println("totalCouncilTaxAndHousingBenefitClaims " + totalCouncilTaxAndHousingBenefitClaims);
-                tLoadSummary.put("totalCouncilTaxAndHousingBenefitClaims", totalCouncilTaxAndHousingBenefitClaims);
-                System.out.println("totalHousingBenefitClaims " + totalHousingBenefitClaims);
-                tLoadSummary.put("totalHousingBenefitClaims", totalHousingBenefitClaims);
-                System.out.println("countDRecords " + tDRecords.size());
-                tLoadSummary.put("countDRecords", tDRecords.size());
-                System.out.println("countSRecords " + countSRecords);
-                tLoadSummary.put("countSRecords", countSRecords);
-                System.out.println("countOfSRecordsWithoutDRecord " + tSRecordsWithoutDRecords.size());
-                tLoadSummary.put("countOfSRecordsWithoutDRecord", tSRecordsWithoutDRecords.size());
-                System.out.println("countDRecordsInUnexpectedOrder " + countDRecordsInUnexpectedOrder);
-                tLoadSummary.put("countDRecordsInUnexpectedOrder", countDRecordsInUnexpectedOrder);
-                System.out.println("tRecordIDsNotLoaded.size() " + tRecordIDsNotLoaded.size());
-                tLoadSummary.put("tRecordIDsNotLoaded.size()", tRecordIDsNotLoaded.size());
-                System.out.println("uniqueClaimantNationalInsuranceNumberCount " + tClaimantIDs.size());
-                tLoadSummary.put("uniqueClaimantNationalInsuranceNumberCount", tClaimantIDs.size());
-                System.out.println("uniquePartnerNationalInsuranceNumbersCount " + tPartnerIDs.size());
-                tLoadSummary.put("uniquePartnerNationalInsuranceNumbersCount", tPartnerIDs.size());
-                System.out.println("uniqueDependentsNationalInsuranceNumbersCount " + tDependentsIDs.size());
-                tLoadSummary.put("uniqueDependentsNationalInsuranceNumbersCount", tDependentsIDs.size());
-                System.out.println("uniqueNon-DependentsNationalInsuranceNumbersCount " + tNonDependentsIDs.size());
-                tLoadSummary.put("uniqueNon-DependentsNationalInsuranceNumbersCount", tNonDependentsIDs.size());
-                System.out.println("uniqueAllHouseholdNationalInsuranceNumbersCount " + tAllHouseholdIDs.size());
-                tLoadSummary.put("uniqueAllHouseholdNationalInsuranceNumbersCount", tAllHouseholdIDs.size());
-                System.out.println("lineCount " + lineCount);
-                tLoadSummary.put("lineCount", lineCount);
-                System.out.println("totalIncome " + totalIncome);
-                //tLoadSummary.put("totalIncome", totalIncome);
-                System.out.println("totalIncomeGreaterThanZeroCount " + totalIncomeGreaterThanZeroCount);
-                //tLoadSummary.put("totalWeeklyEligibleRentAmount", totalWeeklyEligibleRentAmount);
-                System.out.println("totalWeeklyEligibleRentAmountGreaterThanZeroCount " + totalWeeklyEligibleRentAmountGreaterThanZeroCount);
-                // Store tDRecords on File
-                Generic_StaticIO.writeObject(
-                        tDRecords,
-                        tDRecordsFile);
-                // Store tSRecordsWithoutDRecords on File
-                Generic_StaticIO.writeObject(
-                        tSRecordsWithoutDRecords,
-                        tSRecordsWithoutDRecordsFile);
-                // Store tClaimantIDs on File
-                Generic_StaticIO.writeObject(
-                        tClaimantIDs,
-                        tClaimantIDsFile);
-                // Store tPartnerIDs on File
-                Generic_StaticIO.writeObject(
-                        tPartnerIDs,
-                        tPartnerIDsFile);
-                // Store tDependentsIDs on File
-                Generic_StaticIO.writeObject(
-                        tDependentsIDs,
-                        tDependentsIDsFile);
-                // Store tNonDependentsIDs on File
-                Generic_StaticIO.writeObject(
-                        tNonDependentsIDs,
-                        tNonDependentsIDsFile);
-                // Store tAllHouseholdIDs on File
-                Generic_StaticIO.writeObject(
-                        tAllHouseholdIDs,
-                        tAllHouseholdIDsFile);
-                // Store tClaimantIDToRecordIDLookup on File
-                Generic_StaticIO.writeObject(
-                        tClaimantIDToRecordIDLookup,
-                        tClaimantIDToRecordIDLookupFile);
-                // Store tClaimantIDToPostcodeLookup on File
-                Generic_StaticIO.writeObject(
-                        tClaimantIDToPostcodeLookup,
-                        tClaimantIDToPostcodeLookupFile);
-                // Store tClaimantIDToTenancyTypeLookup on File
-                Generic_StaticIO.writeObject(
-                        tClaimantIDToTenancyTypeLookup,
-                        tClaimantIDToTenancyTypeLookupFile);
-                // Store tCTBClaimRefToClaimantIDLookup
-                Generic_StaticIO.writeObject(
-                        tCTBRefToClaimantIDLookup,
-                        tCTBRefToClaimantIDLookupFile);
-                // Store tClaimantIDToCTBRefLookup
-                Generic_StaticIO.writeObject(
-                        tClaimantIDToCTBRefLookup,
-                        tClaimantIDToCTBRefLookupFile);
-                // Store tLoadSummary
-                Generic_StaticIO.writeObject(
-                        tLoadSummary,
-                        tLoadSummaryFile);
-                // Store tClaimantNationalInsuranceNumberIDAndPostcode
-                Generic_StaticIO.writeObject(
-                        tClaimantIDAndPostcodeSet,
-                        tClaimantIDAndPostcodeFile);
-                // Store tClaimantNationalInsuranceNumberIDAndPostcode
-                Generic_StaticIO.writeObject(
-                        tClaimantIDAndTenancyTypeSet,
-                        tClaimantIDAndTenancyTypeFile);
-                // Store tClaimantNationalInsuranceNumberIDAndPostcode
-                Generic_StaticIO.writeObject(
-                        tClaimantIDAndPostcodeAndTenancyTypeSet,
-                        tClaimantIDAndPostcodeAndTenancyTypeFile);
-            } catch (IOException ex) {
-                Logger.getLogger(DW_SHBE_Handler.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            result[0] = Generic_StaticIO.readObject(tDRecordsFile);
-            result[1] = Generic_StaticIO.readObject(tSRecordsWithoutDRecordsFile);
-            result[2] = Generic_StaticIO.readObject(tClaimantIDsFile);
-            result[3] = Generic_StaticIO.readObject(tPartnerIDsFile);
-            result[4] = Generic_StaticIO.readObject(tDependentsIDsFile);
-            result[5] = Generic_StaticIO.readObject(tNonDependentsIDsFile);
-            result[6] = Generic_StaticIO.readObject(tAllHouseholdIDsFile);
-            result[7] = Generic_StaticIO.readObject(tClaimantIDToRecordIDLookupFile);
-            result[8] = Generic_StaticIO.readObject(tClaimantIDToPostcodeLookupFile);
-            result[9] = Generic_StaticIO.readObject(tClaimantIDToTenancyTypeLookupFile);
-            result[10] = Generic_StaticIO.readObject(tCTBRefToClaimantIDLookupFile);
-            result[11] = Generic_StaticIO.readObject(tClaimantIDToCTBRefLookupFile);
-            result[12] = Generic_StaticIO.readObject(tLoadSummaryFile);
-            result[13] = Generic_StaticIO.readObject(tClaimantIDAndPostcodeFile);
-            result[14] = Generic_StaticIO.readObject(tClaimantIDAndTenancyTypeFile);
-            result[15] = Generic_StaticIO.readObject(tClaimantIDAndPostcodeAndTenancyTypeFile);
-        }
+//                                            tRecordIDsNotLoaded.add(RecordID);
+//                                        }
+//                                    } catch (Exception e) {
+//                                        System.err.println(line);
+//                                        System.err.println("RecordID " + RecordID);
+//                                        //System.err.println(e.getMessage());
+//                                        System.err.println(e.getLocalizedMessage());
+//                                        e.printStackTrace();
+//                                        tRecordIDsNotLoaded.add(RecordID);
+//                                    }
+////                                    countDRecords++;
+//                                }
+//                            }
+//                            lineCount++;
+//                            RecordID++;
+//                            break;
+//                    }
+//                    tokenType = st.nextToken();
+//                }
+//                br.close();
+//                // Add all SRecords from recordsWithoutDRecords that actually do have 
+//                // DRecords, it just so happened that the DRecord was read after the 
+//                // first SRecord
+//                int countDRecordsInUnexpectedOrder = 0;
+//                Set<String> s = tDRecords.keySet();
+//                Iterator<String> ite = tSRecordsWithoutDRecords.keySet().iterator();
+//                HashSet<String> rem = new HashSet<String>();
+//                while (ite.hasNext()) {
+//                    String councilTaxBenefitClaimReferenceNumber = ite.next();
+//                    if (s.contains(councilTaxBenefitClaimReferenceNumber)) {
+//                        DW_SHBE_Record DRecord = tDRecords.get(councilTaxBenefitClaimReferenceNumber);
+//                        DRecord.SRecords.addAll(tDRecords.get(councilTaxBenefitClaimReferenceNumber).getSRecords());
+//                        rem.add(councilTaxBenefitClaimReferenceNumber);
+//                        countDRecordsInUnexpectedOrder++;
+//                    }
+//                }
+//                //System.out.println("SRecords that came before DRecords count " + countDRecordsInUnexpectedOrder);
+//                ite = rem.iterator();
+//                while (ite.hasNext()) {
+//                    tSRecordsWithoutDRecords.remove(ite.next());
+//                }
+//                // Summary report of load
+//                System.out.println("totalCouncilTaxBenefitClaims " + totalCouncilTaxBenefitClaims);
+//                tLoadSummary.put("totalCouncilTaxBenefitClaims", totalCouncilTaxBenefitClaims);
+//                System.out.println("totalCouncilTaxAndHousingBenefitClaims " + totalCouncilTaxAndHousingBenefitClaims);
+//                tLoadSummary.put("totalCouncilTaxAndHousingBenefitClaims", totalCouncilTaxAndHousingBenefitClaims);
+//                System.out.println("totalHousingBenefitClaims " + totalHousingBenefitClaims);
+//                tLoadSummary.put("totalHousingBenefitClaims", totalHousingBenefitClaims);
+//                System.out.println("countDRecords " + tDRecords.size());
+//                tLoadSummary.put("countDRecords", tDRecords.size());
+//                System.out.println("countSRecords " + countSRecords);
+//                tLoadSummary.put("countSRecords", countSRecords);
+//                System.out.println("countOfSRecordsWithoutDRecord " + tSRecordsWithoutDRecords.size());
+//                tLoadSummary.put("countOfSRecordsWithoutDRecord", tSRecordsWithoutDRecords.size());
+//                System.out.println("countDRecordsInUnexpectedOrder " + countDRecordsInUnexpectedOrder);
+//                tLoadSummary.put("countDRecordsInUnexpectedOrder", countDRecordsInUnexpectedOrder);
+//                System.out.println("tRecordIDsNotLoaded.size() " + tRecordIDsNotLoaded.size());
+//                tLoadSummary.put("tRecordIDsNotLoaded.size()", tRecordIDsNotLoaded.size());
+//                System.out.println("uniqueClaimantNationalInsuranceNumberCount " + tClaimantIDs.size());
+//                tLoadSummary.put("uniqueClaimantNationalInsuranceNumberCount", tClaimantIDs.size());
+//                System.out.println("uniquePartnerNationalInsuranceNumbersCount " + tPartnerIDs.size());
+//                tLoadSummary.put("uniquePartnerNationalInsuranceNumbersCount", tPartnerIDs.size());
+//                System.out.println("uniqueDependentsNationalInsuranceNumbersCount " + tDependentsIDs.size());
+//                tLoadSummary.put("uniqueDependentsNationalInsuranceNumbersCount", tDependentsIDs.size());
+//                System.out.println("uniqueNon-DependentsNationalInsuranceNumbersCount " + tNonDependentsIDs.size());
+//                tLoadSummary.put("uniqueNon-DependentsNationalInsuranceNumbersCount", tNonDependentsIDs.size());
+//                System.out.println("uniqueAllHouseholdNationalInsuranceNumbersCount " + tAllHouseholdIDs.size());
+//                tLoadSummary.put("uniqueAllHouseholdNationalInsuranceNumbersCount", tAllHouseholdIDs.size());
+//                System.out.println("lineCount " + lineCount);
+//                tLoadSummary.put("lineCount", lineCount);
+//                System.out.println("totalIncome " + totalIncome);
+//                //tLoadSummary.put("totalIncome", totalIncome);
+//                System.out.println("totalIncomeGreaterThanZeroCount " + totalIncomeGreaterThanZeroCount);
+//                //tLoadSummary.put("totalWeeklyEligibleRentAmount", totalWeeklyEligibleRentAmount);
+//                System.out.println("totalWeeklyEligibleRentAmountGreaterThanZeroCount " + totalWeeklyEligibleRentAmountGreaterThanZeroCount);
+//                // Store tDRecords on File
+//                Generic_StaticIO.writeObject(
+//                        tDRecords,
+//                        tDRecordsFile);
+//                // Store tSRecordsWithoutDRecords on File
+//                Generic_StaticIO.writeObject(
+//                        tSRecordsWithoutDRecords,
+//                        tSRecordsWithoutDRecordsFile);
+//                // Store tClaimantIDs on File
+//                Generic_StaticIO.writeObject(
+//                        tClaimantIDs,
+//                        tClaimantIDsFile);
+//                // Store tPartnerIDs on File
+//                Generic_StaticIO.writeObject(
+//                        tPartnerIDs,
+//                        tPartnerIDsFile);
+//                // Store tDependentsIDs on File
+//                Generic_StaticIO.writeObject(
+//                        tDependentsIDs,
+//                        tDependentsIDsFile);
+//                // Store tNonDependentsIDs on File
+//                Generic_StaticIO.writeObject(
+//                        tNonDependentsIDs,
+//                        tNonDependentsIDsFile);
+//                // Store tAllHouseholdIDs on File
+//                Generic_StaticIO.writeObject(
+//                        tAllHouseholdIDs,
+//                        tAllHouseholdIDsFile);
+//                // Store tClaimantIDToRecordIDLookup on File
+//                Generic_StaticIO.writeObject(
+//                        tClaimantIDToRecordIDLookup,
+//                        tClaimantIDToRecordIDLookupFile);
+//                // Store tClaimantIDToPostcodeLookup on File
+//                Generic_StaticIO.writeObject(
+//                        tClaimantIDToPostcodeLookup,
+//                        tClaimantIDToPostcodeLookupFile);
+//                // Store tClaimantIDToTenancyTypeLookup on File
+//                Generic_StaticIO.writeObject(
+//                        tClaimantIDToTenancyTypeLookup,
+//                        tClaimantIDToTenancyTypeLookupFile);
+//                // Store tCTBClaimRefToClaimantIDLookup
+//                Generic_StaticIO.writeObject(
+//                        tCTBRefToClaimantIDLookup,
+//                        tCTBRefToClaimantIDLookupFile);
+//                // Store tClaimantIDToCTBRefLookup
+//                Generic_StaticIO.writeObject(
+//                        tClaimantIDToCTBRefLookup,
+//                        tClaimantIDToCTBRefLookupFile);
+//                // Store tLoadSummary
+//                Generic_StaticIO.writeObject(
+//                        tLoadSummary,
+//                        tLoadSummaryFile);
+//                // Store tClaimantNationalInsuranceNumberIDAndPostcode
+//                Generic_StaticIO.writeObject(
+//                        tClaimantIDAndPostcodeSet,
+//                        tClaimantIDAndPostcodeFile);
+//                // Store tClaimantNationalInsuranceNumberIDAndPostcode
+//                Generic_StaticIO.writeObject(
+//                        tClaimantIDAndTenancyTypeSet,
+//                        tClaimantIDAndTenancyTypeFile);
+//                // Store tClaimantNationalInsuranceNumberIDAndPostcode
+//                Generic_StaticIO.writeObject(
+//                        tClaimantIDAndPostcodeAndTenancyTypeSet,
+//                        tClaimantIDAndPostcodeAndTenancyTypeFile);
+//            } catch (IOException ex) {
+//                Logger.getLogger(DW_SHBE_Handler.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        } else {
+//            result[0] = Generic_StaticIO.readObject(tDRecordsFile);
+//            result[1] = Generic_StaticIO.readObject(tSRecordsWithoutDRecordsFile);
+//            result[2] = Generic_StaticIO.readObject(tClaimantIDsFile);
+//            result[3] = Generic_StaticIO.readObject(tPartnerIDsFile);
+//            result[4] = Generic_StaticIO.readObject(tDependentsIDsFile);
+//            result[5] = Generic_StaticIO.readObject(tNonDependentsIDsFile);
+//            result[6] = Generic_StaticIO.readObject(tAllHouseholdIDsFile);
+//            result[7] = Generic_StaticIO.readObject(tClaimantIDToRecordIDLookupFile);
+//            result[8] = Generic_StaticIO.readObject(tClaimantIDToPostcodeLookupFile);
+//            result[9] = Generic_StaticIO.readObject(tClaimantIDToTenancyTypeLookupFile);
+//            result[10] = Generic_StaticIO.readObject(tCTBRefToClaimantIDLookupFile);
+//            result[11] = Generic_StaticIO.readObject(tClaimantIDToCTBRefLookupFile);
+//            result[12] = Generic_StaticIO.readObject(tLoadSummaryFile);
+//            result[13] = Generic_StaticIO.readObject(tClaimantIDAndPostcodeFile);
+//            result[14] = Generic_StaticIO.readObject(tClaimantIDAndTenancyTypeFile);
+//            result[15] = Generic_StaticIO.readObject(tClaimantIDAndPostcodeAndTenancyTypeFile);
+//        }
+        // Overwrite Lookups
+        Generic_StaticIO.writeObject(NINOToIDLookup, getNINOToIDLookupFile());
+        Generic_StaticIO.writeObject(IDToNINOLookup, getIDToNINOLookupFile());
+        Generic_StaticIO.writeObject(PostcodeToPostcodeIDLookup, getPostcodeToPostcodeIDLookupFile());
+        Generic_StaticIO.writeObject(PostcodeIDToPostcodeLookup, getPostcodeIDToPostcodeLookupFile());
         return result;
     }
 
-    /**
-     *
-     * @param NINO
-     * @param NINOToIDLookup
-     * @param IDToNINOLookup
+    /**@param S
+     * @param SToIDLookup
+     * @param IDToSLookup
      * @return
      */
     public DW_ID getIDAddIfNeeded(
-            String NINO,
-            HashMap<String, DW_ID> NINOToIDLookup,
-            HashMap<DW_ID, String> IDToNINOLookup) {
+            String S,
+            HashMap<String, DW_ID> SToIDLookup,
+            HashMap<DW_ID, String> IDToSLookup) {
         DW_ID result;
-        if (NINOToIDLookup.containsKey(NINO)) {
-            result = NINOToIDLookup.get(NINO);
+        if (SToIDLookup.containsKey(S)) {
+            result = SToIDLookup.get(S);
         } else {
-            result = new DW_ID(IDToNINOLookup.size());
-            IDToNINOLookup.put(result, NINO);
-            NINOToIDLookup.put(NINO, result);
+            result = new DW_ID(IDToSLookup.size());
+            IDToSLookup.put(result, S);
+            SToIDLookup.put(S, result);
         }
         return result;
     }
