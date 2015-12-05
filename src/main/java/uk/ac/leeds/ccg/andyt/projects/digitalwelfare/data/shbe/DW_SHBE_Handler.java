@@ -1323,13 +1323,13 @@ public class DW_SHBE_Handler {
             result.put("TotalIncomeGreaterThanZeroCountTenancyType" + TTS,
                     totalIncomeByTTGreaterThanZeroCountBD);
             if (totalIncomeByTTGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
-                result.put("AverageIncomeGreaterThanZeroCountTenancyType" + TTS,
+                result.put("AverageIncomeTenancyType" + TTS,
                         Generic_BigDecimal.divideRoundIfNecessary(
                                 totalIncomeByTT[i],
                                 totalIncomeByTTGreaterThanZeroCountBD,
                                 2, RoundingMode.HALF_UP));
             } else {
-                result.put("AverageIncomeGreaterThanZeroCountTenancyType" + TTS,
+                result.put("AverageIncomeTenancyType" + TTS,
                         BigDecimal.ZERO);
             }
             // Rent

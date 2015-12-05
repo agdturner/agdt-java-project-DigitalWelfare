@@ -222,6 +222,11 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
 
+//        includes.remove("Yearly");
+//        includes.remove("6Monthly");
+//        includes.remove("3Monthly");
+//        includes.remove("MonthlyUO");
+        
         // Specifiy distances
         ArrayList<Double> distances;
         distances = new ArrayList<Double>();
@@ -262,26 +267,20 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 ArrayList<Integer> include;
                 include = includes.get(includeKey);
                 TreeMap<String, HashMap<String, String>> summaryTable;
-//                summaryTable = tSummary.getSummaryTable(
-//                        SHBEFilenames,
-//                        include,
-//                        forceNewSummaries, 
-//                        nTT,
-//                        nEG);
+                summaryTable = tSummary.getSummaryTable(
+                        SHBEFilenames,
+                        include,
+                        forceNewSummaries, 
+                        nTT,
+                        nEG);
                 boolean doUnderOccupancy;
-//                doUnderOccupancy = false;
-//                tSummary.writeSummaryTable2(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-//                tSummary.writeSummaryTable1(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-//                tSummary.writeSummaryTable0(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-//                tSummary.writeSummaryTableRentAndIncome0(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-//                tSummary.writeSummaryTableTenancyType0(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-//                tSummary.writeSummaryTableDemographics0(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-//                summaryTable = tSummary.getSummaryTable(
-//                        SHBEFilenames,
-//                        include,
-//                        underOccupiedData, 
-//                        nTT,
-//                        nEG);
+                doUnderOccupancy = false;
+                tSummary.writeSummaryTableCompare3Times(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
+                tSummary.writeSummaryTableCompare2Times(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
+                tSummary.writeSummaryTableSingleTime(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
+                tSummary.writeSummaryTableSingleTimeRentAndIncome(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
+                tSummary.writeSummaryTableSingleTimeTenancyType(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
+                tSummary.writeSummaryTableSingleTimeDemographics(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
                 summaryTable = tSummary.getSummaryTable(
                         SHBEFilenames,
                         include,
@@ -292,12 +291,13 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         NINOtoIDLookup,
                         PostcodeToPostcodeIDLookup);
                 doUnderOccupancy = true;
-                tSummary.writeSummaryTable1(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTable0(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableRentAndIncome0(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableTenancyType0(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableDemographics0(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                System.exit(0);
+                tSummary.writeSummaryTableCompare3Times(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
+                tSummary.writeSummaryTableCompare2Times(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
+                tSummary.writeSummaryTableSingleTime(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
+                tSummary.writeSummaryTableSingleTimeRentAndIncome(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
+                tSummary.writeSummaryTableSingleTimeTenancyType(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
+                tSummary.writeSummaryTableSingleTimeDemographics(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
+//                System.exit(0);
             }
         }
         System.exit(0);
