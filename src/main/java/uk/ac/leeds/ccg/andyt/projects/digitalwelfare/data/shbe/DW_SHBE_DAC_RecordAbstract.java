@@ -61,6 +61,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     private String DateMostRecentCTBClaimWasReceived;
     /**
      * 57 62 LHARegulationsApplied
+     * Blank - LHA flag set to 'No'
+     * 1 - LHA flag set to 'Yes'
+     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!!!
+     * In the SHBE Extracts for Leeds this is generally set as "No" or "Yes"
+     * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!!!
      */
     private String LHARegulationsApplied;
     /**

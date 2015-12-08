@@ -20,6 +20,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  *
@@ -174,6 +175,26 @@ public class DW_SHBE_Record implements Serializable {
                     line,
                     handler));
         }
+    }
+    
+    @Override
+    public String toString() {
+        String result;
+        result = "D_Record: " + DRecord.toString();
+        long NumberOfS_Records;
+        NumberOfS_Records = SRecords.size();
+        result += " Number of SRecords = " + NumberOfS_Records;
+        if (NumberOfS_Records > 0) {
+         result += ": ";   
+        }
+        Iterator<DW_SHBE_S_Record> ite;
+        ite = SRecords.iterator();
+        while (ite.hasNext()) {
+            DW_SHBE_S_Record S_Record;
+            S_Record = ite.next();
+            result += " S_Record: " + S_Record.toString();
+        }
+        return result;
     }
 
     private DW_SHBE_S_Record generateSRecord(

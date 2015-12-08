@@ -151,6 +151,70 @@ public class DW_SHBE_Handler {
         //loadInputData(dir, SHBEFilenames[47], loadFromSource);
     }
 
+//    public static String getClaimantType(DW_SHBE_D_Record D_Record) {
+//        String HBClaimRefNo;
+//        HBClaimRefNo = D_Record.getHousingBenefitClaimReferenceNumber();
+//        return getClaimantType(HBClaimRefNo);
+//    }
+    public static String getClaimantType(DW_SHBE_D_Record D_Record) {
+        boolean isCurrentHBClaimInPayment;
+        isCurrentHBClaimInPayment = isCurrentHBClaimInPayment(D_Record);
+        boolean isCurrentCTBClaimInPayment;
+        isCurrentCTBClaimInPayment = isCurrentCTBClaimInPayment(D_Record);
+        if (isCurrentHBClaimInPayment) {
+            if (isCurrentCTBClaimInPayment) {
+                return "HBAndCTB";                
+            } else {
+                return "HBOnly";
+            }
+        } else {
+            if (isCurrentCTBClaimInPayment) {
+                return "CTBOnly";                
+            } else {
+                return "NotInPayment";
+            }
+        }
+    }
+    
+    @Deprecated
+    public static String getClaimantType(String HBClaimRefNo) {
+        String result;
+        if (HBClaimRefNo == null) {
+            result = "CTB";
+        } else {
+            if (HBClaimRefNo.isEmpty()) {
+                result = "CTB";
+            } else {
+                result = "HB";
+            }
+        }
+        return result;
+    }
+    
+    
+
+    public static boolean isCurrentCTBClaimInPayment(DW_SHBE_D_Record D_Record) {
+        if (D_Record.getStatusOfCTBClaimAtExtractDate() == 1) {
+            int TT;
+            TT = D_Record.getTenancyType();
+            if (TT == 5 || TT == 7) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isCurrentHBClaimInPayment(DW_SHBE_D_Record D_Record) {
+        if (D_Record.getStatusOfHBClaimAtExtractDate() == 1) {
+            int TT;
+            TT = D_Record.getTenancyType();
+            if (TT > 0 && TT < 10 && (TT != 5 || TT != 7)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public HashSet<String> getRecordTypes() {
         return RecordTypes;
     }
@@ -232,7 +296,6 @@ public class DW_SHBE_Handler {
      * @param filename
      * @return
      */
-    
     public Object[] loadInputData(
             File directory,
             String filename,
@@ -432,17 +495,28 @@ public class DW_SHBE_Handler {
                                                 System.out.println("existingSHBE_DataRecord" + existingSHBE_DataRecord);
                                                 System.out.println("replacementSHBE_DataRecord" + aDRecord);
                                             }
-                                            // Count Council Tax and Housing Benefits and combined claims
-                                            if (!aDRecord.getCouncilTaxBenefitClaimReferenceNumber().trim().isEmpty()) {
+                                            // Count Council Tax and Housing Benefits and combined claims       
+//                                if (!aDRecord.getCouncilTaxBenefitClaimReferenceNumber().trim().isEmpty()) {
+//                                    totalCouncilTaxBenefitClaims++;
+//                                    if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
+//                                        totalCouncilTaxAndHousingBenefitClaims++;
+//                                        totalHousingBenefitClaims++;
+//                                    }
+//                                } else {
+//                                    if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
+//                                        totalHousingBenefitClaims++;
+//                                    }
+//                                }
+                                            boolean isCurrentHBClaimInPayment;
+                                            isCurrentHBClaimInPayment = DW_SHBE_Handler.isCurrentHBClaimInPayment(aDRecord);
+                                            if (DW_SHBE_Handler.isCurrentHBClaimInPayment(aDRecord)) {
                                                 totalCouncilTaxBenefitClaims++;
-                                                if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
+                                                if (isCurrentHBClaimInPayment) {
                                                     totalCouncilTaxAndHousingBenefitClaims++;
-                                                    totalHousingBenefitClaims++;
                                                 }
-                                            } else {
-                                                if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
-                                                    totalHousingBenefitClaims++;
-                                                }
+                                            }
+                                            if (isCurrentHBClaimInPayment) {
+                                                totalHousingBenefitClaims++;
                                             }
                                             // aSHBE_DataRecord.getNonDependantStatus 11
                                             // aSHBE_DataRecord.getSubRecordType() 284
@@ -705,8 +779,8 @@ public class DW_SHBE_Handler {
             boolean loadFromSource
     ) {
         Object[] result = loadInputData(directory,
-             filename,
-             loadFromSource);
+                filename,
+                loadFromSource);
 //        Object[] result = new Object[16];
 //        File inputFile = new File(
 //                directory,
@@ -1136,7 +1210,8 @@ public class DW_SHBE_Handler {
         return result;
     }
 
-    /**@param S
+    /**
+     * @param S
      * @param SToIDLookup
      * @param IDToSLookup
      * @return
@@ -1513,18 +1588,29 @@ public class DW_SHBE_Handler {
 //                                    System.out.println("existingSHBE_DataRecord" + existingSHBE_DataRecord);
 //                                    System.out.println("replacementSHBE_DataRecord" + aSHBE_DataRecord);
 //                                }
-                                // Count Council Tax and Housing Benefits and combined claims
-                                if (!aDRecord.getCouncilTaxBenefitClaimReferenceNumber().trim().isEmpty()) {
-                                    totalCouncilTaxBenefitClaims++;
-                                    if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
-                                        totalCouncilTaxAndHousingBenefitClaims++;
-                                        totalHousingBenefitClaims++;
-                                    }
-                                } else {
-                                    if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
-                                        totalHousingBenefitClaims++;
-                                    }
-                                }
+                                // Count Council Tax and Housing Benefits and combined claims       
+//                                if (!aDRecord.getCouncilTaxBenefitClaimReferenceNumber().trim().isEmpty()) {
+//                                    totalCouncilTaxBenefitClaims++;
+//                                    if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
+//                                        totalCouncilTaxAndHousingBenefitClaims++;
+//                                        totalHousingBenefitClaims++;
+//                                    }
+//                                } else {
+//                                    if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
+//                                        totalHousingBenefitClaims++;
+//                                    }
+//                                }
+                                boolean isCurrentHBClaimInPayment;
+                                            isCurrentHBClaimInPayment = DW_SHBE_Handler.isCurrentHBClaimInPayment(aDRecord);
+                                            if (DW_SHBE_Handler.isCurrentHBClaimInPayment(aDRecord)) {
+                                                totalCouncilTaxBenefitClaims++;
+                                                if (isCurrentHBClaimInPayment) {
+                                                    totalCouncilTaxAndHousingBenefitClaims++;
+                                                }
+                                            }
+                                            if (isCurrentHBClaimInPayment) {
+                                                totalHousingBenefitClaims++;
+                                            }
                                 // aSHBE_DataRecord.getNonDependantStatus 11
                                 // aSHBE_DataRecord.getSubRecordType() 284
                                 String claimantID = aDRecord.getClaimantsNationalInsuranceNumber();
@@ -2218,6 +2304,43 @@ public class DW_SHBE_Handler {
         a_Aggregate_SHBE_DataRecord.setTotalPartnersTotalHoursOfRemunerativeWorkPerWeek(
                 a_Aggregate_SHBE_DataRecord.getTotalPartnersTotalHoursOfRemunerativeWorkPerWeek()
                 + aDRecord.getPartnersTotalHoursOfRemunerativeWorkPerWeek());
+    }
+
+    public static long getHouseholdSize(DW_SHBE_Record rec) {
+        long result;
+        result = 1;
+        DW_SHBE_D_Record D_Record;
+        D_Record = rec.DRecord;
+        result += D_Record.getPartnerFlag();
+        result += D_Record.getNumberOfChildDependents();
+        long NumberOfNonDependents;
+        NumberOfNonDependents = D_Record.getNumberOfNonDependents();
+        result += NumberOfNonDependents;
+        HashSet<DW_SHBE_S_Record> S_Records;
+        S_Records = rec.SRecords;
+        long NumberOfS_Records;
+        NumberOfS_Records = S_Records.size();
+        if (NumberOfS_Records != NumberOfNonDependents) {
+            System.out.println("NumberOfS_Records != NumberOfNonDependents for rec " + rec.toString());
+            Iterator<DW_SHBE_S_Record> ite;
+            ite = S_Records.iterator();
+            while (ite.hasNext()) {
+                DW_SHBE_S_Record S_Record;
+                S_Record = ite.next();
+            }
+        }
+        return result;
+    }
+
+    public static long getHouseholdSize(DW_SHBE_D_Record D_Record) {
+        long result;
+        result = 1;
+        result += D_Record.getPartnerFlag();
+        result += D_Record.getNumberOfChildDependents();
+        long NumberOfNonDependents;
+        NumberOfNonDependents = D_Record.getNumberOfNonDependents();
+        result += NumberOfNonDependents;
+        return result;
     }
 
     public static long getClaimantsIncomeFromBenefitsAndAllowances(
@@ -3218,6 +3341,10 @@ public class DW_SHBE_Handler {
         return 17;
     }
 
+    public static int getNumberOfPassportStandardIndicators() {
+        return 5;
+    }
+    
     public static ArrayList<String> getTenureTypeAll(
             boolean doUnderOccupiedData) {
         ArrayList<String> result;

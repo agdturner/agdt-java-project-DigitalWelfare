@@ -2673,11 +2673,13 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
     }
 
     /**
-     * 8 13 NumberOfChildDependents
+     * 8 13 NumberOfChildDependents:
+     * The total number of household members with the statuses 'Child Under 16' and 'Youth 16 - 19' in the split in which the Extract Date falls.
      */
     private int NumberOfChildDependents;
     /**
-     * 9 14 NumberOfNonDependents
+     * 9 14 NumberOfNonDependents:
+     * The number of Non-Dependant Groups present on the claim in the split in which the Extract Date falls.
      */
     private int NumberOfNonDependents;
 
@@ -2994,6 +2996,9 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
     private int BereavementPremiumAwarded;
     /**
      * 118 123 PartnerFlag
+     * 0 No Partner or Disregarded Partner present
+     * 1 The total of Partners and Disregarded Partners is 1
+     * 2 Multiple Partners/Disregarded Partners are present
      */
     private int PartnerFlag;
     /**

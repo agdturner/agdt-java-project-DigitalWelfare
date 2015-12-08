@@ -258,7 +258,13 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
             int nEG;
             nEG = DW_SHBE_Handler.getNumberOfClaimantsEthnicGroups();
-            Summary tSummary = new Summary(tDW_SHBE_Handler, nTT, nEG);
+            int nPSI;
+            nPSI = DW_SHBE_Handler.getNumberOfPassportStandardIndicators();
+            Summary tSummary = new Summary(
+                    tDW_SHBE_Handler, 
+                    nTT,
+                    nEG, 
+                    nPSI);
             Iterator<String> includesIte;
             includesIte = includes.keySet().iterator();
             while (includesIte.hasNext()) {
@@ -272,12 +278,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         include,
                         forceNewSummaries, 
                         nTT,
-                        nEG);
+                        nEG, 
+                        nPSI);
                 boolean doUnderOccupancy;
                 doUnderOccupancy = false;
                 tSummary.writeSummaryTableCompare3Times(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
                 tSummary.writeSummaryTableCompare2Times(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableSingleTime(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
+                tSummary.writeSummaryTableSingleTime0(summaryTable, includeKey, doUnderOccupancy, nTT, nEG, nPSI);
+                tSummary.writeSummaryTableSingleTime1(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
                 tSummary.writeSummaryTableSingleTimeRentAndIncome(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
                 tSummary.writeSummaryTableSingleTimeTenancyType(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
                 tSummary.writeSummaryTableSingleTimeDemographics(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
@@ -287,13 +295,15 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         forceNewSummaries,
                         nTT, 
                         nEG,
+                        nPSI,
                         underOccupiedData,
                         NINOtoIDLookup,
                         PostcodeToPostcodeIDLookup);
                 doUnderOccupancy = true;
                 tSummary.writeSummaryTableCompare3Times(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
                 tSummary.writeSummaryTableCompare2Times(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableSingleTime(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
+                tSummary.writeSummaryTableSingleTime0(summaryTable, includeKey, doUnderOccupancy, nTT, nEG, nPSI);
+                tSummary.writeSummaryTableSingleTime1(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
                 tSummary.writeSummaryTableSingleTimeRentAndIncome(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
                 tSummary.writeSummaryTableSingleTimeTenancyType(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
                 tSummary.writeSummaryTableSingleTimeDemographics(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
@@ -2838,21 +2848,15 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                             String level = levelsIte.next();
                             TreeMap<String, String> tLookupFromPostcodeToLevelCode;
                             tLookupFromPostcodeToLevelCode = lookupsFromPostcodeToLevelCode.get(level);
-                            String housingBenefitClaimReferenceNumber0;
-                            housingBenefitClaimReferenceNumber0 = DRecord0.getHousingBenefitClaimReferenceNumber();
+//                            String housingBenefitClaimReferenceNumber0;
+//                            housingBenefitClaimReferenceNumber0 = DRecord0.getHousingBenefitClaimReferenceNumber();
                             String councilTaxBenefitClaimReferenceNumber0;
                             councilTaxBenefitClaimReferenceNumber0 = DRecord0.getCouncilTaxBenefitClaimReferenceNumber();
                             //String claimantNINO1 = DRecord0.getClaimantsNationalInsuranceNumber();
                             String claimantType;
-                            if (housingBenefitClaimReferenceNumber0 == null) {
-                                claimantType = "CTB";
-                            } else {
-                                if (housingBenefitClaimReferenceNumber0.isEmpty()) {
-                                    claimantType = "CTB";
-                                } else {
-                                    claimantType = "HB";
-                                }
-                            }
+//                            claimantType = DW_SHBE_Handler.getClaimantType(
+//                                    housingBenefitClaimReferenceNumber0);
+                            claimantType = DW_SHBE_Handler.getClaimantType(DRecord0);
                             Integer tenancyTypeInt = DRecord0.getTenancyType();
                             if (postcode0 != null) {
                                 String areaCode;
@@ -3249,22 +3253,16 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                 tLookupFromPostcodeToLevelCode = lookupsFromPostcodeToLevelCode.get(level);
                                 TreeMap<String, Integer> unexpectedCounts;
                                 unexpectedCounts = levelUnexpectedCounts.get(level);
-                                String housingBenefitClaimReferenceNumber1;
-                                housingBenefitClaimReferenceNumber1 = DRecord1.getHousingBenefitClaimReferenceNumber();
+//                                String housingBenefitClaimReferenceNumber1;
+//                                housingBenefitClaimReferenceNumber1 = DRecord1.getHousingBenefitClaimReferenceNumber();
                                 String councilTaxBenefitClaimReferenceNumber1;
                                 councilTaxBenefitClaimReferenceNumber1 = DRecord1.getCouncilTaxBenefitClaimReferenceNumber();
                                 String claimantNINO1 = DRecord1.getClaimantsNationalInsuranceNumber();
                                 DW_ID claimantID1 = NINOtoIDLookup.get(claimantNINO1);
                                 String claimantType;
-                                if (housingBenefitClaimReferenceNumber1 == null) {
-                                    claimantType = "CTB";
-                                } else {
-                                    if (housingBenefitClaimReferenceNumber1.isEmpty()) {
-                                        claimantType = "CTB";
-                                    } else {
-                                        claimantType = "HB";
-                                    }
-                                }
+//                                claimantType = DW_SHBE_Handler.getClaimantType(
+//                                        housingBenefitClaimReferenceNumber1);
+                                claimantType = DW_SHBE_Handler.getClaimantType(DRecord1);
                                 boolean doAdd = true;
                                 // Check for UnderOccupied
                                 if (doUnderOccupied) {
@@ -6533,8 +6531,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 } else {
                     ymAllResult.put(aTenancyTypeInteger, 1);
                 }
-                String aHousingBenefitClaimReferenceNumber = DRecord.getHousingBenefitClaimReferenceNumber();
-                if (!aHousingBenefitClaimReferenceNumber.isEmpty()) {
+//                String aHousingBenefitClaimReferenceNumber = DRecord.getHousingBenefitClaimReferenceNumber();
+//                if (!aHousingBenefitClaimReferenceNumber.isEmpty()) {
+                if (DW_SHBE_Handler.isCurrentHBClaimInPayment(DRecord)) {
                     if (ymHBResult.containsKey(aTenancyTypeInteger)) {
                         int count = ymAllResult.get(aTenancyTypeInteger);
                         count++;
@@ -8356,7 +8355,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             DW_SHBE_D_Record DRecordStart = DRecordsStart.get(councilTaxClaimNumber);
             if (DRecordStart != null) {
                 // Filter for only Housing Benefit Claimants
-                if (!DRecordStart.getHousingBenefitClaimReferenceNumber().isEmpty()) {
+                //if (!DRecordStart.getHousingBenefitClaimReferenceNumber().isEmpty()) {
+                if (DW_SHBE_Handler.isCurrentHBClaimInPayment(DRecordStart)) {
                     String postcodeStart = DRecordStart.getClaimantsPostcode();
                     String startPostcodeDistrict = DW_Postcode_Handler.getPostcodeDistrict(postcodeStart);
                     startPostcodeDistrict = formatPostcodeDistrict(startPostcodeDistrict);
@@ -8370,7 +8370,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     }
                     DW_SHBE_D_Record DRecordEnd = DRecordsEnd.get(councilTaxClaimNumber);
                     // Filter for only Housing Benefit Claimants
-                    if (!DRecordStart.getHousingBenefitClaimReferenceNumber().isEmpty()) {
+//                    if (!DRecordEnd.getHousingBenefitClaimReferenceNumber().isEmpty()) {
+                    if (DW_SHBE_Handler.isCurrentHBClaimInPayment(DRecordEnd)) {
                         String destinationPostcodeDistrict;
                         String destinationPostcode = null;
                         if (DRecordEnd == null) {
