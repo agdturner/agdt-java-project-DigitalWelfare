@@ -32,7 +32,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeID;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
@@ -107,22 +107,19 @@ public class Summary {
     private static final String TotalCTBLHACasesString = "CTBTotalLHACases";
     private static final String PercentageCTBLHACasesString = "CTBPercentageLHACases";
 
-    private static final String tAllCountString = "AllCount";
-    private static final String tHBCountString = "HBCount";
-    private static final String tCTBCountString = "CTBOnlyCount";
+    private static final String AllCountString = "AllCount";
+    private static final String HBCountString = "HBCount";
+    private static final String CTBCountString = "CTBOnlyCount";
 
-    private static String[] tAllEthnicGroupCountString;
-    private static String[] tAllTenancyTypeClaimantCountString;
-    private static String tAllTenancyType8InLS277NSClaimantCountString;
-    private static String tAllPostcodeValidFormatCountString;
-    private static String tAllPostcodeValidCountString;
+    private static String[] AllEthnicGroupCountString;
+    private static String[] AllTenancyTypeClaimantCountString;
+    private static String AllTenancyType8InLS277NSClaimantCountString;
+    private static String AllPostcodeValidFormatCountString;
+    private static String AllPostcodeValidCountString;
 
-    private static final String tTotalIncomeString = "TotalIncome";
-    private static final String tTotalIncomeGreaterThanZeroCountString = "TotalIncomeGreaterThanZeroCount";
-    private static final String tAverageIncomeString = "AverageIncome";
-    private static final String tTotalWeeklyEligibleRentAmountString = "TotalWeeklyEligibleRentAmount";
-    private static final String tTotalWeeklyEligibleRentAmountGreaterThanZeroCountString = "TotalWeeklyEligibleRentAmountGreaterThanZeroCount";
-    private static final String tAverageWeeklyEligibleRentAmountString = "AverageWeeklyEligibleRentAmount";
+    private static final String TotalIncomeString = "TotalIncome";
+    private static final String TotalIncomeGreaterThanZeroCountString = "TotalIncomeGreaterThanZeroCount";
+    private static final String AverageIncomeString = "AverageIncome";
 
     private static final String SHBEFilename00String = "SHBEFilename00";
     private static final String SHBEFilename0String = "SHBEFilename0";
@@ -134,87 +131,87 @@ public class Summary {
     private static final String RSLFilename0String = "RSLFilename0";
     private static final String RSLFilename1String = "RSLFilename1";
 
-    private static final String tAllCount00String = "AllCount00";
-    private static final String tAllCount0String = "AllCount0";
-    private static final String tAllCount1String = "AllCount1";
-    private static final String tCouncilCount00String = "CouncilCount00";
-    private static final String tCouncilCount0String = "CouncilCount0";
-    private static final String tCouncilCount1String = "CouncilCount1";
-    private static final String tRSLCount00String = "RSLCount00";
-    private static final String tRSLCount0String = "RSLCount0";
-    private static final String tRSLCount1String = "RSLCount1";
-    private static final String tAllLinkedRecordCount00String = "AllLinkedRecordCount00";
-    private static final String tAllLinkedRecordCount0String = "AllLinkedRecordCount0";
-    private static final String tAllLinkedRecordCount1String = "AllLinkedRecordCount1";
-    private static final String tCouncilLinkedRecordCount00String = "CouncilLinkedRecordCount00";
-    private static final String tCouncilLinkedRecordCount0String = "CouncilLinkedRecordCount0";
-    private static final String tCouncilLinkedRecordCount1String = "CouncilLinkedRecordCount1";
-    private static final String tRSLLinkedRecordCount00String = "RSLLinkedRecordCount00";
-    private static final String tRSLLinkedRecordCount0String = "RSLLinkedRecordCount0";
-    private static final String tRSLLinkedRecordCount1String = "RSLLinkedRecordCount1";
+    private static final String AllCount00String = "AllCount00";
+    private static final String AllCount0String = "AllCount0";
+    private static final String AllCount1String = "AllCount1";
+    private static final String CouncilCount00String = "CouncilCount00";
+    private static final String CouncilCount0String = "CouncilCount0";
+    private static final String CouncilCount1String = "CouncilCount1";
+    private static final String RSLCount00String = "RSLCount00";
+    private static final String RSLCount0String = "RSLCount0";
+    private static final String RSLCount1String = "RSLCount1";
+    private static final String AllLinkedRecordCount00String = "AllLinkedRecordCount00";
+    private static final String AllLinkedRecordCount0String = "AllLinkedRecordCount0";
+    private static final String AllLinkedRecordCount1String = "AllLinkedRecordCount1";
+    private static final String CouncilLinkedRecordCount00String = "CouncilLinkedRecordCount00";
+    private static final String CouncilLinkedRecordCount0String = "CouncilLinkedRecordCount0";
+    private static final String CouncilLinkedRecordCount1String = "CouncilLinkedRecordCount1";
+    private static final String RSLLinkedRecordCount00String = "RSLLinkedRecordCount00";
+    private static final String RSLLinkedRecordCount0String = "RSLLinkedRecordCount0";
+    private static final String RSLLinkedRecordCount1String = "RSLLinkedRecordCount1";
     // Under Occupancy Only
 //    private static final String councilCountString = "CouncilCount";
 //    private static final String RSLCountString = "RSLCount";
-    private static String totalRentArrearsString;
-    private static String averageRentArrearsString;
-    private static String greaterThan0AverageRentArrearsString;
+    private static String TotalRentArrearsString;
+    private static String AverageRentArrearsString;
+    private static String GreaterThan0AverageRentArrearsString;
 
     // HB
-//    private static String tHBFemaleClaimantCountString;
-//    private static String tHBMaleClaimantCountString;
-//    private static String tHBDisabledClaimantCountString;
-//    private static String tHBFemaleDisabledClaimantCountString;
-//    private static String tHBMaleDisabledClaimantCountString;
-    private static String[] tHBEthnicGroupCountString;
-    private static String[] tHBTenancyTypeClaimantCountString;
-    private static String tHBTenancyType8InLS277NSClaimantCountString;
-    private static String tHBPostcodeValidFormatCountString;
-    private static String tHBPostcodeValidCountString;
+//    private static String HBFemaleClaimantCountString;
+//    private static String HBMaleClaimantCountString;
+//    private static String HBDisabledClaimantCountString;
+//    private static String HBFemaleDisabledClaimantCountString;
+//    private static String HBMaleDisabledClaimantCountString;
+    private static String[] HBEthnicGroupCountString;
+    private static String[] HBTenancyTypeClaimantCountString;
+    private static String HBTenancyType8InLS277NSClaimantCountString;
+    private static String HBPostcodeValidFormatCountString;
+    private static String HBPostcodeValidCountString;
     // CTB
-//    private static String tCTBFemaleClaimantCountString;
-//    private static String tCTBMaleClaimantCountString;
-//    private static String tCTBDisabledClaimantCountString;
-//    private static String tCTBFemaleDisabledClaimantCountString;
-//    private static String tCTBMaleDisabledClaimantCountString;
-    private static String[] tCTBEthnicGroupCountString;
-    private static String[] tCTBTenancyTypeClaimantCountString;
-    private static String tCTBTenancyType8InLS277NSClaimantCountString;
-    private static String tCTBPostcodeValidFormatCountString;
-    private static String tCTBPostcodeValidCountString;
+//    private static String CTBFemaleClaimantCountString;
+//    private static String CTBMaleClaimantCountString;
+//    private static String CTBDisabledClaimantCountString;
+//    private static String CTBFemaleDisabledClaimantCountString;
+//    private static String CTBMaleDisabledClaimantCountString;
+    private static String[] CTBEthnicGroupCountString;
+    private static String[] CTBTenancyTypeClaimantCountString;
+    private static String CTBTenancyType8InLS277NSClaimantCountString;
+    private static String CTBPostcodeValidFormatCountString;
+    private static String CTBPostcodeValidCountString;
 
     // Compare 2 Times
     // All
-    private static String tAllTenancyTypeChangeCountString;
+    private static String AllTenancyTypeChangeCountString;
     // HB
-    private static String tHBPostcode0ValidPostcode1ValidCountString;
-    private static String tHBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString;
-    private static String tHBPostcode0ValidPostcode1ValidPostcodeChangeCountString;
-    private static String tHBPostcode0ValidPostcode1NotValidCountString;
-    private static String tHBPostcode0NotValidPostcode1ValidCountString;
-    private static String tHBPostcode0NotValidPostcode1NotValidCountString;
-    private static String tHBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString;
-    private static String tHBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString;
-    private static String tHBTenancyTypeChangeCountString;
-    private static String tHBTenancyTypeChangeHousingCountString;
-    private static String tHBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString;
-    private static String tHBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString;
-    private static String tHBPostcodeChangeWithinSocialTenancyTypesCountString;
-    private static String tHBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString;
+    private static String HBPostcode0ValidPostcode1ValidCountString;
+    private static String HBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString;
+    private static String HBPostcode0ValidPostcode1ValidPostcodeChangeCountString;
+    private static String HBPostcode0ValidPostcode1NotValidCountString;
+    private static String HBPostcode0NotValidPostcode1ValidCountString;
+    private static String HBPostcode0NotValidPostcode1NotValidCountString;
+    private static String HBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString;
+    private static String HBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString;
+    private static String HBTenancyTypeChangeCountString;
+    private static String HBTenancyTypeChangeHousingCountString;
+    private static String HBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString;
+    private static String HBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString;
+    private static String HBPostcodeChangeWithinSocialTenancyTypesCountString;
+    private static String HBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString;
     // CTB
-    private static String tCTBPostcode0ValidPostcode1ValidCountString;
-    private static String tCTBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString;
-    private static String tCTBPostcode0ValidPostcode1ValidPostcodeChangeCountString;
-    private static String tCTBPostcode0ValidPostcode1NotValidCountString;
-    private static String tCTBPostcode0NotValidPostcode1ValidCountString;
-    private static String tCTBPostcode0NotValidPostcode1NotValidCountString;
-    private static String tCTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString;
-    private static String tCTBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString;
-    private static String tCTBTenancyTypeChangeCountString;
-    private static String tCTBTenancyTypeChangeHousingCountString;
-    private static String tCTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString;
-    private static String tCTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString;
-    private static String tCTBPostcodeChangeWithinSocialTenancyTypesCountString;
-    private static String tCTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString;
+    private static String CTBPostcode0ValidPostcode1ValidCountString;
+    private static String CTBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString;
+    private static String CTBPostcode0ValidPostcode1ValidPostcodeChangeCountString;
+    private static String CTBPostcode0ValidPostcode1NotValidCountString;
+    private static String CTBPostcode0NotValidPostcode1ValidCountString;
+    private static String CTBPostcode0NotValidPostcode1NotValidCountString;
+    private static String CTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString;
+    private static String CTBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString;
+    private static String CTBTenancyTypeChangeCountString;
+    private static String CTBTenancyTypeChangeHousingCountString;
+    private static String CTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString;
+    private static String CTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString;
+    private static String CTBPostcodeChangeWithinSocialTenancyTypesCountString;
+    private static String CTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString;
 
     // Compare 3 Times
     // All
@@ -272,24 +269,24 @@ public class Summary {
     private static int[] TotalHBPassportedStandardIndicatorCount;
     private static int[] TotalCTBPassportedStandardIndicatorCount;
 
-    //private static int[] tAllTenancyTypeClaimantCount;
-    private static long tAllTotalHouseholdSize;
-    private static long tHBTotalHouseholdSize;
-    private static long tCTBTotalHouseholdSize;
+    //private static int[] AllTenancyTypeClaimantCount;
+    private static long AllTotalHouseholdSize;
+    private static long HBTotalHouseholdSize;
+    private static long CTBTotalHouseholdSize;
     // HB
-    private static int tHBCount;
-    private static int[] tHBTenancyTypeCount;
-    private static int[] tHBEthnicGroupCount;
-    private static int tHBTenancyType8InLS277NSClaimantCount;
-    private static int tHBPostcodeValidFormatCount;
-    private static int tHBPostcodeValidCount;
+    private static int HBCount;
+    private static int[] HBTenancyTypeCount;
+    private static int[] HBEthnicGroupCount;
+    private static int HBTenancyType8InLS277NSClaimantCount;
+    private static int HBPostcodeValidFormatCount;
+    private static int HBPostcodeValidCount;
     // CTB
-    private static int tCTBCount;
-    private static int[] tCTBTenancyTypeCount;
-    private static int[] tCTBEthnicGroupCount;
-    private static int tCTBTenancyType8InLS277NSClaimantCount;
-    private static int tCTBPostcodeValidFormatCount;
-    private static int tCTBPostcodeValidCount;
+    private static int CTBCount;
+    private static int[] CTBTenancyTypeCount;
+    private static int[] CTBEthnicGroupCount;
+    private static int CTBTenancyType8InLS277NSClaimantCount;
+    private static int CTBPostcodeValidFormatCount;
+    private static int CTBPostcodeValidCount;
     // Other summary stats
     private static double totalRentArrears;
     private static double rentArrearsCount;
@@ -298,56 +295,56 @@ public class Summary {
 
     // Compare 2 Times
     // All
-    private static int tAllTenancyTypeChangeCount;
+    private static int AllTenancyTypeChangeCount;
     // HB
-    private static int tHBPostcode0ValidPostcode1ValidCount;
-    private static int tHBPostcode0ValidPostcode1ValidPostcodeNotChangedCount;
-    private static int tHBPostcode0ValidPostcode1ValidPostcodeChangeCount;
-    private static int tHBPostcode0ValidPostcode1NotValidCount;
-    private static int tHBPostcode0NotValidPostcode1ValidCount;
-    private static int tHBPostcode0NotValidPostcode1NotValidCount;
-    private static int tHBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount;
-    private static int tHBPostcode0NotValidPostcode1NotValidPostcodeChangedCount;
-    private static int tHBTenancyTypeChangeCount;
-    private static int tHBTenancyTypeChangeHousingCount;
-    private static int tHBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount;
-    private static int tHBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount;
-    private static int tHBPostcodeChangeWithinSocialTenancyTypesCount;
-    private static int tHBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount;
+    private static int HBPostcode0ValidPostcode1ValidCount;
+    private static int HBPostcode0ValidPostcode1ValidPostcodeNotChangedCount;
+    private static int HBPostcode0ValidPostcode1ValidPostcodeChangeCount;
+    private static int HBPostcode0ValidPostcode1NotValidCount;
+    private static int HBPostcode0NotValidPostcode1ValidCount;
+    private static int HBPostcode0NotValidPostcode1NotValidCount;
+    private static int HBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount;
+    private static int HBPostcode0NotValidPostcode1NotValidPostcodeChangedCount;
+    private static int HBTenancyTypeChangeCount;
+    private static int HBTenancyTypeChangeHousingCount;
+    private static int HBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount;
+    private static int HBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount;
+    private static int HBPostcodeChangeWithinSocialTenancyTypesCount;
+    private static int HBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount;
     // CTB
-    private static int tCTBPostcode0ValidPostcode1ValidCount;
-    private static int tCTBPostcode0ValidPostcode1ValidPostcodeNotChangedCount;
-    private static int tCTBPostcode0ValidPostcode1ValidPostcodeChangeCount;
-    private static int tCTBPostcode0ValidPostcode1NotValidCount;
-    private static int tCTBPostcode0NotValidPostcode1ValidCount;
-    private static int tCTBPostcode0NotValidPostcode1NotValidCount;
-    private static int tCTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount;
-    private static int tCTBPostcode0NotValidPostcode1NotValidPostcodeChangedCount;
-    private static int tCTBTenancyTypeChangeCount;
-    private static int tCTBTenancyTypeChangeHousingCount;
-    private static int tCTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount;
-    private static int tCTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount;
-    private static int tCTBPostcodeChangeWithinSocialTenancyTypesCount;
-    private static int tCTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount;
+    private static int CTBPostcode0ValidPostcode1ValidCount;
+    private static int CTBPostcode0ValidPostcode1ValidPostcodeNotChangedCount;
+    private static int CTBPostcode0ValidPostcode1ValidPostcodeChangeCount;
+    private static int CTBPostcode0ValidPostcode1NotValidCount;
+    private static int CTBPostcode0NotValidPostcode1ValidCount;
+    private static int CTBPostcode0NotValidPostcode1NotValidCount;
+    private static int CTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount;
+    private static int CTBPostcode0NotValidPostcode1NotValidPostcodeChangedCount;
+    private static int CTBTenancyTypeChangeCount;
+    private static int CTBTenancyTypeChangeHousingCount;
+    private static int CTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount;
+    private static int CTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount;
+    private static int CTBPostcodeChangeWithinSocialTenancyTypesCount;
+    private static int CTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount;
 
-    private static int tAllCount00;
-    private static int tAllCount0;
-    private static int tAllCount1;
-    private static int tCouncilCount00;
-    private static int tCouncilCount0;
-    private static int tCouncilCount1;
-    private static int tRSLCount00;
-    private static int tRSLCount0;
-    private static int tRSLCount1;
-    private static int tAllLinkedRecordCount00;
-    private static int tAllLinkedRecordCount0;
-    private static int tAllLinkedRecordCount1;
-    private static int tCouncilLinkedRecordCount00;
-    private static int tCouncilLinkedRecordCount0;
-    private static int tCouncilLinkedRecordCount1;
-    private static int tRSLLinkedRecordCount00;
-    private static int tRSLLinkedRecordCount0;
-    private static int tRSLLinkedRecordCount1;
+    private static int AllCount00;
+    private static int AllCount0;
+    private static int AllCount1;
+    private static int CouncilCount00;
+    private static int CouncilCount0;
+    private static int CouncilCount1;
+    private static int RSLCount00;
+    private static int RSLCount0;
+    private static int RSLCount1;
+    private static int AllLinkedRecordCount00;
+    private static int AllLinkedRecordCount0;
+    private static int AllLinkedRecordCount1;
+    private static int CouncilLinkedRecordCount00;
+    private static int CouncilLinkedRecordCount0;
+    private static int CouncilLinkedRecordCount1;
+    private static int RSLLinkedRecordCount00;
+    private static int RSLLinkedRecordCount0;
+    private static int RSLLinkedRecordCount1;
 
     // Compare 3 Times
     private static int SamePostcodeIII;
@@ -378,112 +375,118 @@ public class Summary {
         TotalAllPassportedStandardIndicatorCount = new int[nPSI];
         TotalHBPassportedStandardIndicatorCount = new int[nPSI];
         TotalCTBPassportedStandardIndicatorCount = new int[nPSI];
-        tHBEthnicGroupCount = new int[nEG];
-        tCTBEthnicGroupCount = new int[nEG];
-        tHBTenancyTypeCount = new int[nTT];
-        tCTBTenancyTypeCount = new int[nTT];
+        HBEthnicGroupCount = new int[nEG];
+        CTBEthnicGroupCount = new int[nEG];
+        HBTenancyTypeCount = new int[nTT];
+        CTBTenancyTypeCount = new int[nTT];
     }
 
     protected final void initSingleTimeStrings(int nTT, int nEG, int nPSI) {
         TotalAllPassportedStandardIndicatorCountString = new String[nPSI];
         TotalHBPassportedStandardIndicatorCountString = new String[nPSI];
         TotalCTBPassportedStandardIndicatorCountString = new String[nPSI];
+        PercentageAllPassportedStandardIndicatorCountString = new String[nPSI];
+        PercentageHBPassportedStandardIndicatorCountString = new String[nPSI];
+        PercentageCTBPassportedStandardIndicatorCountString = new String[nPSI];
         for (int i = 1; i < nPSI; i++) {
-            TotalAllPassportedStandardIndicatorCountString[i] = "AllPassportedStandardIndicator" + i + "Count";
-            TotalHBPassportedStandardIndicatorCountString[i] = "AllPassportedStandardIndicator" + i + "Count";
-            TotalCTBPassportedStandardIndicatorCountString[i] = "AllPassportedStandardIndicator" + i + "Count";
+            TotalAllPassportedStandardIndicatorCountString[i] = "TotalAllPassportedStandardIndicator" + i + "Count";
+            TotalHBPassportedStandardIndicatorCountString[i] = "TotalHBPassportedStandardIndicator" + i + "Count";
+            TotalCTBPassportedStandardIndicatorCountString[i] = "TotalCTBPassportedStandardIndicator" + i + "Count";
+            PercentageAllPassportedStandardIndicatorCountString[i] = "PercentageAllPassportedStandardIndicator" + i + "Count";
+            PercentageHBPassportedStandardIndicatorCountString[i] = "PercentageHBPassportedStandardIndicator" + i + "Count";
+            PercentageCTBPassportedStandardIndicatorCountString[i] = "PercentageCTBPassportedStandardIndicator" + i + "Count";
         }
 
         // All
-        tAllEthnicGroupCountString = new String[nEG];
+        AllEthnicGroupCountString = new String[nEG];
         for (int i = 1; i < nEG; i++) {
-            tAllEthnicGroupCountString[i] = "ClaimantEthnicGroup" + i + "Count";
+            AllEthnicGroupCountString[i] = "ClaimantEthnicGroup" + i + "Count";
         }
-        tAllTenancyTypeClaimantCountString = new String[nTT];
+        AllTenancyTypeClaimantCountString = new String[nTT];
         for (int i = 1; i < nTT; i++) {
-            tAllTenancyTypeClaimantCountString[i] = "AllTenancyType" + i + "ClaimantCount";
+            AllTenancyTypeClaimantCountString[i] = "AllTenancyType" + i + "ClaimantCount";
         }
-        tAllTenancyType8InLS277NSClaimantCountString = "AllTenancyType8InLS277NSClaimantCount";
-        tAllPostcodeValidFormatCountString = "AllPostcodeValidFormatCount";
-        tAllPostcodeValidCountString = "AllPostcodeValidCount";
+        AllTenancyType8InLS277NSClaimantCountString = "AllTenancyType8InLS277NSClaimantCount";
+        AllPostcodeValidFormatCountString = "AllPostcodeValidFormatCount";
+        AllPostcodeValidCountString = "AllPostcodeValidCount";
 
         // HB
-        tHBEthnicGroupCountString = new String[nEG];
+        HBEthnicGroupCountString = new String[nEG];
         for (int i = 1; i < nEG; i++) {
-            tHBEthnicGroupCountString[i] = "HBClaimantEthnicGroup" + i + "Count";
+            HBEthnicGroupCountString[i] = "HBClaimantEthnicGroup" + i + "Count";
         }
-        tHBTenancyTypeClaimantCountString = new String[nTT];
+        HBTenancyTypeClaimantCountString = new String[nTT];
         for (int i = 1; i < nTT; i++) {
-            tHBTenancyTypeClaimantCountString[i] = "HBTenancyType" + i + "ClaimantCount";
+            HBTenancyTypeClaimantCountString[i] = "HBTenancyType" + i + "ClaimantCount";
         }
-        tHBTenancyType8InLS277NSClaimantCountString = "HBTenancyType8InLS277NSClaimantCount";
-        tHBPostcodeValidFormatCountString = "HBPostcodeValidFormatCount";
-        tHBPostcodeValidCountString = "HBPostcodeValidCount";
-//        tHBFemaleClaimantCountString = "HBFemaleClaimantCount";
-//        tHBDisabledClaimantCountString = "HBDisabledClaimantCount";
-//        tHBFemaleDisabledClaimantCountString = "HBDisabledFemaleClaimantCount";
-//        tHBMaleDisabledClaimantCountString = "HBDisabledMaleClaimantCount";
+        HBTenancyType8InLS277NSClaimantCountString = "HBTenancyType8InLS277NSClaimantCount";
+        HBPostcodeValidFormatCountString = "HBPostcodeValidFormatCount";
+        HBPostcodeValidCountString = "HBPostcodeValidCount";
+//        HBFemaleClaimantCountString = "HBFemaleClaimantCount";
+//        HBDisabledClaimantCountString = "HBDisabledClaimantCount";
+//        HBFemaleDisabledClaimantCountString = "HBDisabledFemaleClaimantCount";
+//        HBMaleDisabledClaimantCountString = "HBDisabledMaleClaimantCount";
 
         // CTB
-        tCTBEthnicGroupCountString = new String[nEG];
+        CTBEthnicGroupCountString = new String[nEG];
         for (int i = 1; i < nEG; i++) {
-            tCTBEthnicGroupCountString[i] = "CTBClaimantEthnicGroup" + i + "Count";
+            CTBEthnicGroupCountString[i] = "CTBClaimantEthnicGroup" + i + "Count";
         }
-        tCTBTenancyTypeClaimantCountString = new String[nTT];
+        CTBTenancyTypeClaimantCountString = new String[nTT];
         for (int i = 1; i < nTT; i++) {
-            tCTBTenancyTypeClaimantCountString[i] = "CTBTenancyType" + i + "ClaimantCount";
+            CTBTenancyTypeClaimantCountString[i] = "CTBTenancyType" + i + "ClaimantCount";
         }
-        tCTBTenancyType8InLS277NSClaimantCountString = "CTBTenancyType8InLS277NSClaimantCount";
-        tCTBPostcodeValidFormatCountString = "CTBPostcodeValidFormatCount";
-        tCTBPostcodeValidCountString = "CTBPostcodeValidCount";
-//        tCTBFemaleClaimantCountString = "CTBFemaleClaimantCount";
-//        tCTBDisabledClaimantCountString = "CTBDisabledClaimantCount";
-//        tCTBFemaleDisabledClaimantCountString = "CTBDisabledFemaleClaimantCount";
-//        tCTBMaleDisabledClaimantCountString = "CTBDisabledMaleClaimantCount";
+        CTBTenancyType8InLS277NSClaimantCountString = "CTBTenancyType8InLS277NSClaimantCount";
+        CTBPostcodeValidFormatCountString = "CTBPostcodeValidFormatCount";
+        CTBPostcodeValidCountString = "CTBPostcodeValidCount";
+//        CTBFemaleClaimantCountString = "CTBFemaleClaimantCount";
+//        CTBDisabledClaimantCountString = "CTBDisabledClaimantCount";
+//        CTBFemaleDisabledClaimantCountString = "CTBDisabledFemaleClaimantCount";
+//        CTBMaleDisabledClaimantCountString = "CTBDisabledMaleClaimantCount";
 
         // Under Occupancy
-        totalRentArrearsString = "TotalRentArrears";
-        averageRentArrearsString = "AverageRentArrears";
-        greaterThan0AverageRentArrearsString = "GreaterThan0AverageRentArrears";
+        TotalRentArrearsString = "TotalRentArrears";
+        AverageRentArrearsString = "AverageRentArrears";
+        GreaterThan0AverageRentArrearsString = "GreaterThan0AverageRentArrears";
     }
 
     protected final void initCompare2TimesStrings(int nTT, int nEG) {
         // All
-        tAllTenancyTypeChangeCountString = "AllTenancyTypeChangeCount";
+        AllTenancyTypeChangeCountString = "AllTenancyTypeChangeCount";
 
         // HB
-        tHBPostcode0ValidPostcode1ValidCountString = "HBPostcode0ValidPostcode1ValidCount";
-        tHBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString = "HBPostcode0ValidPostcode1ValidPostcodeNotChangedCount";
-        tHBPostcode0ValidPostcode1ValidPostcodeChangeCountString = "HBPostcode0ValidPostcode1ValidPostcodeChangeCount";
-        tHBPostcode0ValidPostcode1NotValidCountString = "HBPostcode0ValidPostcode1NotValidCount";
-        tHBPostcode0NotValidPostcode1ValidCountString = "HBPostcode0NotValidPostcode1ValidCount";
-        tHBPostcode0NotValidPostcode1NotValidCountString = "HBPostcode0NotValidPostcode1NotValidCount";
-        tHBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString = "HBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount";
-        tHBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString = "HBPostcode0NotValidPostcode1NotValidPostcodeChangedCount";
+        HBPostcode0ValidPostcode1ValidCountString = "HBPostcode0ValidPostcode1ValidCount";
+        HBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString = "HBPostcode0ValidPostcode1ValidPostcodeNotChangedCount";
+        HBPostcode0ValidPostcode1ValidPostcodeChangeCountString = "HBPostcode0ValidPostcode1ValidPostcodeChangeCount";
+        HBPostcode0ValidPostcode1NotValidCountString = "HBPostcode0ValidPostcode1NotValidCount";
+        HBPostcode0NotValidPostcode1ValidCountString = "HBPostcode0NotValidPostcode1ValidCount";
+        HBPostcode0NotValidPostcode1NotValidCountString = "HBPostcode0NotValidPostcode1NotValidCount";
+        HBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString = "HBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount";
+        HBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString = "HBPostcode0NotValidPostcode1NotValidPostcodeChangedCount";
 
-        tHBTenancyTypeChangeCountString = "HBTenancyTypeChangeCount";
-        tHBTenancyTypeChangeHousingCountString = "HBTenancyTypeChangeHousingCount";
-        tHBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString = "HBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount";
-        tHBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString = "HBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount";
-        tHBPostcodeChangeWithinSocialTenancyTypesCountString = "HBPostcodeChangeWithinSocialTenancyTypesCount";
-        tHBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString = "HBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount";
+        HBTenancyTypeChangeCountString = "HBTenancyTypeChangeCount";
+        HBTenancyTypeChangeHousingCountString = "HBTenancyTypeChangeHousingCount";
+        HBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString = "HBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount";
+        HBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString = "HBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount";
+        HBPostcodeChangeWithinSocialTenancyTypesCountString = "HBPostcodeChangeWithinSocialTenancyTypesCount";
+        HBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString = "HBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount";
 
         // CTB
-        tCTBPostcode0ValidPostcode1ValidCountString = "CTBPostcode0ValidPostcode1ValidCount";
-        tCTBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString = "CTBPostcode0ValidPostcode1ValidPostcodeNotChangedCount";
-        tCTBPostcode0ValidPostcode1ValidPostcodeChangeCountString = "CTBPostcode0ValidPostcode1ValidPostcodeChangeCount";
-        tCTBPostcode0ValidPostcode1NotValidCountString = "CTBPostcode0ValidPostcode1NotValidCount";
-        tCTBPostcode0NotValidPostcode1ValidCountString = "CTBPostcode0NotValidPostcode1ValidCount";
-        tCTBPostcode0NotValidPostcode1NotValidCountString = "CTBPostcode0NotValidPostcode1NotValidCount";
-        tCTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString = "CTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount";
-        tCTBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString = "CTBPostcode0NotValidPostcode1NotValidPostcodeChangedCount";
+        CTBPostcode0ValidPostcode1ValidCountString = "CTBPostcode0ValidPostcode1ValidCount";
+        CTBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString = "CTBPostcode0ValidPostcode1ValidPostcodeNotChangedCount";
+        CTBPostcode0ValidPostcode1ValidPostcodeChangeCountString = "CTBPostcode0ValidPostcode1ValidPostcodeChangeCount";
+        CTBPostcode0ValidPostcode1NotValidCountString = "CTBPostcode0ValidPostcode1NotValidCount";
+        CTBPostcode0NotValidPostcode1ValidCountString = "CTBPostcode0NotValidPostcode1ValidCount";
+        CTBPostcode0NotValidPostcode1NotValidCountString = "CTBPostcode0NotValidPostcode1NotValidCount";
+        CTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString = "CTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount";
+        CTBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString = "CTBPostcode0NotValidPostcode1NotValidPostcodeChangedCount";
 
-        tCTBTenancyTypeChangeCountString = "CTBTenancyTypeChangeCount";
-        tCTBTenancyTypeChangeHousingCountString = "CTBTenancyTypeChangeHousingCount";
-        tCTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString = "CTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount";
-        tCTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString = "CTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount";
-        tCTBPostcodeChangeWithinSocialTenancyTypesCountString = "CTBPostcodeChangeWithinSocialTenancyTypesCount";
-        tCTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString = "CTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount";
+        CTBTenancyTypeChangeCountString = "CTBTenancyTypeChangeCount";
+        CTBTenancyTypeChangeHousingCountString = "CTBTenancyTypeChangeHousingCount";
+        CTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString = "CTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount";
+        CTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString = "CTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount";
+        CTBPostcodeChangeWithinSocialTenancyTypesCountString = "CTBPostcodeChangeWithinSocialTenancyTypesCount";
+        CTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString = "CTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount";
     }
 
     protected final void initCompare3TimesStrings(int nTT, int nEG) {
@@ -559,74 +562,74 @@ public class Summary {
         PercentageCTBLHACases = 0.0d;
         // HB
         for (int i = 1; i < nEG; i++) {
-            tHBEthnicGroupCount[i] = 0;
+            HBEthnicGroupCount[i] = 0;
         }
         for (int i = 1; i < nTT; i++) {
-            tHBTenancyTypeCount[i] = 0;
+            HBTenancyTypeCount[i] = 0;
         }
-        tHBCount = 0;
-        tHBTenancyType8InLS277NSClaimantCount = 0;
-        tHBPostcodeValidFormatCount = 0;
-        tHBPostcodeValidCount = 0;
+        HBCount = 0;
+        HBTenancyType8InLS277NSClaimantCount = 0;
+        HBPostcodeValidFormatCount = 0;
+        HBPostcodeValidCount = 0;
 
-        tAllTotalHouseholdSize = 0L;
-        tHBTotalHouseholdSize = 0L;
-        tCTBTotalHouseholdSize = 0L;
+        AllTotalHouseholdSize = 0L;
+        HBTotalHouseholdSize = 0L;
+        CTBTotalHouseholdSize = 0L;
 
         // CTB
         for (int i = 1; i < nEG; i++) {
-            tCTBEthnicGroupCount[i] = 0;
+            CTBEthnicGroupCount[i] = 0;
         }
         for (int i = 1; i < nTT; i++) {
-            tCTBTenancyTypeCount[i] = 0;
+            CTBTenancyTypeCount[i] = 0;
         }
-        tCTBCount = 0;
-        tCTBTenancyType8InLS277NSClaimantCount = 0;
-        tCTBPostcodeValidFormatCount = 0;
-        tCTBPostcodeValidCount = 0;
+        CTBCount = 0;
+        CTBTenancyType8InLS277NSClaimantCount = 0;
+        CTBPostcodeValidFormatCount = 0;
+        CTBPostcodeValidCount = 0;
 
-        tAllCount1 = 0;
-        tCouncilCount1 = 0;
-        tRSLCount1 = 0;
-        tAllLinkedRecordCount1 = 0;
-        tCouncilLinkedRecordCount1 = 0;
-        tRSLLinkedRecordCount1 = 0;
+        AllCount1 = 0;
+        CouncilCount1 = 0;
+        RSLCount1 = 0;
+        AllLinkedRecordCount1 = 0;
+        CouncilLinkedRecordCount1 = 0;
+        RSLLinkedRecordCount1 = 0;
     }
 
     private void initCompare2TimesCounts(int nTT, int nEG) {
         // All
-        tAllTenancyTypeChangeCount = 0;
+        AllTenancyTypeChangeCount = 0;
 
         // HB
-        tHBPostcode0ValidPostcode1ValidCount = 0;
-        tHBPostcode0ValidPostcode1ValidPostcodeNotChangedCount = 0;
-        tHBPostcode0ValidPostcode1ValidPostcodeChangeCount = 0;
-        tHBPostcode0ValidPostcode1NotValidCount = 0;
-        tHBPostcode0NotValidPostcode1ValidCount = 0;
-        tHBPostcode0NotValidPostcode1NotValidCount = 0;
-        tHBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount = 0;
-        tHBPostcode0NotValidPostcode1NotValidPostcodeChangedCount = 0;
-        tHBTenancyTypeChangeCount = 0;
-        tHBTenancyTypeChangeHousingCount = 0;
-        tHBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount = 0;
-        tHBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount = 0;
-        tHBPostcodeChangeWithinSocialTenancyTypesCount = 0;
-        tHBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount = 0;
+        HBPostcode0ValidPostcode1ValidCount = 0;
+        HBPostcode0ValidPostcode1ValidPostcodeNotChangedCount = 0;
+        HBPostcode0ValidPostcode1ValidPostcodeChangeCount = 0;
+        HBPostcode0ValidPostcode1NotValidCount = 0;
+        HBPostcode0NotValidPostcode1ValidCount = 0;
+        HBPostcode0NotValidPostcode1NotValidCount = 0;
+        HBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount = 0;
+        HBPostcode0NotValidPostcode1NotValidPostcodeChangedCount = 0;
+        HBTenancyTypeChangeCount = 0;
+        HBTenancyTypeChangeHousingCount = 0;
+        HBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount = 0;
+        HBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount = 0;
+        HBPostcodeChangeWithinSocialTenancyTypesCount = 0;
+        HBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount = 0;
         // CTB
-        tCTBPostcode0ValidPostcode1ValidCount = 0;
-        tCTBPostcode0ValidPostcode1ValidPostcodeNotChangedCount = 0;
-        tCTBPostcode0ValidPostcode1ValidPostcodeChangeCount = 0;
-        tCTBPostcode0ValidPostcode1NotValidCount = 0;
-        tCTBPostcode0NotValidPostcode1ValidCount = 0;
-        tCTBPostcode0NotValidPostcode1NotValidCount = 0;
-        tCTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount = 0;
-        tCTBPostcode0NotValidPostcode1NotValidPostcodeChangedCount = 0;
-        tCTBTenancyTypeChangeCount = 0;
-        tCTBTenancyTypeChangeHousingCount = 0;
-        tCTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount = 0;
-        tCTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount = 0;
-        tCTBPostcodeChangeWithinSocialTenancyTypesCount = 0;
-        tCTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount = 0;
+        CTBPostcode0ValidPostcode1ValidCount = 0;
+        CTBPostcode0ValidPostcode1ValidPostcodeNotChangedCount = 0;
+        CTBPostcode0ValidPostcode1ValidPostcodeChangeCount = 0;
+        CTBPostcode0ValidPostcode1NotValidCount = 0;
+        CTBPostcode0NotValidPostcode1ValidCount = 0;
+        CTBPostcode0NotValidPostcode1NotValidCount = 0;
+        CTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount = 0;
+        CTBPostcode0NotValidPostcode1NotValidPostcodeChangedCount = 0;
+        CTBTenancyTypeChangeCount = 0;
+        CTBTenancyTypeChangeHousingCount = 0;
+        CTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount = 0;
+        CTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount = 0;
+        CTBPostcodeChangeWithinSocialTenancyTypesCount = 0;
+        CTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount = 0;
         // Under Occupancy
         totalRentArrears = 0.0d;
         rentArrearsCount = 0.0d;
@@ -1186,7 +1189,7 @@ public class Summary {
      * result[7] is a HashMap<DW_ID, Long> tClaimantIDToRecordIDLookup;
      * result[8] is a HashMap<DW_ID, String> tClaimantIDToPostcodeLookup;
      * result[9] is a HashMap<DW_ID, Integer> tClaimantIDToTenancyTypeLookup;
-     * result[10] is a HashMap<String, DW_ID> tCTBRefToClaimantIDLookup;
+     * result[10] is a HashMap<String, DW_ID> CTBRefToClaimantIDLookup;
      * result[11] is a HashMap<DW_ID, String> tClaimantIDToCTBRefLookup;
      * result[12] is a HashMap<String, Integer> tLoadSummary;
      * result[13] is a HashSet<ID_TenancyType> tClaimantIDAndPostcode.
@@ -1213,123 +1216,123 @@ public class Summary {
         addToSummarySingleTime(nTT, nEG, nPSI, summary);
         //All
         summary.put(
-                tAllTenancyTypeChangeCountString,
-                Integer.toString(tAllTenancyTypeChangeCount));
+                AllTenancyTypeChangeCountString,
+                Integer.toString(AllTenancyTypeChangeCount));
         // HB
         summary.put(
-                tHBPostcode0ValidPostcode1ValidCountString,
-                Integer.toString(tHBPostcode0ValidPostcode1ValidCount));
+                HBPostcode0ValidPostcode1ValidCountString,
+                Integer.toString(HBPostcode0ValidPostcode1ValidCount));
         summary.put(
-                tHBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString,
-                Integer.toString(tHBPostcode0ValidPostcode1ValidPostcodeNotChangedCount));
+                HBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString,
+                Integer.toString(HBPostcode0ValidPostcode1ValidPostcodeNotChangedCount));
         summary.put(
-                tHBPostcode0ValidPostcode1ValidPostcodeChangeCountString,
-                Integer.toString(tHBPostcode0ValidPostcode1ValidPostcodeChangeCount));
+                HBPostcode0ValidPostcode1ValidPostcodeChangeCountString,
+                Integer.toString(HBPostcode0ValidPostcode1ValidPostcodeChangeCount));
         summary.put(
-                tHBPostcode0ValidPostcode1NotValidCountString,
-                Integer.toString(tHBPostcode0ValidPostcode1NotValidCount));
+                HBPostcode0ValidPostcode1NotValidCountString,
+                Integer.toString(HBPostcode0ValidPostcode1NotValidCount));
         summary.put(
-                tHBPostcode0NotValidPostcode1ValidCountString,
-                Integer.toString(tHBPostcode0NotValidPostcode1ValidCount));
+                HBPostcode0NotValidPostcode1ValidCountString,
+                Integer.toString(HBPostcode0NotValidPostcode1ValidCount));
         summary.put(
-                tHBPostcode0NotValidPostcode1NotValidCountString,
-                Integer.toString(tHBPostcode0NotValidPostcode1NotValidCount));
+                HBPostcode0NotValidPostcode1NotValidCountString,
+                Integer.toString(HBPostcode0NotValidPostcode1NotValidCount));
         summary.put(
-                tHBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString,
-                Integer.toString(tHBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount));
+                HBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString,
+                Integer.toString(HBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount));
         summary.put(
-                tHBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString,
-                Integer.toString(tHBPostcode0NotValidPostcode1NotValidPostcodeChangedCount));
+                HBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString,
+                Integer.toString(HBPostcode0NotValidPostcode1NotValidPostcodeChangedCount));
         summary.put(
-                tHBTenancyTypeChangeCountString,
-                Integer.toString(tHBTenancyTypeChangeCount));
+                HBTenancyTypeChangeCountString,
+                Integer.toString(HBTenancyTypeChangeCount));
         summary.put(
-                tHBTenancyTypeChangeHousingCountString,
-                Integer.toString(tHBTenancyTypeChangeHousingCount));
+                HBTenancyTypeChangeHousingCountString,
+                Integer.toString(HBTenancyTypeChangeHousingCount));
         summary.put(
-                tHBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString,
-                Integer.toString(tHBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount));
+                HBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString,
+                Integer.toString(HBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount));
         summary.put(
-                tHBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString,
-                Integer.toString(tHBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount));
+                HBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString,
+                Integer.toString(HBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount));
         summary.put(
-                tHBPostcodeChangeWithinSocialTenancyTypesCountString,
-                Integer.toString(tHBPostcodeChangeWithinSocialTenancyTypesCount));
+                HBPostcodeChangeWithinSocialTenancyTypesCountString,
+                Integer.toString(HBPostcodeChangeWithinSocialTenancyTypesCount));
         summary.put(
-                tHBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString,
-                Integer.toString(tHBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount));
+                HBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString,
+                Integer.toString(HBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount));
         // CTB
         summary.put(
-                tCTBPostcode0ValidPostcode1ValidCountString,
-                Integer.toString(tCTBPostcode0ValidPostcode1ValidCount));
+                CTBPostcode0ValidPostcode1ValidCountString,
+                Integer.toString(CTBPostcode0ValidPostcode1ValidCount));
         summary.put(
-                tCTBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString,
-                Integer.toString(tCTBPostcode0ValidPostcode1ValidPostcodeNotChangedCount));
+                CTBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString,
+                Integer.toString(CTBPostcode0ValidPostcode1ValidPostcodeNotChangedCount));
         summary.put(
-                tCTBPostcode0ValidPostcode1ValidPostcodeChangeCountString,
-                Integer.toString(tCTBPostcode0ValidPostcode1ValidPostcodeChangeCount));
+                CTBPostcode0ValidPostcode1ValidPostcodeChangeCountString,
+                Integer.toString(CTBPostcode0ValidPostcode1ValidPostcodeChangeCount));
         summary.put(
-                tCTBPostcode0ValidPostcode1NotValidCountString,
-                Integer.toString(tCTBPostcode0ValidPostcode1NotValidCount));
+                CTBPostcode0ValidPostcode1NotValidCountString,
+                Integer.toString(CTBPostcode0ValidPostcode1NotValidCount));
         summary.put(
-                tCTBPostcode0NotValidPostcode1ValidCountString,
-                Integer.toString(tCTBPostcode0NotValidPostcode1ValidCount));
+                CTBPostcode0NotValidPostcode1ValidCountString,
+                Integer.toString(CTBPostcode0NotValidPostcode1ValidCount));
         summary.put(
-                tCTBPostcode0NotValidPostcode1NotValidCountString,
-                Integer.toString(tCTBPostcode0NotValidPostcode1NotValidCount));
+                CTBPostcode0NotValidPostcode1NotValidCountString,
+                Integer.toString(CTBPostcode0NotValidPostcode1NotValidCount));
         summary.put(
-                tCTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString,
-                Integer.toString(tCTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount));
+                CTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString,
+                Integer.toString(CTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount));
         summary.put(
-                tCTBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString,
-                Integer.toString(tCTBPostcode0NotValidPostcode1NotValidPostcodeChangedCount));
+                CTBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString,
+                Integer.toString(CTBPostcode0NotValidPostcode1NotValidPostcodeChangedCount));
         summary.put(
-                tCTBTenancyTypeChangeCountString,
-                Integer.toString(tCTBTenancyTypeChangeCount));
+                CTBTenancyTypeChangeCountString,
+                Integer.toString(CTBTenancyTypeChangeCount));
         summary.put(
-                tCTBTenancyTypeChangeHousingCountString,
-                Integer.toString(tCTBTenancyTypeChangeHousingCount));
+                CTBTenancyTypeChangeHousingCountString,
+                Integer.toString(CTBTenancyTypeChangeHousingCount));
         summary.put(
-                tCTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString,
-                Integer.toString(tCTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount));
+                CTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString,
+                Integer.toString(CTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount));
         summary.put(
-                tCTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString,
-                Integer.toString(tCTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount));
+                CTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString,
+                Integer.toString(CTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount));
         summary.put(
-                tCTBPostcodeChangeWithinSocialTenancyTypesCountString,
-                Integer.toString(tCTBPostcodeChangeWithinSocialTenancyTypesCount));
+                CTBPostcodeChangeWithinSocialTenancyTypesCountString,
+                Integer.toString(CTBPostcodeChangeWithinSocialTenancyTypesCount));
         summary.put(
-                tCTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString,
-                Integer.toString(tCTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount));
+                CTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString,
+                Integer.toString(CTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount));
     }
 
     private void addToSummarySingleTimeRentArrears(
             HashMap<String, String> summary) {
         summary.put(
-                totalRentArrearsString,
+                TotalRentArrearsString,
                 "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
                         BigDecimal.valueOf(totalRentArrears),
                         2, RoundingMode.HALF_UP));
         if (rentArrearsCount != 0.0d) {
             summary.put(
-                    averageRentArrearsString,
+                    AverageRentArrearsString,
                     "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
                             BigDecimal.valueOf(totalRentArrears / rentArrearsCount),
                             2, RoundingMode.HALF_UP));
         } else {
             summary.put(
-                    averageRentArrearsString,
+                    AverageRentArrearsString,
                     "0");
         }
         if (greaterThan0RentArrearsCount != 0.0d) {
             summary.put(
-                    greaterThan0AverageRentArrearsString,
+                    GreaterThan0AverageRentArrearsString,
                     "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
                             BigDecimal.valueOf(totalRentArrears / greaterThan0RentArrearsCount),
                             2, RoundingMode.HALF_UP));
         } else {
             summary.put(
-                    greaterThan0AverageRentArrearsString,
+                    GreaterThan0AverageRentArrearsString,
                     "0");
         }
     }
@@ -1351,16 +1354,16 @@ public class Summary {
             int nPSI,
             HashMap<String, String> summary) {
         // All
-        double tAllCount;
-        tAllCount = tHBCount + tCTBCount;
-        summary.put(tAllCountString, Double.toString(tAllCount));
+        double AllCount;
+        AllCount = HBCount + CTBCount;
+        summary.put(AllCountString, Integer.toString((int) AllCount));
         summary.put(
                 AllTotalHouseholdSizeString,
-                Long.toString(tAllTotalHouseholdSize));
+                Long.toString(AllTotalHouseholdSize));
         double ave;
         // All HouseholdSize
-        if (tAllCount > 0) {
-            ave = tAllTotalHouseholdSize / tAllCount;
+        if (AllCount > 0) {
+            ave = AllTotalHouseholdSize / AllCount;
             summary.put(
                     AllAverageHouseholdSizeString,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1373,9 +1376,9 @@ public class Summary {
         // HB HouseholdSize
         summary.put(
                 HBTotalHouseholdSizeString,
-                Long.toString(tHBTotalHouseholdSize));
-        if (tHBCount > 0) {
-            ave = tHBTotalHouseholdSize / (double) tHBCount;
+                Long.toString(HBTotalHouseholdSize));
+        if (HBCount > 0) {
+            ave = HBTotalHouseholdSize / (double) HBCount;
             summary.put(
                     HBAverageHouseholdSizeString,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1388,9 +1391,9 @@ public class Summary {
         // CTB HouseholdSize
         summary.put(
                 CTBTotalHouseholdSizeString,
-                Long.toString(tCTBTotalHouseholdSize));
-        if (tCTBCount > 0) {
-            ave = tCTBTotalHouseholdSize / (double) tCTBCount;
+                Long.toString(CTBTotalHouseholdSize));
+        if (CTBCount > 0) {
+            ave = CTBTotalHouseholdSize / (double) CTBCount;
             summary.put(
                     CTBAverageHouseholdSizeString,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1405,8 +1408,8 @@ public class Summary {
             summary.put(
                     TotalAllPassportedStandardIndicatorCountString[i],
                     Long.toString(TotalAllPassportedStandardIndicatorCount[i]));
-            if (tAllCount > 0) {
-                ave = (TotalAllPassportedStandardIndicatorCount[i] * 100.0d) / tAllCount;
+            if (AllCount > 0) {
+                ave = (TotalAllPassportedStandardIndicatorCount[i] * 100.0d) / AllCount;
                 summary.put(
                         PercentageAllPassportedStandardIndicatorCountString[i],
                         Generic_BigDecimal.roundIfNecessary(
@@ -1419,8 +1422,8 @@ public class Summary {
             summary.put(
                     TotalHBPassportedStandardIndicatorCountString[i],
                     Long.toString(TotalHBPassportedStandardIndicatorCount[i]));
-            if (tHBCount > 0) {
-                ave = (TotalHBPassportedStandardIndicatorCount[i] * 100.0d) / (double) tHBCount;
+            if (HBCount > 0) {
+                ave = (TotalHBPassportedStandardIndicatorCount[i] * 100.0d) / (double) HBCount;
                 summary.put(
                         PercentageHBPassportedStandardIndicatorCountString[i],
                         Generic_BigDecimal.roundIfNecessary(
@@ -1433,8 +1436,8 @@ public class Summary {
             summary.put(
                     TotalCTBPassportedStandardIndicatorCountString[i],
                     Long.toString(TotalCTBPassportedStandardIndicatorCount[i]));
-            if (tCTBCount > 0) {
-                ave = (TotalCTBPassportedStandardIndicatorCount[i] * 100.0d) / (double) tCTBCount;
+            if (CTBCount > 0) {
+                ave = (TotalCTBPassportedStandardIndicatorCount[i] * 100.0d) / (double) CTBCount;
                 summary.put(
                         PercentageCTBPassportedStandardIndicatorCountString[i],
                         Generic_BigDecimal.roundIfNecessary(
@@ -1582,8 +1585,8 @@ public class Summary {
         summary.put(
                 TotalHBClaimantsEmployedString,
                 Integer.toString(TotalHBClaimantsEmployed));
-        if (tHBCount > 0) {
-            ave = (TotalHBClaimantsEmployed * 100.0d) / (double) tHBCount;
+        if (HBCount > 0) {
+            ave = (TotalHBClaimantsEmployed * 100.0d) / (double) HBCount;
             summary.put(
                     PercentageHBClaimantsEmployedString,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1596,8 +1599,8 @@ public class Summary {
         summary.put(
                 TotalCTBClaimantsEmployedString,
                 Integer.toString(TotalCTBClaimantsEmployed));
-        if (tCTBCount > 0) {
-            ave = (TotalCTBClaimantsEmployed * 100.0d) / (double) tCTBCount;
+        if (CTBCount > 0) {
+            ave = (TotalCTBClaimantsEmployed * 100.0d) / (double) CTBCount;
             summary.put(
                     PercentageCTBClaimantsEmployedString,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1611,8 +1614,8 @@ public class Summary {
         summary.put(
                 TotalHBClaimantsSelfEmployedString,
                 Integer.toString(TotalHBClaimantsSelfEmployed));
-        if (tHBCount > 0) {
-            ave = (TotalHBClaimantsSelfEmployed * 100.0d) / (double) tHBCount;
+        if (HBCount > 0) {
+            ave = (TotalHBClaimantsSelfEmployed * 100.0d) / (double) HBCount;
             summary.put(
                     PercentageHBClaimantsSelfEmployedString,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1625,8 +1628,8 @@ public class Summary {
         summary.put(
                 TotalCTBClaimantsSelfEmployedString,
                 Integer.toString(TotalCTBClaimantsSelfEmployed));
-        if (tCTBCount > 0) {
-            ave = (TotalCTBClaimantsSelfEmployed * 100.0d) / (double) tCTBCount;
+        if (CTBCount > 0) {
+            ave = (TotalCTBClaimantsSelfEmployed * 100.0d) / (double) CTBCount;
             summary.put(
                     PercentageCTBClaimantsSelfEmployedString,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1640,8 +1643,8 @@ public class Summary {
         summary.put(
                 TotalHBClaimantsStudentsString,
                 Integer.toString(TotalHBClaimantsStudents));
-        if (tHBCount > 0) {
-            ave = (TotalHBClaimantsStudents * 100.0d) / (double) tHBCount;
+        if (HBCount > 0) {
+            ave = (TotalHBClaimantsStudents * 100.0d) / (double) HBCount;
             summary.put(
                     PercentageHBClaimantsStudentsString,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1654,8 +1657,8 @@ public class Summary {
         summary.put(
                 TotalCTBClaimantsStudentsString,
                 Integer.toString(TotalCTBClaimantsStudents));
-        if (tCTBCount > 0) {
-            ave = (TotalCTBClaimantsStudents * 100.0d) / (double) tCTBCount;
+        if (CTBCount > 0) {
+            ave = (TotalCTBClaimantsStudents * 100.0d) / (double) CTBCount;
             summary.put(
                     PercentageCTBClaimantsStudentsString,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1669,8 +1672,8 @@ public class Summary {
         summary.put(
                 TotalHBLHACasesString,
                 Integer.toString(TotalHBLHACases));
-        if (tHBCount > 0) {
-            ave = (TotalHBLHACases * 100.0d) / (double) tHBCount;
+        if (HBCount > 0) {
+            ave = (TotalHBLHACases * 100.0d) / (double) HBCount;
             summary.put(
                     PercentageHBLHACasesString,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1683,8 +1686,8 @@ public class Summary {
         summary.put(
                 TotalCTBLHACasesString,
                 Integer.toString(TotalCTBLHACases));
-        if (tCTBCount > 0) {
-            ave = (TotalCTBLHACases * 100.0d) / (double) tCTBCount;
+        if (CTBCount > 0) {
+            ave = (TotalCTBLHACases * 100.0d) / (double) CTBCount;
             summary.put(
                     PercentageCTBLHACasesString,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1703,14 +1706,14 @@ public class Summary {
         // Ethnicity
         for (int i = 1; i < nEG; i++) {
             summary.put(
-                    tAllEthnicGroupCountString[i],
-                    Integer.toString(tHBEthnicGroupCount[i] + tCTBEthnicGroupCount[i]));
+                    AllEthnicGroupCountString[i],
+                    Integer.toString(HBEthnicGroupCount[i] + CTBEthnicGroupCount[i]));
             summary.put(
-                    tHBEthnicGroupCountString[i],
-                    Integer.toString(tHBEthnicGroupCount[i]));
+                    HBEthnicGroupCountString[i],
+                    Integer.toString(HBEthnicGroupCount[i]));
             summary.put(
-                    tCTBEthnicGroupCountString[i],
-                    Integer.toString(tCTBEthnicGroupCount[i]));
+                    CTBEthnicGroupCountString[i],
+                    Integer.toString(CTBEthnicGroupCount[i]));
         }
     }
 
@@ -1721,53 +1724,53 @@ public class Summary {
         // TenancyType
         for (int i = 1; i < nTT; i++) {
             summary.put(
-                    tAllTenancyTypeClaimantCountString[i],
-                    Integer.toString(tHBTenancyTypeCount[i] + tCTBTenancyTypeCount[i]));
+                    AllTenancyTypeClaimantCountString[i],
+                    Integer.toString(HBTenancyTypeCount[i] + CTBTenancyTypeCount[i]));
             summary.put(
-                    tHBTenancyTypeClaimantCountString[i],
-                    Integer.toString(tHBTenancyTypeCount[i]));
+                    HBTenancyTypeClaimantCountString[i],
+                    Integer.toString(HBTenancyTypeCount[i]));
             summary.put(
-                    tCTBTenancyTypeClaimantCountString[i],
-                    Integer.toString(tCTBTenancyTypeCount[i]));
+                    CTBTenancyTypeClaimantCountString[i],
+                    Integer.toString(CTBTenancyTypeCount[i]));
         }
         summary.put(
-                tAllTenancyType8InLS277NSClaimantCountString,
-                Integer.toString(tHBTenancyType8InLS277NSClaimantCount + tCTBTenancyType8InLS277NSClaimantCount));
+                AllTenancyType8InLS277NSClaimantCountString,
+                Integer.toString(HBTenancyType8InLS277NSClaimantCount + CTBTenancyType8InLS277NSClaimantCount));
         summary.put(
-                tAllPostcodeValidFormatCountString,
-                Integer.toString(tHBPostcodeValidFormatCount + tCTBPostcodeValidFormatCount));
+                AllPostcodeValidFormatCountString,
+                Integer.toString(HBPostcodeValidFormatCount + CTBPostcodeValidFormatCount));
         summary.put(
-                tAllPostcodeValidCountString,
-                Integer.toString(tHBPostcodeValidCount + tCTBPostcodeValidCount));
+                AllPostcodeValidCountString,
+                Integer.toString(HBPostcodeValidCount + CTBPostcodeValidCount));
         // HB
-        summary.put(tHBCountString, Integer.toString(tHBCount));
+        summary.put(HBCountString, Integer.toString(HBCount));
         summary.put(
-                tHBTenancyType8InLS277NSClaimantCountString,
-                Integer.toString(tHBTenancyType8InLS277NSClaimantCount));
+                HBTenancyType8InLS277NSClaimantCountString,
+                Integer.toString(HBTenancyType8InLS277NSClaimantCount));
         summary.put(
-                tHBPostcodeValidFormatCountString,
-                Integer.toString(tHBPostcodeValidFormatCount));
+                HBPostcodeValidFormatCountString,
+                Integer.toString(HBPostcodeValidFormatCount));
         summary.put(
-                tHBPostcodeValidCountString,
-                Integer.toString(tHBPostcodeValidCount));
+                HBPostcodeValidCountString,
+                Integer.toString(HBPostcodeValidCount));
         // CTB
-        summary.put(tCTBCountString, Integer.toString(tCTBCount));
+        summary.put(CTBCountString, Integer.toString(CTBCount));
         summary.put(
-                tCTBTenancyType8InLS277NSClaimantCountString,
-                Integer.toString(tCTBTenancyType8InLS277NSClaimantCount));
+                CTBTenancyType8InLS277NSClaimantCountString,
+                Integer.toString(CTBTenancyType8InLS277NSClaimantCount));
         summary.put(
-                tCTBPostcodeValidFormatCountString,
-                Integer.toString(tCTBPostcodeValidFormatCount));
+                CTBPostcodeValidFormatCountString,
+                Integer.toString(CTBPostcodeValidFormatCount));
         summary.put(
-                tCTBPostcodeValidCountString,
-                Integer.toString(tCTBPostcodeValidCount));
+                CTBPostcodeValidCountString,
+                Integer.toString(CTBPostcodeValidCount));
     }
 
     private void doCompare2TimesCounts(
             DW_SHBE_D_Record D_Record,
             String CTBRef,
-            HashMap<String, DW_ID> tCTBRefID0,
-            HashMap<String, DW_ID> tCTBRefID1,
+            HashMap<String, DW_ID> CTBRefID0,
+            HashMap<String, DW_ID> CTBRefID1,
             HashMap<DW_ID, Integer> tIDByTenancyType0,
             HashMap<DW_ID, Integer> tIDByTenancyType1,
             HashMap<DW_ID, String> tIDByPostcode0,
@@ -1781,14 +1784,14 @@ public class Summary {
         if (isCurrentHBClaimInPayment || isCurrentCTBClaimInPayment) {
             doSingleTimeCount(
                     D_Record, CTBRef,
-                    tCTBRefID0,
+                    CTBRefID0,
                     tIDByTenancyType0,
                     tIDByPostcode0,
                     yM30v);
 //            String HBRef;
 //            HBRef = D_Record.getHousingBenefitClaimReferenceNumber();
             DW_ID tID0;
-            tID0 = tCTBRefID0.get(CTBRef);
+            tID0 = CTBRefID0.get(CTBRef);
             String postcode0 = null;
             boolean isValidPostcode0;
             isValidPostcode0 = false;
@@ -1804,7 +1807,7 @@ public class Summary {
                 }
             }
             DW_ID tID1;
-            tID1 = tCTBRefID1.get(CTBRef);
+            tID1 = CTBRefID1.get(CTBRef);
             boolean isValidPostcode1;
             isValidPostcode1 = false;
             String postcode1 = null;
@@ -1845,7 +1848,7 @@ public class Summary {
     private void doSingleTimeCount(
             DW_SHBE_D_Record D_Record,
             String CTBRef,
-            HashMap<String, DW_ID> tCTBRefID0,
+            HashMap<String, DW_ID> CTBRefID0,
             HashMap<DW_ID, Integer> tIDByTenancyType0,
             HashMap<DW_ID, String> tIDByPostcode0,
             String yM30v) {
@@ -1865,7 +1868,7 @@ public class Summary {
 //        int SevereDisabilityPremiumAwarded0;
 //        SevereDisabilityPremiumAwarded0 = D_Record.getSevereDisabilityPremiumAwarded();
             DW_ID tID0;
-            tID0 = tCTBRefID0.get(CTBRef);
+            tID0 = CTBRefID0.get(CTBRef);
             String postcode0 = null;
             Integer tenancyType0 = 0;
             if (tID0 != null) {
@@ -1877,7 +1880,7 @@ public class Summary {
             }
             long HouseholdSize;
             HouseholdSize = DW_SHBE_Handler.getHouseholdSize(D_Record);
-            tAllTotalHouseholdSize += HouseholdSize;
+            AllTotalHouseholdSize += HouseholdSize;
             int WeeklyHousingBenefitEntitlement;
             WeeklyHousingBenefitEntitlement = D_Record.getWeeklyHousingBenefitEntitlement();
             if (WeeklyHousingBenefitEntitlement > 0) {
@@ -1923,7 +1926,7 @@ public class Summary {
             if (isCurrentHBClaimInPayment) {
                 TotalHBPassportedStandardIndicatorCount[PassportedStandardIndicator]++;
                 //if (HBRef.equalsIgnoreCase(CTBRef)) {
-                tHBTotalHouseholdSize += HouseholdSize;
+                HBTotalHouseholdSize += HouseholdSize;
                 int ClaimantsNetWeeklyIncomeFromEmployment;
                 ClaimantsNetWeeklyIncomeFromEmployment = D_Record.getClaimantsNetWeeklyIncomeFromEmployment();
                 if (ClaimantsNetWeeklyIncomeFromEmployment > 0) {
@@ -1954,7 +1957,7 @@ public class Summary {
             //} else {
             if (isCurrentCTBClaimInPayment) {
                 TotalCTBPassportedStandardIndicatorCount[PassportedStandardIndicator]++;
-                tCTBTotalHouseholdSize += HouseholdSize;
+                CTBTotalHouseholdSize += HouseholdSize;
                 int ClaimantsNetWeeklyIncomeFromEmployment;
                 ClaimantsNetWeeklyIncomeFromEmployment = D_Record.getClaimantsNetWeeklyIncomeFromEmployment();
                 if (ClaimantsNetWeeklyIncomeFromEmployment > 0) {
@@ -2005,30 +2008,30 @@ public class Summary {
             boolean isValidPostcode0) {
         if (isValidPostcode0) {
             if (isValidPostcode1) {
-                tHBPostcode0ValidPostcode1ValidCount++;
+                HBPostcode0ValidPostcode1ValidCount++;
                 if (postcode0.equalsIgnoreCase(postcode1)) {
-                    tHBPostcode0ValidPostcode1ValidPostcodeNotChangedCount++;
+                    HBPostcode0ValidPostcode1ValidPostcodeNotChangedCount++;
                 } else {
-                    tHBPostcode0ValidPostcode1ValidPostcodeChangeCount++;
+                    HBPostcode0ValidPostcode1ValidPostcodeChangeCount++;
                 }
             } else {
-                tHBPostcode0ValidPostcode1NotValidCount++;
+                HBPostcode0ValidPostcode1NotValidCount++;
             }
         } else {
             if (isValidPostcode1) {
-                tHBPostcode0NotValidPostcode1ValidCount++;
+                HBPostcode0NotValidPostcode1ValidCount++;
             } else {
-                tHBPostcode0NotValidPostcode1NotValidCount++;
+                HBPostcode0NotValidPostcode1NotValidCount++;
                 if (postcode0 == null) {
-                    tHBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount++;
+                    HBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount++;
                 } else {
                     if (postcode1 == null) {
-                        tHBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount++;
+                        HBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount++;
                     } else {
                         if (postcode0.equalsIgnoreCase(postcode1)) {
-                            tHBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount++;
+                            HBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount++;
                         } else {
-                            tHBPostcode0NotValidPostcode1NotValidPostcodeChangedCount++;
+                            HBPostcode0NotValidPostcode1NotValidPostcodeChangedCount++;
                         }
                     }
                 }
@@ -2036,8 +2039,8 @@ public class Summary {
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
             if (!(tenancyType0 == 0 || tenancyType1 == 0)) {
-                tHBTenancyTypeChangeCount++;
-                tAllTenancyTypeChangeCount++;
+                HBTenancyTypeChangeCount++;
+                AllTenancyTypeChangeCount++;
                 if ((tenancyType0 == 1
                         || tenancyType0 == 2
                         || tenancyType0 == 3
@@ -2052,18 +2055,18 @@ public class Summary {
                         || tenancyType1 == 6
                         || tenancyType1 == 8
                         || tenancyType1 == 9)) {
-                    tHBTenancyTypeChangeHousingCount++;
+                    HBTenancyTypeChangeHousingCount++;
                 }
             }
             if ((tenancyType0 == 1
                     || tenancyType0 == 4)
                     && tenancyType1 == 3) {
-                tHBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount++;
+                HBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount++;
             }
             if (tenancyType0 == 3
                     && (tenancyType1 == 1
                     || tenancyType1 == 4)) {
-                tHBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount++;
+                HBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount++;
             }
         }
         if ((tenancyType0 == 1 && tenancyType1 == 1)
@@ -2072,14 +2075,14 @@ public class Summary {
                 || (tenancyType0 == 4 && tenancyType1 == 4)) {
             if (isValidPostcode0 && isValidPostcode1) {
                 if (!postcode0.equalsIgnoreCase(postcode1)) {
-                    tHBPostcodeChangeWithinSocialTenancyTypesCount++;
+                    HBPostcodeChangeWithinSocialTenancyTypesCount++;
                 }
             }
         }
         if (tenancyType0 == 3 && tenancyType1 == 3) {
             if (isValidPostcode0 && isValidPostcode1) {
                 if (!postcode0.equalsIgnoreCase(postcode1)) {
-                    tHBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount++;
+                    HBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount++;
                 }
             }
         }
@@ -2090,13 +2093,13 @@ public class Summary {
             Integer tenancyType0,
             String postcode0,
             String yM30v) {
-        tHBCount++;
-        tHBEthnicGroupCount[ClaimantsEthnicGroup0]++;
-        tHBTenancyTypeCount[tenancyType0]++;
+        HBCount++;
+        HBEthnicGroupCount[ClaimantsEthnicGroup0]++;
+        HBTenancyTypeCount[tenancyType0]++;
         if (tenancyType0 == 8) {
             if (postcode0 != null) {
                 if (postcode0.equalsIgnoreCase("LS27 7NS")) {
-                    tHBTenancyType8InLS277NSClaimantCount++;
+                    HBTenancyType8InLS277NSClaimantCount++;
                 }
             }
         }
@@ -2106,10 +2109,10 @@ public class Summary {
             boolean isValidPostcode;
             isValidPostcode = DW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
             if (isValidPostcodeFormat) {
-                tHBPostcodeValidFormatCount++;
+                HBPostcodeValidFormatCount++;
             }
             if (isValidPostcode) {
-                tHBPostcodeValidCount++;
+                HBPostcodeValidCount++;
             }
         }
     }
@@ -2123,30 +2126,30 @@ public class Summary {
             boolean isValidPostcode0) {
         if (isValidPostcode0) {
             if (isValidPostcode1) {
-                tCTBPostcode0ValidPostcode1ValidCount++;
+                CTBPostcode0ValidPostcode1ValidCount++;
                 if (postcode0.equalsIgnoreCase(postcode1)) {
-                    tCTBPostcode0ValidPostcode1ValidPostcodeNotChangedCount++;
+                    CTBPostcode0ValidPostcode1ValidPostcodeNotChangedCount++;
                 } else {
-                    tCTBPostcode0ValidPostcode1ValidPostcodeChangeCount++;
+                    CTBPostcode0ValidPostcode1ValidPostcodeChangeCount++;
                 }
             } else {
-                tCTBPostcode0ValidPostcode1NotValidCount++;
+                CTBPostcode0ValidPostcode1NotValidCount++;
             }
         } else {
             if (isValidPostcode1) {
-                tCTBPostcode0NotValidPostcode1ValidCount++;
+                CTBPostcode0NotValidPostcode1ValidCount++;
             } else {
-                tCTBPostcode0NotValidPostcode1NotValidCount++;
+                CTBPostcode0NotValidPostcode1NotValidCount++;
                 if (postcode0 == null) {
-                    tCTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount++;
+                    CTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount++;
                 } else {
                     if (postcode1 == null) {
-                        tCTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount++;
+                        CTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount++;
                     } else {
                         if (postcode0.equalsIgnoreCase(postcode1)) {
-                            tCTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount++;
+                            CTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCount++;
                         } else {
-                            tCTBPostcode0NotValidPostcode1NotValidPostcodeChangedCount++;
+                            CTBPostcode0NotValidPostcode1NotValidPostcodeChangedCount++;
                         }
                     }
                 }
@@ -2154,8 +2157,8 @@ public class Summary {
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
             if (!(tenancyType0 == 0 || tenancyType1 == 0)) {
-                tCTBTenancyTypeChangeCount++;
-                tAllTenancyTypeChangeCount++;
+                CTBTenancyTypeChangeCount++;
+                AllTenancyTypeChangeCount++;
                 if ((tenancyType0 == 1
                         || tenancyType0 == 2
                         || tenancyType0 == 3
@@ -2170,18 +2173,18 @@ public class Summary {
                         || tenancyType1 == 6
                         || tenancyType1 == 8
                         || tenancyType1 == 9)) {
-                    tCTBTenancyTypeChangeHousingCount++;
+                    CTBTenancyTypeChangeHousingCount++;
                 }
             }
             if ((tenancyType0 == 1
                     || tenancyType0 == 4)
                     && tenancyType1 == 3) {
-                tCTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount++;
+                CTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCount++;
             }
             if (tenancyType0 == 3
                     && (tenancyType1 == 1
                     || tenancyType1 == 4)) {
-                tCTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount++;
+                CTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCount++;
             }
         }
         if ((tenancyType0 == 1 && tenancyType1 == 1)
@@ -2190,14 +2193,14 @@ public class Summary {
                 || (tenancyType0 == 4 && tenancyType1 == 4)) {
             if (isValidPostcode0 && isValidPostcode1) {
                 if (!postcode0.equalsIgnoreCase(postcode1)) {
-                    tCTBPostcodeChangeWithinSocialTenancyTypesCount++;
+                    CTBPostcodeChangeWithinSocialTenancyTypesCount++;
                 }
             }
         }
         if (tenancyType0 == 3 && tenancyType1 == 3) {
             if (isValidPostcode0 && isValidPostcode1) {
                 if (!postcode0.equalsIgnoreCase(postcode1)) {
-                    tCTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount++;
+                    CTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCount++;
                 }
             }
         }
@@ -2208,13 +2211,13 @@ public class Summary {
             Integer tenancyType0,
             String postcode0,
             String yM30v) {
-        tCTBCount++;
-        tCTBEthnicGroupCount[ClaimantsEthnicGroup0]++;
-        tCTBTenancyTypeCount[tenancyType0]++;
+        CTBCount++;
+        CTBEthnicGroupCount[ClaimantsEthnicGroup0]++;
+        CTBTenancyTypeCount[tenancyType0]++;
         if (tenancyType0 == 8) {
             if (postcode0 != null) {
                 if (postcode0.equalsIgnoreCase("LS27 7NS")) {
-                    tCTBTenancyType8InLS277NSClaimantCount++;
+                    CTBTenancyType8InLS277NSClaimantCount++;
                 }
             }
         }
@@ -2224,10 +2227,10 @@ public class Summary {
             boolean isValidPostcode;
             isValidPostcode = DW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
             if (isValidPostcodeFormat) {
-                tCTBPostcodeValidFormatCount++;
+                CTBPostcodeValidFormatCount++;
             }
             if (isValidPostcode) {
-                tCTBPostcodeValidCount++;
+                CTBPostcodeValidCount++;
             }
         }
     }
@@ -2287,7 +2290,7 @@ public class Summary {
          * result[7] is a HashMap<DW_ID, Long> tClaimantIDToRecordIDLookup;
          * result[8] is a HashMap<DW_ID, String> tClaimantIDToPostcodeLookup;
          * result[9] is a HashMap<DW_ID, Integer> tClaimantIDToTenancyTypeLookup;
-         * result[10] is a HashMap<String, DW_ID> tCTBRefToClaimantIDLookup;
+         * result[10] is a HashMap<String, DW_ID> CTBRefToClaimantIDLookup;
          * result[11] is a HashMap<DW_ID, String> tClaimantIDToCTBRefLookup;
          * result[12] is a HashMap<String, Integer> tLoadSummary;
          * result[13] is a HashSet<ID_TenancyType> tClaimantIDAndPostcode.
@@ -2304,8 +2307,8 @@ public class Summary {
         summary = result.get(key);
         TreeMap<String, HashSet<DW_ID>> tClaimantIDs;
         tClaimantIDs = new TreeMap<String, HashSet<DW_ID>>();
-        TreeMap<String, HashSet<DW_ID>> tAllIDs;
-        tAllIDs = new TreeMap<String, HashSet<DW_ID>>();
+        TreeMap<String, HashSet<DW_ID>> AllIDs;
+        AllIDs = new TreeMap<String, HashSet<DW_ID>>();
         TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes;
         tClaimantIDPostcodes = new TreeMap<String, HashSet<ID_PostcodeID>>();
         TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTenancyTypes;
@@ -2317,17 +2320,17 @@ public class Summary {
         HashSet<DW_ID> tClaimantIDs0;
         tClaimantIDs0 = (HashSet<DW_ID>) tSHBEData0[2];
         tClaimantIDs.put(yM30, tClaimantIDs0);
-        HashSet<DW_ID> tAllIDs0;
-        tAllIDs0 = (HashSet<DW_ID>) tSHBEData0[6];
-        tAllIDs.put(yM30, tAllIDs0);
+        HashSet<DW_ID> AllIDs0;
+        AllIDs0 = (HashSet<DW_ID>) tSHBEData0[6];
+        AllIDs.put(yM30, AllIDs0);
         HashMap<DW_ID, String> tIDByPostcode0;
         tIDByPostcode0 = (HashMap<DW_ID, String>) tSHBEData0[8];
         //tIDByPostcode0 = loadIDByPostcode(loadData, filename, i);
         HashMap<DW_ID, Integer> tIDByTenancyType0;
         tIDByTenancyType0 = (HashMap<DW_ID, Integer>) tSHBEData0[9];
         //tIDByTenancyType0 = loadIDByTenancyType(loadData, filename, i);
-        HashMap<String, DW_ID> tCTBRefToIDLookup0;
-        tCTBRefToIDLookup0 = (HashMap<String, DW_ID>) tSHBEData0[10];
+        HashMap<String, DW_ID> CTBRefToIDLookup0;
+        CTBRefToIDLookup0 = (HashMap<String, DW_ID>) tSHBEData0[10];
         //tCTBRefID0 = loadCTBRefByID(loadData, filename, i);        
         HashMap<String, Integer> tLoadSummary;
         tLoadSummary = (HashMap<String, Integer>) tSHBEData0[12];
@@ -2344,7 +2347,7 @@ public class Summary {
         // All
         initCounts(nTT, nEG, nPSI);
         Iterator<String> ite;
-        ite = tCTBRefToIDLookup0.keySet().iterator();
+        ite = CTBRefToIDLookup0.keySet().iterator();
         while (ite.hasNext()) {
             String CTBRef;
             CTBRef = ite.next();
@@ -2352,7 +2355,7 @@ public class Summary {
             D_Record = tDRecords0.get(CTBRef).getDRecord();
             doSingleTimeCount(
                     D_Record, CTBRef,
-                    tCTBRefToIDLookup0,
+                    CTBRefToIDLookup0,
                     tIDByTenancyType0,
                     tIDByPostcode0,
                     yM30v);
@@ -2391,7 +2394,7 @@ public class Summary {
              * result[7] is a HashMap<DW_ID, Long> tClaimantIDToRecordIDLookup;
              * result[8] is a HashMap<DW_ID, String> tClaimantIDToPostcodeLookup;
              * result[9] is a HashMap<DW_ID, Integer> tClaimantIDToTenancyTypeLookup;
-             * result[10] is a HashMap<String, DW_ID> tCTBRefToClaimantIDLookup;
+             * result[10] is a HashMap<String, DW_ID> CTBRefToClaimantIDLookup;
              * result[11] is a HashMap<DW_ID, String> tClaimantIDToCTBRefLookup;
              * result[12] is a HashMap<String, Integer> tLoadSummary;
              * result[13] is a HashSet<ID_TenancyType> tClaimantIDAndPostcode.
@@ -2403,9 +2406,9 @@ public class Summary {
             HashSet<DW_ID> tClaimantIDs1;
             tClaimantIDs1 = (HashSet<DW_ID>) tSHBEData1[2];
             tClaimantIDs.put(yM31, tClaimantIDs1);
-            HashSet<DW_ID> tAllIDs1;
-            tAllIDs1 = (HashSet<DW_ID>) tSHBEData1[6];
-            tAllIDs.put(yM31, tAllIDs1);
+            HashSet<DW_ID> AllIDs1;
+            AllIDs1 = (HashSet<DW_ID>) tSHBEData1[6];
+            AllIDs.put(yM31, AllIDs1);
             HashMap<DW_ID, String> tIDByPostcode1;
             tIDByPostcode1 = (HashMap<DW_ID, String>) tSHBEData1[8];
             HashMap<DW_ID, Integer> tIDByTenancyType1;
@@ -2448,7 +2451,7 @@ public class Summary {
                 doCompare2TimesCounts(
                         D_Record,
                         CTBRef,
-                        tCTBRefToIDLookup0,
+                        CTBRefToIDLookup0,
                         CTBRefToIDLookup1,
                         tIDByTenancyType0,
                         tIDByTenancyType1,
@@ -2481,7 +2484,7 @@ public class Summary {
             tDRecords0 = tDRecords1;
             tIDByPostcode0 = tIDByPostcode1;
             tIDByTenancyType0 = tIDByTenancyType1;
-            tCTBRefToIDLookup0 = CTBRefToIDLookup1;
+            CTBRefToIDLookup0 = CTBRefToIDLookup1;
             yM30 = yM31;
             yM30v = yM31v;
             // Not used at present. incomeAndRentSummary0 = incomeAndRentSummary1;
@@ -2899,8 +2902,8 @@ public class Summary {
         // This would involve feeding them in to the method too per se.
         TreeMap<String, HashSet<DW_ID>> tClaimantIDs;
         tClaimantIDs = new TreeMap<String, HashSet<DW_ID>>();
-        TreeMap<String, HashSet<DW_ID>> tAllIDs;
-        tAllIDs = new TreeMap<String, HashSet<DW_ID>>();
+        TreeMap<String, HashSet<DW_ID>> AllIDs;
+        AllIDs = new TreeMap<String, HashSet<DW_ID>>();
         TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes;
         tClaimantIDPostcodes = new TreeMap<String, HashSet<ID_PostcodeID>>();
         TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTenancyTypes;
@@ -2914,17 +2917,17 @@ public class Summary {
         HashSet<DW_ID> tClaimantIDs0;
         tClaimantIDs0 = (HashSet<DW_ID>) tSHBEData0[2];
         tClaimantIDs.put(yM30, tClaimantIDs0);
-        HashSet<DW_ID> tAllIDs0;
-        tAllIDs0 = (HashSet<DW_ID>) tSHBEData0[6];
-        tAllIDs.put(yM30, tAllIDs0);
+        HashSet<DW_ID> AllIDs0;
+        AllIDs0 = (HashSet<DW_ID>) tSHBEData0[6];
+        AllIDs.put(yM30, AllIDs0);
 //        HashMap<DW_ID, String> tIDByPostcode0;
 //        tIDByPostcode0 = (HashMap<DW_ID, String>) tSHBEData0[8];
         //tIDByPostcode0 = loadIDByPostcode(loadData, filename, i);
 //        HashMap<DW_ID, Integer> tIDByTenancyType0;
 //        tIDByTenancyType0 = (HashMap<DW_ID, Integer>) tSHBEData0[9];
         //tIDByTenancyType0 = loadIDByTenancyType(loadData, filename, i);
-//        HashMap<String, DW_ID> tCTBRefToIDLookup0;
-//        tCTBRefToIDLookup0 = (HashMap<String, DW_ID>) tSHBEData0[10];
+//        HashMap<String, DW_ID> CTBRefToIDLookup0;
+//        CTBRefToIDLookup0 = (HashMap<String, DW_ID>) tSHBEData0[10];
 //        HashSet<ID_PostcodeID> tClaimantIDPostcodes0;
 //        tClaimantIDPostcodes0 = (HashSet<ID_PostcodeID>) tSHBEData0[13];
 //        tClaimantIDPostcodes.put(yM30, tClaimantIDPostcodes0);
@@ -3104,12 +3107,12 @@ public class Summary {
             TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTenancyTypes,
             HashMap<String, DW_ID> NINOToIDLookup,
             HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
-        tCouncilLinkedRecordCount00 = tCouncilLinkedRecordCount0;
-        tRSLLinkedRecordCount00 = tRSLLinkedRecordCount0;
-        tAllLinkedRecordCount00 = tAllLinkedRecordCount0;
-        tAllCount00 = tAllCount0;
-        tCouncilCount00 = tCouncilCount0;
-        tRSLCount00 = tRSLCount0;
+        CouncilLinkedRecordCount00 = CouncilLinkedRecordCount0;
+        RSLLinkedRecordCount00 = RSLLinkedRecordCount0;
+        AllLinkedRecordCount00 = AllLinkedRecordCount0;
+        AllCount00 = AllCount0;
+        CouncilCount00 = CouncilCount0;
+        RSLCount00 = RSLCount0;
         partSummaryCompare2Times(
                 tSHBEData1, yM31, yM31v, filename1, tSHBEData0, yM30, yM30v,
                 filename0, forceNewSummaries, nTT, nEG, nPSI, councilFilenames,
@@ -3151,25 +3154,25 @@ public class Summary {
         summary.put(SHBEFilename1String, filename1);
         summary.put(CouncilFilename00String, councilFilenames.get(yM300));
         summary.put(RSLFilename00String, RSLFilenames.get(yM300));
-        summary.put(tCouncilCount00String, Integer.toString(tCouncilCount00));
-        summary.put(tCouncilLinkedRecordCount00String, Integer.toString(tCouncilLinkedRecordCount00));
-        summary.put(tRSLCount00String, Integer.toString(tRSLCount00));
-        summary.put(tRSLLinkedRecordCount00String, Integer.toString(tRSLLinkedRecordCount00));
-        summary.put(tAllLinkedRecordCount00String, Integer.toString(tCouncilLinkedRecordCount00 + tRSLLinkedRecordCount00));
+        summary.put(CouncilCount00String, Integer.toString(CouncilCount00));
+        summary.put(CouncilLinkedRecordCount00String, Integer.toString(CouncilLinkedRecordCount00));
+        summary.put(RSLCount00String, Integer.toString(RSLCount00));
+        summary.put(RSLLinkedRecordCount00String, Integer.toString(RSLLinkedRecordCount00));
+        summary.put(AllLinkedRecordCount00String, Integer.toString(CouncilLinkedRecordCount00 + RSLLinkedRecordCount00));
         summary.put(CouncilFilename0String, councilFilenames.get(yM30));
         summary.put(RSLFilename0String, RSLFilenames.get(yM30));
-        summary.put(tCouncilCount0String, Integer.toString(tCouncilCount0));
-        summary.put(tCouncilLinkedRecordCount0String, Integer.toString(tCouncilLinkedRecordCount0));
-        summary.put(tRSLCount0String, Integer.toString(tRSLCount0));
-        summary.put(tRSLLinkedRecordCount0String, Integer.toString(tRSLLinkedRecordCount0));
-        summary.put(tAllLinkedRecordCount0String, Integer.toString(tCouncilLinkedRecordCount0 + tRSLLinkedRecordCount0));
+        summary.put(CouncilCount0String, Integer.toString(CouncilCount0));
+        summary.put(CouncilLinkedRecordCount0String, Integer.toString(CouncilLinkedRecordCount0));
+        summary.put(RSLCount0String, Integer.toString(RSLCount0));
+        summary.put(RSLLinkedRecordCount0String, Integer.toString(RSLLinkedRecordCount0));
+        summary.put(AllLinkedRecordCount0String, Integer.toString(CouncilLinkedRecordCount0 + RSLLinkedRecordCount0));
         summary.put(CouncilFilename1String, councilFilenames.get(yM31));
         summary.put(RSLFilename1String, RSLFilenames.get(yM31));
-        summary.put(tCouncilCount1String, Integer.toString(tCouncilCount1));
-        summary.put(tCouncilLinkedRecordCount1String, Integer.toString(tCouncilLinkedRecordCount1));
-        summary.put(tRSLCount1String, Integer.toString(tRSLCount1));
-        summary.put(tRSLLinkedRecordCount1String, Integer.toString(tRSLLinkedRecordCount1));
-        summary.put(tAllLinkedRecordCount1String, Integer.toString(tCouncilLinkedRecordCount1 + tRSLLinkedRecordCount1));
+        summary.put(CouncilCount1String, Integer.toString(CouncilCount1));
+        summary.put(CouncilLinkedRecordCount1String, Integer.toString(CouncilLinkedRecordCount1));
+        summary.put(RSLCount1String, Integer.toString(RSLCount1));
+        summary.put(RSLLinkedRecordCount1String, Integer.toString(RSLLinkedRecordCount1));
+        summary.put(AllLinkedRecordCount1String, Integer.toString(CouncilLinkedRecordCount1 + RSLLinkedRecordCount1));
     }
 
     /**
@@ -3220,12 +3223,12 @@ public class Summary {
             TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTenancyTypes,
             HashMap<String, DW_ID> NINOToIDLookup,
             HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
-        tAllCount0 = tAllCount1;
-        tCouncilCount0 = tCouncilCount1;
-        tRSLCount0 = tRSLCount1;
-        tCouncilLinkedRecordCount0 = tCouncilLinkedRecordCount1;
-        tRSLLinkedRecordCount0 = tRSLLinkedRecordCount1;
-        tAllLinkedRecordCount0 = tAllLinkedRecordCount1;
+        AllCount0 = AllCount1;
+        CouncilCount0 = CouncilCount1;
+        RSLCount0 = RSLCount1;
+        CouncilLinkedRecordCount0 = CouncilLinkedRecordCount1;
+        RSLLinkedRecordCount0 = RSLLinkedRecordCount1;
+        AllLinkedRecordCount0 = AllLinkedRecordCount1;
         partSummarySingleTime(tSHBEData0, yM30, yM30v, filename0,
                 forceNewSummaries, nTT, nEG, nPSI, councilFilenames, RSLFilenames,
                 councilUnderOccupiedSet0, RSLUnderOccupiedSet0, result,
@@ -3239,15 +3242,15 @@ public class Summary {
         tIDByPostcode0 = (HashMap<DW_ID, String>) tSHBEData0[8];
         HashMap<DW_ID, Integer> tIDByTenancyType0;
         tIDByTenancyType0 = (HashMap<DW_ID, Integer>) tSHBEData0[9];
-        HashMap<String, DW_ID> tCTBRefToIDLookup0;
-        tCTBRefToIDLookup0 = (HashMap<String, DW_ID>) tSHBEData0[10];
+        HashMap<String, DW_ID> CTBRefToIDLookup0;
+        CTBRefToIDLookup0 = (HashMap<String, DW_ID>) tSHBEData0[10];
 
         HashMap<DW_ID, String> tIDByPostcode00;
         tIDByPostcode00 = (HashMap<DW_ID, String>) tSHBEData00[8];
         HashMap<DW_ID, Integer> tIDByTenancyType00;
         tIDByTenancyType00 = (HashMap<DW_ID, Integer>) tSHBEData00[9];
-        HashMap<String, DW_ID> tCTBRefToIDLookup00;
-        tCTBRefToIDLookup00 = (HashMap<String, DW_ID>) tSHBEData00[10];
+        HashMap<String, DW_ID> CTBRefToIDLookup00;
+        CTBRefToIDLookup00 = (HashMap<String, DW_ID>) tSHBEData00[10];
 
         TreeMap<String, DW_UnderOccupiedReport_Record> councilUnderOccupiedSet0Map;
         councilUnderOccupiedSet0Map = councilUnderOccupiedSet0.getMap();
@@ -3258,8 +3261,8 @@ public class Summary {
         doCompare2TimesLoopOverSet(
                 councilUnderOccupiedSet0Map,
                 tDRecords0,
-                tCTBRefToIDLookup00,
-                tCTBRefToIDLookup0,
+                CTBRefToIDLookup00,
+                CTBRefToIDLookup0,
                 tIDByTenancyType00,
                 tIDByTenancyType0,
                 tIDByPostcode00,
@@ -3270,8 +3273,8 @@ public class Summary {
         doCompare2TimesLoopOverSet(
                 RSLUnderOccupiedSet0Map,
                 tDRecords0,
-                tCTBRefToIDLookup00,
-                tCTBRefToIDLookup0,
+                CTBRefToIDLookup00,
+                CTBRefToIDLookup0,
                 tIDByTenancyType00,
                 tIDByTenancyType0,
                 tIDByPostcode00,
@@ -3291,18 +3294,18 @@ public class Summary {
         summary.put(SHBEFilename1String, filename0); // This looks wierd but is right!
         summary.put(CouncilFilename0String, councilFilenames.get(yM300)); // This looks wierd but is right!
         summary.put(RSLFilename0String, RSLFilenames.get(yM300)); // This looks wierd but is right!
-        summary.put(tCouncilCount0String, Integer.toString(tCouncilCount0));
-        summary.put(tCouncilLinkedRecordCount0String, Integer.toString(tCouncilLinkedRecordCount0));
-        summary.put(tRSLCount0String, Integer.toString(tRSLCount0));
-        summary.put(tRSLLinkedRecordCount0String, Integer.toString(tRSLLinkedRecordCount0));
-        summary.put(tAllLinkedRecordCount0String, Integer.toString(tCouncilLinkedRecordCount0 + tRSLLinkedRecordCount0));
+        summary.put(CouncilCount0String, Integer.toString(CouncilCount0));
+        summary.put(CouncilLinkedRecordCount0String, Integer.toString(CouncilLinkedRecordCount0));
+        summary.put(RSLCount0String, Integer.toString(RSLCount0));
+        summary.put(RSLLinkedRecordCount0String, Integer.toString(RSLLinkedRecordCount0));
+        summary.put(AllLinkedRecordCount0String, Integer.toString(CouncilLinkedRecordCount0 + RSLLinkedRecordCount0));
         summary.put(CouncilFilename1String, councilFilenames.get(yM30)); // This looks wierd but is right!
         summary.put(RSLFilename1String, RSLFilenames.get(yM30)); // This looks wierd but is right!
-        summary.put(tCouncilCount1String, Integer.toString(tCouncilCount1));
-        summary.put(tCouncilLinkedRecordCount1String, Integer.toString(tCouncilLinkedRecordCount1));
-        summary.put(tRSLCount1String, Integer.toString(tRSLCount1));
-        summary.put(tRSLLinkedRecordCount1String, Integer.toString(tRSLLinkedRecordCount1));
-        summary.put(tAllLinkedRecordCount1String, Integer.toString(tCouncilLinkedRecordCount1 + tRSLLinkedRecordCount1));
+        summary.put(CouncilCount1String, Integer.toString(CouncilCount1));
+        summary.put(CouncilLinkedRecordCount1String, Integer.toString(CouncilLinkedRecordCount1));
+        summary.put(RSLCount1String, Integer.toString(RSLCount1));
+        summary.put(RSLLinkedRecordCount1String, Integer.toString(RSLLinkedRecordCount1));
+        summary.put(AllLinkedRecordCount1String, Integer.toString(CouncilLinkedRecordCount1 + RSLLinkedRecordCount1));
     }
 
     private void addToSetsForComparisons(
@@ -3351,7 +3354,7 @@ public class Summary {
             //            TreeMap<String, DW_SHBE_Record> tDRecords0,
             //            HashMap<DW_ID, String> tIDByPostcode0,
             //            HashMap<DW_ID, Integer> tIDByTenancyType0,
-            //            HashMap<String, DW_ID> tCTBRefToIDLookup0,
+            //            HashMap<String, DW_ID> CTBRefToIDLookup0,
             //            HashMap<String, Integer> tLoadSummary,
             String yM3,
             String yM3v,
@@ -3379,8 +3382,8 @@ public class Summary {
         HashMap<DW_ID, Integer> tIDByTenancyType0;
         tIDByTenancyType0 = (HashMap<DW_ID, Integer>) tSHBEData[9];
         //tIDByTenancyType0 = loadIDByTenancyType(loadData, filename, i);
-        HashMap<String, DW_ID> tCTBRefToIDLookup0;
-        tCTBRefToIDLookup0 = (HashMap<String, DW_ID>) tSHBEData[10];
+        HashMap<String, DW_ID> CTBRefToIDLookup0;
+        CTBRefToIDLookup0 = (HashMap<String, DW_ID>) tSHBEData[10];
         //tCTBRefID0 = loadCTBRefByID(loadData, filename, i);
         String key;
         key = DW_SHBE_Handler.getYearMonthNumber(filename);
@@ -3409,12 +3412,12 @@ public class Summary {
         RSLUnderOccupiedSet0Map = RSLUnderOccupiedSet.getMap();
         // Loop over underoccupancy data
         // Loop over Council
-        tCouncilLinkedRecordCount1 = doSingleTimeLoopOverSet(
-                councilUnderOccupiedSet0Map, tDRecords0, tCTBRefToIDLookup0,
+        CouncilLinkedRecordCount1 = doSingleTimeLoopOverSet(
+                councilUnderOccupiedSet0Map, tDRecords0, CTBRefToIDLookup0,
                 tIDByTenancyType0, tIDByPostcode0, yM3v);
         // Loop over RSL
-        tRSLLinkedRecordCount1 = doSingleTimeLoopOverSet(
-                RSLUnderOccupiedSet0Map, tDRecords0, tCTBRefToIDLookup0,
+        RSLLinkedRecordCount1 = doSingleTimeLoopOverSet(
+                RSLUnderOccupiedSet0Map, tDRecords0, CTBRefToIDLookup0,
                 tIDByTenancyType0, tIDByPostcode0, yM3v);
         HashMap<String, BigDecimal> incomeAndRentSummary0;
         incomeAndRentSummary0 = DW_SHBE_Handler.getIncomeAndRentSummary(
@@ -3428,19 +3431,19 @@ public class Summary {
                 incomeAndRentSummary0);
 
         // All
-        tCouncilCount1 = councilUnderOccupiedSet0Map.size();
-        tRSLCount1 = RSLUnderOccupiedSet0Map.size();
-        tAllCount1 = tCouncilCount1 + tRSLCount1;
-        tAllLinkedRecordCount1 = tCouncilLinkedRecordCount1 + tRSLLinkedRecordCount1;
+        CouncilCount1 = councilUnderOccupiedSet0Map.size();
+        RSLCount1 = RSLUnderOccupiedSet0Map.size();
+        AllCount1 = CouncilCount1 + RSLCount1;
+        AllLinkedRecordCount1 = CouncilLinkedRecordCount1 + RSLLinkedRecordCount1;
         summary.put(SHBEFilename1String, filename);
         summary.put(CouncilFilename1String, councilFilenames.get(yM3));
         summary.put(RSLFilename1String, RSLFilenames.get(yM3));
-        summary.put(tCouncilCount1String, Integer.toString(councilUnderOccupiedSet0Map.size()));
-        summary.put(tCouncilLinkedRecordCount1String, Integer.toString(tCouncilLinkedRecordCount1));
-        summary.put(tRSLCount1String, Integer.toString(RSLUnderOccupiedSet0Map.size()));
-        summary.put(tRSLLinkedRecordCount1String, Integer.toString(tRSLLinkedRecordCount1));
-        summary.put(tAllCount1String, Integer.toString(tAllCount1));
-        summary.put(tAllLinkedRecordCount1String, Integer.toString(tAllLinkedRecordCount1));
+        summary.put(CouncilCount1String, Integer.toString(councilUnderOccupiedSet0Map.size()));
+        summary.put(CouncilLinkedRecordCount1String, Integer.toString(CouncilLinkedRecordCount1));
+        summary.put(RSLCount1String, Integer.toString(RSLUnderOccupiedSet0Map.size()));
+        summary.put(RSLLinkedRecordCount1String, Integer.toString(RSLLinkedRecordCount1));
+        summary.put(AllCount1String, Integer.toString(AllCount1));
+        summary.put(AllLinkedRecordCount1String, Integer.toString(AllLinkedRecordCount1));
         addToSummarySingleTime(nTT, nEG, nPSI, summary);
         addToSummarySingleTimeRentArrears(summary);
     }
@@ -3448,8 +3451,8 @@ public class Summary {
     public void doCompare2TimesLoopOverSet(
             TreeMap<String, DW_UnderOccupiedReport_Record> map,
             TreeMap<String, DW_SHBE_Record> D_Records0,
-            HashMap<String, DW_ID> tCTBRefID0,
-            HashMap<String, DW_ID> tCTBRefID1,
+            HashMap<String, DW_ID> CTBRefID0,
+            HashMap<String, DW_ID> CTBRefID1,
             HashMap<DW_ID, Integer> tIDByTenancyType0,
             HashMap<DW_ID, Integer> tIDByTenancyType1,
             HashMap<DW_ID, String> tIDByPostcode0,
@@ -3478,8 +3481,8 @@ public class Summary {
                 doCompare2TimesCounts(
                         D_Record,
                         CTBRef,
-                        tCTBRefID0,
-                        tCTBRefID1,
+                        CTBRefID0,
+                        CTBRefID1,
                         tIDByTenancyType0,
                         tIDByTenancyType1,
                         tIDByPostcode0,
@@ -3493,7 +3496,7 @@ public class Summary {
     public int doSingleTimeLoopOverSet(
             TreeMap<String, DW_UnderOccupiedReport_Record> map,
             TreeMap<String, DW_SHBE_Record> D_Records,
-            HashMap<String, DW_ID> tCTBRefToIDLookup0,
+            HashMap<String, DW_ID> CTBRefToIDLookup0,
             HashMap<DW_ID, Integer> tIDByTenancyType0,
             HashMap<DW_ID, String> tIDByPostcode0,
             String yM30v) {
@@ -3520,7 +3523,7 @@ public class Summary {
                 doSingleTimeCount(
                         D_Record,
                         CTBRef,
-                        tCTBRefToIDLookup0,
+                        CTBRefToIDLookup0,
                         tIDByTenancyType0,
                         tIDByPostcode0,
                         yM30v);
@@ -3608,22 +3611,22 @@ public class Summary {
         if (underOccupancy) {
             header += CouncilFilename00String + ", ";
             header += RSLFilename00String + ", ";
-            header += tCouncilCount00String + ", ";
-            header += tRSLCount00String + ", ";
-            header += tAllCount00String + ", ";
-            header += tAllLinkedRecordCount00String + ", ";
+            header += CouncilCount00String + ", ";
+            header += RSLCount00String + ", ";
+            header += AllCount00String + ", ";
+            header += AllLinkedRecordCount00String + ", ";
             header += CouncilFilename0String + ", ";
             header += RSLFilename0String + ", ";
-            header += tCouncilCount0String + ", ";
-            header += tRSLCount0String + ", ";
-            header += tAllCount0String + ", ";
-            header += tAllLinkedRecordCount1String + ", ";
+            header += CouncilCount0String + ", ";
+            header += RSLCount0String + ", ";
+            header += AllCount0String + ", ";
+            header += AllLinkedRecordCount1String + ", ";
             header += CouncilFilename1String + ", ";
             header += RSLFilename1String + ", ";
-            header += tCouncilCount1String + ", ";
-            header += tRSLCount1String + ", ";
-            header += tAllCount1String + ", ";
-            header += tAllLinkedRecordCount1String + ", ";
+            header += CouncilCount1String + ", ";
+            header += RSLCount1String + ", ";
+            header += AllCount1String + ", ";
+            header += AllLinkedRecordCount1String + ", ";
         }
         header += SamePostcodeIIIString + ", ";
         header += SamePostcodeIOIString + ", ";
@@ -3680,22 +3683,22 @@ public class Summary {
             if (underOccupancy) {
                 line += summary.get(CouncilFilename00String) + ", ";
                 line += summary.get(RSLFilename00String) + ", ";
-                line += summary.get(tCouncilCount00String) + ", ";
-                line += summary.get(tRSLCount00String) + ", ";
-                line += summary.get(tAllCount00String) + ", ";
-                line += summary.get(tAllLinkedRecordCount00String) + ", ";
+                line += summary.get(CouncilCount00String) + ", ";
+                line += summary.get(RSLCount00String) + ", ";
+                line += summary.get(AllCount00String) + ", ";
+                line += summary.get(AllLinkedRecordCount00String) + ", ";
                 line += summary.get(CouncilFilename0String) + ", ";
                 line += summary.get(RSLFilename0String) + ", ";
-                line += summary.get(tCouncilCount0String) + ", ";
-                line += summary.get(tRSLCount0String) + ", ";
-                line += summary.get(tAllCount0String) + ", ";
-                line += summary.get(tAllLinkedRecordCount0String) + ", ";
+                line += summary.get(CouncilCount0String) + ", ";
+                line += summary.get(RSLCount0String) + ", ";
+                line += summary.get(AllCount0String) + ", ";
+                line += summary.get(AllLinkedRecordCount0String) + ", ";
                 line += summary.get(CouncilFilename1String) + ", ";
                 line += summary.get(RSLFilename1String) + ", ";
-                line += summary.get(tCouncilCount1String) + ", ";
-                line += summary.get(tRSLCount1String) + ", ";
-                line += summary.get(tAllCount1String) + ", ";
-                line += summary.get(tAllLinkedRecordCount1String) + ", ";
+                line += summary.get(CouncilCount1String) + ", ";
+                line += summary.get(RSLCount1String) + ", ";
+                line += summary.get(AllCount1String) + ", ";
+                line += summary.get(AllLinkedRecordCount1String) + ", ";
             }
             line += summary.get(SamePostcodeIIIString) + ", ";
             line += summary.get(SamePostcodeIOIString) + ", ";
@@ -3758,42 +3761,42 @@ public class Summary {
         if (underOccupancy) {
             header += CouncilFilename0String + ", ";
             header += RSLFilename0String + ", ";
-            header += tCouncilCount0String + ", ";
-            header += tRSLCount0String + ", ";
-            header += tAllCount0String + ", ";
-            header += tAllLinkedRecordCount1String + ", ";
+            header += CouncilCount0String + ", ";
+            header += RSLCount0String + ", ";
+            header += AllCount0String + ", ";
+            header += AllLinkedRecordCount1String + ", ";
             header += CouncilFilename1String + ", ";
             header += RSLFilename1String + ", ";
-            header += tCouncilCount1String + ", ";
-            header += tRSLCount1String + ", ";
-            header += tAllCount1String + ", ";
-            header += tAllLinkedRecordCount1String + ", ";
+            header += CouncilCount1String + ", ";
+            header += RSLCount1String + ", ";
+            header += AllCount1String + ", ";
+            header += AllLinkedRecordCount1String + ", ";
         }
-        header += tAllTenancyTypeChangeCountString + ", ";
-        header += tHBPostcode0ValidPostcode1ValidCountString + ", ";
-        header += tHBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString + ", ";
-        header += tHBPostcode0ValidPostcode1ValidPostcodeChangeCountString + ", ";
-        header += tHBPostcode0ValidPostcode1NotValidCountString + ", ";
-        header += tHBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString + ", ";
-        header += tHBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString + ", ";
-        header += tHBTenancyTypeChangeCountString + ", ";
-        header += tHBTenancyTypeChangeHousingCountString + ", ";
-        header += tHBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString + ", ";
-        header += tHBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString + ", ";
-        header += tHBPostcodeChangeWithinSocialTenancyTypesCountString + ", ";
-        header += tHBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString + ", ";
-        header += tCTBPostcode0ValidPostcode1ValidCountString + ", ";
-        header += tCTBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString + ", ";
-        header += tCTBPostcode0ValidPostcode1ValidPostcodeChangeCountString + ", ";
-        header += tCTBPostcode0ValidPostcode1NotValidCountString + ", ";
-        header += tCTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString + ", ";
-        header += tCTBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString + ", ";
-        header += tCTBTenancyTypeChangeCountString + ", ";
-        header += tCTBTenancyTypeChangeHousingCountString + ", ";
-        header += tCTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString + ", ";
-        header += tCTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString + ", ";
-        header += tCTBPostcodeChangeWithinSocialTenancyTypesCountString + ", ";
-        header += tCTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString;
+        header += AllTenancyTypeChangeCountString + ", ";
+        header += HBPostcode0ValidPostcode1ValidCountString + ", ";
+        header += HBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString + ", ";
+        header += HBPostcode0ValidPostcode1ValidPostcodeChangeCountString + ", ";
+        header += HBPostcode0ValidPostcode1NotValidCountString + ", ";
+        header += HBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString + ", ";
+        header += HBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString + ", ";
+        header += HBTenancyTypeChangeCountString + ", ";
+        header += HBTenancyTypeChangeHousingCountString + ", ";
+        header += HBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString + ", ";
+        header += HBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString + ", ";
+        header += HBPostcodeChangeWithinSocialTenancyTypesCountString + ", ";
+        header += HBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString + ", ";
+        header += CTBPostcode0ValidPostcode1ValidCountString + ", ";
+        header += CTBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString + ", ";
+        header += CTBPostcode0ValidPostcode1ValidPostcodeChangeCountString + ", ";
+        header += CTBPostcode0ValidPostcode1NotValidCountString + ", ";
+        header += CTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString + ", ";
+        header += CTBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString + ", ";
+        header += CTBTenancyTypeChangeCountString + ", ";
+        header += CTBTenancyTypeChangeHousingCountString + ", ";
+        header += CTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString + ", ";
+        header += CTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString + ", ";
+        header += CTBPostcodeChangeWithinSocialTenancyTypesCountString + ", ";
+        header += CTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString;
         pw.println(header);
         Iterator<String> ite;
         ite = summaryTable.keySet().iterator();
@@ -3826,44 +3829,44 @@ public class Summary {
             line += PostCodeLookupDate1 + ", " + PostCodeLookupFile1Name + ", ";
             if (underOccupancy) {
                 line += summary.get(CouncilFilename0String) + ", ";
-                line += summary.get(tCouncilCount0String) + ", ";
+                line += summary.get(CouncilCount0String) + ", ";
                 line += summary.get(RSLFilename0String) + ", ";
-                line += summary.get(tRSLCount0String) + ", ";
-                line += summary.get(tAllCount0String) + ", ";
-                line += summary.get(tAllLinkedRecordCount0String) + ", ";
+                line += summary.get(RSLCount0String) + ", ";
+                line += summary.get(AllCount0String) + ", ";
+                line += summary.get(AllLinkedRecordCount0String) + ", ";
                 line += summary.get(CouncilFilename1String) + ", ";
                 line += summary.get(RSLFilename1String) + ", ";
-                line += summary.get(tCouncilCount1String) + ", ";
-                line += summary.get(tRSLCount1String) + ", ";
-                line += summary.get(tAllCount1String) + ", ";
-                line += summary.get(tAllLinkedRecordCount1String) + ", ";
+                line += summary.get(CouncilCount1String) + ", ";
+                line += summary.get(RSLCount1String) + ", ";
+                line += summary.get(AllCount1String) + ", ";
+                line += summary.get(AllLinkedRecordCount1String) + ", ";
                 line += summary.get(CouncilFilename1String) + ", ";
             }
-            line += summary.get(tAllTenancyTypeChangeCountString) + ", ";
-            line += summary.get(tHBPostcode0ValidPostcode1ValidCountString) + ", ";
-            line += summary.get(tHBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString) + ", ";
-            line += summary.get(tHBPostcode0ValidPostcode1ValidPostcodeChangeCountString) + ", ";
-            line += summary.get(tHBPostcode0ValidPostcode1NotValidCountString) + ", ";
-            line += summary.get(tHBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString) + ", ";
-            line += summary.get(tHBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString) + ", ";
-            line += summary.get(tHBTenancyTypeChangeCountString) + ", ";
-            line += summary.get(tHBTenancyTypeChangeHousingCountString) + ", ";
-            line += summary.get(tHBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString) + ", ";
-            line += summary.get(tHBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString) + ", ";
-            line += summary.get(tHBPostcodeChangeWithinSocialTenancyTypesCountString) + ", ";
-            line += summary.get(tHBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString) + ", ";
-            line += summary.get(tCTBPostcode0ValidPostcode1ValidCountString) + ", ";
-            line += summary.get(tCTBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString) + ", ";
-            line += summary.get(tCTBPostcode0ValidPostcode1ValidPostcodeChangeCountString) + ", ";
-            line += summary.get(tCTBPostcode0ValidPostcode1NotValidCountString) + ", ";
-            line += summary.get(tCTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString) + ", ";
-            line += summary.get(tCTBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString) + ", ";
-            line += summary.get(tCTBTenancyTypeChangeCountString) + ", ";
-            line += summary.get(tCTBTenancyTypeChangeHousingCountString) + ", ";
-            line += summary.get(tCTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString) + ", ";
-            line += summary.get(tCTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString) + ", ";
-            line += summary.get(tCTBPostcodeChangeWithinSocialTenancyTypesCountString) + ", ";
-            line += summary.get(tCTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString);
+            line += summary.get(AllTenancyTypeChangeCountString) + ", ";
+            line += summary.get(HBPostcode0ValidPostcode1ValidCountString) + ", ";
+            line += summary.get(HBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString) + ", ";
+            line += summary.get(HBPostcode0ValidPostcode1ValidPostcodeChangeCountString) + ", ";
+            line += summary.get(HBPostcode0ValidPostcode1NotValidCountString) + ", ";
+            line += summary.get(HBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString) + ", ";
+            line += summary.get(HBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString) + ", ";
+            line += summary.get(HBTenancyTypeChangeCountString) + ", ";
+            line += summary.get(HBTenancyTypeChangeHousingCountString) + ", ";
+            line += summary.get(HBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString) + ", ";
+            line += summary.get(HBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString) + ", ";
+            line += summary.get(HBPostcodeChangeWithinSocialTenancyTypesCountString) + ", ";
+            line += summary.get(HBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString) + ", ";
+            line += summary.get(CTBPostcode0ValidPostcode1ValidCountString) + ", ";
+            line += summary.get(CTBPostcode0ValidPostcode1ValidPostcodeNotChangedCountString) + ", ";
+            line += summary.get(CTBPostcode0ValidPostcode1ValidPostcodeChangeCountString) + ", ";
+            line += summary.get(CTBPostcode0ValidPostcode1NotValidCountString) + ", ";
+            line += summary.get(CTBPostcode0NotValidPostcode1NotValidPostcodeNotChangedCountString) + ", ";
+            line += summary.get(CTBPostcode0NotValidPostcode1NotValidPostcodeChangedCountString) + ", ";
+            line += summary.get(CTBTenancyTypeChangeCountString) + ", ";
+            line += summary.get(CTBTenancyTypeChangeHousingCountString) + ", ";
+            line += summary.get(CTBSocialTenancyTypesToPrivateDeregulatedTenancyTypesCountString) + ", ";
+            line += summary.get(CTBPrivateDeregulatedTenancyTypesToSocialTenancyTypesCountString) + ", ";
+            line += summary.get(CTBPostcodeChangeWithinSocialTenancyTypesCountString) + ", ";
+            line += summary.get(CTBPostcodeChangeWithinPrivateDeregulatedTenancyTypesCountString);
             pw.println(line);
         }
         pw.close();
@@ -3910,12 +3913,12 @@ public class Summary {
         header += HBAverageHouseholdSizeString + ", ";
         header += CTBTotalHouseholdSizeString + ", ";
         header += CTBAverageHouseholdSizeString + ", ";
-        header += tAllPostcodeValidFormatCountString + ", ";
-        header += tAllPostcodeValidCountString + ", ";
-        header += tHBPostcodeValidFormatCountString + ", ";
-        header += tHBPostcodeValidCountString + ", ";
-        header += tCTBPostcodeValidFormatCountString + ", ";
-        header += tCTBPostcodeValidCountString + ", ";
+        header += AllPostcodeValidFormatCountString + ", ";
+        header += AllPostcodeValidCountString + ", ";
+        header += HBPostcodeValidFormatCountString + ", ";
+        header += HBPostcodeValidCountString + ", ";
+        header += CTBPostcodeValidFormatCountString + ", ";
+        header += CTBPostcodeValidCountString + ", ";
         for (int i = 1; i < nPSI; i++) {
             header += TotalAllPassportedStandardIndicatorCountString[i] + ", ";
             header += PercentageAllPassportedStandardIndicatorCountString[i] + ", ";
@@ -3964,12 +3967,12 @@ public class Summary {
             line += summary.get(HBAverageHouseholdSizeString) + ", ";
             line += summary.get(CTBTotalHouseholdSizeString) + ", ";
             line += summary.get(CTBAverageHouseholdSizeString) + ", ";
-            line += summary.get(tAllPostcodeValidFormatCountString) + ", ";
-            line += summary.get(tAllPostcodeValidCountString) + ", ";
-            line += summary.get(tHBPostcodeValidFormatCountString) + ", ";
-            line += summary.get(tHBPostcodeValidCountString) + ", ";
-            line += summary.get(tCTBPostcodeValidFormatCountString) + ", ";
-            line += summary.get(tCTBPostcodeValidCountString) + ", ";
+            line += summary.get(AllPostcodeValidFormatCountString) + ", ";
+            line += summary.get(AllPostcodeValidCountString) + ", ";
+            line += summary.get(HBPostcodeValidFormatCountString) + ", ";
+            line += summary.get(HBPostcodeValidCountString) + ", ";
+            line += summary.get(CTBPostcodeValidFormatCountString) + ", ";
+            line += summary.get(CTBPostcodeValidCountString) + ", ";
             for (int i = 1; i < nPSI; i++) {
                 line += summary.get(TotalAllPassportedStandardIndicatorCountString[i]) + ", ";
                 line += summary.get(PercentageAllPassportedStandardIndicatorCountString[i]) + ", ";
@@ -4141,19 +4144,19 @@ public class Summary {
         header = "";
         header += SHBEFilename1String + ", ";
         header += getSingleTimeGenericHeaderPart(doUnderOccupancy);
-        header += tTotalIncomeString + ", ";
-        header += tTotalIncomeGreaterThanZeroCountString + ", ";
-        header += tAverageIncomeString + ", ";
-        header += tTotalWeeklyEligibleRentAmountString + ", ";
-        header += tTotalWeeklyEligibleRentAmountGreaterThanZeroCountString + ", ";
-        header += tAverageWeeklyEligibleRentAmountString + ", ";
+        header += TotalIncomeString + ", ";
+        header += TotalIncomeGreaterThanZeroCountString + ", ";
+        header += AverageIncomeString + ", ";
+        header += TotalWeeklyEligibleRentAmountString + ", ";
+        header += TotalWeeklyEligibleRentAmountNonZeroCountString + ", ";
+        header += AverageWeeklyEligibleRentAmountString + ", ";
         for (int i = 1; i < nTT; i++) {
-            header += tTotalIncomeString + "TenancyType" + i + ", ";
-            header += tTotalIncomeGreaterThanZeroCountString + "TenancyType" + i + ", ";
-            header += tAverageIncomeString + "TenancyType" + i + ", ";
-            header += tTotalWeeklyEligibleRentAmountString + "TenancyType" + i + ", ";
-            header += tTotalWeeklyEligibleRentAmountGreaterThanZeroCountString + "TenancyType" + i + ", ";
-            header += tAverageWeeklyEligibleRentAmountString + "TenancyType" + i + ", ";
+            header += TotalIncomeString + "TenancyType" + i + ", ";
+            header += TotalIncomeGreaterThanZeroCountString + "TenancyType" + i + ", ";
+            header += AverageIncomeString + "TenancyType" + i + ", ";
+            header += TotalWeeklyEligibleRentAmountString + "TenancyType" + i + ", ";
+            header += TotalWeeklyEligibleRentAmountNonZeroCountString + "TenancyType" + i + ", ";
+            header += AverageWeeklyEligibleRentAmountString + "TenancyType" + i + ", ";
         }
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -4171,19 +4174,19 @@ public class Summary {
             filename1 = summary.get(SHBEFilename1String);
             line += filename1 + ", ";
             line += getSingleTimeGenericLinePart(key, summary, doUnderOccupancy);
-            line += summary.get(tTotalIncomeString) + ", ";
-            line += summary.get(tTotalIncomeGreaterThanZeroCountString) + ", ";
-            line += summary.get(tAverageIncomeString) + ", ";
-            line += summary.get(tTotalWeeklyEligibleRentAmountString) + ", ";
-            line += summary.get(tTotalWeeklyEligibleRentAmountGreaterThanZeroCountString) + ", ";
-            line += summary.get(tAverageWeeklyEligibleRentAmountString) + ", ";
+            line += summary.get(TotalIncomeString) + ", ";
+            line += summary.get(TotalIncomeGreaterThanZeroCountString) + ", ";
+            line += summary.get(AverageIncomeString) + ", ";
+            line += summary.get(TotalWeeklyEligibleRentAmountString) + ", ";
+            line += summary.get(TotalWeeklyEligibleRentAmountNonZeroCountString) + ", ";
+            line += summary.get(AverageWeeklyEligibleRentAmountString) + ", ";
             for (int i = 1; i < nTT; i++) {
-                line += summary.get(tTotalIncomeString + "TenancyType" + i) + ", ";
-                line += summary.get(tTotalIncomeGreaterThanZeroCountString + "TenancyType" + i) + ", ";
-                line += summary.get(tAverageIncomeString + "TenancyType" + i) + ", ";
-                line += summary.get(tTotalWeeklyEligibleRentAmountString + "TenancyType" + i) + ", ";
-                line += summary.get(tTotalWeeklyEligibleRentAmountGreaterThanZeroCountString + "TenancyType" + i) + ", ";
-                line += summary.get(tAverageWeeklyEligibleRentAmountString + "TenancyType" + i) + ", ";
+                line += summary.get(TotalIncomeString + "TenancyType" + i) + ", ";
+                line += summary.get(TotalIncomeGreaterThanZeroCountString + "TenancyType" + i) + ", ";
+                line += summary.get(AverageIncomeString + "TenancyType" + i) + ", ";
+                line += summary.get(TotalWeeklyEligibleRentAmountString + "TenancyType" + i) + ", ";
+                line += summary.get(TotalWeeklyEligibleRentAmountNonZeroCountString + "TenancyType" + i) + ", ";
+                line += summary.get(AverageWeeklyEligibleRentAmountString + "TenancyType" + i) + ", ";
             }
             line = line.substring(0, line.length() - 2);
             pw.println(line);
@@ -4213,13 +4216,13 @@ public class Summary {
         header += SHBEFilename1String + ", ";
         header += getSingleTimeGenericHeaderPart(underOccupancy);
         for (int i = 1; i < nEG; i++) {
-            header += tAllEthnicGroupCountString[i] + ", ";
+            header += AllEthnicGroupCountString[i] + ", ";
         }
         for (int i = 1; i < nEG; i++) {
-            header += tHBEthnicGroupCountString[i] + ", ";
+            header += HBEthnicGroupCountString[i] + ", ";
         }
         for (int i = 1; i < nEG; i++) {
-            header += tCTBEthnicGroupCountString[i] + ", ";
+            header += CTBEthnicGroupCountString[i] + ", ";
         }
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -4239,13 +4242,13 @@ public class Summary {
             line += getSingleTimeGenericLinePart(key,
                     summary, underOccupancy);
             for (int i = 1; i < nEG; i++) {
-                line += summary.get(tAllEthnicGroupCountString[i]) + ", ";
+                line += summary.get(AllEthnicGroupCountString[i]) + ", ";
             }
             for (int i = 1; i < nEG; i++) {
-                line += summary.get(tHBEthnicGroupCountString[i]) + ", ";
+                line += summary.get(HBEthnicGroupCountString[i]) + ", ";
             }
             for (int i = 1; i < nEG; i++) {
-                line += summary.get(tCTBEthnicGroupCountString[i]) + ", ";
+                line += summary.get(CTBEthnicGroupCountString[i]) + ", ";
             }
             line = line.substring(0, line.length() - 2);
             pw.println(line);
@@ -4275,21 +4278,21 @@ public class Summary {
         header += SHBEFilename1String + ", ";
         header += getSingleTimeGenericHeaderPart(underOccupancy);
         for (int i = 1; i < nTT; i++) {
-            header += tAllTenancyTypeClaimantCountString[i] + ", ";
+            header += AllTenancyTypeClaimantCountString[i] + ", ";
             if (i == 8) {
-                header += tAllTenancyType8InLS277NSClaimantCountString + ", ";
+                header += AllTenancyType8InLS277NSClaimantCountString + ", ";
             }
         }
         for (int i = 1; i < nTT; i++) {
-            header += tHBTenancyTypeClaimantCountString[i] + ", ";
+            header += HBTenancyTypeClaimantCountString[i] + ", ";
             if (i == 8) {
-                header += tHBTenancyType8InLS277NSClaimantCountString + ", ";
+                header += HBTenancyType8InLS277NSClaimantCountString + ", ";
             }
         }
         for (int i = 1; i < nTT; i++) {
-            header += tCTBTenancyTypeClaimantCountString[i] + ", ";
+            header += CTBTenancyTypeClaimantCountString[i] + ", ";
             if (i == 8) {
-                header += tCTBTenancyType8InLS277NSClaimantCountString + ", ";
+                header += CTBTenancyType8InLS277NSClaimantCountString + ", ";
             }
         }
         header = header.substring(0, header.length() - 2);
@@ -4310,21 +4313,21 @@ public class Summary {
             line += getSingleTimeGenericLinePart(key,
                     summary, underOccupancy);
             for (int i = 1; i < nTT; i++) {
-                line += summary.get(tAllTenancyTypeClaimantCountString[i]) + ", ";
+                line += summary.get(AllTenancyTypeClaimantCountString[i]) + ", ";
                 if (i == 8) {
-                    line += summary.get(tAllTenancyType8InLS277NSClaimantCountString) + ", ";
+                    line += summary.get(AllTenancyType8InLS277NSClaimantCountString) + ", ";
                 }
             }
             for (int i = 1; i < nTT; i++) {
-                line += summary.get(tHBTenancyTypeClaimantCountString[i]) + ", ";
+                line += summary.get(HBTenancyTypeClaimantCountString[i]) + ", ";
                 if (i == 8) {
-                    line += summary.get(tHBTenancyType8InLS277NSClaimantCountString) + ", ";
+                    line += summary.get(HBTenancyType8InLS277NSClaimantCountString) + ", ";
                 }
             }
             for (int i = 1; i < nTT; i++) {
-                line += summary.get(tCTBTenancyTypeClaimantCountString[i]) + ", ";
+                line += summary.get(CTBTenancyTypeClaimantCountString[i]) + ", ";
                 if (i == 8) {
-                    line += summary.get(tCTBTenancyType8InLS277NSClaimantCountString) + ", ";
+                    line += summary.get(CTBTenancyType8InLS277NSClaimantCountString) + ", ";
                 }
             }
             line = line.substring(0, line.length() - 2);
@@ -4346,9 +4349,9 @@ public class Summary {
                     + "AllCount, "
                     + "AllLinkedRecordsCount";
         } else {
-            result += tAllCountString + ", ";
-            result += tHBCountString + ", ";
-            result += tCTBCountString + ", ";
+            result += AllCountString + ", ";
+            result += HBCountString + ", ";
+            result += CTBCountString + ", ";
         }
         return result;
     }
@@ -4361,19 +4364,19 @@ public class Summary {
         result = key + ", ";
         if (doUnderOccupancy) {
             result += summary.get(CouncilFilename1String) + ", ";
-            result += summary.get(tCouncilCount1String) + ", ";
-            result += summary.get(tCouncilLinkedRecordCount1String) + ", ";
+            result += summary.get(CouncilCount1String) + ", ";
+            result += summary.get(CouncilLinkedRecordCount1String) + ", ";
             result += summary.get(RSLFilename1String) + ", ";
-            result += summary.get(tRSLCount1String) + ", ";
-            result += summary.get(tRSLLinkedRecordCount1String) + ", ";
-            result += summary.get(tAllCount1String) + ", ";
+            result += summary.get(RSLCount1String) + ", ";
+            result += summary.get(RSLLinkedRecordCount1String) + ", ";
+            result += summary.get(AllCount1String) + ", ";
 //                    (Integer.valueOf(summary.get("CouncilCount"))
 //                    + Integer.valueOf(summary.get("RSLCount")))) + ", ";
-            result += summary.get(tAllLinkedRecordCount1String) + ", ";
+            result += summary.get(AllLinkedRecordCount1String) + ", ";
         } else {
-            result += summary.get(tAllCountString) + ", ";
-            result += summary.get(tHBCountString) + ", ";
-            result += summary.get(tCTBCountString) + ", ";
+            result += summary.get(AllCountString) + ", ";
+            result += summary.get(HBCountString) + ", ";
+            result += summary.get(CTBCountString) + ", ";
         }
         return result;
     }

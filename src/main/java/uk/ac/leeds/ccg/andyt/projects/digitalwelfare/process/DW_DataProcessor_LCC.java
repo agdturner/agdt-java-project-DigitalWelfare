@@ -259,7 +259,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             int nEG;
             nEG = DW_SHBE_Handler.getNumberOfClaimantsEthnicGroups();
             int nPSI;
-            nPSI = DW_SHBE_Handler.getNumberOfPassportStandardIndicators();
+            nPSI = DW_SHBE_Handler.getOneOverMaxValueOfPassportStandardIndicator();
             Summary tSummary = new Summary(
                     tDW_SHBE_Handler, 
                     nTT,

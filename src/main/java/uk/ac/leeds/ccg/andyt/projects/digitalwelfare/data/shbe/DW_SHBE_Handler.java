@@ -3341,8 +3341,8 @@ public class DW_SHBE_Handler {
         return 17;
     }
 
-    public static int getNumberOfPassportStandardIndicators() {
-        return 5;
+    public static int getOneOverMaxValueOfPassportStandardIndicator() {
+        return 6;
     }
     
     public static ArrayList<String> getTenureTypeAll(
