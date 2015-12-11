@@ -36,6 +36,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Collectio
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_S_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.ID_PostcodeID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.ID_TenancyType_PostcodeID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.ID_TenancyType;
@@ -56,7 +57,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     private DW_SHBE_Handler tDW_SHBE_Handler;
     private DW_UnderOccupiedReport_Handler tDW_UnderOccupiedReport_Handler;
     //private double distanceThreshold;
-
+    
     public DW_DataProcessor_LCC() {
     }
 
@@ -68,75 +69,6 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         new DW_DataProcessor_LCC().run();
     }
 
-    public static Object[] getTenancyTypeGroups() {
-        Object[] result;
-        result = new Object[4];
-        // Tenancy Type Groups
-        Boolean underOccupied;
-        HashMap<Boolean, TreeMap<String, ArrayList<String>>> tenancyTypeGroups;
-        tenancyTypeGroups = new HashMap<Boolean, TreeMap<String, ArrayList<String>>>();
-        HashMap<Boolean, ArrayList<String>> tenancyTypesGrouped;
-        tenancyTypesGrouped = new HashMap<Boolean, ArrayList<String>>();
-        TreeMap<String, ArrayList<String>> ttgs;
-        ArrayList<String> ttg;
-        ArrayList<String> all;
-        ArrayList<String> regulated;
-        ArrayList<String> unregulated;
-        HashMap<Boolean, ArrayList<String>> regulatedGroups;
-        regulatedGroups = new HashMap<Boolean, ArrayList<String>>();
-        HashMap<Boolean, ArrayList<String>> unregulatedGroups;
-        unregulatedGroups = new HashMap<Boolean, ArrayList<String>>();
-        ArrayList<String> rg;
-        ArrayList<String> ug;
-        // Not UO
-        underOccupied = false;
-        ttgs = new TreeMap<String, ArrayList<String>>();
-        all = DW_SHBE_Handler.getTenureTypeAll(underOccupied);
-        ttgs.put("all", all);
-        regulated = DW_SHBE_Handler.getTenancyTypeRegulated(underOccupied);
-        ttgs.put("regulated", regulated);
-        unregulated = DW_SHBE_Handler.getTenancyTypeUnregulated(underOccupied);
-        ttgs.put("unregulated", unregulated);
-        tenancyTypeGroups.put(underOccupied, ttgs);
-        ttg = new ArrayList<String>();
-        ttg.add("Regulated");
-        ttg.add("Unregulated");
-        ttg.add("Ungrouped");
-        ttg.add("-999");
-        tenancyTypesGrouped.put(underOccupied, ttg);
-        rg = DW_SHBE_Handler.getTenancyTypeRegulated(underOccupied);
-        regulatedGroups.put(underOccupied, rg);
-        ug = DW_SHBE_Handler.getTenancyTypeUnregulated(underOccupied);
-        unregulatedGroups.put(underOccupied, ug);
-        // UO
-        underOccupied = true;
-        ttgs = new TreeMap<String, ArrayList<String>>();
-        all = DW_SHBE_Handler.getTenureTypeAll(underOccupied);
-        ttgs.put("all", all);
-        regulated = DW_SHBE_Handler.getTenancyTypeRegulated(underOccupied);
-        ttgs.put("regulated", regulated);
-        unregulated = DW_SHBE_Handler.getTenancyTypeUnregulated(underOccupied);
-        ttgs.put("unregulated", unregulated);
-        tenancyTypeGroups.put(underOccupied, ttgs);
-        ttg = new ArrayList<String>();
-        ttg.add("Regulated");
-        ttg.add("RegulatedUO");
-        ttg.add("Unregulated");
-        ttg.add("UnregulatedUO");
-        ttg.add("Ungrouped");
-        ttg.add("UngroupedUO");
-        ttg.add("-999");
-        tenancyTypesGrouped.put(underOccupied, ttg);
-        rg = DW_SHBE_Handler.getTenancyTypeRegulated(underOccupied);
-        regulatedGroups.put(underOccupied, rg);
-        ug = DW_SHBE_Handler.getTenancyTypeUnregulated(underOccupied);
-        unregulatedGroups.put(underOccupied, ug);
-        result[0] = tenancyTypeGroups;
-        result[1] = tenancyTypesGrouped;
-        result[2] = regulatedGroups;
-        result[3] = unregulatedGroups;
-        return result;
-    }
 
     @Override
     public void run() {
@@ -150,9 +82,6 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         Object[] underOccupiedData;
         underOccupiedData = DW_UnderOccupiedReport_Handler.loadUnderOccupiedReportData();
 
-        HashMap<String, DW_ID> NINOtoIDLookup;
-        NINOtoIDLookup = DW_SHBE_Handler.getNINOToIDLookup();
-        
         HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
         PostcodeToPostcodeIDLookup = DW_SHBE_Handler.getPostcodeToPostcodeIDLookup();
 //        reportUnderOccupancyTotals(underOccupiedData);
@@ -174,10 +103,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        getTotalClaimantsByTenancyType();
         String[] SHBEFilenames;
         SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
+        
         ArrayList<String> claimantTypes;
-        claimantTypes = new ArrayList<String>();
-        claimantTypes.add("HB");
-        claimantTypes.add("CTB");
+        claimantTypes = DW_SHBE_Handler.getClaimantTypes();
+        
         ArrayList<String> levels;
         levels = new ArrayList<String>();
         levels.add("OA");
@@ -206,9 +135,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 
         HashMap<Boolean, ArrayList<String>> tenancyTypes;
         tenancyTypes = new HashMap<Boolean, ArrayList<String>>();
-        tenancyTypes.put(Boolean.TRUE, DW_SHBE_Handler.getTenureTypeAll(Boolean.TRUE));
-        tenancyTypes.put(Boolean.FALSE, DW_SHBE_Handler.getTenureTypeAll(Boolean.FALSE));
-        Object[] ttgs = getTenancyTypeGroups();
+        tenancyTypes.put(Boolean.TRUE, DW_SHBE_TenancyType_Handler.getTenancyTypeAll(Boolean.TRUE));
+        tenancyTypes.put(Boolean.FALSE, DW_SHBE_TenancyType_Handler.getTenancyTypeAll(Boolean.FALSE));
+        Object[] ttgs = DW_SHBE_TenancyType_Handler.getTenancyTypeGroups();
         HashMap<Boolean, TreeMap<String, ArrayList<String>>> tenancyTypeGroups;
         tenancyTypeGroups = (HashMap<Boolean, TreeMap<String, ArrayList<String>>>) ttgs[0];
         HashMap<Boolean, ArrayList<String>> tenancyTypesGrouped;
@@ -226,7 +155,6 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        includes.remove("6Monthly");
 //        includes.remove("3Monthly");
 //        includes.remove("MonthlyUO");
-        
         // Specifiy distances
         ArrayList<Double> distances;
         distances = new ArrayList<Double>();
@@ -247,6 +175,16 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         bArray.add(false);
         Iterator<Boolean> iteB;
 
+        HashMap<String, DW_ID> NINOtoIDLookup;
+        ArrayList<String> paymentTypes;
+        paymentTypes = DW_SHBE_Handler.getPaymentTypes();
+        paymentTypes.remove("AllPT");
+        paymentTypes.remove("InPayment");
+        paymentTypes.remove("Suspended");
+//        paymentTypes.remove("OtherPT");
+        
+        Iterator<String> paymentTypesIte;
+
         // Summary Tables
         boolean forceNewSummaries;
 //        forceNewSummaries = false;
@@ -254,106 +192,154 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         // Runtime approximately 3 minutes.
         if (true) {
 //        if (false) {
-            int nTT;
-            nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
-            int nEG;
-            nEG = DW_SHBE_Handler.getNumberOfClaimantsEthnicGroups();
-            int nPSI;
-            nPSI = DW_SHBE_Handler.getOneOverMaxValueOfPassportStandardIndicator();
-            Summary tSummary = new Summary(
-                    tDW_SHBE_Handler, 
-                    nTT,
-                    nEG, 
-                    nPSI);
-            Iterator<String> includesIte;
-            includesIte = includes.keySet().iterator();
-            while (includesIte.hasNext()) {
-                String includeKey;
-                includeKey = includesIte.next();
-                ArrayList<Integer> include;
-                include = includes.get(includeKey);
-                TreeMap<String, HashMap<String, String>> summaryTable;
-                summaryTable = tSummary.getSummaryTable(
-                        SHBEFilenames,
-                        include,
-                        forceNewSummaries, 
+            paymentTypesIte = paymentTypes.iterator();
+            while (paymentTypesIte.hasNext()) {
+                String paymentType;
+                paymentType = paymentTypesIte.next();
+                NINOtoIDLookup = DW_SHBE_Handler.getNINOToIDLookup(paymentType);
+                int nTT;
+                nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
+                int nEG;
+                nEG = DW_SHBE_Handler.getNumberOfClaimantsEthnicGroups();
+                int nPSI;
+                nPSI = DW_SHBE_Handler.getOneOverMaxValueOfPassportStandardIndicator();
+                Summary tSummary = new Summary(
+                        tDW_SHBE_Handler,
                         nTT,
-                        nEG, 
-                        nPSI);
-                boolean doUnderOccupancy;
-                doUnderOccupancy = false;
-                tSummary.writeSummaryTableCompare3Times(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableCompare2Times(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableSingleTime0(summaryTable, includeKey, doUnderOccupancy, nTT, nEG, nPSI);
-                tSummary.writeSummaryTableSingleTime1(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableSingleTimeRentAndIncome(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableSingleTimeTenancyType(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableSingleTimeDemographics(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                summaryTable = tSummary.getSummaryTable(
-                        SHBEFilenames,
-                        include,
-                        forceNewSummaries,
-                        nTT, 
                         nEG,
-                        nPSI,
-                        underOccupiedData,
-                        NINOtoIDLookup,
-                        PostcodeToPostcodeIDLookup);
-                doUnderOccupancy = true;
-                tSummary.writeSummaryTableCompare3Times(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableCompare2Times(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableSingleTime0(summaryTable, includeKey, doUnderOccupancy, nTT, nEG, nPSI);
-                tSummary.writeSummaryTableSingleTime1(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableSingleTimeRentAndIncome(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableSingleTimeTenancyType(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-                tSummary.writeSummaryTableSingleTimeDemographics(summaryTable, includeKey, doUnderOccupancy, nTT, nEG);
-//                System.exit(0);
+                        nPSI);
+                Iterator<String> includesIte;
+                includesIte = includes.keySet().iterator();
+                while (includesIte.hasNext()) {
+                    String includeKey;
+                    includeKey = includesIte.next();
+                    ArrayList<Integer> include;
+                    include = includes.get(includeKey);
+                    TreeMap<String, HashMap<String, String>> summaryTable;
+                    summaryTable = tSummary.getSummaryTable(
+                            SHBEFilenames,
+                            include,
+                            forceNewSummaries,
+                            paymentType,
+                            nTT,
+                            nEG,
+                            nPSI);
+                    boolean doUnderOccupancy;
+                    doUnderOccupancy = false;
+                    tSummary.writeSummaryTables(
+                            summaryTable, 
+                            paymentType, 
+                            includeKey,
+                            doUnderOccupancy, 
+                            nTT, nEG, nPSI);
+                    summaryTable = tSummary.getSummaryTable(
+                            SHBEFilenames,
+                            include,
+                            forceNewSummaries,
+                            paymentType,
+                            nTT,
+                            nEG,
+                            nPSI,
+                            underOccupiedData,
+                            NINOtoIDLookup,
+                            PostcodeToPostcodeIDLookup);
+                    doUnderOccupancy = true;
+                    tSummary.writeSummaryTables(
+                            summaryTable, 
+                            paymentType, 
+                            includeKey,
+                            doUnderOccupancy, 
+                            nTT, nEG, nPSI);
+                    //System.exit(0);
+                }
             }
         }
-        System.exit(0);
+        //System.exit(0);
         // Postcode and Tenancy Type transitions 
         // Runtime approximately 1 hour 5 minutes.
-//        if (true) {
-        if (false) {
-            // Postcode Changes (same tenancy)
-            iteB = bArray.iterator();
-            while (iteB.hasNext()) {
-                boolean checkPreviousTenure;
-                checkPreviousTenure = iteB.next();
-                System.out.println("CheckPreviousTenure " + checkPreviousTenure);
-                Iterator<Boolean> iteB2;
-                iteB2 = bArray.iterator();
-                while (iteB2.hasNext()) {
-                    boolean reportTenancyTransitionBreaks;
-                    reportTenancyTransitionBreaks = iteB2.next();
-                    System.out.println("ReportTenancyTransitionBreaks " + reportTenancyTransitionBreaks);
-                    System.out.println("PostcodeChanges");
-                    Iterator<Boolean> iteB3;
-                    iteB3 = bArray.iterator();
-                    while (iteB3.hasNext()) {
-                        boolean doUnderOccupiedData;
-                        doUnderOccupiedData = iteB3.next();
-                        if (doUnderOccupiedData) {
-                            System.out.println("UO");
-                            Iterator<Boolean> iteB4;
-                            iteB4 = bArray.iterator();
-                            while (iteB4.hasNext()) {
-                                boolean doCouncil;
-                                doCouncil = iteB4.next();
-                                Iterator<Boolean> iteB5;
-                                iteB5 = bArray.iterator();
-                                while (iteB5.hasNext()) {
+        if (true) {
+//        if (false) {
+            paymentTypesIte = paymentTypes.iterator();
+            while (paymentTypesIte.hasNext()) {
+                String paymentType;
+                paymentType = paymentTypesIte.next();
+                
+                //NINOtoIDLookup = DW_SHBE_Handler.getNINOToIDLookup(paymentType);
+                // Postcode Changes (same tenancy)
+                iteB = bArray.iterator();
+                while (iteB.hasNext()) {
+                    boolean checkPreviousTenure;
+                    checkPreviousTenure = iteB.next();
+                    System.out.println("CheckPreviousTenure " + checkPreviousTenure);
+                    Iterator<Boolean> iteB2;
+                    iteB2 = bArray.iterator();
+                    while (iteB2.hasNext()) {
+                        boolean reportTenancyTransitionBreaks;
+                        reportTenancyTransitionBreaks = iteB2.next();
+                        System.out.println("ReportTenancyTransitionBreaks " + reportTenancyTransitionBreaks);
+                        System.out.println("PostcodeChanges");
+                        Iterator<Boolean> iteB3;
+                        iteB3 = bArray.iterator();
+                        while (iteB3.hasNext()) {
+                            boolean doUnderOccupiedData;
+                            doUnderOccupiedData = iteB3.next();
+                            if (doUnderOccupiedData) {
+                                System.out.println("UO");
+                                Iterator<Boolean> iteB4;
+                                iteB4 = bArray.iterator();
+                                while (iteB4.hasNext()) {
+                                    boolean doCouncil;
+                                    doCouncil = iteB4.next();
+                                    Iterator<Boolean> iteB5;
+                                    iteB5 = bArray.iterator();
+                                    while (iteB5.hasNext()) {
+                                        boolean postcodeChange;
+                                        postcodeChange = iteB5.next();
+                                        System.out.println("postcodeChange " + postcodeChange);
+                                        Iterator<Boolean> iteB6;
+                                        iteB6 = bArray.iterator();
+                                        while (iteB6.hasNext()) {
+                                            boolean checkPreviousPostcode;
+                                            checkPreviousPostcode = iteB6.next();
+                                            System.out.println("checkPreviousPostcode " + postcodeChange);
+                                            postcodeChanges(
+                                                    SHBEFilenames,
+                                                    paymentType,
+                                                    tenancyTypes.get(doUnderOccupiedData),
+                                                    tenancyTypesGrouped.get(doUnderOccupiedData),
+                                                    regulatedGroups.get(doUnderOccupiedData),
+                                                    unregulatedGroups.get(doUnderOccupiedData),
+                                                    includes,
+                                                    loadData,
+                                                    checkPreviousTenure,
+                                                    reportTenancyTransitionBreaks,
+                                                    postcodeHandler,
+                                                    postcodeChange,
+                                                    checkPreviousPostcode,
+                                                    underOccupiedData,
+                                                    doUnderOccupiedData,
+                                                    doCouncil);
+                                        }
+                                    }
+                                }
+                            } else {
+                                System.out.println("All");
+                                Iterator<Boolean> iteB4;
+                                iteB4 = bArray.iterator();
+                                while (iteB4.hasNext()) {
                                     boolean postcodeChange;
-                                    postcodeChange = iteB5.next();
+                                    postcodeChange = iteB4.next();
                                     System.out.println("postcodeChange " + postcodeChange);
-                                    Iterator<Boolean> iteB6;
-                                    iteB6 = bArray.iterator();
-                                    while (iteB6.hasNext()) {
+                                    Iterator<Boolean> iteB5;
+                                    iteB5 = bArray.iterator();
+                                    while (iteB5.hasNext()) {
                                         boolean checkPreviousPostcode;
-                                        checkPreviousPostcode = iteB6.next();
+                                        checkPreviousPostcode = iteB5.next();
                                         System.out.println("checkPreviousPostcode " + postcodeChange);
                                         postcodeChanges(
                                                 SHBEFilenames,
+                                                paymentType,
+                                                //tenancyTypes.get(doUnderOccupiedData),
                                                 tenancyTypes.get(doUnderOccupiedData),
                                                 tenancyTypesGrouped.get(doUnderOccupiedData),
                                                 regulatedGroups.get(doUnderOccupiedData),
@@ -367,27 +353,41 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                                 checkPreviousPostcode,
                                                 underOccupiedData,
                                                 doUnderOccupiedData,
-                                                doCouncil);
+                                                false);
                                     }
                                 }
                             }
-                        } else {
-                            System.out.println("All");
-                            Iterator<Boolean> iteB4;
-                            iteB4 = bArray.iterator();
-                            while (iteB4.hasNext()) {
-                                boolean postcodeChange;
-                                postcodeChange = iteB4.next();
-                                System.out.println("postcodeChange " + postcodeChange);
-                                Iterator<Boolean> iteB5;
-                                iteB5 = bArray.iterator();
-                                while (iteB5.hasNext()) {
-                                    boolean checkPreviousPostcode;
-                                    checkPreviousPostcode = iteB5.next();
-                                    System.out.println("checkPreviousPostcode " + postcodeChange);
-                                    postcodeChanges(
+                        }
+                    }
+                }
+                // TenancyTransitions
+                iteB = bArray.iterator();
+                while (iteB.hasNext()) {
+                    boolean checkPreviousTenure;
+                    checkPreviousTenure = iteB.next();
+                    System.out.println("CheckPreviousTenure " + checkPreviousTenure);
+                    Iterator<Boolean> iteB2;
+                    iteB2 = bArray.iterator();
+                    while (iteB2.hasNext()) {
+                        boolean reportTenancyTransitionBreaks;
+                        reportTenancyTransitionBreaks = iteB2.next();
+                        System.out.println("ReportTenancyTransitionBreaks " + reportTenancyTransitionBreaks);
+                        System.out.println("TenancyChanges");
+                        Iterator<Boolean> iteB3;
+                        iteB3 = bArray.iterator();
+                        while (iteB3.hasNext()) {
+                            boolean doUnderOccupiedData;
+                            doUnderOccupiedData = iteB3.next();
+                            if (doUnderOccupiedData) {
+                                System.out.println("UO");
+                                Iterator<Boolean> iteB4;
+                                iteB4 = bArray.iterator();
+                                while (iteB4.hasNext()) {
+                                    boolean doCouncil;
+                                    doCouncil = iteB4.next();
+                                    tenancyChanges(
                                             SHBEFilenames,
-                                            //tenancyTypes.get(doUnderOccupiedData),
+                                            paymentType,
                                             tenancyTypes.get(doUnderOccupiedData),
                                             tenancyTypesGrouped.get(doUnderOccupiedData),
                                             regulatedGroups.get(doUnderOccupiedData),
@@ -396,45 +396,15 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                             loadData,
                                             checkPreviousTenure,
                                             reportTenancyTransitionBreaks,
-                                            postcodeHandler,
-                                            postcodeChange,
-                                            checkPreviousPostcode,
                                             underOccupiedData,
                                             doUnderOccupiedData,
-                                            false);
+                                            doCouncil);
                                 }
-                            }
-                        }
-                    }
-                }
-            }
-            // TenancyTransitions
-            iteB = bArray.iterator();
-            while (iteB.hasNext()) {
-                boolean checkPreviousTenure;
-                checkPreviousTenure = iteB.next();
-                System.out.println("CheckPreviousTenure " + checkPreviousTenure);
-                Iterator<Boolean> iteB2;
-                iteB2 = bArray.iterator();
-                while (iteB2.hasNext()) {
-                    boolean reportTenancyTransitionBreaks;
-                    reportTenancyTransitionBreaks = iteB2.next();
-                    System.out.println("ReportTenancyTransitionBreaks " + reportTenancyTransitionBreaks);
-                    System.out.println("TenancyChanges");
-                    Iterator<Boolean> iteB3;
-                    iteB3 = bArray.iterator();
-                    while (iteB3.hasNext()) {
-                        boolean doUnderOccupiedData;
-                        doUnderOccupiedData = iteB3.next();
-                        if (doUnderOccupiedData) {
-                            System.out.println("UO");
-                            Iterator<Boolean> iteB4;
-                            iteB4 = bArray.iterator();
-                            while (iteB4.hasNext()) {
-                                boolean doCouncil;
-                                doCouncil = iteB4.next();
+                            } else {
+                                System.out.println("All");
                                 tenancyChanges(
                                         SHBEFilenames,
+                                        paymentType,
                                         tenancyTypes.get(doUnderOccupiedData),
                                         tenancyTypesGrouped.get(doUnderOccupiedData),
                                         regulatedGroups.get(doUnderOccupiedData),
@@ -445,51 +415,70 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                         reportTenancyTransitionBreaks,
                                         underOccupiedData,
                                         doUnderOccupiedData,
-                                        doCouncil);
+                                        false);
                             }
-                        } else {
-                            System.out.println("All");
-                            tenancyChanges(
-                                    SHBEFilenames,
-                                    tenancyTypes.get(doUnderOccupiedData),
-                                    tenancyTypesGrouped.get(doUnderOccupiedData),
-                                    regulatedGroups.get(doUnderOccupiedData),
-                                    unregulatedGroups.get(doUnderOccupiedData),
-                                    includes,
-                                    loadData,
-                                    checkPreviousTenure,
-                                    reportTenancyTransitionBreaks,
-                                    underOccupiedData,
-                                    doUnderOccupiedData,
-                                    false);
                         }
-                    }
-                    System.out.println("TenancyAndPostcodeChanges");
-                    iteB3 = bArray.iterator();
-                    while (iteB3.hasNext()) {
-                        boolean doUnderOccupiedData;
-                        doUnderOccupiedData = iteB3.next();
-                        if (doUnderOccupiedData) {
-                            System.out.println("UO");
-                            Iterator<Boolean> iteB4;
-                            iteB4 = bArray.iterator();
-                            while (iteB4.hasNext()) {
-                                boolean doCouncil;
-                                doCouncil = iteB4.next();
-                                Iterator<Boolean> iteB5;
-                                iteB5 = bArray.iterator();
-                                while (iteB5.hasNext()) {
+                        System.out.println("TenancyAndPostcodeChanges");
+                        iteB3 = bArray.iterator();
+                        while (iteB3.hasNext()) {
+                            boolean doUnderOccupiedData;
+                            doUnderOccupiedData = iteB3.next();
+                            if (doUnderOccupiedData) {
+                                System.out.println("UO");
+                                Iterator<Boolean> iteB4;
+                                iteB4 = bArray.iterator();
+                                while (iteB4.hasNext()) {
+                                    boolean doCouncil;
+                                    doCouncil = iteB4.next();
+                                    Iterator<Boolean> iteB5;
+                                    iteB5 = bArray.iterator();
+                                    while (iteB5.hasNext()) {
+                                        boolean postcodeChange;
+                                        postcodeChange = iteB5.next();
+                                        System.out.println("postcodeChange " + postcodeChange);
+                                        Iterator<Boolean> iteB6;
+                                        iteB6 = bArray.iterator();
+                                        while (iteB6.hasNext()) {
+                                            boolean checkPreviousPostcode;
+                                            checkPreviousPostcode = iteB6.next();
+                                            System.out.println("checkPreviousPostcode " + postcodeChange);
+                                            tenancyAndPostcodeChanges(
+                                                    SHBEFilenames,
+                                                    paymentType,
+                                                    tenancyTypes.get(doUnderOccupiedData),
+                                                    tenancyTypesGrouped.get(doUnderOccupiedData),
+                                                    regulatedGroups.get(doUnderOccupiedData),
+                                                    unregulatedGroups.get(doUnderOccupiedData),
+                                                    includes,
+                                                    loadData,
+                                                    checkPreviousTenure,
+                                                    reportTenancyTransitionBreaks,
+                                                    postcodeHandler,
+                                                    postcodeChange,
+                                                    checkPreviousPostcode,
+                                                    underOccupiedData,
+                                                    doUnderOccupiedData,
+                                                    doCouncil);
+                                        }
+                                    }
+                                }
+                            } else {
+                                System.out.println("All");
+                                Iterator<Boolean> iteB4;
+                                iteB4 = bArray.iterator();
+                                while (iteB4.hasNext()) {
                                     boolean postcodeChange;
-                                    postcodeChange = iteB5.next();
+                                    postcodeChange = iteB4.next();
                                     System.out.println("postcodeChange " + postcodeChange);
-                                    Iterator<Boolean> iteB6;
-                                    iteB6 = bArray.iterator();
-                                    while (iteB6.hasNext()) {
+                                    Iterator<Boolean> iteB5;
+                                    iteB5 = bArray.iterator();
+                                    while (iteB5.hasNext()) {
                                         boolean checkPreviousPostcode;
-                                        checkPreviousPostcode = iteB6.next();
+                                        checkPreviousPostcode = iteB5.next();
                                         System.out.println("checkPreviousPostcode " + postcodeChange);
                                         tenancyAndPostcodeChanges(
                                                 SHBEFilenames,
+                                                paymentType,
                                                 tenancyTypes.get(doUnderOccupiedData),
                                                 tenancyTypesGrouped.get(doUnderOccupiedData),
                                                 regulatedGroups.get(doUnderOccupiedData),
@@ -503,45 +492,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                                 checkPreviousPostcode,
                                                 underOccupiedData,
                                                 doUnderOccupiedData,
-                                                doCouncil);
+                                                false);
                                     }
-                                }
-                            }
-                        } else {
-                            System.out.println("All");
-                            Iterator<Boolean> iteB4;
-                            iteB4 = bArray.iterator();
-                            while (iteB4.hasNext()) {
-                                boolean postcodeChange;
-                                postcodeChange = iteB4.next();
-                                System.out.println("postcodeChange " + postcodeChange);
-                                Iterator<Boolean> iteB5;
-                                iteB5 = bArray.iterator();
-                                while (iteB5.hasNext()) {
-                                    boolean checkPreviousPostcode;
-                                    checkPreviousPostcode = iteB5.next();
-                                    System.out.println("checkPreviousPostcode " + postcodeChange);
-                                    tenancyAndPostcodeChanges(
-                                            SHBEFilenames,
-                                            tenancyTypes.get(doUnderOccupiedData),
-                                            tenancyTypesGrouped.get(doUnderOccupiedData),
-                                            regulatedGroups.get(doUnderOccupiedData),
-                                            unregulatedGroups.get(doUnderOccupiedData),
-                                            includes,
-                                            loadData,
-                                            checkPreviousTenure,
-                                            reportTenancyTransitionBreaks,
-                                            postcodeHandler,
-                                            postcodeChange,
-                                            checkPreviousPostcode,
-                                            underOccupiedData,
-                                            doUnderOccupiedData,
-                                            false);
                                 }
                             }
                         }
                     }
-                }
 ////                if (true) {
 //                if (false) {
 //                    File dirOut;
@@ -576,30 +532,97 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                        }
 //                    }
 //                }
+                }
             }
         }
 //        System.exit(0);
 
-        // Get Lookups from postcodes to level codes
-        if (true) {
-//        if (false) {
-            TreeMap<String, TreeMap<String, String>> lookupsFromPostcodeToLevelCode; // Work needed to load the appropriate look up for the appropriate years and months of postcode!
-            lookupsFromPostcodeToLevelCode = getLookupsFromPostcodeToLevelCode(levels);
-            //Generic_UKPostcode_Handler.isValidPostcodeForm(String postcode)
-            iteB = bArray.iterator();
-            while (iteB.hasNext()) {
-                boolean doUnderOccupied;
-                doUnderOccupied = iteB.next();
-                if (doUnderOccupied) {
-//                    if (true) {
-                    if (false) {
+        // Aggregate
+//        if (true) {
+        if (false) {
+            paymentTypesIte = paymentTypes.iterator();
+            while (paymentTypesIte.hasNext()) {
+                String paymentType;
+                paymentType = paymentTypesIte.next();
+                NINOtoIDLookup = DW_SHBE_Handler.getNINOToIDLookup(paymentType);
+
+                TreeMap<String, TreeMap<String, String>> lookupsFromPostcodeToLevelCode; // Work needed to load the appropriate look up for the appropriate years and months of postcode!
+                lookupsFromPostcodeToLevelCode = getLookupsFromPostcodeToLevelCode(levels);
+                //Generic_UKPostcode_Handler.isValidPostcodeForm(String postcode)
+                iteB = bArray.iterator();
+                while (iteB.hasNext()) {
+                    boolean doUnderOccupied;
+                    doUnderOccupied = iteB.next();
+                    if (doUnderOccupied) {
+                        if (true) {
+//                        if (false) {
+                            aggregateClaimants(
+                                    doUnderOccupied,
+                                    true,
+                                    true,
+                                    underOccupiedData,
+                                    lookupsFromPostcodeToLevelCode,
+                                    SHBEFilenames,
+                                    paymentType,
+                                    claimantTypes,
+                                    tenancyTypeGroups.get(doUnderOccupied),
+                                    tenancyTypesGrouped.get(doUnderOccupied),
+                                    regulatedGroups.get(doUnderOccupied),
+                                    unregulatedGroups.get(doUnderOccupied),
+                                    includes,
+                                    levels,
+                                    types,
+                                    distanceTypes,
+                                    distances,
+                                    NINOtoIDLookup);
+                        }
                         aggregateClaimants(
                                 doUnderOccupied,
                                 true,
+                                false,
+                                underOccupiedData,
+                                lookupsFromPostcodeToLevelCode,
+                                SHBEFilenames,
+                                paymentType,
+                                claimantTypes,
+                                tenancyTypeGroups.get(doUnderOccupied),
+                                tenancyTypesGrouped.get(doUnderOccupied),
+                                regulatedGroups.get(doUnderOccupied),
+                                unregulatedGroups.get(doUnderOccupied),
+                                includes,
+                                levels,
+                                types,
+                                distanceTypes,
+                                distances,
+                                NINOtoIDLookup);
+                        aggregateClaimants(
+                                doUnderOccupied,
+                                false,
                                 true,
                                 underOccupiedData,
                                 lookupsFromPostcodeToLevelCode,
                                 SHBEFilenames,
+                                paymentType,
+                                claimantTypes,
+                                tenancyTypeGroups.get(doUnderOccupied),
+                                tenancyTypesGrouped.get(doUnderOccupied),
+                                regulatedGroups.get(doUnderOccupied),
+                                unregulatedGroups.get(doUnderOccupied),
+                                includes,
+                                levels,
+                                types,
+                                distanceTypes,
+                                distances,
+                                NINOtoIDLookup);
+                    } else {
+                        aggregateClaimants(
+                                doUnderOccupied,
+                                false,
+                                false,
+                                underOccupiedData,
+                                lookupsFromPostcodeToLevelCode,
+                                SHBEFilenames,
+                                paymentType,
                                 claimantTypes,
                                 tenancyTypeGroups.get(doUnderOccupied),
                                 tenancyTypesGrouped.get(doUnderOccupied),
@@ -612,61 +635,6 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                 distances,
                                 NINOtoIDLookup);
                     }
-                    aggregateClaimants(
-                            doUnderOccupied,
-                            true,
-                            false,
-                            underOccupiedData,
-                            lookupsFromPostcodeToLevelCode,
-                            SHBEFilenames,
-                            claimantTypes,
-                            tenancyTypeGroups.get(doUnderOccupied),
-                            tenancyTypesGrouped.get(doUnderOccupied),
-                            regulatedGroups.get(doUnderOccupied),
-                            unregulatedGroups.get(doUnderOccupied),
-                            includes,
-                            levels,
-                            types,
-                            distanceTypes,
-                            distances,
-                            NINOtoIDLookup);
-                    aggregateClaimants(
-                            doUnderOccupied,
-                            false,
-                            true,
-                            underOccupiedData,
-                            lookupsFromPostcodeToLevelCode,
-                            SHBEFilenames,
-                            claimantTypes,
-                            tenancyTypeGroups.get(doUnderOccupied),
-                            tenancyTypesGrouped.get(doUnderOccupied),
-                            regulatedGroups.get(doUnderOccupied),
-                            unregulatedGroups.get(doUnderOccupied),
-                            includes,
-                            levels,
-                            types,
-                            distanceTypes,
-                            distances,
-                            NINOtoIDLookup);
-                } else {
-                    aggregateClaimants(
-                            doUnderOccupied,
-                            false,
-                            false,
-                            underOccupiedData,
-                            lookupsFromPostcodeToLevelCode,
-                            SHBEFilenames,
-                            claimantTypes,
-                            tenancyTypeGroups.get(doUnderOccupied),
-                            tenancyTypesGrouped.get(doUnderOccupied),
-                            regulatedGroups.get(doUnderOccupied),
-                            unregulatedGroups.get(doUnderOccupied),
-                            includes,
-                            levels,
-                            types,
-                            distanceTypes,
-                            distances,
-                            NINOtoIDLookup);
                 }
             }
         }
@@ -976,7 +944,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         totalCouncil.addAll(totalRSL);
         System.out.println("Number of tenants effected by underoccupancy " + totalCouncil.size());
     }
-    
+
     /**
      * Calculates and writes out: Tenancy Type Transition Matrixes; Transition
      * Frequencies.
@@ -996,6 +964,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      */
     public void tenancyChanges(
             String[] SHBEFilenames,
+            String paymentType,
             ArrayList<String> tenancyTypes,
             ArrayList<String> tenancyTypesGrouped,
             ArrayList<Integer> regulatedGroups,
@@ -1011,6 +980,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         File dirOut;
         dirOut = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
                 "All",
+                paymentType,
                 checkPreviousTenure);
         dirOut = new File(
                 dirOut,
@@ -1060,6 +1030,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 tIDByCTBRef0 = loadIDByCTBRef(
                         loadData,
                         filename,
+                        paymentType,
                         i,
                         tIDByCTBRefs);
             }
@@ -1070,6 +1041,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             tIDByTenancyType0 = loadIDByTenure(
                     loadData,
                     filename,
+                    paymentType,
                     i,
                     tIDByTenancyTypes);
             // Init tenancyTypeChangesAllIncludes and tenancyTypeChangesGroupedAllIncludes
@@ -1091,6 +1063,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     tIDByCTBRef1 = loadIDByCTBRef(
                             loadData,
                             filename,
+                            paymentType,
                             i,
                             tIDByCTBRefs);
                 }
@@ -1099,6 +1072,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 tIDByTenancyType1 = loadIDByTenure(
                         loadData,
                         filename,
+                        paymentType,
                         i,
                         tIDByTenancyTypes);
                 // Get TenancyTypeTranistionMatrix
@@ -1186,12 +1160,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         }
                     } else {
                         if (!doneFirst) {
-                            if (!splitT[0].contains("-999")) {
+                            if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
                                 out += splitT[0];
                                 doneFirst = true;
                             }
                         } else {
-                            if (!splitT[0].contains("-999")) {
+                            if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
                                 out += ", " + splitT[0];
                             }
                         }
@@ -1208,10 +1182,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             }
             System.out.println(includeKey + " maximum number of transitions "
                     + max + " out of a possible " + (include.size() - 1));
-            writeTransitionFrequencies(
-                    transitions,
+            writeTransitionFrequencies(transitions,
                     dirOut2,
-                    "Ungrouped",
+                    DW_Files.sUngrouped,
                     "Frequencies.txt",
                     reportTenancyTransitionBreaks);
             // Grouped
@@ -1242,12 +1215,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         }
                     } else {
                         if (!doneFirst) {
-                            if (!splitT[0].contains("-999")) {
+                            if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
                                 out += splitT[0];
                                 doneFirst = true;
                             }
                         } else {
-                            if (!splitT[0].contains("-999")) {
+                            if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
                                 out += ", " + splitT[0];
                             }
                         }
@@ -1264,10 +1237,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             }
             System.out.println(includeKey + " maximum number of transitions "
                     + max + " out of a possible " + (include.size() - 1));
-            writeTransitionFrequencies(
-                    transitions,
+            writeTransitionFrequencies(transitions,
                     dirOut2,
-                    "Grouped",
+                    DW_Files.sGrouped,
                     "FrequenciesGrouped.txt",
                     reportTenancyTransitionBreaks);
         }
@@ -1278,6 +1250,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * Frequencies.
      *
      * @param SHBEFilenames A list of all SHBE filenames
+     * @param paymentType
      * @param tenancyTypes
      * @param tenancyTypesGrouped
      * @param regulatedGroups
@@ -1307,6 +1280,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      */
     public void tenancyAndPostcodeChanges(
             String[] SHBEFilenames,
+            String paymentType,
             ArrayList<String> tenancyTypes,
             ArrayList<String> tenancyTypesGrouped,
             ArrayList<Integer> regulatedGroups,
@@ -1321,15 +1295,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             Object[] underOccupiedData,
             boolean doUnderOccupied,
             boolean doCouncil) {
-        String tenancyAndPostCodeChangesOnly;
-        tenancyAndPostCodeChangesOnly = "TenancyAndPostcodeChanges";
         File dirOut;
         dirOut = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
                 "All",
+                paymentType,
                 checkPreviousTenure);
         dirOut = new File(
                 dirOut,
-                tenancyAndPostCodeChangesOnly);
+                DW_Files.sTenancyAndPostcodeChanges);
         TreeMap<String, DW_UnderOccupiedReport_Set> underOccupiedSets = null;
         if (doUnderOccupied) {
             if (doCouncil) {
@@ -1342,11 +1315,11 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         if (postcodeChange) {
             dirOut = new File(
                     dirOut,
-                    "PostcodeChanged");
+                    DW_Files.sPostcodeChanged);
         } else {
             dirOut = new File(
                     dirOut,
-                    "PostcodeUnchanged");
+                    DW_Files.sPostcodeUnchanged);
         }
         dirOut.mkdirs();
         Iterator<String> includesIte;
@@ -1381,6 +1354,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 tIDByCTBRef0 = loadIDByCTBRef(
                         loadData,
                         filename,
+                        paymentType,
                         i,
                         tIDByCTBRefs);
             }
@@ -1391,6 +1365,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             tIDByTenancyType0 = loadIDByTenure(
                     loadData,
                     filename,
+                    paymentType,
                     i,
                     tIDByTenancyTypes);
             HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes;
@@ -1399,6 +1374,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             tIDByPostcode0 = loadIDByPostcode(
                     loadData,
                     filename,
+                    paymentType,
                     i,
                     tIDByPostcodes);
             // Init tenancyChanges and tenancyChangesGrouped
@@ -1422,6 +1398,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     tIDByCTBRef1 = loadIDByCTBRef(
                             loadData,
                             filename,
+                            paymentType,
                             i,
                             tIDByCTBRefs);
                 }
@@ -1430,6 +1407,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 tIDByTenancyType1 = loadIDByTenure(
                         loadData,
                         filename,
+                        paymentType,
                         i,
                         tIDByTenancyTypes);
                 // tIDByPostcode1
@@ -1437,6 +1415,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 tIDByPostcode1 = loadIDByPostcode(
                         loadData,
                         filename,
+                        paymentType,
                         i,
                         tIDByPostcodes);
                 // Get TenancyTypeTranistionMatrix
@@ -1468,7 +1447,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         yM30,
                         yM31,
                         dirOut2,
-                        tenancyTypesGrouped,
+                        tenancyTypes,
                         false,
                         doUnderOccupied);
                 TreeMap<String, TreeMap<String, Integer>> tenancyTypeTransitionMatrixGrouped;
@@ -1540,12 +1519,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         }
                     } else {
                         if (!doneFirst) {
-                            if (!splitT[0].contains("-999")) {
+                            if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
                                 out += splitT[0];
                                 doneFirst = true;
                             }
                         } else {
-                            if (!splitT[0].contains("-999")) {
+                            if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
                                 out += ", " + splitT[0];
                             }
                         }
@@ -1562,10 +1541,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             }
             System.out.println(includeKey + " maximum number of transitions "
                     + max + " out of a possible " + (include.size() - 1));
-            writeTransitionFrequencies(
-                    transitions,
+            writeTransitionFrequencies(transitions,
                     dirOut2,
-                    "Ungrouped",
+                    DW_Files.sUngrouped,
                     "Frequencies.txt",
                     reportTenancyTransitionBreaks);
             // Grouped
@@ -1596,12 +1574,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         }
                     } else {
                         if (!doneFirst) {
-                            if (!splitT[0].contains("-999")) {
+                            if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
                                 out += splitT[0];
                                 doneFirst = true;
                             }
                         } else {
-                            if (!splitT[0].contains("-999")) {
+                            if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
                                 out += ", " + splitT[0];
                             }
                         }
@@ -1618,10 +1596,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             }
             System.out.println(includeKey + " maximum number of transitions "
                     + max + " out of a possible " + (include.size() - 1));
-            writeTransitionFrequencies(
-                    transitions,
+            writeTransitionFrequencies(transitions,
                     dirOut2,
-                    "Grouped",
+                    DW_Files.sGrouped,
                     "FrequenciesGrouped.txt",
                     reportTenancyTransitionBreaks);
         }
@@ -1648,6 +1625,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      */
     public void postcodeChanges(
             String[] SHBEFilenames,
+            String paymentType,
             ArrayList<String> tenancyTypes,
             ArrayList<String> tenancyTypesGrouped,
             ArrayList<Integer> regulatedGroups,
@@ -1663,12 +1641,16 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             boolean doUnderOccupied,
             boolean doCouncil) {
         File dirOut;
-        dirOut = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
-                "All",
-                checkPreviousTenure);
+//        dirOut = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
+//                "All",
+//                paymentType,
+//                checkPreviousTenure);
         dirOut = new File(
                 DW_Files.getOutputSHBETablesDir(),
                 "PostcodeChanges");
+        dirOut = new File(
+        dirOut,
+        paymentType);
         TreeMap<String, DW_UnderOccupiedReport_Set> underOccupiedSets = null;
         if (doUnderOccupied) {
             if (doCouncil) {
@@ -1681,7 +1663,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         if (postcodeChange) {
             dirOut = new File(
                     dirOut,
-                    "PostcodeChanged");
+                    DW_Files.sPostcodeChanged);
         } else {
             dirOut = new File(
                     dirOut,
@@ -1720,6 +1702,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 tIDByCTBRef0 = loadIDByCTBRef(
                         loadData,
                         filename,
+                        paymentType,
                         i,
                         tIDByCTBRefs);
             }
@@ -1730,6 +1713,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             tIDByTenancyType0 = loadIDByTenure(
                     loadData,
                     filename,
+                    paymentType,
                     i,
                     tIDByTenancyTypes);
             HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes;
@@ -1738,6 +1722,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             tIDByPostcode0 = loadIDByPostcode(
                     loadData,
                     filename,
+                    paymentType,
                     i,
                     tIDByPostcodes);
             // Init tenancyChanges and tenancyChangesGrouped
@@ -1759,6 +1744,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     tIDByCTBRef1 = loadIDByCTBRef(
                             loadData,
                             filename,
+                            paymentType,
                             i,
                             tIDByCTBRefs);
                 }
@@ -1767,6 +1753,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 tIDByTenancyType1 = loadIDByTenure(
                         loadData,
                         filename,
+                        paymentType,
                         i,
                         tIDByTenancyTypes);
                 // tIDByPostcode1
@@ -1774,6 +1761,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 tIDByPostcode1 = loadIDByPostcode(
                         loadData,
                         filename,
+                        paymentType,
                         i,
                         tIDByPostcodes);
                 // Get PostcodeTransitionCounts
@@ -1879,12 +1867,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                             }
                         } else {
                             if (!doneFirst) {
-                                if (!splitT[0].contains("-999")) {
+                                if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
                                     out = splitT[0];
                                     doneFirst = true;
                                 }
                             } else {
-                                if (!splitT[0].contains("-999")) {
+                                if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
                                     out += ", " + splitT[0];
                                 }
                             }
@@ -1901,10 +1889,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 }
                 System.out.println(includeKey + " maximum number of transitions "
                         + max + " out of a possible " + (include.size() - 1));
-                writeTransitionFrequencies(
-                        transitions,
+                writeTransitionFrequencies(transitions,
                         dirOut2,
-                        "Ungrouped",
+                        DW_Files.sUngrouped,
                         "Frequencies.txt",
                         reportTenancyTransitionBreaks);
                 // Grouped
@@ -1935,12 +1922,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                             }
                         } else {
                             if (!doneFirst) {
-                                if (!splitT[0].contains("-999")) {
+                                if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
                                     out += splitT[0];
                                     doneFirst = true;
                                 }
                             } else {
-                                if (!splitT[0].contains("-999")) {
+                                if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
                                     out += ", " + splitT[0];
                                 }
                             }
@@ -1957,10 +1944,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 }
                 System.out.println(includeKey + " maximum number of transitions "
                         + max + " out of a possible " + (include.size() - 1));
-                writeTransitionFrequencies(
-                        transitions,
+                writeTransitionFrequencies(transitions,
                         dirOut2,
-                        "Grouped",
+                        DW_Files.sGrouped,
                         "FrequenciesGrouped.txt",
                         reportTenancyTransitionBreaks);
             }
@@ -1970,13 +1956,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     protected HashMap<String, DW_ID> loadCTBRefByID(
             boolean loadData,
             String filename,
+            String paymentType,
             Integer key,
             HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs) {
         HashMap<String, DW_ID> result;
         if (tCTBRefByIDs.containsKey(key)) {
             return tCTBRefByIDs.get(key);
         }
-        result = loadCTBRefByID(loadData, filename, key);
+        result = loadCTBRefByID(loadData, filename, paymentType, key);
         tCTBRefByIDs.put(key, result);
         //System.out.println("...done.");
         return result;
@@ -1985,12 +1972,13 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     protected HashMap<String, DW_ID> loadCTBRefByID(
             boolean loadData,
             String filename,
+            String paymentType,
             Integer key) {
         HashMap<String, DW_ID> result;
         if (loadData) {
             //System.out.print("Loading " + filename + " ...");
             Object[] aSHBEData;
-            aSHBEData = getSHBEData(filename);
+            aSHBEData = getSHBEData(filename, paymentType);
             /*
              * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
              * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;
@@ -2012,7 +2000,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             result = (HashMap<String, DW_ID>) aSHBEData[10];
         } else {
             File f;
-            f = DW_SHBE_Handler.getCTBRefToClaimantIDLookupFile(filename);
+            f = DW_SHBE_Handler.getCTBRefToClaimantIDLookupFile(paymentType, filename);
             //System.out.print("Loading " + f + " ...");
             result = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(
                     f);
@@ -2037,13 +2025,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     protected HashMap<DW_ID, String> loadIDByCTBRef(
             boolean loadData,
             String filename,
+            String paymentType,
             Integer key,
             HashMap<Integer, HashMap<DW_ID, String>> tIDByCTBRefs) {
         HashMap<DW_ID, String> result;
         if (tIDByCTBRefs.containsKey(key)) {
             return tIDByCTBRefs.get(key);
         }
-        result = loadIDByCTBRef(loadData, filename, key);
+        result = loadIDByCTBRef(loadData, filename, paymentType, key);
         tIDByCTBRefs.put(key, result);
         return result;
     }
@@ -2051,12 +2040,13 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     protected HashMap<DW_ID, String> loadIDByCTBRef(
             boolean loadData,
             String filename,
+            String paymentType,
             Integer key) {
         HashMap<DW_ID, String> result;
         if (loadData) {
             //System.out.print("Loading " + filename + " ...");
             Object[] aSHBEData;
-            aSHBEData = getSHBEData(filename);
+            aSHBEData = getSHBEData(filename, paymentType);
             /*
              * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
              * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;
@@ -2078,7 +2068,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             result = (HashMap<DW_ID, String>) aSHBEData[11];
         } else {
             File f;
-            f = DW_SHBE_Handler.getClaimantIDToCTBRefLookupFile(filename);
+            f = DW_SHBE_Handler.getClaimantIDToCTBRefLookupFile(paymentType, filename);
             //System.out.print("Loading " + f + " ...");
             result = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(
                     f);
@@ -2090,13 +2080,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     protected HashMap<DW_ID, Integer> loadIDByTenure(
             boolean loadData,
             String filename,
+            String paymentType,
             Integer key,
             HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes) {
         HashMap<DW_ID, Integer> result;
         if (tIDByTenancyTypes.containsKey(key)) {
             return tIDByTenancyTypes.get(key);
         }
-        result = loadIDByTenancyType(loadData, filename, key);
+        result = loadIDByTenancyType(loadData, filename, paymentType, key);
         tIDByTenancyTypes.put(key, result);
         return result;
     }
@@ -2111,12 +2102,13 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     protected HashMap<DW_ID, Integer> loadIDByTenancyType(
             boolean loadData,
             String filename,
+            String paymentType,
             Integer key) {
         HashMap<DW_ID, Integer> result;
         if (loadData) {
             //System.out.print("Loading " + filename + " ...");
             Object[] aSHBEData;
-            aSHBEData = getSHBEData(filename);
+            aSHBEData = getSHBEData(filename, paymentType);
             /*
              * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
              * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;
@@ -2138,7 +2130,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             result = (HashMap<DW_ID, Integer>) aSHBEData[9];
         } else {
             File f;
-            f = DW_SHBE_Handler.getClaimantIDToTenancyTypeLookupFile(filename);
+            f = DW_SHBE_Handler.getClaimantIDToTenancyTypeLookupFile(
+                    paymentType, filename);
             //System.out.print("Loading " + f + " ...");
             result = (HashMap<DW_ID, Integer>) Generic_StaticIO.readObject(f);
         }
@@ -2149,13 +2142,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     protected HashMap<DW_ID, String> loadIDByPostcode(
             boolean loadData,
             String filename,
+            String paymentType,
             Integer key,
             HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes) {
         HashMap<DW_ID, String> result;
         if (tIDByPostcodes.containsKey(key)) {
             return tIDByPostcodes.get(key);
         }
-        result = loadIDByPostcode(loadData, filename, key);
+        result = loadIDByPostcode(loadData, filename, paymentType, key);
         tIDByPostcodes.put(key, result);
         return result;
     }
@@ -2163,12 +2157,13 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     protected HashMap<DW_ID, String> loadIDByPostcode(
             boolean loadData,
             String filename,
+            String paymentType,
             Integer key) {
         HashMap<DW_ID, String> result;
         if (loadData) {
             //System.out.print("Loading " + filename + " ...");
             Object[] aSHBEData;
-            aSHBEData = getSHBEData(filename);
+            aSHBEData = getSHBEData(filename, paymentType);
             /*
              * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
              * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;
@@ -2190,7 +2185,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             result = (HashMap<DW_ID, String>) aSHBEData[8];
         } else {
             File f;
-            f = DW_SHBE_Handler.getClaimantIDToPostcodeLookupFile(filename);
+            f = DW_SHBE_Handler.getClaimantIDToPostcodeLookupFile(
+                    paymentType, filename);
             //System.out.print("Loading " + f + " ...");
             result = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(f);
         }
@@ -2516,12 +2512,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                        }
 //                    } else {
 //                        if (!doneFirst) {
-//                            if (!splitT[0].contains("-999")) {
+//                            if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
 //                                out += splitT[0];
 //                                doneFirst = true;
 //                            }
 //                        } else {
-//                            if (!splitT[0].contains("-999")) {
+//                            if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
 //                                out += ", " + splitT[0];
 //                            }
 //                        }
@@ -2590,12 +2586,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                        }
 //                    } else {
 //                        if (!doneFirst) {
-//                            if (!splitT[0].contains("-999")) {
+//                            if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
 //                                out += splitT[0];
 //                                doneFirst = true;
 //                            }
 //                        } else {
-//                            if (!splitT[0].contains("-999")) {
+//                            if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
 //                                out += ", " + splitT[0];
 //                            }
 //                        }
@@ -2654,6 +2650,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             Object[] underOccupiedData,
             TreeMap<String, TreeMap<String, String>> lookupsFromPostcodeToLevelCode,
             String[] SHBEFilenames,
+            String paymentType,
             ArrayList<String> claimantTypes,
             TreeMap<String, ArrayList<String>> tenancyTypeGroups,
             ArrayList<String> tenancyTypesGrouped,
@@ -2701,7 +2698,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             i = includeIte.next();
             // Load first data
             Object[] SHBEData0;
-            SHBEData0 = getSHBEData(SHBEFilenames[i]);
+            SHBEData0 = getSHBEData(SHBEFilenames[i], paymentType);
             /*
              * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
              * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;
@@ -2980,7 +2977,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 i = includeIte.next();
                 // Load next data
                 Object[] SHBEData1;
-                SHBEData1 = getSHBEData(SHBEFilenames[i]);
+                SHBEData1 = getSHBEData(SHBEFilenames[i], paymentType);
                 /*
                  * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
                  * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;
@@ -4502,7 +4499,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     String tenancyType0 = Integer.toString(tenancyType0Integer);
                     Integer tenancyType1Integer = -999;
                     String tenancyType1;
-                    tenancyType1 = "-999";
+                    tenancyType1 = DW_SHBE_TenancyType_Handler.sMinus999;
                     if (tenancyType0Integer.compareTo(tenancyType1Integer) != 0) {
                         String tenancyTypeChange;
                         if (doUnderOccupiedData) {
@@ -4636,7 +4633,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             }
             if (doMainLoop) {
                 Integer tenancyType0Integer = -999;
-                String tenancyType0 = "-999";
+                String tenancyType0 = DW_SHBE_TenancyType_Handler.sMinus999;
                 String postcode0 = null;
                 boolean isValidPostcodeFormPostcode0 = false;
                 boolean isValidPostcode0 = false;
@@ -4664,11 +4661,11 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                 }
                             }
                         } else {
-                            tenancyType0 = "-999";
+                            tenancyType0 = DW_SHBE_TenancyType_Handler.sMinus999;
                         }
                     }
                 } else {
-                    tenancyType0 = "-999";
+                    tenancyType0 = DW_SHBE_TenancyType_Handler.sMinus999;
                 }
                 Integer tenancyType1Integer = tIDByTenancyType1.get(tID);
                 String tenancyType1 = Integer.toString(tenancyType1Integer);
@@ -4771,7 +4768,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     String tenancyType0 = Integer.toString(tenancyType0Integer);
                     Integer tenancyType1Integer = -999;
                     String tenancyType1;
-                    tenancyType1 = "-999";
+                    tenancyType1 = DW_SHBE_TenancyType_Handler.sMinus999;
                     String postcode0;
                     postcode0 = tIDByPostcode0.get(tID);
                     boolean isValidPostcode0;
@@ -4816,13 +4813,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         }
         if (postcodeChange) {
             if (!postcodeChanges.isEmpty()) {
-                writePostcodeChanges(
-                        dirOut,
+                writePostcodeChanges(dirOut,
                         postcodeChanges,
                         yM30,
                         yM31,
                         checkPreviousPostcode,
-                        "Ungrouped");
+                        DW_Files.sUngrouped);
             }
         }
         if (result.isEmpty()) {
@@ -4839,12 +4835,13 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             String postcode0,
             String postcode1) {
         String[] result;
-        result = new String[5];
+        result = new String[6];
         result[0] = ID.toString();
-        result[1] = yM31;
-        result[2] = tenancyTypeChange;
-        result[3] = postcode0;
-        result[4] = postcode1;
+        result[1] = yM30;
+        result[2] = yM31;
+        result[3] = tenancyTypeChange;
+        result[4] = postcode0;
+        result[5] = postcode1;
         return result;
     }
 
@@ -4974,14 +4971,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                     }
                                 }
                             } else {
-                                tenancyType0 = "-999";
+                                tenancyType0 = DW_SHBE_TenancyType_Handler.sMinus999;
                             }
                         }
                     } else {
-                        tenancyType0 = "-999";
+                        tenancyType0 = DW_SHBE_TenancyType_Handler.sMinus999;
                     }
                 } else {
-                    tenancyType0 = "-999";
+                    tenancyType0 = DW_SHBE_TenancyType_Handler.sMinus999;
                 }
                 Integer tenancyType1Integer = tIDByTenancyType1.get(tID);
                 String tenancyType1 = Integer.toString(tenancyType1Integer);
@@ -5000,7 +4997,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     }
                     if (doCount) {
                         if (tenancyType0Integer.compareTo(tenancyType1Integer) == 0
-                                || tenancyType0.equalsIgnoreCase("-999")) { // Major diff
+                                || tenancyType0.equalsIgnoreCase(DW_SHBE_TenancyType_Handler.sMinus999)) { // Major diff
                             String tenancyTypeChange;
                             if (doUnderOccupiedData) {
                                 String[] ttc = getTenancyTypeTransitionName(
@@ -5187,7 +5184,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         String tenancyType0 = Integer.toString(tenancyType0Integer);
                         Integer tenancyType1Integer = -999;
                         String tenancyType1;
-                        tenancyType1 = "-999";
+                        tenancyType1 = DW_SHBE_TenancyType_Handler.sMinus999;
                         String postcode0;
                         postcode0 = tIDByPostcode0.get(tID);
                         boolean isValidPostcode0 = false;
@@ -5235,13 +5232,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         }
         if (postcodeChange) {
             if (!postcodeChanges.isEmpty()) {
-                writePostcodeChanges(
-                        dirOut,
+                writePostcodeChanges(dirOut,
                         postcodeChanges,
                         yM30,
                         yM31,
                         checkPreviousPostcode,
-                        "Ungrouped");
+                        DW_Files.sUngrouped);
             }
         }
         if (result.isEmpty()) {
@@ -5372,7 +5368,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     }
                     if (doCount) {
                         if (tenancyType0.equalsIgnoreCase(tenancyType1)
-                                || tenancyType0.equalsIgnoreCase("-999")) { // Major diff
+                                || tenancyType0.equalsIgnoreCase(DW_SHBE_TenancyType_Handler.sMinus999)) { // Major diff
                             String tenancyTypeChange;
                             if (doUnderOccupiedData) {
                                 String[] ttc = getTenancyTypeTransitionName(
@@ -5462,7 +5458,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     String tenancyType0;
                     tenancyType0 = getTenancyTypeGroup(regulatedGroups, unregulatedGroups, tenancyType0Integer);
                     String tenancyType1;
-                    tenancyType1 = "-999";
+                    tenancyType1 = DW_SHBE_TenancyType_Handler.sMinus999;
                     String postcode0;
                     postcode0 = tIDByPostcode0.get(tID);
                     boolean isValidPostcode0 = false;
@@ -5509,13 +5505,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         }
         if (postcodeChange) {
             if (!postcodeChanges.isEmpty()) {
-                writePostcodeChanges(
-                        dirOut,
+                writePostcodeChanges(dirOut,
                         postcodeChanges,
                         yM30,
                         yM31,
                         checkPreviousPostcode,
-                        "Grouped");
+                        DW_Files.sGrouped);
             }
         }
         if (result.isEmpty()) {
@@ -5753,7 +5748,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                             unregulatedGroups,
                             tenancyType0Integer);
                     String tenancyType1;
-                    tenancyType1 = "-999";
+                    tenancyType1 = DW_SHBE_TenancyType_Handler.sMinus999;
                     String postcode0;
                     postcode0 = tIDByPostcode0.get(tID);
                     boolean isValidPostcode0;
@@ -5798,13 +5793,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         }
         if (postcodeChange) {
             if (!postcodeChanges.isEmpty()) {
-                writePostcodeChanges(
-                        dirOut,
+                writePostcodeChanges(dirOut,
                         postcodeChanges,
                         yM30,
                         yM31,
                         checkPreviousPostcode,
-                        "Grouped");
+                        DW_Files.sGrouped);
             }
         }
         if (result.isEmpty()) {
@@ -5868,9 +5862,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             Integer tenancyType) {
         String result;
         if (tenancyType == -999) {
-            result = "-999";
+            result = DW_SHBE_TenancyType_Handler.sMinus999;
         } else {
-            result = "Ungrouped";
+            result = DW_Files.sUngrouped;
             if (regulatedGroups.contains(tenancyType)) {
                 result = "Regulated";
             }
@@ -5920,7 +5914,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     tID);
             String tenancyType0;
             if (tenancyType0Integer == null) {
-                tenancyType0 = "-999";
+                tenancyType0 = DW_SHBE_TenancyType_Handler.sMinus999;
             } else {
                 tenancyType0 = getTenancyTypeGroup(
                         regulatedGroups,
@@ -5962,7 +5956,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     tID);
             String tenancyType0;
             if (tenancyType0Integer == null) {
-                tenancyType0 = "-999";
+                tenancyType0 = DW_SHBE_TenancyType_Handler.sMinus999;
             } else {
                 tenancyType0 = getTenancyTypeGroup(
                         regulatedGroups,
@@ -5970,7 +5964,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         tenancyType0Integer);
             }
             String tenancyType1;
-            tenancyType1 = "-999";
+            tenancyType1 = DW_SHBE_TenancyType_Handler.sMinus999;
             if (hasPreviousTenureChange) {
                 if (!set.contains(tID)) {
                     if (tenancyTypeTranistionMatrix.containsKey(tenancyType1)) {
@@ -6063,7 +6057,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                     unregulatedGroups,
                                     tenancyType0Integer);
                         } else {
-                            tenancyType0 = "-999";
+                            tenancyType0 = DW_SHBE_TenancyType_Handler.sMinus999;
                         }
                     } else {
                         if (tenancyType0Integer == -999) {
@@ -6083,7 +6077,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                 tenancyType0Integer);
                     }
                 } else {
-                    tenancyType0 = "-999";
+                    tenancyType0 = DW_SHBE_TenancyType_Handler.sMinus999;
                 }
                 if (!tenancyType0.equalsIgnoreCase(tenancyType1)) {
                     String tenancyTypeChange;
@@ -6149,7 +6143,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                             unregulatedGroups,
                             tenancyType0Integer);
                     String tenancyType1;
-                    tenancyType1 = "-999";
+                    tenancyType1 = DW_SHBE_TenancyType_Handler.sMinus999;
                     if (!tenancyType0.equalsIgnoreCase(tenancyType1)) { // Always the case!
                         String tenancyTypeChange;
                         if (doUnderOccupiedData) {
@@ -6258,12 +6252,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         if (grouped) {
             dirOut2 = new File(
                     dirOut,
-                    "Grouped");
+                    DW_Files.sGrouped);
         } else {
             dirOut2 = new File(
                     dirOut,
-                    "Ungrouped");
-//        tenancyTypes = DW_SHBE_Handler.getTenureTypeAll(doUnderOccupiedData);
+                    DW_Files.sUngrouped);
+//        tenancyTypes = DW_SHBE_Handler.getTenancyTypeAll(doUnderOccupiedData);
         }
         dirOut2.mkdir();
         File f;
@@ -6310,7 +6304,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                             line += "," + count.toString();
                         }
                     }
-                    tenancyType1 = "-999";
+                    tenancyType1 = DW_SHBE_TenancyType_Handler.sMinus999;
                     Integer nullCount = tenancyTypeCounts.get(tenancyType1);
                     if (nullCount == null) {
                         line += ",0";
@@ -6321,8 +6315,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 pw.println(line);
             }
             TreeMap<String, Integer> tenancyTypeCounts;
-            tenancyTypeCounts = tenancyTypeMatrix.get("-999");
-            line = "-999";
+            tenancyTypeCounts = tenancyTypeMatrix.get(DW_SHBE_TenancyType_Handler.sMinus999);
+            line = DW_SHBE_TenancyType_Handler.sMinus999;
             if (tenancyTypeCounts == null) {
                 for (String tenancyType : tenancyTypes) {
                     line += ",0";
@@ -6342,7 +6336,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         line += "," + count.toString();
                     }
                 }
-                tenancyType1 = "-999";
+                tenancyType1 = DW_SHBE_TenancyType_Handler.sMinus999;
                 Integer nullCount = tenancyTypeCounts.get(tenancyType1);
                 if (nullCount == null) {
                     line += ",0";
@@ -6389,7 +6383,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        }
 //        File dirOut2 = new File(
 //                dirOut,
-//                "Grouped");
+//                DW_Files.sGrouped);
 //        dirOut2.mkdir();
 //        File f;
 //        f = new File(
@@ -6397,7 +6391,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                "TenancyTypeTransition"
 //                + "_Start_" + year0 + month0
 //                + "_End_" + year1 + month1 + ".csv");
-////        tenancyTypes = DW_SHBE_Handler.getTenureTypeAll();
+////        tenancyTypes = DW_SHBE_Handler.getTenancyTypeAll();
 //        PrintWriter pw;
 //        try {
 //            pw = new PrintWriter(f);
@@ -6434,7 +6428,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                            line += "," + count.toString();
 //                        }
 //                    }
-////                    String tenancyType0 = "-999";
+////                    String tenancyType0 = DW_SHBE_TenancyType_Handler.sMinus999;
 ////                    Integer nullCount = tenancyTypeCounts.get(tenancyType0);
 ////                    if (nullCount == null) {
 ////                        line += ",0";
@@ -6445,8 +6439,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                pw.println(line);
 //            }
 ////            TreeMap<String, Integer> tenancyTypeCounts;
-////            tenancyTypeCounts = tenancyTypeMatrix.get("-999");
-////            line = "-999";
+////            tenancyTypeCounts = tenancyTypeMatrix.get(DW_SHBE_TenancyType_Handler.sMinus999);
+////            line = DW_SHBE_TenancyType_Handler.sMinus999;
 ////            if (tenancyTypeCounts == null) {
 ////                for (String tenancyTypeGroup : tenancyTypesGrouped) {
 ////                    line += ",0";
@@ -6465,7 +6459,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 ////                        line += "," + count.toString();
 ////                    }
 ////                }
-////                String tenancyType0 = "-999";
+////                String tenancyType0 = DW_SHBE_TenancyType_Handler.sMinus999;
 ////                Integer nullCount = tenancyTypeCounts.get(tenancyType0);
 ////                if (nullCount == null) {
 ////                    line += ",0";
@@ -6481,11 +6475,11 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                    .getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }
-    public void getTotalClaimantsByTenancyType() {
+    public void getTotalClaimantsByTenancyType(String paymentType) {
         //TreeMap<String,TreeMap<Integer,Integer>> result = new TreeMap<String,TreeMap<Integer,Integer>>();
         String[] SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
         for (String SHBEFilename : SHBEFilenames) {
-            Object[] SHBEData = getSHBEData(SHBEFilename);
+            Object[] SHBEData = getSHBEData(SHBEFilename, paymentType);
             /*
              * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
              * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;
@@ -6596,6 +6590,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      */
     public Object[] getChangeInTenancyForMovers(
             String[] tSHBEfilenames,
+            String paymentType,
             HashSet<String> NINOOfClaimantsStartYear,
             HashSet<String> NINOOfClaimantsEndYear,
             HashMap<String, String> NINOOfClaimantsThatMoved,
@@ -6622,7 +6617,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         originsAndDestinations.add(9);
         originsAndDestinations.add(-999);
         result[1] = originsAndDestinations;
-        Object[] SHBEDataStart = getSHBEData(tSHBEfilenames[startIndex]);
+        Object[] SHBEDataStart = getSHBEData(tSHBEfilenames[startIndex], paymentType);
         /*
          * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
          * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;
@@ -6643,7 +6638,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
          */
         TreeMap<String, DW_SHBE_D_Record> DRecordsStart = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataStart[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsStart = (TreeMap<String, DW_SHBE_Record>) SHBEDataStart[1];
-        Object[] SHBEDataEnd = getSHBEData(tSHBEfilenames[endIndex]);
+        Object[] SHBEDataEnd = getSHBEData(tSHBEfilenames[endIndex], paymentType);
         /*
          * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
          * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;
@@ -6820,6 +6815,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      */
     public Object[] getChangeInTenancy(
             String[] tSHBEfilenames,
+            String paymentType,
             String startYear,
             String startMonth,
             String endYear,
@@ -6841,7 +6837,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         originsAndDestinations.add(9);
         originsAndDestinations.add(-999);
         result[1] = originsAndDestinations;
-        Object[] SHBEDataStart = getSHBEData(tSHBEfilenames[startIndex]);
+        Object[] SHBEDataStart = getSHBEData(tSHBEfilenames[startIndex], paymentType);
         /*
          * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
          * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;
@@ -6862,7 +6858,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
          */
         TreeMap<String, DW_SHBE_D_Record> startDRecords = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataStart[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsStart = (TreeMap<String, DW_SHBE_Record>) SHBEDataStart[1];
-        Object[] SHBEDataEnd = getSHBEData(tSHBEfilenames[endIndex]);
+        Object[] SHBEDataEnd = getSHBEData(tSHBEfilenames[endIndex], paymentType);
         TreeMap<String, DW_SHBE_D_Record> endDRecords = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataEnd[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
@@ -7202,6 +7198,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * @param underOccupiedReport_Sets
      */
     public void processSHBEReportDataForSarah(
+            String paymentType,
             ArrayList<Object[]> SHBE_Sets,
             ArrayList<DW_UnderOccupiedReport_Set>[] underOccupiedReport_Sets) {
         /*
@@ -7459,6 +7456,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             String endMonth = DW_SHBE_Handler.getMonth(allSHBEFilenames[endIndex]);
             Object[] migrationData = getAllClaimantMigrationData(
                     allSHBEFilenames,
+                    paymentType,
                     AllNINOOfClaimantsStartYear,
                     AllNINOOfClaimantsEndYear,
                     AllNINOOfClaimantsThatMoved,
@@ -7488,6 +7486,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      */
     public void processSHBEReportDataIntoMigrationMatricesForApril(
             ArrayList<Object[]> SHBEData,
+            String paymentType,
             ArrayList<DW_UnderOccupiedReport_Set>[] underOccupiedReport_Sets) {
         ArrayList<DW_UnderOccupiedReport_Set> councilRecords;
         ArrayList<DW_UnderOccupiedReport_Set> registeredSocialLandlordRecords;
@@ -7535,6 +7534,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 endYear,
                 endMonth,
                 allSHBEFilenames,
+                paymentType,
                 startIndex,
                 endIndex);
         /**
@@ -7575,6 +7575,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 endYear,
                 endMonth,
                 allSHBEFilenames,
+                paymentType,
                 startIndex,
                 endIndex);
         HashSet<String> AllNINOOfClaimants2010 = (HashSet<String>) migrationData[1];
@@ -7605,6 +7606,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 endYear,
                 endMonth,
                 allSHBEFilenames,
+                paymentType,
                 startIndex,
                 endIndex);
         HashSet<String> AllNINOOfClaimants2011 = (HashSet<String>) migrationData[1];
@@ -7635,6 +7637,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 endYear,
                 endMonth,
                 allSHBEFilenames,
+                paymentType,
                 startIndex,
                 endIndex);
         HashSet<String> AllNINOOfClaimants2012 = (HashSet<String>) migrationData[1];
@@ -7665,6 +7668,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 endYear,
                 endMonth,
                 allSHBEFilenames,
+                paymentType,
                 startIndex,
                 endIndex);
         HashSet<String> AllNINOOfClaimants2013 = (HashSet<String>) migrationData[1];
@@ -7695,6 +7699,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 endYear,
                 endMonth,
                 allSHBEFilenames,
+                paymentType,
                 startIndex,
                 endIndex);
         HashSet<String> AllNINOOfClaimants2014 = (HashSet<String>) migrationData[1];
@@ -7725,6 +7730,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 endYear,
                 endMonth,
                 allSHBEFilenames,
+                paymentType,
                 startIndex,
                 endIndex);
         HashSet<String> AllNINOOfClaimants2015 = (HashSet<String>) migrationData[1];
@@ -7889,6 +7895,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             String endYear,
             String endMonth,
             String[] allSHBEFilenames,
+            String paymentType,
             int startIndex,
             int endIndex) {
         Object[] result;
@@ -7912,6 +7919,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         type = "All";
         migrationData = getAllClaimantMigrationData(
                 allSHBEFilenames,
+                paymentType,
                 AllNINOOfClaimantsStartYear,
                 AllNINOOfClaimantsEndYear,
                 AllNINOOfClaimantsThatMoved,
@@ -7933,6 +7941,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         type = "HB";
         migrationData = getHBClaimantOnlyMigrationData(
                 allSHBEFilenames,
+                paymentType,
                 HBNINOOfClaimantsStartYear,
                 HBNINOOfClaimantsEndYear,
                 HBNINOOfClaimantsThatMoved,
@@ -8093,6 +8102,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      */
     public Object[] getAllClaimantMigrationData(
             String[] tSHBEfilenames,
+            String paymentType,
             HashSet<String> NINOOfClaimantsStartYear,
             HashSet<String> NINOOfClaimantsEndYear,
             HashMap<String, String> NINOOfClaimantsThatMoved,
@@ -8111,7 +8121,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         TreeSet<String> originsAndDestinations;
         originsAndDestinations = new TreeSet<String>();
         result[1] = originsAndDestinations;
-        Object[] SHBEDataStart = getSHBEData(tSHBEfilenames[startIndex]);
+        Object[] SHBEDataStart = getSHBEData(tSHBEfilenames[startIndex], paymentType);
         /*
          * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
          * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;
@@ -8132,7 +8142,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
          */
         TreeMap<String, DW_SHBE_D_Record> DRecordsStart = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataStart[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsStart = (TreeMap<String, DW_SHBE_Record>) SHBEDataStart[1];
-        Object[] SHBEDataEnd = getSHBEData(tSHBEfilenames[endIndex]);
+        Object[] SHBEDataEnd = getSHBEData(tSHBEfilenames[endIndex], paymentType);
         TreeMap<String, DW_SHBE_D_Record> DRecordsEnd = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataEnd[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
@@ -8305,6 +8315,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      */
     public Object[] getHBClaimantOnlyMigrationData(
             String[] tSHBEfilenames,
+            String paymentType,
             HashSet<String> AllNINOOfClaimantsStartYear,
             HashSet<String> AllNINOOfClaimantsEndYear,
             HashMap<String, String> AllNINOOfClaimantsThatMoved,
@@ -8321,7 +8332,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         result[0] = resultMatrix;
         TreeSet<String> originsAndDestinations = new TreeSet<String>();
         result[1] = originsAndDestinations;
-        Object[] SHBEDataStart = getSHBEData(tSHBEfilenames[startIndex]);
+        Object[] SHBEDataStart = getSHBEData(tSHBEfilenames[startIndex], paymentType);
         /*
          * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
          * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;
@@ -8342,7 +8353,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
          */
         TreeMap<String, DW_SHBE_D_Record> DRecordsStart = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataStart[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsStart = (TreeMap<String, DW_SHBE_Record>) SHBEDataStart[1];
-        Object[] SHBEDataEnd = getSHBEData(tSHBEfilenames[endIndex]);
+        Object[] SHBEDataEnd = getSHBEData(tSHBEfilenames[endIndex], paymentType);
         TreeMap<String, DW_SHBE_D_Record> DRecordsEnd = (TreeMap<String, DW_SHBE_D_Record>) SHBEDataEnd[0];
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
@@ -8572,11 +8583,13 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      *
      */
     public Object[] getSHBEData(
-            String filename) {
+            String filename,
+            String paymentType) {
         System.out.println("Loading SHBE from " + filename);
         Object[] result = tDW_SHBE_Handler.loadInputData(
                 DW_Files.getInputSHBEDir(),
                 filename,
+                paymentType,
                 false);
         return result;
     }
@@ -8723,9 +8736,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      */
     public HashMap<String, TreeMap<String, Integer>> getUnderOccupiedbyPostcode(
             TreeMap<String, DW_UnderOccupiedReport_Record>[] records,
-            String[] tSHBEfilenames) {
+            String[] tSHBEfilenames,
+            String paymentType) {
         HashMap<String, TreeMap<String, Integer>> result = new HashMap<String, TreeMap<String, Integer>>();
-        Object[] SHBEDataMonth1 = getSHBEData(tSHBEfilenames[0]);
+        Object[] SHBEDataMonth1 = getSHBEData(tSHBEfilenames[0], paymentType);
         /*
          * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
          * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;
@@ -8874,13 +8888,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * values are counts of the number of claims.
      */
     protected HashMap<String, TreeMap<String, Integer>> getCouncilTaxClaimCountByPostcode(
-            String[] tSHBEfilenames) {
+            String[] tSHBEfilenames,
+            String paymentType) {
         HashMap<String, TreeMap<String, Integer>> result = new HashMap<String, TreeMap<String, Integer>>();
         for (int month = 0; month < tSHBEfilenames.length - 1; month++) {
             TreeMap<String, Integer> monthsResult = new TreeMap<String, Integer>();
             String monthString = DW_SHBE_Handler.getMonth(tSHBEfilenames[month]);
             result.put(monthString, monthsResult);
-            Object[] SHBEData = getSHBEData(tSHBEfilenames[month]);
+            Object[] SHBEData = getSHBEData(tSHBEfilenames[month], paymentType);
             /*
              * result[0] is a TreeMap<String, DW_SHBE_Record> CTBRef, DRecords;
              * result[1] is a TreeMap<String, DW_SHBE_Record> CTBRef, SRecords without DRecords;

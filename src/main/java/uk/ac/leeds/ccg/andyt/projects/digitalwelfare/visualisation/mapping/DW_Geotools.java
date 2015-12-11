@@ -951,7 +951,11 @@ public class DW_Geotools extends AGDT_Geotools {
         li = new AGDT_LegendItem(legendMessage, Color.WHITE);
 
         legendItems.add(li);
-        
+        li = new AGDT_LegendItem("Origin", Color.RED);
+        legendItems.add(li);
+        li = new AGDT_LegendItem("Destination", Color.BLUE);
+        legendItems.add(li);
+
 //        if (styleParameters.isDrawBoundaries()) {
 //            FeatureLayer backgroundFeatureLayer;
 //            backgroundFeatureLayer = backgroundDW_Shapefile.getFeatureLayer(

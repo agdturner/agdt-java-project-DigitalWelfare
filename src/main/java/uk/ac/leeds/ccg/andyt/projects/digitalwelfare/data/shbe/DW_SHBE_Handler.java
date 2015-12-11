@@ -51,6 +51,9 @@ public class DW_SHBE_Handler {
 
     private HashSet<String> RecordTypes;
 
+    public static final String sHB = "HB";
+    public static final String sCTB = "CTB";
+    
     private static HashMap<String, DW_ID> NINOToIDLookup;
     private static HashMap<DW_ID, String> IDToNINOLookup;
     private static HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
@@ -77,8 +80,7 @@ public class DW_SHBE_Handler {
         File IDToNINOLookupFile;
         File PostcodeToPostcodeIDLookupFile;
         File PostcodeIDToPostcodeLookupFile;
-        NINOToIDLookupFile = getNINOToIDLookupFile();
-        IDToNINOLookupFile = getIDToNINOLookupFile();
+
         PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
         PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
 //        HashMap<String, DW_ID> NINOToIDLookup;
@@ -96,11 +98,21 @@ public class DW_SHBE_Handler {
 //                PostcodeIDToPostcodeLookupFile);
         PostcodeToPostcodeIDLookup = new HashMap<String, DW_ID>();
         PostcodeIDToPostcodeLookup = new HashMap<DW_ID, String>();
-        for (int i = 0; i < SHBEFilenames.length; i++) {
-            loadInputData(
-                    dir,
-                    SHBEFilenames[i],
-                    loadFromSource);
+
+        ArrayList<String> inPaymentTypes;
+        inPaymentTypes = getPaymentTypes();
+        Iterator<String> ite = inPaymentTypes.iterator();
+        while (ite.hasNext()) {
+            String inPaymentType;
+            inPaymentType = ite.next();
+            NINOToIDLookupFile = getNINOToIDLookupFile(inPaymentType);
+            IDToNINOLookupFile = getIDToNINOLookupFile(inPaymentType);
+            for (int i = 0; i < SHBEFilenames.length; i++) {
+                loadInputData(
+                        dir,
+                        SHBEFilenames[i],
+                        inPaymentType,
+                        loadFromSource);
 //                    NINOToIDLookupFile,
 //                    IDToNINOLookupFile,
 //                    PostcodeToPostcodeIDLookupFile,
@@ -109,13 +121,30 @@ public class DW_SHBE_Handler {
 //                    IDToNINOLookup,
 //                    PostcodeToPostcodeIDLookup,
 //                    PostcodeIDToPostcodeLookup);
+            }
+            // writeOutLookups
+            Generic_StaticIO.writeObject(NINOToIDLookup, NINOToIDLookupFile);
+            Generic_StaticIO.writeObject(IDToNINOLookup, IDToNINOLookupFile);
+            Generic_StaticIO.writeObject(PostcodeToPostcodeIDLookup, PostcodeToPostcodeIDLookupFile);
+            Generic_StaticIO.writeObject(PostcodeIDToPostcodeLookup, PostcodeIDToPostcodeLookupFile);
         }
-        // writeOutLookups
-        Generic_StaticIO.writeObject(NINOToIDLookup, NINOToIDLookupFile);
-        Generic_StaticIO.writeObject(IDToNINOLookup, IDToNINOLookupFile);
-        Generic_StaticIO.writeObject(PostcodeToPostcodeIDLookup, PostcodeToPostcodeIDLookupFile);
-        Generic_StaticIO.writeObject(PostcodeIDToPostcodeLookup, PostcodeIDToPostcodeLookupFile);
         //loadInputData(dir, SHBEFilenames[47], loadFromSource);
+    }
+
+    public static final String sAllPT = "AllPT";
+    public static final String sInPayment = "InPayment";
+    public static final String sSuspended = "Suspended";
+    public static final String sOtherPT = "OtherPT";
+    
+    public static ArrayList<String> getPaymentTypes() {
+        ArrayList<String> result;
+        result = new ArrayList<String>();
+        result.add(sAllPT);
+        result.add(sInPayment);
+        result.add(sSuspended);
+        result.add(sOtherPT);
+        //result.add("NotInPaymentNotSuspended");
+        return result;
     }
 
     public void runNew() {
@@ -130,25 +159,32 @@ public class DW_SHBE_Handler {
         File IDToNINOLookupFile;
         File PostcodeToPostcodeIDLookupFile;
         File PostcodeIDToPostcodeLookupFile;
-        NINOToIDLookupFile = getNINOToIDLookupFile();
-        IDToNINOLookupFile = getIDToNINOLookupFile();
-        PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
-        PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
+        ArrayList<String> inPaymentTypes;
+        inPaymentTypes = getPaymentTypes();
+        Iterator<String> ite = inPaymentTypes.iterator();
+        while (ite.hasNext()) {
+            String inPaymentType;
+            inPaymentType = ite.next();
+            NINOToIDLookupFile = getNINOToIDLookupFile(inPaymentType);
+            IDToNINOLookupFile = getIDToNINOLookupFile(inPaymentType);
+            PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
+            PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
 //        HashMap<String, DW_ID> NINOToIDLookup;
 //        HashMap<DW_ID, String> IDToNINOLookup;
 //        HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
 //        HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
-        NINOToIDLookup = getNINOToIDLookup(NINOToIDLookupFile);
-        IDToNINOLookup = getIDToNINOLookup(IDToNINOLookupFile);
-        PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
-                PostcodeToPostcodeIDLookupFile);
-        PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
-                PostcodeIDToPostcodeLookupFile);
-        loadInputDataNew(
-                dir,
-                SHBEFilename,
-                loadFromSource);
-        //loadInputData(dir, SHBEFilenames[47], loadFromSource);
+            NINOToIDLookup = getNINOToIDLookup(NINOToIDLookupFile);
+            IDToNINOLookup = getIDToNINOLookup(IDToNINOLookupFile);
+            PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
+                    PostcodeToPostcodeIDLookupFile);
+            PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
+                    PostcodeIDToPostcodeLookupFile);
+            loadInputDataNew(
+                    dir,
+                    SHBEFilename,
+                    inPaymentType,
+                    loadFromSource);
+        }
     }
 
 //    public static String getClaimantType(DW_SHBE_D_Record D_Record) {
@@ -156,63 +192,120 @@ public class DW_SHBE_Handler {
 //        HBClaimRefNo = D_Record.getHousingBenefitClaimReferenceNumber();
 //        return getClaimantType(HBClaimRefNo);
 //    }
-    public static String getClaimantType(DW_SHBE_D_Record D_Record) {
-        boolean isCurrentHBClaimInPayment;
-        isCurrentHBClaimInPayment = isCurrentHBClaimInPayment(D_Record);
-        boolean isCurrentCTBClaimInPayment;
-        isCurrentCTBClaimInPayment = isCurrentCTBClaimInPayment(D_Record);
-        if (isCurrentHBClaimInPayment) {
-            if (isCurrentCTBClaimInPayment) {
-                return "HBAndCTB";                
-            } else {
-                return "HBOnly";
-            }
-        } else {
-            if (isCurrentCTBClaimInPayment) {
-                return "CTBOnly";                
-            } else {
-                return "NotInPayment";
-            }
-        }
-    }
     
+    
+//    public static String getClaimantType(DW_SHBE_D_Record D_Record) {
+//        boolean isCurrentHBClaimInPayment;
+//        isCurrentHBClaimInPayment = isCurrentHBClaimInPayment(D_Record);
+//        boolean isCurrentCTBOnlyClaimInPayment;
+//        isCurrentCTBOnlyClaimInPayment = isCurrentCTBOnlyClaimInPayment(D_Record);
+//        if (isCurrentHBClaimInPayment) {
+//            if (isCurrentCTBOnlyClaimInPayment) {
+//                return "HBAndCTB";
+//            } else {
+//                return "HBOnly";
+//            }
+//        } else {
+//            if (isCurrentCTBOnlyClaimInPayment) {
+//                return "CTBOnly";
+//            } else {
+//                return "NotInPayment";
+//            }
+//        }
+//    }
+
+    public static String getClaimantType(DW_SHBE_D_Record D_Record) {
+        if (isCurrentHBClaim(D_Record)) {
+            return sHB;
+        }
+        //if (isCurrentCTBOnlyClaim(D_Record)) {
+            return sCTB;
+        //}
+    }
+
+    public static ArrayList<String> getClaimantTypes() {
+        ArrayList<String> result;
+        result = new ArrayList<String>();
+        result.add(sHB);
+        result.add(sCTB);
+        return result;
+    }
+        
     @Deprecated
     public static String getClaimantType(String HBClaimRefNo) {
         String result;
         if (HBClaimRefNo == null) {
-            result = "CTB";
+            result = sCTB;
         } else {
             if (HBClaimRefNo.isEmpty()) {
-                result = "CTB";
+                result = sCTB;
             } else {
-                result = "HB";
+                result = sHB;
             }
         }
         return result;
     }
-    
-    
 
-    public static boolean isCurrentCTBClaimInPayment(DW_SHBE_D_Record D_Record) {
+    public static boolean isCurrentCTBOnlyClaimOtherPT(DW_SHBE_D_Record D_Record) {
+        if (D_Record.getStatusOfCTBClaimAtExtractDate() == 0) {
+            return isCurrentCTBOnlyClaim(D_Record);
+        }
+        return false;
+    }
+
+    public static boolean isCurrentCTBOnlyClaimSuspended(DW_SHBE_D_Record D_Record) {
+        if (D_Record.getStatusOfCTBClaimAtExtractDate() == 2) {
+            return isCurrentCTBOnlyClaim(D_Record);
+        }
+        return false;
+    }
+
+    public static boolean isCurrentCTBOnlyClaimInPayment(DW_SHBE_D_Record D_Record) {
         if (D_Record.getStatusOfCTBClaimAtExtractDate() == 1) {
-            int TT;
-            TT = D_Record.getTenancyType();
-            if (TT == 5 || TT == 7) {
-                return true;
-            }
+            return isCurrentCTBOnlyClaim(D_Record);
+        }
+        return false;
+    }
+
+    public static boolean isCurrentCTBOnlyClaim(DW_SHBE_D_Record D_Record) {
+        int TT;
+        TT = D_Record.getTenancyType();
+//        if (TT == 5 || TT == 7) {
+//            return true;
+//        }
+//        return false;
+        return TT == 5 || TT == 7;
+    }
+
+    public static boolean isCurrentHBClaimOtherPT(DW_SHBE_D_Record D_Record) {
+        if (D_Record.getStatusOfHBClaimAtExtractDate() == 0) {
+            return isCurrentHBClaim(D_Record);
+        }
+        return false;
+    }
+
+    public static boolean isCurrentHBClaimSuspended(DW_SHBE_D_Record D_Record) {
+        if (D_Record.getStatusOfHBClaimAtExtractDate() == 2) {
+            return isCurrentHBClaim(D_Record);
         }
         return false;
     }
 
     public static boolean isCurrentHBClaimInPayment(DW_SHBE_D_Record D_Record) {
         if (D_Record.getStatusOfHBClaimAtExtractDate() == 1) {
-            int TT;
-            TT = D_Record.getTenancyType();
-            if (TT > 0 && TT < 10 && (TT != 5 || TT != 7)) {
-                return true;
-            }
+            return isCurrentHBClaim(D_Record);
         }
         return false;
+    }
+
+    public static boolean isCurrentHBClaim(DW_SHBE_D_Record D_Record) {
+        int TT;
+        TT = D_Record.getTenancyType();
+//        if (TT > 0 && TT < 10 && (TT != 5 || TT != 7)) {
+//            return true;
+//        }
+//        return false;
+        return TT > 0 && TT < 10 && (TT != 5 || TT != 7);
     }
 
     public HashSet<String> getRecordTypes() {
@@ -294,32 +387,35 @@ public class DW_SHBE_Handler {
      *
      * @param directory
      * @param filename
-     * @return
+     * @param inPaymentType
+     * @param loadFromSource
      */
     public Object[] loadInputData(
             File directory,
             String filename,
+            String inPaymentType,
             boolean loadFromSource) {
+
         Object[] result = new Object[16];
         File inputFile = new File(
                 directory,
                 filename);
-        File tDRecordsFile = getDRecordsFile(filename);
-        File tSRecordsWithoutDRecordsFile = getSRecordsWithoutDRecordsFile(filename);
-        File tClaimantIDsFile = getClaimantIDsFile(filename);
-        File tPartnerIDsFile = getPartnerIDsFile(filename);
-        File tDependentsIDsFile = getDependentsIDsFile(filename);
-        File tNonDependentsIDsFile = getNonDependentsIDsFile(filename);
-        File tAllHouseholdIDsFile = getAllHouseholdIDsFile(filename);
-        File tClaimantIDToRecordIDLookupFile = getClaimantIDToRecordIDLookupFile(filename);
-        File tClaimantIDToPostcodeLookupFile = getClaimantIDToPostcodeLookupFile(filename);
-        File tClaimantIDToTenancyTypeLookupFile = getClaimantIDToTenancyTypeLookupFile(filename);
-        File tCTBRefToClaimantIDLookupFile = getCTBRefToClaimantIDLookupFile(filename);
-        File tClaimantIDToCTBRefLookupFile = getClaimantIDToCTBRefLookupFile(filename);
-        File tLoadSummaryFile = getLoadSummaryFile(filename);
-        File tClaimantIDAndPostcodeFile = getClaimantIDPostcodeSetFile(filename);
-        File tClaimantIDAndTenancyTypeFile = getClaimantIDTenancyTypeSetFile(filename);
-        File tClaimantIDAndPostcodeAndTenancyTypeFile = getClaimantIDPostcodeTenancyTypeSetFile(filename);
+        File tDRecordsFile = getDRecordsFile(inPaymentType, filename);
+        File tSRecordsWithoutDRecordsFile = getSRecordsWithoutDRecordsFile(inPaymentType, filename);
+        File tClaimantIDsFile = getClaimantIDsFile(inPaymentType, filename);
+        File tPartnerIDsFile = getPartnerIDsFile(inPaymentType, filename);
+        File tDependentsIDsFile = getDependentsIDsFile(inPaymentType, filename);
+        File tNonDependentsIDsFile = getNonDependentsIDsFile(inPaymentType, filename);
+        File tAllHouseholdIDsFile = getAllHouseholdIDsFile(inPaymentType, filename);
+        File tClaimantIDToRecordIDLookupFile = getClaimantIDToRecordIDLookupFile(inPaymentType, filename);
+        File tClaimantIDToPostcodeLookupFile = getClaimantIDToPostcodeLookupFile(inPaymentType, filename);
+        File tClaimantIDToTenancyTypeLookupFile = getClaimantIDToTenancyTypeLookupFile(inPaymentType, filename);
+        File tCTBRefToClaimantIDLookupFile = getCTBRefToClaimantIDLookupFile(inPaymentType, filename);
+        File tClaimantIDToCTBRefLookupFile = getClaimantIDToCTBRefLookupFile(inPaymentType, filename);
+        File tLoadSummaryFile = getLoadSummaryFile(inPaymentType, filename);
+        File tClaimantIDAndPostcodeFile = getClaimantIDPostcodeSetFile(inPaymentType, filename);
+        File tClaimantIDAndTenancyTypeFile = getClaimantIDTenancyTypeSetFile(inPaymentType, filename);
+        File tClaimantIDAndPostcodeAndTenancyTypeFile = getClaimantIDPostcodeTenancyTypeSetFile(inPaymentType, filename);
         if (loadFromSource) {
             // Init NINOToIDLookup, IDToNINOLookup, PostcodeToPostcodeIDLookup, 
             // PostcodeIDToPostcodeLookup;
@@ -327,8 +423,8 @@ public class DW_SHBE_Handler {
             File IDToNINOLookupFile;
             File PostcodeToPostcodeIDLookupFile;
             File PostcodeIDToPostcodeLookupFile;
-            NINOToIDLookupFile = getNINOToIDLookupFile();
-            IDToNINOLookupFile = getIDToNINOLookupFile();
+            NINOToIDLookupFile = getNINOToIDLookupFile(inPaymentType);
+            IDToNINOLookupFile = getIDToNINOLookupFile(inPaymentType);
             PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
             PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
 //            HashMap<String, DW_ID> NINOToIDLookup;
@@ -478,113 +574,160 @@ public class DW_SHBE_Handler {
                                         DW_SHBE_D_Record aDRecord;
                                         aDRecord = new DW_SHBE_D_Record(RecordID, line, this);
                                         rec.DRecord = aDRecord;
-                                        totalIncome = getClaimantsAndPartnersIncomeTotal(aDRecord);
-                                        if (totalIncome > 0) {
-                                            totalIncomeGreaterThanZeroCount++;
-                                        }
-                                        totalWeeklyEligibleRentAmount = aDRecord.getWeeklyEligibleRentAmount();
-                                        if (totalWeeklyEligibleRentAmount > 0) {
-                                            totalWeeklyEligibleRentAmountGreaterThanZeroCount++;
-                                        }
                                         String CTBRef;
                                         CTBRef = aDRecord.getCouncilTaxBenefitClaimReferenceNumber();
                                         if (CTBRef != null) {
-                                            Object o = tDRecords.put(CTBRef, rec);
-                                            if (o != null) {
-                                                DW_SHBE_Record existingSHBE_DataRecord = (DW_SHBE_Record) o;
-                                                System.out.println("existingSHBE_DataRecord" + existingSHBE_DataRecord);
-                                                System.out.println("replacementSHBE_DataRecord" + aDRecord);
-                                            }
-                                            // Count Council Tax and Housing Benefits and combined claims       
-//                                if (!aDRecord.getCouncilTaxBenefitClaimReferenceNumber().trim().isEmpty()) {
-//                                    totalCouncilTaxBenefitClaims++;
-//                                    if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
-//                                        totalCouncilTaxAndHousingBenefitClaims++;
-//                                        totalHousingBenefitClaims++;
-//                                    }
-//                                } else {
-//                                    if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
-//                                        totalHousingBenefitClaims++;
-//                                    }
-//                                }
-                                            boolean isCurrentHBClaimInPayment;
-                                            isCurrentHBClaimInPayment = DW_SHBE_Handler.isCurrentHBClaimInPayment(aDRecord);
-                                            if (DW_SHBE_Handler.isCurrentHBClaimInPayment(aDRecord)) {
-                                                totalCouncilTaxBenefitClaims++;
-                                                if (isCurrentHBClaimInPayment) {
-                                                    totalCouncilTaxAndHousingBenefitClaims++;
+                                            boolean doLoop = false;
+                                            if (inPaymentType.equalsIgnoreCase("All")) {
+                                                doLoop = true;
+                                                if (!CTBRef.trim().isEmpty()) {
+                                                    totalCouncilTaxBenefitClaims++;
+                                                    if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
+                                                        totalCouncilTaxAndHousingBenefitClaims++;
+                                                        totalHousingBenefitClaims++;
+                                                    }
+                                                } else {
+                                                    if (!aDRecord.getHousingBenefitClaimReferenceNumber().trim().isEmpty()) {
+                                                        totalHousingBenefitClaims++;
+                                                    }
+                                                }
+                                            } else {
+                                                int StatusOfCTBClaimAtExtractDate;
+                                                StatusOfCTBClaimAtExtractDate = aDRecord.getStatusOfCTBClaimAtExtractDate();
+                                                int StatusOfHBClaimAtExtractDate;
+                                                StatusOfHBClaimAtExtractDate = aDRecord.getStatusOfHBClaimAtExtractDate();
+                                                if (inPaymentType.equalsIgnoreCase("InPayment")
+                                                        && (StatusOfHBClaimAtExtractDate == 1
+                                                        || StatusOfCTBClaimAtExtractDate == 1)) {
+                                                    doLoop = true;
+                                                    boolean isCurrentCTBClaimInPayment;
+                                                    isCurrentCTBClaimInPayment = DW_SHBE_Handler.isCurrentCTBOnlyClaimInPayment(aDRecord);
+                                                    if (DW_SHBE_Handler.isCurrentHBClaimInPayment(aDRecord)) {
+                                                        totalHousingBenefitClaims++;
+                                                        if (isCurrentCTBClaimInPayment) {
+                                                            totalCouncilTaxAndHousingBenefitClaims++;
+                                                        }
+                                                    }
+                                                    if (isCurrentCTBClaimInPayment) {
+                                                        totalCouncilTaxBenefitClaims++;
+                                                    }
+                                                }
+                                                if (inPaymentType.equalsIgnoreCase("Suspended")
+                                                        && (StatusOfHBClaimAtExtractDate == 2
+                                                        || StatusOfCTBClaimAtExtractDate == 2)) {
+                                                    doLoop = true;
+                                                    boolean isCurrentCTBClaimSuspended;
+                                                    isCurrentCTBClaimSuspended = DW_SHBE_Handler.isCurrentCTBOnlyClaimSuspended(aDRecord);
+                                                    if (DW_SHBE_Handler.isCurrentHBClaimSuspended(aDRecord)) {
+                                                        totalHousingBenefitClaims++;
+                                                        if (isCurrentCTBClaimSuspended) {
+                                                            totalCouncilTaxAndHousingBenefitClaims++;
+                                                        }
+                                                    }
+                                                    if (isCurrentCTBClaimSuspended) {
+                                                        totalCouncilTaxBenefitClaims++;
+                                                    }
+                                                }
+                                                if (inPaymentType.equalsIgnoreCase("NotInPaymentNotSuspended")
+                                                        && (StatusOfHBClaimAtExtractDate == 0
+                                                        || StatusOfCTBClaimAtExtractDate == 0)) {
+                                                    doLoop = true;
+                                                    boolean isCurrentCTBClaimNotInPaymentNotSuspended;
+                                                    isCurrentCTBClaimNotInPaymentNotSuspended = DW_SHBE_Handler.isCurrentCTBOnlyClaimOtherPT(aDRecord);
+                                                    if (DW_SHBE_Handler.isCurrentHBClaimOtherPT(aDRecord)) {
+                                                        totalHousingBenefitClaims++;
+                                                        if (isCurrentCTBClaimNotInPaymentNotSuspended) {
+                                                            totalCouncilTaxAndHousingBenefitClaims++;
+                                                        }
+                                                    }
+                                                    if (isCurrentCTBClaimNotInPaymentNotSuspended) {
+                                                        totalCouncilTaxBenefitClaims++;
+                                                    }
                                                 }
                                             }
-                                            if (isCurrentHBClaimInPayment) {
-                                                totalHousingBenefitClaims++;
-                                            }
-                                            // aSHBE_DataRecord.getNonDependantStatus 11
-                                            // aSHBE_DataRecord.getSubRecordType() 284
-                                            String claimantNINO = aDRecord.getClaimantsNationalInsuranceNumber();
-                                            DW_ID claimantID;
-                                            if (claimantNINO.length() > 0) {
-                                                claimantID = getIDAddIfNeeded(
-                                                        claimantNINO,
-                                                        NINOToIDLookup,
-                                                        IDToNINOLookup);
-                                                tClaimantIDs.add(claimantID);
-                                                tCTBRefToClaimantIDLookup.put(
-                                                        CTBRef,
-                                                        claimantID);
-                                                tClaimantIDToCTBRefLookup.put(
-                                                        claimantID,
-                                                        CTBRef);
-                                                tClaimantIDToRecordIDLookup.put(
-                                                        claimantID,
-                                                        RecordID);
-                                                String postcode;
-                                                postcode = DW_Postcode_Handler.formatPostcode(
-                                                        aDRecord.getClaimantsPostcode());
-                                                tClaimantIDToPostcodeLookup.put(
-                                                        claimantID,
-                                                        postcode);
-
-                                                DW_ID postcodeID;
-                                                postcodeID = getIDAddIfNeeded(
-                                                        postcode,
-                                                        PostcodeToPostcodeIDLookup,
-                                                        PostcodeIDToPostcodeLookup);
-
-                                                tClaimantIDAndPostcodeSet.add(
-                                                        new ID_PostcodeID(
-                                                                claimantID,
-                                                                postcodeID));
-                                                int TenancyType;
-                                                TenancyType = aDRecord.getTenancyType();
-                                                ID_TenancyType ID_TenancyType;
-                                                ID_TenancyType = new ID_TenancyType(
-                                                        claimantID,
-                                                        TenancyType);
-                                                tClaimantIDAndTenancyTypeSet.add(
-                                                        ID_TenancyType);
-                                                tClaimantIDAndPostcodeAndTenancyTypeSet.add(
-                                                        new ID_TenancyType_PostcodeID(
-                                                                ID_TenancyType,
-                                                                postcodeID));
-                                                tClaimantIDToTenancyTypeLookup.put(
-                                                        claimantID,
-                                                        TenancyType);
-                                                tAllHouseholdIDs.add(claimantID);
-                                                // aSHBE_DataRecord.getPartnerFlag() 118
-                                                if (aDRecord.getPartnerFlag() > 0) {
-                                                    String partnersNationalInsuranceNumber;
-                                                    partnersNationalInsuranceNumber = aDRecord.getPartnersNationalInsuranceNumber();
-                                                    DW_ID ID;
-                                                    ID = getIDAddIfNeeded(
-                                                            partnersNationalInsuranceNumber,
+                                            if (doLoop) {
+                                                totalIncome = getClaimantsAndPartnersIncomeTotal(aDRecord);
+                                                if (totalIncome > 0) {
+                                                    totalIncomeGreaterThanZeroCount++;
+                                                }
+                                                totalWeeklyEligibleRentAmount = aDRecord.getWeeklyEligibleRentAmount();
+                                                if (totalWeeklyEligibleRentAmount > 0) {
+                                                    totalWeeklyEligibleRentAmountGreaterThanZeroCount++;
+                                                }
+                                                Object o = tDRecords.put(CTBRef, rec);
+                                                if (o != null) {
+                                                    DW_SHBE_Record existingSHBE_DataRecord = (DW_SHBE_Record) o;
+                                                    System.out.println("existingSHBE_DataRecord" + existingSHBE_DataRecord);
+                                                    System.out.println("replacementSHBE_DataRecord" + aDRecord);
+                                                }
+                                                // aSHBE_DataRecord.getNonDependantStatus 11
+                                                // aSHBE_DataRecord.getSubRecordType() 284
+                                                String claimantNINO = aDRecord.getClaimantsNationalInsuranceNumber();
+                                                DW_ID claimantID;
+                                                if (claimantNINO.length() > 0) {
+                                                    claimantID = getIDAddIfNeeded(
+                                                            claimantNINO,
                                                             NINOToIDLookup,
                                                             IDToNINOLookup);
-                                                    tPartnerIDs.add(ID);
-                                                    tAllHouseholdIDs.add(ID);
+                                                    tClaimantIDs.add(claimantID);
+                                                    tCTBRefToClaimantIDLookup.put(
+                                                            CTBRef,
+                                                            claimantID);
+                                                    tClaimantIDToCTBRefLookup.put(
+                                                            claimantID,
+                                                            CTBRef);
+                                                    tClaimantIDToRecordIDLookup.put(
+                                                            claimantID,
+                                                            RecordID);
+                                                    String postcode;
+                                                    postcode = DW_Postcode_Handler.formatPostcode(
+                                                            aDRecord.getClaimantsPostcode());
+                                                    tClaimantIDToPostcodeLookup.put(
+                                                            claimantID,
+                                                            postcode);
+
+                                                    DW_ID postcodeID;
+                                                    postcodeID = getIDAddIfNeeded(
+                                                            postcode,
+                                                            PostcodeToPostcodeIDLookup,
+                                                            PostcodeIDToPostcodeLookup);
+
+                                                    tClaimantIDAndPostcodeSet.add(
+                                                            new ID_PostcodeID(
+                                                                    claimantID,
+                                                                    postcodeID));
+                                                    int TenancyType;
+                                                    TenancyType = aDRecord.getTenancyType();
+                                                    ID_TenancyType ID_TenancyType;
+                                                    ID_TenancyType = new ID_TenancyType(
+                                                            claimantID,
+                                                            TenancyType);
+                                                    tClaimantIDAndTenancyTypeSet.add(
+                                                            ID_TenancyType);
+                                                    tClaimantIDAndPostcodeAndTenancyTypeSet.add(
+                                                            new ID_TenancyType_PostcodeID(
+                                                                    ID_TenancyType,
+                                                                    postcodeID));
+                                                    tClaimantIDToTenancyTypeLookup.put(
+                                                            claimantID,
+                                                            TenancyType);
+                                                    tAllHouseholdIDs.add(claimantID);
+                                                    // aSHBE_DataRecord.getPartnerFlag() 118
+                                                    if (aDRecord.getPartnerFlag() > 0) {
+                                                        String partnersNationalInsuranceNumber;
+                                                        partnersNationalInsuranceNumber = aDRecord.getPartnersNationalInsuranceNumber();
+                                                        DW_ID ID;
+                                                        ID = getIDAddIfNeeded(
+                                                                partnersNationalInsuranceNumber,
+                                                                NINOToIDLookup,
+                                                                IDToNINOLookup);
+                                                        tPartnerIDs.add(ID);
+                                                        tAllHouseholdIDs.add(ID);
+                                                    }
                                                 }
+                                            } else {
+                                                tRecordIDsNotLoaded.add(RecordID);
                                             }
-                                        } else {
-                                            tRecordIDsNotLoaded.add(RecordID);
                                         }
                                     } catch (Exception e) {
                                         System.err.println(line);
@@ -770,16 +913,19 @@ public class DW_SHBE_Handler {
      *
      * @param directory
      * @param filename
+     * @param inPaymentType
      * @param loadFromSource
-     * @return
      */
     public Object[] loadInputDataNew(
             File directory,
             String filename,
+            String inPaymentType,
             boolean loadFromSource
     ) {
-        Object[] result = loadInputData(directory,
+        Object[] result = loadInputData(
+                directory,
                 filename,
+                inPaymentType,
                 loadFromSource);
 //        Object[] result = new Object[16];
 //        File inputFile = new File(
@@ -1203,8 +1349,8 @@ public class DW_SHBE_Handler {
 //            result[15] = Generic_StaticIO.readObject(tClaimantIDAndPostcodeAndTenancyTypeFile);
 //        }
         // Overwrite Lookups
-        Generic_StaticIO.writeObject(NINOToIDLookup, getNINOToIDLookupFile());
-        Generic_StaticIO.writeObject(IDToNINOLookup, getIDToNINOLookupFile());
+        Generic_StaticIO.writeObject(NINOToIDLookup, getNINOToIDLookupFile(inPaymentType));
+        Generic_StaticIO.writeObject(IDToNINOLookup, getIDToNINOLookupFile(inPaymentType));
         Generic_StaticIO.writeObject(PostcodeToPostcodeIDLookup, getPostcodeToPostcodeIDLookupFile());
         Generic_StaticIO.writeObject(PostcodeIDToPostcodeLookup, getPostcodeIDToPostcodeLookupFile());
         return result;
@@ -1234,14 +1380,16 @@ public class DW_SHBE_Handler {
     /**
      *
      * @param SHBE_Data
+     * @param inPaymentType
      * @param filename
-     * @param councilUnderOccupiedSet0
+     * @param councilUnderOccupiedSet
      * @param doUnderOccupancy
      * @param forceNew
      * @return
      */
     public static HashMap<String, BigDecimal> getIncomeAndRentSummary(
             Object[] SHBE_Data,
+            String inPaymentType,
             String filename,
             DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
             boolean doUnderOccupancy,
@@ -1249,6 +1397,7 @@ public class DW_SHBE_Handler {
         HashMap<String, BigDecimal> result;
         File tIncomeAndRentSummaryFile = getIncomeAndRentSummaryFile(
                 filename,
+                inPaymentType,
                 doUnderOccupancy);
         if (tIncomeAndRentSummaryFile.exists()) {
             if (!forceNew) {
@@ -1601,16 +1750,16 @@ public class DW_SHBE_Handler {
 //                                    }
 //                                }
                                 boolean isCurrentHBClaimInPayment;
-                                            isCurrentHBClaimInPayment = DW_SHBE_Handler.isCurrentHBClaimInPayment(aDRecord);
-                                            if (DW_SHBE_Handler.isCurrentHBClaimInPayment(aDRecord)) {
-                                                totalCouncilTaxBenefitClaims++;
-                                                if (isCurrentHBClaimInPayment) {
-                                                    totalCouncilTaxAndHousingBenefitClaims++;
-                                                }
-                                            }
-                                            if (isCurrentHBClaimInPayment) {
-                                                totalHousingBenefitClaims++;
-                                            }
+                                isCurrentHBClaimInPayment = DW_SHBE_Handler.isCurrentHBClaimInPayment(aDRecord);
+                                if (DW_SHBE_Handler.isCurrentHBClaimInPayment(aDRecord)) {
+                                    totalCouncilTaxBenefitClaims++;
+                                    if (isCurrentHBClaimInPayment) {
+                                        totalCouncilTaxAndHousingBenefitClaims++;
+                                    }
+                                }
+                                if (isCurrentHBClaimInPayment) {
+                                    totalHousingBenefitClaims++;
+                                }
                                 // aSHBE_DataRecord.getNonDependantStatus 11
                                 // aSHBE_DataRecord.getSubRecordType() 284
                                 String claimantID = aDRecord.getClaimantsNationalInsuranceNumber();
@@ -2687,7 +2836,6 @@ public class DW_SHBE_Handler {
      *
      * @param tSHBEFilenames
      * @param include
-     * @param startIndex
      * @return * {@code
      * Object[] result;
      * result = new Object[2];
@@ -2959,7 +3107,8 @@ public class DW_SHBE_Handler {
     public static HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup(
             File PostcodeToPostcodeIDLookupFile) {
         if (PostcodeToPostcodeIDLookup == null) {
-            PostcodeToPostcodeIDLookup = getStringToDW_IDLookup(PostcodeToPostcodeIDLookupFile);
+            PostcodeToPostcodeIDLookup = getStringToDW_IDLookup(
+                    PostcodeToPostcodeIDLookupFile);
         }
         return PostcodeToPostcodeIDLookup;
     }
@@ -2992,9 +3141,9 @@ public class DW_SHBE_Handler {
         return NINOToIDLookup;
     }
 
-    public static HashMap<String, DW_ID> getNINOToIDLookup() {
+    public static HashMap<String, DW_ID> getNINOToIDLookup(String inPaymentType) {
         File f;
-        f = getNINOToIDLookupFile();
+        f = getNINOToIDLookupFile(inPaymentType);
         return getNINOToIDLookup(f);
     }
 
@@ -3006,9 +3155,9 @@ public class DW_SHBE_Handler {
         return IDToNINOLookup;
     }
 
-    public static HashMap<DW_ID, String> getIDToNINOLookup() {
+    public static HashMap<DW_ID, String> getIDToNINOLookup(String inPaymentType) {
         File f;
-        f = getIDToNINOLookupFile();
+        f = getIDToNINOLookupFile(inPaymentType);
         return getIDToNINOLookup(f);
     }
 
@@ -3030,20 +3179,20 @@ public class DW_SHBE_Handler {
         return result;
     }
 
-    public static File getNINOToIDLookupFile() {
+    public static File getNINOToIDLookupFile(String inPaymentType) {
         File result;
         String filename = "NINOToID_HashMapStringDW_ID.thisFile";
         result = new File(
-                DW_Files.getGeneratedSHBEDir(),
+                DW_Files.getGeneratedSHBEDir(inPaymentType),
                 filename);
         return result;
     }
 
-    public static File getIDToNINOLookupFile() {
+    public static File getIDToNINOLookupFile(String inPaymentType) {
         File result;
         String filename = "IDToNINO_HashMapDW_IDString.thisFile";
         result = new File(
-                DW_Files.getGeneratedSHBEDir(),
+                DW_Files.getGeneratedSHBEDir(inPaymentType),
                 filename);
         return result;
     }
@@ -3051,168 +3200,193 @@ public class DW_SHBE_Handler {
     /**
      * [0]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getDRecordsFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "DRecords_TreeMapStringDW_SHBE_Record.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
      * [1]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getSRecordsWithoutDRecordsFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "SRecordsWithoutDRecords_TreeMapStringDW_SHBE_S_Record.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
      * [2]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getClaimantIDsFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "ClaimantIDs_HashSetString.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
      * [3]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getPartnerIDsFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "PartnerIDs_HashSetString.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
      * [4]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getDependentsIDsFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "DependentsIDs_HashSetString.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
      * [5]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getNonDependentsIDsFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "NonDependentsIDs_HashSetString.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
      * [6]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getAllHouseholdIDsFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "AllHouseholdIDs_HashSetString.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
      * [7]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getClaimantIDToRecordIDLookupFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "ClaimantIDToRecordIDLookup_HashMapStringLong.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
      * [8]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getClaimantIDToPostcodeLookupFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "ClaimantIDToPostcodeLookup_HashMapStringString.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
      * [9]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getClaimantIDToTenancyTypeLookupFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "ClaimantIDToTenancyTypeLookup_HashMapStringInteger.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
      * [10]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getCTBRefToClaimantIDLookupFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "CTBRefToClaimantIDLookup_HashMapLongString.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
      * [11]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getClaimantIDToCTBRefLookupFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "ClaimantIDToCTBRefLookup_HashMapLongString.thisFile";
         result = getFile(
+                inPaymentType,
                 filename,
                 partFilename);
         return result;
@@ -3221,65 +3395,77 @@ public class DW_SHBE_Handler {
     /**
      * [12]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getLoadSummaryFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "LoadSummary_HashMapStringInteger.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
      * [13]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getClaimantIDPostcodeSetFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "ClaimantIDPostcode_HashSetID_Postcode.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [13]
+     * [14]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getClaimantIDTenancyTypeSetFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "ClaimantIDTenancyType_HashSetID_TenancyType.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [13]
+     * [15]
      *
+     * @param inPaymentType
      * @param filename
      * @return
      */
     public static File getClaimantIDPostcodeTenancyTypeSetFile(
+            String inPaymentType,
             String filename) {
         File result;
         String partFilename = "ClaimantIDPostcodeTenancyType_HashSetID_Postcode_TenancyType.thisFile";
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
+     * [16]
+     *
+     * @param inPaymentType
      * @param filename
      * @param doUnderOccupancy
      * @return
      */
     public static File getIncomeAndRentSummaryFile(
+            String inPaymentType,
             String filename,
             boolean doUnderOccupancy) {
         File result;
@@ -3289,17 +3475,19 @@ public class DW_SHBE_Handler {
         } else {
             partFilename = "IncomeAndRentSummary_HashMapStringBigDecimal.thisFile";
         }
-        result = getFile(filename, partFilename);
+        result = getFile(inPaymentType, filename, partFilename);
         return result;
     }
 
     /**
      *
+     * @param dirName
      * @param filename
      * @param partFilename
      * @return
      */
     public static File getFile(
+            String dirName,
             String filename,
             String partFilename) {
         File result;
@@ -3308,7 +3496,7 @@ public class DW_SHBE_Handler {
         String filenameOut = key + "_" + partFilename;
         File dirOut;
         dirOut = new File(
-                DW_Files.getGeneratedSHBEDir(),
+                DW_Files.getGeneratedSHBEDir(dirName),
                 key);
         dirOut.mkdirs();
         result = new File(
@@ -3317,21 +3505,6 @@ public class DW_SHBE_Handler {
         return result;
     }
 
-    public static ArrayList<String> getTenancyTypeAll() {
-        ArrayList<String> result;
-        result = new ArrayList<String>();
-        result.add("0"); // This should not exist
-        result.add("1");
-        result.add("2");
-        result.add("3");
-        result.add("4");
-        result.add("5");
-        result.add("6");
-        result.add("7");
-        result.add("8");
-        result.add("9");
-        return result;
-    }
 
     public static int getNumberOfTenancyTypes() {
         return 10;
@@ -3343,137 +3516,6 @@ public class DW_SHBE_Handler {
 
     public static int getOneOverMaxValueOfPassportStandardIndicator() {
         return 6;
-    }
-    
-    public static ArrayList<String> getTenureTypeAll(
-            boolean doUnderOccupiedData) {
-        ArrayList<String> result;
-        result = getTenancyTypeAll();
-        if (doUnderOccupiedData) {
-            result.add("0UO"); // This should not exist
-            result.add("1UO");
-            result.add("2UO");
-            result.add("3UO"); // Technically tenancyType 3 is not supposed to be UO
-            result.add("4UO");
-            result.add("5UO");
-            result.add("6UO");
-            result.add("7UO");
-            result.add("8UO");
-            result.add("9UO");
-        }
-        return result;
-    }
-
-    public static ArrayList<String> getTenancyTypeRegulated(
-            boolean doUnderOccupiedData) {
-        ArrayList<String> result;
-        result = new ArrayList<String>();
-        result.add("1");
-        result.add("2");
-        result.add("4");
-        if (doUnderOccupiedData) {
-            result.add("1UO");
-            result.add("2UO");
-            result.add("4UO");
-        }
-        return result;
-    }
-
-    public static ArrayList<String> getTenancyTypeUnregulated(
-            boolean doUnderOccupiedData) {
-        ArrayList<String> result;
-        result = new ArrayList<String>();
-        result.add("3");
-//        if (doUnderOccupiedData) {
-//            result.add("3UO"); // Technically tenancyType 3 is not supposed to be UO
-//        }
-        return result;
-    }
-
-    public static String getTenancyTypeName(String tenancyType) {
-        String result;
-        if (tenancyType.startsWith("1")) {
-            //result = "Council Tenant HRA cases";
-            result = "Council";
-        } else {
-            if (tenancyType.startsWith("2")) {
-                //result = "Private Tenant Regulated, non-Housing Association cases";
-                result = "Private Regulated";
-            } else {
-                if (tenancyType.startsWith("3")) {
-                    //result = "Private Tenant Deregulated, non-Housing Association cases";
-                    result = "Private Deregulated";
-                } else {
-                    if (tenancyType.startsWith("4")) {
-                        //result = "Private Tenant Housing Association cases";
-                        result = "Housing Association";
-                    } else {
-                        if (tenancyType.startsWith("5")) {
-                            result = "CTB only cases, where Claimant or Liable Person is set as the owner within Council Tax";
-                        } else {
-                            if (tenancyType.startsWith("6")) {
-                                //result = "Other Private Tenant cases";
-                                result = "Private Other";
-                            } else {
-                                if (tenancyType.startsWith("7")) {
-                                    result = "CTB only cases, where Claimant or Liable Person is not set as the owner within Council Tax";
-                                } else {
-                                    if (tenancyType.startsWith("8")) {
-                                        result = "Council Tenant cases where the HRA flag is set to 'No'";
-                                    } else {
-                                        if (tenancyType.startsWith("9")) {
-                                            result = "Private Tenant, non-HA, non-Homeless cases where there is a Meals deduction";
-                                        } else {
-                                            if (tenancyType.startsWith("-999")) {
-                                                result = "No Tenancy";
-                                            } else {
-                                                result = tenancyType.replaceAll("UO", ""); // This is a bit of a hack!
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if (tenancyType.endsWith("UO")) {
-            result += " Under Occupied";
-        }
-        return result;
-    }
-
-    public static String getTenancyTypeName(int tenancyType) {
-        switch (tenancyType) {
-            case 1:
-                //return "Council Tenant HRA cases";
-                return "Council";
-            case 2:
-                //return "Private Tenant Regulated, non-Housing Association cases";
-                return "Private Regulated";
-            case 3:
-                //return "Private Tenant Deregulated, non-Housing Association cases";
-                return "Private Deregulated";
-            case 4:
-                //return "Private Tenant Housing Association cases";
-                return "Housing Association";
-            case 5:
-                return "CTB only cases, where Claimant or Liable Person is set as the owner within Council Tax";
-            case 6:
-                //return "Other Private Tenant cases";
-                return "Private Other";
-            case 7:
-                return "CTB only cases, where Claimant or Liable Person is not set as the owner within Council Tax";
-            case 8:
-                return "Council Tenant cases where the HRA flag is set to 'No'";
-            case 9:
-                return "Private Tenant, non-HA, non-Homeless cases where there is a Meals deduction";
-            case -999:
-                return "No Tenancy";
-            default:
-                return "Unknown";
-        }
     }
 
     /**
