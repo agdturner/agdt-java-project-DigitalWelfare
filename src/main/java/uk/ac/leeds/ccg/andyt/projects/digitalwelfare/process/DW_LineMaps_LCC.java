@@ -468,10 +468,10 @@ public class DW_LineMaps_LCC extends DW_Maps {
 
         ArrayList<String> paymentTypes;
         paymentTypes = DW_SHBE_Handler.getPaymentTypes();
-        //paymentTypes.remove("AllPT");
-        paymentTypes.remove("InPayment");
-        paymentTypes.remove("Suspended");
-        paymentTypes.remove("OtherPT");
+//        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
+        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
+        paymentTypes.remove(DW_SHBE_Handler.sSuspended);
+        paymentTypes.remove(DW_SHBE_Handler.sOtherPT);
         
         Iterator<String> paymentTypesIte;
         

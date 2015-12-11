@@ -34,6 +34,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_Under
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_CollectionHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
+import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler.sAllPT;
+import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler.sInPayment;
+import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler.sOtherPT;
+import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler.sSuspended;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_S_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
@@ -178,10 +182,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         HashMap<String, DW_ID> NINOtoIDLookup;
         ArrayList<String> paymentTypes;
         paymentTypes = DW_SHBE_Handler.getPaymentTypes();
-        paymentTypes.remove("AllPT");
-        paymentTypes.remove("InPayment");
-        paymentTypes.remove("Suspended");
-//        paymentTypes.remove("OtherPT");
+//        paymentTypes.remove(sAllPT);
+//        paymentTypes.remove(sInPayment);
+//        paymentTypes.remove(sSuspended);
+//        paymentTypes.remove(sOtherPT);
         
         Iterator<String> paymentTypesIte;
 
@@ -254,7 +258,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 }
             }
         }
-        //System.exit(0);
+        System.exit(0);
         // Postcode and Tenancy Type transitions 
         // Runtime approximately 1 hour 5 minutes.
         if (true) {
@@ -6527,7 +6531,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 }
 //                String aHousingBenefitClaimReferenceNumber = DRecord.getHousingBenefitClaimReferenceNumber();
 //                if (!aHousingBenefitClaimReferenceNumber.isEmpty()) {
-                if (DW_SHBE_Handler.isCurrentHBClaimInPayment(DRecord)) {
+                if (DW_SHBE_Handler.isHBClaimInPayment(DRecord)) {
                     if (ymHBResult.containsKey(aTenancyTypeInteger)) {
                         int count = ymAllResult.get(aTenancyTypeInteger);
                         count++;
@@ -8367,7 +8371,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             if (DRecordStart != null) {
                 // Filter for only Housing Benefit Claimants
                 //if (!DRecordStart.getHousingBenefitClaimReferenceNumber().isEmpty()) {
-                if (DW_SHBE_Handler.isCurrentHBClaimInPayment(DRecordStart)) {
+                if (DW_SHBE_Handler.isHBClaimInPayment(DRecordStart)) {
                     String postcodeStart = DRecordStart.getClaimantsPostcode();
                     String startPostcodeDistrict = DW_Postcode_Handler.getPostcodeDistrict(postcodeStart);
                     startPostcodeDistrict = formatPostcodeDistrict(startPostcodeDistrict);
@@ -8382,7 +8386,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     DW_SHBE_D_Record DRecordEnd = DRecordsEnd.get(councilTaxClaimNumber);
                     // Filter for only Housing Benefit Claimants
 //                    if (!DRecordEnd.getHousingBenefitClaimReferenceNumber().isEmpty()) {
-                    if (DW_SHBE_Handler.isCurrentHBClaimInPayment(DRecordEnd)) {
+                    if (DW_SHBE_Handler.isHBClaimInPayment(DRecordEnd)) {
                         String destinationPostcodeDistrict;
                         String destinationPostcode = null;
                         if (DRecordEnd == null) {
