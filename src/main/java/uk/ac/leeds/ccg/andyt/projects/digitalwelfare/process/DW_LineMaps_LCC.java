@@ -472,9 +472,8 @@ public class DW_LineMaps_LCC extends DW_Maps {
         paymentTypes.remove(DW_SHBE_Handler.sInPayment);
         paymentTypes.remove(DW_SHBE_Handler.sSuspended);
         paymentTypes.remove(DW_SHBE_Handler.sOtherPT);
-        
+
         Iterator<String> paymentTypesIte;
-        
 
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
@@ -844,6 +843,8 @@ public class DW_LineMaps_LCC extends DW_Maps {
                 Iterator<String> yMsIte;
                 yMsIte = yMs.iterator();
                 String yM30 = yMsIte.next();
+                String yM30Start = yM30;
+                String yM30End;
                 while (yMsIte.hasNext()) {
                     String yM31;
                     yM31 = yMsIte.next();
@@ -861,7 +862,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
                     }
                     yM30 = yM31;
                 }
-
+                yM30End = yM30;
                 //System.out.println(filename + " lines " + lines.size());
                 //int count = 0;
                 if (!lines.isEmpty()) {
@@ -1046,8 +1047,10 @@ public class DW_LineMaps_LCC extends DW_Maps {
                                 }
                             }
                         }
+                        String dates;
+                        dates = getDatesString(yM30Start, yM30End);
                         String legendMessage;
-                        legendMessage = yM30 + " Count " + count;
+                        legendMessage = dates + " Count " + count;
                         System.out.println("line count = " + count);
                         System.out.println("Postcode not valid count = " + notPCCount);
                         TreeSetFeatureCollection tsfc;
@@ -1146,6 +1149,18 @@ public class DW_LineMaps_LCC extends DW_Maps {
         }
     }
 
+    private String getDatesString(
+            String yM30Start,
+            String yM30End) {
+        String result;
+        String[] split;
+        split = yM30Start.split("_");
+        result = split[1] + " " + split[0] + " to ";
+        split = yM30End.split("_");
+        result += split[1] + " " + split[0];
+        return result;
+    }
+                        
     public void postcodeMaps(
             String paymentType,
             TreeMap<String, ArrayList<String>> yearMonths,
@@ -1299,6 +1314,8 @@ public class DW_LineMaps_LCC extends DW_Maps {
             Iterator<String> yMsIte;
             yMsIte = yM3s.iterator();
             String yM30 = yMsIte.next();
+            String yM30Start = yM30;
+            String yM30End;
             while (yMsIte.hasNext()) {
                 String yM31;
                 yM31 = yMsIte.next();
@@ -1324,6 +1341,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
                 }
                 yM30 = yM31;
             }
+            yM30End = yM30;
             if (!lines.isEmpty()) {
                 //name += "_TO_" + split1[0] + "_" + split1[1];
                 File dirOut2;
@@ -1505,8 +1523,10 @@ public class DW_LineMaps_LCC extends DW_Maps {
                             }
                         }
                     }
+                    String dates;
+                    dates = getDatesString(yM30Start, yM30End);
                     String legendMessage;
-                    legendMessage = "Count " + count;
+                    legendMessage = dates + " Count " + count;
                     System.out.println("line count = " + count);
                     System.out.println("Postcode not valid count = " + notPCCount);
                     TreeSetFeatureCollection tsfc;

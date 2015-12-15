@@ -262,7 +262,7 @@ public class DW_Postcode_Handler implements Serializable {
             postcodeNoSpaces = postcodeNoSpaces.replaceAll("'", "");
             postcodeNoSpaces = postcodeNoSpaces.replaceAll("\\.", "");
             if (postcodeNoSpaces.length() < 5) {
-                System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " too few characters to format.");
+                //System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " too few characters to format.");
                 result = postcodeNoSpaces;
             } else {
                 int length;

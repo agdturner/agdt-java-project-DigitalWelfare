@@ -45,9 +45,9 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * A store and reference for all AbstractGrid2DSquareCell
      */
     public transient Grids_Environment _Grids_Environment;
-    
+
     public transient DW_SHBE_CollectionHandler _DW_SHBE_CollectionHandler;
-    
+
     public DW_Environment() {
         init_DW_Environment();
     }
@@ -106,7 +106,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * A method to ensure there is enough memory to continue.
      *
      * @param handleOutOfMemoryError
-     * @return 
+     * @return
      */
     @Override
     public boolean tryToEnsureThereIsEnoughMemoryToContinue(
@@ -115,8 +115,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             if (tryToEnsureThereIsEnoughMemoryToContinue()) {
                 return true;
             } else {
-                String message =
-                        "Warning! Not enough data to swap in "
+                String message
+                        = "Warning! Not enough data to swap in "
                         + this.getClass().getName()
                         + ".tryToEnsureThereIsEnoughMemoryToContinue(boolean)";
                 log(message);
@@ -157,7 +157,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     /**
      * A method to try to ensure there is enough memory to continue.
-     * @return 
+     *
+     * @return
      */
     @Override
     protected boolean tryToEnsureThereIsEnoughMemoryToContinue() {

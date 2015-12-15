@@ -28,6 +28,17 @@ import java.util.TreeMap;
  */
 public class DW_SHBE_TenancyType_Handler {
 
+    public static final int iMinus999 = -999;
+    public static final int zero = 0;
+    public static final int i1 = 1;
+    public static final int i2 = 2;
+    public static final int i3 = 3;
+    public static final int i4 = 4;
+    public static final int i5 = 5;
+    public static final int i6 = 6;
+    public static final int i7 = 7;
+    public static final int i8 = 8;
+    public static final int i9 = 9;
     public static final String sMinus999 = "-999";
     public static final String s0 = "0";
     public static final String s1 = "1";

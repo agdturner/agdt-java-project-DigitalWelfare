@@ -18,6 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting.DW_Report;
@@ -30,60 +31,19 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_Lin
  */
 public class DW_MainProcessor {
 
+    private transient final DW_Environment env;
+
+    public DW_MainProcessor(DW_Environment env) {
+        this.env = env;
+    }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         try {
-//            DW_Postcode_Handler aDW_Postcode_Handler;
-//            aDW_Postcode_Handler = new DW_Postcode_Handler();
-//            aDW_Postcode_Handler.run();
-            
-//            DW_SHBE_Handler aDW_SHBE_Handler;
-//            aDW_SHBE_Handler = new DW_SHBE_Handler();
-//            aDW_SHBE_Handler.run();
-
-            DW_DataProcessor_LCC aDW_DataProcessor_LCC;
-            aDW_DataProcessor_LCC = new DW_DataProcessor_LCC();
-            aDW_DataProcessor_LCC.run();
-//            
-//////            DW_ChoroplethMaps_LCC aDW_ChoroplethMaps_LCC;
-//////            aDW_ChoroplethMaps_LCC = new DW_ChoroplethMaps_LCC();
-//////            aDW_ChoroplethMaps_LCC.run();
-//
-            DW_LineMaps_LCC aDW_LineMaps_LCC;
-            aDW_LineMaps_LCC = new DW_LineMaps_LCC();
-            aDW_LineMaps_LCC.run();
-//            
-//////            DW_Report aDW_Report;
-//////            aDW_Report = new DW_Report();
-//////            aDW_Report.run();
-//            
-            DW_LineGraph aDW_LineGraph;
-            aDW_LineGraph = new DW_LineGraph();
-            aDW_LineGraph.run(args);
-//
-            DW_DensityMaps_LCC aDW_DensityMaps_LCC;
-            aDW_DensityMaps_LCC = new DW_DensityMaps_LCC();
-            aDW_DensityMaps_LCC.run();
-            
-//            DW_LineDensityMaps_LCC aDW_LineDensityMaps_LCC;
-//            aDW_LineDensityMaps_LCC = new DW_LineDensityMaps_LCC();
-//            aDW_LineDensityMaps_LCC.run();
-            
-//            DW_LineDensityDifferenceMaps_LCC aDW_LineDensityDifferenceMaps_LCC;
-//            aDW_LineDensityDifferenceMaps_LCC = new DW_LineDensityDifferenceMaps_LCC();
-//            aDW_LineDensityDifferenceMaps_LCC.run();
-            
-//            boolean underOccupancy;
-//            underOccupancy = true;
-            
-//            DW_LineMaps_LCC aDW_LineMaps_LCC;
-//            aDW_LineMaps_LCC = new DW_LineMaps_LCC();
-//            aDW_LineMaps_LCC.run2(underOccupancy,true);
-//            aDW_LineMaps_LCC.run2(underOccupancy,false);
-//            aDW_LineMaps_LCC.run2(false,false);            
-//            aDW_LineMaps_LCC.run(args);
+            DW_Environment env = new DW_Environment();
+            new DW_MainProcessor(env).run();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -101,4 +61,53 @@ public class DW_MainProcessor {
         }
     }
 
+    public void run() {
+        //            DW_Postcode_Handler aDW_Postcode_Handler;
+//            aDW_Postcode_Handler = new DW_Postcode_Handler();
+//            aDW_Postcode_Handler.run();
+
+        DW_SHBE_Handler aDW_SHBE_Handler;
+        aDW_SHBE_Handler = new DW_SHBE_Handler(env);
+        aDW_SHBE_Handler.run();
+//            aDW_SHBE_Handler.runNew();
+//
+//            DW_DataProcessor_LCC aDW_DataProcessor_LCC;
+//            aDW_DataProcessor_LCC = new DW_DataProcessor_LCC();
+//            aDW_DataProcessor_LCC.run();
+//////            
+////////            DW_ChoroplethMaps_LCC aDW_ChoroplethMaps_LCC;
+////////            aDW_ChoroplethMaps_LCC = new DW_ChoroplethMaps_LCC();
+////////            aDW_ChoroplethMaps_LCC.run();
+////
+////            DW_LineMaps_LCC aDW_LineMaps_LCC;
+////            aDW_LineMaps_LCC = new DW_LineMaps_LCC();
+////            aDW_LineMaps_LCC.run();
+////            
+////////            DW_Report aDW_Report;
+////////            aDW_Report = new DW_Report();
+////////            aDW_Report.run();
+////            
+//            DW_LineGraph aDW_LineGraph;
+//            aDW_LineGraph = new DW_LineGraph();
+//            aDW_LineGraph.run(args);
+//
+//            DW_DensityMaps_LCC aDW_DensityMaps_LCC;
+//            aDW_DensityMaps_LCC = new DW_DensityMaps_LCC();
+//            aDW_DensityMaps_LCC.run();
+
+//            DW_LineDensityMaps_LCC aDW_LineDensityMaps_LCC;
+//            aDW_LineDensityMaps_LCC = new DW_LineDensityMaps_LCC();
+//            aDW_LineDensityMaps_LCC.run();
+//            DW_LineDensityDifferenceMaps_LCC aDW_LineDensityDifferenceMaps_LCC;
+//            aDW_LineDensityDifferenceMaps_LCC = new DW_LineDensityDifferenceMaps_LCC();
+//            aDW_LineDensityDifferenceMaps_LCC.run();
+//            boolean underOccupancy;
+//            underOccupancy = true;
+//            DW_LineMaps_LCC aDW_LineMaps_LCC;
+//            aDW_LineMaps_LCC = new DW_LineMaps_LCC();
+//            aDW_LineMaps_LCC.run2(underOccupancy,true);
+//            aDW_LineMaps_LCC.run2(underOccupancy,false);
+//            aDW_LineMaps_LCC.run2(false,false);            
+//            aDW_LineMaps_LCC.run(args);
+    }
 }

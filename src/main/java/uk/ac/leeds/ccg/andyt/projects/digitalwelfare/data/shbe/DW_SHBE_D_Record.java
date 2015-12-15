@@ -38,8 +38,8 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
 
     public DW_SHBE_D_Record(
             long RecordID,
-            String line,
-            DW_SHBE_Handler handler) throws Exception {
+            String line
+    ) throws Exception {
         this.RecordID = RecordID;
         String[] fields = line.split(",");
         int exceptionalType = 0;
@@ -77,14 +77,16 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
         //ClaimantsSurname(fields[n]);
         //ClaimantsFirstForename = fields[n;
         n++;
-        if (n < fields.length) {
-            if (fields[n].isEmpty()) {
-                n++;
-                exceptionalType = 1;
-            }
-        } else {
-            return;
-        }
+        
+//        if (n < fields.length) {
+//            if (fields[n].isEmpty()) {
+//                n++;
+//                exceptionalType = 1;
+//            }
+//        } else {
+//            return;
+//        }
+        
         if (n < fields.length) {
             setClaimantsDateOfBirth(fields[n]);
         } else {
@@ -92,15 +94,16 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
         }
         n++;
         if (n < fields.length) {
-            if (exceptionalType == 0) {
-                setTenancyType(n, fields);
-            } else {
-                if (exceptionalType == 1) {
-                    System.out.println("Ignoring fields " + n + ": " 
-                            + fields[n] + " instead of a numerical Tenancy "
-                            + "Type getting something else RecordID " + RecordID);
-                }
-            }
+            setTenancyType(n, fields);
+//            if (exceptionalType == 0) {
+//                setTenancyType(n, fields);
+//            } else {
+//                if (exceptionalType == 1) {
+//                    System.out.println("Ignoring fields " + n + ": " 
+//                            + fields[n] + " instead of a numerical Tenancy "
+//                            + "Type getting something else RecordID " + RecordID);
+//                }
+//            }
         } else {
             return;
         }

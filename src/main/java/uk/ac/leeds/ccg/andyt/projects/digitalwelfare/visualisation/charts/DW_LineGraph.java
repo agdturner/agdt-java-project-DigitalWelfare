@@ -200,6 +200,7 @@ public class DW_LineGraph extends Generic_LineGraph {
             paymentType = paymentTypesIte.next();
 
             boolean checkPreviousTenure;
+//            checkPreviousTenure = false;
             checkPreviousTenure = false;
 
 //        iteB = bArray.iterator();

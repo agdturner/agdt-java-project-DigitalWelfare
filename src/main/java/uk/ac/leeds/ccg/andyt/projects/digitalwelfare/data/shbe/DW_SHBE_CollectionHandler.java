@@ -25,9 +25,7 @@ public class DW_SHBE_CollectionHandler
         //        extends GENESIS_OutOfMemoryErrorHandler
         implements Serializable {
 
-    static final long serialVersionUID = 1L;
-
-    public transient DW_Environment env;
+    final transient DW_Environment env;
 
     protected HashMap<Long, DW_SHBE_Collection> collections;
 
@@ -65,8 +63,15 @@ public class DW_SHBE_CollectionHandler
 
     public long nextID;
 
-    public DW_SHBE_CollectionHandler() {}
-
+    public DW_SHBE_CollectionHandler(
+            DW_Environment env) {
+        this.env = env;
+        _Directory = new File(
+                DW_Files.getSwapSHBEDir(),
+                "Collection" + System.currentTimeMillis());
+        init();
+    }
+    
     public DW_SHBE_CollectionHandler(
             DW_Environment env,
             File dir) {
@@ -85,7 +90,7 @@ public class DW_SHBE_CollectionHandler
     }
 
     public void add(DW_SHBE_Collection col){
-        collections.put(col.ID, col);
+        collections.put(col.getID(), col);
     }
     
     /**

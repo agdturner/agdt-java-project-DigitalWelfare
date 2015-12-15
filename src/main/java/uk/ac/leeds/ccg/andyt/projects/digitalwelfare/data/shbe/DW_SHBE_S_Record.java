@@ -134,9 +134,8 @@ public class DW_SHBE_S_Record extends DW_SHBE_RecordAbstract implements Serializ
      */
     public DW_SHBE_S_Record(
             long RecordID,
-            String line,
-            //String type,
-            DW_SHBE_Handler handler) throws Exception {
+            String line
+    ) throws Exception {
         this.RecordID = RecordID;
         String[] fields = line.split(",");
         int n;
