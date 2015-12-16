@@ -78,6 +78,31 @@ public class DW_SHBE_Collection implements Serializable {
     private HashSet<ID_TenancyType_PostcodeID> ClaimantIDAndPostcodeAndTenancyTypeSet;
     private TreeSet<Long> RecordIDsNotLoaded = new TreeSet<Long>();
 
+    public static final String sCountCTBClaims = "TotalCTBClaims";
+    public static final String sCountCTBAndHBClaims = "TotalCTBAndHBClaims";
+    public static final String sCountHBClaims = "CountHBClaims";
+    public static final String sCountDRecords = "CountDRecords";
+    public static final String sCountSRecords = "CountSRecords";
+    public static final String sCountOfSRecordsWithoutDRecord = "CountOfSRecordsWithoutDRecord";
+    public static final String sCountSRecordNotLoaded = "CountSRecordNotLoaded";
+    public static final String sCountOfIncompleteDRecords = "CountOfIncompleteDRecords";
+    public static final String sCountDRecordsInUnexpectedOrder = "CountDRecordsInUnexpectedOrder";
+    public static final String sCountRecordIDsNotLoaded = "RecordIDsNotLoaded.size()";
+//    public static final String sCountRecordIDsNotLoaded = "CountRecordIDsNotLoaded";
+    public static final String sCountUniqueClaimants = "CountUniqueClaimants";
+    public static final String sCountUniquePartners = "CountUniquePartners";
+    public static final String sCountUniqueDependents = "CountUniqueDependents";
+    public static final String sCountUniqueNonDependents = "CountUniqueNonDependents";
+    public static final String sCountUniqueIndividuals = "CountUniqueIndividuals";
+    public static final String sCountPairedClaimants = "CountPairedClaimants";
+    public static final String sLineCount = "LineCount";
+    public static final String sTotalIncome = "TotalIncome";
+    public static final String sTotalIncomeGreaterThanZeroCount = "TotalIncomeGreaterThanZeroCount";
+    public static final String sAverageIncomeGreaterThanZeroCount = "AverageIncomeGreaterThanZeroCount";
+    public static final String sTotalWeeklyEligibleRentAmount = "TotalWeeklyEligibleRentAmount";
+    public static final String sTotalWeeklyEligibleRentAmountGreaterThanZeroCount = "TotalWeeklyEligibleRentAmountGreaterThanZeroCount";
+    public static final String sAverageWeeklyEligibleRentAmountGreaterThanZeroCount = "AverageWeeklyEligibleRentAmountGreaterThanZeroCount";
+
     public DW_SHBE_Collection(
             Long ID,
             DW_SHBE_CollectionHandler handler) {
@@ -179,7 +204,7 @@ public class DW_SHBE_Collection implements Serializable {
      * @param loadFromSource
      */
     public DW_SHBE_Collection(
-            DW_SHBE_Handler tDW_SHBE_Handler,
+            //DW_SHBE_Handler tDW_SHBE_Handler,
             Long ID,
             DW_SHBE_CollectionHandler handler,
             File inputDirectory,
@@ -187,7 +212,9 @@ public class DW_SHBE_Collection implements Serializable {
             String paymentType,
             boolean loadFromSource
     ) {
+        System.err.println("----------------------");
         System.err.println("Load " + inputFilename);
+        System.err.println("----------------------");
         this.handler = handler;
         this.PaymentType = paymentType;
         InputFile = new File(inputDirectory, inputFilename);
@@ -221,8 +248,8 @@ public class DW_SHBE_Collection implements Serializable {
             File DW_IDToNINOLookupFile;
             NINOToDW_IDLookupFile = DW_SHBE_Handler.getNINOToDW_IDLookupFile();
             DW_IDToNINOLookupFile = DW_SHBE_Handler.getDW_IDToNINOLookupFile();
-            tDW_SHBE_Handler.NINOToDW_IDLookup = DW_SHBE_Handler.getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
-            tDW_SHBE_Handler.DW_IDToNINOLookup = DW_SHBE_Handler.getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
+            DW_SHBE_Handler.NINOToDW_IDLookup = DW_SHBE_Handler.getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
+            DW_SHBE_Handler.DW_IDToNINOLookup = DW_SHBE_Handler.getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
             // Postcode
             File PostcodeToPostcodeIDLookupFile;
             File PostcodeIDToPostcodeLookupFile;
@@ -274,12 +301,11 @@ public class DW_SHBE_Collection implements Serializable {
                             //System.out.println(line);
                             break;
                         case StreamTokenizer.TT_WORD:
-                            
-                            
-                            if (RecordID == 464) {
-                                int debug = 1;
-                            }
-                            
+//                            
+//                            if (RecordID == 464) {
+//                                int debug = 1;
+//                            }
+//                            
                             line = st.sval;
                             if (line.startsWith("S")) {
                                 try {
@@ -294,8 +320,18 @@ public class DW_SHBE_Collection implements Serializable {
                                         DW_SHBE_Record record;
                                         record = Records.get(CTBRef);
                                         if (record == null) {
-                                            RecordIDsNotLoaded.add(RecordID);
-                                            SRecordNotLoadedCount++;
+                                            /* SRecordsWithoutDRecords are gone 
+                                             * through at the end in case and 
+                                             * DRecrods are in the data in later 
+                                             * lines for some reason. At this 
+                                             * stage, we can create new IDs as 
+                                             * without the DRecord we have no 
+                                             * idea of the Claimant NINO which 
+                                             * is generally used for assigning 
+                                             * DW_IDs for SRecords where there is 
+                                             * not one set.
+                                             */
+                                            SRecordsWithoutDRecords.put(CTBRef, SRecord);
                                         } else {
                                             if (!record.getSRecords().add(SRecord)) {
                                                 SRecordNotLoadedCount++;
@@ -328,105 +364,9 @@ public class DW_SHBE_Collection implements Serializable {
                                                 }
                                             }
                                             if (doLoop) {
-                                                String sNINO;
-                                                sNINO = SRecord.getSubRecordChildReferenceNumberOrNINO();
-                                                if (sNINO.isEmpty()) {
-                                                    sNINO = "0";
-                                                }
-                                                /*
-                                                 * If we get a simple number here rather 
-                                                 * than a NINO, we append the claimant 
-                                                 * NINO which in theory should result in 
-                                                 * a unique ID for a person. This may not 
-                                                 * work for different SHBE extracts as 
-                                                 * the number of Dependents may change 
-                                                 * over time and the number codes may 
-                                                 * alter...
-                                                 */
-                                                if (sNINO.length() < 3) {
-                                                    sNINO += "_" + SRecord.getClaimantsNationalInsuranceNumber();
-                                                }
-                                                DW_ID sNINODW_ID;
-                                                sNINODW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
-                                                        sNINO, DW_SHBE_Handler.NINOToDW_IDLookup,
-                                                        DW_SHBE_Handler.DW_IDToNINOLookup);
-                                                String sDOB;
-                                                sDOB = SRecord.getSubRecordDateOfBirth();
-                                                DW_ID sDOBDW_ID;
-                                                sDOBDW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
-                                                        sDOB, DW_SHBE_Handler.DOBToDW_IDLookup,
-                                                        DW_SHBE_Handler.DW_IDToDOBLookup);
-                                                DW_PersonID sDW_PersonID;
-                                                sDW_PersonID = new DW_PersonID(sNINODW_ID, sDOBDW_ID);
-                                                DW_ID sDW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
-                                                        sDW_PersonID,
-                                                        DW_SHBE_Handler.DW_PersonIDToDW_IDLookup,
-                                                        DW_SHBE_Handler.DW_IDToDW_PersonIDLookup);
-                                                if (SRecord.getSubRecordType() == 2) {
-                                                    if (NonDependentIDs.contains(sDW_PersonID)) {
-                                                        // This subrecord has the same ID as another.
-                                                        // Some subrecords have their
-                                                        // NINO set to XX999999XX and it is possible
-                                                        // that two have this set and have the same
-                                                        // date of birth!
-                                                        DW_ID DW_ID;
-                                                        DW_ID = DW_SHBE_Handler.DW_PersonIDToDW_IDLookup.get(sDW_PersonID);
-                                                        String previousCTBRef;
-                                                        previousCTBRef = SRecordIDToCTBRef.get(DW_ID);
-//                                                        
-//                                                        if (previousCTBRef == null) {
-//                                                            int debug = 1;
-//                                                        }
-//                                                        
-                                                        DW_SHBE_Record previousRecord;
-                                                        previousRecord = Records.get(previousCTBRef);
-                                                        if (!previousRecord.isPairedRecord()) {
-                                                            // Probably want to count this and may want to 
-                                                            // modify sNINO until it is unique.
-                                                            //System.out.println("Not Paired D Record and NonDependent S Record ID not unique!");
-                                                            Object[] SRecordIDUpdate;
-                                                            SRecordIDUpdate = getSRecordIDUpdate(
-                                                                    tDW_SHBE_Handler, SRecord);
-                                                            sDW_ID = (DW_ID) SRecordIDUpdate[0];
-                                                            sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
-                                                        }
-                                                    }
-                                                    NonDependentIDs.add(sDW_PersonID);
-                                                } else {
-                                                    if (DependentIDs.contains(sDW_PersonID)) {
-                                                        // This subrecord has the same ID as another.
-                                                        // Some subrecords have their
-                                                        // NINO set to XX999999XX and it is possible
-                                                        // that two have this set and have the same
-                                                        // date of birth! Indeed, it is more likley for
-                                                        // subrecords than for anything else as there
-                                                        // could be twins or tripplets etc...
-                                                        DW_ID DW_ID;
-                                                        DW_ID = DW_SHBE_Handler.DW_PersonIDToDW_IDLookup.get(sDW_PersonID);
-                                                        String previousCTBRef;
-                                                        previousCTBRef = SRecordIDToCTBRef.get(DW_ID);
-//                                                        
-//                                                        if (previousCTBRef == null) {
-//                                                            int debug = 1;
-//                                                        }
-//                                                        
-                                                        DW_SHBE_Record previousRecord;
-                                                        previousRecord = Records.get(previousCTBRef);
-                                                        if (!previousRecord.isPairedRecord()) {
-                                                            // Probably want to count this and may want to 
-                                                            // modify sNINO until it is unique.  
-                                                            //System.out.println("Not Paired D Record and Dependent S Record ID not unique!");
-                                                            Object[] SRecordIDUpdate;
-                                                            SRecordIDUpdate = getSRecordIDUpdate(
-                                                                    tDW_SHBE_Handler, SRecord);
-                                                            sDW_ID = (DW_ID) SRecordIDUpdate[0];
-                                                            sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
-                                                        }
-                                                    }
-                                                    DependentIDs.add(sDW_PersonID);
-                                                }
-                                                SRecordIDToCTBRef.put(sDW_ID, CTBRef);
-                                                AllIDs.add(sDW_PersonID);
+                                                doSRecordLoop(
+                                                        SRecord,
+                                                        CTBRef);
                                             } else {
                                                 RecordIDsNotLoaded.add(RecordID);
                                             }
@@ -702,46 +642,57 @@ public class DW_SHBE_Collection implements Serializable {
                 while (ite.hasNext()) {
                     SRecordsWithoutDRecords.remove(ite.next());
                 }
-                System.out.println("totalCouncilTaxBenefitClaims " + totalCouncilTaxBenefitClaims);
-                LoadSummary.put("totalCouncilTaxBenefitClaims", totalCouncilTaxBenefitClaims);
-                System.out.println("totalCouncilTaxAndHousingBenefitClaims " + totalCouncilTaxAndHousingBenefitClaims);
-                LoadSummary.put("totalCouncilTaxAndHousingBenefitClaims", totalCouncilTaxAndHousingBenefitClaims);
-                System.out.println("totalHousingBenefitClaims " + totalHousingBenefitClaims);
-                LoadSummary.put("totalHousingBenefitClaims", totalHousingBenefitClaims);
-                System.out.println("countDRecords " + Records.size());
-                LoadSummary.put("countDRecords", Records.size());
-                System.out.println("countSRecords " + countSRecords);
-                LoadSummary.put("countSRecords", countSRecords);
-                System.out.println("countOfSRecordsWithoutDRecord " + SRecordsWithoutDRecords.size());
-                LoadSummary.put("countOfSRecordsWithoutDRecord ", SRecordsWithoutDRecords.size());
-                System.out.println("SRecordNotLoadedCount " + SRecordNotLoadedCount);
-                LoadSummary.put("SRecordNotLoadedCount ", SRecordNotLoadedCount);                
-                System.out.println("NumberOfIncompleteDRecords " + NumberOfIncompleteDRecords);
-                LoadSummary.put("NumberOfIncompleteDRecords ", NumberOfIncompleteDRecords);
-                System.out.println("countDRecordsInUnexpectedOrder " + countDRecordsInUnexpectedOrder);
-                LoadSummary.put("countDRecordsInUnexpectedOrder ", countDRecordsInUnexpectedOrder);
-                System.out.println("tRecordIDsNotLoaded.size() " + RecordIDsNotLoaded.size());
-                LoadSummary.put("tRecordIDsNotLoaded.size()", RecordIDsNotLoaded.size());
-                System.out.println("uniqueClaimantNationalInsuranceNumberCount " + ClaimantIDs.size());
-                LoadSummary.put("uniqueClaimantNationalInsuranceNumberCount", ClaimantIDs.size());
-                System.out.println("uniquePartnerNationalInsuranceNumbersCount " + PartnerIDs.size());
-                LoadSummary.put("uniquePartnerNationalInsuranceNumbersCount", PartnerIDs.size());
-                System.out.println("uniqueDependentsNationalInsuranceNumbersCount " + DependentIDs.size());
-                LoadSummary.put("uniqueDependentsNationalInsuranceNumbersCount", DependentIDs.size());
-                System.out.println("uniqueNon-DependentsNationalInsuranceNumbersCount " + NonDependentIDs.size());
-                LoadSummary.put("uniqueNon-DependentsNationalInsuranceNumbersCount", NonDependentIDs.size());
-                System.out.println("uniqueAllHouseholdNationalInsuranceNumbersCount " + AllIDs.size());
-                LoadSummary.put("uniqueAllHouseholdNationalInsuranceNumbersCount", AllIDs.size());
-                System.out.println("PairedClaimantIDsSize " + PairedClaimantIDs.size());
-                LoadSummary.put("PairedClaimantIDsSize", PairedClaimantIDs.size());
-                System.out.println("lineCount " + lineCount);
-                LoadSummary.put("lineCount", lineCount);
-                System.out.println("totalIncome " + grandTotalIncome);
-                System.out.println("totalIncomeGreaterThanZeroCount " + totalIncomeGreaterThanZeroCount);
-                System.out.println("averageIncomeGreaterThanZeroCount " + grandTotalIncome / (double) totalIncomeGreaterThanZeroCount);
-                System.out.println("totalWeeklyEligibleRentAmount " + grandTotalWeeklyEligibleRentAmount);
-                System.out.println("totalWeeklyEligibleRentAmountGreaterThanZeroCount " + totalWeeklyEligibleRentAmountGreaterThanZeroCount);
-                System.out.println("averageWeeklyEligibleRentAmountGreaterThanZeroCount " + grandTotalWeeklyEligibleRentAmount / (double) totalWeeklyEligibleRentAmountGreaterThanZeroCount);
+                // Get IDs for remaining SRecords
+                ite = SRecordsWithoutDRecords.keySet().iterator();
+                while (ite.hasNext()) {
+                    String CTBRef;
+                    CTBRef = ite.next();
+                    DW_SHBE_S_Record SRecord;
+                    SRecord = SRecordsWithoutDRecords.get(CTBRef);
+                    doSRecordLoop(
+                            SRecord,
+                            CTBRef);
+                }
+                System.out.println(sCountCTBClaims + " " + totalCouncilTaxBenefitClaims);
+                LoadSummary.put(sCountCTBClaims, totalCouncilTaxBenefitClaims);
+                System.out.println(sCountCTBAndHBClaims + " " + totalCouncilTaxAndHousingBenefitClaims);
+                LoadSummary.put(sCountCTBAndHBClaims, totalCouncilTaxAndHousingBenefitClaims);
+                System.out.println(sCountHBClaims + " " + totalHousingBenefitClaims);
+                LoadSummary.put(sCountHBClaims, totalHousingBenefitClaims);
+                System.out.println(sCountDRecords + " " + Records.size());
+                LoadSummary.put(sCountDRecords, Records.size());
+                System.out.println(sCountSRecords + " " + countSRecords);
+                LoadSummary.put(sCountSRecords, countSRecords);
+                System.out.println(sCountOfSRecordsWithoutDRecord + " " + SRecordsWithoutDRecords.size());
+                LoadSummary.put(sCountOfSRecordsWithoutDRecord, SRecordsWithoutDRecords.size());
+                System.out.println(sCountSRecordNotLoaded + " " + SRecordNotLoadedCount);
+                LoadSummary.put(sCountSRecordNotLoaded, SRecordNotLoadedCount);
+                System.out.println(sCountOfIncompleteDRecords + " " + NumberOfIncompleteDRecords);
+                LoadSummary.put(sCountOfIncompleteDRecords, NumberOfIncompleteDRecords);
+                System.out.println(sCountDRecordsInUnexpectedOrder + " " + countDRecordsInUnexpectedOrder);
+                LoadSummary.put(sCountDRecordsInUnexpectedOrder, countDRecordsInUnexpectedOrder);
+                System.out.println(sCountRecordIDsNotLoaded + " " + RecordIDsNotLoaded.size());
+                LoadSummary.put(sCountRecordIDsNotLoaded, RecordIDsNotLoaded.size());
+                System.out.println(sCountUniqueClaimants + " " + ClaimantIDs.size());
+                LoadSummary.put(sCountUniqueClaimants, ClaimantIDs.size());
+                System.out.println(sCountUniquePartners + " " + PartnerIDs.size());
+                LoadSummary.put(sCountUniquePartners, PartnerIDs.size());
+                System.out.println(sCountUniqueDependents + " " + DependentIDs.size());
+                LoadSummary.put(sCountUniqueDependents, DependentIDs.size());
+                System.out.println(sCountUniqueNonDependents + " " + NonDependentIDs.size());
+                LoadSummary.put(sCountUniqueNonDependents, NonDependentIDs.size());
+                System.out.println(sCountUniqueIndividuals + " " + AllIDs.size());
+                LoadSummary.put(sCountUniqueIndividuals, AllIDs.size());
+                System.out.println(sCountPairedClaimants + " " + PairedClaimantIDs.size());
+                LoadSummary.put(sCountPairedClaimants, PairedClaimantIDs.size());
+                System.out.println(sLineCount + " " + lineCount);
+                LoadSummary.put(sLineCount, lineCount);
+                System.out.println(sTotalIncome + " " + grandTotalIncome);
+                System.out.println(sTotalIncomeGreaterThanZeroCount + " " + totalIncomeGreaterThanZeroCount);
+                System.out.println(sAverageIncomeGreaterThanZeroCount + " " + grandTotalIncome / (double) totalIncomeGreaterThanZeroCount);
+                System.out.println(sTotalWeeklyEligibleRentAmount + " " + grandTotalWeeklyEligibleRentAmount);
+                System.out.println(sTotalWeeklyEligibleRentAmountGreaterThanZeroCount + " " + totalWeeklyEligibleRentAmountGreaterThanZeroCount);
+                System.out.println(sAverageWeeklyEligibleRentAmountGreaterThanZeroCount + " " + grandTotalWeeklyEligibleRentAmount / (double) totalWeeklyEligibleRentAmountGreaterThanZeroCount);
                 Generic_StaticIO.writeObject(Records, DRecordsFile);
                 Generic_StaticIO.writeObject(SRecordsWithoutDRecords, SRecordsWithoutDRecordsFile);
                 Generic_StaticIO.writeObject(SRecordIDToCTBRef, SRecordIDToCTBRefFile);
@@ -786,8 +737,125 @@ public class DW_SHBE_Collection implements Serializable {
         }
     }
 
+    private void doSRecordLoop(
+            DW_SHBE_S_Record SRecord,
+            String CTBRef) {
+        String sNINO;
+        sNINO = SRecord.getSubRecordChildReferenceNumberOrNINO();
+        if (sNINO.isEmpty()) {
+            sNINO = "0";
+        }
+        /*
+         * If we get a simple number here rather 
+         * than a NINO, we append the claimant 
+         * NINO which in theory should result in 
+         * a unique ID for a person. This may not 
+         * work for different SHBE extracts as 
+         * the number of Dependents may change 
+         * over time and the number codes may 
+         * alter...
+         */
+        if (sNINO.length() < 3) {
+            sNINO += "_" + SRecord.getClaimantsNationalInsuranceNumber();
+        }
+        DW_ID sNINODW_ID;
+        sNINODW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
+                sNINO, DW_SHBE_Handler.NINOToDW_IDLookup,
+                DW_SHBE_Handler.DW_IDToNINOLookup);
+        String sDOB;
+        sDOB = SRecord.getSubRecordDateOfBirth();
+        DW_ID sDOBDW_ID;
+        sDOBDW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
+                sDOB, DW_SHBE_Handler.DOBToDW_IDLookup,
+                DW_SHBE_Handler.DW_IDToDOBLookup);
+        DW_PersonID sDW_PersonID;
+        sDW_PersonID = new DW_PersonID(sNINODW_ID, sDOBDW_ID);
+        DW_ID sDW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
+                sDW_PersonID,
+                DW_SHBE_Handler.DW_PersonIDToDW_IDLookup,
+                DW_SHBE_Handler.DW_IDToDW_PersonIDLookup);
+        if (SRecord.getSubRecordType() == 2) {
+            if (NonDependentIDs.contains(sDW_PersonID)) {
+                // This subrecord has the same ID as another.
+                // Some subrecords have their
+                // NINO set to XX999999XX and it is possible
+                // that two have this set and have the same
+                // date of birth!
+                DW_ID DW_ID;
+                DW_ID = DW_SHBE_Handler.DW_PersonIDToDW_IDLookup.get(sDW_PersonID);
+                String previousCTBRef;
+                previousCTBRef = SRecordIDToCTBRef.get(DW_ID);
+                DW_SHBE_Record previousRecord;
+                previousRecord = Records.get(previousCTBRef);
+                if (previousRecord == null) {
+                    //System.out.println("SRecord does not have a DRecord and SRecord ID not unique");
+                    Object[] SRecordIDUpdate;
+                    SRecordIDUpdate = getSRecordIDUpdate(
+                            //tDW_SHBE_Handler, 
+                            SRecord);
+                    sDW_ID = (DW_ID) SRecordIDUpdate[0];
+                    sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
+                } else {
+                    if (!previousRecord.isPairedRecord()) {
+                        //System.out.println("Not Paired DRecord and NonDependent SRecord ID not unique");
+                        Object[] SRecordIDUpdate;
+                        SRecordIDUpdate = getSRecordIDUpdate(
+                                //tDW_SHBE_Handler, 
+                                SRecord);
+                        sDW_ID = (DW_ID) SRecordIDUpdate[0];
+                        sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
+                    }
+                }
+            }
+            NonDependentIDs.add(sDW_PersonID);
+        } else {
+            if (DependentIDs.contains(sDW_PersonID)) {
+                // This subrecord has the same ID as another.
+                // Some subrecords have their
+                // NINO set to XX999999XX and it is possible
+                // that two have this set and have the same
+                // date of birth! Indeed, it is more likley for
+                // subrecords than for anything else as there
+                // could be twins or tripplets etc...
+                DW_ID DW_ID;
+                DW_ID = DW_SHBE_Handler.DW_PersonIDToDW_IDLookup.get(sDW_PersonID);
+                String previousCTBRef;
+                previousCTBRef = SRecordIDToCTBRef.get(DW_ID);
+                DW_SHBE_Record previousRecord;
+                previousRecord = Records.get(previousCTBRef);
+                if (previousRecord == null) {
+                    //System.out.println("SRecord does not have a DRecord and SRecord ID not unique");
+                    Object[] SRecordIDUpdate;
+                    SRecordIDUpdate = getSRecordIDUpdate(
+                            //tDW_SHBE_Handler, 
+                            SRecord);
+                    sDW_ID = (DW_ID) SRecordIDUpdate[0];
+                    sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
+                } else {
+                    if (!previousRecord.isPairedRecord()) {
+                        //System.out.println("Not Paired DRecord and Dependent SRecord ID not unique");
+                        Object[] SRecordIDUpdate;
+                        SRecordIDUpdate = getSRecordIDUpdate(
+                                //tDW_SHBE_Handler, 
+                                SRecord);
+                        sDW_ID = (DW_ID) SRecordIDUpdate[0];
+                        sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
+                    }
+                }
+            }
+            DependentIDs.add(sDW_PersonID);
+        }
+        SRecordIDToCTBRef.put(sDW_ID, CTBRef);
+        AllIDs.add(sDW_PersonID);
+    }
+
+    /**
+     *
+     * @param SRecord
+     * @return
+     */
     private Object[] getSRecordIDUpdate(
-            DW_SHBE_Handler DW_SHBE_Handler,
+            //DW_SHBE_Handler tDW_SHBE_Handler,
             DW_SHBE_S_Record SRecord) {
         Object[] result;
         result = new Object[2];

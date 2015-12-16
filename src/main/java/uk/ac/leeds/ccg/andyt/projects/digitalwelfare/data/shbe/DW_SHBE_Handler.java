@@ -133,7 +133,7 @@ public class DW_SHBE_Handler {
                         collectionDir);
                 DW_SHBE_Collection SHBEData;
                 SHBEData = new DW_SHBE_Collection(
-                        this,
+                        //this,
                         handler.nextID,
                         handler,
                         dir,
@@ -420,7 +420,7 @@ public class DW_SHBE_Handler {
                     collectionDir);
             DW_SHBE_Collection SHBEData;
             SHBEData = new DW_SHBE_Collection(
-                    this,
+                    //this,
                     handler.nextID,
                     handler,
                     dir,
@@ -2564,7 +2564,7 @@ public class DW_SHBE_Handler {
             boolean loadFromSource) {
         DW_SHBE_Collection result;
         result = new DW_SHBE_Collection(
-                this,
+                //this,
                 handler.nextID,
                 handler,
                 directory,
