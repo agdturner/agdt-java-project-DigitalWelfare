@@ -66,14 +66,14 @@ public class DW_MainProcessor {
 //            aDW_Postcode_Handler = new DW_Postcode_Handler();
 //            aDW_Postcode_Handler.run();
 
-        DW_SHBE_Handler aDW_SHBE_Handler;
-        aDW_SHBE_Handler = new DW_SHBE_Handler(env);
-        aDW_SHBE_Handler.run();
+//        DW_SHBE_Handler aDW_SHBE_Handler;
+//        aDW_SHBE_Handler = new DW_SHBE_Handler(env);
+//        aDW_SHBE_Handler.run();
 //            aDW_SHBE_Handler.runNew();
 //
-//            DW_DataProcessor_LCC aDW_DataProcessor_LCC;
-//            aDW_DataProcessor_LCC = new DW_DataProcessor_LCC();
-//            aDW_DataProcessor_LCC.run();
+            DW_DataProcessor_LCC aDW_DataProcessor_LCC;
+            aDW_DataProcessor_LCC = new DW_DataProcessor_LCC(env);
+            aDW_DataProcessor_LCC.run();
 //////            
 ////////            DW_ChoroplethMaps_LCC aDW_ChoroplethMaps_LCC;
 ////////            aDW_ChoroplethMaps_LCC = new DW_ChoroplethMaps_LCC();

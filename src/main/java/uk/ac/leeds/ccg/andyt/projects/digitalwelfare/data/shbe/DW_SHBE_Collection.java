@@ -236,7 +236,7 @@ public class DW_SHBE_Collection implements Serializable {
         File ClaimantIDAndPostcodeFile = DW_SHBE_Handler.getClaimantIDPostcodeSetFile(paymentType, inputFilename);
         File ClaimantIDAndTenancyTypeFile = DW_SHBE_Handler.getClaimantIDTenancyTypeSetFile(paymentType, inputFilename);
         File ClaimantIDAndPostcodeAndTenancyTypeFile = DW_SHBE_Handler.getClaimantIDTenancyPostcodeTypeSetFile(paymentType, inputFilename);
-        File tRecordIDsNotLoadedFile = DW_SHBE_Handler.getClaimantIDTenancyPostcodeTypeSetFile(paymentType, inputFilename);
+        File RecordIDsNotLoadedFile = DW_SHBE_Handler.getClaimantIDTenancyPostcodeTypeSetFile(paymentType, inputFilename);
         if (loadFromSource) {
             long collectionID = 0L;
             DW_SHBE_Collection collection;
@@ -711,6 +711,7 @@ public class DW_SHBE_Collection implements Serializable {
                 Generic_StaticIO.writeObject(ClaimantIDAndPostcodeSet, ClaimantIDAndPostcodeFile);
                 Generic_StaticIO.writeObject(ClaimantIDAndTenancyTypeSet, ClaimantIDAndTenancyTypeFile);
                 Generic_StaticIO.writeObject(ClaimantIDAndPostcodeAndTenancyTypeSet, ClaimantIDAndPostcodeAndTenancyTypeFile);
+                Generic_StaticIO.writeObject(RecordIDsNotLoaded, RecordIDsNotLoadedFile);
             } catch (IOException ex) {
                 Logger.getLogger(DW_SHBE_Handler.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -733,7 +734,7 @@ public class DW_SHBE_Collection implements Serializable {
             ClaimantIDAndPostcodeSet = (HashSet<ID_PostcodeID>) Generic_StaticIO.readObject(ClaimantIDAndPostcodeFile);
             ClaimantIDAndTenancyTypeSet = (HashSet<ID_TenancyType>) Generic_StaticIO.readObject(ClaimantIDAndTenancyTypeFile);
             ClaimantIDAndPostcodeAndTenancyTypeSet = (HashSet<ID_TenancyType_PostcodeID>) Generic_StaticIO.readObject(ClaimantIDAndPostcodeAndTenancyTypeFile);
-            RecordIDsNotLoaded = (TreeSet<Long>) Generic_StaticIO.readObject(tRecordIDsNotLoadedFile);
+//            RecordIDsNotLoaded = (TreeSet<Long>) Generic_StaticIO.readObject(RecordIDsNotLoadedFile);
         }
     }
 

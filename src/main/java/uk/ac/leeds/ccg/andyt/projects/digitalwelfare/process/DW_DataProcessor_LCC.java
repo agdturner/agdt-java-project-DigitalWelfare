@@ -96,8 +96,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        DW_SHBE_Handler DW_SHBE_Handler;
 //        DW_SHBE_Handler = new DW_SHBE_Handler(env);
         
-        HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
-        PostcodeToPostcodeIDLookup = DW_SHBE_Handler.getPostcodeToPostcodeIDLookup();
+        HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup;
+        tPostcodeToPostcodeIDLookup = DW_SHBE_Handler.getPostcodeToPostcodeIDLookup();
 //        reportUnderOccupancyTotals(underOccupiedData);
 //        // Data generalisation and output
 //        processSHBEReportData(
@@ -166,9 +166,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         includes = DW_SHBE_Handler.getIncludes();
 
 //        includes.remove("Yearly");
-//        includes.remove("6Monthly");
-//        includes.remove("3Monthly");
-//        includes.remove("MonthlyUO");
+        includes.remove("6Monthly");
+        includes.remove("3Monthly");
+        includes.remove("MonthlyUO");
+        
         // Specifiy distances
         ArrayList<Double> distances;
         distances = new ArrayList<Double>();
@@ -189,13 +190,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         bArray.add(false);
         Iterator<Boolean> iteB;
 
-        HashMap<DW_PersonID, DW_ID> DW_PersonIDtoDW_IDLookup;
-       DW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
+       HashMap<DW_PersonID, DW_ID> tDW_PersonIDtoDW_IDLookup;
+       tDW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
        ArrayList<String> paymentTypes;
         paymentTypes = DW_SHBE_Handler.getPaymentTypes();
-//        paymentTypes.remove(sAllPT);
-//        paymentTypes.remove(sInPayment);
-//        paymentTypes.remove(sSuspended);
+        
+        paymentTypes.remove(sAllPT);
+        paymentTypes.remove(sInPayment);
+        paymentTypes.remove(sSuspended);
 //        paymentTypes.remove(sOtherPT);
 
         Iterator<String> paymentTypesIte;
@@ -253,6 +255,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                             includeKey,
                             doUnderOccupancy,
                             nTT, nEG, nPSI);
+                    System.exit(0);
                     summaryTable = tSummary.getSummaryTable(
                             SHBEFilenames,
                             include,
@@ -262,8 +265,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                             nEG,
                             nPSI,
                             underOccupiedData,
-                            DW_PersonIDtoDW_IDLookup,
-                            PostcodeToPostcodeIDLookup,
+                            tDW_PersonIDtoDW_IDLookup,
+                            tPostcodeToPostcodeIDLookup,
                             handleOutOfMemoryError);
                     doUnderOccupancy = true;
                     tSummary.writeSummaryTables(
@@ -601,7 +604,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                     types,
                                     distanceTypes,
                                     distances,
-                                    DW_PersonIDtoDW_IDLookup);
+                                    tDW_PersonIDtoDW_IDLookup);
                         }
                         aggregateClaimants(
                                 doUnderOccupied,
@@ -621,7 +624,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                 types,
                                 distanceTypes,
                                 distances,
-                                DW_PersonIDtoDW_IDLookup);
+                                tDW_PersonIDtoDW_IDLookup);
                         aggregateClaimants(
                                 doUnderOccupied,
                                 false,
@@ -640,7 +643,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                 types,
                                 distanceTypes,
                                 distances,
-                                DW_PersonIDtoDW_IDLookup);
+                                tDW_PersonIDtoDW_IDLookup);
                     } else {
                         aggregateClaimants(
                                 doUnderOccupied,
@@ -660,7 +663,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                 types,
                                 distanceTypes,
                                 distances,
-                                DW_PersonIDtoDW_IDLookup);
+                                tDW_PersonIDtoDW_IDLookup);
                     }
                 }
             }

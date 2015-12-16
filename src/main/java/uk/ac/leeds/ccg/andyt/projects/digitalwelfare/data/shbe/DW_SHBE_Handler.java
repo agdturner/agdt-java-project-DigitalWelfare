@@ -2540,9 +2540,9 @@ public class DW_SHBE_Handler {
     public static DW_PersonID getClaimantDW_PersonID(DW_SHBE_D_Record D_Record) {
         DW_PersonID result;
         DW_ID NINO_ID;
-        NINO_ID = new DW_ID(D_Record.getClaimantsNationalInsuranceNumber());
+        NINO_ID = NINOToDW_IDLookup.get(D_Record.getClaimantsNationalInsuranceNumber());
         DW_ID DOB_ID;
-        DOB_ID = new DW_ID(D_Record.getClaimantsDateOfBirth());
+        DOB_ID = DOBToDW_IDLookup.get(D_Record.getClaimantsDateOfBirth());
         result = new DW_PersonID(NINO_ID, DOB_ID);
         return result;
     }

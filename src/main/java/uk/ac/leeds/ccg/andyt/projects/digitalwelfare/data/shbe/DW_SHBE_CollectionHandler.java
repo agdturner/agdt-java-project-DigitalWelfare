@@ -74,6 +74,16 @@ public class DW_SHBE_CollectionHandler
     
     public DW_SHBE_CollectionHandler(
             DW_Environment env,
+            String filename) {
+        this.env = env;
+        _Directory = new File(
+                DW_Files.getSwapSHBEDir(),
+                filename);
+        init();
+    }
+    
+    public DW_SHBE_CollectionHandler(
+            DW_Environment env,
             File dir) {
         this.env = env;
         _Directory = dir;
