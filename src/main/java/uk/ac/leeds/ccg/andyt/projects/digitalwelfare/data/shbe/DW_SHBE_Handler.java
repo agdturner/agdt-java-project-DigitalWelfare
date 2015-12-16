@@ -48,14 +48,14 @@ public class DW_SHBE_Handler {
     public static final String sHB = "HB";
     public static final String sCTB = "CTB";
 
-    HashMap<String, DW_ID> NINOToDW_IDLookup;
-    HashMap<DW_ID, String> DW_IDToNINOLookup;
-    HashMap<String, DW_ID> DOBToDW_IDLookup;
-    HashMap<DW_ID, String> DW_IDToDOBLookup;
-    HashMap<DW_PersonID, DW_ID> DW_PersonIDToDW_IDLookup;
-    HashMap<DW_ID, DW_PersonID> DW_IDToDW_PersonIDLookup;
-    HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
-    HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
+    static HashMap<String, DW_ID> NINOToDW_IDLookup;
+    static HashMap<DW_ID, String> DW_IDToNINOLookup;
+    static HashMap<String, DW_ID> DOBToDW_IDLookup;
+    static HashMap<DW_ID, String> DW_IDToDOBLookup;
+    static HashMap<DW_PersonID, DW_ID> DW_PersonIDToDW_IDLookup;
+    static HashMap<DW_ID, DW_PersonID> DW_IDToDW_PersonIDLookup;
+    static HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
+    static HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
 
     public DW_SHBE_Handler(DW_Environment env) {
         this.env = env;
@@ -84,52 +84,48 @@ public class DW_SHBE_Handler {
         dir = DW_Files.getInputSHBEDir();
         boolean loadFromSource;
         loadFromSource = true;
-        // @TODO Pass these in
+        // NINO
         File NINOToDW_IDLookupFile;
         File DW_IDToNINOLookupFile;
         NINOToDW_IDLookupFile = getNINOToDW_IDLookupFile();
         DW_IDToNINOLookupFile = getDW_IDToNINOLookupFile();
+        NINOToDW_IDLookup = getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
+        DW_IDToNINOLookup = getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
+        // Postcode
         File PostcodeToPostcodeIDLookupFile;
         File PostcodeIDToPostcodeLookupFile;
         PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
         PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
-        File DW_PersonIDToDW_IDLookupFile;
-        File DW_IDToDW_PersonIDLookupFile;
-        DW_PersonIDToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile();
-        DW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
-
-//        HashMap<String, DW_ID> NINOToIDLookup;
-//        HashMap<DW_ID, String> IDToNINOLookup;
-//        HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
-//        HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
-        NINOToDW_IDLookup = getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
-        DW_IDToNINOLookup = getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
-//        NINOToDW_IDLookup = getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
-//        DW_IDToNINOLookup = getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
-        DW_PersonIDToDW_IDLookup = getDW_PersonIDToDW_IDLookup(
-                DW_PersonIDToDW_IDLookupFile);
-        DW_IDToDW_PersonIDLookup = getDW_IDToDW_PersonIDLookup(
-                DW_IDToDW_PersonIDLookupFile);
-//        DW_PersonIDToDW_IDLookup = new HashMap<DW_PersonID, DW_ID>();
-//        DW_IDToDW_PersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
         PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
                 PostcodeToPostcodeIDLookupFile);
         PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
                 PostcodeIDToPostcodeLookupFile);
-//        PostcodeToPostcodeIDLookup = new HashMap<String, DW_ID>();
-//        PostcodeIDToPostcodeLookup = new HashMap<DW_ID, String>();
-
+        // Person
+        File DW_PersonIDToDW_IDLookupFile;
+        File DW_IDToDW_PersonIDLookupFile;
+        DW_PersonIDToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile();
+        DW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
+        DW_PersonIDToDW_IDLookup = getDW_PersonIDToDW_IDLookup(
+                DW_PersonIDToDW_IDLookupFile);
+        DW_IDToDW_PersonIDLookup = getDW_IDToDW_PersonIDLookup(
+                DW_IDToDW_PersonIDLookupFile);
+        // Loop
         ArrayList<String> paymentTypes;
         paymentTypes = getPaymentTypes();
         Iterator<String> ite = paymentTypes.iterator();
         while (ite.hasNext()) {
             String paymentType;
             paymentType = ite.next();
-            NINOToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile(paymentType);
-            DW_IDToNINOLookupFile = getDW_IDToDW_PersonIDLookupFile(paymentType);
+            System.out.println("----------------------");
+            System.out.println("Payment Type " + paymentType);
+            System.out.println("----------------------");
+            //for (int i = 0; i < SHBEFilenames.length; i++) {
             for (int i = 0; i < SHBEFilenames.length; i++) {
                 File collectionDir = new File(
                         DW_Files.getSwapSHBEDir(),
+                        paymentType);
+                collectionDir = new File(
+                        collectionDir,
                         SHBEFilenames[i]);
                 DW_SHBE_CollectionHandler handler;
                 handler = new DW_SHBE_CollectionHandler(
@@ -144,22 +140,14 @@ public class DW_SHBE_Handler {
                         SHBEFilenames[i],
                         paymentType,
                         loadFromSource);
-//                    NINOToIDLookupFile,
-//                    IDToNINOLookupFile,
-//                    PostcodeToPostcodeIDLookupFile,
-//                    PostcodeIDToPostcodeLookupFile,
-//                    NINOToIDLookup,
-//                    IDToNINOLookup,
-//                    PostcodeToPostcodeIDLookup,
-//                    PostcodeIDToPostcodeLookup);
             }
-            // writeOutLookups
-            Generic_StaticIO.writeObject(DW_PersonIDToDW_IDLookup, NINOToDW_IDLookupFile);
-            Generic_StaticIO.writeObject(DW_IDToDW_PersonIDLookup, DW_IDToNINOLookupFile);
-            Generic_StaticIO.writeObject(PostcodeToPostcodeIDLookup, PostcodeToPostcodeIDLookupFile);
-            Generic_StaticIO.writeObject(PostcodeIDToPostcodeLookup, PostcodeIDToPostcodeLookupFile);
         }
-        //loadInputData(dir, SHBEFilenames[47], loadFromSource);
+        Generic_StaticIO.writeObject(NINOToDW_IDLookup, NINOToDW_IDLookupFile);
+        Generic_StaticIO.writeObject(DW_IDToNINOLookup, DW_IDToNINOLookupFile);
+        Generic_StaticIO.writeObject(DW_PersonIDToDW_IDLookup, DW_PersonIDToDW_IDLookupFile);
+        Generic_StaticIO.writeObject(DW_IDToDW_PersonIDLookup, DW_IDToDW_PersonIDLookupFile);
+        Generic_StaticIO.writeObject(PostcodeToPostcodeIDLookup, PostcodeToPostcodeIDLookupFile);
+        Generic_StaticIO.writeObject(PostcodeIDToPostcodeLookup, PostcodeIDToPostcodeLookupFile);
     }
 
     public static final String sAllPT = "AllPT";
@@ -191,31 +179,37 @@ public class DW_SHBE_Handler {
         dir = DW_Files.getInputSHBEDir();
         boolean loadFromSource;
         loadFromSource = true;
-        // @TODO Pass these in
-        File NINOToIDLookupFile;
-        File IDToNINOLookupFile;
+        // NINO
+        File NINOToDW_IDLookupFile;
+        File DW_IDToNINOLookupFile;
+        NINOToDW_IDLookupFile = getNINOToDW_IDLookupFile();
+        DW_IDToNINOLookupFile = getDW_IDToNINOLookupFile();
+        NINOToDW_IDLookup = getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
+        DW_IDToNINOLookup = getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
+        // Postcode
         File PostcodeToPostcodeIDLookupFile;
         File PostcodeIDToPostcodeLookupFile;
+        PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
+        PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
+        PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
+                PostcodeToPostcodeIDLookupFile);
+        PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
+                PostcodeIDToPostcodeLookupFile);
+        // Person
+        File DW_PersonIDToDW_IDLookupFile;
+        File DW_IDToDW_PersonIDLookupFile;
+        DW_PersonIDToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile();
+        DW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
+        DW_PersonIDToDW_IDLookup = getDW_PersonIDToDW_IDLookup(
+                DW_PersonIDToDW_IDLookupFile);
+        DW_IDToDW_PersonIDLookup = getDW_IDToDW_PersonIDLookup(
+                DW_IDToDW_PersonIDLookupFile);
         ArrayList<String> paymentTypes;
         paymentTypes = getPaymentTypes();
         Iterator<String> ite = paymentTypes.iterator();
         while (ite.hasNext()) {
             String paymentType;
             paymentType = ite.next();
-            NINOToIDLookupFile = getDW_PersonIDToDW_IDLookupFile(paymentType);
-            IDToNINOLookupFile = getDW_IDToDW_PersonIDLookupFile(paymentType);
-            PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
-            PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
-//        HashMap<String, DW_ID> NINOToIDLookup;
-//        HashMap<DW_ID, String> IDToNINOLookup;
-//        HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
-//        HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
-            DW_PersonIDToDW_IDLookup = getDW_PersonIDToIDLookup(NINOToIDLookupFile);
-            DW_IDToDW_PersonIDLookup = getDW_IDToDW_PersonIDLookup(IDToNINOLookupFile);
-            PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
-                    PostcodeToPostcodeIDLookupFile);
-            PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
-                    PostcodeIDToPostcodeLookupFile);
             loadInputData(
                     handler,
                     dir,
@@ -223,6 +217,12 @@ public class DW_SHBE_Handler {
                     paymentType,
                     loadFromSource);
         }
+        Generic_StaticIO.writeObject(NINOToDW_IDLookup, NINOToDW_IDLookupFile);
+        Generic_StaticIO.writeObject(DW_IDToNINOLookup, DW_IDToNINOLookupFile);
+        Generic_StaticIO.writeObject(DW_PersonIDToDW_IDLookup, DW_PersonIDToDW_IDLookupFile);
+        Generic_StaticIO.writeObject(DW_IDToDW_PersonIDLookup, DW_IDToDW_PersonIDLookupFile);
+        Generic_StaticIO.writeObject(PostcodeToPostcodeIDLookup, PostcodeToPostcodeIDLookupFile);
+        Generic_StaticIO.writeObject(PostcodeIDToPostcodeLookup, PostcodeIDToPostcodeLookupFile);
     }
 
 //    public static String getClaimantType(DW_SHBE_D_Record D_Record) {
@@ -410,7 +410,7 @@ public class DW_SHBE_Handler {
         dir = DW_Files.getInputSHBEDir();
         String[] filenames = getSHBEFilenamesAll();
         for (String filename : filenames) {
-            System.out.println("Loading SHBE data from " + filename + " ...");
+            System.out.println("Load SHBE data from " + filename + " ...");
             File collectionDir = new File(
                     DW_Files.getSwapSHBEDir(),
                     filename);
@@ -453,7 +453,7 @@ public class DW_SHBE_Handler {
         } else {
             result = new DW_ID(DW_IDToStringLookup.size());
             DW_IDToStringLookup.put(result, S);
-            StringToDW_IDLookup.put(S,result);
+            StringToDW_IDLookup.put(S, result);
         }
         return result;
     }
@@ -1863,16 +1863,20 @@ public class DW_SHBE_Handler {
         return result;
     }
 
+    public static HashMap<DW_PersonID, DW_ID> getDW_PersonIDToDW_IDLookup(){
+        return getDW_PersonIDToDW_IDLookup(getDW_PersonIDToDW_IDLookupFile());
+    }
+    
     public static HashMap<DW_PersonID, DW_ID> getDW_PersonIDToDW_IDLookup(
             File f) {
-        HashMap<DW_PersonID, DW_ID> result;
-        if (f.exists()) {
-            result = (HashMap<DW_PersonID, DW_ID>) Generic_StaticIO.readObject(
-                    f);
-        } else {
-            result = new HashMap<DW_PersonID, DW_ID>();
+        if (DW_PersonIDToDW_IDLookup == null) {
+            if (f.exists()) {
+                DW_PersonIDToDW_IDLookup = (HashMap<DW_PersonID, DW_ID>) Generic_StaticIO.readObject(f);
+            } else {
+                DW_PersonIDToDW_IDLookup = new HashMap<DW_PersonID, DW_ID>();
+            }
         }
-        return result;
+        return DW_PersonIDToDW_IDLookup;
     }
 
     public static HashMap<String, DW_ID> getStringToDW_IDLookup(
@@ -1886,7 +1890,7 @@ public class DW_SHBE_Handler {
         return result;
     }
 
-    public HashMap<String, DW_ID> getNINOToDW_IDLookup(
+    public static HashMap<String, DW_ID> getNINOToDW_IDLookup(
             File f) {
         if (NINOToDW_IDLookup == null) {
             NINOToDW_IDLookup = getStringToDW_IDLookup(f);
@@ -1900,7 +1904,7 @@ public class DW_SHBE_Handler {
         return getDW_IDToStringLookup(f);
     }
 
-    public HashMap<DW_ID, String> getDW_IDToNINOLookup(
+    public static HashMap<DW_ID, String> getDW_IDToNINOLookup(
             File f) {
         if (DW_IDToNINOLookup == null) {
             DW_IDToNINOLookup = getDW_IDToStringLookup(f);
@@ -1908,7 +1912,7 @@ public class DW_SHBE_Handler {
         return DW_IDToNINOLookup;
     }
 
-    public HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup(
+    public static HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup(
             File f) {
         if (PostcodeToPostcodeIDLookup == null) {
             PostcodeToPostcodeIDLookup = getStringToDW_IDLookup(f);
@@ -1916,13 +1920,13 @@ public class DW_SHBE_Handler {
         return PostcodeToPostcodeIDLookup;
     }
 
-    public HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup() {
+    public static HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup() {
         File f;
         f = getPostcodeToPostcodeIDLookupFile();
         return getPostcodeToPostcodeIDLookup(f);
     }
 
-    public HashMap<DW_ID, String> getPostcodeIDToPostcodeLookup(
+    public static HashMap<DW_ID, String> getPostcodeIDToPostcodeLookup(
             File f) {
         if (PostcodeIDToPostcodeLookup == null) {
             PostcodeIDToPostcodeLookup = getDW_IDToStringLookup(f);
@@ -1930,13 +1934,13 @@ public class DW_SHBE_Handler {
         return PostcodeIDToPostcodeLookup;
     }
 
-    public HashMap<DW_ID, String> getPostcodeIDToPostcodeLookup() {
+    public static HashMap<DW_ID, String> getPostcodeIDToPostcodeLookup() {
         File f;
         f = getPostcodeIDToPostcodeLookupFile();
         return getPostcodeIDToPostcodeLookup(f);
     }
 
-    public HashMap<DW_PersonID, DW_ID> getDW_PersonIDToIDLookup(
+    public static HashMap<DW_PersonID, DW_ID> getDW_PersonIDToIDLookup(
             File f) {
         if (DW_PersonIDToDW_IDLookup == null) {
             DW_PersonIDToDW_IDLookup = getDW_PersonIDToDW_IDLookup(f);
@@ -1944,37 +1948,33 @@ public class DW_SHBE_Handler {
         return DW_PersonIDToDW_IDLookup;
     }
 
-    public HashMap<DW_PersonID, DW_ID> getDW_PersonIDToDW_IDLookup(
-            String paymentType) {
-        File f;
-        f = getDW_PersonIDToDW_IDLookupFile(paymentType);
-        return getDW_PersonIDToIDLookup(f);
-    }
-
-    public HashMap<DW_ID, DW_PersonID> getDW_IDToDW_PersonIDLookup(
+//    public HashMap<DW_PersonID, DW_ID> getDW_PersonIDToDW_IDLookup(
+//            String paymentType) {
+//        File f;
+//        f = getDW_PersonIDToDW_IDLookupFile(paymentType);
+//        return getDW_PersonIDToIDLookup(f);
+//    }
+    public static HashMap<DW_ID, DW_PersonID> getDW_IDToDW_PersonIDLookup(
             File f) {
         if (DW_IDToDW_PersonIDLookup == null) {
-            HashMap<DW_ID, DW_PersonID> result;
             if (f.exists()) {
-                result = (HashMap<DW_ID, DW_PersonID>) Generic_StaticIO.readObject(f);
+                DW_IDToDW_PersonIDLookup = (HashMap<DW_ID, DW_PersonID>) Generic_StaticIO.readObject(f);
             } else {
-                result = new HashMap<DW_ID, DW_PersonID>();
+                DW_IDToDW_PersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
             }
-            return result;
         }
         return DW_IDToDW_PersonIDLookup;
     }
 
-    public HashMap<DW_ID, DW_PersonID> getIDToDW_PersonIDLookup(
-            String paymentType) {
-        File f;
-        f = getDW_IDToDW_PersonIDLookupFile(paymentType);
-        return getDW_IDToDW_PersonIDLookup(f);
-    }
-
+//    public HashMap<DW_ID, DW_PersonID> getDW_IDToDW_PersonIDLookup(
+//            String paymentType) {
+//        File f;
+//        f = getDW_IDToDW_PersonIDLookupFile(paymentType);
+//        return getDW_IDToDW_PersonIDLookup(f);
+//    }
     public static File getPostcodeToPostcodeIDLookupFile() {
         File result;
-        String filename = "PostcodeToPostcodeID_HashMapStringDW_ID.thisFile";
+        String filename = "PostcodeToPostcodeID_HashMap_String__DW_ID.thisFile";
         result = new File(
                 DW_Files.getGeneratedSHBEDir(),
                 filename);
@@ -1983,7 +1983,7 @@ public class DW_SHBE_Handler {
 
     public static File getPostcodeIDToPostcodeLookupFile() {
         File result;
-        String filename = "PostcodeIDToPostcode_HashMapDW_IDString.thisFile";
+        String filename = "PostcodeIDToPostcode_HashMap_DW_ID__String.thisFile";
         result = new File(
                 DW_Files.getGeneratedSHBEDir(),
                 filename);
@@ -1992,7 +1992,7 @@ public class DW_SHBE_Handler {
 
     public static File getNINOToDW_IDLookupFile() {
         File result;
-        String filename = "NINOToID_HashMapStringDW_ID.thisFile";
+        String filename = "NINOToID_HashMap_String__DW_ID.thisFile";
         result = new File(
                 DW_Files.getGeneratedSHBEDir(),
                 filename);
@@ -2001,7 +2001,7 @@ public class DW_SHBE_Handler {
 
     public static File getDW_IDToNINOLookupFile() {
         File result;
-        String filename = "IDToNINO_HashMapDW_IDString.thisFile";
+        String filename = "IDToNINO_HashMap_DW_ID__String.thisFile";
         result = new File(
                 DW_Files.getGeneratedSHBEDir(),
                 filename);
@@ -2010,43 +2010,52 @@ public class DW_SHBE_Handler {
 
     public static File getDW_PersonIDToDW_IDLookupFile() {
         File result;
-        String filename = "PersonIDToID_HashMapDW_PersonIDDW_ID.thisFile";
+        String filename = "PersonIDToID_HashMap_DW__PersonID_DW_ID.thisFile";
         result = new File(
                 DW_Files.getGeneratedSHBEDir(),
-                filename);
-        return result;
-    }
-
-    public static File getDW_IDToDW_PersonIDLookupFile() {
-        File result;
-        String filename = "IDToPersonID_HashMapDW_IDDW_PersonID.thisFile";
-        result = new File(
-                DW_Files.getGeneratedSHBEDir(),
-                filename);
-        return result;
-    }
-
-    public static File getDW_PersonIDToDW_IDLookupFile(String paymentType) {
-        File result;
-        String filename = "DW_PersonIDToDW_ID_HashMapStringDW_ID.thisFile";
-        result = new File(
-                DW_Files.getGeneratedSHBEDir(paymentType),
-                filename);
-        return result;
-    }
-
-    public static File getDW_IDToDW_PersonIDLookupFile(String paymentType) {
-        File result;
-        String filename = "DW_IDToDW_PersonID_HashMapDW_IDString.thisFile";
-        result = new File(
-                DW_Files.getGeneratedSHBEDir(paymentType),
                 filename);
         return result;
     }
 
     /**
-     * [0]
      *
+     * @return
+     */
+    public static File getDW_IDToDW_PersonIDLookupFile() {
+        File result;
+        String filename = "IDToPersonID_HashMap_DW_ID__DW_PersonID.thisFile";
+        result = new File(
+                DW_Files.getGeneratedSHBEDir(),
+                filename);
+        return result;
+    }
+
+//    /**
+//     * 
+//     * @param paymentType
+//     * @return 
+//     */
+//    public static File getDW_PersonIDToDW_IDLookupFile(String paymentType) {
+//        File result;
+//        String filename = "DW_PersonIDToDW_ID_HashMap_DW_PersonID__DW_ID.thisFile";
+//        result = new File(
+//                DW_Files.getGeneratedSHBEDir(paymentType),
+//                filename);
+//        return result;
+//    }
+//    /**
+//     * @param paymentType
+//     * @return 
+//     */
+//    public static File getDW_IDToDW_PersonIDLookupFile(String paymentType) {
+//        File result;
+//        String filename = "DW_IDToDW_PersonID_HashMap_DW_ID__DW_PersonID.thisFile";
+//        result = new File(
+//                DW_Files.getGeneratedSHBEDir(paymentType),
+//                filename);
+//        return result;
+//    }
+    /**
      * @param paymentType
      * @param filename
      * @return
@@ -2055,14 +2064,12 @@ public class DW_SHBE_Handler {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "DRecords_TreeMapStringDW_SHBE_Record.thisFile";
+        String partFilename = "DRecords_TreeMap_String__DW_SHBE_Record.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [1]
-     *
      * @param paymentType
      * @param filename
      * @return
@@ -2071,14 +2078,26 @@ public class DW_SHBE_Handler {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "SRecordsWithoutDRecords_TreeMapStringDW_SHBE_S_Record.thisFile";
+        String partFilename = "SRecordsWithoutDRecords_TreeMap_String__DW_SHBE_S_Record.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [2]
-     *
+     * @param paymentType
+     * @param filename
+     * @return
+     */
+    public static File getSRecordIDToCTBRefFile(
+            String paymentType,
+            String filename) {
+        File result;
+        String partFilename = "SRecordIDToCTBRef_HashMap_DW_ID__String.thisFile";
+        result = getFile(paymentType, filename, partFilename);
+        return result;
+    }
+
+    /**
      * @param paymentType
      * @param filename
      * @return
@@ -2087,14 +2106,12 @@ public class DW_SHBE_Handler {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDs_HashSetString.thisFile";
+        String partFilename = "ClaimantIDs_HashSet_DW_PersonID.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [3]
-     *
      * @param paymentType
      * @param filename
      * @return
@@ -2103,46 +2120,40 @@ public class DW_SHBE_Handler {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "PartnerIDs_HashSetString.thisFile";
+        String partFilename = "PartnerIDs_HashSet_DW_PersonID.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [4]
-     *
      * @param paymentType
      * @param filename
      * @return
      */
-    public static File getDependentsIDsFile(
+    public static File getDependentIDsFile(
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "DependentsIDs_HashSetString.thisFile";
+        String partFilename = "DependentIDs_HashSet_DW_PersonID.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [5]
-     *
      * @param paymentType
      * @param filename
      * @return
      */
-    public static File getNonDependentsIDsFile(
+    public static File getNonDependentIDsFile(
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "NonDependentsIDs_HashSetString.thisFile";
+        String partFilename = "NonDependentIDs_HashSet_DW_PersonID.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [6]
-     *
      * @param paymentType
      * @param filename
      * @return
@@ -2151,14 +2162,26 @@ public class DW_SHBE_Handler {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "AllHouseholdIDs_HashSetString.thisFile";
+        String partFilename = "AllHouseholdIDs_HashSet_DW_PersonID.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [7]
-     *
+     * @param paymentType
+     * @param filename
+     * @return
+     */
+    public static File getPairedClaimantIDsFile(
+            String paymentType,
+            String filename) {
+        File result;
+        String partFilename = "PairedClaimantIDs_HashSet_DW_PersonID.thisFile";
+        result = getFile(paymentType, filename, partFilename);
+        return result;
+    }
+
+    /**
      * @param paymentType
      * @param filename
      * @return
@@ -2167,14 +2190,12 @@ public class DW_SHBE_Handler {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDToRecordIDLookup_HashMapStringLong.thisFile";
+        String partFilename = "ClaimantIDToRecordIDLookup_HashMap_DW_ID__Long.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [8]
-     *
      * @param paymentType
      * @param filename
      * @return
@@ -2183,14 +2204,12 @@ public class DW_SHBE_Handler {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDToPostcodeLookup_HashMapStringString.thisFile";
+        String partFilename = "ClaimantIDToPostcodeLookup_HashMap_DW_ID__String.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [9]
-     *
      * @param paymentType
      * @param filename
      * @return
@@ -2199,14 +2218,12 @@ public class DW_SHBE_Handler {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDToTenancyTypeLookup_HashMapStringInteger.thisFile";
+        String partFilename = "ClaimantIDToTenancyTypeLookup_HashMap_DW_ID__Integer.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [10]
-     *
      * @param paymentType
      * @param filename
      * @return
@@ -2215,14 +2232,12 @@ public class DW_SHBE_Handler {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "CTBRefToClaimantIDLookup_HashMapLongString.thisFile";
+        String partFilename = "CTBRefToClaimantIDLookup_HashMap_String__DW_ID.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [11]
-     *
      * @param paymentType
      * @param filename
      * @return
@@ -2231,7 +2246,7 @@ public class DW_SHBE_Handler {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDToCTBRefLookup_HashMapLongString.thisFile";
+        String partFilename = "ClaimantIDToCTBRefLookup_HashMap_DW_ID__String.thisFile";
         result = getFile(
                 paymentType,
                 filename,
@@ -2240,8 +2255,6 @@ public class DW_SHBE_Handler {
     }
 
     /**
-     * [12]
-     *
      * @param paymentType
      * @param filename
      * @return
@@ -2250,14 +2263,12 @@ public class DW_SHBE_Handler {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "LoadSummary_HashMapStringInteger.thisFile";
+        String partFilename = "LoadSummary_HashMap_String__Integer.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [13]
-     *
      * @param paymentType
      * @param filename
      * @return
@@ -2266,14 +2277,12 @@ public class DW_SHBE_Handler {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDPostcode_HashSetID_Postcode.thisFile";
+        String partFilename = "ClaimantIDPostcode_HashSet_ID_Postcode.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [14]
-     *
      * @param paymentType
      * @param filename
      * @return
@@ -2282,23 +2291,21 @@ public class DW_SHBE_Handler {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDTenancyType_HashSetID_TenancyType.thisFile";
+        String partFilename = "ClaimantIDTenancyType_HashSet_ID_TenancyType.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
 
     /**
-     * [15]
-     *
      * @param paymentType
      * @param filename
      * @return
      */
-    public static File getClaimantIDPostcodeTenancyTypeSetFile(
+    public static File getClaimantIDTenancyPostcodeTypeSetFile(
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDPostcodeTenancyType_HashSetID_Postcode_TenancyType.thisFile";
+        String partFilename = "ClaimantIDTenancyTypePostcodeID_HashSet_ID_TenancyType_PostcodeID.thisFile";
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2318,9 +2325,9 @@ public class DW_SHBE_Handler {
         File result;
         String partFilename;
         if (doUnderOccupancy) {
-            partFilename = "IncomeAndRentSummaryUO_HashMapStringBigDecimal.thisFile";
+            partFilename = "IncomeAndRentSummaryUO_HashMap_String__BigDecimal.thisFile";
         } else {
-            partFilename = "IncomeAndRentSummary_HashMapStringBigDecimal.thisFile";
+            partFilename = "IncomeAndRentSummary_HashMap_String__BigDecimal.thisFile";
         }
         result = getFile(paymentType, filename, partFilename);
         return result;
@@ -2566,10 +2573,10 @@ public class DW_SHBE_Handler {
                 loadFromSource);
         Generic_StaticIO.writeObject(
                 DW_PersonIDToDW_IDLookup,
-                getDW_PersonIDToDW_IDLookupFile(paymentType));
+                getDW_PersonIDToDW_IDLookupFile());
         Generic_StaticIO.writeObject(
                 DW_IDToDW_PersonIDLookup,
-                getDW_IDToDW_PersonIDLookupFile(paymentType));
+                getDW_IDToDW_PersonIDLookupFile());
         Generic_StaticIO.writeObject(
                 PostcodeToPostcodeIDLookup,
                 getPostcodeToPostcodeIDLookupFile());

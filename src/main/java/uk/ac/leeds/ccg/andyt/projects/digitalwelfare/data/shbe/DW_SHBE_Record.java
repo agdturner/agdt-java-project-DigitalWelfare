@@ -134,20 +134,20 @@ public class DW_SHBE_Record implements Serializable {
      */
     public DW_SHBE_Record(
             long RecordID,
-            //int type,
+            int type,
             String line) throws Exception {
         this.RecordID = RecordID;
         if (line.startsWith("S")) {
             //System.out.println("S Record");
             getSRecords().add(generateSRecord(
-                    //type,
+                    type,
                     RecordID,
                     line));
         }
         if (line.startsWith("D"))  {
             //System.out.println("D Record");
             setDRecord(generateDRecord(
-                    //type,
+                    type,
                     RecordID,
                     line));
         }
@@ -174,17 +174,17 @@ public class DW_SHBE_Record implements Serializable {
     }
 
     private DW_SHBE_S_Record generateSRecord(
-            //int type,
+            int type,
             long RecordID,
             String line) throws Exception {
-        return new DW_SHBE_S_Record(RecordID,line);
+        return new DW_SHBE_S_Record(RecordID, type, line);
     }
     
     private DW_SHBE_D_Record generateDRecord(
-            //int type,
+            int type,
             long RecordID,
             String line) throws Exception {
-        return new DW_SHBE_D_Record(RecordID, line);
+        return new DW_SHBE_D_Record(RecordID, type, line);
     }
 
     /**
@@ -213,7 +213,7 @@ public class DW_SHBE_Record implements Serializable {
      * 
      * @param DRecord 
      */
-    protected void setDRecord(DW_SHBE_D_Record DRecord) {
+    private void setDRecord(DW_SHBE_D_Record DRecord) {
         this.DRecord = DRecord;
     }
 
@@ -235,7 +235,7 @@ public class DW_SHBE_Record implements Serializable {
     /**
      * @return the SRecords
      */
-    public HashSet<DW_SHBE_S_Record> getSRecords() {
+    public final HashSet<DW_SHBE_S_Record> getSRecords() {
         if (SRecords == null) {
             SRecords = new HashSet<DW_SHBE_S_Record>();
         }

@@ -61,7 +61,7 @@ public class DW_SHBE_S_Record extends DW_SHBE_RecordAbstract implements Serializ
      * In type1 but not type0 288 315 SubRecordDateOfBirth
      */
     private String SubRecordDateOfBirth;
-    
+
     /**
      * Creates a null record in case this is needed
      *
@@ -74,11 +74,9 @@ public class DW_SHBE_S_Record extends DW_SHBE_RecordAbstract implements Serializ
 
     /**
      * @param RecordID
-     * @param type ------------------------------------------------------------
-     * The type is worked out by reading the first line of the data. type1 has:
-     * LandlordPostcode and SubRecordDateOfBirth for S Record; and,
-     * LandlordPostcode for D Record.
-     * type0-------------------------------------------------------------------
+     * @param type {@code The type is worked out by reading the first line of
+     * the data. type1 has: LandlordPostcode 307 and SubRecordDateOfBirth 315.
+     * type0---NoFields_307_315-------------------------------------------------
      * 1,2,3,4,8,9, 11,12,13,14,15,16,17,18,19, 20,21,22,23,24,25,26,27,28,29,
      * 30,31,32,33,34,35,36,37,38,39, 40,41,42,43,44,45,46,47,48,49,
      * 50,51,52,53,54,55,56,57,58,59, 60,61,62,63,64,65,66,67,68,69,
@@ -103,7 +101,7 @@ public class DW_SHBE_S_Record extends DW_SHBE_RecordAbstract implements Serializ
      * 290,291,292,293,294,295,296,297,298,299, 308,309,
      * 310,311,316,317,318,319, 320,321,322,323,324,325,326,327,328,329,
      * 330,331,332,333,334,335,336,337,338,339, 340,341
-     * type1-------------------------------------------------------------------
+     * type1---ExtraFields_307(LandLordPostcode)_315(Sub-RecordDateOfBirth)-----
      * 1,2,3,4,8,9, 11,12,13,14,15,16,17,18,19, 20,21,22,23,24,25,26,27,28,29,
      * 30,31,32,33,34,35,36,37,38,39, 40,41,42,43,44,45,46,47,48,49,
      * 50,51,52,53,54,55,56,57,58,59, 60,61,62,63,64,65,66,67,68,69,
@@ -127,13 +125,13 @@ public class DW_SHBE_S_Record extends DW_SHBE_RecordAbstract implements Serializ
      * 270,271,272,273,274,275,276,277,278, 284,285,286,287,
      * 290,291,292,293,294,295,296,297,298,299, 307,308,309,
      * 310,311,315,316,317,318,319, 320,321,322,323,324,325,326,327,328,329,
-     * 330,331,332,333,334,335,336,337,338,339, 340,341
+     * 330,331,332,333,334,335,336,337,338,339, 340,341}
      * @param line
-     * @param handler
      * @throws java.lang.Exception
      */
     public DW_SHBE_S_Record(
             long RecordID,
+            int type,
             String line
     ) throws Exception {
         this.RecordID = RecordID;
@@ -183,11 +181,16 @@ public class DW_SHBE_S_Record extends DW_SHBE_RecordAbstract implements Serializ
         } else {
             return;
         }
-        n = 284;
-        if (n < fields.length) {
-            setSubRecordType(n, fields);
+        if (type == 0) {
+            n = 284;
         } else {
-            return;
+            //(type == 1)
+            n = 285;
+        }
+        if (n < fields.length) {
+                setSubRecordType(n, fields);
+            } else {
+                return;
         }
         n++;
         if (n < fields.length) {
@@ -209,7 +212,7 @@ public class DW_SHBE_S_Record extends DW_SHBE_RecordAbstract implements Serializ
         }
         n++;
         if (n < fields.length) {
-                SubRecordDateOfBirth = fields[n];
+            SubRecordDateOfBirth = fields[n];
         }
     }
 
@@ -371,5 +374,5 @@ public class DW_SHBE_S_Record extends DW_SHBE_RecordAbstract implements Serializ
     protected void setSubRecordStartDate(String SubRecordStartDate) {
         this.SubRecordStartDate = SubRecordStartDate;
     }
-    
+
 }

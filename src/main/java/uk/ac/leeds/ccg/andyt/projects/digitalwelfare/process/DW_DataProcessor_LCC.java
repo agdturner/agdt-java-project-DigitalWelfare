@@ -93,8 +93,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         Object[] underOccupiedData;
         underOccupiedData = DW_UnderOccupiedReport_Handler.loadUnderOccupiedReportData();
 
-        DW_SHBE_Handler DW_SHBE_Handler;
-        DW_SHBE_Handler = new DW_SHBE_Handler(env);
+//        DW_SHBE_Handler DW_SHBE_Handler;
+//        DW_SHBE_Handler = new DW_SHBE_Handler(env);
         
         HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
         PostcodeToPostcodeIDLookup = DW_SHBE_Handler.getPostcodeToPostcodeIDLookup();
@@ -190,7 +190,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         Iterator<Boolean> iteB;
 
         HashMap<DW_PersonID, DW_ID> DW_PersonIDtoDW_IDLookup;
-        ArrayList<String> paymentTypes;
+       DW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
+       ArrayList<String> paymentTypes;
         paymentTypes = DW_SHBE_Handler.getPaymentTypes();
 //        paymentTypes.remove(sAllPT);
 //        paymentTypes.remove(sInPayment);
@@ -212,7 +213,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             while (paymentTypesIte.hasNext()) {
                 String paymentType;
                 paymentType = paymentTypesIte.next();
-                DW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(paymentType);
+                //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
                 int nTT;
                 nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
                 int nEG;
@@ -571,7 +572,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             while (paymentTypesIte.hasNext()) {
                 String paymentType;
                 paymentType = paymentTypesIte.next();
-                DW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(paymentType);
+                //DW_SHBE_Handler.DW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
                 TreeMap<String, TreeMap<String, String>> lookupsFromPostcodeToLevelCode; // Work needed to load the appropriate look up for the appropriate years and months of postcode!
                 lookupsFromPostcodeToLevelCode = getLookupsFromPostcodeToLevelCode(levels);
                 //Generic_UKPostcode_Handler.isValidPostcodeForm(String postcode)

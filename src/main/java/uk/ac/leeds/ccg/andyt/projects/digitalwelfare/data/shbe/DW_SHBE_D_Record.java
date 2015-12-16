@@ -36,13 +36,23 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
         this.RecordID = RecordID;
     }
 
+    /**
+     * 
+     * @param RecordID
+     * @param type It is not necessary to pass this in, as we only add Landlords
+     * postcode if the record is long enough. But it might be useful to have 
+     * other types in future if the number of fields or the field usage changes.
+     * @param line
+     * @throws Exception 
+     */
     public DW_SHBE_D_Record(
             long RecordID,
+            int type,
             String line
     ) throws Exception {
         this.RecordID = RecordID;
         String[] fields = line.split(",");
-        int exceptionalType = 0;
+        //int exceptionalType = 0;
         int n = 0;
         if (n < fields.length) {
             if (!fields[n].equalsIgnoreCase("D")) {
@@ -77,7 +87,6 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
         //ClaimantsSurname(fields[n]);
         //ClaimantsFirstForename = fields[n;
         n++;
-        
 //        if (n < fields.length) {
 //            if (fields[n].isEmpty()) {
 //                n++;
@@ -86,7 +95,6 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
 //        } else {
 //            return;
 //        }
-        
         if (n < fields.length) {
             setClaimantsDateOfBirth(fields[n]);
         } else {
@@ -2671,6 +2679,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
         }
         n++;
         if (n < fields.length) {
+            // This is only in type 1 records.
             setLandlordPostcode(DW_Postcode_Handler.formatPostcode(fields[n]));
         }
     }
