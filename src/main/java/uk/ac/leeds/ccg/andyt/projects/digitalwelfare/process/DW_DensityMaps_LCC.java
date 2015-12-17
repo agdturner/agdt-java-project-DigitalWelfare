@@ -49,7 +49,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UOReport_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Set;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.initONSPDLookups;
 import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
@@ -657,7 +657,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
             // Check for UnderOccupied
             if (doUnderOccupied) {
                 // UnderOccupancy
-                DW_UnderOccupiedReport_Record underOccupied0 = null;
+                DW_UOReport_Record underOccupied0 = null;
                 if (underOccupiedSet != null) {
                     underOccupied0 = underOccupiedSet.getMap().get(
                             councilTaxBenefitClaimReferenceNumber);

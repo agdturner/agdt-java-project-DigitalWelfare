@@ -32,7 +32,7 @@ public class DW_UnderOccupiedReport_Set {
     /**
      * aUnderOccupiedReport_Record.getClaimReferenceNumber(), aUnderOccupiedReport_Record
      */ 
-    TreeMap<String, DW_UnderOccupiedReport_Record> map;
+    TreeMap<String, DW_UOReport_Record> map;
     
     public DW_UnderOccupiedReport_Set() {}
     
@@ -53,12 +53,12 @@ public class DW_UnderOccupiedReport_Set {
 //        result[0] = councilRecords;
 //        RSLRecords = new TreeMap[numberOfUnderOccupiedReportFiles];
 
-    public TreeMap<String, DW_UnderOccupiedReport_Record> getMap() {
+    public TreeMap<String, DW_UOReport_Record> getMap() {
         return map;
     }
 
     public void setSet(
-            TreeMap<String, DW_UnderOccupiedReport_Record> set) {
+            TreeMap<String, DW_UOReport_Record> set) {
         this.map = set;
     }
     

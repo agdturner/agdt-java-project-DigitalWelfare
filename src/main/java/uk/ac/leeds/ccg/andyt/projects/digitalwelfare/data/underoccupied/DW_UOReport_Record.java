@@ -22,7 +22,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied;
  *
  * @author geoagdt
  */
-public class DW_UnderOccupiedReport_Record {
+public class DW_UOReport_Record {
 
     /**
      * 0 RecordID
@@ -86,7 +86,7 @@ public class DW_UnderOccupiedReport_Record {
      * @param type
      * @throws Exception
      */
-    public DW_UnderOccupiedReport_Record(
+    public DW_UOReport_Record(
             long RecordID,
             String line,
             //String type
@@ -427,7 +427,7 @@ public class DW_UnderOccupiedReport_Record {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DW_UnderOccupiedReport_Record other = (DW_UnderOccupiedReport_Record) obj;
+        final DW_UOReport_Record other = (DW_UOReport_Record) obj;
         if ((this.RecordType == null) ? (other.RecordType != null) : !this.RecordType.equals(other.RecordType)) {
             return false;
         }

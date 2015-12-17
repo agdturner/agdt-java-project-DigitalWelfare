@@ -195,7 +195,7 @@ public class DW_SHBE_Collection implements Serializable {
     }
 
     /**
-     * @param DW_SHBE_Handler
+     * !@param DW_SHBE_Handler
      * @param ID
      * @param handler
      * @param inputDirectory
@@ -236,7 +236,7 @@ public class DW_SHBE_Collection implements Serializable {
         File ClaimantIDAndPostcodeFile = DW_SHBE_Handler.getClaimantIDPostcodeSetFile(paymentType, inputFilename);
         File ClaimantIDAndTenancyTypeFile = DW_SHBE_Handler.getClaimantIDTenancyTypeSetFile(paymentType, inputFilename);
         File ClaimantIDAndPostcodeAndTenancyTypeFile = DW_SHBE_Handler.getClaimantIDTenancyPostcodeTypeSetFile(paymentType, inputFilename);
-        File RecordIDsNotLoadedFile = DW_SHBE_Handler.getClaimantIDTenancyPostcodeTypeSetFile(paymentType, inputFilename);
+        File RecordIDsNotLoadedFile = DW_SHBE_Handler.getRecordIDsNotLoadedFile(paymentType, inputFilename);
         if (loadFromSource) {
             long collectionID = 0L;
             DW_SHBE_Collection collection;
@@ -566,7 +566,8 @@ public class DW_SHBE_Collection implements Serializable {
                                                 ID_TenancyType ID_TenancyType;
                                                 ID_TenancyType = new ID_TenancyType(claimantID, TenancyType);
                                                 ClaimantIDAndTenancyTypeSet.add(ID_TenancyType);
-                                                ClaimantIDAndPostcodeAndTenancyTypeSet.add(new ID_TenancyType_PostcodeID(ID_TenancyType, postcodeID));
+                                                ClaimantIDAndPostcodeAndTenancyTypeSet.add(
+                                                        new ID_TenancyType_PostcodeID(ID_TenancyType, postcodeID));
                                                 ClaimantIDToTenancyTypeLookup.put(claimantID, TenancyType);
                                                 AllIDs.add(claimantDW_PersonID);
                                                 if (aDRecord.getPartnerFlag() > 0) {

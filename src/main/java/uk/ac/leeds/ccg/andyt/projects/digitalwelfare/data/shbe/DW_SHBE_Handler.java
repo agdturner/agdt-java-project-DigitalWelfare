@@ -32,7 +32,7 @@ import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.Summary;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UOReport_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
@@ -559,7 +559,7 @@ public class DW_SHBE_Handler {
         }
         Iterator<String> ite;
         if (doUnderOccupancy) {
-            TreeMap<String, DW_UnderOccupiedReport_Record> map;
+            TreeMap<String, DW_UOReport_Record> map;
             map = councilUnderOccupiedSet.getMap();
             ite = map.keySet().iterator();
             while (ite.hasNext()) {
@@ -2310,8 +2310,20 @@ public class DW_SHBE_Handler {
     }
 
     /**
-     * [16]
-     *
+     * @param paymentType
+     * @param filename
+     * @return
+     */
+    public static File getRecordIDsNotLoadedFile(
+            String paymentType,
+            String filename) {
+        File result;
+        String partFilename = "RecordIDsNotLoaded_TreeSet_Long.thisFile";
+        result = getFile(paymentType, filename, partFilename);
+        return result;
+    }
+            
+    /**
      * @param paymentType
      * @param filename
      * @param doUnderOccupancy

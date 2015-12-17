@@ -135,7 +135,7 @@ public class DW_UnderOccupiedReport_Handler {
      * @param pw
      * @return
      */
-    public static TreeMap<String, DW_UnderOccupiedReport_Record> loadInputData(
+    public static TreeMap<String, DW_UOReport_Record> loadInputData(
             File directory,
             String filename) {
 //        String type;
@@ -144,8 +144,8 @@ public class DW_UnderOccupiedReport_Handler {
 //        } else {
 //            type = "Council";
 //        }
-        TreeMap<String, DW_UnderOccupiedReport_Record> result;
-        result = new TreeMap<String, DW_UnderOccupiedReport_Record>();
+        TreeMap<String, DW_UOReport_Record> result;
+        result = new TreeMap<String, DW_UOReport_Record>();
         File inputFile = new File(
                 directory,
                 filename);
@@ -178,16 +178,16 @@ public class DW_UnderOccupiedReport_Handler {
                     case StreamTokenizer.TT_WORD:
                         line = st.sval;
                         try {
-                            DW_UnderOccupiedReport_Record aUnderOccupiedReport_Record;
-                            aUnderOccupiedReport_Record = new DW_UnderOccupiedReport_Record(
+                            DW_UOReport_Record aUnderOccupiedReport_Record;
+                            aUnderOccupiedReport_Record = new DW_UOReport_Record(
                                     RecordID, line, fieldnames);
                                     //RecordID, line, type);
                             Object o = result.put(
                                     aUnderOccupiedReport_Record.getClaimReferenceNumber(),
                                     aUnderOccupiedReport_Record);
                             if (o != null) {
-                                DW_UnderOccupiedReport_Record existingUnderOccupiedReport_Record;
-                                existingUnderOccupiedReport_Record = (DW_UnderOccupiedReport_Record) o;
+                                DW_UOReport_Record existingUnderOccupiedReport_Record;
+                                existingUnderOccupiedReport_Record = (DW_UOReport_Record) o;
                                 if (!existingUnderOccupiedReport_Record.equals(aUnderOccupiedReport_Record)) {
                                     System.out.println("existingUnderOccupiedReport_DataRecord " + existingUnderOccupiedReport_Record);
                                     System.out.println("replacementUnderOccupiedReport_DataRecord " + aUnderOccupiedReport_Record);
