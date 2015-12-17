@@ -61,16 +61,16 @@ public class DW_MainProcessor {
         }
     }
 
-    public void run() {
+    public void run() throws Exception {
         //            DW_Postcode_Handler aDW_Postcode_Handler;
 //            aDW_Postcode_Handler = new DW_Postcode_Handler();
 //            aDW_Postcode_Handler.run();
 
-//        DW_SHBE_Handler aDW_SHBE_Handler;
-//        aDW_SHBE_Handler = new DW_SHBE_Handler(env);
-//        aDW_SHBE_Handler.run();
-//            aDW_SHBE_Handler.runNew();
-//
+        DW_SHBE_Handler aDW_SHBE_Handler;
+        aDW_SHBE_Handler = new DW_SHBE_Handler(env);
+        aDW_SHBE_Handler.run();
+            aDW_SHBE_Handler.runNew();
+
             DW_DataProcessor_LCC aDW_DataProcessor_LCC;
             aDW_DataProcessor_LCC = new DW_DataProcessor_LCC(env);
             aDW_DataProcessor_LCC.run();
@@ -79,9 +79,9 @@ public class DW_MainProcessor {
 ////////            aDW_ChoroplethMaps_LCC = new DW_ChoroplethMaps_LCC();
 ////////            aDW_ChoroplethMaps_LCC.run();
 ////
-////            DW_LineMaps_LCC aDW_LineMaps_LCC;
-////            aDW_LineMaps_LCC = new DW_LineMaps_LCC();
-////            aDW_LineMaps_LCC.run();
+            DW_LineMaps_LCC aDW_LineMaps_LCC;
+            aDW_LineMaps_LCC = new DW_LineMaps_LCC();
+            aDW_LineMaps_LCC.run();
 ////            
 ////////            DW_Report aDW_Report;
 ////////            aDW_Report = new DW_Report();

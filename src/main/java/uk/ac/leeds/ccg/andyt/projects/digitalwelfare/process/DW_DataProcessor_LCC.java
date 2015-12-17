@@ -194,10 +194,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
        tDW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
        ArrayList<String> paymentTypes;
         paymentTypes = DW_SHBE_Handler.getPaymentTypes();
-        
-        paymentTypes.remove(sAllPT);
-        paymentTypes.remove(sInPayment);
-        paymentTypes.remove(sSuspended);
+//        paymentTypes.remove(sAllPT);
+//        paymentTypes.remove(sInPayment);
+//        paymentTypes.remove(sSuspended);
 //        paymentTypes.remove(sOtherPT);
 
         Iterator<String> paymentTypesIte;
@@ -255,26 +254,25 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                             includeKey,
                             doUnderOccupancy,
                             nTT, nEG, nPSI);
-                    System.exit(0);
-                    summaryTable = tSummary.getSummaryTable(
-                            SHBEFilenames,
-                            include,
-                            forceNewSummaries,
-                            paymentType,
-                            nTT,
-                            nEG,
-                            nPSI,
-                            underOccupiedData,
-                            tDW_PersonIDtoDW_IDLookup,
-                            tPostcodeToPostcodeIDLookup,
-                            handleOutOfMemoryError);
-                    doUnderOccupancy = true;
-                    tSummary.writeSummaryTables(
-                            summaryTable,
-                            paymentType,
-                            includeKey,
-                            doUnderOccupancy,
-                            nTT, nEG, nPSI);
+//                    summaryTable = tSummary.getSummaryTable(
+//                            SHBEFilenames,
+//                            include,
+//                            forceNewSummaries,
+//                            paymentType,
+//                            nTT,
+//                            nEG,
+//                            nPSI,
+//                            underOccupiedData,
+//                            tDW_PersonIDtoDW_IDLookup,
+//                            tPostcodeToPostcodeIDLookup,
+//                            handleOutOfMemoryError);
+//                    doUnderOccupancy = true;
+//                    tSummary.writeSummaryTables(
+//                            summaryTable,
+//                            paymentType,
+//                            includeKey,
+//                            doUnderOccupancy,
+//                            nTT, nEG, nPSI);
 //                    System.exit(0);
                 }
             }
@@ -282,8 +280,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        System.exit(0);
         // Postcode and Tenancy Type transitions 
         // Runtime approximately 1 hour 5 minutes.
-//        if (true) {
-        if (false) {
+        if (true) {
+//        if (false) {
             paymentTypesIte = paymentTypes.iterator();
             while (paymentTypesIte.hasNext()) {
                 String paymentType;
@@ -291,8 +289,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 
                 //NINOtoIDLookup = DW_SHBE_Handler.getDW_PersonIDToIDLookup(paymentType);
                 // Postcode Changes (same tenancy)
-//                if (true) {
-                if (false) {
+                if (true) {
+//                if (false) {
                     iteB = bArray.iterator();
                     while (iteB.hasNext()) {
                         boolean checkPreviousTenure;
@@ -402,8 +400,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         System.out.println("ReportTenancyTransitionBreaks " + reportTenancyTransitionBreaks);
                         Iterator<Boolean> iteB3;
                         iteB3 = bArray.iterator();
-//                        if (true) {
-                        if (false) {
+                        if (true) {
+//                        if (false) {
                             System.out.println("TenancyChanges");
                             while (iteB3.hasNext()) {
                                 boolean doUnderOccupiedData;

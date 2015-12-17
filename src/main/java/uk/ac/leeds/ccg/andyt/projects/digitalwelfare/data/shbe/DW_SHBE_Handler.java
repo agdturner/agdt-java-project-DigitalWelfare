@@ -31,6 +31,7 @@ import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.Summary;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -629,73 +630,71 @@ public class DW_SHBE_Handler {
         BigDecimal totalWeeklyEligibleRentAmountGreaterThanZeroCountBD;
         totalWeeklyEligibleRentAmountGreaterThanZeroCountBD = BigDecimal.valueOf(
                 totalWeeklyEligibleRentAmountGreaterThanZeroCount);
-        result.put("TotalIncome", totalIncome);
-        result.put("TotalIncomeGreaterThanZeroCount",
+        result.put(Summary.sAllTotalIncome, totalIncome);
+        result.put(Summary.sAllTotalCountIncomeNonZero,
                 totalIncomeGreaterThanZeroCountBD);
         if (totalIncomeGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
             result.put(
-                    "AverageIncome",
+                    Summary.sAllAverageIncome,
                     Generic_BigDecimal.divideRoundIfNecessary(
                             totalIncome, totalIncomeGreaterThanZeroCountBD,
                             2, RoundingMode.HALF_UP));
         } else {
             result.put(
-                    "AverageIncome",
+                    Summary.sAllAverageIncome,
                     BigDecimal.ZERO);
         }
-        result.put("TotalWeeklyEligibleRentAmount",
+        result.put(Summary.sAllTotalWeeklyEligibleRentAmount,
                 totalWeeklyEligibleRentAmount);
-        result.put("TotalWeeklyEligibleRentAmountGreaterThanZeroCount",
+        result.put(Summary.sAllTotalCountWeeklyEligibleRentAmountNonZero,
                 totalWeeklyEligibleRentAmountGreaterThanZeroCountBD);
         if (totalWeeklyEligibleRentAmountGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
             result.put(
-                    "AverageWeeklyEligibleRentAmount",
+                    Summary.sAllAverageWeeklyEligibleRentAmount,
                     Generic_BigDecimal.divideRoundIfNecessary(
                             totalWeeklyEligibleRentAmount,
                             totalWeeklyEligibleRentAmountGreaterThanZeroCountBD,
                             2, RoundingMode.HALF_UP));
         } else {
             result.put(
-                    "AverageWeeklyEligibleRentAmount",
+                    Summary.sAllAverageWeeklyEligibleRentAmount,
                     BigDecimal.ZERO);
         }
         for (int i = 0; i < nTT; i++) {
-            String TTS;
-            TTS = "" + i;
             // Income
-            result.put("TotalIncomeTenancyType" + TTS,
+            result.put(Summary.sAllTotalIncomeTenancyType[i],
                     totalIncomeByTT[i]);
             BigDecimal totalIncomeByTTGreaterThanZeroCountBD;
             totalIncomeByTTGreaterThanZeroCountBD = BigDecimal.valueOf(
                     totalIncomeByTTGreaterThanZeroCount[i]);
-            result.put("TotalIncomeGreaterThanZeroCountTenancyType" + TTS,
+            result.put(Summary.sAllTotalCountIncomeNonZeroTenancyType[i],
                     totalIncomeByTTGreaterThanZeroCountBD);
             if (totalIncomeByTTGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
-                result.put("AverageIncomeTenancyType" + TTS,
+                result.put(Summary.sAllAverageIncomeTenancyType[i],
                         Generic_BigDecimal.divideRoundIfNecessary(
                                 totalIncomeByTT[i],
                                 totalIncomeByTTGreaterThanZeroCountBD,
                                 2, RoundingMode.HALF_UP));
             } else {
-                result.put("AverageIncomeTenancyType" + TTS,
+                result.put(Summary.sAllAverageIncomeTenancyType[i],
                         BigDecimal.ZERO);
             }
             // Rent
-            result.put("TotalWeeklyEligibleRentAmountTenancyType" + TTS,
+            result.put(Summary.sAllTotalWeeklyEligibleRentAmountTenancyType[i],
                     totalByTTWeeklyEligibleRentAmount[i]);
             BigDecimal totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD;
             totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD = BigDecimal.valueOf(
                     totalByTTWeeklyEligibleRentAmountGreaterThanZeroCount[i]);
-            result.put("TotalWeeklyEligibleRentAmountGreaterThanZeroCountTenancyType" + TTS,
+            result.put(Summary.sAllTotalCountWeeklyEligibleRentAmountNonZeroTenancyType[i],
                     totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD);
             if (totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
-                result.put("AverageWeeklyEligibleRentAmountTenancyType" + TTS,
+                result.put(Summary.sAllAverageWeeklyEligibleRentAmountTenancyType[i],
                         Generic_BigDecimal.divideRoundIfNecessary(
                                 totalByTTWeeklyEligibleRentAmount[i],
                                 totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD,
                                 2, RoundingMode.HALF_UP));
             } else {
-                result.put("AverageWeeklyEligibleRentAmountTenancyType" + TTS,
+                result.put(Summary.sAllAverageWeeklyEligibleRentAmountTenancyType[i],
                         BigDecimal.ZERO);
             }
         }

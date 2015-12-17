@@ -87,8 +87,8 @@ public class DW_SHBE_Collection implements Serializable {
     public static final String sCountSRecordNotLoaded = "CountSRecordNotLoaded";
     public static final String sCountOfIncompleteDRecords = "CountOfIncompleteDRecords";
     public static final String sCountDRecordsInUnexpectedOrder = "CountDRecordsInUnexpectedOrder";
-    public static final String sCountRecordIDsNotLoaded = "RecordIDsNotLoaded.size()";
-//    public static final String sCountRecordIDsNotLoaded = "CountRecordIDsNotLoaded";
+    //public static final String sCountRecordIDsNotLoaded = "RecordIDsNotLoaded.size()";
+    public static final String sCountRecordIDsNotLoaded = "CountRecordIDsNotLoaded";
     public static final String sCountUniqueClaimants = "CountUniqueClaimants";
     public static final String sCountUniquePartners = "CountUniquePartners";
     public static final String sCountUniqueDependents = "CountUniqueDependents";
@@ -734,7 +734,7 @@ public class DW_SHBE_Collection implements Serializable {
             ClaimantIDAndPostcodeSet = (HashSet<ID_PostcodeID>) Generic_StaticIO.readObject(ClaimantIDAndPostcodeFile);
             ClaimantIDAndTenancyTypeSet = (HashSet<ID_TenancyType>) Generic_StaticIO.readObject(ClaimantIDAndTenancyTypeFile);
             ClaimantIDAndPostcodeAndTenancyTypeSet = (HashSet<ID_TenancyType_PostcodeID>) Generic_StaticIO.readObject(ClaimantIDAndPostcodeAndTenancyTypeFile);
-//            RecordIDsNotLoaded = (TreeSet<Long>) Generic_StaticIO.readObject(RecordIDsNotLoadedFile);
+            RecordIDsNotLoaded = (TreeSet<Long>) Generic_StaticIO.readObject(RecordIDsNotLoadedFile);
         }
     }
 
