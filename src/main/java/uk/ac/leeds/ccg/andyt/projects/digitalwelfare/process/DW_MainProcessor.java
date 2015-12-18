@@ -43,7 +43,7 @@ public class DW_MainProcessor {
     public static void main(String[] args) {
         try {
             DW_Environment env = new DW_Environment();
-            new DW_MainProcessor(env).run();
+            new DW_MainProcessor(env).run(args);
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -61,7 +61,7 @@ public class DW_MainProcessor {
         }
     }
 
-    public void run() throws Exception {
+    public void run(String[] args) throws Exception {
 //        DW_Postcode_Handler aDW_Postcode_Handler;
 //        aDW_Postcode_Handler = new DW_Postcode_Handler();
 //        aDW_Postcode_Handler.run();
@@ -70,6 +70,7 @@ public class DW_MainProcessor {
 //        aDW_SHBE_Handler = new DW_SHBE_Handler(env);
 //        aDW_SHBE_Handler.run();
 //        aDW_SHBE_Handler.runNew();
+        
         DW_DataProcessor_LCC aDW_DataProcessor_LCC;
         aDW_DataProcessor_LCC = new DW_DataProcessor_LCC(env);
         aDW_DataProcessor_LCC.run();
@@ -78,21 +79,22 @@ public class DW_MainProcessor {
 //        aDW_ChoroplethMaps_LCC = new DW_ChoroplethMaps_LCC();
 //        aDW_ChoroplethMaps_LCC.run();
 
-//        DW_LineMaps_LCC aDW_LineMaps_LCC;
-//        aDW_LineMaps_LCC = new DW_LineMaps_LCC();
-//        aDW_LineMaps_LCC.run();
+        DW_LineMaps_LCC aDW_LineMaps_LCC;
+        aDW_LineMaps_LCC = new DW_LineMaps_LCC();
+        aDW_LineMaps_LCC.run();
 
 //        DW_Report aDW_Report;
 //        aDW_Report = new DW_Report();
 //        aDW_Report.run();
 
-//        DW_LineGraph aDW_LineGraph;
-//        aDW_LineGraph = new DW_LineGraph();
-//        aDW_LineGraph.run(args);
+        DW_LineGraph aDW_LineGraph;
+        aDW_LineGraph = new DW_LineGraph();
+        aDW_LineGraph.run(args);
 
-//        DW_DensityMaps_LCC aDW_DensityMaps_LCC;
-//        aDW_DensityMaps_LCC = new DW_DensityMaps_LCC(env);
-//        aDW_DensityMaps_LCC.run();
+        DW_DensityMaps_LCC aDW_DensityMaps_LCC;
+        aDW_DensityMaps_LCC = new DW_DensityMaps_LCC(env);
+        aDW_DensityMaps_LCC.run();
+        
 //        DW_LineDensityMaps_LCC aDW_LineDensityMaps_LCC;
 //        aDW_LineDensityMaps_LCC = new DW_LineDensityMaps_LCC();
 //        aDW_LineDensityMaps_LCC.run();

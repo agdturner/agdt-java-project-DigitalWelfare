@@ -166,9 +166,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         includes = DW_SHBE_Handler.getIncludes();
 
 //        includes.remove("Yearly");
-        includes.remove("6Monthly");
-        includes.remove("3Monthly");
-        includes.remove("MonthlyUO");
+//        includes.remove("6Monthly");
+//        includes.remove("3Monthly");
+//        includes.remove("MonthlyUO");
         
         // Specifiy distances
         ArrayList<Double> distances;
@@ -194,9 +194,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
        tDW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
        ArrayList<String> paymentTypes;
         paymentTypes = DW_SHBE_Handler.getPaymentTypes();
-        paymentTypes.remove(sAllPT);
-        paymentTypes.remove(sInPayment);
-        paymentTypes.remove(sSuspended);
+//        paymentTypes.remove(sAllPT);
+//        paymentTypes.remove(sInPayment);
+//        paymentTypes.remove(sSuspended);
 //        paymentTypes.remove(sOtherPT);
 
         Iterator<String> paymentTypesIte;
@@ -208,8 +208,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        forceNewSummaries = false;
         forceNewSummaries = true;
         // Runtime approximately 3 minutes.
-        if (true) {
-//        if (false) {
+//        if (true) {
+        if (false) {
             paymentTypesIte = paymentTypes.iterator();
             while (paymentTypesIte.hasNext()) {
                 String paymentType;
@@ -237,23 +237,23 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     ArrayList<Integer> include;
                     include = includes.get(includeKey);
                     TreeMap<String, HashMap<String, String>> summaryTable;
-//                    summaryTable = tSummary.getSummaryTable(
-//                            SHBEFilenames,
-//                            include,
-//                            forceNewSummaries,
-//                            paymentType,
-//                            nTT,
-//                            nEG,
-//                            nPSI,
-//                            handleOutOfMemoryError);
+                    summaryTable = tSummary.getSummaryTable(
+                            SHBEFilenames,
+                            include,
+                            forceNewSummaries,
+                            paymentType,
+                            nTT,
+                            nEG,
+                            nPSI,
+                            handleOutOfMemoryError);
                     boolean doUnderOccupancy;
                     doUnderOccupancy = false;
-//                    tSummary.writeSummaryTables(
-//                            summaryTable,
-//                            paymentType,
-//                            includeKey,
-//                            doUnderOccupancy,
-//                            nTT, nEG, nPSI);
+                    tSummary.writeSummaryTables(
+                            summaryTable,
+                            paymentType,
+                            includeKey,
+                            doUnderOccupancy,
+                            nTT, nEG, nPSI);
                     summaryTable = tSummary.getSummaryTable(
                             SHBEFilenames,
                             include,
@@ -273,12 +273,20 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                             includeKey,
                             doUnderOccupancy,
                             nTT, nEG, nPSI);
-                    System.exit(0);
+//                    System.exit(0);
                 }
             }
         }
-//        System.exit(0);
-        // Postcode and Tenancy Type transitions 
+        
+        
+        //System.exit(0);
+        
+
+//        paymentTypes.remove(sAllPT);
+////        paymentTypes.remove(sInPayment);
+//        paymentTypes.remove(sSuspended);
+//        paymentTypes.remove(sOtherPT);
+// Postcode and Tenancy Type transitions 
         // Runtime approximately 1 hour 5 minutes.
         if (true) {
 //        if (false) {
@@ -287,7 +295,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 String paymentType;
                 paymentType = paymentTypesIte.next();
 
-                //NINOtoIDLookup = DW_SHBE_Handler.getDW_PersonIDToIDLookup(paymentType);
+                //NINOtoIDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(paymentType);
                 // Postcode Changes (same tenancy)
                 if (true) {
 //                if (false) {

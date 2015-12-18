@@ -266,10 +266,16 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         b.add(true);
         b.add(false);
 
-        ArrayList<String> inPaymentTypes;
-        inPaymentTypes = DW_SHBE_Handler.getPaymentTypes();
+        ArrayList<String> paymentTypes;
+        paymentTypes = DW_SHBE_Handler.getPaymentTypes();
+        
+        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
+//        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
+        paymentTypes.remove(DW_SHBE_Handler.sSuspended);
+        paymentTypes.remove(DW_SHBE_Handler.sOtherPT);
+        
         Iterator<String> inPaymentTypesIte;
-        inPaymentTypesIte = inPaymentTypes.iterator();
+        inPaymentTypesIte = paymentTypes.iterator();
         while (inPaymentTypesIte.hasNext()) {
             String inPaymentType;
             inPaymentType = inPaymentTypesIte.next();
