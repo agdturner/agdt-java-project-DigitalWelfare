@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
@@ -76,163 +77,275 @@ public class Summary {
     private static final String sCTBTotalHouseholdSize = "CTBTotalHouseholdSize";
     private static final String sCTBAverageHouseholdSize = "CTBAverageHouseholdSize";
     // PSI
-    private static String[] sAllTotalCountPSI;
-    private static String[] sHBTotalCountPSI;
+    private static String[] sAllTotalCount_PSI;
+    private static String[] sHBTotalCount_PSI;
     private static String[] sCTBTotalCountPSI;
-    private static String[] sAllPercentagePSI;
-    private static String[] sHBPercentagePSI;
-    private static String[] sCTBPercentagePSI;
+    private static String[] sAllPercentageOfAll_PSI;
+    private static String[] sHBPercentageOfHB_PSI;
+    private static String[] sCTBPercentageOfCTB_PSI;
     // PSIByTT
-    private static String[][] sAllTotalCountPSIByTT;
-    private static String[][] sHBTotalCountPSIByTT;
-    private static String[][] sCTBTotalCountPSIByTT;
-    private static String[][] sAllPercentagePSIByTT;
-    private static String[][] sHBPercentagePSIByTT;
-    private static String[][] sCTBPercentagePSIByTT;
+    private static String[][] sAllTotalCount_PSIByTT;
+    private static String[][] sHBTotalCount_PSIByTT;
+    private static String[][] sCTBTotalCount_PSIByTT;
+    private static String[][] sAllPercentageOfAll_PSIByTT;
+    private static String[][] sHBPercentageOfHB_PSIByTT;
+    private static String[][] sCTBPercentageOfCTB_PSIByTT;
     // DisabilityPremiumAwardByTT
-    private static String[] sAllTotalCountDisabilityPremiumAwardByTT;
-    private static String[] sHBTotalCountDisabilityPremiumAwardByTT;
-    private static String[] sCTBTotalCountDisabilityPremiumAwardByTT;
-    private static String[] sAllPercentageDisabilityPremiumAwardByTT;
-    private static String[] sHBPercentageDisabilityPremiumAwardByTT;
-    private static String[] sCTBPercentageDisabilityPremiumAwardByTT;
+    private static String[] sAllTotalCount_DisabilityPremiumAwardByTT;
+    private static String[] sHBTotalCount_DisabilityPremiumAwardByTT;
+    private static String[] sCTBTotalCount_DisabilityPremiumAwardByTT;
+    private static String[] sAllPercentageOfAll_DisabilityPremiumAwardByTT;
+    private static String[] sHBPercentageOfHB_DisabilityPremiumAwardByTT;
+    private static String[] sCTBPercentageOfCTB_DisabilityPremiumAwardByTT;
+    // SevereDisabilityPremiumAwardByTT
     private static String[] sAllTotalCountSevereDisabilityPremiumAwardByTT;
-    private static String[] sHBTotalCountSevereDisabilityPremiumAwardByTT;
-    private static String[] sCTBTotalCountSevereDisabilityPremiumAwardByTT;
-    private static String[] sAllPercentageSevereDisabilityPremiumAwardByTT;
-    private static String[] sHBPercentageSevereDisabilityPremiumAwardByTT;
-    private static String[] sCTBPercentageSevereDisabilityPremiumAwardByTT;
-    private static String[] sAllTotalCountEnhancedDisabilityPremiumAwardByTT;
-    private static String[] sHBTotalCountEnhancedDisabilityPremiumAwardByTT;
-    private static String[] sCTBTotalCountEnhancedDisabilityPremiumAwardByTT;
-    private static String[] sAllPercentageEnhancedDisabilityPremiumAwardByTT;
-    private static String[] sHBPercentageEnhancedDisabilityPremiumAwardByTT;
-    private static String[] sCTBPercentageEnhancedDisabilityPremiumAwardByTT;
-    
+    private static String[] sHBTotalCount_SevereDisabilityPremiumAwardByTT;
+    private static String[] sCTBTotalCount_SevereDisabilityPremiumAwardByTT;
+    private static String[] sAllPercentageOfAll_SevereDisabilityPremiumAwardByTT;
+    private static String[] sHBPercentageOfHB_SevereDisabilityPremiumAwardByTT;
+    private static String[] sCTBPercentageOfCTB_SevereDisabilityPremiumAwardByTT;
+    // DisabledChildPremiumAwardByTT
+    private static String[] sAllTotalCountDisabledChildPremiumAwardByTT;
+    private static String[] sHBTotalCount_DisabledChildPremiumAwardByTT;
+    private static String[] sCTBTotalCount_DisabledChildPremiumAwardByTT;
+    private static String[] sAllPercentageOfAll_DisabledChildPremiumAwardByTT;
+    private static String[] sHBPercentageOfHB_DisabledChildPremiumAwardByTT;
+    private static String[] sCTBPercentageOfCTB_DisabledChildPremiumAwardByTT;
+    // EnhancedDisabilityPremiumAwardByTT
+    private static String[] sAllTotalCount_EnhancedDisabilityPremiumAwardByTT;
+    private static String[] sHBTotalCount_EnhancedDisabilityPremiumAwardByTT;
+    private static String[] sCTBTotalCount_EnhancedDisabilityPremiumAwardByTT;
+    private static String[] sAllPercentageOfAll_EnhancedDisabilityPremiumAwardByTT;
+    private static String[] sHBPercentageOfHB_EnhancedDisabilityPremiumAwardByTT;
+    private static String[] sCTBPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT;
+    // DisabilityAwards
+    private static final String sTotalCount_DisabilityAward = "TotalCount_DisabilityAward";
+    private static final String sPercentageOfAll_DisabilityAward = "PercentageOfAll_DisabilityAward";
+    // DisabilityPremiumAwards
+    private static final String sTotalCount_DisabilityPremiumAward = "TotalCount_DisabilityPremiumAward";
+    private static final String sPercentageOfAll_DisabilityPremiumAward = "PercentageOfAll_DisabilityPremiumAward";
+    // SevereDisabilityPremiumAwards
+    private static final String sTotalCount_SevereDisabilityPremiumAward = "TotalCount_SevereDisabilityPremiumAward";
+    private static final String sPercentageOfAll_SevereDisabilityPremiumAward = "PercentageOfAll_SevereDisabilityPremiumAward";
+    // DisabledChildPremiumAwards
+    private static final String sTotalCount_DisabledChildPremiumAward = "TotalCount_DisabledChildPremiumAward";
+    private static final String sPercentageOfAll_DisabledChildPremiumAward = "PercentageOfAll_DisabledChildPremiumAward";
+    // EnhancedDisabilityPremiumAwards
+    private static final String sTotalCount_EnhancedDisabilityPremiumAward = "TotalCount_EnhancedDisabilityPremiumAward";
+    private static final String sPercentageOfAll_EnhancedDisabilityPremiumAward = "PercentageOfAll_EnhancedDisabilityPremiumAward";
+    // DisabilityPremiumAwardHBTTs
+    private static final String sTotalCount_DisabilityPremiumAwardHBTTs = "TotalCount_DisabilityPremiumAwardHBTTs";
+    private static final String sPercentageOfAll_DisabilityPremiumAwardHBTTs = "PercentageOfAll_DisabilityPremiumAwardHBTTs";
+    private static final String sPercentageOfHB_DisabilityPremiumAwardHBTTs = "PercentageOfHB_DisabilityPremiumAwardHBTTs";
+    // SevereDisabilityPremiumAwardHBTTs
+    private static final String sTotalCount_SevereDisabilityPremiumAwardHBTTs = "TotalCount_SevereDisabilityPremiumAwardHBTTs";
+    private static final String sPercentageOfAll_SevereDisabilityPremiumAwardHBTTs = "PercentageOfAll_SevereDisabilityPremiumAwardHBTTs";
+    private static final String sPercentageOfHB_SevereDisabilityPremiumAwardHBTTs = "PercentageOfHB_SevereDisabilityPremiumAwardHBTTs";
+    // DisabledChildPremiumAwardHBTTs
+    private static final String sTotalCount_DisabledChildPremiumAwardHBTTs = "TotalCount_DisabledChildPremiumAwardHBTTs";
+    private static final String sPercentageOfAll_DisabledChildPremiumAwardHBTTs = "PercentageOfAll_DisabledChildPremiumAwardHBTTs";
+    private static final String sPercentageOfHB_DisabledChildPremiumAwardHBTTs = "PercentageOfHB_DisabledChildPremiumAwardHBTTs";
+    // EnhancedDisabilityPremiumAwardHBTTs
+    private static final String sTotalCount_EnhancedDisabilityPremiumAwardHBTTs = "TotalCount_EnhancedDisabilityPremiumAwardHBTTs";
+    private static final String sPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs = "PercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs";
+    private static final String sPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs = "PercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs";
+    // DisabilityPremiumAwardCTBTTs
+    private static final String sTotalCount_DisabilityPremiumAwardCTBTTs = "TotalCount_DisabilityPremiumAwardCTBTTs";
+    private static final String sPercentageOfAll_DisabilityPremiumAwardCTBTTs = "PercentageOfAll_DisabilityPremiumAwardCTBTTs";
+    private static final String sPercentageOfCTB_DisabilityPremiumAwardCTBTTs = "PercentageOfCTB_DisabilityPremiumAwardCTBTTs";
+    // SevereDisabilityPremiumAwardCTBTTs
+    private static final String sTotalCount_SevereDisabilityPremiumAwardCTBTTs = "TotalCount_SevereDisabilityPremiumAwardCTBTTs";
+    private static final String sPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs = "PercentageOfAll_SevereDisabilityPremiumAwardCTBTTs";
+    private static final String sPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs = "PercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs";
+    // DisabledChildPremiumAwardCTBTTs
+    private static final String sTotalCount_DisabledChildPremiumAwardCTBTTs = "TotalCount_DisabledChildPremiumAwardCTBTTs";
+    private static final String sPercentageOfAll_DisabledChildPremiumAwardCTBTTs = "PercentageOfAll_DisabledChildPremiumAwardCTBTTs";
+    private static final String sPercentageOfCTB_DisabledChildPremiumAwardCTBTTs = "PercentageOfCTB_DisabledChildPremiumAwardCTBTTs";
+    // EnhancedDisabilityPremiumAwardCTBTTs
+    private static final String sTotalCount_EnhancedDisabilityPremiumAwardCTBTTs = "TotalCount_EnhancedDisabilityPremiumAwardCTBTTs";
+    private static final String sPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs = "PercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs";
+    private static final String sPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs = "PercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs";
+    // DisabilityPremiumAwardSocialTTs
+    private static final String sTotalCount_DisabilityPremiumAwardSocialTTs = "TotalCount_DisabilityPremiumAwardSocialTTs";
+    private static final String sPercentageOfAll_DisabilityPremiumAwardSocialTTs = "PrecentageOfAll_DisabilityPremiumAwardSocialTTs";
+    private static final String sPercentageOfHB_DisabilityPremiumAwardSocialTTs = "PrecentageOfHB_DisabilityPremiumAwardSocialTTs";
+    // DisabilityPremiumAwardPrivateDeregulatedTTs
+    private static final String sTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs = "TotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs";
+    private static final String sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs";
+    private static final String sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs";
+    // SevereDisabilityPremiumAwardSocialTTs
+    private static final String sTotalCount_SevereDisabilityPremiumAwardSocialTTs = "TotalCount_SevereDisabilityPremiumAwardSocialTTs";
+    private static final String sPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs = "PrecentageOfAll_SevereDisabilityPremiumAwardSocialTTs";
+    private static final String sPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs = "PrecentageOfHB_SevereDisabilityPremiumAwardSocialTTs";
+    // SevereDisabilityPremiumAwardPrivateDeregulatedTTs
+    private static final String sTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "TotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
+    private static final String sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
+    private static final String sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
+    // DisabledChildPremiumAwardSocialTTs
+    private static final String sTotalCount_DisabledChildPremiumAwardSocialTTs = "TotalCount_DisabledChildPremiumAwardSocialTTs";
+    private static final String sPercentageOfAll_DisabledChildPremiumAwardSocialTTs = "PrecentageOfAll_DisabledChildPremiumAwardSocialTTs";
+    private static final String sPercentageOfHB_DisabledChildPremiumAwardSocialTTs = "PrecentageOfHB_DisabledChildPremiumAwardSocialTTs";
+    // DisabledChildPremiumAwardPrivateDeregulatedTTs
+    private static final String sTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs = "TotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs";
+    private static final String sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs = "sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs";
+    private static final String sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs = "sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs";
+    // EnhancedDisabilityPremiumAwardSocialTTs
+    private static final String sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs = "TotalCount_EnhancedDisabilityPremiumAwardSocialTTs";
+    private static final String sPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs = "PrecentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs";
+    private static final String sPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs = "PrecentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs";
+    // EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs
+    private static final String sTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "TotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
+    private static final String sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
+    private static final String sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
+
+    // DisabilityAwardByTT
+    private static String[] sAllTotalCount_DisabilityAwardByTT;
+    private static String[] sAllPercentageOfAll_DisabilityAwardByTT;
+    private static String[] sHBTotalCount_DisabilityAwardByTT;
+    private static String[] sHBPercentageOfHB_DisabilityAwardByTT;
+    private static String[] sCTBTotalCount_DisabilityAwardByTT;
+    private static String[] sCTBPercentageOfCTB_DisabilityAwardByTT;
+    // DisabilityAwardHBTTs
+    private static final String sTotalCount_DisabilityAwardHBTTs = "TotalCount_DisabilityAwardHBTTs";
+    private static final String sPercentageOfAll_DisabilityAwardHBTTs = "PercentageOfAll_DisabilityAwardHBTTs";
+    private static final String sPercentageOfHB_DisabilityAwardHBTTs = "PercentageOfHB_DisabilityAwardHBTTs";
+    // DisabilityAwardCTBTTs
+    private static final String sTotalCount_DisabilityAwardCTBTTs = "TotalCount_DisabilityAwardCTBTTs";
+    private static final String sPercentageOfAll_DisabilityAwardCTBTTs = "PercentageOfAll_DisabilityAwardCTBTTs";
+    private static final String sPercentageOfCTB_DisabilityAwardCTBTTs = "PercentageOfCTB_DisabilityAwardCTBTTs";
+    // DisabilityAwardSocialTTs
+    private static final String sTotalCount_DisabilityAwardSocialTTs = "TotalCount_DisabilityAwardSocialTTs";
+    private static final String sPercentageOfAll_DisabilityAwardSocialTTs = "PrecentageOfAll_DisabilityAwardSocialTTs";
+    private static final String sPercentageOfHB_DisabilityAwardSocialTTs = "PrecentageOfHB_DisabilityAwardSocialTTs";
+    // DisabilityAwardPrivateDeregulatedTTs
+    private static final String sTotalCount_DisabilityAwardPrivateDeregulatedTTs = "TotalCount_DisabilityAwardPrivateDeregulatedTTs";
+    private static final String sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs = "sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs";
+    private static final String sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs = "sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs";
+
     // HBEntitlement
     public static final String sTotalWeeklyHBEntitlement = "TotalWeeklyHBEntitlement";
-    public static final String sTotalCountWeeklyHBEntitlementNonZero = "TotalCountWeeklyHBEntitlementNonZero";
-    public static final String sTotalCountWeeklyHBEntitlementZero = "TotalCountWeeklyHBEntitlementZero";
+    public static final String sTotalCountWeeklyHBEntitlementNonZero = "TotalCount_WeeklyHBEntitlementNonZero";
+    public static final String sTotalCountWeeklyHBEntitlementZero = "TotalCount_WeeklyHBEntitlementZero";
     public static final String sAverageWeeklyHBEntitlement = "AverageWeeklyHBEntitlement";
     // CTBEntitlement
     public static final String sTotalWeeklyCTBEntitlement = "TotalWeeklyCTBEntitlement";
-    public static final String sTotalCountWeeklyCTBEntitlementNonZero = "TotalCountWeeklyCTBEntitlementNonZero";
-    public static final String sTotalCountWeeklyCTBEntitlementZero = "TotalCountWeeklyCTBEntitlementZero";
+    public static final String sTotalCountWeeklyCTBEntitlementNonZero = "TotalCount_WeeklyCTBEntitlementNonZero";
+    public static final String sTotalCountWeeklyCTBEntitlementZero = "TotalCount_WeeklyCTBEntitlementZero";
     public static final String sAverageWeeklyCTBEntitlement = "AverageWeeklyCTBEntitlement";
     // WeeklyEligibleRentAmount
-    public static final String sAllTotalWeeklyEligibleRentAmount = "TotalWeeklyEligibleRentAmount";
+    public static final String sAllTotalWeeklyEligibleRentAmount = "AllTotalWeeklyEligibleRentAmount";
     public static String[] sAllTotalWeeklyEligibleRentAmountTT;
-    public static final String sAllTotalCountWeeklyEligibleRentAmountNonZero = "TotalCountWeeklyEligibleRentAmountNonZero";
+    public static final String sAllTotalCountWeeklyEligibleRentAmountNonZero = "AllTotalCount_WeeklyEligibleRentAmountNonZero";
     public static String[] sAllTotalCountWeeklyEligibleRentAmountNonZeroTT;
-    public static final String sAllTotalCountWeeklyEligibleRentAmountZero = "TotalCountWeeklyEligibleRentAmountZero";
+    public static final String sAllTotalCountWeeklyEligibleRentAmountZero = "AllTotalCount_WeeklyEligibleRentAmountZero";
     public static String[] sAllTotalCountWeeklyEligibleRentAmountZeroTT;
-    public static final String sAllAverageWeeklyEligibleRentAmount = "AverageWeeklyEligibleRentAmount";
+    public static final String sAllAverageWeeklyEligibleRentAmount = "AllAverageWeeklyEligibleRentAmount";
     public static String[] sAllAverageWeeklyEligibleRentAmountTT;
 
     // WeeklyHBEntitlement
     public static final String sHBTotalWeeklyHBEntitlement = "HBTotalWeeklyHBEntitlement";
-    public static final String sHBTotalCountWeeklyHBEntitlementNonZero = "HBTotalCountWeeklyHBEntitlementNonZero";
-    public static final String sHBTotalCountWeeklyHBEntitlementZero = "HBTotalCountWeeklyHBEntitlementZero";
+    public static final String sHBTotalCount_WeeklyHBEntitlementNonZero = "HBTotalCount_WeeklyHBEntitlementNonZero";
+    public static final String sHBTotalCount_WeeklyHBEntitlementZero = "HBTotalCount_WeeklyHBEntitlementZero";
     public static final String sHBAverageWeeklyHBEntitlement = "HBAverageWeeklyHBEntitlement";
     public static final String sCTBTotalWeeklyHBEntitlement = "CTBTotalWeeklyHBEntitlement";
-    public static final String sCTBTotalCountWeeklyHBEntitlementNonZero = "CTBTotalCountWeeklyHBEntitlementNonZero";
-    public static final String sCTBTotalCountWeeklyHBEntitlementZero = "CTBTotalCountWeeklyHBEntitlementZero";
+    public static final String sCTBTotalCount_WeeklyHBEntitlementNonZero = "CTBTotalCount_WeeklyHBEntitlementNonZero";
+    public static final String sCTBTotalCountWeeklyHBEntitlementZero = "CTBTotalCount_WeeklyHBEntitlementZero";
     public static final String sCTBAverageWeeklyHBEntitlement = "CTBAverageWeeklyHBEntitlement";
     // WeeklyCTBEntitlement
     public static final String sHBTotalWeeklyCTBEntitlement = "HBTotalWeeklyCTBEntitlement";
-    public static final String sHBTotalCountWeeklyCTBEntitlementNonZero = "HBTotalCountWeeklyCTBEntitlementNonZero";
-    public static final String sHBTotalCountWeeklyCTBEntitlementZero = "HBTotalCountWeeklyCTBEntitlementZero";
+    public static final String sHBTotalCount_WeeklyCTBEntitlementNonZero = "HBTotalCount_WeeklyCTBEntitlementNonZero";
+    public static final String sHBTotalCount_WeeklyCTBEntitlementZero = "HBTotalCount_WeeklyCTBEntitlementZero";
     public static final String sHBAverageWeeklyCTBEntitlement = "HBAverageWeeklyCTBEntitlement";
     public static final String sCTBTotalWeeklyCTBEntitlement = "CTBTotalWeeklyCTBEntitlement";
-    public static final String sCTBTotalCountWeeklyCTBEntitlementNonZero = "CTBTotalCountWeeklyCTBEntitlementNonZero";
-    public static final String sCTBTotalCountWeeklyCTBEntitlementZero = "CTBTotalCountWeeklyCTBEntitlementZero";
+    public static final String sCTBTotalCount_WeeklyCTBEntitlementNonZero = "CTBTotalCount_WeeklyCTBEntitlementNonZero";
+    public static final String sCTBTotalCountWeeklyCTBEntitlementZero = "CTBTotalCount_WeeklyCTBEntitlementZero";
     public static final String sCTBAverageWeeklyCTBEntitlement = "CTBAverageWeeklyCTBEntitlement";
     // WeeklyEligibleRentAmount
     public static final String sHBTotalWeeklyEligibleRentAmount = "HBTotalWeeklyEligibleRentAmount";
-    public static final String sHBTotalCountWeeklyEligibleRentAmountNonZero = "HBTotalCountWeeklyEligibleRentAmountNonZero";
-    public static final String sHBTotalCountWeeklyEligibleRentAmountZero = "HBTotalCountWeeklyEligibleRentAmountZero";
+    public static final String sHBTotalCountWeeklyEligibleRentAmountNonZero = "HBTotalCount_WeeklyEligibleRentAmountNonZero";
+    public static final String sHBTotalCountWeeklyEligibleRentAmountZero = "HBTotalCount_WeeklyEligibleRentAmountZero";
     public static final String sHBAverageWeeklyEligibleRentAmount = "HBAverageWeeklyEligibleRentAmount";
     public static final String sCTBTotalWeeklyEligibleRentAmount = "CTBTotalWeeklyEligibleRentAmount";
-    public static final String sCTBTotalCountWeeklyEligibleRentAmountNonZero = "CTBTotalCountWeeklyEligibleRentAmountNonZero";
-    public static final String sCTBTotalCountWeeklyEligibleRentAmountZero = "CTBTotalCountWeeklyEligibleRentAmountZero";
+    public static final String sCTBTotalCountWeeklyEligibleRentAmountNonZero = "CTBTotalCount_WeeklyEligibleRentAmountNonZero";
+    public static final String sCTBTotalCountWeeklyEligibleRentAmountZero = "CTBTotalCount_WeeklyEligibleRentAmountZero";
     public static final String sCTBAverageWeeklyEligibleRentAmount = "CTBAverageWeeklyEligibleRentAmount";
     // WeeklyEligibleCouncilTaxAmount
     private static final String sAllTotalWeeklyEligibleCouncilTaxAmount = "AllTotalWeeklyEligibleCouncilTaxAmount";
-    private static final String sAllTotalCountWeeklyEligibleCouncilTaxAmountNonZero = "AllTotalCountWeeklyEligibleCouncilTaxAmountNonZero";
-    private static final String sAllTotalCountWeeklyEligibleCouncilTaxAmountZero = "AllTotalCountWeeklyEligibleCouncilTaxAmountZero";
+    private static final String sAllTotalCountWeeklyEligibleCouncilTaxAmountNonZero = "AllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero";
+    private static final String sAllTotalCountWeeklyEligibleCouncilTaxAmountZero = "AllTotalCount_WeeklyEligibleCouncilTaxAmountZero";
     private static final String sAllAverageWeeklyEligibleCouncilTaxAmount = "AllAverageWeeklyEligibleCouncilTaxAmount";
-    private static final String sHBTotalWeeklyEligibleCouncilTaxAmount = "HBTotalCountWeeklyEligibleCouncilTaxAmount";
-    private static final String sHBTotalCountWeeklyEligibleCouncilTaxAmountNonZero = "HBTotalCountWeeklyEligibleCouncilTaxAmountNonZero";
-    private static final String sHBTotalCountWeeklyEligibleCouncilTaxAmountZero = "HBTotalCountWeeklyEligibleCouncilTaxAmountZero";
+    private static final String sHBTotalWeeklyEligibleCouncilTaxAmount = "HBTotalCount_WeeklyEligibleCouncilTaxAmount";
+    private static final String sHBTotalCountWeeklyEligibleCouncilTaxAmountNonZero = "HBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero";
+    private static final String sHBTotalCountWeeklyEligibleCouncilTaxAmountZero = "HBTotalCount_WeeklyEligibleCouncilTaxAmountZero";
     private static final String sHBAverageWeeklyEligibleCouncilTaxAmount = "HBAverageWeeklyEligibleCouncilTaxAmount";
     private static final String sCTBTotalWeeklyEligibleCouncilTaxAmount = "CTBTotalWeeklyEligibleCouncilTaxAmount";
-    private static final String sCTBTotalCountWeeklyEligibleCouncilTaxAmountNonZero = "CTBTotalCountWeeklyEligibleCouncilTaxAmountNonZero";
-    private static final String sCTBTotalCountWeeklyEligibleCouncilTaxAmountZero = "CTBTotalCountWeeklyEligibleCouncilTaxAmountZero";
+    private static final String sCTBTotalCountWeeklyEligibleCouncilTaxAmountNonZero = "CTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero";
+    private static final String sCTBTotalCountWeeklyEligibleCouncilTaxAmountZero = "CTBTotalCount_WeeklyEligibleCouncilTaxAmountZero";
     private static final String sCTBAverageWeeklyEligibleCouncilTaxAmount = "CTBAverageWeeklyEligibleCouncilTaxAmount";
     // ContractualRentAmount
     private static final String sAllTotalContractualRentAmount = "AllTotalContractualRentAmount";
-    private static final String sAllTotalCountContractualRentAmountNonZeroCount = "AllTotalCountContractualRentAmountNonZero";
-    private static final String sAllTotalCountContractualRentAmountZeroCount = "AllTotalCountContractualRentAmountZero";
+    private static final String sAllTotalCountContractualRentAmountNonZeroCount = "AllTotalCount_ContractualRentAmountNonZero";
+    private static final String sAllTotalCountContractualRentAmountZeroCount = "AllTotalCount_ContractualRentAmountZero";
     private static final String sAllAverageContractualRentAmount = "AllAverageContractualRentAmount";
     private static final String sHBTotalContractualRentAmount = "HBTotalContractualRentAmount";
-    private static final String sHBTotalCountContractualRentAmountNonZeroCount = "HBTotalCountContractualRentAmountNonZero";
-    private static final String sHBTotalCountContractualRentAmountZeroCount = "HBTotalCountContractualRentAmountZero";
+    private static final String sHBTotalCountContractualRentAmountNonZeroCount = "HBTotalCount_ContractualRentAmountNonZero";
+    private static final String sHBTotalCountContractualRentAmountZeroCount = "HBTotalCount_ContractualRentAmountZero";
     private static final String sHBAverageContractualRentAmount = "HBAverageContractualRentAmount";
     private static final String sCTBTotalContractualRentAmount = "CTBTotalContractualRentAmount";
-    private static final String sCTBTotalCountContractualRentAmountNonZeroCount = "CTBTotalCountContractualRentAmountNonZero";
-    private static final String sCTBTotalCountContractualRentAmountZeroCount = "CTBTotalCountContractualRentAmountZero";
+    private static final String sCTBTotalCountContractualRentAmountNonZeroCount = "CTBTotalCount_ContractualRentAmountNonZero";
+    private static final String sCTBTotalCountContractualRentAmountZeroCount = "CTBTotalCount_ContractualRentAmountZero";
     private static final String sCTBAverageContractualRentAmount = "CTBAverageContractualRentAmount";
     // WeeklyAdditionalDiscretionaryPayment
     private static final String sAllTotalWeeklyAdditionalDiscretionaryPayment = "AllTotalWeeklyAdditionalDiscretionaryPayment";
-    private static final String sAllTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero = "AllTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero";
-    private static final String sAllTotalCountWeeklyAdditionalDiscretionaryPaymentZero = "AllTotalCountWeeklyAdditionalDiscretionaryPaymentZero";
+    private static final String sAllTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero = "AllTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero";
+    private static final String sAllTotalCountWeeklyAdditionalDiscretionaryPaymentZero = "AllTotalCount_WeeklyAdditionalDiscretionaryPaymentZero";
     private static final String sAllAverageWeeklyAdditionalDiscretionaryPayment = "AllAverageWeeklyAdditionalDiscretionaryPayment";
     private static final String sHBTotalWeeklyAdditionalDiscretionaryPayment = "HBTotalWeeklyAdditionalDiscretionaryPayment";
-    private static final String sHBTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero = "HBTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero";
-    private static final String sHBTotalCountWeeklyAdditionalDiscretionaryPaymentZero = "HBTotalCountWeeklyAdditionalDiscretionaryPaymentZero";
+    private static final String sHBTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero = "HBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero";
+    private static final String sHBTotalCountWeeklyAdditionalDiscretionaryPaymentZero = "HBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero";
     private static final String sHBAverageWeeklyAdditionalDiscretionaryPayment = "HBAverageWeeklyAdditionalDiscretionaryPayment";
     private static final String sCTBTotalWeeklyAdditionalDiscretionaryPayment = "CTBTotalWeeklyAdditionalDiscretionaryPayment";
-    private static final String sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero = "CTBTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero";
-    private static final String sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentZero = "CTBTotalCountWeeklyAdditionalDiscretionaryPaymentZero";
+    private static final String sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero = "CTBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero";
+    private static final String sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentZero = "CTBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero";
     private static final String sCTBAverageWeeklyAdditionalDiscretionaryPayment = "CTBAverageWeeklyAdditionalDiscretionaryPayment";
     // WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability
     private static final String sAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
-    private static final String sAllTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "AllTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
-    private static final String sAllTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "AllTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
+    private static final String sAllTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "AllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
+    private static final String sAllTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "AllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
     private static final String sAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "AllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
     private static final String sHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
-    private static final String sHBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "HBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
-    private static final String sHBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "HBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
+    private static final String sHBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "HBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
+    private static final String sHBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "HBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
     private static final String sHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "HBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
     private static final String sCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
-    private static final String sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "CTBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
-    private static final String sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "CTBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
+    private static final String sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "CTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
+    private static final String sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "CTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
     private static final String sCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "CTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
     // Employment
-    private static final String sAllTotalCountClaimantsEmployed = "AllTotalCountClaimantsEmployed";
-    private static final String sAllPercentageClaimantsEmployed = "AllPercentageClaimantsEmployed";
-    private static final String sAllTotalCountClaimantsSelfEmployed = "AllTotalCountClaimantsSelfEmployed";
-    private static final String sAllPercentageClaimantsSelfEmployed = "AllPercentageClaimantsSelfEmployed";
-    private static final String sAllTotalCountClaimantsStudents = "AllTotalCountClaimantsStudents";
-    private static final String sAllPercentageClaimantsStudents = "AllPercentageClaimantsStudents";
-    private static final String sAllTotalCountLHACases = "AllTotalCountLHACases";
-    private static final String sAllPercentageLHACases = "AllPercentageLHACases";
-    private static final String sHBTotalCountClaimantsEmployed = "HBTotalCountClaimantsEmployed";
-    private static final String sHBPercentageClaimantsEmployed = "HBPercentageClaimantsEmployed";
-    private static final String sHBTotalCountClaimantsSelfEmployed = "HBTotalCountClaimantsSelfEmployed";
-    private static final String sHBPercentageClaimantsSelfEmployed = "HBPercentageClaimantsSelfEmployed";
-    private static final String sHBTotalCountClaimantsStudents = "HBTotalCountClaimantsStudents";
-    private static final String sHBPercentageClaimantsStudents = "HBPercentageClaimantsStudents";
-    private static final String sHBTotalCountLHACases = "HBTotalCountLHACases";
-    private static final String sHBPercentageLHACases = "HBPercentageLHACases";
-    private static final String sCTBTotalCountClaimantsEmployed = "CTBTotalCountClaimantsEmployed";
-    private static final String sCTBPercentageClaimantsEmployed = "CTBPercentageClaimantsEmployed";
+    private static final String sAllTotalCount_ClaimantsEmployed = "AllTotalCount_ClaimantsEmployed";
+    private static final String sAllPercentage_ClaimantsEmployed = "AllPercentage_ClaimantsEmployed";
+    private static final String sAllTotalCount_ClaimantsSelfEmployed = "AllTotalCount_ClaimantsSelfEmployed";
+    private static final String sAllPercentage_ClaimantsSelfEmployed = "AllPercentage_ClaimantsSelfEmployed";
+    private static final String sAllTotalCount_ClaimantsStudents = "AllTotalCount_ClaimantsStudents";
+    private static final String sAllPercentage_ClaimantsStudents = "AllPercentage_ClaimantsStudents";
+    private static final String sAllTotalCount_LHACases = "AllTotalCount_LHACases";
+    private static final String sAllPercentageOfAll_LHACases = "AllPercentageOfHB__LHACases";
+    private static final String sHBTotalCountClaimantsEmployed = "HBTotalCount_ClaimantsEmployed";
+    private static final String sHBPercentageOfHB_ClaimantsEmployed = "HBPercentageOfHB_ClaimantsEmployed";
+    private static final String sHBTotalCountClaimantsSelfEmployed = "HBTotalCount_ClaimantsSelfEmployed";
+    private static final String sHBPercentageOfHB_ClaimantsSelfEmployed = "HBPercentageOfHB_ClaimantsSelfEmployed";
+    private static final String sHBTotalCountClaimantsStudents = "HBTotalCount_ClaimantsStudents";
+    private static final String sHBPercentageOfHB_ClaimantsStudents = "HBPercentageOfHB_ClaimantsStudents";
+    private static final String sHBTotalCount_LHACases = "HBTotalCount_LHACases";
+    private static final String sHBPercentageOfHB_LHACases = "HBPercentageOfHB_LHACases";
+    private static final String sCTBTotalCount_ClaimantsEmployed = "CTBTotalCount_ClaimantsEmployed";
+    private static final String sCTBPercentageOfCTB_ClaimantsEmployed = "CTBPercentageOfCTB_ClaimantsEmployed";
     private static final String sCTBTotalCountClaimantsSelfEmployed = "CTBTotalCountClaimantsSelfEmployed";
-    private static final String sCTBPercentageClaimantsSelfEmployed = "CTBPercentageClaimantsSelfEmployed";
+    private static final String sCTBPercentageOfCTB_ClaimantsSelfEmployed = "CTBPercentageOfCTB_ClaimantsSelfEmployed";
     private static final String sCTBTotalCountClaimantsStudents = "CTBTotalCountClaimantsStudents";
-    private static final String sCTBPercentageClaimantsStudents = "CTBPercentageClaimantsStudents";
-    private static final String sCTBTotalCountLHACases = "CTBTotalCountLHACases";
-    private static final String sCTBPercentageLHACases = "CTBPercentageLHACases";
+    private static final String sCTBPercentageOfCTB_ClaimantsStudents = "CTBPercentageOfCTB_ClaimantsStudents";
+    private static final String sCTBTotalCount_LHACases = "CTBTotalCountLHACases";
+    private static final String sCTBPercentageOfCTB_LHACases = "CTBPercentageOfCTB_LHACases";
 
     private static final String sAllCount0 = "AllCount0";
     private static final String sHBCount0 = "HBCount0";
@@ -244,36 +357,37 @@ public class Summary {
     private static final String sTotalCount_SocialTTsClaimant = "TotalCount_SocialTTsClaimant";
     private static final String sPercentageOfAll_SocialTTsClaimant = "PercentageOfAll_SocialTTsClaimant";
     private static final String sPercentageOfHB_SocialTTsClaimant = "PercentageOfHB_SocialTTsClaimant";
-    private static final String sTotalCountPrivateDeregulatedTTsClaimant = "TotalCountPrivateDeregulatedTTsClaimant";
-    private static final String sPercentageOfAllPrivateDeregulatedTTsClaimant = "PercentageOfAll_PrivateDeregulatedTTsClaimant";
-    private static final String sPercentageOfHBPrivateDeregulatedTTsClaimant = "PercentageOfHB_PrivateDeregulatedTTsClaimant";
-    
+    private static final String sTotalCount_PrivateDeregulatedTTsClaimant = "TotalCount_PrivateDeregulatedTTsClaimant";
+    private static final String sPercentageOfAll_PrivateDeregulatedTTsClaimant = "PercentageOfAll_PrivateDeregulatedTTsClaimant";
+    private static final String sPercentageOfHB_PrivateDeregulatedTTsClaimant = "PercentageOfHB_PrivateDeregulatedTTsClaimant";
+
     private static String[] sAllTotalCountEthnicGroupClaimant;
     private static String[] sAllPercentageEthnicGroupClaimant;
-    private static String[] sTotalCountClaimantsTT;
-    private static String[] sPercentageOfAllClaimantsTT;
+    private static String[] sTotalCount_ClaimantsTT;
+    private static String[] sPercentageOfAll_ClaimantsTT;
     private static String sAllPostcodeValidFormatCount;
     private static String sAllPostcodeValidCount;
 
     // Income
     // All
-    public static final String sAllTotalIncome = "TotalIncome";
+    public static final String sAllTotalIncome = "AllTotalIncome";
     public static String[] sAllTotalIncomeTT;
-    public static final String sAllTotalCountIncomeNonZero = "AllTotalCountIncomeNonZero";
+    public static final String sAllTotalCount_IncomeNonZero = "AllTotalCount_IncomeNonZero";
+    public static final String sAllTotalCount_IncomeZero = "AllTotalCount_IncomeZero";
     public static String[] sAllTotalCountIncomeNonZeroTT;
-    public static final String sAllTotalCountIncomeZero = "AllTotalCountIncomeZero";
+    public static final String sAllTotalCountIncomeZero = "AllTotalCount_IncomeZero";
     public static String[] sAllTotalCountIncomeZeroTT;
     public static final String sAllAverageIncome = "AllAverageIncome";
     public static String[] sAllAverageIncomeTT;
     //HB
-    public static final String sHBTotalIncome = "TotalIncome";
-    public static final String sHBTotalCountIncomeNonZero = "HBTotalCountIncomeNonZero";
-    public static final String sHBTotalCountIncomeZero = "HBTotalCountIncomeZero";
+    public static final String sHBTotalIncome = "HBTotalIncome";
+    public static final String sHBTotalCount_IncomeNonZero = "HBTotalCount_IncomeNonZero";
+    public static final String sHBTotalCount_IncomeZero = "HBTotalCount_IncomeZero";
     public static final String sHBAverageIncome = "HBAverageIncome";
     // CTB
-    public static final String sCTBTotalIncome = "TotalIncome";
-    public static final String sCTBTotalCountIncomeNonZero = "CTBTotalCountIncomeNonZero";
-    public static final String sCTBTotalCountIncomeZero = "CTBTotalCountIncomeZero";
+    public static final String sCTBTotalIncome = "CTBTotalIncome";
+    public static final String sCTBTotalCount_IncomeNonZero = "CTBTotalCount_IncomeNonZero";
+    public static final String sCTBTotalCount_IncomeZero = "CTBTotalCount_IncomeZero";
     public static final String sCTBAverageIncome = "CTBAverageIncome";
 
     private static final String sSHBEFilename00 = "SHBEFilename00";
@@ -296,7 +410,7 @@ public class Summary {
     private static final String sRSLCount0 = "RSLCount0";
     private static final String sRSLCount1 = "RSLCount1";
     private static final String sAllUOLinkedRecordCount00 = "AllLinkedRecordCount00";
-    private static final String aAllUOLinkedRecordCount0 = "AllLinkedRecordCount0";
+    private static final String sAllUOLinkedRecordCount0 = "AllLinkedRecordCount0";
     private static final String sAllUOLinkedRecordCount1 = "AllLinkedRecordCount1";
     private static final String sCouncilLinkedRecordCount00 = "CouncilLinkedRecordCount00";
     private static final String sCouncilLinkedRecordCount0 = "CouncilLinkedRecordCount0";
@@ -307,10 +421,12 @@ public class Summary {
     // Under Occupancy Only
 //    private static final String councilCountString = "CouncilCount";
 //    private static final String RSLCountString = "RSLCount";
-    private static String sTotalRentArrears;
-    private static String sAverageRentArrears;
-    private static String sGreaterThan0AverageRentArrears;
-
+    private static final String sTotal_RentArrears = "Total_RentArrears";
+    private static final String sTotalCount_RentArrears = "TotalCount_RentArrears";
+    private static final String sTotalCount_RentArrearsZero = "TotalCount_RentArrearsZero";
+    private static final String sTotalCount_RentArrearsNonZero = "TotalCount_RentArrearsNonZero";
+    private static final String sAverage_RentArrears = "Average_RentArrears";
+    private static final String sAverage_NonZeroRentArrears = "AverageNonZero_RentArrears";
     // Demographics
     // Disability
     // HB
@@ -322,7 +438,7 @@ public class Summary {
     // Ethnicity
     private static String[] sHBTotalCount_EthnicGroupClaimant;
     private static String[] sHBPercentage_EthnicGroupClaimant;
-    
+
     private static String[] sTotalCountClaimantTT;
     private static String[] sPercentageOfAll_TTClaimant;
     private static String[] sPercentageOfHB_ClaimantTT;
@@ -344,56 +460,79 @@ public class Summary {
 
     // Compare 2 Times
     // All TT
-    private static final String sAllTotalCountTTChangeClaimant = "AllTotalCountTTChangeClaimant";
+    private static final String sAllTotalCount_TTChangeClaimant = "AllTotalCount_TTChangeClaimant";
     private static final String sAllPercentageOfAll_TTChangeClaimant = "AllPercentageOfAll_TTChangeClaimant";
-    private static final String sTotalCountHBTTsToCTBTTs = "TotalCountHBTTsToCTBTTs";
+    private static final String sTotalCount_HBTTsToCTBTTs = "TotalCount_HBTTsToCTBTTs";
     private static final String sPercentageOfHB_HBTTsToCTBTTs = "PercentageOfHB_HBTTsToCTBTTs";
-    private static final String sTotalCountCTBTTsToHBTTs = "TotalCountCTBTTsToHBTTs";
-    private static final String sPercentageCTBTTsToHBTTs = "PercentageCTBTTsToHBTTs";
+    private static final String sTotalCount_CTBTTsToHBTTs = "TotalCount_CTBTTsToHBTTs";
+    private static final String sPercentageOfCTB_CTBTTsToHBTTs = "PercentageOfCTB_CTBTTsToHBTTs";
     // HB TT
-    private static final String sHBTotalCountTTChangeClaimant = "HBTotalCountTTChangeClaimant";
+    private static final String sHBTotalCount_TTChangeClaimant = "HBTotalCount_TTChangeClaimant";
     private static final String sHBPercentageOfHB_TTChangeClaimant = "HBPercentageOfHB_TTChangeClaimant";
-    private static final String sTotalCountHBTTsToHBTTs = "TotalCountHBTTsToHBTTs";
+    private static final String sTotalCount_HBTTsToHBTTs = "TotalCount_HBTTsToHBTTs";
     private static final String sPercentageOfHB_HBTTsToHBTTs = "PercentageOfHB_HBTTsToHBTTs";
-    private static final String sTotalCountSocialTTsToPrivateDeregulatedTTs = "TotalCountSocialTTsToPrivateDeregulatedTTs";
-    private static final String sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs = "PercentageSocialTTsToPrivateDeregulatedTTs";
-    private static final String sTotalCountPrivateDeregulatedTTsToSocialTTs = "TotalCountPrivateDeregulatedTTsToSocialTTs";
+    private static final String sTotalCount_SocialTTsToPrivateDeregulatedTTs = "TotalCount_SocialTTsToPrivateDeregulatedTTs";
+    private static final String sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs = "PercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs";
+    private static final String sTotalCount_PrivateDeregulatedTTsToSocialTTs = "TotalCount_PrivateDeregulatedTTsToSocialTTs";
     private static final String sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs = "PercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs";
-    private static final String sTotalCountTT1ToPrivateDeregulatedTTs = "TotalCountTT1ToPrivateDeregulatedTTs";
+    private static final String sTotalCount_TT1ToPrivateDeregulatedTTs = "TotalCount_TT1ToPrivateDeregulatedTTs";
     private static final String sPercentageOfTT1_TT1ToPrivateDeregulatedTTs = "PercentageOfTT1_TT1ToPrivateDeregulatedTTs";
-    private static final String sTotalCountTT4ToPrivateDeregulatedTTs = "TotalCountTT4ToPrivateDeregulatedTTs";
-    private static final String sPercentageTT4ToPrivateDeregulatedTTs = "PercentageTT4ToPrivateDeregulatedTTs";
-    private static final String sTotalCountPrivateDeregulatedTTsToTT1 = "TotalCountPrivateDeregulatedTTsToTT1";
+    private static final String sTotalCount_TT4ToPrivateDeregulatedTTs = "TotalCount_TT4ToPrivateDeregulatedTTs";
+    private static final String sPercentageOfTT4_TT4ToPrivateDeregulatedTTs = "PercentageOfTT4_TT4ToPrivateDeregulatedTTs";
+    private static final String sTotalCount_PrivateDeregulatedTTsToTT1 = "TotalCount_PrivateDeregulatedTTsToTT1";
     private static final String sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1 = "PercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1";
-    private static final String sTotalCountPrivateDeregulatedTTsToTT4 = "TotalCountPrivateDeregulatedTTsToTT4";
+    private static final String sTotalCount_PrivateDeregulatedTTsToTT4 = "TotalCount_PrivateDeregulatedTTsToTT4";
     private static final String sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4 = "PercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4";
-    private static final String sTotalCountPostcodeChangeWithinSocialTTs = "TotalCountPostcodeChangeWithinSocialTTs";
-    private static final String sPercentagePostcodeChangeWithinSocialTTs = "PercentagePostcodeChangeWithinSocialTTs";
-    private static final String sTotalCountPostcodeChangeWithinTT1 = "TotalCountPostcodeChangeWithinTT1";
+
+    private static final String sTotalCount_TT1ToTT4 = "TotalCount_TT1ToTT4";
+    private static final String sPercentageOfTT1_TT1ToTT4 = "PercentageOfTT1_TT1ToTT4";
+    private static final String sTotalCount_TT4ToTT1 = "TotalCount_TT4ToTT1";
+    private static final String sPercentageOfTT4_TT4ToTT1 = "PercentageOfTT4_TT4ToTT1";
+
+    private static final String sTotalCount_PostcodeChangeWithinSocialTTs = "TotalCount_PostcodeChangeWithinSocialTTs";
+    private static final String sPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs = "PercentageOfSocialTTs_PostcodeChangeWithinSocialTTs";
+    private static final String sTotalCount_PostcodeChangeWithinTT1 = "TotalCount_PostcodeChangeWithinTT1";
     private static final String sPercentageOfTT1_PostcodeChangeWithinTT1 = "PercentageOfTT1_PostcodeChangeWithinTT1";
-    private static final String sTotalCountPostcodeChangeWithinTT4 = "TotalCountPostcodeChangeWithinTT4";
-    private static final String sPercentagePostcodeChangeWithinTT4 = "PercentagePostcodeChangeWithinTT4";
-    private static final String sTotalCountPostcodeChangeWithinPrivateDeregulatedTTs = "TotalCountPostcodeChangeWithinPrivateDeregulatedTTs";
+    private static final String sTotalCount_PostcodeChangeWithinTT4 = "TotalCountPostcodeChangeWithinTT4";
+    private static final String sPercentageOfTT4_PostcodeChangeWithinTT4 = "PercentageOfTT4_PostcodeChangeWithinTT4";
+    private static final String sTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs = "TotalCount_PostcodeChangeWithinPrivateDeregulatedTTs";
     private static final String sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs = "PercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs";
     // CTB TT
-    private static final String sCTBTotalCountTTChangeClaimant = "CTBTotalCountTTChangeClaimant";
-    private static final String sCTBPercentageTTChangeClaimant = "CTBPercentageTTChangeClaimant";
-    private static final String sTotalCountSocialTTsToCTBTTs = "TotalCountSocialTTsToCTBTTs";
-    private static final String sPercentageSocialTTsToCTBTTs = "PercentageSocialTTsToCTBTTs";
-    private static final String sTotalCountTT1ToCTBTTs = "TotalCountTT1ToCTBTTs";
-    private static final String sPercentageOfTT1_TT1ToCTBTTs = "PercentageTT1ToCTBTTs";
-    private static final String sTotalCountTT4ToCTBTTs = "TotalCountTT4ToCTBTTs";
-    private static final String sPercentageTT4ToCTBTTs = "PercentageTT4ToCTBTTs";
-    private static final String sTotalCountPrivateDeregulatedTTsToCTBTTs = "TotalCountPrivateDeregulatedTTsToCTBTTs";
-    private static final String sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs = "PercentagePrivateDeregulatedTTsToCTBTTs";
-    private static final String sTotalCountCTBTTsToSocialTTs = "TotalCountCTBTTsToSocialTTs";
-    private static final String sPercentageCTBTTsToSocialTTs = "PercentageCTBTTsToSocialTTs";
-    private static final String sTotalCountCTBTTsToTT1 = "TotalCountCTBTTsToTT1";
-    private static final String sPercentageCTBTTsToTT1 = "PercentageCTBTTsToTT1";
-    private static final String sTotalCountCTBTTsToTT4 = "TotalCountCTBTTsToTT4";
-    private static final String sPercentageCTBTTsToTT4 = "PercentageCTBTTsToTT4";
-    private static final String sTotalCountCTBTTsToPrivateDeregulatedTTs = "TotalCountCTBTTsToPrivateDeregulatedTypes";
-    private static final String sPercentageCTBTTsToPrivateDeregulatedTTs = "PercentageCTBTTsToPrivateDeregulatedTypes";
+    private static final String sCTBTotalCount_TTChangeClaimant = "CTBTotalCount_TTChangeClaimant";
+    private static final String sCTBPercentageOfCTB_TTChangeClaimant = "CTBPercentageOfCTB_TTChangeClaimant";
+    private static final String sTotalCount_SocialTTsToCTBTTs = "TotalCount_SocialTTsToCTBTTs";
+    private static final String sPercentageOfSocialTTs_SocialTTsToCTBTTs = "PercentageOfSocialTTs_SocialTTsToCTBTTs";
+    private static final String sTotalCount_TT1ToCTBTTs = "TotalCount_TT1ToCTBTTs";
+    private static final String sPercentageOfTT1_TT1ToCTBTTs = "PercentageOfTT1_TT1ToCTBTTs";
+    private static final String sTotalCount_TT4ToCTBTTs = "TotalCount_TT4ToCTBTTs";
+    private static final String sPercentageOfTT4_TT4ToCTBTTs = "PercentageOfTT4_TT4ToCTBTTs";
+    private static final String sTotalCount_PrivateDeregulatedTTsToCTBTTs = "TotalCount_PrivateDeregulatedTTsToCTBTTs";
+    private static final String sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs = "PercentageOfPrivateDeregulated_PrivateDeregulatedTTsToCTBTTs";
+    private static final String sTotalCountCTBTTsToSocialTTs = "TotalCount_CTBTTsToSocialTTs";
+    private static final String sPercentageOfCTB_CTBTTsToSocialTTs = "PercentageOfCTB_CTBTTsToSocialTTs";
+    private static final String sTotalCount_CTBTTsToTT1 = "TotalCount_CTBTTsToTT1";
+    private static final String sPercentageOfCTB_CTBTTsToTT1 = "PercentageOfCTB_CTBTTsToTT1";
+    private static final String sTotalCount_CTBTTsToTT4 = "TotalCount_CTBTTsToTT4";
+    private static final String sPercentageOfCTB_CTBTTsToTT4 = "PercentageOfCTB_CTBTTsToTT4";
+    private static final String sTotalCount_CTBTTsToPrivateDeregulatedTTs = "TotalCount_CTBTTsToPrivateDeregulatedTypes";
+    private static final String sPercentageOfCTB_CTBTTsToPrivateDeregulatedTTs = "PercentageOfCTB_CTBTTsToPrivateDeregulatedTypes";
+    // All Postcode
+    private static final String sAllTotalCountPostcode0ValidPostcode1Valid = "AllTotalCountPostcode0ValidPostcode1Valid";
+    private static final String sAllPercentagePostcode0ValidPostcode1Valid = "AllPercentagePostcode0ValidPostcode1Valid";
+    private static final String sAllTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged = "AllTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged";
+    private static final String sAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged = "AllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged";
+    private static final String sAllTotalCountPostcode0ValidPostcode1ValidPostcodeChange = "AllTotalCountPostcode0ValidPostcode1ValidPostcodeChange";
+    private static final String sAllPercentagePostcode0ValidPostcode1ValidPostcodeChange = "AllPercentagePostcode0ValidPostcode1ValidPostcodeChange";
+    private static final String sAllTotalCountPostcode0ValidPostcode1NotValid = "AllTotalCountPostcode0ValidPostcode1NotValid";
+    private static final String sAllPercentagePostcode0ValidPostcode1NotValid = "AllPercentagePostcode0ValidPostcode1NotValid";
+    private static final String sAllTotalCountPostcode0NotValidPostcode1Valid = "AllTotalCountPostcode0NotValidPostcode1Valid";
+    private static final String sAllPercentagePostcode0NotValidPostcode1Valid = "AllPercentagePostcode0NotValidPostcode1Valid";
+    private static final String sAllTotalCountPostcode0NotValidPostcode1NotValid = "AllTotalCountPostcode0NotValidPostcode1NotValid";
+    private static final String sAllPercentagePostcode0NotValidPostcode1NotValid = "AllPercentagePostcode0NotValidPostcode1NotValid";
+    private static final String sAllTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged = "AllTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    private static final String sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged = "AllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    private static final String sAllTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged = "AllTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged";
+    private static final String sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged = "AllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged";
     // HB Postcode
     private static final String sHBTotalCountPostcode0ValidPostcode1Valid = "HBTotalCountPostcode0ValidPostcode1Valid";
     private static final String sHBPercentagePostcode0ValidPostcode1Valid = "HBPercentagePostcode0ValidPostcode1Valid";
@@ -413,7 +552,7 @@ public class Summary {
     private static final String sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged = "HBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged";
     // CTB Postcode
     private static final String sCTBTotalCountPostcode0ValidPostcode1Valid = "CTBTotalCountPostcode0ValidPostcode1Valid";
-    private static final String sCTBPercentagePostcode0ValidPostcode1Valid = "CTBPercentagePostcode0ValidPostcode1Valid";
+    private static final String sCTBPercentageOfCTB_Postcode0ValidPostcode1Valid = "CTBPercentagePostcode0ValidPostcode1Valid";
     private static final String sCTBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged = "CTBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged";
     private static final String sCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged = "CTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged";
     private static final String sCTBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged = "CTBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged";
@@ -454,7 +593,7 @@ public class Summary {
     private static int AllTotalWeeklyHBEntitlementNonZeroCount;
     private static int AllTotalWeeklyHBEntitlementZeroCount;
     private static double AllTotalWeeklyCTBEntitlement;
-    private static int AllTotalWeeklyCTBEntitlementNonZeroCount;
+    private static int AllTotalCount_WeeklyCTBEntitlementNonZero;
     private static int AllTotalWeeklyCTBEntitlementZeroCount;
     private static double AllTotalWeeklyEligibleRentAmount;
     private static int AllTotalWeeklyEligibleRentAmountNonZeroCount;
@@ -473,10 +612,10 @@ public class Summary {
     private static int AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount;
     // HB
     private static double HBTotalWeeklyHBEntitlement;
-    private static int HBTotalWeeklyHBEntitlementNonZeroCount;
-    private static int HBTotalWeeklyHBEntitlementZeroCount;
+    private static int HBTotalCount_WeeklyHBEntitlementNonZero;
+    private static int HBTotalCount_WeeklyHBEntitlementZero;
     private static double HBTotalWeeklyCTBEntitlement;
-    private static int HBTotalWeeklyCTBEntitlementNonZeroCount;
+    private static int HBTotalCount_WeeklyCTBEntitlementNonZero;
     private static int HBTotalWeeklyCTBEntitlementZeroCount;
     private static double HBTotalWeeklyEligibleRentAmount;
     private static int HBTotalWeeklyEligibleRentAmountNonZeroCount;
@@ -495,10 +634,10 @@ public class Summary {
     private static int HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount;
     // CTB
     private static double CTBTotalWeeklyHBEntitlement;
-    private static int CTBTotalWeeklyHBEntitlementNonZeroCount;
+    private static int CTBTotalCount_WeeklyHBEntitlementNonZero;
     private static int CTBTotalWeeklyHBEntitlementZeroCount;
     private static double CTBTotalWeeklyCTBEntitlement;
-    private static int CTBTotalWeeklyCTBEntitlementNonZeroCount;
+    private static int CTBTotalCount_WeeklyCTBEntitlementNonZero;
     private static int CTBTotalWeeklyCTBEntitlementZeroCount;
     private static double CTBTotalWeeklyEligibleRentAmount;
     private static int CTBTotalWeeklyEligibleRentAmountNonZeroCount;
@@ -517,34 +656,30 @@ public class Summary {
     private static int CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount;
 
     // Employment Education Training
-    private static int HBTotalCountEmployedClaimants;
+    private static int HBTotalCount_EmployedClaimants;
     private static int HBTotalCountSelfEmployedClaimants;
     private static int HBTotalCountStudentsClaimants;
-    private static int CTBTotalCountCTBEmployedClaimants;
+    private static int CTBTotalCountEmployedClaimants;
     private static int CTBTotalCountSelfEmployedClaimants;
     private static int CTBTotalCountStudentsClaimants;
     // HLA
     private static int HBTotalCountLHACases;
-    private static int CTBTotalCountLHACases;
+    private static int CTBTotalCount_LHACases;
 
-    private static int[] AllTotalDisabilityPremiumAwardByTTCount;
-    private static int[] HBTotalDisabilityPremiumAwardByTTCount;
-    private static int[] CTBTotalDisabilityPremiumAwardByTTCount;
-    private static int[] AllTotalSevereDisabilityPremiumAwardByTTCount;
-    private static int[] HBTotalSevereDisabilityPremiumAwardByTTCount;
-    private static int[] CTBTotalSevereDisabilityPremiumAwardByTTCount;
-    private static int[] AllTotalEnhancedDisabilityPremiumAwardByTTCount;
-    private static int[] HBTotalEnhancedDisabilityPremiumAwardByTTCount;
-    private static int[] CTBTotalEnhancedDisabilityPremiumAwardByTTCount;
-    private static int[] TotalAllPSICount;
-    private static int[] TotalHBPSICount;
-    private static int[] TotalCTBPSICount;
-    private static int[][] TotalAllPSIByTTCount;
-    private static int[][] TotalHBPSIByTTCount;
-    private static int[][] TotalCTBPSIByTTCount;
+    private static int[] TotalCount_DisabilityPremiumAwardByTT;
+    private static int[] TotalCount_SevereDisabilityPremiumAwardByTT;
+    private static int[] TotalCount_DisabledChildPremiumAwardByTT;
+    private static int[] TotalCount_EnhancedDisabilityPremiumAwardByTT;
+    private static int[] TotalCount_DisabilityAwardByTT;
+    private static int[] AllTotalCount_PSI;
+    private static int[] HBTotalCount_PSI;
+    private static int[] CTBTotalCount_PSI;
+    private static int[][] AllTotalCount_PSIByTT;
+    private static int[][] HBTotalCount_PSIByTT;
+    private static int[][] CTBTotalCount_PSIByTT;
 
-    private static int[] TotalCountTTClaimant1;
-    private static int[] TotalCountTTClaimant0;
+    private static int[] TotalCount_TTClaimant1;
+    private static int[] TotalCount_TTClaimant0;
     private static long AllTotalHouseholdSize;
     private static long HBTotalHouseholdSize;
     private static long CTBTotalHouseholdSize;
@@ -563,49 +698,61 @@ public class Summary {
     private static int CTBPostcodeValidFormatCount;
     private static int CTBPostcodeValidCount;
     // Other summary stats
-    private static double totalRentArrears;
-    private static double rentArrearsCount;
-    private static double greaterThan0RentArrearsCount;
+    private static double Total_RentArrears;
+    private static double TotalCount_RentArrears;
+    private static int TotalCount_RentArrearsNonZero;
+    private static int TotalCount_RentArrearsZero;
 
     // Compare 2 Times
     // General
-    private static int TotalCountHBTTsToCTBTTs;
-    private static int TotalCountCTBTTsToHBTTs;
+    private static int TotalCount_HBTTsToCTBTTs;
+    private static int TotalCount_CTBTTsToHBTTs;
     // General HB related
-    private static int TotalCountHBTTsToHBTTs;
-    private static int TotalCountSocialTTsToPrivateDeregulatedTTs;
-    private static int TotalCountPrivateDeregulatedTTsToSocialTTs;
-    private static int TotalCountTT1ToPrivateDeregulatedTTs;
-    private static int TotalCountTT4ToPrivateDeregulatedTTs;
-    private static int TotalCountPrivateDeregulatedTTsToTT1;
-    private static int TotalCountPrivateDeregulatedTTsToTT4;
-    private static int TotalCountPostcodeChangeWithinSocialTTs;
-    private static int TotalCountPostcodeChangeWithinTT1;
-    private static int TotalCountPostcodeChangeWithinTT4;
-    private static int TotalCountPostcodeChangeWithinPrivateDeregulatedTTs;
+    private static int TotalCount_HBTTsToHBTTs;
+    private static int TotalCount_SocialTTsToPrivateDeregulatedTTs;
+    private static int TotalCount_PrivateDeregulatedTTsToSocialTTs;
+    private static int TotalCount_TT1ToPrivateDeregulatedTTs;
+    private static int TotalCount_TT4ToPrivateDeregulatedTTs;
+    private static int TotalCount_PrivateDeregulatedTTsToTT1;
+    private static int TotalCount_PrivateDeregulatedTTsToTT4;
+    private static int TotalCount_PostcodeChangeWithinSocialTTs;
+    private static int TotalCount_PostcodeChangeWithinTT1;
+    private static int TotalCount_PostcodeChangeWithinTT4;
+    private static int TotalCount_PostcodeChangeWithinPrivateDeregulatedTTs;
     // General CTB related
     private static int TotalCountSocialTTsToCTBTTs;
-    private static int TotalCountTT1ToCTBTTs;
-    private static int TotalCountTT4ToCTBTTs;
-    private static int TotalCountPrivateDeregulatedTTsToCTBTTs;
-    private static int TotalCountCTBTTsToSocialTTs;
-    private static int TotalCountCTBTTsToTT1;
-    private static int TotalCountCTBTTsToTT4;
-    private static int TotalCountCTBTTsToPrivateDeregulatedTTs;
+    private static int TotalCount_TT1ToCTBTTs;
+    private static int TotalCount_TT4ToCTBTTs;
+    private static int TotalCount_PrivateDeregulatedTTsToCTBTTs;
+    private static int TotalCount_CTBTTsToSocialTTs;
+    private static int TotalCount_CTBTTsToTT1;
+    private static int TotalCount_CTBTTsToTT4;
+    private static int TotalCount_CTBTTsToPrivateDeregulatedTTs;
+    //
+    private static int TotalCount_TT1ToTT4;
+    private static int TotalCount_TT4ToTT1;
     // All
-    private static int AllTotalCountTTChangeClaimant;
+    private static int AllTotalCount_TTChangeClaimant;
+    private static int AllTotalCountPostcode0ValidPostcode1Valid;
+    private static int AllTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged;
+    private static int AllTotalCountPostcode0ValidPostcode1ValidPostcodeChanged;
+    private static int AllTotalCountPostcode0ValidPostcode1NotValid;
+    private static int AllTotalCountPostcode0NotValidPostcode1Valid;
+    private static int AllTotalCountPostcode0NotValidPostcode1NotValid;
+    private static int AllTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged;
+    private static int AllTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged;
     // HB
-    private static int HBTotalCountTTChangeClaimant;
+    private static int HBTotalCount_TTChangeClaimant;
     private static int HBTotalCountPostcode0ValidPostcode1Valid;
     private static int HBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged;
-    private static int HBTotalCountPostcode0ValidPostcode1ValidPostcodeChange;
+    private static int HBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged;
     private static int HBTotalCountPostcode0ValidPostcode1NotValid;
     private static int HBTotalCountPostcode0NotValidPostcode1Valid;
     private static int HBTotalCountPostcode0NotValidPostcode1NotValid;
     private static int HBTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged;
     private static int HBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged;
     // CTB
-    private static int CTBTotalCountTTChangeClaimant;
+    private static int CTBTotalCount_TTChangeClaimant;
     private static int CTBTotalCountPostcode0ValidPostcode1Valid;
     private static int CTBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged;
     private static int CTBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged;
@@ -666,23 +813,19 @@ public class Summary {
     protected final void init(int nTT, int nEG, int nPSI) {
         initSingleTimeStrings(nTT, nEG, nPSI);
         initCompare3TimesStrings(nTT, nEG);
-        AllTotalDisabilityPremiumAwardByTTCount = new int[nTT];
-        HBTotalDisabilityPremiumAwardByTTCount = new int[nTT];
-        CTBTotalDisabilityPremiumAwardByTTCount = new int[nTT];
-        AllTotalSevereDisabilityPremiumAwardByTTCount = new int[nTT];
-        HBTotalSevereDisabilityPremiumAwardByTTCount = new int[nTT];
-        CTBTotalSevereDisabilityPremiumAwardByTTCount = new int[nTT];
-        AllTotalEnhancedDisabilityPremiumAwardByTTCount = new int[nTT];
-        HBTotalEnhancedDisabilityPremiumAwardByTTCount = new int[nTT];
-        CTBTotalEnhancedDisabilityPremiumAwardByTTCount = new int[nTT];
-        TotalAllPSICount = new int[nPSI];
-        TotalHBPSICount = new int[nPSI];
-        TotalCTBPSICount = new int[nPSI];
-        TotalAllPSIByTTCount = new int[nPSI][nTT];
-        TotalHBPSIByTTCount = new int[nPSI][nTT];
-        TotalCTBPSIByTTCount = new int[nPSI][nTT];
-        TotalCountTTClaimant1 = new int[nTT];
-        TotalCountTTClaimant0 = new int[nTT];
+        TotalCount_DisabilityPremiumAwardByTT = new int[nTT];
+        TotalCount_SevereDisabilityPremiumAwardByTT = new int[nTT];
+        TotalCount_DisabledChildPremiumAwardByTT = new int[nTT];
+        TotalCount_EnhancedDisabilityPremiumAwardByTT = new int[nTT];
+        TotalCount_DisabilityAwardByTT = new int[nTT];
+        AllTotalCount_PSI = new int[nPSI];
+        HBTotalCount_PSI = new int[nPSI];
+        CTBTotalCount_PSI = new int[nPSI];
+        AllTotalCount_PSIByTT = new int[nPSI][nTT];
+        HBTotalCount_PSIByTT = new int[nPSI][nTT];
+        CTBTotalCount_PSIByTT = new int[nPSI][nTT];
+        TotalCount_TTClaimant1 = new int[nTT];
+        TotalCount_TTClaimant0 = new int[nTT];
         HBEthnicGroupCount = new int[nEG];
         CTBEthnicGroupCount = new int[nEG];
     }
@@ -697,32 +840,35 @@ public class Summary {
         sAllTotalCountWeeklyEligibleRentAmountZeroTT = new String[nTT];
         sAllAverageWeeklyEligibleRentAmountTT = new String[nTT];
 
-        sAllTotalCountPSI = new String[nPSI];
-        sHBTotalCountPSI = new String[nPSI];
+        sAllTotalCount_PSI = new String[nPSI];
+        sHBTotalCount_PSI = new String[nPSI];
         sCTBTotalCountPSI = new String[nPSI];
-        sAllPercentagePSI = new String[nPSI];
-        sHBPercentagePSI = new String[nPSI];
-        sCTBPercentagePSI = new String[nPSI];
-        sAllTotalCountPSIByTT = new String[nPSI][nTT];
-        sHBTotalCountPSIByTT = new String[nPSI][nTT];
-        sCTBTotalCountPSIByTT = new String[nPSI][nTT];
-        sAllPercentagePSIByTT = new String[nPSI][nTT];
-        sHBPercentagePSIByTT = new String[nPSI][nTT];
-        sCTBPercentagePSIByTT = new String[nPSI][nTT];
+        sAllPercentageOfAll_PSI = new String[nPSI];
+        sHBPercentageOfHB_PSI = new String[nPSI];
+        sCTBPercentageOfCTB_PSI = new String[nPSI];
+        sAllTotalCount_PSIByTT = new String[nPSI][nTT];
+        sHBTotalCount_PSIByTT = new String[nPSI][nTT];
+        sCTBTotalCount_PSIByTT = new String[nPSI][nTT];
+        sAllPercentageOfAll_PSIByTT = new String[nPSI][nTT];
+        sHBPercentageOfHB_PSIByTT = new String[nPSI][nTT];
+        sCTBPercentageOfCTB_PSIByTT = new String[nPSI][nTT];
         for (int i = 1; i < nPSI; i++) {
-            sAllTotalCountPSI[i] = "TotalAllPSI" + i + "Count";
-            sHBTotalCountPSI[i] = "TotalHBPSI" + i + "Count";
+            sAllTotalCount_PSI[i] = "TotalAllPSI" + i + "Count";
+            sHBTotalCount_PSI[i] = "TotalHBPSI" + i + "Count";
             sCTBTotalCountPSI[i] = "TotalCTBPSI" + i + "Count";
-            sAllPercentagePSI[i] = "PercentageAllPSI" + i + "Count";
-            sHBPercentagePSI[i] = "PercentageHBPSI" + i + "Count";
-            sCTBPercentagePSI[i] = "PercentageCTBPSI" + i + "Count";
+            sAllPercentageOfAll_PSI[i] = "PercentageAllPSI" + i + "Count";
+            sHBPercentageOfHB_PSI[i] = "PercentageHBPSI" + i + "Count";
+            sCTBPercentageOfCTB_PSI[i] = "PercentageCTBPSI" + i + "Count";
             for (int j = 1; j < nTT; j++) {
-                sAllTotalCountPSIByTT[i][j] = "TotalAllPSI" + i + "TT" + j + "Count";
-                sHBTotalCountPSIByTT[i][j] = "TotalHBPSI" + i + "TT" + j + "Count";
-                sCTBTotalCountPSIByTT[i][j] = "TotalCTBPSI" + i + "TT" + j + "Count";
-                sAllPercentagePSIByTT[i][j] = "PercentageAllPSI" + i + "TT" + j + "Count";
-                sHBPercentagePSIByTT[i][j] = "PercentageHBPSI" + i + "TT" + j + "Count";
-                sCTBPercentagePSIByTT[i][j] = "PercentageCTBPSI" + i + "TT" + j + "Count";
+                sAllTotalCount_PSIByTT[i][j] = "TotalCount_AllPSI" + i + "TT" + j;
+                sHBTotalCount_PSIByTT[i][j] = "TotalCount_HBPSI" + i + "TT" + j;
+                sCTBTotalCount_PSIByTT[i][j] = "TotalCount_CTBPSI" + i + "TT" + j;
+                sAllPercentageOfAll_PSIByTT[i][j] = "PercentageOfAll_PSI" + i + "TT" + j;
+                if (!(j == 5 || j == 7)) {
+                    sHBPercentageOfHB_PSIByTT[i][j] = "PercentageOfHB_PSI" + i + "TT" + j;
+                } else {
+                    sCTBPercentageOfCTB_PSIByTT[i][j] = "PercentageOfCTB_PSI" + i + "TT" + j;
+                }
             }
         }
 
@@ -736,59 +882,94 @@ public class Summary {
         sTotalCountClaimantTT = new String[nTT];
         sPercentageOfHB_ClaimantTT = new String[nTT];
         sPercentageOfCTB_ClaimantTT = new String[nTT];
-        sAllTotalCountDisabilityPremiumAwardByTT = new String[nTT];
-        sHBTotalCountDisabilityPremiumAwardByTT = new String[nTT];
-        sCTBTotalCountDisabilityPremiumAwardByTT = new String[nTT];
-        sAllPercentageDisabilityPremiumAwardByTT = new String[nTT];
-        sHBPercentageDisabilityPremiumAwardByTT = new String[nTT];
-        sCTBPercentageDisabilityPremiumAwardByTT = new String[nTT];
+        // DisabilityAward
+        sAllTotalCount_DisabilityAwardByTT = new String[nTT];
+        sHBTotalCount_DisabilityAwardByTT = new String[nTT];
+        sCTBTotalCount_DisabilityAwardByTT = new String[nTT];
+        sAllPercentageOfAll_DisabilityAwardByTT = new String[nTT];
+        sHBPercentageOfHB_DisabilityAwardByTT = new String[nTT];
+        sCTBPercentageOfCTB_DisabilityAwardByTT = new String[nTT];
+        // DisabilityPremiumAward
+        sAllTotalCount_DisabilityPremiumAwardByTT = new String[nTT];
+        sHBTotalCount_DisabilityPremiumAwardByTT = new String[nTT];
+        sCTBTotalCount_DisabilityPremiumAwardByTT = new String[nTT];
+        sAllPercentageOfAll_DisabilityPremiumAwardByTT = new String[nTT];
+        sHBPercentageOfHB_DisabilityPremiumAwardByTT = new String[nTT];
+        sCTBPercentageOfCTB_DisabilityPremiumAwardByTT = new String[nTT];
+        // SevereDisabilityPremiumAward
         sAllTotalCountSevereDisabilityPremiumAwardByTT = new String[nTT];
-        sHBTotalCountSevereDisabilityPremiumAwardByTT = new String[nTT];
-        sCTBTotalCountSevereDisabilityPremiumAwardByTT = new String[nTT];
-        sAllPercentageSevereDisabilityPremiumAwardByTT = new String[nTT];
-        sHBPercentageSevereDisabilityPremiumAwardByTT = new String[nTT];
-        sCTBPercentageSevereDisabilityPremiumAwardByTT = new String[nTT];
-        sAllTotalCountEnhancedDisabilityPremiumAwardByTT = new String[nTT];
-        sHBTotalCountEnhancedDisabilityPremiumAwardByTT = new String[nTT];
-        sCTBTotalCountEnhancedDisabilityPremiumAwardByTT = new String[nTT];
-        sAllPercentageEnhancedDisabilityPremiumAwardByTT = new String[nTT];
-        sHBPercentageEnhancedDisabilityPremiumAwardByTT = new String[nTT];
-        sCTBPercentageEnhancedDisabilityPremiumAwardByTT = new String[nTT];
-        sTotalCountClaimantsTT = new String[nTT];
-        sPercentageOfAllClaimantsTT = new String[nTT];
+        sHBTotalCount_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        sCTBTotalCount_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        sAllPercentageOfAll_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        sHBPercentageOfHB_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        sCTBPercentageOfCTB_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        // DisabledChildPremiumAward
+        sAllTotalCountDisabledChildPremiumAwardByTT = new String[nTT];
+        sHBTotalCount_DisabledChildPremiumAwardByTT = new String[nTT];
+        sCTBTotalCount_DisabledChildPremiumAwardByTT = new String[nTT];
+        sAllPercentageOfAll_DisabledChildPremiumAwardByTT = new String[nTT];
+        sHBPercentageOfHB_DisabledChildPremiumAwardByTT = new String[nTT];
+        sCTBPercentageOfCTB_DisabledChildPremiumAwardByTT = new String[nTT];
+        // EnhancedDisabilityPremiumAward
+        sAllTotalCount_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sHBTotalCount_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sCTBTotalCount_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sAllPercentageOfAll_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sHBPercentageOfHB_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sCTBPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sTotalCount_ClaimantsTT = new String[nTT];
+        sPercentageOfAll_ClaimantsTT = new String[nTT];
         for (int i = 1; i < nTT; i++) {
-            sTotalCountClaimantTT[i] = "TotalCountClaimantTT" + i;
-            sPercentageOfHB_ClaimantTT[i] = "PercentageOfHBClaimantTT" + i;
-            sPercentageOfCTB_ClaimantTT[i] = "PercentageOfCTBClaimantTT" + i;
+            // Claimants
+            sTotalCount_ClaimantsTT[i] = "TotalCount_ClaimantsTT" + i;
+            sPercentageOfAll_ClaimantsTT[i] = "PercentageOfAll_ClaimantsTT" + i;
+            sPercentageOfHB_ClaimantTT[i] = "PercentageOfHB_ClaimantTT" + i;
+            sPercentageOfCTB_ClaimantTT[i] = "PercentageOfCTB_ClaimantTT" + i;
+            // Income
             sAllTotalIncomeTT[i] = sAllTotalIncome + "TT" + i;
-            sAllTotalCountIncomeNonZeroTT[i] = sAllTotalCountIncomeNonZero + "TT" + i;
+            sAllTotalCountIncomeNonZeroTT[i] = sAllTotalCount_IncomeNonZero + "TT" + i;
             sAllTotalCountIncomeZeroTT[i] = sAllTotalCountIncomeZero + "TT" + i;
             sAllAverageIncomeTT[i] = sAllAverageIncome + "TT" + i;
+            // WeeklyEligibleRentAmountTT
             sAllTotalWeeklyEligibleRentAmountTT[i] = sAllTotalWeeklyEligibleRentAmount + "TT" + i;
             sAllTotalCountWeeklyEligibleRentAmountNonZeroTT[i] = sAllTotalCountWeeklyEligibleRentAmountNonZero + "TT" + i;
             sAllTotalCountWeeklyEligibleRentAmountZeroTT[i] = sAllTotalCountWeeklyEligibleRentAmountZero + "TT" + i;
             sAllAverageWeeklyEligibleRentAmountTT[i] = sAllAverageWeeklyEligibleRentAmount + "TT" + i;
-
-            sTotalCountClaimantsTT[i] = "TotalCountClaimantsTT" + i;
-            sPercentageOfAllClaimantsTT[i] = "PercentageOfAllClaimantsTT" + i;
-            sAllTotalCountDisabilityPremiumAwardByTT[i] = "AllTotalCountDisabilityPremiumAwardByTT" + i;
-            sHBTotalCountDisabilityPremiumAwardByTT[i] = "HBTotalCountDisabilityPremiumAwardByTT" + i;
-            sCTBTotalCountDisabilityPremiumAwardByTT[i] = "CTBTotalCountDisabilityPremiumAwardByTT" + i;
-            sAllPercentageDisabilityPremiumAwardByTT[i] = "AllPercentageDisabilityPremiumAwardByTT" + i;
-            sHBPercentageDisabilityPremiumAwardByTT[i] = "HBPercentageDisabilityPremiumAwardByTT" + i;
-            sCTBPercentageDisabilityPremiumAwardByTT[i] = "CTBPercentageDisabilityPremiumAwardByTT" + i;
-            sAllTotalCountSevereDisabilityPremiumAwardByTT[i] = "AllTotalCountSevereDisabilityPremiumAwardByTT" + i;
-            sHBTotalCountSevereDisabilityPremiumAwardByTT[i] = "HBTotalCountSevereDisabilityPremiumAwardByTT" + i;
-            sCTBTotalCountSevereDisabilityPremiumAwardByTT[i] = "CTBTotalCountSevereDisabilityPremiumAwardByTT" + i;
-            sAllPercentageSevereDisabilityPremiumAwardByTT[i] = "AllPercentageSevereDisabilityPremiumAwardByTT" + i;
-            sHBPercentageSevereDisabilityPremiumAwardByTT[i] = "HBPercentageSevereDisabilityPremiumAwardByTT" + i;
-            sCTBPercentageSevereDisabilityPremiumAwardByTT[i] = "CTBPercentageSevereDisabilityPremiumAwardByTT" + i;
-            sAllTotalCountEnhancedDisabilityPremiumAwardByTT[i] = "AllTotalCountEnhancedDisabilityPremiumAwardByTT" + i;
-            sHBTotalCountEnhancedDisabilityPremiumAwardByTT[i] = "HBTotalCountEnhancedDisabilityPremiumAwardByTT" + i;
-            sCTBTotalCountEnhancedDisabilityPremiumAwardByTT[i] = "CTBTotalCountEnhancedDisabilityPremiumAwardByTT" + i;
-            sAllPercentageEnhancedDisabilityPremiumAwardByTT[i] = "AllPercentageEnhancedDisabilityPremiumAwardByTT" + i;
-            sHBPercentageEnhancedDisabilityPremiumAwardByTT[i] = "HBPercentageEnhancedDisabilityPremiumAwardByTT" + i;
-            sCTBPercentageEnhancedDisabilityPremiumAwardByTT[i] = "CTBPercentageEnhancedDisabilityPremiumAwardByTT" + i;
+            // DisabilityAwardByTT
+            sAllTotalCount_DisabilityAwardByTT[i] = "AllTotalCount_DisabilityAwardByTT" + i;
+            sHBTotalCount_DisabilityAwardByTT[i] = "HBTotalCount_DisabilityAwardByTT" + i;
+            sCTBTotalCount_DisabilityAwardByTT[i] = "CTBTotalCount_DisabilityAwardByTT" + i;
+            sAllPercentageOfAll_DisabilityAwardByTT[i] = "AllPercentageOfAll_DisabilityAwardByTT" + i;
+            sHBPercentageOfHB_DisabilityAwardByTT[i] = "HBPercentageOfHB_DisabilityAwardByTT" + i;
+            sCTBPercentageOfCTB_DisabilityAwardByTT[i] = "CTBPercentageOfCTB_DisabilityAwardByTT" + i;
+            // DisabilityPremiumAwardByTT
+            sAllTotalCount_DisabilityPremiumAwardByTT[i] = "AllTotalCount_DisabilityPremiumAwardByTT" + i;
+            sHBTotalCount_DisabilityPremiumAwardByTT[i] = "HBTotalCount_DisabilityPremiumAwardByTT" + i;
+            sCTBTotalCount_DisabilityPremiumAwardByTT[i] = "CTBTotalCount_DisabilityPremiumAwardByTT" + i;
+            sAllPercentageOfAll_DisabilityPremiumAwardByTT[i] = "AllPercentageOfAll_DisabilityPremiumAwardByTT" + i;
+            sHBPercentageOfHB_DisabilityPremiumAwardByTT[i] = "HBPercentageOfHB_DisabilityPremiumAwardByTT" + i;
+            sCTBPercentageOfCTB_DisabilityPremiumAwardByTT[i] = "CTBPercentageOfCTB_DisabilityPremiumAwardByTT" + i;
+            // SevereDisabilityPremiumAwardByTT
+            sAllTotalCountSevereDisabilityPremiumAwardByTT[i] = "AllTotalCount_SevereDisabilityPremiumAwardByTT" + i;
+            sHBTotalCount_SevereDisabilityPremiumAwardByTT[i] = "HBTotalCount_SevereDisabilityPremiumAwardByTT" + i;
+            sCTBTotalCount_SevereDisabilityPremiumAwardByTT[i] = "CTBTotalCount_SevereDisabilityPremiumAwardByTT" + i;
+            sAllPercentageOfAll_SevereDisabilityPremiumAwardByTT[i] = "AllPercentageOfAll_SevereDisabilityPremiumAwardByTT" + i;
+            sHBPercentageOfHB_SevereDisabilityPremiumAwardByTT[i] = "HBPercentageOfHB_SevereDisabilityPremiumAwardByTT" + i;
+            sCTBPercentageOfCTB_SevereDisabilityPremiumAwardByTT[i] = "CTBPercentageOfCTB_SevereDisabilityPremiumAwardByTT" + i;
+            // DisabledChildPremiumAwardByTT
+            sAllTotalCountDisabledChildPremiumAwardByTT[i] = "AllTotalCount_DisabledChildPremiumAwardByTT" + i;
+            sHBTotalCount_DisabledChildPremiumAwardByTT[i] = "HBTotalCount_DisabledChildPremiumAwardByTT" + i;
+            sCTBTotalCount_DisabledChildPremiumAwardByTT[i] = "CTBTotalCount_DisabledChildPremiumAwardByTT" + i;
+            sAllPercentageOfAll_DisabledChildPremiumAwardByTT[i] = "AllPercentageOfAll_DisabledChildPremiumAwardByTT" + i;
+            sHBPercentageOfHB_DisabledChildPremiumAwardByTT[i] = "HBPercentageOfHB_DisabledChildPremiumAwardByTT" + i;
+            sCTBPercentageOfCTB_DisabledChildPremiumAwardByTT[i] = "CTBPercentageOfCTB_DisabledChildPremiumAwardByTT" + i;
+            // EnhancedDisabilityPremiumAwardByTT
+            sAllTotalCount_EnhancedDisabilityPremiumAwardByTT[i] = "AllTotalCount_EnhancedDisabilityPremiumAwardByTT" + i;
+            sHBTotalCount_EnhancedDisabilityPremiumAwardByTT[i] = "HBTotalCount_EnhancedDisabilityPremiumAwardByTT" + i;
+            sCTBTotalCount_EnhancedDisabilityPremiumAwardByTT[i] = "CTBTotalCount_EnhancedDisabilityPremiumAwardByTT" + i;
+            sAllPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i] = "AllPercentageOfAll_EnhancedDisabilityPremiumAwardByTT" + i;
+            sHBPercentageOfHB_EnhancedDisabilityPremiumAwardByTT[i] = "HBPercentageOfHB_EnhancedDisabilityPremiumAwardByTT" + i;
+            sCTBPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT[i] = "CTBPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT" + i;
         }
         sAllPostcodeValidFormatCount = "AllPostcodeValidFormatCount";
         sAllPostcodeValidCount = "AllPostcodeValidCount";
@@ -800,7 +981,7 @@ public class Summary {
             sHBTotalCount_EthnicGroupClaimant[i] = "HBTotalCountEthnicGroup" + i + "Claimant";
             sHBPercentage_EthnicGroupClaimant[i] = "HBPercentageEthnicGroup" + i + "Claimant";
         }
-        
+
         sHBPostcodeValidFormatCount = "HBPostcodeValidFormatCount";
         sHBPostcodeValidCount = "HBPostcodeValidCount";
 //        HBFemaleClaimantCountString = "HBFemaleClaimantCount";
@@ -828,10 +1009,6 @@ public class Summary {
 //        CTBFemaleDisabledClaimantCountString = "CTBDisabledFemaleClaimantCount";
 //        CTBMaleDisabledClaimantCountString = "CTBDisabledMaleClaimantCount";
 
-        // Under Occupancy
-        sTotalRentArrears = "TotalRentArrears";
-        sAverageRentArrears = "AverageRentArrears";
-        sGreaterThan0AverageRentArrears = "GreaterThan0AverageRentArrears";
     }
 
     protected final void initCompare3TimesStrings(int nTT, int nEG) {
@@ -869,13 +1046,13 @@ public class Summary {
     private void initSingleTimeCounts(int nTT, int nEG, int nPSI) {
 
         for (int i = 1; i < nPSI; i++) {
-            TotalAllPSICount[i] = 0;
-            TotalHBPSICount[i] = 0;
-            TotalCTBPSICount[i] = 0;
+            AllTotalCount_PSI[i] = 0;
+            HBTotalCount_PSI[i] = 0;
+            CTBTotalCount_PSI[i] = 0;
             for (int j = 1; j < nTT; j++) {
-                TotalAllPSIByTTCount[i][j] = 0;
-                TotalHBPSIByTTCount[i][j] = 0;
-                TotalCTBPSIByTTCount[i][j] = 0;
+                AllTotalCount_PSIByTT[i][j] = 0;
+                HBTotalCount_PSIByTT[i][j] = 0;
+                CTBTotalCount_PSIByTT[i][j] = 0;
             }
         }
 
@@ -884,7 +1061,7 @@ public class Summary {
         AllTotalWeeklyHBEntitlementNonZeroCount = 0;
         AllTotalWeeklyHBEntitlementZeroCount = 0;
         AllTotalWeeklyCTBEntitlement = 0.0d;
-        AllTotalWeeklyCTBEntitlementNonZeroCount = 0;
+        AllTotalCount_WeeklyCTBEntitlementNonZero = 0;
         AllTotalWeeklyCTBEntitlementZeroCount = 0;
         AllTotalWeeklyEligibleRentAmount = 0.0d;
         AllTotalWeeklyEligibleRentAmountNonZeroCount = 0;
@@ -902,10 +1079,10 @@ public class Summary {
         AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
 
         HBTotalWeeklyHBEntitlement = 0.0d;
-        HBTotalWeeklyHBEntitlementNonZeroCount = 0;
-        HBTotalWeeklyHBEntitlementZeroCount = 0;
+        HBTotalCount_WeeklyHBEntitlementNonZero = 0;
+        HBTotalCount_WeeklyHBEntitlementZero = 0;
         HBTotalWeeklyCTBEntitlement = 0.0d;
-        HBTotalWeeklyCTBEntitlementNonZeroCount = 0;
+        HBTotalCount_WeeklyCTBEntitlementNonZero = 0;
         HBTotalWeeklyCTBEntitlementZeroCount = 0;
         HBTotalWeeklyEligibleRentAmount = 0.0d;
         HBTotalWeeklyEligibleRentAmountNonZeroCount = 0;
@@ -923,10 +1100,10 @@ public class Summary {
         HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
 
         CTBTotalWeeklyHBEntitlement = 0.0d;
-        CTBTotalWeeklyHBEntitlementNonZeroCount = 0;
+        CTBTotalCount_WeeklyHBEntitlementNonZero = 0;
         CTBTotalWeeklyHBEntitlementZeroCount = 0;
         CTBTotalWeeklyCTBEntitlement = 0.0d;
-        CTBTotalWeeklyCTBEntitlementNonZeroCount = 0;
+        CTBTotalCount_WeeklyCTBEntitlementNonZero = 0;
         CTBTotalWeeklyCTBEntitlementZeroCount = 0;
         CTBTotalWeeklyEligibleRentAmount = 0.0d;
         CTBTotalWeeklyEligibleRentAmountNonZeroCount = 0;
@@ -943,25 +1120,21 @@ public class Summary {
         CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0.0d;
         CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
 
-        HBTotalCountEmployedClaimants = 0;
-        CTBTotalCountCTBEmployedClaimants = 0;
+        HBTotalCount_EmployedClaimants = 0;
+        CTBTotalCountEmployedClaimants = 0;
         HBTotalCountSelfEmployedClaimants = 0;
         CTBTotalCountSelfEmployedClaimants = 0;
         HBTotalCountStudentsClaimants = 0;
         CTBTotalCountStudentsClaimants = 0;
         HBTotalCountLHACases = 0;
-        CTBTotalCountLHACases = 0;
+        CTBTotalCount_LHACases = 0;
         for (int i = 1; i < nTT; i++) {
-            TotalCountTTClaimant1[i] = 0;
-            AllTotalDisabilityPremiumAwardByTTCount[i] = 0;
-            HBTotalDisabilityPremiumAwardByTTCount[i] = 0;
-            CTBTotalDisabilityPremiumAwardByTTCount[i] = 0;
-            AllTotalSevereDisabilityPremiumAwardByTTCount[i] = 0;
-            HBTotalSevereDisabilityPremiumAwardByTTCount[i] = 0;
-            CTBTotalSevereDisabilityPremiumAwardByTTCount[i] = 0;
-            AllTotalEnhancedDisabilityPremiumAwardByTTCount[i] = 0;
-            HBTotalEnhancedDisabilityPremiumAwardByTTCount[i] = 0;
-            CTBTotalEnhancedDisabilityPremiumAwardByTTCount[i] = 0;
+            TotalCount_TTClaimant1[i] = 0;
+            TotalCount_DisabilityPremiumAwardByTT[i] = 0;
+            TotalCount_SevereDisabilityPremiumAwardByTT[i] = 0;
+            TotalCount_DisabledChildPremiumAwardByTT[i] = 0;
+            TotalCount_EnhancedDisabilityPremiumAwardByTT[i] = 0;
+            TotalCount_DisabilityAwardByTT[i] = 0;
         }
         // All
         //AllCount0 = AllCount1;
@@ -995,48 +1168,64 @@ public class Summary {
         AllUOLinkedRecordCount1 = 0;
         CouncilLinkedRecordCount1 = 0;
         RSLLinkedRecordCount1 = 0;
+        // RentArrears
+        Total_RentArrears = 0.0d;
+        TotalCount_RentArrears = 0;
+        TotalCount_RentArrearsZero = 0;
+        TotalCount_RentArrearsNonZero = 0;
     }
 
     private void initCompare2TimesCounts() {
         // Compare 2 Times
         // General
-        TotalCountHBTTsToCTBTTs = 0;
-        TotalCountCTBTTsToHBTTs = 0;
+        TotalCount_HBTTsToCTBTTs = 0;
+        TotalCount_CTBTTsToHBTTs = 0;
         // General HB related
-        TotalCountHBTTsToHBTTs = 0;
-        TotalCountSocialTTsToPrivateDeregulatedTTs = 0;
-        TotalCountPrivateDeregulatedTTsToSocialTTs = 0;
-        TotalCountTT1ToPrivateDeregulatedTTs = 0;
-        TotalCountTT4ToPrivateDeregulatedTTs = 0;
-        TotalCountPrivateDeregulatedTTsToTT1 = 0;
-        TotalCountPrivateDeregulatedTTsToTT4 = 0;
-        TotalCountPostcodeChangeWithinSocialTTs = 0;
-        TotalCountPostcodeChangeWithinTT1 = 0;
-        TotalCountPostcodeChangeWithinTT4 = 0;
-        TotalCountPostcodeChangeWithinPrivateDeregulatedTTs = 0;
+        TotalCount_HBTTsToHBTTs = 0;
+        TotalCount_SocialTTsToPrivateDeregulatedTTs = 0;
+        TotalCount_PrivateDeregulatedTTsToSocialTTs = 0;
+        TotalCount_TT1ToPrivateDeregulatedTTs = 0;
+        TotalCount_TT4ToPrivateDeregulatedTTs = 0;
+        TotalCount_PrivateDeregulatedTTsToTT1 = 0;
+        TotalCount_PrivateDeregulatedTTsToTT4 = 0;
+        TotalCount_PostcodeChangeWithinSocialTTs = 0;
+        TotalCount_PostcodeChangeWithinTT1 = 0;
+        TotalCount_PostcodeChangeWithinTT4 = 0;
+        TotalCount_PostcodeChangeWithinPrivateDeregulatedTTs = 0;
         // General CTB related
         TotalCountSocialTTsToCTBTTs = 0;
-        TotalCountTT1ToCTBTTs = 0;
-        TotalCountTT4ToCTBTTs = 0;
-        TotalCountPrivateDeregulatedTTsToCTBTTs = 0;
-        TotalCountCTBTTsToSocialTTs = 0;
-        TotalCountCTBTTsToTT1 = 0;
-        TotalCountCTBTTsToTT4 = 0;
-        TotalCountCTBTTsToPrivateDeregulatedTTs = 0;
+        TotalCount_TT1ToCTBTTs = 0;
+        TotalCount_TT4ToCTBTTs = 0;
+        TotalCount_PrivateDeregulatedTTsToCTBTTs = 0;
+        TotalCount_CTBTTsToSocialTTs = 0;
+        TotalCount_CTBTTsToTT1 = 0;
+        TotalCount_CTBTTsToTT4 = 0;
+        TotalCount_CTBTTsToPrivateDeregulatedTTs = 0;
+        //
+        TotalCount_TT1ToTT4 = 0;
+        TotalCount_TT4ToTT1 = 0;
         // All
-        AllTotalCountTTChangeClaimant = 0;
+        AllTotalCount_TTChangeClaimant = 0;
+        AllTotalCountPostcode0ValidPostcode1Valid = 0;
+        AllTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged = 0;
+        AllTotalCountPostcode0ValidPostcode1ValidPostcodeChanged = 0;
+        AllTotalCountPostcode0ValidPostcode1NotValid = 0;
+        AllTotalCountPostcode0NotValidPostcode1Valid = 0;
+        AllTotalCountPostcode0NotValidPostcode1NotValid = 0;
+        AllTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged = 0;
+        AllTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged = 0;
         // HB
-        HBTotalCountTTChangeClaimant = 0;
+        HBTotalCount_TTChangeClaimant = 0;
         HBTotalCountPostcode0ValidPostcode1Valid = 0;
         HBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged = 0;
-        HBTotalCountPostcode0ValidPostcode1ValidPostcodeChange = 0;
+        HBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged = 0;
         HBTotalCountPostcode0ValidPostcode1NotValid = 0;
         HBTotalCountPostcode0NotValidPostcode1Valid = 0;
         HBTotalCountPostcode0NotValidPostcode1NotValid = 0;
         HBTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged = 0;
         HBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged = 0;
         // CTB
-        CTBTotalCountTTChangeClaimant = 0;
+        CTBTotalCount_TTChangeClaimant = 0;
         CTBTotalCountPostcode0ValidPostcode1Valid = 0;
         CTBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged = 0;
         CTBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged = 0;
@@ -1596,41 +1785,6 @@ public class Summary {
         return result;
     }
 
-    /**
-     * Loads SHBE Data from filename.
-     *
-     * @param filename
-     * @param paymentType
-     * @param handleOutOfMemoryError
-     * @return
-     */
-    public DW_SHBE_Collection getSHBEData(
-            String filename,
-            String paymentType,
-            boolean handleOutOfMemoryError) {
-        System.out.println("Loading SHBE from " + filename);
-        DW_SHBE_Collection result;
-        DW_SHBE_CollectionHandler handler;
-        handler = new DW_SHBE_CollectionHandler(
-                env,
-                filename);
-        result = new DW_SHBE_Collection(
-                //this.tDW_SHBE_Handler,
-                handler.getNextID(handleOutOfMemoryError),
-                handler,
-                DW_Files.getInputSHBEDir(),
-                filename,
-                paymentType,
-                false);
-//        Object[] result = tDW_SHBE_Handler.loadInputData(
-//                DW_Files.getInputSHBEDir(),
-//                filename,
-//                paymentType,
-//                false,
-//                this);
-        return result;
-    }
-
     private void addToSummaryCompare2Times(
             int nTT,
             int nEG,
@@ -1645,13 +1799,96 @@ public class Summary {
         double d;
         // All
         summary.put(
-                sAllTotalCountTTChangeClaimant,
-                Integer.toString(AllTotalCountTTChangeClaimant));
+                sAllTotalCount_TTChangeClaimant,
+                Integer.toString(AllTotalCount_TTChangeClaimant));
         d = AllCount0;
         if (d > 0) {
-            percentage = (AllTotalCountTTChangeClaimant * 100.0d) / d;
+            percentage = (AllTotalCount_TTChangeClaimant * 100.0d) / d;
             summary.put(
                     sAllPercentageOfAll_TTChangeClaimant,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // Postcode
+        summary.put(
+                sAllTotalCountPostcode0ValidPostcode1Valid,
+                Integer.toString(HBTotalCountPostcode0ValidPostcode1Valid + CTBTotalCountPostcode0ValidPostcode1Valid));
+        summary.put(
+                sAllTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged,
+                Integer.toString(AllTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged));
+        summary.put(
+                sAllTotalCountPostcode0ValidPostcode1ValidPostcodeChange,
+                Integer.toString(AllTotalCountPostcode0ValidPostcode1ValidPostcodeChanged));
+        summary.put(
+                sAllTotalCountPostcode0ValidPostcode1NotValid,
+                Integer.toString(AllTotalCountPostcode0ValidPostcode1NotValid));
+        summary.put(
+                sAllTotalCountPostcode0NotValidPostcode1Valid,
+                Integer.toString(AllTotalCountPostcode0NotValidPostcode1Valid));
+        summary.put(
+                sAllTotalCountPostcode0NotValidPostcode1NotValid,
+                Integer.toString(AllTotalCountPostcode0NotValidPostcode1NotValid));
+        summary.put(
+                sAllTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged,
+                Integer.toString(AllTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged));
+        summary.put(
+                sAllTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged,
+                Integer.toString(AllTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged));
+        if (d > 0) {
+            percentage = (AllTotalCountPostcode0ValidPostcode1Valid * 100.0d) / d;
+            summary.put(
+                    sAllPercentagePostcode0ValidPostcode1Valid,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+            percentage = (AllTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged * 100.0d) / d;
+            summary.put(
+                    sAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+            percentage = (AllTotalCountPostcode0ValidPostcode1ValidPostcodeChanged * 100.0d) / d;
+            summary.put(
+                    sAllPercentagePostcode0ValidPostcode1ValidPostcodeChange,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+            percentage = (AllTotalCountPostcode0ValidPostcode1NotValid * 100.0d) / d;
+            summary.put(
+                    sAllPercentagePostcode0ValidPostcode1NotValid,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+            percentage = (AllTotalCountPostcode0NotValidPostcode1Valid * 100.0d) / d;
+            summary.put(
+                    sAllPercentagePostcode0NotValidPostcode1Valid,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+            percentage = (AllTotalCountPostcode0NotValidPostcode1NotValid * 100.0d) / d;
+            summary.put(
+                    sAllPercentagePostcode0NotValidPostcode1NotValid,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+            percentage = (AllTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged * 100.0d) / d;
+            summary.put(
+                    sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+            percentage = (AllTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged * 100.0d) / d;
+            summary.put(
+                    sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
@@ -1661,30 +1898,30 @@ public class Summary {
         d = HBCount0;
         // Tenancy Type
         summary.put(
-                sHBTotalCountTTChangeClaimant,
-                Integer.toString(HBTotalCountTTChangeClaimant));
+                sHBTotalCount_TTChangeClaimant,
+                Integer.toString(HBTotalCount_TTChangeClaimant));
         summary.put(
-                sTotalCountHBTTsToCTBTTs,
-                Integer.toString(TotalCountHBTTsToCTBTTs));
+                sTotalCount_HBTTsToCTBTTs,
+                Integer.toString(TotalCount_HBTTsToCTBTTs));
         summary.put(
-                sTotalCountHBTTsToHBTTs,
-                Integer.toString(TotalCountHBTTsToHBTTs));
+                sTotalCount_HBTTsToHBTTs,
+                Integer.toString(TotalCount_HBTTsToHBTTs));
         if (d > 0) {
-            percentage = (HBTotalCountTTChangeClaimant * 100.0d) / d;
+            percentage = (HBTotalCount_TTChangeClaimant * 100.0d) / d;
             summary.put(
                     sHBPercentageOfHB_TTChangeClaimant,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountHBTTsToCTBTTs * 100.0d) / d;
+            percentage = (TotalCount_HBTTsToCTBTTs * 100.0d) / d;
             summary.put(
                     sPercentageOfHB_HBTTsToCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountHBTTsToHBTTs * 100.0d) / d;
+            percentage = (TotalCount_HBTTsToHBTTs * 100.0d) / d;
             summary.put(
                     sPercentageOfHB_HBTTsToHBTTs,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1701,7 +1938,7 @@ public class Summary {
                 Integer.toString(HBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged));
         summary.put(
                 sHBTotalCountPostcode0ValidPostcode1ValidPostcodeChange,
-                Integer.toString(HBTotalCountPostcode0ValidPostcode1ValidPostcodeChange));
+                Integer.toString(HBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged));
         summary.put(
                 sHBTotalCountPostcode0ValidPostcode1NotValid,
                 Integer.toString(HBTotalCountPostcode0ValidPostcode1NotValid));
@@ -1732,7 +1969,7 @@ public class Summary {
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (HBTotalCountPostcode0ValidPostcode1ValidPostcodeChange * 100.0d) / d;
+            percentage = (HBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged * 100.0d) / d;
             summary.put(
                     sHBPercentagePostcode0ValidPostcode1ValidPostcodeChange,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1775,53 +2012,53 @@ public class Summary {
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        // Private
+        // Private Deregulated
         summary.put(
-                sTotalCountPrivateDeregulatedTTsToCTBTTs,
-                Integer.toString(TotalCountPrivateDeregulatedTTsToCTBTTs));
+                sTotalCount_PrivateDeregulatedTTsToCTBTTs,
+                Integer.toString(TotalCount_PrivateDeregulatedTTsToCTBTTs));
         summary.put(
-                sTotalCountPrivateDeregulatedTTsToSocialTTs,
-                Integer.toString(TotalCountPrivateDeregulatedTTsToSocialTTs));
+                sTotalCount_PrivateDeregulatedTTsToSocialTTs,
+                Integer.toString(TotalCount_PrivateDeregulatedTTsToSocialTTs));
         summary.put(
-                sTotalCountPrivateDeregulatedTTsToTT1,
-                Integer.toString(TotalCountPrivateDeregulatedTTsToTT1));
+                sTotalCount_PrivateDeregulatedTTsToTT1,
+                Integer.toString(TotalCount_PrivateDeregulatedTTsToTT1));
         summary.put(
-                sTotalCountPrivateDeregulatedTTsToTT4,
-                Integer.toString(TotalCountPrivateDeregulatedTTsToTT4));
+                sTotalCount_PrivateDeregulatedTTsToTT4,
+                Integer.toString(TotalCount_PrivateDeregulatedTTsToTT4));
         summary.put(
-                sTotalCountPostcodeChangeWithinPrivateDeregulatedTTs,
-                Integer.toString(TotalCountPostcodeChangeWithinPrivateDeregulatedTTs));
-        d = TotalCountTTClaimant0[3] + TotalCountTTClaimant0[6];
+                sTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs,
+                Integer.toString(TotalCount_PostcodeChangeWithinPrivateDeregulatedTTs));
+        d = TotalCount_TTClaimant0[3] + TotalCount_TTClaimant0[6];
         if (d > 0) {
-            percentage = (TotalCountPrivateDeregulatedTTsToCTBTTs * 100.0d) / d;
+            percentage = (TotalCount_PrivateDeregulatedTTsToCTBTTs * 100.0d) / d;
             summary.put(
                     sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountPrivateDeregulatedTTsToSocialTTs * 100.0d) / d;
+            percentage = (TotalCount_PrivateDeregulatedTTsToSocialTTs * 100.0d) / d;
             summary.put(
                     sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountPrivateDeregulatedTTsToTT1 * 100.0d) / d;
+            percentage = (TotalCount_PrivateDeregulatedTTsToTT1 * 100.0d) / d;
             summary.put(
                     sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountPrivateDeregulatedTTsToTT4 * 100.0d) / d;
+            percentage = (TotalCount_PrivateDeregulatedTTsToTT4 * 100.0d) / d;
             summary.put(
                     sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountPostcodeChangeWithinPrivateDeregulatedTTs * 100.0d) / d;
+            percentage = (TotalCount_PostcodeChangeWithinPrivateDeregulatedTTs * 100.0d) / d;
             summary.put(
                     sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1829,67 +2066,95 @@ public class Summary {
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
+        // TT1
+        summary.put(
+                sTotalCount_TT1ToTT4,
+                Integer.toString(TotalCount_TT1ToTT4));
+        d = TotalCount_TTClaimant0[1];
+        if (d > 0) {
+            percentage = (TotalCount_TT1ToTT4 * 100.0d) / d;
+            summary.put(
+                    sPercentageOfTT1_TT1ToTT4,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // TT4
+        summary.put(
+                sTotalCount_TT4ToTT1,
+                Integer.toString(TotalCount_TT4ToTT1));
+        d = TotalCount_TTClaimant0[4];
+        if (d > 0) {
+            percentage = (TotalCount_TT4ToTT1 * 100.0d) / d;
+            summary.put(
+                    sPercentageOfTT4_TT4ToTT1,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
         // Social
-        d = TotalCountTTClaimant0[1] + TotalCountTTClaimant0[4];
+        d = TotalCount_TTClaimant0[1] + TotalCount_TTClaimant0[4];
         summary.put(
-                sTotalCountSocialTTsToPrivateDeregulatedTTs,
-                Integer.toString(TotalCountSocialTTsToPrivateDeregulatedTTs));
+                sTotalCount_SocialTTsToPrivateDeregulatedTTs,
+                Integer.toString(TotalCount_SocialTTsToPrivateDeregulatedTTs));
         summary.put(
-                sTotalCountPostcodeChangeWithinSocialTTs,
-                Integer.toString(TotalCountPostcodeChangeWithinSocialTTs));
+                sTotalCount_PostcodeChangeWithinSocialTTs,
+                Integer.toString(TotalCount_PostcodeChangeWithinSocialTTs));
         summary.put(
-                sTotalCountSocialTTsToCTBTTs,
+                sTotalCount_SocialTTsToCTBTTs,
                 Integer.toString(TotalCountSocialTTsToCTBTTs));
         if (d > 0) {
-            percentage = (TotalCountSocialTTsToPrivateDeregulatedTTs * 100.0d) / d;
+            percentage = (TotalCount_SocialTTsToPrivateDeregulatedTTs * 100.0d) / d;
             summary.put(
                     sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountPostcodeChangeWithinSocialTTs * 100.0d) / d;
+            percentage = (TotalCount_PostcodeChangeWithinSocialTTs * 100.0d) / d;
             summary.put(
-                    sPercentagePostcodeChangeWithinSocialTTs,
+                    sPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCountSocialTTsToCTBTTs * 100.0d) / d;
             summary.put(
-                    sPercentageSocialTTsToCTBTTs,
+                    sPercentageOfSocialTTs_SocialTTsToCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // TT1
-        d = TotalCountTTClaimant0[1];
+        d = TotalCount_TTClaimant0[1];
         summary.put(
-                sTotalCountTT1ToCTBTTs,
-                Integer.toString(TotalCountTT1ToCTBTTs));
+                sTotalCount_TT1ToCTBTTs,
+                Integer.toString(TotalCount_TT1ToCTBTTs));
         summary.put(
-                sTotalCountTT1ToPrivateDeregulatedTTs,
-                Integer.toString(TotalCountTT1ToPrivateDeregulatedTTs));
+                sTotalCount_TT1ToPrivateDeregulatedTTs,
+                Integer.toString(TotalCount_TT1ToPrivateDeregulatedTTs));
         summary.put(
-                sTotalCountPostcodeChangeWithinTT1,
-                Integer.toString(TotalCountPostcodeChangeWithinTT1));
+                sTotalCount_PostcodeChangeWithinTT1,
+                Integer.toString(TotalCount_PostcodeChangeWithinTT1));
         if (d > 0) {
-            percentage = (TotalCountTT1ToCTBTTs * 100.0d) / d;
+            percentage = (TotalCount_TT1ToCTBTTs * 100.0d) / d;
             summary.put(
                     sPercentageOfTT1_TT1ToCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountTT1ToPrivateDeregulatedTTs * 100.0d) / d;
+            percentage = (TotalCount_TT1ToPrivateDeregulatedTTs * 100.0d) / d;
             summary.put(
                     sPercentageOfTT1_TT1ToPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountPostcodeChangeWithinTT1 * 100.0d) / d;
+            percentage = (TotalCount_PostcodeChangeWithinTT1 * 100.0d) / d;
             summary.put(
                     sPercentageOfTT1_PostcodeChangeWithinTT1,
                     Generic_BigDecimal.roundIfNecessary(
@@ -1898,44 +2163,44 @@ public class Summary {
                             RoundingMode.HALF_UP).toPlainString());
         }
         // TT4
-        d = TotalCountTTClaimant0[4];
+        d = TotalCount_TTClaimant0[4];
         summary.put(
-                sTotalCountTT4ToCTBTTs,
-                Integer.toString(TotalCountTT4ToCTBTTs));
+                sTotalCount_TT4ToCTBTTs,
+                Integer.toString(TotalCount_TT4ToCTBTTs));
         summary.put(
-                sTotalCountTT4ToPrivateDeregulatedTTs,
-                Integer.toString(TotalCountTT4ToPrivateDeregulatedTTs));
+                sTotalCount_TT4ToPrivateDeregulatedTTs,
+                Integer.toString(TotalCount_TT4ToPrivateDeregulatedTTs));
         summary.put(
-                sTotalCountPostcodeChangeWithinTT1,
-                Integer.toString(TotalCountPostcodeChangeWithinTT1));
+                sTotalCount_PostcodeChangeWithinTT1,
+                Integer.toString(TotalCount_PostcodeChangeWithinTT1));
         summary.put(
-                sTotalCountPostcodeChangeWithinTT4,
-                Integer.toString(TotalCountPostcodeChangeWithinTT4));
+                sTotalCount_PostcodeChangeWithinTT4,
+                Integer.toString(TotalCount_PostcodeChangeWithinTT4));
         if (d > 0) {
-            percentage = (TotalCountTT4ToCTBTTs * 100.0d) / d;
+            percentage = (TotalCount_TT4ToCTBTTs * 100.0d) / d;
             summary.put(
-                    sPercentageTT4ToCTBTTs,
+                    sPercentageOfTT4_TT4ToCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountTT4ToPrivateDeregulatedTTs * 100.0d) / d;
+            percentage = (TotalCount_TT4ToPrivateDeregulatedTTs * 100.0d) / d;
             summary.put(
-                    sPercentageTT4ToPrivateDeregulatedTTs,
+                    sPercentageOfTT4_TT4ToPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountPostcodeChangeWithinTT1 * 100.0d) / d;
+            percentage = (TotalCount_PostcodeChangeWithinTT1 * 100.0d) / d;
             summary.put(
                     sPercentageOfTT1_PostcodeChangeWithinTT1,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountPostcodeChangeWithinTT4 * 100.0d) / d;
+            percentage = (TotalCount_PostcodeChangeWithinTT4 * 100.0d) / d;
             summary.put(
-                    sPercentagePostcodeChangeWithinTT4,
+                    sPercentageOfTT4_PostcodeChangeWithinTT4,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
@@ -1967,31 +2232,31 @@ public class Summary {
                 sCTBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged,
                 Integer.toString(CTBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged));
         summary.put(
-                sCTBTotalCountTTChangeClaimant,
-                Integer.toString(CTBTotalCountTTChangeClaimant));
+                sCTBTotalCount_TTChangeClaimant,
+                Integer.toString(CTBTotalCount_TTChangeClaimant));
         summary.put(
-                sCTBTotalCountTTChangeClaimant,
-                Integer.toString(CTBTotalCountTTChangeClaimant));
+                sCTBTotalCount_TTChangeClaimant,
+                Integer.toString(CTBTotalCount_TTChangeClaimant));
         summary.put(
                 sTotalCountCTBTTsToSocialTTs,
-                Integer.toString(TotalCountCTBTTsToSocialTTs));
+                Integer.toString(TotalCount_CTBTTsToSocialTTs));
         summary.put(
-                sTotalCountCTBTTsToTT1,
-                Integer.toString(TotalCountCTBTTsToTT1));
+                sTotalCount_CTBTTsToTT1,
+                Integer.toString(TotalCount_CTBTTsToTT1));
         summary.put(
-                sTotalCountCTBTTsToTT4,
-                Integer.toString(TotalCountCTBTTsToTT4));
+                sTotalCount_CTBTTsToTT4,
+                Integer.toString(TotalCount_CTBTTsToTT4));
         summary.put(
-                sTotalCountCTBTTsToPrivateDeregulatedTTs,
-                Integer.toString(TotalCountCTBTTsToPrivateDeregulatedTTs));
+                sTotalCount_CTBTTsToPrivateDeregulatedTTs,
+                Integer.toString(TotalCount_CTBTTsToPrivateDeregulatedTTs));
         summary.put(
-                sTotalCountCTBTTsToHBTTs,
-                Integer.toString(TotalCountCTBTTsToHBTTs));
-        d = TotalCountTTClaimant0[5] + TotalCountTTClaimant0[7];
+                sTotalCount_CTBTTsToHBTTs,
+                Integer.toString(TotalCount_CTBTTsToHBTTs));
+        d = TotalCount_TTClaimant0[5] + TotalCount_TTClaimant0[7];
         if (d > 0) {
             percentage = (CTBTotalCountPostcode0ValidPostcode1Valid * 100.0d) / d;
             summary.put(
-                    sCTBPercentagePostcode0ValidPostcode1Valid,
+                    sCTBPercentageOfCTB_Postcode0ValidPostcode1Valid,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
@@ -2045,51 +2310,51 @@ public class Summary {
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (CTBTotalCountTTChangeClaimant * 100.0d) / d;
+            percentage = (CTBTotalCount_TTChangeClaimant * 100.0d) / d;
             summary.put(
-                    sCTBPercentageTTChangeClaimant,
+                    sCTBPercentageOfCTB_TTChangeClaimant,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (CTBTotalCountTTChangeClaimant * 100.0d) / d;
+            percentage = (CTBTotalCount_TTChangeClaimant * 100.0d) / d;
             summary.put(
-                    sCTBPercentageTTChangeClaimant,
+                    sCTBPercentageOfCTB_TTChangeClaimant,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountCTBTTsToSocialTTs * 100.0d) / d;
+            percentage = (TotalCount_CTBTTsToSocialTTs * 100.0d) / d;
             summary.put(
-                    sPercentageCTBTTsToSocialTTs,
+                    sPercentageOfCTB_CTBTTsToSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountCTBTTsToTT1 * 100.0d) / d;
+            percentage = (TotalCount_CTBTTsToTT1 * 100.0d) / d;
             summary.put(
-                    sPercentageCTBTTsToTT1,
+                    sPercentageOfCTB_CTBTTsToTT1,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountCTBTTsToTT4 * 100.0d) / d;
+            percentage = (TotalCount_CTBTTsToTT4 * 100.0d) / d;
             summary.put(
-                    sPercentageCTBTTsToTT4,
+                    sPercentageOfCTB_CTBTTsToTT4,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountCTBTTsToPrivateDeregulatedTTs * 100.0d) / d;
+            percentage = (TotalCount_CTBTTsToPrivateDeregulatedTTs * 100.0d) / d;
             summary.put(
-                    sPercentageCTBTTsToPrivateDeregulatedTTs,
+                    sPercentageOfCTB_CTBTTsToPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
-            percentage = (TotalCountCTBTTsToHBTTs * 100.0d) / d;
+            percentage = (TotalCount_CTBTTsToHBTTs * 100.0d) / d;
             summary.put(
-                    sPercentageCTBTTsToHBTTs,
+                    sPercentageOfCTB_CTBTTsToHBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
@@ -2097,34 +2362,41 @@ public class Summary {
         }
     }
 
-    private void addToSummarySingleTimeRentArrears0(
+    private void addToSummarySingleTimeRentArrears(
             HashMap<String, String> summary) {
         summary.put(
-                sTotalRentArrears,
+                sTotal_RentArrears,
                 "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
-                        BigDecimal.valueOf(totalRentArrears),
+                        BigDecimal.valueOf(Total_RentArrears),
                         2, RoundingMode.HALF_UP));
-        if (rentArrearsCount != 0.0d) {
+        summary.put(
+                sTotalCount_RentArrears,
+                "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
+                        BigDecimal.valueOf(TotalCount_RentArrears),
+                        2, RoundingMode.HALF_UP));
+        summary.put(
+                sTotalCount_RentArrearsNonZero,
+                "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
+                        BigDecimal.valueOf(TotalCount_RentArrearsNonZero),
+                        2, RoundingMode.HALF_UP));
+        summary.put(
+                sTotalCount_RentArrearsZero,
+                "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
+                        BigDecimal.valueOf(TotalCount_RentArrearsZero),
+                        2, RoundingMode.HALF_UP));
+        if (TotalCount_RentArrears != 0.0d) {
             summary.put(
-                    sAverageRentArrears,
+                    sAverage_RentArrears,
                     "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
-                            BigDecimal.valueOf(totalRentArrears / rentArrearsCount),
+                            BigDecimal.valueOf(Total_RentArrears / (double) TotalCount_RentArrears),
                             2, RoundingMode.HALF_UP));
-        } else {
-            summary.put(
-                    sAverageRentArrears,
-                    s0);
         }
-        if (greaterThan0RentArrearsCount != 0.0d) {
+        if (TotalCount_RentArrearsNonZero != 0.0d) {
             summary.put(
-                    sGreaterThan0AverageRentArrears,
+                    sAverage_NonZeroRentArrears,
                     "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
-                            BigDecimal.valueOf(totalRentArrears / greaterThan0RentArrearsCount),
+                            BigDecimal.valueOf(Total_RentArrears / TotalCount_RentArrearsNonZero),
                             2, RoundingMode.HALF_UP));
-        } else {
-            summary.put(
-                    sGreaterThan0AverageRentArrears,
-                    s0);
         }
     }
 
@@ -2133,15 +2405,30 @@ public class Summary {
             int nEG,
             int nPSI,
             HashMap<String, String> summary) {
+        // Set the last results
+        AllCount0 = AllCount1;
+        HBCount0 = HBCount1;
+        CTBCount0 = CTBCount1;
+        AllUOCount0 = AllUOCount1;
+        CouncilCount0 = CouncilCount1;
+        RSLCount0 = RSLCount1;
+        CouncilLinkedRecordCount0 = CouncilLinkedRecordCount1;
+        RSLLinkedRecordCount0 = RSLLinkedRecordCount1;
+        AllUOLinkedRecordCount0 = AllUOLinkedRecordCount1;
+//        for (int TT = 0; TT < nTT; TT++) {
+//            AllTotalCountTTClaimant0[TT] = AllTotalCountTTClaimant1[TT];
+//        }
+        System.arraycopy(TotalCount_TTClaimant1, 0, TotalCount_TTClaimant0, 0, nTT);
+
         addToSummarySingleTime0(summary);
         addToSummarySingleTimeDisability(nTT, summary);
-        addToSummarySingleTimeDemographics(nEG, summary);
+        addToSummarySingleTimeEthnicity(nEG, summary);
         addToSummarySingleTimeTT(nTT, summary);
         addToSummarySingleTimePSI(nTT, nPSI, summary);
         addToSummarySingleTime1(summary);
-        AllCount0 = AllCount1;
-        HBCount0 = CTBCount1;
-        CTBCount0 = CTBCount1;
+//        AllCount0 = AllCount1;
+//        HBCount0 = HBCount1;
+//        CTBCount0 = CTBCount1;
     }
 
     private void addToSummarySingleTime0(
@@ -2204,92 +2491,87 @@ public class Summary {
             int nPSI,
             HashMap<String, String> summary) {
         double ave;
+        double d;
         // PassportStandardIndicator
         for (int i = 0; i < nPSI; i++) {
             summary.put(
-                    sAllTotalCountPSI[i],
-                    Long.toString(TotalAllPSICount[i]));
-            if (AllCount1 > 0) {
-                ave = (TotalAllPSICount[i] * 100.0d) / (double) AllCount1;
+                    sAllTotalCount_PSI[i],
+                    Long.toString(AllTotalCount_PSI[i]));
+            d = AllCount1;
+            if (d > 0) {
+                ave = (AllTotalCount_PSI[i] * 100.0d) / d;
                 summary.put(
-                        sAllPercentagePSI[i],
+                        sAllPercentageOfAll_PSI[i],
                         Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(ave), decimalPlacePrecisionForAverage, RoundingMode.HALF_UP).toPlainString());
-            } else {
-                summary.put(
-                        sAllPercentagePSI[i],
-                        "0.0");
+                                BigDecimal.valueOf(ave),
+                                decimalPlacePrecisionForAverage,
+                                RoundingMode.HALF_UP).toPlainString());
             }
             summary.put(
-                    sHBTotalCountPSI[i],
-                    Long.toString(TotalHBPSICount[i]));
-            if (HBCount1 > 0) {
-                ave = (TotalHBPSICount[i] * 100.0d) / (double) HBCount1;
+                    sHBTotalCount_PSI[i],
+                    Long.toString(HBTotalCount_PSI[i]));
+            d = HBCount1;
+            if (d > 0) {
+                ave = (HBTotalCount_PSI[i] * 100.0d) / d;
                 summary.put(
-                        sHBPercentagePSI[i],
+                        sHBPercentageOfHB_PSI[i],
                         Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(ave), decimalPlacePrecisionForAverage, RoundingMode.HALF_UP).toPlainString());
-            } else {
-                summary.put(
-                        sHBPercentagePSI[i],
-                        "0.0");
+                                BigDecimal.valueOf(ave),
+                                decimalPlacePrecisionForAverage,
+                                RoundingMode.HALF_UP).toPlainString());
             }
             summary.put(
                     sCTBTotalCountPSI[i],
-                    Long.toString(TotalCTBPSICount[i]));
-            if (CTBCount1 > 0) {
-                ave = (TotalCTBPSICount[i] * 100.0d) / (double) CTBCount1;
+                    Long.toString(CTBTotalCount_PSI[i]));
+            d = CTBCount1;
+            if (d > 0) {
+                ave = (CTBTotalCount_PSI[i] * 100.0d) / d;
                 summary.put(
-                        sCTBPercentagePSI[i],
+                        sCTBPercentageOfCTB_PSI[i],
                         Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(ave), decimalPlacePrecisionForAverage, RoundingMode.HALF_UP).toPlainString());
-            } else {
-                summary.put(
-                        sCTBPercentagePSI[i],
-                        s0);
+                                BigDecimal.valueOf(ave),
+                                decimalPlacePrecisionForAverage,
+                                RoundingMode.HALF_UP).toPlainString());
             }
             for (int j = 1; j < nTT; j++) {
                 summary.put(
-                        sAllTotalCountPSIByTT[i][j],
-                        Long.toString(TotalAllPSIByTTCount[i][j]));
-                if (AllCount1 > 0) {
-                    ave = (TotalAllPSIByTTCount[i][j] * 100.0d) / (double) AllCount1;
+                        sAllTotalCount_PSIByTT[i][j],
+                        Long.toString(AllTotalCount_PSIByTT[i][j]));
+                d = AllCount1;
+                if (d > 0) {
+                    ave = (AllTotalCount_PSIByTT[i][j] * 100.0d) / d;
                     summary.put(
-                            sAllPercentagePSIByTT[i][j],
+                            sAllPercentageOfAll_PSIByTT[i][j],
                             Generic_BigDecimal.roundIfNecessary(
-                                    BigDecimal.valueOf(ave), decimalPlacePrecisionForAverage, RoundingMode.HALF_UP).toPlainString());
-                } else {
-                    summary.put(
-                            sAllPercentagePSIByTT[i][j],
-                            s0);
+                                    BigDecimal.valueOf(ave),
+                                    decimalPlacePrecisionForAverage,
+                                    RoundingMode.HALF_UP).toPlainString());
                 }
                 summary.put(
-                        sHBTotalCountPSIByTT[i][j],
-                        Long.toString(TotalHBPSIByTTCount[i][j]));
-                if (HBCount1 > 0) {
-                    ave = (TotalHBPSIByTTCount[i][j] * 100.0d) / (double) HBCount1;
+                        sHBTotalCount_PSIByTT[i][j],
+                        Long.toString(HBTotalCount_PSIByTT[i][j]));
+                d = HBCount1;
+                if (d > 0) {
+                    ave = (HBTotalCount_PSIByTT[i][j] * 100.0d) / d;
                     summary.put(
-                            sHBPercentagePSIByTT[i][j],
+                            sHBPercentageOfHB_PSIByTT[i][j],
                             Generic_BigDecimal.roundIfNecessary(
-                                    BigDecimal.valueOf(ave), decimalPlacePrecisionForAverage, RoundingMode.HALF_UP).toPlainString());
-                } else {
-                    summary.put(
-                            sHBPercentagePSIByTT[i][j],
-                            s0);
+                                    BigDecimal.valueOf(ave),
+                                    decimalPlacePrecisionForAverage,
+                                    RoundingMode.HALF_UP).toPlainString());
                 }
                 summary.put(
-                        sCTBTotalCountPSIByTT[i][j],
-                        Long.toString(TotalCTBPSIByTTCount[i][j]));
-                if (CTBCount1 > 0) {
-                    ave = (TotalCTBPSIByTTCount[i][j] * 100.0d) / (double) CTBCount1;
+                        sCTBTotalCount_PSIByTT[i][j],
+                        Long.toString(CTBTotalCount_PSIByTT[i][j]));
+                d = CTBCount1;
+                if (d > 0) {
+                    ave = (CTBTotalCount_PSIByTT[i][j] * 100.0d) / d;
                     summary.put(
-                            sCTBPercentagePSIByTT[i][j],
+                            sCTBPercentageOfCTB_PSIByTT[i][j],
                             Generic_BigDecimal.roundIfNecessary(
-                                    BigDecimal.valueOf(ave), decimalPlacePrecisionForAverage, RoundingMode.HALF_UP).toPlainString());
-                } else {
-                    summary.put(
-                            sCTBPercentagePSIByTT[i][j],
-                            s0);
+                                    BigDecimal.valueOf(ave),
+                                    decimalPlacePrecisionForAverage,
+                                    RoundingMode.HALF_UP).toPlainString());
                 }
             }
         }
@@ -2299,114 +2581,816 @@ public class Summary {
             int nTT,
             HashMap<String, String> summary) {
         double percentage;
+        double d;
+        int t;
+        // DisabilityAward
+        t = TotalCount_DisabilityAwardByTT[1]
+                + TotalCount_DisabilityAwardByTT[2]
+                + TotalCount_DisabilityAwardByTT[3]
+                + TotalCount_DisabilityAwardByTT[4]
+                + TotalCount_DisabilityAwardByTT[5]
+                + TotalCount_DisabilityAwardByTT[6]
+                + TotalCount_DisabilityAwardByTT[7]
+                + TotalCount_DisabilityAwardByTT[8]
+                + TotalCount_DisabilityAwardByTT[9];
+        summary.put(
+                sTotalCount_DisabilityAward,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabilityAward,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityAwardHBTTs
+        t = TotalCount_DisabilityAwardByTT[1]
+                + TotalCount_DisabilityAwardByTT[2]
+                + TotalCount_DisabilityAwardByTT[3]
+                + TotalCount_DisabilityAwardByTT[4]
+                + TotalCount_DisabilityAwardByTT[6]
+                + TotalCount_DisabilityAwardByTT[8]
+                + TotalCount_DisabilityAwardByTT[9];
+        summary.put(
+                sTotalCount_DisabilityAwardHBTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabilityAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_DisabilityAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityAwardByTT
+        t = TotalCount_DisabilityAwardByTT[5]
+                + TotalCount_DisabilityAwardByTT[7];
+        summary.put(
+                sTotalCount_DisabilityAwardCTBTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabilityAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = CTBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfCTB_DisabilityAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityAwardSocialTTs
+        t = TotalCount_DisabilityAwardByTT[1] + TotalCount_DisabilityAwardByTT[4];
+        summary.put(
+                sTotalCount_DisabilityAwardSocialTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabilityAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_DisabilityAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityAwardPrivateDeregulatedTTs
+        t = TotalCount_DisabilityAwardByTT[3] + TotalCount_DisabilityAwardByTT[6];
+        summary.put(
+                sTotalCount_DisabilityAwardPrivateDeregulatedTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityPremiumAward
+        t = TotalCount_DisabilityPremiumAwardByTT[1]
+                + TotalCount_DisabilityPremiumAwardByTT[2]
+                + TotalCount_DisabilityPremiumAwardByTT[3]
+                + TotalCount_DisabilityPremiumAwardByTT[4]
+                + TotalCount_DisabilityPremiumAwardByTT[5]
+                + TotalCount_DisabilityPremiumAwardByTT[6]
+                + TotalCount_DisabilityPremiumAwardByTT[7]
+                + TotalCount_DisabilityPremiumAwardByTT[8]
+                + TotalCount_DisabilityPremiumAwardByTT[9];
+        summary.put(
+                sTotalCount_DisabilityPremiumAward,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabilityPremiumAward,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityPremiumAwardHBTTs
+        t = TotalCount_DisabilityPremiumAwardByTT[1]
+                + TotalCount_DisabilityPremiumAwardByTT[2]
+                + TotalCount_DisabilityPremiumAwardByTT[3]
+                + TotalCount_DisabilityPremiumAwardByTT[4]
+                + TotalCount_DisabilityPremiumAwardByTT[6]
+                + TotalCount_DisabilityPremiumAwardByTT[8]
+                + TotalCount_DisabilityPremiumAwardByTT[9];
+        summary.put(
+                sTotalCount_DisabilityPremiumAwardHBTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabilityPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_DisabilityPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityPremiumAwardCTBTTs
+        t = TotalCount_DisabilityPremiumAwardByTT[5]
+                + TotalCount_DisabilityPremiumAwardByTT[7];
+        summary.put(
+                sTotalCount_DisabilityPremiumAwardCTBTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabilityPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = CTBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfCTB_DisabilityPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityPremiumAwardSocialTTs
+        t = TotalCount_DisabilityPremiumAwardByTT[1] + TotalCount_DisabilityPremiumAwardByTT[4];
+        summary.put(
+                sTotalCount_DisabilityPremiumAwardSocialTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_DisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityPremiumAwardByPrivateDeregulatedTTs
+        t = TotalCount_DisabilityPremiumAwardByTT[3] + TotalCount_DisabilityPremiumAwardByTT[6];
+        summary.put(
+                sTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // SevereDisabilityPremiumAward
+        t = TotalCount_SevereDisabilityPremiumAwardByTT[1]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[2]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[3]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[4]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[5]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[6]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[7]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[8]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[9];
+        summary.put(
+                sTotalCount_SevereDisabilityPremiumAward,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_SevereDisabilityPremiumAward,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // SevereSevereDisabilityPremiumAwardHBTTs
+        t = TotalCount_SevereDisabilityPremiumAwardByTT[1]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[2]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[3]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[4]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[6]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[8]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[9];
+        summary.put(
+                sTotalCount_SevereDisabilityPremiumAwardHBTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_SevereDisabilityPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_SevereDisabilityPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // SevereDisabilityPremiumAwardCTBTTs
+        t = TotalCount_SevereDisabilityPremiumAwardByTT[5]
+                + TotalCount_SevereDisabilityPremiumAwardByTT[7];
+        summary.put(
+                sTotalCount_SevereDisabilityPremiumAwardCTBTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = CTBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // SevereDisabilityPremiumAwardSocialTTs
+        t = TotalCount_SevereDisabilityPremiumAwardByTT[1] + TotalCount_SevereDisabilityPremiumAwardByTT[4];
+        summary.put(
+                sTotalCount_SevereDisabilityPremiumAwardSocialTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // SevereDisabilityPremiumAwardPrivateDeregulatedTTs
+        t = TotalCount_SevereDisabilityPremiumAwardByTT[3] + TotalCount_SevereDisabilityPremiumAwardByTT[6];
+        summary.put(
+                sTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabledChildPremiumAward
+        t = TotalCount_DisabledChildPremiumAwardByTT[1]
+                + TotalCount_DisabledChildPremiumAwardByTT[2]
+                + TotalCount_DisabledChildPremiumAwardByTT[3]
+                + TotalCount_DisabledChildPremiumAwardByTT[4]
+                + TotalCount_DisabledChildPremiumAwardByTT[5]
+                + TotalCount_DisabledChildPremiumAwardByTT[6]
+                + TotalCount_DisabledChildPremiumAwardByTT[7]
+                + TotalCount_DisabledChildPremiumAwardByTT[8]
+                + TotalCount_DisabledChildPremiumAwardByTT[9];
+        summary.put(
+                sTotalCount_DisabledChildPremiumAward,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabledChildPremiumAward,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // SevereDisabledChildPremiumAwardHBTTs
+        t = TotalCount_DisabledChildPremiumAwardByTT[1]
+                + TotalCount_DisabledChildPremiumAwardByTT[2]
+                + TotalCount_DisabledChildPremiumAwardByTT[3]
+                + TotalCount_DisabledChildPremiumAwardByTT[4]
+                + TotalCount_DisabledChildPremiumAwardByTT[6]
+                + TotalCount_DisabledChildPremiumAwardByTT[8]
+                + TotalCount_DisabledChildPremiumAwardByTT[9];
+        summary.put(
+                sTotalCount_DisabledChildPremiumAwardHBTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabledChildPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_DisabledChildPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabledChildPremiumAwardCTBTTs
+        t = TotalCount_DisabledChildPremiumAwardByTT[5]
+                + TotalCount_DisabledChildPremiumAwardByTT[7];
+        summary.put(
+                sTotalCount_DisabledChildPremiumAwardCTBTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabledChildPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = CTBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfCTB_DisabledChildPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabledChildPremiumAwardSocialTTs
+        t = TotalCount_DisabledChildPremiumAwardByTT[1] + TotalCount_DisabledChildPremiumAwardByTT[4];
+        summary.put(
+                sTotalCount_DisabledChildPremiumAwardSocialTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabledChildPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_DisabledChildPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabledChildPremiumAwardPrivateDeregulatedTTs
+        t = TotalCount_DisabledChildPremiumAwardByTT[3] + TotalCount_DisabledChildPremiumAwardByTT[6];
+        summary.put(
+                sTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // EnhancedDisabilityPremiumAward
+        t = TotalCount_EnhancedDisabilityPremiumAwardByTT[1]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[2]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[3]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[4]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[5]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[6]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[7]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[8]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[9];
+        summary.put(
+                sTotalCount_EnhancedDisabilityPremiumAward,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_EnhancedDisabilityPremiumAward,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // EnhancedDisabilityPremiumAwardHBTTs
+        t = TotalCount_EnhancedDisabilityPremiumAwardByTT[1]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[2]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[3]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[4]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[6]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[8]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[9];
+        summary.put(
+                sTotalCount_EnhancedDisabilityPremiumAwardHBTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // EnhancedDisabilityPremiumAwardCTBTTs
+        t = TotalCount_EnhancedDisabilityPremiumAwardByTT[5]
+                + TotalCount_EnhancedDisabilityPremiumAwardByTT[7];
+        summary.put(
+                sTotalCount_EnhancedDisabilityPremiumAwardCTBTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = CTBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // EnhancedDisabilityPremiumAwardSocialTTs
+        t = TotalCount_EnhancedDisabilityPremiumAwardByTT[1] + TotalCount_EnhancedDisabilityPremiumAwardByTT[4];
+        summary.put(
+                sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs
+        t = TotalCount_EnhancedDisabilityPremiumAwardByTT[3] + TotalCount_EnhancedDisabilityPremiumAwardByTT[6];
+        summary.put(
+                sTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                Integer.toString(t));
+        d = AllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = HBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // ByTT
         for (int i = 0; i < nTT; i++) {
             summary.put(
-                    sAllTotalCountDisabilityPremiumAwardByTT[i],
-                    Integer.toString(AllTotalDisabilityPremiumAwardByTTCount[i]));
+                    sAllTotalCount_DisabilityAwardByTT[i],
+                    Integer.toString(TotalCount_DisabilityAwardByTT[i]));
+            summary.put(
+                    sAllTotalCount_DisabilityPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_DisabilityPremiumAwardByTT[i]));
             summary.put(
                     sAllTotalCountSevereDisabilityPremiumAwardByTT[i],
-                    Integer.toString(AllTotalSevereDisabilityPremiumAwardByTTCount[i]));
+                    Integer.toString(TotalCount_SevereDisabilityPremiumAwardByTT[i]));
             summary.put(
-                    sAllTotalCountEnhancedDisabilityPremiumAwardByTT[i],
-                    Integer.toString(AllTotalEnhancedDisabilityPremiumAwardByTTCount[i]));
-            if (AllCount1 > 0) {
-                percentage = (AllTotalDisabilityPremiumAwardByTTCount[i] * 100.0d) / (double) AllCount1;
+                    sAllTotalCountDisabledChildPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_DisabledChildPremiumAwardByTT[i]));
+            summary.put(
+                    sAllTotalCount_EnhancedDisabilityPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+            d = AllCount1;
+            if (d > 0) {
+                percentage = (TotalCount_DisabilityAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sAllPercentageDisabilityPremiumAwardByTT[i],
+                        sAllPercentageOfAll_DisabilityAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(percentage), decimalPlacePrecisionForPercentage, RoundingMode.HALF_UP).toPlainString());
-                percentage = (AllTotalSevereDisabilityPremiumAwardByTTCount[i] * 100.0d) / (double) AllCount1;
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+                percentage = (TotalCount_DisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sAllPercentageSevereDisabilityPremiumAwardByTT[i],
+                        sAllPercentageOfAll_DisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(percentage), decimalPlacePrecisionForPercentage, RoundingMode.HALF_UP).toPlainString());
-                percentage = (AllTotalEnhancedDisabilityPremiumAwardByTTCount[i] * 100.0d) / (double) AllCount1;
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+                percentage = (TotalCount_SevereDisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sAllPercentageEnhancedDisabilityPremiumAwardByTT[i],
+                        sAllPercentageOfAll_SevereDisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(percentage), decimalPlacePrecisionForPercentage, RoundingMode.HALF_UP).toPlainString());
-            } else {
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+                percentage = (TotalCount_DisabledChildPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sAllPercentageDisabilityPremiumAwardByTT[i],
-                        "0.0");
+                        sAllPercentageOfAll_DisabledChildPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+                percentage = (TotalCount_EnhancedDisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sAllPercentageSevereDisabilityPremiumAwardByTT[i],
-                        "0.0");
-                summary.put(
-                        sAllPercentageEnhancedDisabilityPremiumAwardByTT[i],
-                        "0.0");
+                        sAllPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
             }
             summary.put(
-                    sHBTotalCountDisabilityPremiumAwardByTT[i],
-                    Integer.toString(HBTotalDisabilityPremiumAwardByTTCount[i]));
+                    sHBTotalCount_DisabilityAwardByTT[i],
+                    Integer.toString(TotalCount_DisabilityAwardByTT[i]));
             summary.put(
-                    sHBTotalCountSevereDisabilityPremiumAwardByTT[i],
-                    Integer.toString(HBTotalSevereDisabilityPremiumAwardByTTCount[i]));
+                    sHBTotalCount_DisabilityPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_DisabilityPremiumAwardByTT[i]));
             summary.put(
-                    sHBTotalCountEnhancedDisabilityPremiumAwardByTT[i],
-                    Integer.toString(HBTotalEnhancedDisabilityPremiumAwardByTTCount[i]));
-            if (HBCount1 > 0) {
-                percentage = (HBTotalDisabilityPremiumAwardByTTCount[i] * 100.0d) / (double) HBCount1;
+                    sHBTotalCount_SevereDisabilityPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_SevereDisabilityPremiumAwardByTT[i]));
+            summary.put(
+                    sHBTotalCount_DisabledChildPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_DisabledChildPremiumAwardByTT[i]));
+            summary.put(
+                    sHBTotalCount_EnhancedDisabilityPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+            d = HBCount1;
+            if (d > 0) {
+                percentage = (TotalCount_DisabilityAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sHBPercentageDisabilityPremiumAwardByTT[i],
+                        sHBPercentageOfHB_DisabilityAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(percentage), decimalPlacePrecisionForPercentage, RoundingMode.HALF_UP).toPlainString());
-                percentage = (HBTotalSevereDisabilityPremiumAwardByTTCount[i] * 100.0d) / (double) HBCount1;
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+                percentage = (TotalCount_DisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sHBPercentageSevereDisabilityPremiumAwardByTT[i],
+                        sHBPercentageOfHB_DisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(percentage), decimalPlacePrecisionForPercentage, RoundingMode.HALF_UP).toPlainString());
-                percentage = (HBTotalEnhancedDisabilityPremiumAwardByTTCount[i] * 100.0d) / (double) HBCount1;
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+                percentage = (TotalCount_SevereDisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sHBPercentageEnhancedDisabilityPremiumAwardByTT[i],
+                        sHBPercentageOfHB_SevereDisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(percentage), decimalPlacePrecisionForPercentage, RoundingMode.HALF_UP).toPlainString());
-            } else {
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+                percentage = (TotalCount_DisabledChildPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sHBPercentageDisabilityPremiumAwardByTT[i],
-                        "0.0");
+                        sHBPercentageOfHB_DisabledChildPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+                percentage = (TotalCount_EnhancedDisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sHBPercentageSevereDisabilityPremiumAwardByTT[i],
-                        "0.0");
-                summary.put(
-                        sHBPercentageEnhancedDisabilityPremiumAwardByTT[i],
-                        "0.0");
+                        sHBPercentageOfHB_EnhancedDisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
             }
             summary.put(
-                    sCTBTotalCountDisabilityPremiumAwardByTT[i],
-                    Integer.toString(CTBTotalDisabilityPremiumAwardByTTCount[i]));
+                    sCTBTotalCount_DisabilityAwardByTT[i],
+                    Integer.toString(TotalCount_DisabilityAwardByTT[i]));
             summary.put(
-                    sCTBTotalCountSevereDisabilityPremiumAwardByTT[i],
-                    Integer.toString(CTBTotalSevereDisabilityPremiumAwardByTTCount[i]));
+                    sCTBTotalCount_DisabilityPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_DisabilityPremiumAwardByTT[i]));
             summary.put(
-                    sCTBTotalCountEnhancedDisabilityPremiumAwardByTT[i],
-                    Integer.toString(CTBTotalEnhancedDisabilityPremiumAwardByTTCount[i]));
-            if (CTBCount1 > 0) {
-                percentage = (CTBTotalDisabilityPremiumAwardByTTCount[i] * 100.0d) / (double) CTBCount1;
+                    sCTBTotalCount_SevereDisabilityPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_SevereDisabilityPremiumAwardByTT[i]));
+            summary.put(
+                    sCTBTotalCount_DisabledChildPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_DisabledChildPremiumAwardByTT[i]));
+            summary.put(
+                    sCTBTotalCount_EnhancedDisabilityPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+            d = CTBCount1;
+            if (d > 0) {
+                percentage = (TotalCount_DisabilityAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sCTBPercentageDisabilityPremiumAwardByTT[i],
+                        sCTBPercentageOfCTB_DisabilityAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+                percentage = (TotalCount_DisabilityPremiumAwardByTT[i] * 100.0d) / d;
+                summary.put(
+                        sCTBPercentageOfCTB_DisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+                percentage = (TotalCount_SevereDisabilityPremiumAwardByTT[i] * 100.0d) / d;
+                summary.put(
+                        sCTBPercentageOfCTB_SevereDisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+                percentage = (TotalCount_DisabledChildPremiumAwardByTT[i] * 100.0d) / d;
+                summary.put(
+                        sCTBPercentageOfCTB_DisabledChildPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+                percentage = (TotalCount_EnhancedDisabilityPremiumAwardByTT[i] * 100.0d) / d;
+                summary.put(
+                        sCTBPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage), decimalPlacePrecisionForPercentage, RoundingMode.HALF_UP).toPlainString());
-                percentage = (CTBTotalSevereDisabilityPremiumAwardByTTCount[i] * 100.0d) / (double) CTBCount1;
-                summary.put(
-                        sCTBPercentageSevereDisabilityPremiumAwardByTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(percentage), decimalPlacePrecisionForPercentage, RoundingMode.HALF_UP).toPlainString());
-                percentage = (CTBTotalEnhancedDisabilityPremiumAwardByTTCount[i] * 100.0d) / (double) CTBCount1;
-                summary.put(
-                        sCTBPercentageEnhancedDisabilityPremiumAwardByTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(percentage), decimalPlacePrecisionForPercentage, RoundingMode.HALF_UP).toPlainString());
-            } else {
-                summary.put(
-                        sCTBPercentageDisabilityPremiumAwardByTT[i],
-                        "0.0");
-                summary.put(
-                        sCTBPercentageSevereDisabilityPremiumAwardByTT[i],
-                        "0.0");
-                summary.put(
-                        sCTBPercentageEnhancedDisabilityPremiumAwardByTT[i],
-                        "0.0");
             }
         }
     }
@@ -2414,6 +3398,7 @@ public class Summary {
     private void addToSummarySingleTime1(
             HashMap<String, String> summary) {
         double ave;
+        double d;
         // WeeklyHBEntitlement
         summary.put(
                 sTotalWeeklyHBEntitlement,
@@ -2424,8 +3409,9 @@ public class Summary {
         summary.put(
                 sTotalCountWeeklyHBEntitlementZero,
                 Integer.toString(AllTotalWeeklyHBEntitlementZeroCount));
-        if (AllTotalWeeklyHBEntitlementNonZeroCount > 0) {
-            ave = AllTotalWeeklyHBEntitlement / (double) AllTotalWeeklyHBEntitlementNonZeroCount;
+        d = AllTotalWeeklyHBEntitlementNonZeroCount;
+        if (d > 0) {
+            ave = AllTotalWeeklyHBEntitlement / d;
             summary.put(
                     sAverageWeeklyHBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2440,14 +3426,13 @@ public class Summary {
         summary.put(
                 sHBTotalWeeklyHBEntitlement,
                 BigDecimal.valueOf(HBTotalWeeklyHBEntitlement).toPlainString());
-        summary.put(
-                sHBTotalCountWeeklyHBEntitlementNonZero,
-                Integer.toString(HBTotalWeeklyHBEntitlementNonZeroCount));
-        summary.put(
-                sHBTotalCountWeeklyHBEntitlementZero,
-                Integer.toString(HBTotalWeeklyHBEntitlementZeroCount));
-        if (HBTotalWeeklyHBEntitlementNonZeroCount > 0) {
-            ave = HBTotalWeeklyHBEntitlement / (double) HBTotalWeeklyHBEntitlementNonZeroCount;
+        summary.put(sHBTotalCount_WeeklyHBEntitlementNonZero,
+                Integer.toString(HBTotalCount_WeeklyHBEntitlementNonZero));
+        summary.put(sHBTotalCount_WeeklyHBEntitlementZero,
+                Integer.toString(HBTotalCount_WeeklyHBEntitlementZero));
+        d = HBTotalCount_WeeklyHBEntitlementNonZero;
+        if (d > 0) {
+            ave = HBTotalWeeklyHBEntitlement / d;
             summary.put(
                     sHBAverageWeeklyHBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2462,14 +3447,14 @@ public class Summary {
         summary.put(
                 sCTBTotalWeeklyHBEntitlement,
                 BigDecimal.valueOf(CTBTotalWeeklyHBEntitlement).toPlainString());
-        summary.put(
-                sCTBTotalCountWeeklyHBEntitlementNonZero,
-                Integer.toString(CTBTotalWeeklyHBEntitlementNonZeroCount));
+        summary.put(sCTBTotalCount_WeeklyHBEntitlementNonZero,
+                Integer.toString(CTBTotalCount_WeeklyHBEntitlementNonZero));
         summary.put(
                 sCTBTotalCountWeeklyHBEntitlementZero,
                 Integer.toString(CTBTotalWeeklyHBEntitlementZeroCount));
-        if (CTBTotalWeeklyHBEntitlementNonZeroCount > 0) {
-            ave = CTBTotalWeeklyHBEntitlement / (double) CTBTotalWeeklyHBEntitlementNonZeroCount;
+        d = CTBTotalCount_WeeklyHBEntitlementNonZero;
+        if (d > 0) {
+            ave = CTBTotalWeeklyHBEntitlement / d;
             summary.put(
                     sCTBAverageWeeklyHBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2487,12 +3472,13 @@ public class Summary {
                 BigDecimal.valueOf(AllTotalWeeklyCTBEntitlement).toPlainString());
         summary.put(
                 sTotalCountWeeklyCTBEntitlementNonZero,
-                Integer.toString(AllTotalWeeklyCTBEntitlementNonZeroCount));
+                Integer.toString(AllTotalCount_WeeklyCTBEntitlementNonZero));
         summary.put(
                 sTotalCountWeeklyCTBEntitlementZero,
                 Integer.toString(AllTotalWeeklyCTBEntitlementZeroCount));
-        if (AllTotalWeeklyCTBEntitlementNonZeroCount > 0) {
-            ave = AllTotalWeeklyCTBEntitlement / (double) AllTotalWeeklyCTBEntitlementNonZeroCount;
+        d = AllTotalCount_WeeklyCTBEntitlementNonZero;
+        if (d > 0) {
+            ave = AllTotalWeeklyCTBEntitlement / d;
             summary.put(
                     sAverageWeeklyCTBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2507,14 +3493,13 @@ public class Summary {
         summary.put(
                 sHBTotalWeeklyCTBEntitlement,
                 BigDecimal.valueOf(HBTotalWeeklyCTBEntitlement).toPlainString());
-        summary.put(
-                sHBTotalCountWeeklyCTBEntitlementNonZero,
-                Integer.toString(HBTotalWeeklyCTBEntitlementNonZeroCount));
-        summary.put(
-                sHBTotalCountWeeklyCTBEntitlementZero,
+        summary.put(sHBTotalCount_WeeklyCTBEntitlementNonZero,
+                Integer.toString(HBTotalCount_WeeklyCTBEntitlementNonZero));
+        summary.put(sHBTotalCount_WeeklyCTBEntitlementZero,
                 Integer.toString(HBTotalWeeklyCTBEntitlementZeroCount));
-        if (HBTotalWeeklyCTBEntitlementNonZeroCount > 0) {
-            ave = HBTotalWeeklyCTBEntitlement / (double) HBTotalWeeklyCTBEntitlementNonZeroCount;
+        d = HBTotalCount_WeeklyCTBEntitlementNonZero;
+        if (d > 0) {
+            ave = HBTotalWeeklyCTBEntitlement / d;
             summary.put(
                     sHBAverageWeeklyCTBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2529,14 +3514,14 @@ public class Summary {
         summary.put(
                 sCTBTotalWeeklyCTBEntitlement,
                 BigDecimal.valueOf(CTBTotalWeeklyCTBEntitlement).toPlainString());
-        summary.put(
-                sCTBTotalCountWeeklyCTBEntitlementNonZero,
-                Integer.toString(CTBTotalWeeklyCTBEntitlementNonZeroCount));
+        summary.put(sCTBTotalCount_WeeklyCTBEntitlementNonZero,
+                Integer.toString(CTBTotalCount_WeeklyCTBEntitlementNonZero));
         summary.put(
                 sCTBTotalCountWeeklyCTBEntitlementZero,
                 Integer.toString(CTBTotalWeeklyCTBEntitlementZeroCount));
-        if (CTBTotalWeeklyCTBEntitlementNonZeroCount > 0) {
-            ave = CTBTotalWeeklyCTBEntitlement / (double) CTBTotalWeeklyCTBEntitlementNonZeroCount;
+        d = CTBTotalCount_WeeklyCTBEntitlementNonZero;
+        if (d > 0) {
+            ave = CTBTotalWeeklyCTBEntitlement / d;
             summary.put(
                     sCTBAverageWeeklyCTBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2558,8 +3543,9 @@ public class Summary {
         summary.put(
                 sAllTotalCountWeeklyEligibleRentAmountZero,
                 Integer.toString(AllTotalWeeklyEligibleRentAmountZeroCount));
-        if (AllTotalWeeklyEligibleRentAmountNonZeroCount > 0) {
-            ave = AllTotalWeeklyEligibleRentAmount / (double) AllTotalWeeklyEligibleRentAmountNonZeroCount;
+        d = AllTotalWeeklyEligibleRentAmountNonZeroCount;
+        if (d > 0) {
+            ave = AllTotalWeeklyEligibleRentAmount / d;
             summary.put(
                     sAllAverageWeeklyEligibleRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2580,8 +3566,9 @@ public class Summary {
         summary.put(
                 sHBTotalCountWeeklyEligibleRentAmountZero,
                 Integer.toString(HBTotalWeeklyEligibleRentAmountZeroCount));
-        if (HBTotalWeeklyEligibleRentAmountNonZeroCount > 0) {
-            ave = HBTotalWeeklyEligibleRentAmount / (double) HBTotalWeeklyEligibleRentAmountNonZeroCount;
+        d = HBTotalWeeklyEligibleRentAmountNonZeroCount;
+        if (d > 0) {
+            ave = HBTotalWeeklyEligibleRentAmount / d;
             summary.put(
                     sHBAverageWeeklyEligibleRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2602,8 +3589,9 @@ public class Summary {
         summary.put(
                 sCTBTotalCountWeeklyEligibleRentAmountZero,
                 Integer.toString(CTBTotalWeeklyEligibleRentAmountZeroCount));
-        if (CTBTotalWeeklyEligibleRentAmountNonZeroCount > 0) {
-            ave = CTBTotalWeeklyEligibleRentAmount / (double) CTBTotalWeeklyEligibleRentAmountNonZeroCount;
+        d = CTBTotalWeeklyEligibleRentAmountNonZeroCount;
+        if (d > 0) {
+            ave = CTBTotalWeeklyEligibleRentAmount / d;
             summary.put(
                     sCTBAverageWeeklyEligibleRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2625,8 +3613,9 @@ public class Summary {
         summary.put(
                 sAllTotalCountWeeklyEligibleCouncilTaxAmountZero,
                 Integer.toString(AllTotalCountWeeklyEligibleCouncilTaxAmountZero));
-        if (AllTotalCountWeeklyEligibleCouncilTaxAmountNonZero > 0) {
-            ave = AllTotalWeeklyEligibleCouncilTaxAmount / (double) AllTotalCountWeeklyEligibleCouncilTaxAmountNonZero;
+        d = AllTotalCountWeeklyEligibleCouncilTaxAmountNonZero;
+        if (d > 0) {
+            ave = AllTotalWeeklyEligibleCouncilTaxAmount / d;
             summary.put(
                     sAllAverageWeeklyEligibleCouncilTaxAmount,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2647,8 +3636,9 @@ public class Summary {
         summary.put(
                 sHBTotalCountWeeklyEligibleCouncilTaxAmountZero,
                 Integer.toString(HBTotalCountWeeklyEligibleCouncilTaxAmountZero));
-        if (HBTotalCountWeeklyEligibleCouncilTaxAmountNonZero > 0) {
-            ave = HBTotalWeeklyEligibleCouncilTaxAmount / (double) HBTotalCountWeeklyEligibleCouncilTaxAmountNonZero;
+        d = HBTotalCountWeeklyEligibleCouncilTaxAmountNonZero;
+        if (d > 0) {
+            ave = HBTotalWeeklyEligibleCouncilTaxAmount / d;
             summary.put(
                     sHBAverageWeeklyEligibleCouncilTaxAmount,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2669,8 +3659,9 @@ public class Summary {
         summary.put(
                 sCTBTotalCountWeeklyEligibleCouncilTaxAmountZero,
                 Integer.toString(CTBTotalCountWeeklyEligibleCouncilTaxAmountZero));
-        if (CTBTotalCountWeeklyEligibleCouncilTaxAmountNonZero > 0) {
-            ave = CTBTotalWeeklyEligibleCouncilTaxAmount / (double) CTBTotalCountWeeklyEligibleCouncilTaxAmountNonZero;
+        d = CTBTotalCountWeeklyEligibleCouncilTaxAmountNonZero;
+        if (d > 0) {
+            ave = CTBTotalWeeklyEligibleCouncilTaxAmount / d;
             summary.put(
                     sCTBAverageWeeklyEligibleCouncilTaxAmount,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2692,8 +3683,9 @@ public class Summary {
         summary.put(
                 sAllTotalCountContractualRentAmountZeroCount,
                 Integer.toString(AllTotalContractualRentAmountZeroCount));
-        if (AllTotalContractualRentAmountNonZeroCount > 0) {
-            ave = AllTotalContractualRentAmount / (double) AllTotalContractualRentAmountNonZeroCount;
+        d = AllTotalContractualRentAmountNonZeroCount;
+        if (d > 0) {
+            ave = AllTotalContractualRentAmount / d;
             summary.put(
                     sAllAverageContractualRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2714,8 +3706,9 @@ public class Summary {
         summary.put(
                 sHBTotalCountContractualRentAmountZeroCount,
                 Integer.toString(HBTotalContractualRentAmountZeroCount));
-        if (HBTotalContractualRentAmountNonZeroCount > 0) {
-            ave = HBTotalContractualRentAmount / (double) HBTotalContractualRentAmountNonZeroCount;
+        d = HBTotalContractualRentAmountNonZeroCount;
+        if (d > 0) {
+            ave = HBTotalContractualRentAmount / d;
             summary.put(
                     sHBAverageContractualRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2736,8 +3729,9 @@ public class Summary {
         summary.put(
                 sCTBTotalCountContractualRentAmountZeroCount,
                 Integer.toString(CTBTotalContractualRentAmountZeroCount));
-        if (CTBTotalContractualRentAmountNonZeroCount > 0) {
-            ave = CTBTotalContractualRentAmount / (double) CTBTotalContractualRentAmountNonZeroCount;
+        d = CTBTotalContractualRentAmountNonZeroCount;
+        if (d > 0) {
+            ave = CTBTotalContractualRentAmount / d;
             summary.put(
                     sCTBAverageContractualRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2759,8 +3753,9 @@ public class Summary {
         summary.put(
                 sAllTotalCountWeeklyAdditionalDiscretionaryPaymentZero,
                 Integer.toString(AllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount));
-        if (AllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount > 0) {
-            ave = AllTotalWeeklyAdditionalDiscretionaryPayment / (double) AllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+        d = AllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+        if (d > 0) {
+            ave = AllTotalWeeklyAdditionalDiscretionaryPayment / d;
             summary.put(
                     sAllAverageWeeklyAdditionalDiscretionaryPayment,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2781,8 +3776,9 @@ public class Summary {
         summary.put(
                 sHBTotalCountWeeklyAdditionalDiscretionaryPaymentZero,
                 Integer.toString(HBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount));
-        if (HBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount > 0) {
-            ave = HBTotalWeeklyAdditionalDiscretionaryPayment / (double) HBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+        d = HBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+        if (d > 0) {
+            ave = HBTotalWeeklyAdditionalDiscretionaryPayment / d;
             summary.put(
                     sHBAverageWeeklyAdditionalDiscretionaryPayment,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2803,8 +3799,9 @@ public class Summary {
         summary.put(
                 sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentZero,
                 Integer.toString(CTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount));
-        if (CTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount > 0) {
-            ave = CTBTotalWeeklyAdditionalDiscretionaryPayment / (double) CTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+        d = CTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+        if (d > 0) {
+            ave = CTBTotalWeeklyAdditionalDiscretionaryPayment / d;
             summary.put(
                     sCTBAverageWeeklyAdditionalDiscretionaryPayment,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2826,8 +3823,9 @@ public class Summary {
         summary.put(
                 sAllTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero,
                 Integer.toString(AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount));
-        if (AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount > 0) {
-            ave = AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability / (double) AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+        d = AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+        if (d > 0) {
+            ave = AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability / d;
             summary.put(
                     sAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2848,8 +3846,9 @@ public class Summary {
         summary.put(
                 sHBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero,
                 Integer.toString(HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount));
-        if (HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount > 0) {
-            ave = HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability / (double) HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+        d = HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+        if (d > 0) {
+            ave = HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability / d;
             summary.put(
                     sHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2870,8 +3869,9 @@ public class Summary {
         summary.put(
                 sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero,
                 Integer.toString(CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount));
-        if (CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount > 0) {
-            ave = CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability / (double) CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+        d = CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+        if (d > 0) {
+            ave = CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability / d;
             summary.put(
                     sCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
                     Generic_BigDecimal.roundIfNecessary(
@@ -2885,174 +3885,184 @@ public class Summary {
         }
         // Employed
         int t;
-        t = HBTotalCountEmployedClaimants + CTBTotalCountCTBEmployedClaimants;
+        t = HBTotalCount_EmployedClaimants + CTBTotalCountEmployedClaimants;
         summary.put(
-                sAllTotalCountClaimantsEmployed,
+                sAllTotalCount_ClaimantsEmployed,
                 Integer.toString(t));
-        if (AllCount1 > 0) {
-            ave = (t * 100.0d) / (double) AllCount1;
+        d = AllCount1;
+        if (d > 0) {
+            ave = (t * 100.0d) / d;
             summary.put(
-                    sAllPercentageClaimantsEmployed,
+                    sAllPercentage_ClaimantsEmployed,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sAllPercentageClaimantsEmployed,
+                    sAllPercentage_ClaimantsEmployed,
                     s0);
         }
         summary.put(
                 sHBTotalCountClaimantsEmployed,
-                Integer.toString(HBTotalCountEmployedClaimants));
-        if (HBCount1 > 0) {
-            ave = (HBTotalCountEmployedClaimants * 100.0d) / (double) HBCount1;
+                Integer.toString(HBTotalCount_EmployedClaimants));
+        d = HBCount1;
+        if (d > 0) {
+            ave = (HBTotalCount_EmployedClaimants * 100.0d) / d;
             summary.put(
-                    sHBPercentageClaimantsEmployed,
+                    sHBPercentageOfHB_ClaimantsEmployed,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBPercentageClaimantsEmployed,
+                    sHBPercentageOfHB_ClaimantsEmployed,
                     s0);
         }
         summary.put(
-                sCTBTotalCountClaimantsEmployed,
-                Integer.toString(CTBTotalCountCTBEmployedClaimants));
-        if (CTBCount1 > 0) {
-            ave = (CTBTotalCountCTBEmployedClaimants * 100.0d) / (double) CTBCount1;
+                sCTBTotalCount_ClaimantsEmployed,
+                Integer.toString(CTBTotalCountEmployedClaimants));
+        d = CTBCount1;
+        if (d > 0) {
+            ave = (CTBTotalCountEmployedClaimants * 100.0d) / d;
             summary.put(
-                    sCTBPercentageClaimantsEmployed,
+                    sCTBPercentageOfCTB_ClaimantsEmployed,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBPercentageClaimantsEmployed,
+                    sCTBPercentageOfCTB_ClaimantsEmployed,
                     s0);
         }
         // Self Employed
         summary.put(
                 sHBTotalCountClaimantsSelfEmployed,
                 Integer.toString(HBTotalCountSelfEmployedClaimants));
-        if (HBCount1 > 0) {
-            ave = (HBTotalCountSelfEmployedClaimants * 100.0d) / (double) HBCount1;
+        d = HBCount1;
+        if (d > 0) {
+            ave = (HBTotalCountSelfEmployedClaimants * 100.0d) / d;
             summary.put(
-                    sHBPercentageClaimantsSelfEmployed,
+                    sHBPercentageOfHB_ClaimantsSelfEmployed,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBPercentageClaimantsSelfEmployed,
+                    sHBPercentageOfHB_ClaimantsSelfEmployed,
                     s0);
         }
         summary.put(
                 sCTBTotalCountClaimantsSelfEmployed,
                 Integer.toString(CTBTotalCountSelfEmployedClaimants));
-        if (CTBCount1 > 0) {
-            ave = (CTBTotalCountSelfEmployedClaimants * 100.0d) / (double) CTBCount1;
+        d = CTBCount1;
+        if (d > 0) {
+            ave = (CTBTotalCountSelfEmployedClaimants * 100.0d) / d;
             summary.put(
-                    sCTBPercentageClaimantsSelfEmployed,
+                    sCTBPercentageOfCTB_ClaimantsSelfEmployed,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBPercentageClaimantsSelfEmployed,
+                    sCTBPercentageOfCTB_ClaimantsSelfEmployed,
                     s0);
         }
         // Students
         summary.put(
                 sHBTotalCountClaimantsStudents,
                 Integer.toString(HBTotalCountStudentsClaimants));
-        if (HBCount1 > 0) {
-            ave = (HBTotalCountStudentsClaimants * 100.0d) / (double) HBCount1;
+        d = HBCount1;
+        if (d > 0) {
+            ave = (HBTotalCountStudentsClaimants * 100.0d) / d;
             summary.put(
-                    sHBPercentageClaimantsStudents,
+                    sHBPercentageOfHB_ClaimantsStudents,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBPercentageClaimantsStudents,
+                    sHBPercentageOfHB_ClaimantsStudents,
                     s0);
         }
         summary.put(
                 sCTBTotalCountClaimantsStudents,
                 Integer.toString(CTBTotalCountStudentsClaimants));
-        if (CTBCount1 > 0) {
-            ave = (CTBTotalCountStudentsClaimants * 100.0d) / (double) CTBCount1;
+        d = CTBCount1;
+        if (d > 0) {
+            ave = (CTBTotalCountStudentsClaimants * 100.0d) / d;
             summary.put(
-                    sCTBPercentageClaimantsStudents,
+                    sCTBPercentageOfCTB_ClaimantsStudents,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBPercentageClaimantsStudents,
+                    sCTBPercentageOfCTB_ClaimantsStudents,
                     s0);
         }
         // LHACases
-        t = HBTotalCountLHACases + CTBTotalCountLHACases;
+        t = HBTotalCountLHACases + CTBTotalCount_LHACases;
         summary.put(
-                sAllTotalCountLHACases,
+                sAllTotalCount_LHACases,
                 Integer.toString(t));
-        if (AllCount1 > 0) {
-            ave = (t * 100.0d) / (double) HBCount1;
+        d = AllCount1;
+        if (d > 0) {
+            ave = (t * 100.0d) / d;
             summary.put(
-                    sAllPercentageLHACases,
+                    sAllPercentageOfAll_LHACases,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sAllPercentageLHACases,
+                    sAllPercentageOfAll_LHACases,
                     s0);
         }
         summary.put(
-                sHBTotalCountLHACases,
+                sHBTotalCount_LHACases,
                 Integer.toString(HBTotalCountLHACases));
-        if (HBCount1 > 0) {
-            ave = (HBTotalCountLHACases * 100.0d) / (double) HBCount1;
+        d = HBCount1;
+        if (d > 0) {
+            ave = (HBTotalCountLHACases * 100.0d) / d;
             summary.put(
-                    sHBPercentageLHACases,
+                    sHBPercentageOfHB_LHACases,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBPercentageLHACases,
+                    sHBPercentageOfHB_LHACases,
                     s0);
         }
         summary.put(
-                sCTBTotalCountLHACases,
-                Integer.toString(CTBTotalCountLHACases));
-        if (CTBCount1 > 0) {
-            ave = (CTBTotalCountLHACases * 100.0d) / (double) CTBCount1;
+                sCTBTotalCount_LHACases,
+                Integer.toString(CTBTotalCount_LHACases));
+        d = CTBCount1;
+        if (d > 0) {
+            ave = (CTBTotalCount_LHACases * 100.0d) / d;
             summary.put(
-                    sCTBPercentageLHACases,
+                    sCTBPercentageOfCTB_LHACases,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBPercentageLHACases,
+                    sCTBPercentageOfCTB_LHACases,
                     s0);
         }
     }
 
-    private void addToSummarySingleTimeDemographics(
+    private void addToSummarySingleTimeEthnicity(
             int nEG,
             HashMap<String, String> summary) {
         // Ethnicity
@@ -3113,65 +4123,65 @@ public class Summary {
         double percentage;
         double d;
         int all;
-        all = TotalCountTTClaimant1[1] + TotalCountTTClaimant1[4];
+        all = TotalCount_TTClaimant1[1] + TotalCount_TTClaimant1[4];
         summary.put(
-            sTotalCount_SocialTTsClaimant,
+                sTotalCount_SocialTTsClaimant,
                 Integer.toString(all));
         d = AllCount1;
         if (AllCount1 > 0) {
             percentage = (all * 100.0d) / d;
-                summary.put(
-                        sPercentageOfAll_SocialTTsClaimant,
-                        Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(percentage),
-                                decimalPlacePrecisionForPercentage,
-                                RoundingMode.HALF_UP).toPlainString());
+            summary.put(
+                    sPercentageOfAll_SocialTTsClaimant,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
         }
         d = HBCount1;
         if (HBCount1 > 0) {
             percentage = (all * 100.0d) / d;
-                summary.put(
-                        sPercentageOfHB_SocialTTsClaimant,
-                        Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(percentage),
-                                decimalPlacePrecisionForPercentage,
-                                RoundingMode.HALF_UP).toPlainString());
+            summary.put(
+                    sPercentageOfHB_SocialTTsClaimant,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
         }
-        all = TotalCountTTClaimant1[3] + TotalCountTTClaimant1[6];
+        all = TotalCount_TTClaimant1[3] + TotalCount_TTClaimant1[6];
         summary.put(
-            sTotalCountPrivateDeregulatedTTsClaimant,
+                sTotalCount_PrivateDeregulatedTTsClaimant,
                 Integer.toString(all));
         d = AllCount1;
         if (AllCount1 > 0) {
             percentage = (all * 100.0d) / d;
-                summary.put(
-                        sPercentageOfAllPrivateDeregulatedTTsClaimant,
-                        Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(percentage),
-                                decimalPlacePrecisionForPercentage,
-                                RoundingMode.HALF_UP).toPlainString());
+            summary.put(
+                    sPercentageOfAll_PrivateDeregulatedTTsClaimant,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
         }
         d = HBCount1;
         if (HBCount1 > 0) {
             percentage = (all * 100.0d) / d;
-                summary.put(
-                        sPercentageOfHBPrivateDeregulatedTTsClaimant,
-                        Generic_BigDecimal.roundIfNecessary(
-                                BigDecimal.valueOf(percentage),
-                                decimalPlacePrecisionForPercentage,
-                                RoundingMode.HALF_UP).toPlainString());
+            summary.put(
+                    sPercentageOfHB_PrivateDeregulatedTTsClaimant,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
         }
         // TT
         for (int i = 1; i < nTT; i++) {
-            all = TotalCountTTClaimant1[i];
+            all = TotalCount_TTClaimant1[i];
             summary.put(
-                    sTotalCountClaimantsTT[i],
+                    sTotalCount_ClaimantsTT[i],
                     Integer.toString(all));
             d = AllCount1;
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
                 summary.put(
-                        sPercentageOfAllClaimantsTT[i],
+                        sPercentageOfAll_ClaimantsTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
@@ -3317,7 +4327,15 @@ public class Summary {
                     postcode1,
                     isValidPostcode0);
         }
-        //}
+        AllTotalCount_TTChangeClaimant = HBTotalCount_TTChangeClaimant + CTBTotalCount_TTChangeClaimant;
+        AllTotalCountPostcode0ValidPostcode1Valid = HBTotalCountPostcode0ValidPostcode1Valid + CTBTotalCountPostcode0ValidPostcode1Valid;
+        AllTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged = HBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged + CTBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged;
+        AllTotalCountPostcode0ValidPostcode1ValidPostcodeChanged = HBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged + CTBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged;
+        AllTotalCountPostcode0ValidPostcode1NotValid = HBTotalCountPostcode0ValidPostcode1NotValid + CTBTotalCountPostcode0ValidPostcode1NotValid;
+        AllTotalCountPostcode0NotValidPostcode1Valid = HBTotalCountPostcode0NotValidPostcode1Valid + CTBTotalCountPostcode0NotValidPostcode1Valid;
+        AllTotalCountPostcode0NotValidPostcode1NotValid = HBTotalCountPostcode0NotValidPostcode1NotValid + CTBTotalCountPostcode0NotValidPostcode1NotValid;
+        AllTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged = HBTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged + CTBTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged;
+        AllTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged = HBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged + CTBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged;
     }
 
     private void doSingleTimeCount(
@@ -3345,27 +4363,38 @@ public class Summary {
         // All unfiltered counts
         TT = D_Record.getTenancyType();
         postcode = D_Record.getClaimantsPostcode();
-        TotalCountTTClaimant1[TT]++;
-        
+        TotalCount_TTClaimant1[TT]++;
         int DisabilityPremiumAwarded;
         DisabilityPremiumAwarded = D_Record.getDisabilityPremiumAwarded();
         if (DisabilityPremiumAwarded == 1) {
-            AllTotalDisabilityPremiumAwardByTTCount[TT]++;
+            TotalCount_DisabilityPremiumAwardByTT[TT]++;
         }
         int SevereDisabilityPremiumAwarded;
         SevereDisabilityPremiumAwarded = D_Record.getSevereDisabilityPremiumAwarded();
         if (SevereDisabilityPremiumAwarded == 1) {
-            AllTotalSevereDisabilityPremiumAwardByTTCount[TT]++;
+            TotalCount_SevereDisabilityPremiumAwardByTT[TT]++;
+        }
+        int DisabledChildPremiumAwarded;
+        DisabledChildPremiumAwarded = D_Record.getDisabledChildPremiumAwarded();
+        if (DisabledChildPremiumAwarded == 1) {
+            TotalCount_DisabledChildPremiumAwardByTT[TT]++;
         }
         int EnhancedDisabilityPremiumAwarded;
         EnhancedDisabilityPremiumAwarded = D_Record.getEnhancedDisabilityPremiumAwarded();
         if (EnhancedDisabilityPremiumAwarded == 1) {
-            AllTotalEnhancedDisabilityPremiumAwardByTTCount[TT]++;
+            TotalCount_EnhancedDisabilityPremiumAwardByTT[TT]++;
+        }
+        // General Household Disability Flag
+        if (DisabilityPremiumAwarded == 1
+                || SevereDisabilityPremiumAwarded == 1
+                || DisabledChildPremiumAwarded == 1
+                || EnhancedDisabilityPremiumAwarded == 1) {
+            TotalCount_DisabilityAwardByTT[TT]++;
         }
         int PSI;
         PSI = D_Record.getPassportedStandardIndicator();
-        TotalAllPSICount[PSI]++;
-        TotalAllPSIByTTCount[PSI][TT]++;
+        AllTotalCount_PSI[PSI]++;
+        AllTotalCount_PSIByTT[PSI][TT]++;
         long HouseholdSize;
         HouseholdSize = DW_SHBE_Handler.getHouseholdSize(D_Record);
         AllTotalHouseholdSize += HouseholdSize;
@@ -3381,7 +4410,7 @@ public class Summary {
         WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
         if (WeeklyCouncilTaxBenefitBenefitEntitlement > 0) {
             AllTotalWeeklyCTBEntitlement += WeeklyCouncilTaxBenefitBenefitEntitlement;
-            AllTotalWeeklyCTBEntitlementNonZeroCount++;
+            AllTotalCount_WeeklyCTBEntitlementNonZero++;
         } else {
             AllTotalWeeklyCTBEntitlementZeroCount++;
         }
@@ -3426,23 +4455,14 @@ public class Summary {
             AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
         }
         if (DW_SHBE_Handler.isHBClaim(D_Record)) {
-            if (DisabilityPremiumAwarded == 1) {
-                HBTotalDisabilityPremiumAwardByTTCount[TT]++;
-            }
-            if (SevereDisabilityPremiumAwarded == 1) {
-                HBTotalSevereDisabilityPremiumAwardByTTCount[TT]++;
-            }
-            if (EnhancedDisabilityPremiumAwarded == 1) {
-                HBTotalEnhancedDisabilityPremiumAwardByTTCount[TT]++;
-            }
-            TotalHBPSICount[PSI]++;
-            TotalHBPSIByTTCount[PSI][TT]++;
+            HBTotalCount_PSI[PSI]++;
+            HBTotalCount_PSIByTT[PSI][TT]++;
             //if (HBRef.equalsIgnoreCase(CTBRef)) {
             HBTotalHouseholdSize += HouseholdSize;
             int ClaimantsNetWeeklyIncomeFromEmployment;
             ClaimantsNetWeeklyIncomeFromEmployment = D_Record.getClaimantsNetWeeklyIncomeFromEmployment();
             if (ClaimantsNetWeeklyIncomeFromEmployment > 0) {
-                HBTotalCountEmployedClaimants++;
+                HBTotalCount_EmployedClaimants++;
             }
             int ClaimantsNetWeeklyIncomeFromSelfEmployment;
             ClaimantsNetWeeklyIncomeFromSelfEmployment = D_Record.getClaimantsNetWeeklyIncomeFromSelfEmployment();
@@ -3466,14 +4486,14 @@ public class Summary {
             }
             if (WeeklyHousingBenefitEntitlement > 0) {
                 HBTotalWeeklyHBEntitlement += WeeklyHousingBenefitEntitlement;
-                HBTotalWeeklyHBEntitlementNonZeroCount++;
+                HBTotalCount_WeeklyHBEntitlementNonZero++;
             } else {
-                HBTotalWeeklyHBEntitlementZeroCount++;
+                HBTotalCount_WeeklyHBEntitlementZero++;
             }
             WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
             if (WeeklyCouncilTaxBenefitBenefitEntitlement > 0) {
                 HBTotalWeeklyCTBEntitlement += WeeklyCouncilTaxBenefitBenefitEntitlement;
-                HBTotalWeeklyCTBEntitlementNonZeroCount++;
+                HBTotalCount_WeeklyCTBEntitlementNonZero++;
             } else {
                 HBTotalWeeklyCTBEntitlementZeroCount++;
             }
@@ -3518,22 +4538,13 @@ public class Summary {
                     yM30v);
         }
         if (DW_SHBE_Handler.isCTBOnlyClaim(D_Record)) {
-            if (DisabilityPremiumAwarded == 1) {
-                CTBTotalDisabilityPremiumAwardByTTCount[TT]++;
-            }
-            if (SevereDisabilityPremiumAwarded == 1) {
-                CTBTotalSevereDisabilityPremiumAwardByTTCount[TT]++;
-            }
-            if (EnhancedDisabilityPremiumAwarded == 1) {
-                CTBTotalEnhancedDisabilityPremiumAwardByTTCount[TT]++;
-            }
-            TotalCTBPSICount[PSI]++;
-            TotalCTBPSIByTTCount[PSI][TT]++;
+            CTBTotalCount_PSI[PSI]++;
+            CTBTotalCount_PSIByTT[PSI][TT]++;
             CTBTotalHouseholdSize += HouseholdSize;
             int ClaimantsNetWeeklyIncomeFromEmployment;
             ClaimantsNetWeeklyIncomeFromEmployment = D_Record.getClaimantsNetWeeklyIncomeFromEmployment();
             if (ClaimantsNetWeeklyIncomeFromEmployment > 0) {
-                CTBTotalCountCTBEmployedClaimants++;
+                CTBTotalCountEmployedClaimants++;
             }
             int ClaimantsNetWeeklyIncomeFromSelfEmployment;
             ClaimantsNetWeeklyIncomeFromSelfEmployment = D_Record.getClaimantsNetWeeklyIncomeFromSelfEmployment();
@@ -3551,19 +4562,19 @@ public class Summary {
             LHARegulationsApplied = D_Record.getLHARegulationsApplied();
             if (LHARegulationsApplied != null) {
                 if (LHARegulationsApplied.equalsIgnoreCase("1")) {
-                    CTBTotalCountLHACases++;
+                    CTBTotalCount_LHACases++;
                 }
             }
             if (WeeklyHousingBenefitEntitlement > 0) {
                 CTBTotalWeeklyHBEntitlement += WeeklyHousingBenefitEntitlement;
-                CTBTotalWeeklyHBEntitlementNonZeroCount++;
+                CTBTotalCount_WeeklyHBEntitlementNonZero++;
             } else {
                 CTBTotalWeeklyHBEntitlementZeroCount++;
             }
             WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
             if (WeeklyCouncilTaxBenefitBenefitEntitlement > 0) {
                 CTBTotalWeeklyCTBEntitlement += WeeklyCouncilTaxBenefitBenefitEntitlement;
-                CTBTotalWeeklyCTBEntitlementNonZeroCount++;
+                CTBTotalCount_WeeklyCTBEntitlementNonZero++;
             } else {
                 CTBTotalWeeklyCTBEntitlementZeroCount++;
             }
@@ -3604,20 +4615,22 @@ public class Summary {
             }
             doSingleTimeCTBCount(
                     ClaimantsEthnicGroup0,
-                    TT,
                     postcode,
                     yM30v);
         }
+        AllCount1 = HBCount1 + CTBCount1;
     }
 
     private void doSingleTimeRentArrearsCount(DW_UOReport_Record UORec) {
         Double totalRA;
         totalRA = UORec.getTotalRentArrears();
         if (totalRA != null) {
-            totalRentArrears += totalRA;
-            rentArrearsCount += 1.0d;
+            Total_RentArrears += totalRA;
+            TotalCount_RentArrears += 1.0d;
             if (totalRA > 0.0d) {
-                greaterThan0RentArrearsCount++;
+                TotalCount_RentArrearsNonZero++;
+            } else {
+                TotalCount_RentArrearsZero++;
             }
         }
     }
@@ -3635,7 +4648,7 @@ public class Summary {
                 if (postcode0.equalsIgnoreCase(postcode1)) {
                     HBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged++;
                 } else {
-                    HBTotalCountPostcode0ValidPostcode1ValidPostcodeChange++;
+                    HBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged++;
                 }
             } else {
                 HBTotalCountPostcode0ValidPostcode1NotValid++;
@@ -3661,8 +4674,7 @@ public class Summary {
             }
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
-            HBTotalCountTTChangeClaimant++;
-            AllTotalCountTTChangeClaimant++;
+            HBTotalCount_TTChangeClaimant++;
             if ((tenancyType0 == 5
                     || tenancyType0 == 7)
                     && (tenancyType1 == 1
@@ -3672,7 +4684,7 @@ public class Summary {
                     || tenancyType1 == 6
                     || tenancyType1 == 8
                     || tenancyType1 == 9)) {
-                TotalCountCTBTTsToHBTTs++;
+                TotalCount_CTBTTsToHBTTs++;
             }
             if ((tenancyType0 == 1
                     || tenancyType0 == 2
@@ -3688,27 +4700,27 @@ public class Summary {
                     || tenancyType1 == 6
                     || tenancyType1 == 8
                     || tenancyType1 == 9)) {
-                TotalCountHBTTsToHBTTs++;
+                TotalCount_HBTTsToHBTTs++;
             }
             if (tenancyType0 == 1 || tenancyType0 == 4) {
                 if (tenancyType1 == 3 || tenancyType0 == 6) {
-                    TotalCountSocialTTsToPrivateDeregulatedTTs++;
+                    TotalCount_SocialTTsToPrivateDeregulatedTTs++;
                     if (tenancyType0 == 1) {
-                        TotalCountTT1ToPrivateDeregulatedTTs++;
+                        TotalCount_TT1ToPrivateDeregulatedTTs++;
                     }
                     if (tenancyType0 == 4) {
-                        TotalCountTT4ToPrivateDeregulatedTTs++;
+                        TotalCount_TT4ToPrivateDeregulatedTTs++;
                     }
                 }
             }
             if (tenancyType0 == 3 || tenancyType0 == 6) {
                 if (tenancyType1 == 1 || tenancyType1 == 4) {
-                    TotalCountPrivateDeregulatedTTsToSocialTTs++;
+                    TotalCount_PrivateDeregulatedTTsToSocialTTs++;
                     if (tenancyType1 == 1) {
-                        TotalCountPrivateDeregulatedTTsToTT1++;
+                        TotalCount_PrivateDeregulatedTTsToTT1++;
                     }
                     if (tenancyType1 == 4) {
-                        TotalCountPrivateDeregulatedTTsToTT4++;
+                        TotalCount_PrivateDeregulatedTTsToTT4++;
                     }
                 }
             }
@@ -3719,12 +4731,12 @@ public class Summary {
                 || (tenancyType0 == 4 && tenancyType1 == 4)) {
             if (isValidPostcode0 && isValidPostcode1) {
                 if (!postcode0.equalsIgnoreCase(postcode1)) {
-                    TotalCountPostcodeChangeWithinSocialTTs++;
+                    TotalCount_PostcodeChangeWithinSocialTTs++;
                     if (tenancyType0 == 1 && tenancyType1 == 1) {
-                        TotalCountPostcodeChangeWithinTT1++;
+                        TotalCount_PostcodeChangeWithinTT1++;
                     }
                     if (tenancyType0 == 4 && tenancyType1 == 4) {
-                        TotalCountPostcodeChangeWithinTT4++;
+                        TotalCount_PostcodeChangeWithinTT4++;
                     }
                 }
             }
@@ -3732,7 +4744,7 @@ public class Summary {
         if ((tenancyType0 == 3 || tenancyType0 == 6) && (tenancyType1 == 3 || tenancyType1 == 6)) {
             if (isValidPostcode0 && isValidPostcode1) {
                 if (!postcode0.equalsIgnoreCase(postcode1)) {
-                    TotalCountPostcodeChangeWithinPrivateDeregulatedTTs++;
+                    TotalCount_PostcodeChangeWithinPrivateDeregulatedTTs++;
                 }
             }
         }
@@ -3804,8 +4816,7 @@ public class Summary {
             }
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
-            CTBTotalCountTTChangeClaimant++;
-            AllTotalCountTTChangeClaimant++;
+            CTBTotalCount_TTChangeClaimant++;
             if ((tenancyType0 == 1
                     || tenancyType0 == 2
                     || tenancyType0 == 3
@@ -3815,7 +4826,7 @@ public class Summary {
                     || tenancyType0 == 9)
                     && (tenancyType1 == 5
                     || tenancyType1 == 7)) {
-                TotalCountHBTTsToCTBTTs++;
+                TotalCount_HBTTsToCTBTTs++;
             }
             if ((tenancyType0 == 1 || tenancyType0 == 4)
                     && (tenancyType1 == 5 || tenancyType1 == 7)) {
@@ -3823,22 +4834,28 @@ public class Summary {
             }
             if (tenancyType0 == 5 || tenancyType0 == 7) {
                 if (tenancyType1 == 1 || tenancyType1 == 4) {
-                    TotalCountCTBTTsToSocialTTs++;
+                    TotalCount_CTBTTsToSocialTTs++;
                     if (tenancyType1 == 1) {
-                        TotalCountCTBTTsToTT1++;
+                        TotalCount_CTBTTsToTT1++;
                     }
                     if (tenancyType1 == 4) {
-                        TotalCountCTBTTsToTT4++;
+                        TotalCount_CTBTTsToTT4++;
                     }
                 }
             }
             if ((tenancyType0 == 3 || tenancyType0 == 6)
                     && (tenancyType1 == 5 || tenancyType1 == 7)) {
-                TotalCountPrivateDeregulatedTTsToCTBTTs++;
+                TotalCount_PrivateDeregulatedTTsToCTBTTs++;
             }
             if ((tenancyType0 == 5 || tenancyType0 == 7)
                     && (tenancyType1 == 3 || tenancyType1 == 6)) {
-                TotalCountCTBTTsToPrivateDeregulatedTTs++;
+                TotalCount_CTBTTsToPrivateDeregulatedTTs++;
+            }
+            if (tenancyType0 == 1 && tenancyType1 == 4) {
+                TotalCount_TT1ToTT4++;
+            }
+            if (tenancyType0 == 4 && tenancyType1 == 1) {
+                TotalCount_TT4ToTT1++;
             }
         }
     }
@@ -3852,7 +4869,6 @@ public class Summary {
      */
     private void doSingleTimeCTBCount(
             int tEG,
-            Integer tTT,
             String tP,
             String yM3v) {
         CTBCount1++;
@@ -3888,6 +4904,7 @@ public class Summary {
             ArrayList<Integer> include,
             boolean forceNewSummaries,
             String paymentType,
+            //underOccupiedData,
             int nTT,
             int nEG,
             int nPSI,
@@ -3896,6 +4913,7 @@ public class Summary {
         AllCount0 = null;
         HBCount0 = null;
         CTBCount0 = null;
+        initCounts(nTT, nEG, nPSI);
         // Initialise summaryTable
         TreeMap<String, HashMap<String, String>> result;
         result = new TreeMap<String, HashMap<String, String>>();
@@ -3921,8 +4939,9 @@ public class Summary {
         filename0 = SHBEFilenames[i];
         String yM30;
         yM30 = DW_SHBE_Handler.getYM3(filename0);
+        System.out.println("Load " + filename0);
         DW_SHBE_Collection tSHBEData0;
-        tSHBEData0 = getSHBEData(filename0, paymentType, handleOutOfMemoryError);
+        tSHBEData0 = new DW_SHBE_Collection(filename0, paymentType);
         // These could be returned to save time recreating them for other includes.
         // This would involve feeding them in to the method too per se.
         String yM30v;
@@ -3988,17 +5007,17 @@ public class Summary {
                     yM30v);
         }
         summary.put(sSHBEFilename1, filename0); // This looks odd but is right!
-        HashMap<String, BigDecimal> incomeAndRentSummary0;
-        incomeAndRentSummary0 = DW_SHBE_Handler.getIncomeAndRentSummary(
+        HashMap<String, BigDecimal> incomeAndRentSummary;
+        incomeAndRentSummary = DW_SHBE_Handler.getIncomeAndRentSummary(
                 tSHBEData0,
                 filename0,
                 paymentType,
                 null,
                 false,
                 forceNewSummaries);
-        addToSummarySingleTimeIncomeAndRent0(
+        addToSummarySingleTimeIncomeAndRent(
                 summary,
-                incomeAndRentSummary0);
+                incomeAndRentSummary);
         addToSummarySingleTime(nTT, nEG, nPSI, summary);
         while (includeIte.hasNext()) {
             i = includeIte.next();
@@ -4009,8 +5028,9 @@ public class Summary {
             String yM31v;
             yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
             // Load next data
+            System.out.println("Load " + filename1);
             DW_SHBE_Collection tSHBEData1;
-            tSHBEData1 = getSHBEData(filename1, paymentType, handleOutOfMemoryError);
+            tSHBEData1 = new DW_SHBE_Collection(filename1, paymentType);
             TreeMap<String, DW_SHBE_Record> tDRecords1;
             tDRecords1 = tSHBEData1.getRecords();
             HashSet<DW_PersonID> tClaimantIDs1;
@@ -4038,10 +5058,6 @@ public class Summary {
             key = DW_SHBE_Handler.getYearMonthNumber(filename1);
             summary = result.get(key);
             // Counters
-//            for (int TT = 0; TT < nTT; TT++) {
-//                AllTotalCountTTClaimant0[TT] = AllTotalCountTTClaimant1[TT];
-//            }
-            System.arraycopy(TotalCountTTClaimant1, 0, TotalCountTTClaimant0, 0, nTT);
             tLoadSummary = (HashMap<String, Integer>) tSHBEData1.getLoadSummary();
             addToSummary(summary, tLoadSummary);
             HashMap<String, BigDecimal> incomeAndRentSummary1;
@@ -4052,7 +5068,7 @@ public class Summary {
                     null,
                     false,
                     forceNewSummaries);
-            addToSummarySingleTimeIncomeAndRent0(
+            addToSummarySingleTimeIncomeAndRent(
                     summary,
                     incomeAndRentSummary1);
             initCounts(nTT, nEG, nPSI);
@@ -4110,6 +5126,9 @@ public class Summary {
             CTBRefToIDLookup0 = CTBRefToIDLookup1;
             yM30 = yM31;
             yM30v = yM31v;
+            AllCount0 = null;
+            HBCount0 = null;
+            CTBCount0 = null;
             // Not used at present. incomeAndRentSummary0 = incomeAndRentSummary1;
         }
         return result;
@@ -4461,6 +5480,7 @@ public class Summary {
      * @return
      */
     public TreeMap<String, HashMap<String, String>> getSummaryTable(
+            TreeMap<String, HashMap<String, String>> summaryTableAll,
             String[] SHBEFilenames,
             ArrayList<Integer> include,
             boolean forceNewSummaries,
@@ -4476,6 +5496,7 @@ public class Summary {
         AllCount0 = null;
         HBCount0 = null;
         CTBCount0 = null;
+        initCounts(nTT, nEG, nPSI);
         // Initialise result
         TreeMap<String, HashMap<String, String>> result;
         result = new TreeMap<String, HashMap<String, String>>();
@@ -4486,28 +5507,29 @@ public class Summary {
         RSLUnderOccupiedSets = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[1];
         // Initialise first data
         Iterator<Integer> includeIte;
-        DW_SHBE_Collection tSHBEData0 = null;
+        DW_SHBE_Collection tSHBEData1 = null;
         includeIte = include.iterator();
         boolean initFirst = false;
-        String yM30 = "";
-        String yM30v = "";
-        DW_UnderOccupiedReport_Set councilUnderOccupiedSet0 = null;
-        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet0 = null;
-        String filename0 = null;
+        String yM31 = "";
+        String yM31v = "";
+        DW_UnderOccupiedReport_Set councilUnderOccupiedSet1 = null;
+        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1 = null;
+        String filename1 = null;
         int i;
         while (!initFirst) {
             i = includeIte.next();
             // Load first data
-            filename0 = SHBEFilenames[i];
-            yM30 = DW_SHBE_Handler.getYM3(filename0);
-            councilUnderOccupiedSet0 = councilUnderOccupiedSets.get(yM30);
-            if (councilUnderOccupiedSet0 != null) {
-                RSLUnderOccupiedSet0 = RSLUnderOccupiedSets.get(yM30);
-                tSHBEData0 = getSHBEData(filename0, paymentType, handleOutOfMemoryError);
+            filename1 = SHBEFilenames[i];
+            yM31 = DW_SHBE_Handler.getYM3(filename1);
+            councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
+            if (councilUnderOccupiedSet1 != null) {
+                RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
+                System.out.println("Load " + filename1);
+                tSHBEData1 = new DW_SHBE_Collection(filename1, paymentType);
                 initFirst = true;
             }
         }
-        if (tSHBEData0 == null) {
+        if (tSHBEData1 == null) {
             return result;
         }
         Object[] filenames;
@@ -4524,9 +5546,9 @@ public class Summary {
             j = includeIte2.next();
             String yM3;
             yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[j]);
-            DW_UnderOccupiedReport_Set aCouncilUnderOccupiedSet0;
-            aCouncilUnderOccupiedSet0 = councilUnderOccupiedSets.get(yM3);
-            if (aCouncilUnderOccupiedSet0 != null) {
+            DW_UnderOccupiedReport_Set aCouncilUnderOccupiedSet;
+            aCouncilUnderOccupiedSet = councilUnderOccupiedSets.get(yM3);
+            if (aCouncilUnderOccupiedSet != null) {
                 HashMap<String, String> summary;
                 summary = new HashMap<String, String>();
                 String key;
@@ -4550,12 +5572,12 @@ public class Summary {
         // Specify Data
 //        TreeMap<String, DW_SHBE_Record> tDRecords0;
 //        tDRecords0 = (TreeMap<String, DW_SHBE_Record>) tSHBEData0[0];
-        HashSet<DW_PersonID> tClaimantIDs0;
-        tClaimantIDs0 = tSHBEData0.getClaimantIDs();
-        tClaimantIDs.put(yM30, tClaimantIDs0);
-        HashSet<DW_PersonID> AllIDs0;
-        AllIDs0 = tSHBEData0.getAllIDs();
-        AllIDs.put(yM30, AllIDs0);
+        HashSet<DW_PersonID> tClaimantIDs1;
+        tClaimantIDs1 = tSHBEData1.getClaimantIDs();
+        tClaimantIDs.put(yM31, tClaimantIDs1);
+        HashSet<DW_PersonID> AllIDs1;
+        AllIDs1 = tSHBEData1.getAllIDs();
+        AllIDs.put(yM31, AllIDs1);
 //        HashMap<DW_ID, String> tIDByPostcode0;
 //        tIDByPostcode0 = (HashMap<DW_ID, String>) tSHBEData0[8];
         //tIDByPostcode0 = loadIDByPostcode(loadData, filename, i);
@@ -4574,191 +5596,13 @@ public class Summary {
 //        tClaimantIDPostcodeTTs0 = (HashSet<ID_TenancyType_PostcodeID>) tSHBEData0[15];
 //        tClaimantIDPostcodeTTs.put(yM30, tClaimantIDPostcodeTTs0);
 
-        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-        partSummarySingleTime(
-                tSHBEData0,
-                yM30,
-                yM30v,
-                filename0,
-                forceNewSummaries,
-                paymentType,
-                nTT,
-                nEG,
-                nPSI,
-                councilFilenames,
-                RSLFilenames,
-                councilUnderOccupiedSet0,
-                RSLUnderOccupiedSet0,
-                result,
-                tClaimantIDPostcodes,
-                tClaimantIDTTs,
-                tClaimantIDPostcodeTTs,
-                tDW_PersonIDToIDLookup,
-                tPostcodeToPostcodeIDLookup);
-
-        if (!includeIte.hasNext()) {
-            return result;
-        }
-        i = includeIte.next();
-        // Second data
-        String filename00 = filename0;
-        String yM300 = yM30;
-        String yM300v = yM30v;
-        DW_SHBE_Collection tSHBEData00 = tSHBEData0;
-        DW_UnderOccupiedReport_Set councilUnderOccupiedSet00;
-        councilUnderOccupiedSet00 = councilUnderOccupiedSet0;
-        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet00;
-        RSLUnderOccupiedSet00 = RSLUnderOccupiedSet0;
-
-        filename0 = SHBEFilenames[i];
-        yM30 = DW_SHBE_Handler.getYM3(filename0);
-        councilUnderOccupiedSet0 = councilUnderOccupiedSets.get(yM30);
-        RSLUnderOccupiedSet0 = RSLUnderOccupiedSets.get(yM30);
-        tSHBEData0 = getSHBEData(filename0, paymentType, handleOutOfMemoryError);
-
-        //DO SOME SUMMARY
-        partSummaryCompare2Times(
-                tSHBEData00,
-                yM30,
-                yM30v,
-                filename0,
-                tSHBEData0,
-                yM300,
-                yM300v,
-                filename00,
-                forceNewSummaries,
-                paymentType,
-                nTT,
-                nEG,
-                nPSI,
-                councilFilenames,
-                RSLFilenames,
-                councilUnderOccupiedSet0,
-                RSLUnderOccupiedSet0,
-                result,
-                tClaimantIDPostcodes,
-                tClaimantIDTTs,
-                tClaimantIDPostcodeTTs,
-                tDW_PersonIDToIDLookup,
-                tPostcodeToPostcodeIDLookup);
-        filename00 = filename0;
-        yM300 = yM30;
-        yM300v = yM30v;
-        tSHBEData00 = tSHBEData0;
-        councilUnderOccupiedSet00 = councilUnderOccupiedSet0;
-        RSLUnderOccupiedSet00 = RSLUnderOccupiedSet0;
-
-        while (includeIte.hasNext()) {
-            i = includeIte.next();
-
-            String filename1 = SHBEFilenames[i];
-            String yM31 = DW_SHBE_Handler.getYM3(filename1);
-            String yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
-            DW_UnderOccupiedReport_Set councilUnderOccupiedSet1;
-            councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
-            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1;
-            RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
-            DW_SHBE_Collection tSHBEData1 = getSHBEData(filename1, paymentType, handleOutOfMemoryError);
-
-            //DO SOME SUMMARY
-            partSummaryCompare3Times(
-                    SHBEFilenames,
-                    include,
-                    tSHBEData1,
-                    yM31,
-                    yM31v,
-                    filename1,
-                    tSHBEData0,
-                    yM30,
-                    yM30v,
-                    filename0,
-                    tSHBEData00,
-                    yM300,
-                    yM300v,
-                    filename00,
-                    forceNewSummaries,
-                    paymentType,
-                    nTT,
-                    nEG,
-                    nPSI,
-                    councilFilenames,
-                    RSLFilenames,
-                    councilUnderOccupiedSet1,
-                    RSLUnderOccupiedSet1,
-                    councilUnderOccupiedSet0,
-                    RSLUnderOccupiedSet0,
-                    councilUnderOccupiedSet00,
-                    RSLUnderOccupiedSet00,
-                    result,
-                    tClaimantIDPostcodes,
-                    tClaimantIDTTs,
-                    tClaimantIDPostcodeTTs,
-                    tDW_PersonIDToIDLookup,
-                    tPostcodeToPostcodeIDLookup);
-            councilUnderOccupiedSet00 = councilUnderOccupiedSet0;
-            councilUnderOccupiedSet0 = councilUnderOccupiedSet1;
-            RSLUnderOccupiedSet00 = RSLUnderOccupiedSet0;
-            RSLUnderOccupiedSet0 = RSLUnderOccupiedSet1;
-            filename00 = filename0;
-            filename0 = filename1;
-            tSHBEData0 = tSHBEData1;
-            yM300 = yM30;
-            yM30 = yM31;
-            yM300v = yM30v;
-            yM30v = yM31v;
-            // Not used at present. incomeAndRentSummary0 = incomeAndRentSummary1;
-        }
-        return result;
-    }
-
-    private void partSummaryCompare3Times(
-            String[] SHBEFilenames,
-            ArrayList<Integer> include,
-            DW_SHBE_Collection tSHBEData1,
-            String yM31,
-            String yM31v,
-            String filename1,
-            DW_SHBE_Collection tSHBEData0,
-            String yM30,
-            String yM30v,
-            String filename0,
-            DW_SHBE_Collection tSHBEData00,
-            String yM300,
-            String yM300v,
-            String filename00,
-            boolean forceNewSummaries,
-            String paymentType,
-            int nTT,
-            int nEG,
-            int nPSI,
-            TreeMap<String, String> councilFilenames,
-            TreeMap<String, String> RSLFilenames,
-            DW_UnderOccupiedReport_Set councilUnderOccupiedSet1,
-            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1,
-            DW_UnderOccupiedReport_Set councilUnderOccupiedSet0,
-            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet0,
-            DW_UnderOccupiedReport_Set councilUnderOccupiedSet00,
-            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet00,
-            TreeMap<String, HashMap<String, String>> result,
-            TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
-            TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs,
-            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
-            HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
-            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
-        CouncilLinkedRecordCount00 = CouncilLinkedRecordCount0;
-        RSLLinkedRecordCount00 = RSLLinkedRecordCount0;
-        AllLinkedRecordCount00 = AllUOLinkedRecordCount0;
-        AllUOCount00 = AllUOCount0;
-        CouncilCount00 = CouncilCount0;
-        RSLCount00 = RSLCount0;
-        partSummaryCompare2Times(
+        yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+        doPartSummarySingleTime(
                 tSHBEData1,
-                yM31, yM31v,
+                yM31,
+                yM31v,
                 filename1,
-                tSHBEData0,
-                yM30,
-                yM30v,
-                filename0, forceNewSummaries,
+                forceNewSummaries,
                 paymentType,
                 nTT,
                 nEG,
@@ -4771,17 +5615,209 @@ public class Summary {
                 tClaimantIDPostcodes,
                 tClaimantIDTTs,
                 tClaimantIDPostcodeTTs,
-                DW_PersonIDToIDLookup,
-                PostcodeToPostcodeIDLookup);
+                tDW_PersonIDToIDLookup,
+                tPostcodeToPostcodeIDLookup);
+        if (!includeIte.hasNext()) {
+            return result;
+        }
+        i = includeIte.next();
+        // Second data
+        // Init vars
+        String filename0 = filename1;
+        String yM30 = yM31;
+        String yM30v = yM31v;
+        DW_SHBE_Collection tSHBEData0 = tSHBEData1;
+        DW_UnderOccupiedReport_Set councilUnderOccupiedSet0;
+        councilUnderOccupiedSet0 = councilUnderOccupiedSet1;
+        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet0;
+        RSLUnderOccupiedSet0 = RSLUnderOccupiedSet1;
+
+        filename1 = SHBEFilenames[i];
+        yM31 = DW_SHBE_Handler.getYM3(filename1);
+        councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
+        RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
+        System.out.println("Load " + filename1);
+        tSHBEData1 = new DW_SHBE_Collection(filename1, paymentType);
+
+        //DO SOME SUMMARY
+        doPartSummaryCompare2Times(
+                tSHBEData1,
+                yM31,
+                yM31v,
+                filename1,
+                tSHBEData0,
+                yM30,
+                yM30v,
+                filename0,
+                forceNewSummaries,
+                paymentType,
+                nTT,
+                nEG,
+                nPSI,
+                councilFilenames,
+                RSLFilenames,
+                councilUnderOccupiedSet1,
+                RSLUnderOccupiedSet1,
+                councilUnderOccupiedSet0,
+                RSLUnderOccupiedSet0,
+                result,
+                tClaimantIDPostcodes,
+                tClaimantIDTTs,
+                tClaimantIDPostcodeTTs,
+                tDW_PersonIDToIDLookup,
+                tPostcodeToPostcodeIDLookup);
+        String filename00 = filename0;
+        String yM300 = yM30;
+        String yM300v = yM30v;
+        DW_SHBE_Collection tSHBEData00 = tSHBEData0;
+        DW_UnderOccupiedReport_Set councilUnderOccupiedSet00 = councilUnderOccupiedSet0;
+        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet00 = RSLUnderOccupiedSet0;
+        filename0 = filename1;
+        yM30 = yM31;
+        yM30v = yM31v;
+        tSHBEData0 = tSHBEData1;
+        councilUnderOccupiedSet0 = councilUnderOccupiedSet1;
+        RSLUnderOccupiedSet0 = RSLUnderOccupiedSet1;
+
+        while (includeIte.hasNext()) {
+            i = includeIte.next();
+
+            filename1 = SHBEFilenames[i];
+            yM31 = DW_SHBE_Handler.getYM3(filename1);
+            yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+            councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
+            RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
+            tSHBEData1 = new DW_SHBE_Collection(filename1, paymentType);
+
+            //DO SOME SUMMARY
+            doPartSummaryCompare3Times(
+                    SHBEFilenames,
+                    include,
+                    tSHBEData1,
+                    yM31,
+                    yM31v,
+                    filename1,
+                    tSHBEData0,
+                    yM30,
+                    yM30v,
+                    filename0,
+//                    tSHBEData00,
+                    yM300,
+//                    yM300v,
+                    filename00,
+                    forceNewSummaries,
+                    paymentType,
+                    nTT,
+                    nEG,
+                    nPSI,
+                    councilFilenames,
+                    RSLFilenames,
+                    councilUnderOccupiedSet1,
+                    RSLUnderOccupiedSet1,
+                    councilUnderOccupiedSet0,
+                    RSLUnderOccupiedSet0,
+//                    councilUnderOccupiedSet00,
+//                    RSLUnderOccupiedSet00,
+                    result,
+                    tClaimantIDPostcodes,
+                    tClaimantIDTTs,
+                    tClaimantIDPostcodeTTs,
+                    tDW_PersonIDToIDLookup,
+                    tPostcodeToPostcodeIDLookup);
+            councilUnderOccupiedSet00 = councilUnderOccupiedSet0;
+            councilUnderOccupiedSet0 = councilUnderOccupiedSet1;
+            RSLUnderOccupiedSet00 = RSLUnderOccupiedSet0;
+            RSLUnderOccupiedSet0 = RSLUnderOccupiedSet1;
+            filename00 = filename0;
+            filename0 = filename1;
+            tSHBEData00 = tSHBEData0;
+            tSHBEData0 = tSHBEData1;
+            yM300 = yM30;
+            yM30 = yM31;
+            yM300v = yM30v;
+            yM30v = yM31v;
+            AllCount0 = null;
+            HBCount0 = null;
+            CTBCount0 = null;
+            // Not used at present. incomeAndRentSummary0 = incomeAndRentSummary1;
+        }
+        return result;
+    }
+
+    private void doPartSummaryCompare3Times(
+            String[] SHBEFilenames,
+            ArrayList<Integer> include,
+            DW_SHBE_Collection tSHBEData1,
+            String yM31,
+            String yM31v,
+            String filename1,
+            DW_SHBE_Collection tSHBEData0,
+            String yM30,
+            String yM30v,
+            String filename0,
+//            DW_SHBE_Collection tSHBEData00,
+            String yM300,
+//            String yM300v,
+            String filename00,
+            boolean forceNewSummaries,
+            String paymentType,
+            int nTT,
+            int nEG,
+            int nPSI,
+            TreeMap<String, String> tCouncilFilenames,
+            TreeMap<String, String> tRSLFilenames,
+            DW_UnderOccupiedReport_Set tCouncilUnderOccupiedSet1,
+            DW_UnderOccupiedReport_Set tRSLUnderOccupiedSet1,
+            DW_UnderOccupiedReport_Set tCouncilUnderOccupiedSet0,
+            DW_UnderOccupiedReport_Set tRSLUnderOccupiedSet0,
+//            DW_UnderOccupiedReport_Set tCouncilUnderOccupiedSet00,
+//            DW_UnderOccupiedReport_Set tRSLUnderOccupiedSet00,
+            TreeMap<String, HashMap<String, String>> result,
+            TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
+            TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs,
+            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
+            HashMap<DW_PersonID, DW_ID> tDW_PersonIDToIDLookup,
+            HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup) {
+        // Set counters
+        CouncilLinkedRecordCount00 = CouncilLinkedRecordCount0;
+        RSLLinkedRecordCount00 = RSLLinkedRecordCount0;
+        AllLinkedRecordCount00 = AllUOLinkedRecordCount0;
+        AllUOCount00 = AllUOCount0;
+        CouncilCount00 = CouncilCount0;
+        RSLCount00 = RSLCount0;
+        doPartSummaryCompare2Times(
+                tSHBEData1,
+                yM31,
+                yM31v,
+                filename1,
+                tSHBEData0,
+                yM30,
+                yM30v,
+                filename0,
+                forceNewSummaries,
+                paymentType,
+                nTT,
+                nEG,
+                nPSI,
+                tCouncilFilenames,
+                tRSLFilenames,
+                tCouncilUnderOccupiedSet1,
+                tRSLUnderOccupiedSet1,
+                tCouncilUnderOccupiedSet0,
+                tRSLUnderOccupiedSet0,
+                result,
+                tClaimantIDPostcodes,
+                tClaimantIDTTs,
+                tClaimantIDPostcodeTTs,
+                tDW_PersonIDToIDLookup,
+                tPostcodeToPostcodeIDLookup);
 
         String key;
         key = DW_SHBE_Handler.getYearMonthNumber(filename1);
         HashMap<String, String> summary;
         summary = result.get(key);
-
-        TreeMap<String, DW_SHBE_Record> tDRecords1;
-        tDRecords1 = tSHBEData1.getRecords();
-
+//        TreeMap<String, DW_SHBE_Record> tDRecords1;
+//        tDRecords1 = tSHBEData1.getRecords();
         HashSet<ID_PostcodeID> tClaimantIDPostcodes1;
         tClaimantIDPostcodes1 = tClaimantIDPostcodes.get(yM31);
         HashSet<ID_TenancyType> tClaimantIDTTs1;
@@ -4804,22 +5840,23 @@ public class Summary {
         summary.put(sSHBEFilename00, filename00);
         summary.put(sSHBEFilename0, filename0);
         summary.put(sSHBEFilename1, filename1);
-        summary.put(sCouncilFilename00, councilFilenames.get(yM300));
-        summary.put(sRSLFilename00, RSLFilenames.get(yM300));
+        summary.put(sCouncilFilename00, tCouncilFilenames.get(yM300));
+        summary.put(sRSLFilename00, tRSLFilenames.get(yM300));
         summary.put(sCouncilCount00, Integer.toString(CouncilCount00));
         summary.put(sCouncilLinkedRecordCount00, Integer.toString(CouncilLinkedRecordCount00));
         summary.put(sRSLCount00, Integer.toString(RSLCount00));
         summary.put(sRSLLinkedRecordCount00, Integer.toString(RSLLinkedRecordCount00));
         summary.put(sAllUOLinkedRecordCount00, Integer.toString(CouncilLinkedRecordCount00 + RSLLinkedRecordCount00));
-        summary.put(sCouncilFilename0, councilFilenames.get(yM30));
-        summary.put(sRSLFilename0, RSLFilenames.get(yM30));
+        summary.put(sCouncilFilename0, tCouncilFilenames.get(yM30));
+        summary.put(sRSLFilename0, tRSLFilenames.get(yM30));
         summary.put(sCouncilCount0, Integer.toString(CouncilCount0));
         summary.put(sCouncilLinkedRecordCount0, Integer.toString(CouncilLinkedRecordCount0));
         summary.put(sRSLCount0, Integer.toString(RSLCount0));
         summary.put(sRSLLinkedRecordCount0, Integer.toString(RSLLinkedRecordCount0));
-        summary.put(aAllUOLinkedRecordCount0, Integer.toString(CouncilLinkedRecordCount0 + RSLLinkedRecordCount0));
-        summary.put(sCouncilFilename1, councilFilenames.get(yM31));
-        summary.put(sRSLFilename1, RSLFilenames.get(yM31));
+        summary.put(sAllUOCount0, Integer.toString(AllUOCount0));
+        summary.put(sAllUOLinkedRecordCount0, Integer.toString(CouncilLinkedRecordCount0 + RSLLinkedRecordCount0));
+        summary.put(sCouncilFilename1, tCouncilFilenames.get(yM31));
+        summary.put(sRSLFilename1, tRSLFilenames.get(yM31));
         summary.put(sCouncilCount1, Integer.toString(CouncilCount1));
         summary.put(sCouncilLinkedRecordCount1, Integer.toString(CouncilLinkedRecordCount1));
         summary.put(sRSLCount1, Integer.toString(RSLCount1));
@@ -4831,34 +5868,34 @@ public class Summary {
      * Bit odd but filename0 has the data for now. filename00 has the data for
      * the previous time.
      *
+     * @param tSHBEData1
+     * @param yM31
+     * @param yM31v
+     * @param filename1
      * @param tSHBEData0
      * @param yM30
      * @param yM30v
      * @param filename0
-     * @param tSHBEData00
-     * @param yM300
-     * @param yM300v
-     * @param filename00
      * @param forceNewSummaries
      * @param nTT
      * @param nEG
      * @param councilFilenames
      * @param RSLFilenames
-     * @param councilUnderOccupiedSet0
-     * @param RSLUnderOccupiedSet0
+     * @param councilUnderOccupiedSet1
+     * @param RSLUnderOccupiedSet1
      * @param councilUnderOccupiedSet00
      * @param RSLUnderOccupiedSet00
      * @param summaries
      */
-    private void partSummaryCompare2Times(
+    private void doPartSummaryCompare2Times(
+            DW_SHBE_Collection tSHBEData1,
+            String yM31,
+            String yM31v,
+            String filename1,
             DW_SHBE_Collection tSHBEData0,
             String yM30,
             String yM30v,
             String filename0,
-            DW_SHBE_Collection tSHBEData00,
-            String yM300,
-            String yM300v,
-            String filename00,
             boolean forceNewSummaries,
             String paymentType,
             int nTT,
@@ -4866,6 +5903,8 @@ public class Summary {
             int nPSI,
             TreeMap<String, String> councilFilenames,
             TreeMap<String, String> RSLFilenames,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet1,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1,
             DW_UnderOccupiedReport_Set councilUnderOccupiedSet0,
             DW_UnderOccupiedReport_Set RSLUnderOccupiedSet0,
             TreeMap<String, HashMap<String, String>> summaries,
@@ -4874,21 +5913,11 @@ public class Summary {
             TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
             HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
             HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
-        AllUOCount0 = AllUOCount1;
-        CouncilCount0 = CouncilCount1;
-        RSLCount0 = RSLCount1;
-        CouncilLinkedRecordCount0 = CouncilLinkedRecordCount1;
-        RSLLinkedRecordCount0 = RSLLinkedRecordCount1;
-        AllUOLinkedRecordCount0 = AllUOLinkedRecordCount1;
-//        for (int TT = 0; TT < nTT; TT++) {
-//            AllTotalCountTTClaimant0[TT] = AllTotalCountTTClaimant1[TT];
-//        }
-        System.arraycopy(TotalCountTTClaimant1, 0, TotalCountTTClaimant0, 0, nTT);
-        partSummarySingleTime(
-                tSHBEData0,
-                yM30,
-                yM30v,
-                filename0,
+        doPartSummarySingleTime(
+                tSHBEData1,
+                yM31,
+                yM31v,
+                filename1,
                 forceNewSummaries,
                 paymentType,
                 nTT,
@@ -4896,8 +5925,8 @@ public class Summary {
                 nPSI,
                 councilFilenames,
                 RSLFilenames,
-                councilUnderOccupiedSet0,
-                RSLUnderOccupiedSet0,
+                councilUnderOccupiedSet1,
+                RSLUnderOccupiedSet1,
                 summaries,
                 tClaimantIDPostcodes,
                 tClaimantIDTTs,
@@ -4905,8 +5934,8 @@ public class Summary {
                 DW_PersonIDToIDLookup,
                 PostcodeToPostcodeIDLookup);
 
-        TreeMap<String, DW_SHBE_Record> tDRecords0;
-        tDRecords0 = tSHBEData0.getRecords();
+        TreeMap<String, DW_SHBE_Record> tDRecords1;
+        tDRecords1 = tSHBEData1.getRecords();
 //        HashMap<DW_ID, String> tIDByPostcode0;
 //        tIDByPostcode0 = (HashMap<DW_ID, String>) tSHBEData0[8];
 //        HashMap<DW_ID, Integer> tIDByTT0;
@@ -4914,8 +5943,8 @@ public class Summary {
 //        HashMap<String, DW_ID> CTBRefToIDLookup0;
 //        CTBRefToIDLookup0 = (HashMap<String, DW_ID>) tSHBEData0[10];
 
-        TreeMap<String, DW_SHBE_Record> tDRecords00;
-        tDRecords00 = tSHBEData00.getRecords();
+        TreeMap<String, DW_SHBE_Record> tDRecords0;
+        tDRecords0 = tSHBEData0.getRecords();
 //        HashMap<DW_ID, String> tIDByPostcode00;
 //        tIDByPostcode00 = (HashMap<DW_ID, String>) tSHBEData00[8];
 //        HashMap<DW_ID, Integer> tIDByTT00;
@@ -4927,57 +5956,65 @@ public class Summary {
         councilUnderOccupiedSet0Map = councilUnderOccupiedSet0.getMap();
         TreeMap<String, DW_UOReport_Record> RSLUnderOccupiedSet0Map;
         RSLUnderOccupiedSet0Map = RSLUnderOccupiedSet0.getMap();
+        TreeMap<String, DW_UOReport_Record> councilUnderOccupiedSet1Map;
+        councilUnderOccupiedSet1Map = councilUnderOccupiedSet1.getMap();
+        TreeMap<String, DW_UOReport_Record> RSLUnderOccupiedSet1Map;
+        RSLUnderOccupiedSet1Map = RSLUnderOccupiedSet1.getMap();
         // Loop over underoccupancy data
         // Loop over Council
         doCompare2TimesLoopOverSet(
                 councilUnderOccupiedSet0Map,
-                tDRecords00,
+                councilUnderOccupiedSet1Map,
                 tDRecords0,
+                tDRecords1,
                 //                CTBRefToIDLookup00,
                 //                CTBRefToIDLookup0,
                 //                tIDByTT00,
                 //                tIDByTT0,
                 //                tIDByPostcode00,
                 //                tIDByPostcode0,
-                yM300v,
-                yM30v);
+                yM30v,
+                yM31v);
         // Loop over RSL
         doCompare2TimesLoopOverSet(
                 RSLUnderOccupiedSet0Map,
-                tDRecords00,
+                RSLUnderOccupiedSet1Map,
                 tDRecords0,
+                tDRecords1,
                 //                CTBRefToIDLookup00,
                 //                CTBRefToIDLookup0,
                 //                tIDByTT00,
                 //                tIDByTT0,
                 //                tIDByPostcode00,
                 //                tIDByPostcode0,
-                yM300v,
-                yM30v);
+                yM30v,
+                yM31v);
 
         String key;
-        key = DW_SHBE_Handler.getYearMonthNumber(filename0);
+        key = DW_SHBE_Handler.getYearMonthNumber(filename1);
         HashMap<String, String> summary;
         summary = summaries.get(key);
 
         addToSummaryCompare2Times(nTT, nEG, nPSI, summary);
 
         // All
-        summary.put(sSHBEFilename0, filename00); // This looks wierd but is right!
-        summary.put(sSHBEFilename1, filename0); // This looks wierd but is right!
-        summary.put(sCouncilFilename0, councilFilenames.get(yM300)); // This looks wierd but is right!
-        summary.put(sRSLFilename0, RSLFilenames.get(yM300)); // This looks wierd but is right!
+        summary.put(sSHBEFilename0, filename0); // This looks wierd but is right!
+        summary.put(sSHBEFilename1, filename1); // This looks wierd but is right!
+        summary.put(sCouncilFilename0, councilFilenames.get(yM30)); // This looks wierd but is right!
+        summary.put(sRSLFilename0, RSLFilenames.get(yM30)); // This looks wierd but is right!
         summary.put(sCouncilCount0, Integer.toString(CouncilCount0));
         summary.put(sCouncilLinkedRecordCount0, Integer.toString(CouncilLinkedRecordCount0));
         summary.put(sRSLCount0, Integer.toString(RSLCount0));
         summary.put(sRSLLinkedRecordCount0, Integer.toString(RSLLinkedRecordCount0));
-        summary.put(aAllUOLinkedRecordCount0, Integer.toString(CouncilLinkedRecordCount0 + RSLLinkedRecordCount0));
-        summary.put(sCouncilFilename1, councilFilenames.get(yM30)); // This looks wierd but is right!
-        summary.put(sRSLFilename1, RSLFilenames.get(yM30)); // This looks wierd but is right!
+        summary.put(sAllUOCount0, Integer.toString(AllUOCount0));
+        summary.put(sAllUOLinkedRecordCount0, Integer.toString(CouncilLinkedRecordCount0 + RSLLinkedRecordCount0));
+        summary.put(sCouncilFilename1, councilFilenames.get(yM31)); // This looks wierd but is right!
+        summary.put(sRSLFilename1, RSLFilenames.get(yM31)); // This looks wierd but is right!
         summary.put(sCouncilCount1, Integer.toString(CouncilCount1));
         summary.put(sCouncilLinkedRecordCount1, Integer.toString(CouncilLinkedRecordCount1));
         summary.put(sRSLCount1, Integer.toString(RSLCount1));
         summary.put(sRSLLinkedRecordCount1, Integer.toString(RSLLinkedRecordCount1));
+        summary.put(sAllUOCount1, Integer.toString(AllUOCount1));
         summary.put(sAllUOLinkedRecordCount1, Integer.toString(CouncilLinkedRecordCount1 + RSLLinkedRecordCount1));
     }
 
@@ -5021,7 +6058,7 @@ public class Summary {
         }
     }
 
-    private void partSummarySingleTime(
+    private void doPartSummarySingleTime(
             //            HashMap<String, String> summary,
             DW_SHBE_Collection tSHBEData,
             //            TreeMap<String, DW_SHBE_Record> tDRecords0,
@@ -5047,6 +6084,21 @@ public class Summary {
             TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
             HashMap<DW_PersonID, DW_ID> tDW_PersonIDToIDLookup,
             HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup) {
+        // Set the last results
+        AllCount0 = AllCount1;
+        HBCount0 = HBCount1;
+        CTBCount0 = CTBCount1;
+        AllUOCount0 = AllUOCount1;
+        CouncilCount0 = CouncilCount1;
+        RSLCount0 = RSLCount1;
+        CouncilLinkedRecordCount0 = CouncilLinkedRecordCount1;
+        RSLLinkedRecordCount0 = RSLLinkedRecordCount1;
+        AllCount0 = AllCount1;
+        AllUOLinkedRecordCount0 = AllUOLinkedRecordCount1;
+//        for (int TT = 0; TT < nTT; TT++) {
+//            AllTotalCountTTClaimant0[TT] = AllTotalCountTTClaimant1[TT];
+//        }
+        System.arraycopy(TotalCount_TTClaimant1, 0, TotalCount_TTClaimant0, 0, nTT);
 
         TreeMap<String, DW_SHBE_Record> tDRecords0;
         tDRecords0 = tSHBEData.getRecords();
@@ -5080,18 +6132,18 @@ public class Summary {
                 tDW_PersonIDToIDLookup,
                 tPostcodeToPostcodeIDLookup);
 
-        TreeMap<String, DW_UOReport_Record> councilUnderOccupiedSet0Map;
-        councilUnderOccupiedSet0Map = councilUnderOccupiedSet.getMap();
-        TreeMap<String, DW_UOReport_Record> RSLUnderOccupiedSet0Map;
-        RSLUnderOccupiedSet0Map = RSLUnderOccupiedSet.getMap();
+        TreeMap<String, DW_UOReport_Record> councilUnderOccupiedSetMap;
+        councilUnderOccupiedSetMap = councilUnderOccupiedSet.getMap();
+        TreeMap<String, DW_UOReport_Record> RSLUnderOccupiedSetMap;
+        RSLUnderOccupiedSetMap = RSLUnderOccupiedSet.getMap();
         // Loop over underoccupancy data
         // Loop over Council
         CouncilLinkedRecordCount1 = doSingleTimeLoopOverSet(
-                councilUnderOccupiedSet0Map, tDRecords0, CTBRefToIDLookup0,
+                councilUnderOccupiedSetMap, tDRecords0, CTBRefToIDLookup0,
                 tIDByTT0, tIDByPostcode0, yM3v);
         // Loop over RSL
         RSLLinkedRecordCount1 = doSingleTimeLoopOverSet(
-                RSLUnderOccupiedSet0Map, tDRecords0, CTBRefToIDLookup0,
+                RSLUnderOccupiedSetMap, tDRecords0, CTBRefToIDLookup0,
                 tIDByTT0, tIDByPostcode0, yM3v);
         HashMap<String, BigDecimal> incomeAndRentSummary0;
         incomeAndRentSummary0 = DW_SHBE_Handler.getIncomeAndRentSummary(
@@ -5101,31 +6153,31 @@ public class Summary {
                 councilUnderOccupiedSet,
                 true,
                 forceNewSummaries);
-        addToSummarySingleTimeIncomeAndRent0(
+        addToSummarySingleTimeIncomeAndRent(
                 summary,
                 incomeAndRentSummary0);
-
-        // All
-        CouncilCount1 = councilUnderOccupiedSet0Map.size();
-        RSLCount1 = RSLUnderOccupiedSet0Map.size();
+        addToSummarySingleTime(nTT, nEG, nPSI, summary);
+        addToSummarySingleTimeRentArrears(summary);
+        // Prepare vars
+        CouncilCount1 = councilUnderOccupiedSetMap.size();
+        RSLCount1 = RSLUnderOccupiedSetMap.size();
         AllUOCount1 = CouncilCount1 + RSLCount1;
         AllUOLinkedRecordCount1 = CouncilLinkedRecordCount1 + RSLLinkedRecordCount1;
         summary.put(sAllUOCount1, Integer.toString(AllUOCount1));
         summary.put(sSHBEFilename1, filename);
         summary.put(sCouncilFilename1, councilFilenames.get(yM3));
         summary.put(sRSLFilename1, RSLFilenames.get(yM3));
-        summary.put(sCouncilCount1, Integer.toString(councilUnderOccupiedSet0Map.size()));
+        summary.put(sCouncilCount1, Integer.toString(CouncilCount1));
         summary.put(sCouncilLinkedRecordCount1, Integer.toString(CouncilLinkedRecordCount1));
-        summary.put(sRSLCount1, Integer.toString(RSLUnderOccupiedSet0Map.size()));
+        summary.put(sRSLCount1, Integer.toString(RSLCount1));
         summary.put(sRSLLinkedRecordCount1, Integer.toString(RSLLinkedRecordCount1));
         summary.put(sAllUOCount1, Integer.toString(AllUOCount1));
         summary.put(sAllUOLinkedRecordCount1, Integer.toString(AllUOLinkedRecordCount1));
-        addToSummarySingleTime(nTT, nEG, nPSI, summary);
-        addToSummarySingleTimeRentArrears0(summary);
     }
 
     public void doCompare2TimesLoopOverSet(
-            TreeMap<String, DW_UOReport_Record> map,
+            TreeMap<String, DW_UOReport_Record> map0,
+            TreeMap<String, DW_UOReport_Record> map1,
             TreeMap<String, DW_SHBE_Record> D_Records0,
             TreeMap<String, DW_SHBE_Record> D_Records1,
             //            HashMap<String, DW_ID> CTBRefID0,
@@ -5137,12 +6189,12 @@ public class Summary {
             String yM30v,
             String yM31v) {
         Iterator<String> ite;
-        ite = map.keySet().iterator();
+        ite = map1.keySet().iterator();
         while (ite.hasNext()) {
             String tID;
             tID = ite.next();
             DW_UOReport_Record UORec;
-            UORec = map.get(tID);
+            UORec = map1.get(tID);
             // Rent Arrears Summary
             doSingleTimeRentArrearsCount(UORec);
             String CTBRef;
@@ -5176,8 +6228,63 @@ public class Summary {
                         yM31v);
             }
         }
+        // Go through all those that were in the UO data, but have come out.
+        HashSet<String> claimsOutOfUO;
+        claimsOutOfUO = new HashSet<String>();
+        claimsOutOfUO.addAll(map0.keySet());
+        claimsOutOfUO.removeAll(map1.keySet());
+        ite = claimsOutOfUO.iterator();
+        while (ite.hasNext()) {
+            String tID;
+            tID = ite.next();
+            DW_UOReport_Record UORec;
+            UORec = map0.get(tID);
+            // Rent Arrears Summary
+            doSingleTimeRentArrearsCount(UORec);
+            String CTBRef;
+            CTBRef = UORec.getClaimReferenceNumber();
+            DW_SHBE_Record Record0;
+            Record0 = D_Records0.get(CTBRef);
+            DW_SHBE_Record Record1;
+            Record1 = D_Records1.get(CTBRef);
+            if (Record1 == null) {
+                // Count this!
+                //tDRecordsCTBRefDW_SHBE_RecordNullCount++;
+            } else {
+                DW_SHBE_D_Record D_Record0;
+                D_Record0 = null;
+                if (Record0 != null) {
+                    D_Record0 = Record0.getDRecord();
+                }
+                DW_SHBE_D_Record D_Record1;
+                D_Record1 = Record1.getDRecord();
+                doCompare2TimesCounts(
+                        D_Record0,
+                        D_Record1,
+                        //                        CTBRef,
+                        //                        CTBRefID0,
+                        //                        CTBRefID1,
+                        //                        tIDByTT0,
+                        //                        tIDByTT1,
+                        //                        tIDByPostcode0,
+                        //                        tIDByPostcode1,
+                        yM30v,
+                        yM31v);
+            }
+        }
+
     }
 
+    /**
+     *
+     * @param map
+     * @param D_Records
+     * @param CTBRefToIDLookup0
+     * @param tIDByTT0
+     * @param tIDByPostcode0
+     * @param yM30v
+     * @return
+     */
     public int doSingleTimeLoopOverSet(
             TreeMap<String, DW_UOReport_Record> map,
             TreeMap<String, DW_SHBE_Record> D_Records,
@@ -5218,17 +6325,17 @@ public class Summary {
         return linkedRecords;
     }
 
-    private void addToSummarySingleTimeIncomeAndRent0(
+    private void addToSummarySingleTimeIncomeAndRent(
             HashMap<String, String> summary,
-            HashMap<String, BigDecimal> incomeAndRentSummary0) {
+            HashMap<String, BigDecimal> incomeAndRentSummary) {
         Iterator<String> incomeAndRentSummaryKeySetIte;
-        incomeAndRentSummaryKeySetIte = incomeAndRentSummary0.keySet().iterator();
+        incomeAndRentSummaryKeySetIte = incomeAndRentSummary.keySet().iterator();
         while (incomeAndRentSummaryKeySetIte.hasNext()) {
             String name;
             name = incomeAndRentSummaryKeySetIte.next();
             String value;
             value = Generic_BigDecimal.roundIfNecessary(
-                    incomeAndRentSummary0.get(name), 2, RoundingMode.HALF_UP).toPlainString();
+                    incomeAndRentSummary.get(name), 2, RoundingMode.HALF_UP).toPlainString();
             summary.put(
                     name,
                     value);
@@ -5337,7 +6444,13 @@ public class Summary {
                 includeKey,
                 doUnderOccupancy,
                 nTT, nEG);
-        writeSummaryTableSingleTimeDemographics(
+        if (doUnderOccupancy) {
+            writeSummaryTableSingleTimeRentArrears(
+                    summaryTable,
+                    paymentType,
+                    includeKey, doUnderOccupancy, nTT, nEG);
+        }
+        writeSummaryTableSingleTimeEthnicity(
                 summaryTable,
                 paymentType,
                 includeKey, doUnderOccupancy, nTT, nEG);
@@ -5347,6 +6460,27 @@ public class Summary {
                 includeKey,
                 doUnderOccupancy,
                 nTT, nEG);
+    }
+
+    private PrintWriter getPrintWriter(
+            String name,
+            TreeMap<String, HashMap<String, String>> summaryTable,
+            String paymentType,
+            String includeKey,
+            boolean underOccupancy) {
+        PrintWriter result;
+        File dirOut;
+        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
+        String outFilename;
+        outFilename = paymentType + "_";
+        if (underOccupancy) {
+            outFilename += "UO_";
+        }
+        outFilename += summaryTable.firstKey() + "To" + summaryTable.lastKey() + name + ".csv";
+        File outFile;
+        outFile = new File(dirOut, outFilename);
+        result = Generic_StaticIO.getPrintWriter(outFile, false);
+        return result;
     }
 
     /**
@@ -5369,14 +6503,10 @@ public class Summary {
     ) {
         TreeMap<String, File> ONSPDFiles;
         ONSPDFiles = DW_Postcode_Handler.getONSPDFiles();
-        File dirOut;
-        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
-        File outFile;
-        outFile = new File(
-                dirOut,
-                summaryTable.firstKey() + "To" + summaryTable.lastKey() + "Compare3Times.csv");
+        String name;
+        name = "Compare3Times";
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(outFile, false);
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
@@ -5436,7 +6566,6 @@ public class Summary {
             line = "";
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
-            header = "";
             String filename00;
             filename00 = summary.get(sSHBEFilename00);
             String filename0;
@@ -5478,7 +6607,7 @@ public class Summary {
                 line += summary.get(sCouncilCount0) + ", ";
                 line += summary.get(sRSLCount0) + ", ";
                 line += summary.get(sAllUOCount0) + ", ";
-                line += summary.get(aAllUOLinkedRecordCount0) + ", ";
+                line += summary.get(sAllUOLinkedRecordCount0) + ", ";
                 line += summary.get(sCouncilFilename1) + ", ";
                 line += summary.get(sRSLFilename1) + ", ";
                 line += summary.get(sCouncilCount1) + ", ";
@@ -5531,69 +6660,57 @@ public class Summary {
     ) {
         TreeMap<String, File> ONSPDFiles;
         ONSPDFiles = DW_Postcode_Handler.getONSPDFiles();
-        File dirOut;
-        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
-        File outFile;
-        outFile = new File(
-                dirOut,
-                summaryTable.firstKey() + "To" + summaryTable.lastKey() + "Compare2Times.csv");
+        String name;
+        name = "Compare2Times";
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(outFile, false);
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
-        header = getGenericHeaderCompare2Times(underOccupancy);
-        // General
-        // All
-        header += sAllTotalCountTTChangeClaimant + ", ";
-        header += sAllPercentageOfAll_TTChangeClaimant + ", ";
-        // General HB related
-        header += sHBTotalCountTTChangeClaimant + ", ";
-        header += sHBPercentageOfHB_TTChangeClaimant + ", ";
-        header += sTotalCountHBTTsToHBTTs + ", ";
-        header += sPercentageOfHB_HBTTsToHBTTs + ", ";
-        header += sTotalCountSocialTTsToPrivateDeregulatedTTs + ", ";
-        header += sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs + ", ";
-        header += sTotalCountPrivateDeregulatedTTsToSocialTTs + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs + ", ";
-        header += sTotalCountTT1ToPrivateDeregulatedTTs + ", ";
-        header += sPercentageOfTT1_TT1ToPrivateDeregulatedTTs + ", ";
-        header += sTotalCountTT4ToPrivateDeregulatedTTs + ", ";
-        header += sPercentageTT4ToPrivateDeregulatedTTs + ", ";
-        header += sTotalCountPrivateDeregulatedTTsToTT1 + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1 + ", ";
-        header += sTotalCountPrivateDeregulatedTTsToTT4 + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4 + ", ";
-        header += sTotalCountPostcodeChangeWithinSocialTTs + ", ";
-        header += sPercentagePostcodeChangeWithinSocialTTs + ", ";
-        header += sTotalCountPostcodeChangeWithinTT1 + ", ";
-        header += sPercentageOfTT1_PostcodeChangeWithinTT1 + ", ";
-        header += sTotalCountPostcodeChangeWithinTT4 + ", ";
-        header += sPercentagePostcodeChangeWithinTT4 + ", ";
-        header += sTotalCountPostcodeChangeWithinPrivateDeregulatedTTs + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs + ", ";
-        header += sTotalCountHBTTsToCTBTTs + ", ";
-        header += sPercentageOfHB_HBTTsToCTBTTs + ", ";
-        // General CTB related
-        header += sCTBTotalCountTTChangeClaimant + ", ";
-        header += sCTBPercentageTTChangeClaimant + ", ";
-        header += sTotalCountSocialTTsToCTBTTs + ", ";
-        header += sPercentageSocialTTsToCTBTTs + ", ";
-        header += sTotalCountTT1ToCTBTTs + ", ";
-        header += sPercentageOfTT1_TT1ToCTBTTs + ", ";
-        header += sTotalCountTT4ToCTBTTs + ", ";
-        header += sPercentageTT4ToCTBTTs + ", ";
-        header += sTotalCountPrivateDeregulatedTTsToCTBTTs + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs + ", ";
-        header += sTotalCountCTBTTsToSocialTTs + ", ";
-        header += sPercentageCTBTTsToSocialTTs + ", ";
-        header += sTotalCountCTBTTsToTT1 + ", ";
-        header += sPercentageCTBTTsToTT1 + ", ";
-        header += sTotalCountCTBTTsToTT4 + ", ";
-        header += sPercentageCTBTTsToTT4 + ", ";
-        header += sTotalCountCTBTTsToPrivateDeregulatedTTs + ", ";
-        header += sPercentageCTBTTsToPrivateDeregulatedTTs + ", ";
-        header += sTotalCountCTBTTsToHBTTs + ", ";
-        header += sPercentageCTBTTsToHBTTs + ", ";
+        header = getHeaderCompare2TimesGeneric(underOccupancy);
+        header += getHeaderCompare2TimesTTChange();
+        header += getHeaderCompare2TimesPostcodeChange();
+        header = header.substring(0, header.length() - 2);
+        pw.println(header);
+        Iterator<String> ite;
+        ite = summaryTable.keySet().iterator();
+        while (ite.hasNext()) {
+            String key;
+            key = ite.next();
+            HashMap<String, String> summary;
+            summary = summaryTable.get(key);
+            String line;
+            line = getLineCompare2TimesGeneric(
+                    summary,
+                    ONSPDFiles,
+                    underOccupancy);
+            // General
+            line += getLineCompare2TimesTTChange(summary);
+            line += getLineCompare2TimesPostcodeChange(summary);
+            line = line.substring(0, line.length() - 2);
+            pw.println(line);
+        }
+        pw.close();
+    }
+
+    private String getHeaderCompare2TimesPostcodeChange() {
+        String header = "";
+        // All Postcode Related
+        header += sAllTotalCountPostcode0ValidPostcode1Valid + ", ";
+        header += sAllPercentagePostcode0ValidPostcode1Valid + ", ";
+        header += sAllTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sAllTotalCountPostcode0ValidPostcode1ValidPostcodeChange + ", ";
+        header += sAllPercentagePostcode0ValidPostcode1ValidPostcodeChange + ", ";
+        header += sAllTotalCountPostcode0ValidPostcode1NotValid + ", ";
+        header += sAllPercentagePostcode0ValidPostcode1NotValid + ", ";
+        header += sAllTotalCountPostcode0NotValidPostcode1Valid + ", ";
+        header += sAllPercentagePostcode0NotValidPostcode1Valid + ", ";
+        header += sAllTotalCountPostcode0NotValidPostcode1NotValid + ", ";
+        header += sAllPercentagePostcode0NotValidPostcode1NotValid + ", ";
+        header += sAllTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sAllTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        header += sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
         // HB Postcode Related
         header += sHBTotalCountPostcode0ValidPostcode1Valid + ", ";
         header += sHBPercentagePostcode0ValidPostcode1Valid + ", ";
@@ -5613,7 +6730,7 @@ public class Summary {
         header += sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
         // CTB Postcode Related
         header += sCTBTotalCountPostcode0ValidPostcode1Valid + ", ";
-        header += sCTBPercentagePostcode0ValidPostcode1Valid + ", ";
+        header += sCTBPercentageOfCTB_Postcode0ValidPostcode1Valid + ", ";
         header += sCTBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
         header += sCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
         header += sCTBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged + ", ";
@@ -5628,108 +6745,188 @@ public class Summary {
         header += sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
         header += sCTBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
         header += sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
-        pw.println(header);
-        Iterator<String> ite;
-        ite = summaryTable.keySet().iterator();
-        while (ite.hasNext()) {
-            String key;
-            key = ite.next();
-            HashMap<String, String> summary;
-            summary = summaryTable.get(key);
-            String line;
-            line = getGenericLineCompare2Times(
-                    summary,
-                    ONSPDFiles,
-                    underOccupancy);
-            // General
-            // All
-            line += summary.get(sAllTotalCountTTChangeClaimant) + ", ";
-            line += summary.get(sAllPercentageOfAll_TTChangeClaimant) + ", ";
-            // General HB related
-            line += summary.get(sHBTotalCountTTChangeClaimant) + ", ";
-            line += summary.get(sHBPercentageOfHB_TTChangeClaimant) + ", ";
-            line += summary.get(sTotalCountHBTTsToHBTTs) + ", ";
-            line += summary.get(sPercentageOfHB_HBTTsToHBTTs) + ", ";
-            line += summary.get(sTotalCountSocialTTsToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sTotalCountPrivateDeregulatedTTsToSocialTTs) + ", ";
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs) + ", ";
-            line += summary.get(sTotalCountTT1ToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sPercentageOfTT1_TT1ToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sTotalCountTT4ToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sPercentageTT4ToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sTotalCountPrivateDeregulatedTTsToTT1) + ", ";
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1) + ", ";
-            line += summary.get(sTotalCountPrivateDeregulatedTTsToTT4) + ", ";
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4) + ", ";
-            line += summary.get(sTotalCountPostcodeChangeWithinSocialTTs) + ", ";
-            line += summary.get(sPercentagePostcodeChangeWithinSocialTTs) + ", ";
-            line += summary.get(sTotalCountPostcodeChangeWithinTT1) + ", ";
-            line += summary.get(sPercentageOfTT1_PostcodeChangeWithinTT1) + ", ";
-            line += summary.get(sTotalCountPostcodeChangeWithinTT4) + ", ";
-            line += summary.get(sPercentagePostcodeChangeWithinTT4) + ", ";
-            line += summary.get(sTotalCountPostcodeChangeWithinPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sTotalCountHBTTsToCTBTTs) + ", ";
-            line += summary.get(sPercentageOfHB_HBTTsToCTBTTs) + ", ";
-            // General CTB related
-            line += summary.get(sCTBTotalCountTTChangeClaimant) + ", ";
-            line += summary.get(sCTBPercentageTTChangeClaimant) + ", ";
-            line += summary.get(sTotalCountSocialTTsToCTBTTs) + ", ";
-            line += summary.get(sPercentageSocialTTsToCTBTTs) + ", ";
-            line += summary.get(sTotalCountTT1ToCTBTTs) + ", ";
-            line += summary.get(sPercentageOfTT1_TT1ToCTBTTs) + ", ";
-            line += summary.get(sTotalCountTT4ToCTBTTs) + ", ";
-            line += summary.get(sPercentageTT4ToCTBTTs) + ", ";
-            line += summary.get(sTotalCountPrivateDeregulatedTTsToCTBTTs) + ", ";
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs) + ", ";
-            line += summary.get(sTotalCountCTBTTsToSocialTTs) + ", ";
-            line += summary.get(sPercentageCTBTTsToSocialTTs) + ", ";
-            line += summary.get(sTotalCountCTBTTsToTT1) + ", ";
-            line += summary.get(sPercentageCTBTTsToTT1) + ", ";
-            line += summary.get(sTotalCountCTBTTsToTT4) + ", ";
-            line += summary.get(sPercentageCTBTTsToTT4) + ", ";
-            line += summary.get(sTotalCountCTBTTsToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sPercentageCTBTTsToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sTotalCountCTBTTsToHBTTs) + ", ";
-            line += summary.get(sPercentageCTBTTsToHBTTs) + ", ";
-            // HB Postcode related
-            line += summary.get(sHBTotalCountPostcode0ValidPostcode1Valid) + ", ";
-            line += summary.get(sHBPercentagePostcode0ValidPostcode1Valid) + ", ";
-            line += summary.get(sHBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-            line += summary.get(sHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-            line += summary.get(sHBTotalCountPostcode0ValidPostcode1ValidPostcodeChange) + ", ";
-            line += summary.get(sHBPercentagePostcode0ValidPostcode1ValidPostcodeChange) + ", ";
-            line += summary.get(sHBTotalCountPostcode0ValidPostcode1NotValid) + ", ";
-            line += summary.get(sHBPercentagePostcode0ValidPostcode1NotValid) + ", ";
-            line += summary.get(sHBTotalCountPostcode0NotValidPostcode1Valid) + ", ";
-            line += summary.get(sHBPercentagePostcode0NotValidPostcode1Valid) + ", ";
-            line += summary.get(sHBTotalCountPostcode0NotValidPostcode1NotValid) + ", ";
-            line += summary.get(sHBPercentagePostcode0NotValidPostcode1NotValid) + ", ";
-            line += summary.get(sHBTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-            line += summary.get(sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-            line += summary.get(sHBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
-            line += summary.get(sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
-            // CTB Postcode related
-            line += summary.get(sCTBTotalCountPostcode0ValidPostcode1Valid) + ", ";
-            line += summary.get(sCTBPercentagePostcode0ValidPostcode1Valid) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-            line += summary.get(sCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged) + ", ";
-            line += summary.get(sCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0ValidPostcode1NotValid) + ", ";
-            line += summary.get(sCTBPercentagePostcode0ValidPostcode1NotValid) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0NotValidPostcode1Valid) + ", ";
-            line += summary.get(sCTBPercentagePostcode0NotValidPostcode1Valid) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0NotValidPostcode1NotValid) + ", ";
-            line += summary.get(sCTBPercentagePostcode0NotValidPostcode1NotValid) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-            line += summary.get(sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
-            line += summary.get(sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
-            pw.println(line);
-        }
-        pw.close();
+        return header;
+    }
+
+    private String getLineCompare2TimesPostcodeChange(HashMap<String, String> summary) {
+        String line = "";
+        // All
+        line += summary.get(sAllTotalCountPostcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sAllPercentagePostcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sAllTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sAllTotalCountPostcode0ValidPostcode1ValidPostcodeChange) + ", ";
+        line += summary.get(sAllPercentagePostcode0ValidPostcode1ValidPostcodeChange) + ", ";
+        line += summary.get(sAllTotalCountPostcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sAllPercentagePostcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sAllTotalCountPostcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sAllPercentagePostcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sAllTotalCountPostcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sAllPercentagePostcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sAllTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sAllTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        line += summary.get(sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        // HB
+        line += summary.get(sHBTotalCountPostcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sHBPercentagePostcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sHBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sHBTotalCountPostcode0ValidPostcode1ValidPostcodeChange) + ", ";
+        line += summary.get(sHBPercentagePostcode0ValidPostcode1ValidPostcodeChange) + ", ";
+        line += summary.get(sHBTotalCountPostcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sHBPercentagePostcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sHBTotalCountPostcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sHBPercentagePostcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sHBTotalCountPostcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sHBPercentagePostcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sHBTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sHBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        line += summary.get(sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        // CTB
+        line += summary.get(sCTBTotalCountPostcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sCTBPercentageOfCTB_Postcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sCTBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCTBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged) + ", ";
+        line += summary.get(sCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged) + ", ";
+        line += summary.get(sCTBTotalCountPostcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sCTBPercentagePostcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sCTBTotalCountPostcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sCTBPercentagePostcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sCTBTotalCountPostcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sCTBPercentagePostcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sCTBTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCTBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        line += summary.get(sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        return line;
+    }
+
+    public String getHeaderCompare2TimesTTChange() {
+        String header = "";
+        // General
+        // All
+        header += sAllTotalCount_TTChangeClaimant + ", ";
+        header += sAllPercentageOfAll_TTChangeClaimant + ", ";
+        // General HB related
+        header += sHBTotalCount_TTChangeClaimant + ", ";
+        header += sHBPercentageOfHB_TTChangeClaimant + ", ";
+        header += sTotalCount_HBTTsToHBTTs + ", ";
+        header += sPercentageOfHB_HBTTsToHBTTs + ", ";
+        header += sTotalCount_SocialTTsToPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs + ", ";
+        header += sTotalCount_PrivateDeregulatedTTsToSocialTTs + ", ";
+        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs + ", ";
+        header += sTotalCount_TT1ToPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfTT1_TT1ToPrivateDeregulatedTTs + ", ";
+        header += sTotalCount_TT4ToPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfTT4_TT4ToPrivateDeregulatedTTs + ", ";
+        header += sTotalCount_PrivateDeregulatedTTsToTT1 + ", ";
+        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1 + ", ";
+        header += sTotalCount_PrivateDeregulatedTTsToTT4 + ", ";
+        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4 + ", ";
+
+        header += sTotalCount_TT1ToTT4 + ", ";
+        header += sPercentageOfTT1_TT1ToTT4 + ", ";
+        header += sTotalCount_TT4ToTT1 + ", ";
+        header += sPercentageOfTT4_TT4ToTT1 + ", ";
+
+        header += sTotalCount_PostcodeChangeWithinSocialTTs + ", ";
+        header += sPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs + ", ";
+        header += sTotalCount_PostcodeChangeWithinTT1 + ", ";
+        header += sPercentageOfTT1_PostcodeChangeWithinTT1 + ", ";
+        header += sTotalCount_PostcodeChangeWithinTT4 + ", ";
+        header += sPercentageOfTT4_PostcodeChangeWithinTT4 + ", ";
+        header += sTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs + ", ";
+        header += sTotalCount_HBTTsToCTBTTs + ", ";
+        header += sPercentageOfHB_HBTTsToCTBTTs + ", ";
+        // General CTB related
+        header += sCTBTotalCount_TTChangeClaimant + ", ";
+        header += sCTBPercentageOfCTB_TTChangeClaimant + ", ";
+        header += sTotalCount_SocialTTsToCTBTTs + ", ";
+        header += sPercentageOfSocialTTs_SocialTTsToCTBTTs + ", ";
+        header += sTotalCount_TT1ToCTBTTs + ", ";
+        header += sPercentageOfTT1_TT1ToCTBTTs + ", ";
+        header += sTotalCount_TT4ToCTBTTs + ", ";
+        header += sPercentageOfTT4_TT4ToCTBTTs + ", ";
+        header += sTotalCount_PrivateDeregulatedTTsToCTBTTs + ", ";
+        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs + ", ";
+        header += sTotalCountCTBTTsToSocialTTs + ", ";
+        header += sPercentageOfCTB_CTBTTsToSocialTTs + ", ";
+        header += sTotalCount_CTBTTsToTT1 + ", ";
+        header += sPercentageOfCTB_CTBTTsToTT1 + ", ";
+        header += sTotalCount_CTBTTsToTT4 + ", ";
+        header += sPercentageOfCTB_CTBTTsToTT4 + ", ";
+        header += sTotalCount_CTBTTsToPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfCTB_CTBTTsToPrivateDeregulatedTTs + ", ";
+        header += sTotalCount_CTBTTsToHBTTs + ", ";
+        header += sPercentageOfCTB_CTBTTsToHBTTs + ", ";
+        return header;
+    }
+
+    private String getLineCompare2TimesTTChange(HashMap<String, String> summary) {
+        String line = "";
+        // All
+        line += summary.get(sAllTotalCount_TTChangeClaimant) + ", ";
+        line += summary.get(sAllPercentageOfAll_TTChangeClaimant) + ", ";
+        // General HB related
+        line += summary.get(sHBTotalCount_TTChangeClaimant) + ", ";
+        line += summary.get(sHBPercentageOfHB_TTChangeClaimant) + ", ";
+        line += summary.get(sTotalCount_HBTTsToHBTTs) + ", ";
+        line += summary.get(sPercentageOfHB_HBTTsToHBTTs) + ", ";
+        line += summary.get(sTotalCount_SocialTTsToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sTotalCount_PrivateDeregulatedTTsToSocialTTs) + ", ";
+        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs) + ", ";
+        line += summary.get(sTotalCount_TT1ToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sPercentageOfTT1_TT1ToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sTotalCount_TT4ToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sPercentageOfTT4_TT4ToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sTotalCount_PrivateDeregulatedTTsToTT1) + ", ";
+        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1) + ", ";
+        line += summary.get(sTotalCount_PrivateDeregulatedTTsToTT4) + ", ";
+        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4) + ", ";
+
+        line += summary.get(sTotalCount_TT1ToTT4) + ", ";
+        line += summary.get(sPercentageOfTT1_TT1ToTT4) + ", ";
+        line += summary.get(sTotalCount_TT4ToTT1) + ", ";
+        line += summary.get(sPercentageOfTT4_TT4ToTT1) + ", ";
+
+        line += summary.get(sTotalCount_PostcodeChangeWithinSocialTTs) + ", ";
+        line += summary.get(sPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs) + ", ";
+        line += summary.get(sTotalCount_PostcodeChangeWithinTT1) + ", ";
+        line += summary.get(sPercentageOfTT1_PostcodeChangeWithinTT1) + ", ";
+        line += summary.get(sTotalCount_PostcodeChangeWithinTT4) + ", ";
+        line += summary.get(sPercentageOfTT4_PostcodeChangeWithinTT4) + ", ";
+        line += summary.get(sTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sTotalCount_HBTTsToCTBTTs) + ", ";
+        line += summary.get(sPercentageOfHB_HBTTsToCTBTTs) + ", ";
+        // General CTB related
+        line += summary.get(sCTBTotalCount_TTChangeClaimant) + ", ";
+        line += summary.get(sCTBPercentageOfCTB_TTChangeClaimant) + ", ";
+        line += summary.get(sTotalCount_SocialTTsToCTBTTs) + ", ";
+        line += summary.get(sPercentageOfSocialTTs_SocialTTsToCTBTTs) + ", ";
+        line += summary.get(sTotalCount_TT1ToCTBTTs) + ", ";
+        line += summary.get(sPercentageOfTT1_TT1ToCTBTTs) + ", ";
+        line += summary.get(sTotalCount_TT4ToCTBTTs) + ", ";
+        line += summary.get(sPercentageOfTT4_TT4ToCTBTTs) + ", ";
+        line += summary.get(sTotalCount_PrivateDeregulatedTTsToCTBTTs) + ", ";
+        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs) + ", ";
+        line += summary.get(sTotalCountCTBTTsToSocialTTs) + ", ";
+        line += summary.get(sPercentageOfCTB_CTBTTsToSocialTTs) + ", ";
+        line += summary.get(sTotalCount_CTBTTsToTT1) + ", ";
+        line += summary.get(sPercentageOfCTB_CTBTTsToTT1) + ", ";
+        line += summary.get(sTotalCount_CTBTTsToTT4) + ", ";
+        line += summary.get(sPercentageOfCTB_CTBTTsToTT4) + ", ";
+        line += summary.get(sTotalCount_CTBTTsToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sPercentageOfCTB_CTBTTsToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sTotalCount_CTBTTsToHBTTs) + ", ";
+        line += summary.get(sPercentageOfCTB_CTBTTsToHBTTs) + ", ";
+        return line;
     }
 
     /**
@@ -5752,69 +6949,15 @@ public class Summary {
     ) {
         TreeMap<String, File> ONSPDFiles;
         ONSPDFiles = DW_Postcode_Handler.getONSPDFiles();
-        File dirOut;
-        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
-        File outFile;
-        outFile = new File(
-                dirOut,
-                summaryTable.firstKey() + "To" + summaryTable.lastKey() + "Compare2TimesTT.csv");
+        String name;
+        name = "Compare2TimesTT";
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(outFile, false);
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
-        header = getGenericHeaderCompare2Times(underOccupancy);
-        // General
-        // All
-        header += sAllTotalCountTTChangeClaimant + ", ";
-        header += sAllPercentageOfAll_TTChangeClaimant + ", ";
-        // General HB related
-        header += sHBTotalCountTTChangeClaimant + ", ";
-        header += sHBPercentageOfHB_TTChangeClaimant + ", ";
-        header += sTotalCountHBTTsToHBTTs + ", ";
-        header += sPercentageOfHB_HBTTsToHBTTs + ", ";
-        header += sTotalCountSocialTTsToPrivateDeregulatedTTs + ", ";
-        header += sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs + ", ";
-        header += sTotalCountPrivateDeregulatedTTsToSocialTTs + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs + ", ";
-        header += sTotalCountTT1ToPrivateDeregulatedTTs + ", ";
-        header += sPercentageOfTT1_TT1ToPrivateDeregulatedTTs + ", ";
-        header += sTotalCountTT4ToPrivateDeregulatedTTs + ", ";
-        header += sPercentageTT4ToPrivateDeregulatedTTs + ", ";
-        header += sTotalCountPrivateDeregulatedTTsToTT1 + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1 + ", ";
-        header += sTotalCountPrivateDeregulatedTTsToTT4 + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4 + ", ";
-        header += sTotalCountPostcodeChangeWithinSocialTTs + ", ";
-        header += sPercentagePostcodeChangeWithinSocialTTs + ", ";
-        header += sTotalCountPostcodeChangeWithinTT1 + ", ";
-        header += sPercentageOfTT1_PostcodeChangeWithinTT1 + ", ";
-        header += sTotalCountPostcodeChangeWithinTT4 + ", ";
-        header += sPercentagePostcodeChangeWithinTT4 + ", ";
-        header += sTotalCountPostcodeChangeWithinPrivateDeregulatedTTs + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs + ", ";
-        header += sTotalCountHBTTsToCTBTTs + ", ";
-        header += sPercentageOfHB_HBTTsToCTBTTs + ", ";
-        // General CTB related
-        header += sCTBTotalCountTTChangeClaimant + ", ";
-        header += sCTBPercentageTTChangeClaimant + ", ";
-        header += sTotalCountSocialTTsToCTBTTs + ", ";
-        header += sPercentageSocialTTsToCTBTTs + ", ";
-        header += sTotalCountTT1ToCTBTTs + ", ";
-        header += sPercentageOfTT1_TT1ToCTBTTs + ", ";
-        header += sTotalCountTT4ToCTBTTs + ", ";
-        header += sPercentageTT4ToCTBTTs + ", ";
-        header += sTotalCountPrivateDeregulatedTTsToCTBTTs + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs + ", ";
-        header += sTotalCountCTBTTsToSocialTTs + ", ";
-        header += sPercentageCTBTTsToSocialTTs + ", ";
-        header += sTotalCountCTBTTsToTT1 + ", ";
-        header += sPercentageCTBTTsToTT1 + ", ";
-        header += sTotalCountCTBTTsToTT4 + ", ";
-        header += sPercentageCTBTTsToTT4 + ", ";
-        header += sTotalCountCTBTTsToPrivateDeregulatedTTs + ", ";
-        header += sPercentageCTBTTsToPrivateDeregulatedTTs + ", ";
-        header += sTotalCountCTBTTsToHBTTs + ", ";
-        header += sPercentageCTBTTsToHBTTs + ", ";
+        header = getHeaderCompare2TimesGeneric(underOccupancy);
+        header += getHeaderCompare2TimesTTChange();
+        header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
         ite = summaryTable.keySet().iterator();
@@ -5824,68 +6967,20 @@ public class Summary {
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
             String line;
-            line = getGenericLineCompare2Times(
+            line = getLineCompare2TimesGeneric(
                     summary,
                     ONSPDFiles,
                     underOccupancy);
             // General
             // All
-            line += summary.get(sAllTotalCountTTChangeClaimant) + ", ";
-            line += summary.get(sAllPercentageOfAll_TTChangeClaimant) + ", ";
-            // General HB related
-            line += summary.get(sHBTotalCountTTChangeClaimant) + ", ";
-            line += summary.get(sHBPercentageOfHB_TTChangeClaimant) + ", ";
-            line += summary.get(sTotalCountHBTTsToHBTTs) + ", ";
-            line += summary.get(sPercentageOfHB_HBTTsToHBTTs) + ", ";
-            line += summary.get(sTotalCountSocialTTsToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sTotalCountPrivateDeregulatedTTsToSocialTTs) + ", ";
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs) + ", ";
-            line += summary.get(sTotalCountTT1ToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sPercentageOfTT1_TT1ToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sTotalCountTT4ToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sPercentageTT4ToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sTotalCountPrivateDeregulatedTTsToTT1) + ", ";
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1) + ", ";
-            line += summary.get(sTotalCountPrivateDeregulatedTTsToTT4) + ", ";
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4) + ", ";
-            line += summary.get(sTotalCountPostcodeChangeWithinSocialTTs) + ", ";
-            line += summary.get(sPercentagePostcodeChangeWithinSocialTTs) + ", ";
-            line += summary.get(sTotalCountPostcodeChangeWithinTT1) + ", ";
-            line += summary.get(sPercentageOfTT1_PostcodeChangeWithinTT1) + ", ";
-            line += summary.get(sTotalCountPostcodeChangeWithinTT4) + ", ";
-            line += summary.get(sPercentagePostcodeChangeWithinTT4) + ", ";
-            line += summary.get(sTotalCountPostcodeChangeWithinPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sTotalCountHBTTsToCTBTTs) + ", ";
-            line += summary.get(sPercentageOfHB_HBTTsToCTBTTs) + ", ";
-            // General CTB related
-            line += summary.get(sCTBTotalCountTTChangeClaimant) + ", ";
-            line += summary.get(sCTBPercentageTTChangeClaimant) + ", ";
-            line += summary.get(sTotalCountSocialTTsToCTBTTs) + ", ";
-            line += summary.get(sPercentageSocialTTsToCTBTTs) + ", ";
-            line += summary.get(sTotalCountTT1ToCTBTTs) + ", ";
-            line += summary.get(sPercentageOfTT1_TT1ToCTBTTs) + ", ";
-            line += summary.get(sTotalCountTT4ToCTBTTs) + ", ";
-            line += summary.get(sPercentageTT4ToCTBTTs) + ", ";
-            line += summary.get(sTotalCountPrivateDeregulatedTTsToCTBTTs) + ", ";
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs) + ", ";
-            line += summary.get(sTotalCountCTBTTsToSocialTTs) + ", ";
-            line += summary.get(sPercentageCTBTTsToSocialTTs) + ", ";
-            line += summary.get(sTotalCountCTBTTsToTT1) + ", ";
-            line += summary.get(sPercentageCTBTTsToTT1) + ", ";
-            line += summary.get(sTotalCountCTBTTsToTT4) + ", ";
-            line += summary.get(sPercentageCTBTTsToTT4) + ", ";
-            line += summary.get(sTotalCountCTBTTsToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sPercentageCTBTTsToPrivateDeregulatedTTs) + ", ";
-            line += summary.get(sTotalCountCTBTTsToHBTTs) + ", ";
-            line += summary.get(sPercentageCTBTTsToHBTTs) + ", ";
+            line += getLineCompare2TimesTTChange(summary);
+            line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
         pw.close();
     }
 
-    public String getGenericHeaderCompare2Times(boolean underOccupancy) {
+    public String getHeaderCompare2TimesGeneric(boolean underOccupancy) {
         String header;
         header = "";
         header += sSHBEFilename0 + ", ";
@@ -5900,13 +6995,17 @@ public class Summary {
             header += sCouncilFilename0 + ", ";
             header += sRSLFilename0 + ", ";
             header += sCouncilCount0 + ", ";
+            header += sCouncilLinkedRecordCount0 + ", ";
             header += sRSLCount0 + ", ";
+            header += sRSLLinkedRecordCount0 + ", ";
             header += sAllUOCount0 + ", ";
-            header += sAllUOLinkedRecordCount1 + ", ";
+            header += sAllUOLinkedRecordCount0 + ", ";
             header += sCouncilFilename1 + ", ";
             header += sRSLFilename1 + ", ";
             header += sCouncilCount1 + ", ";
+            header += sCouncilLinkedRecordCount1 + ", ";
             header += sRSLCount1 + ", ";
+            header += sRSLLinkedRecordCount1 + ", ";
             header += sAllUOCount1 + ", ";
             header += sAllUOLinkedRecordCount1 + ", ";
         }
@@ -5920,7 +7019,7 @@ public class Summary {
         return header;
     }
 
-    public String getGenericLineCompare2Times(
+    public String getLineCompare2TimesGeneric(
             HashMap<String, String> summary,
             TreeMap<String, File> ONSPDFiles,
             boolean underOccupancy) {
@@ -5966,18 +7065,21 @@ public class Summary {
         line += PostCodeLookupDate1 + ", " + PostCodeLookupFile1Name + ", ";
         if (underOccupancy) {
             line += summary.get(sCouncilFilename0) + ", ";
-            line += summary.get(sCouncilCount0) + ", ";
             line += summary.get(sRSLFilename0) + ", ";
+            line += summary.get(sCouncilCount0) + ", ";
+            line += summary.get(sCouncilLinkedRecordCount0) + ", ";
             line += summary.get(sRSLCount0) + ", ";
+            line += summary.get(sRSLLinkedRecordCount0) + ", ";
             line += summary.get(sAllUOCount0) + ", ";
-            line += summary.get(aAllUOLinkedRecordCount0) + ", ";
+            line += summary.get(sAllUOLinkedRecordCount0) + ", ";
             line += summary.get(sCouncilFilename1) + ", ";
             line += summary.get(sRSLFilename1) + ", ";
             line += summary.get(sCouncilCount1) + ", ";
+            line += summary.get(sCouncilLinkedRecordCount1) + ", ";
             line += summary.get(sRSLCount1) + ", ";
+            line += summary.get(sRSLLinkedRecordCount1) + ", ";
             line += summary.get(sAllUOCount1) + ", ";
             line += summary.get(sAllUOLinkedRecordCount1) + ", ";
-            line += summary.get(sCouncilFilename1) + ", ";
         }
         line += summary.get(sAllCount0) + ", ";
         line += summary.get(sHBCount0) + ", ";
@@ -6009,51 +7111,15 @@ public class Summary {
     ) {
         TreeMap<String, File> ONSPDFiles;
         ONSPDFiles = DW_Postcode_Handler.getONSPDFiles();
-        File dirOut;
-        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
-        File outFile;
-        outFile = new File(
-                dirOut,
-                summaryTable.firstKey() + "To" + summaryTable.lastKey() + "Compare2TimesPostcode.csv");
+        String name;
+        name = "Compare2TimesPostcode";
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(outFile, false);
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
-        header = getGenericHeaderCompare2Times(underOccupancy);
-        // HB
-        header += sHBTotalCountPostcode0ValidPostcode1Valid + ", ";
-        header += sHBPercentagePostcode0ValidPostcode1Valid + ", ";
-        header += sHBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
-        header += sHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
-        header += sHBTotalCountPostcode0ValidPostcode1ValidPostcodeChange + ", ";
-        header += sHBPercentagePostcode0ValidPostcode1ValidPostcodeChange + ", ";
-        header += sHBTotalCountPostcode0ValidPostcode1NotValid + ", ";
-        header += sHBPercentagePostcode0ValidPostcode1NotValid + ", ";
-        header += sHBTotalCountPostcode0NotValidPostcode1Valid + ", ";
-        header += sHBPercentagePostcode0NotValidPostcode1Valid + ", ";
-        header += sHBTotalCountPostcode0NotValidPostcode1NotValid + ", ";
-        header += sHBPercentagePostcode0NotValidPostcode1NotValid + ", ";
-        header += sHBTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
-        header += sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
-        header += sHBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
-        header += sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
-        // CTB
-        header += sCTBTotalCountPostcode0ValidPostcode1Valid + ", ";
-        header += sCTBPercentagePostcode0ValidPostcode1Valid + ", ";
-        header += sCTBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
-        header += sCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
-        header += sCTBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged + ", ";
-        header += sCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged + ", ";
-        header += sCTBTotalCountPostcode0ValidPostcode1NotValid + ", ";
-        header += sCTBPercentagePostcode0ValidPostcode1NotValid + ", ";
-        header += sCTBTotalCountPostcode0NotValidPostcode1Valid + ", ";
-        header += sCTBPercentagePostcode0NotValidPostcode1Valid + ", ";
-        header += sCTBTotalCountPostcode0NotValidPostcode1NotValid + ", ";
-        header += sCTBPercentagePostcode0NotValidPostcode1NotValid + ", ";
-        header += sCTBTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
-        header += sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
-        header += sCTBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
-        header += sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        header = getHeaderCompare2TimesGeneric(underOccupancy);
+        header += getHeaderCompare2TimesPostcodeChange();
+        header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
         ite = summaryTable.keySet().iterator();
@@ -6063,44 +7129,12 @@ public class Summary {
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
             String line;
-            line = getGenericLineCompare2Times(
+            line = getLineCompare2TimesGeneric(
                     summary,
                     ONSPDFiles,
                     underOccupancy);
-            // HB
-            line += summary.get(sHBTotalCountPostcode0ValidPostcode1Valid) + ", ";
-            line += summary.get(sHBPercentagePostcode0ValidPostcode1Valid) + ", ";
-            line += summary.get(sHBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-            line += summary.get(sHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-            line += summary.get(sHBTotalCountPostcode0ValidPostcode1ValidPostcodeChange) + ", ";
-            line += summary.get(sHBPercentagePostcode0ValidPostcode1ValidPostcodeChange) + ", ";
-            line += summary.get(sHBTotalCountPostcode0ValidPostcode1NotValid) + ", ";
-            line += summary.get(sHBPercentagePostcode0ValidPostcode1NotValid) + ", ";
-            line += summary.get(sHBTotalCountPostcode0NotValidPostcode1Valid) + ", ";
-            line += summary.get(sHBPercentagePostcode0NotValidPostcode1Valid) + ", ";
-            line += summary.get(sHBTotalCountPostcode0NotValidPostcode1NotValid) + ", ";
-            line += summary.get(sHBPercentagePostcode0NotValidPostcode1NotValid) + ", ";
-            line += summary.get(sHBTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-            line += summary.get(sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-            line += summary.get(sHBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
-            line += summary.get(sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
-            // CTB
-            line += summary.get(sCTBTotalCountPostcode0ValidPostcode1Valid) + ", ";
-            line += summary.get(sCTBPercentagePostcode0ValidPostcode1Valid) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-            line += summary.get(sCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0ValidPostcode1ValidPostcodeChanged) + ", ";
-            line += summary.get(sCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0ValidPostcode1NotValid) + ", ";
-            line += summary.get(sCTBPercentagePostcode0ValidPostcode1NotValid) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0NotValidPostcode1Valid) + ", ";
-            line += summary.get(sCTBPercentagePostcode0NotValidPostcode1Valid) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0NotValidPostcode1NotValid) + ", ";
-            line += summary.get(sCTBPercentagePostcode0NotValidPostcode1NotValid) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-            line += summary.get(sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-            line += summary.get(sCTBTotalCountPostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
-            line += summary.get(sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+            line += getLineCompare2TimesPostcodeChange(summary);
+            line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
         pw.close();
@@ -6117,19 +7151,15 @@ public class Summary {
     ) {
         TreeMap<String, File> ONSPDFiles;
         ONSPDFiles = DW_Postcode_Handler.getONSPDFiles();
-        File dirOut;
-        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
-        File outFile;
-        outFile = new File(
-                dirOut,
-                summaryTable.firstKey() + "To" + summaryTable.lastKey() + "SingleTimeGenericCounts.csv");
+        String name;
+        name = "SingleTimeGenericCounts";
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(outFile, false);
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getGenericHeaderSingleTime(underOccupancy);
+        header += getHeaderSingleTimeGeneric(underOccupancy);
         if (!underOccupancy) {
             header += "PostCodeLookupDate, ";
             header += "PostCodeLookupFile, ";
@@ -6169,7 +7199,7 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getGenericLineSingleTime(key, summary, underOccupancy);
+            line += getLineSingleTimeGeneric(key, summary, underOccupancy);
             if (!underOccupancy) {
                 line += getPostcodeLookupDateAndFilenameLinePart(filename1, ONSPDFiles);
                 line += summary.get(DW_SHBE_Collection.sLineCount) + ", ";
@@ -6207,19 +7237,15 @@ public class Summary {
             int nTT,
             int nEG
     ) {
-        File dirOut;
-        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
-        File outFile;
-        outFile = new File(
-                dirOut,
-                summaryTable.firstKey() + "To" + summaryTable.lastKey() + "SingleTimeEntitlementEligibleAmountContractualAmount.csv");
+        String name;
+        name = "SingleTimeEntitlementEligibleAmountContractualAmount";
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(outFile, false);
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getGenericHeaderSingleTime(underOccupancy);
+        header += getHeaderSingleTimeGeneric(underOccupancy);
         header += sTotalWeeklyHBEntitlement + ", ";
         header += sTotalCountWeeklyHBEntitlementNonZero + ", ";
         header += sTotalCountWeeklyHBEntitlementZero + ", ";
@@ -6229,10 +7255,11 @@ public class Summary {
         header += sAllTotalCountWeeklyEligibleRentAmountNonZero + ", ";
         header += sAllTotalCountWeeklyEligibleRentAmountZero + ", ";
         header += sAllAverageWeeklyEligibleRentAmount + ", ";
-        header += sAllTotalWeeklyEligibleRentAmount + ", ";
+        header += sHBTotalWeeklyEligibleRentAmount + ", ";
         header += sHBTotalCountWeeklyEligibleRentAmountNonZero + ", ";
         header += sHBTotalCountWeeklyEligibleRentAmountZero + ", ";
         header += sHBAverageWeeklyEligibleRentAmount + ", ";
+        header += sCTBTotalWeeklyEligibleRentAmount + ", ";
         header += sCTBTotalCountWeeklyEligibleRentAmountNonZero + ", ";
         header += sCTBTotalCountWeeklyEligibleRentAmountZero + ", ";
         header += sCTBAverageWeeklyEligibleRentAmount + ", ";
@@ -6303,75 +7330,76 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getGenericLineSingleTime(key, summary, underOccupancy);
+            line += getLineSingleTimeGeneric(key, summary, underOccupancy);
             line += summary.get(sTotalWeeklyHBEntitlement) + ", ";
-        line += summary.get(sTotalCountWeeklyHBEntitlementNonZero) + ", ";
-        line += summary.get(sTotalCountWeeklyHBEntitlementZero) + ", ";
-        line += summary.get(sAverageWeeklyHBEntitlement) + ", ";
-        // WeeklyEligibleRentAmount
-        line += summary.get(sAllTotalWeeklyEligibleRentAmount) + ", ";
-        line += summary.get(sAllTotalCountWeeklyEligibleRentAmountNonZero) + ", ";
-        line += summary.get(sAllTotalCountWeeklyEligibleRentAmountZero) + ", ";
-        line += summary.get(sAllAverageWeeklyEligibleRentAmount) + ", ";
-        line += summary.get(sAllTotalWeeklyEligibleRentAmount) + ", ";
-        line += summary.get(sHBTotalCountWeeklyEligibleRentAmountNonZero) + ", ";
-        line += summary.get(sHBTotalCountWeeklyEligibleRentAmountZero) + ", ";
-        line += summary.get(sHBAverageWeeklyEligibleRentAmount) + ", ";
-        line += summary.get(sCTBTotalCountWeeklyEligibleRentAmountNonZero) + ", ";
-        line += summary.get(sCTBTotalCountWeeklyEligibleRentAmountZero) + ", ";
-        line += summary.get(sCTBAverageWeeklyEligibleRentAmount) + ", ";
-        // WeeklyEligibleCouncilTaxAmount
-        line += summary.get(sAllTotalWeeklyEligibleCouncilTaxAmount) + ", ";
-        line += summary.get(sAllTotalCountWeeklyEligibleCouncilTaxAmountNonZero ) + ", ";
-        line += summary.get(sAllTotalCountWeeklyEligibleCouncilTaxAmountZero ) + ", ";
-        line += summary.get(sAllAverageWeeklyEligibleCouncilTaxAmount ) + ", ";
-        line += summary.get(sHBTotalWeeklyEligibleCouncilTaxAmount ) + ", ";
-        line += summary.get(sHBTotalCountWeeklyEligibleCouncilTaxAmountNonZero ) + ", ";
-        line += summary.get(sHBTotalCountWeeklyEligibleCouncilTaxAmountZero ) + ", ";
-        line += summary.get(sHBAverageWeeklyEligibleCouncilTaxAmount ) + ", ";
-        line += summary.get(sCTBTotalWeeklyEligibleCouncilTaxAmount ) + ", ";
-        line += summary.get(sCTBTotalCountWeeklyEligibleCouncilTaxAmountNonZero ) + ", ";
-        line += summary.get(sCTBTotalCountWeeklyEligibleCouncilTaxAmountZero ) + ", ";
-        line += summary.get(sCTBAverageWeeklyEligibleCouncilTaxAmount ) + ", ";
-        // ContractualRentAmount
-        line += summary.get(sAllTotalContractualRentAmount ) + ", ";
-        line += summary.get(sAllTotalCountContractualRentAmountNonZeroCount ) + ", ";
-        line += summary.get(sAllTotalCountContractualRentAmountZeroCount ) + ", ";
-        line += summary.get(sAllAverageContractualRentAmount ) + ", ";
-        line += summary.get(sHBTotalContractualRentAmount ) + ", ";
-        line += summary.get(sHBTotalCountContractualRentAmountNonZeroCount ) + ", ";
-        line += summary.get(sHBTotalCountContractualRentAmountZeroCount ) + ", ";
-        line += summary.get(sHBAverageContractualRentAmount ) + ", ";
-        line += summary.get(sCTBTotalContractualRentAmount ) + ", ";
-        line += summary.get(sCTBTotalCountContractualRentAmountNonZeroCount ) + ", ";
-        line += summary.get(sCTBTotalCountContractualRentAmountZeroCount ) + ", ";
-        line += summary.get(sCTBAverageContractualRentAmount ) + ", ";
-        // WeeklyAdditionalDiscretionaryPayment
-        line += summary.get(sAllTotalWeeklyAdditionalDiscretionaryPayment ) + ", ";
-        line += summary.get(sAllTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero ) + ", ";
-        line += summary.get(sAllTotalCountWeeklyAdditionalDiscretionaryPaymentZero ) + ", ";
-        line += summary.get(sAllAverageWeeklyAdditionalDiscretionaryPayment ) + ", ";
-        line += summary.get(sHBTotalWeeklyAdditionalDiscretionaryPayment ) + ", ";
-        line += summary.get(sHBTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero ) + ", ";
-        line += summary.get(sHBTotalCountWeeklyAdditionalDiscretionaryPaymentZero ) + ", ";
-        line += summary.get(sHBAverageWeeklyAdditionalDiscretionaryPayment ) + ", ";
-        line += summary.get(sCTBTotalWeeklyAdditionalDiscretionaryPayment ) + ", ";
-        line += summary.get(sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero ) + ", ";
-        line += summary.get(sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentZero ) + ", ";
-        line += summary.get(sCTBAverageWeeklyAdditionalDiscretionaryPayment ) + ", ";
-        // WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability
-        line += summary.get(sAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability ) + ", ";
-        line += summary.get(sAllTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero ) + ", ";
-        line += summary.get(sAllTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero ) + ", ";
-        line += summary.get(sAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability ) + ", ";
-        line += summary.get(sHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability ) + ", ";
-        line += summary.get(sHBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero ) + ", ";
-        line += summary.get(sHBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero ) + ", ";
-        line += summary.get(sHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability ) + ", ";
-        line += summary.get(sCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability ) + ", ";
-        line += summary.get(sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero ) + ", ";
-        line += summary.get(sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero ) + ", ";
-        line += summary.get(sCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability ) + ", ";
+            line += summary.get(sTotalCountWeeklyHBEntitlementNonZero) + ", ";
+            line += summary.get(sTotalCountWeeklyHBEntitlementZero) + ", ";
+            line += summary.get(sAverageWeeklyHBEntitlement) + ", ";
+            // WeeklyEligibleRentAmount
+            line += summary.get(sAllTotalWeeklyEligibleRentAmount) + ", ";
+            line += summary.get(sAllTotalCountWeeklyEligibleRentAmountNonZero) + ", ";
+            line += summary.get(sAllTotalCountWeeklyEligibleRentAmountZero) + ", ";
+            line += summary.get(sAllAverageWeeklyEligibleRentAmount) + ", ";
+            line += summary.get(sHBTotalWeeklyEligibleRentAmount) + ", ";
+            line += summary.get(sHBTotalCountWeeklyEligibleRentAmountNonZero) + ", ";
+            line += summary.get(sHBTotalCountWeeklyEligibleRentAmountZero) + ", ";
+            line += summary.get(sHBAverageWeeklyEligibleRentAmount) + ", ";
+            line += summary.get(sCTBTotalWeeklyEligibleRentAmount) + ", ";
+            line += summary.get(sCTBTotalCountWeeklyEligibleRentAmountNonZero) + ", ";
+            line += summary.get(sCTBTotalCountWeeklyEligibleRentAmountZero) + ", ";
+            line += summary.get(sCTBAverageWeeklyEligibleRentAmount) + ", ";
+            // WeeklyEligibleCouncilTaxAmount
+            line += summary.get(sAllTotalWeeklyEligibleCouncilTaxAmount) + ", ";
+            line += summary.get(sAllTotalCountWeeklyEligibleCouncilTaxAmountNonZero) + ", ";
+            line += summary.get(sAllTotalCountWeeklyEligibleCouncilTaxAmountZero) + ", ";
+            line += summary.get(sAllAverageWeeklyEligibleCouncilTaxAmount) + ", ";
+            line += summary.get(sHBTotalWeeklyEligibleCouncilTaxAmount) + ", ";
+            line += summary.get(sHBTotalCountWeeklyEligibleCouncilTaxAmountNonZero) + ", ";
+            line += summary.get(sHBTotalCountWeeklyEligibleCouncilTaxAmountZero) + ", ";
+            line += summary.get(sHBAverageWeeklyEligibleCouncilTaxAmount) + ", ";
+            line += summary.get(sCTBTotalWeeklyEligibleCouncilTaxAmount) + ", ";
+            line += summary.get(sCTBTotalCountWeeklyEligibleCouncilTaxAmountNonZero) + ", ";
+            line += summary.get(sCTBTotalCountWeeklyEligibleCouncilTaxAmountZero) + ", ";
+            line += summary.get(sCTBAverageWeeklyEligibleCouncilTaxAmount) + ", ";
+            // ContractualRentAmount
+            line += summary.get(sAllTotalContractualRentAmount) + ", ";
+            line += summary.get(sAllTotalCountContractualRentAmountNonZeroCount) + ", ";
+            line += summary.get(sAllTotalCountContractualRentAmountZeroCount) + ", ";
+            line += summary.get(sAllAverageContractualRentAmount) + ", ";
+            line += summary.get(sHBTotalContractualRentAmount) + ", ";
+            line += summary.get(sHBTotalCountContractualRentAmountNonZeroCount) + ", ";
+            line += summary.get(sHBTotalCountContractualRentAmountZeroCount) + ", ";
+            line += summary.get(sHBAverageContractualRentAmount) + ", ";
+            line += summary.get(sCTBTotalContractualRentAmount) + ", ";
+            line += summary.get(sCTBTotalCountContractualRentAmountNonZeroCount) + ", ";
+            line += summary.get(sCTBTotalCountContractualRentAmountZeroCount) + ", ";
+            line += summary.get(sCTBAverageContractualRentAmount) + ", ";
+            // WeeklyAdditionalDiscretionaryPayment
+            line += summary.get(sAllTotalWeeklyAdditionalDiscretionaryPayment) + ", ";
+            line += summary.get(sAllTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero) + ", ";
+            line += summary.get(sAllTotalCountWeeklyAdditionalDiscretionaryPaymentZero) + ", ";
+            line += summary.get(sAllAverageWeeklyAdditionalDiscretionaryPayment) + ", ";
+            line += summary.get(sHBTotalWeeklyAdditionalDiscretionaryPayment) + ", ";
+            line += summary.get(sHBTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero) + ", ";
+            line += summary.get(sHBTotalCountWeeklyAdditionalDiscretionaryPaymentZero) + ", ";
+            line += summary.get(sHBAverageWeeklyAdditionalDiscretionaryPayment) + ", ";
+            line += summary.get(sCTBTotalWeeklyAdditionalDiscretionaryPayment) + ", ";
+            line += summary.get(sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentNonZero) + ", ";
+            line += summary.get(sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentZero) + ", ";
+            line += summary.get(sCTBAverageWeeklyAdditionalDiscretionaryPayment) + ", ";
+            // WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability
+            line += summary.get(sAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + ", ";
+            line += summary.get(sAllTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero) + ", ";
+            line += summary.get(sAllTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero) + ", ";
+            line += summary.get(sAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + ", ";
+            line += summary.get(sHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + ", ";
+            line += summary.get(sHBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero) + ", ";
+            line += summary.get(sHBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero) + ", ";
+            line += summary.get(sHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + ", ";
+            line += summary.get(sCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + ", ";
+            line += summary.get(sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero) + ", ";
+            line += summary.get(sCTBTotalCountWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero) + ", ";
+            line += summary.get(sCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + ", ";
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
@@ -6386,37 +7414,33 @@ public class Summary {
             int nTT,
             int nEG
     ) {
-        File dirOut;
-        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
-        File outFile;
-        outFile = new File(
-                dirOut,
-                summaryTable.firstKey() + "To" + summaryTable.lastKey() + "SingleTimeEmploymentEducationTraining.csv");
+        String name;
+        name = "SingleTimeEmploymentEducationTraining";
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(outFile, false);
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getGenericHeaderSingleTime(underOccupancy);
-        header += sAllTotalCountClaimantsEmployed + ", ";
-        header += sAllPercentageClaimantsEmployed + ", ";
-        header += sAllTotalCountClaimantsSelfEmployed + ", ";
-        header += sAllPercentageClaimantsSelfEmployed + ", ";
-        header += sAllTotalCountClaimantsStudents + ", ";
-        header += sAllPercentageClaimantsStudents + ", ";
+        header += getHeaderSingleTimeGeneric(underOccupancy);
+        header += sAllTotalCount_ClaimantsEmployed + ", ";
+        header += sAllPercentage_ClaimantsEmployed + ", ";
+        header += sAllTotalCount_ClaimantsSelfEmployed + ", ";
+        header += sAllPercentage_ClaimantsSelfEmployed + ", ";
+        header += sAllTotalCount_ClaimantsStudents + ", ";
+        header += sAllPercentage_ClaimantsStudents + ", ";
         header += sHBTotalCountClaimantsEmployed + ", ";
-        header += sHBPercentageClaimantsEmployed + ", ";
+        header += sHBPercentageOfHB_ClaimantsEmployed + ", ";
         header += sHBTotalCountClaimantsSelfEmployed + ", ";
-        header += sHBPercentageClaimantsSelfEmployed + ", ";
+        header += sHBPercentageOfHB_ClaimantsSelfEmployed + ", ";
         header += sHBTotalCountClaimantsStudents + ", ";
-        header += sHBPercentageClaimantsStudents + ", ";
-        header += sCTBTotalCountClaimantsEmployed + ", ";
-        header += sCTBPercentageClaimantsEmployed + ", ";
+        header += sHBPercentageOfHB_ClaimantsStudents + ", ";
+        header += sCTBTotalCount_ClaimantsEmployed + ", ";
+        header += sCTBPercentageOfCTB_ClaimantsEmployed + ", ";
         header += sCTBTotalCountClaimantsSelfEmployed + ", ";
-        header += sCTBPercentageClaimantsSelfEmployed + ", ";
+        header += sCTBPercentageOfCTB_ClaimantsSelfEmployed + ", ";
         header += sCTBTotalCountClaimantsStudents + ", ";
-        header += sCTBPercentageClaimantsStudents + ", ";
+        header += sCTBPercentageOfCTB_ClaimantsStudents + ", ";
         header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
@@ -6432,27 +7456,27 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getGenericLineSingleTime(key, summary, underOccupancy);
-            line += summary.get(sAllTotalCountClaimantsEmployed) + ", ";
-            line += summary.get(sAllPercentageClaimantsEmployed) + ", ";
-            line += summary.get(sAllTotalCountClaimantsSelfEmployed) + ", ";
-            line += summary.get(sAllPercentageClaimantsSelfEmployed) + ", ";
-            line += summary.get(sAllTotalCountClaimantsStudents) + ", ";
-            line += summary.get(sAllPercentageClaimantsStudents) + ", ";
+            line += getLineSingleTimeGeneric(key, summary, underOccupancy);
+            line += summary.get(sAllTotalCount_ClaimantsEmployed) + ", ";
+            line += summary.get(sAllPercentage_ClaimantsEmployed) + ", ";
+            line += summary.get(sAllTotalCount_ClaimantsSelfEmployed) + ", ";
+            line += summary.get(sAllPercentage_ClaimantsSelfEmployed) + ", ";
+            line += summary.get(sAllTotalCount_ClaimantsStudents) + ", ";
+            line += summary.get(sAllPercentage_ClaimantsStudents) + ", ";
             line += summary.get(sHBTotalCountClaimantsEmployed) + ", ";
-            line += summary.get(sHBPercentageClaimantsEmployed) + ", ";
+            line += summary.get(sHBPercentageOfHB_ClaimantsEmployed) + ", ";
             line += summary.get(sHBTotalCountClaimantsSelfEmployed) + ", ";
-            line += summary.get(sHBPercentageClaimantsSelfEmployed) + ", ";
+            line += summary.get(sHBPercentageOfHB_ClaimantsSelfEmployed) + ", ";
             line += summary.get(sHBTotalCountClaimantsStudents) + ", ";
-            line += summary.get(sHBPercentageClaimantsStudents) + ", ";
-            line += summary.get(sCTBTotalCountClaimantsEmployed) + ", ";
-            line += summary.get(sCTBPercentageClaimantsEmployed) + ", ";
+            line += summary.get(sHBPercentageOfHB_ClaimantsStudents) + ", ";
+            line += summary.get(sCTBTotalCount_ClaimantsEmployed) + ", ";
+            line += summary.get(sCTBPercentageOfCTB_ClaimantsEmployed) + ", ";
             line += summary.get(sCTBTotalCountClaimantsSelfEmployed) + ", ";
-            line += summary.get(sCTBPercentageClaimantsSelfEmployed) + ", ";
+            line += summary.get(sCTBPercentageOfCTB_ClaimantsSelfEmployed) + ", ";
             line += summary.get(sCTBTotalCountClaimantsStudents) + ", ";
-            line += summary.get(sCTBPercentageClaimantsStudents) + ", ";
-            line += summary.get(sCTBTotalCountLHACases) + ", ";
-            line += summary.get(sCTBPercentageLHACases) + ", ";
+            line += summary.get(sCTBPercentageOfCTB_ClaimantsStudents) + ", ";
+            line += summary.get(sCTBTotalCount_LHACases) + ", ";
+            line += summary.get(sCTBPercentageOfCTB_LHACases) + ", ";
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
@@ -6482,67 +7506,47 @@ public class Summary {
             int nTT,
             int nEG
     ) {
-        File dirOut;
-        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
-        File outFile;
-        outFile = new File(
-                dirOut,
-                summaryTable.firstKey() + "To" + summaryTable.lastKey() + "SingleTimeRentAndIncome.csv");
+        String name;
+        name = "SingleTimeRentAndIncome";
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(outFile, false);
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getGenericHeaderSingleTime(underOccupancy);
+        header += getHeaderSingleTimeGeneric(underOccupancy);
         header += sAllTotalIncome + ", ";
-        header += sAllTotalCountIncomeNonZero + ", ";
-//        header += sAllTotalCountIncomeZero + ", ";
+        header += sAllTotalCount_IncomeNonZero + ", ";
+        header += sAllTotalCountIncomeZero + ", ";
         header += sAllAverageIncome + ", ";
         header += sAllTotalWeeklyEligibleRentAmount + ", ";
         header += sAllTotalCountWeeklyEligibleRentAmountNonZero + ", ";
         header += sAllAverageWeeklyEligibleRentAmount + ", ";
+        // HB
+        header += sHBTotalIncome + ", ";
+        header += sHBTotalCount_IncomeNonZero + ", ";
+        header += sHBTotalCount_IncomeZero + ", ";
+        header += sHBAverageIncome + ", ";
+        header += sHBTotalWeeklyEligibleRentAmount + ", ";
+        header += sHBTotalCountWeeklyEligibleRentAmountNonZero + ", ";
+        header += sHBAverageWeeklyEligibleRentAmount + ", ";
+        // CTB
+        header += sCTBTotalIncome + ", ";
+        header += sCTBTotalCount_IncomeNonZero + ", ";
+        header += sCTBTotalCount_IncomeZero + ", ";
+        header += sCTBAverageIncome + ", ";
+        header += sCTBTotalWeeklyEligibleRentAmount + ", ";
+        header += sCTBTotalCountWeeklyEligibleRentAmountNonZero + ", ";
+        header += sCTBAverageWeeklyEligibleRentAmount + ", ";
         for (int i = 1; i < nTT; i++) {
             header += sAllTotalIncome + "TT" + i + ", ";
-            header += sAllTotalCountIncomeNonZero + "TT" + i + ", ";
-//            header += sAllTotalCountIncomeZero + "TT" + i + ", ";
+            header += sAllTotalCount_IncomeNonZero + "TT" + i + ", ";
+            header += sAllTotalCountIncomeZero + "TT" + i + ", ";
             header += sAllAverageIncome + "TT" + i + ", ";
             header += sAllTotalWeeklyEligibleRentAmount + "TT" + i + ", ";
             header += sAllTotalCountWeeklyEligibleRentAmountNonZero + "TT" + i + ", ";
             header += sAllAverageWeeklyEligibleRentAmount + "TT" + i + ", ";
         }
-//        header += sHBTotalIncome + ", ";
-//        header += sHBTotalCountIncomeNonZero + ", ";
-//        header += sHBTotalCountIncomeZero + ", ";
-//        header += sHBAverageIncome + ", ";
-//        header += sHBTotalWeeklyEligibleRentAmount + ", ";
-//        header += sHBTotalCountWeeklyEligibleRentAmountNonZero + ", ";
-//        header += sHBAverageWeeklyEligibleRentAmount + ", ";
-//        for (int i = 1; i < nTT; i++) {
-//            header += sHBTotalIncome + "TT" + i + ", ";
-//            header += sHBTotalCountIncomeNonZero + "TT" + i + ", ";
-//            header += sHBTotalCountIncomeZero + "TT" + i + ", ";
-//            header += sHBAverageIncome + "TT" + i + ", ";
-//            header += sHBTotalWeeklyEligibleRentAmount + "TT" + i + ", ";
-//            header += sHBTotalCountWeeklyEligibleRentAmountNonZero + "TT" + i + ", ";
-//            header += sHBAverageWeeklyEligibleRentAmount + "TT" + i + ", ";
-//        }
-//        header += sCTBTotalIncome + ", ";
-//        header += sCTBTotalCountIncomeNonZero + ", ";
-//        header += sCTBTotalCountIncomeZero + ", ";
-//        header += sCTBAverageIncome + ", ";
-//        header += sCTBTotalWeeklyEligibleRentAmount + ", ";
-//        header += sCTBTotalCountWeeklyEligibleRentAmountNonZero + ", ";
-//        header += sCTBAverageWeeklyEligibleRentAmount + ", ";
-//        for (int i = 1; i < nTT; i++) {
-//            header += sCTBTotalIncome + "TT" + i + ", ";
-//            header += sCTBTotalCountIncomeNonZero + "TT" + i + ", ";
-//            header += sCTBTotalCountIncomeZero + "TT" + i + ", ";
-//            header += sCTBAverageIncome + "TT" + i + ", ";
-//            header += sCTBTotalWeeklyEligibleRentAmount + "TT" + i + ", ";
-//            header += sCTBTotalCountWeeklyEligibleRentAmountNonZero + "TT" + i + ", ";
-//            header += sCTBAverageWeeklyEligibleRentAmount + "TT" + i + ", ";
-//        }
         header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
@@ -6558,66 +7562,47 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getGenericLineSingleTime(key, summary, underOccupancy);
+            line += getLineSingleTimeGeneric(key, summary, underOccupancy);
+            // All
             line += summary.get(sAllTotalIncome) + ", ";
-            line += summary.get(sAllTotalCountIncomeNonZero) + ", ";
-//            line += summary.get(sAllTotalCountIncomeZero) + ", ";
+            line += summary.get(sAllTotalCount_IncomeNonZero) + ", ";
+            line += summary.get(sAllTotalCountIncomeZero) + ", ";
             line += summary.get(sAllAverageIncome) + ", ";
             line += summary.get(sAllTotalWeeklyEligibleRentAmount) + ", ";
             line += summary.get(sAllTotalCountWeeklyEligibleRentAmountNonZero) + ", ";
             line += summary.get(sAllAverageWeeklyEligibleRentAmount) + ", ";
+            // HB
+            line += summary.get(sHBTotalIncome) + ", ";
+            line += summary.get(sHBTotalCount_IncomeNonZero) + ", ";
+            line += summary.get(sHBTotalCount_IncomeZero) + ", ";
+            line += summary.get(sHBAverageIncome) + ", ";
+            line += summary.get(sHBTotalWeeklyEligibleRentAmount) + ", ";
+            line += summary.get(sHBTotalCountWeeklyEligibleRentAmountNonZero) + ", ";
+            line += summary.get(sHBAverageWeeklyEligibleRentAmount) + ", ";
+            // CTB
+            line += summary.get(sCTBTotalIncome) + ", ";
+            line += summary.get(sCTBTotalCount_IncomeNonZero) + ", ";
+            line += summary.get(sCTBTotalCount_IncomeZero) + ", ";
+            line += summary.get(sCTBAverageIncome) + ", ";
+            line += summary.get(sCTBTotalWeeklyEligibleRentAmount) + ", ";
+            line += summary.get(sCTBTotalCountWeeklyEligibleRentAmountNonZero) + ", ";
+            line += summary.get(sCTBAverageWeeklyEligibleRentAmount) + ", ";
             for (int i = 1; i < nTT; i++) {
                 line += summary.get(sAllTotalIncome + "TT" + i) + ", ";
-                line += summary.get(sAllTotalCountIncomeNonZero + "TT" + i) + ", ";
-//                line += summary.get(sAllTotalCountIncomeZero + "TT" + i) + ", ";
+                line += summary.get(sAllTotalCount_IncomeNonZero + "TT" + i) + ", ";
+                line += summary.get(sAllTotalCountIncomeZero + "TT" + i) + ", ";
                 line += summary.get(sAllAverageIncome + "TT" + i) + ", ";
                 line += summary.get(sAllTotalWeeklyEligibleRentAmount + "TT" + i) + ", ";
                 line += summary.get(sAllTotalCountWeeklyEligibleRentAmountNonZero + "TT" + i) + ", ";
                 line += summary.get(sAllAverageWeeklyEligibleRentAmount + "TT" + i) + ", ";
             }
-//            line += filename1 + ", ";
-//            line += getSingleTimeGenericLinePart(key, summary, underOccupancy);
-//            line += summary.get(sHBTotalIncome) + ", ";
-//            line += summary.get(sHBTotalCountIncomeNonZero) + ", ";
-//            line += summary.get(sHBTotalCountIncomeZero) + ", ";
-//            line += summary.get(sHBAverageIncome) + ", ";
-//            line += summary.get(sHBTotalWeeklyEligibleRentAmount) + ", ";
-//            line += summary.get(sHBTotalCountWeeklyEligibleRentAmountNonZero) + ", ";
-//            line += summary.get(sHBAverageWeeklyEligibleRentAmount) + ", ";
-//            for (int i = 1; i < nTT; i++) {
-//                line += summary.get(sHBTotalIncome + "TT" + i) + ", ";
-//                line += summary.get(sHBTotalCountIncomeNonZero + "TT" + i) + ", ";
-//                line += summary.get(sHBTotalCountIncomeZero + "TT" + i) + ", ";
-//                line += summary.get(sHBAverageIncome + "TT" + i) + ", ";
-//                line += summary.get(sHBTotalWeeklyEligibleRentAmount + "TT" + i) + ", ";
-//                line += summary.get(sHBTotalCountWeeklyEligibleRentAmountNonZero + "TT" + i) + ", ";
-//                line += summary.get(sHBAverageWeeklyEligibleRentAmount + "TT" + i) + ", ";
-//            }
-//            line += filename1 + ", ";
-//            line += getSingleTimeGenericLinePart(key, summary, underOccupancy);
-//            line += summary.get(sCTBTotalIncome) + ", ";
-//            line += summary.get(sCTBTotalCountIncomeNonZero) + ", ";
-//            line += summary.get(sCTBTotalCountIncomeZero) + ", ";
-//            line += summary.get(sCTBAverageIncome) + ", ";
-//            line += summary.get(sCTBTotalWeeklyEligibleRentAmount) + ", ";
-//            line += summary.get(sCTBTotalCountWeeklyEligibleRentAmountNonZero) + ", ";
-//            line += summary.get(sCTBAverageWeeklyEligibleRentAmount) + ", ";
-//            for (int i = 1; i < nTT; i++) {
-//                line += summary.get(sCTBTotalIncome + "TT" + i) + ", ";
-//                line += summary.get(sCTBTotalCountIncomeNonZero + "TT" + i) + ", ";
-//                line += summary.get(sCTBTotalCountIncomeZero + "TT" + i) + ", ";
-//                line += summary.get(sCTBAverageIncome + "TT" + i) + ", ";
-//                line += summary.get(sCTBTotalWeeklyEligibleRentAmount + "TT" + i) + ", ";
-//                line += summary.get(sCTBTotalCountWeeklyEligibleRentAmountNonZero + "TT" + i) + ", ";
-//                line += summary.get(sCTBAverageWeeklyEligibleRentAmount + "TT" + i) + ", ";
-//            }
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
         pw.close();
     }
 
-    public void writeSummaryTableSingleTimeDemographics(
+    public void writeSummaryTableSingleTimeRentArrears(
             TreeMap<String, HashMap<String, String>> summaryTable,
             String paymentType,
             String includeKey,
@@ -6625,20 +7610,65 @@ public class Summary {
             int nTT,
             int nEG
     ) {
-        File dirOut;
-        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
-
-        File outFile;
-        outFile = new File(
-                dirOut,
-                summaryTable.firstKey() + "To" + summaryTable.lastKey() + "SingleTimeDemographics.csv");
+        String name;
+        name = "SingleTimeCouncilRentArrears";
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(outFile, false);
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getGenericHeaderSingleTime(underOccupancy);
+        header += getHeaderSingleTimeGeneric(underOccupancy);
+        header += sTotal_RentArrears + ", ";
+        header += sTotalCount_RentArrearsNonZero + ", ";
+        header += sTotalCount_RentArrearsZero + ", ";
+        header += sAverage_RentArrears + ", ";
+        header += sAverage_NonZeroRentArrears + ", ";
+        header = header.substring(0, header.length() - 2);
+        pw.println(header);
+        Iterator<String> ite;
+        ite = summaryTable.keySet().iterator();
+        while (ite.hasNext()) {
+            String key;
+            key = ite.next();
+            String line;
+            line = "";
+            HashMap<String, String> summary;
+            summary = summaryTable.get(key);
+            header = "";
+            String filename1;
+            filename1 = summary.get(sSHBEFilename1);
+            line += filename1 + ", ";
+            line += getLineSingleTimeGeneric(key,
+                    summary, underOccupancy);
+            line += summary.get(sTotal_RentArrears) + ", ";
+            line += summary.get(sTotalCount_RentArrearsNonZero) + ", ";
+            line += summary.get(sTotalCount_RentArrearsZero) + ", ";
+            line += summary.get(sAverage_RentArrears) + ", ";
+            line += summary.get(sAverage_NonZeroRentArrears) + ", ";
+            line = line.substring(0, line.length() - 2);
+            pw.println(line);
+        }
+        pw.close();
+    }
+
+    public void writeSummaryTableSingleTimeEthnicity(
+            TreeMap<String, HashMap<String, String>> summaryTable,
+            String paymentType,
+            String includeKey,
+            boolean underOccupancy,
+            int nTT,
+            int nEG
+    ) {
+        String name;
+        name = "SingleTimeEthnicity";
+        PrintWriter pw;
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        // Write headers
+        String header;
+        header = "";
+        header += sSHBEFilename1 + ", ";
+        header += getHeaderSingleTimeGeneric(underOccupancy);
         for (int i = 1; i < nEG; i++) {
             header += sAllTotalCountEthnicGroupClaimant[i] + ", ";
             header += sAllPercentageEthnicGroupClaimant[i] + ", ";
@@ -6666,7 +7696,7 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getGenericLineSingleTime(key,
+            line += getLineSingleTimeGeneric(key,
                     summary, underOccupancy);
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sAllTotalCountEthnicGroupClaimant[i]) + ", ";
@@ -6694,40 +7724,36 @@ public class Summary {
             int nTT,
             int nEG
     ) {
-        File dirOut;
-        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
-        File outFile;
-        outFile = new File(
-                dirOut,
-                summaryTable.firstKey() + "To" + summaryTable.lastKey() + "SingleTimeTT.csv");
+        String name;
+        name = "SingleTimeTT";
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(outFile, false);
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getGenericHeaderSingleTime(underOccupancy);
+        header += getHeaderSingleTimeGeneric(underOccupancy);
         header += sTotalCount_SocialTTsClaimant + ", ";
         header += sPercentageOfAll_SocialTTsClaimant + ", ";
         header += sPercentageOfHB_SocialTTsClaimant + ", ";
-        header += sTotalCountPrivateDeregulatedTTsClaimant + ", ";
-        header += sPercentageOfAllPrivateDeregulatedTTsClaimant + ", ";
-        header += sPercentageOfHBPrivateDeregulatedTTsClaimant + ", ";
+        header += sTotalCount_PrivateDeregulatedTTsClaimant + ", ";
+        header += sPercentageOfAll_PrivateDeregulatedTTsClaimant + ", ";
+        header += sPercentageOfHB_PrivateDeregulatedTTsClaimant + ", ";
         for (int i = 1; i < nTT; i++) {
-                header += sTotalCountClaimantsTT[i] + ", ";
-                header += sPercentageOfAllClaimantsTT[i] + ", ";
-                if (!(i == 5 || i == 7)) {
-                    header += sPercentageOfHB_ClaimantTT[i] + ", ";
-                } else {
-                    header += sPercentageOfCTB_ClaimantTT[i] + ", ";
-                }
+            header += sTotalCount_ClaimantsTT[i] + ", ";
+            header += sPercentageOfAll_ClaimantsTT[i] + ", ";
+            if ((i == 5 || i == 7)) {
+                header += sPercentageOfCTB_ClaimantTT[i] + ", ";
+            } else {
+                header += sPercentageOfHB_ClaimantTT[i] + ", ";
             }
-        header += sAllTotalCountLHACases + ", ";
-        header += sAllPercentageLHACases + ", ";
-        header += sHBTotalCountLHACases + ", ";
-        header += sHBPercentageLHACases + ", ";
-        header += sCTBTotalCountLHACases + ", ";
-        header += sCTBPercentageLHACases + ", ";
+        }
+        header += sAllTotalCount_LHACases + ", ";
+        header += sAllPercentageOfAll_LHACases + ", ";
+        header += sHBTotalCount_LHACases + ", ";
+        header += sHBPercentageOfHB_LHACases + ", ";
+        header += sCTBTotalCount_LHACases + ", ";
+        header += sCTBPercentageOfCTB_LHACases + ", ";
         header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
@@ -6743,29 +7769,29 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getGenericLineSingleTime(key,
+            line += getLineSingleTimeGeneric(key,
                     summary, underOccupancy);
             line += summary.get(sTotalCount_SocialTTsClaimant) + ", ";
-       line += summary.get(sPercentageOfAll_SocialTTsClaimant) + ", ";
-        line += summary.get(sPercentageOfHB_SocialTTsClaimant) + ", ";
-        line += summary.get(sTotalCountPrivateDeregulatedTTsClaimant) + ", ";
-      line += summary.get(sPercentageOfAllPrivateDeregulatedTTsClaimant) + ", ";
-       line += summary.get(sPercentageOfHBPrivateDeregulatedTTsClaimant) + ", ";
-        for (int i = 1; i < nTT; i++) {
-                line += summary.get(sTotalCountClaimantsTT[i]) + ", ";
-                line += summary.get(sPercentageOfAllClaimantsTT[i]) + ", ";
-                if (!(i == 5 || i == 7)) {
-                    line += summary.get(sPercentageOfHB_ClaimantTT[i]) + ", ";
-                } else {
+            line += summary.get(sPercentageOfAll_SocialTTsClaimant) + ", ";
+            line += summary.get(sPercentageOfHB_SocialTTsClaimant) + ", ";
+            line += summary.get(sTotalCount_PrivateDeregulatedTTsClaimant) + ", ";
+            line += summary.get(sPercentageOfAll_PrivateDeregulatedTTsClaimant) + ", ";
+            line += summary.get(sPercentageOfHB_PrivateDeregulatedTTsClaimant) + ", ";
+            for (int i = 1; i < nTT; i++) {
+                line += summary.get(sTotalCount_ClaimantsTT[i]) + ", ";
+                line += summary.get(sPercentageOfAll_ClaimantsTT[i]) + ", ";
+                if ((i == 5 || i == 7)) {
                     line += summary.get(sPercentageOfCTB_ClaimantTT[i]) + ", ";
+                } else {
+                    line += summary.get(sPercentageOfHB_ClaimantTT[i]) + ", ";
                 }
             }
-            line += summary.get(sAllTotalCountLHACases) + ", ";
-            line += summary.get(sAllPercentageLHACases) + ", ";
-            line += summary.get(sHBTotalCountLHACases) + ", ";
-            line += summary.get(sHBPercentageLHACases) + ", ";
-            line += summary.get(sCTBTotalCountLHACases) + ", ";
-            line += summary.get(sCTBPercentageLHACases) + ", ";
+            line += summary.get(sAllTotalCount_LHACases) + ", ";
+            line += summary.get(sAllPercentageOfAll_LHACases) + ", ";
+            line += summary.get(sHBTotalCount_LHACases) + ", ";
+            line += summary.get(sHBPercentageOfHB_LHACases) + ", ";
+            line += summary.get(sCTBTotalCount_LHACases) + ", ";
+            line += summary.get(sCTBPercentageOfCTB_LHACases) + ", ";
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
@@ -6781,45 +7807,41 @@ public class Summary {
             int nEG,
             int nPSI
     ) {
-        File dirOut;
-        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
-        File outFile;
-        outFile = new File(
-                dirOut,
-                summaryTable.firstKey() + "To" + summaryTable.lastKey() + "SingleTimePSI.csv");
+        String name;
+        name = "SingleTimePSI";
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(outFile, false);
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getGenericHeaderSingleTime(underOccupancy);
+        header += getHeaderSingleTimeGeneric(underOccupancy);
         for (int i = 1; i < nPSI; i++) {
-            header += sAllTotalCountPSI[i] + ", ";
-            header += sAllPercentagePSI[i] + ", ";
+            header += sAllTotalCount_PSI[i] + ", ";
+            header += sAllPercentageOfAll_PSI[i] + ", ";
         }
         for (int i = 1; i < nPSI; i++) {
-            header += sHBTotalCountPSI[i] + ", ";
-            header += sHBPercentagePSI[i] + ", ";
+            header += sHBTotalCount_PSI[i] + ", ";
+            header += sHBPercentageOfHB_PSI[i] + ", ";
         }
         for (int i = 1; i < nPSI; i++) {
             header += sCTBTotalCountPSI[i] + ", ";
-            header += sCTBPercentagePSI[i] + ", ";
+            header += sCTBPercentageOfCTB_PSI[i] + ", ";
         }
         for (int i = 1; i < nPSI; i++) {
             for (int j = 1; j < nTT; j++) {
-                header += sAllTotalCountPSIByTT[i][j] + ", ";
-                header += sAllPercentagePSIByTT[i][j] + ", ";
+                header += sAllTotalCount_PSIByTT[i][j] + ", ";
+                header += sAllPercentageOfAll_PSIByTT[i][j] + ", ";
             }
         }
         for (int i = 1; i < nPSI; i++) {
             for (int j = 1; j < nTT; j++) {
                 if (!(j == 5 || j == 7)) {
-                header += sHBTotalCountPSIByTT[i][j] + ", ";
-                header += sHBPercentagePSIByTT[i][j] + ", ";
+                    header += sHBTotalCount_PSIByTT[i][j] + ", ";
+                    header += sHBPercentageOfHB_PSIByTT[i][j] + ", ";
                 } else {
-                header += sCTBTotalCountPSIByTT[i][j] + ", ";
-                header += sCTBPercentagePSIByTT[i][j] + ", ";
+                    header += sCTBTotalCount_PSIByTT[i][j] + ", ";
+                    header += sCTBPercentageOfCTB_PSIByTT[i][j] + ", ";
                 }
             }
         }
@@ -6838,34 +7860,34 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getGenericLineSingleTime(key,
+            line += getLineSingleTimeGeneric(key,
                     summary, underOccupancy);
             for (int i = 1; i < nPSI; i++) {
-                line += summary.get(sAllTotalCountPSI[i]) + ", ";
-                line += summary.get(sAllPercentagePSI[i]) + ", ";
+                line += summary.get(sAllTotalCount_PSI[i]) + ", ";
+                line += summary.get(sAllPercentageOfAll_PSI[i]) + ", ";
             }
             for (int i = 1; i < nPSI; i++) {
-                line += summary.get(sHBTotalCountPSI[i]) + ", ";
-                line += summary.get(sHBPercentagePSI[i]) + ", ";
+                line += summary.get(sHBTotalCount_PSI[i]) + ", ";
+                line += summary.get(sHBPercentageOfHB_PSI[i]) + ", ";
             }
             for (int i = 1; i < nPSI; i++) {
                 line += summary.get(sCTBTotalCountPSI[i]) + ", ";
-                line += summary.get(sCTBPercentagePSI[i]) + ", ";
+                line += summary.get(sCTBPercentageOfCTB_PSI[i]) + ", ";
             }
             for (int i = 1; i < nPSI; i++) {
                 for (int j = 1; j < nTT; j++) {
-                    line += summary.get(sAllTotalCountPSIByTT[i][j]) + ", ";
-                    line += summary.get(sAllPercentagePSIByTT[i][j]) + ", ";
+                    line += summary.get(sAllTotalCount_PSIByTT[i][j]) + ", ";
+                    line += summary.get(sAllPercentageOfAll_PSIByTT[i][j]) + ", ";
                 }
             }
             for (int i = 1; i < nPSI; i++) {
                 for (int j = 1; j < nTT; j++) {
                     if (!(j == 5 || j == 7)) {
-                line += summary.get(sHBTotalCountPSIByTT[i][j]) + ", ";
-                    line += summary.get(sHBPercentagePSIByTT[i][j]) + ", ";
+                        line += summary.get(sHBTotalCount_PSIByTT[i][j]) + ", ";
+                        line += summary.get(sHBPercentageOfHB_PSIByTT[i][j]) + ", ";
                     } else {
-                    line += summary.get(sCTBTotalCountPSIByTT[i][j]) + ", ";
-                    line += summary.get(sCTBPercentagePSIByTT[i][j]) + ", ";
+                        line += summary.get(sCTBTotalCount_PSIByTT[i][j]) + ", ";
+                        line += summary.get(sCTBPercentageOfCTB_PSIByTT[i][j]) + ", ";
                     }
                 }
             }
@@ -6883,42 +7905,153 @@ public class Summary {
             int nTT,
             int nEG
     ) {
-        File dirOut;
-        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
-        File outFile;
-        outFile = new File(
-                dirOut,
-                summaryTable.firstKey() + "To" + summaryTable.lastKey() + "SingleTimeDisability.csv");
+        String name;
+        name = "SingleTimeDisability";
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(outFile, false);
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getGenericHeaderSingleTime(underOccupancy);
+        header += getHeaderSingleTimeGeneric(underOccupancy);
+        // General DisabilityAward
+        header += sTotalCount_DisabilityAward + ", ";
+        header += sPercentageOfAll_DisabilityAward + ", ";
+        header += sTotalCount_DisabilityAwardHBTTs + ", ";
+        header += sPercentageOfAll_DisabilityAwardHBTTs + ", ";
+        header += sPercentageOfHB_DisabilityAwardHBTTs + ", ";
+        header += sTotalCount_DisabilityAwardCTBTTs + ", ";
+        header += sPercentageOfAll_DisabilityAwardCTBTTs + ", ";
+        header += sPercentageOfCTB_DisabilityAwardCTBTTs + ", ";
+        // General DisabilityPremiumAward
+        header += sTotalCount_DisabilityPremiumAward + ", ";
+        header += sPercentageOfAll_DisabilityPremiumAward + ", ";
+        header += sTotalCount_DisabilityPremiumAwardHBTTs + ", ";
+        header += sPercentageOfAll_DisabilityPremiumAwardHBTTs + ", ";
+        header += sPercentageOfHB_DisabilityPremiumAwardHBTTs + ", ";
+        header += sTotalCount_DisabilityPremiumAwardCTBTTs + ", ";
+        header += sPercentageOfAll_DisabilityPremiumAwardCTBTTs + ", ";
+        header += sPercentageOfCTB_DisabilityPremiumAwardCTBTTs + ", ";
+        // General SevereDisabilityPremiumAward
+        header += sTotalCount_SevereDisabilityPremiumAward + ", ";
+        header += sPercentageOfAll_SevereDisabilityPremiumAward + ", ";
+        header += sTotalCount_SevereDisabilityPremiumAwardHBTTs + ", ";
+        header += sPercentageOfAll_SevereDisabilityPremiumAwardHBTTs + ", ";
+        header += sPercentageOfHB_SevereDisabilityPremiumAwardHBTTs + ", ";
+        header += sTotalCount_SevereDisabilityPremiumAwardCTBTTs + ", ";
+        header += sPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs + ", ";
+        header += sPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs + ", ";
+        // General DisabledChildPremiumAward
+        header += sTotalCount_DisabledChildPremiumAward + ", ";
+        header += sPercentageOfAll_DisabledChildPremiumAward + ", ";
+        header += sTotalCount_DisabledChildPremiumAwardHBTTs + ", ";
+        header += sPercentageOfAll_DisabledChildPremiumAwardHBTTs + ", ";
+        header += sPercentageOfHB_DisabledChildPremiumAwardHBTTs + ", ";
+        header += sTotalCount_DisabledChildPremiumAwardCTBTTs + ", ";
+        header += sPercentageOfAll_DisabledChildPremiumAwardCTBTTs + ", ";
+        header += sPercentageOfCTB_DisabledChildPremiumAwardCTBTTs + ", ";
+        // General EnhancedDisabilityPremiumAward
+        header += sTotalCount_EnhancedDisabilityPremiumAward + ", ";
+        header += sPercentageOfAll_EnhancedDisabilityPremiumAward + ", ";
+        header += sTotalCount_EnhancedDisabilityPremiumAwardHBTTs + ", ";
+        header += sPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs + ", ";
+        header += sPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs + ", ";
+        header += sTotalCount_EnhancedDisabilityPremiumAwardCTBTTs + ", ";
+        header += sPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs + ", ";
+        header += sPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs + ", ";
+        // DisabilityPremiumAwardSocialTTs
+        header += sTotalCount_DisabilityAwardSocialTTs + ", ";
+        header += sPercentageOfAll_DisabilityAwardSocialTTs + ", ";
+        header += sPercentageOfHB_DisabilityAwardSocialTTs + ", ";
+        header += sTotalCount_DisabilityPremiumAwardSocialTTs + ", ";
+        header += sPercentageOfAll_DisabilityPremiumAwardSocialTTs + ", ";
+        header += sPercentageOfHB_DisabilityPremiumAwardSocialTTs + ", ";
+        header += sTotalCount_SevereDisabilityPremiumAwardSocialTTs + ", ";
+        header += sPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs + ", ";
+        header += sPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs + ", ";
+        header += sTotalCount_DisabledChildPremiumAwardSocialTTs + ", ";
+        header += sPercentageOfAll_DisabledChildPremiumAwardSocialTTs + ", ";
+        header += sPercentageOfHB_DisabledChildPremiumAwardSocialTTs + ", ";
+        header += sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs + ", ";
+        header += sPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs + ", ";
+        header += sPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs + ", ";
+        // DisabilityPremiumAwardPrivateDeregulatedTTs
+        header += sTotalCount_DisabilityAwardPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs + ", ";
+        header += sTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs + ", ";
+        header += sTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs + ", ";
+        header += sTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs + ", ";
+        header += sTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs + ", ";
+        header += sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs + ", ";
         for (int i = 1; i < nTT; i++) {
-            header += sAllTotalCountDisabilityPremiumAwardByTT[i] + ", ";
-            header += sAllPercentageDisabilityPremiumAwardByTT[i] + ", ";
-            header += sAllTotalCountSevereDisabilityPremiumAwardByTT[i] + ", ";
-            header += sAllPercentageSevereDisabilityPremiumAwardByTT[i] + ", ";
-            header += sAllTotalCountEnhancedDisabilityPremiumAwardByTT[i] + ", ";
-            header += sAllPercentageEnhancedDisabilityPremiumAwardByTT[i] + ", ";
-        }
-        for (int i = 1; i < nTT; i++) {
-            header += sHBTotalCountDisabilityPremiumAwardByTT[i] + ", ";
-            header += sHBPercentageDisabilityPremiumAwardByTT[i] + ", ";
-            header += sHBTotalCountSevereDisabilityPremiumAwardByTT[i] + ", ";
-            header += sHBPercentageSevereDisabilityPremiumAwardByTT[i] + ", ";
-            header += sHBTotalCountEnhancedDisabilityPremiumAwardByTT[i] + ", ";
-            header += sHBPercentageEnhancedDisabilityPremiumAwardByTT[i] + ", ";
-        }
-        for (int i = 1; i < nTT; i++) {
-            header += sCTBTotalCountDisabilityPremiumAwardByTT[i] + ", ";
-            header += sCTBPercentageDisabilityPremiumAwardByTT[i] + ", ";
-            header += sCTBTotalCountSevereDisabilityPremiumAwardByTT[i] + ", ";
-            header += sCTBPercentageSevereDisabilityPremiumAwardByTT[i] + ", ";
-            header += sCTBTotalCountEnhancedDisabilityPremiumAwardByTT[i] + ", ";
-            header += sCTBPercentageEnhancedDisabilityPremiumAwardByTT[i] + ", ";
+            // DisabilityAward
+            //header += sAllTotalCount_DisabilityAwardByTT[i] + ", ";
+            //header += sAllPercentageOfAll_DisabilityAwardByTT[i] + ", ";
+            if ((i == 5 || i == 7)) {
+                header += sCTBTotalCount_DisabilityAwardByTT[i] + ", ";
+                header += sAllPercentageOfAll_DisabilityAwardByTT[i] + ", ";
+                header += sCTBPercentageOfCTB_DisabilityAwardByTT[i] + ", ";
+            } else {
+                header += sHBTotalCount_DisabilityAwardByTT[i] + ", ";
+                header += sAllPercentageOfAll_DisabilityAwardByTT[i] + ", ";
+                header += sHBPercentageOfHB_DisabilityAwardByTT[i] + ", ";
+            }
+            // DisabilityPremiumAward
+            //header += sAllTotalCount_DisabilityPremiumAwardByTT[i] + ", ";
+            //header += sAllPercentageOfAll_DisabilityPremiumAwardByTT[i] + ", ";
+            if ((i == 5 || i == 7)) {
+                header += sCTBTotalCount_DisabilityPremiumAwardByTT[i] + ", ";
+                header += sAllPercentageOfAll_DisabilityPremiumAwardByTT[i] + ", ";
+                header += sCTBPercentageOfCTB_DisabilityPremiumAwardByTT[i] + ", ";
+            } else {
+                header += sHBTotalCount_DisabilityPremiumAwardByTT[i] + ", ";
+                header += sAllPercentageOfAll_DisabilityPremiumAwardByTT[i] + ", ";
+                header += sHBPercentageOfHB_DisabilityPremiumAwardByTT[i] + ", ";
+            }
+            // SevereDisabilityPremiumAward
+            //header += sAllTotalCountSevereDisabilityPremiumAwardByTT[i] + ", ";
+            //header += sAllPercentageOfAll_SevereDisabilityPremiumAwardByTT[i] + ", ";
+            if ((i == 5 || i == 7)) {
+                header += sCTBTotalCount_SevereDisabilityPremiumAwardByTT[i] + ", ";
+                header += sAllPercentageOfAll_SevereDisabilityPremiumAwardByTT[i] + ", ";
+                header += sCTBPercentageOfCTB_SevereDisabilityPremiumAwardByTT[i] + ", ";
+            } else {
+                header += sHBTotalCount_SevereDisabilityPremiumAwardByTT[i] + ", ";
+                header += sAllPercentageOfAll_SevereDisabilityPremiumAwardByTT[i] + ", ";
+                header += sHBPercentageOfHB_SevereDisabilityPremiumAwardByTT[i] + ", ";
+            }
+            // DisabledChildPremiumAward
+            //header += sAllTotalCountDisabledChildPremiumAwardByTT[i] + ", ";
+            //header += sAllPercentageOfAll_DisabledChildPremiumAwardByTT[i] + ", ";
+            if ((i == 5 || i == 7)) {
+                header += sCTBTotalCount_DisabledChildPremiumAwardByTT[i] + ", ";
+                header += sAllPercentageOfAll_DisabledChildPremiumAwardByTT[i] + ", ";
+                header += sCTBPercentageOfCTB_DisabledChildPremiumAwardByTT[i] + ", ";
+            } else {
+                header += sHBTotalCount_DisabledChildPremiumAwardByTT[i] + ", ";
+                header += sAllPercentageOfAll_DisabledChildPremiumAwardByTT[i] + ", ";
+                header += sHBPercentageOfHB_DisabledChildPremiumAwardByTT[i] + ", ";
+            }
+            // EnhancedDisabilityPremiumAward
+            //header += sAllTotalCount_EnhancedDisabilityPremiumAwardByTT[i] + ", ";
+            //header += sAllPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i] + ", ";
+            if ((i == 5 || i == 7)) {
+                header += sCTBTotalCount_EnhancedDisabilityPremiumAwardByTT[i] + ", ";
+                header += sAllPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i] + ", ";
+                header += sCTBPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT[i] + ", ";
+            } else {
+                header += sHBTotalCount_EnhancedDisabilityPremiumAwardByTT[i] + ", ";
+                header += sAllPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i] + ", ";
+                header += sHBPercentageOfHB_EnhancedDisabilityPremiumAwardByTT[i] + ", ";
+            }
         }
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -6935,31 +8068,146 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getGenericLineSingleTime(key,
+            line += getLineSingleTimeGeneric(key,
                     summary, underOccupancy);
+            // General DisabilityAward
+            line += summary.get(sTotalCount_DisabilityAward) + ", ";
+            line += summary.get(sPercentageOfAll_DisabilityAward) + ", ";
+            line += summary.get(sTotalCount_DisabilityAwardHBTTs) + ", ";
+            line += summary.get(sPercentageOfAll_DisabilityAwardHBTTs) + ", ";
+            line += summary.get(sPercentageOfHB_DisabilityAwardHBTTs) + ", ";
+            line += summary.get(sTotalCount_DisabilityAwardCTBTTs) + ", ";
+            line += summary.get(sPercentageOfAll_DisabilityAwardCTBTTs) + ", ";
+            line += summary.get(sPercentageOfCTB_DisabilityAwardCTBTTs) + ", ";
+            // General DisabilityPremiumAward
+            line += summary.get(sTotalCount_DisabilityPremiumAward) + ", ";
+            line += summary.get(sPercentageOfAll_DisabilityPremiumAward) + ", ";
+            line += summary.get(sTotalCount_DisabilityPremiumAwardHBTTs) + ", ";
+            line += summary.get(sPercentageOfAll_DisabilityPremiumAwardHBTTs) + ", ";
+            line += summary.get(sPercentageOfHB_DisabilityPremiumAwardHBTTs) + ", ";
+            line += summary.get(sTotalCount_DisabilityPremiumAwardCTBTTs) + ", ";
+            line += summary.get(sPercentageOfAll_DisabilityPremiumAwardCTBTTs) + ", ";
+            line += summary.get(sPercentageOfCTB_DisabilityPremiumAwardCTBTTs) + ", ";
+            // General SevereDisabilityPremiumAward
+            line += summary.get(sTotalCount_SevereDisabilityPremiumAward) + ", ";
+            line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAward) + ", ";
+            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardHBTTs) + ", ";
+            line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardHBTTs) + ", ";
+            line += summary.get(sPercentageOfHB_SevereDisabilityPremiumAwardHBTTs) + ", ";
+            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardCTBTTs) + ", ";
+            line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs) + ", ";
+            line += summary.get(sPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs) + ", ";
+            // General DisabledChildPremiumAward
+            line += summary.get(sTotalCount_DisabledChildPremiumAward) + ", ";
+            line += summary.get(sPercentageOfAll_DisabledChildPremiumAward) + ", ";
+            line += summary.get(sTotalCount_DisabledChildPremiumAwardHBTTs) + ", ";
+            line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardHBTTs) + ", ";
+            line += summary.get(sPercentageOfHB_DisabledChildPremiumAwardHBTTs) + ", ";
+            line += summary.get(sTotalCount_DisabledChildPremiumAwardCTBTTs) + ", ";
+            line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardCTBTTs) + ", ";
+            line += summary.get(sPercentageOfCTB_DisabledChildPremiumAwardCTBTTs) + ", ";
+            // General EnhancedDisabilityPremiumAward
+            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAward) + ", ";
+            line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAward) + ", ";
+            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardHBTTs) + ", ";
+            line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs) + ", ";
+            line += summary.get(sPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs) + ", ";
+            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardCTBTTs) + ", ";
+            line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs) + ", ";
+            line += summary.get(sPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs) + ", ";
+            // DisabilityPremiumAwardSocialTTs
+            line += summary.get(sTotalCount_DisabilityAwardSocialTTs) + ", ";
+            line += summary.get(sPercentageOfAll_DisabilityAwardSocialTTs) + ", ";
+            line += summary.get(sPercentageOfHB_DisabilityAwardSocialTTs) + ", ";
+            line += summary.get(sTotalCount_DisabilityPremiumAwardSocialTTs) + ", ";
+            line += summary.get(sPercentageOfAll_DisabilityPremiumAwardSocialTTs) + ", ";
+            line += summary.get(sPercentageOfHB_DisabilityPremiumAwardSocialTTs) + ", ";
+            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardSocialTTs) + ", ";
+            line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs) + ", ";
+            line += summary.get(sPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs) + ", ";
+            line += summary.get(sTotalCount_DisabledChildPremiumAwardSocialTTs) + ", ";
+            line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardSocialTTs) + ", ";
+            line += summary.get(sPercentageOfHB_DisabledChildPremiumAwardSocialTTs) + ", ";
+            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs) + ", ";
+            line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs) + ", ";
+            line += summary.get(sPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs) + ", ";
+            // DisabilityPremiumAwardPrivateDeregulatedTTs
+            line += summary.get(sTotalCount_DisabilityAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs) + ", ";
+            line += summary.get(sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs) + ", ";
             for (int i = 1; i < nTT; i++) {
-                line += summary.get(sAllTotalCountDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sAllPercentageDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sAllTotalCountSevereDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sAllPercentageSevereDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sAllTotalCountEnhancedDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sAllPercentageEnhancedDisabilityPremiumAwardByTT[i]) + ", ";
-            }
-            for (int i = 1; i < nTT; i++) {
-                line += summary.get(sHBTotalCountDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sHBPercentageDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sHBTotalCountSevereDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sHBPercentageSevereDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sHBTotalCountEnhancedDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sHBPercentageEnhancedDisabilityPremiumAwardByTT[i]) + ", ";
-            }
-            for (int i = 1; i < nTT; i++) {
-                line += summary.get(sCTBTotalCountDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sCTBPercentageDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sCTBTotalCountSevereDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sCTBPercentageSevereDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sCTBTotalCountEnhancedDisabilityPremiumAwardByTT[i]) + ", ";
-                line += summary.get(sCTBPercentageEnhancedDisabilityPremiumAwardByTT[i]) + ", ";
+                // DisabilityAward
+                //line += summary.get(sAllTotalCount_DisabilityAwardByTT[i]) + ", ";
+                //line += summary.get(sAllPercentageOfAll_DisabilityAwardByTT[i]) + ", ";
+                if ((i == 5 || i == 7)) {
+                    line += summary.get(sCTBTotalCount_DisabilityAwardByTT[i]) + ", ";
+                    line += summary.get(sAllPercentageOfAll_DisabilityAwardByTT[i]) + ", ";
+                    line += summary.get(sCTBPercentageOfCTB_DisabilityAwardByTT[i]) + ", ";
+                } else {
+                    line += summary.get(sHBTotalCount_DisabilityAwardByTT[i]) + ", ";
+                    line += summary.get(sAllPercentageOfAll_DisabilityAwardByTT[i]) + ", ";
+                    line += summary.get(sHBPercentageOfHB_DisabilityAwardByTT[i]) + ", ";
+                }
+                // DisabilityPremiumAward
+                //line += summary.get(sAllTotalCount_DisabilityPremiumAwardByTT[i]) + ", ";
+                //line += summary.get(sAllPercentageOfAll_DisabilityPremiumAwardByTT[i]) + ", ";
+                if ((i == 5 || i == 7)) {
+                    line += summary.get(sCTBTotalCount_DisabilityPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sAllPercentageOfAll_DisabilityPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sCTBPercentageOfCTB_DisabilityPremiumAwardByTT[i]) + ", ";
+                } else {
+                    line += summary.get(sHBTotalCount_DisabilityPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sAllPercentageOfAll_DisabilityPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sHBPercentageOfHB_DisabilityPremiumAwardByTT[i]) + ", ";
+                }
+                // SevereDisabilityPremiumAward
+                //line += summary.get(sAllTotalCountSevereDisabilityPremiumAwardByTT[i]) + ", ";
+                //line += summary.get(sAllPercentageOfAll_SevereDisabilityPremiumAwardByTT[i]) + ", ";
+                if ((i == 5 || i == 7)) {
+                    line += summary.get(sCTBTotalCount_SevereDisabilityPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sAllPercentageOfAll_SevereDisabilityPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sCTBPercentageOfCTB_SevereDisabilityPremiumAwardByTT[i]) + ", ";
+                } else {
+                    line += summary.get(sHBTotalCount_SevereDisabilityPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sAllPercentageOfAll_SevereDisabilityPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sHBPercentageOfHB_SevereDisabilityPremiumAwardByTT[i]) + ", ";
+                }
+                // DisabledChildPremiumAward
+                //line += summary.get(sAllTotalCountDisabledChildPremiumAwardByTT[i]) + ", ";
+                //line += summary.get(sAllPercentageOfAll_DisabledChildPremiumAwardByTT[i]) + ", ";
+                if ((i == 5 || i == 7)) {
+                    line += summary.get(sCTBTotalCount_DisabledChildPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sAllPercentageOfAll_DisabledChildPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sCTBPercentageOfCTB_DisabledChildPremiumAwardByTT[i]) + ", ";
+                } else {
+                    line += summary.get(sHBTotalCount_DisabledChildPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sAllPercentageOfAll_DisabledChildPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sHBPercentageOfHB_DisabledChildPremiumAwardByTT[i]) + ", ";
+                }
+                // EnhancedDisabilityPremiumAward
+                //line += summary.get(sAllTotalCount_EnhancedDisabilityPremiumAwardByTT[i]) + ", ";
+                //line += summary.get(sAllPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i]) + ", ";
+                if ((i == 5 || i == 7)) {
+                    line += summary.get(sCTBTotalCount_EnhancedDisabilityPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sAllPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sCTBPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT[i]) + ", ";
+                } else {
+                    line += summary.get(sHBTotalCount_EnhancedDisabilityPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sAllPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i]) + ", ";
+                    line += summary.get(sHBPercentageOfHB_EnhancedDisabilityPremiumAwardByTT[i]) + ", ";
+                }
             }
             line = line.substring(0, line.length() - 2);
             pw.println(line);
@@ -6967,10 +8215,10 @@ public class Summary {
         pw.close();
     }
 
-    private String getGenericHeaderSingleTime(boolean doUnderoccupancy) {
+    private String getHeaderSingleTimeGeneric(boolean underoccupancy) {
         String result;
         result = "year-month, ";
-        if (doUnderoccupancy) {
+        if (underoccupancy) {
             result += "CouncilFilename, "
                     + "CouncilCount, "
                     + "CouncilLinkedRecordsCount,"
@@ -6979,17 +8227,17 @@ public class Summary {
                     + "RSLCount, "
                     + "RSLLinkedRecordsCount, "
                     + "AllCount, "
-                    + "AllLinkedRecordsCount";
+                    + "AllLinkedRecordsCount, ";
         } else {
             result += sAllCount1 + ", ";
             result += sHBCount1 + ", ";
             result += sCTBCount1 + ", ";
         }
-        result = "Month Year, ";
+        result += "Month Year, ";
         return result;
     }
 
-    private String getGenericLineSingleTime(
+    private String getLineSingleTimeGeneric(
             String key,
             HashMap<String, String> summary,
             boolean doUnderOccupancy) {
@@ -7013,7 +8261,7 @@ public class Summary {
         }
         String[] split;
         split = key.split("-");
-        result = Generic_Time.getMonth3Letters(split[1]);
+        result += Generic_Time.getMonth3Letters(split[1]);
         result += " " + split[0] + ", ";
         return result;
     }

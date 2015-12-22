@@ -164,7 +164,6 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         // Includes
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
-
 //        includes.remove("Yearly");
 //        includes.remove("6Monthly");
 //        includes.remove("3Monthly");
@@ -193,7 +192,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
        HashMap<DW_PersonID, DW_ID> tDW_PersonIDtoDW_IDLookup;
        tDW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
        ArrayList<String> paymentTypes;
-        paymentTypes = DW_SHBE_Handler.getPaymentTypes();
+       paymentTypes = DW_SHBE_Handler.getPaymentTypes();
 //        paymentTypes.remove(sAllPT);
 //        paymentTypes.remove(sInPayment);
 //        paymentTypes.remove(sSuspended);
@@ -208,8 +207,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        forceNewSummaries = false;
         forceNewSummaries = true;
         // Runtime approximately 3 minutes.
-//        if (true) {
-        if (false) {
+        if (true) {
+//        if (false) {
             paymentTypesIte = paymentTypes.iterator();
             while (paymentTypesIte.hasNext()) {
                 String paymentType;
@@ -236,8 +235,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     includeKey = includesIte.next();
                     ArrayList<Integer> include;
                     include = includes.get(includeKey);
-                    TreeMap<String, HashMap<String, String>> summaryTable;
-                    summaryTable = tSummary.getSummaryTable(
+                    TreeMap<String, HashMap<String, String>> summaryTableAll;
+                    summaryTableAll = null;
+                    summaryTableAll = tSummary.getSummaryTable(
                             SHBEFilenames,
                             include,
                             forceNewSummaries,
@@ -245,16 +245,19 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                             nTT,
                             nEG,
                             nPSI,
+                            //underOccupiedData,
                             handleOutOfMemoryError);
                     boolean doUnderOccupancy;
                     doUnderOccupancy = false;
                     tSummary.writeSummaryTables(
-                            summaryTable,
+                            summaryTableAll,
                             paymentType,
                             includeKey,
                             doUnderOccupancy,
                             nTT, nEG, nPSI);
-                    summaryTable = tSummary.getSummaryTable(
+                    TreeMap<String, HashMap<String, String>> summaryTableUO;
+                    summaryTableUO = tSummary.getSummaryTable(
+                            summaryTableAll,
                             SHBEFilenames,
                             include,
                             forceNewSummaries,
@@ -268,18 +271,18 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                             handleOutOfMemoryError);
                     doUnderOccupancy = true;
                     tSummary.writeSummaryTables(
-                            summaryTable,
+                            summaryTableUO,
                             paymentType,
                             includeKey,
                             doUnderOccupancy,
                             nTT, nEG, nPSI);
-//                    System.exit(0);
+                    System.exit(0);
                 }
             }
         }
         
         
-        //System.exit(0);
+        System.exit(0);
         
 
 //        paymentTypes.remove(sAllPT);
@@ -2069,7 +2072,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         if (loadData) {
             //System.out.print("Loading " + filename + " ...");
             DW_SHBE_Collection aSHBEData;
-            aSHBEData = getSHBEData(filename, paymentType);
+            aSHBEData = new DW_SHBE_Collection(
+                                    filename,
+                                    paymentType);
             result = (HashMap<DW_ID, String>) aSHBEData.getClaimantIDToCTBRefLookup();
         } else {
             File f;
@@ -2114,7 +2119,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         if (loadData) {
             //System.out.print("Loading " + filename + " ...");
             DW_SHBE_Collection aSHBEData;
-            aSHBEData = getSHBEData(filename, paymentType);
+            aSHBEData = new DW_SHBE_Collection(
+                                    filename,
+                                    paymentType);
             result = (HashMap<DW_ID, Integer>) aSHBEData.getClaimantIDToTenancyTypeLookup();
         } else {
             File f;
@@ -2151,7 +2158,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         if (loadData) {
             //System.out.print("Loading " + filename + " ...");
             DW_SHBE_Collection aSHBEData;
-            aSHBEData = getSHBEData(filename, paymentType);
+            aSHBEData = new DW_SHBE_Collection(
+                                    filename,
+                                    paymentType);
             result = (HashMap<DW_ID, String>) aSHBEData.getClaimantIDToPostcodeLookup();
         } else {
             File f;
@@ -2670,7 +2679,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             i = includeIte.next();
             // Load first data
             DW_SHBE_Collection SHBEData0;
-            SHBEData0 = getSHBEData(SHBEFilenames[i], paymentType);
+            SHBEData0 = new DW_SHBE_Collection(
+                                    SHBEFilenames[i],
+                                    paymentType);
             String yM30;
             yM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
             String yM30v;
@@ -2927,7 +2938,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 i = includeIte.next();
                 // Load next data
                 DW_SHBE_Collection SHBEData1;
-                SHBEData1 = getSHBEData(SHBEFilenames[i], paymentType);
+                SHBEData1 = new DW_SHBE_Collection(
+                                    SHBEFilenames[i],
+                                    paymentType);
                 HashMap<DW_ID, String> tIDByPostcode1;
                 tIDByPostcode1 = SHBEData1.getClaimantIDToPostcodeLookup();
                 HashMap<DW_ID, Integer> tIDByTenancyType1;
@@ -6401,7 +6414,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         String[] SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
         for (String SHBEFilename : SHBEFilenames) {
             DW_SHBE_Collection SHBEData;
-            SHBEData = getSHBEData(SHBEFilename, paymentType);
+            SHBEData = new DW_SHBE_Collection(
+                                    SHBEFilename,
+                                    paymentType);
             String year = DW_SHBE_Handler.getYear(SHBEFilename);
             String month = DW_SHBE_Handler.getMonth(SHBEFilename);
             TreeMap<Integer, Integer> ymAllResult = new TreeMap<Integer, Integer>();
@@ -6466,7 +6481,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     /**
      * Returns a migration matrix for all claimants.
      *
-     * @param tSHBEfilenames
+     * @param SHBEFilenames
      * @param paymentType
      * @param NINOOfClaimantsStartYear
      * @param NINOOfClaimantsEndYear
@@ -6486,7 +6501,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * ----
      */
     public Object[] getChangeInTenancyForMovers(
-            String[] tSHBEfilenames,
+            String[] SHBEFilenames,
             String paymentType,
             HashSet<String> NINOOfClaimantsStartYear,
             HashSet<String> NINOOfClaimantsEndYear,
@@ -6518,16 +6533,16 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         result[1] = originsAndDestinations;
         // Start
         DW_SHBE_Collection SHBEDataStart;
-        SHBEDataStart = getSHBEData(
-                tSHBEfilenames[startIndex],
-                paymentType);
+        SHBEDataStart = new DW_SHBE_Collection(
+                                    SHBEFilenames[startIndex],
+                                    paymentType);
         TreeMap<String, DW_SHBE_Record> recordsStart;
         recordsStart = SHBEDataStart.getRecords();
         // End
         DW_SHBE_Collection SHBEDataEnd;
-        SHBEDataEnd = getSHBEData(
-                tSHBEfilenames[endIndex], 
-                paymentType);
+        SHBEDataEnd = new DW_SHBE_Collection(
+                                    SHBEFilenames[endIndex],
+                                    paymentType);
         TreeMap<String, DW_SHBE_Record> recordsEnd;
         recordsEnd = SHBEDataEnd.getRecords();
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
@@ -6676,7 +6691,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     /**
      * Returns a migration matrix for all claimants.
      *
-     * @param tSHBEfilenames
+     * @param SHBEFilenames
      * @param paymentType
      * @param startYear
      * @param startMonth
@@ -6691,7 +6706,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * result[1] is a {@code TreeSet<String>} of origins/destinations;
      */
     public Object[] getChangeInTenancy(
-            String[] tSHBEfilenames,
+            String[] SHBEFilenames,
             String paymentType,
             String startYear,
             String startMonth,
@@ -6715,11 +6730,15 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         originsAndDestinations.add(-999);
         result[1] = originsAndDestinations;
         DW_SHBE_Collection SHBEDataStart;
-        SHBEDataStart = getSHBEData(tSHBEfilenames[startIndex], paymentType);
+        SHBEDataStart = new DW_SHBE_Collection(
+                                    SHBEFilenames[startIndex],
+                                    paymentType);
         TreeMap<String, DW_SHBE_Record> recordsStart;
         recordsStart = SHBEDataStart.getRecords();
         DW_SHBE_Collection SHBEDataEnd;
-        SHBEDataEnd = getSHBEData(tSHBEfilenames[endIndex], paymentType);
+        SHBEDataEnd = new DW_SHBE_Collection(
+                                    SHBEFilenames[endIndex],
+                                    paymentType);
         TreeMap<String, DW_SHBE_Record> recordsEnd;
         recordsEnd = SHBEDataEnd.getRecords();
         // Iterate over records and join these with SHBE records to get postcodes
@@ -7949,7 +7968,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     /**
      * Returns a migration matrix for all claimants.
      *
-     * @param tSHBEfilenames
+     * @param SHBEFilenames
      * @param paymentType
      * @param NINOOfClaimantsStartYear
      * @param NINOOfClaimantsEndYear
@@ -7967,7 +7986,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * result[1] is a {@code TreeSet<String>} of origins/destinations.
      */
     public Object[] getAllClaimantMigrationData(
-            String[] tSHBEfilenames,
+            String[] SHBEFilenames,
             String paymentType,
             HashSet<String> NINOOfClaimantsStartYear,
             HashSet<String> NINOOfClaimantsEndYear,
@@ -7987,9 +8006,13 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         TreeSet<String> originsAndDestinations;
         originsAndDestinations = new TreeSet<String>();
         result[1] = originsAndDestinations;
-        DW_SHBE_Collection SHBEDataStart = getSHBEData(tSHBEfilenames[startIndex], paymentType);
+        DW_SHBE_Collection SHBEDataStart = new DW_SHBE_Collection(
+                                    SHBEFilenames[startIndex],
+                                    paymentType);
         TreeMap<String, DW_SHBE_Record> DRecordsStart = SHBEDataStart.getRecords();
-        DW_SHBE_Collection SHBEDataEnd = getSHBEData(tSHBEfilenames[endIndex], paymentType);
+        DW_SHBE_Collection SHBEDataEnd = new DW_SHBE_Collection(
+                                    SHBEFilenames[endIndex],
+                                    paymentType);
         TreeMap<String, DW_SHBE_Record> DRecordsEnd = SHBEDataEnd.getRecords();
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
@@ -8144,7 +8167,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     /**
      * Returns a migration matrix for all claimants.
      *
-     * @param tSHBEfilenames
+     * @param SHBEFilenames
      * @param paymentType
      * @param AllNINOOfClaimantsStartYear
      * @param AllNINOOfClaimantsEndYear
@@ -8162,7 +8185,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * result[1] is a {@code TreeSet<String>} of origins/destinations.
      */
     public Object[] getHBClaimantOnlyMigrationData(
-            String[] tSHBEfilenames,
+            String[] SHBEFilenames,
             String paymentType,
             HashSet<String> AllNINOOfClaimantsStartYear,
             HashSet<String> AllNINOOfClaimantsEndYear,
@@ -8180,9 +8203,13 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         result[0] = resultMatrix;
         TreeSet<String> originsAndDestinations = new TreeSet<String>();
         result[1] = originsAndDestinations;
-        DW_SHBE_Collection SHBEDataStart = getSHBEData(tSHBEfilenames[startIndex], paymentType);
+        DW_SHBE_Collection SHBEDataStart = new DW_SHBE_Collection(
+                                    SHBEFilenames[startIndex],
+                                    paymentType);
         TreeMap<String, DW_SHBE_Record> DRecordsStart = SHBEDataStart.getRecords();
-        DW_SHBE_Collection SHBEDataEnd = getSHBEData(tSHBEfilenames[endIndex], paymentType);
+        DW_SHBE_Collection SHBEDataEnd = new DW_SHBE_Collection(
+                                    SHBEFilenames[endIndex],
+                                    paymentType);
         TreeMap<String, DW_SHBE_Record> DRecordsEnd = SHBEDataEnd.getRecords();
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
@@ -8388,26 +8415,6 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     }
 
     /**
-     * Loads SHBE Data from filename.
-     *
-     * @param filename
-     * @param paymentType
-     * @return DW_SHBE_Collection
-     */
-    public DW_SHBE_Collection getSHBEData(
-            String filename,
-            String paymentType) {
-        System.out.println("Loading SHBE from " + filename);
-        DW_SHBE_Collection result = tDW_SHBE_Handler.loadInputData(
-                collectionHandler,
-                DW_Files.getInputSHBEDir(),
-                filename,
-                paymentType,
-                false);
-        return result;
-    }
-
-    /**
      * Writes to files aggregated details about rent arrears totals and by
      * aggregated postcode.
      *
@@ -8542,7 +8549,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      * Returns data about under occupancy by postcode.
      *
      * @param records
-     * @param tSHBEfilenames
+     * @param SHBEFilenames
      * @param paymentType
      * @return HashMap<String, TreeMap<String, Integer>> The keys are Months,
      * the values are TreeMap<String, Integer> with Keys as Postcode sectors and
@@ -8550,13 +8557,15 @@ public class DW_DataProcessor_LCC extends DW_Processor {
      */
     public HashMap<String, TreeMap<String, Integer>> getUnderOccupiedbyPostcode(
             TreeMap<String, DW_UOReport_Record>[] records,
-            String[] tSHBEfilenames,
+            String[] SHBEFilenames,
             String paymentType) {
         HashMap<String, TreeMap<String, Integer>> result = new HashMap<String, TreeMap<String, Integer>>();
-        DW_SHBE_Collection SHBEDataMonth1 = getSHBEData(tSHBEfilenames[0], paymentType);
-        for (int month = 0; month < tSHBEfilenames.length - 1; month++) {
+        DW_SHBE_Collection SHBEDataMonth1 = new DW_SHBE_Collection(
+                                    SHBEFilenames[0],
+                                    paymentType);
+        for (int month = 0; month < SHBEFilenames.length - 1; month++) {
             int underOccupancyMonth = month;
-            String monthString = DW_SHBE_Handler.getMonth(tSHBEfilenames[month]);
+            String monthString = DW_SHBE_Handler.getMonth(SHBEFilenames[month]);
             TreeMap<String, DW_SHBE_Record> DRecords = SHBEDataMonth1.getRecords();
             // Iterate over records and join these with SHBE records to get postcodes
             TreeMap<String, Integer> postcodeClaims = new TreeMap<String, Integer>();
@@ -8675,21 +8684,23 @@ public class DW_DataProcessor_LCC extends DW_Processor {
     /**
      * Returns data about the number of claims per postcode.
      *
-     * @param tSHBEfilenames
+     * @param SHBEFilenames
      * @param paymentType
      * @return HashMap<String, TreeMap<String, Integer>> The keys are Months,
      * the values are TreeMap<String, Integer> with Keys as Postcode sectors and
      * values are counts of the number of claims.
      */
     protected HashMap<String, TreeMap<String, Integer>> getCouncilTaxClaimCountByPostcode(
-            String[] tSHBEfilenames,
+            String[] SHBEFilenames,
             String paymentType) {
         HashMap<String, TreeMap<String, Integer>> result = new HashMap<String, TreeMap<String, Integer>>();
-        for (int month = 0; month < tSHBEfilenames.length - 1; month++) {
+        for (int month = 0; month < SHBEFilenames.length - 1; month++) {
             TreeMap<String, Integer> monthsResult = new TreeMap<String, Integer>();
-            String monthString = DW_SHBE_Handler.getMonth(tSHBEfilenames[month]);
+            String monthString = DW_SHBE_Handler.getMonth(SHBEFilenames[month]);
             result.put(monthString, monthsResult);
-            DW_SHBE_Collection SHBEData = getSHBEData(tSHBEfilenames[month], paymentType);
+            DW_SHBE_Collection SHBEData = new DW_SHBE_Collection(
+                                    SHBEFilenames[month],
+                                    paymentType);
             TreeMap<String, DW_SHBE_Record> recs = SHBEData.getRecords();
             //TreeMap<String, DW_SHBE_Record> SRecordsWithoutDRecords = (TreeMap<String, DW_SHBE_Record>) SHBEData[1];
             Iterator<String> ite = recs.keySet().iterator();

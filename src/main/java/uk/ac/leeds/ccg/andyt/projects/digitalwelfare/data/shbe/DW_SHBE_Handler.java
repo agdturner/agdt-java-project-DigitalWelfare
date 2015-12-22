@@ -49,14 +49,14 @@ public class DW_SHBE_Handler {
     public static final String sHB = "HB";
     public static final String sCTB = "CTB";
 
-    private static HashMap<String, DW_ID> NINOToDW_IDLookup;
-    private static HashMap<DW_ID, String> DW_IDToNINOLookup;
-    private static HashMap<String, DW_ID> DOBToDW_IDLookup;
-    private static HashMap<DW_ID, String> DW_IDToDOBLookup;
-    private static HashMap<DW_PersonID, DW_ID> DW_PersonIDToDW_IDLookup;
-    private static HashMap<DW_ID, DW_PersonID> DW_IDToDW_PersonIDLookup;
-    private static HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
-    private static HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
+    static HashMap<String, DW_ID> NINOToDW_IDLookup;
+    static HashMap<DW_ID, String> DW_IDToNINOLookup;
+    static HashMap<String, DW_ID> DOBToDW_IDLookup;
+    static HashMap<DW_ID, String> DW_IDToDOBLookup;
+    static HashMap<DW_PersonID, DW_ID> DW_PersonIDToDW_IDLookup;
+    static HashMap<DW_ID, DW_PersonID> DW_IDToDW_PersonIDLookup;
+    static HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
+    static HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
 
     public DW_SHBE_Handler(DW_Environment env) {
         this.env = env;
@@ -75,7 +75,7 @@ public class DW_SHBE_Handler {
         DW_Environment env;
         env = new DW_Environment();
         //new DW_SHBE_Handler().run();
-        new DW_SHBE_Handler(env).runNew();
+        //new DW_SHBE_Handler(env).runNew();
     }
 
     public void run() {
@@ -83,40 +83,46 @@ public class DW_SHBE_Handler {
         SHBEFilenames = getSHBEFilenamesAll();
         File dir;
         dir = DW_Files.getInputSHBEDir();
-        boolean loadFromSource;
-        loadFromSource = true;
         // NINO
         File NINOToDW_IDLookupFile;
         File DW_IDToNINOLookupFile;
         NINOToDW_IDLookupFile = getNINOToDW_IDLookupFile();
         DW_IDToNINOLookupFile = getDW_IDToNINOLookupFile();
-        NINOToDW_IDLookup = getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
-        DW_IDToNINOLookup = getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
+//        NINOToDW_IDLookup = getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
+        NINOToDW_IDLookup = new HashMap<String, DW_ID>();
+//        DW_IDToNINOLookup = getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
+        DW_IDToNINOLookup = new HashMap<DW_ID, String>();
         // DOB
         File DOBToDW_IDLookupFile;
         File DW_IDToDOBLookupFile;
         DOBToDW_IDLookupFile = getDOBToDW_IDLookupFile();
         DW_IDToDOBLookupFile = getDW_IDToDOBLookupFile();
-        DOBToDW_IDLookup = getDOBToDW_IDLookup(DOBToDW_IDLookupFile);
-        DW_IDToDOBLookup = getDW_IDToDOBLookup(DW_IDToDOBLookupFile);
+//        DOBToDW_IDLookup = getDOBToDW_IDLookup(DOBToDW_IDLookupFile);
+        DOBToDW_IDLookup = new HashMap<String, DW_ID>();
+//        DW_IDToDOBLookup = getDW_IDToDOBLookup(DW_IDToDOBLookupFile);
+        DW_IDToDOBLookup = new HashMap<DW_ID, String>();
         // Postcode
         File PostcodeToPostcodeIDLookupFile;
         File PostcodeIDToPostcodeLookupFile;
         PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
         PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
-        PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
-                PostcodeToPostcodeIDLookupFile);
-        PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
-                PostcodeIDToPostcodeLookupFile);
+//        PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
+//                PostcodeToPostcodeIDLookupFile);
+        PostcodeToPostcodeIDLookup = new HashMap<String, DW_ID>();
+//        PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
+//                PostcodeIDToPostcodeLookupFile);
+        PostcodeIDToPostcodeLookup = new HashMap<DW_ID, String>();
         // Person
         File DW_PersonIDToDW_IDLookupFile;
         File DW_IDToDW_PersonIDLookupFile;
         DW_PersonIDToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile();
         DW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
-        DW_PersonIDToDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(
-                DW_PersonIDToDW_IDLookupFile);
-        DW_IDToDW_PersonIDLookup = getDW_IDToDW_PersonIDLookup(
-                DW_IDToDW_PersonIDLookupFile);
+//        DW_PersonIDToDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(
+//                DW_PersonIDToDW_IDLookupFile);
+        DW_PersonIDToDW_IDLookup = new HashMap<DW_PersonID, DW_ID>();
+//        DW_IDToDW_PersonIDLookup = getDW_IDToDW_PersonIDLookup(
+//                DW_IDToDW_PersonIDLookupFile);
+        DW_IDToDW_PersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
         // Loop
         ArrayList<String> paymentTypes;
         paymentTypes = getPaymentTypes();
@@ -141,13 +147,11 @@ public class DW_SHBE_Handler {
                         collectionDir);
                 DW_SHBE_Collection SHBEData;
                 SHBEData = new DW_SHBE_Collection(
-                        //this,
                         handler.nextID,
                         handler,
                         dir,
                         SHBEFilenames[i],
-                        paymentType,
-                        loadFromSource);
+                        paymentType);
             }
         }
         Generic_StaticIO.writeObject(NINOToDW_IDLookup, NINOToDW_IDLookupFile);
@@ -176,65 +180,61 @@ public class DW_SHBE_Handler {
         return result;
     }
 
-    public void runNew() {
-        String SHBEFilename;
-        SHBEFilename = "hb9803_SHBE_397524k April 2011.csv";
-        //SHBEFilename = "hb9991_SHBE_754889k October 2015.csv";
-        File collectionDir = new File(
-                DW_Files.getSwapSHBEDir(),
-                SHBEFilename);
-        DW_SHBE_CollectionHandler handler;
-        handler = new DW_SHBE_CollectionHandler(env, collectionDir);
-        File dir;
-        dir = DW_Files.getInputSHBEDir();
-        boolean loadFromSource;
-        loadFromSource = true;
-        // NINO
-        File NINOToDW_IDLookupFile;
-        File DW_IDToNINOLookupFile;
-        NINOToDW_IDLookupFile = getNINOToDW_IDLookupFile();
-        DW_IDToNINOLookupFile = getDW_IDToNINOLookupFile();
-        NINOToDW_IDLookup = getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
-        DW_IDToNINOLookup = getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
-        // Postcode
-        File PostcodeToPostcodeIDLookupFile;
-        File PostcodeIDToPostcodeLookupFile;
-        PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
-        PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
-        PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
-                PostcodeToPostcodeIDLookupFile);
-        PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
-                PostcodeIDToPostcodeLookupFile);
-        // Person
-        File DW_PersonIDToDW_IDLookupFile;
-        File DW_IDToDW_PersonIDLookupFile;
-        DW_PersonIDToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile();
-        DW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
-        DW_PersonIDToDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(
-                DW_PersonIDToDW_IDLookupFile);
-        DW_IDToDW_PersonIDLookup = getDW_IDToDW_PersonIDLookup(
-                DW_IDToDW_PersonIDLookupFile);
-        ArrayList<String> paymentTypes;
-        paymentTypes = getPaymentTypes();
-        Iterator<String> ite = paymentTypes.iterator();
-        while (ite.hasNext()) {
-            String paymentType;
-            paymentType = ite.next();
-            loadInputData(
-                    handler,
-                    dir,
-                    SHBEFilename,
-                    paymentType,
-                    loadFromSource);
-        }
-        Generic_StaticIO.writeObject(NINOToDW_IDLookup, NINOToDW_IDLookupFile);
-        Generic_StaticIO.writeObject(DW_IDToNINOLookup, DW_IDToNINOLookupFile);
-        Generic_StaticIO.writeObject(DW_PersonIDToDW_IDLookup, DW_PersonIDToDW_IDLookupFile);
-        Generic_StaticIO.writeObject(DW_IDToDW_PersonIDLookup, DW_IDToDW_PersonIDLookupFile);
-        Generic_StaticIO.writeObject(PostcodeToPostcodeIDLookup, PostcodeToPostcodeIDLookupFile);
-        Generic_StaticIO.writeObject(PostcodeIDToPostcodeLookup, PostcodeIDToPostcodeLookupFile);
-    }
-
+//    public void runNew() {
+//        String SHBEFilename;
+//        SHBEFilename = "hb9803_SHBE_397524k April 2011.csv";
+//        //SHBEFilename = "hb9991_SHBE_754889k October 2015.csv";
+//        File collectionDir = new File(
+//                DW_Files.getSwapSHBEDir(),
+//                SHBEFilename);
+//        DW_SHBE_CollectionHandler handler;
+//        handler = new DW_SHBE_CollectionHandler(env, collectionDir);
+//        File dir;
+//        dir = DW_Files.getInputSHBEDir();
+//        // NINO
+//        File NINOToDW_IDLookupFile;
+//        File DW_IDToNINOLookupFile;
+//        NINOToDW_IDLookupFile = getNINOToDW_IDLookupFile();
+//        DW_IDToNINOLookupFile = getDW_IDToNINOLookupFile();
+//        NINOToDW_IDLookup = getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
+//        DW_IDToNINOLookup = getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
+//        // Postcode
+//        File PostcodeToPostcodeIDLookupFile;
+//        File PostcodeIDToPostcodeLookupFile;
+//        PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
+//        PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
+//        PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
+//                PostcodeToPostcodeIDLookupFile);
+//        PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
+//                PostcodeIDToPostcodeLookupFile);
+//        // Person
+//        File DW_PersonIDToDW_IDLookupFile;
+//        File DW_IDToDW_PersonIDLookupFile;
+//        DW_PersonIDToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile();
+//        DW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
+//        DW_PersonIDToDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(
+//                DW_PersonIDToDW_IDLookupFile);
+//        DW_IDToDW_PersonIDLookup = getDW_IDToDW_PersonIDLookup(
+//                DW_IDToDW_PersonIDLookupFile);
+//        ArrayList<String> paymentTypes;
+//        paymentTypes = getPaymentTypes();
+//        Iterator<String> ite = paymentTypes.iterator();
+//        while (ite.hasNext()) {
+//            String paymentType;
+//            paymentType = ite.next();
+//            DW_SHBE_Collection newCollection = new DW_SHBE_Collection(
+//                    handler,
+//                    dir,
+//                    SHBEFilename,
+//                    paymentType);
+//        }
+//        Generic_StaticIO.writeObject(NINOToDW_IDLookup, NINOToDW_IDLookupFile);
+//        Generic_StaticIO.writeObject(DW_IDToNINOLookup, DW_IDToNINOLookupFile);
+//        Generic_StaticIO.writeObject(DW_PersonIDToDW_IDLookup, DW_PersonIDToDW_IDLookupFile);
+//        Generic_StaticIO.writeObject(DW_IDToDW_PersonIDLookup, DW_IDToDW_PersonIDLookupFile);
+//        Generic_StaticIO.writeObject(PostcodeToPostcodeIDLookup, PostcodeToPostcodeIDLookupFile);
+//        Generic_StaticIO.writeObject(PostcodeIDToPostcodeLookup, PostcodeIDToPostcodeLookupFile);
+//    }
 //    public static String getClaimantType(DW_SHBE_D_Record D_Record) {
 //        String HBClaimRefNo;
 //        HBClaimRefNo = D_Record.getHousingBenefitClaimReferenceNumber();
@@ -412,7 +412,6 @@ public class DW_SHBE_Handler {
     public ArrayList<DW_SHBE_Collection> loadSHBEData() {
 
         String paymentType = "AllPT";
-        boolean loadFromSource = false;
 
         ArrayList<DW_SHBE_Collection> result;
         result = new ArrayList();
@@ -421,25 +420,9 @@ public class DW_SHBE_Handler {
         String[] filenames = getSHBEFilenamesAll();
         for (String filename : filenames) {
             System.out.println("Load SHBE data from " + filename + " ...");
-            File collectionDir = new File(
-                    DW_Files.getSwapSHBEDir(),
-                    filename);
-            DW_SHBE_CollectionHandler handler;
-            handler = new DW_SHBE_CollectionHandler(
-                    env,
-                    collectionDir);
             DW_SHBE_Collection SHBEData;
             SHBEData = new DW_SHBE_Collection(
-                    //this,
-                    handler.nextID,
-                    handler,
-                    dir,
-                    filename,
-                    paymentType,
-                    loadFromSource);
-//            Object[] SHBEData;
-//            SHBEData = loadInputData(dir, filename, handler, this);
-            //SHBEData = loadInputData(dir, filename);
+                    filename, paymentType);
             result.add(SHBEData);
             System.out.println("... loaded SHBE data from " + filename + ".");
         }
@@ -543,28 +526,39 @@ public class DW_SHBE_Handler {
         result = new HashMap<String, BigDecimal>();
         TreeMap<String, DW_SHBE_Record> recs;
         recs = SHBE_Collection.getRecords();
-        //long totalIncome = 0;
-        BigDecimal totalIncome = BigDecimal.ZERO;
-        long totalIncomeGreaterThanZeroCount = 0;
-        BigDecimal totalWeeklyEligibleRentAmount = BigDecimal.ZERO;
-        //long totalWeeklyEligibleRentAmount = 0;
-        long totalWeeklyEligibleRentAmountGreaterThanZeroCount = 0;
         int nTT = getNumberOfTenancyTypes();
-        //long[] totalIncomeByTT;
-        BigDecimal[] totalIncomeByTT;
-        totalIncomeByTT = new BigDecimal[nTT];
-        //long[] totalIncomeByTTGreaterThanZeroCount;
-        long[] totalIncomeByTTGreaterThanZeroCount;
-        totalIncomeByTTGreaterThanZeroCount = new long[nTT];
-        BigDecimal[] totalByTTWeeklyEligibleRentAmount;
-        totalByTTWeeklyEligibleRentAmount = new BigDecimal[nTT];
-        int[] totalByTTWeeklyEligibleRentAmountGreaterThanZeroCount;
-        totalByTTWeeklyEligibleRentAmountGreaterThanZeroCount = new int[nTT];
+        // All
+        BigDecimal AllTotalIncome = BigDecimal.ZERO;
+        long AllTotalCount_IncomeNonZero = 0;
+        long AllTotalCount_IncomeZero = 0;
+        BigDecimal AllTotalWeeklyEligibleRentAmount = BigDecimal.ZERO;
+        long AllTotalCount_WeeklyEligibleRentAmountNonZero = 0;
+        BigDecimal[] AllTotalIncomeByTT;
+        AllTotalIncomeByTT = new BigDecimal[nTT];
+        long[] AllTotalCount_IncomeByTTNonZero;
+        AllTotalCount_IncomeByTTNonZero = new long[nTT];
+        BigDecimal[] AllTotalByTTWeeklyEligibleRentAmount;
+        AllTotalByTTWeeklyEligibleRentAmount = new BigDecimal[nTT];
+        int[] AllTotalCount_ByTTWeeklyEligibleRentAmountNonZero;
+        AllTotalCount_ByTTWeeklyEligibleRentAmountNonZero = new int[nTT];
+        // HB
+        BigDecimal HBTotalIncome = BigDecimal.ZERO;
+        long HBTotalCount_IncomeNonZero = 0;
+        long HBTotalCount_IncomeZero = 0;
+        BigDecimal HBTotalWeeklyEligibleRentAmount = BigDecimal.ZERO;
+        long HBTotalCount_WeeklyEligibleRentAmountNonZero = 0;
+        // CTB
+        BigDecimal CTBTotalIncome = BigDecimal.ZERO;
+        long CTBTotalCount_IncomeNonZero = 0;
+        long CTBTotalCount_IncomeZero = 0;
+        BigDecimal CTBTotalWeeklyEligibleRentAmount = BigDecimal.ZERO;
+        long CTBTotalCount_WeeklyEligibleRentAmountNonZero = 0;
         for (int i = 0; i < nTT; i++) {
-            totalIncomeByTT[i] = BigDecimal.ZERO;
-            totalIncomeByTTGreaterThanZeroCount[i] = 0;
-            totalByTTWeeklyEligibleRentAmount[i] = BigDecimal.ZERO;
-            totalByTTWeeklyEligibleRentAmountGreaterThanZeroCount[i] = 0;
+            //All
+            AllTotalIncomeByTT[i] = BigDecimal.ZERO;
+            AllTotalCount_IncomeByTTNonZero[i] = 0;
+            AllTotalByTTWeeklyEligibleRentAmount[i] = BigDecimal.ZERO;
+            AllTotalCount_ByTTWeeklyEligibleRentAmountNonZero[i] = 0;
         }
         Iterator<String> ite;
         if (doUnderOccupancy) {
@@ -583,20 +577,34 @@ public class DW_SHBE_Handler {
                     TT = aDRecord.getTenancyType();
                     BigDecimal income;
                     income = BigDecimal.valueOf(getClaimantsAndPartnersIncomeTotal(aDRecord));
-                    //totalIncome += income;
-                    totalIncome = totalIncome.add(income);
-                    totalIncomeByTT[TT] = totalIncomeByTT[TT].add(income);
+                    // All
+                    AllTotalIncome = AllTotalIncome.add(income);
+                    AllTotalIncomeByTT[TT] = AllTotalIncomeByTT[TT].add(income);
                     if (income.compareTo(BigDecimal.ZERO) == 1) {
-                        totalIncomeGreaterThanZeroCount++;
-                        totalIncomeByTTGreaterThanZeroCount[TT]++;
+                        AllTotalCount_IncomeNonZero++;
+                        AllTotalCount_IncomeByTTNonZero[TT]++;
+                    } else {
+                        AllTotalCount_IncomeZero++;
                     }
-                    BigDecimal weeklyEligibleRentAmount;
-                    weeklyEligibleRentAmount = BigDecimal.valueOf(aDRecord.getWeeklyEligibleRentAmount());
-                    totalWeeklyEligibleRentAmount = totalWeeklyEligibleRentAmount.add(weeklyEligibleRentAmount);
-                    totalByTTWeeklyEligibleRentAmount[TT] = totalByTTWeeklyEligibleRentAmount[TT].add(weeklyEligibleRentAmount);
-                    if (weeklyEligibleRentAmount.compareTo(BigDecimal.ZERO) == 1) {
-                        totalWeeklyEligibleRentAmountGreaterThanZeroCount++;
-                        totalByTTWeeklyEligibleRentAmountGreaterThanZeroCount[TT]++;
+                    BigDecimal a;
+                    a = BigDecimal.valueOf(aDRecord.getWeeklyEligibleRentAmount());
+                    AllTotalWeeklyEligibleRentAmount = AllTotalWeeklyEligibleRentAmount.add(a);
+                    AllTotalByTTWeeklyEligibleRentAmount[TT] = AllTotalByTTWeeklyEligibleRentAmount[TT].add(a);
+                    if (a.compareTo(BigDecimal.ZERO) == 1) {
+                        AllTotalCount_WeeklyEligibleRentAmountNonZero++;
+                        AllTotalCount_ByTTWeeklyEligibleRentAmountNonZero[TT]++;
+                    }
+                    // HB
+                    if (TT == 1 || TT == 2 || TT == 3 || TT == 4 || TT == 6 || TT == 8 || TT == 9) {
+                        HBTotalIncome = HBTotalIncome.add(income);
+                        a = BigDecimal.valueOf(aDRecord.getWeeklyEligibleRentAmount());
+                        HBTotalWeeklyEligibleRentAmount = HBTotalWeeklyEligibleRentAmount.add(a);
+                    }
+                    // CTB
+                    if (TT == 5 || TT == 7) {
+                        CTBTotalIncome = CTBTotalIncome.add(income);
+                        a = BigDecimal.valueOf(aDRecord.getWeeklyEligibleRentAmount());
+                        CTBTotalWeeklyEligibleRentAmount = CTBTotalWeeklyEligibleRentAmount.add(a);
                     }
                 }
             }
@@ -613,40 +621,55 @@ public class DW_SHBE_Handler {
                 TT = aDRecord.getTenancyType();
                 BigDecimal income;
                 income = BigDecimal.valueOf(getClaimantsAndPartnersIncomeTotal(aDRecord));
-                //totalIncome += income;
-                totalIncome = totalIncome.add(income);
-                totalIncomeByTT[TT] = totalIncomeByTT[TT].add(income);
+                // All
+                AllTotalIncome = AllTotalIncome.add(income);
+                AllTotalIncomeByTT[TT] = AllTotalIncomeByTT[TT].add(income);
                 if (income.compareTo(BigDecimal.ZERO) == 1) {
-                    totalIncomeGreaterThanZeroCount++;
-                    totalIncomeByTTGreaterThanZeroCount[TT]++;
+                    AllTotalCount_IncomeNonZero++;
+                    AllTotalCount_IncomeByTTNonZero[TT]++;
+                } else {
+                    AllTotalCount_IncomeZero++;
                 }
-                BigDecimal weeklyEligibleRentAmount;
-                weeklyEligibleRentAmount = BigDecimal.valueOf(aDRecord.getWeeklyEligibleRentAmount());
-                totalWeeklyEligibleRentAmount = totalWeeklyEligibleRentAmount.add(weeklyEligibleRentAmount);
-                totalByTTWeeklyEligibleRentAmount[TT] = totalByTTWeeklyEligibleRentAmount[TT].add(weeklyEligibleRentAmount);
-                if (weeklyEligibleRentAmount.compareTo(BigDecimal.ZERO) == 1) {
-                    totalWeeklyEligibleRentAmountGreaterThanZeroCount++;
-                    totalByTTWeeklyEligibleRentAmountGreaterThanZeroCount[TT]++;
+                BigDecimal a;
+                a = BigDecimal.valueOf(aDRecord.getWeeklyEligibleRentAmount());
+                AllTotalWeeklyEligibleRentAmount = AllTotalWeeklyEligibleRentAmount.add(a);
+                AllTotalByTTWeeklyEligibleRentAmount[TT] = AllTotalByTTWeeklyEligibleRentAmount[TT].add(a);
+                if (a.compareTo(BigDecimal.ZERO) == 1) {
+                    AllTotalCount_WeeklyEligibleRentAmountNonZero++;
+                    AllTotalCount_ByTTWeeklyEligibleRentAmountNonZero[TT]++;
+                }
+                // HB
+                if (TT == 1 || TT == 2 || TT == 3 || TT == 4 || TT == 6 || TT == 8 || TT == 9) {
+                    HBTotalIncome = HBTotalIncome.add(income);
+                    a = BigDecimal.valueOf(aDRecord.getWeeklyEligibleRentAmount());
+                    HBTotalWeeklyEligibleRentAmount = HBTotalWeeklyEligibleRentAmount.add(a);
+                }
+                // CTB
+                if (TT == 5 || TT == 7) {
+                    CTBTotalIncome = CTBTotalIncome.add(income);
+                    a = BigDecimal.valueOf(aDRecord.getWeeklyEligibleRentAmount());
+                    CTBTotalWeeklyEligibleRentAmount = CTBTotalWeeklyEligibleRentAmount.add(a);
                 }
             }
         }
-//        //BigDecimal totalIncomeBD;
-//        totalIncomeBD = BigDecimal.valueOf(totalIncome);
-        BigDecimal totalIncomeGreaterThanZeroCountBD;
-        totalIncomeGreaterThanZeroCountBD = BigDecimal.valueOf(totalIncomeGreaterThanZeroCount);
-//        BigDecimal totalWeeklyEligibleRentAmountBD;
-//        totalWeeklyEligibleRentAmountBD = BigDecimal.valueOf(totalWeeklyEligibleRentAmount);
-        BigDecimal totalWeeklyEligibleRentAmountGreaterThanZeroCountBD;
-        totalWeeklyEligibleRentAmountGreaterThanZeroCountBD = BigDecimal.valueOf(
-                totalWeeklyEligibleRentAmountGreaterThanZeroCount);
-        result.put(Summary.sAllTotalIncome, totalIncome);
-        result.put(Summary.sAllTotalCountIncomeNonZero,
-                totalIncomeGreaterThanZeroCountBD);
-        if (totalIncomeGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
+        // All
+        BigDecimal AllTotalCount_IncomeNonZeroBD;
+        AllTotalCount_IncomeNonZeroBD = BigDecimal.valueOf(AllTotalCount_IncomeNonZero);
+        BigDecimal AllTotalCount_IncomeZeroBD;
+        AllTotalCount_IncomeZeroBD = BigDecimal.valueOf(AllTotalCount_IncomeZero);
+        BigDecimal AllTotalCount_WeeklyEligibleRentAmountNonZeroBD;
+        AllTotalCount_WeeklyEligibleRentAmountNonZeroBD = BigDecimal.valueOf(
+                AllTotalCount_WeeklyEligibleRentAmountNonZero);
+        result.put(Summary.sAllTotalIncome, AllTotalIncome);
+        result.put(Summary.sAllTotalCount_IncomeNonZero,
+                AllTotalCount_IncomeNonZeroBD);
+        result.put(Summary.sAllTotalCount_IncomeZero,
+                AllTotalCount_IncomeZeroBD);
+        if (AllTotalCount_IncomeNonZeroBD.compareTo(BigDecimal.ZERO) == 1) {
             result.put(
                     Summary.sAllAverageIncome,
                     Generic_BigDecimal.divideRoundIfNecessary(
-                            totalIncome, totalIncomeGreaterThanZeroCountBD,
+                            AllTotalIncome, AllTotalCount_IncomeNonZeroBD,
                             2, RoundingMode.HALF_UP));
         } else {
             result.put(
@@ -654,34 +677,102 @@ public class DW_SHBE_Handler {
                     BigDecimal.ZERO);
         }
         result.put(Summary.sAllTotalWeeklyEligibleRentAmount,
-                totalWeeklyEligibleRentAmount);
+                AllTotalWeeklyEligibleRentAmount);
         result.put(Summary.sAllTotalCountWeeklyEligibleRentAmountNonZero,
-                totalWeeklyEligibleRentAmountGreaterThanZeroCountBD);
-        if (totalWeeklyEligibleRentAmountGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
+                AllTotalCount_WeeklyEligibleRentAmountNonZeroBD);
+        if (AllTotalCount_WeeklyEligibleRentAmountNonZeroBD.compareTo(BigDecimal.ZERO) == 1) {
             result.put(
                     Summary.sAllAverageWeeklyEligibleRentAmount,
                     Generic_BigDecimal.divideRoundIfNecessary(
-                            totalWeeklyEligibleRentAmount,
-                            totalWeeklyEligibleRentAmountGreaterThanZeroCountBD,
+                            AllTotalWeeklyEligibleRentAmount,
+                            AllTotalCount_WeeklyEligibleRentAmountNonZeroBD,
+                            2, RoundingMode.HALF_UP));
+        }
+        // HB
+        BigDecimal HBTotalCount_IncomeNonZeroBD;
+        HBTotalCount_IncomeNonZeroBD = BigDecimal.valueOf(HBTotalCount_IncomeNonZero);
+        BigDecimal HBTotalCount_IncomeZeroBD;
+        HBTotalCount_IncomeZeroBD = BigDecimal.valueOf(HBTotalCount_IncomeZero);
+        BigDecimal HBTotalCount_WeeklyEligibleRentAmountNonZeroBD;
+        HBTotalCount_WeeklyEligibleRentAmountNonZeroBD = BigDecimal.valueOf(
+                HBTotalCount_WeeklyEligibleRentAmountNonZero);
+        result.put(Summary.sHBTotalIncome, HBTotalIncome);
+        result.put(Summary.sHBTotalCount_IncomeNonZero,
+                HBTotalCount_IncomeNonZeroBD);
+        result.put(Summary.sHBTotalCount_IncomeZero,
+                HBTotalCount_IncomeZeroBD);
+        if (HBTotalCount_IncomeNonZeroBD.compareTo(BigDecimal.ZERO) == 1) {
+            result.put(
+                    Summary.sHBAverageIncome,
+                    Generic_BigDecimal.divideRoundIfNecessary(
+                            HBTotalIncome, HBTotalCount_IncomeNonZeroBD,
                             2, RoundingMode.HALF_UP));
         } else {
             result.put(
-                    Summary.sAllAverageWeeklyEligibleRentAmount,
+                    Summary.sHBAverageIncome,
                     BigDecimal.ZERO);
+        }
+        result.put(Summary.sHBTotalWeeklyEligibleRentAmount,
+                HBTotalWeeklyEligibleRentAmount);
+        result.put(Summary.sHBTotalCountWeeklyEligibleRentAmountNonZero,
+                HBTotalCount_WeeklyEligibleRentAmountNonZeroBD);
+        if (HBTotalCount_WeeklyEligibleRentAmountNonZeroBD.compareTo(BigDecimal.ZERO) == 1) {
+            result.put(
+                    Summary.sHBAverageWeeklyEligibleRentAmount,
+                    Generic_BigDecimal.divideRoundIfNecessary(
+                            HBTotalWeeklyEligibleRentAmount,
+                            HBTotalCount_WeeklyEligibleRentAmountNonZeroBD,
+                            2, RoundingMode.HALF_UP));
+        }
+        // CTB
+        BigDecimal CTBTotalCount_IncomeNonZeroBD;
+        CTBTotalCount_IncomeNonZeroBD = BigDecimal.valueOf(CTBTotalCount_IncomeNonZero);
+        BigDecimal CTBTotalCount_IncomeZeroBD;
+        CTBTotalCount_IncomeZeroBD = BigDecimal.valueOf(CTBTotalCount_IncomeZero);
+        BigDecimal CTBTotalCount_WeeklyEligibleRentAmountNonZeroBD;
+        CTBTotalCount_WeeklyEligibleRentAmountNonZeroBD = BigDecimal.valueOf(
+                CTBTotalCount_WeeklyEligibleRentAmountNonZero);
+        result.put(Summary.sCTBTotalIncome, CTBTotalIncome);
+        result.put(Summary.sCTBTotalCount_IncomeNonZero,
+                CTBTotalCount_IncomeNonZeroBD);
+        result.put(Summary.sCTBTotalCount_IncomeZero,
+                CTBTotalCount_IncomeZeroBD);
+        if (CTBTotalCount_IncomeNonZeroBD.compareTo(BigDecimal.ZERO) == 1) {
+            result.put(
+                    Summary.sCTBAverageIncome,
+                    Generic_BigDecimal.divideRoundIfNecessary(
+                            CTBTotalIncome, CTBTotalCount_IncomeNonZeroBD,
+                            2, RoundingMode.HALF_UP));
+        } else {
+            result.put(
+                    Summary.sCTBAverageIncome,
+                    BigDecimal.ZERO);
+        }
+        result.put(Summary.sCTBTotalWeeklyEligibleRentAmount,
+                CTBTotalWeeklyEligibleRentAmount);
+        result.put(Summary.sCTBTotalCountWeeklyEligibleRentAmountNonZero,
+                CTBTotalCount_WeeklyEligibleRentAmountNonZeroBD);
+        if (CTBTotalCount_WeeklyEligibleRentAmountNonZeroBD.compareTo(BigDecimal.ZERO) == 1) {
+            result.put(
+                    Summary.sCTBAverageWeeklyEligibleRentAmount,
+                    Generic_BigDecimal.divideRoundIfNecessary(
+                            CTBTotalWeeklyEligibleRentAmount,
+                            CTBTotalCount_WeeklyEligibleRentAmountNonZeroBD,
+                            2, RoundingMode.HALF_UP));
         }
         for (int i = 0; i < nTT; i++) {
             // Income
             result.put(Summary.sAllTotalIncomeTT[i],
-                    totalIncomeByTT[i]);
+                    AllTotalIncomeByTT[i]);
             BigDecimal totalIncomeByTTGreaterThanZeroCountBD;
             totalIncomeByTTGreaterThanZeroCountBD = BigDecimal.valueOf(
-                    totalIncomeByTTGreaterThanZeroCount[i]);
+                    AllTotalCount_IncomeByTTNonZero[i]);
             result.put(Summary.sAllTotalCountIncomeNonZeroTT[i],
                     totalIncomeByTTGreaterThanZeroCountBD);
             if (totalIncomeByTTGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
                 result.put(Summary.sAllAverageIncomeTT[i],
                         Generic_BigDecimal.divideRoundIfNecessary(
-                                totalIncomeByTT[i],
+                                AllTotalIncomeByTT[i],
                                 totalIncomeByTTGreaterThanZeroCountBD,
                                 2, RoundingMode.HALF_UP));
             } else {
@@ -690,16 +781,16 @@ public class DW_SHBE_Handler {
             }
             // Rent
             result.put(Summary.sAllTotalWeeklyEligibleRentAmountTT[i],
-                    totalByTTWeeklyEligibleRentAmount[i]);
+                    AllTotalByTTWeeklyEligibleRentAmount[i]);
             BigDecimal totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD;
             totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD = BigDecimal.valueOf(
-                    totalByTTWeeklyEligibleRentAmountGreaterThanZeroCount[i]);
+                    AllTotalCount_ByTTWeeklyEligibleRentAmountNonZero[i]);
             result.put(Summary.sAllTotalCountWeeklyEligibleRentAmountNonZeroTT[i],
                     totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD);
             if (totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
                 result.put(Summary.sAllAverageWeeklyEligibleRentAmountTT[i],
                         Generic_BigDecimal.divideRoundIfNecessary(
-                                totalByTTWeeklyEligibleRentAmount[i],
+                                AllTotalByTTWeeklyEligibleRentAmount[i],
                                 totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD,
                                 2, RoundingMode.HALF_UP));
             } else {
@@ -1264,6 +1355,7 @@ public class DW_SHBE_Handler {
         long result;
         result = 1;
         result += D_Record.getPartnerFlag();
+        //result += D_Record.getNumberOfChildDependents();
         result += D_Record.getNumberOfChildDependents();
         long NumberOfNonDependents;
         NumberOfNonDependents = D_Record.getNumberOfNonDependents();
@@ -1881,7 +1973,7 @@ public class DW_SHBE_Handler {
         }
         return result;
     }
-    
+
     public static HashMap<String, DW_ID> getNINOToDW_IDLookup(
             File f) {
         if (NINOToDW_IDLookup == null) {
@@ -1889,12 +1981,12 @@ public class DW_SHBE_Handler {
         }
         return NINOToDW_IDLookup;
     }
-    
+
     public static HashMap<String, DW_ID> getNINOToDW_IDLookup() {
         return getNINOToDW_IDLookup(getNINOToDW_IDLookupFile());
     }
-    
-   public static HashMap<String, DW_ID> getDOBToDW_IDLookup(
+
+    public static HashMap<String, DW_ID> getDOBToDW_IDLookup(
             File f) {
         if (DOBToDW_IDLookup == null) {
             DOBToDW_IDLookup = getStringToDW_IDLookup(f);
@@ -1902,10 +1994,10 @@ public class DW_SHBE_Handler {
         return DOBToDW_IDLookup;
     }
 
-     public static HashMap<String, DW_ID> getDOBToDW_IDLookup() {
+    public static HashMap<String, DW_ID> getDOBToDW_IDLookup() {
         return getDOBToDW_IDLookup(getDOBToDW_IDLookupFile());
     }
-    
+
     public static HashMap<DW_ID, String> getDW_IDToNINOLookup(
             File f) {
         if (DW_IDToNINOLookup == null) {
@@ -1929,8 +2021,8 @@ public class DW_SHBE_Handler {
     public static HashMap<DW_ID, String> getDW_IDToDOBLookup() {
         return getDW_IDToStringLookup(getDW_IDToDOBLookupFile());
     }
-    
-     public static HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup(
+
+    public static HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup(
             File f) {
         if (PostcodeToPostcodeIDLookup == null) {
             PostcodeToPostcodeIDLookup = getStringToDW_IDLookup(f);
@@ -1938,9 +2030,9 @@ public class DW_SHBE_Handler {
         return PostcodeToPostcodeIDLookup;
     }
 
-     public static HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup(){
-         return getPostcodeToPostcodeIDLookup(getPostcodeToPostcodeIDLookupFile());
-     }
+    public static HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup() {
+        return getPostcodeToPostcodeIDLookup(getPostcodeToPostcodeIDLookupFile());
+    }
 
     public static HashMap<DW_ID, String> getPostcodeIDToPostcodeLookup(
             File f) {
@@ -1971,7 +2063,7 @@ public class DW_SHBE_Handler {
     public static HashMap<DW_PersonID, DW_ID> getDW_PersonIDToDW_IDLookup() {
         return DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(getDW_PersonIDToDW_IDLookupFile());
     }
-    
+
     public static HashMap<DW_ID, DW_PersonID> getDW_IDToDW_PersonIDLookup(
             File f) {
         if (DW_IDToDW_PersonIDLookup == null) {
@@ -2023,7 +2115,7 @@ public class DW_SHBE_Handler {
                 filename);
         return result;
     }
-    
+
     public static File getDW_IDToNINOLookupFile() {
         File result;
         String filename = "IDToNINO_HashMap_DW_ID__String.thisFile";
@@ -2041,7 +2133,7 @@ public class DW_SHBE_Handler {
                 filename);
         return result;
     }
-    
+
     public static File getDW_PersonIDToDW_IDLookupFile() {
         File result;
         String filename = "PersonIDToID_HashMap_DW_PersonID__DW_ID.thisFile";
@@ -2357,7 +2449,7 @@ public class DW_SHBE_Handler {
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
-            
+
     /**
      * @param paymentType
      * @param filename
@@ -2606,29 +2698,26 @@ public class DW_SHBE_Handler {
             DW_SHBE_CollectionHandler handler,
             File directory,
             String filename,
-            String paymentType,
-            boolean loadFromSource) {
+            String paymentType) {
         DW_SHBE_Collection result;
         result = new DW_SHBE_Collection(
-                //this,
                 handler.nextID,
                 handler,
                 directory,
                 filename,
-                paymentType,
-                loadFromSource);
-        Generic_StaticIO.writeObject(
-                DW_PersonIDToDW_IDLookup,
-                getDW_PersonIDToDW_IDLookupFile());
-        Generic_StaticIO.writeObject(
-                DW_IDToDW_PersonIDLookup,
-                getDW_IDToDW_PersonIDLookupFile());
-        Generic_StaticIO.writeObject(
-                PostcodeToPostcodeIDLookup,
-                getPostcodeToPostcodeIDLookupFile());
-        Generic_StaticIO.writeObject(
-                PostcodeIDToPostcodeLookup,
-                getPostcodeIDToPostcodeLookupFile());
+                paymentType);
+//        Generic_StaticIO.writeObject(
+//                DW_PersonIDToDW_IDLookup,
+//                getDW_PersonIDToDW_IDLookupFile());
+//        Generic_StaticIO.writeObject(
+//                DW_IDToDW_PersonIDLookup,
+//                getDW_IDToDW_PersonIDLookupFile());
+//        Generic_StaticIO.writeObject(
+//                PostcodeToPostcodeIDLookup,
+//                getPostcodeToPostcodeIDLookupFile());
+//        Generic_StaticIO.writeObject(
+//                PostcodeIDToPostcodeLookup,
+//                getPostcodeIDToPostcodeLookupFile());
         return result;
     }
 }

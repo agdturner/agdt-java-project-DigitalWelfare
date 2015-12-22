@@ -399,12 +399,9 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                         }
                         underOccupiedSet0 = underOccupiedSets0.get(yM0);
                         if (underOccupiedSet0 != null) {
-                            SHBEData0 = tDW_SHBE_Handler.loadInputData(
-                                    collectionHandler,
-                                    DW_Files.getInputSHBEDir(),
+                            SHBEData0 = new DW_SHBE_Collection(
                                     SHBEFilenames[i],
-                                    inPaymentType,
-                                    false);
+                                    inPaymentType);
                             Grid2DSquareCellDouble g0 = doDensity(
                                     dirOut,
                                     yM0,
@@ -416,12 +413,9 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                                     scaleToFirst);
                         }
                     } else {
-                        SHBEData0 = tDW_SHBE_Handler.loadInputData(
-                                collectionHandler,
-                                DW_Files.getInputSHBEDir(),
-                                SHBEFilenames[i],
-                                inPaymentType,
-                                false);
+                        SHBEData0 = new DW_SHBE_Collection(
+                                    SHBEFilenames[i],
+                                    inPaymentType);
                         Grid2DSquareCellDouble g0 = doDensity(
                                 dirOut,
                                 yM0,
@@ -522,12 +516,9 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                 }
             }
             DW_SHBE_Collection SHBEData0;
-            SHBEData0 = tDW_SHBE_Handler.loadInputData(
-                    collectionHandler,
-                    DW_Files.getInputSHBEDir(),
-                    SHBEFilenames[i],
-                    inPaymentType,
-                    false);
+            SHBEData0 = new DW_SHBE_Collection(
+                                    SHBEFilenames[i],
+                                    inPaymentType);
             DW_SHBE_Collection SHBEData00;
             SHBEData00 = SHBEData0;
             String yM300;
@@ -546,12 +537,9 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
             while (ite.hasNext()) {
                 i = ite.next();
                 DW_SHBE_Collection SHBEData1;
-                SHBEData1 = tDW_SHBE_Handler.loadInputData(
-                        collectionHandler,
-                        DW_Files.getInputSHBEDir(),
-                        SHBEFilenames[i],
-                        inPaymentType,
-                        false);
+                SHBEData1 = new DW_SHBE_Collection(
+                                    SHBEFilenames[i],
+                                    inPaymentType);
                 String yM31;
                 yM31 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                 // Init underOccupiedSets

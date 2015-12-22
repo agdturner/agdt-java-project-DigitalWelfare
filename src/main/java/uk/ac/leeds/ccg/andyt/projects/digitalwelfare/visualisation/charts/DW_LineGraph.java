@@ -1259,10 +1259,39 @@ public class DW_LineGraph extends Generic_LineGraph {
         selectionName = "CTBOnly";
         if (doUnderOccupancy) {
             if (sameTenancyType) {
+                CTBOnlySelection.add("5 - 5UO");
+                CTBOnlySelection.add("5UO - 5");
+                CTBOnlySelection.add("5UO - 5UO");
                 CTBOnlySelection.add("7 - 7UO");
                 CTBOnlySelection.add("7UO - 7");
                 CTBOnlySelection.add("7UO - 7UO");
             }
+            // 5
+            CTBOnlySelection.add("5UO - 1");
+            CTBOnlySelection.add("5 - 1UO");
+            CTBOnlySelection.add("5UO - 1UO");
+            CTBOnlySelection.add("5UO - 2");
+            CTBOnlySelection.add("5 - 2UO");
+            CTBOnlySelection.add("5UO - 2UO");
+            CTBOnlySelection.add("5UO - 3");
+            CTBOnlySelection.add("5 - 3UO");
+            CTBOnlySelection.add("5UO - 3UO");
+            CTBOnlySelection.add("5UO - 4");
+            CTBOnlySelection.add("5 - 4UO");
+            CTBOnlySelection.add("5UO - 4UO");
+            CTBOnlySelection.add("5UO - 6");
+            CTBOnlySelection.add("5 - 6UO");
+            CTBOnlySelection.add("5UO - 6UO");
+            CTBOnlySelection.add("5UO - 7");
+            CTBOnlySelection.add("5 - 7UO");
+            CTBOnlySelection.add("5UO - 7UO");
+            CTBOnlySelection.add("5UO - 8");
+            CTBOnlySelection.add("5 - 8UO");
+            CTBOnlySelection.add("5UO - 8UO");
+            CTBOnlySelection.add("5UO - 9");
+            CTBOnlySelection.add("5 - 9UO");
+            CTBOnlySelection.add("5UO - 9UO");
+            // 7
             CTBOnlySelection.add("7UO - 1");
             CTBOnlySelection.add("7 - 1UO");
             CTBOnlySelection.add("7UO - 1UO");
@@ -1288,6 +1317,12 @@ public class DW_LineGraph extends Generic_LineGraph {
             CTBOnlySelection.add("7 - 9UO");
             CTBOnlySelection.add("7UO - 9UO");
             if (do999) {
+                CTBOnlySelection.add("5UO - -999");
+                CTBOnlySelection.add("-999 - 5UO");
+                CTBOnlySelection.add("5 - -999UO");
+                CTBOnlySelection.add("-999UO - 5");
+                CTBOnlySelection.add("5UO - -999UO");
+                CTBOnlySelection.add("-999UO - 5UO");
                 CTBOnlySelection.add("7UO - -999");
                 CTBOnlySelection.add("-999 - 7UO");
                 CTBOnlySelection.add("7 - -999UO");
@@ -1297,8 +1332,19 @@ public class DW_LineGraph extends Generic_LineGraph {
             }
         } else {
             if (sameTenancyType) {
+                CTBOnlySelection.add("5 - 5");
                 CTBOnlySelection.add("7 - 7");
             }
+            // 5
+            CTBOnlySelection.add("7 - 1");
+            CTBOnlySelection.add("7 - 2");
+            CTBOnlySelection.add("7 - 3");
+            CTBOnlySelection.add("7 - 4");
+            CTBOnlySelection.add("7 - 5");
+            CTBOnlySelection.add("7 - 6");
+            CTBOnlySelection.add("7 - 8");
+            CTBOnlySelection.add("7 - 9");
+            // 7
             CTBOnlySelection.add("7 - 1");
             CTBOnlySelection.add("7 - 2");
             CTBOnlySelection.add("7 - 3");
@@ -1448,14 +1494,17 @@ public class DW_LineGraph extends Generic_LineGraph {
         if (doUnderOccupancy) {
             if (sameTenancyType) {
                 selection.add("1 - 1UO");
+                selection.add("1UO - 1");
                 selection.add("1UO - 1UO");
-                selection.add("1UO - 1UO");
-                selection.add("2 - 2UO");
-                selection.add("2UO - 2UO");
-                selection.add("2UO - 2UO");
+//                selection.add("2 - 2UO");
+//                selection.add("2UO - 2");
+//                selection.add("2UO - 2UO");
                 selection.add("3 - 3UO");
+                selection.add("3UO - 3");
                 selection.add("3UO - 3UO");
-                selection.add("3UO - 3UO");
+                selection.add("4 - 4UO");
+                selection.add("4UO - 4");
+                selection.add("4UO - 4UO");
             }
             selection.add("1 - 3UO");
             selection.add("1UO - 3");

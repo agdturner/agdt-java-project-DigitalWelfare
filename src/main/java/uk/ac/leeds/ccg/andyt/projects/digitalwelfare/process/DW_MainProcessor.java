@@ -69,31 +69,31 @@ public class DW_MainProcessor {
 //        DW_SHBE_Handler aDW_SHBE_Handler;
 //        aDW_SHBE_Handler = new DW_SHBE_Handler(env);
 //        aDW_SHBE_Handler.run();
-//        aDW_SHBE_Handler.runNew();
+//////        aDW_SHBE_Handler.runNew();
         
         DW_DataProcessor_LCC aDW_DataProcessor_LCC;
         aDW_DataProcessor_LCC = new DW_DataProcessor_LCC(env);
         aDW_DataProcessor_LCC.run();
-
-//        DW_ChoroplethMaps_LCC aDW_ChoroplethMaps_LCC;
-//        aDW_ChoroplethMaps_LCC = new DW_ChoroplethMaps_LCC();
-//        aDW_ChoroplethMaps_LCC.run();
-
-        DW_LineMaps_LCC aDW_LineMaps_LCC;
-        aDW_LineMaps_LCC = new DW_LineMaps_LCC();
-        aDW_LineMaps_LCC.run();
-
-//        DW_Report aDW_Report;
-//        aDW_Report = new DW_Report();
-//        aDW_Report.run();
-
-        DW_LineGraph aDW_LineGraph;
-        aDW_LineGraph = new DW_LineGraph();
-        aDW_LineGraph.run(args);
-
-        DW_DensityMaps_LCC aDW_DensityMaps_LCC;
-        aDW_DensityMaps_LCC = new DW_DensityMaps_LCC(env);
-        aDW_DensityMaps_LCC.run();
+//
+////        DW_ChoroplethMaps_LCC aDW_ChoroplethMaps_LCC;
+////        aDW_ChoroplethMaps_LCC = new DW_ChoroplethMaps_LCC();
+////        aDW_ChoroplethMaps_LCC.run();
+//
+//        DW_LineMaps_LCC aDW_LineMaps_LCC;
+//        aDW_LineMaps_LCC = new DW_LineMaps_LCC();
+//        aDW_LineMaps_LCC.run();
+//
+////        DW_Report aDW_Report;
+////        aDW_Report = new DW_Report();
+////        aDW_Report.run();
+//
+//        DW_LineGraph aDW_LineGraph;
+//        aDW_LineGraph = new DW_LineGraph();
+//        aDW_LineGraph.run(args);
+//
+//        DW_DensityMaps_LCC aDW_DensityMaps_LCC;
+//        aDW_DensityMaps_LCC = new DW_DensityMaps_LCC(env);
+//        aDW_DensityMaps_LCC.run();
         
 //        DW_LineDensityMaps_LCC aDW_LineDensityMaps_LCC;
 //        aDW_LineDensityMaps_LCC = new DW_LineDensityMaps_LCC();
