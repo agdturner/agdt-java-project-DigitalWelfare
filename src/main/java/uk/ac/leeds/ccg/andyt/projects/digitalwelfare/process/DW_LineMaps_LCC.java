@@ -87,6 +87,34 @@ public class DW_LineMaps_LCC extends DW_Maps {
         }
     }
 
+    protected static HashMap<Boolean, ArrayList<ArrayList<String>>> getAllTenancyTypeChangesSocialGrouped() {
+        HashMap<Boolean, ArrayList<ArrayList<String>>> result;
+        result = new HashMap<Boolean, ArrayList<ArrayList<String>>>();
+        boolean doUnderOccupancy;
+        ArrayList<ArrayList<String>> attc;
+        doUnderOccupancy = true;
+        attc = getAllTenancyTypeChangesSocialGrouped(doUnderOccupancy);
+        result.put(doUnderOccupancy, attc);
+        doUnderOccupancy = false;
+        attc = getAllTenancyTypeChangesSocialGrouped(doUnderOccupancy);
+        result.put(doUnderOccupancy, attc);
+        return result;
+    }
+            
+    protected static HashMap<Boolean, ArrayList<ArrayList<String>>> getAllTenancyTypeChangesSocial() {
+        HashMap<Boolean, ArrayList<ArrayList<String>>> result;
+        result = new HashMap<Boolean, ArrayList<ArrayList<String>>>();
+        boolean doUnderOccupancy;
+        ArrayList<ArrayList<String>> attc;
+        doUnderOccupancy = true;
+        attc = getAllTenancyTypeChangesSocial(doUnderOccupancy);
+        result.put(doUnderOccupancy, attc);
+        doUnderOccupancy = false;
+        attc = getAllTenancyTypeChangesSocial(doUnderOccupancy);
+        result.put(doUnderOccupancy, attc);
+        return result;
+    }
+            
     protected static HashMap<Boolean, ArrayList<ArrayList<String>>> getAllTenancyTypeChanges() {
         HashMap<Boolean, ArrayList<ArrayList<String>>> result;
         result = new HashMap<Boolean, ArrayList<ArrayList<String>>>();
@@ -300,6 +328,53 @@ public class DW_LineMaps_LCC extends DW_Maps {
         result.add(tenancyTypeChanges);
         return result;
     }
+    
+    protected static ArrayList<ArrayList<String>> getAllTenancyTypeChangesSocialGrouped(
+            boolean doUnderOccupancy) {
+        ArrayList<ArrayList<String>> result;
+        result = new ArrayList<ArrayList<String>>();
+        ArrayList<String> tenancyTypeChanges;
+        tenancyTypeChanges = new ArrayList<String>();
+        if (doUnderOccupancy) {
+            tenancyTypeChanges.add("Regulated - RegulatedUO");
+            tenancyTypeChanges.add("RegulatedUO - Regulated");
+            tenancyTypeChanges.add("RegulatedUO - RegulatedUO");
+        } else {
+            tenancyTypeChanges.add("Regulated - Regulated");
+        }
+        result.add(tenancyTypeChanges);
+        return result;
+    }
+    
+    protected static ArrayList<ArrayList<String>> getAllTenancyTypeChangesSocial(
+            boolean doUnderOccupancy) {
+        ArrayList<ArrayList<String>> result;
+        result = new ArrayList<ArrayList<String>>();
+        ArrayList<String> tenancyTypeChanges;
+        tenancyTypeChanges = new ArrayList<String>();
+        if (doUnderOccupancy) {
+            // Social
+            tenancyTypeChanges.add("1UO - 1");
+            tenancyTypeChanges.add("1 - 1UO");
+            tenancyTypeChanges.add("1UO - 1UO");
+            tenancyTypeChanges.add("4UO - 4");
+            tenancyTypeChanges.add("4 - 4UO");
+            tenancyTypeChanges.add("4UO - 4UO");
+            tenancyTypeChanges.add("1 - 4UO");
+            tenancyTypeChanges.add("1UO - 4");
+            tenancyTypeChanges.add("1UO - 4UO");
+            tenancyTypeChanges.add("4 - 1UO");
+            tenancyTypeChanges.add("4UO - 1");
+            tenancyTypeChanges.add("4UO - 1UO");
+        } else {
+            tenancyTypeChanges.add("1 - 1");
+            tenancyTypeChanges.add("4 - 4");
+            tenancyTypeChanges.add("1 - 4");
+            tenancyTypeChanges.add("4 - 1");
+        }
+        result.add(tenancyTypeChanges);
+        return result;
+    }
 
     protected static ArrayList<ArrayList<String>> getAllTenancyTypeGroups(
             boolean doUnderOccupancy) {
@@ -434,6 +509,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("Regulated - RegulatedUO");
             tenancyTypeChanges.add("RegulatedUO - Regulated");
+            tenancyTypeChanges.add("RegulatedUO - RegulatedUO");
         } else {
             tenancyTypeChanges.add("Regulated - Regulated");
         }
@@ -442,6 +518,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("UnregulatedUO - Unregulated");
             tenancyTypeChanges.add("Unregulated - UnregulatedUO");
+            tenancyTypeChanges.add("UnregulatedUO - UnregulatedUO");
         } else {
             tenancyTypeChanges.add("Unregulated - Unregulated");
         }
@@ -697,6 +774,13 @@ public class DW_LineMaps_LCC extends DW_Maps {
         HashMap<Boolean, ArrayList<ArrayList<String>>> allTenancyTypeGroupsGrouped;
         allTenancyTypeGroupsGrouped = getAllTenancyTypeGroupsGrouped();
 
+        HashMap<Boolean, ArrayList<ArrayList<String>>> allTenancyTypeChangesSocial;
+        allTenancyTypeChangesSocial = getAllTenancyTypeChangesSocial();
+
+        HashMap<Boolean, ArrayList<ArrayList<String>>> allTenancyTypeChangesSocialGrouped;
+        allTenancyTypeChangesSocialGrouped = getAllTenancyTypeChangesSocialGrouped();
+
+                
         ArrayList<Boolean> b;
         b = new ArrayList<Boolean>();
         b.add(true);
@@ -716,7 +800,6 @@ public class DW_LineMaps_LCC extends DW_Maps {
 
                 TreeMap<String, ArrayList<String>> yM3s;
                 yM3s = getYM3s(include);
-
                 // Postcode And Tenancy Type
 //                if (true) {
                 if (false) {
@@ -885,14 +968,13 @@ public class DW_LineMaps_LCC extends DW_Maps {
                         }
                     }
                 }
-                if (true) {
-                    //if (false) {
-                    // Postcode Only Changes
+                // Postcode Only Changes (does not includes postcode changes between different TTs)
+//                if (true) {
+                if (false) {
                     Iterator<Boolean> iteb;
                     iteb = b.iterator();
                     boolean doUnderOccupancyData;
-                    doUnderOccupancyData = false;
-//                    while (iteb.hasNext()) {
+                    while (iteb.hasNext()) {
                         doUnderOccupancyData = iteb.next();
                         if (doUnderOccupancyData) {
                             boolean doCouncil;
@@ -1016,7 +1098,181 @@ public class DW_LineMaps_LCC extends DW_Maps {
                                 }
                             }
                         }
-//                    }
+                    }
+                }
+                // Postcode changes all (includes changes within the same TT and between TTs)
+                if (true) {
+//                if (false) {
+                    boolean doTenancyTypeAndPostcodeChange;
+                    Iterator<Boolean> iteb0;
+                    iteb0 = b.iterator();
+                    while (iteb0.hasNext()) {
+                        doTenancyTypeAndPostcodeChange = iteb0.next();
+                        Iterator<Boolean> iteb;
+                        iteb = b.iterator();
+                        while (iteb.hasNext()) {
+                            boolean doUnderOccupancyData;
+                            doUnderOccupancyData = iteb.next();
+                            if (doUnderOccupancyData) {
+                                boolean doCouncil;
+                                doCouncil = true;
+                                boolean doRSL;
+                                doRSL = true;
+                                Iterator<Boolean> iteb1;
+                                iteb1 = b.iterator();
+                                while (iteb1.hasNext()) {
+                                    boolean doCheckedPreviousTenure;
+                                    doCheckedPreviousTenure = iteb1.next();
+                                    Iterator<Boolean> iteb2;
+                                    iteb2 = b.iterator();
+                                    while (iteb2.hasNext()) {
+                                        boolean doCheckedPreviousPostcode;
+                                        doCheckedPreviousPostcode = iteb2.next();
+                                        Iterator<Boolean> iteb3;
+                                        iteb3 = b.iterator();
+                                        while (iteb3.hasNext()) {
+                                            boolean grouped;
+                                            grouped = iteb3.next();
+                                            if (grouped) {
+                                                postcodeMaps(
+                                                        paymentType,
+                                                        yM3s,
+                                                        includeName,
+                                                        include,
+                                                        allTenancyTypeChangesSocialGrouped.get(doUnderOccupancyData),
+                                                        true,
+                                                        doTenancyTypeAndPostcodeChange,
+                                                        doUnderOccupancyData,
+                                                        doCouncil,
+                                                        doRSL,
+                                                        doCheckedPreviousTenure,
+                                                        doCheckedPreviousPostcode,
+                                                        grouped);
+                                            } else {
+                                                postcodeMaps(
+                                                        paymentType,
+                                                        yM3s,
+                                                        includeName,
+                                                        include,
+                                                        allTenancyTypeChangesSocial.get(doUnderOccupancyData),
+                                                        true,
+                                                        doTenancyTypeAndPostcodeChange,
+                                                        doUnderOccupancyData,
+                                                        doCouncil,
+                                                        doRSL,
+                                                        doCheckedPreviousTenure,
+                                                        doCheckedPreviousPostcode,
+                                                        grouped);
+                                            }
+                                        }
+                                    }
+                                }
+                                iteb1 = b.iterator();
+                                while (iteb1.hasNext()) {
+                                    doCouncil = iteb1.next();
+                                    Iterator<Boolean> iteb2;
+                                    iteb2 = b.iterator();
+                                    while (iteb2.hasNext()) {
+                                        boolean doCheckedPreviousTenure;
+                                        doCheckedPreviousTenure = iteb2.next();
+                                        Iterator<Boolean> iteb3;
+                                        iteb3 = b.iterator();
+                                        while (iteb3.hasNext()) {
+                                            boolean doCheckedPreviousPostcode;
+                                            doCheckedPreviousPostcode = iteb3.next();
+                                            Iterator<Boolean> iteb4;
+                                            iteb4 = b.iterator();
+                                            while (iteb4.hasNext()) {
+                                                boolean doGrouped;
+                                                doGrouped = iteb4.next();
+                                                if (doGrouped) {
+                                                    postcodeMaps(
+                                                            paymentType,
+                                                            yM3s,
+                                                            includeName,
+                                                            include,
+                                                            allTenancyTypeChangesSocialGrouped.get(doUnderOccupancyData),
+                                                        true,
+                                                        doTenancyTypeAndPostcodeChange,
+                                                            doUnderOccupancyData,
+                                                            doCouncil,
+                                                            false,
+                                                            doCheckedPreviousTenure,
+                                                            doCheckedPreviousPostcode,
+                                                            doGrouped);
+                                                } else {
+                                                    postcodeMaps(
+                                                            paymentType,
+                                                            yM3s,
+                                                            includeName,
+                                                            include,
+                                                            allTenancyTypeChangesSocial.get(doUnderOccupancyData),
+                                                        true,
+                                                        doTenancyTypeAndPostcodeChange,
+                                                            doUnderOccupancyData,
+                                                            doCouncil,
+                                                            false,
+                                                            doCheckedPreviousTenure,
+                                                            doCheckedPreviousPostcode,
+                                                            doGrouped);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                Iterator<Boolean> iteb1;
+                                iteb1 = b.iterator();
+                                while (iteb1.hasNext()) {
+                                    boolean doCheckedPreviousTenure;
+                                    doCheckedPreviousTenure = iteb1.next();
+                                    Iterator<Boolean> iteb2;
+                                    iteb2 = b.iterator();
+                                    while (iteb2.hasNext()) {
+                                        boolean doCheckedPreviousPostcode;
+                                        doCheckedPreviousPostcode = iteb2.next();
+                                        Iterator<Boolean> iteb3;
+                                        iteb3 = b.iterator();
+                                        while (iteb3.hasNext()) {
+                                            boolean doGrouped;
+                                            doGrouped = iteb3.next();
+                                            if (doGrouped) {
+                                                postcodeMaps(
+                                                        paymentType,
+                                                        yM3s,
+                                                        includeName,
+                                                        include,
+                                                        allTenancyTypeChangesSocialGrouped.get(doUnderOccupancyData),
+                                                        true,
+                                                        doTenancyTypeAndPostcodeChange,
+                                                        doUnderOccupancyData,
+                                                        false,
+                                                        false,
+                                                        doCheckedPreviousTenure,
+                                                        doCheckedPreviousPostcode,
+                                                        doGrouped);
+                                            } else {
+                                                postcodeMaps(
+                                                        paymentType,
+                                                        yM3s,
+                                                        includeName,
+                                                        include,
+                                                        allTenancyTypeChangesSocial.get(doUnderOccupancyData),
+                                                        true,
+                                                        doTenancyTypeAndPostcodeChange,
+                                                        doUnderOccupancyData,
+                                                        false,
+                                                        false,
+                                                        doCheckedPreviousTenure,
+                                                        doCheckedPreviousPostcode,
+                                                        doGrouped);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1089,7 +1345,6 @@ public class DW_LineMaps_LCC extends DW_Maps {
             String includeName,
             ArrayList<Integer> include,
             ArrayList<ArrayList<String>> allTenancyTypeChanges,
-            ArrayList<ArrayList<String>> allTenancyTypeChangesGrouped,
             boolean doTenancyTypeAndPostcodeChange,
             boolean doUnderOccupancyData,
             boolean doCouncil,
@@ -1587,6 +1842,9 @@ public class DW_LineMaps_LCC extends DW_Maps {
                     DW_Files.sPostcodeChanges);
             dirOut = new File(
                     mapDirectory,
+                    paymentType);
+            dirOut = new File(
+                    dirOut,
                     DW_Files.sPostcodeChanges);
             dirOut = DW_Files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
             dirInCouncil = DW_Files.getUOFile(dirIn, doUnderOccupancyData, true);
@@ -1972,7 +2230,549 @@ public class DW_LineMaps_LCC extends DW_Maps {
             }
         }
     }
+    
+    public void postcodeMaps(
+            String paymentType,
+            TreeMap<String, ArrayList<String>> yearMonths,
+            String includeName,
+            ArrayList<Integer> include,
+            ArrayList<ArrayList<String>> allTenancyTypeChanges,
+            boolean ignore_JustForDistinguishingThisMethodFlag,
+            boolean doTenancyTypeAndPostcodeChange,
+            boolean doUnderOccupancyData,
+            boolean doCouncil,
+            boolean doRSL,
+            boolean doCheckedPreviousTenure,
+            boolean doCheckedPreviousPostcode,
+            boolean grouped) throws Exception {
+        File dirIn;
+        File dirInCouncil;
+        File dirInRSL;
+        File dirOut;
+        if (doTenancyTypeAndPostcodeChange) {
+            dirIn = new File(
+                    DW_Files.getOutputSHBETablesDir(),
+                    "Tenancy");
+            dirIn = new File(
+                    dirIn,
+                    paymentType);
+            dirIn = new File(
+                    dirIn,
+                    "All");
+            dirOut = new File(
+                    mapDirectory,
+                    paymentType);
+            dirOut = new File(
+                    dirOut,
+                    "All" + DW_Files.sPostcodeChanges);
+            dirOut = DW_Files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
+            dirIn = new File(
+                    dirIn,
+                    DW_Files.sTenancyTypeTransition);
+            if (doCheckedPreviousTenure) {
+                dirIn = new File(
+                        dirIn,
+                        DW_Files.sCheckedPreviousTenure);
+                dirOut = new File(
+                        dirOut,
+                        DW_Files.sCheckedPreviousTenure);
+            } else {
+                dirIn = new File(
+                        dirIn,
+                        DW_Files.sNotCheckedPreviousTenure);
+                dirOut = new File(
+                        dirOut,
+                        DW_Files.sNotCheckedPreviousTenure);
+            }
+            dirIn = new File(
+                    dirIn,
+                    DW_Files.sTenancyAndPostcodeChanges);
+            dirInCouncil = DW_Files.getUOFile(dirIn, doUnderOccupancyData, true);
+            dirInRSL = DW_Files.getUOFile(dirIn, doUnderOccupancyData, false);
+            dirInCouncil = new File(
+                    dirInCouncil,
+                    DW_Files.sPostcodeChanged);
+            dirInRSL = new File(
+                    dirInRSL,
+                    DW_Files.sPostcodeChanged);
+            dirInCouncil = new File(
+                    dirInCouncil,
+                    includeName);
+            dirInRSL = new File(
+                    dirInRSL,
+                    includeName);
+        } else {
+            dirIn = new File(
+                    DW_Files.getOutputSHBETablesDir(),
+                    DW_Files.sPostcodeChanges);
+            dirOut = new File(
+                    mapDirectory,
+                    paymentType);
+            dirOut = new File(
+                    dirOut,
+                    DW_Files.sPostcodeChanges);
+            dirOut = DW_Files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
+            dirInCouncil = DW_Files.getUOFile(dirIn, doUnderOccupancyData, true);
+            dirInRSL = DW_Files.getUOFile(dirIn, doUnderOccupancyData, false);
+            dirInCouncil = new File(
+                    dirInCouncil,
+                    DW_Files.sPostcodeChanged);
+            dirInRSL = new File(
+                    dirInRSL,
+                    DW_Files.sPostcodeChanged);
+            dirInCouncil = new File(
+                    dirInCouncil,
+                    includeName);
+            dirInRSL = new File(
+                    dirInRSL,
+                    includeName);
+        }
+        if (grouped) {
+            dirInCouncil = new File(
+                    dirInCouncil,
+                    DW_Files.sGrouped);
+            dirInRSL = new File(
+                    dirInRSL,
+                    DW_Files.sGrouped);
+            dirOut = new File(
+                    dirOut,
+                    DW_Files.sGrouped);
+        } else {
+            dirInCouncil = new File(
+                    dirInCouncil,
+                    DW_Files.sUngrouped);
+            dirInRSL = new File(
+                    dirInRSL,
+                    DW_Files.sUngrouped);
+            dirOut = new File(
+                    dirOut,
+                    DW_Files.sUngrouped);
+        }
+        dirInCouncil = new File(
+                dirInCouncil,
+                DW_Files.sPostcodeChanges);
+        dirInRSL = new File(
+                dirInRSL,
+                DW_Files.sPostcodeChanges);
+        if (doCheckedPreviousPostcode) {
+            dirInCouncil = new File(
+                    dirInCouncil,
+                    DW_Files.sCheckedPreviousPostcode);
+            dirInRSL = new File(
+                    dirInRSL,
+                    DW_Files.sCheckedPreviousPostcode);
+            dirOut = new File(
+                    dirOut,
+                    DW_Files.sCheckedPreviousPostcode);
+        } else {
+            dirInCouncil = new File(
+                    dirInCouncil,
+                    DW_Files.sNotCheckedPreviousPostcode);
+            dirInRSL = new File(
+                    dirInRSL,
+                    DW_Files.sNotCheckedPreviousPostcode);
+            dirOut = new File(
+                    dirOut,
+                    DW_Files.sNotCheckedPreviousPostcode);
+        }
+        File dirIn2;
+        File dirInCouncil2;
+        File dirInRSL2;
+        dirIn2 = new File(
+                DW_Files.getOutputSHBETablesDir(),
+                DW_Files.sPostcodeChanges);
+        dirIn2 = new File(
+                dirIn2,
+                paymentType);
+        dirInCouncil2 = DW_Files.getUOFile(dirIn2, doUnderOccupancyData, true);
+        dirInRSL2 = DW_Files.getUOFile(dirIn2, doUnderOccupancyData, false);
+        dirInCouncil2 = new File(
+                dirInCouncil2,
+                DW_Files.sPostcodeChanged);
+        dirInRSL2 = new File(
+                dirInRSL2,
+                DW_Files.sPostcodeChanged);
+        dirInCouncil2 = new File(
+                dirInCouncil2,
+                includeName);
+        dirInRSL2 = new File(
+                dirInRSL2,
+                includeName);
+        if (grouped) {
+            dirInCouncil2 = new File(
+                    dirInCouncil2,
+                    DW_Files.sGrouped);
+            dirInRSL2 = new File(
+                    dirInRSL2,
+                    DW_Files.sGrouped);
+        } else {
+            dirInCouncil2 = new File(
+                    dirInCouncil2,
+                    DW_Files.sUngrouped);
+            dirInRSL2 = new File(
+                    dirInRSL2,
+                    DW_Files.sUngrouped);
+        }
+        dirInCouncil2 = new File(
+                dirInCouncil2,
+                DW_Files.sPostcodeChanges);
+        dirInRSL2 = new File(
+                dirInRSL2,
+                DW_Files.sPostcodeChanges);
+        if (doCheckedPreviousPostcode) {
+            dirInCouncil2 = new File(
+                    dirInCouncil2,
+                    DW_Files.sCheckedPreviousPostcode);
+            dirInRSL2 = new File(
+                    dirInRSL2,
+                    DW_Files.sCheckedPreviousPostcode);
+        } else {
+            dirInCouncil2 = new File(
+                    dirInCouncil2,
+                    DW_Files.sNotCheckedPreviousPostcode);
+            dirInRSL2 = new File(
+                    dirInRSL2,
+                    DW_Files.sNotCheckedPreviousPostcode);
+        }
+        Iterator<String> yearMonthsIte;
+        yearMonthsIte = yearMonths.keySet().iterator();
+        while (yearMonthsIte.hasNext()) {
+            String name;
+            name = yearMonthsIte.next();
+            System.out.println(name);
+            ArrayList<String> yM3s;
+            yM3s = yearMonths.get(name);
+            ArrayList<String> lines;
+            lines = new ArrayList<String>();
+            Iterator<String> yMsIte;
+            yMsIte = yM3s.iterator();
+            String yM30 = yMsIte.next();
+            String yM30Start = yM30;
+            String yM30End;
+            while (yMsIte.hasNext()) {
+                String yM31;
+                yM31 = yMsIte.next();
+                String filename = "PostcodeChanges_Start_" + yM30 + "_End_" + yM31 + ".csv";
+                File f;
+                f = new File(
+                        dirInCouncil,
+                        filename);
+                if (f.exists()) {
+                    //System.out.println("Load " + f);
+                    ArrayList<String> linesPart;
+                    linesPart = DW_Table.readCSV(f);
+                    lines.addAll(linesPart);
+                }
+                f = new File(
+                        dirInRSL,
+                        filename);
+                if (f.exists()) {
+                    //System.out.println("Load " + f);
+                    ArrayList<String> linesPart;
+                    linesPart = DW_Table.readCSV(f);
+                    lines.addAll(linesPart);
+                }
+                f = new File(
+                        dirInCouncil2,
+                        filename);
+                if (f.exists()) {
+                    //System.out.println("Load " + f);
+                    ArrayList<String> linesPart;
+                    linesPart = DW_Table.readCSV(f);
+                    lines.addAll(linesPart);
+                }
+                f = new File(
+                        dirInRSL2,
+                        filename);
+                if (f.exists()) {
+                    //System.out.println("Load " + f);
+                    ArrayList<String> linesPart;
+                    linesPart = DW_Table.readCSV(f);
+                    lines.addAll(linesPart);
+                }
+                yM30 = yM31;
+            }
+            yM30End = yM30;
+            if (!lines.isEmpty()) {
+                //name += "_TO_" + split1[0] + "_" + split1[1];
+                File dirOut2;
+                dirOut2 = new File(
+                        dirOut,
+                        name);
+                // Step 3.
+                SimpleFeatureType aLineSFT = DataUtilities.createType(
+                        "LINE",
+                        "the_geom:LineString," + "name:String," + "number:Integer");
 
+                // Totals for each tenancy type
+                Iterator<ArrayList<String>> allTenancyTypeChangesIte;
+                allTenancyTypeChangesIte = allTenancyTypeChanges.iterator();
+                while (allTenancyTypeChangesIte.hasNext()) {
+                    ArrayList<String> tenancyTypeChanges;
+                    tenancyTypeChanges = allTenancyTypeChangesIte.next();
+
+                    // Initialise a FeatureCollections and SimpleFeatureBuilders
+                    HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcSs;
+                    tsfcSs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                    HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcMs;
+                    tsfcMs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                    HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcEs;
+                    tsfcEs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+
+                    HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbSs;
+                    sfbSs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                    HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbMs;
+                    sfbMs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                    HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbEs;
+                    sfbEs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+
+                    // Create SimpleFeatureBuilder
+                    //FeatureFactory ff = FactoryFinder.getGeometryFactories();
+                    GeometryFactory geometryFactory = new GeometryFactory();
+
+                    long count = 0;
+                    long notPCCount = 0;
+
+                    Iterator<String> linesIte;
+                    linesIte = lines.iterator();
+                    while (linesIte.hasNext()) {
+                        String line;
+                        line = linesIte.next();
+                        String[] lineSplit;
+                        lineSplit = line.split(",");
+                        yM30 = lineSplit[1].trim();
+                        String yM31;
+                        yM31 = lineSplit[2].trim();
+                        String yM30v;
+                        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+                        String yM31v;
+                        yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+                        String tenancyTypeChange;
+                        tenancyTypeChange = lineSplit[3].trim();
+                        if (tenancyTypeChanges.contains(tenancyTypeChange)) {
+                            if (yM3s.contains(yM31)) {
+                                String postcode0 = lineSplit[4].trim();
+                                String postcode1 = lineSplit[5].trim();
+                                AGDT_Point origin;
+                                origin = DW_Postcode_Handler.getPointFromPostcode(
+                                        yM30v,
+                                        DW_Postcode_Handler.TYPE_UNIT,
+                                        postcode0);
+                                AGDT_Point destination;
+                                destination = DW_Postcode_Handler.getPointFromPostcode(
+                                        yM31v,
+                                        DW_Postcode_Handler.TYPE_UNIT,
+                                        postcode1);
+                                TreeSetFeatureCollection tsfcS;
+                                tsfcS = tsfcSs.get(tenancyTypeChanges);
+                                if (tsfcS == null) {
+                                    tsfcS = new TreeSetFeatureCollection();
+                                    tsfcSs.put(tenancyTypeChanges, tsfcS);
+                                }
+                                SimpleFeatureBuilder sfbS;
+                                sfbS = sfbSs.get(tenancyTypeChanges);
+                                if (sfbS == null) {
+                                    sfbS = new SimpleFeatureBuilder(aLineSFT);
+                                }
+                                TreeSetFeatureCollection tsfcM;
+                                tsfcM = tsfcMs.get(tenancyTypeChanges);
+                                if (tsfcM == null) {
+                                    tsfcM = new TreeSetFeatureCollection();
+                                    tsfcMs.put(tenancyTypeChanges, tsfcM);
+                                }
+                                SimpleFeatureBuilder sfbM;
+                                sfbM = sfbMs.get(tenancyTypeChanges);
+                                if (sfbM == null) {
+                                    sfbM = new SimpleFeatureBuilder(aLineSFT);
+                                }
+                                TreeSetFeatureCollection tsfcE;
+                                tsfcE = tsfcEs.get(tenancyTypeChanges);
+                                if (tsfcE == null) {
+                                    tsfcE = new TreeSetFeatureCollection();
+                                    tsfcEs.put(tenancyTypeChanges, tsfcE);
+                                }
+                                SimpleFeatureBuilder sfbE;
+                                sfbE = sfbEs.get(tenancyTypeChanges);
+                                if (sfbE == null) {
+                                    sfbE = new SimpleFeatureBuilder(aLineSFT);
+                                }
+                                if (origin != null && destination != null) {
+
+                                    double originx;
+                                    double originy;
+                                    originx = origin.getX();
+                                    originy = origin.getY();
+                                    double destinationx;
+                                    double destinationy;
+                                    destinationx = destination.getX();
+                                    destinationy = destination.getY();
+
+                                    double break1x;
+                                    double break1y;
+                                    break1x = (originx + (originx + ((originx + destinationx) / 2.0d)) / 2.0d) / 2.0d;
+                                    break1y = (originy + (originy + ((originy + destinationy) / 2.0d)) / 2.0d) / 2.0d;
+//                        break1x = (originx + destinationx) / 2.0d;
+//                        break1y = (originy + destinationy) / 2.0d;
+
+                                    double break2x;
+                                    double break2y;
+                                    break2x = (destinationx + (destinationx + ((originx + destinationx) / 2.0d)) / 2.0d) / 2.0d;
+                                    break2y = (destinationy + (destinationy + ((originy + destinationy) / 2.0d)) / 2.0d) / 2.0d;
+//                        break2x = (originx + destinationx) / 2.0d;
+//                        break2y = (originy + destinationy) / 2.0d;
+
+//                        double midpointx;
+//                        double midpointy;
+//                        midpointx = (originx + destinationx) / 2.0d;
+//                        midpointy = (originy + destinationy) / 2.0d;
+                                    Coordinate[] coords;
+                                    LineString lineString;
+                                    SimpleFeature feature;
+
+//                        coords = new Coordinate[2];
+//                        coords[0] = new Coordinate(originx, originy);
+//                        coords[1] = new Coordinate(destinationx, destinationy);
+//                        lineString = geometryFactory.createLineString(coords);
+//                        sfbOM.add(lineString);
+////                        // Add attributes to line
+////          sfb.add(outlet);
+//                        feature = sfbOM.buildFeature(null);
+//                        tsfcOM.add(feature);
+                                    coords = new Coordinate[2];
+                                    coords[0] = new Coordinate(originx, originy);
+                                    coords[1] = new Coordinate(break1x, break1y);
+                                    lineString = geometryFactory.createLineString(coords);
+                                    sfbS.add(lineString);
+                                    feature = sfbS.buildFeature(null);
+                                    tsfcS.add(feature);
+
+                                    coords = new Coordinate[2];
+                                    coords[0] = new Coordinate(break1x, break1y);
+                                    coords[1] = new Coordinate(break2x, break2y);
+                                    lineString = geometryFactory.createLineString(coords);
+                                    sfbM.add(lineString);
+                                    // Add attributes to line
+//          sfb.add(outlet);
+                                    feature = sfbM.buildFeature(null);
+                                    tsfcM.add(feature);
+
+                                    coords = new Coordinate[2];
+                                    coords[0] = new Coordinate(break2x, break2y);
+                                    coords[1] = new Coordinate(destinationx, destinationy);
+                                    lineString = geometryFactory.createLineString(coords);
+                                    sfbE.add(lineString);
+                                    // Add attributes to line
+//          sfb.add(outlet);
+                                    feature = sfbE.buildFeature(null);
+                                    tsfcE.add(feature);
+
+                                    count++;
+
+                                } else {
+                                    notPCCount++;
+                                }
+                            }
+                        }
+                    }
+                    String dates;
+                    dates = getDatesString(yM30Start, yM30End);
+                    String legendMessage;
+                    legendMessage = dates + " Count " + count;
+                    System.out.println("line count = " + count);
+                    System.out.println("Postcode not valid count = " + notPCCount);
+                    TreeSetFeatureCollection tsfc;
+                    name = getName(tenancyTypeChanges);
+                    File dirOut3;
+                    dirOut3 = new File(
+                            dirOut2,
+                            name);
+                    String nameM;
+                    nameM = name + "M";
+                    tsfc = tsfcMs.get(tenancyTypeChanges);
+                    if (tsfc != null) {
+                        File f0 = AGDT_Geotools.getOutputShapefile(
+                                dirOut3,
+                                nameM);
+                        DW_Shapefile.transact(
+                                f0,
+                                aLineSFT,
+                                tsfc,
+                                getShapefileDataStoreFactory());
+                        String nameS;
+                        nameS = name + "S";
+                        tsfc = tsfcSs.get(tenancyTypeChanges);
+                        File f1 = AGDT_Geotools.getOutputShapefile(
+                                dirOut3,
+                                nameS);
+                        DW_Shapefile.transact(
+                                f1,
+                                aLineSFT,
+                                tsfc,
+                                getShapefileDataStoreFactory());
+                        String nameE;
+                        nameE = name + "E";
+                        tsfc = tsfcEs.get(tenancyTypeChanges);
+                        File f2 = AGDT_Geotools.getOutputShapefile(
+                                dirOut3,
+                                nameE);
+                        DW_Shapefile.transact(
+                                f2,
+                                aLineSFT,
+                                tsfc,
+                                getShapefileDataStoreFactory());
+
+//            // Had Hoped to getting away with doing this once
+//            FeatureLayer backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
+//                backgroundShapefile,
+//                backgroundStyle);
+                        for (int i = 0; i < 2; i++) {
+                            String name2;
+                            if (i == 0) {
+                                name2 = "DestinationOnTop";
+                                midgrounds = new ArrayList<AGDT_Shapefile>();
+                                midgrounds.add(new DW_Shapefile(f0));
+                                midgrounds.add(new DW_Shapefile(f1));
+                                midgrounds.add(new DW_Shapefile(f2));
+                            } else {
+                                name2 = "OriginOnTop";
+                                midgrounds = new ArrayList<AGDT_Shapefile>();
+                                midgrounds.add(new DW_Shapefile(f0));
+                                midgrounds.add(new DW_Shapefile(f2));
+                                midgrounds.add(new DW_Shapefile(f1));
+                            }
+                            System.out.println(name2);
+                            File dirOut4;
+                            dirOut4 = new File(
+                                    dirOut3,
+                                    name2);
+                            dirOut4.mkdirs();
+                            setStyleParameters(
+                                    i,
+                                    Color.RED,
+                                    Color.BLUE);
+                            DW_Geotools.outputToImage(
+                                    legendMessage,
+                                    name,
+                                    midgrounds,
+                                    foregrounds,
+                                    dirOut4,
+                                    png_String,
+                                    imageWidth,
+                                    styleParameters,
+                                    0,
+                                    Double.POSITIVE_INFINITY,
+                                    showMapsInJMapPane);
+                        }
+                    } else {
+                        System.out.println("No lines to visualise1");
+                    }
+                }
+            } else {
+                System.out.println("No lines to visualise2");
+            }
+        }
+    }
+    
     /**
      * For changes within the same TT.
      *

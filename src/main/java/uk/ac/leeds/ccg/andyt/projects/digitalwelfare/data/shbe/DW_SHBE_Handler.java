@@ -2591,6 +2591,7 @@ public class DW_SHBE_Handler {
         omitYearly.add(44);
         omitYearly.add(45);
         omitYearly.add(46);
+        omitYearly.add(47);
         result.put(omitKey, omitYearly);
         omitKey = "6Monthly";
         ArrayList<Integer> omit6Monthly;

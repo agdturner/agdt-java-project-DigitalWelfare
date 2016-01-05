@@ -95,7 +95,6 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 
 //        DW_SHBE_Handler DW_SHBE_Handler;
 //        DW_SHBE_Handler = new DW_SHBE_Handler(env);
-        
         HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup;
         tPostcodeToPostcodeIDLookup = DW_SHBE_Handler.getPostcodeToPostcodeIDLookup();
 //        reportUnderOccupancyTotals(underOccupiedData);
@@ -168,7 +167,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        includes.remove("6Monthly");
 //        includes.remove("3Monthly");
 //        includes.remove("MonthlyUO");
-        
+
         // Specifiy distances
         ArrayList<Double> distances;
         distances = new ArrayList<Double>();
@@ -189,10 +188,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         bArray.add(false);
         Iterator<Boolean> iteB;
 
-       HashMap<DW_PersonID, DW_ID> tDW_PersonIDtoDW_IDLookup;
-       tDW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
-       ArrayList<String> paymentTypes;
-       paymentTypes = DW_SHBE_Handler.getPaymentTypes();
+        HashMap<DW_PersonID, DW_ID> tDW_PersonIDtoDW_IDLookup;
+        tDW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
+        ArrayList<String> paymentTypes;
+        paymentTypes = DW_SHBE_Handler.getPaymentTypes();
 //        paymentTypes.remove(sAllPT);
 //        paymentTypes.remove(sInPayment);
 //        paymentTypes.remove(sSuspended);
@@ -201,7 +200,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         Iterator<String> paymentTypesIte;
 
         boolean handleOutOfMemoryError = false;
-        
+
         // Summary Tables
         boolean forceNewSummaries;
 //        forceNewSummaries = false;
@@ -227,7 +226,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         nTT,
                         nEG,
                         nPSI,
-                handleOutOfMemoryError);
+                        handleOutOfMemoryError);
                 Iterator<String> includesIte;
                 includesIte = includes.keySet().iterator();
                 while (includesIte.hasNext()) {
@@ -235,64 +234,68 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     includeKey = includesIte.next();
                     ArrayList<Integer> include;
                     include = includes.get(includeKey);
+                    boolean doUnderOccupancy;
                     TreeMap<String, HashMap<String, String>> summaryTableAll;
                     summaryTableAll = null;
-                    summaryTableAll = tSummary.getSummaryTable(
-                            SHBEFilenames,
-                            include,
-                            forceNewSummaries,
-                            paymentType,
-                            nTT,
-                            nEG,
-                            nPSI,
-                            //underOccupiedData,
-                            handleOutOfMemoryError);
-                    boolean doUnderOccupancy;
-                    doUnderOccupancy = false;
-                    tSummary.writeSummaryTables(
-                            summaryTableAll,
-                            paymentType,
-                            includeKey,
-                            doUnderOccupancy,
-                            nTT, nEG, nPSI);
-                    TreeMap<String, HashMap<String, String>> summaryTableUO;
-                    summaryTableUO = tSummary.getSummaryTable(
-                            summaryTableAll,
-                            SHBEFilenames,
-                            include,
-                            forceNewSummaries,
-                            paymentType,
-                            nTT,
-                            nEG,
-                            nPSI,
-                            underOccupiedData,
-                            tDW_PersonIDtoDW_IDLookup,
-                            tPostcodeToPostcodeIDLookup,
-                            handleOutOfMemoryError);
-                    doUnderOccupancy = true;
-                    tSummary.writeSummaryTables(
-                            summaryTableUO,
-                            paymentType,
-                            includeKey,
-                            doUnderOccupancy,
-                            nTT, nEG, nPSI);
-                    System.exit(0);
+                    if (true) {
+//                    if (false) {
+                        summaryTableAll = tSummary.getSummaryTable(
+                                SHBEFilenames,
+                                include,
+                                forceNewSummaries,
+                                paymentType,
+                                nTT,
+                                nEG,
+                                nPSI,
+                                //underOccupiedData,
+                                handleOutOfMemoryError);
+                        doUnderOccupancy = false;
+                        tSummary.writeSummaryTables(
+                                summaryTableAll,
+                                paymentType,
+                                includeKey,
+                                doUnderOccupancy,
+                                nTT, nEG, nPSI);
+                    }
+//                    System.exit(0);
+//                    if (true) {
+                    if (false) {
+                          TreeMap<String, HashMap<String, String>> summaryTableUO;
+                        summaryTableUO = tSummary.getSummaryTable(
+                                summaryTableAll,
+                                SHBEFilenames,
+                                include,
+                                forceNewSummaries,
+                                paymentType,
+                                nTT,
+                                nEG,
+                                nPSI,
+                                underOccupiedData,
+                                tDW_PersonIDtoDW_IDLookup,
+                                tPostcodeToPostcodeIDLookup,
+                                handleOutOfMemoryError);
+                        doUnderOccupancy = true;
+                        tSummary.writeSummaryTables(
+                                summaryTableUO,
+                                paymentType,
+                                includeKey,
+                                doUnderOccupancy,
+                                nTT, nEG, nPSI);
+                    }
+//                    System.exit(0);
                 }
             }
         }
-        
-        
-        System.exit(0);
-        
 
+//        System.exit(0);
 //        paymentTypes.remove(sAllPT);
 ////        paymentTypes.remove(sInPayment);
 //        paymentTypes.remove(sSuspended);
 //        paymentTypes.remove(sOtherPT);
 // Postcode and Tenancy Type transitions 
         // Runtime approximately 1 hour 5 minutes.
-        if (true) {
-//        if (false) {
+//        if (true) {
+        if (false) {
             paymentTypesIte = paymentTypes.iterator();
             while (paymentTypesIte.hasNext()) {
                 String paymentType;
@@ -2033,7 +2036,6 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        //System.out.println("...done.");
 //        return result;
 //    }
-
     /**
      *
      * @param loadData
@@ -2073,8 +2075,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             //System.out.print("Loading " + filename + " ...");
             DW_SHBE_Collection aSHBEData;
             aSHBEData = new DW_SHBE_Collection(
-                                    filename,
-                                    paymentType);
+                    filename,
+                    paymentType);
             result = (HashMap<DW_ID, String>) aSHBEData.getClaimantIDToCTBRefLookup();
         } else {
             File f;
@@ -2120,8 +2122,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             //System.out.print("Loading " + filename + " ...");
             DW_SHBE_Collection aSHBEData;
             aSHBEData = new DW_SHBE_Collection(
-                                    filename,
-                                    paymentType);
+                    filename,
+                    paymentType);
             result = (HashMap<DW_ID, Integer>) aSHBEData.getClaimantIDToTenancyTypeLookup();
         } else {
             File f;
@@ -2159,8 +2161,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             //System.out.print("Loading " + filename + " ...");
             DW_SHBE_Collection aSHBEData;
             aSHBEData = new DW_SHBE_Collection(
-                                    filename,
-                                    paymentType);
+                    filename,
+                    paymentType);
             result = (HashMap<DW_ID, String>) aSHBEData.getClaimantIDToPostcodeLookup();
         } else {
             File f;
@@ -2680,8 +2682,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             // Load first data
             DW_SHBE_Collection SHBEData0;
             SHBEData0 = new DW_SHBE_Collection(
-                                    SHBEFilenames[i],
-                                    paymentType);
+                    SHBEFilenames[i],
+                    paymentType);
             String yM30;
             yM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
             String yM30v;
@@ -2939,8 +2941,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 // Load next data
                 DW_SHBE_Collection SHBEData1;
                 SHBEData1 = new DW_SHBE_Collection(
-                                    SHBEFilenames[i],
-                                    paymentType);
+                        SHBEFilenames[i],
+                        paymentType);
                 HashMap<DW_ID, String> tIDByPostcode1;
                 tIDByPostcode1 = SHBEData1.getClaimantIDToPostcodeLookup();
                 HashMap<DW_ID, Integer> tIDByTenancyType1;
@@ -6415,8 +6417,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         for (String SHBEFilename : SHBEFilenames) {
             DW_SHBE_Collection SHBEData;
             SHBEData = new DW_SHBE_Collection(
-                                    SHBEFilename,
-                                    paymentType);
+                    SHBEFilename,
+                    paymentType);
             String year = DW_SHBE_Handler.getYear(SHBEFilename);
             String month = DW_SHBE_Handler.getMonth(SHBEFilename);
             TreeMap<Integer, Integer> ymAllResult = new TreeMap<Integer, Integer>();
@@ -6534,15 +6536,15 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         // Start
         DW_SHBE_Collection SHBEDataStart;
         SHBEDataStart = new DW_SHBE_Collection(
-                                    SHBEFilenames[startIndex],
-                                    paymentType);
+                SHBEFilenames[startIndex],
+                paymentType);
         TreeMap<String, DW_SHBE_Record> recordsStart;
         recordsStart = SHBEDataStart.getRecords();
         // End
         DW_SHBE_Collection SHBEDataEnd;
         SHBEDataEnd = new DW_SHBE_Collection(
-                                    SHBEFilenames[endIndex],
-                                    paymentType);
+                SHBEFilenames[endIndex],
+                paymentType);
         TreeMap<String, DW_SHBE_Record> recordsEnd;
         recordsEnd = SHBEDataEnd.getRecords();
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
@@ -6731,14 +6733,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         result[1] = originsAndDestinations;
         DW_SHBE_Collection SHBEDataStart;
         SHBEDataStart = new DW_SHBE_Collection(
-                                    SHBEFilenames[startIndex],
-                                    paymentType);
+                SHBEFilenames[startIndex],
+                paymentType);
         TreeMap<String, DW_SHBE_Record> recordsStart;
         recordsStart = SHBEDataStart.getRecords();
         DW_SHBE_Collection SHBEDataEnd;
         SHBEDataEnd = new DW_SHBE_Collection(
-                                    SHBEFilenames[endIndex],
-                                    paymentType);
+                SHBEFilenames[endIndex],
+                paymentType);
         TreeMap<String, DW_SHBE_Record> recordsEnd;
         recordsEnd = SHBEDataEnd.getRecords();
         // Iterate over records and join these with SHBE records to get postcodes
@@ -8007,12 +8009,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         originsAndDestinations = new TreeSet<String>();
         result[1] = originsAndDestinations;
         DW_SHBE_Collection SHBEDataStart = new DW_SHBE_Collection(
-                                    SHBEFilenames[startIndex],
-                                    paymentType);
+                SHBEFilenames[startIndex],
+                paymentType);
         TreeMap<String, DW_SHBE_Record> DRecordsStart = SHBEDataStart.getRecords();
         DW_SHBE_Collection SHBEDataEnd = new DW_SHBE_Collection(
-                                    SHBEFilenames[endIndex],
-                                    paymentType);
+                SHBEFilenames[endIndex],
+                paymentType);
         TreeMap<String, DW_SHBE_Record> DRecordsEnd = SHBEDataEnd.getRecords();
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
@@ -8204,12 +8206,12 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         TreeSet<String> originsAndDestinations = new TreeSet<String>();
         result[1] = originsAndDestinations;
         DW_SHBE_Collection SHBEDataStart = new DW_SHBE_Collection(
-                                    SHBEFilenames[startIndex],
-                                    paymentType);
+                SHBEFilenames[startIndex],
+                paymentType);
         TreeMap<String, DW_SHBE_Record> DRecordsStart = SHBEDataStart.getRecords();
         DW_SHBE_Collection SHBEDataEnd = new DW_SHBE_Collection(
-                                    SHBEFilenames[endIndex],
-                                    paymentType);
+                SHBEFilenames[endIndex],
+                paymentType);
         TreeMap<String, DW_SHBE_Record> DRecordsEnd = SHBEDataEnd.getRecords();
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
@@ -8561,8 +8563,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             String paymentType) {
         HashMap<String, TreeMap<String, Integer>> result = new HashMap<String, TreeMap<String, Integer>>();
         DW_SHBE_Collection SHBEDataMonth1 = new DW_SHBE_Collection(
-                                    SHBEFilenames[0],
-                                    paymentType);
+                SHBEFilenames[0],
+                paymentType);
         for (int month = 0; month < SHBEFilenames.length - 1; month++) {
             int underOccupancyMonth = month;
             String monthString = DW_SHBE_Handler.getMonth(SHBEFilenames[month]);
@@ -8699,8 +8701,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             String monthString = DW_SHBE_Handler.getMonth(SHBEFilenames[month]);
             result.put(monthString, monthsResult);
             DW_SHBE_Collection SHBEData = new DW_SHBE_Collection(
-                                    SHBEFilenames[month],
-                                    paymentType);
+                    SHBEFilenames[month],
+                    paymentType);
             TreeMap<String, DW_SHBE_Record> recs = SHBEData.getRecords();
             //TreeMap<String, DW_SHBE_Record> SRecordsWithoutDRecords = (TreeMap<String, DW_SHBE_Record>) SHBEData[1];
             Iterator<String> ite = recs.keySet().iterator();
