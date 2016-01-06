@@ -678,7 +678,7 @@ public class DW_SHBE_Handler {
         }
         result.put(Summary.sAllTotalWeeklyEligibleRentAmount,
                 AllTotalWeeklyEligibleRentAmount);
-        result.put(Summary.sAllTotalCountWeeklyEligibleRentAmountNonZero,
+        result.put(Summary.sAllTotalCount_WeeklyEligibleRentAmountNonZero,
                 AllTotalCount_WeeklyEligibleRentAmountNonZeroBD);
         if (AllTotalCount_WeeklyEligibleRentAmountNonZeroBD.compareTo(BigDecimal.ZERO) == 1) {
             result.put(
@@ -714,7 +714,7 @@ public class DW_SHBE_Handler {
         }
         result.put(Summary.sHBTotalWeeklyEligibleRentAmount,
                 HBTotalWeeklyEligibleRentAmount);
-        result.put(Summary.sHBTotalCountWeeklyEligibleRentAmountNonZero,
+        result.put(Summary.sHBTotalCount_WeeklyEligibleRentAmountNonZero,
                 HBTotalCount_WeeklyEligibleRentAmountNonZeroBD);
         if (HBTotalCount_WeeklyEligibleRentAmountNonZeroBD.compareTo(BigDecimal.ZERO) == 1) {
             result.put(
@@ -750,7 +750,7 @@ public class DW_SHBE_Handler {
         }
         result.put(Summary.sCTBTotalWeeklyEligibleRentAmount,
                 CTBTotalWeeklyEligibleRentAmount);
-        result.put(Summary.sCTBTotalCountWeeklyEligibleRentAmountNonZero,
+        result.put(Summary.sCTBTotalCount_WeeklyEligibleRentAmountNonZero,
                 CTBTotalCount_WeeklyEligibleRentAmountNonZeroBD);
         if (CTBTotalCount_WeeklyEligibleRentAmountNonZeroBD.compareTo(BigDecimal.ZERO) == 1) {
             result.put(
@@ -762,39 +762,39 @@ public class DW_SHBE_Handler {
         }
         for (int i = 0; i < nTT; i++) {
             // Income
-            result.put(Summary.sAllTotalIncomeTT[i],
+            result.put(Summary.sTotalIncomeTT[i],
                     AllTotalIncomeByTT[i]);
             BigDecimal totalIncomeByTTGreaterThanZeroCountBD;
             totalIncomeByTTGreaterThanZeroCountBD = BigDecimal.valueOf(
                     AllTotalCount_IncomeByTTNonZero[i]);
-            result.put(Summary.sAllTotalCountIncomeNonZeroTT[i],
+            result.put(Summary.sTotalCount_IncomeNonZeroTT[i],
                     totalIncomeByTTGreaterThanZeroCountBD);
             if (totalIncomeByTTGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
-                result.put(Summary.sAllAverageIncomeTT[i],
+                result.put(Summary.sAverageIncomeTT[i],
                         Generic_BigDecimal.divideRoundIfNecessary(
                                 AllTotalIncomeByTT[i],
                                 totalIncomeByTTGreaterThanZeroCountBD,
                                 2, RoundingMode.HALF_UP));
             } else {
-                result.put(Summary.sAllAverageIncomeTT[i],
+                result.put(Summary.sAverageIncomeTT[i],
                         BigDecimal.ZERO);
             }
             // Rent
-            result.put(Summary.sAllTotalWeeklyEligibleRentAmountTT[i],
+            result.put(Summary.sTotalWeeklyEligibleRentAmountTT[i],
                     AllTotalByTTWeeklyEligibleRentAmount[i]);
             BigDecimal totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD;
             totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD = BigDecimal.valueOf(
                     AllTotalCount_ByTTWeeklyEligibleRentAmountNonZero[i]);
-            result.put(Summary.sAllTotalCountWeeklyEligibleRentAmountNonZeroTT[i],
+            result.put(Summary.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i],
                     totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD);
             if (totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
-                result.put(Summary.sAllAverageWeeklyEligibleRentAmountTT[i],
+                result.put(Summary.sAverageWeeklyEligibleRentAmountTT[i],
                         Generic_BigDecimal.divideRoundIfNecessary(
                                 AllTotalByTTWeeklyEligibleRentAmount[i],
                                 totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD,
                                 2, RoundingMode.HALF_UP));
             } else {
-                result.put(Summary.sAllAverageWeeklyEligibleRentAmountTT[i],
+                result.put(Summary.sAverageWeeklyEligibleRentAmountTT[i],
                         BigDecimal.ZERO);
             }
         }

@@ -30,6 +30,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 //import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.Summary;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.SummaryUO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
@@ -227,6 +228,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         nEG,
                         nPSI,
                         handleOutOfMemoryError);
+                SummaryUO tSummaryUO = new SummaryUO(
+                        env,
+                        collectionHandler,
+                        tDW_SHBE_Handler,
+                        nTT,
+                        nEG,
+                        nPSI,
+                        handleOutOfMemoryError);
                 Iterator<String> includesIte;
                 includesIte = includes.keySet().iterator();
                 while (includesIte.hasNext()) {
@@ -261,7 +270,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                    if (true) {
                     if (false) {
                           TreeMap<String, HashMap<String, String>> summaryTableUO;
-                        summaryTableUO = tSummary.getSummaryTable(
+                        summaryTableUO = tSummaryUO.getSummaryTable(
                                 summaryTableAll,
                                 SHBEFilenames,
                                 include,
@@ -287,7 +296,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             }
         }
 
-//        System.exit(0);
+        System.exit(0);
 //        paymentTypes.remove(sAllPT);
 ////        paymentTypes.remove(sInPayment);
 //        paymentTypes.remove(sSuspended);

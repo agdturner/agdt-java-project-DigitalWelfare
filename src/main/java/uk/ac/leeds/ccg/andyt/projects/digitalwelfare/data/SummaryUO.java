@@ -37,6 +37,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_H
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_PersonID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Collection;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_CollectionHandler;
+//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
@@ -44,714 +45,1416 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyTy
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.ID_PostcodeID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.ID_TenancyType;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.ID_TenancyType_PostcodeID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UOReport_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Set;
 
 /**
  *
  * @author geoagdt
  */
-public class Summary {
-    // Generic vars
-    protected transient DW_Environment env;
-    public DW_SHBE_CollectionHandler collectionHandler;
-    protected DW_SHBE_Handler tDW_SHBE_Handler;
-    protected static final int decimalPlacePrecisionForAverage = 3;
-    protected static final int decimalPlacePrecisionForPercentage = 3;
-    // Special vars
-    protected static final String postcodeLS277NS = "LS27 7NS";
-    protected static final String s0 = "0";
-    // Main vars
+public class SummaryUO extends Summary {
+
+    // Council
     // Counter Strings
     // HouseholdSize
-    protected static final String sAllTotalHouseholdSize = "AllTotalHouseholdSize";
-    protected static final String sAllAverageHouseholdSize = "AllAverageHouseholdSize";
-    protected static final String sHBTotalHouseholdSize = "HBTotalHouseholdSize";
-    protected static final String sHBAverageHouseholdSize = "HBAverageHouseholdSize";
-    protected static final String sCTBTotalHouseholdSize = "CTBTotalHouseholdSize";
-    protected static final String sCTBAverageHouseholdSize = "CTBAverageHouseholdSize";
+    protected static final String sCouncilAllTotalHouseholdSize = "CouncilAllTotalHouseholdSize";
+    protected static final String sCouncilAllAverageHouseholdSize = "CouncilAllAverageHouseholdSize";
+    protected static final String sCouncilHBTotalHouseholdSize = "CouncilHBTotalHouseholdSize";
+    protected static final String sCouncilHBAverageHouseholdSize = "CouncilHBAverageHouseholdSize";
+    protected static final String sCouncilCTBTotalHouseholdSize = "CouncilCTBTotalHouseholdSize";
+    protected static final String sCouncilCTBAverageHouseholdSize = "CouncilCTBAverageHouseholdSize";
     // PSI
-    protected static String[] sAllTotalCount_PSI;
-    protected static String[] sHBTotalCount_PSI;
-    protected static String[] sCTBTotalCount_PSI;
-    protected static String[] sAllPercentageOfAll_PSI;
-    protected static String[] sHBPercentageOfHB_PSI;
-    protected static String[] sCTBPercentageOfCTB_PSI;
+    protected static String[] sCouncilAllTotalCount_PSI;
+    protected static String[] sCouncilHBTotalCount_PSI;
+    protected static String[] sCouncilCTBTotalCount_PSI;
+    protected static String[] sCouncilAllPercentageOfAll_PSI;
+    protected static String[] sCouncilHBPercentageOfHB_PSI;
+    protected static String[] sCouncilCTBPercentageOfCTB_PSI;
     // PSIByTT
-    protected static String[][] sTotalCount_PSIByTT;
-    protected static String[][] sPercentageOfAll_PSIByTT;
-    protected static String[][] sPercentageOfHB_PSIByTT;
-    protected static String[][] sPercentageOfCTB_PSIByTT;
+    protected static String[][] sCouncilTotalCount_PSIByTT;
+    protected static String[][] sCouncilPercentageOfAll_PSIByTT;
+    protected static String[][] sCouncilPercentageOfHB_PSIByTT;
+    protected static String[][] sCouncilPercentageOfCTB_PSIByTT;
     // DisabilityPremiumAwardByTT
-    protected static String[] sTotalCount_DisabilityPremiumAwardByTT;
-    protected static String[] sPercentageOfAll_DisabilityPremiumAwardByTT;
-    protected static String[] sPercentageOfHB_DisabilityPremiumAwardByTT;
-    protected static String[] sPercentageOfCTB_DisabilityPremiumAwardByTT;
-    protected static String[] sPercentageOfTT_DisabilityPremiumAwardByTT;
+    protected static String[] sCouncilTotalCount_DisabilityPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfAll_DisabilityPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfHB_DisabilityPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfCTB_DisabilityPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfTT_DisabilityPremiumAwardByTT;
     // SevereDisabilityPremiumAwardByTT
-    protected static String[] sTotalCount_SevereDisabilityPremiumAwardByTT;
-    protected static String[] sPercentageOfAll_SevereDisabilityPremiumAwardByTT;
-    protected static String[] sPercentageOfHB_SevereDisabilityPremiumAwardByTT;
-    protected static String[] sPercentageOfCTB_SevereDisabilityPremiumAwardByTT;
-    protected static String[] sPercentageOfTT_SevereDisabilityPremiumAwardByTT;
+    protected static String[] sCouncilTotalCount_SevereDisabilityPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfAll_SevereDisabilityPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfHB_SevereDisabilityPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfCTB_SevereDisabilityPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfTT_SevereDisabilityPremiumAwardByTT;
     // DisabledChildPremiumAwardByTT
-    protected static String[] sTotalCount_DisabledChildPremiumAwardByTT;
-    protected static String[] sPercentageOfAll_DisabledChildPremiumAwardByTT;
-    protected static String[] sPercentageOfHB_DisabledChildPremiumAwardByTT;
-    protected static String[] sPercentageOfCTB_DisabledChildPremiumAwardByTT;
-    protected static String[] sPercentageOfTT_DisabledChildPremiumAwardByTT;
+    protected static String[] sCouncilTotalCount_DisabledChildPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfAll_DisabledChildPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfHB_DisabledChildPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfCTB_DisabledChildPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfTT_DisabledChildPremiumAwardByTT;
     // EnhancedDisabilityPremiumAwardByTT
-    protected static String[] sTotalCount_EnhancedDisabilityPremiumAwardByTT;
-    protected static String[] sPercentageOfAll_EnhancedDisabilityPremiumAwardByTT;
-    protected static String[] sPercentageOfHB_EnhancedDisabilityPremiumAwardByTT;
-    protected static String[] sPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT;
-    protected static String[] sPercentageOfTT_EnhancedDisabilityPremiumAwardByTT;
+    protected static String[] sCouncilTotalCount_EnhancedDisabilityPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfAll_EnhancedDisabilityPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfHB_EnhancedDisabilityPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT;
+    protected static String[] sCouncilPercentageOfTT_EnhancedDisabilityPremiumAwardByTT;
     // DisabilityAwards
-    protected static final String sTotalCount_DisabilityAward = "TotalCount_DisabilityAward";
-    protected static final String sPercentageOfAll_DisabilityAward = "PercentageOfAll_DisabilityAward";
+    protected static final String sCouncilTotalCount_DisabilityAward = "CouncilTotalCount_DisabilityAward";
+    protected static final String sCouncilPercentageOfAll_DisabilityAward = "CouncilPercentageOfAll_DisabilityAward";
     // DisabilityPremiumAwards
-    protected static final String sTotalCount_DisabilityPremiumAward = "TotalCount_DisabilityPremiumAward";
-    protected static final String sPercentageOfAll_DisabilityPremiumAward = "PercentageOfAll_DisabilityPremiumAward";
+    protected static final String sCouncilTotalCount_DisabilityPremiumAward = "CouncilTotalCount_DisabilityPremiumAward";
+    protected static final String sCouncilPercentageOfAll_DisabilityPremiumAward = "CouncilPercentageOfAll_DisabilityPremiumAward";
     // SevereDisabilityPremiumAwards
-    protected static final String sTotalCount_SevereDisabilityPremiumAward = "TotalCount_SevereDisabilityPremiumAward";
-    protected static final String sPercentageOfAll_SevereDisabilityPremiumAward = "PercentageOfAll_SevereDisabilityPremiumAward";
+    protected static final String sCouncilTotalCount_SevereDisabilityPremiumAward = "CouncilTotalCount_SevereDisabilityPremiumAward";
+    protected static final String sCouncilPercentageOfAll_SevereDisabilityPremiumAward = "CouncilPercentageOfAll_SevereDisabilityPremiumAward";
     // DisabledChildPremiumAwards
-    protected static final String sTotalCount_DisabledChildPremiumAward = "TotalCount_DisabledChildPremiumAward";
-    protected static final String sPercentageOfAll_DisabledChildPremiumAward = "PercentageOfAll_DisabledChildPremiumAward";
+    protected static final String sCouncilTotalCount_DisabledChildPremiumAward = "CouncilTotalCount_DisabledChildPremiumAward";
+    protected static final String sCouncilPercentageOfAll_DisabledChildPremiumAward = "CouncilPercentageOfAll_DisabledChildPremiumAward";
     // EnhancedDisabilityPremiumAwards
-    protected static final String sTotalCount_EnhancedDisabilityPremiumAward = "TotalCount_EnhancedDisabilityPremiumAward";
-    protected static final String sPercentageOfAll_EnhancedDisabilityPremiumAward = "PercentageOfAll_EnhancedDisabilityPremiumAward";
+    protected static final String sCouncilTotalCount_EnhancedDisabilityPremiumAward = "CouncilTotalCount_EnhancedDisabilityPremiumAward";
+    protected static final String sCouncilPercentageOfAll_EnhancedDisabilityPremiumAward = "CouncilPercentageOfAll_EnhancedDisabilityPremiumAward";
     // DisabilityPremiumAwardHBTTs
-    protected static final String sTotalCount_DisabilityPremiumAwardHBTTs = "TotalCount_DisabilityPremiumAwardHBTTs";
-    protected static final String sPercentageOfAll_DisabilityPremiumAwardHBTTs = "PercentageOfAll_DisabilityPremiumAwardHBTTs";
-    protected static final String sPercentageOfHB_DisabilityPremiumAwardHBTTs = "PercentageOfHB_DisabilityPremiumAwardHBTTs";
+    protected static final String sCouncilTotalCount_DisabilityPremiumAwardHBTTs = "CouncilTotalCount_DisabilityPremiumAwardHBTTs";
+    protected static final String sCouncilPercentageOfAll_DisabilityPremiumAwardHBTTs = "CouncilPercentageOfAll_DisabilityPremiumAwardHBTTs";
+    protected static final String sCouncilPercentageOfHB_DisabilityPremiumAwardHBTTs = "CouncilPercentageOfHB_DisabilityPremiumAwardHBTTs";
     // SevereDisabilityPremiumAwardHBTTs
-    protected static final String sTotalCount_SevereDisabilityPremiumAwardHBTTs = "TotalCount_SevereDisabilityPremiumAwardHBTTs";
-    protected static final String sPercentageOfAll_SevereDisabilityPremiumAwardHBTTs = "PercentageOfAll_SevereDisabilityPremiumAwardHBTTs";
-    protected static final String sPercentageOfHB_SevereDisabilityPremiumAwardHBTTs = "PercentageOfHB_SevereDisabilityPremiumAwardHBTTs";
+    protected static final String sCouncilTotalCount_SevereDisabilityPremiumAwardHBTTs = "CouncilTotalCount_SevereDisabilityPremiumAwardHBTTs";
+    protected static final String sCouncilPercentageOfAll_SevereDisabilityPremiumAwardHBTTs = "CouncilPercentageOfAll_SevereDisabilityPremiumAwardHBTTs";
+    protected static final String sCouncilPercentageOfHB_SevereDisabilityPremiumAwardHBTTs = "CouncilPercentageOfHB_SevereDisabilityPremiumAwardHBTTs";
     // DisabledChildPremiumAwardHBTTs
-    protected static final String sTotalCount_DisabledChildPremiumAwardHBTTs = "TotalCount_DisabledChildPremiumAwardHBTTs";
-    protected static final String sPercentageOfAll_DisabledChildPremiumAwardHBTTs = "PercentageOfAll_DisabledChildPremiumAwardHBTTs";
-    protected static final String sPercentageOfHB_DisabledChildPremiumAwardHBTTs = "PercentageOfHB_DisabledChildPremiumAwardHBTTs";
+    protected static final String sCouncilTotalCount_DisabledChildPremiumAwardHBTTs = "CouncilTotalCount_DisabledChildPremiumAwardHBTTs";
+    protected static final String sCouncilPercentageOfAll_DisabledChildPremiumAwardHBTTs = "CouncilPercentageOfAll_DisabledChildPremiumAwardHBTTs";
+    protected static final String sCouncilPercentageOfHB_DisabledChildPremiumAwardHBTTs = "CouncilPercentageOfHB_DisabledChildPremiumAwardHBTTs";
     // EnhancedDisabilityPremiumAwardHBTTs
-    protected static final String sTotalCount_EnhancedDisabilityPremiumAwardHBTTs = "TotalCount_EnhancedDisabilityPremiumAwardHBTTs";
-    protected static final String sPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs = "PercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs";
-    protected static final String sPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs = "PercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs";
+    protected static final String sCouncilTotalCount_EnhancedDisabilityPremiumAwardHBTTs = "CouncilTotalCount_EnhancedDisabilityPremiumAwardHBTTs";
+    protected static final String sCouncilPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs = "CouncilPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs";
+    protected static final String sCouncilPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs = "CouncilPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs";
     // DisabilityPremiumAwardCTBTTs
-    protected static final String sTotalCount_DisabilityPremiumAwardCTBTTs = "TotalCount_DisabilityPremiumAwardCTBTTs";
-    protected static final String sPercentageOfAll_DisabilityPremiumAwardCTBTTs = "PercentageOfAll_DisabilityPremiumAwardCTBTTs";
-    protected static final String sPercentageOfCTB_DisabilityPremiumAwardCTBTTs = "PercentageOfCTB_DisabilityPremiumAwardCTBTTs";
+    protected static final String sCouncilTotalCount_DisabilityPremiumAwardCTBTTs = "CouncilTotalCount_DisabilityPremiumAwardCTBTTs";
+    protected static final String sCouncilPercentageOfAll_DisabilityPremiumAwardCTBTTs = "CouncilPercentageOfAll_DisabilityPremiumAwardCTBTTs";
+    protected static final String sCouncilPercentageOfCTB_DisabilityPremiumAwardCTBTTs = "CouncilPercentageOfCTB_DisabilityPremiumAwardCTBTTs";
     // SevereDisabilityPremiumAwardCTBTTs
-    protected static final String sTotalCount_SevereDisabilityPremiumAwardCTBTTs = "TotalCount_SevereDisabilityPremiumAwardCTBTTs";
-    protected static final String sPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs = "PercentageOfAll_SevereDisabilityPremiumAwardCTBTTs";
-    protected static final String sPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs = "PercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs";
+    protected static final String sCouncilTotalCount_SevereDisabilityPremiumAwardCTBTTs = "CouncilTotalCount_SevereDisabilityPremiumAwardCTBTTs";
+    protected static final String sCouncilPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs = "CouncilPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs";
+    protected static final String sCouncilPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs = "CouncilPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs";
     // DisabledChildPremiumAwardCTBTTs
-    protected static final String sTotalCount_DisabledChildPremiumAwardCTBTTs = "TotalCount_DisabledChildPremiumAwardCTBTTs";
-    protected static final String sPercentageOfAll_DisabledChildPremiumAwardCTBTTs = "PercentageOfAll_DisabledChildPremiumAwardCTBTTs";
-    protected static final String sPercentageOfCTB_DisabledChildPremiumAwardCTBTTs = "PercentageOfCTB_DisabledChildPremiumAwardCTBTTs";
+    protected static final String sCouncilTotalCount_DisabledChildPremiumAwardCTBTTs = "CouncilTotalCount_DisabledChildPremiumAwardCTBTTs";
+    protected static final String sCouncilPercentageOfAll_DisabledChildPremiumAwardCTBTTs = "CouncilPercentageOfAll_DisabledChildPremiumAwardCTBTTs";
+    protected static final String sCouncilPercentageOfCTB_DisabledChildPremiumAwardCTBTTs = "CouncilPercentageOfCTB_DisabledChildPremiumAwardCTBTTs";
     // EnhancedDisabilityPremiumAwardCTBTTs
-    protected static final String sTotalCount_EnhancedDisabilityPremiumAwardCTBTTs = "TotalCount_EnhancedDisabilityPremiumAwardCTBTTs";
-    protected static final String sPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs = "PercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs";
-    protected static final String sPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs = "PercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs";
+    protected static final String sCouncilTotalCount_EnhancedDisabilityPremiumAwardCTBTTs = "CouncilTotalCount_EnhancedDisabilityPremiumAwardCTBTTs";
+    protected static final String sCouncilPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs = "CouncilPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs";
+    protected static final String sCouncilPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs = "CouncilPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs";
     // DisabilityPremiumAwardSocialTTs
-    protected static final String sTotalCount_DisabilityPremiumAwardSocialTTs = "TotalCount_DisabilityPremiumAwardSocialTTs";
-    protected static final String sPercentageOfAll_DisabilityPremiumAwardSocialTTs = "PercentageOfAll_DisabilityPremiumAwardSocialTTs";
-    protected static final String sPercentageOfHB_DisabilityPremiumAwardSocialTTs = "PercentageOfHB_DisabilityPremiumAwardSocialTTs";
-    protected static final String sPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs = "PercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs";
+    protected static final String sCouncilTotalCount_DisabilityPremiumAwardSocialTTs = "CouncilTotalCount_DisabilityPremiumAwardSocialTTs";
+    protected static final String sCouncilPercentageOfAll_DisabilityPremiumAwardSocialTTs = "CouncilPercentageOfAll_DisabilityPremiumAwardSocialTTs";
+    protected static final String sCouncilPercentageOfHB_DisabilityPremiumAwardSocialTTs = "CouncilPercentageOfHB_DisabilityPremiumAwardSocialTTs";
+    protected static final String sCouncilPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs = "CouncilPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs";
     // DisabilityPremiumAwardPrivateDeregulatedTTs
-    protected static final String sTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs = "TotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs = "PercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs = "CouncilTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs = "CouncilsPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs = "CouncilsPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs = "CouncilPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs";
     // SevereDisabilityPremiumAwardSocialTTs
-    protected static final String sTotalCount_SevereDisabilityPremiumAwardSocialTTs = "TotalCount_SevereDisabilityPremiumAwardSocialTTs";
-    protected static final String sPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs = "PercentageOfAll_SevereDisabilityPremiumAwardSocialTTs";
-    protected static final String sPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs = "PercentageOfHB_SevereDisabilityPremiumAwardSocialTTs";
-    protected static final String sPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs = "PercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs";
+    protected static final String sCouncilTotalCount_SevereDisabilityPremiumAwardSocialTTs = "CouncilTotalCount_SevereDisabilityPremiumAwardSocialTTs";
+    protected static final String sCouncilPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs = "CouncilPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs";
+    protected static final String sCouncilPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs = "CouncilPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs";
+    protected static final String sCouncilPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs = "CouncilPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs";
     // SevereDisabilityPremiumAwardPrivateDeregulatedTTs
-    protected static final String sTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "TotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "PercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "CouncilTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "CouncilsPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "CouncilsPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "CouncilPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
     // DisabledChildPremiumAwardSocialTTs
-    protected static final String sTotalCount_DisabledChildPremiumAwardSocialTTs = "TotalCount_DisabledChildPremiumAwardSocialTTs";
-    protected static final String sPercentageOfAll_DisabledChildPremiumAwardSocialTTs = "PercentageOfAll_DisabledChildPremiumAwardSocialTTs";
-    protected static final String sPercentageOfHB_DisabledChildPremiumAwardSocialTTs = "PercentageOfHB_DisabledChildPremiumAwardSocialTTs";
-    protected static final String sPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs = "PercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs";
+    protected static final String sCouncilTotalCount_DisabledChildPremiumAwardSocialTTs = "CouncilTotalCount_DisabledChildPremiumAwardSocialTTs";
+    protected static final String sCouncilPercentageOfAll_DisabledChildPremiumAwardSocialTTs = "CouncilPercentageOfAll_DisabledChildPremiumAwardSocialTTs";
+    protected static final String sCouncilPercentageOfHB_DisabledChildPremiumAwardSocialTTs = "CouncilPercentageOfHB_DisabledChildPremiumAwardSocialTTs";
+    protected static final String sCouncilPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs = "CouncilPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs";
     // DisabledChildPremiumAwardPrivateDeregulatedTTs
-    protected static final String sTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs = "TotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs = "sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs = "sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs = "PercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs = "CouncilTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs = "CouncilsPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs = "CouncilsPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs = "CouncilPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs";
     // EnhancedDisabilityPremiumAwardSocialTTs
-    protected static final String sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs = "TotalCount_EnhancedDisabilityPremiumAwardSocialTTs";
-    protected static final String sPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs = "PercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs";
-    protected static final String sPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs = "PercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs";
-    protected static final String sPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs = "PercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs";
+    protected static final String sCouncilTotalCount_EnhancedDisabilityPremiumAwardSocialTTs = "CouncilTotalCount_EnhancedDisabilityPremiumAwardSocialTTs";
+    protected static final String sCouncilPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs = "CouncilPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs";
+    protected static final String sCouncilPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs = "CouncilPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs";
+    protected static final String sCouncilPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs = "CouncilPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs";
     // EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs
-    protected static final String sTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "TotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "PercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "CouncilTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "CouncilsPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "CouncilsPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "CouncilPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
     // DisabilityAwardByTT
-    protected static String[] sTotalCount_DisabilityAwardByTT;
-    protected static String[] sPercentageOfAll_DisabilityAwardByTT;
-    protected static String[] sPercentageOfHB_DisabilityAwardByTT;
-    protected static String[] sPercentageOfCTB_DisabilityAwardByTT;
-    protected static String[] sPercentageOfTT_DisabilityAwardByTT;
+    protected static String[] sCouncilTotalCount_DisabilityAwardByTT;
+    protected static String[] sCouncilPercentageOfAll_DisabilityAwardByTT;
+    protected static String[] sCouncilPercentageOfHB_DisabilityAwardByTT;
+    protected static String[] sCouncilPercentageOfCTB_DisabilityAwardByTT;
+    protected static String[] sCouncilPercentageOfTT_DisabilityAwardByTT;
     // DisabilityAwardHBTTs
-    protected static final String sTotalCount_DisabilityAwardHBTTs = "TotalCount_DisabilityAwardHBTTs";
-    protected static final String sPercentageOfAll_DisabilityAwardHBTTs = "PercentageOfAll_DisabilityAwardHBTTs";
-    protected static final String sPercentageOfHB_DisabilityAwardHBTTs = "PercentageOfHB_DisabilityAwardHBTTs";
+    protected static final String sCouncilTotalCount_DisabilityAwardHBTTs = "CouncilTotalCount_DisabilityAwardHBTTs";
+    protected static final String sCouncilPercentageOfAll_DisabilityAwardHBTTs = "CouncilPercentageOfAll_DisabilityAwardHBTTs";
+    protected static final String sCouncilPercentageOfHB_DisabilityAwardHBTTs = "CouncilPercentageOfHB_DisabilityAwardHBTTs";
     // DisabilityAwardCTBTTs
-    protected static final String sTotalCount_DisabilityAwardCTBTTs = "TotalCount_DisabilityAwardCTBTTs";
-    protected static final String sPercentageOfAll_DisabilityAwardCTBTTs = "PercentageOfAll_DisabilityAwardCTBTTs";
-    protected static final String sPercentageOfCTB_DisabilityAwardCTBTTs = "PercentageOfCTB_DisabilityAwardCTBTTs";
+    protected static final String sCouncilTotalCount_DisabilityAwardCTBTTs = "CouncilTotalCount_DisabilityAwardCTBTTs";
+    protected static final String sCouncilPercentageOfAll_DisabilityAwardCTBTTs = "CouncilPercentageOfAll_DisabilityAwardCTBTTs";
+    protected static final String sCouncilPercentageOfCTB_DisabilityAwardCTBTTs = "CouncilPercentageOfCTB_DisabilityAwardCTBTTs";
     // DisabilityAwardSocialTTs
-    protected static final String sTotalCount_DisabilityAwardSocialTTs = "TotalCount_DisabilityAwardSocialTTs";
-    protected static final String sPercentageOfAll_DisabilityAwardSocialTTs = "PercentageOfAll_DisabilityAwardSocialTTs";
-    protected static final String sPercentageOfHB_DisabilityAwardSocialTTs = "PercentageOfHB_DisabilityAwardSocialTTs";
-    protected static final String sPercentageOfSocialTTs_DisabilityAwardSocialTTs = "sPercentageOfSocialTTs_DisabilityAwardSocialTTs";
+    protected static final String sCouncilTotalCount_DisabilityAwardSocialTTs = "CouncilTotalCount_DisabilityAwardSocialTTs";
+    protected static final String sCouncilPercentageOfAll_DisabilityAwardSocialTTs = "CouncilPercentageOfAll_DisabilityAwardSocialTTs";
+    protected static final String sCouncilPercentageOfHB_DisabilityAwardSocialTTs = "CouncilPercentageOfHB_DisabilityAwardSocialTTs";
+    protected static final String sCouncilPercentageOfSocialTTs_DisabilityAwardSocialTTs = "CouncilsPercentageOfSocialTTs_DisabilityAwardSocialTTs";
     // DisabilityAwardPrivateDeregulatedTTs
-    protected static final String sTotalCount_DisabilityAwardPrivateDeregulatedTTs = "TotalCount_DisabilityAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs = "sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs = "sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs = "PercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilTotalCount_DisabilityAwardPrivateDeregulatedTTs = "CouncilTotalCount_DisabilityAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs = "CouncilsPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs = "CouncilsPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs = "CouncilPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs";
     // HBEntitlement
-    public static final String sTotalWeeklyHBEntitlement = "TotalWeeklyHBEntitlement";
-    public static final String sTotalCount_WeeklyHBEntitlementNonZero = "TotalCount_WeeklyHBEntitlementNonZero";
-    public static final String sTotalCount_WeeklyHBEntitlementZero = "TotalCount_WeeklyHBEntitlementZero";
-    public static final String sAverageWeeklyHBEntitlement = "AverageWeeklyHBEntitlement";
+    public static final String sCouncilTotalWeeklyHBEntitlement = "CouncilTotalWeeklyHBEntitlement";
+    public static final String sCouncilTotalCount_WeeklyHBEntitlementNonZero = "CouncilTotalCount_WeeklyHBEntitlementNonZero";
+    public static final String sCouncilTotalCount_WeeklyHBEntitlementZero = "CouncilTotalCount_WeeklyHBEntitlementZero";
+    public static final String sCouncilAverageWeeklyHBEntitlement = "CouncilAverageWeeklyHBEntitlement";
     // CTBEntitlement
-    public static final String sTotalWeeklyCTBEntitlement = "TotalWeeklyCTBEntitlement";
-    public static final String sTotalCount_WeeklyCTBEntitlementNonZero = "TotalCount_WeeklyCTBEntitlementNonZero";
-    public static final String sTotalCount_WeeklyCTBEntitlementZero = "TotalCount_WeeklyCTBEntitlementZero";
-    public static final String sAverageWeeklyCTBEntitlement = "AverageWeeklyCTBEntitlement";
+    public static final String sCouncilTotalWeeklyCTBEntitlement = "CouncilTotalWeeklyCTBEntitlement";
+    public static final String sCouncilTotalCount_WeeklyCTBEntitlementNonZero = "CouncilTotalCount_WeeklyCTBEntitlementNonZero";
+    public static final String sCouncilTotalCount_WeeklyCTBEntitlementZero = "CouncilTotalCount_WeeklyCTBEntitlementZero";
+    public static final String sCouncilAverageWeeklyCTBEntitlement = "CouncilAverageWeeklyCTBEntitlement";
     // WeeklyEligibleRentAmount
-    public static final String sAllTotalWeeklyEligibleRentAmount = "AllTotalWeeklyEligibleRentAmount";
-    public static String[] sTotalWeeklyEligibleRentAmountTT;
-    public static final String sAllTotalCount_WeeklyEligibleRentAmountNonZero = "AllTotalCount_WeeklyEligibleRentAmountNonZero";
-    public static String[] sTotalCount_WeeklyEligibleRentAmountNonZeroTT;
-    public static final String sAllTotalCount_WeeklyEligibleRentAmountZero = "AllTotalCount_WeeklyEligibleRentAmountZero";
-    public static String[] sTotalCount_WeeklyEligibleRentAmountZeroTT;
-    public static final String sAllAverageWeeklyEligibleRentAmount = "AllAverageWeeklyEligibleRentAmount";
-    public static String[] sAverageWeeklyEligibleRentAmountTT;
+    public static final String sCouncilAllTotalWeeklyEligibleRentAmount = "CouncilAllTotalWeeklyEligibleRentAmount";
+    public static String[] sCouncilTotalWeeklyEligibleRentAmountTT;
+    public static final String sCouncilAllTotalCount_WeeklyEligibleRentAmountNonZero = "CouncilAllTotalCount_WeeklyEligibleRentAmountNonZero";
+    public static String[] sCouncilTotalCount_WeeklyEligibleRentAmountNonZeroTT;
+    public static final String sCouncilAllTotalCount_WeeklyEligibleRentAmountZero = "CouncilAllTotalCount_WeeklyEligibleRentAmountZero";
+    public static String[] sCouncilTotalCount_WeeklyEligibleRentAmountZeroTT;
+    public static final String sCouncilAllAverageWeeklyEligibleRentAmount = "CouncilAllAverageWeeklyEligibleRentAmount";
+    public static String[] sCouncilAverageWeeklyEligibleRentAmountTT;
     // WeeklyHBEntitlement
-    public static final String sHBTotalWeeklyHBEntitlement = "HBTotalWeeklyHBEntitlement";
-    public static final String sHBTotalCount_WeeklyHBEntitlementNonZero = "HBTotalCount_WeeklyHBEntitlementNonZero";
-    public static final String sHBTotalCount_WeeklyHBEntitlementZero = "HBTotalCount_WeeklyHBEntitlementZero";
-    public static final String sHBAverageWeeklyHBEntitlement = "HBAverageWeeklyHBEntitlement";
-    public static final String sCTBTotalWeeklyHBEntitlement = "CTBTotalWeeklyHBEntitlement";
-    public static final String sCTBTotalCount_WeeklyHBEntitlementNonZero = "CTBTotalCount_WeeklyHBEntitlementNonZero";
-    public static final String sCTBTotalCount_WeeklyHBEntitlementZero = "CTBTotalCount_WeeklyHBEntitlementZero";
-    public static final String sCTBAverageWeeklyHBEntitlement = "CTBAverageWeeklyHBEntitlement";
+    public static final String sCouncilHBTotalWeeklyHBEntitlement = "CouncilHBTotalWeeklyHBEntitlement";
+    public static final String sCouncilHBTotalCount_WeeklyHBEntitlementNonZero = "CouncilHBTotalCount_WeeklyHBEntitlementNonZero";
+    public static final String sCouncilHBTotalCount_WeeklyHBEntitlementZero = "CouncilHBTotalCount_WeeklyHBEntitlementZero";
+    public static final String sCouncilHBAverageWeeklyHBEntitlement = "CouncilHBAverageWeeklyHBEntitlement";
+    public static final String sCouncilCTBTotalWeeklyHBEntitlement = "CouncilCTBTotalWeeklyHBEntitlement";
+    public static final String sCouncilCTBTotalCount_WeeklyHBEntitlementNonZero = "CouncilCTBTotalCount_WeeklyHBEntitlementNonZero";
+    public static final String sCouncilCTBTotalCount_WeeklyHBEntitlementZero = "CouncilCTBTotalCount_WeeklyHBEntitlementZero";
+    public static final String sCouncilCTBAverageWeeklyHBEntitlement = "CouncilCTBAverageWeeklyHBEntitlement";
     // WeeklyCTBEntitlement
-    public static final String sHBTotalWeeklyCTBEntitlement = "HBTotalWeeklyCTBEntitlement";
-    public static final String sHBTotalCount_WeeklyCTBEntitlementNonZero = "HBTotalCount_WeeklyCTBEntitlementNonZero";
-    public static final String sHBTotalCount_WeeklyCTBEntitlementZero = "HBTotalCount_WeeklyCTBEntitlementZero";
-    public static final String sHBAverageWeeklyCTBEntitlement = "HBAverageWeeklyCTBEntitlement";
-    public static final String sCTBTotalWeeklyCTBEntitlement = "CTBTotalWeeklyCTBEntitlement";
-    public static final String sCTBTotalCount_WeeklyCTBEntitlementNonZero = "CTBTotalCount_WeeklyCTBEntitlementNonZero";
-    public static final String sCTBTotalCount_WeeklyCTBEntitlementZero = "CTBTotalCount_WeeklyCTBEntitlementZero";
-    public static final String sCTBAverageWeeklyCTBEntitlement = "CTBAverageWeeklyCTBEntitlement";
+    public static final String sCouncilHBTotalWeeklyCTBEntitlement = "CouncilHBTotalWeeklyCTBEntitlement";
+    public static final String sCouncilHBTotalCount_WeeklyCTBEntitlementNonZero = "CouncilHBTotalCount_WeeklyCTBEntitlementNonZero";
+    public static final String sCouncilHBTotalCount_WeeklyCTBEntitlementZero = "CouncilHBTotalCount_WeeklyCTBEntitlementZero";
+    public static final String sCouncilHBAverageWeeklyCTBEntitlement = "CouncilHBAverageWeeklyCTBEntitlement";
+    public static final String sCouncilCTBTotalWeeklyCTBEntitlement = "CouncilCTBTotalWeeklyCTBEntitlement";
+    public static final String sCouncilCTBTotalCount_WeeklyCTBEntitlementNonZero = "CouncilCTBTotalCount_WeeklyCTBEntitlementNonZero";
+    public static final String sCouncilCTBTotalCount_WeeklyCTBEntitlementZero = "CouncilCTBTotalCount_WeeklyCTBEntitlementZero";
+    public static final String sCouncilCTBAverageWeeklyCTBEntitlement = "CouncilCTBAverageWeeklyCTBEntitlement";
     // WeeklyEligibleRentAmount
-    public static final String sHBTotalWeeklyEligibleRentAmount = "HBTotalWeeklyEligibleRentAmount";
-    public static final String sHBTotalCount_WeeklyEligibleRentAmountNonZero = "HBTotalCount_WeeklyEligibleRentAmountNonZero";
-    public static final String sHBTotalCount_WeeklyEligibleRentAmountZero = "HBTotalCount_WeeklyEligibleRentAmountZero";
-    public static final String sHBAverageWeeklyEligibleRentAmount = "HBAverageWeeklyEligibleRentAmount";
-    public static final String sCTBTotalWeeklyEligibleRentAmount = "CTBTotalWeeklyEligibleRentAmount";
-    public static final String sCTBTotalCount_WeeklyEligibleRentAmountNonZero = "CTBTotalCount_WeeklyEligibleRentAmountNonZero";
-    public static final String sCTBTotalCount_WeeklyEligibleRentAmountZero = "CTBTotalCount_WeeklyEligibleRentAmountZero";
-    public static final String sCTBAverageWeeklyEligibleRentAmount = "CTBAverageWeeklyEligibleRentAmount";
+    public static final String sCouncilHBTotalWeeklyEligibleRentAmount = "CouncilHBTotalWeeklyEligibleRentAmount";
+    public static final String sCouncilHBTotalCount_WeeklyEligibleRentAmountNonZero = "CouncilHBTotalCount_WeeklyEligibleRentAmountNonZero";
+    public static final String sCouncilHBTotalCount_WeeklyEligibleRentAmountZero = "CouncilHBTotalCount_WeeklyEligibleRentAmountZero";
+    public static final String sCouncilHBAverageWeeklyEligibleRentAmount = "CouncilHBAverageWeeklyEligibleRentAmount";
+    public static final String sCouncilCTBTotalWeeklyEligibleRentAmount = "CouncilCTBTotalWeeklyEligibleRentAmount";
+    public static final String sCouncilCTBTotalCount_WeeklyEligibleRentAmountNonZero = "CouncilCTBTotalCount_WeeklyEligibleRentAmountNonZero";
+    public static final String sCouncilCTBTotalCount_WeeklyEligibleRentAmountZero = "CouncilCTBTotalCount_WeeklyEligibleRentAmountZero";
+    public static final String sCouncilCTBAverageWeeklyEligibleRentAmount = "CouncilCTBAverageWeeklyEligibleRentAmount";
     // WeeklyEligibleCouncilTaxAmount
-    protected static final String sAllTotalWeeklyEligibleCouncilTaxAmount = "AllTotalWeeklyEligibleCouncilTaxAmount";
-    protected static final String sAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = "AllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero";
-    protected static final String sAllTotalCount_WeeklyEligibleCouncilTaxAmountZero = "AllTotalCount_WeeklyEligibleCouncilTaxAmountZero";
-    protected static final String sAllAverageWeeklyEligibleCouncilTaxAmount = "AllAverageWeeklyEligibleCouncilTaxAmount";
-    protected static final String sHBTotalWeeklyEligibleCouncilTaxAmount = "HBTotalCount_WeeklyEligibleCouncilTaxAmount";
-    protected static final String sHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = "HBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero";
-    protected static final String sHBTotalCount_WeeklyEligibleCouncilTaxAmountZero = "HBTotalCount_WeeklyEligibleCouncilTaxAmountZero";
-    protected static final String sHBAverageWeeklyEligibleCouncilTaxAmount = "HBAverageWeeklyEligibleCouncilTaxAmount";
-    protected static final String sCTBTotalWeeklyEligibleCouncilTaxAmount = "CTBTotalWeeklyEligibleCouncilTaxAmount";
-    protected static final String sCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = "CTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero";
-    protected static final String sCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero = "CTBTotalCount_WeeklyEligibleCouncilTaxAmountZero";
-    protected static final String sCTBAverageWeeklyEligibleCouncilTaxAmount = "CTBAverageWeeklyEligibleCouncilTaxAmount";
+    protected static final String sCouncilAllTotalWeeklyEligibleCouncilTaxAmount = "CouncilAllTotalWeeklyEligibleCouncilTaxAmount";
+    protected static final String sCouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = "CouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero";
+    protected static final String sCouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountZero = "CouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountZero";
+    protected static final String sCouncilAllAverageWeeklyEligibleCouncilTaxAmount = "CouncilAllAverageWeeklyEligibleCouncilTaxAmount";
+    protected static final String sCouncilHBTotalWeeklyEligibleCouncilTaxAmount = "CouncilHBTotalCount_WeeklyEligibleCouncilTaxAmount";
+    protected static final String sCouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = "CouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero";
+    protected static final String sCouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountZero = "CouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountZero";
+    protected static final String sCouncilHBAverageWeeklyEligibleCouncilTaxAmount = "CouncilHBAverageWeeklyEligibleCouncilTaxAmount";
+    protected static final String sCouncilCTBTotalWeeklyEligibleCouncilTaxAmount = "CouncilCTBTotalWeeklyEligibleCouncilTaxAmount";
+    protected static final String sCouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = "CouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero";
+    protected static final String sCouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero = "CouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero";
+    protected static final String sCouncilCTBAverageWeeklyEligibleCouncilTaxAmount = "CouncilCTBAverageWeeklyEligibleCouncilTaxAmount";
     // ContractualRentAmount
-    protected static final String sAllTotalContractualRentAmount = "AllTotalContractualRentAmount";
-    protected static final String sAllTotalCountContractualRentAmountNonZeroCount = "AllTotalCount_ContractualRentAmountNonZero";
-    protected static final String sAllTotalCountContractualRentAmountZeroCount = "AllTotalCount_ContractualRentAmountZero";
-    protected static final String sAllAverageContractualRentAmount = "AllAverageContractualRentAmount";
-    protected static final String sHBTotalContractualRentAmount = "HBTotalContractualRentAmount";
-    protected static final String sHBTotalCountContractualRentAmountNonZeroCount = "HBTotalCount_ContractualRentAmountNonZero";
-    protected static final String sHBTotalCountContractualRentAmountZeroCount = "HBTotalCount_ContractualRentAmountZero";
-    protected static final String sHBAverageContractualRentAmount = "HBAverageContractualRentAmount";
-    protected static final String sCTBTotalContractualRentAmount = "CTBTotalContractualRentAmount";
-    protected static final String sCTBTotalCountContractualRentAmountNonZeroCount = "CTBTotalCount_ContractualRentAmountNonZero";
-    protected static final String sCTBTotalCountContractualRentAmountZeroCount = "CTBTotalCount_ContractualRentAmountZero";
-    protected static final String sCTBAverageContractualRentAmount = "CTBAverageContractualRentAmount";
+    protected static final String sCouncilAllTotalContractualRentAmount = "CouncilAllTotalContractualRentAmount";
+    protected static final String sCouncilAllTotalCountContractualRentAmountNonZeroCount = "CouncilAllTotalCount_ContractualRentAmountNonZero";
+    protected static final String sCouncilAllTotalCountContractualRentAmountZeroCount = "CouncilAllTotalCount_ContractualRentAmountZero";
+    protected static final String sCouncilAllAverageContractualRentAmount = "CouncilAllAverageContractualRentAmount";
+    protected static final String sCouncilHBTotalContractualRentAmount = "CouncilHBTotalContractualRentAmount";
+    protected static final String sCouncilHBTotalCountContractualRentAmountNonZeroCount = "CouncilHBTotalCount_ContractualRentAmountNonZero";
+    protected static final String sCouncilHBTotalCountContractualRentAmountZeroCount = "CouncilHBTotalCount_ContractualRentAmountZero";
+    protected static final String sCouncilHBAverageContractualRentAmount = "CouncilHBAverageContractualRentAmount";
+    protected static final String sCouncilCTBTotalContractualRentAmount = "CouncilCTBTotalContractualRentAmount";
+    protected static final String sCouncilCTBTotalCountContractualRentAmountNonZeroCount = "CouncilCTBTotalCount_ContractualRentAmountNonZero";
+    protected static final String sCouncilCTBTotalCountContractualRentAmountZeroCount = "CouncilCTBTotalCount_ContractualRentAmountZero";
+    protected static final String sCouncilCTBAverageContractualRentAmount = "CouncilCTBAverageContractualRentAmount";
     // WeeklyAdditionalDiscretionaryPayment
-    protected static final String sAllTotalWeeklyAdditionalDiscretionaryPayment = "AllTotalWeeklyAdditionalDiscretionaryPayment";
-    protected static final String sAllTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero = "AllTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero";
-    protected static final String sAllTotalCount_WeeklyAdditionalDiscretionaryPaymentZero = "AllTotalCount_WeeklyAdditionalDiscretionaryPaymentZero";
-    protected static final String sAllAverageWeeklyAdditionalDiscretionaryPayment = "AllAverageWeeklyAdditionalDiscretionaryPayment";
-    protected static final String sHBTotalWeeklyAdditionalDiscretionaryPayment = "HBTotalWeeklyAdditionalDiscretionaryPayment";
-    protected static final String sHBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero = "HBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero";
-    protected static final String sHBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero = "HBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero";
-    protected static final String sHBAverageWeeklyAdditionalDiscretionaryPayment = "HBAverageWeeklyAdditionalDiscretionaryPayment";
-    protected static final String sCTBTotalWeeklyAdditionalDiscretionaryPayment = "CTBTotalWeeklyAdditionalDiscretionaryPayment";
-    protected static final String sCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero = "CTBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero";
-    protected static final String sCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero = "CTBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero";
-    protected static final String sCTBAverageWeeklyAdditionalDiscretionaryPayment = "CTBAverageWeeklyAdditionalDiscretionaryPayment";
+    protected static final String sCouncilAllTotalWeeklyAdditionalDiscretionaryPayment = "CouncilAllTotalWeeklyAdditionalDiscretionaryPayment";
+    protected static final String sCouncilAllTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero = "CouncilAllTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero";
+    protected static final String sCouncilAllTotalCount_WeeklyAdditionalDiscretionaryPaymentZero = "CouncilAllTotalCount_WeeklyAdditionalDiscretionaryPaymentZero";
+    protected static final String sCouncilAllAverageWeeklyAdditionalDiscretionaryPayment = "CouncilAllAverageWeeklyAdditionalDiscretionaryPayment";
+    protected static final String sCouncilHBTotalWeeklyAdditionalDiscretionaryPayment = "CouncilHBTotalWeeklyAdditionalDiscretionaryPayment";
+    protected static final String sCouncilHBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero = "CouncilHBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero";
+    protected static final String sCouncilHBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero = "CouncilHBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero";
+    protected static final String sCouncilHBAverageWeeklyAdditionalDiscretionaryPayment = "CouncilHBAverageWeeklyAdditionalDiscretionaryPayment";
+    protected static final String sCouncilCTBTotalWeeklyAdditionalDiscretionaryPayment = "CouncilCTBTotalWeeklyAdditionalDiscretionaryPayment";
+    protected static final String sCouncilCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero = "CouncilCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero";
+    protected static final String sCouncilCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero = "CouncilCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero";
+    protected static final String sCouncilCTBAverageWeeklyAdditionalDiscretionaryPayment = "CouncilCTBAverageWeeklyAdditionalDiscretionaryPayment";
     // WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability
-    protected static final String sAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
-    protected static final String sAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "AllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
-    protected static final String sAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "AllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
-    protected static final String sAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "AllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
-    protected static final String sHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
-    protected static final String sHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "HBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
-    protected static final String sHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "HBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
-    protected static final String sHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "HBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
-    protected static final String sCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
-    protected static final String sCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "CTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
-    protected static final String sCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "CTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
-    protected static final String sCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "CTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
+    protected static final String sCouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
+    protected static final String sCouncilAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "CouncilAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
+    protected static final String sCouncilAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "CouncilAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
+    protected static final String sCouncilAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "CouncilAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
+    protected static final String sCouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
+    protected static final String sCouncilHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "CouncilHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
+    protected static final String sCouncilHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "CouncilHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
+    protected static final String sCouncilHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "CouncilHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
+    protected static final String sCouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
+    protected static final String sCouncilCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "CouncilCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
+    protected static final String sCouncilCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "CouncilCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
+    protected static final String sCouncilCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "CouncilCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
     // Employment
-    protected static final String sAllTotalCount_ClaimantsEmployed = "AllTotalCount_ClaimantsEmployed";
-    protected static final String sAllPercentage_ClaimantsEmployed = "AllPercentage_ClaimantsEmployed";
-    protected static final String sAllTotalCount_ClaimantsSelfEmployed = "AllTotalCount_ClaimantsSelfEmployed";
-    protected static final String sAllPercentage_ClaimantsSelfEmployed = "AllPercentage_ClaimantsSelfEmployed";
-    protected static final String sAllTotalCount_ClaimantsStudents = "AllTotalCount_ClaimantsStudents";
-    protected static final String sAllPercentage_ClaimantsStudents = "AllPercentage_ClaimantsStudents";
-    protected static final String sAllTotalCount_LHACases = "AllTotalCount_LHACases";
-    protected static final String sAllPercentageOfAll_LHACases = "AllPercentageOfHB__LHACases";
-    protected static final String sHBTotalCount_ClaimantsEmployed = "HBTotalCount_ClaimantsEmployed";
-    protected static final String sHBPercentageOfHB_ClaimantsEmployed = "HBPercentageOfHB_ClaimantsEmployed";
-    protected static final String sHBTotalCountClaimantsSelfEmployed = "HBTotalCount_ClaimantsSelfEmployed";
-    protected static final String sHBPercentageOfHB_ClaimantsSelfEmployed = "HBPercentageOfHB_ClaimantsSelfEmployed";
-    protected static final String sHBTotalCountClaimantsStudents = "HBTotalCount_ClaimantsStudents";
-    protected static final String sHBPercentageOfHB_ClaimantsStudents = "HBPercentageOfHB_ClaimantsStudents";
-    protected static final String sHBTotalCount_LHACases = "HBTotalCount_LHACases";
-    protected static final String sHBPercentageOfHB_LHACases = "HBPercentageOfHB_LHACases";
-    protected static final String sCTBTotalCount_ClaimantsEmployed = "CTBTotalCount_ClaimantsEmployed";
-    protected static final String sCTBPercentageOfCTB_ClaimantsEmployed = "CTBPercentageOfCTB_ClaimantsEmployed";
-    protected static final String sCTBTotalCountClaimantsSelfEmployed = "CTBTotalCountClaimantsSelfEmployed";
-    protected static final String sCTBPercentageOfCTB_ClaimantsSelfEmployed = "CTBPercentageOfCTB_ClaimantsSelfEmployed";
-    protected static final String sCTBTotalCountClaimantsStudents = "CTBTotalCountClaimantsStudents";
-    protected static final String sCTBPercentageOfCTB_ClaimantsStudents = "CTBPercentageOfCTB_ClaimantsStudents";
-    protected static final String sCTBTotalCount_LHACases = "CTBTotalCountLHACases";
-    protected static final String sCTBPercentageOfCTB_LHACases = "CTBPercentageOfCTB_LHACases";
+    protected static final String sCouncilAllTotalCount_ClaimantsEmployed = "CouncilAllTotalCount_ClaimantsEmployed";
+    protected static final String sCouncilAllPercentage_ClaimantsEmployed = "CouncilAllPercentage_ClaimantsEmployed";
+    protected static final String sCouncilAllTotalCount_ClaimantsSelfEmployed = "CouncilAllTotalCount_ClaimantsSelfEmployed";
+    protected static final String sCouncilAllPercentage_ClaimantsSelfEmployed = "CouncilAllPercentage_ClaimantsSelfEmployed";
+    protected static final String sCouncilAllTotalCount_ClaimantsStudents = "CouncilAllTotalCount_ClaimantsStudents";
+    protected static final String sCouncilAllPercentage_ClaimantsStudents = "CouncilAllPercentage_ClaimantsStudents";
+    protected static final String sCouncilAllTotalCount_LHACases = "CouncilAllTotalCount_LHACases";
+    protected static final String sCouncilAllPercentageOfAll_LHACases = "CouncilAllPercentageOfHB__LHACases";
+    protected static final String sCouncilHBTotalCount_ClaimantsEmployed = "CouncilHBTotalCount_ClaimantsEmployed";
+    protected static final String sCouncilHBPercentageOfHB_ClaimantsEmployed = "CouncilHBPercentageOfHB_ClaimantsEmployed";
+    protected static final String sCouncilHBTotalCountClaimantsSelfEmployed = "CouncilHBTotalCount_ClaimantsSelfEmployed";
+    protected static final String sCouncilHBPercentageOfHB_ClaimantsSelfEmployed = "CouncilHBPercentageOfHB_ClaimantsSelfEmployed";
+    protected static final String sCouncilHBTotalCountClaimantsStudents = "CouncilHBTotalCount_ClaimantsStudents";
+    protected static final String sCouncilHBPercentageOfHB_ClaimantsStudents = "CouncilHBPercentageOfHB_ClaimantsStudents";
+    protected static final String sCouncilHBTotalCount_LHACases = "CouncilHBTotalCount_LHACases";
+    protected static final String sCouncilHBPercentageOfHB_LHACases = "CouncilHBPercentageOfHB_LHACases";
+    protected static final String sCouncilCTBTotalCount_ClaimantsEmployed = "CouncilCTBTotalCount_ClaimantsEmployed";
+    protected static final String sCouncilCTBPercentageOfCTB_ClaimantsEmployed = "CouncilCTBPercentageOfCTB_ClaimantsEmployed";
+    protected static final String sCouncilCTBTotalCountClaimantsSelfEmployed = "CouncilCTBTotalCountClaimantsSelfEmployed";
+    protected static final String sCouncilCTBPercentageOfCTB_ClaimantsSelfEmployed = "CouncilCTBPercentageOfCTB_ClaimantsSelfEmployed";
+    protected static final String sCouncilCTBTotalCountClaimantsStudents = "CouncilCTBTotalCountClaimantsStudents";
+    protected static final String sCouncilCTBPercentageOfCTB_ClaimantsStudents = "CouncilCTBPercentageOfCTB_ClaimantsStudents";
+    protected static final String sCouncilCTBTotalCount_LHACases = "CouncilCTBTotalCountLHACases";
+    protected static final String sCouncilCTBPercentageOfCTB_LHACases = "CouncilCTBPercentageOfCTB_LHACases";
     // Counts
-    protected static final String sAllCount0 = "AllCount0";
-    protected static final String sHBCount0 = "HBCount0";
-    protected static final String sCTBCount0 = "CTBOnlyCount0";
-    protected static final String sAllCount1 = "AllCount1";
-    protected static final String sHBCount1 = "HBCount1";
-    protected static final String sCTBCount1 = "CTBOnlyCount1";
-    protected static final String sTotalCount_SocialTTsClaimant = "TotalCount_SocialTTsClaimant";
-    protected static final String sPercentageOfAll_SocialTTsClaimant = "PercentageOfAll_SocialTTsClaimant";
-    protected static final String sPercentageOfHB_SocialTTsClaimant = "PercentageOfHB_SocialTTsClaimant";
-    protected static final String sTotalCount_PrivateDeregulatedTTsClaimant = "TotalCount_PrivateDeregulatedTTsClaimant";
-    protected static final String sPercentageOfAll_PrivateDeregulatedTTsClaimant = "PercentageOfAll_PrivateDeregulatedTTsClaimant";
-    protected static final String sPercentageOfHB_PrivateDeregulatedTTsClaimant = "PercentageOfHB_PrivateDeregulatedTTsClaimant";
-    protected static String[] sAllTotalCount_EthnicGroupClaimant;
-    protected static String[] sAllPercentage_EthnicGroupClaimant;
-    protected static String sAllPostcodeValidFormatCount;
-    protected static String sAllPostcodeValidCount;
+    protected static final String sCouncilAllCount0 = "CouncilAllCount0";
+    protected static final String sCouncilHBCount0 = "CouncilHBCount0";
+    protected static final String sCouncilCTBCount0 = "CouncilCTBOnlyCount0";
+    protected static final String sCouncilAllCount1 = "CouncilAllCount1";
+    protected static final String sCouncilHBCount1 = "CouncilHBCount1";
+    protected static final String sCouncilCTBCount1 = "CouncilCTBOnlyCount1";
+    protected static final String sCouncilTotalCount_SocialTTsClaimant = "CouncilTotalCount_SocialTTsClaimant";
+    protected static final String sCouncilPercentageOfAll_SocialTTsClaimant = "CouncilPercentageOfAll_SocialTTsClaimant";
+    protected static final String sCouncilPercentageOfHB_SocialTTsClaimant = "CouncilPercentageOfHB_SocialTTsClaimant";
+    protected static final String sCouncilTotalCount_PrivateDeregulatedTTsClaimant = "CouncilTotalCount_PrivateDeregulatedTTsClaimant";
+    protected static final String sCouncilPercentageOfAll_PrivateDeregulatedTTsClaimant = "CouncilPercentageOfAll_PrivateDeregulatedTTsClaimant";
+    protected static final String sCouncilPercentageOfHB_PrivateDeregulatedTTsClaimant = "CouncilPercentageOfHB_PrivateDeregulatedTTsClaimant";
+    protected static String[] sCouncilAllTotalCount_EthnicGroupClaimant;
+    protected static String[] sCouncilAllPercentage_EthnicGroupClaimant;
+    protected static String sCouncilAllPostcodeValidFormatCount;
+    protected static String sCouncilAllPostcodeValidCount;
     // Income
     // All
-    public static final String sAllTotalIncome = "AllTotalIncome";
-    public static String[] sTotalIncomeTT;
-    public static final String sAllTotalCount_IncomeNonZero = "AllTotalCount_IncomeNonZero";
-    public static final String sAllTotalCount_IncomeZero = "AllTotalCount_IncomeZero";
-    public static String[] sTotalCount_IncomeNonZeroTT;
-    public static String[] sTotalCount_IncomeZeroTT;
-    public static final String sAllAverageIncome = "AllAverageIncome";
-    public static String[] sAverageIncomeTT;
+    public static final String sCouncilAllTotalIncome = "CouncilAllTotalIncome";
+    public static String[] sCouncilTotalIncomeTT;
+    public static final String sCouncilAllTotalCount_IncomeNonZero = "CouncilAllTotalCount_IncomeNonZero";
+    public static final String sCouncilAllTotalCount_IncomeZero = "CouncilAllTotalCount_IncomeZero";
+    public static String[] sCouncilTotalCount_IncomeNonZeroTT;
+    public static String[] sCouncilTotalCount_IncomeZeroTT;
+    public static final String sCouncilAllAverageIncome = "CouncilAllAverageIncome";
+    public static String[] sCouncilAverageIncomeTT;
     //HB
-    public static final String sHBTotalIncome = "HBTotalIncome";
-    public static final String sHBTotalCount_IncomeNonZero = "HBTotalCount_IncomeNonZero";
-    public static final String sHBTotalCount_IncomeZero = "HBTotalCount_IncomeZero";
-    public static final String sHBAverageIncome = "HBAverageIncome";
+    public static final String sCouncilHBTotalIncome = "CouncilHBTotalIncome";
+    public static final String sCouncilHBTotalCount_IncomeNonZero = "CouncilHBTotalCount_IncomeNonZero";
+    public static final String sCouncilHBTotalCount_IncomeZero = "CouncilHBTotalCount_IncomeZero";
+    public static final String sCouncilHBAverageIncome = "CouncilHBAverageIncome";
     // CTB
-    public static final String sCTBTotalIncome = "CTBTotalIncome";
-    public static final String sCTBTotalCount_IncomeNonZero = "CTBTotalCount_IncomeNonZero";
-    public static final String sCTBTotalCount_IncomeZero = "CTBTotalCount_IncomeZero";
-    public static final String sCTBAverageIncome = "CTBAverageIncome";
+    public static final String sCouncilCTBTotalIncome = "CouncilCTBTotalIncome";
+    public static final String sCouncilCTBTotalCount_IncomeNonZero = "CouncilCTBTotalCount_IncomeNonZero";
+    public static final String sCouncilCTBTotalCount_IncomeZero = "CouncilCTBTotalCount_IncomeZero";
+    public static final String sCouncilCTBAverageIncome = "CouncilCTBAverageIncome";
+    
+    // RSL
+    // Counter Strings
+    // HouseholdSize
+    protected static final String sRSLAllTotalHouseholdSize = "RSLAllTotalHouseholdSize";
+    protected static final String sRSLAllAverageHouseholdSize = "RSLAllAverageHouseholdSize";
+    protected static final String sRSLHBTotalHouseholdSize = "RSLHBTotalHouseholdSize";
+    protected static final String sRSLHBAverageHouseholdSize = "RSLHBAverageHouseholdSize";
+    protected static final String sRSLCTBTotalHouseholdSize = "RSLCTBTotalHouseholdSize";
+    protected static final String sRSLCTBAverageHouseholdSize = "RSLCTBAverageHouseholdSize";
+    // PSI
+    protected static String[] sRSLAllTotalCount_PSI;
+    protected static String[] sRSLHBTotalCount_PSI;
+    protected static String[] sRSLCTBTotalCount_PSI;
+    protected static String[] sRSLAllPercentageOfAll_PSI;
+    protected static String[] sRSLHBPercentageOfHB_PSI;
+    protected static String[] sRSLCTBPercentageOfCTB_PSI;
+    // PSIByTT
+    protected static String[][] sRSLTotalCount_PSIByTT;
+    protected static String[][] sRSLPercentageOfAll_PSIByTT;
+    protected static String[][] sRSLPercentageOfHB_PSIByTT;
+    protected static String[][] sRSLPercentageOfCTB_PSIByTT;
+    // DisabilityPremiumAwardByTT
+    protected static String[] sRSLTotalCount_DisabilityPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfAll_DisabilityPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfHB_DisabilityPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfCTB_DisabilityPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfTT_DisabilityPremiumAwardByTT;
+    // SevereDisabilityPremiumAwardByTT
+    protected static String[] sRSLTotalCount_SevereDisabilityPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfAll_SevereDisabilityPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfHB_SevereDisabilityPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfCTB_SevereDisabilityPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfTT_SevereDisabilityPremiumAwardByTT;
+    // DisabledChildPremiumAwardByTT
+    protected static String[] sRSLTotalCount_DisabledChildPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfAll_DisabledChildPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfHB_DisabledChildPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfCTB_DisabledChildPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfTT_DisabledChildPremiumAwardByTT;
+    // EnhancedDisabilityPremiumAwardByTT
+    protected static String[] sRSLTotalCount_EnhancedDisabilityPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfAll_EnhancedDisabilityPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfHB_EnhancedDisabilityPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT;
+    protected static String[] sRSLPercentageOfTT_EnhancedDisabilityPremiumAwardByTT;
+    // DisabilityAwards
+    protected static final String sRSLTotalCount_DisabilityAward = "RSLTotalCount_DisabilityAward";
+    protected static final String sRSLPercentageOfAll_DisabilityAward = "RSLPercentageOfAll_DisabilityAward";
+    // DisabilityPremiumAwards
+    protected static final String sRSLTotalCount_DisabilityPremiumAward = "RSLTotalCount_DisabilityPremiumAward";
+    protected static final String sRSLPercentageOfAll_DisabilityPremiumAward = "RSLPercentageOfAll_DisabilityPremiumAward";
+    // SevereDisabilityPremiumAwards
+    protected static final String sRSLTotalCount_SevereDisabilityPremiumAward = "RSLTotalCount_SevereDisabilityPremiumAward";
+    protected static final String sRSLPercentageOfAll_SevereDisabilityPremiumAward = "RSLPercentageOfAll_SevereDisabilityPremiumAward";
+    // DisabledChildPremiumAwards
+    protected static final String sRSLTotalCount_DisabledChildPremiumAward = "RSLTotalCount_DisabledChildPremiumAward";
+    protected static final String sRSLPercentageOfAll_DisabledChildPremiumAward = "RSLPercentageOfAll_DisabledChildPremiumAward";
+    // EnhancedDisabilityPremiumAwards
+    protected static final String sRSLTotalCount_EnhancedDisabilityPremiumAward = "RSLTotalCount_EnhancedDisabilityPremiumAward";
+    protected static final String sRSLPercentageOfAll_EnhancedDisabilityPremiumAward = "RSLPercentageOfAll_EnhancedDisabilityPremiumAward";
+    // DisabilityPremiumAwardHBTTs
+    protected static final String sRSLTotalCount_DisabilityPremiumAwardHBTTs = "RSLTotalCount_DisabilityPremiumAwardHBTTs";
+    protected static final String sRSLPercentageOfAll_DisabilityPremiumAwardHBTTs = "RSLPercentageOfAll_DisabilityPremiumAwardHBTTs";
+    protected static final String sRSLPercentageOfHB_DisabilityPremiumAwardHBTTs = "RSLPercentageOfHB_DisabilityPremiumAwardHBTTs";
+    // SevereDisabilityPremiumAwardHBTTs
+    protected static final String sRSLTotalCount_SevereDisabilityPremiumAwardHBTTs = "RSLTotalCount_SevereDisabilityPremiumAwardHBTTs";
+    protected static final String sRSLPercentageOfAll_SevereDisabilityPremiumAwardHBTTs = "RSLPercentageOfAll_SevereDisabilityPremiumAwardHBTTs";
+    protected static final String sRSLPercentageOfHB_SevereDisabilityPremiumAwardHBTTs = "RSLPercentageOfHB_SevereDisabilityPremiumAwardHBTTs";
+    // DisabledChildPremiumAwardHBTTs
+    protected static final String sRSLTotalCount_DisabledChildPremiumAwardHBTTs = "RSLTotalCount_DisabledChildPremiumAwardHBTTs";
+    protected static final String sRSLPercentageOfAll_DisabledChildPremiumAwardHBTTs = "RSLPercentageOfAll_DisabledChildPremiumAwardHBTTs";
+    protected static final String sRSLPercentageOfHB_DisabledChildPremiumAwardHBTTs = "RSLPercentageOfHB_DisabledChildPremiumAwardHBTTs";
+    // EnhancedDisabilityPremiumAwardHBTTs
+    protected static final String sRSLTotalCount_EnhancedDisabilityPremiumAwardHBTTs = "RSLTotalCount_EnhancedDisabilityPremiumAwardHBTTs";
+    protected static final String sRSLPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs = "RSLPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs";
+    protected static final String sRSLPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs = "RSLPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs";
+    // DisabilityPremiumAwardCTBTTs
+    protected static final String sRSLTotalCount_DisabilityPremiumAwardCTBTTs = "RSLTotalCount_DisabilityPremiumAwardCTBTTs";
+    protected static final String sRSLPercentageOfAll_DisabilityPremiumAwardCTBTTs = "RSLPercentageOfAll_DisabilityPremiumAwardCTBTTs";
+    protected static final String sRSLPercentageOfCTB_DisabilityPremiumAwardCTBTTs = "RSLPercentageOfCTB_DisabilityPremiumAwardCTBTTs";
+    // SevereDisabilityPremiumAwardCTBTTs
+    protected static final String sRSLTotalCount_SevereDisabilityPremiumAwardCTBTTs = "RSLTotalCount_SevereDisabilityPremiumAwardCTBTTs";
+    protected static final String sRSLPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs = "RSLPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs";
+    protected static final String sRSLPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs = "RSLPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs";
+    // DisabledChildPremiumAwardCTBTTs
+    protected static final String sRSLTotalCount_DisabledChildPremiumAwardCTBTTs = "RSLTotalCount_DisabledChildPremiumAwardCTBTTs";
+    protected static final String sRSLPercentageOfAll_DisabledChildPremiumAwardCTBTTs = "RSLPercentageOfAll_DisabledChildPremiumAwardCTBTTs";
+    protected static final String sRSLPercentageOfCTB_DisabledChildPremiumAwardCTBTTs = "RSLPercentageOfCTB_DisabledChildPremiumAwardCTBTTs";
+    // EnhancedDisabilityPremiumAwardCTBTTs
+    protected static final String sRSLTotalCount_EnhancedDisabilityPremiumAwardCTBTTs = "RSLTotalCount_EnhancedDisabilityPremiumAwardCTBTTs";
+    protected static final String sRSLPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs = "RSLPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs";
+    protected static final String sRSLPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs = "RSLPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs";
+    // DisabilityPremiumAwardSocialTTs
+    protected static final String sRSLTotalCount_DisabilityPremiumAwardSocialTTs = "RSLTotalCount_DisabilityPremiumAwardSocialTTs";
+    protected static final String sRSLPercentageOfAll_DisabilityPremiumAwardSocialTTs = "RSLPercentageOfAll_DisabilityPremiumAwardSocialTTs";
+    protected static final String sRSLPercentageOfHB_DisabilityPremiumAwardSocialTTs = "RSLPercentageOfHB_DisabilityPremiumAwardSocialTTs";
+    protected static final String sRSLPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs = "RSLPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs";
+    // DisabilityPremiumAwardPrivateDeregulatedTTs
+    protected static final String sRSLTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs = "RSLTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs = "RSLsPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs = "RSLsPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs = "RSLPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs";
+    // SevereDisabilityPremiumAwardSocialTTs
+    protected static final String sRSLTotalCount_SevereDisabilityPremiumAwardSocialTTs = "RSLTotalCount_SevereDisabilityPremiumAwardSocialTTs";
+    protected static final String sRSLPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs = "RSLPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs";
+    protected static final String sRSLPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs = "RSLPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs";
+    protected static final String sRSLPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs = "RSLPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs";
+    // SevereDisabilityPremiumAwardPrivateDeregulatedTTs
+    protected static final String sRSLTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "RSLTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "RSLsPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "RSLsPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "RSLPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
+    // DisabledChildPremiumAwardSocialTTs
+    protected static final String sRSLTotalCount_DisabledChildPremiumAwardSocialTTs = "RSLTotalCount_DisabledChildPremiumAwardSocialTTs";
+    protected static final String sRSLPercentageOfAll_DisabledChildPremiumAwardSocialTTs = "RSLPercentageOfAll_DisabledChildPremiumAwardSocialTTs";
+    protected static final String sRSLPercentageOfHB_DisabledChildPremiumAwardSocialTTs = "RSLPercentageOfHB_DisabledChildPremiumAwardSocialTTs";
+    protected static final String sRSLPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs = "RSLPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs";
+    // DisabledChildPremiumAwardPrivateDeregulatedTTs
+    protected static final String sRSLTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs = "RSLTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs = "RSLsPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs = "RSLsPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs = "RSLPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs";
+    // EnhancedDisabilityPremiumAwardSocialTTs
+    protected static final String sRSLTotalCount_EnhancedDisabilityPremiumAwardSocialTTs = "RSLTotalCount_EnhancedDisabilityPremiumAwardSocialTTs";
+    protected static final String sRSLPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs = "RSLPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs";
+    protected static final String sRSLPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs = "RSLPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs";
+    protected static final String sRSLPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs = "RSLPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs";
+    // EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs
+    protected static final String sRSLTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "RSLTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "RSLsPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "RSLsPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "RSLPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
+    // DisabilityAwardByTT
+    protected static String[] sRSLTotalCount_DisabilityAwardByTT;
+    protected static String[] sRSLPercentageOfAll_DisabilityAwardByTT;
+    protected static String[] sRSLPercentageOfHB_DisabilityAwardByTT;
+    protected static String[] sRSLPercentageOfCTB_DisabilityAwardByTT;
+    protected static String[] sRSLPercentageOfTT_DisabilityAwardByTT;
+    // DisabilityAwardHBTTs
+    protected static final String sRSLTotalCount_DisabilityAwardHBTTs = "RSLTotalCount_DisabilityAwardHBTTs";
+    protected static final String sRSLPercentageOfAll_DisabilityAwardHBTTs = "RSLPercentageOfAll_DisabilityAwardHBTTs";
+    protected static final String sRSLPercentageOfHB_DisabilityAwardHBTTs = "RSLPercentageOfHB_DisabilityAwardHBTTs";
+    // DisabilityAwardCTBTTs
+    protected static final String sRSLTotalCount_DisabilityAwardCTBTTs = "RSLTotalCount_DisabilityAwardCTBTTs";
+    protected static final String sRSLPercentageOfAll_DisabilityAwardCTBTTs = "RSLPercentageOfAll_DisabilityAwardCTBTTs";
+    protected static final String sRSLPercentageOfCTB_DisabilityAwardCTBTTs = "RSLPercentageOfCTB_DisabilityAwardCTBTTs";
+    // DisabilityAwardSocialTTs
+    protected static final String sRSLTotalCount_DisabilityAwardSocialTTs = "RSLTotalCount_DisabilityAwardSocialTTs";
+    protected static final String sRSLPercentageOfAll_DisabilityAwardSocialTTs = "RSLPercentageOfAll_DisabilityAwardSocialTTs";
+    protected static final String sRSLPercentageOfHB_DisabilityAwardSocialTTs = "RSLPercentageOfHB_DisabilityAwardSocialTTs";
+    protected static final String sRSLPercentageOfSocialTTs_DisabilityAwardSocialTTs = "RSLsPercentageOfSocialTTs_DisabilityAwardSocialTTs";
+    // DisabilityAwardPrivateDeregulatedTTs
+    protected static final String sRSLTotalCount_DisabilityAwardPrivateDeregulatedTTs = "RSLTotalCount_DisabilityAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs = "RSLsPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs = "RSLsPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs = "RSLPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs";
+    // HBEntitlement
+    public static final String sRSLTotalWeeklyHBEntitlement = "RSLTotalWeeklyHBEntitlement";
+    public static final String sRSLTotalCount_WeeklyHBEntitlementNonZero = "RSLTotalCount_WeeklyHBEntitlementNonZero";
+    public static final String sRSLTotalCount_WeeklyHBEntitlementZero = "RSLTotalCount_WeeklyHBEntitlementZero";
+    public static final String sRSLAverageWeeklyHBEntitlement = "RSLAverageWeeklyHBEntitlement";
+    // CTBEntitlement
+    public static final String sRSLTotalWeeklyCTBEntitlement = "RSLTotalWeeklyCTBEntitlement";
+    public static final String sRSLTotalCount_WeeklyCTBEntitlementNonZero = "RSLTotalCount_WeeklyCTBEntitlementNonZero";
+    public static final String sRSLTotalCount_WeeklyCTBEntitlementZero = "RSLTotalCount_WeeklyCTBEntitlementZero";
+    public static final String sRSLAverageWeeklyCTBEntitlement = "RSLAverageWeeklyCTBEntitlement";
+    // WeeklyEligibleRentAmount
+    public static final String sRSLAllTotalWeeklyEligibleRentAmount = "RSLAllTotalWeeklyEligibleRentAmount";
+    public static String[] sRSLTotalWeeklyEligibleRentAmountTT;
+    public static final String sRSLAllTotalCount_WeeklyEligibleRentAmountNonZero = "RSLAllTotalCount_WeeklyEligibleRentAmountNonZero";
+    public static String[] sRSLTotalCount_WeeklyEligibleRentAmountNonZeroTT;
+    public static final String sRSLAllTotalCount_WeeklyEligibleRentAmountZero = "RSLAllTotalCount_WeeklyEligibleRentAmountZero";
+    public static String[] sRSLTotalCount_WeeklyEligibleRentAmountZeroTT;
+    public static final String sRSLAllAverageWeeklyEligibleRentAmount = "RSLAllAverageWeeklyEligibleRentAmount";
+    public static String[] sRSLAverageWeeklyEligibleRentAmountTT;
+    // WeeklyHBEntitlement
+    public static final String sRSLHBTotalWeeklyHBEntitlement = "RSLHBTotalWeeklyHBEntitlement";
+    public static final String sRSLHBTotalCount_WeeklyHBEntitlementNonZero = "RSLHBTotalCount_WeeklyHBEntitlementNonZero";
+    public static final String sRSLHBTotalCount_WeeklyHBEntitlementZero = "RSLHBTotalCount_WeeklyHBEntitlementZero";
+    public static final String sRSLHBAverageWeeklyHBEntitlement = "RSLHBAverageWeeklyHBEntitlement";
+    public static final String sRSLCTBTotalWeeklyHBEntitlement = "RSLCTBTotalWeeklyHBEntitlement";
+    public static final String sRSLCTBTotalCount_WeeklyHBEntitlementNonZero = "RSLCTBTotalCount_WeeklyHBEntitlementNonZero";
+    public static final String sRSLCTBTotalCount_WeeklyHBEntitlementZero = "RSLCTBTotalCount_WeeklyHBEntitlementZero";
+    public static final String sRSLCTBAverageWeeklyHBEntitlement = "RSLCTBAverageWeeklyHBEntitlement";
+    // WeeklyCTBEntitlement
+    public static final String sRSLHBTotalWeeklyCTBEntitlement = "RSLHBTotalWeeklyCTBEntitlement";
+    public static final String sRSLHBTotalCount_WeeklyCTBEntitlementNonZero = "RSLHBTotalCount_WeeklyCTBEntitlementNonZero";
+    public static final String sRSLHBTotalCount_WeeklyCTBEntitlementZero = "RSLHBTotalCount_WeeklyCTBEntitlementZero";
+    public static final String sRSLHBAverageWeeklyCTBEntitlement = "RSLHBAverageWeeklyCTBEntitlement";
+    public static final String sRSLCTBTotalWeeklyCTBEntitlement = "RSLCTBTotalWeeklyCTBEntitlement";
+    public static final String sRSLCTBTotalCount_WeeklyCTBEntitlementNonZero = "RSLCTBTotalCount_WeeklyCTBEntitlementNonZero";
+    public static final String sRSLCTBTotalCount_WeeklyCTBEntitlementZero = "RSLCTBTotalCount_WeeklyCTBEntitlementZero";
+    public static final String sRSLCTBAverageWeeklyCTBEntitlement = "RSLCTBAverageWeeklyCTBEntitlement";
+    // WeeklyEligibleRentAmount
+    public static final String sRSLHBTotalWeeklyEligibleRentAmount = "RSLHBTotalWeeklyEligibleRentAmount";
+    public static final String sRSLHBTotalCount_WeeklyEligibleRentAmountNonZero = "RSLHBTotalCount_WeeklyEligibleRentAmountNonZero";
+    public static final String sRSLHBTotalCount_WeeklyEligibleRentAmountZero = "RSLHBTotalCount_WeeklyEligibleRentAmountZero";
+    public static final String sRSLHBAverageWeeklyEligibleRentAmount = "RSLHBAverageWeeklyEligibleRentAmount";
+    public static final String sRSLCTBTotalWeeklyEligibleRentAmount = "RSLCTBTotalWeeklyEligibleRentAmount";
+    public static final String sRSLCTBTotalCount_WeeklyEligibleRentAmountNonZero = "RSLCTBTotalCount_WeeklyEligibleRentAmountNonZero";
+    public static final String sRSLCTBTotalCount_WeeklyEligibleRentAmountZero = "RSLCTBTotalCount_WeeklyEligibleRentAmountZero";
+    public static final String sRSLCTBAverageWeeklyEligibleRentAmount = "RSLCTBAverageWeeklyEligibleRentAmount";
+    // WeeklyEligibleCouncilTaxAmount
+    protected static final String sRSLAllTotalWeeklyEligibleCouncilTaxAmount = "RSLAllTotalWeeklyEligibleCouncilTaxAmount";
+    protected static final String sRSLAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = "RSLAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero";
+    protected static final String sRSLAllTotalCount_WeeklyEligibleCouncilTaxAmountZero = "RSLAllTotalCount_WeeklyEligibleCouncilTaxAmountZero";
+    protected static final String sRSLAllAverageWeeklyEligibleCouncilTaxAmount = "RSLAllAverageWeeklyEligibleCouncilTaxAmount";
+    protected static final String sRSLHBTotalWeeklyEligibleCouncilTaxAmount = "RSLHBTotalCount_WeeklyEligibleCouncilTaxAmount";
+    protected static final String sRSLHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = "RSLHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero";
+    protected static final String sRSLHBTotalCount_WeeklyEligibleCouncilTaxAmountZero = "RSLHBTotalCount_WeeklyEligibleCouncilTaxAmountZero";
+    protected static final String sRSLHBAverageWeeklyEligibleCouncilTaxAmount = "RSLHBAverageWeeklyEligibleCouncilTaxAmount";
+    protected static final String sRSLCTBTotalWeeklyEligibleCouncilTaxAmount = "RSLCTBTotalWeeklyEligibleCouncilTaxAmount";
+    protected static final String sRSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = "RSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero";
+    protected static final String sRSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero = "RSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero";
+    protected static final String sRSLCTBAverageWeeklyEligibleCouncilTaxAmount = "RSLCTBAverageWeeklyEligibleCouncilTaxAmount";
+    // ContractualRentAmount
+    protected static final String sRSLAllTotalContractualRentAmount = "RSLAllTotalContractualRentAmount";
+    protected static final String sRSLAllTotalCountContractualRentAmountNonZeroCount = "RSLAllTotalCount_ContractualRentAmountNonZero";
+    protected static final String sRSLAllTotalCountContractualRentAmountZeroCount = "RSLAllTotalCount_ContractualRentAmountZero";
+    protected static final String sRSLAllAverageContractualRentAmount = "RSLAllAverageContractualRentAmount";
+    protected static final String sRSLHBTotalContractualRentAmount = "RSLHBTotalContractualRentAmount";
+    protected static final String sRSLHBTotalCountContractualRentAmountNonZeroCount = "RSLHBTotalCount_ContractualRentAmountNonZero";
+    protected static final String sRSLHBTotalCountContractualRentAmountZeroCount = "RSLHBTotalCount_ContractualRentAmountZero";
+    protected static final String sRSLHBAverageContractualRentAmount = "RSLHBAverageContractualRentAmount";
+    protected static final String sRSLCTBTotalContractualRentAmount = "RSLCTBTotalContractualRentAmount";
+    protected static final String sRSLCTBTotalCountContractualRentAmountNonZeroCount = "RSLCTBTotalCount_ContractualRentAmountNonZero";
+    protected static final String sRSLCTBTotalCountContractualRentAmountZeroCount = "RSLCTBTotalCount_ContractualRentAmountZero";
+    protected static final String sRSLCTBAverageContractualRentAmount = "RSLCTBAverageContractualRentAmount";
+    // WeeklyAdditionalDiscretionaryPayment
+    protected static final String sRSLAllTotalWeeklyAdditionalDiscretionaryPayment = "RSLAllTotalWeeklyAdditionalDiscretionaryPayment";
+    protected static final String sRSLAllTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero = "RSLAllTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero";
+    protected static final String sRSLAllTotalCount_WeeklyAdditionalDiscretionaryPaymentZero = "RSLAllTotalCount_WeeklyAdditionalDiscretionaryPaymentZero";
+    protected static final String sRSLAllAverageWeeklyAdditionalDiscretionaryPayment = "RSLAllAverageWeeklyAdditionalDiscretionaryPayment";
+    protected static final String sRSLHBTotalWeeklyAdditionalDiscretionaryPayment = "RSLHBTotalWeeklyAdditionalDiscretionaryPayment";
+    protected static final String sRSLHBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero = "RSLHBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero";
+    protected static final String sRSLHBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero = "RSLHBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero";
+    protected static final String sRSLHBAverageWeeklyAdditionalDiscretionaryPayment = "RSLHBAverageWeeklyAdditionalDiscretionaryPayment";
+    protected static final String sRSLCTBTotalWeeklyAdditionalDiscretionaryPayment = "RSLCTBTotalWeeklyAdditionalDiscretionaryPayment";
+    protected static final String sRSLCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero = "RSLCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero";
+    protected static final String sRSLCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero = "RSLCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero";
+    protected static final String sRSLCTBAverageWeeklyAdditionalDiscretionaryPayment = "RSLCTBAverageWeeklyAdditionalDiscretionaryPayment";
+    // WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability
+    protected static final String sRSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "RSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
+    protected static final String sRSLAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "RSLAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
+    protected static final String sRSLAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "RSLAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
+    protected static final String sRSLAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "RSLAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
+    protected static final String sRSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "RSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
+    protected static final String sRSLHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "RSLHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
+    protected static final String sRSLHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "RSLHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
+    protected static final String sRSLHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "RSLHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
+    protected static final String sRSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
+    protected static final String sRSLCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero = "RSLCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero";
+    protected static final String sRSLCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero = "RSLCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero";
+    protected static final String sRSLCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = "RSLCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability";
+    // Employment
+    protected static final String sRSLAllTotalCount_ClaimantsEmployed = "RSLAllTotalCount_ClaimantsEmployed";
+    protected static final String sRSLAllPercentage_ClaimantsEmployed = "RSLAllPercentage_ClaimantsEmployed";
+    protected static final String sRSLAllTotalCount_ClaimantsSelfEmployed = "RSLAllTotalCount_ClaimantsSelfEmployed";
+    protected static final String sRSLAllPercentage_ClaimantsSelfEmployed = "RSLAllPercentage_ClaimantsSelfEmployed";
+    protected static final String sRSLAllTotalCount_ClaimantsStudents = "RSLAllTotalCount_ClaimantsStudents";
+    protected static final String sRSLAllPercentage_ClaimantsStudents = "RSLAllPercentage_ClaimantsStudents";
+    protected static final String sRSLAllTotalCount_LHACases = "RSLAllTotalCount_LHACases";
+    protected static final String sRSLAllPercentageOfAll_LHACases = "RSLAllPercentageOfHB__LHACases";
+    protected static final String sRSLHBTotalCount_ClaimantsEmployed = "RSLHBTotalCount_ClaimantsEmployed";
+    protected static final String sRSLHBPercentageOfHB_ClaimantsEmployed = "RSLHBPercentageOfHB_ClaimantsEmployed";
+    protected static final String sRSLHBTotalCountClaimantsSelfEmployed = "RSLHBTotalCount_ClaimantsSelfEmployed";
+    protected static final String sRSLHBPercentageOfHB_ClaimantsSelfEmployed = "RSLHBPercentageOfHB_ClaimantsSelfEmployed";
+    protected static final String sRSLHBTotalCountClaimantsStudents = "RSLHBTotalCount_ClaimantsStudents";
+    protected static final String sRSLHBPercentageOfHB_ClaimantsStudents = "RSLHBPercentageOfHB_ClaimantsStudents";
+    protected static final String sRSLHBTotalCount_LHACases = "RSLHBTotalCount_LHACases";
+    protected static final String sRSLHBPercentageOfHB_LHACases = "RSLHBPercentageOfHB_LHACases";
+    protected static final String sRSLCTBTotalCount_ClaimantsEmployed = "RSLCTBTotalCount_ClaimantsEmployed";
+    protected static final String sRSLCTBPercentageOfCTB_ClaimantsEmployed = "RSLCTBPercentageOfCTB_ClaimantsEmployed";
+    protected static final String sRSLCTBTotalCountClaimantsSelfEmployed = "RSLCTBTotalCountClaimantsSelfEmployed";
+    protected static final String sRSLCTBPercentageOfCTB_ClaimantsSelfEmployed = "RSLCTBPercentageOfCTB_ClaimantsSelfEmployed";
+    protected static final String sRSLCTBTotalCountClaimantsStudents = "RSLCTBTotalCountClaimantsStudents";
+    protected static final String sRSLCTBPercentageOfCTB_ClaimantsStudents = "RSLCTBPercentageOfCTB_ClaimantsStudents";
+    protected static final String sRSLCTBTotalCount_LHACases = "RSLCTBTotalCountLHACases";
+    protected static final String sRSLCTBPercentageOfCTB_LHACases = "RSLCTBPercentageOfCTB_LHACases";
+    // Counts
+    protected static final String sRSLAllCount0 = "RSLAllCount0";
+    protected static final String sRSLHBCount0 = "RSLHBCount0";
+    protected static final String sRSLCTBCount0 = "RSLCTBOnlyCount0";
+    protected static final String sRSLAllCount1 = "RSLAllCount1";
+    protected static final String sRSLHBCount1 = "RSLHBCount1";
+    protected static final String sRSLCTBCount1 = "RSLCTBOnlyCount1";
+    protected static final String sRSLTotalCount_SocialTTsClaimant = "RSLTotalCount_SocialTTsClaimant";
+    protected static final String sRSLPercentageOfAll_SocialTTsClaimant = "RSLPercentageOfAll_SocialTTsClaimant";
+    protected static final String sRSLPercentageOfHB_SocialTTsClaimant = "RSLPercentageOfHB_SocialTTsClaimant";
+    protected static final String sRSLTotalCount_PrivateDeregulatedTTsClaimant = "RSLTotalCount_PrivateDeregulatedTTsClaimant";
+    protected static final String sRSLPercentageOfAll_PrivateDeregulatedTTsClaimant = "RSLPercentageOfAll_PrivateDeregulatedTTsClaimant";
+    protected static final String sRSLPercentageOfHB_PrivateDeregulatedTTsClaimant = "RSLPercentageOfHB_PrivateDeregulatedTTsClaimant";
+    protected static String[] sRSLAllTotalCount_EthnicGroupClaimant;
+    protected static String[] sRSLAllPercentage_EthnicGroupClaimant;
+    protected static String sRSLAllPostcodeValidFormatCount;
+    protected static String sRSLAllPostcodeValidCount;
+    // Income
+    // All
+    public static final String sRSLAllTotalIncome = "RSLAllTotalIncome";
+    public static String[] sRSLTotalIncomeTT;
+    public static final String sRSLAllTotalCount_IncomeNonZero = "RSLAllTotalCount_IncomeNonZero";
+    public static final String sRSLAllTotalCount_IncomeZero = "RSLAllTotalCount_IncomeZero";
+    public static String[] sRSLTotalCount_IncomeNonZeroTT;
+    public static String[] sRSLTotalCount_IncomeZeroTT;
+    public static final String sRSLAllAverageIncome = "RSLAllAverageIncome";
+    public static String[] sRSLAverageIncomeTT;
+    //HB
+    public static final String sRSLHBTotalIncome = "RSLHBTotalIncome";
+    public static final String sRSLHBTotalCount_IncomeNonZero = "RSLHBTotalCount_IncomeNonZero";
+    public static final String sRSLHBTotalCount_IncomeZero = "RSLHBTotalCount_IncomeZero";
+    public static final String sRSLHBAverageIncome = "RSLHBAverageIncome";
+    // CTB
+    public static final String sRSLCTBTotalIncome = "RSLCTBTotalIncome";
+    public static final String sRSLCTBTotalCount_IncomeNonZero = "RSLCTBTotalCount_IncomeNonZero";
+    public static final String sRSLCTBTotalCount_IncomeZero = "RSLCTBTotalCount_IncomeZero";
+    public static final String sRSLCTBAverageIncome = "RSLCTBAverageIncome";
 
     // Files
-    protected static final String sSHBEFilename00 = "SHBEFilename00";
-    protected static final String sSHBEFilename0 = "SHBEFilename0";
-    protected static final String sSHBEFilename1 = "SHBEFilename1";
+    protected static final String sCouncilFilename00 = "CouncilFilename00";
+    protected static final String sCouncilFilename0 = "CouncilFilename0";
+    protected static final String sCouncilFilename1 = "CouncilFilename1";
+    protected static final String sRSLFilename00 = "RSLFilename00";
+    protected static final String sRSLFilename0 = "RSLFilename0";
+    protected static final String sRSLFilename1 = "RSLFilename1";
 
+    // Strings0
+    // All
+    protected static final String sAllUOCount00 = "AllUOCount00";
+    protected static final String sAllUOCount0 = "AllUOCount0";
+    protected static final String sAllUOCount1 = "AllUOCount1";
+    protected static final String sAllUOLinkedRecordCount00 = "AllUOLinkedRecordCount00";
+    protected static final String sAllUOLinkedRecordCount0 = "AllUOLinkedRecordCount0";
+    protected static final String sAllUOLinkedRecordCount1 = "AllUOLinkedRecordCount1";
+    // Council
+    protected static final String sCouncilCount00 = "CouncilCount00";
+    protected static final String sCouncilCount0 = "CouncilCount0";
+    protected static final String sCouncilCount1 = "CouncilCount1";
+    protected static final String sCouncilLinkedRecordCount00 = "CouncilLinkedRecordCount00";
+    protected static final String sCouncilLinkedRecordCount0 = "CouncilLinkedRecordCount0";
+    protected static final String sCouncilLinkedRecordCount1 = "CouncilLinkedRecordCount1";    
+    protected static final String sCouncilTotal_RentArrears = "CouncilTotal_RentArrears";
+    protected static final String sCouncilTotalCount_RentArrears = "CouncilTotalCount_RentArrears";
+    protected static final String sCouncilTotalCount_RentArrearsZero = "CouncilTotalCount_RentArrearsZero";
+    protected static final String sCouncilTotalCount_RentArrearsNonZero = "CouncilTotalCount_RentArrearsNonZero";
+    protected static final String sCouncilAverage_RentArrears = "CouncilAverage_RentArrears";
+    protected static final String sCouncilAverage_NonZeroRentArrears = "CouncilAverage_NonZeroRentArrears";
+    // RSL
+    protected static final String sRSLCount00 = "RSLCount00";
+    protected static final String sRSLCount0 = "RSLCount0";
+    protected static final String sRSLCount1 = "RSLCount1";
+    protected static final String sRSLLinkedRecordCount00 = "RSLLinkedRecordCount00";
+    protected static final String sRSLLinkedRecordCount0 = "RSLLinkedRecordCount0";
+    protected static final String sRSLLinkedRecordCount1 = "RSLLinkedRecordCount1";
+    
     // Demographics
     // Ethnicity
-    protected static String[] sHBTotalCount_EthnicGroupClaimant;
-    protected static String[] sHBPercentage_EthnicGroupClaimant;
+    protected static String[] sRSLHBTotalCount_EthnicGroupClaimant;
+    protected static String[] sRSLHBPercentage_EthnicGroupClaimant;
+    protected static String[] sCouncilHBTotalCount_EthnicGroupClaimant;
+    protected static String[] sCouncilHBPercentage_EthnicGroupClaimant;
 
-    protected static String[] sTotalCount_ClaimantTT;
-    protected static String[] sPercentageOfAll_ClaimantTT;
-    protected static String[] sPercentageOfHB_ClaimantTT;
-    protected static String[] sPercentageOfCTB_ClaimantTT;
-    protected static String sHBPostcodeValidFormatCount;
-    protected static String sHBPostcodeValidCount;
+    // Strings1
+    // Council
+    protected static String[] sCouncilTotalCount_ClaimantTT;
+    protected static String[] sCouncilPercentageOfAll_ClaimantTT;
+    protected static String[] sCouncilPercentageOfHB_ClaimantTT;
+    protected static String[] sCouncilPercentageOfCTB_ClaimantTT;
+    protected static String sCouncilHBPostcodeValidFormatCount;
+    protected static String sCouncilHBPostcodeValidCount;
     // CTB
-//    protected static String CTBFemaleClaimantCountString;
-//    protected static String CTBMaleClaimantCountString;
-//    protected static String CTBDisabledClaimantCountString;
-//    protected static String CTBFemaleDisabledClaimantCountString;
-//    protected static String CTBMaleDisabledClaimantCountString;
-    protected static String[] sCTBTotalCount_EthnicGroupClaimant;
-    protected static String[] sCTBPercentageEthnicGroupClaimant;
-    protected static String[] sCTBTotalCount_TTClaimant;
-    protected static String[] sCTBPercentageOfAll_TTClaimant;
-    protected static String sCTBPostcodeValidFormatCount;
-    protected static String sCTBPostcodeValidCount;
+    protected static String[] sCouncilTBTotalCount_EthnicGroupClaimant;
+    protected static String[] sCouncilCTBPercentageEthnicGroupClaimant;
+    protected static String[] sCouncilCTBTotalCountTTClaimant;
+    protected static String[] sCouncilCTBPercentageOfAllTTClaimant;
+    protected static String sCouncilCTBPostcodeValidFormatCount;
+    protected static String sCouncilCTBPostcodeValidCount;
+    // RSL
+    protected static String[] sRSLTotalCount_ClaimantTT;
+    protected static String[] sRSLPercentageOfAll_ClaimantTT;
+    protected static String[] sRSLPercentageOfHB_ClaimantTT;
+    protected static String[] sRSLPercentageOfCTB_ClaimantTT;
+    protected static String sRSLHBPostcodeValidFormatCount;
+    protected static String sRSLHBPostcodeValidCount;
+    // CTB
+    protected static String[] sRSLCTBTotalCount_EthnicGroupClaimant;
+    protected static String[] sRSLCTBPercentageEthnicGroupClaimant;
+    protected static String[] sRSLCTBTotalCountTTClaimant;
+    protected static String[] sRSLCTBPercentageOfAllTTClaimant;
+    protected static String sRSLCTBPostcodeValidFormatCount;
+    protected static String sRSLCTBPostcodeValidCount;
 
     // Compare 2 Times
+    // Council
     // All TT
-    protected static final String sAllTotalCount_TTChangeClaimant = "AllTotalCount_TTChangeClaimant";
-    protected static final String sAllPercentageOfAll_TTChangeClaimant = "AllPercentageOfAll_TTChangeClaimant";
-    protected static final String sTotalCount_HBTTsToCTBTTs = "TotalCount_HBTTsToCTBTTs";
-    protected static final String sPercentageOfHB_HBTTsToCTBTTs = "PercentageOfHB_HBTTsToCTBTTs";
-    protected static final String sTotalCount_CTBTTsToHBTTs = "TotalCount_CTBTTsToHBTTs";
-    protected static final String sPercentageOfCTB_CTBTTsToHBTTs = "PercentageOfCTB_CTBTTsToHBTTs";
+    protected static final String sCouncilAllTotalCount_TTChangeClaimant = "CouncilAllTotalCount_TTChangeClaimant";
+    protected static final String sCouncilAllPercentageOfAll_TTChangeClaimant = "CouncilAllPercentageOfAll_TTChangeClaimant";
+    protected static final String sCouncilTotalCount_HBTTsToCTBTTs = "CouncilTotalCount_HBTTsToCTBTTs";
+    protected static final String sCouncilPercentageOfHB_HBTTsToCTBTTs = "CouncilPercentageOfHB_HBTTsToCTBTTs";
+    protected static final String sCouncilTotalCount_CTBTTsToHBTTs = "CouncilTotalCount_CTBTTsToHBTTs";
+    protected static final String sCouncilPercentageOfCTB_CTBTTsToHBTTs = "CouncilPercentageOfCTB_CTBTTsToHBTTs";
     // HB TT
-    protected static final String sHBTotalCount_TTChangeClaimant = "HBTotalCount_TTChangeClaimant";
-    protected static final String sHBPercentageOfHB_TTChangeClaimant = "HBPercentageOfHB_TTChangeClaimant";
-    protected static final String sTotalCount_Minus999TTToSocialTTs = "TotalCount_Minus999TTToSocialTTs";
-    protected static final String sTotalCount_Minus999TTToPrivateDeregulatedTTs = "TotalCount_Minus999TTToPrivateDeregulatedTTs";
-    protected static final String sTotalCount_HBTTsToHBTTs = "TotalCount_HBTTsToHBTTs";
-    protected static final String sPercentageOfHB_HBTTsToHBTTs = "PercentageOfHB_HBTTsToHBTTs";
-    protected static final String sTotalCount_HBTTsToMinus999TT = "TotalCount_HBTTsToMinus999TT";
-    protected static final String sPercentageOfHB_HBTTsToMinus999TT = "PercentageOfHB_HBTTsToMinus999TT";
-    protected static final String sTotalCount_SocialTTsToPrivateDeregulatedTTs = "TotalCount_SocialTTsToPrivateDeregulatedTTs";
-    protected static final String sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs = "PercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs";
-    protected static final String sTotalCount_SocialTTsToMinus999TT = "TotalCount_SocialTTsToMinus999TT";
-    protected static final String sPercentageOfSocialTTs_SocialTTsToMinus999TT = "PercentageOfSocialTTs_SocialTTsToMinus999TT";
-    protected static final String sTotalCount_PrivateDeregulatedTTsToSocialTTs = "TotalCount_PrivateDeregulatedTTsToSocialTTs";
-    protected static final String sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs = "PercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs";
-    protected static final String sTotalCount_PrivateDeregulatedTTsToMinus999TT = "TotalCount_PrivateDeregulatedTTsToMinus999TT";
-    protected static final String sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT = "PercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT";
-    protected static final String sTotalCount_TT1ToPrivateDeregulatedTTs = "TotalCount_TT1ToPrivateDeregulatedTTs";
-    protected static final String sPercentageOfTT1_TT1ToPrivateDeregulatedTTs = "PercentageOfTT1_TT1ToPrivateDeregulatedTTs";
-    protected static final String sTotalCount_TT4ToPrivateDeregulatedTTs = "TotalCount_TT4ToPrivateDeregulatedTTs";
-    protected static final String sPercentageOfTT4_TT4ToPrivateDeregulatedTTs = "PercentageOfTT4_TT4ToPrivateDeregulatedTTs";
-    protected static final String sTotalCount_PrivateDeregulatedTTsToTT1 = "TotalCount_PrivateDeregulatedTTsToTT1";
-    protected static final String sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1 = "PercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1";
-    protected static final String sTotalCount_PrivateDeregulatedTTsToTT4 = "TotalCount_PrivateDeregulatedTTsToTT4";
-    protected static final String sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4 = "PercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4";
-    protected static final String sTotalCount_TT1ToTT4 = "TotalCount_TT1ToTT4";
-    protected static final String sPercentageOfTT1_TT1ToTT4 = "PercentageOfTT1_TT1ToTT4";
-    protected static final String sTotalCount_TT4ToTT1 = "TotalCount_TT4ToTT1";
-    protected static final String sPercentageOfTT4_TT4ToTT1 = "PercentageOfTT4_TT4ToTT1";
-    protected static final String sTotalCount_PostcodeChangeWithinSocialTTs = "TotalCount_PostcodeChangeWithinSocialTTs";
-    protected static final String sPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs = "PercentageOfSocialTTs_PostcodeChangeWithinSocialTTs";
-    protected static final String sTotalCount_PostcodeChangeWithinTT1 = "TotalCount_PostcodeChangeWithinTT1";
-    protected static final String sPercentageOfTT1_PostcodeChangeWithinTT1 = "PercentageOfTT1_PostcodeChangeWithinTT1";
-    protected static final String sTotalCount_PostcodeChangeWithinTT4 = "TotalCount_PostcodeChangeWithinTT4";
-    protected static final String sPercentageOfTT4_PostcodeChangeWithinTT4 = "PercentageOfTT4_PostcodeChangeWithinTT4";
-    protected static final String sTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs = "TotalCount_PostcodeChangeWithinPrivateDeregulatedTTs";
-    protected static final String sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs = "PercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs";
+    protected static final String sCouncilHBTotalCount_TTChangeClaimant = "CouncilHBTotalCount_TTChangeClaimant";
+    protected static final String sCouncilHBPercentageOfHB_TTChangeClaimant = "CouncilHBPercentageOfHB_TTChangeClaimant";
+    protected static final String sCouncilTotalCount_Minus999TTToSocialTTs = "CouncilTotalCount_Minus999TTToSocialTTs";
+    protected static final String sCouncilTotalCount_Minus999TTToPrivateDeregulatedTTs = "CouncilTotalCount_Minus999TTToPrivateDeregulatedTTs";
+    protected static final String sCouncilTotalCount_HBTTsToHBTTs = "CouncilTotalCount_HBTTsToHBTTs";
+    protected static final String sCouncilPercentageOfHB_HBTTsToHBTTs = "CouncilPercentageOfHB_HBTTsToHBTTs";
+    protected static final String sCouncilTotalCount_HBTTsToMinus999TT = "CouncilTotalCount_HBTTsToMinus999TT";
+    protected static final String sCouncilPercentageOfHB_HBTTsToMinus999TT = "CouncilPercentageOfHB_HBTTsToMinus999TT";
+    protected static final String sCouncilTotalCount_SocialTTsToPrivateDeregulatedTTs = "CouncilTotalCount_SocialTTsToPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs = "CouncilPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs";
+    protected static final String sCouncilTotalCount_SocialTTsToMinus999TT = "CouncilTotalCount_SocialTTsToMinus999TT";
+    protected static final String sCouncilPercentageOfSocialTTs_SocialTTsToMinus999TT = "CouncilPercentageOfSocialTTs_SocialTTsToMinus999TT";
+    protected static final String sCouncilTotalCount_PrivateDeregulatedTTsToSocialTTs = "CouncilTotalCount_PrivateDeregulatedTTsToSocialTTs";
+    protected static final String sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs = "CouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs";
+    protected static final String sCouncilTotalCount_PrivateDeregulatedTTsToMinus999TT = "CouncilTotalCount_PrivateDeregulatedTTsToMinus999TT";
+    protected static final String sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT = "CouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT";
+    protected static final String sCouncilTotalCount_TT1ToPrivateDeregulatedTTs = "CouncilTotalCount_TT1ToPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfTT1_TT1ToPrivateDeregulatedTTs = "CouncilPercentageOfTT1_TT1ToPrivateDeregulatedTTs";
+    protected static final String sCouncilTotalCount_TT4ToPrivateDeregulatedTTs = "CouncilTotalCount_TT4ToPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfTT4_TT4ToPrivateDeregulatedTTs = "CouncilPercentageOfTT4_TT4ToPrivateDeregulatedTTs";
+    protected static final String sCouncilTotalCount_PrivateDeregulatedTTsToTT1 = "CouncilTotalCount_PrivateDeregulatedTTsToTT1";
+    protected static final String sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1 = "CouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1";
+    protected static final String sCouncilTotalCount_PrivateDeregulatedTTsToTT4 = "CouncilTotalCount_PrivateDeregulatedTTsToTT4";
+    protected static final String sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4 = "CouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4";
+    protected static final String sCouncilTotalCount_TT1ToTT4 = "CouncilTotalCount_TT1ToTT4";
+    protected static final String sCouncilPercentageOfTT1_TT1ToTT4 = "CouncilPercentageOfTT1_TT1ToTT4";
+    protected static final String sCouncilTotalCount_TT4ToTT1 = "CouncilTotalCount_TT4ToTT1";
+    protected static final String sCouncilPercentageOfTT4_TT4ToTT1 = "CouncilPercentageOfTT4_TT4ToTT1";
+    protected static final String sCouncilTotalCount_PostcodeChangeWithinSocialTTs = "CouncilTotalCount_PostcodeChangeWithinSocialTTs";
+    protected static final String sCouncilPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs = "CouncilPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs";
+    protected static final String sCouncilTotalCount_PostcodeChangeWithinTT1 = "CouncilTotalCount_PostcodeChangeWithinTT1";
+    protected static final String sCouncilPercentageOfTT1_PostcodeChangeWithinTT1 = "CouncilPercentageOfTT1_PostcodeChangeWithinTT1";
+    protected static final String sCouncilTotalCount_PostcodeChangeWithinTT4 = "CouncilTotalCount_PostcodeChangeWithinTT4";
+    protected static final String sCouncilPercentageOfTT4_PostcodeChangeWithinTT4 = "CouncilPercentageOfTT4_PostcodeChangeWithinTT4";
+    protected static final String sCouncilTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs = "CouncilTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs";
+    protected static final String sCouncilPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs = "CouncilPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs";
     // CTB TT
-    protected static final String sCTBTotalCount_TTChangeClaimant = "CTBTotalCount_TTChangeClaimant";
-    protected static final String sCTBPercentageOfCTB_TTChangeClaimant = "CTBPercentageOfCTB_TTChangeClaimant";
-    protected static final String sTotalCount_Minus999TTToCTBTTs = "TotalCount_Minus999TTToCTBTTs";
-    protected static final String sTotalCount_SocialTTsToCTBTTs = "TotalCount_SocialTTsToCTBTTs";
-    protected static final String sPercentageOfSocialTTs_SocialTTsToCTBTTs = "PercentageOfSocialTTs_SocialTTsToCTBTTs";
-    protected static final String sTotalCount_TT1ToCTBTTs = "TotalCount_TT1ToCTBTTs";
-    protected static final String sPercentageOfTT1_TT1ToCTBTTs = "PercentageOfTT1_TT1ToCTBTTs";
-    protected static final String sTotalCount_TT4ToCTBTTs = "TotalCount_TT4ToCTBTTs";
-    protected static final String sPercentageOfTT4_TT4ToCTBTTs = "PercentageOfTT4_TT4ToCTBTTs";
-    protected static final String sTotalCount_PrivateDeregulatedTTsToCTBTTs = "TotalCount_PrivateDeregulatedTTsToCTBTTs";
-    protected static final String sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs = "PercentageOfPrivateDeregulated_PrivateDeregulatedTTsToCTBTTs";
-    protected static final String sTotalCount_CTBTTsToSocialTTs = "TotalCount_CTBTTsToSocialTTs";
-    protected static final String sTotalCount_CTBTTsToMinus999TT = "TotalCount_CTBTTsToMinus999TT";
-    protected static final String sPercentageOfCTB_CTBTTsToSocialTTs = "PercentageOfCTB_CTBTTsToSocialTTs";
-    protected static final String sPercentageOfCTB_CTBTTsToMinus999TT = "PercentageOfCTB_CTBTTsToMinus999TT";
-    protected static final String sTotalCount_CTBTTsToTT1 = "TotalCount_CTBTTsToTT1";
-    protected static final String sPercentageOfCTB_CTBTTsToTT1 = "PercentageOfCTB_CTBTTsToTT1";
-    protected static final String sTotalCount_CTBTTsToTT4 = "TotalCount_CTBTTsToTT4";
-    protected static final String sPercentageOfCTB_CTBTTsToTT4 = "PercentageOfCTB_CTBTTsToTT4";
-    protected static final String sTotalCount_CTBTTsToPrivateDeregulatedTTs = "TotalCount_CTBTTsToPrivateDeregulatedTypes";
-    protected static final String sPercentageOfCTB_CTBTTsToPrivateDeregulatedTTs = "PercentageOfCTB_CTBTTsToPrivateDeregulatedTypes";
+    protected static final String sCouncilCTBTotalCount_TTChangeClaimant = "CouncilCTBTotalCount_TTChangeClaimant";
+    protected static final String sCouncilCTBPercentageOfCTB_TTChangeClaimant = "CouncilCTBPercentageOfCTB_TTChangeClaimant";
+    protected static final String sCouncilTotalCount_Minus999TTToCTBTTs = "CouncilTotalCount_Minus999TTToCTBTTs";
+    protected static final String sCouncilTotalCount_SocialTTsToCTBTTs = "CouncilTotalCount_SocialTTsToCTBTTs";
+    protected static final String sCouncilPercentageOfSocialTTs_SocialTTsToCTBTTs = "CouncilPercentageOfSocialTTs_SocialTTsToCTBTTs";
+    protected static final String sCouncilTotalCount_TT1ToCTBTTs = "CouncilTotalCount_TT1ToCTBTTs";
+    protected static final String sCouncilPercentageOfTT1_TT1ToCTBTTs = "CouncilPercentageOfTT1_TT1ToCTBTTs";
+    protected static final String sCouncilTotalCount_TT4ToCTBTTs = "CouncilTotalCount_TT4ToCTBTTs";
+    protected static final String sCouncilPercentageOfTT4_TT4ToCTBTTs = "CouncilPercentageOfTT4_TT4ToCTBTTs";
+    protected static final String sCouncilTotalCount_PrivateDeregulatedTTsToCTBTTs = "CouncilTotalCount_PrivateDeregulatedTTsToCTBTTs";
+    protected static final String sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs = "CouncilPercentageOfPrivateDeregulated_PrivateDeregulatedTTsToCTBTTs";
+    protected static final String sCouncilTotalCount_CTBTTsToSocialTTs = "CouncilTotalCount_CTBTTsToSocialTTs";
+    protected static final String sCouncilTotalCount_CTBTTsToMinus999TT = "CouncilTotalCount_CTBTTsToMinus999TT";
+    protected static final String sCouncilPercentageOfCTB_CTBTTsToSocialTTs = "CouncilPercentageOfCTB_CTBTTsToSocialTTs";
+    protected static final String sCouncilPercentageOfCTB_CTBTTsToMinus999TT = "CouncilPercentageOfCTB_CTBTTsToMinus999TT";
+    protected static final String sCouncilTotalCount_CTBTTsToTT1 = "CouncilTotalCount_CTBTTsToTT1";
+    protected static final String sCouncilPercentageOfCTB_CTBTTsToTT1 = "CouncilPercentageOfCTB_CTBTTsToTT1";
+    protected static final String sCouncilTotalCount_CTBTTsToTT4 = "CouncilTotalCount_CTBTTsToTT4";
+    protected static final String sCouncilPercentageOfCTB_CTBTTsToTT4 = "CouncilPercentageOfCTB_CTBTTsToTT4";
+    protected static final String sCouncilTotalCount_CTBTTsToPrivateDeregulatedTTs = "CouncilTotalCount_CTBTTsToPrivateDeregulatedTypes";
+    protected static final String sCouncilPercentageOfCTB_CTBTTsToPrivateDeregulatedTTs = "CouncilPercentageOfCTB_CTBTTsToPrivateDeregulatedTypes";
     // All Postcode
-    protected static final String sAllTotalCount_Postcode0ValidPostcode1Valid = "AllTotalCount_Postcode0ValidPostcode1Valid";
-    protected static final String sAllPercentagePostcode0ValidPostcode1Valid = "AllPercentagePostcode0ValidPostcode1Valid";
-    protected static final String sAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = "AllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged";
-    protected static final String sAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged = "AllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged";
-    protected static final String sAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChange = "AllTotalCount_Postcode0ValidPostcode1ValidPostcodeChange";
-    protected static final String sAllPercentagePostcode0ValidPostcode1ValidPostcodeChange = "AllPercentagePostcode0ValidPostcode1ValidPostcodeChange";
-    protected static final String sAllTotalCount_Postcode0ValidPostcode1NotValid = "AllTotalCount_Postcode0ValidPostcode1NotValid";
-    protected static final String sAllPercentagePostcode0ValidPostcode1NotValid = "AllPercentagePostcode0ValidPostcode1NotValid";
-    protected static final String sAllTotalCount_Postcode0NotValidPostcode1Valid = "AllTotalCount_Postcode0NotValidPostcode1Valid";
-    protected static final String sAllPercentagePostcode0NotValidPostcode1Valid = "AllPercentagePostcode0NotValidPostcode1Valid";
-    protected static final String sAllTotalCount_Postcode0NotValidPostcode1NotValid = "AllTotalCount_Postcode0NotValidPostcode1NotValid";
-    protected static final String sAllPercentagePostcode0NotValidPostcode1NotValid = "AllPercentagePostcode0NotValidPostcode1NotValid";
-    protected static final String sAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = "AllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged";
-    protected static final String sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged = "AllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged";
-    protected static final String sAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = "AllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged";
-    protected static final String sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged = "AllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged";
+    protected static final String sCouncilAllTotalCount_Postcode0ValidPostcode1Valid = "CouncilAllTotalCount_Postcode0ValidPostcode1Valid";
+    protected static final String sCouncilAllPercentagePostcode0ValidPostcode1Valid = "CouncilAllPercentagePostcode0ValidPostcode1Valid";
+    protected static final String sCouncilAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = "CouncilAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged";
+    protected static final String sCouncilAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged = "CouncilAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged";
+    protected static final String sCouncilAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChange = "CouncilAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChange";
+    protected static final String sCouncilAllPercentagePostcode0ValidPostcode1ValidPostcodeChange = "CouncilAllPercentagePostcode0ValidPostcode1ValidPostcodeChange";
+    protected static final String sCouncilAllTotalCount_Postcode0ValidPostcode1NotValid = "CouncilAllTotalCount_Postcode0ValidPostcode1NotValid";
+    protected static final String sCouncilAllPercentagePostcode0ValidPostcode1NotValid = "CouncilAllPercentagePostcode0ValidPostcode1NotValid";
+    protected static final String sCouncilAllTotalCount_Postcode0NotValidPostcode1Valid = "CouncilAllTotalCount_Postcode0NotValidPostcode1Valid";
+    protected static final String sCouncilAllPercentagePostcode0NotValidPostcode1Valid = "CouncilAllPercentagePostcode0NotValidPostcode1Valid";
+    protected static final String sCouncilAllTotalCount_Postcode0NotValidPostcode1NotValid = "CouncilAllTotalCount_Postcode0NotValidPostcode1NotValid";
+    protected static final String sCouncilAllPercentagePostcode0NotValidPostcode1NotValid = "CouncilAllPercentagePostcode0NotValidPostcode1NotValid";
+    protected static final String sCouncilAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = "CouncilAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    protected static final String sCouncilAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged = "CouncilAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    protected static final String sCouncilAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = "CouncilAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged";
+    protected static final String sCouncilAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged = "CouncilAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged";
     // HB Postcode
-    protected static final String sHBTotalCount_Postcode0ValidPostcode1Valid = "HBTotalCount_Postcode0ValidPostcode1Valid";
-    protected static final String sHBPercentagePostcode0ValidPostcode1Valid = "HBPercentagePostcode0ValidPostcode1Valid";
-    protected static final String sHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = "HBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged";
-    protected static final String sHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged = "HBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged";
-    protected static final String sHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChange = "HBTotalCount_Postcode0ValidPostcode1ValidPostcodeChange";
-    protected static final String sHBPercentagePostcode0ValidPostcode1ValidPostcodeChange = "HBPercentagePostcode0ValidPostcode1ValidPostcodeChange";
-    protected static final String sHBTotalCount_Postcode0ValidPostcode1NotValid = "HBTotalCount_Postcode0ValidPostcode1NotValid";
-    protected static final String sHBPercentagePostcode0ValidPostcode1NotValid = "HBPercentagePostcode0ValidPostcode1NotValid";
-    protected static final String sHBTotalCount_Postcode0NotValidPostcode1Valid = "HBTotalCount_Postcode0NotValidPostcode1Valid";
-    protected static final String sHBPercentagePostcode0NotValidPostcode1Valid = "HBPercentagePostcode0NotValidPostcode1Valid";
-    protected static final String sHBTotalCount_Postcode0NotValidPostcode1NotValid = "HBTotalCount_Postcode0NotValidPostcode1NotValid";
-    protected static final String sHBPercentagePostcode0NotValidPostcode1NotValid = "HBPercentagePostcode0NotValidPostcode1NotValid";
-    protected static final String sHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = "HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged";
-    protected static final String sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged = "HBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged";
-    protected static final String sHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = "HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged";
-    protected static final String sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged = "HBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged";
+    protected static final String sCouncilHBTotalCount_Postcode0ValidPostcode1Valid = "CouncilHBTotalCount_Postcode0ValidPostcode1Valid";
+    protected static final String sCouncilHBPercentagePostcode0ValidPostcode1Valid = "CouncilHBPercentagePostcode0ValidPostcode1Valid";
+    protected static final String sCouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = "CouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged";
+    protected static final String sCouncilHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged = "CouncilHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged";
+    protected static final String sCouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChange = "CouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChange";
+    protected static final String sCouncilHBPercentagePostcode0ValidPostcode1ValidPostcodeChange = "CouncilHBPercentagePostcode0ValidPostcode1ValidPostcodeChange";
+    protected static final String sCouncilHBTotalCount_Postcode0ValidPostcode1NotValid = "CouncilHBTotalCount_Postcode0ValidPostcode1NotValid";
+    protected static final String sCouncilHBPercentagePostcode0ValidPostcode1NotValid = "CouncilHBPercentagePostcode0ValidPostcode1NotValid";
+    protected static final String sCouncilHBTotalCount_Postcode0NotValidPostcode1Valid = "CouncilHBTotalCount_Postcode0NotValidPostcode1Valid";
+    protected static final String sCouncilHBPercentagePostcode0NotValidPostcode1Valid = "CouncilHBPercentagePostcode0NotValidPostcode1Valid";
+    protected static final String sCouncilHBTotalCount_Postcode0NotValidPostcode1NotValid = "CouncilHBTotalCount_Postcode0NotValidPostcode1NotValid";
+    protected static final String sCouncilHBPercentagePostcode0NotValidPostcode1NotValid = "CouncilHBPercentagePostcode0NotValidPostcode1NotValid";
+    protected static final String sCouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = "CouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    protected static final String sCouncilHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged = "CouncilHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    protected static final String sCouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = "CouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged";
+    protected static final String sCouncilHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged = "CouncilHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged";
     // CTB Postcode
-    protected static final String sCTBTotalCount_Postcode0ValidPostcode1Valid = "CTBTotalCount_Postcode0ValidPostcode1Valid";
-    protected static final String sCTBPercentageOfCTB_Postcode0ValidPostcode1Valid = "CTBPercentagePostcode0ValidPostcode1Valid";
-    protected static final String sCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = "CTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged";
-    protected static final String sCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged = "CTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged";
-    protected static final String sCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = "CTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged";
-    protected static final String sCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged = "CTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged";
-    protected static final String sCTBTotalCount_Postcode0ValidPostcode1NotValid = "CTBTotalCount_Postcode0ValidPostcode1NotValid";
-    protected static final String sCTBPercentagePostcode0ValidPostcode1NotValid = "CTBPercentagePostcode0ValidPostcode1NotValid";
-    protected static final String sCTBTotalCount_Postcode0NotValidPostcode1Valid = "CTBTotalCount_Postcode0NotValidPostcode1Valid";
-    protected static final String sCTBPercentagePostcode0NotValidPostcode1Valid = "CTBPercentagePostcode0NotValidPostcode1Valid";
-    protected static final String sCTBTotalCount_Postcode0NotValidPostcode1NotValid = "CTBTotalCount_Postcode0NotValidPostcode1NotValid";
-    protected static final String sCTBPercentagePostcode0NotValidPostcode1NotValid = "CTBPercentagePostcode0NotValidPostcode1NotValid";
-    protected static final String sCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = "CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged";
-    protected static final String sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged = "CTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged";
-    protected static final String sCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = "CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged";
-    protected static final String sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged = "CTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged";
+    protected static final String sCouncilCTBTotalCount_Postcode0ValidPostcode1Valid = "CouncilCTBTotalCount_Postcode0ValidPostcode1Valid";
+    protected static final String sCouncilCTBPercentageOfCTB_Postcode0ValidPostcode1Valid = "CouncilCTBPercentagePostcode0ValidPostcode1Valid";
+    protected static final String sCouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = "CouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged";
+    protected static final String sCouncilCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged = "CouncilCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged";
+    protected static final String sCouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = "CouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged";
+    protected static final String sCouncilCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged = "CouncilCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged";
+    protected static final String sCouncilCTBTotalCount_Postcode0ValidPostcode1NotValid = "CouncilCTBTotalCount_Postcode0ValidPostcode1NotValid";
+    protected static final String sCouncilCTBPercentagePostcode0ValidPostcode1NotValid = "CouncilCTBPercentagePostcode0ValidPostcode1NotValid";
+    protected static final String sCouncilCTBTotalCount_Postcode0NotValidPostcode1Valid = "CouncilCTBTotalCount_Postcode0NotValidPostcode1Valid";
+    protected static final String sCouncilCTBPercentagePostcode0NotValidPostcode1Valid = "CouncilCTBPercentagePostcode0NotValidPostcode1Valid";
+    protected static final String sCouncilCTBTotalCount_Postcode0NotValidPostcode1NotValid = "CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValid";
+    protected static final String sCouncilCTBPercentagePostcode0NotValidPostcode1NotValid = "CouncilCTBPercentagePostcode0NotValidPostcode1NotValid";
+    protected static final String sCouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = "CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    protected static final String sCouncilCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged = "CouncilCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    protected static final String sCouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = "CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged";
+    protected static final String sCouncilCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged = "CouncilCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged";
+    // RSL
+    // All TT
+    protected static final String sRSLAllTotalCount_TTChangeClaimant = "RSLAllTotalCount_TTChangeClaimant";
+    protected static final String sRSLAllPercentageOfAll_TTChangeClaimant = "RSLAllPercentageOfAll_TTChangeClaimant";
+    protected static final String sRSLTotalCount_HBTTsToCTBTTs = "RSLTotalCount_HBTTsToCTBTTs";
+    protected static final String sRSLPercentageOfHB_HBTTsToCTBTTs = "RSLPercentageOfHB_HBTTsToCTBTTs";
+    protected static final String sRSLTotalCount_CTBTTsToHBTTs = "RSLTotalCount_CTBTTsToHBTTs";
+    protected static final String sRSLPercentageOfCTB_CTBTTsToHBTTs = "RSLPercentageOfCTB_CTBTTsToHBTTs";
+    // HB TT
+    protected static final String sRSLHBTotalCount_TTChangeClaimant = "RSLHBTotalCount_TTChangeClaimant";
+    protected static final String sRSLHBPercentageOfHB_TTChangeClaimant = "RSLHBPercentageOfHB_TTChangeClaimant";
+    protected static final String sRSLTotalCount_Minus999TTToSocialTTs = "RSLTotalCount_Minus999TTToSocialTTs";
+    protected static final String sRSLTotalCount_Minus999TTToPrivateDeregulatedTTs = "RSLTotalCount_Minus999TTToPrivateDeregulatedTTs";
+    protected static final String sRSLTotalCount_HBTTsToHBTTs = "RSLTotalCount_HBTTsToHBTTs";
+    protected static final String sRSLPercentageOfHB_HBTTsToHBTTs = "RSLPercentageOfHB_HBTTsToHBTTs";
+    protected static final String sRSLTotalCount_HBTTsToMinus999TT = "RSLTotalCount_HBTTsToMinus999TT";
+    protected static final String sRSLPercentageOfHB_HBTTsToMinus999TT = "RSLPercentageOfHB_HBTTsToMinus999TT";
+    protected static final String sRSLTotalCount_SocialTTsToPrivateDeregulatedTTs = "RSLTotalCount_SocialTTsToPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs = "RSLPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs";
+    protected static final String sRSLTotalCount_SocialTTsToMinus999TT = "RSLTotalCount_SocialTTsToMinus999TT";
+    protected static final String sRSLPercentageOfSocialTTs_SocialTTsToMinus999TT = "RSLPercentageOfSocialTTs_SocialTTsToMinus999TT";
+    protected static final String sRSLTotalCount_PrivateDeregulatedTTsToSocialTTs = "RSLTotalCount_PrivateDeregulatedTTsToSocialTTs";
+    protected static final String sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs = "RSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs";
+    protected static final String sRSLTotalCount_PrivateDeregulatedTTsToMinus999TT = "RSLTotalCount_PrivateDeregulatedTTsToMinus999TT";
+    protected static final String sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT = "RSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT";
+    protected static final String sRSLTotalCount_TT1ToPrivateDeregulatedTTs = "RSLTotalCount_TT1ToPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfTT1_TT1ToPrivateDeregulatedTTs = "RSLPercentageOfTT1_TT1ToPrivateDeregulatedTTs";
+    protected static final String sRSLTotalCount_TT4ToPrivateDeregulatedTTs = "RSLTotalCount_TT4ToPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfTT4_TT4ToPrivateDeregulatedTTs = "RSLPercentageOfTT4_TT4ToPrivateDeregulatedTTs";
+    protected static final String sRSLTotalCount_PrivateDeregulatedTTsToTT1 = "RSLTotalCount_PrivateDeregulatedTTsToTT1";
+    protected static final String sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1 = "RSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1";
+    protected static final String sRSLTotalCount_PrivateDeregulatedTTsToTT4 = "RSLTotalCount_PrivateDeregulatedTTsToTT4";
+    protected static final String sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4 = "RSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4";
+    protected static final String sRSLTotalCount_TT1ToTT4 = "RSLTotalCount_TT1ToTT4";
+    protected static final String sRSLPercentageOfTT1_TT1ToTT4 = "RSLPercentageOfTT1_TT1ToTT4";
+    protected static final String sRSLTotalCount_TT4ToTT1 = "RSLTotalCount_TT4ToTT1";
+    protected static final String sRSLPercentageOfTT4_TT4ToTT1 = "RSLPercentageOfTT4_TT4ToTT1";
+    protected static final String sRSLTotalCount_PostcodeChangeWithinSocialTTs = "RSLTotalCount_PostcodeChangeWithinSocialTTs";
+    protected static final String sRSLPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs = "RSLPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs";
+    protected static final String sRSLTotalCount_PostcodeChangeWithinTT1 = "RSLTotalCount_PostcodeChangeWithinTT1";
+    protected static final String sRSLPercentageOfTT1_PostcodeChangeWithinTT1 = "RSLPercentageOfTT1_PostcodeChangeWithinTT1";
+    protected static final String sRSLTotalCount_PostcodeChangeWithinTT4 = "RSLTotalCount_PostcodeChangeWithinTT4";
+    protected static final String sRSLPercentageOfTT4_PostcodeChangeWithinTT4 = "RSLPercentageOfTT4_PostcodeChangeWithinTT4";
+    protected static final String sRSLTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs = "RSLTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs";
+    protected static final String sRSLPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs = "RSLPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs";
+    // CTB TT
+    protected static final String sRSLCTBTotalCount_TTChangeClaimant = "RSLCTBTotalCount_TTChangeClaimant";
+    protected static final String sRSLCTBPercentageOfCTB_TTChangeClaimant = "RSLCTBPercentageOfCTB_TTChangeClaimant";
+    protected static final String sRSLTotalCount_Minus999TTToCTBTTs = "RSLTotalCount_Minus999TTToCTBTTs";
+    protected static final String sRSLTotalCount_SocialTTsToCTBTTs = "RSLTotalCount_SocialTTsToCTBTTs";
+    protected static final String sRSLPercentageOfSocialTTs_SocialTTsToCTBTTs = "RSLPercentageOfSocialTTs_SocialTTsToCTBTTs";
+    protected static final String sRSLTotalCount_TT1ToCTBTTs = "RSLTotalCount_TT1ToCTBTTs";
+    protected static final String sRSLPercentageOfTT1_TT1ToCTBTTs = "RSLPercentageOfTT1_TT1ToCTBTTs";
+    protected static final String sRSLTotalCount_TT4ToCTBTTs = "RSLTotalCount_TT4ToCTBTTs";
+    protected static final String sRSLPercentageOfTT4_TT4ToCTBTTs = "RSLPercentageOfTT4_TT4ToCTBTTs";
+    protected static final String sRSLTotalCount_PrivateDeregulatedTTsToCTBTTs = "RSLTotalCount_PrivateDeregulatedTTsToCTBTTs";
+    protected static final String sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs = "RSLPercentageOfPrivateDeregulated_PrivateDeregulatedTTsToCTBTTs";
+    protected static final String sRSLTotalCount_CTBTTsToSocialTTs = "RSLTotalCount_CTBTTsToSocialTTs";
+    protected static final String sRSLTotalCount_CTBTTsToMinus999TT = "RSLTotalCount_CTBTTsToMinus999TT";
+    protected static final String sRSLPercentageOfCTB_CTBTTsToSocialTTs = "RSLPercentageOfCTB_CTBTTsToSocialTTs";
+    protected static final String sRSLPercentageOfCTB_CTBTTsToMinus999TT = "RSLPercentageOfCTB_CTBTTsToMinus999TT";
+    protected static final String sRSLTotalCount_CTBTTsToTT1 = "RSLTotalCount_CTBTTsToTT1";
+    protected static final String sRSLPercentageOfCTB_CTBTTsToTT1 = "RSLPercentageOfCTB_CTBTTsToTT1";
+    protected static final String sRSLTotalCount_CTBTTsToTT4 = "RSLTotalCount_CTBTTsToTT4";
+    protected static final String sRSLPercentageOfCTB_CTBTTsToTT4 = "RSLPercentageOfCTB_CTBTTsToTT4";
+    protected static final String sRSLTotalCount_CTBTTsToPrivateDeregulatedTTs = "RSLTotalCount_CTBTTsToPrivateDeregulatedTypes";
+    protected static final String sRSLPercentageOfCTB_CTBTTsToPrivateDeregulatedTTs = "RSLPercentageOfCTB_CTBTTsToPrivateDeregulatedTypes";
+    // All Postcode
+    protected static final String sRSLAllTotalCount_Postcode0ValidPostcode1Valid = "RSLAllTotalCount_Postcode0ValidPostcode1Valid";
+    protected static final String sRSLAllPercentagePostcode0ValidPostcode1Valid = "RSLAllPercentagePostcode0ValidPostcode1Valid";
+    protected static final String sRSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = "RSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged";
+    protected static final String sRSLAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged = "RSLAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged";
+    protected static final String sRSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChange = "RSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChange";
+    protected static final String sRSLAllPercentagePostcode0ValidPostcode1ValidPostcodeChange = "RSLAllPercentagePostcode0ValidPostcode1ValidPostcodeChange";
+    protected static final String sRSLAllTotalCount_Postcode0ValidPostcode1NotValid = "RSLAllTotalCount_Postcode0ValidPostcode1NotValid";
+    protected static final String sRSLAllPercentagePostcode0ValidPostcode1NotValid = "RSLAllPercentagePostcode0ValidPostcode1NotValid";
+    protected static final String sRSLAllTotalCount_Postcode0NotValidPostcode1Valid = "RSLAllTotalCount_Postcode0NotValidPostcode1Valid";
+    protected static final String sRSLAllPercentagePostcode0NotValidPostcode1Valid = "RSLAllPercentagePostcode0NotValidPostcode1Valid";
+    protected static final String sRSLAllTotalCount_Postcode0NotValidPostcode1NotValid = "RSLAllTotalCount_Postcode0NotValidPostcode1NotValid";
+    protected static final String sRSLAllPercentagePostcode0NotValidPostcode1NotValid = "RSLAllPercentagePostcode0NotValidPostcode1NotValid";
+    protected static final String sRSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = "RSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    protected static final String sRSLAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged = "RSLAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    protected static final String sRSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = "RSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged";
+    protected static final String sRSLAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged = "RSLAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged";
+    // HB Postcode
+    protected static final String sRSLHBTotalCount_Postcode0ValidPostcode1Valid = "RSLHBTotalCount_Postcode0ValidPostcode1Valid";
+    protected static final String sRSLHBPercentagePostcode0ValidPostcode1Valid = "RSLHBPercentagePostcode0ValidPostcode1Valid";
+    protected static final String sRSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = "RSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged";
+    protected static final String sRSLHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged = "RSLHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged";
+    protected static final String sRSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChange = "RSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChange";
+    protected static final String sRSLHBPercentagePostcode0ValidPostcode1ValidPostcodeChange = "RSLHBPercentagePostcode0ValidPostcode1ValidPostcodeChange";
+    protected static final String sRSLHBTotalCount_Postcode0ValidPostcode1NotValid = "RSLHBTotalCount_Postcode0ValidPostcode1NotValid";
+    protected static final String sRSLHBPercentagePostcode0ValidPostcode1NotValid = "RSLHBPercentagePostcode0ValidPostcode1NotValid";
+    protected static final String sRSLHBTotalCount_Postcode0NotValidPostcode1Valid = "RSLHBTotalCount_Postcode0NotValidPostcode1Valid";
+    protected static final String sRSLHBPercentagePostcode0NotValidPostcode1Valid = "RSLHBPercentagePostcode0NotValidPostcode1Valid";
+    protected static final String sRSLHBTotalCount_Postcode0NotValidPostcode1NotValid = "RSLHBTotalCount_Postcode0NotValidPostcode1NotValid";
+    protected static final String sRSLHBPercentagePostcode0NotValidPostcode1NotValid = "RSLHBPercentagePostcode0NotValidPostcode1NotValid";
+    protected static final String sRSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = "RSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    protected static final String sRSLHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged = "RSLHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    protected static final String sRSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = "RSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged";
+    protected static final String sRSLHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged = "RSLHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged";
+    // CTB Postcode
+    protected static final String sRSLCTBTotalCount_Postcode0ValidPostcode1Valid = "RSLCTBTotalCount_Postcode0ValidPostcode1Valid";
+    protected static final String sRSLCTBPercentageOfCTB_Postcode0ValidPostcode1Valid = "RSLCTBPercentagePostcode0ValidPostcode1Valid";
+    protected static final String sRSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = "RSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged";
+    protected static final String sRSLCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged = "RSLCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged";
+    protected static final String sRSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = "RSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged";
+    protected static final String sRSLCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged = "RSLCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged";
+    protected static final String sRSLCTBTotalCount_Postcode0ValidPostcode1NotValid = "RSLCTBTotalCount_Postcode0ValidPostcode1NotValid";
+    protected static final String sRSLCTBPercentagePostcode0ValidPostcode1NotValid = "RSLCTBPercentagePostcode0ValidPostcode1NotValid";
+    protected static final String sRSLCTBTotalCount_Postcode0NotValidPostcode1Valid = "RSLCTBTotalCount_Postcode0NotValidPostcode1Valid";
+    protected static final String sRSLCTBPercentagePostcode0NotValidPostcode1Valid = "RSLCTBPercentagePostcode0NotValidPostcode1Valid";
+    protected static final String sRSLCTBTotalCount_Postcode0NotValidPostcode1NotValid = "RSLCTBTotalCount_Postcode0NotValidPostcode1NotValid";
+    protected static final String sRSLCTBPercentagePostcode0NotValidPostcode1NotValid = "RSLCTBPercentagePostcode0NotValidPostcode1NotValid";
+    protected static final String sRSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = "RSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    protected static final String sRSLCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged = "RSLCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged";
+    protected static final String sRSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = "RSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged";
+    protected static final String sRSLCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged = "RSLCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged";
 
     // Compare 3 Times
-    // All
-    protected static String sSamePostcodeIII;
-    protected static String sSamePostcodeIOI;
-    protected static String sSamePostcodeOIO;
-    protected static String sSameTenancyIII;
-    protected static String sSameTenancyIOI;
-    protected static String sSameTenancyOIO;
-    protected static String sSameTenancyAndPostcodeIII;
-    protected static String sSameTenancyAndPostcodeIOI;
-    protected static String sSameTenancyAndPostcodeOIO;
-    protected static String[] sSameTenancyIIITT;
-    protected static String[] sSameTenancyIOITT;
-    protected static String[] sSameTenancyOIOTT;
-    protected static String[] sSameTenancyAndPostcodeIIITT;
-    protected static String[] sSameTenancyAndPostcodeIOITT;
-    protected static String[] sSameTenancyAndPostcodeOIOTT;
+    // Council
+    protected static String sCouncilSamePostcodeIII;
+    protected static String sCouncilSamePostcodeIOI;
+    protected static String sCouncilSamePostcodeOIO;
+    protected static String sCouncilSameTenancyIII;
+    protected static String sCouncilSameTenancyIOI;
+    protected static String sCouncilSameTenancyOIO;
+    protected static String sCouncilSameTenancyAndPostcodeIII;
+    protected static String sCouncilSameTenancyAndPostcodeIOI;
+    protected static String sCouncilSameTenancyAndPostcodeOIO;
+    protected static String[] sCouncilSameTenancyIIITT;
+    protected static String[] sCouncilSameTenancyIOITT;
+    protected static String[] sCouncilSameTenancyOIOTT;
+    protected static String[] sCouncilSameTenancyAndPostcodeIIITT;
+    protected static String[] sCouncilSameTenancyAndPostcodeIOITT;
+    protected static String[] sCouncilSameTenancyAndPostcodeOIOTT;
+    // RSL
+    protected static String sRSLSamePostcodeIII;
+    protected static String sRSLSamePostcodeIOI;
+    protected static String sRSLSamePostcodeOIO;
+    protected static String sRSLSameTenancyIII;
+    protected static String sRSLSameTenancyIOI;
+    protected static String sRSLSameTenancyOIO;
+    protected static String sRSLSameTenancyAndPostcodeIII;
+    protected static String sRSLSameTenancyAndPostcodeIOI;
+    protected static String sRSLSameTenancyAndPostcodeOIO;
+    protected static String[] sRSLSameTenancyIIITT;
+    protected static String[] sRSLSameTenancyIOITT;
+    protected static String[] sRSLSameTenancyOIOTT;
+    protected static String[] sRSLSameTenancyAndPostcodeIIITT;
+    protected static String[] sRSLSameTenancyAndPostcodeIOITT;
+    protected static String[] sRSLSameTenancyAndPostcodeOIOTT;
 
     // Counters
+    // Council
     // Single Time
     // All
-    protected static double AllTotalWeeklyHBEntitlement;
-    protected static int AllTotalWeeklyHBEntitlementNonZeroCount;
-    protected static int AllTotalWeeklyHBEntitlementZeroCount;
-    protected static double AllTotalWeeklyCTBEntitlement;
-    protected static int AllTotalCount_WeeklyCTBEntitlementNonZero;
-    protected static int AllTotalWeeklyCTBEntitlementZeroCount;
-    protected static double AllTotalWeeklyEligibleRentAmount;
-    protected static int AllTotalWeeklyEligibleRentAmountNonZeroCount;
-    protected static int AllTotalWeeklyEligibleRentAmountZeroCount;
-    protected static double AllTotalWeeklyEligibleCouncilTaxAmount;
-    protected static int AllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
-    protected static int AllTotalCount_WeeklyEligibleCouncilTaxAmountZero;
-    protected static double AllTotalContractualRentAmount;
-    protected static int AllTotalContractualRentAmountNonZeroCount;
-    protected static int AllTotalContractualRentAmountZeroCount;
-    protected static double AllTotalWeeklyAdditionalDiscretionaryPayment;
-    protected static int AllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
-    protected static int AllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount;
-    protected static double AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
-    protected static int AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
-    protected static int AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount;
+    protected static double CouncilAllTotalWeeklyHBEntitlement;
+    protected static int CouncilAllTotalWeeklyHBEntitlementNonZeroCount;
+    protected static int CouncilAllTotalWeeklyHBEntitlementZeroCount;
+    protected static double CouncilAllTotalWeeklyCTBEntitlement;
+    protected static int CouncilAllTotalCount_WeeklyCTBEntitlementNonZero;
+    protected static int CouncilAllTotalWeeklyCTBEntitlementZeroCount;
+    protected static double CouncilAllTotalWeeklyEligibleRentAmount;
+    protected static int CouncilAllTotalWeeklyEligibleRentAmountNonZeroCount;
+    protected static int CouncilAllTotalWeeklyEligibleRentAmountZeroCount;
+    protected static double CouncilAllTotalWeeklyEligibleCouncilTaxAmount;
+    protected static int CouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
+    protected static int CouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountZero;
+    protected static double CouncilAllTotalContractualRentAmount;
+    protected static int CouncilAllTotalContractualRentAmountNonZeroCount;
+    protected static int CouncilAllTotalContractualRentAmountZeroCount;
+    protected static double CouncilAllTotalWeeklyAdditionalDiscretionaryPayment;
+    protected static int CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+    protected static int CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount;
+    protected static double CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
+    protected static int CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+    protected static int CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount;
     // HB
-    protected static double HBTotalWeeklyHBEntitlement;
-    protected static int HBTotalCount_WeeklyHBEntitlementNonZero;
-    protected static int HBTotalCount_WeeklyHBEntitlementZero;
-    protected static double HBTotalWeeklyCTBEntitlement;
-    protected static int HBTotalCount_WeeklyCTBEntitlementNonZero;
-    protected static int HBTotalWeeklyCTBEntitlementZeroCount;
-    protected static double HBTotalWeeklyEligibleRentAmount;
-    protected static int HBTotalWeeklyEligibleRentAmountNonZeroCount;
-    protected static int HBTotalWeeklyEligibleRentAmountZeroCount;
-    protected static double HBTotalWeeklyEligibleCouncilTaxAmount;
-    protected static int HBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
-    protected static int HBTotalCount_WeeklyEligibleCouncilTaxAmountZero;
-    protected static double HBTotalContractualRentAmount;
-    protected static int HBTotalContractualRentAmountNonZeroCount;
-    protected static int HBTotalContractualRentAmountZeroCount;
-    protected static double HBTotalWeeklyAdditionalDiscretionaryPayment;
-    protected static int HBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
-    protected static int HBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount;
-    protected static double HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
-    protected static int HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
-    protected static int HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount;
+    protected static double CouncilHBTotalWeeklyHBEntitlement;
+    protected static int CouncilHBTotalCount_WeeklyHBEntitlementNonZero;
+    protected static int CouncilHBTotalCount_WeeklyHBEntitlementZero;
+    protected static double CouncilHBTotalWeeklyCTBEntitlement;
+    protected static int CouncilHBTotalCount_WeeklyCTBEntitlementNonZero;
+    protected static int CouncilHBTotalWeeklyCTBEntitlementZeroCount;
+    protected static double CouncilHBTotalWeeklyEligibleRentAmount;
+    protected static int CouncilHBTotalWeeklyEligibleRentAmountNonZeroCount;
+    protected static int CouncilHBTotalWeeklyEligibleRentAmountZeroCount;
+    protected static double CouncilHBTotalWeeklyEligibleCouncilTaxAmount;
+    protected static int CouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
+    protected static int CouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountZero;
+    protected static double CouncilHBTotalContractualRentAmount;
+    protected static int CouncilHBTotalContractualRentAmountNonZeroCount;
+    protected static int CouncilHBTotalContractualRentAmountZeroCount;
+    protected static double CouncilHBTotalWeeklyAdditionalDiscretionaryPayment;
+    protected static int CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+    protected static int CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount;
+    protected static double CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
+    protected static int CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+    protected static int CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount;
     // CTB
-    protected static double CTBTotalWeeklyHBEntitlement;
-    protected static int CTBTotalCount_WeeklyHBEntitlementNonZero;
-    protected static int CTBTotalWeeklyHBEntitlementZeroCount;
-    protected static double CTBTotalWeeklyCTBEntitlement;
-    protected static int CTBTotalCount_WeeklyCTBEntitlementNonZero;
-    protected static int CTBTotalWeeklyCTBEntitlementZeroCount;
-    protected static double CTBTotalWeeklyEligibleRentAmount;
-    protected static int CTBTotalWeeklyEligibleRentAmountNonZeroCount;
-    protected static int CTBTotalWeeklyEligibleRentAmountZeroCount;
-    protected static double CTBTotalWeeklyEligibleCouncilTaxAmount;
-    protected static int CTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
-    protected static int CTBTotalCount_WeeklyEligibleCouncilTaxAmountZero;
-    protected static double CTBTotalContractualRentAmount;
-    protected static int CTBTotalContractualRentAmountNonZeroCount;
-    protected static int CTBTotalContractualRentAmountZeroCount;
-    protected static double CTBTotalWeeklyAdditionalDiscretionaryPayment;
-    protected static int CTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
-    protected static int CTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount;
-    protected static double CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
-    protected static int CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
-    protected static int CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount;
+    protected static double CouncilCTBTotalWeeklyHBEntitlement;
+    protected static int CouncilCTBTotalCount_WeeklyHBEntitlementNonZero;
+    protected static int CouncilCTBTotalWeeklyHBEntitlementZeroCount;
+    protected static double CouncilCTBTotalWeeklyCTBEntitlement;
+    protected static int CouncilCTBTotalCount_WeeklyCTBEntitlementNonZero;
+    protected static int CouncilCTBTotalWeeklyCTBEntitlementZeroCount;
+    protected static double CouncilCTBTotalWeeklyEligibleRentAmount;
+    protected static int CouncilCTBTotalWeeklyEligibleRentAmountNonZeroCount;
+    protected static int CouncilCTBTotalWeeklyEligibleRentAmountZeroCount;
+    protected static double CouncilCTBTotalWeeklyEligibleCouncilTaxAmount;
+    protected static int CouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
+    protected static int CouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero;
+    protected static double CouncilCTBTotalContractualRentAmount;
+    protected static int CouncilCTBTotalContractualRentAmountNonZeroCount;
+    protected static int CouncilCTBTotalContractualRentAmountZeroCount;
+    protected static double CouncilCTBTotalWeeklyAdditionalDiscretionaryPayment;
+    protected static int CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+    protected static int CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount;
+    protected static double CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
+    protected static int CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+    protected static int CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount;
     // Employment Education Training
-    protected static int HBTotalCount_EmployedClaimants;
-    protected static int HBTotalCount_SelfEmployedClaimants;
-    protected static int HBTotalCount_StudentsClaimants;
-    protected static int CTBTotalCount_EmployedClaimants;
-    protected static int CTBTotalCount_SelfEmployedClaimants;
-    protected static int CTBTotalCount_StudentsClaimants;
+    protected static int CouncilHBTotalCount_EmployedClaimants;
+    protected static int CouncilHBTotalCount_SelfEmployedClaimants;
+    protected static int CouncilHBTotalCount_StudentsClaimants;
+    protected static int CouncilCTBTotalCount_EmployedClaimants;
+    protected static int CouncilCTBTotalCount_SelfEmployedClaimants;
+    protected static int CouncilCTBTotalCount_StudentsClaimants;
     // HLA
-    protected static int HBTotalCount_LHACases;
-    protected static int CTBTotalCount_LHACases;
-    // Disability
-    protected static int[] TotalCount_DisabilityPremiumAwardByTT;
-    protected static int[] TotalCount_SevereDisabilityPremiumAwardByTT;
-    protected static int[] TotalCount_DisabledChildPremiumAwardByTT;
-    protected static int[] TotalCount_EnhancedDisabilityPremiumAwardByTT;
-    protected static int[] TotalCount_DisabilityAwardByTT;
-    // PSI
-    protected static int[] AllTotalCount_PSI;
-    protected static int[] HBTotalCount_PSI;
-    protected static int[] CTBTotalCount_PSI;
-    protected static int[][] AllTotalCount_PSIByTT;
-    protected static int[][] HBTotalCount_PSIByTT;
-    protected static int[][] CTBTotalCount_PSIByTT;
-    // Total Count Claimant
-    protected static int[] TotalCount_TTClaimant1;
-    protected static int[] TotalCount_TTClaimant0;
-    // Household Size
-    protected static long AllTotalHouseholdSize;
-    protected static long HBTotalHouseholdSize;
-    protected static long CTBTotalHouseholdSize;
-    protected static int AllCount1;
-    protected static Integer AllCount0;
+    protected static int CouncilHBTotalCountLHACases;
+    protected static int CouncilCTBTotalCount_LHACases;
+    protected static int[] CouncilTotalCount_DisabilityPremiumAwardByTT;
+    protected static int[] CouncilTotalCount_SevereDisabilityPremiumAwardByTT;
+    protected static int[] CouncilTotalCount_DisabledChildPremiumAwardByTT;
+    protected static int[] CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT;
+    protected static int[] CouncilTotalCount_DisabilityAwardByTT;
+    protected static int[] CouncilAllTotalCount_PSI;
+    protected static int[] CouncilHBTotalCount_PSI;
+    protected static int[] CouncilCTBTotalCount_PSI;
+    protected static int[][] CouncilAllTotalCount_PSIByTT;
+    protected static int[][] CouncilHBTotalCount_PSIByTT;
+    protected static int[][] CouncilCTBTotalCount_PSIByTT;
+    protected static int[] CouncilTotalCount_TTClaimant1;
+    protected static int[] CouncilTotalCount_TTClaimant0;
+    protected static long CouncilAllTotalHouseholdSize;
+    protected static long CouncilHBTotalHouseholdSize;
+    protected static long CouncilCTBTotalHouseholdSize;
+    protected static int CouncilAllCount1;
+    protected static Integer CouncilAllCount0;
     // HB
-    protected static int HBCount1;
-    protected static Integer HBCount0;
-    protected static int[] HBEthnicGroupCount;
-    protected static int HBPostcodeValidFormatCount;
-    protected static int HBPostcodeValidCount;
+    protected static int CouncilHBCount1;
+    protected static Integer CouncilHBCount0;
+    protected static int[] CouncilHBEthnicGroupCount;
+    protected static int CouncilHBPostcodeValidFormatCount;
+    protected static int CouncilHBPostcodeValidCount;
     // CTB
-    protected static int CTBCount1;
-    protected static Integer CTBCount0;
-    protected static int[] CTBEthnicGroupCount;
-    protected static int CTBPostcodeValidFormatCount;
-    protected static int CTBPostcodeValidCount;
-    // Compare 2 Times
-    // General
-    protected static int TotalCount_HBTTsToCTBTTs;
-    protected static int TotalCount_CTBTTsToHBTTs;
-    // General HB related
-    protected static int TotalCount_Minus999TTToSocialTTs;
-    protected static int TotalCount_Minus999TTToPrivateDeregulatedTTs;
-    protected static int TotalCount_HBTTsToHBTTs;
-    protected static int TotalCount_HBTTsToMinus999TT;
-    protected static int TotalCount_SocialTTsToPrivateDeregulatedTTs;
-    protected static int TotalCount_SocialTTsToMinus999TT;
-    protected static int TotalCount_PrivateDeregulatedTTsToSocialTTs;
-    protected static int TotalCount_PrivateDeregulatedTTsToMinus999TT;
-    protected static int TotalCount_TT1ToPrivateDeregulatedTTs;
-    protected static int TotalCount_TT4ToPrivateDeregulatedTTs;
-    protected static int TotalCount_PrivateDeregulatedTTsToTT1;
-    protected static int TotalCount_PrivateDeregulatedTTsToTT4;
-    protected static int TotalCount_PostcodeChangeWithinSocialTTs;
-    protected static int TotalCount_PostcodeChangeWithinTT1;
-    protected static int TotalCount_PostcodeChangeWithinTT4;
-    protected static int TotalCount_PostcodeChangeWithinPrivateDeregulatedTTs;
-    // General CTB related
-    protected static int TotalCount_SocialTTsToCTBTTs;
-    protected static int TotalCount_Minus999TTToCTBTTs;
-    protected static int TotalCount_TT1ToCTBTTs;
-    protected static int TotalCount_TT4ToCTBTTs;
-    protected static int TotalCount_PrivateDeregulatedTTsToCTBTTs;
-    protected static int TotalCount_CTBTTsToSocialTTs;
-    protected static int TotalCount_CTBTTsToMinus999TT;
-    protected static int TotalCount_CTBTTsToTT1;
-    protected static int TotalCount_CTBTTsToTT4;
-    protected static int TotalCount_CTBTTsToPrivateDeregulatedTTs;
-    // TT1 TT4
-    protected static int TotalCount_TT1ToTT4;
-    protected static int TotalCount_TT4ToTT1;
+    protected static int CouncilCTBCount1;
+    protected static Integer CouncilCTBCount0;
+    protected static int[] CouncilCTBEthnicGroupCount;
+    protected static int CouncilCTBPostcodeValidFormatCount;
+    protected static int CouncilCTBPostcodeValidCount;
+    // Other summary stats
+    protected static double CouncilTotal_RentArrears;
+    protected static double CouncilTotalCount_RentArrears;
+    protected static int CouncilTotalCount_RentArrearsNonZero;
+    protected static int CouncilTotalCount_RentArrearsZero;
+    // RSL
+    // Single Time
     // All
-    protected static int AllTotalCount_TTChangeClaimant;
-    //protected static int AllTotalCount_TTChangeClaimantIgnoreMinus999;
-    protected static int AllTotalCount_Postcode0ValidPostcode1Valid;
-    protected static int AllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
-    protected static int AllTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
-    protected static int AllTotalCount_Postcode0ValidPostcode1NotValid;
-    protected static int AllTotalCount_Postcode0NotValidPostcode1Valid;
-    protected static int AllTotalCount_Postcode0NotValidPostcode1NotValid;
-    protected static int AllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged;
-    protected static int AllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
+    protected static double RSLAllTotalWeeklyHBEntitlement;
+    protected static int RSLAllTotalWeeklyHBEntitlementNonZeroCount;
+    protected static int RSLAllTotalWeeklyHBEntitlementZeroCount;
+    protected static double RSLAllTotalWeeklyCTBEntitlement;
+    protected static int RSLAllTotalCount_WeeklyCTBEntitlementNonZero;
+    protected static int RSLAllTotalWeeklyCTBEntitlementZeroCount;
+    protected static double RSLAllTotalWeeklyEligibleRentAmount;
+    protected static int RSLAllTotalWeeklyEligibleRentAmountNonZeroCount;
+    protected static int RSLAllTotalWeeklyEligibleRentAmountZeroCount;
+    protected static double RSLAllTotalWeeklyEligibleCouncilTaxAmount;
+    protected static int RSLAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
+    protected static int RSLAllTotalCount_WeeklyEligibleCouncilTaxAmountZero;
+    protected static double RSLAllTotalContractualRentAmount;
+    protected static int RSLAllTotalContractualRentAmountNonZeroCount;
+    protected static int RSLAllTotalContractualRentAmountZeroCount;
+    protected static double RSLAllTotalWeeklyAdditionalDiscretionaryPayment;
+    protected static int RSLAllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+    protected static int RSLAllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount;
+    protected static double RSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
+    protected static int RSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+    protected static int RSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount;
     // HB
-    protected static int HBTotalCount_TTChangeClaimant;
-    //protected static int HBTotalCount_TTChangeClaimantIgnoreMinus999;
-    protected static int HBTotalCount_Postcode0ValidPostcode1Valid;
-    protected static int HBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
-    protected static int HBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
-    protected static int HBTotalCount_Postcode0ValidPostcode1NotValid;
-    protected static int HBTotalCount_Postcode0NotValidPostcode1Valid;
-    protected static int HBTotalCount_Postcode0NotValidPostcode1NotValid;
-    protected static int HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged;
-    protected static int HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
+    protected static double RSLHBTotalWeeklyHBEntitlement;
+    protected static int RSLHBTotalCount_WeeklyHBEntitlementNonZero;
+    protected static int RSLHBTotalCount_WeeklyHBEntitlementZero;
+    protected static double RSLHBTotalWeeklyCTBEntitlement;
+    protected static int RSLHBTotalCount_WeeklyCTBEntitlementNonZero;
+    protected static int RSLHBTotalWeeklyCTBEntitlementZeroCount;
+    protected static double RSLHBTotalWeeklyEligibleRentAmount;
+    protected static int RSLHBTotalWeeklyEligibleRentAmountNonZeroCount;
+    protected static int RSLHBTotalWeeklyEligibleRentAmountZeroCount;
+    protected static double RSLHBTotalWeeklyEligibleCouncilTaxAmount;
+    protected static int RSLHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
+    protected static int RSLHBTotalCount_WeeklyEligibleCouncilTaxAmountZero;
+    protected static double RSLHBTotalContractualRentAmount;
+    protected static int RSLHBTotalContractualRentAmountNonZeroCount;
+    protected static int RSLHBTotalContractualRentAmountZeroCount;
+    protected static double RSLHBTotalWeeklyAdditionalDiscretionaryPayment;
+    protected static int RSLHBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+    protected static int RSLHBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount;
+    protected static double RSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
+    protected static int RSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+    protected static int RSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount;
     // CTB
-    protected static int CTBTotalCount_TTChangeClaimant;
-    //protected static int CTBTotalCount_TTChangeClaimantIgnoreMinus999;
-    protected static int CTBTotalCount_Postcode0ValidPostcode1Valid;
-    protected static int CTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
-    protected static int CTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
-    protected static int CTBTotalCount_Postcode0ValidPostcode1NotValid;
-    protected static int CTBTotalCount_Postcode0NotValidPostcode1Valid;
-    protected static int CTBTotalCount_Postcode0NotValidPostcode1NotValid;
-    protected static int CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged;
-    protected static int CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
-    // Compare 3 Times
-    protected static int SamePostcodeIII;
-    protected static int SamePostcodeIOI;
-    protected static int SamePostcodeOIO;
-    protected static int SameTenancyIII;
-    protected static int SameTenancyIOI;
-    protected static int SameTenancyOIO;
-    protected static int SameTenancyAndPostcodeIII;
-    protected static int SameTenancyAndPostcodeIOI;
-    protected static int SameTenancyAndPostcodeOIO;
-    protected static int[] SameTenancyIIITT;
-    protected static int[] SameTenancyIOITT;
-    protected static int[] SameTenancyOIOTT;
-    protected static int[] SameTenancyAndPostcodeIIITT;
-    protected static int[] SameTenancyAndPostcodeIOITT;
-    protected static int[] SameTenancyAndPostcodeOIOTT;
+    protected static double RSLCTBTotalWeeklyHBEntitlement;
+    protected static int RSLCTBTotalCount_WeeklyHBEntitlementNonZero;
+    protected static int RSLCTBTotalWeeklyHBEntitlementZeroCount;
+    protected static double RSLCTBTotalWeeklyCTBEntitlement;
+    protected static int RSLCTBTotalCount_WeeklyCTBEntitlementNonZero;
+    protected static int RSLCTBTotalWeeklyCTBEntitlementZeroCount;
+    protected static double RSLCTBTotalWeeklyEligibleRentAmount;
+    protected static int RSLCTBTotalWeeklyEligibleRentAmountNonZeroCount;
+    protected static int RSLCTBTotalWeeklyEligibleRentAmountZeroCount;
+    protected static double RSLCTBTotalWeeklyEligibleCouncilTaxAmount;
+    protected static int RSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
+    protected static int RSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero;
+    protected static double RSLCTBTotalContractualRentAmount;
+    protected static int RSLCTBTotalContractualRentAmountNonZeroCount;
+    protected static int RSLCTBTotalContractualRentAmountZeroCount;
+    protected static double RSLCTBTotalWeeklyAdditionalDiscretionaryPayment;
+    protected static int RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+    protected static int RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount;
+    protected static double RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
+    protected static int RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+    protected static int RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount;
+    // Employment Education Training
+    protected static int RSLHBTotalCount_EmployedClaimants;
+    protected static int RSLHBTotalCount_SelfEmployedClaimants;
+    protected static int RSLHBTotalCount_StudentsClaimants;
+    protected static int RSLCTBTotalCount_EmployedClaimants;
+    protected static int RSLCTBTotalCount_SelfEmployedClaimants;
+    protected static int RSLCTBTotalCount_StudentsClaimants;
+    // HLA
+    protected static int RSLHBTotalCountLHACases;
+    protected static int RSLCTBTotalCount_LHACases;
+    protected static int[] RSLTotalCount_DisabilityPremiumAwardByTT;
+    protected static int[] RSLTotalCount_SevereDisabilityPremiumAwardByTT;
+    protected static int[] RSLTotalCount_DisabledChildPremiumAwardByTT;
+    protected static int[] RSLTotalCount_EnhancedDisabilityPremiumAwardByTT;
+    protected static int[] RSLTotalCount_DisabilityAwardByTT;
+    protected static int[] RSLAllTotalCount_PSI;
+    protected static int[] RSLHBTotalCount_PSI;
+    protected static int[] RSLCTBTotalCount_PSI;
+    protected static int[][] RSLAllTotalCount_PSIByTT;
+    protected static int[][] RSLHBTotalCount_PSIByTT;
+    protected static int[][] RSLCTBTotalCount_PSIByTT;
+    protected static int[] RSLTotalCount_TTClaimant1;
+    protected static int[] RSLTotalCount_TTClaimant0;
+    protected static long RSLAllTotalHouseholdSize;
+    protected static long RSLHBTotalHouseholdSize;
+    protected static long RSLCTBTotalHouseholdSize;
+    protected static int RSLAllCount1;
+    protected static Integer RSLAllCount0;
+    // HB
+    protected static int RSLHBCount1;
+    protected static Integer RSLHBCount0;
+    protected static int[] RSLHBEthnicGroupCount;
+    protected static int RSLHBPostcodeValidFormatCount;
+    protected static int RSLHBPostcodeValidCount;
+    // CTB
+    protected static int RSLCTBCount1;
+    protected static Integer RSLCTBCount0;
+    protected static int[] RSLCTBEthnicGroupCount;
+    protected static int RSLCTBPostcodeValidFormatCount;
+    protected static int RSLCTBPostcodeValidCount;
 
-    public Summary(){
-        this.env = null;
-        this.collectionHandler = null;
-        this.tDW_SHBE_Handler = null;
-    }
-    
-    public Summary(
+    // Compare 2 Times
+    // Council
+    // General
+    protected static int CouncilTotalCount_HBTTsToCTBTTs;
+    protected static int CouncilTotalCount_CTBTTsToHBTTs;
+    // General HB related
+    protected static int CouncilTotalCount_Minus999TTToSocialTTs;
+    protected static int CouncilTotalCount_Minus999TTToPrivateDeregulatedTTs;
+    protected static int CouncilTotalCount_HBTTsToHBTTs;
+    protected static int CouncilTotalCount_HBTTsToMinus999TT;
+    protected static int CouncilTotalCount_SocialTTsToPrivateDeregulatedTTs;
+    protected static int CouncilTotalCount_SocialTTsToMinus999TT;
+    protected static int CouncilTotalCount_PrivateDeregulatedTTsToSocialTTs;
+    protected static int CouncilTotalCount_PrivateDeregulatedTTsToMinus999TT;
+    protected static int CouncilTotalCount_TT1ToPrivateDeregulatedTTs;
+    protected static int CouncilTotalCount_TT4ToPrivateDeregulatedTTs;
+    protected static int CouncilTotalCount_PrivateDeregulatedTTsToTT1;
+    protected static int CouncilTotalCount_PrivateDeregulatedTTsToTT4;
+    protected static int CouncilTotalCount_PostcodeChangeWithinSocialTTs;
+    protected static int CouncilTotalCount_PostcodeChangeWithinTT1;
+    protected static int CouncilTotalCount_PostcodeChangeWithinTT4;
+    protected static int CouncilTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs;
+    // General CTB related
+    protected static int CouncilTotalCount_SocialTTsToCTBTTs;
+    protected static int CouncilTotalCount_Minus999TTToCTBTTs;
+    protected static int CouncilTotalCount_TT1ToCTBTTs;
+    protected static int CouncilTotalCount_TT4ToCTBTTs;
+    protected static int CouncilTotalCount_PrivateDeregulatedTTsToCTBTTs;
+    protected static int CouncilTotalCount_CTBTTsToSocialTTs;
+    protected static int CouncilTotalCount_CTBTTsToMinus999TT;
+    protected static int CouncilTotalCount_CTBTTsToTT1;
+    protected static int CouncilTotalCount_CTBTTsToTT4;
+    protected static int CouncilTotalCount_CTBTTsToPrivateDeregulatedTTs;
+    //
+    protected static int CouncilTotalCount_TT1ToTT4;
+    protected static int CouncilTotalCount_TT4ToTT1;
+    // CouncilAll
+    protected static int CouncilAllTotalCount_TTChangeClaimant;
+    //protected static int CouncilAllTotalCount_TTChangeClaimantIgnoreMinus999;
+    protected static int CouncilAllTotalCount_Postcode0ValidPostcode1Valid;
+    protected static int CouncilAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
+    protected static int CouncilAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
+    protected static int CouncilAllTotalCount_Postcode0ValidPostcode1NotValid;
+    protected static int CouncilAllTotalCount_Postcode0NotValidPostcode1Valid;
+    protected static int CouncilAllTotalCount_Postcode0NotValidPostcode1NotValid;
+    protected static int CouncilAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged;
+    protected static int CouncilAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
+    // HB
+    protected static int CouncilHBTotalCount_TTChangeClaimant;
+    //protected static int CouncilHBTotalCount_TTChangeClaimantIgnoreMinus999;
+    protected static int CouncilHBTotalCount_Postcode0ValidPostcode1Valid;
+    protected static int CouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
+    protected static int CouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
+    protected static int CouncilHBTotalCount_Postcode0ValidPostcode1NotValid;
+    protected static int CouncilHBTotalCount_Postcode0NotValidPostcode1Valid;
+    protected static int CouncilHBTotalCount_Postcode0NotValidPostcode1NotValid;
+    protected static int CouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged;
+    protected static int CouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
+    // CTB
+    protected static int CouncilCTBTotalCount_TTChangeClaimant;
+    //protected static int CouncilCTBTotalCount_TTChangeClaimantIgnoreMinus999;
+    protected static int CouncilCTBTotalCount_Postcode0ValidPostcode1Valid;
+    protected static int CouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
+    protected static int CouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
+    protected static int CouncilCTBTotalCount_Postcode0ValidPostcode1NotValid;
+    protected static int CouncilCTBTotalCount_Postcode0NotValidPostcode1Valid;
+    protected static int CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValid;
+    protected static int CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged;
+    protected static int CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
+    // RSL
+    // General
+    protected static int RSLTotalCount_HBTTsToCTBTTs;
+    protected static int RSLTotalCount_CTBTTsToHBTTs;
+    // General HB related
+    protected static int RSLTotalCount_Minus999TTToSocialTTs;
+    protected static int RSLTotalCount_Minus999TTToPrivateDeregulatedTTs;
+    protected static int RSLTotalCount_HBTTsToHBTTs;
+    protected static int RSLTotalCount_HBTTsToMinus999TT;
+    protected static int RSLTotalCount_SocialTTsToPrivateDeregulatedTTs;
+    protected static int RSLTotalCount_SocialTTsToMinus999TT;
+    protected static int RSLTotalCount_PrivateDeregulatedTTsToSocialTTs;
+    protected static int RSLTotalCount_PrivateDeregulatedTTsToMinus999TT;
+    protected static int RSLTotalCount_TT1ToPrivateDeregulatedTTs;
+    protected static int RSLTotalCount_TT4ToPrivateDeregulatedTTs;
+    protected static int RSLTotalCount_PrivateDeregulatedTTsToTT1;
+    protected static int RSLTotalCount_PrivateDeregulatedTTsToTT4;
+    protected static int RSLTotalCount_PostcodeChangeWithinSocialTTs;
+    protected static int RSLTotalCount_PostcodeChangeWithinTT1;
+    protected static int RSLTotalCount_PostcodeChangeWithinTT4;
+    protected static int RSLTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs;
+    // General CTB related
+    protected static int RSLTotalCount_SocialTTsToCTBTTs;
+    protected static int RSLTotalCount_Minus999TTToCTBTTs;
+    protected static int RSLTotalCount_TT1ToCTBTTs;
+    protected static int RSLTotalCount_TT4ToCTBTTs;
+    protected static int RSLTotalCount_PrivateDeregulatedTTsToCTBTTs;
+    protected static int RSLTotalCount_CTBTTsToSocialTTs;
+    protected static int RSLTotalCount_CTBTTsToMinus999TT;
+    protected static int RSLTotalCount_CTBTTsToTT1;
+    protected static int RSLTotalCount_CTBTTsToTT4;
+    protected static int RSLTotalCount_CTBTTsToPrivateDeregulatedTTs;
+    //
+    protected static int RSLTotalCount_TT1ToTT4;
+    protected static int RSLTotalCount_TT4ToTT1;
+    // RSLAll
+    protected static int RSLAllTotalCount_TTChangeClaimant;
+    //protected static int RSLAllTotalCount_TTChangeClaimantIgnoreMinus999;
+    protected static int RSLAllTotalCount_Postcode0ValidPostcode1Valid;
+    protected static int RSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
+    protected static int RSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
+    protected static int RSLAllTotalCount_Postcode0ValidPostcode1NotValid;
+    protected static int RSLAllTotalCount_Postcode0NotValidPostcode1Valid;
+    protected static int RSLAllTotalCount_Postcode0NotValidPostcode1NotValid;
+    protected static int RSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged;
+    protected static int RSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
+    // HB
+    protected static int RSLHBTotalCount_TTChangeClaimant;
+    //protected static int RSLHBTotalCount_TTChangeClaimantIgnoreMinus999;
+    protected static int RSLHBTotalCount_Postcode0ValidPostcode1Valid;
+    protected static int RSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
+    protected static int RSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
+    protected static int RSLHBTotalCount_Postcode0ValidPostcode1NotValid;
+    protected static int RSLHBTotalCount_Postcode0NotValidPostcode1Valid;
+    protected static int RSLHBTotalCount_Postcode0NotValidPostcode1NotValid;
+    protected static int RSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged;
+    protected static int RSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
+    // CTB
+    protected static int RSLCTBTotalCount_TTChangeClaimant;
+    //protected static int RSLCTBTotalCount_TTChangeClaimantIgnoreMinus999;
+    protected static int RSLCTBTotalCount_Postcode0ValidPostcode1Valid;
+    protected static int RSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
+    protected static int RSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
+    protected static int RSLCTBTotalCount_Postcode0ValidPostcode1NotValid;
+    protected static int RSLCTBTotalCount_Postcode0NotValidPostcode1Valid;
+    protected static int RSLCTBTotalCount_Postcode0NotValidPostcode1NotValid;
+    protected static int RSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged;
+    protected static int RSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
+
+    protected static int AllUOCount00;
+    protected static int AllUOCount0;
+    protected static int AllUOCount1;
+    protected static int CouncilCount00;
+    protected static int CouncilCount0;
+    protected static int CouncilCount1;
+    protected static int RSLCount00;
+    protected static int RSLCount0;
+    protected static int RSLCount1;
+    protected static int AllLinkedRecordCount00;
+    protected static int AllUOLinkedRecordCount0;
+    protected static int AllUOLinkedRecordCount1;
+    protected static int CouncilLinkedRecordCount00;
+    protected static int CouncilLinkedRecordCount0;
+    protected static int CouncilLinkedRecordCount1;
+    protected static int RSLLinkedRecordCount00;
+    protected static int RSLLinkedRecordCount0;
+    protected static int RSLLinkedRecordCount1;
+
+    // Compare 3 Times
+    // Council
+    protected static int CouncilSamePostcodeIII;
+    protected static int CouncilSamePostcodeIOI;
+    protected static int CouncilSamePostcodeOIO;
+    protected static int CouncilSameTenancyIII;
+    protected static int CouncilSameTenancyIOI;
+    protected static int CouncilSameTenancyOIO;
+    protected static int CouncilSameTenancyAndPostcodeIII;
+    protected static int CouncilSameTenancyAndPostcodeIOI;
+    protected static int CouncilSameTenancyAndPostcodeOIO;
+    protected static int[] CouncilSameTenancyIIITT;
+    protected static int[] CouncilSameTenancyIOITT;
+    protected static int[] CouncilSameTenancyOIOTT;
+    protected static int[] CouncilSameTenancyAndPostcodeIIITT;
+    protected static int[] CouncilSameTenancyAndPostcodeIOITT;
+    protected static int[] CouncilSameTenancyAndPostcodeOIOTT;
+    // RSL
+    protected static int RSLSamePostcodeIII;
+    protected static int RSLSamePostcodeIOI;
+    protected static int RSLSamePostcodeOIO;
+    protected static int RSLSameTenancyIII;
+    protected static int RSLSameTenancyIOI;
+    protected static int RSLSameTenancyOIO;
+    protected static int RSLSameTenancyAndPostcodeIII;
+    protected static int RSLSameTenancyAndPostcodeIOI;
+    protected static int RSLSameTenancyAndPostcodeOIO;
+    protected static int[] RSLSameTenancyIIITT;
+    protected static int[] RSLSameTenancyIOITT;
+    protected static int[] RSLSameTenancyOIOTT;
+    protected static int[] RSLSameTenancyAndPostcodeIIITT;
+    protected static int[] RSLSameTenancyAndPostcodeIOITT;
+    protected static int[] RSLSameTenancyAndPostcodeOIOTT;
+
+    public SummaryUO(
             DW_Environment env,
             DW_SHBE_CollectionHandler collectionHandler,
             DW_SHBE_Handler tDW_SHBE_Handler,
-            int nTT, 
-            int nEG, 
+            int nTT,
+            int nEG,
             int nPSI,
             boolean handleOutOfMemoryError) {
         this.env = env;
@@ -760,7 +1463,19 @@ public class Summary {
         init(nTT, nEG, nPSI);
     }
 
+    
+    
+    
+    
+    // Go through all methods and approriate for UO
+    
+    
+    
+    
+    
+    @Override
     protected void init(int nTT, int nEG, int nPSI) {
+        super.init(nTT, nEG, nPSI);
         initSingleTimeStrings(nTT, nEG, nPSI);
         initCompare3TimesStrings(nTT, nEG);
         TotalCount_DisabilityPremiumAwardByTT = new int[nTT];
@@ -780,7 +1495,9 @@ public class Summary {
         CTBEthnicGroupCount = new int[nEG];
     }
 
+    @Override
     protected void initSingleTimeStrings(int nTT, int nEG, int nPSI) {
+        super.initSingleTimeStrings(nTT, nEG, nPSI);
         sTotalIncomeTT = new String[nTT];
         sTotalCount_IncomeNonZeroTT = new String[nTT];
         sTotalCount_IncomeZeroTT = new String[nTT];
@@ -789,6 +1506,7 @@ public class Summary {
         sTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
         sTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
         sAverageWeeklyEligibleRentAmountTT = new String[nTT];
+
         sAllTotalCount_PSI = new String[nPSI];
         sHBTotalCount_PSI = new String[nPSI];
         sCTBTotalCount_PSI = new String[nPSI];
@@ -800,28 +1518,29 @@ public class Summary {
         sPercentageOfHB_PSIByTT = new String[nPSI][nTT];
         sPercentageOfCTB_PSIByTT = new String[nPSI][nTT];
         for (int i = 1; i < nPSI; i++) {
-            sAllTotalCount_PSI[i] = "AllTotalCount_PSI" + i;
-            sHBTotalCount_PSI[i] = "HBTotalCount_PSI" + i;
-            sCTBTotalCount_PSI[i] = "CTBTotalCount_PSI" + i;
-            sAllPercentageOfAll_PSI[i] = "AllPercentageOfAll_PSI" + i;
-            sHBPercentageOfHB_PSI[i] = "HBPercentageOfHB_PSI" + i;
-            sCTBPercentageOfCTB_PSI[i] = "CTBPercentageOfCTB_PSI" + i;
+            sAllTotalCount_PSI[i] = "RSLAllTotalCount_PSI" + i;
+            sHBTotalCount_PSI[i] = "RSLHBTotalCount_PSI" + i;
+            sCTBTotalCount_PSI[i] = "RSLCTBTotalCount_PSI" + i;
+            sAllPercentageOfAll_PSI[i] = "RSLAllPercentageOfAll_PSI" + i;
+            sHBPercentageOfHB_PSI[i] = "RSLHBPercentageOfHB_PSI" + i;
+            sCTBPercentageOfCTB_PSI[i] = "RSLCTBPercentageOfCTB_PSI" + i;
             for (int j = 1; j < nTT; j++) {
-                sTotalCount_PSIByTT[i][j] = "TotalCount_PSI" + i + "TT" + j;
-                sPercentageOfAll_PSIByTT[i][j] = "PercentageOfAll_PSI" + i + "TT" + j;
+                sTotalCount_PSIByTT[i][j] = "RSLTotalCount_PSI" + i + "TT" + j;
+                sPercentageOfAll_PSIByTT[i][j] = "RSLPercentageOfAll_PSI" + i + "TT" + j;
                 if (j == 5 || j == 7) {
-                    sPercentageOfCTB_PSIByTT[i][j] = "PercentageOfCTB_PSI" + i + "TT" + j;
+                    sPercentageOfCTB_PSIByTT[i][j] = "RSLPercentageOfCTB_PSI" + i + "TT" + j;
                 } else {
-                    sPercentageOfHB_PSIByTT[i][j] = "PercentageOfHB_PSI" + i + "TT" + j;
+                    sPercentageOfHB_PSIByTT[i][j] = "RSLPercentageOfHB_PSI" + i + "TT" + j;
                 }
             }
         }
+
         // All
         sAllTotalCount_EthnicGroupClaimant = new String[nEG];
         sAllPercentage_EthnicGroupClaimant = new String[nEG];
         for (int i = 1; i < nEG; i++) {
-            sAllTotalCount_EthnicGroupClaimant[i] = "AllTotalCount_EthnicGroup" + i + "Claimant";
-            sAllPercentage_EthnicGroupClaimant[i] = "AllPercentageEthnicGroup" + i + "Claimant";
+            sAllTotalCount_EthnicGroupClaimant[i] = "RSLAllTotalCount_EthnicGroup" + i + "Claimant";
+            sAllPercentage_EthnicGroupClaimant[i] = "RSLAllPercentageEthnicGroup" + i + "Claimant";
         }
         sTotalCount_ClaimantTT = new String[nTT];
         sPercentageOfAll_ClaimantTT = new String[nTT];
@@ -859,99 +1578,89 @@ public class Summary {
         sPercentageOfTT_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
         for (int i = 1; i < nTT; i++) {
             // Claimants
-            sTotalCount_ClaimantTT[i] = "TotalCount_ClaimantTT" + i;
-            sPercentageOfAll_ClaimantTT[i] = "PercentageOfAll_ClaimantTT" + i;
-            sPercentageOfHB_ClaimantTT[i] = "PercentageOfHB_ClaimantTT" + i;
-            sPercentageOfCTB_ClaimantTT[i] = "PercentageOfCTB_ClaimantTT" + i;
+            sTotalCount_ClaimantTT[i] = "RSLTotalCount_ClaimantTT" + i;
+            sPercentageOfAll_ClaimantTT[i] = "RSLPercentageOfAll_ClaimantTT" + i;
+            sPercentageOfHB_ClaimantTT[i] = "RSLPercentageOfHB_ClaimantTT" + i;
+            sPercentageOfCTB_ClaimantTT[i] = "RSLPercentageOfCTB_ClaimantTT" + i;
             // Income
-            sTotalIncomeTT[i] = "TotalIncomeTT" + i;
-            sTotalCount_IncomeNonZeroTT[i] = "TotalCount_IncomeNonZeroTT" + i;
-            sTotalCount_IncomeZeroTT[i] = "TotalCount_IncomeZeroTT" + i;
-            sAverageIncomeTT[i] = "AverageIncomeTT" + i;
+            sTotalIncomeTT[i] = "RSLTotalIncomeTT" + i;
+            sTotalCount_IncomeNonZeroTT[i] = "RSLTotalCount_IncomeNonZeroTT" + i;
+            sTotalCount_IncomeZeroTT[i] = "RSLTotalCount_IncomeZeroTT" + i;
+            sAverageIncomeTT[i] = "RSLAverageIncomeTT" + i;
             // WeeklyEligibleRentAmountTT
-            sTotalWeeklyEligibleRentAmountTT[i] = "TotalWeeklyEligibleRentAmountTT" + i;
-            sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
-            sTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountZeroTT" + i;
-            sAverageWeeklyEligibleRentAmountTT[i] = "AverageWeeklyEligibleRentAmountTT" + i;
+            sTotalWeeklyEligibleRentAmountTT[i] = "RSLTotalWeeklyEligibleRentAmountTT" + i;
+            sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "RSLTotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
+            sTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "RSLTotalCount_WeeklyEligibleRentAmountZeroTT" + i;
+            sAverageWeeklyEligibleRentAmountTT[i] = "RSLAverageWeeklyEligibleRentAmountTT" + i;
             // DisabilityAwardByTT
-            sTotalCount_DisabilityAwardByTT[i] = "TotalCount_DisabilityAwardByTT" + i;
-            sPercentageOfAll_DisabilityAwardByTT[i] = "PercentageOfAll_DisabilityAwardByTT" + i;
-            sPercentageOfHB_DisabilityAwardByTT[i] = "PercentageOfHB_DisabilityAwardByTT" + i;
-            sPercentageOfCTB_DisabilityAwardByTT[i] = "PercentageOfCTB_DisabilityAwardByTT" + i;
-            sPercentageOfTT_DisabilityAwardByTT[i] = "PercentageOfTT_DisabilityAwardByTT" + i;
+            sTotalCount_DisabilityAwardByTT[i] = "RSLTotalCount_DisabilityAwardByTT" + i;
+            sPercentageOfAll_DisabilityAwardByTT[i] = "RSLPercentageOfAll_DisabilityAwardByTT" + i;
+            sPercentageOfHB_DisabilityAwardByTT[i] = "RSLPercentageOfHB_DisabilityAwardByTT" + i;
+            sPercentageOfCTB_DisabilityAwardByTT[i] = "RSLPercentageOfCTB_DisabilityAwardByTT" + i;
+            sPercentageOfTT_DisabilityAwardByTT[i] = "RSLPercentageOfTT_DisabilityAwardByTT" + i;
             // DisabilityPremiumAwardByTT
-            sTotalCount_DisabilityPremiumAwardByTT[i] = "TotalCount_DisabilityPremiumAwardByTT" + i;
-            sPercentageOfAll_DisabilityPremiumAwardByTT[i] = "PercentageOfAll_DisabilityPremiumAwardByTT" + i;
-            sPercentageOfHB_DisabilityPremiumAwardByTT[i] = "PercentageOfHB_DisabilityPremiumAwardByTT" + i;
-            sPercentageOfCTB_DisabilityPremiumAwardByTT[i] = "PercentageOfCTB_DisabilityPremiumAwardByTT" + i;
-            sPercentageOfTT_DisabilityPremiumAwardByTT[i] = "PercentageOfTT_DisabilityPremiumAwardByTT" + i;
+            sTotalCount_DisabilityPremiumAwardByTT[i] = "RSLTotalCount_DisabilityPremiumAwardByTT" + i;
+            sPercentageOfAll_DisabilityPremiumAwardByTT[i] = "RSLPercentageOfAll_DisabilityPremiumAwardByTT" + i;
+            sPercentageOfHB_DisabilityPremiumAwardByTT[i] = "RSLPercentageOfHB_DisabilityPremiumAwardByTT" + i;
+            sPercentageOfCTB_DisabilityPremiumAwardByTT[i] = "RSLPercentageOfCTB_DisabilityPremiumAwardByTT" + i;
+            sPercentageOfTT_DisabilityPremiumAwardByTT[i] = "RSLPercentageOfTT_DisabilityPremiumAwardByTT" + i;
             // SevereDisabilityPremiumAwardByTT
-            sTotalCount_SevereDisabilityPremiumAwardByTT[i] = "TotalCount_SevereDisabilityPremiumAwardByTT" + i;
-            sPercentageOfAll_SevereDisabilityPremiumAwardByTT[i] = "PercentageOfAll_SevereDisabilityPremiumAwardByTT" + i;
-            sPercentageOfHB_SevereDisabilityPremiumAwardByTT[i] = "PercentageOfHB_SevereDisabilityPremiumAwardByTT" + i;
-            sPercentageOfCTB_SevereDisabilityPremiumAwardByTT[i] = "PercentageOfCTB_SevereDisabilityPremiumAwardByTT" + i;
-            sPercentageOfTT_SevereDisabilityPremiumAwardByTT[i] = "PercentageOfTT_SevereDisabilityPremiumAwardByTT" + i;
+            sTotalCount_SevereDisabilityPremiumAwardByTT[i] = "RSLTotalCount_SevereDisabilityPremiumAwardByTT" + i;
+            sPercentageOfAll_SevereDisabilityPremiumAwardByTT[i] = "RSLPercentageOfAll_SevereDisabilityPremiumAwardByTT" + i;
+            sPercentageOfHB_SevereDisabilityPremiumAwardByTT[i] = "RSLPercentageOfHB_SevereDisabilityPremiumAwardByTT" + i;
+            sPercentageOfCTB_SevereDisabilityPremiumAwardByTT[i] = "RSLPercentageOfCTB_SevereDisabilityPremiumAwardByTT" + i;
+            sPercentageOfTT_SevereDisabilityPremiumAwardByTT[i] = "RSLPercentageOfTT_SevereDisabilityPremiumAwardByTT" + i;
             // DisabledChildPremiumAwardByTT
-            sTotalCount_DisabledChildPremiumAwardByTT[i] = "TotalCount_DisabledChildPremiumAwardByTT" + i;
-            sPercentageOfAll_DisabledChildPremiumAwardByTT[i] = "PercentageOfAll_DisabledChildPremiumAwardByTT" + i;
-            sPercentageOfHB_DisabledChildPremiumAwardByTT[i] = "PercentageOfHB_DisabledChildPremiumAwardByTT" + i;
-            sPercentageOfCTB_DisabledChildPremiumAwardByTT[i] = "PercentageOfCTB_DisabledChildPremiumAwardByTT" + i;
-            sPercentageOfTT_DisabledChildPremiumAwardByTT[i] = "PercentageOfTT_DisabledChildPremiumAwardByTT" + i;
+            sTotalCount_DisabledChildPremiumAwardByTT[i] = "RSLTotalCount_DisabledChildPremiumAwardByTT" + i;
+            sPercentageOfAll_DisabledChildPremiumAwardByTT[i] = "RSLPercentageOfAll_DisabledChildPremiumAwardByTT" + i;
+            sPercentageOfHB_DisabledChildPremiumAwardByTT[i] = "RSLPercentageOfHB_DisabledChildPremiumAwardByTT" + i;
+            sPercentageOfCTB_DisabledChildPremiumAwardByTT[i] = "RSLPercentageOfCTB_DisabledChildPremiumAwardByTT" + i;
+            sPercentageOfTT_DisabledChildPremiumAwardByTT[i] = "RSLPercentageOfTT_DisabledChildPremiumAwardByTT" + i;
             // EnhancedDisabilityPremiumAwardByTT
-            sTotalCount_EnhancedDisabilityPremiumAwardByTT[i] = "TotalCount_EnhancedDisabilityPremiumAwardByTT" + i;
-            sPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i] = "PercentageOfAll_EnhancedDisabilityPremiumAwardByTT" + i;
-            sPercentageOfHB_EnhancedDisabilityPremiumAwardByTT[i] = "PercentageOfHB_EnhancedDisabilityPremiumAwardByTT" + i;
-            sPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT[i] = "PercentageOfCTB_EnhancedDisabilityPremiumAwardByTT" + i;
-            sPercentageOfTT_EnhancedDisabilityPremiumAwardByTT[i] = "PercentageOfTT_EnhancedDisabilityPremiumAwardByTT" + i;
+            sTotalCount_EnhancedDisabilityPremiumAwardByTT[i] = "RSLTotalCount_EnhancedDisabilityPremiumAwardByTT" + i;
+            sPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i] = "RSLPercentageOfAll_EnhancedDisabilityPremiumAwardByTT" + i;
+            sPercentageOfHB_EnhancedDisabilityPremiumAwardByTT[i] = "RSLPercentageOfHB_EnhancedDisabilityPremiumAwardByTT" + i;
+            sPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT[i] = "RSLPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT" + i;
+            sPercentageOfTT_EnhancedDisabilityPremiumAwardByTT[i] = "RSLPercentageOfTT_EnhancedDisabilityPremiumAwardByTT" + i;
         }
-        // Postcode
-        sAllPostcodeValidFormatCount = "AllPostcodeValidFormatCount";
-        sAllPostcodeValidCount = "AllPostcodeValidCount";
-        sHBPostcodeValidFormatCount = "HBPostcodeValidFormatCount";
-        sHBPostcodeValidCount = "HBPostcodeValidCount";
-        sCTBPostcodeValidFormatCount = "CTBPostcodeValidFormatCount";
-        sCTBPostcodeValidCount = "CTBPostcodeValidCount";
-        // EthnicGroup
-        sAllTotalCount_EthnicGroupClaimant = new String[nEG];
-        sAllPercentage_EthnicGroupClaimant = new String[nEG];
+        sAllPostcodeValidFormatCount = "RSLAllPostcodeValidFormatCount";
+        sAllPostcodeValidCount = "RSLAllPostcodeValidCount";
+
+        // HB
         sHBTotalCount_EthnicGroupClaimant = new String[nEG];
         sHBPercentage_EthnicGroupClaimant = new String[nEG];
+        for (int i = 1; i < nEG; i++) {
+            sHBTotalCount_EthnicGroupClaimant[i] = "RSLHBTotalCount_EthnicGroup" + i + "Claimant";
+            sHBPercentage_EthnicGroupClaimant[i] = "RSLHBPercentageEthnicGroup" + i + "Claimant";
+        }
+
+        sHBPostcodeValidFormatCount = "RSLHBPostcodeValidFormatCount";
+        sHBPostcodeValidCount = "RSLHBPostcodeValidCount";
+//        HBFemaleClaimantCountString = "RSLHBFemaleClaimantCount";
+//        HBDisabledClaimantCountString = "RSLHBDisabledClaimantCount";
+//        HBFemaleDisabledClaimantCountString = "RSLHBDisabledFemaleClaimantCount";
+//        HBMaleDisabledClaimantCountString = "RSLHBDisabledMaleClaimantCount";
+
+        // CTB
         sCTBTotalCount_EthnicGroupClaimant = new String[nEG];
         sCTBPercentageEthnicGroupClaimant = new String[nEG];
         for (int i = 1; i < nEG; i++) {
-            sAllTotalCount_EthnicGroupClaimant[i] = "AllTotalCount_EthnicGroup" + i + "Claimant";
-            sAllPercentage_EthnicGroupClaimant[i] = "AllPercentage_EthnicGroup" + i + "Claimant";
-            sHBTotalCount_EthnicGroupClaimant[i] = "HBTotalCount_EthnicGroup" + i + "Claimant";
-            sHBPercentage_EthnicGroupClaimant[i] = "HBPercentage_EthnicGroup" + i + "Claimant";
-            sCTBTotalCount_EthnicGroupClaimant[i] = "CTBTotalCountClaimantEthnicGroup" + i + "Claimant";
-            sCTBPercentageEthnicGroupClaimant[i] = "CTBPercentageClaimantEthnicGroup" + i + "Claimant";
+            sCTBTotalCount_EthnicGroupClaimant[i] = "RSLCTBTotalCountClaimantEthnicGroup" + i + "Claimant";
+            sCTBPercentageEthnicGroupClaimant[i] = "RSLCTBPercentageClaimantEthnicGroup" + i + "Claimant";
         }
-    }
-
-    protected void initCompare3TimesStrings(int nTT, int nEG) {
-        sSamePostcodeIII = "SamePostcodeIII";
-        sSamePostcodeIOI = "SamePostcodeIOI";
-        sSamePostcodeOIO = "SamePostcodeOIO";
-        sSameTenancyIII = "SameTenancyIII";
-        sSameTenancyIOI = "SameTenancyIOI";
-        sSameTenancyOIO = "SameTenancyOIO";
-        sSameTenancyAndPostcodeIII = "SameTenancyAndPostcodeIII";
-        sSameTenancyAndPostcodeIOI = "SameTenancyAndPostcodeIOI";
-        sSameTenancyAndPostcodeOIO = "SameTenancyAndPostcodeOIO";
-        sSameTenancyIIITT = new String[nTT];
-        sSameTenancyIOITT = new String[nTT];
-        sSameTenancyOIOTT = new String[nTT];
-        sSameTenancyAndPostcodeIIITT = new String[nTT];
-        sSameTenancyAndPostcodeIOITT = new String[nTT];
-        sSameTenancyAndPostcodeOIOTT = new String[nTT];
+        sCTBTotalCount_TTClaimant = new String[nTT];
+        sCTBPercentageOfAll_TTClaimant = new String[nTT];
         for (int i = 1; i < nTT; i++) {
-            sSameTenancyIIITT[i] = "SameTenancyIIITT" + i;
-            sSameTenancyIOITT[i] = "SameTenancyIOITT" + i;
-            sSameTenancyOIOTT[i] = "SameTenancyOIOTT" + i;
-            sSameTenancyAndPostcodeIIITT[i] = "SameTenancyAndPostcodeIIITT" + i;
-            sSameTenancyAndPostcodeIOITT[i] = "SameTenancyAndPostcodeIOITT" + i;
-            sSameTenancyAndPostcodeOIOTT[i] = "SameTenancyAndPostcodeOIOTT" + i;
+            sCTBTotalCount_TTClaimant[i] = "RSLCTBTotalCountTT" + i + "Claimant";
+            sCTBPercentageOfAll_TTClaimant[i] = "RSLCTBPercentageTT" + i + "Claimant";
         }
+        sCTBPostcodeValidFormatCount = "RSLCTBPostcodeValidFormatCount";
+        sCTBPostcodeValidCount = "RSLCTBPostcodeValidCount";
+//        CTBFemaleClaimantCountString = "RSLCTBFemaleClaimantCount";
+//        CTBDisabledClaimantCountString = "RSLCTBDisabledClaimantCount";
+//        CTBFemaleDisabledClaimantCountString = "RSLCTBDisabledFemaleClaimantCount";
+//        CTBMaleDisabledClaimantCountString = "RSLCTBDisabledMaleClaimantCount";
+
     }
 
     protected void initCounts(int nTT, int nEG, int nPSI) {
@@ -961,7 +1670,7 @@ public class Summary {
     }
 
     protected void initSingleTimeCounts(int nTT, int nEG, int nPSI) {
-        // PSI
+
         for (int i = 1; i < nPSI; i++) {
             AllTotalCount_PSI[i] = 0;
             HBTotalCount_PSI[i] = 0;
@@ -972,6 +1681,7 @@ public class Summary {
                 CTBTotalCount_PSIByTT[i][j] = 0;
             }
         }
+
         // All
         AllTotalWeeklyHBEntitlement = 0.0d;
         AllTotalWeeklyHBEntitlementNonZeroCount = 0;
@@ -993,7 +1703,7 @@ public class Summary {
         AllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount = 0;
         AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0.0d;
         AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
-        // HB
+
         HBTotalWeeklyHBEntitlement = 0.0d;
         HBTotalCount_WeeklyHBEntitlementNonZero = 0;
         HBTotalCount_WeeklyHBEntitlementZero = 0;
@@ -1014,7 +1724,7 @@ public class Summary {
         HBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount = 0;
         HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0.0d;
         HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
-        // CTB
+
         CTBTotalWeeklyHBEntitlement = 0.0d;
         CTBTotalCount_WeeklyHBEntitlementNonZero = 0;
         CTBTotalWeeklyHBEntitlementZeroCount = 0;
@@ -1035,17 +1745,15 @@ public class Summary {
         CTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount = 0;
         CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0.0d;
         CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
-        // Employment
+
         HBTotalCount_EmployedClaimants = 0;
         CTBTotalCount_EmployedClaimants = 0;
         HBTotalCount_SelfEmployedClaimants = 0;
         CTBTotalCount_SelfEmployedClaimants = 0;
         HBTotalCount_StudentsClaimants = 0;
         CTBTotalCount_StudentsClaimants = 0;
-        // LHA
         HBTotalCount_LHACases = 0;
         CTBTotalCount_LHACases = 0;
-        // Disability
         for (int i = 1; i < nTT; i++) {
             TotalCount_TTClaimant1[i] = 0;
             TotalCount_DisabilityPremiumAwardByTT[i] = 0;
@@ -1054,29 +1762,47 @@ public class Summary {
             TotalCount_EnhancedDisabilityPremiumAwardByTT[i] = 0;
             TotalCount_DisabilityAwardByTT[i] = 0;
         }
+        // All
         //AllCount0 = AllCount1;
         AllCount1 = 0;
-        //HBCount0 = HBCount1;
-        HBCount1 = 0;
-        //CTBCount0 = CTBCount1;
-        CTBCount1 = 0;
-        // Ethnicity
+
+        // HB
         for (int i = 1; i < nEG; i++) {
             HBEthnicGroupCount[i] = 0;
-            CTBEthnicGroupCount[i] = 0;
         }
+        //HBCount0 = HBCount1;
+        HBCount1 = 0;
         HBPostcodeValidFormatCount = 0;
         HBPostcodeValidCount = 0;
         HBTotalCount_TTChangeClaimant = 0;
         //HBTotalCount_TTChangeClaimantIgnoreMinus999 = 0;
+
+        AllTotalHouseholdSize = 0L;
+        HBTotalHouseholdSize = 0L;
+        CTBTotalHouseholdSize = 0L;
+
+        // CTB
+        for (int i = 1; i < nEG; i++) {
+            CTBEthnicGroupCount[i] = 0;
+        }
+        //CTBCount0 = CTBCount1;
+        CTBCount1 = 0;
         CTBPostcodeValidFormatCount = 0;
         CTBPostcodeValidCount = 0;
         CTBTotalCount_TTChangeClaimant = 0;
         //CTBTotalCount_TTChangeClaimantIgnoreMinus999 = 0;
-        // Household Size
-        AllTotalHouseholdSize = 0L;
-        HBTotalHouseholdSize = 0L;
-        CTBTotalHouseholdSize = 0L;
+
+        AllUOCount1 = 0;
+        CouncilCount1 = 0;
+        RSLCount1 = 0;
+        AllUOLinkedRecordCount1 = 0;
+        CouncilLinkedRecordCount1 = 0;
+        RSLLinkedRecordCount1 = 0;
+        // RentArrears
+        CouncilTotal_RentArrears = 0.0d;
+        CouncilTotalCount_RentArrears = 0;
+        CouncilTotalCount_RentArrearsZero = 0;
+        CouncilTotalCount_RentArrearsNonZero = 0;
     }
 
     protected void initCompare2TimesCounts() {
@@ -1222,6 +1948,258 @@ public class Summary {
         return result;
     }
 
+    public static HashSet<ID_TenancyType> getID_TenancyTypeSet(
+            TreeMap<String, DW_SHBE_Record> D_Records,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet,
+            HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup) {
+        HashSet<ID_TenancyType> result;
+        result = new HashSet<ID_TenancyType>();
+        TreeMap<String, DW_UOReport_Record> RSLMap;
+        RSLMap = RSLUnderOccupiedSet.getMap();
+        TreeMap<String, DW_UOReport_Record> councilMap;
+        councilMap = councilUnderOccupiedSet.getMap();
+        Iterator<String> ite;
+        ite = councilMap.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            if (D_Records.containsKey(CTBRef)) {
+                DW_SHBE_D_Record D_Record;
+                D_Record = D_Records.get(CTBRef).getDRecord();
+                DW_PersonID DW_PersonID;
+                DW_PersonID = DW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
+                DW_ID ID;
+                ID = DW_PersonIDToIDLookup.get(DW_PersonID);
+                int TT;
+                TT = D_Record.getTenancyType();
+                ID_TenancyType ID_TenancyType;
+                ID_TenancyType = new ID_TenancyType(ID, TT);
+                result.add(ID_TenancyType);
+//            } else {
+//                // There are a few cases where a mapping to the SHBE does not exist!
+//                int debug = 1;//?
+            }
+        }
+        ite = RSLMap.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            if (D_Records.containsKey(CTBRef)) {
+                DW_SHBE_D_Record D_Record;
+                D_Record = D_Records.get(CTBRef).getDRecord();
+                DW_PersonID DW_PersonID;
+                DW_PersonID = DW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
+                DW_ID ID;
+                ID = DW_PersonIDToIDLookup.get(DW_PersonID);
+                int TT;
+                TT = D_Record.getTenancyType();
+                ID_TenancyType ID_TenancyType;
+                ID_TenancyType = new ID_TenancyType(ID, TT);
+                result.add(ID_TenancyType);
+//            } else {
+//                // There are a few cases where a mapping to the SHBE does not exist!
+//                int debug = 1;//?
+            }
+        }
+        return result;
+    }
+
+    public static HashSet<ID_PostcodeID> getID_PostcodeIDSet(
+            TreeMap<String, DW_SHBE_Record> D_Records,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet,
+            HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
+            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
+        HashSet<ID_PostcodeID> result;
+        result = new HashSet<ID_PostcodeID>();
+        TreeMap<String, DW_UOReport_Record> RSLMap;
+        RSLMap = RSLUnderOccupiedSet.getMap();
+        TreeMap<String, DW_UOReport_Record> councilMap;
+        councilMap = councilUnderOccupiedSet.getMap();
+        Iterator<String> ite;
+        ite = councilMap.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            DW_SHBE_D_Record D_Record;
+            if (D_Records.containsKey(CTBRef)) {
+                D_Record = D_Records.get(CTBRef).getDRecord();
+                DW_PersonID DW_PersonID;
+                DW_PersonID = DW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
+                DW_ID ID;
+                ID = DW_PersonIDToIDLookup.get(DW_PersonID);
+                DW_ID PostcodeID;
+                PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
+                ID_PostcodeID ID_PostcodeID;
+                ID_PostcodeID = new ID_PostcodeID(ID, PostcodeID);
+                result.add(ID_PostcodeID);
+//            } else {
+//                // There are a few cases where a mapping to the SHBE does not exist!
+//                int debug = 1;//?
+            }
+        }
+        ite = RSLMap.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            DW_SHBE_D_Record D_Record;
+            if (D_Records.containsKey(CTBRef)) {
+                D_Record = D_Records.get(CTBRef).getDRecord();
+                DW_PersonID DW_PersonID;
+                DW_PersonID = DW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
+                DW_ID ID;
+                ID = DW_PersonIDToIDLookup.get(DW_PersonID);
+                DW_ID PostcodeID;
+                PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
+                ID_PostcodeID ID_PostcodeID;
+                ID_PostcodeID = new ID_PostcodeID(ID, PostcodeID);
+                result.add(ID_PostcodeID);
+//            } else {
+//                // There are a few cases where a mapping to the SHBE does not exist!
+//                int debug = 1;//?
+            }
+        }
+        return result;
+    }
+
+    public static HashSet<ID_TenancyType_PostcodeID> getID_TenancyType_PostcodeIDSet(
+            TreeMap<String, DW_SHBE_Record> D_Records,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet,
+            HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
+            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
+        HashSet<ID_TenancyType_PostcodeID> result;
+        result = new HashSet<ID_TenancyType_PostcodeID>();
+        TreeMap<String, DW_UOReport_Record> RSLMap;
+        RSLMap = RSLUnderOccupiedSet.getMap();
+        TreeMap<String, DW_UOReport_Record> councilMap;
+        councilMap = councilUnderOccupiedSet.getMap();
+        Iterator<String> ite;
+        ite = councilMap.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            if (D_Records.containsKey(CTBRef)) {
+                DW_SHBE_D_Record D_Record;
+                D_Record = D_Records.get(CTBRef).getDRecord();
+                DW_PersonID DW_PersonID;
+                DW_PersonID = DW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
+                DW_ID ID;
+                ID = DW_PersonIDToIDLookup.get(DW_PersonID);
+                int TT;
+                TT = D_Record.getTenancyType();
+                ID_TenancyType ID_TenancyType;
+                ID_TenancyType = new ID_TenancyType(ID, TT);
+                DW_ID PostcodeID;
+                PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
+                ID_TenancyType_PostcodeID ID_TenancyType_PostcodeID;
+                ID_TenancyType_PostcodeID = new ID_TenancyType_PostcodeID(ID_TenancyType, PostcodeID);
+                result.add(ID_TenancyType_PostcodeID);
+//            } else {
+//                // There are a few cases where a mapping to the SHBE does not exist!
+//                int debug = 1;//?
+            }
+        }
+        ite = RSLMap.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            if (D_Records.containsKey(CTBRef)) {
+                DW_SHBE_D_Record D_Record;
+                D_Record = D_Records.get(CTBRef).getDRecord();
+                DW_PersonID DW_PersonID;
+                DW_PersonID = DW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
+                DW_ID ID;
+                ID = DW_PersonIDToIDLookup.get(DW_PersonID);
+                int TT;
+                TT = D_Record.getTenancyType();
+                ID_TenancyType ID_TenancyType;
+                ID_TenancyType = new ID_TenancyType(ID, TT);
+                DW_ID PostcodeID;
+                PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
+                ID_TenancyType_PostcodeID ID_TenancyType_PostcodeID;
+                ID_TenancyType_PostcodeID = new ID_TenancyType_PostcodeID(ID_TenancyType, PostcodeID);
+                result.add(ID_TenancyType_PostcodeID);
+//            } else {
+//                // There are a few cases where a mapping to the SHBE does not exist!
+//                int debug = 1;//?
+            }
+        }
+        return result;
+    }
+
+//    public static Object[] getMembershipsID_TenancyType(HashSet<ID_TenancyType> set00, HashSet<ID_TenancyType> set0, HashSet<ID_TenancyType> set1) {
+//        Object[] result;
+//        result = new Object[3];
+//        HashSet<ID_TenancyType> union;
+//        union = new HashSet<ID_TenancyType>();
+//        union.addAll(set1);
+//        union.retainAll(set0);
+//        union.retainAll(set00);
+//        HashSet<ID_TenancyType> set0Only;
+//        set0Only = new HashSet<ID_TenancyType>();
+//        set0Only.addAll(set0);
+//        set0Only.removeAll(set1);
+//        set0Only.removeAll(set00);
+//        HashSet<ID_TenancyType> set00AndSet1;
+//        set00AndSet1 = new HashSet<ID_TenancyType>();
+//        set00AndSet1.addAll(set00);
+//        set00AndSet1.removeAll(set0);
+//        set00AndSet1.retainAll(set1);
+//        result[0] = union;
+//        result[1] = set0Only;
+//        result[2] = set00AndSet1;
+//        return result;
+//    }
+//
+//    public static Object[] getMembershipsID_TenancyType_PostcodeID(HashSet<ID_TenancyType_PostcodeID> set00, HashSet<ID_TenancyType_PostcodeID> set0, HashSet<ID_TenancyType_PostcodeID> set1) {
+//        Object[] result;
+//        result = new Object[3];
+//        HashSet<ID_TenancyType_PostcodeID> union;
+//        union = new HashSet<ID_TenancyType_PostcodeID>();
+//        union.addAll(set1);
+//        union.retainAll(set0);
+//        union.retainAll(set00);
+//        HashSet<ID_TenancyType_PostcodeID> set0Only;
+//        set0Only = new HashSet<ID_TenancyType_PostcodeID>();
+//        set0Only.addAll(set0);
+//        set0Only.removeAll(set1);
+//        set0Only.removeAll(set00);
+//        HashSet<ID_TenancyType_PostcodeID> set00AndSet1;
+//        set00AndSet1 = new HashSet<ID_TenancyType_PostcodeID>();
+//        set00AndSet1.addAll(set00);
+//        set00AndSet1.removeAll(set0);
+//        set00AndSet1.retainAll(set1);
+//        result[0] = union;
+//        result[1] = set0Only;
+//        result[2] = set00AndSet1;
+//        return result;
+//    }
+//
+//    public static Object[] getMembershipsID_PostcodeID(HashSet<ID_PostcodeID> set00, HashSet<ID_PostcodeID> set0, HashSet<ID_PostcodeID> set1) {
+//        Object[] result;
+//        result = new Object[3];
+//        HashSet<ID_PostcodeID> union;
+//        union = new HashSet<ID_PostcodeID>();
+//        union.addAll(set1);
+//        union.retainAll(set0);
+//        union.retainAll(set00);
+//        HashSet<ID_PostcodeID> set0Only;
+//        set0Only = new HashSet<ID_PostcodeID>();
+//        set0Only.addAll(set0);
+//        set0Only.removeAll(set1);
+//        set0Only.removeAll(set00);
+//        HashSet<ID_PostcodeID> set00AndSet1;
+//        set00AndSet1 = new HashSet<ID_PostcodeID>();
+//        set00AndSet1.addAll(set00);
+//        set00AndSet1.removeAll(set0);
+//        set00AndSet1.retainAll(set1);
+//        result[0] = union;
+//        result[1] = set0Only;
+//        result[2] = set00AndSet1;
+//        return result;
+//    }
     /**
      *
      * @param nTT
@@ -1265,7 +2243,7 @@ public class Summary {
             tClaimantIDPostcodeTTs0 = tClaimantIDPostcodeTTs.get((String) previousYM3s[2]);
             Object[] memberships;
             //memberships = Summary.getMembershipsID_TenancyType_PostcodeID(tClaimantIDPostcodeTTs00, tClaimantIDPostcodeTTs0, tClaimantIDPostcodeTTs1);
-            memberships = Summary.getMemberships(
+            memberships = SummaryUO.getMemberships(
                     tClaimantIDPostcodeTTs00,
                     tClaimantIDPostcodeTTs0,
                     tClaimantIDPostcodeTTs1);
@@ -1350,7 +2328,7 @@ public class Summary {
             tClaimantIDTTs0 = tClaimantIDTTs.get((String) previousYM3s[2]);
             Object[] memberships;
             //memberships = Summary.getMembershipsID_TenancyType(tClaimantIDTTs00, tClaimantIDTTs0, tClaimantIDTTs1);
-            memberships = Summary.getMemberships(
+            memberships = SummaryUO.getMemberships(
                     tClaimantIDTTs00,
                     tClaimantIDTTs0,
                     tClaimantIDTTs1);
@@ -1419,7 +2397,7 @@ public class Summary {
             tClaimantIDTypes0 = tClaimantIDPostcodeTypes.get((String) previousYM3s[2]);
             Object[] memberships;
             //memberships = Summary.getMembershipsID_PostcodeID(tClaimantIDTypes00, tClaimantIDTypes0, tClaimantIDPostcodeTypes1);
-            memberships = Summary.getMemberships(
+            memberships = SummaryUO.getMemberships(
                     tClaimantIDTypes00,
                     tClaimantIDTypes0,
                     tClaimantIDPostcodeTypes1);
@@ -2111,6 +3089,44 @@ public class Summary {
         }
     }
 
+    protected void addToSummarySingleTimeRentArrears(
+            HashMap<String, String> summary) {
+        summary.put(
+                sCouncilTotal_RentArrears,
+                "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
+                        BigDecimal.valueOf(CouncilTotal_RentArrears),
+                        2, RoundingMode.HALF_UP));
+        summary.put(
+                sCouncilTotalCount_RentArrears,
+                "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
+                        BigDecimal.valueOf(CouncilTotalCount_RentArrears),
+                        2, RoundingMode.HALF_UP));
+        summary.put(
+                sCouncilTotalCount_RentArrearsNonZero,
+                "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
+                        BigDecimal.valueOf(CouncilTotalCount_RentArrearsNonZero),
+                        2, RoundingMode.HALF_UP));
+        summary.put(
+                sCouncilTotalCount_RentArrearsZero,
+                "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
+                        BigDecimal.valueOf(CouncilTotalCount_RentArrearsZero),
+                        2, RoundingMode.HALF_UP));
+        if (CouncilTotalCount_RentArrears != 0.0d) {
+            summary.put(
+                    sCouncilAverage_RentArrears,
+                    "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
+                            BigDecimal.valueOf(CouncilTotal_RentArrears / (double) CouncilTotalCount_RentArrears),
+                            2, RoundingMode.HALF_UP));
+        }
+        if (CouncilTotalCount_RentArrearsNonZero != 0.0d) {
+            summary.put(
+                    sCouncilAverage_NonZeroRentArrears,
+                    "" + Generic_BigDecimal.roundToAndSetDecimalPlaces(
+                            BigDecimal.valueOf(CouncilTotal_RentArrears / CouncilTotalCount_RentArrearsNonZero),
+                            2, RoundingMode.HALF_UP));
+        }
+    }
+
     protected void addToSummarySingleTime(
             int nTT,
             int nEG,
@@ -2120,6 +3136,12 @@ public class Summary {
         AllCount0 = AllCount1;
         HBCount0 = HBCount1;
         CTBCount0 = CTBCount1;
+        AllUOCount0 = AllUOCount1;
+        CouncilCount0 = CouncilCount1;
+        RSLCount0 = RSLCount1;
+        CouncilLinkedRecordCount0 = CouncilLinkedRecordCount1;
+        RSLLinkedRecordCount0 = RSLLinkedRecordCount1;
+        AllUOLinkedRecordCount0 = AllUOLinkedRecordCount1;
 //        for (int TT = 0; TT < nTT; TT++) {
 //            AllTotalCountTTClaimant0[TT] = AllTotalCountTTClaimant1[TT];
 //        }
@@ -3429,23 +4451,29 @@ public class Summary {
         summary.put(
                 sAllTotalWeeklyEligibleCouncilTaxAmount,
                 BigDecimal.valueOf(AllTotalWeeklyEligibleCouncilTaxAmount).toPlainString());
-        summary.put(sAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
+        summary.put(
+                sAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
                 Integer.toString(AllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero));
-        summary.put(sAllTotalCount_WeeklyEligibleCouncilTaxAmountZero,
+        summary.put(
+                sAllTotalCount_WeeklyEligibleCouncilTaxAmountZero,
                 Integer.toString(AllTotalCount_WeeklyEligibleCouncilTaxAmountZero));
         summary.put(
                 sHBTotalWeeklyEligibleCouncilTaxAmount,
                 BigDecimal.valueOf(HBTotalWeeklyEligibleCouncilTaxAmount).toPlainString());
-        summary.put(sHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
+        summary.put(
+                sHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
                 Integer.toString(HBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero));
-        summary.put(sHBTotalCount_WeeklyEligibleCouncilTaxAmountZero,
+        summary.put(
+                sHBTotalCount_WeeklyEligibleCouncilTaxAmountZero,
                 Integer.toString(HBTotalCount_WeeklyEligibleCouncilTaxAmountZero));
         summary.put(
                 sCTBTotalWeeklyEligibleCouncilTaxAmount,
                 BigDecimal.valueOf(CTBTotalWeeklyEligibleCouncilTaxAmount).toPlainString());
-        summary.put(sCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
+        summary.put(
+                sCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
                 Integer.toString(CTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero));
-        summary.put(sCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero,
+        summary.put(
+                sCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero,
                 Integer.toString(CTBTotalCount_WeeklyEligibleCouncilTaxAmountZero));
         // ContractualRentAmount
         summary.put(
@@ -3540,24 +4568,30 @@ public class Summary {
         summary.put(
                 sHBTotalCount_ClaimantsEmployed,
                 Integer.toString(HBTotalCount_EmployedClaimants));
-        summary.put(sCTBTotalCount_ClaimantsEmployed,
+        summary.put(
+                sCTBTotalCount_ClaimantsEmployed,
                 Integer.toString(CTBTotalCount_EmployedClaimants));
         // Self Employed
-        summary.put(sHBTotalCountClaimantsSelfEmployed,
+        summary.put(
+                sHBTotalCountClaimantsSelfEmployed,
                 Integer.toString(HBTotalCount_SelfEmployedClaimants));
-        summary.put(sCTBTotalCountClaimantsSelfEmployed,
+        summary.put(
+                sCTBTotalCountClaimantsSelfEmployed,
                 Integer.toString(CTBTotalCount_SelfEmployedClaimants));
         // Students
-        summary.put(sHBTotalCountClaimantsStudents,
+        summary.put(
+                sHBTotalCountClaimantsStudents,
                 Integer.toString(HBTotalCount_StudentsClaimants));
-        summary.put(sCTBTotalCountClaimantsStudents,
+        summary.put(
+                sCTBTotalCountClaimantsStudents,
                 Integer.toString(CTBTotalCount_StudentsClaimants));
         // LHACases
         t = HBTotalCount_LHACases + CTBTotalCount_LHACases;
         summary.put(
                 sAllTotalCount_LHACases,
                 Integer.toString(t));
-        summary.put(sHBTotalCount_LHACases,
+        summary.put(
+                sHBTotalCount_LHACases,
                 Integer.toString(HBTotalCount_LHACases));
         summary.put(
                 sCTBTotalCount_LHACases,
@@ -4595,6 +5629,20 @@ public class Summary {
         AllCount1 = HBCount1 + CTBCount1;
     }
 
+    protected void doSingleTimeRentArrearsCount(DW_UOReport_Record UORec) {
+        Double totalRA;
+        totalRA = UORec.getTotalRentArrears();
+        if (totalRA != null) {
+            CouncilTotal_RentArrears += totalRA;
+            CouncilTotalCount_RentArrears += 1.0d;
+            if (totalRA > 0.0d) {
+                CouncilTotalCount_RentArrearsNonZero++;
+            } else {
+                CouncilTotalCount_RentArrearsZero++;
+            }
+        }
+    }
+
     protected void doCompare2TimesHBCount(
             Integer tenancyType0,
             String postcode0,
@@ -4769,6 +5817,7 @@ public class Summary {
     /**
      *
      * @param tEG The Ethnic Group
+     * @param tTT The Tenancy Type
      * @param tP The Postcode
      * @param yM3v They yM3 for postcode lookup validity
      */
@@ -4876,6 +5925,7 @@ public class Summary {
     /**
      *
      * @param tEG The Ethnic Group
+     * @param tTT The Tenancy Type
      * @param tP The Postcode
      * @param yM3v They yM3 for postcode lookup validity
      */
@@ -5250,11 +6300,14 @@ public class Summary {
             summary.put(sSameTenancyOIO,
                     null);
             for (int TT = 1; TT < nTT; TT++) {
-                summary.put(sSameTenancyIIITT[TT],
+                summary.put(
+                        sSameTenancyIIITT[TT],
                         null);
-                summary.put(sSameTenancyIOITT[TT],
+                summary.put(
+                        sSameTenancyIOITT[TT],
                         null);
-                summary.put(sSameTenancyOIOTT[TT],
+                summary.put(
+                        sSameTenancyOIOTT[TT],
                         null);
             }
         } else {
@@ -5265,11 +6318,14 @@ public class Summary {
             summary.put(sSameTenancyOIO,
                     "" + mainCounts[2]);
             for (int TT = 1; TT < nTT; TT++) {
-                summary.put(sSameTenancyIIITT[TT],
+                summary.put(
+                        sSameTenancyIIITT[TT],
                         "" + IIITTCounts[TT]);
-                summary.put(sSameTenancyIOITT[TT],
+                summary.put(
+                        sSameTenancyIOITT[TT],
                         "" + IOITTCounts[TT]);
-                summary.put(sSameTenancyOIOTT[TT],
+                summary.put(
+                        sSameTenancyOIOTT[TT],
                         "" + OIOTTCounts[TT]);
             }
         }
@@ -5292,11 +6348,14 @@ public class Summary {
             summary.put(sSameTenancyAndPostcodeOIO,
                     null);
             for (int TT = 1; TT < nTT; TT++) {
-                summary.put(sSameTenancyAndPostcodeIIITT[TT],
+                summary.put(
+                        sSameTenancyAndPostcodeIIITT[TT],
                         null);
-                summary.put(sSameTenancyAndPostcodeIOITT[TT],
+                summary.put(
+                        sSameTenancyAndPostcodeIOITT[TT],
                         null);
-                summary.put(sSameTenancyAndPostcodeOIOTT[TT],
+                summary.put(
+                        sSameTenancyAndPostcodeOIOTT[TT],
                         null);
             }
         } else {
@@ -5307,16 +6366,932 @@ public class Summary {
             summary.put(sSameTenancyAndPostcodeOIO,
                     "" + mainCounts[2]);
             for (int TT = 1; TT < nTT; TT++) {
-                summary.put(sSameTenancyAndPostcodeIIITT[TT],
+                summary.put(
+                        sSameTenancyAndPostcodeIIITT[TT],
                         "" + IIITTCounts[TT]);
-                summary.put(sSameTenancyAndPostcodeIOITT[TT],
+                summary.put(
+                        sSameTenancyAndPostcodeIOITT[TT],
                         "" + IOITTCounts[TT]);
-                summary.put(sSameTenancyAndPostcodeOIOTT[TT],
+                summary.put(
+                        sSameTenancyAndPostcodeOIOTT[TT],
                         "" + OIOTTCounts[TT]);
             }
         }
     }
 
+    public void doCompare3TimesCounts(
+            HashMap<String, String> summary,
+            int nTT,
+            String[] SHBEFilenames,
+            ArrayList<Integer> include,
+            String yM31,
+            TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
+            HashSet<ID_PostcodeID> tClaimantIDPostcodes1,
+            TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs,
+            HashSet<ID_TenancyType> tClaimantIDTT1,
+            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
+            HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTTs1,
+            HashMap<String, DW_SHBE_D_Record> D_Records,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet
+    ) {
+        Integer[] counts;
+        counts = getCountsIDPostcode(
+                SHBEFilenames,
+                include,
+                yM31,
+                tClaimantIDPostcodes,
+                tClaimantIDPostcodes1);
+        summary.put(sSamePostcodeIII,
+                "" + counts[0]);
+        summary.put(sSamePostcodeIOI,
+                "" + counts[1]);
+        summary.put(sSamePostcodeOIO,
+                "" + counts[2]);
+        Object[] countsIDTT = getCountsIDTT(
+                nTT,
+                SHBEFilenames,
+                include,
+                yM31,
+                tClaimantIDTTs,
+                tClaimantIDTT1);
+        Integer[] mainCounts;
+        mainCounts = (Integer[]) countsIDTT[0];
+        Integer[] IIITTCounts;
+        Integer[] IOITTCounts;
+        Integer[] OIOTTCounts;
+        IIITTCounts = (Integer[]) countsIDTT[1];
+        IOITTCounts = (Integer[]) countsIDTT[2];
+        OIOTTCounts = (Integer[]) countsIDTT[3];
+        if (mainCounts == null) { // If mainCounts is null, then so are other counts
+            summary.put(sSameTenancyIII,
+                    null);
+            summary.put(sSameTenancyIOI,
+                    null);
+            summary.put(sSameTenancyOIO,
+                    null);
+            for (int TT = 1; TT < nTT; TT++) {
+                summary.put(
+                        sSameTenancyIIITT[TT],
+                        null);
+                summary.put(
+                        sSameTenancyIOITT[TT],
+                        null);
+                summary.put(
+                        sSameTenancyOIOTT[TT],
+                        null);
+            }
+        } else {
+            summary.put(sSameTenancyIII,
+                    "" + mainCounts[0]);
+            summary.put(sSameTenancyIOI,
+                    "" + mainCounts[1]);
+            summary.put(sSameTenancyOIO,
+                    "" + mainCounts[2]);
+            for (int TT = 1; TT < nTT; TT++) {
+                summary.put(
+                        sSameTenancyIIITT[TT],
+                        "" + IIITTCounts[TT]);
+                summary.put(
+                        sSameTenancyIOITT[TT],
+                        "" + IOITTCounts[TT]);
+                summary.put(
+                        sSameTenancyOIOTT[TT],
+                        "" + OIOTTCounts[TT]);
+            }
+        }
+        Object[] countsIDPostcodeTT = getCountsIDPostcodeTT(
+                nTT,
+                SHBEFilenames,
+                include,
+                yM31,
+                tClaimantIDPostcodeTTs,
+                tClaimantIDPostcodeTTs1);
+        mainCounts = (Integer[]) countsIDPostcodeTT[0];
+        IIITTCounts = (Integer[]) countsIDPostcodeTT[1];
+        IOITTCounts = (Integer[]) countsIDPostcodeTT[2];
+        OIOTTCounts = (Integer[]) countsIDPostcodeTT[3];
+        if (mainCounts == null) { // If mainCounts is null, then so are other counts
+            summary.put(sSameTenancyAndPostcodeIII,
+                    null);
+            summary.put(sSameTenancyAndPostcodeIOI,
+                    null);
+            summary.put(sSameTenancyAndPostcodeOIO,
+                    null);
+            for (int TT = 1; TT < nTT; TT++) {
+                summary.put(
+                        sSameTenancyAndPostcodeIIITT[TT],
+                        null);
+                summary.put(
+                        sSameTenancyAndPostcodeIOITT[TT],
+                        null);
+                summary.put(
+                        sSameTenancyAndPostcodeOIOTT[TT],
+                        null);
+            }
+        } else {
+            summary.put(sSameTenancyAndPostcodeIII,
+                    "" + mainCounts[0]);
+            summary.put(sSameTenancyAndPostcodeIOI,
+                    "" + mainCounts[1]);
+            summary.put(sSameTenancyAndPostcodeOIO,
+                    "" + mainCounts[2]);
+            for (int TT = 1; TT < nTT; TT++) {
+                summary.put(
+                        sSameTenancyAndPostcodeIIITT[TT],
+                        "" + IIITTCounts[TT]);
+                summary.put(
+                        sSameTenancyAndPostcodeIOITT[TT],
+                        "" + IOITTCounts[TT]);
+                summary.put(
+                        sSameTenancyAndPostcodeOIOTT[TT],
+                        "" + OIOTTCounts[TT]);
+            }
+        }
+    }
+
+    /**
+     *
+     * @param summaryTableAll
+     * @param SHBEFilenames
+     * @param include
+     * @param forceNewSummaries
+     * @param paymentType
+     * @param nTT
+     * @param nEG
+     * @param nPSI
+     * @param underOccupiedData
+     * @param tDW_PersonIDToIDLookup
+     * @param tPostcodeToPostcodeIDLookup
+     * @param handleOutOfMemoryError
+     * @return
+     */
+    public TreeMap<String, HashMap<String, String>> getSummaryTable(
+            TreeMap<String, HashMap<String, String>> summaryTableAll,
+            String[] SHBEFilenames,
+            ArrayList<Integer> include,
+            boolean forceNewSummaries,
+            String paymentType,
+            int nTT,
+            int nEG,
+            int nPSI,
+            Object[] underOccupiedData,
+            HashMap<DW_PersonID, DW_ID> tDW_PersonIDToIDLookup,
+            HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup,
+            boolean handleOutOfMemoryError
+    ) {
+        AllCount0 = null;
+        HBCount0 = null;
+        CTBCount0 = null;
+        initCounts(nTT, nEG, nPSI);
+        // Initialise result part 1
+        TreeMap<String, HashMap<String, String>> result;
+        result = new TreeMap<String, HashMap<String, String>>();
+        // Initialise UO
+        TreeMap<String, DW_UnderOccupiedReport_Set> councilUnderOccupiedSets = null;
+        TreeMap<String, DW_UnderOccupiedReport_Set> RSLUnderOccupiedSets = null;
+        councilUnderOccupiedSets = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[0];
+        RSLUnderOccupiedSets = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[1];
+        // Initialise first data
+        Iterator<Integer> includeIte;
+        DW_SHBE_Collection tSHBEData1 = null;
+        includeIte = include.iterator();
+        boolean initFirst = false;
+        String yM31 = "";
+        String yM31v = "";
+        DW_UnderOccupiedReport_Set councilUnderOccupiedSet1 = null;
+        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1 = null;
+        String filename1 = null;
+        int i;
+        while (!initFirst) {
+            i = includeIte.next();
+            // Load first data
+            filename1 = SHBEFilenames[i];
+            yM31 = DW_SHBE_Handler.getYM3(filename1);
+            councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
+            if (councilUnderOccupiedSet1 != null) {
+                RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
+                System.out.println("Load " + filename1);
+                tSHBEData1 = new DW_SHBE_Collection(filename1, paymentType);
+                initFirst = true;
+            }
+        }
+        if (tSHBEData1 == null) {
+            return result;
+        }
+        Object[] filenames;
+        filenames = DW_UnderOccupiedReport_Handler.getFilenames();
+        TreeMap<String, String> councilFilenames;
+        TreeMap<String, String> RSLFilenames;
+        councilFilenames = (TreeMap<String, String>) filenames[0];
+        RSLFilenames = (TreeMap<String, String>) filenames[1];
+        // Initialise result part 2
+        Iterator<Integer> includeIte2;
+        includeIte2 = include.iterator();
+        while (includeIte2.hasNext()) {
+            int j;
+            j = includeIte2.next();
+            String yM3;
+            yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[j]);
+            DW_UnderOccupiedReport_Set aCouncilUnderOccupiedSet;
+            aCouncilUnderOccupiedSet = councilUnderOccupiedSets.get(yM3);
+            if (aCouncilUnderOccupiedSet != null) {
+                HashMap<String, String> summary;
+                summary = new HashMap<String, String>();
+                String key;
+                key = DW_SHBE_Handler.getYearMonthNumber(SHBEFilenames[j]);
+                result.put(key, summary);
+            }
+        }
+        // The following could be returned/passed in  to save time recreating 
+        // them for other includes.
+        TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes;
+        tClaimantIDPostcodes = new TreeMap<String, HashSet<ID_PostcodeID>>();
+        TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs;
+        tClaimantIDTTs = new TreeMap<String, HashSet<ID_TenancyType>>();
+        TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs;
+        tClaimantIDPostcodeTTs = new TreeMap<String, HashSet<ID_TenancyType_PostcodeID>>();
+
+        yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+
+        // Summarise first data
+        doPartSummarySingleTime(
+                tSHBEData1,
+                yM31,
+                yM31v,
+                filename1,
+                forceNewSummaries,
+                paymentType,
+                nTT,
+                nEG,
+                nPSI,
+                councilFilenames,
+                RSLFilenames,
+                councilUnderOccupiedSet1,
+                RSLUnderOccupiedSet1,
+                result,
+                tClaimantIDPostcodes,
+                tClaimantIDTTs,
+                tClaimantIDPostcodeTTs,
+                tDW_PersonIDToIDLookup,
+                tPostcodeToPostcodeIDLookup);
+
+        // Declare vars for referring to previous data needed for comparisons
+        String filename0;
+        String yM30;
+        String yM30v;
+        DW_SHBE_Collection tSHBEData0;
+        DW_UnderOccupiedReport_Set councilUnderOccupiedSet0;
+        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet0;
+
+        if (includeIte.hasNext()) {
+            i = includeIte.next();
+
+            filename0 = filename1;
+            yM30 = yM31;
+            yM30v = yM31v;
+            tSHBEData0 = tSHBEData1;
+            councilUnderOccupiedSet0 = councilUnderOccupiedSet1;
+            RSLUnderOccupiedSet0 = RSLUnderOccupiedSet1;
+
+            filename1 = SHBEFilenames[i];
+            yM31 = DW_SHBE_Handler.getYM3(filename1);
+            yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+            councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
+            RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
+            System.out.println("Load " + filename1);
+            tSHBEData1 = new DW_SHBE_Collection(filename1, paymentType);
+
+            //DO SOME SUMMARY
+            doPartSummaryCompare2Times(
+                    tSHBEData1,
+                    yM31,
+                    yM31v,
+                    filename1,
+                    tSHBEData0,
+                    yM30,
+                    yM30v,
+                    filename0,
+                    forceNewSummaries,
+                    paymentType,
+                    nTT,
+                    nEG,
+                    nPSI,
+                    councilFilenames,
+                    RSLFilenames,
+                    councilUnderOccupiedSet1,
+                    RSLUnderOccupiedSet1,
+                    councilUnderOccupiedSet0,
+                    RSLUnderOccupiedSet0,
+                    result,
+                    tClaimantIDPostcodes,
+                    tClaimantIDTTs,
+                    tClaimantIDPostcodeTTs,
+                    tDW_PersonIDToIDLookup,
+                    tPostcodeToPostcodeIDLookup);
+
+            String filename00;
+            String yM300;
+
+            while (includeIte.hasNext()) {
+                i = includeIte.next();
+
+                filename00 = filename0;
+                yM300 = yM30;
+
+                filename0 = filename1;
+                yM30 = yM31;
+                yM30v = yM31v;
+                tSHBEData0 = tSHBEData1;
+                councilUnderOccupiedSet0 = councilUnderOccupiedSet1;
+                RSLUnderOccupiedSet0 = RSLUnderOccupiedSet1;
+
+                filename1 = SHBEFilenames[i];
+                yM31 = DW_SHBE_Handler.getYM3(filename1);
+                yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+                councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
+                RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
+                System.out.println("Load " + filename1);
+                tSHBEData1 = new DW_SHBE_Collection(filename1, paymentType);
+
+                //DO SOME SUMMARY
+                doPartSummaryCompare3Times(
+                        SHBEFilenames,
+                        include,
+                        tSHBEData1,
+                        yM31,
+                        yM31v,
+                        filename1,
+                        tSHBEData0,
+                        yM30,
+                        yM30v,
+                        filename0,
+                        yM300,
+                        filename00,
+                        forceNewSummaries,
+                        paymentType,
+                        nTT,
+                        nEG,
+                        nPSI,
+                        councilFilenames,
+                        RSLFilenames,
+                        councilUnderOccupiedSet1,
+                        RSLUnderOccupiedSet1,
+                        councilUnderOccupiedSet0,
+                        RSLUnderOccupiedSet0,
+                        result,
+                        tClaimantIDPostcodes,
+                        tClaimantIDTTs,
+                        tClaimantIDPostcodeTTs,
+                        tDW_PersonIDToIDLookup,
+                        tPostcodeToPostcodeIDLookup);
+
+                AllCount0 = null;
+                HBCount0 = null;
+                CTBCount0 = null;
+                // Not used at present. incomeAndRentSummary0 = incomeAndRentSummary1;
+
+            }
+        }
+        return result;
+    }
+
+    protected void doPartSummaryCompare3Times(
+            String[] SHBEFilenames,
+            ArrayList<Integer> include,
+            DW_SHBE_Collection tSHBEData1,
+            String yM31,
+            String yM31v,
+            String filename1,
+            DW_SHBE_Collection tSHBEData0,
+            String yM30,
+            String yM30v,
+            String filename0,
+            String yM300,
+            String filename00,
+            boolean forceNewSummaries,
+            String paymentType,
+            int nTT,
+            int nEG,
+            int nPSI,
+            TreeMap<String, String> tCouncilFilenames,
+            TreeMap<String, String> tRSLFilenames,
+            DW_UnderOccupiedReport_Set tCouncilUnderOccupiedSet1,
+            DW_UnderOccupiedReport_Set tRSLUnderOccupiedSet1,
+            DW_UnderOccupiedReport_Set tCouncilUnderOccupiedSet0,
+            DW_UnderOccupiedReport_Set tRSLUnderOccupiedSet0,
+            TreeMap<String, HashMap<String, String>> result,
+            TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
+            TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs,
+            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
+            HashMap<DW_PersonID, DW_ID> tDW_PersonIDToIDLookup,
+            HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup) {
+        // Set counters
+        CouncilLinkedRecordCount00 = CouncilLinkedRecordCount0;
+        RSLLinkedRecordCount00 = RSLLinkedRecordCount0;
+        AllLinkedRecordCount00 = AllUOLinkedRecordCount0;
+        AllUOCount00 = AllUOCount0;
+        CouncilCount00 = CouncilCount0;
+        RSLCount00 = RSLCount0;
+        doPartSummaryCompare2Times(
+                tSHBEData1,
+                yM31,
+                yM31v,
+                filename1,
+                tSHBEData0,
+                yM30,
+                yM30v,
+                filename0,
+                forceNewSummaries,
+                paymentType,
+                nTT,
+                nEG,
+                nPSI,
+                tCouncilFilenames,
+                tRSLFilenames,
+                tCouncilUnderOccupiedSet1,
+                tRSLUnderOccupiedSet1,
+                tCouncilUnderOccupiedSet0,
+                tRSLUnderOccupiedSet0,
+                result,
+                tClaimantIDPostcodes,
+                tClaimantIDTTs,
+                tClaimantIDPostcodeTTs,
+                tDW_PersonIDToIDLookup,
+                tPostcodeToPostcodeIDLookup);
+        String key;
+        key = DW_SHBE_Handler.getYearMonthNumber(filename1);
+        HashMap<String, String> summary;
+        summary = result.get(key);
+//        TreeMap<String, DW_SHBE_Record> tDRecords1;
+//        tDRecords1 = tSHBEData1.getRecords();
+        HashSet<ID_PostcodeID> tClaimantIDPostcodes1;
+        tClaimantIDPostcodes1 = tClaimantIDPostcodes.get(yM31);
+        HashSet<ID_TenancyType> tClaimantIDTTs1;
+        tClaimantIDTTs1 = tClaimantIDTTs.get(yM31);
+        HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTTs1;
+        tClaimantIDPostcodeTTs1 = tClaimantIDPostcodeTTs.get(yM31);
+
+        doCompare3TimesCounts(
+                summary,
+                nTT,
+                SHBEFilenames,
+                include,
+                yM31,
+                tClaimantIDPostcodes,
+                tClaimantIDPostcodes1,
+                tClaimantIDTTs,
+                tClaimantIDTTs1,
+                tClaimantIDPostcodeTTs,
+                tClaimantIDPostcodeTTs1);
+        summary.put(sSHBEFilename00, filename00);
+        summary.put(sSHBEFilename0, filename0);
+        summary.put(sSHBEFilename1, filename1);
+        summary.put(sCouncilFilename00, tCouncilFilenames.get(yM300));
+        summary.put(sRSLFilename00, tRSLFilenames.get(yM300));
+        summary.put(sCouncilCount00, Integer.toString(CouncilCount00));
+        summary.put(sCouncilLinkedRecordCount00, Integer.toString(CouncilLinkedRecordCount00));
+        summary.put(sRSLCount00, Integer.toString(RSLCount00));
+        summary.put(sRSLLinkedRecordCount00, Integer.toString(RSLLinkedRecordCount00));
+        summary.put(sAllUOLinkedRecordCount00, Integer.toString(CouncilLinkedRecordCount00 + RSLLinkedRecordCount00));
+        summary.put(sCouncilFilename0, tCouncilFilenames.get(yM30));
+        summary.put(sRSLFilename0, tRSLFilenames.get(yM30));
+        summary.put(sCouncilCount0, Integer.toString(CouncilCount0));
+        summary.put(sCouncilLinkedRecordCount0, Integer.toString(CouncilLinkedRecordCount0));
+        summary.put(sRSLCount0, Integer.toString(RSLCount0));
+        summary.put(sRSLLinkedRecordCount0, Integer.toString(RSLLinkedRecordCount0));
+        summary.put(sAllUOCount0, Integer.toString(AllUOCount0));
+        summary.put(sAllUOLinkedRecordCount0, Integer.toString(CouncilLinkedRecordCount0 + RSLLinkedRecordCount0));
+        summary.put(sCouncilFilename1, tCouncilFilenames.get(yM31));
+        summary.put(sRSLFilename1, tRSLFilenames.get(yM31));
+        summary.put(sCouncilCount1, Integer.toString(CouncilCount1));
+        summary.put(sCouncilLinkedRecordCount1, Integer.toString(CouncilLinkedRecordCount1));
+        summary.put(sRSLCount1, Integer.toString(RSLCount1));
+        summary.put(sRSLLinkedRecordCount1, Integer.toString(RSLLinkedRecordCount1));
+        summary.put(sAllUOLinkedRecordCount1, Integer.toString(CouncilLinkedRecordCount1 + RSLLinkedRecordCount1));
+    }
+
+    /**
+     * 
+     * @param tSHBEData1
+     * @param yM31
+     * @param yM31v
+     * @param filename1
+     * @param tSHBEData0
+     * @param yM30
+     * @param yM30v
+     * @param filename0
+     * @param forceNewSummaries
+     * @param paymentType
+     * @param nTT
+     * @param nEG
+     * @param nPSI
+     * @param councilFilenames
+     * @param RSLFilenames
+     * @param councilUnderOccupiedSet1
+     * @param RSLUnderOccupiedSet1
+     * @param councilUnderOccupiedSet0
+     * @param RSLUnderOccupiedSet0
+     * @param summaries
+     * @param tClaimantIDPostcodes
+     * @param tClaimantIDTTs
+     * @param tClaimantIDPostcodeTTs
+     * @param DW_PersonIDToIDLookup
+     * @param PostcodeToPostcodeIDLookup 
+     */
+    protected void doPartSummaryCompare2Times(
+            DW_SHBE_Collection tSHBEData1,
+            String yM31,
+            String yM31v,
+            String filename1,
+            DW_SHBE_Collection tSHBEData0,
+            String yM30,
+            String yM30v,
+            String filename0,
+            boolean forceNewSummaries,
+            String paymentType,
+            int nTT,
+            int nEG,
+            int nPSI,
+            TreeMap<String, String> councilFilenames,
+            TreeMap<String, String> RSLFilenames,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet1,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet0,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet0,
+            TreeMap<String, HashMap<String, String>> summaries,
+            TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
+            TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs,
+            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
+            HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
+            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
+
+        doPartSummarySingleTime(
+                tSHBEData1,
+                yM31,
+                yM31v,
+                filename1,
+                forceNewSummaries,
+                paymentType,
+                nTT,
+                nEG,
+                nPSI,
+                councilFilenames,
+                RSLFilenames,
+                councilUnderOccupiedSet1,
+                RSLUnderOccupiedSet1,
+                summaries,
+                tClaimantIDPostcodes,
+                tClaimantIDTTs,
+                tClaimantIDPostcodeTTs,
+                DW_PersonIDToIDLookup,
+                PostcodeToPostcodeIDLookup);
+
+        TreeMap<String, DW_SHBE_Record> tDRecords1;
+        tDRecords1 = tSHBEData1.getRecords();
+        TreeMap<String, DW_SHBE_Record> tDRecords0;
+        tDRecords0 = tSHBEData0.getRecords();
+
+        TreeMap<String, DW_UOReport_Record> councilUnderOccupiedSet0Map;
+        councilUnderOccupiedSet0Map = councilUnderOccupiedSet0.getMap();
+        TreeMap<String, DW_UOReport_Record> RSLUnderOccupiedSet0Map;
+        RSLUnderOccupiedSet0Map = RSLUnderOccupiedSet0.getMap();
+        TreeMap<String, DW_UOReport_Record> councilUnderOccupiedSet1Map;
+        councilUnderOccupiedSet1Map = councilUnderOccupiedSet1.getMap();
+        TreeMap<String, DW_UOReport_Record> RSLUnderOccupiedSet1Map;
+        RSLUnderOccupiedSet1Map = RSLUnderOccupiedSet1.getMap();
+        // Loop over underoccupancy data
+        // Loop over Council
+        doCompare2TimesLoopOverSet(
+                councilUnderOccupiedSet0Map,
+                councilUnderOccupiedSet1Map,
+                tDRecords0,
+                tDRecords1,
+                yM30v,
+                yM31v);
+        // Loop over RSL
+        doCompare2TimesLoopOverSet(
+                RSLUnderOccupiedSet0Map,
+                RSLUnderOccupiedSet1Map,
+                tDRecords0,
+                tDRecords1,
+                yM30v,
+                yM31v);
+
+        String key;
+        key = DW_SHBE_Handler.getYearMonthNumber(filename1);
+        HashMap<String, String> summary;
+        summary = summaries.get(key);
+
+        addToSummaryCompare2Times(nTT, nEG, nPSI, summary);
+
+        // All
+        summary.put(sSHBEFilename0, filename0);
+        summary.put(sSHBEFilename1, filename1);
+        summary.put(sCouncilFilename0, councilFilenames.get(yM30));
+        summary.put(sRSLFilename0, RSLFilenames.get(yM30));
+        summary.put(sCouncilCount0, Integer.toString(CouncilCount0));
+        summary.put(sCouncilLinkedRecordCount0, Integer.toString(CouncilLinkedRecordCount0));
+        summary.put(sRSLCount0, Integer.toString(RSLCount0));
+        summary.put(sRSLLinkedRecordCount0, Integer.toString(RSLLinkedRecordCount0));
+        summary.put(sAllUOCount0, Integer.toString(AllUOCount0));
+        summary.put(sAllUOLinkedRecordCount0, Integer.toString(CouncilLinkedRecordCount0 + RSLLinkedRecordCount0));
+        summary.put(sCouncilFilename1, councilFilenames.get(yM31));
+        summary.put(sRSLFilename1, RSLFilenames.get(yM31));
+        summary.put(sCouncilCount1, Integer.toString(CouncilCount1));
+        summary.put(sCouncilLinkedRecordCount1, Integer.toString(CouncilLinkedRecordCount1));
+        summary.put(sRSLCount1, Integer.toString(RSLCount1));
+        summary.put(sRSLLinkedRecordCount1, Integer.toString(RSLLinkedRecordCount1));
+        summary.put(sAllUOCount1, Integer.toString(AllUOCount1));
+        summary.put(sAllUOLinkedRecordCount1, Integer.toString(CouncilLinkedRecordCount1 + RSLLinkedRecordCount1));
+    }
+
+    protected void addToSetsForComparisons(
+            String yM3,
+            TreeMap<String, DW_SHBE_Record> D_Records,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet,
+            TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
+            TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs,
+            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
+            HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
+            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup
+    ) {
+        HashSet<ID_PostcodeID> tClaimantIDPostcodes0;
+        HashSet<ID_TenancyType> tClaimantIDTTs0;
+        HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTTs0;
+        if (tClaimantIDPostcodes.containsKey(yM3)) {
+            tClaimantIDPostcodes0 = tClaimantIDPostcodes.get(yM3);
+        } else {
+            tClaimantIDPostcodes0 = getID_PostcodeIDSet(
+                    D_Records, councilUnderOccupiedSet, RSLUnderOccupiedSet,
+                    DW_PersonIDToIDLookup, PostcodeToPostcodeIDLookup);
+            tClaimantIDPostcodes.put(yM3, tClaimantIDPostcodes0);
+        }
+        if (tClaimantIDTTs.containsKey(yM3)) {
+            tClaimantIDTTs0 = tClaimantIDTTs.get(yM3);
+        } else {
+            tClaimantIDTTs0 = getID_TenancyTypeSet(
+                    D_Records, councilUnderOccupiedSet, RSLUnderOccupiedSet,
+                    DW_PersonIDToIDLookup);
+            tClaimantIDTTs.put(yM3, tClaimantIDTTs0);
+        }
+        if (tClaimantIDPostcodeTTs.containsKey(yM3)) {
+            tClaimantIDPostcodeTTs0 = tClaimantIDPostcodeTTs.get(yM3);
+        } else {
+            tClaimantIDPostcodeTTs0 = getID_TenancyType_PostcodeIDSet(
+                    D_Records, councilUnderOccupiedSet, RSLUnderOccupiedSet,
+                    DW_PersonIDToIDLookup, PostcodeToPostcodeIDLookup);
+            tClaimantIDPostcodeTTs.put(yM3, tClaimantIDPostcodeTTs0);
+        }
+    }
+
+    protected void doPartSummarySingleTime(
+            DW_SHBE_Collection tSHBEData,
+            String yM3,
+            String yM3v,
+            String filename,
+            boolean forceNewSummaries,
+            String paymentType,
+            int nTT,
+            int nEG,
+            int nPSI,
+            TreeMap<String, String> councilFilenames,
+            TreeMap<String, String> RSLFilenames,
+            DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
+            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet,
+            TreeMap<String, HashMap<String, String>> summaries,
+            TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
+            TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs,
+            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
+            HashMap<DW_PersonID, DW_ID> tDW_PersonIDToIDLookup,
+            HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup) {
+//        // Set the last results
+//        AllCount0 = AllCount1;
+//        HBCount0 = HBCount1;
+//        CTBCount0 = CTBCount1;
+//        AllUOCount0 = AllUOCount1;
+//        CouncilCount0 = CouncilCount1;
+//        RSLCount0 = RSLCount1;
+//        CouncilLinkedRecordCount0 = CouncilLinkedRecordCount1;
+//        RSLLinkedRecordCount0 = RSLLinkedRecordCount1;
+//        AllCount0 = AllCount1;
+//        AllUOLinkedRecordCount0 = AllUOLinkedRecordCount1;
+////        for (int TT = 0; TT < nTT; TT++) {
+////            AllTotalCountTTClaimant0[TT] = AllTotalCountTTClaimant1[TT];
+////        }
+//        System.arraycopy(TotalCount_TTClaimant1, 0, TotalCount_TTClaimant0, 0, nTT);
+
+        TreeMap<String, DW_SHBE_Record> tDRecords;
+        tDRecords = tSHBEData.getRecords();
+        String key;
+        key = DW_SHBE_Handler.getYearMonthNumber(filename);
+        HashMap<String, String> summary;
+        summary = summaries.get(key);
+        HashMap<String, Integer> tLoadSummary;
+        tLoadSummary = tSHBEData.getLoadSummary();
+        addToSummary(summary, tLoadSummary);
+        initCounts(nTT, nEG, nPSI);
+
+        // Add to tClaimantIDPostcodes, tClaimantIDTTs, tClaimantIDPostcodeTTs for later comparisons
+        addToSetsForComparisons(
+                yM3,
+                tDRecords,
+                councilUnderOccupiedSet,
+                RSLUnderOccupiedSet,
+                tClaimantIDPostcodes,
+                tClaimantIDTTs,
+                tClaimantIDPostcodeTTs,
+                tDW_PersonIDToIDLookup,
+                tPostcodeToPostcodeIDLookup);
+
+        TreeMap<String, DW_UOReport_Record> councilUnderOccupiedSetMap;
+        councilUnderOccupiedSetMap = councilUnderOccupiedSet.getMap();
+        TreeMap<String, DW_UOReport_Record> RSLUnderOccupiedSetMap;
+        RSLUnderOccupiedSetMap = RSLUnderOccupiedSet.getMap();
+        // Loop over underoccupancy data
+        // Loop over Council
+        CouncilLinkedRecordCount1 = doSingleTimeLoopOverSet(
+                councilUnderOccupiedSetMap, tDRecords, yM3v);
+        // To calculate just council percentages and rates we should do this here.
+        // Loop over RSL
+        RSLLinkedRecordCount1 = doSingleTimeLoopOverSet(
+                RSLUnderOccupiedSetMap, tDRecords, yM3v);
+        // The above adds to the councilo calculate just council percentages and rates we should do this here.
+        // Prepare vars
+        CouncilCount1 = councilUnderOccupiedSetMap.size();
+        RSLCount1 = RSLUnderOccupiedSetMap.size();
+        AllUOCount1 = CouncilCount1 + RSLCount1;
+        AllUOLinkedRecordCount1 = CouncilLinkedRecordCount1 + RSLLinkedRecordCount1;
+        // Add to counts
+        HashMap<String, BigDecimal> incomeAndRentSummary;
+        incomeAndRentSummary = DW_SHBE_Handler.getIncomeAndRentSummary(
+                tSHBEData,
+                filename,
+                paymentType,
+                councilUnderOccupiedSet,
+                true,
+                forceNewSummaries);
+        addToSummarySingleTimeIncomeAndRent(
+                summary,
+                incomeAndRentSummary);
+        addToSummarySingleTime(nTT, nEG, nPSI, summary);
+        addToSummarySingleTimeRentArrears(summary);
+        summary.put(sSHBEFilename1, filename);
+        summary.put(sCouncilFilename1, councilFilenames.get(yM3));
+        summary.put(sRSLFilename1, RSLFilenames.get(yM3));
+        summary.put(sCouncilCount1, Integer.toString(CouncilCount1));
+        summary.put(sCouncilLinkedRecordCount1, Integer.toString(CouncilLinkedRecordCount1));
+        summary.put(sRSLCount1, Integer.toString(RSLCount1));
+        summary.put(sRSLLinkedRecordCount1, Integer.toString(RSLLinkedRecordCount1));
+        summary.put(sAllUOCount1, Integer.toString(AllUOCount1));
+        summary.put(sAllUOLinkedRecordCount1, Integer.toString(AllUOLinkedRecordCount1));
+    }
+
+    public void doCompare2TimesLoopOverSet(
+            TreeMap<String, DW_UOReport_Record> map0,
+            TreeMap<String, DW_UOReport_Record> map1,
+            TreeMap<String, DW_SHBE_Record> D_Records0,
+            TreeMap<String, DW_SHBE_Record> D_Records1,
+            String yM30v,
+            String yM31v) {
+        Iterator<String> ite;
+        // Go through all those in D_Records0 and do counts for all those 
+        // that are in map1
+        ite = D_Records0.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            DW_SHBE_Record Record0;
+            Record0 = D_Records0.get(CTBRef);
+            if (map1.containsKey(CTBRef)) {
+                DW_SHBE_Record Record1;
+                Record1 = D_Records1.get(CTBRef);
+                DW_SHBE_D_Record D_Record0;
+                D_Record0 = null;
+                if (Record0 != null) {
+                    D_Record0 = Record0.getDRecord();
+                }
+                DW_SHBE_D_Record D_Record1;
+                D_Record1 = null;
+                if (D_Record1 != null) {
+                    D_Record1 = Record1.getDRecord();
+                }
+                doCompare2TimesCounts(
+                        D_Record0,
+                        D_Record1,
+                        yM30v,
+                        yM31v);
+            }
+        }
+        // Go through all those in current UO data        
+        ite = map1.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            DW_UOReport_Record UORec;
+            UORec = map1.get(CTBRef);
+            // Rent Arrears Summary
+            doSingleTimeRentArrearsCount(UORec);
+//            String CTBRef;
+//            CTBRef = UORec.getClaimReferenceNumber();
+            DW_SHBE_Record Record0;
+            Record0 = D_Records0.get(CTBRef);
+            DW_SHBE_Record Record1;
+            Record1 = D_Records1.get(CTBRef);
+            DW_SHBE_D_Record D_Record0;
+            D_Record0 = null;
+            if (Record0 != null) {
+                D_Record0 = Record0.getDRecord();
+            }
+            DW_SHBE_D_Record D_Record1;
+            D_Record1 = null;
+            if (Record1 != null) {
+                D_Record1 = Record1.getDRecord();
+            }
+            doCompare2TimesCounts(
+                    D_Record0,
+                    D_Record1,
+                    yM30v,
+                    yM31v);
+        }
+        // Go through all those that were in the UO data, but have come out.
+        HashSet<String> claimsOutOfUO;
+        claimsOutOfUO = new HashSet<String>();
+        claimsOutOfUO.addAll(map0.keySet());
+        claimsOutOfUO.removeAll(map1.keySet());
+        ite = claimsOutOfUO.iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            DW_UOReport_Record UORec;
+            UORec = map0.get(CTBRef);
+            // Rent Arrears Summary
+            doSingleTimeRentArrearsCount(UORec);
+//            String CTBRef;
+//            CTBRef = UORec.getClaimReferenceNumber();
+            DW_SHBE_Record Record0;
+            Record0 = D_Records0.get(CTBRef);
+            DW_SHBE_Record Record1;
+            Record1 = D_Records1.get(CTBRef);
+            DW_SHBE_D_Record D_Record0;
+            D_Record0 = null;
+            if (Record0 != null) {
+                D_Record0 = Record0.getDRecord();
+            }
+            DW_SHBE_D_Record D_Record1;
+            D_Record1 = null;
+            if (Record1 != null) {
+                D_Record1 = Record1.getDRecord();
+            }
+            doCompare2TimesCounts(
+                    D_Record0,
+                    D_Record1,
+                    yM30v,
+                    yM31v);
+        }
+    }
+
+    /**
+     *
+     * @param map
+     * @param D_Records
+     * @param yM30v
+     * @return
+     */
+    public int doSingleTimeLoopOverSet(
+            TreeMap<String, DW_UOReport_Record> map,
+            TreeMap<String, DW_SHBE_Record> D_Records,
+            String yM30v) {
+        int linkedRecords;
+        linkedRecords = 0;
+        Iterator<String> ite;
+        ite = map.keySet().iterator();
+        while (ite.hasNext()) {
+            String CTBRef;
+            CTBRef = ite.next();
+            DW_UOReport_Record UORec;
+            UORec = map.get(CTBRef);
+            // Rent Arrears Summary
+            doSingleTimeRentArrearsCount(UORec);
+            DW_SHBE_Record Record;
+            Record = D_Records.get(CTBRef);
+            if (Record == null) {
+                //tDRecordsCTBRefDW_SHBE_RecordNullCount++;
+                int count = 1;
+            } else {
+                DW_SHBE_D_Record D_Record;
+                D_Record = Record.getDRecord();
+                doSingleTimeCount(
+                        D_Record,
+                        yM30v);
+                linkedRecords++;
+            }
+        }
+        return linkedRecords;
+    }
+
+    @Override
     protected void addToSummarySingleTimeIncomeAndRent(
             HashMap<String, String> summary,
             HashMap<String, BigDecimal> incomeAndRentSummary) {
@@ -5334,33 +7309,6 @@ public class Summary {
         }
     }
 
-    protected File getSummaryTableDir(
-            String paymentType,
-            String includeKey,
-            boolean doUnderOccupancy) {
-        File result;
-        result = new File(
-                DW_Files.getOutputSHBETablesDir(),
-                "SummaryTables");
-        result = new File(
-                result,
-                paymentType);
-        result = new File(
-                result,
-                includeKey);
-        if (doUnderOccupancy) {
-            result = new File(
-                    result,
-                    "UO");
-        } else {
-            result = new File(
-                    result,
-                    "All");
-        }
-        result.mkdirs();
-        return result;
-    }
-
     /**
      * Provides comparisons with the previous period
      *
@@ -5372,6 +7320,7 @@ public class Summary {
      * @param nEG
      * @param nPSI
      */
+    @Override
     public void writeSummaryTables(
             TreeMap<String, HashMap<String, String>> summaryTable,
             String paymentType,
@@ -5381,12 +7330,12 @@ public class Summary {
             int nEG,
             int nPSI
     ) {
-        writeSummaryTableCompare3Times(
-                summaryTable,
-                paymentType,
-                includeKey,
-                doUnderOccupancy,
-                nTT, nEG);
+//        writeSummaryTableCompare3Times(
+//                summaryTable,
+//                paymentType,
+//                includeKey,
+//                doUnderOccupancy,
+//                nTT, nEG);
         writeSummaryTableCompare2Times(
                 summaryTable,
                 paymentType,
@@ -5435,6 +7384,12 @@ public class Summary {
                 includeKey,
                 doUnderOccupancy,
                 nTT, nEG);
+        if (doUnderOccupancy) {
+            writeSummaryTableSingleTimeRentArrears(
+                    summaryTable,
+                    paymentType,
+                    includeKey, doUnderOccupancy, nTT, nEG);
+        }
         writeSummaryTableSingleTimeEthnicity(
                 summaryTable,
                 paymentType,
@@ -5501,6 +7456,26 @@ public class Summary {
         header += "PostCodeLookupDate00, PostCodeLookupFile00, "
                 + "PostCodeLookupDate0, PostCodeLookupFile0, "
                 + "PostCodeLookupDate1, PostCodeLookupFile1, ";
+        if (underOccupancy) {
+            header += sCouncilFilename00 + ", ";
+            header += sRSLFilename00 + ", ";
+            header += sCouncilCount00 + ", ";
+            header += sRSLCount00 + ", ";
+            header += sAllUOCount00 + ", ";
+            header += sAllUOLinkedRecordCount00 + ", ";
+            header += sCouncilFilename0 + ", ";
+            header += sRSLFilename0 + ", ";
+            header += sCouncilCount0 + ", ";
+            header += sRSLCount0 + ", ";
+            header += sAllUOCount0 + ", ";
+            header += sAllUOLinkedRecordCount1 + ", ";
+            header += sCouncilFilename1 + ", ";
+            header += sRSLFilename1 + ", ";
+            header += sCouncilCount1 + ", ";
+            header += sRSLCount1 + ", ";
+            header += sAllUOCount1 + ", ";
+            header += sAllUOLinkedRecordCount1 + ", ";
+        }
         header += sSamePostcodeIII + ", ";
         header += sSamePostcodeIOI + ", ";
         header += sSamePostcodeOIO + ", ";
@@ -5563,6 +7538,26 @@ public class Summary {
                 PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
             }
             line += PostCodeLookupDate1 + ", " + PostCodeLookupFile1Name + ", ";
+            if (underOccupancy) {
+                line += summary.get(sCouncilFilename00) + ", ";
+                line += summary.get(sRSLFilename00) + ", ";
+                line += summary.get(sCouncilCount00) + ", ";
+                line += summary.get(sRSLCount00) + ", ";
+                line += summary.get(sAllUOCount00) + ", ";
+                line += summary.get(sAllUOLinkedRecordCount00) + ", ";
+                line += summary.get(sCouncilFilename0) + ", ";
+                line += summary.get(sRSLFilename0) + ", ";
+                line += summary.get(sCouncilCount0) + ", ";
+                line += summary.get(sRSLCount0) + ", ";
+                line += summary.get(sAllUOCount0) + ", ";
+                line += summary.get(sAllUOLinkedRecordCount0) + ", ";
+                line += summary.get(sCouncilFilename1) + ", ";
+                line += summary.get(sRSLFilename1) + ", ";
+                line += summary.get(sCouncilCount1) + ", ";
+                line += summary.get(sRSLCount1) + ", ";
+                line += summary.get(sAllUOCount1) + ", ";
+                line += summary.get(sAllUOLinkedRecordCount1) + ", ";
+            }
             line += summary.get(sSamePostcodeIII) + ", ";
             line += summary.get(sSamePostcodeIOI) + ", ";
             line += summary.get(sSamePostcodeOIO) + ", ";
@@ -5615,7 +7610,7 @@ public class Summary {
         pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
-        header = getHeaderCompare2TimesGeneric();
+        header = getHeaderCompare2TimesGeneric(underOccupancy);
         header += getHeaderCompare2TimesTTChange();
         header += getHeaderCompare2TimesPostcodeChange();
         header = header.substring(0, header.length() - 2);
@@ -5630,7 +7625,8 @@ public class Summary {
             String line;
             line = getLineCompare2TimesGeneric(
                     summary,
-                    ONSPDFiles);
+                    ONSPDFiles,
+                    underOccupancy);
             line += getLineCompare2TimesTTChange(summary);
             line += getLineCompare2TimesPostcodeChange(summary);
             line = line.substring(0, line.length() - 2);
@@ -5942,7 +7938,7 @@ public class Summary {
         pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
-        header = getHeaderCompare2TimesGeneric();
+        header = getHeaderCompare2TimesGeneric(underOccupancy);
         header += getHeaderCompare2TimesTTChange();
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -5956,7 +7952,8 @@ public class Summary {
             String line;
             line = getLineCompare2TimesGeneric(
                     summary,
-                    ONSPDFiles);
+                    ONSPDFiles,
+                    underOccupancy);
             // General
             // All
             line += getLineCompare2TimesTTChange(summary);
@@ -5966,7 +7963,7 @@ public class Summary {
         pw.close();
     }
 
-    public String getHeaderCompare2TimesGeneric() {
+    public String getHeaderCompare2TimesGeneric(boolean underOccupancy) {
         String header;
         header = "";
         header += sSHBEFilename0 + ", ";
@@ -5977,6 +7974,24 @@ public class Summary {
         header += "Month1 Year1, ";
         header += "PostCodeLookupDate0, PostCodeLookupFile0, "
                 + "PostCodeLookupDate1, PostCodeLookupFile1, ";
+        if (underOccupancy) {
+            header += sCouncilFilename0 + ", ";
+            header += sRSLFilename0 + ", ";
+            header += sCouncilCount0 + ", ";
+            header += sCouncilLinkedRecordCount0 + ", ";
+            header += sRSLCount0 + ", ";
+            header += sRSLLinkedRecordCount0 + ", ";
+            header += sAllUOCount0 + ", ";
+            header += sAllUOLinkedRecordCount0 + ", ";
+            header += sCouncilFilename1 + ", ";
+            header += sRSLFilename1 + ", ";
+            header += sCouncilCount1 + ", ";
+            header += sCouncilLinkedRecordCount1 + ", ";
+            header += sRSLCount1 + ", ";
+            header += sRSLLinkedRecordCount1 + ", ";
+            header += sAllUOCount1 + ", ";
+            header += sAllUOLinkedRecordCount1 + ", ";
+        }
         header += sAllCount0 + ", ";
         header += sHBCount0 + ", ";
         header += sCTBCount0 + ", ";
@@ -5989,7 +8004,8 @@ public class Summary {
 
     public String getLineCompare2TimesGeneric(
             HashMap<String, String> summary,
-            TreeMap<String, File> ONSPDFiles) {
+            TreeMap<String, File> ONSPDFiles,
+            boolean underOccupancy) {
         String line = "";
         String filename0;
         filename0 = summary.get(sSHBEFilename0);
@@ -6039,6 +8055,24 @@ public class Summary {
             PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
         }
         line += PostCodeLookupDate1 + ", " + PostCodeLookupFile1Name + ", ";
+        if (underOccupancy) {
+            line += summary.get(sCouncilFilename0) + ", ";
+            line += summary.get(sRSLFilename0) + ", ";
+            line += summary.get(sCouncilCount0) + ", ";
+            line += summary.get(sCouncilLinkedRecordCount0) + ", ";
+            line += summary.get(sRSLCount0) + ", ";
+            line += summary.get(sRSLLinkedRecordCount0) + ", ";
+            line += summary.get(sAllUOCount0) + ", ";
+            line += summary.get(sAllUOLinkedRecordCount0) + ", ";
+            line += summary.get(sCouncilFilename1) + ", ";
+            line += summary.get(sRSLFilename1) + ", ";
+            line += summary.get(sCouncilCount1) + ", ";
+            line += summary.get(sCouncilLinkedRecordCount1) + ", ";
+            line += summary.get(sRSLCount1) + ", ";
+            line += summary.get(sRSLLinkedRecordCount1) + ", ";
+            line += summary.get(sAllUOCount1) + ", ";
+            line += summary.get(sAllUOLinkedRecordCount1) + ", ";
+        }
         line += summary.get(sAllCount0) + ", ";
         line += summary.get(sHBCount0) + ", ";
         line += summary.get(sCTBCount0) + ", ";
@@ -6076,7 +8110,7 @@ public class Summary {
         pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
-        header = getHeaderCompare2TimesGeneric();
+        header = getHeaderCompare2TimesGeneric(underOccupancy);
         header += getHeaderCompare2TimesPostcodeChange();
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -6090,7 +8124,8 @@ public class Summary {
             String line;
             line = getLineCompare2TimesGeneric(
                     summary,
-                    ONSPDFiles);
+                    ONSPDFiles,
+                    underOccupancy);
             line += getLineCompare2TimesPostcodeChange(summary);
             line = line.substring(0, line.length() - 2);
             pw.println(line);
@@ -6157,7 +8192,7 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getLineSingleTimeGeneric(key, summary);
+            line += getLineSingleTimeGeneric(key, summary, underOccupancy);
             if (!underOccupancy) {
                 line += getPostcodeLookupDateAndFilenameLinePart(filename1, ONSPDFiles);
                 line += summary.get(DW_SHBE_Collection.sLineCount) + ", ";
@@ -6288,7 +8323,7 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getLineSingleTimeGeneric(key, summary);
+            line += getLineSingleTimeGeneric(key, summary, underOccupancy);
             line += summary.get(sTotalWeeklyHBEntitlement) + ", ";
             line += summary.get(sTotalCount_WeeklyHBEntitlementNonZero) + ", ";
             line += summary.get(sTotalCount_WeeklyHBEntitlementZero) + ", ";
@@ -6414,7 +8449,7 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getLineSingleTimeGeneric(key, summary);
+            line += getLineSingleTimeGeneric(key, summary, underOccupancy);
             line += summary.get(sAllTotalCount_ClaimantsEmployed) + ", ";
             line += summary.get(sAllPercentage_ClaimantsEmployed) + ", ";
             line += summary.get(sAllTotalCount_ClaimantsSelfEmployed) + ", ";
@@ -6520,7 +8555,7 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getLineSingleTimeGeneric(key, summary);
+            line += getLineSingleTimeGeneric(key, summary, underOccupancy);
             // All
             line += summary.get(sAllTotalIncome) + ", ";
             line += summary.get(sAllTotalCount_IncomeNonZero) + ", ";
@@ -6554,6 +8589,56 @@ public class Summary {
                 line += summary.get(sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i]) + ", ";
                 line += summary.get(sAverageWeeklyEligibleRentAmountTT[i]) + ", ";
             }
+            line = line.substring(0, line.length() - 2);
+            pw.println(line);
+        }
+        pw.close();
+    }
+
+    public void writeSummaryTableSingleTimeRentArrears(
+            TreeMap<String, HashMap<String, String>> summaryTable,
+            String paymentType,
+            String includeKey,
+            boolean underOccupancy,
+            int nTT,
+            int nEG
+    ) {
+        String name;
+        name = "SingleTimeCouncilRentArrears";
+        PrintWriter pw;
+        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        // Write headers
+        String header;
+        header = "";
+        header += sSHBEFilename1 + ", ";
+        header += getHeaderSingleTimeGeneric(underOccupancy);
+        header += sCouncilTotal_RentArrears + ", ";
+        header += sCouncilTotalCount_RentArrearsNonZero + ", ";
+        header += sCouncilTotalCount_RentArrearsZero + ", ";
+        header += sCouncilAverage_RentArrears + ", ";
+        header += sCouncilAverage_NonZeroRentArrears + ", ";
+        header = header.substring(0, header.length() - 2);
+        pw.println(header);
+        Iterator<String> ite;
+        ite = summaryTable.keySet().iterator();
+        while (ite.hasNext()) {
+            String key;
+            key = ite.next();
+            String line;
+            line = "";
+            HashMap<String, String> summary;
+            summary = summaryTable.get(key);
+            header = "";
+            String filename1;
+            filename1 = summary.get(sSHBEFilename1);
+            line += filename1 + ", ";
+            line += getLineSingleTimeGeneric(key,
+                    summary, underOccupancy);
+            line += summary.get(sCouncilTotal_RentArrears) + ", ";
+            line += summary.get(sCouncilTotalCount_RentArrearsNonZero) + ", ";
+            line += summary.get(sCouncilTotalCount_RentArrearsZero) + ", ";
+            line += summary.get(sCouncilAverage_RentArrears) + ", ";
+            line += summary.get(sCouncilAverage_NonZeroRentArrears) + ", ";
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
@@ -6604,7 +8689,8 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getLineSingleTimeGeneric(key, summary);
+            line += getLineSingleTimeGeneric(key,
+                    summary, underOccupancy);
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sAllTotalCount_EthnicGroupClaimant[i]) + ", ";
                 line += summary.get(sAllPercentage_EthnicGroupClaimant[i]) + ", ";
@@ -6676,7 +8762,8 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getLineSingleTimeGeneric(key, summary);
+            line += getLineSingleTimeGeneric(key,
+                    summary, underOccupancy);
             line += summary.get(sTotalCount_SocialTTsClaimant) + ", ";
             line += summary.get(sPercentageOfAll_SocialTTsClaimant) + ", ";
             line += summary.get(sPercentageOfHB_SocialTTsClaimant) + ", ";
@@ -6765,7 +8852,8 @@ public class Summary {
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
-            line += getLineSingleTimeGeneric(key, summary);
+            line += getLineSingleTimeGeneric(key,
+                    summary, underOccupancy);
             for (int i = 1; i < nPSI; i++) {
                 line += summary.get(sAllTotalCount_PSI[i]) + ", ";
                 line += summary.get(sAllPercentageOfAll_PSI[i]) + ", ";
@@ -6978,7 +9066,7 @@ public class Summary {
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
             line += getLineSingleTimeGeneric(key,
-                    summary);
+                    summary, underOccupancy);
             // General
             // DisabilityAward
             line += summary.get(sTotalCount_DisabilityAward) + ", ";
@@ -7154,12 +9242,26 @@ public class Summary {
 
     protected String getLineSingleTimeGeneric(
             String key,
-            HashMap<String, String> summary) {
+            HashMap<String, String> summary,
+            boolean doUnderOccupancy) {
         String result;
         result = key + ", ";
-        result += summary.get(sAllCount1) + ", ";
-        result += summary.get(sHBCount1) + ", ";
-        result += summary.get(sCTBCount1) + ", ";
+        if (doUnderOccupancy) {
+            result += summary.get(sCouncilFilename1) + ", ";
+            result += summary.get(sCouncilCount1) + ", ";
+            result += summary.get(sCouncilLinkedRecordCount1) + ", ";
+            result += summary.get(sRSLFilename1) + ", ";
+            result += summary.get(sRSLCount1) + ", ";
+            result += summary.get(sRSLLinkedRecordCount1) + ", ";
+            result += summary.get(sAllUOCount1) + ", ";
+//                    (Integer.valueOf(summary.get("CouncilCount"))
+//                    + Integer.valueOf(summary.get("RSLCount")))) + ", ";
+            result += summary.get(sAllUOLinkedRecordCount1) + ", ";
+        } else {
+            result += summary.get(sAllCount1) + ", ";
+            result += summary.get(sHBCount1) + ", ";
+            result += summary.get(sCTBCount1) + ", ";
+        }
         String[] split;
         split = key.split("-");
         result += Generic_Time.getMonth3Letters(split[1]);

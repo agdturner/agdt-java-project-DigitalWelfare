@@ -21,18 +21,13 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StreamTokenizer;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  *
@@ -132,7 +127,6 @@ public class DW_UnderOccupiedReport_Handler {
     /**
      * @param directory
      * @param filename
-     * @param pw
      * @return
      */
     public static TreeMap<String, DW_UOReport_Record> loadInputData(
@@ -257,7 +251,7 @@ public class DW_UnderOccupiedReport_Handler {
 
     /**
      *
-     * @return ArrayList<String>[] result where:--------------------------------
+     * @return Object[] result where:-------------------------------------------
      * result[0] councilFilenames-----------------------------------------------
      * result[1] registeredSocialLandlordFilenames------------------------------
      */
