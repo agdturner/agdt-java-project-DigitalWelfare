@@ -353,9 +353,9 @@ public class Summary {
     protected static final String sPercentageOfAll_PrivateDeregulatedTTsClaimant = "PercentageOfAll_PrivateDeregulatedTTsClaimant";
     protected static final String sPercentageOfHB_PrivateDeregulatedTTsClaimant = "PercentageOfHB_PrivateDeregulatedTTsClaimant";
     protected static String[] sAllTotalCount_EthnicGroupClaimant;
-    protected static String[] sAllPercentage_EthnicGroupClaimant;
-    protected static String sAllPostcodeValidFormatCount;
-    protected static String sAllPostcodeValidCount;
+    protected static String[] sAllPercentageOfAll_EthnicGroupClaimant;
+    protected static String sAllTotalCount_PostcodeValidFormat;
+    protected static String sAllTotalCount_PostcodeValid;
     // Income
     // All
     public static final String sAllTotalIncome = "AllTotalIncome";
@@ -376,35 +376,30 @@ public class Summary {
     public static final String sCTBTotalCount_IncomeNonZero = "CTBTotalCount_IncomeNonZero";
     public static final String sCTBTotalCount_IncomeZero = "CTBTotalCount_IncomeZero";
     public static final String sCTBAverageIncome = "CTBAverageIncome";
-
+    // Demographics
+    // Ethnicity
+    // HB
+    protected static String[] sHBTotalCount_EthnicGroupClaimant;
+    protected static String[] sHBPercentageOfHB_EthnicGroupClaimant;
+    // CTB
+    protected static String[] sCTBTotalCount_EthnicGroupClaimant;
+    protected static String[] sCTBPercentageOfCTB_EthnicGroupClaimant;
     // Files
     protected static final String sSHBEFilename00 = "SHBEFilename00";
     protected static final String sSHBEFilename0 = "SHBEFilename0";
-    protected static final String sSHBEFilename1 = "SHBEFilename1";
-
-    // Demographics
-    // Ethnicity
-    protected static String[] sHBTotalCount_EthnicGroupClaimant;
-    protected static String[] sHBPercentage_EthnicGroupClaimant;
-
+    protected static final String sSHBEFilename1 = "SHBEFilename1";   
+    // Key Counts
     protected static String[] sTotalCount_ClaimantTT;
     protected static String[] sPercentageOfAll_ClaimantTT;
     protected static String[] sPercentageOfHB_ClaimantTT;
     protected static String[] sPercentageOfCTB_ClaimantTT;
-    protected static String sHBPostcodeValidFormatCount;
-    protected static String sHBPostcodeValidCount;
-    // CTB
-//    protected static String CTBFemaleClaimantCountString;
-//    protected static String CTBMaleClaimantCountString;
-//    protected static String CTBDisabledClaimantCountString;
-//    protected static String CTBFemaleDisabledClaimantCountString;
-//    protected static String CTBMaleDisabledClaimantCountString;
-    protected static String[] sCTBTotalCount_EthnicGroupClaimant;
-    protected static String[] sCTBPercentageEthnicGroupClaimant;
+    protected static String[] sHBTotalCount_TTClaimant;
     protected static String[] sCTBTotalCount_TTClaimant;
-    protected static String[] sCTBPercentageOfAll_TTClaimant;
-    protected static String sCTBPostcodeValidFormatCount;
-    protected static String sCTBPostcodeValidCount;
+    // Postcode
+    protected static String sHBTotalCount_PostcodeValidFormat;
+    protected static String sHBTotalCount_PostcodeValid;
+    protected static String sCTBTotalCount_PostcodeValidFormat;
+    protected static String sCTBTotalCount_PostcodeValid;
 
     // Compare 2 Times
     // All TT
@@ -647,14 +642,14 @@ public class Summary {
     protected static int HBCount1;
     protected static Integer HBCount0;
     protected static int[] HBEthnicGroupCount;
-    protected static int HBPostcodeValidFormatCount;
-    protected static int HBPostcodeValidCount;
+    protected static int HBTotalCount_PostcodeValidFormat;
+    protected static int HBTotalCount_PostcodeValid;
     // CTB
     protected static int CTBCount1;
     protected static Integer CTBCount0;
     protected static int[] CTBEthnicGroupCount;
-    protected static int CTBPostcodeValidFormatCount;
-    protected static int CTBPostcodeValidCount;
+    protected static int CTBTotalCount_PostcodeValidFormat;
+    protected static int CTBTotalCount_PostcodeValid;
     // Compare 2 Times
     // General
     protected static int TotalCount_HBTTsToCTBTTs;
@@ -818,10 +813,10 @@ public class Summary {
         }
         // All
         sAllTotalCount_EthnicGroupClaimant = new String[nEG];
-        sAllPercentage_EthnicGroupClaimant = new String[nEG];
+        sAllPercentageOfAll_EthnicGroupClaimant = new String[nEG];
         for (int i = 1; i < nEG; i++) {
             sAllTotalCount_EthnicGroupClaimant[i] = "AllTotalCount_EthnicGroup" + i + "Claimant";
-            sAllPercentage_EthnicGroupClaimant[i] = "AllPercentageEthnicGroup" + i + "Claimant";
+            sAllPercentageOfAll_EthnicGroupClaimant[i] = "AllPercentageEthnicGroup" + i + "Claimant";
         }
         sTotalCount_ClaimantTT = new String[nTT];
         sPercentageOfAll_ClaimantTT = new String[nTT];
@@ -905,26 +900,26 @@ public class Summary {
             sPercentageOfTT_EnhancedDisabilityPremiumAwardByTT[i] = "PercentageOfTT_EnhancedDisabilityPremiumAwardByTT" + i;
         }
         // Postcode
-        sAllPostcodeValidFormatCount = "AllPostcodeValidFormatCount";
-        sAllPostcodeValidCount = "AllPostcodeValidCount";
-        sHBPostcodeValidFormatCount = "HBPostcodeValidFormatCount";
-        sHBPostcodeValidCount = "HBPostcodeValidCount";
-        sCTBPostcodeValidFormatCount = "CTBPostcodeValidFormatCount";
-        sCTBPostcodeValidCount = "CTBPostcodeValidCount";
+        sAllTotalCount_PostcodeValidFormat = "AllTotalCount_PostcodeValidFormat";
+        sAllTotalCount_PostcodeValid = "AllTotalCount_PostcodeValid";
+        sHBTotalCount_PostcodeValidFormat = "HBTotalCount_PostcodeValidFormat";
+        sHBTotalCount_PostcodeValid = "HBTotalCount_PostcodeValid";
+        sCTBTotalCount_PostcodeValidFormat = "CTBTotalCount_PostcodeValidFormat";
+        sCTBTotalCount_PostcodeValid = "CTBTotalCount_PostcodeValid";
         // EthnicGroup
         sAllTotalCount_EthnicGroupClaimant = new String[nEG];
-        sAllPercentage_EthnicGroupClaimant = new String[nEG];
+        sAllPercentageOfAll_EthnicGroupClaimant = new String[nEG];
         sHBTotalCount_EthnicGroupClaimant = new String[nEG];
-        sHBPercentage_EthnicGroupClaimant = new String[nEG];
+        sHBPercentageOfHB_EthnicGroupClaimant = new String[nEG];
         sCTBTotalCount_EthnicGroupClaimant = new String[nEG];
-        sCTBPercentageEthnicGroupClaimant = new String[nEG];
+        sCTBPercentageOfCTB_EthnicGroupClaimant = new String[nEG];
         for (int i = 1; i < nEG; i++) {
             sAllTotalCount_EthnicGroupClaimant[i] = "AllTotalCount_EthnicGroup" + i + "Claimant";
-            sAllPercentage_EthnicGroupClaimant[i] = "AllPercentage_EthnicGroup" + i + "Claimant";
+            sAllPercentageOfAll_EthnicGroupClaimant[i] = "AllPercentageOfAll_EthnicGroup" + i + "Claimant";
             sHBTotalCount_EthnicGroupClaimant[i] = "HBTotalCount_EthnicGroup" + i + "Claimant";
-            sHBPercentage_EthnicGroupClaimant[i] = "HBPercentage_EthnicGroup" + i + "Claimant";
-            sCTBTotalCount_EthnicGroupClaimant[i] = "CTBTotalCountClaimantEthnicGroup" + i + "Claimant";
-            sCTBPercentageEthnicGroupClaimant[i] = "CTBPercentageClaimantEthnicGroup" + i + "Claimant";
+            sHBPercentageOfHB_EthnicGroupClaimant[i] = "HBPercentageOfHB_EthnicGroup" + i + "Claimant";
+            sCTBTotalCount_EthnicGroupClaimant[i] = "CTBTotalCount_ClaimantEthnicGroup" + i + "Claimant";
+            sCTBPercentageOfCTB_EthnicGroupClaimant[i] = "CTBPercentageOfCTB_ClaimantEthnicGroup" + i + "Claimant";
         }
     }
 
@@ -1065,12 +1060,12 @@ public class Summary {
             HBEthnicGroupCount[i] = 0;
             CTBEthnicGroupCount[i] = 0;
         }
-        HBPostcodeValidFormatCount = 0;
-        HBPostcodeValidCount = 0;
+        HBTotalCount_PostcodeValidFormat = 0;
+        HBTotalCount_PostcodeValid = 0;
         HBTotalCount_TTChangeClaimant = 0;
         //HBTotalCount_TTChangeClaimantIgnoreMinus999 = 0;
-        CTBPostcodeValidFormatCount = 0;
-        CTBPostcodeValidCount = 0;
+        CTBTotalCount_PostcodeValidFormat = 0;
+        CTBTotalCount_PostcodeValid = 0;
         CTBTotalCount_TTChangeClaimant = 0;
         //CTBTotalCount_TTChangeClaimantIgnoreMinus999 = 0;
         // Household Size
@@ -4077,8 +4072,7 @@ public class Summary {
             d = AllCount1;
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
-                summary.put(
-                        sAllPercentage_EthnicGroupClaimant[i],
+                summary.put(sAllPercentageOfAll_EthnicGroupClaimant[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
@@ -4088,8 +4082,7 @@ public class Summary {
             d = HBCount1;
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
-                summary.put(
-                        sHBPercentage_EthnicGroupClaimant[i],
+                summary.put(sHBPercentageOfHB_EthnicGroupClaimant[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
@@ -4099,8 +4092,7 @@ public class Summary {
             d = CTBCount1;
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
-                summary.put(
-                        sCTBPercentageEthnicGroupClaimant[i],
+                summary.put(sCTBPercentageOfCTB_EthnicGroupClaimant[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
@@ -4128,28 +4120,22 @@ public class Summary {
                     sTotalCount_ClaimantTT[i],
                     Integer.toString(all));
         }
-        summary.put(
-                sAllPostcodeValidFormatCount,
-                Integer.toString(HBPostcodeValidFormatCount + CTBPostcodeValidFormatCount));
-        summary.put(
-                sAllPostcodeValidCount,
-                Integer.toString(HBPostcodeValidCount + CTBPostcodeValidCount));
+        summary.put(sAllTotalCount_PostcodeValidFormat,
+                Integer.toString(HBTotalCount_PostcodeValidFormat + CTBTotalCount_PostcodeValidFormat));
+        summary.put(sAllTotalCount_PostcodeValid,
+                Integer.toString(HBTotalCount_PostcodeValid + CTBTotalCount_PostcodeValid));
         // HB
         summary.put(sHBCount1, Integer.toString(HBCount1));
-        summary.put(
-                sHBPostcodeValidFormatCount,
-                Integer.toString(HBPostcodeValidFormatCount));
-        summary.put(
-                sHBPostcodeValidCount,
-                Integer.toString(HBPostcodeValidCount));
+        summary.put(sHBTotalCount_PostcodeValidFormat,
+                Integer.toString(HBTotalCount_PostcodeValidFormat));
+        summary.put(sHBTotalCount_PostcodeValid,
+                Integer.toString(HBTotalCount_PostcodeValid));
         // CTB
         summary.put(sCTBCount1, Integer.toString(CTBCount1));
-        summary.put(
-                sCTBPostcodeValidFormatCount,
-                Integer.toString(CTBPostcodeValidFormatCount));
-        summary.put(
-                sCTBPostcodeValidCount,
-                Integer.toString(CTBPostcodeValidCount));
+        summary.put(sCTBTotalCount_PostcodeValidFormat,
+                Integer.toString(CTBTotalCount_PostcodeValidFormat));
+        summary.put(sCTBTotalCount_PostcodeValid,
+                Integer.toString(CTBTotalCount_PostcodeValid));
     }
 
     protected void addToSummarySingleTimeTTRates(
@@ -4784,10 +4770,10 @@ public class Summary {
             boolean isValidPostcode;
             isValidPostcode = DW_Postcode_Handler.isValidPostcode(yM3v, tP);
             if (isValidPostcodeFormat) {
-                HBPostcodeValidFormatCount++;
+                HBTotalCount_PostcodeValidFormat++;
             }
             if (isValidPostcode) {
-                HBPostcodeValidCount++;
+                HBTotalCount_PostcodeValid++;
             }
         }
     }
@@ -4891,10 +4877,10 @@ public class Summary {
             boolean isValidPostcode;
             isValidPostcode = DW_Postcode_Handler.isValidPostcode(yM3v, tP);
             if (isValidPostcodeFormat) {
-                CTBPostcodeValidFormatCount++;
+                CTBTotalCount_PostcodeValidFormat++;
             }
             if (isValidPostcode) {
-                CTBPostcodeValidCount++;
+                CTBTotalCount_PostcodeValid++;
             }
         }
     }
@@ -5457,11 +5443,11 @@ public class Summary {
         File dirOut;
         dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
         String outFilename;
-        outFilename = paymentType + "_";
+        outFilename = paymentType + "_" + includeKey + "_";
         if (underOccupancy) {
             outFilename += "UO_";
         }
-        outFilename += summaryTable.firstKey() + "To" + summaryTable.lastKey() + name + ".csv";
+        outFilename += summaryTable.firstKey() + "_To_" + summaryTable.lastKey() + "_" + name + ".csv";
         File outFile;
         outFile = new File(dirOut, outFilename);
         result = Generic_StaticIO.getPrintWriter(outFile, false);
@@ -6136,12 +6122,12 @@ public class Summary {
         header += sHBAverageHouseholdSize + ", ";
         header += sCTBTotalHouseholdSize + ", ";
         header += sCTBAverageHouseholdSize + ", ";
-        header += sAllPostcodeValidFormatCount + ", ";
-        header += sAllPostcodeValidCount + ", ";
-        header += sHBPostcodeValidFormatCount + ", ";
-        header += sHBPostcodeValidCount + ", ";
-        header += sCTBPostcodeValidFormatCount + ", ";
-        header += sCTBPostcodeValidCount + ", ";
+        header += sAllTotalCount_PostcodeValidFormat + ", ";
+        header += sAllTotalCount_PostcodeValid + ", ";
+        header += sHBTotalCount_PostcodeValidFormat + ", ";
+        header += sHBTotalCount_PostcodeValid + ", ";
+        header += sCTBTotalCount_PostcodeValidFormat + ", ";
+        header += sCTBTotalCount_PostcodeValid + ", ";
         header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
@@ -6175,12 +6161,12 @@ public class Summary {
             line += summary.get(sHBAverageHouseholdSize) + ", ";
             line += summary.get(sCTBTotalHouseholdSize) + ", ";
             line += summary.get(sCTBAverageHouseholdSize) + ", ";
-            line += summary.get(sAllPostcodeValidFormatCount) + ", ";
-            line += summary.get(sAllPostcodeValidCount) + ", ";
-            line += summary.get(sHBPostcodeValidFormatCount) + ", ";
-            line += summary.get(sHBPostcodeValidCount) + ", ";
-            line += summary.get(sCTBPostcodeValidFormatCount) + ", ";
-            line += summary.get(sCTBPostcodeValidCount) + ", ";
+            line += summary.get(sAllTotalCount_PostcodeValidFormat) + ", ";
+            line += summary.get(sAllTotalCount_PostcodeValid) + ", ";
+            line += summary.get(sHBTotalCount_PostcodeValidFormat) + ", ";
+            line += summary.get(sHBTotalCount_PostcodeValid) + ", ";
+            line += summary.get(sCTBTotalCount_PostcodeValidFormat) + ", ";
+            line += summary.get(sCTBTotalCount_PostcodeValid) + ", ";
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
@@ -6579,15 +6565,15 @@ public class Summary {
         header += getHeaderSingleTimeGeneric(underOccupancy);
         for (int i = 1; i < nEG; i++) {
             header += sAllTotalCount_EthnicGroupClaimant[i] + ", ";
-            header += sAllPercentage_EthnicGroupClaimant[i] + ", ";
+            header += sAllPercentageOfAll_EthnicGroupClaimant[i] + ", ";
         }
         for (int i = 1; i < nEG; i++) {
             header += sHBTotalCount_EthnicGroupClaimant[i] + ", ";
-            header += sHBPercentage_EthnicGroupClaimant[i] + ", ";
+            header += sHBPercentageOfHB_EthnicGroupClaimant[i] + ", ";
         }
         for (int i = 1; i < nEG; i++) {
             header += sCTBTotalCount_EthnicGroupClaimant[i] + ", ";
-            header += sCTBPercentageEthnicGroupClaimant[i] + ", ";
+            header += sCTBPercentageOfCTB_EthnicGroupClaimant[i] + ", ";
         }
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -6607,15 +6593,15 @@ public class Summary {
             line += getLineSingleTimeGeneric(key, summary);
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sAllTotalCount_EthnicGroupClaimant[i]) + ", ";
-                line += summary.get(sAllPercentage_EthnicGroupClaimant[i]) + ", ";
+                line += summary.get(sAllPercentageOfAll_EthnicGroupClaimant[i]) + ", ";
             }
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sHBTotalCount_EthnicGroupClaimant[i]) + ", ";
-                line += summary.get(sHBPercentage_EthnicGroupClaimant[i]) + ", ";
+                line += summary.get(sHBPercentageOfHB_EthnicGroupClaimant[i]) + ", ";
             }
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sCTBTotalCount_EthnicGroupClaimant[i]) + ", ";
-                line += summary.get(sCTBPercentageEthnicGroupClaimant[i]) + ", ";
+                line += summary.get(sCTBPercentageOfCTB_EthnicGroupClaimant[i]) + ", ";
             }
             line = line.substring(0, line.length() - 2);
             pw.println(line);

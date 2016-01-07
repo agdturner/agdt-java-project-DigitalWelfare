@@ -164,10 +164,11 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         // Includes
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
-//        includes.remove("Yearly");
-//        includes.remove("6Monthly");
-//        includes.remove("3Monthly");
-//        includes.remove("MonthlyUO");
+        includes.remove("Yearly");
+        includes.remove("6Monthly");
+        includes.remove("3Monthly");
+        includes.remove("MonthlyUO");
+//        includes.remove("Monthly");
 
         // Specifiy distances
         ArrayList<Double> distances;
@@ -228,14 +229,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         nEG,
                         nPSI,
                         handleOutOfMemoryError);
-                SummaryUO tSummaryUO = new SummaryUO(
-                        env,
-                        collectionHandler,
-                        tDW_SHBE_Handler,
-                        nTT,
-                        nEG,
-                        nPSI,
-                        handleOutOfMemoryError);
+//                SummaryUO tSummaryUO = new SummaryUO(
+//                        env,
+//                        collectionHandler,
+//                        tDW_SHBE_Handler,
+//                        nTT,
+//                        nEG,
+//                        nPSI,
+//                        handleOutOfMemoryError);
                 Iterator<String> includesIte;
                 includesIte = includes.keySet().iterator();
                 while (includesIte.hasNext()) {
@@ -270,26 +271,26 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                    if (true) {
                     if (false) {
                           TreeMap<String, HashMap<String, String>> summaryTableUO;
-                        summaryTableUO = tSummaryUO.getSummaryTable(
-                                summaryTableAll,
-                                SHBEFilenames,
-                                include,
-                                forceNewSummaries,
-                                paymentType,
-                                nTT,
-                                nEG,
-                                nPSI,
-                                underOccupiedData,
-                                tDW_PersonIDtoDW_IDLookup,
-                                tPostcodeToPostcodeIDLookup,
-                                handleOutOfMemoryError);
-                        doUnderOccupancy = true;
-                        tSummary.writeSummaryTables(
-                                summaryTableUO,
-                                paymentType,
-                                includeKey,
-                                doUnderOccupancy,
-                                nTT, nEG, nPSI);
+//                        summaryTableUO = tSummaryUO.getSummaryTable(
+//                                summaryTableAll,
+//                                SHBEFilenames,
+//                                include,
+//                                forceNewSummaries,
+//                                paymentType,
+//                                nTT,
+//                                nEG,
+//                                nPSI,
+//                                underOccupiedData,
+//                                tDW_PersonIDtoDW_IDLookup,
+//                                tPostcodeToPostcodeIDLookup,
+//                                handleOutOfMemoryError);
+//                        doUnderOccupancy = true;
+//                        tSummary.writeSummaryTables(
+//                                summaryTableUO,
+//                                paymentType,
+//                                includeKey,
+//                                doUnderOccupancy,
+//                                nTT, nEG, nPSI);
                     }
 //                    System.exit(0);
                 }

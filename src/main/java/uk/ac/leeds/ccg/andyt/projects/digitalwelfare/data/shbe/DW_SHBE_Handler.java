@@ -2659,13 +2659,13 @@ public class DW_SHBE_Handler {
         omit3Monthly.add(45);
         omit3Monthly.add(46);
         result.put(omitKey, omit3Monthly);
-//        omitKey = "Monthly";
-//        ArrayList<Integer> omitMonthly;
-//        omitMonthly = new ArrayList<Integer>();
-//        for (int i = 0; i < 14; i++) {
-//            omitMonthly.add(i);
-//        }
-//        result.put(omitKey, omitMonthly);
+        omitKey = "Monthly";
+        ArrayList<Integer> omitMonthly;
+        omitMonthly = new ArrayList<Integer>();
+        for (int i = 0; i < 14; i++) {
+            omitMonthly.add(i);
+        }
+        result.put(omitKey, omitMonthly);
         omitKey = "MonthlyUO";
         ArrayList<Integer> omitMonthlyUO;
         omitMonthlyUO = new ArrayList<Integer>();

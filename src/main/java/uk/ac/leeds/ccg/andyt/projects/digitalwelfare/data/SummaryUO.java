@@ -348,9 +348,9 @@ public class SummaryUO extends Summary {
     protected static final String sCouncilPercentageOfAll_PrivateDeregulatedTTsClaimant = "CouncilPercentageOfAll_PrivateDeregulatedTTsClaimant";
     protected static final String sCouncilPercentageOfHB_PrivateDeregulatedTTsClaimant = "CouncilPercentageOfHB_PrivateDeregulatedTTsClaimant";
     protected static String[] sCouncilAllTotalCount_EthnicGroupClaimant;
-    protected static String[] sCouncilAllPercentage_EthnicGroupClaimant;
-    protected static String sCouncilAllPostcodeValidFormatCount;
-    protected static String sCouncilAllPostcodeValidCount;
+    protected static String[] sCouncilAllPercentageOfAll_EthnicGroupClaimant;
+    protected static String sCouncilAllTotalCount_PostcodeValidFormat;
+    protected static String sCouncilAllTotalCount_PostcodeValid;
     // Income
     // All
     public static final String sCouncilAllTotalIncome = "CouncilAllTotalIncome";
@@ -371,7 +371,7 @@ public class SummaryUO extends Summary {
     public static final String sCouncilCTBTotalCount_IncomeNonZero = "CouncilCTBTotalCount_IncomeNonZero";
     public static final String sCouncilCTBTotalCount_IncomeZero = "CouncilCTBTotalCount_IncomeZero";
     public static final String sCouncilCTBAverageIncome = "CouncilCTBAverageIncome";
-    
+
     // RSL
     // Counter Strings
     // HouseholdSize
@@ -665,9 +665,9 @@ public class SummaryUO extends Summary {
     protected static final String sRSLPercentageOfAll_PrivateDeregulatedTTsClaimant = "RSLPercentageOfAll_PrivateDeregulatedTTsClaimant";
     protected static final String sRSLPercentageOfHB_PrivateDeregulatedTTsClaimant = "RSLPercentageOfHB_PrivateDeregulatedTTsClaimant";
     protected static String[] sRSLAllTotalCount_EthnicGroupClaimant;
-    protected static String[] sRSLAllPercentage_EthnicGroupClaimant;
-    protected static String sRSLAllPostcodeValidFormatCount;
-    protected static String sRSLAllPostcodeValidCount;
+    protected static String[] sRSLAllPercentageOfAll_EthnicGroupClaimant;
+    protected static String sRSLAllTotalCount_PostcodeValidFormat;
+    protected static String sRSLAllTotalCount_PostcodeValid;
     // Income
     // All
     public static final String sRSLAllTotalIncome = "RSLAllTotalIncome";
@@ -711,7 +711,7 @@ public class SummaryUO extends Summary {
     protected static final String sCouncilCount1 = "CouncilCount1";
     protected static final String sCouncilLinkedRecordCount00 = "CouncilLinkedRecordCount00";
     protected static final String sCouncilLinkedRecordCount0 = "CouncilLinkedRecordCount0";
-    protected static final String sCouncilLinkedRecordCount1 = "CouncilLinkedRecordCount1";    
+    protected static final String sCouncilLinkedRecordCount1 = "CouncilLinkedRecordCount1";
     protected static final String sCouncilTotal_RentArrears = "CouncilTotal_RentArrears";
     protected static final String sCouncilTotalCount_RentArrears = "CouncilTotalCount_RentArrears";
     protected static final String sCouncilTotalCount_RentArrearsZero = "CouncilTotalCount_RentArrearsZero";
@@ -725,43 +725,49 @@ public class SummaryUO extends Summary {
     protected static final String sRSLLinkedRecordCount00 = "RSLLinkedRecordCount00";
     protected static final String sRSLLinkedRecordCount0 = "RSLLinkedRecordCount0";
     protected static final String sRSLLinkedRecordCount1 = "RSLLinkedRecordCount1";
-    
+
     // Demographics
     // Ethnicity
-    protected static String[] sRSLHBTotalCount_EthnicGroupClaimant;
-    protected static String[] sRSLHBPercentage_EthnicGroupClaimant;
+    // Council
     protected static String[] sCouncilHBTotalCount_EthnicGroupClaimant;
-    protected static String[] sCouncilHBPercentage_EthnicGroupClaimant;
+    protected static String[] sCouncilHBPercentageOfHB_EthnicGroupClaimant;
+    protected static String[] sCouncilCTBTotalCount_EthnicGroupClaimant;
+    protected static String[] sCouncilCTBPercentageOfCTB_EthnicGroupClaimant;
+    // RSL
+    protected static String[] sRSLHBTotalCount_EthnicGroupClaimant;
+    protected static String[] sRSLHBPercentageOfHB_EthnicGroupClaimant;
+    protected static String[] sRSLCTBTotalCount_EthnicGroupClaimant;
+    protected static String[] sRSLCTBPercentageOfCTB_EthnicGroupClaimant;
 
-    // Strings1
+    // Key Counts
     // Council
     protected static String[] sCouncilTotalCount_ClaimantTT;
     protected static String[] sCouncilPercentageOfAll_ClaimantTT;
     protected static String[] sCouncilPercentageOfHB_ClaimantTT;
     protected static String[] sCouncilPercentageOfCTB_ClaimantTT;
-    protected static String sCouncilHBPostcodeValidFormatCount;
-    protected static String sCouncilHBPostcodeValidCount;
-    // CTB
-    protected static String[] sCouncilTBTotalCount_EthnicGroupClaimant;
-    protected static String[] sCouncilCTBPercentageEthnicGroupClaimant;
-    protected static String[] sCouncilCTBTotalCountTTClaimant;
-    protected static String[] sCouncilCTBPercentageOfAllTTClaimant;
-    protected static String sCouncilCTBPostcodeValidFormatCount;
-    protected static String sCouncilCTBPostcodeValidCount;
+    protected static String[] sCouncilPercentageOfTT_ClaimantTT;
+    protected static String[] sCouncilCTBTotalCount_TTClaimant;
+    protected static String[] sCouncilCTBPercentageOfCTB_TTClaimant;
     // RSL
     protected static String[] sRSLTotalCount_ClaimantTT;
     protected static String[] sRSLPercentageOfAll_ClaimantTT;
     protected static String[] sRSLPercentageOfHB_ClaimantTT;
     protected static String[] sRSLPercentageOfCTB_ClaimantTT;
-    protected static String sRSLHBPostcodeValidFormatCount;
-    protected static String sRSLHBPostcodeValidCount;
-    // CTB
-    protected static String[] sRSLCTBTotalCount_EthnicGroupClaimant;
-    protected static String[] sRSLCTBPercentageEthnicGroupClaimant;
-    protected static String[] sRSLCTBTotalCountTTClaimant;
-    protected static String[] sRSLCTBPercentageOfAllTTClaimant;
-    protected static String sRSLCTBPostcodeValidFormatCount;
-    protected static String sRSLCTBPostcodeValidCount;
+    protected static String[] sRSLPercentageOfTT_ClaimantTT;
+    protected static String[] sRSLCTBTotalCount_TTClaimant;
+    protected static String[] sRSLCTBPercentageOfCTB_TTClaimant;
+
+    // Postcode
+    // Council
+    protected static String sCouncilHBTotalCount_PostcodeValidFormat;
+    protected static String sCouncilHBTotalCount_PostcodeValid;
+    protected static String sCouncilCTBTotalCount_PostcodeValidFormat;
+    protected static String sCouncilCTBTotalCount_PostcodeValid;
+    // RSL
+    protected static String sRSLHBTotalCount_PostcodeValidFormat;
+    protected static String sRSLHBTotalCount_PostcodeValid;
+    protected static String sRSLCTBTotalCount_PostcodeValidFormat;
+    protected static String sRSLCTBTotalCount_PostcodeValid;
 
     // Compare 2 Times
     // Council
@@ -1112,7 +1118,7 @@ public class SummaryUO extends Summary {
     protected static int CouncilCTBTotalCount_SelfEmployedClaimants;
     protected static int CouncilCTBTotalCount_StudentsClaimants;
     // HLA
-    protected static int CouncilHBTotalCountLHACases;
+    protected static int CouncilHBTotalCount_LHACases;
     protected static int CouncilCTBTotalCount_LHACases;
     protected static int[] CouncilTotalCount_DisabilityPremiumAwardByTT;
     protected static int[] CouncilTotalCount_SevereDisabilityPremiumAwardByTT;
@@ -1136,14 +1142,14 @@ public class SummaryUO extends Summary {
     protected static int CouncilHBCount1;
     protected static Integer CouncilHBCount0;
     protected static int[] CouncilHBEthnicGroupCount;
-    protected static int CouncilHBPostcodeValidFormatCount;
-    protected static int CouncilHBPostcodeValidCount;
+    protected static int CouncilHBTotalCount_PostcodeValidFormat;
+    protected static int CouncilHBTotalCount_PostcodeValid;
     // CTB
     protected static int CouncilCTBCount1;
     protected static Integer CouncilCTBCount0;
     protected static int[] CouncilCTBEthnicGroupCount;
-    protected static int CouncilCTBPostcodeValidFormatCount;
-    protected static int CouncilCTBPostcodeValidCount;
+    protected static int CouncilCTBTotalCount_PostcodeValidFormat;
+    protected static int CouncilCTBTotalCount_PostcodeValid;
     // Other summary stats
     protected static double CouncilTotal_RentArrears;
     protected static double CouncilTotalCount_RentArrears;
@@ -1225,13 +1231,15 @@ public class SummaryUO extends Summary {
     protected static int RSLCTBTotalCount_SelfEmployedClaimants;
     protected static int RSLCTBTotalCount_StudentsClaimants;
     // HLA
-    protected static int RSLHBTotalCountLHACases;
+    protected static int RSLHBTotalCount_LHACases;
     protected static int RSLCTBTotalCount_LHACases;
+    // Disability
     protected static int[] RSLTotalCount_DisabilityPremiumAwardByTT;
     protected static int[] RSLTotalCount_SevereDisabilityPremiumAwardByTT;
     protected static int[] RSLTotalCount_DisabledChildPremiumAwardByTT;
     protected static int[] RSLTotalCount_EnhancedDisabilityPremiumAwardByTT;
     protected static int[] RSLTotalCount_DisabilityAwardByTT;
+    // Key Counts
     protected static int[] RSLAllTotalCount_PSI;
     protected static int[] RSLHBTotalCount_PSI;
     protected static int[] RSLCTBTotalCount_PSI;
@@ -1249,14 +1257,14 @@ public class SummaryUO extends Summary {
     protected static int RSLHBCount1;
     protected static Integer RSLHBCount0;
     protected static int[] RSLHBEthnicGroupCount;
-    protected static int RSLHBPostcodeValidFormatCount;
-    protected static int RSLHBPostcodeValidCount;
+    protected static int RSLHBTotalCount_PostcodeValidFormat;
+    protected static int RSLHBTotalCount_PostcodeValid;
     // CTB
     protected static int RSLCTBCount1;
     protected static Integer RSLCTBCount0;
     protected static int[] RSLCTBEthnicGroupCount;
-    protected static int RSLCTBPostcodeValidFormatCount;
-    protected static int RSLCTBPostcodeValidCount;
+    protected static int RSLCTBTotalCount_PostcodeValidFormat;
+    protected static int RSLCTBTotalCount_PostcodeValid;
 
     // Compare 2 Times
     // Council
@@ -1291,7 +1299,7 @@ public class SummaryUO extends Summary {
     protected static int CouncilTotalCount_CTBTTsToTT1;
     protected static int CouncilTotalCount_CTBTTsToTT4;
     protected static int CouncilTotalCount_CTBTTsToPrivateDeregulatedTTs;
-    //
+    // TT1 TT4
     protected static int CouncilTotalCount_TT1ToTT4;
     protected static int CouncilTotalCount_TT4ToTT1;
     // CouncilAll
@@ -1318,7 +1326,6 @@ public class SummaryUO extends Summary {
     protected static int CouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
     // CTB
     protected static int CouncilCTBTotalCount_TTChangeClaimant;
-    //protected static int CouncilCTBTotalCount_TTChangeClaimantIgnoreMinus999;
     protected static int CouncilCTBTotalCount_Postcode0ValidPostcode1Valid;
     protected static int CouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
     protected static int CouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
@@ -1359,12 +1366,11 @@ public class SummaryUO extends Summary {
     protected static int RSLTotalCount_CTBTTsToTT1;
     protected static int RSLTotalCount_CTBTTsToTT4;
     protected static int RSLTotalCount_CTBTTsToPrivateDeregulatedTTs;
-    //
+    // TT1 TT4
     protected static int RSLTotalCount_TT1ToTT4;
     protected static int RSLTotalCount_TT4ToTT1;
     // RSLAll
     protected static int RSLAllTotalCount_TTChangeClaimant;
-    //protected static int RSLAllTotalCount_TTChangeClaimantIgnoreMinus999;
     protected static int RSLAllTotalCount_Postcode0ValidPostcode1Valid;
     protected static int RSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
     protected static int RSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
@@ -1375,7 +1381,6 @@ public class SummaryUO extends Summary {
     protected static int RSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
     // HB
     protected static int RSLHBTotalCount_TTChangeClaimant;
-    //protected static int RSLHBTotalCount_TTChangeClaimantIgnoreMinus999;
     protected static int RSLHBTotalCount_Postcode0ValidPostcode1Valid;
     protected static int RSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
     protected static int RSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
@@ -1386,7 +1391,6 @@ public class SummaryUO extends Summary {
     protected static int RSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
     // CTB
     protected static int RSLCTBTotalCount_TTChangeClaimant;
-    //protected static int RSLCTBTotalCount_TTChangeClaimantIgnoreMinus999;
     protected static int RSLCTBTotalCount_Postcode0ValidPostcode1Valid;
     protected static int RSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
     protected static int RSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
@@ -1463,335 +1467,586 @@ public class SummaryUO extends Summary {
         init(nTT, nEG, nPSI);
     }
 
-    
-    
-    
-    
-    // Go through all methods and approriate for UO
-    
-    
-    
-    
-    
     @Override
     protected void init(int nTT, int nEG, int nPSI) {
         super.init(nTT, nEG, nPSI);
         initSingleTimeStrings(nTT, nEG, nPSI);
         initCompare3TimesStrings(nTT, nEG);
-        TotalCount_DisabilityPremiumAwardByTT = new int[nTT];
-        TotalCount_SevereDisabilityPremiumAwardByTT = new int[nTT];
-        TotalCount_DisabledChildPremiumAwardByTT = new int[nTT];
-        TotalCount_EnhancedDisabilityPremiumAwardByTT = new int[nTT];
-        TotalCount_DisabilityAwardByTT = new int[nTT];
-        AllTotalCount_PSI = new int[nPSI];
-        HBTotalCount_PSI = new int[nPSI];
-        CTBTotalCount_PSI = new int[nPSI];
-        AllTotalCount_PSIByTT = new int[nPSI][nTT];
-        HBTotalCount_PSIByTT = new int[nPSI][nTT];
-        CTBTotalCount_PSIByTT = new int[nPSI][nTT];
-        TotalCount_TTClaimant1 = new int[nTT];
-        TotalCount_TTClaimant0 = new int[nTT];
-        HBEthnicGroupCount = new int[nEG];
-        CTBEthnicGroupCount = new int[nEG];
+        // Council
+        CouncilTotalCount_DisabilityPremiumAwardByTT = new int[nTT];
+        CouncilTotalCount_SevereDisabilityPremiumAwardByTT = new int[nTT];
+        CouncilTotalCount_DisabledChildPremiumAwardByTT = new int[nTT];
+        CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT = new int[nTT];
+        CouncilTotalCount_DisabilityAwardByTT = new int[nTT];
+        CouncilAllTotalCount_PSI = new int[nPSI];
+        CouncilHBTotalCount_PSI = new int[nPSI];
+        CouncilCTBTotalCount_PSI = new int[nPSI];
+        CouncilAllTotalCount_PSIByTT = new int[nPSI][nTT];
+        CouncilHBTotalCount_PSIByTT = new int[nPSI][nTT];
+        CouncilCTBTotalCount_PSIByTT = new int[nPSI][nTT];
+        CouncilTotalCount_TTClaimant1 = new int[nTT];
+        CouncilTotalCount_TTClaimant0 = new int[nTT];
+        CouncilHBEthnicGroupCount = new int[nEG];
+        CouncilCTBEthnicGroupCount = new int[nEG];
+        // RSL
+        RSLTotalCount_DisabilityPremiumAwardByTT = new int[nTT];
+        RSLTotalCount_SevereDisabilityPremiumAwardByTT = new int[nTT];
+        RSLTotalCount_DisabledChildPremiumAwardByTT = new int[nTT];
+        RSLTotalCount_EnhancedDisabilityPremiumAwardByTT = new int[nTT];
+        RSLTotalCount_DisabilityAwardByTT = new int[nTT];
+        RSLAllTotalCount_PSI = new int[nPSI];
+        RSLHBTotalCount_PSI = new int[nPSI];
+        RSLCTBTotalCount_PSI = new int[nPSI];
+        RSLAllTotalCount_PSIByTT = new int[nPSI][nTT];
+        RSLHBTotalCount_PSIByTT = new int[nPSI][nTT];
+        RSLCTBTotalCount_PSIByTT = new int[nPSI][nTT];
+        RSLTotalCount_TTClaimant1 = new int[nTT];
+        RSLTotalCount_TTClaimant0 = new int[nTT];
+        RSLHBEthnicGroupCount = new int[nEG];
+        RSLCTBEthnicGroupCount = new int[nEG];
     }
 
     @Override
     protected void initSingleTimeStrings(int nTT, int nEG, int nPSI) {
         super.initSingleTimeStrings(nTT, nEG, nPSI);
-        sTotalIncomeTT = new String[nTT];
-        sTotalCount_IncomeNonZeroTT = new String[nTT];
-        sTotalCount_IncomeZeroTT = new String[nTT];
-        sAverageIncomeTT = new String[nTT];
-        sTotalWeeklyEligibleRentAmountTT = new String[nTT];
-        sTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        sTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
-        sAverageWeeklyEligibleRentAmountTT = new String[nTT];
-
-        sAllTotalCount_PSI = new String[nPSI];
-        sHBTotalCount_PSI = new String[nPSI];
-        sCTBTotalCount_PSI = new String[nPSI];
-        sAllPercentageOfAll_PSI = new String[nPSI];
-        sHBPercentageOfHB_PSI = new String[nPSI];
-        sCTBPercentageOfCTB_PSI = new String[nPSI];
-        sTotalCount_PSIByTT = new String[nPSI][nTT];
-        sPercentageOfAll_PSIByTT = new String[nPSI][nTT];
-        sPercentageOfHB_PSIByTT = new String[nPSI][nTT];
-        sPercentageOfCTB_PSIByTT = new String[nPSI][nTT];
+        // Council
+        sCouncilTotalIncomeTT = new String[nTT];
+        sCouncilTotalCount_IncomeNonZeroTT = new String[nTT];
+        sCouncilTotalCount_IncomeZeroTT = new String[nTT];
+        sCouncilAverageIncomeTT = new String[nTT];
+        sCouncilTotalWeeklyEligibleRentAmountTT = new String[nTT];
+        sCouncilTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        sCouncilTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
+        sCouncilAverageWeeklyEligibleRentAmountTT = new String[nTT];
+        sCouncilAllTotalCount_PSI = new String[nPSI];
+        sCouncilHBTotalCount_PSI = new String[nPSI];
+        sCouncilCTBTotalCount_PSI = new String[nPSI];
+        sCouncilAllPercentageOfAll_PSI = new String[nPSI];
+        sCouncilHBPercentageOfHB_PSI = new String[nPSI];
+        sCouncilCTBPercentageOfCTB_PSI = new String[nPSI];
+        sCouncilTotalCount_PSIByTT = new String[nPSI][nTT];
+        sCouncilPercentageOfAll_PSIByTT = new String[nPSI][nTT];
+        sCouncilPercentageOfHB_PSIByTT = new String[nPSI][nTT];
+        sCouncilPercentageOfCTB_PSIByTT = new String[nPSI][nTT];
         for (int i = 1; i < nPSI; i++) {
-            sAllTotalCount_PSI[i] = "RSLAllTotalCount_PSI" + i;
-            sHBTotalCount_PSI[i] = "RSLHBTotalCount_PSI" + i;
-            sCTBTotalCount_PSI[i] = "RSLCTBTotalCount_PSI" + i;
-            sAllPercentageOfAll_PSI[i] = "RSLAllPercentageOfAll_PSI" + i;
-            sHBPercentageOfHB_PSI[i] = "RSLHBPercentageOfHB_PSI" + i;
-            sCTBPercentageOfCTB_PSI[i] = "RSLCTBPercentageOfCTB_PSI" + i;
+            sCouncilAllTotalCount_PSI[i] = "CouncilAllTotalCount_PSI" + i;
+            sCouncilHBTotalCount_PSI[i] = "CouncilHBTotalCount_PSI" + i;
+            sCouncilCTBTotalCount_PSI[i] = "CouncilCTBTotalCount_PSI" + i;
+            sCouncilAllPercentageOfAll_PSI[i] = "CouncilAllPercentageOfAll_PSI" + i;
+            sCouncilHBPercentageOfHB_PSI[i] = "CouncilHBPercentageOfHB_PSI" + i;
+            sCouncilCTBPercentageOfCTB_PSI[i] = "CouncilCTBPercentageOfCTB_PSI" + i;
             for (int j = 1; j < nTT; j++) {
-                sTotalCount_PSIByTT[i][j] = "RSLTotalCount_PSI" + i + "TT" + j;
-                sPercentageOfAll_PSIByTT[i][j] = "RSLPercentageOfAll_PSI" + i + "TT" + j;
+                sCouncilTotalCount_PSIByTT[i][j] = "CouncilTotalCount_PSI" + i + "TT" + j;
+                sCouncilPercentageOfAll_PSIByTT[i][j] = "CouncilPercentageOfAll_PSI" + i + "TT" + j;
                 if (j == 5 || j == 7) {
-                    sPercentageOfCTB_PSIByTT[i][j] = "RSLPercentageOfCTB_PSI" + i + "TT" + j;
+                    sCouncilPercentageOfCTB_PSIByTT[i][j] = "CouncilPercentageOfCTB_PSI" + i + "TT" + j;
                 } else {
-                    sPercentageOfHB_PSIByTT[i][j] = "RSLPercentageOfHB_PSI" + i + "TT" + j;
+                    sCouncilPercentageOfHB_PSIByTT[i][j] = "CouncilPercentageOfHB_PSI" + i + "TT" + j;
                 }
             }
         }
-
         // All
-        sAllTotalCount_EthnicGroupClaimant = new String[nEG];
-        sAllPercentage_EthnicGroupClaimant = new String[nEG];
+        sCouncilAllTotalCount_EthnicGroupClaimant = new String[nEG];
+        sCouncilAllPercentageOfAll_EthnicGroupClaimant = new String[nEG];
         for (int i = 1; i < nEG; i++) {
-            sAllTotalCount_EthnicGroupClaimant[i] = "RSLAllTotalCount_EthnicGroup" + i + "Claimant";
-            sAllPercentage_EthnicGroupClaimant[i] = "RSLAllPercentageEthnicGroup" + i + "Claimant";
+            sCouncilAllTotalCount_EthnicGroupClaimant[i] = "CouncilAllTotalCount_EthnicGroup" + i + "Claimant";
+            sCouncilAllPercentageOfAll_EthnicGroupClaimant[i] = "CouncilAllPercentageOfAll_EthnicGroup" + i + "Claimant";
         }
-        sTotalCount_ClaimantTT = new String[nTT];
-        sPercentageOfAll_ClaimantTT = new String[nTT];
-        sPercentageOfHB_ClaimantTT = new String[nTT];
-        sPercentageOfCTB_ClaimantTT = new String[nTT];
+        sCouncilTotalCount_ClaimantTT = new String[nTT];
+        sCouncilPercentageOfAll_ClaimantTT = new String[nTT];
+        sCouncilPercentageOfHB_ClaimantTT = new String[nTT];
+        sCouncilPercentageOfCTB_ClaimantTT = new String[nTT];
         // DisabilityAward
-        sTotalCount_DisabilityAwardByTT = new String[nTT];
-        sPercentageOfAll_DisabilityAwardByTT = new String[nTT];
-        sPercentageOfHB_DisabilityAwardByTT = new String[nTT];
-        sPercentageOfCTB_DisabilityAwardByTT = new String[nTT];
-        sPercentageOfTT_DisabilityAwardByTT = new String[nTT];
+        sCouncilTotalCount_DisabilityAwardByTT = new String[nTT];
+        sCouncilPercentageOfAll_DisabilityAwardByTT = new String[nTT];
+        sCouncilPercentageOfHB_DisabilityAwardByTT = new String[nTT];
+        sCouncilPercentageOfCTB_DisabilityAwardByTT = new String[nTT];
+        sCouncilPercentageOfTT_DisabilityAwardByTT = new String[nTT];
         // DisabilityPremiumAward
-        sTotalCount_DisabilityPremiumAwardByTT = new String[nTT];
-        sPercentageOfAll_DisabilityPremiumAwardByTT = new String[nTT];
-        sPercentageOfHB_DisabilityPremiumAwardByTT = new String[nTT];
-        sPercentageOfCTB_DisabilityPremiumAwardByTT = new String[nTT];
-        sPercentageOfTT_DisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilTotalCount_DisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfAll_DisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfHB_DisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfCTB_DisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfTT_DisabilityPremiumAwardByTT = new String[nTT];
         // SevereDisabilityPremiumAward
-        sTotalCount_SevereDisabilityPremiumAwardByTT = new String[nTT];
-        sPercentageOfAll_SevereDisabilityPremiumAwardByTT = new String[nTT];
-        sPercentageOfHB_SevereDisabilityPremiumAwardByTT = new String[nTT];
-        sPercentageOfCTB_SevereDisabilityPremiumAwardByTT = new String[nTT];
-        sPercentageOfTT_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilTotalCount_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfAll_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfHB_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfCTB_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfTT_SevereDisabilityPremiumAwardByTT = new String[nTT];
         // DisabledChildPremiumAward
-        sTotalCount_DisabledChildPremiumAwardByTT = new String[nTT];
-        sPercentageOfAll_DisabledChildPremiumAwardByTT = new String[nTT];
-        sPercentageOfHB_DisabledChildPremiumAwardByTT = new String[nTT];
-        sPercentageOfCTB_DisabledChildPremiumAwardByTT = new String[nTT];
-        sPercentageOfTT_DisabledChildPremiumAwardByTT = new String[nTT];
+        sCouncilTotalCount_DisabledChildPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfAll_DisabledChildPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfHB_DisabledChildPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfCTB_DisabledChildPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfTT_DisabledChildPremiumAwardByTT = new String[nTT];
         // EnhancedDisabilityPremiumAward
-        sTotalCount_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
-        sPercentageOfAll_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
-        sPercentageOfHB_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
-        sPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
-        sPercentageOfTT_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilTotalCount_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfAll_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfHB_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sCouncilPercentageOfTT_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
         for (int i = 1; i < nTT; i++) {
             // Claimants
-            sTotalCount_ClaimantTT[i] = "RSLTotalCount_ClaimantTT" + i;
-            sPercentageOfAll_ClaimantTT[i] = "RSLPercentageOfAll_ClaimantTT" + i;
-            sPercentageOfHB_ClaimantTT[i] = "RSLPercentageOfHB_ClaimantTT" + i;
-            sPercentageOfCTB_ClaimantTT[i] = "RSLPercentageOfCTB_ClaimantTT" + i;
+            sCouncilTotalCount_ClaimantTT[i] = "CouncilTotalCount_ClaimantTT" + i;
+            sCouncilPercentageOfAll_ClaimantTT[i] = "CouncilPercentageOfAll_ClaimantTT" + i;
+            sCouncilPercentageOfHB_ClaimantTT[i] = "CouncilPercentageOfHB_ClaimantTT" + i;
+            sCouncilPercentageOfCTB_ClaimantTT[i] = "CouncilPercentageOfCTB_ClaimantTT" + i;
             // Income
-            sTotalIncomeTT[i] = "RSLTotalIncomeTT" + i;
-            sTotalCount_IncomeNonZeroTT[i] = "RSLTotalCount_IncomeNonZeroTT" + i;
-            sTotalCount_IncomeZeroTT[i] = "RSLTotalCount_IncomeZeroTT" + i;
-            sAverageIncomeTT[i] = "RSLAverageIncomeTT" + i;
+            sCouncilTotalIncomeTT[i] = "CouncilTotalIncomeTT" + i;
+            sCouncilTotalCount_IncomeNonZeroTT[i] = "CouncilTotalCount_IncomeNonZeroTT" + i;
+            sCouncilTotalCount_IncomeZeroTT[i] = "CouncilTotalCount_IncomeZeroTT" + i;
+            sCouncilAverageIncomeTT[i] = "CouncilAverageIncomeTT" + i;
             // WeeklyEligibleRentAmountTT
-            sTotalWeeklyEligibleRentAmountTT[i] = "RSLTotalWeeklyEligibleRentAmountTT" + i;
-            sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "RSLTotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
-            sTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "RSLTotalCount_WeeklyEligibleRentAmountZeroTT" + i;
-            sAverageWeeklyEligibleRentAmountTT[i] = "RSLAverageWeeklyEligibleRentAmountTT" + i;
+            sCouncilTotalWeeklyEligibleRentAmountTT[i] = "CouncilTotalWeeklyEligibleRentAmountTT" + i;
+            sCouncilTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "CouncilTotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
+            sCouncilTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "CouncilTotalCount_WeeklyEligibleRentAmountZeroTT" + i;
+            sCouncilAverageWeeklyEligibleRentAmountTT[i] = "CouncilAverageWeeklyEligibleRentAmountTT" + i;
             // DisabilityAwardByTT
-            sTotalCount_DisabilityAwardByTT[i] = "RSLTotalCount_DisabilityAwardByTT" + i;
-            sPercentageOfAll_DisabilityAwardByTT[i] = "RSLPercentageOfAll_DisabilityAwardByTT" + i;
-            sPercentageOfHB_DisabilityAwardByTT[i] = "RSLPercentageOfHB_DisabilityAwardByTT" + i;
-            sPercentageOfCTB_DisabilityAwardByTT[i] = "RSLPercentageOfCTB_DisabilityAwardByTT" + i;
-            sPercentageOfTT_DisabilityAwardByTT[i] = "RSLPercentageOfTT_DisabilityAwardByTT" + i;
+            sCouncilTotalCount_DisabilityAwardByTT[i] = "CouncilTotalCount_DisabilityAwardByTT" + i;
+            sCouncilPercentageOfAll_DisabilityAwardByTT[i] = "CouncilPercentageOfAll_DisabilityAwardByTT" + i;
+            sCouncilPercentageOfHB_DisabilityAwardByTT[i] = "CouncilPercentageOfHB_DisabilityAwardByTT" + i;
+            sCouncilPercentageOfCTB_DisabilityAwardByTT[i] = "CouncilPercentageOfCTB_DisabilityAwardByTT" + i;
+            sCouncilPercentageOfTT_DisabilityAwardByTT[i] = "CouncilPercentageOfTT_DisabilityAwardByTT" + i;
             // DisabilityPremiumAwardByTT
-            sTotalCount_DisabilityPremiumAwardByTT[i] = "RSLTotalCount_DisabilityPremiumAwardByTT" + i;
-            sPercentageOfAll_DisabilityPremiumAwardByTT[i] = "RSLPercentageOfAll_DisabilityPremiumAwardByTT" + i;
-            sPercentageOfHB_DisabilityPremiumAwardByTT[i] = "RSLPercentageOfHB_DisabilityPremiumAwardByTT" + i;
-            sPercentageOfCTB_DisabilityPremiumAwardByTT[i] = "RSLPercentageOfCTB_DisabilityPremiumAwardByTT" + i;
-            sPercentageOfTT_DisabilityPremiumAwardByTT[i] = "RSLPercentageOfTT_DisabilityPremiumAwardByTT" + i;
+            sCouncilTotalCount_DisabilityPremiumAwardByTT[i] = "CouncilTotalCount_DisabilityPremiumAwardByTT" + i;
+            sCouncilPercentageOfAll_DisabilityPremiumAwardByTT[i] = "CouncilPercentageOfAll_DisabilityPremiumAwardByTT" + i;
+            sCouncilPercentageOfHB_DisabilityPremiumAwardByTT[i] = "CouncilPercentageOfHB_DisabilityPremiumAwardByTT" + i;
+            sCouncilPercentageOfCTB_DisabilityPremiumAwardByTT[i] = "CouncilPercentageOfCTB_DisabilityPremiumAwardByTT" + i;
+            sCouncilPercentageOfTT_DisabilityPremiumAwardByTT[i] = "CouncilPercentageOfTT_DisabilityPremiumAwardByTT" + i;
             // SevereDisabilityPremiumAwardByTT
-            sTotalCount_SevereDisabilityPremiumAwardByTT[i] = "RSLTotalCount_SevereDisabilityPremiumAwardByTT" + i;
-            sPercentageOfAll_SevereDisabilityPremiumAwardByTT[i] = "RSLPercentageOfAll_SevereDisabilityPremiumAwardByTT" + i;
-            sPercentageOfHB_SevereDisabilityPremiumAwardByTT[i] = "RSLPercentageOfHB_SevereDisabilityPremiumAwardByTT" + i;
-            sPercentageOfCTB_SevereDisabilityPremiumAwardByTT[i] = "RSLPercentageOfCTB_SevereDisabilityPremiumAwardByTT" + i;
-            sPercentageOfTT_SevereDisabilityPremiumAwardByTT[i] = "RSLPercentageOfTT_SevereDisabilityPremiumAwardByTT" + i;
+            sCouncilTotalCount_SevereDisabilityPremiumAwardByTT[i] = "CouncilTotalCount_SevereDisabilityPremiumAwardByTT" + i;
+            sCouncilPercentageOfAll_SevereDisabilityPremiumAwardByTT[i] = "CouncilPercentageOfAll_SevereDisabilityPremiumAwardByTT" + i;
+            sCouncilPercentageOfHB_SevereDisabilityPremiumAwardByTT[i] = "CouncilPercentageOfHB_SevereDisabilityPremiumAwardByTT" + i;
+            sCouncilPercentageOfCTB_SevereDisabilityPremiumAwardByTT[i] = "CouncilPercentageOfCTB_SevereDisabilityPremiumAwardByTT" + i;
+            sCouncilPercentageOfTT_SevereDisabilityPremiumAwardByTT[i] = "CouncilPercentageOfTT_SevereDisabilityPremiumAwardByTT" + i;
             // DisabledChildPremiumAwardByTT
-            sTotalCount_DisabledChildPremiumAwardByTT[i] = "RSLTotalCount_DisabledChildPremiumAwardByTT" + i;
-            sPercentageOfAll_DisabledChildPremiumAwardByTT[i] = "RSLPercentageOfAll_DisabledChildPremiumAwardByTT" + i;
-            sPercentageOfHB_DisabledChildPremiumAwardByTT[i] = "RSLPercentageOfHB_DisabledChildPremiumAwardByTT" + i;
-            sPercentageOfCTB_DisabledChildPremiumAwardByTT[i] = "RSLPercentageOfCTB_DisabledChildPremiumAwardByTT" + i;
-            sPercentageOfTT_DisabledChildPremiumAwardByTT[i] = "RSLPercentageOfTT_DisabledChildPremiumAwardByTT" + i;
+            sCouncilTotalCount_DisabledChildPremiumAwardByTT[i] = "CouncilTotalCount_DisabledChildPremiumAwardByTT" + i;
+            sCouncilPercentageOfAll_DisabledChildPremiumAwardByTT[i] = "CouncilPercentageOfAll_DisabledChildPremiumAwardByTT" + i;
+            sCouncilPercentageOfHB_DisabledChildPremiumAwardByTT[i] = "CouncilPercentageOfHB_DisabledChildPremiumAwardByTT" + i;
+            sCouncilPercentageOfCTB_DisabledChildPremiumAwardByTT[i] = "CouncilPercentageOfCTB_DisabledChildPremiumAwardByTT" + i;
+            sCouncilPercentageOfTT_DisabledChildPremiumAwardByTT[i] = "CouncilPercentageOfTT_DisabledChildPremiumAwardByTT" + i;
             // EnhancedDisabilityPremiumAwardByTT
-            sTotalCount_EnhancedDisabilityPremiumAwardByTT[i] = "RSLTotalCount_EnhancedDisabilityPremiumAwardByTT" + i;
-            sPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i] = "RSLPercentageOfAll_EnhancedDisabilityPremiumAwardByTT" + i;
-            sPercentageOfHB_EnhancedDisabilityPremiumAwardByTT[i] = "RSLPercentageOfHB_EnhancedDisabilityPremiumAwardByTT" + i;
-            sPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT[i] = "RSLPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT" + i;
-            sPercentageOfTT_EnhancedDisabilityPremiumAwardByTT[i] = "RSLPercentageOfTT_EnhancedDisabilityPremiumAwardByTT" + i;
+            sCouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[i] = "CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT" + i;
+            sCouncilPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i] = "CouncilPercentageOfAll_EnhancedDisabilityPremiumAwardByTT" + i;
+            sCouncilPercentageOfHB_EnhancedDisabilityPremiumAwardByTT[i] = "CouncilPercentageOfHB_EnhancedDisabilityPremiumAwardByTT" + i;
+            sCouncilPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT[i] = "CouncilPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT" + i;
+            sCouncilPercentageOfTT_EnhancedDisabilityPremiumAwardByTT[i] = "CouncilPercentageOfTT_EnhancedDisabilityPremiumAwardByTT" + i;
         }
-        sAllPostcodeValidFormatCount = "RSLAllPostcodeValidFormatCount";
-        sAllPostcodeValidCount = "RSLAllPostcodeValidCount";
-
+        sCouncilAllTotalCount_PostcodeValidFormat = "CouncilAllTotalCount_PostcodeValidFormat";
+        sCouncilAllTotalCount_PostcodeValid = "CouncilAllTotalCount_PostcodeValid";
         // HB
-        sHBTotalCount_EthnicGroupClaimant = new String[nEG];
-        sHBPercentage_EthnicGroupClaimant = new String[nEG];
+        sCouncilHBTotalCount_EthnicGroupClaimant = new String[nEG];
+        sCouncilHBPercentageOfHB_EthnicGroupClaimant = new String[nEG];
         for (int i = 1; i < nEG; i++) {
-            sHBTotalCount_EthnicGroupClaimant[i] = "RSLHBTotalCount_EthnicGroup" + i + "Claimant";
-            sHBPercentage_EthnicGroupClaimant[i] = "RSLHBPercentageEthnicGroup" + i + "Claimant";
+            sCouncilHBTotalCount_EthnicGroupClaimant[i] = "CouncilHBTotalCount_EthnicGroup" + i + "Claimant";
+            sCouncilHBPercentageOfHB_EthnicGroupClaimant[i] = "CouncilHBPercentageOfHB_EthnicGroup" + i + "Claimant";
+        }
+        sCouncilHBTotalCount_PostcodeValidFormat = "CouncilHBTotalCount_PostcodeValidFormat";
+        sCouncilHBTotalCount_PostcodeValid = "CouncilHBTotalCount_PostcodeValid";
+        // CTB
+        sCouncilCTBTotalCount_EthnicGroupClaimant = new String[nEG];
+        sCouncilCTBPercentageOfCTB_EthnicGroupClaimant = new String[nEG];
+        for (int i = 1; i < nEG; i++) {
+            sCouncilCTBTotalCount_EthnicGroupClaimant[i] = "CouncilCTBTotalCount_ClaimantEthnicGroup" + i + "Claimant";
+            sCouncilCTBPercentageOfCTB_EthnicGroupClaimant[i] = "CouncilCTBPercentageOfCTB_ClaimantEthnicGroup" + i + "Claimant";
+        }
+        sCouncilCTBTotalCount_TTClaimant = new String[nTT];
+        sCouncilCTBPercentageOfCTB_TTClaimant = new String[nTT];
+        for (int i = 1; i < nTT; i++) {
+            sCouncilCTBTotalCount_TTClaimant[i] = "CouncilCTBTotalCount_TT" + i + "Claimant";
+            sCouncilCTBPercentageOfCTB_TTClaimant[i] = "CouncilCTBPercentageOfCTB_TT" + i + "Claimant";
+        }
+        sCouncilCTBTotalCount_PostcodeValidFormat = "CouncilCTBTotalCount_PostcodeValidFormat";
+        sCouncilCTBTotalCount_PostcodeValid = "CouncilCTBTotalCount_PostcodeValid";
+        // RSL
+        sRSLTotalIncomeTT = new String[nTT];
+        sRSLTotalCount_IncomeNonZeroTT = new String[nTT];
+        sRSLTotalCount_IncomeZeroTT = new String[nTT];
+        sRSLAverageIncomeTT = new String[nTT];
+        sRSLTotalWeeklyEligibleRentAmountTT = new String[nTT];
+        sRSLTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        sRSLTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
+        sRSLAverageWeeklyEligibleRentAmountTT = new String[nTT];
+        sRSLAllTotalCount_PSI = new String[nPSI];
+        sRSLHBTotalCount_PSI = new String[nPSI];
+        sRSLCTBTotalCount_PSI = new String[nPSI];
+        sRSLAllPercentageOfAll_PSI = new String[nPSI];
+        sRSLHBPercentageOfHB_PSI = new String[nPSI];
+        sRSLCTBPercentageOfCTB_PSI = new String[nPSI];
+        sRSLTotalCount_PSIByTT = new String[nPSI][nTT];
+        sRSLPercentageOfAll_PSIByTT = new String[nPSI][nTT];
+        sRSLPercentageOfHB_PSIByTT = new String[nPSI][nTT];
+        sRSLPercentageOfCTB_PSIByTT = new String[nPSI][nTT];
+        for (int i = 1; i < nPSI; i++) {
+            sRSLAllTotalCount_PSI[i] = "RSLAllTotalCount_PSI" + i;
+            sRSLHBTotalCount_PSI[i] = "RSLHBTotalCount_PSI" + i;
+            sRSLCTBTotalCount_PSI[i] = "RSLCTBTotalCount_PSI" + i;
+            sRSLAllPercentageOfAll_PSI[i] = "RSLAllPercentageOfAll_PSI" + i;
+            sRSLHBPercentageOfHB_PSI[i] = "RSLHBPercentageOfHB_PSI" + i;
+            sRSLCTBPercentageOfCTB_PSI[i] = "RSLCTBPercentageOfCTB_PSI" + i;
+            for (int j = 1; j < nTT; j++) {
+                sRSLTotalCount_PSIByTT[i][j] = "RSLTotalCount_PSI" + i + "TT" + j;
+                sRSLPercentageOfAll_PSIByTT[i][j] = "RSLPercentageOfAll_PSI" + i + "TT" + j;
+                if (j == 5 || j == 7) {
+                    sRSLPercentageOfCTB_PSIByTT[i][j] = "RSLPercentageOfCTB_PSI" + i + "TT" + j;
+                } else {
+                    sRSLPercentageOfHB_PSIByTT[i][j] = "RSLPercentageOfHB_PSI" + i + "TT" + j;
+                }
+            }
+        }
+        // All
+        sRSLAllTotalCount_EthnicGroupClaimant = new String[nEG];
+        sRSLAllPercentageOfAll_EthnicGroupClaimant = new String[nEG];
+        for (int i = 1; i < nEG; i++) {
+            sRSLAllTotalCount_EthnicGroupClaimant[i] = "RSLAllTotalCount_EthnicGroup" + i + "Claimant";
+            sRSLAllPercentageOfAll_EthnicGroupClaimant[i] = "RSLAllPercentageOfAll_EthnicGroup" + i + "Claimant";
+        }
+        sRSLTotalCount_ClaimantTT = new String[nTT];
+        sRSLPercentageOfAll_ClaimantTT = new String[nTT];
+        sRSLPercentageOfHB_ClaimantTT = new String[nTT];
+        sRSLPercentageOfCTB_ClaimantTT = new String[nTT];
+        // DisabilityAward
+        sRSLTotalCount_DisabilityAwardByTT = new String[nTT];
+        sRSLPercentageOfAll_DisabilityAwardByTT = new String[nTT];
+        sRSLPercentageOfHB_DisabilityAwardByTT = new String[nTT];
+        sRSLPercentageOfCTB_DisabilityAwardByTT = new String[nTT];
+        sRSLPercentageOfTT_DisabilityAwardByTT = new String[nTT];
+        // DisabilityPremiumAward
+        sRSLTotalCount_DisabilityPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfAll_DisabilityPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfHB_DisabilityPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfCTB_DisabilityPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfTT_DisabilityPremiumAwardByTT = new String[nTT];
+        // SevereDisabilityPremiumAward
+        sRSLTotalCount_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfAll_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfHB_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfCTB_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfTT_SevereDisabilityPremiumAwardByTT = new String[nTT];
+        // DisabledChildPremiumAward
+        sRSLTotalCount_DisabledChildPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfAll_DisabledChildPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfHB_DisabledChildPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfCTB_DisabledChildPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfTT_DisabledChildPremiumAwardByTT = new String[nTT];
+        // EnhancedDisabilityPremiumAward
+        sRSLTotalCount_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfAll_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfHB_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        sRSLPercentageOfTT_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
+        for (int i = 1; i < nTT; i++) {
+            // Claimants
+            sRSLTotalCount_ClaimantTT[i] = "RSLTotalCount_ClaimantTT" + i;
+            sRSLPercentageOfAll_ClaimantTT[i] = "RSLPercentageOfAll_ClaimantTT" + i;
+            sRSLPercentageOfHB_ClaimantTT[i] = "RSLPercentageOfHB_ClaimantTT" + i;
+            sRSLPercentageOfCTB_ClaimantTT[i] = "RSLPercentageOfCTB_ClaimantTT" + i;
+            // Income
+            sRSLTotalIncomeTT[i] = "RSLTotalIncomeTT" + i;
+            sRSLTotalCount_IncomeNonZeroTT[i] = "RSLTotalCount_IncomeNonZeroTT" + i;
+            sRSLTotalCount_IncomeZeroTT[i] = "RSLTotalCount_IncomeZeroTT" + i;
+            sRSLAverageIncomeTT[i] = "RSLAverageIncomeTT" + i;
+            // WeeklyEligibleRentAmountTT
+            sRSLTotalWeeklyEligibleRentAmountTT[i] = "RSLTotalWeeklyEligibleRentAmountTT" + i;
+            sRSLTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "RSLTotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
+            sRSLTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "RSLTotalCount_WeeklyEligibleRentAmountZeroTT" + i;
+            sRSLAverageWeeklyEligibleRentAmountTT[i] = "RSLAverageWeeklyEligibleRentAmountTT" + i;
+            // DisabilityAwardByTT
+            sRSLTotalCount_DisabilityAwardByTT[i] = "RSLTotalCount_DisabilityAwardByTT" + i;
+            sRSLPercentageOfAll_DisabilityAwardByTT[i] = "RSLPercentageOfAll_DisabilityAwardByTT" + i;
+            sRSLPercentageOfHB_DisabilityAwardByTT[i] = "RSLPercentageOfHB_DisabilityAwardByTT" + i;
+            sRSLPercentageOfCTB_DisabilityAwardByTT[i] = "RSLPercentageOfCTB_DisabilityAwardByTT" + i;
+            sRSLPercentageOfTT_DisabilityAwardByTT[i] = "RSLPercentageOfTT_DisabilityAwardByTT" + i;
+            // DisabilityPremiumAwardByTT
+            sRSLTotalCount_DisabilityPremiumAwardByTT[i] = "RSLTotalCount_DisabilityPremiumAwardByTT" + i;
+            sRSLPercentageOfAll_DisabilityPremiumAwardByTT[i] = "RSLPercentageOfAll_DisabilityPremiumAwardByTT" + i;
+            sRSLPercentageOfHB_DisabilityPremiumAwardByTT[i] = "RSLPercentageOfHB_DisabilityPremiumAwardByTT" + i;
+            sRSLPercentageOfCTB_DisabilityPremiumAwardByTT[i] = "RSLPercentageOfCTB_DisabilityPremiumAwardByTT" + i;
+            sRSLPercentageOfTT_DisabilityPremiumAwardByTT[i] = "RSLPercentageOfTT_DisabilityPremiumAwardByTT" + i;
+            // SevereDisabilityPremiumAwardByTT
+            sRSLTotalCount_SevereDisabilityPremiumAwardByTT[i] = "RSLTotalCount_SevereDisabilityPremiumAwardByTT" + i;
+            sRSLPercentageOfAll_SevereDisabilityPremiumAwardByTT[i] = "RSLPercentageOfAll_SevereDisabilityPremiumAwardByTT" + i;
+            sRSLPercentageOfHB_SevereDisabilityPremiumAwardByTT[i] = "RSLPercentageOfHB_SevereDisabilityPremiumAwardByTT" + i;
+            sRSLPercentageOfCTB_SevereDisabilityPremiumAwardByTT[i] = "RSLPercentageOfCTB_SevereDisabilityPremiumAwardByTT" + i;
+            sRSLPercentageOfTT_SevereDisabilityPremiumAwardByTT[i] = "RSLPercentageOfTT_SevereDisabilityPremiumAwardByTT" + i;
+            // DisabledChildPremiumAwardByTT
+            sRSLTotalCount_DisabledChildPremiumAwardByTT[i] = "RSLTotalCount_DisabledChildPremiumAwardByTT" + i;
+            sRSLPercentageOfAll_DisabledChildPremiumAwardByTT[i] = "RSLPercentageOfAll_DisabledChildPremiumAwardByTT" + i;
+            sRSLPercentageOfHB_DisabledChildPremiumAwardByTT[i] = "RSLPercentageOfHB_DisabledChildPremiumAwardByTT" + i;
+            sRSLPercentageOfCTB_DisabledChildPremiumAwardByTT[i] = "RSLPercentageOfCTB_DisabledChildPremiumAwardByTT" + i;
+            sRSLPercentageOfTT_DisabledChildPremiumAwardByTT[i] = "RSLPercentageOfTT_DisabledChildPremiumAwardByTT" + i;
+            // EnhancedDisabilityPremiumAwardByTT
+            sRSLTotalCount_EnhancedDisabilityPremiumAwardByTT[i] = "RSLTotalCount_EnhancedDisabilityPremiumAwardByTT" + i;
+            sRSLPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i] = "RSLPercentageOfAll_EnhancedDisabilityPremiumAwardByTT" + i;
+            sRSLPercentageOfHB_EnhancedDisabilityPremiumAwardByTT[i] = "RSLPercentageOfHB_EnhancedDisabilityPremiumAwardByTT" + i;
+            sRSLPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT[i] = "RSLPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT" + i;
+            sRSLPercentageOfTT_EnhancedDisabilityPremiumAwardByTT[i] = "RSLPercentageOfTT_EnhancedDisabilityPremiumAwardByTT" + i;
+        }
+        sRSLAllTotalCount_PostcodeValidFormat = "RSLAllTotalCount_PostcodeValidFormat";
+        sRSLAllTotalCount_PostcodeValid = "RSLAllTotalCount_PostcodeValid";
+        // HB
+        sRSLHBTotalCount_EthnicGroupClaimant = new String[nEG];
+        sRSLHBPercentageOfHB_EthnicGroupClaimant = new String[nEG];
+        for (int i = 1; i < nEG; i++) {
+            sRSLHBTotalCount_EthnicGroupClaimant[i] = "RSLHBTotalCount_EthnicGroup" + i + "Claimant";
+            sRSLHBPercentageOfHB_EthnicGroupClaimant[i] = "RSLHBPercentageOfHB_EthnicGroup" + i + "Claimant";
         }
 
-        sHBPostcodeValidFormatCount = "RSLHBPostcodeValidFormatCount";
-        sHBPostcodeValidCount = "RSLHBPostcodeValidCount";
-//        HBFemaleClaimantCountString = "RSLHBFemaleClaimantCount";
-//        HBDisabledClaimantCountString = "RSLHBDisabledClaimantCount";
-//        HBFemaleDisabledClaimantCountString = "RSLHBDisabledFemaleClaimantCount";
-//        HBMaleDisabledClaimantCountString = "RSLHBDisabledMaleClaimantCount";
-
+        sRSLHBTotalCount_PostcodeValidFormat = "RSLHBTotalCount_PostcodeValidFormat";
+        sRSLHBTotalCount_PostcodeValid = "RSLHBTotalCount_PostcodeValid";
         // CTB
-        sCTBTotalCount_EthnicGroupClaimant = new String[nEG];
-        sCTBPercentageEthnicGroupClaimant = new String[nEG];
+        sRSLCTBTotalCount_EthnicGroupClaimant = new String[nEG];
+        sRSLCTBPercentageOfCTB_EthnicGroupClaimant = new String[nEG];
         for (int i = 1; i < nEG; i++) {
-            sCTBTotalCount_EthnicGroupClaimant[i] = "RSLCTBTotalCountClaimantEthnicGroup" + i + "Claimant";
-            sCTBPercentageEthnicGroupClaimant[i] = "RSLCTBPercentageClaimantEthnicGroup" + i + "Claimant";
+            sRSLCTBTotalCount_EthnicGroupClaimant[i] = "RSLCTBTotalCount_EthnicGroup" + i + "Claimant";
+            sRSLCTBPercentageOfCTB_EthnicGroupClaimant[i] = "RSLCTBPercentageOfCTB_EthnicGroup" + i + "Claimant";
         }
         sCTBTotalCount_TTClaimant = new String[nTT];
-        sCTBPercentageOfAll_TTClaimant = new String[nTT];
+        sRSLCTBPercentageOfCTB_TTClaimant = new String[nTT];
         for (int i = 1; i < nTT; i++) {
-            sCTBTotalCount_TTClaimant[i] = "RSLCTBTotalCountTT" + i + "Claimant";
-            sCTBPercentageOfAll_TTClaimant[i] = "RSLCTBPercentageTT" + i + "Claimant";
+            sRSLCTBTotalCount_TTClaimant[i] = "RSLCTBTotalCount_TT" + i + "Claimant";
+            sRSLCTBPercentageOfCTB_TTClaimant[i] = "RSLCTBPercentageOfCTB_TT" + i + "Claimant";
         }
-        sCTBPostcodeValidFormatCount = "RSLCTBPostcodeValidFormatCount";
-        sCTBPostcodeValidCount = "RSLCTBPostcodeValidCount";
-//        CTBFemaleClaimantCountString = "RSLCTBFemaleClaimantCount";
-//        CTBDisabledClaimantCountString = "RSLCTBDisabledClaimantCount";
-//        CTBFemaleDisabledClaimantCountString = "RSLCTBDisabledFemaleClaimantCount";
-//        CTBMaleDisabledClaimantCountString = "RSLCTBDisabledMaleClaimantCount";
-
+        sRSLCTBTotalCount_PostcodeValidFormat = "RSLCTBTotalCount_PostcodeValidFormat";
+        sRSLCTBTotalCount_PostcodeValid = "RSLCTBTotalCount_PostcodeValid";
     }
 
+    @Override
     protected void initCounts(int nTT, int nEG, int nPSI) {
         initSingleTimeCounts(nTT, nEG, nPSI);
         initCompare2TimesCounts();
         initCompare3TimesCounts(nTT);
     }
 
+    @Override
     protected void initSingleTimeCounts(int nTT, int nEG, int nPSI) {
-
+        super.initSingleTimeCounts(nTT, nEG, nPSI);
+        // Council
         for (int i = 1; i < nPSI; i++) {
-            AllTotalCount_PSI[i] = 0;
-            HBTotalCount_PSI[i] = 0;
-            CTBTotalCount_PSI[i] = 0;
+            CouncilAllTotalCount_PSI[i] = 0;
+            CouncilHBTotalCount_PSI[i] = 0;
+            CouncilCTBTotalCount_PSI[i] = 0;
             for (int j = 1; j < nTT; j++) {
-                AllTotalCount_PSIByTT[i][j] = 0;
-                HBTotalCount_PSIByTT[i][j] = 0;
-                CTBTotalCount_PSIByTT[i][j] = 0;
+                CouncilAllTotalCount_PSIByTT[i][j] = 0;
+                CouncilHBTotalCount_PSIByTT[i][j] = 0;
+                CouncilCTBTotalCount_PSIByTT[i][j] = 0;
             }
         }
-
         // All
-        AllTotalWeeklyHBEntitlement = 0.0d;
-        AllTotalWeeklyHBEntitlementNonZeroCount = 0;
-        AllTotalWeeklyHBEntitlementZeroCount = 0;
-        AllTotalWeeklyCTBEntitlement = 0.0d;
-        AllTotalCount_WeeklyCTBEntitlementNonZero = 0;
-        AllTotalWeeklyCTBEntitlementZeroCount = 0;
-        AllTotalWeeklyEligibleRentAmount = 0.0d;
-        AllTotalWeeklyEligibleRentAmountNonZeroCount = 0;
-        AllTotalWeeklyEligibleRentAmountZeroCount = 0;
-        AllTotalWeeklyEligibleCouncilTaxAmount = 0.0d;
-        AllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = 0;
-        AllTotalCount_WeeklyEligibleCouncilTaxAmountZero = 0;
-        AllTotalContractualRentAmount = 0.0d;
-        AllTotalContractualRentAmountNonZeroCount = 0;
-        AllTotalContractualRentAmountZeroCount = 0;
-        AllTotalWeeklyAdditionalDiscretionaryPayment = 0.0d;
-        AllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount = 0;
-        AllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount = 0;
-        AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0.0d;
-        AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
-
-        HBTotalWeeklyHBEntitlement = 0.0d;
-        HBTotalCount_WeeklyHBEntitlementNonZero = 0;
-        HBTotalCount_WeeklyHBEntitlementZero = 0;
-        HBTotalWeeklyCTBEntitlement = 0.0d;
-        HBTotalCount_WeeklyCTBEntitlementNonZero = 0;
-        HBTotalWeeklyCTBEntitlementZeroCount = 0;
-        HBTotalWeeklyEligibleRentAmount = 0.0d;
-        HBTotalWeeklyEligibleRentAmountNonZeroCount = 0;
-        HBTotalWeeklyEligibleRentAmountZeroCount = 0;
-        HBTotalWeeklyEligibleCouncilTaxAmount = 0.0d;
-        HBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = 0;
-        HBTotalCount_WeeklyEligibleCouncilTaxAmountZero = 0;
-        HBTotalContractualRentAmount = 0.0d;
-        HBTotalContractualRentAmountNonZeroCount = 0;
-        HBTotalContractualRentAmountZeroCount = 0;
-        HBTotalWeeklyAdditionalDiscretionaryPayment = 0.0d;
-        HBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount = 0;
-        HBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount = 0;
-        HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0.0d;
-        HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
-
-        CTBTotalWeeklyHBEntitlement = 0.0d;
-        CTBTotalCount_WeeklyHBEntitlementNonZero = 0;
-        CTBTotalWeeklyHBEntitlementZeroCount = 0;
-        CTBTotalWeeklyCTBEntitlement = 0.0d;
-        CTBTotalCount_WeeklyCTBEntitlementNonZero = 0;
-        CTBTotalWeeklyCTBEntitlementZeroCount = 0;
-        CTBTotalWeeklyEligibleRentAmount = 0.0d;
-        CTBTotalWeeklyEligibleRentAmountNonZeroCount = 0;
-        CTBTotalWeeklyEligibleRentAmountZeroCount = 0;
-        CTBTotalWeeklyEligibleCouncilTaxAmount = 0.0d;
-        CTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = 0;
-        CTBTotalCount_WeeklyEligibleCouncilTaxAmountZero = 0;
-        CTBTotalContractualRentAmount = 0.0d;
-        CTBTotalContractualRentAmountNonZeroCount = 0;
-        CTBTotalContractualRentAmountZeroCount = 0;
-        CTBTotalWeeklyAdditionalDiscretionaryPayment = 0.0d;
-        CTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount = 0;
-        CTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount = 0;
-        CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0.0d;
-        CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
-
-        HBTotalCount_EmployedClaimants = 0;
-        CTBTotalCount_EmployedClaimants = 0;
-        HBTotalCount_SelfEmployedClaimants = 0;
-        CTBTotalCount_SelfEmployedClaimants = 0;
-        HBTotalCount_StudentsClaimants = 0;
-        CTBTotalCount_StudentsClaimants = 0;
-        HBTotalCount_LHACases = 0;
-        CTBTotalCount_LHACases = 0;
-        for (int i = 1; i < nTT; i++) {
-            TotalCount_TTClaimant1[i] = 0;
-            TotalCount_DisabilityPremiumAwardByTT[i] = 0;
-            TotalCount_SevereDisabilityPremiumAwardByTT[i] = 0;
-            TotalCount_DisabledChildPremiumAwardByTT[i] = 0;
-            TotalCount_EnhancedDisabilityPremiumAwardByTT[i] = 0;
-            TotalCount_DisabilityAwardByTT[i] = 0;
-        }
-        // All
-        //AllCount0 = AllCount1;
-        AllCount1 = 0;
-
+        CouncilAllTotalWeeklyHBEntitlement = 0.0d;
+        CouncilAllTotalWeeklyHBEntitlementNonZeroCount = 0;
+        CouncilAllTotalWeeklyHBEntitlementZeroCount = 0;
+        CouncilAllTotalWeeklyCTBEntitlement = 0.0d;
+        CouncilAllTotalCount_WeeklyCTBEntitlementNonZero = 0;
+        CouncilAllTotalWeeklyCTBEntitlementZeroCount = 0;
+        CouncilAllTotalWeeklyEligibleRentAmount = 0.0d;
+        CouncilAllTotalWeeklyEligibleRentAmountNonZeroCount = 0;
+        CouncilAllTotalWeeklyEligibleRentAmountZeroCount = 0;
+        CouncilAllTotalWeeklyEligibleCouncilTaxAmount = 0.0d;
+        CouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = 0;
+        CouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountZero = 0;
+        CouncilAllTotalContractualRentAmount = 0.0d;
+        CouncilAllTotalContractualRentAmountNonZeroCount = 0;
+        CouncilAllTotalContractualRentAmountZeroCount = 0;
+        CouncilAllTotalWeeklyAdditionalDiscretionaryPayment = 0.0d;
+        CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount = 0;
+        CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount = 0;
+        CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0.0d;
+        CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
         // HB
-        for (int i = 1; i < nEG; i++) {
-            HBEthnicGroupCount[i] = 0;
-        }
-        //HBCount0 = HBCount1;
-        HBCount1 = 0;
-        HBPostcodeValidFormatCount = 0;
-        HBPostcodeValidCount = 0;
-        HBTotalCount_TTChangeClaimant = 0;
-        //HBTotalCount_TTChangeClaimantIgnoreMinus999 = 0;
-
-        AllTotalHouseholdSize = 0L;
-        HBTotalHouseholdSize = 0L;
-        CTBTotalHouseholdSize = 0L;
-
+        CouncilHBTotalWeeklyHBEntitlement = 0.0d;
+        CouncilHBTotalCount_WeeklyHBEntitlementNonZero = 0;
+        CouncilHBTotalCount_WeeklyHBEntitlementZero = 0;
+        CouncilHBTotalWeeklyCTBEntitlement = 0.0d;
+        CouncilHBTotalCount_WeeklyCTBEntitlementNonZero = 0;
+        CouncilHBTotalWeeklyCTBEntitlementZeroCount = 0;
+        CouncilHBTotalWeeklyEligibleRentAmount = 0.0d;
+        CouncilHBTotalWeeklyEligibleRentAmountNonZeroCount = 0;
+        CouncilHBTotalWeeklyEligibleRentAmountZeroCount = 0;
+        CouncilHBTotalWeeklyEligibleCouncilTaxAmount = 0.0d;
+        CouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = 0;
+        CouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountZero = 0;
+        CouncilHBTotalContractualRentAmount = 0.0d;
+        CouncilHBTotalContractualRentAmountNonZeroCount = 0;
+        CouncilHBTotalContractualRentAmountZeroCount = 0;
+        CouncilHBTotalWeeklyAdditionalDiscretionaryPayment = 0.0d;
+        CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount = 0;
+        CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount = 0;
+        CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0.0d;
+        CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
         // CTB
-        for (int i = 1; i < nEG; i++) {
-            CTBEthnicGroupCount[i] = 0;
+        CouncilCTBTotalWeeklyHBEntitlement = 0.0d;
+        CouncilCTBTotalCount_WeeklyHBEntitlementNonZero = 0;
+        CouncilCTBTotalWeeklyHBEntitlementZeroCount = 0;
+        CouncilCTBTotalWeeklyCTBEntitlement = 0.0d;
+        CouncilCTBTotalCount_WeeklyCTBEntitlementNonZero = 0;
+        CouncilCTBTotalWeeklyCTBEntitlementZeroCount = 0;
+        CouncilCTBTotalWeeklyEligibleRentAmount = 0.0d;
+        CouncilCTBTotalWeeklyEligibleRentAmountNonZeroCount = 0;
+        CouncilCTBTotalWeeklyEligibleRentAmountZeroCount = 0;
+        CouncilCTBTotalWeeklyEligibleCouncilTaxAmount = 0.0d;
+        CouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = 0;
+        CouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero = 0;
+        CouncilCTBTotalContractualRentAmount = 0.0d;
+        CouncilCTBTotalContractualRentAmountNonZeroCount = 0;
+        CouncilCTBTotalContractualRentAmountZeroCount = 0;
+        CouncilCTBTotalWeeklyAdditionalDiscretionaryPayment = 0.0d;
+        CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount = 0;
+        CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount = 0;
+        CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0.0d;
+        CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
+        // Demographic Counts
+        CouncilHBTotalCount_EmployedClaimants = 0;
+        CouncilHBTotalCount_SelfEmployedClaimants = 0;
+        CouncilHBTotalCount_StudentsClaimants = 0;
+        CouncilHBTotalCount_LHACases = 0;
+        CouncilCTBTotalCount_EmployedClaimants = 0;
+        CouncilCTBTotalCount_SelfEmployedClaimants = 0;
+        CouncilCTBTotalCount_StudentsClaimants = 0;
+        CouncilCTBTotalCount_LHACases = 0;
+        for (int i = 1; i < nTT; i++) {
+            CouncilTotalCount_TTClaimant1[i] = 0;
+            CouncilTotalCount_DisabilityPremiumAwardByTT[i] = 0;
+            CouncilTotalCount_SevereDisabilityPremiumAwardByTT[i] = 0;
+            CouncilTotalCount_DisabledChildPremiumAwardByTT[i] = 0;
+            CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[i] = 0;
+            CouncilTotalCount_DisabilityAwardByTT[i] = 0;
         }
-        //CTBCount0 = CTBCount1;
-        CTBCount1 = 0;
-        CTBPostcodeValidFormatCount = 0;
-        CTBPostcodeValidCount = 0;
-        CTBTotalCount_TTChangeClaimant = 0;
-        //CTBTotalCount_TTChangeClaimantIgnoreMinus999 = 0;
+        // Ethnicity
+        for (int i = 1; i < nEG; i++) {
+            CouncilHBEthnicGroupCount[i] = 0;
+            CouncilCTBEthnicGroupCount[i] = 0;
+        }
+        // Key Counts
+        CouncilAllCount1 = 0;
+        CouncilHBCount1 = 0;
+        CouncilCTBCount1 = 0;
+        // Postcode Counts
+        CouncilHBTotalCount_PostcodeValidFormat = 0;
+        CouncilHBTotalCount_PostcodeValid = 0;
+        CouncilHBTotalCount_TTChangeClaimant = 0;
+        CouncilCTBTotalCount_PostcodeValidFormat = 0;
+        CouncilCTBTotalCount_PostcodeValid = 0;
+        CouncilCTBTotalCount_TTChangeClaimant = 0;
+        // Household Size
+        CouncilAllTotalHouseholdSize = 0L;
+        CouncilHBTotalHouseholdSize = 0L;
+        CouncilCTBTotalHouseholdSize = 0L;
 
+        // RSL
+        for (int i = 1; i < nPSI; i++) {
+            RSLAllTotalCount_PSI[i] = 0;
+            RSLHBTotalCount_PSI[i] = 0;
+            RSLCTBTotalCount_PSI[i] = 0;
+            for (int j = 1; j < nTT; j++) {
+                RSLAllTotalCount_PSIByTT[i][j] = 0;
+                RSLHBTotalCount_PSIByTT[i][j] = 0;
+                RSLCTBTotalCount_PSIByTT[i][j] = 0;
+            }
+        }
+        // All
+        RSLAllTotalWeeklyHBEntitlement = 0.0d;
+        RSLAllTotalWeeklyHBEntitlementNonZeroCount = 0;
+        RSLAllTotalWeeklyHBEntitlementZeroCount = 0;
+        RSLAllTotalWeeklyCTBEntitlement = 0.0d;
+        RSLAllTotalCount_WeeklyCTBEntitlementNonZero = 0;
+        RSLAllTotalWeeklyCTBEntitlementZeroCount = 0;
+        RSLAllTotalWeeklyEligibleRentAmount = 0.0d;
+        RSLAllTotalWeeklyEligibleRentAmountNonZeroCount = 0;
+        RSLAllTotalWeeklyEligibleRentAmountZeroCount = 0;
+        RSLAllTotalWeeklyEligibleCouncilTaxAmount = 0.0d;
+        RSLAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = 0;
+        RSLAllTotalCount_WeeklyEligibleCouncilTaxAmountZero = 0;
+        RSLAllTotalContractualRentAmount = 0.0d;
+        RSLAllTotalContractualRentAmountNonZeroCount = 0;
+        RSLAllTotalContractualRentAmountZeroCount = 0;
+        RSLAllTotalWeeklyAdditionalDiscretionaryPayment = 0.0d;
+        RSLAllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount = 0;
+        RSLAllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount = 0;
+        RSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0.0d;
+        RSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
+        // HB
+        RSLHBTotalWeeklyHBEntitlement = 0.0d;
+        RSLHBTotalCount_WeeklyHBEntitlementNonZero = 0;
+        RSLHBTotalCount_WeeklyHBEntitlementZero = 0;
+        RSLHBTotalWeeklyCTBEntitlement = 0.0d;
+        RSLHBTotalCount_WeeklyCTBEntitlementNonZero = 0;
+        RSLHBTotalWeeklyCTBEntitlementZeroCount = 0;
+        RSLHBTotalWeeklyEligibleRentAmount = 0.0d;
+        RSLHBTotalWeeklyEligibleRentAmountNonZeroCount = 0;
+        RSLHBTotalWeeklyEligibleRentAmountZeroCount = 0;
+        RSLHBTotalWeeklyEligibleCouncilTaxAmount = 0.0d;
+        RSLHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = 0;
+        RSLHBTotalCount_WeeklyEligibleCouncilTaxAmountZero = 0;
+        RSLHBTotalContractualRentAmount = 0.0d;
+        RSLHBTotalContractualRentAmountNonZeroCount = 0;
+        RSLHBTotalContractualRentAmountZeroCount = 0;
+        RSLHBTotalWeeklyAdditionalDiscretionaryPayment = 0.0d;
+        RSLHBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount = 0;
+        RSLHBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount = 0;
+        RSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0.0d;
+        RSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
+        // CTB
+        RSLCTBTotalWeeklyHBEntitlement = 0.0d;
+        RSLCTBTotalCount_WeeklyHBEntitlementNonZero = 0;
+        RSLCTBTotalWeeklyHBEntitlementZeroCount = 0;
+        RSLCTBTotalWeeklyCTBEntitlement = 0.0d;
+        RSLCTBTotalCount_WeeklyCTBEntitlementNonZero = 0;
+        RSLCTBTotalWeeklyCTBEntitlementZeroCount = 0;
+        RSLCTBTotalWeeklyEligibleRentAmount = 0.0d;
+        RSLCTBTotalWeeklyEligibleRentAmountNonZeroCount = 0;
+        RSLCTBTotalWeeklyEligibleRentAmountZeroCount = 0;
+        RSLCTBTotalWeeklyEligibleCouncilTaxAmount = 0.0d;
+        RSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero = 0;
+        RSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero = 0;
+        RSLCTBTotalContractualRentAmount = 0.0d;
+        RSLCTBTotalContractualRentAmountNonZeroCount = 0;
+        RSLCTBTotalContractualRentAmountZeroCount = 0;
+        RSLCTBTotalWeeklyAdditionalDiscretionaryPayment = 0.0d;
+        RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount = 0;
+        RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount = 0;
+        RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = 0.0d;
+        RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount = 0;
+        // Demographic Counts
+        RSLHBTotalCount_EmployedClaimants = 0;
+        RSLHBTotalCount_SelfEmployedClaimants = 0;
+        RSLHBTotalCount_StudentsClaimants = 0;
+        RSLHBTotalCount_LHACases = 0;
+        RSLCTBTotalCount_EmployedClaimants = 0;
+        RSLCTBTotalCount_SelfEmployedClaimants = 0;
+        RSLCTBTotalCount_StudentsClaimants = 0;
+        RSLCTBTotalCount_LHACases = 0;
+        for (int i = 1; i < nTT; i++) {
+            RSLTotalCount_TTClaimant1[i] = 0;
+            RSLTotalCount_DisabilityPremiumAwardByTT[i] = 0;
+            RSLTotalCount_SevereDisabilityPremiumAwardByTT[i] = 0;
+            RSLTotalCount_DisabledChildPremiumAwardByTT[i] = 0;
+            RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[i] = 0;
+            RSLTotalCount_DisabilityAwardByTT[i] = 0;
+        }
+        // Ethnicity
+        for (int i = 1; i < nEG; i++) {
+            RSLHBEthnicGroupCount[i] = 0;
+            RSLCTBEthnicGroupCount[i] = 0;
+        }
+        // Key Counts
+        RSLAllCount1 = 0;
+        RSLHBCount1 = 0;
+        RSLCTBCount1 = 0;
+        // Postcode Counts
+        RSLHBTotalCount_PostcodeValidFormat = 0;
+        RSLHBTotalCount_PostcodeValid = 0;
+        RSLHBTotalCount_TTChangeClaimant = 0;
+        RSLCTBTotalCount_PostcodeValidFormat = 0;
+        RSLCTBTotalCount_PostcodeValid = 0;
+        RSLCTBTotalCount_TTChangeClaimant = 0;
+        // Household Size
+        RSLAllTotalHouseholdSize = 0L;
+        RSLHBTotalHouseholdSize = 0L;
+        RSLCTBTotalHouseholdSize = 0L;
+
+        // UO only
         AllUOCount1 = 0;
         CouncilCount1 = 0;
         RSLCount1 = 0;
@@ -1805,147 +2060,192 @@ public class SummaryUO extends Summary {
         CouncilTotalCount_RentArrearsNonZero = 0;
     }
 
+    @Override
     protected void initCompare2TimesCounts() {
-        // Compare 2 Times
+        super.initCompare2TimesCounts();
+        // Council
         // General
-        TotalCount_HBTTsToCTBTTs = 0;
-        TotalCount_CTBTTsToHBTTs = 0;
+        CouncilTotalCount_HBTTsToCTBTTs = 0;
+        CouncilTotalCount_CTBTTsToHBTTs = 0;
         // General HB related
-        TotalCount_Minus999TTToSocialTTs = 0;
-        TotalCount_Minus999TTToPrivateDeregulatedTTs = 0;
-        TotalCount_HBTTsToHBTTs = 0;
-        TotalCount_HBTTsToMinus999TT = 0;
-        TotalCount_SocialTTsToMinus999TT = 0;
-        TotalCount_PrivateDeregulatedTTsToMinus999TT = 0;
-        TotalCount_SocialTTsToPrivateDeregulatedTTs = 0;
-        TotalCount_PrivateDeregulatedTTsToSocialTTs = 0;
-        TotalCount_TT1ToPrivateDeregulatedTTs = 0;
-        TotalCount_TT4ToPrivateDeregulatedTTs = 0;
-        TotalCount_PrivateDeregulatedTTsToTT1 = 0;
-        TotalCount_PrivateDeregulatedTTsToTT4 = 0;
-        TotalCount_PostcodeChangeWithinSocialTTs = 0;
-        TotalCount_PostcodeChangeWithinTT1 = 0;
-        TotalCount_PostcodeChangeWithinTT4 = 0;
-        TotalCount_PostcodeChangeWithinPrivateDeregulatedTTs = 0;
+        CouncilTotalCount_Minus999TTToSocialTTs = 0;
+        CouncilTotalCount_Minus999TTToPrivateDeregulatedTTs = 0;
+        CouncilTotalCount_HBTTsToHBTTs = 0;
+        CouncilTotalCount_HBTTsToMinus999TT = 0;
+        CouncilTotalCount_SocialTTsToMinus999TT = 0;
+        CouncilTotalCount_PrivateDeregulatedTTsToMinus999TT = 0;
+        CouncilTotalCount_SocialTTsToPrivateDeregulatedTTs = 0;
+        CouncilTotalCount_PrivateDeregulatedTTsToSocialTTs = 0;
+        CouncilTotalCount_TT1ToPrivateDeregulatedTTs = 0;
+        CouncilTotalCount_TT4ToPrivateDeregulatedTTs = 0;
+        CouncilTotalCount_PrivateDeregulatedTTsToTT1 = 0;
+        CouncilTotalCount_PrivateDeregulatedTTsToTT4 = 0;
+        CouncilTotalCount_PostcodeChangeWithinSocialTTs = 0;
+        CouncilTotalCount_PostcodeChangeWithinTT1 = 0;
+        CouncilTotalCount_PostcodeChangeWithinTT4 = 0;
+        CouncilTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs = 0;
         // General CTB related
-        TotalCount_Minus999TTToCTBTTs = 0;
-        TotalCount_SocialTTsToCTBTTs = 0;
-        TotalCount_TT1ToCTBTTs = 0;
-        TotalCount_TT4ToCTBTTs = 0;
-        TotalCount_PrivateDeregulatedTTsToCTBTTs = 0;
-        TotalCount_CTBTTsToSocialTTs = 0;
-        TotalCount_CTBTTsToMinus999TT = 0;
-        TotalCount_CTBTTsToTT1 = 0;
-        TotalCount_CTBTTsToTT4 = 0;
-        TotalCount_CTBTTsToPrivateDeregulatedTTs = 0;
-        //
-        TotalCount_TT1ToTT4 = 0;
-        TotalCount_TT4ToTT1 = 0;
+        CouncilTotalCount_Minus999TTToCTBTTs = 0;
+        CouncilTotalCount_SocialTTsToCTBTTs = 0;
+        CouncilTotalCount_TT1ToCTBTTs = 0;
+        CouncilTotalCount_TT4ToCTBTTs = 0;
+        CouncilTotalCount_PrivateDeregulatedTTsToCTBTTs = 0;
+        CouncilTotalCount_CTBTTsToSocialTTs = 0;
+        CouncilTotalCount_CTBTTsToMinus999TT = 0;
+        CouncilTotalCount_CTBTTsToTT1 = 0;
+        CouncilTotalCount_CTBTTsToTT4 = 0;
+        CouncilTotalCount_CTBTTsToPrivateDeregulatedTTs = 0;
+        // TT1 TT4
+        CouncilTotalCount_TT1ToTT4 = 0;
+        CouncilTotalCount_TT4ToTT1 = 0;
         // All
-        AllTotalCount_TTChangeClaimant = 0;
-        AllTotalCount_Postcode0ValidPostcode1Valid = 0;
-        AllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = 0;
-        AllTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = 0;
-        AllTotalCount_Postcode0ValidPostcode1NotValid = 0;
-        AllTotalCount_Postcode0NotValidPostcode1Valid = 0;
-        AllTotalCount_Postcode0NotValidPostcode1NotValid = 0;
-        AllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = 0;
-        AllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = 0;
+        CouncilAllTotalCount_TTChangeClaimant = 0;
+        CouncilAllTotalCount_Postcode0ValidPostcode1Valid = 0;
+        CouncilAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = 0;
+        CouncilAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = 0;
+        CouncilAllTotalCount_Postcode0ValidPostcode1NotValid = 0;
+        CouncilAllTotalCount_Postcode0NotValidPostcode1Valid = 0;
+        CouncilAllTotalCount_Postcode0NotValidPostcode1NotValid = 0;
+        CouncilAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = 0;
+        CouncilAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = 0;
         // HB
-        HBTotalCount_TTChangeClaimant = 0;
-        //HBTotalCount_TTChangeClaimantIgnoreMinus999 = 0;
-        HBTotalCount_Postcode0ValidPostcode1Valid = 0;
-        HBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = 0;
-        HBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = 0;
-        HBTotalCount_Postcode0ValidPostcode1NotValid = 0;
-        HBTotalCount_Postcode0NotValidPostcode1Valid = 0;
-        HBTotalCount_Postcode0NotValidPostcode1NotValid = 0;
-        HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = 0;
-        HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = 0;
+        CouncilHBTotalCount_TTChangeClaimant = 0;
+        CouncilHBTotalCount_Postcode0ValidPostcode1Valid = 0;
+        CouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = 0;
+        CouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = 0;
+        CouncilHBTotalCount_Postcode0ValidPostcode1NotValid = 0;
+        CouncilHBTotalCount_Postcode0NotValidPostcode1Valid = 0;
+        CouncilHBTotalCount_Postcode0NotValidPostcode1NotValid = 0;
+        CouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = 0;
+        CouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = 0;
         // CTB
-        CTBTotalCount_TTChangeClaimant = 0;
-        CTBTotalCount_Postcode0ValidPostcode1Valid = 0;
-        CTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = 0;
-        CTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = 0;
-        CTBTotalCount_Postcode0ValidPostcode1NotValid = 0;
-        CTBTotalCount_Postcode0NotValidPostcode1Valid = 0;
-        CTBTotalCount_Postcode0NotValidPostcode1NotValid = 0;
-        CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = 0;
-        CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = 0;
+        CouncilCTBTotalCount_TTChangeClaimant = 0;
+        CouncilCTBTotalCount_Postcode0ValidPostcode1Valid = 0;
+        CouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = 0;
+        CouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = 0;
+        CouncilCTBTotalCount_Postcode0ValidPostcode1NotValid = 0;
+        CouncilCTBTotalCount_Postcode0NotValidPostcode1Valid = 0;
+        CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValid = 0;
+        CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = 0;
+        CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = 0;
+        //  RSL
+        // General
+        RSLTotalCount_HBTTsToCTBTTs = 0;
+        RSLTotalCount_CTBTTsToHBTTs = 0;
+        // General HB related
+        RSLTotalCount_Minus999TTToSocialTTs = 0;
+        RSLTotalCount_Minus999TTToPrivateDeregulatedTTs = 0;
+        RSLTotalCount_HBTTsToHBTTs = 0;
+        RSLTotalCount_HBTTsToMinus999TT = 0;
+        RSLTotalCount_SocialTTsToMinus999TT = 0;
+        RSLTotalCount_PrivateDeregulatedTTsToMinus999TT = 0;
+        RSLTotalCount_SocialTTsToPrivateDeregulatedTTs = 0;
+        RSLTotalCount_PrivateDeregulatedTTsToSocialTTs = 0;
+        RSLTotalCount_TT1ToPrivateDeregulatedTTs = 0;
+        RSLTotalCount_TT4ToPrivateDeregulatedTTs = 0;
+        RSLTotalCount_PrivateDeregulatedTTsToTT1 = 0;
+        RSLTotalCount_PrivateDeregulatedTTsToTT4 = 0;
+        RSLTotalCount_PostcodeChangeWithinSocialTTs = 0;
+        RSLTotalCount_PostcodeChangeWithinTT1 = 0;
+        RSLTotalCount_PostcodeChangeWithinTT4 = 0;
+        RSLTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs = 0;
+        // General CTB related
+        RSLTotalCount_Minus999TTToCTBTTs = 0;
+        RSLTotalCount_SocialTTsToCTBTTs = 0;
+        RSLTotalCount_TT1ToCTBTTs = 0;
+        RSLTotalCount_TT4ToCTBTTs = 0;
+        RSLTotalCount_PrivateDeregulatedTTsToCTBTTs = 0;
+        RSLTotalCount_CTBTTsToSocialTTs = 0;
+        RSLTotalCount_CTBTTsToMinus999TT = 0;
+        RSLTotalCount_CTBTTsToTT1 = 0;
+        RSLTotalCount_CTBTTsToTT4 = 0;
+        RSLTotalCount_CTBTTsToPrivateDeregulatedTTs = 0;
+        // TT1 TT4
+        RSLTotalCount_TT1ToTT4 = 0;
+        RSLTotalCount_TT4ToTT1 = 0;
+        // All
+        RSLAllTotalCount_TTChangeClaimant = 0;
+        RSLAllTotalCount_Postcode0ValidPostcode1Valid = 0;
+        RSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = 0;
+        RSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = 0;
+        RSLAllTotalCount_Postcode0ValidPostcode1NotValid = 0;
+        RSLAllTotalCount_Postcode0NotValidPostcode1Valid = 0;
+        RSLAllTotalCount_Postcode0NotValidPostcode1NotValid = 0;
+        RSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = 0;
+        RSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = 0;
+        // HB
+        RSLHBTotalCount_TTChangeClaimant = 0;
+        RSLHBTotalCount_Postcode0ValidPostcode1Valid = 0;
+        RSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = 0;
+        RSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = 0;
+        RSLHBTotalCount_Postcode0ValidPostcode1NotValid = 0;
+        RSLHBTotalCount_Postcode0NotValidPostcode1Valid = 0;
+        RSLHBTotalCount_Postcode0NotValidPostcode1NotValid = 0;
+        RSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = 0;
+        RSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = 0;
+        // CTB
+        RSLCTBTotalCount_TTChangeClaimant = 0;
+        RSLCTBTotalCount_Postcode0ValidPostcode1Valid = 0;
+        RSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = 0;
+        RSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = 0;
+        RSLCTBTotalCount_Postcode0ValidPostcode1NotValid = 0;
+        RSLCTBTotalCount_Postcode0NotValidPostcode1Valid = 0;
+        RSLCTBTotalCount_Postcode0NotValidPostcode1NotValid = 0;
+        RSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = 0;
+        RSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = 0;
     }
 
+    @Override
     protected void initCompare3TimesCounts(int nTT) {
-        SamePostcodeIII = 0;
-        SamePostcodeIOI = 0;
-        SamePostcodeOIO = 0;
-        SameTenancyIII = 0;
-        SameTenancyIOI = 0;
-        SameTenancyOIO = 0;
-        SameTenancyAndPostcodeIII = 0;
-        SameTenancyAndPostcodeIOI = 0;
-        SameTenancyAndPostcodeOIO = 0;
-        SameTenancyIIITT = new int[nTT];
-        SameTenancyIOITT = new int[nTT];
-        SameTenancyOIOTT = new int[nTT];
-        SameTenancyAndPostcodeIIITT = new int[nTT];
-        SameTenancyAndPostcodeIOITT = new int[nTT];
-        SameTenancyAndPostcodeOIOTT = new int[nTT];
+        super.initCompare3TimesCounts(nTT);
+        // Council
+        CouncilSamePostcodeIII = 0;
+        CouncilSamePostcodeIOI = 0;
+        CouncilSamePostcodeOIO = 0;
+        CouncilSameTenancyIII = 0;
+        CouncilSameTenancyIOI = 0;
+        CouncilSameTenancyOIO = 0;
+        CouncilSameTenancyAndPostcodeIII = 0;
+        CouncilSameTenancyAndPostcodeIOI = 0;
+        CouncilSameTenancyAndPostcodeOIO = 0;
+        CouncilSameTenancyIIITT = new int[nTT];
+        CouncilSameTenancyIOITT = new int[nTT];
+        CouncilSameTenancyOIOTT = new int[nTT];
+        CouncilSameTenancyAndPostcodeIIITT = new int[nTT];
+        CouncilSameTenancyAndPostcodeIOITT = new int[nTT];
+        CouncilSameTenancyAndPostcodeOIOTT = new int[nTT];
         for (int i = 1; i < nTT; i++) {
-            SameTenancyIIITT[i] = 0;
-            SameTenancyIOITT[i] = 0;
-            SameTenancyOIOTT[i] = 0;
-            SameTenancyAndPostcodeIIITT[i] = 0;
-            SameTenancyAndPostcodeIOITT[i] = 0;
-            SameTenancyAndPostcodeOIOTT[i] = 0;
+            CouncilSameTenancyIIITT[i] = 0;
+            CouncilSameTenancyIOITT[i] = 0;
+            CouncilSameTenancyOIOTT[i] = 0;
+            CouncilSameTenancyAndPostcodeIIITT[i] = 0;
+            CouncilSameTenancyAndPostcodeIOITT[i] = 0;
+            CouncilSameTenancyAndPostcodeOIOTT[i] = 0;
         }
-    }
-
-    public static Object[] getMemberships(
-            HashSet set00,
-            HashSet set0,
-            HashSet set1) {
-        Object[] result;
-        result = new Object[3];
-        // Union
-        HashSet union;
-        union = new HashSet();
-        if (set1 != null) {
-            union.addAll(set1);
+        // RSL
+        RSLSamePostcodeIII = 0;
+        RSLSamePostcodeIOI = 0;
+        RSLSamePostcodeOIO = 0;
+        RSLSameTenancyIII = 0;
+        RSLSameTenancyIOI = 0;
+        RSLSameTenancyOIO = 0;
+        RSLSameTenancyAndPostcodeIII = 0;
+        RSLSameTenancyAndPostcodeIOI = 0;
+        RSLSameTenancyAndPostcodeOIO = 0;
+        RSLSameTenancyIIITT = new int[nTT];
+        RSLSameTenancyIOITT = new int[nTT];
+        RSLSameTenancyOIOTT = new int[nTT];
+        RSLSameTenancyAndPostcodeIIITT = new int[nTT];
+        RSLSameTenancyAndPostcodeIOITT = new int[nTT];
+        RSLSameTenancyAndPostcodeOIOTT = new int[nTT];
+        for (int i = 1; i < nTT; i++) {
+            RSLSameTenancyIIITT[i] = 0;
+            RSLSameTenancyIOITT[i] = 0;
+            RSLSameTenancyOIOTT[i] = 0;
+            RSLSameTenancyAndPostcodeIIITT[i] = 0;
+            RSLSameTenancyAndPostcodeIOITT[i] = 0;
+            RSLSameTenancyAndPostcodeOIOTT[i] = 0;
         }
-        if (set0 != null) {
-            union.retainAll(set0);
-        }
-        if (set00 != null) {
-            union.retainAll(set00);
-        }
-        // set0Only
-        HashSet set0Only;
-        set0Only = new HashSet();
-        if (set0 != null) {
-            set0Only.addAll(set0);
-        }
-        if (set1 != null) {
-            set0Only.removeAll(set1);
-        }
-        if (set00 != null) {
-            set0Only.removeAll(set00);
-        }
-        // set00AndSet1
-        HashSet set00AndSet1;
-        set00AndSet1 = new HashSet();
-        if (set00 != null) {
-            set00AndSet1.addAll(set00);
-        }
-        if (set0 != null) {
-            set00AndSet1.removeAll(set0);
-        }
-        if (set1 != null) {
-            set00AndSet1.retainAll(set1);
-        }
-        result[0] = union;
-        result[1] = set0Only;
-        result[2] = set00AndSet1;
-        return result;
     }
 
     public static HashSet<ID_TenancyType> getID_TenancyTypeSet(
@@ -1976,9 +2276,9 @@ public class SummaryUO extends Summary {
                 ID_TenancyType ID_TenancyType;
                 ID_TenancyType = new ID_TenancyType(ID, TT);
                 result.add(ID_TenancyType);
-//            } else {
-//                // There are a few cases where a mapping to the SHBE does not exist!
-//                int debug = 1;//?
+            } else {
+                // There are a few cases where a mapping to the SHBE does not exist!
+                int debug = 1;//?
             }
         }
         ite = RSLMap.keySet().iterator();
@@ -1997,9 +2297,9 @@ public class SummaryUO extends Summary {
                 ID_TenancyType ID_TenancyType;
                 ID_TenancyType = new ID_TenancyType(ID, TT);
                 result.add(ID_TenancyType);
-//            } else {
-//                // There are a few cases where a mapping to the SHBE does not exist!
-//                int debug = 1;//?
+            } else {
+                // There are a few cases where a mapping to the SHBE does not exist!
+                int debug = 1;//?
             }
         }
         return result;
@@ -2034,9 +2334,9 @@ public class SummaryUO extends Summary {
                 ID_PostcodeID ID_PostcodeID;
                 ID_PostcodeID = new ID_PostcodeID(ID, PostcodeID);
                 result.add(ID_PostcodeID);
-//            } else {
-//                // There are a few cases where a mapping to the SHBE does not exist!
-//                int debug = 1;//?
+            } else {
+                // There are a few cases where a mapping to the SHBE does not exist!
+                int debug = 1;//?
             }
         }
         ite = RSLMap.keySet().iterator();
@@ -2055,9 +2355,9 @@ public class SummaryUO extends Summary {
                 ID_PostcodeID ID_PostcodeID;
                 ID_PostcodeID = new ID_PostcodeID(ID, PostcodeID);
                 result.add(ID_PostcodeID);
-//            } else {
-//                // There are a few cases where a mapping to the SHBE does not exist!
-//                int debug = 1;//?
+            } else {
+                // There are a few cases where a mapping to the SHBE does not exist!
+                int debug = 1;//?
             }
         }
         return result;
@@ -2096,9 +2396,9 @@ public class SummaryUO extends Summary {
                 ID_TenancyType_PostcodeID ID_TenancyType_PostcodeID;
                 ID_TenancyType_PostcodeID = new ID_TenancyType_PostcodeID(ID_TenancyType, PostcodeID);
                 result.add(ID_TenancyType_PostcodeID);
-//            } else {
-//                // There are a few cases where a mapping to the SHBE does not exist!
-//                int debug = 1;//?
+            } else {
+                // There are a few cases where a mapping to the SHBE does not exist!
+                int debug = 1;//?
             }
         }
         ite = RSLMap.keySet().iterator();
@@ -2121,334 +2421,21 @@ public class SummaryUO extends Summary {
                 ID_TenancyType_PostcodeID ID_TenancyType_PostcodeID;
                 ID_TenancyType_PostcodeID = new ID_TenancyType_PostcodeID(ID_TenancyType, PostcodeID);
                 result.add(ID_TenancyType_PostcodeID);
-//            } else {
-//                // There are a few cases where a mapping to the SHBE does not exist!
-//                int debug = 1;//?
-            }
-        }
-        return result;
-    }
-
-//    public static Object[] getMembershipsID_TenancyType(HashSet<ID_TenancyType> set00, HashSet<ID_TenancyType> set0, HashSet<ID_TenancyType> set1) {
-//        Object[] result;
-//        result = new Object[3];
-//        HashSet<ID_TenancyType> union;
-//        union = new HashSet<ID_TenancyType>();
-//        union.addAll(set1);
-//        union.retainAll(set0);
-//        union.retainAll(set00);
-//        HashSet<ID_TenancyType> set0Only;
-//        set0Only = new HashSet<ID_TenancyType>();
-//        set0Only.addAll(set0);
-//        set0Only.removeAll(set1);
-//        set0Only.removeAll(set00);
-//        HashSet<ID_TenancyType> set00AndSet1;
-//        set00AndSet1 = new HashSet<ID_TenancyType>();
-//        set00AndSet1.addAll(set00);
-//        set00AndSet1.removeAll(set0);
-//        set00AndSet1.retainAll(set1);
-//        result[0] = union;
-//        result[1] = set0Only;
-//        result[2] = set00AndSet1;
-//        return result;
-//    }
-//
-//    public static Object[] getMembershipsID_TenancyType_PostcodeID(HashSet<ID_TenancyType_PostcodeID> set00, HashSet<ID_TenancyType_PostcodeID> set0, HashSet<ID_TenancyType_PostcodeID> set1) {
-//        Object[] result;
-//        result = new Object[3];
-//        HashSet<ID_TenancyType_PostcodeID> union;
-//        union = new HashSet<ID_TenancyType_PostcodeID>();
-//        union.addAll(set1);
-//        union.retainAll(set0);
-//        union.retainAll(set00);
-//        HashSet<ID_TenancyType_PostcodeID> set0Only;
-//        set0Only = new HashSet<ID_TenancyType_PostcodeID>();
-//        set0Only.addAll(set0);
-//        set0Only.removeAll(set1);
-//        set0Only.removeAll(set00);
-//        HashSet<ID_TenancyType_PostcodeID> set00AndSet1;
-//        set00AndSet1 = new HashSet<ID_TenancyType_PostcodeID>();
-//        set00AndSet1.addAll(set00);
-//        set00AndSet1.removeAll(set0);
-//        set00AndSet1.retainAll(set1);
-//        result[0] = union;
-//        result[1] = set0Only;
-//        result[2] = set00AndSet1;
-//        return result;
-//    }
-//
-//    public static Object[] getMembershipsID_PostcodeID(HashSet<ID_PostcodeID> set00, HashSet<ID_PostcodeID> set0, HashSet<ID_PostcodeID> set1) {
-//        Object[] result;
-//        result = new Object[3];
-//        HashSet<ID_PostcodeID> union;
-//        union = new HashSet<ID_PostcodeID>();
-//        union.addAll(set1);
-//        union.retainAll(set0);
-//        union.retainAll(set00);
-//        HashSet<ID_PostcodeID> set0Only;
-//        set0Only = new HashSet<ID_PostcodeID>();
-//        set0Only.addAll(set0);
-//        set0Only.removeAll(set1);
-//        set0Only.removeAll(set00);
-//        HashSet<ID_PostcodeID> set00AndSet1;
-//        set00AndSet1 = new HashSet<ID_PostcodeID>();
-//        set00AndSet1.addAll(set00);
-//        set00AndSet1.removeAll(set0);
-//        set00AndSet1.retainAll(set1);
-//        result[0] = union;
-//        result[1] = set0Only;
-//        result[2] = set00AndSet1;
-//        return result;
-//    }
-    /**
-     *
-     * @param nTT
-     * @param SHBEFilenames
-     * @param include
-     * @param yM31
-     * @param tClaimantIDPostcodeTTs
-     * @param tClaimantIDPostcodeTTs1
-     * @return
-     */
-    public static Object[] getCountsIDPostcodeTT(
-            int nTT,
-            String[] SHBEFilenames,
-            ArrayList<Integer> include,
-            String yM31,
-            TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
-            HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTTs1) {
-        Object[] result;
-        result = new Object[4];
-        Integer[] mainCounts;
-        mainCounts = new Integer[3];
-        mainCounts[0] = null;
-        mainCounts[1] = null;
-        mainCounts[2] = null;
-        Integer[] IIITTCounts;
-        Integer[] IOITTCounts;
-        Integer[] OIOTTCounts;
-        IIITTCounts = new Integer[nTT];
-        IOITTCounts = new Integer[nTT];
-        OIOTTCounts = new Integer[nTT];
-        for (int i = 1; i < nTT; i++) {
-            IIITTCounts[i] = 0;
-            IOITTCounts[i] = 0;
-            OIOTTCounts[i] = 0;
-        }
-        Object[] previousYM3s = getPreviousYM3s(SHBEFilenames, include, yM31);
-        if ((Boolean) previousYM3s[0]) {
-            HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTTs00;
-            tClaimantIDPostcodeTTs00 = tClaimantIDPostcodeTTs.get((String) previousYM3s[1]);
-            HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTTs0;
-            tClaimantIDPostcodeTTs0 = tClaimantIDPostcodeTTs.get((String) previousYM3s[2]);
-            Object[] memberships;
-            //memberships = Summary.getMembershipsID_TenancyType_PostcodeID(tClaimantIDPostcodeTTs00, tClaimantIDPostcodeTTs0, tClaimantIDPostcodeTTs1);
-            memberships = SummaryUO.getMemberships(
-                    tClaimantIDPostcodeTTs00,
-                    tClaimantIDPostcodeTTs0,
-                    tClaimantIDPostcodeTTs1);
-            HashSet<ID_TenancyType_PostcodeID> III;
-            III = (HashSet<ID_TenancyType_PostcodeID>) memberships[0];
-            HashSet<ID_TenancyType_PostcodeID> IOI;
-            IOI = (HashSet<ID_TenancyType_PostcodeID>) memberships[1];
-            HashSet<ID_TenancyType_PostcodeID> OIO;
-            OIO = (HashSet<ID_TenancyType_PostcodeID>) memberships[2];
-            mainCounts[0] = III.size();
-            mainCounts[1] = IOI.size();
-            mainCounts[2] = OIO.size();
-            result[0] = mainCounts;
-            Iterator<ID_TenancyType_PostcodeID> ite2;
-            ite2 = III.iterator();
-            while (ite2.hasNext()) {
-                ID_TenancyType_PostcodeID aID_Postcode_TenancyType;
-                aID_Postcode_TenancyType = ite2.next();
-                int TT = aID_Postcode_TenancyType.getTenancyType();
-                IIITTCounts[TT]++;
-            }
-            result[1] = IIITTCounts;
-            ite2 = IOI.iterator();
-            while (ite2.hasNext()) {
-                ID_TenancyType_PostcodeID aID_Postcode_TenancyType;
-                aID_Postcode_TenancyType = ite2.next();
-                int TT = aID_Postcode_TenancyType.getTenancyType();
-                IOITTCounts[TT]++;
-            }
-            result[2] = IOITTCounts;
-            ite2 = OIO.iterator();
-            while (ite2.hasNext()) {
-                ID_TenancyType_PostcodeID aID_Postcode_TenancyType;
-                aID_Postcode_TenancyType = ite2.next();
-                int TT = aID_Postcode_TenancyType.getTenancyType();
-                OIOTTCounts[TT]++;
-            }
-            result[3] = OIOTTCounts;
-        }
-        return result;
-    }
-
-    /**
-     *
-     * @param nTT
-     * @param SHBEFilenames
-     * @param include
-     * @param yM31
-     * @param tClaimantIDTTs
-     * @param tClaimantIDTTs1
-     * @return
-     */
-    public static Object[] getCountsIDTT(
-            int nTT, String[] SHBEFilenames,
-            ArrayList<Integer> include,
-            String yM31,
-            TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs,
-            HashSet<ID_TenancyType> tClaimantIDTTs1) {
-        Object[] result;
-        result = new Object[4];
-        Integer[] mainCounts;
-        mainCounts = new Integer[3];
-        mainCounts[0] = null;
-        mainCounts[1] = null;
-        mainCounts[2] = null;
-        Integer[] IIITTCounts;
-        Integer[] IOITTCounts;
-        Integer[] OIOTTCounts;
-        IIITTCounts = new Integer[nTT];
-        IOITTCounts = new Integer[nTT];
-        OIOTTCounts = new Integer[nTT];
-        for (int i = 1; i < nTT; i++) {
-            IIITTCounts[i] = 0;
-            IOITTCounts[i] = 0;
-            OIOTTCounts[i] = 0;
-        }
-        Object[] previousYM3s = getPreviousYM3s(SHBEFilenames, include, yM31);
-        if ((Boolean) previousYM3s[0]) {
-            HashSet<ID_TenancyType> tClaimantIDTTs00;
-            tClaimantIDTTs00 = tClaimantIDTTs.get((String) previousYM3s[1]);
-            HashSet<ID_TenancyType> tClaimantIDTTs0;
-            tClaimantIDTTs0 = tClaimantIDTTs.get((String) previousYM3s[2]);
-            Object[] memberships;
-            //memberships = Summary.getMembershipsID_TenancyType(tClaimantIDTTs00, tClaimantIDTTs0, tClaimantIDTTs1);
-            memberships = SummaryUO.getMemberships(
-                    tClaimantIDTTs00,
-                    tClaimantIDTTs0,
-                    tClaimantIDTTs1);
-            HashSet<ID_TenancyType> III;
-            III = (HashSet<ID_TenancyType>) memberships[0];
-            HashSet<ID_TenancyType> IOI;
-            IOI = (HashSet<ID_TenancyType>) memberships[1];
-            HashSet<ID_TenancyType> OIO;
-            OIO = (HashSet<ID_TenancyType>) memberships[2];
-            mainCounts[0] = III.size();
-            mainCounts[1] = IOI.size();
-            mainCounts[2] = OIO.size();
-            result[0] = mainCounts;
-            Iterator<ID_TenancyType> ite2;
-            ite2 = III.iterator();
-            while (ite2.hasNext()) {
-                ID_TenancyType aID_TenancyType;
-                aID_TenancyType = ite2.next();
-                int TT = aID_TenancyType.getTenancyType();
-                IIITTCounts[TT]++;
-            }
-            result[1] = IIITTCounts;
-            ite2 = IOI.iterator();
-            while (ite2.hasNext()) {
-                ID_TenancyType aID_TenancyType;
-                aID_TenancyType = ite2.next();
-                int TT = aID_TenancyType.getTenancyType();
-                IOITTCounts[TT]++;
-            }
-            result[2] = IOITTCounts;
-            ite2 = OIO.iterator();
-            while (ite2.hasNext()) {
-                ID_TenancyType aID_TenancyType;
-                aID_TenancyType = ite2.next();
-                int TT = aID_TenancyType.getTenancyType();
-                OIOTTCounts[TT]++;
-            }
-            result[3] = OIOTTCounts;
-        }
-        return result;
-    }
-
-    /**
-     *
-     * @param SHBEFilenames
-     * @param include
-     * @param yM31
-     * @param tClaimantIDPostcodeTypes
-     * @param tClaimantIDPostcodeTypes1
-     * @return
-     */
-    public static Integer[] getCountsIDPostcode(
-            String[] SHBEFilenames, ArrayList<Integer> include,
-            String yM31, TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodeTypes,
-            HashSet<ID_PostcodeID> tClaimantIDPostcodeTypes1) {
-        Integer[] result;
-        result = new Integer[3];
-        result[0] = null;
-        result[1] = null;
-        result[2] = null;
-        Object[] previousYM3s = getPreviousYM3s(SHBEFilenames, include, yM31);
-        if ((Boolean) previousYM3s[0]) {
-            HashSet<ID_PostcodeID> tClaimantIDTypes00;
-            tClaimantIDTypes00 = tClaimantIDPostcodeTypes.get((String) previousYM3s[1]);
-            HashSet tClaimantIDTypes0;
-            tClaimantIDTypes0 = tClaimantIDPostcodeTypes.get((String) previousYM3s[2]);
-            Object[] memberships;
-            //memberships = Summary.getMembershipsID_PostcodeID(tClaimantIDTypes00, tClaimantIDTypes0, tClaimantIDPostcodeTypes1);
-            memberships = SummaryUO.getMemberships(
-                    tClaimantIDTypes00,
-                    tClaimantIDTypes0,
-                    tClaimantIDPostcodeTypes1);
-            result[0] = ((HashSet<ID_PostcodeID>) memberships[0]).size();
-            result[1] = ((HashSet<ID_PostcodeID>) memberships[1]).size();
-            result[2] = ((HashSet<ID_PostcodeID>) memberships[2]).size();
-        }
-        return result;
-    }
-
-    protected static Object[] getPreviousYM3s(String[] SHBEFilenames, ArrayList<Integer> include, String yM31) {
-        Object[] result;
-        result = new Object[3];
-        String yM300 = null;
-        boolean yM300set;
-        yM300set = false;
-        String yM30 = null;
-        boolean yM30set;
-        yM30set = false;
-        Iterator<Integer> ite = include.iterator();
-        while (ite.hasNext()) {
-            int i = ite.next();
-            String yM3;
-            yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
-            if (yM3.equalsIgnoreCase(yM31)) {
-                break;
-            }
-            if (yM300set && yM30set) {
-                yM300 = yM30;
-                yM30 = yM3;
             } else {
-                if (yM300set) {
-                    yM30 = yM3;
-                    yM30set = true;
-                } else {
-                    yM300 = yM3;
-                    yM300set = true;
-                }
+                // There are a few cases where a mapping to the SHBE does not exist!
+                int debug = 1;//?
             }
         }
-        result[0] = yM300set && yM30set;
-        result[1] = yM300;
-        result[2] = yM30;
         return result;
     }
 
+    @Override
     protected void addToSummaryCompare2Times(
             int nTT,
             int nEG,
             int nPSI,
             HashMap<String, String> summary) {
+        super.addToSummaryCompare2Times(nTT, nEG, nPSI, summary);
         addToSummarySingleTime(
                 nTT,
                 nEG,
@@ -3127,11 +3114,17 @@ public class SummaryUO extends Summary {
         }
     }
 
+    fdsfadsfsdag ;
+
+    // Need to work out what to do hwith this adding mallarkery
+
+    @Override
     protected void addToSummarySingleTime(
             int nTT,
             int nEG,
             int nPSI,
             HashMap<String, String> summary) {
+        //super.addToSummarySingleTime(nTT, nEG, nPSI, summary);
         // Set the last results
         AllCount0 = AllCount1;
         HBCount0 = HBCount1;
@@ -3164,157 +3157,315 @@ public class SummaryUO extends Summary {
 
     }
 
+    @Override
     protected void addToSummarySingleTimeCounts0(
             HashMap<String, String> summary) {
-        // All
-        AllCount1 = HBCount1 + CTBCount1;
-        summary.put(sAllCount1, Integer.toString(AllCount1));
-        summary.put(sHBCount1, Integer.toString(HBCount1));
-        summary.put(sCTBCount1, Integer.toString(CTBCount1));
+        //super.addToSummarySingleTimeCounts0(summary);
+        // Council
+        CouncilAllCount1 = CouncilHBCount1 + CouncilCTBCount1;
+        summary.put(sCouncilAllCount1, Integer.toString(CouncilAllCount1));
+        summary.put(sCouncilHBCount1, Integer.toString(CouncilHBCount1));
+        summary.put(sCouncilCTBCount1, Integer.toString(CouncilCTBCount1));
         summary.put(
-                sAllTotalHouseholdSize,
-                Long.toString(AllTotalHouseholdSize));
+                sCouncilAllTotalHouseholdSize,
+                Long.toString(CouncilAllTotalHouseholdSize));
+        // RSL
+        RSLAllCount1 = RSLHBCount1 + RSLCTBCount1;
+        summary.put(sRSLAllCount1, Integer.toString(RSLAllCount1));
+        summary.put(sRSLHBCount1, Integer.toString(RSLHBCount1));
+        summary.put(sRSLCTBCount1, Integer.toString(RSLCTBCount1));
+        summary.put(
+                sRSLAllTotalHouseholdSize,
+                Long.toString(RSLAllTotalHouseholdSize));
     }
 
+    @Override
     protected void addToSummarySingleTimeRates0(
             HashMap<String, String> summary) {
+        //super.addToSummarySingleTimeRates0(summary);
         double ave;
+        // Council
         // All HouseholdSize
-        if (AllCount1 > 0) {
-            ave = AllTotalHouseholdSize / (double) AllCount1;
+        if (CouncilAllCount1 > 0) {
+            ave = CouncilAllTotalHouseholdSize / (double) CouncilAllCount1;
             summary.put(
-                    sAllAverageHouseholdSize,
+                    sCouncilAllAverageHouseholdSize,
                     Generic_BigDecimal.roundIfNecessary(
-                            BigDecimal.valueOf(ave), decimalPlacePrecisionForAverage, RoundingMode.HALF_UP).toPlainString());
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sAllAverageHouseholdSize,
+                    sCouncilAllAverageHouseholdSize,
                     s0);
         }
         // HB HouseholdSize
         summary.put(
-                sHBTotalHouseholdSize,
-                Long.toString(HBTotalHouseholdSize));
-        if (HBCount1 > 0) {
-            ave = HBTotalHouseholdSize / (double) HBCount1;
+                sCouncilHBTotalHouseholdSize,
+                Long.toString(CouncilHBTotalHouseholdSize));
+        if (CouncilHBCount1 > 0) {
+            ave = CouncilHBTotalHouseholdSize / (double) CouncilHBCount1;
             summary.put(
-                    sHBAverageHouseholdSize,
+                    sCouncilHBAverageHouseholdSize,
                     Generic_BigDecimal.roundIfNecessary(
-                            BigDecimal.valueOf(ave), decimalPlacePrecisionForAverage, RoundingMode.HALF_UP).toPlainString());
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBAverageHouseholdSize,
+                    sCouncilHBAverageHouseholdSize,
                     s0);
         }
         // CTB HouseholdSize
         summary.put(
-                sCTBTotalHouseholdSize,
-                Long.toString(CTBTotalHouseholdSize));
-        if (CTBCount1 > 0) {
-            ave = CTBTotalHouseholdSize / (double) CTBCount1;
+                sCouncilCTBTotalHouseholdSize,
+                Long.toString(CouncilCTBTotalHouseholdSize));
+        if (CouncilCTBCount1 > 0) {
+            ave = CouncilCTBTotalHouseholdSize / (double) CouncilCTBCount1;
             summary.put(
-                    sCTBAverageHouseholdSize,
+                    sCouncilCTBAverageHouseholdSize,
                     Generic_BigDecimal.roundIfNecessary(
-                            BigDecimal.valueOf(ave), decimalPlacePrecisionForAverage, RoundingMode.HALF_UP).toPlainString());
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBAverageHouseholdSize,
+                    sCouncilCTBAverageHouseholdSize,
+                    s0);
+        }
+        // RSL
+        // All HouseholdSize
+        if (RSLAllCount1 > 0) {
+            ave = RSLAllTotalHouseholdSize / (double) RSLAllCount1;
+            summary.put(
+                    sRSLAllAverageHouseholdSize,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLAllAverageHouseholdSize,
+                    s0);
+        }
+        // HB HouseholdSize
+        summary.put(
+                sRSLHBTotalHouseholdSize,
+                Long.toString(RSLHBTotalHouseholdSize));
+        if (RSLHBCount1 > 0) {
+            ave = RSLHBTotalHouseholdSize / (double) RSLHBCount1;
+            summary.put(
+                    sRSLHBAverageHouseholdSize,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLHBAverageHouseholdSize,
+                    s0);
+        }
+        // CTB HouseholdSize
+        summary.put(
+                sRSLCTBTotalHouseholdSize,
+                Long.toString(RSLCTBTotalHouseholdSize));
+        if (RSLCTBCount1 > 0) {
+            ave = RSLCTBTotalHouseholdSize / (double) RSLCTBCount1;
+            summary.put(
+                    sRSLCTBAverageHouseholdSize,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLCTBAverageHouseholdSize,
                     s0);
         }
     }
 
+    @Override
     protected void addToSummarySingleTimePSICounts(
             int nTT,
             int nPSI,
             HashMap<String, String> summary) {
-        // PassportStandardIndicator
+        //super.addToSummarySingleTimePSICounts(nTT, nPSI, summary);
+        // Council
         for (int i = 1; i < nPSI; i++) {
             summary.put(
-                    sAllTotalCount_PSI[i],
-                    Long.toString(AllTotalCount_PSI[i]));
+                    sCouncilAllTotalCount_PSI[i],
+                    Long.toString(CouncilAllTotalCount_PSI[i]));
             summary.put(
-                    sHBTotalCount_PSI[i],
-                    Long.toString(HBTotalCount_PSI[i]));
+                    sCouncilHBTotalCount_PSI[i],
+                    Long.toString(CouncilHBTotalCount_PSI[i]));
             summary.put(
-                    sCTBTotalCount_PSI[i],
-                    Long.toString(CTBTotalCount_PSI[i]));
+                    sCouncilCTBTotalCount_PSI[i],
+                    Long.toString(CouncilCTBTotalCount_PSI[i]));
             for (int j = 1; j < nTT; j++) {
                 summary.put(
-                        sTotalCount_PSIByTT[i][j],
-                        Long.toString(AllTotalCount_PSIByTT[i][j]));
+                        sCouncilTotalCount_PSIByTT[i][j],
+                        Long.toString(CouncilAllTotalCount_PSIByTT[i][j]));
+            }
+        }
+        // RSL
+        for (int i = 1; i < nPSI; i++) {
+            summary.put(
+                    sRSLAllTotalCount_PSI[i],
+                    Long.toString(RSLAllTotalCount_PSI[i]));
+            summary.put(
+                    sRSLHBTotalCount_PSI[i],
+                    Long.toString(RSLHBTotalCount_PSI[i]));
+            summary.put(
+                    sRSLCTBTotalCount_PSI[i],
+                    Long.toString(RSLCTBTotalCount_PSI[i]));
+            for (int j = 1; j < nTT; j++) {
+                summary.put(
+                        sRSLTotalCount_PSIByTT[i][j],
+                        Long.toString(RSLAllTotalCount_PSIByTT[i][j]));
             }
         }
     }
 
+    @Override
     protected void addToSummarySingleTimePSIRates(
             int nTT,
             int nPSI,
             HashMap<String, String> summary) {
+        //super.addToSummarySingleTimePSIRates(nTT, nPSI, summary);
         double ave;
         double d;
         double all;
-        // PassportStandardIndicator
+        // Council
         for (int i = 1; i < nPSI; i++) {
-            all = Integer.valueOf(summary.get(sAllTotalCount_PSI[i]));
-            d = AllCount1;
+            all = Integer.valueOf(summary.get(sCouncilAllTotalCount_PSI[i]));
+            d = CouncilAllCount1;
             if (d > 0) {
                 ave = (all * 100.0d) / d;
                 summary.put(
-                        sAllPercentageOfAll_PSI[i],
+                        sCouncilAllPercentageOfAll_PSI[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(ave),
                                 decimalPlacePrecisionForAverage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            all = Integer.valueOf(summary.get(sHBTotalCount_PSI[i]));
-            d = HBCount1;
+            all = Integer.valueOf(summary.get(sCouncilHBTotalCount_PSI[i]));
+            d = CouncilHBCount1;
             if (d > 0) {
                 ave = (all * 100.0d) / d;
                 summary.put(
-                        sHBPercentageOfHB_PSI[i],
+                        sCouncilHBPercentageOfHB_PSI[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(ave),
                                 decimalPlacePrecisionForAverage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            all = Integer.valueOf(summary.get(sCTBTotalCount_PSI[i]));
-            d = CTBCount1;
+            all = Integer.valueOf(summary.get(sCouncilCTBTotalCount_PSI[i]));
+            d = CouncilCTBCount1;
             if (d > 0) {
                 ave = (all * 100.0d) / d;
                 summary.put(
-                        sCTBPercentageOfCTB_PSI[i],
+                        sCouncilCTBPercentageOfCTB_PSI[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(ave),
                                 decimalPlacePrecisionForAverage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
             for (int j = 1; j < nTT; j++) {
-                all = Integer.valueOf(summary.get(sTotalCount_PSIByTT[i][j]));
-                d = AllCount1;
+                all = Integer.valueOf(summary.get(sCouncilTotalCount_PSIByTT[i][j]));
+                d = CouncilAllCount1;
                 if (d > 0) {
                     ave = (all * 100.0d) / d;
                     summary.put(
-                            sPercentageOfAll_PSIByTT[i][j],
+                            sCouncilPercentageOfAll_PSIByTT[i][j],
                             Generic_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(ave),
                                     decimalPlacePrecisionForAverage,
                                     RoundingMode.HALF_UP).toPlainString());
                 }
-                d = HBCount1;
+                d = CouncilHBCount1;
                 if (d > 0) {
                     ave = (all * 100.0d) / d;
                     summary.put(
-                            sPercentageOfHB_PSIByTT[i][j],
+                            sCouncilPercentageOfHB_PSIByTT[i][j],
                             Generic_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(ave),
                                     decimalPlacePrecisionForAverage,
                                     RoundingMode.HALF_UP).toPlainString());
                 }
-                d = CTBCount1;
+                d = CouncilCTBCount1;
                 if (d > 0) {
                     ave = (all * 100.0d) / d;
                     summary.put(
-                            sPercentageOfCTB_PSIByTT[i][j],
+                            sCouncilPercentageOfCTB_PSIByTT[i][j],
+                            Generic_BigDecimal.roundIfNecessary(
+                                    BigDecimal.valueOf(ave),
+                                    decimalPlacePrecisionForAverage,
+                                    RoundingMode.HALF_UP).toPlainString());
+                }
+            }
+        }
+        // RSL
+        for (int i = 1; i < nPSI; i++) {
+            all = Integer.valueOf(summary.get(sRSLAllTotalCount_PSI[i]));
+            d = RSLAllCount1;
+            if (d > 0) {
+                ave = (all * 100.0d) / d;
+                summary.put(
+                        sRSLAllPercentageOfAll_PSI[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(ave),
+                                decimalPlacePrecisionForAverage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            all = Integer.valueOf(summary.get(sRSLHBTotalCount_PSI[i]));
+            d = RSLHBCount1;
+            if (d > 0) {
+                ave = (all * 100.0d) / d;
+                summary.put(
+                        sRSLHBPercentageOfHB_PSI[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(ave),
+                                decimalPlacePrecisionForAverage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            all = Integer.valueOf(summary.get(sRSLCTBTotalCount_PSI[i]));
+            d = RSLCTBCount1;
+            if (d > 0) {
+                ave = (all * 100.0d) / d;
+                summary.put(
+                        sRSLCTBPercentageOfCTB_PSI[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(ave),
+                                decimalPlacePrecisionForAverage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            for (int j = 1; j < nTT; j++) {
+                all = Integer.valueOf(summary.get(sRSLTotalCount_PSIByTT[i][j]));
+                d = RSLAllCount1;
+                if (d > 0) {
+                    ave = (all * 100.0d) / d;
+                    summary.put(
+                            sRSLPercentageOfAll_PSIByTT[i][j],
+                            Generic_BigDecimal.roundIfNecessary(
+                                    BigDecimal.valueOf(ave),
+                                    decimalPlacePrecisionForAverage,
+                                    RoundingMode.HALF_UP).toPlainString());
+                }
+                d = RSLHBCount1;
+                if (d > 0) {
+                    ave = (all * 100.0d) / d;
+                    summary.put(
+                            sRSLPercentageOfHB_PSIByTT[i][j],
+                            Generic_BigDecimal.roundIfNecessary(
+                                    BigDecimal.valueOf(ave),
+                                    decimalPlacePrecisionForAverage,
+                                    RoundingMode.HALF_UP).toPlainString());
+                }
+                d = RSLCTBCount1;
+                if (d > 0) {
+                    ave = (all * 100.0d) / d;
+                    summary.put(
+                            sRSLPercentageOfCTB_PSIByTT[i][j],
                             Generic_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(ave),
                                     decimalPlacePrecisionForAverage,
@@ -3324,831 +3475,1056 @@ public class SummaryUO extends Summary {
         }
     }
 
+    @Override
     protected void addToSummarySingleTimeDisabilityCounts(
             int nTT,
             HashMap<String, String> summary) {
+        //super.addToSummarySingleTimeDisabilityCounts(nTT, summary);
         int t;
+        // Council
         // DisabilityAward
-        t = TotalCount_DisabilityAwardByTT[1]
-                + TotalCount_DisabilityAwardByTT[2]
-                + TotalCount_DisabilityAwardByTT[3]
-                + TotalCount_DisabilityAwardByTT[4]
-                + TotalCount_DisabilityAwardByTT[5]
-                + TotalCount_DisabilityAwardByTT[6]
-                + TotalCount_DisabilityAwardByTT[7]
-                + TotalCount_DisabilityAwardByTT[8]
-                + TotalCount_DisabilityAwardByTT[9];
+        t = CouncilTotalCount_DisabilityAwardByTT[1]
+                + CouncilTotalCount_DisabilityAwardByTT[2]
+                + CouncilTotalCount_DisabilityAwardByTT[3]
+                + CouncilTotalCount_DisabilityAwardByTT[4]
+                + CouncilTotalCount_DisabilityAwardByTT[5]
+                + CouncilTotalCount_DisabilityAwardByTT[6]
+                + CouncilTotalCount_DisabilityAwardByTT[7]
+                + CouncilTotalCount_DisabilityAwardByTT[8]
+                + CouncilTotalCount_DisabilityAwardByTT[9];
         summary.put(
-                sTotalCount_DisabilityAward,
+                sCouncilTotalCount_DisabilityAward,
                 Integer.toString(t));
         // DisabilityAwardHBTTs
-        t = TotalCount_DisabilityAwardByTT[1]
-                + TotalCount_DisabilityAwardByTT[2]
-                + TotalCount_DisabilityAwardByTT[3]
-                + TotalCount_DisabilityAwardByTT[4]
-                + TotalCount_DisabilityAwardByTT[6]
-                + TotalCount_DisabilityAwardByTT[8]
-                + TotalCount_DisabilityAwardByTT[9];
+        t = CouncilTotalCount_DisabilityAwardByTT[1]
+                + CouncilTotalCount_DisabilityAwardByTT[2]
+                + CouncilTotalCount_DisabilityAwardByTT[3]
+                + CouncilTotalCount_DisabilityAwardByTT[4]
+                + CouncilTotalCount_DisabilityAwardByTT[6]
+                + CouncilTotalCount_DisabilityAwardByTT[8]
+                + CouncilTotalCount_DisabilityAwardByTT[9];
         summary.put(
-                sTotalCount_DisabilityAwardHBTTs,
+                sCouncilTotalCount_DisabilityAwardHBTTs,
                 Integer.toString(t));
         // DisabilityAwardCTBTTs
-        t = TotalCount_DisabilityAwardByTT[5]
-                + TotalCount_DisabilityAwardByTT[7];
+        t = CouncilTotalCount_DisabilityAwardByTT[5]
+                + CouncilTotalCount_DisabilityAwardByTT[7];
         summary.put(
-                sTotalCount_DisabilityAwardCTBTTs,
+                sCouncilTotalCount_DisabilityAwardCTBTTs,
                 Integer.toString(t));
         // DisabilityAwardSocialTTs
-        t = TotalCount_DisabilityAwardByTT[1] + TotalCount_DisabilityAwardByTT[4];
+        t = CouncilTotalCount_DisabilityAwardByTT[1] + CouncilTotalCount_DisabilityAwardByTT[4];
         summary.put(
-                sTotalCount_DisabilityAwardSocialTTs,
+                sCouncilTotalCount_DisabilityAwardSocialTTs,
                 Integer.toString(t));
         // DisabilityAwardPrivateDeregulatedTTs
-        t = TotalCount_DisabilityAwardByTT[3] + TotalCount_DisabilityAwardByTT[6];
+        t = CouncilTotalCount_DisabilityAwardByTT[3] + CouncilTotalCount_DisabilityAwardByTT[6];
         summary.put(
-                sTotalCount_DisabilityAwardPrivateDeregulatedTTs,
+                sCouncilTotalCount_DisabilityAwardPrivateDeregulatedTTs,
                 Integer.toString(t));
         // DisabilityPremiumAward
-        t = TotalCount_DisabilityPremiumAwardByTT[1]
-                + TotalCount_DisabilityPremiumAwardByTT[2]
-                + TotalCount_DisabilityPremiumAwardByTT[3]
-                + TotalCount_DisabilityPremiumAwardByTT[4]
-                + TotalCount_DisabilityPremiumAwardByTT[5]
-                + TotalCount_DisabilityPremiumAwardByTT[6]
-                + TotalCount_DisabilityPremiumAwardByTT[7]
-                + TotalCount_DisabilityPremiumAwardByTT[8]
-                + TotalCount_DisabilityPremiumAwardByTT[9];
+        t = CouncilTotalCount_DisabilityPremiumAwardByTT[1]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[2]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[3]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[4]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[5]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[6]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[7]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[8]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[9];
         summary.put(
-                sTotalCount_DisabilityPremiumAward,
+                sCouncilTotalCount_DisabilityPremiumAward,
                 Integer.toString(t));
         // DisabilityPremiumAwardHBTTs
-        t = TotalCount_DisabilityPremiumAwardByTT[1]
-                + TotalCount_DisabilityPremiumAwardByTT[2]
-                + TotalCount_DisabilityPremiumAwardByTT[3]
-                + TotalCount_DisabilityPremiumAwardByTT[4]
-                + TotalCount_DisabilityPremiumAwardByTT[6]
-                + TotalCount_DisabilityPremiumAwardByTT[8]
-                + TotalCount_DisabilityPremiumAwardByTT[9];
+        t = CouncilTotalCount_DisabilityPremiumAwardByTT[1]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[2]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[3]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[4]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[6]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[8]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[9];
         summary.put(
-                sTotalCount_DisabilityPremiumAwardHBTTs,
+                sCouncilTotalCount_DisabilityPremiumAwardHBTTs,
                 Integer.toString(t));
         // DisabilityPremiumAwardCTBTTs
-        t = TotalCount_DisabilityPremiumAwardByTT[5]
-                + TotalCount_DisabilityPremiumAwardByTT[7];
+        t = CouncilTotalCount_DisabilityPremiumAwardByTT[5]
+                + CouncilTotalCount_DisabilityPremiumAwardByTT[7];
         summary.put(
-                sTotalCount_DisabilityPremiumAwardCTBTTs,
+                sCouncilTotalCount_DisabilityPremiumAwardCTBTTs,
                 Integer.toString(t));
         // DisabilityPremiumAwardSocialTTs
-        t = TotalCount_DisabilityPremiumAwardByTT[1] + TotalCount_DisabilityPremiumAwardByTT[4];
+        t = CouncilTotalCount_DisabilityPremiumAwardByTT[1] + CouncilTotalCount_DisabilityPremiumAwardByTT[4];
         summary.put(
-                sTotalCount_DisabilityPremiumAwardSocialTTs,
+                sCouncilTotalCount_DisabilityPremiumAwardSocialTTs,
                 Integer.toString(t));
         // DisabilityPremiumAwardPrivateDeregulatedTTs
-        t = TotalCount_DisabilityPremiumAwardByTT[3] + TotalCount_DisabilityPremiumAwardByTT[6];
+        t = CouncilTotalCount_DisabilityPremiumAwardByTT[3] + CouncilTotalCount_DisabilityPremiumAwardByTT[6];
         summary.put(
-                sTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                sCouncilTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs,
                 Integer.toString(t));
         // SevereDisabilityPremiumAward
-        t = TotalCount_SevereDisabilityPremiumAwardByTT[1]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[2]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[3]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[4]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[5]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[6]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[7]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[8]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[9];
+        t = CouncilTotalCount_SevereDisabilityPremiumAwardByTT[1]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[2]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[3]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[4]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[5]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[6]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[7]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[8]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[9];
         summary.put(
-                sTotalCount_SevereDisabilityPremiumAward,
+                sCouncilTotalCount_SevereDisabilityPremiumAward,
                 Integer.toString(t));
         // SevereSevereDisabilityPremiumAwardHBTTs
-        t = TotalCount_SevereDisabilityPremiumAwardByTT[1]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[2]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[3]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[4]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[6]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[8]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[9];
+        t = CouncilTotalCount_SevereDisabilityPremiumAwardByTT[1]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[2]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[3]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[4]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[6]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[8]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[9];
         summary.put(
-                sTotalCount_SevereDisabilityPremiumAwardHBTTs,
+                sCouncilTotalCount_SevereDisabilityPremiumAwardHBTTs,
                 Integer.toString(t));
         // SevereDisabilityPremiumAwardCTBTTs
-        t = TotalCount_SevereDisabilityPremiumAwardByTT[5]
-                + TotalCount_SevereDisabilityPremiumAwardByTT[7];
+        t = CouncilTotalCount_SevereDisabilityPremiumAwardByTT[5]
+                + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[7];
         summary.put(
-                sTotalCount_SevereDisabilityPremiumAwardCTBTTs,
+                sCouncilTotalCount_SevereDisabilityPremiumAwardCTBTTs,
                 Integer.toString(t));
         // SevereDisabilityPremiumAwardSocialTTs
-        t = TotalCount_SevereDisabilityPremiumAwardByTT[1] + TotalCount_SevereDisabilityPremiumAwardByTT[4];
+        t = CouncilTotalCount_SevereDisabilityPremiumAwardByTT[1] + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[4];
         summary.put(
-                sTotalCount_SevereDisabilityPremiumAwardSocialTTs,
+                sCouncilTotalCount_SevereDisabilityPremiumAwardSocialTTs,
                 Integer.toString(t));
         // SevereDisabilityPremiumAwardPrivateDeregulatedTTs
-        t = TotalCount_SevereDisabilityPremiumAwardByTT[3] + TotalCount_SevereDisabilityPremiumAwardByTT[6];
+        t = CouncilTotalCount_SevereDisabilityPremiumAwardByTT[3] + CouncilTotalCount_SevereDisabilityPremiumAwardByTT[6];
         summary.put(
-                sTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                sCouncilTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
                 Integer.toString(t));
         // DisabledChildPremiumAward
-        t = TotalCount_DisabledChildPremiumAwardByTT[1]
-                + TotalCount_DisabledChildPremiumAwardByTT[2]
-                + TotalCount_DisabledChildPremiumAwardByTT[3]
-                + TotalCount_DisabledChildPremiumAwardByTT[4]
-                + TotalCount_DisabledChildPremiumAwardByTT[5]
-                + TotalCount_DisabledChildPremiumAwardByTT[6]
-                + TotalCount_DisabledChildPremiumAwardByTT[7]
-                + TotalCount_DisabledChildPremiumAwardByTT[8]
-                + TotalCount_DisabledChildPremiumAwardByTT[9];
+        t = CouncilTotalCount_DisabledChildPremiumAwardByTT[1]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[2]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[3]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[4]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[5]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[6]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[7]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[8]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[9];
         summary.put(
-                sTotalCount_DisabledChildPremiumAward,
+                sCouncilTotalCount_DisabledChildPremiumAward,
                 Integer.toString(t));
         // SevereDisabledChildPremiumAwardHBTTs
-        t = TotalCount_DisabledChildPremiumAwardByTT[1]
-                + TotalCount_DisabledChildPremiumAwardByTT[2]
-                + TotalCount_DisabledChildPremiumAwardByTT[3]
-                + TotalCount_DisabledChildPremiumAwardByTT[4]
-                + TotalCount_DisabledChildPremiumAwardByTT[6]
-                + TotalCount_DisabledChildPremiumAwardByTT[8]
-                + TotalCount_DisabledChildPremiumAwardByTT[9];
+        t = CouncilTotalCount_DisabledChildPremiumAwardByTT[1]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[2]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[3]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[4]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[6]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[8]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[9];
         summary.put(
-                sTotalCount_DisabledChildPremiumAwardHBTTs,
+                sCouncilTotalCount_DisabledChildPremiumAwardHBTTs,
                 Integer.toString(t));
         // DisabledChildPremiumAwardCTBTTs
-        t = TotalCount_DisabledChildPremiumAwardByTT[5]
-                + TotalCount_DisabledChildPremiumAwardByTT[7];
+        t = CouncilTotalCount_DisabledChildPremiumAwardByTT[5]
+                + CouncilTotalCount_DisabledChildPremiumAwardByTT[7];
         summary.put(
-                sTotalCount_DisabledChildPremiumAwardCTBTTs,
+                sCouncilTotalCount_DisabledChildPremiumAwardCTBTTs,
                 Integer.toString(t));
         // DisabledChildPremiumAwardSocialTTs
-        t = TotalCount_DisabledChildPremiumAwardByTT[1] + TotalCount_DisabledChildPremiumAwardByTT[4];
+        t = CouncilTotalCount_DisabledChildPremiumAwardByTT[1] + CouncilTotalCount_DisabledChildPremiumAwardByTT[4];
         summary.put(
-                sTotalCount_DisabledChildPremiumAwardSocialTTs,
+                sCouncilTotalCount_DisabledChildPremiumAwardSocialTTs,
                 Integer.toString(t));
         // DisabledChildPremiumAwardPrivateDeregulatedTTs
-        t = TotalCount_DisabledChildPremiumAwardByTT[3] + TotalCount_DisabledChildPremiumAwardByTT[6];
+        t = CouncilTotalCount_DisabledChildPremiumAwardByTT[3] + CouncilTotalCount_DisabledChildPremiumAwardByTT[6];
         summary.put(
-                sTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                sCouncilTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs,
                 Integer.toString(t));
         // EnhancedDisabilityPremiumAward
-        t = TotalCount_EnhancedDisabilityPremiumAwardByTT[1]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[2]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[3]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[4]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[5]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[6]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[7]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[8]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[9];
+        t = CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[1]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[2]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[3]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[4]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[5]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[6]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[7]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[8]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[9];
         summary.put(
-                sTotalCount_EnhancedDisabilityPremiumAward,
+                sCouncilTotalCount_EnhancedDisabilityPremiumAward,
                 Integer.toString(t));
         // EnhancedDisabilityPremiumAwardHBTTs
-        t = TotalCount_EnhancedDisabilityPremiumAwardByTT[1]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[2]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[3]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[4]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[6]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[8]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[9];
+        t = CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[1]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[2]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[3]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[4]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[6]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[8]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[9];
         summary.put(
-                sTotalCount_EnhancedDisabilityPremiumAwardHBTTs,
+                sCouncilTotalCount_EnhancedDisabilityPremiumAwardHBTTs,
                 Integer.toString(t));
         // EnhancedDisabilityPremiumAwardCTBTTs
-        t = TotalCount_EnhancedDisabilityPremiumAwardByTT[5]
-                + TotalCount_EnhancedDisabilityPremiumAwardByTT[7];
+        t = CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[5]
+                + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[7];
         summary.put(
-                sTotalCount_EnhancedDisabilityPremiumAwardCTBTTs,
+                sCouncilTotalCount_EnhancedDisabilityPremiumAwardCTBTTs,
                 Integer.toString(t));
         // EnhancedDisabilityPremiumAwardSocialTTs
-        t = TotalCount_EnhancedDisabilityPremiumAwardByTT[1] + TotalCount_EnhancedDisabilityPremiumAwardByTT[4];
+        t = CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[1] + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[4];
         summary.put(
-                sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs,
+                sCouncilTotalCount_EnhancedDisabilityPremiumAwardSocialTTs,
                 Integer.toString(t));
         // EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs
-        t = TotalCount_EnhancedDisabilityPremiumAwardByTT[3] + TotalCount_EnhancedDisabilityPremiumAwardByTT[6];
+        t = CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[3] + CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[6];
         summary.put(
-                sTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                sCouncilTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
                 Integer.toString(t));
         // ByTT
         for (int i = 1; i < nTT; i++) {
             summary.put(
-                    sTotalCount_DisabilityAwardByTT[i],
+                    sCouncilTotalCount_DisabilityAwardByTT[i],
                     Integer.toString(TotalCount_DisabilityAwardByTT[i]));
             summary.put(
-                    sTotalCount_DisabilityPremiumAwardByTT[i],
+                    sCouncilTotalCount_DisabilityPremiumAwardByTT[i],
                     Integer.toString(TotalCount_DisabilityPremiumAwardByTT[i]));
             summary.put(
-                    sTotalCount_SevereDisabilityPremiumAwardByTT[i],
+                    sCouncilTotalCount_SevereDisabilityPremiumAwardByTT[i],
                     Integer.toString(TotalCount_SevereDisabilityPremiumAwardByTT[i]));
             summary.put(
-                    sTotalCount_DisabledChildPremiumAwardByTT[i],
+                    sCouncilTotalCount_DisabledChildPremiumAwardByTT[i],
                     Integer.toString(TotalCount_DisabledChildPremiumAwardByTT[i]));
             summary.put(
-                    sTotalCount_EnhancedDisabilityPremiumAwardByTT[i],
+                    sCouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+        }
+        // RSL
+        // DisabilityAward
+        t = RSLTotalCount_DisabilityAwardByTT[1]
+                + RSLTotalCount_DisabilityAwardByTT[2]
+                + RSLTotalCount_DisabilityAwardByTT[3]
+                + RSLTotalCount_DisabilityAwardByTT[4]
+                + RSLTotalCount_DisabilityAwardByTT[5]
+                + RSLTotalCount_DisabilityAwardByTT[6]
+                + RSLTotalCount_DisabilityAwardByTT[7]
+                + RSLTotalCount_DisabilityAwardByTT[8]
+                + RSLTotalCount_DisabilityAwardByTT[9];
+        summary.put(
+                sRSLTotalCount_DisabilityAward,
+                Integer.toString(t));
+        // DisabilityAwardHBTTs
+        t = RSLTotalCount_DisabilityAwardByTT[1]
+                + RSLTotalCount_DisabilityAwardByTT[2]
+                + RSLTotalCount_DisabilityAwardByTT[3]
+                + RSLTotalCount_DisabilityAwardByTT[4]
+                + RSLTotalCount_DisabilityAwardByTT[6]
+                + RSLTotalCount_DisabilityAwardByTT[8]
+                + RSLTotalCount_DisabilityAwardByTT[9];
+        summary.put(
+                sRSLTotalCount_DisabilityAwardHBTTs,
+                Integer.toString(t));
+        // DisabilityAwardCTBTTs
+        t = RSLTotalCount_DisabilityAwardByTT[5]
+                + RSLTotalCount_DisabilityAwardByTT[7];
+        summary.put(
+                sRSLTotalCount_DisabilityAwardCTBTTs,
+                Integer.toString(t));
+        // DisabilityAwardSocialTTs
+        t = RSLTotalCount_DisabilityAwardByTT[1] + RSLTotalCount_DisabilityAwardByTT[4];
+        summary.put(
+                sRSLTotalCount_DisabilityAwardSocialTTs,
+                Integer.toString(t));
+        // DisabilityAwardPrivateDeregulatedTTs
+        t = RSLTotalCount_DisabilityAwardByTT[3] + RSLTotalCount_DisabilityAwardByTT[6];
+        summary.put(
+                sRSLTotalCount_DisabilityAwardPrivateDeregulatedTTs,
+                Integer.toString(t));
+        // DisabilityPremiumAward
+        t = RSLTotalCount_DisabilityPremiumAwardByTT[1]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[2]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[3]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[4]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[5]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[6]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[7]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[8]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[9];
+        summary.put(
+                sRSLTotalCount_DisabilityPremiumAward,
+                Integer.toString(t));
+        // DisabilityPremiumAwardHBTTs
+        t = RSLTotalCount_DisabilityPremiumAwardByTT[1]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[2]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[3]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[4]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[6]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[8]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[9];
+        summary.put(
+                sRSLTotalCount_DisabilityPremiumAwardHBTTs,
+                Integer.toString(t));
+        // DisabilityPremiumAwardCTBTTs
+        t = RSLTotalCount_DisabilityPremiumAwardByTT[5]
+                + RSLTotalCount_DisabilityPremiumAwardByTT[7];
+        summary.put(
+                sRSLTotalCount_DisabilityPremiumAwardCTBTTs,
+                Integer.toString(t));
+        // DisabilityPremiumAwardSocialTTs
+        t = RSLTotalCount_DisabilityPremiumAwardByTT[1] + RSLTotalCount_DisabilityPremiumAwardByTT[4];
+        summary.put(
+                sRSLTotalCount_DisabilityPremiumAwardSocialTTs,
+                Integer.toString(t));
+        // DisabilityPremiumAwardPrivateDeregulatedTTs
+        t = RSLTotalCount_DisabilityPremiumAwardByTT[3] + RSLTotalCount_DisabilityPremiumAwardByTT[6];
+        summary.put(
+                sRSLTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                Integer.toString(t));
+        // SevereDisabilityPremiumAward
+        t = RSLTotalCount_SevereDisabilityPremiumAwardByTT[1]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[2]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[3]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[4]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[5]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[6]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[7]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[8]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[9];
+        summary.put(
+                sRSLTotalCount_SevereDisabilityPremiumAward,
+                Integer.toString(t));
+        // SevereSevereDisabilityPremiumAwardHBTTs
+        t = RSLTotalCount_SevereDisabilityPremiumAwardByTT[1]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[2]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[3]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[4]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[6]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[8]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[9];
+        summary.put(
+                sRSLTotalCount_SevereDisabilityPremiumAwardHBTTs,
+                Integer.toString(t));
+        // SevereDisabilityPremiumAwardCTBTTs
+        t = RSLTotalCount_SevereDisabilityPremiumAwardByTT[5]
+                + RSLTotalCount_SevereDisabilityPremiumAwardByTT[7];
+        summary.put(
+                sRSLTotalCount_SevereDisabilityPremiumAwardCTBTTs,
+                Integer.toString(t));
+        // SevereDisabilityPremiumAwardSocialTTs
+        t = RSLTotalCount_SevereDisabilityPremiumAwardByTT[1] + RSLTotalCount_SevereDisabilityPremiumAwardByTT[4];
+        summary.put(
+                sRSLTotalCount_SevereDisabilityPremiumAwardSocialTTs,
+                Integer.toString(t));
+        // SevereDisabilityPremiumAwardPrivateDeregulatedTTs
+        t = RSLTotalCount_SevereDisabilityPremiumAwardByTT[3] + RSLTotalCount_SevereDisabilityPremiumAwardByTT[6];
+        summary.put(
+                sRSLTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                Integer.toString(t));
+        // DisabledChildPremiumAward
+        t = RSLTotalCount_DisabledChildPremiumAwardByTT[1]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[2]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[3]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[4]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[5]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[6]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[7]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[8]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[9];
+        summary.put(
+                sRSLTotalCount_DisabledChildPremiumAward,
+                Integer.toString(t));
+        // SevereDisabledChildPremiumAwardHBTTs
+        t = RSLTotalCount_DisabledChildPremiumAwardByTT[1]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[2]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[3]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[4]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[6]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[8]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[9];
+        summary.put(
+                sRSLTotalCount_DisabledChildPremiumAwardHBTTs,
+                Integer.toString(t));
+        // DisabledChildPremiumAwardCTBTTs
+        t = RSLTotalCount_DisabledChildPremiumAwardByTT[5]
+                + RSLTotalCount_DisabledChildPremiumAwardByTT[7];
+        summary.put(
+                sRSLTotalCount_DisabledChildPremiumAwardCTBTTs,
+                Integer.toString(t));
+        // DisabledChildPremiumAwardSocialTTs
+        t = RSLTotalCount_DisabledChildPremiumAwardByTT[1] + RSLTotalCount_DisabledChildPremiumAwardByTT[4];
+        summary.put(
+                sRSLTotalCount_DisabledChildPremiumAwardSocialTTs,
+                Integer.toString(t));
+        // DisabledChildPremiumAwardPrivateDeregulatedTTs
+        t = RSLTotalCount_DisabledChildPremiumAwardByTT[3] + RSLTotalCount_DisabledChildPremiumAwardByTT[6];
+        summary.put(
+                sRSLTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                Integer.toString(t));
+        // EnhancedDisabilityPremiumAward
+        t = RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[1]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[2]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[3]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[4]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[5]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[6]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[7]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[8]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[9];
+        summary.put(
+                sRSLTotalCount_EnhancedDisabilityPremiumAward,
+                Integer.toString(t));
+        // EnhancedDisabilityPremiumAwardHBTTs
+        t = RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[1]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[2]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[3]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[4]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[6]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[8]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[9];
+        summary.put(
+                sRSLTotalCount_EnhancedDisabilityPremiumAwardHBTTs,
+                Integer.toString(t));
+        // EnhancedDisabilityPremiumAwardCTBTTs
+        t = RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[5]
+                + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[7];
+        summary.put(
+                sRSLTotalCount_EnhancedDisabilityPremiumAwardCTBTTs,
+                Integer.toString(t));
+        // EnhancedDisabilityPremiumAwardSocialTTs
+        t = RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[1] + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[4];
+        summary.put(
+                sRSLTotalCount_EnhancedDisabilityPremiumAwardSocialTTs,
+                Integer.toString(t));
+        // EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs
+        t = RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[3] + RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[6];
+        summary.put(
+                sRSLTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                Integer.toString(t));
+        // ByTT
+        for (int i = 1; i < nTT; i++) {
+            summary.put(
+                    sRSLTotalCount_DisabilityAwardByTT[i],
+                    Integer.toString(TotalCount_DisabilityAwardByTT[i]));
+            summary.put(
+                    sRSLTotalCount_DisabilityPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_DisabilityPremiumAwardByTT[i]));
+            summary.put(
+                    sRSLTotalCount_SevereDisabilityPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_SevereDisabilityPremiumAwardByTT[i]));
+            summary.put(
+                    sRSLTotalCount_DisabledChildPremiumAwardByTT[i],
+                    Integer.toString(TotalCount_DisabledChildPremiumAwardByTT[i]));
+            summary.put(
+                    sRSLTotalCount_EnhancedDisabilityPremiumAwardByTT[i],
                     Integer.toString(TotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
         }
     }
 
+    @Override
     protected void addToSummarySingleTimeDisabilityRates(
             int nTT,
             HashMap<String, String> summary) {
+        //super.addToSummarySingleTimeDisabilityRates(nTT, summary);
         double percentage;
         double d;
         int t;
+        // Council
         // DisabilityAward
-        t = Integer.valueOf(summary.get(sTotalCount_DisabilityAward));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityAward));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabilityAward,
+                    sCouncilPercentageOfAll_DisabilityAward,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // DisabilityAwardHBTTs
-        t = Integer.valueOf(summary.get(sTotalCount_DisabilityAwardHBTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityAwardHBTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabilityAwardHBTTs,
+                    sCouncilPercentageOfAll_DisabilityAwardHBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_DisabilityAwardHBTTs,
+                    sCouncilPercentageOfHB_DisabilityAwardHBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // DisabilityAwardCTBTTs
-        t = Integer.valueOf(summary.get(sTotalCount_DisabilityAwardCTBTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityAwardCTBTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabilityAwardCTBTTs,
+                    sCouncilPercentageOfAll_DisabilityAwardCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = CTBCount1;
+        d = CouncilCTBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfCTB_DisabilityAwardCTBTTs,
+                    sCouncilPercentageOfCTB_DisabilityAwardCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // DisabilityAwardSocialTTs
-        t = Integer.valueOf(summary.get(sTotalCount_DisabilityAwardSocialTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityAwardSocialTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabilityAwardSocialTTs,
+                    sCouncilPercentageOfAll_DisabilityAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_DisabilityAwardSocialTTs,
+                    sCouncilPercentageOfHB_DisabilityAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = TotalCount_TTClaimant0[1] + TotalCount_TTClaimant0[4];
+        d = CouncilTotalCount_TTClaimant0[1] + CouncilTotalCount_TTClaimant0[4];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfSocialTTs_DisabilityAwardSocialTTs,
+                    sCouncilPercentageOfSocialTTs_DisabilityAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // DisabilityAwardPrivateDeregulatedTTs
-        t = Integer.valueOf(summary.get(sTotalCount_DisabilityAwardPrivateDeregulatedTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityAwardPrivateDeregulatedTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = TotalCount_TTClaimant0[3] + TotalCount_TTClaimant0[6];
+        d = CouncilTotalCount_TTClaimant0[3] + CouncilTotalCount_TTClaimant0[6];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // DisabilityPremiumAward
-        t = Integer.valueOf(summary.get(sTotalCount_DisabilityPremiumAward));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityPremiumAward));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabilityPremiumAward,
+                    sCouncilPercentageOfAll_DisabilityPremiumAward,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // DisabilityPremiumAwardHBTTs
-        t = Integer.valueOf(summary.get(sTotalCount_DisabilityPremiumAwardHBTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityPremiumAwardHBTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabilityPremiumAwardHBTTs,
+                    sCouncilPercentageOfAll_DisabilityPremiumAwardHBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_DisabilityPremiumAwardHBTTs,
+                    sCouncilPercentageOfHB_DisabilityPremiumAwardHBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // DisabilityPremiumAwardCTBTTs
-        t = Integer.valueOf(summary.get(sTotalCount_DisabilityPremiumAwardCTBTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityPremiumAwardCTBTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabilityPremiumAwardCTBTTs,
+                    sCouncilPercentageOfAll_DisabilityPremiumAwardCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = CTBCount1;
+        d = CouncilCTBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfCTB_DisabilityPremiumAwardCTBTTs,
+                    sCouncilPercentageOfCTB_DisabilityPremiumAwardCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // DisabilityPremiumAwardSocialTTs
-        t = Integer.valueOf(summary.get(sTotalCount_DisabilityPremiumAwardSocialTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityPremiumAwardSocialTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabilityPremiumAwardSocialTTs,
+                    sCouncilPercentageOfAll_DisabilityPremiumAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_DisabilityPremiumAwardSocialTTs,
+                    sCouncilPercentageOfHB_DisabilityPremiumAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = TotalCount_TTClaimant0[1] + TotalCount_TTClaimant0[4];
+        d = CouncilTotalCount_TTClaimant0[1] + CouncilTotalCount_TTClaimant0[4];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs,
+                    sCouncilPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // DisabilityPremiumAwardPrivateDeregulatedTTs
-        t = Integer.valueOf(summary.get(sTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = TotalCount_TTClaimant0[3] + TotalCount_TTClaimant0[6];
+        d = CouncilTotalCount_TTClaimant0[3] + CouncilTotalCount_TTClaimant0[6];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // SevereDisabilityPremiumAward
-        t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAward));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_SevereDisabilityPremiumAward));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_SevereDisabilityPremiumAward,
+                    sCouncilPercentageOfAll_SevereDisabilityPremiumAward,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // SevereSevereDisabilityPremiumAwardHBTTs
-        t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardHBTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_SevereDisabilityPremiumAwardHBTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_SevereDisabilityPremiumAwardHBTTs,
+                    sCouncilPercentageOfAll_SevereDisabilityPremiumAwardHBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_SevereDisabilityPremiumAwardHBTTs,
+                    sCouncilPercentageOfHB_SevereDisabilityPremiumAwardHBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // SevereDisabilityPremiumAwardCTBTTs
-        t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardCTBTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_SevereDisabilityPremiumAwardCTBTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs,
+                    sCouncilPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = CTBCount1;
+        d = CouncilCTBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs,
+                    sCouncilPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // SevereDisabilityPremiumAwardSocialTTs
-        t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardSocialTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_SevereDisabilityPremiumAwardSocialTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs,
+                    sCouncilPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs,
+                    sCouncilPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = TotalCount_TTClaimant0[1] + TotalCount_TTClaimant0[4];
+        d = CouncilTotalCount_TTClaimant0[1] + CouncilTotalCount_TTClaimant0[4];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs,
+                    sCouncilPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // SevereDisabilityPremiumAwardPrivateDeregulatedTTs
-        t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = TotalCount_TTClaimant0[3] + TotalCount_TTClaimant0[6];
+        d = CouncilTotalCount_TTClaimant0[3] + CouncilTotalCount_TTClaimant0[6];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // DisabledChildPremiumAward
-        t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAward));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabledChildPremiumAward));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabledChildPremiumAward,
+                    sCouncilPercentageOfAll_DisabledChildPremiumAward,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // SevereDisabledChildPremiumAwardHBTTs
-        t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardHBTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabledChildPremiumAwardHBTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabledChildPremiumAwardHBTTs,
+                    sCouncilPercentageOfAll_DisabledChildPremiumAwardHBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_DisabledChildPremiumAwardHBTTs,
+                    sCouncilPercentageOfHB_DisabledChildPremiumAwardHBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // DisabledChildPremiumAwardCTBTTs
-        t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardCTBTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabledChildPremiumAwardCTBTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabledChildPremiumAwardCTBTTs,
+                    sCouncilPercentageOfAll_DisabledChildPremiumAwardCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = CTBCount1;
+        d = CouncilCTBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfCTB_DisabledChildPremiumAwardCTBTTs,
+                    sCouncilPercentageOfCTB_DisabledChildPremiumAwardCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // DisabledChildPremiumAwardSocialTTs
-        t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardSocialTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabledChildPremiumAwardSocialTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabledChildPremiumAwardSocialTTs,
+                    sCouncilPercentageOfAll_DisabledChildPremiumAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_DisabledChildPremiumAwardSocialTTs,
+                    sCouncilPercentageOfHB_DisabledChildPremiumAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = TotalCount_TTClaimant0[1] + TotalCount_TTClaimant0[4];
+        d = CouncilTotalCount_TTClaimant0[1] + CouncilTotalCount_TTClaimant0[4];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs,
+                    sCouncilPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // DisabledChildPremiumAwardPrivateDeregulatedTTs
-        t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = TotalCount_TTClaimant0[3] + TotalCount_TTClaimant0[6];
+        d = CouncilTotalCount_TTClaimant0[3] + CouncilTotalCount_TTClaimant0[6];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // EnhancedDisabilityPremiumAward
-        t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAward));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_EnhancedDisabilityPremiumAward));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_EnhancedDisabilityPremiumAward,
+                    sCouncilPercentageOfAll_EnhancedDisabilityPremiumAward,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // EnhancedDisabilityPremiumAwardHBTTs
-        t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardHBTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_EnhancedDisabilityPremiumAwardHBTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs,
+                    sCouncilPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs,
+                    sCouncilPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // EnhancedDisabilityPremiumAwardCTBTTs
-        t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardCTBTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_EnhancedDisabilityPremiumAwardCTBTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs,
+                    sCouncilPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = CTBCount1;
+        d = CouncilCTBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs,
+                    sCouncilPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // EnhancedDisabilityPremiumAwardSocialTTs
-        t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_EnhancedDisabilityPremiumAwardSocialTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs,
+                    sCouncilPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs,
+                    sCouncilPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = TotalCount_TTClaimant0[1] + TotalCount_TTClaimant0[4];
+        d = CouncilTotalCount_TTClaimant0[1] + CouncilTotalCount_TTClaimant0[4];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs,
+                    sCouncilPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
         // EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs
-        t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs));
+        d = CouncilAllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
+        d = CouncilHBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = TotalCount_TTClaimant0[1] + TotalCount_TTClaimant0[4];
+        d = CouncilTotalCount_TTClaimant0[1] + CouncilTotalCount_TTClaimant0[4];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    sCouncilPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
@@ -4156,209 +4532,1021 @@ public class SummaryUO extends Summary {
         }
         // ByTT
         for (int i = 1; i < nTT; i++) {
-            // AllCount1
-            d = AllCount1;
-            t = Integer.valueOf(summary.get(sTotalCount_DisabilityAwardByTT[i]));
+            // CouncilAllCount1
+            d = CouncilAllCount1;
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfAll_DisabilityAwardByTT[i],
+                        sCouncilPercentageOfAll_DisabilityAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_DisabilityPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfAll_DisabilityPremiumAwardByTT[i],
+                        sCouncilPercentageOfAll_DisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_SevereDisabilityPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfAll_SevereDisabilityPremiumAwardByTT[i],
+                        sCouncilPercentageOfAll_SevereDisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabledChildPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfAll_DisabledChildPremiumAwardByTT[i],
+                        sCouncilPercentageOfAll_DisabledChildPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i],
+                        sCouncilPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            // HBCount1;
-            d = HBCount1;
-            t = Integer.valueOf(summary.get(sTotalCount_DisabilityAwardByTT[i]));
+            // CouncilHBCount1;
+            d = CouncilHBCount1;
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfHB_DisabilityAwardByTT[i],
+                        sCouncilPercentageOfHB_DisabilityAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_DisabilityPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfHB_DisabilityPremiumAwardByTT[i],
+                        sCouncilPercentageOfHB_DisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_SevereDisabilityPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfHB_SevereDisabilityPremiumAwardByTT[i],
+                        sCouncilPercentageOfHB_SevereDisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabledChildPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfHB_DisabledChildPremiumAwardByTT[i],
+                        sCouncilPercentageOfHB_DisabledChildPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfHB_EnhancedDisabilityPremiumAwardByTT[i],
+                        sCouncilPercentageOfHB_EnhancedDisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            // CTBCount1
-            d = CTBCount1;
-            t = Integer.valueOf(summary.get(sTotalCount_DisabilityAwardByTT[i]));
+            // CouncilCTBCount1
+            d = CouncilCTBCount1;
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfCTB_DisabilityAwardByTT[i],
+                        sCouncilPercentageOfCTB_DisabilityAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_DisabilityPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfCTB_DisabilityPremiumAwardByTT[i],
+                        sCouncilPercentageOfCTB_DisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_SevereDisabilityPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (TotalCount_SevereDisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sPercentageOfCTB_SevereDisabilityPremiumAwardByTT[i],
+                        sCouncilPercentageOfCTB_SevereDisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabledChildPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (TotalCount_DisabledChildPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sPercentageOfCTB_DisabledChildPremiumAwardByTT[i],
+                        sCouncilPercentageOfCTB_DisabledChildPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (TotalCount_EnhancedDisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT[i],
+                        sCouncilPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
             // TT
-            d = TotalCount_TTClaimant1[i];
-            t = Integer.valueOf(summary.get(sTotalCount_DisabilityAwardByTT[i]));
+            d = CouncilTotalCount_TTClaimant1[i];
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfTT_DisabilityAwardByTT[i],
+                        sCouncilPercentageOfTT_DisabilityAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_DisabilityPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabilityPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
                 summary.put(
-                        sPercentageOfTT_DisabilityPremiumAwardByTT[i],
+                        sCouncilPercentageOfTT_DisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_SevereDisabilityPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (TotalCount_SevereDisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sPercentageOfTT_SevereDisabilityPremiumAwardByTT[i],
+                        sCouncilPercentageOfTT_SevereDisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_DisabledChildPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (TotalCount_DisabledChildPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sPercentageOfTT_DisabledChildPremiumAwardByTT[i],
+                        sCouncilPercentageOfTT_DisabledChildPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+            t = Integer.valueOf(summary.get(sCouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
             if (d > 0) {
                 percentage = (TotalCount_EnhancedDisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
-                        sPercentageOfTT_EnhancedDisabilityPremiumAwardByTT[i],
+                        sCouncilPercentageOfTT_EnhancedDisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+        }
+        // RSL
+        // DisabilityAward
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityAward));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabilityAward,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityAwardHBTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityAwardHBTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabilityAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_DisabilityAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityAwardCTBTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityAwardCTBTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabilityAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLCTBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfCTB_DisabilityAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityAwardSocialTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityAwardSocialTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabilityAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_DisabilityAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLTotalCount_TTClaimant0[1] + RSLTotalCount_TTClaimant0[4];
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfSocialTTs_DisabilityAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityAwardPrivateDeregulatedTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityAwardPrivateDeregulatedTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLTotalCount_TTClaimant0[3] + RSLTotalCount_TTClaimant0[6];
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityPremiumAward
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityPremiumAward));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabilityPremiumAward,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityPremiumAwardHBTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityPremiumAwardHBTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabilityPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_DisabilityPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityPremiumAwardCTBTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityPremiumAwardCTBTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabilityPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLCTBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfCTB_DisabilityPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityPremiumAwardSocialTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityPremiumAwardSocialTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_DisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLTotalCount_TTClaimant0[1] + RSLTotalCount_TTClaimant0[4];
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabilityPremiumAwardPrivateDeregulatedTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLTotalCount_TTClaimant0[3] + RSLTotalCount_TTClaimant0[6];
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // SevereDisabilityPremiumAward
+        t = Integer.valueOf(summary.get(sRSLTotalCount_SevereDisabilityPremiumAward));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_SevereDisabilityPremiumAward,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // SevereSevereDisabilityPremiumAwardHBTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_SevereDisabilityPremiumAwardHBTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_SevereDisabilityPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_SevereDisabilityPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // SevereDisabilityPremiumAwardCTBTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_SevereDisabilityPremiumAwardCTBTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLCTBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // SevereDisabilityPremiumAwardSocialTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_SevereDisabilityPremiumAwardSocialTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLTotalCount_TTClaimant0[1] + RSLTotalCount_TTClaimant0[4];
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // SevereDisabilityPremiumAwardPrivateDeregulatedTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLTotalCount_TTClaimant0[3] + RSLTotalCount_TTClaimant0[6];
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabledChildPremiumAward
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabledChildPremiumAward));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabledChildPremiumAward,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // SevereDisabledChildPremiumAwardHBTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabledChildPremiumAwardHBTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabledChildPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_DisabledChildPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabledChildPremiumAwardCTBTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabledChildPremiumAwardCTBTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabledChildPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLCTBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfCTB_DisabledChildPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabledChildPremiumAwardSocialTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabledChildPremiumAwardSocialTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabledChildPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_DisabledChildPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLTotalCount_TTClaimant0[1] + RSLTotalCount_TTClaimant0[4];
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // DisabledChildPremiumAwardPrivateDeregulatedTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLTotalCount_TTClaimant0[3] + RSLTotalCount_TTClaimant0[6];
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // EnhancedDisabilityPremiumAward
+        t = Integer.valueOf(summary.get(sRSLTotalCount_EnhancedDisabilityPremiumAward));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_EnhancedDisabilityPremiumAward,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // EnhancedDisabilityPremiumAwardHBTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_EnhancedDisabilityPremiumAwardHBTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // EnhancedDisabilityPremiumAwardCTBTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_EnhancedDisabilityPremiumAwardCTBTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLCTBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // EnhancedDisabilityPremiumAwardSocialTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_EnhancedDisabilityPremiumAwardSocialTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLTotalCount_TTClaimant0[1] + RSLTotalCount_TTClaimant0[4];
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs
+        t = Integer.valueOf(summary.get(sRSLTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs));
+        d = RSLAllCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLTotalCount_TTClaimant0[1] + RSLTotalCount_TTClaimant0[4];
+        if (d > 0) {
+            percentage = (t * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // ByTT
+        for (int i = 1; i < nTT; i++) {
+            // RSLAllCount1
+            d = RSLAllCount1;
+            t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfAll_DisabilityAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfAll_DisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_SevereDisabilityPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfAll_SevereDisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_DisabledChildPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfAll_DisabledChildPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfAll_EnhancedDisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            // RSLHBCount1;
+            d = RSLHBCount1;
+            t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfHB_DisabilityAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfHB_DisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_SevereDisabilityPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfHB_SevereDisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_DisabledChildPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfHB_DisabledChildPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfHB_EnhancedDisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            // RSLCTBCount1
+            d = RSLCTBCount1;
+            t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfCTB_DisabilityAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfCTB_DisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_SevereDisabilityPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (TotalCount_SevereDisabilityPremiumAwardByTT[i] * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfCTB_SevereDisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_DisabledChildPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (TotalCount_DisabledChildPremiumAwardByTT[i] * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfCTB_DisabledChildPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (TotalCount_EnhancedDisabilityPremiumAwardByTT[i] * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            // TT
+            d = RSLTotalCount_TTClaimant1[i];
+            t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfTT_DisabilityAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_DisabilityPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (t * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfTT_DisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_SevereDisabilityPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (TotalCount_SevereDisabilityPremiumAwardByTT[i] * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfTT_SevereDisabilityPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_DisabledChildPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (TotalCount_DisabledChildPremiumAwardByTT[i] * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfTT_DisabledChildPremiumAwardByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            t = Integer.valueOf(summary.get(sRSLTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+            if (d > 0) {
+                percentage = (TotalCount_EnhancedDisabilityPremiumAwardByTT[i] * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfTT_EnhancedDisabilityPremiumAwardByTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
@@ -4367,774 +5555,1551 @@ public class SummaryUO extends Summary {
         }
     }
 
+    @Override
     protected void addToSummarySingleTimeCounts1(
             HashMap<String, String> summary) {
+        super.addToSummarySingleTimeCounts1(summary);
+        int t;
+        // Council
         // WeeklyHBEntitlement
         summary.put(
-                sTotalWeeklyHBEntitlement,
-                BigDecimal.valueOf(AllTotalWeeklyHBEntitlement).toPlainString());
+                sCouncilTotalWeeklyHBEntitlement,
+                BigDecimal.valueOf(CouncilAllTotalWeeklyHBEntitlement).toPlainString());
         summary.put(
-                sTotalCount_WeeklyHBEntitlementNonZero,
-                Integer.toString(AllTotalWeeklyHBEntitlementNonZeroCount));
+                sCouncilTotalCount_WeeklyHBEntitlementNonZero,
+                Integer.toString(CouncilAllTotalWeeklyHBEntitlementNonZeroCount));
         summary.put(
-                sTotalCount_WeeklyHBEntitlementZero,
-                Integer.toString(AllTotalWeeklyHBEntitlementZeroCount));
+                sCouncilTotalCount_WeeklyHBEntitlementZero,
+                Integer.toString(CouncilAllTotalWeeklyHBEntitlementZeroCount));
         summary.put(
-                sHBTotalWeeklyHBEntitlement,
-                BigDecimal.valueOf(HBTotalWeeklyHBEntitlement).toPlainString());
-        summary.put(sHBTotalCount_WeeklyHBEntitlementNonZero,
-                Integer.toString(HBTotalCount_WeeklyHBEntitlementNonZero));
-        summary.put(sHBTotalCount_WeeklyHBEntitlementZero,
-                Integer.toString(HBTotalCount_WeeklyHBEntitlementZero));
+                sCouncilHBTotalWeeklyHBEntitlement,
+                BigDecimal.valueOf(CouncilHBTotalWeeklyHBEntitlement).toPlainString());
         summary.put(
-                sCTBTotalWeeklyHBEntitlement,
-                BigDecimal.valueOf(CTBTotalWeeklyHBEntitlement).toPlainString());
-        summary.put(sCTBTotalCount_WeeklyHBEntitlementNonZero,
-                Integer.toString(CTBTotalCount_WeeklyHBEntitlementNonZero));
+                sCouncilHBTotalCount_WeeklyHBEntitlementNonZero,
+                Integer.toString(CouncilHBTotalCount_WeeklyHBEntitlementNonZero));
         summary.put(
-                sCTBTotalCount_WeeklyHBEntitlementZero,
-                Integer.toString(CTBTotalWeeklyHBEntitlementZeroCount));
+                sCouncilHBTotalCount_WeeklyHBEntitlementZero,
+                Integer.toString(CouncilHBTotalCount_WeeklyHBEntitlementZero));
+        summary.put(
+                sCouncilCTBTotalWeeklyHBEntitlement,
+                BigDecimal.valueOf(CouncilCTBTotalWeeklyHBEntitlement).toPlainString());
+        summary.put(
+                sCouncilCTBTotalCount_WeeklyHBEntitlementNonZero,
+                Integer.toString(CouncilCTBTotalCount_WeeklyHBEntitlementNonZero));
+        summary.put(
+                sCouncilCTBTotalCount_WeeklyHBEntitlementZero,
+                Integer.toString(CouncilCTBTotalWeeklyHBEntitlementZeroCount));
         // WeeklyCTBEntitlement
         summary.put(
-                sTotalWeeklyCTBEntitlement,
-                BigDecimal.valueOf(AllTotalWeeklyCTBEntitlement).toPlainString());
+                sCouncilTotalWeeklyCTBEntitlement,
+                BigDecimal.valueOf(CouncilAllTotalWeeklyCTBEntitlement).toPlainString());
         summary.put(
-                sTotalCount_WeeklyCTBEntitlementNonZero,
-                Integer.toString(AllTotalCount_WeeklyCTBEntitlementNonZero));
+                sCouncilTotalCount_WeeklyCTBEntitlementNonZero,
+                Integer.toString(CouncilAllTotalCount_WeeklyCTBEntitlementNonZero));
         summary.put(
-                sTotalCount_WeeklyCTBEntitlementZero,
-                Integer.toString(AllTotalWeeklyCTBEntitlementZeroCount));
+                sCouncilTotalCount_WeeklyCTBEntitlementZero,
+                Integer.toString(CouncilAllTotalWeeklyCTBEntitlementZeroCount));
         summary.put(
-                sHBTotalWeeklyCTBEntitlement,
-                BigDecimal.valueOf(HBTotalWeeklyCTBEntitlement).toPlainString());
-        summary.put(sHBTotalCount_WeeklyCTBEntitlementNonZero,
-                Integer.toString(HBTotalCount_WeeklyCTBEntitlementNonZero));
-        summary.put(sHBTotalCount_WeeklyCTBEntitlementZero,
-                Integer.toString(HBTotalWeeklyCTBEntitlementZeroCount));
+                sCouncilHBTotalWeeklyCTBEntitlement,
+                BigDecimal.valueOf(CouncilHBTotalWeeklyCTBEntitlement).toPlainString());
         summary.put(
-                sCTBTotalWeeklyCTBEntitlement,
-                BigDecimal.valueOf(CTBTotalWeeklyCTBEntitlement).toPlainString());
-        summary.put(sCTBTotalCount_WeeklyCTBEntitlementNonZero,
-                Integer.toString(CTBTotalCount_WeeklyCTBEntitlementNonZero));
+                sCouncilHBTotalCount_WeeklyCTBEntitlementNonZero,
+                Integer.toString(CouncilHBTotalCount_WeeklyCTBEntitlementNonZero));
         summary.put(
-                sCTBTotalCount_WeeklyCTBEntitlementZero,
-                Integer.toString(CTBTotalWeeklyCTBEntitlementZeroCount));
+                sCouncilHBTotalCount_WeeklyCTBEntitlementZero,
+                Integer.toString(CouncilHBTotalWeeklyCTBEntitlementZeroCount));
+        summary.put(
+                sCouncilCTBTotalWeeklyCTBEntitlement,
+                BigDecimal.valueOf(CouncilCTBTotalWeeklyCTBEntitlement).toPlainString());
+        summary.put(
+                sCouncilCTBTotalCount_WeeklyCTBEntitlementNonZero,
+                Integer.toString(CouncilCTBTotalCount_WeeklyCTBEntitlementNonZero));
+        summary.put(
+                sCouncilCTBTotalCount_WeeklyCTBEntitlementZero,
+                Integer.toString(CouncilCTBTotalWeeklyCTBEntitlementZeroCount));
         // WeeklyEligibleRentAmount
         summary.put(
-                sAllTotalWeeklyEligibleRentAmount,
-                BigDecimal.valueOf(AllTotalWeeklyEligibleRentAmount).toPlainString());
+                sCouncilAllTotalWeeklyEligibleRentAmount,
+                BigDecimal.valueOf(CouncilAllTotalWeeklyEligibleRentAmount).toPlainString());
         summary.put(
-                sAllTotalCount_WeeklyEligibleRentAmountNonZero,
-                Integer.toString(AllTotalWeeklyEligibleRentAmountNonZeroCount));
+                sCouncilAllTotalCount_WeeklyEligibleRentAmountNonZero,
+                Integer.toString(CouncilAllTotalWeeklyEligibleRentAmountNonZeroCount));
         summary.put(
-                sAllTotalCount_WeeklyEligibleRentAmountZero,
-                Integer.toString(AllTotalWeeklyEligibleRentAmountZeroCount));
+                sCouncilAllTotalCount_WeeklyEligibleRentAmountZero,
+                Integer.toString(CouncilAllTotalWeeklyEligibleRentAmountZeroCount));
         summary.put(
-                sHBTotalWeeklyEligibleRentAmount,
-                BigDecimal.valueOf(HBTotalWeeklyEligibleRentAmount).toPlainString());
+                sCouncilHBTotalWeeklyEligibleRentAmount,
+                BigDecimal.valueOf(CouncilHBTotalWeeklyEligibleRentAmount).toPlainString());
         summary.put(
-                sHBTotalCount_WeeklyEligibleRentAmountNonZero,
-                Integer.toString(HBTotalWeeklyEligibleRentAmountNonZeroCount));
+                sCouncilHBTotalCount_WeeklyEligibleRentAmountNonZero,
+                Integer.toString(CouncilHBTotalWeeklyEligibleRentAmountNonZeroCount));
         summary.put(
-                sHBTotalCount_WeeklyEligibleRentAmountZero,
-                Integer.toString(HBTotalWeeklyEligibleRentAmountZeroCount));
+                sCouncilHBTotalCount_WeeklyEligibleRentAmountZero,
+                Integer.toString(CouncilHBTotalWeeklyEligibleRentAmountZeroCount));
         summary.put(
-                sCTBTotalWeeklyEligibleRentAmount,
-                BigDecimal.valueOf(CTBTotalWeeklyEligibleRentAmount).toPlainString());
+                sCouncilCTBTotalWeeklyEligibleRentAmount,
+                BigDecimal.valueOf(CouncilCTBTotalWeeklyEligibleRentAmount).toPlainString());
         summary.put(
-                sCTBTotalCount_WeeklyEligibleRentAmountNonZero,
-                Integer.toString(CTBTotalWeeklyEligibleRentAmountNonZeroCount));
+                sCouncilCTBTotalCount_WeeklyEligibleRentAmountNonZero,
+                Integer.toString(CouncilCTBTotalWeeklyEligibleRentAmountNonZeroCount));
         summary.put(
-                sCTBTotalCount_WeeklyEligibleRentAmountZero,
-                Integer.toString(CTBTotalWeeklyEligibleRentAmountZeroCount));
+                sCouncilCTBTotalCount_WeeklyEligibleRentAmountZero,
+                Integer.toString(CouncilCTBTotalWeeklyEligibleRentAmountZeroCount));
         // WeeklyEligibleCouncilTaxAmount
         summary.put(
-                sAllTotalWeeklyEligibleCouncilTaxAmount,
-                BigDecimal.valueOf(AllTotalWeeklyEligibleCouncilTaxAmount).toPlainString());
+                sCouncilAllTotalWeeklyEligibleCouncilTaxAmount,
+                BigDecimal.valueOf(CouncilAllTotalWeeklyEligibleCouncilTaxAmount).toPlainString());
         summary.put(
-                sAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
-                Integer.toString(AllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero));
+                sCouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
+                Integer.toString(CouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero));
         summary.put(
-                sAllTotalCount_WeeklyEligibleCouncilTaxAmountZero,
-                Integer.toString(AllTotalCount_WeeklyEligibleCouncilTaxAmountZero));
+                sCouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountZero,
+                Integer.toString(CouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountZero));
         summary.put(
-                sHBTotalWeeklyEligibleCouncilTaxAmount,
-                BigDecimal.valueOf(HBTotalWeeklyEligibleCouncilTaxAmount).toPlainString());
+                sCouncilHBTotalWeeklyEligibleCouncilTaxAmount,
+                BigDecimal.valueOf(CouncilHBTotalWeeklyEligibleCouncilTaxAmount).toPlainString());
         summary.put(
-                sHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
-                Integer.toString(HBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero));
+                sCouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
+                Integer.toString(CouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero));
         summary.put(
-                sHBTotalCount_WeeklyEligibleCouncilTaxAmountZero,
-                Integer.toString(HBTotalCount_WeeklyEligibleCouncilTaxAmountZero));
+                sCouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountZero,
+                Integer.toString(CouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountZero));
         summary.put(
-                sCTBTotalWeeklyEligibleCouncilTaxAmount,
-                BigDecimal.valueOf(CTBTotalWeeklyEligibleCouncilTaxAmount).toPlainString());
+                sCouncilCTBTotalWeeklyEligibleCouncilTaxAmount,
+                BigDecimal.valueOf(CouncilCTBTotalWeeklyEligibleCouncilTaxAmount).toPlainString());
         summary.put(
-                sCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
-                Integer.toString(CTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero));
+                sCouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
+                Integer.toString(CouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero));
         summary.put(
-                sCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero,
-                Integer.toString(CTBTotalCount_WeeklyEligibleCouncilTaxAmountZero));
+                sCouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero,
+                Integer.toString(CouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero));
         // ContractualRentAmount
         summary.put(
-                sAllTotalContractualRentAmount,
-                BigDecimal.valueOf(AllTotalContractualRentAmount).toPlainString());
+                sCouncilAllTotalContractualRentAmount,
+                BigDecimal.valueOf(CouncilAllTotalContractualRentAmount).toPlainString());
         summary.put(
-                sAllTotalCountContractualRentAmountNonZeroCount,
-                Integer.toString(AllTotalContractualRentAmountNonZeroCount));
+                sCouncilAllTotalCountContractualRentAmountNonZeroCount,
+                Integer.toString(CouncilAllTotalContractualRentAmountNonZeroCount));
         summary.put(
-                sAllTotalCountContractualRentAmountZeroCount,
-                Integer.toString(AllTotalContractualRentAmountZeroCount));
+                sCouncilAllTotalCountContractualRentAmountZeroCount,
+                Integer.toString(CouncilAllTotalContractualRentAmountZeroCount));
         summary.put(
-                sHBTotalContractualRentAmount,
-                BigDecimal.valueOf(HBTotalContractualRentAmount).toPlainString());
+                sCouncilHBTotalContractualRentAmount,
+                BigDecimal.valueOf(CouncilHBTotalContractualRentAmount).toPlainString());
         summary.put(
-                sHBTotalCountContractualRentAmountNonZeroCount,
-                Integer.toString(HBTotalContractualRentAmountNonZeroCount));
+                sCouncilHBTotalCountContractualRentAmountNonZeroCount,
+                Integer.toString(CouncilHBTotalContractualRentAmountNonZeroCount));
         summary.put(
-                sHBTotalCountContractualRentAmountZeroCount,
-                Integer.toString(HBTotalContractualRentAmountZeroCount));
+                sCouncilHBTotalCountContractualRentAmountZeroCount,
+                Integer.toString(CouncilHBTotalContractualRentAmountZeroCount));
         summary.put(
-                sCTBTotalContractualRentAmount,
-                BigDecimal.valueOf(CTBTotalContractualRentAmount).toPlainString());
+                sCouncilCTBTotalContractualRentAmount,
+                BigDecimal.valueOf(CouncilCTBTotalContractualRentAmount).toPlainString());
         summary.put(
-                sCTBTotalCountContractualRentAmountNonZeroCount,
-                Integer.toString(CTBTotalContractualRentAmountNonZeroCount));
+                sCouncilCTBTotalCountContractualRentAmountNonZeroCount,
+                Integer.toString(CouncilCTBTotalContractualRentAmountNonZeroCount));
         summary.put(
-                sCTBTotalCountContractualRentAmountZeroCount,
-                Integer.toString(CTBTotalContractualRentAmountZeroCount));
+                sCouncilCTBTotalCountContractualRentAmountZeroCount,
+                Integer.toString(CouncilCTBTotalContractualRentAmountZeroCount));
         // WeeklyAdditionalDiscretionaryPayment
         summary.put(
-                sAllTotalWeeklyAdditionalDiscretionaryPayment,
-                BigDecimal.valueOf(AllTotalWeeklyAdditionalDiscretionaryPayment).toPlainString());
+                sCouncilAllTotalWeeklyAdditionalDiscretionaryPayment,
+                BigDecimal.valueOf(CouncilAllTotalWeeklyAdditionalDiscretionaryPayment).toPlainString());
         summary.put(
-                sAllTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero,
-                Integer.toString(AllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount));
+                sCouncilAllTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero,
+                Integer.toString(CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount));
         summary.put(
-                sAllTotalCount_WeeklyAdditionalDiscretionaryPaymentZero,
-                Integer.toString(AllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount));
+                sCouncilAllTotalCount_WeeklyAdditionalDiscretionaryPaymentZero,
+                Integer.toString(CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount));
         summary.put(
-                sHBTotalWeeklyAdditionalDiscretionaryPayment,
-                BigDecimal.valueOf(HBTotalWeeklyAdditionalDiscretionaryPayment).toPlainString());
+                sCouncilHBTotalWeeklyAdditionalDiscretionaryPayment,
+                BigDecimal.valueOf(CouncilHBTotalWeeklyAdditionalDiscretionaryPayment).toPlainString());
         summary.put(
-                sHBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero,
-                Integer.toString(HBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount));
+                sCouncilHBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero,
+                Integer.toString(CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount));
         summary.put(
-                sHBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero,
-                Integer.toString(HBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount));
+                sCouncilHBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero,
+                Integer.toString(CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount));
         summary.put(
-                sCTBTotalWeeklyAdditionalDiscretionaryPayment,
-                BigDecimal.valueOf(CTBTotalWeeklyAdditionalDiscretionaryPayment).toPlainString());
+                sCouncilCTBTotalWeeklyAdditionalDiscretionaryPayment,
+                BigDecimal.valueOf(CouncilCTBTotalWeeklyAdditionalDiscretionaryPayment).toPlainString());
         summary.put(
-                sCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero,
-                Integer.toString(CTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount));
+                sCouncilCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero,
+                Integer.toString(CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount));
         summary.put(
-                sCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero,
-                Integer.toString(CTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount));
+                sCouncilCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero,
+                Integer.toString(CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount));
         // WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability
         summary.put(
-                sAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
-                BigDecimal.valueOf(AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability).toPlainString());
+                sCouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                BigDecimal.valueOf(CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability).toPlainString());
         summary.put(
-                sAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero,
-                Integer.toString(AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount));
+                sCouncilAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero,
+                Integer.toString(CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount));
         summary.put(
-                sAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero,
-                Integer.toString(AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount));
+                sCouncilAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero,
+                Integer.toString(CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount));
         summary.put(
-                sHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
-                BigDecimal.valueOf(HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability).toPlainString());
+                sCouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                BigDecimal.valueOf(CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability).toPlainString());
         summary.put(
-                sHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero,
-                Integer.toString(HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount));
+                sCouncilHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero,
+                Integer.toString(CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount));
         summary.put(
-                sHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero,
-                Integer.toString(HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount));
+                sCouncilHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero,
+                Integer.toString(CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount));
         summary.put(
-                sCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
-                BigDecimal.valueOf(CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability).toPlainString());
+                sCouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                BigDecimal.valueOf(CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability).toPlainString());
         summary.put(
-                sCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero,
-                Integer.toString(CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount));
+                sCouncilCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero,
+                Integer.toString(CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount));
         summary.put(
-                sCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero,
-                Integer.toString(CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount));
+                sCouncilCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero,
+                Integer.toString(CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount));
         // Employed
-        int t;
-        t = HBTotalCount_EmployedClaimants + CTBTotalCount_EmployedClaimants;
+        t = CouncilHBTotalCount_EmployedClaimants + CouncilCTBTotalCount_EmployedClaimants;
         summary.put(
-                sAllTotalCount_ClaimantsEmployed,
+                sCouncilAllTotalCount_ClaimantsEmployed,
                 Integer.toString(t));
         summary.put(
-                sHBTotalCount_ClaimantsEmployed,
-                Integer.toString(HBTotalCount_EmployedClaimants));
+                sCouncilHBTotalCount_ClaimantsEmployed,
+                Integer.toString(CouncilHBTotalCount_EmployedClaimants));
         summary.put(
-                sCTBTotalCount_ClaimantsEmployed,
-                Integer.toString(CTBTotalCount_EmployedClaimants));
+                sCouncilCTBTotalCount_ClaimantsEmployed,
+                Integer.toString(CouncilCTBTotalCount_EmployedClaimants));
         // Self Employed
         summary.put(
-                sHBTotalCountClaimantsSelfEmployed,
-                Integer.toString(HBTotalCount_SelfEmployedClaimants));
+                sCouncilHBTotalCountClaimantsSelfEmployed,
+                Integer.toString(CouncilHBTotalCount_SelfEmployedClaimants));
         summary.put(
-                sCTBTotalCountClaimantsSelfEmployed,
-                Integer.toString(CTBTotalCount_SelfEmployedClaimants));
+                sCouncilCTBTotalCountClaimantsSelfEmployed,
+                Integer.toString(CouncilCTBTotalCount_SelfEmployedClaimants));
         // Students
         summary.put(
-                sHBTotalCountClaimantsStudents,
-                Integer.toString(HBTotalCount_StudentsClaimants));
+                sCouncilHBTotalCountClaimantsStudents,
+                Integer.toString(CouncilHBTotalCount_StudentsClaimants));
         summary.put(
-                sCTBTotalCountClaimantsStudents,
-                Integer.toString(CTBTotalCount_StudentsClaimants));
+                sCouncilCTBTotalCountClaimantsStudents,
+                Integer.toString(CouncilCTBTotalCount_StudentsClaimants));
         // LHACases
-        t = HBTotalCount_LHACases + CTBTotalCount_LHACases;
+        t = CouncilHBTotalCount_LHACases + CouncilCTBTotalCount_LHACases;
         summary.put(
-                sAllTotalCount_LHACases,
+                sCouncilAllTotalCount_LHACases,
                 Integer.toString(t));
         summary.put(
-                sHBTotalCount_LHACases,
+                sCouncilHBTotalCount_LHACases,
                 Integer.toString(HBTotalCount_LHACases));
         summary.put(
-                sCTBTotalCount_LHACases,
+                sCouncilCTBTotalCount_LHACases,
+                Integer.toString(CTBTotalCount_LHACases));
+        // RSL
+        // WeeklyHBEntitlement
+        summary.put(
+                sRSLTotalWeeklyHBEntitlement,
+                BigDecimal.valueOf(RSLAllTotalWeeklyHBEntitlement).toPlainString());
+        summary.put(
+                sRSLTotalCount_WeeklyHBEntitlementNonZero,
+                Integer.toString(RSLAllTotalWeeklyHBEntitlementNonZeroCount));
+        summary.put(
+                sRSLTotalCount_WeeklyHBEntitlementZero,
+                Integer.toString(RSLAllTotalWeeklyHBEntitlementZeroCount));
+        summary.put(
+                sRSLHBTotalWeeklyHBEntitlement,
+                BigDecimal.valueOf(RSLHBTotalWeeklyHBEntitlement).toPlainString());
+        summary.put(
+                sRSLHBTotalCount_WeeklyHBEntitlementNonZero,
+                Integer.toString(RSLHBTotalCount_WeeklyHBEntitlementNonZero));
+        summary.put(
+                sRSLHBTotalCount_WeeklyHBEntitlementZero,
+                Integer.toString(RSLHBTotalCount_WeeklyHBEntitlementZero));
+        summary.put(
+                sRSLCTBTotalWeeklyHBEntitlement,
+                BigDecimal.valueOf(RSLCTBTotalWeeklyHBEntitlement).toPlainString());
+        summary.put(
+                sRSLCTBTotalCount_WeeklyHBEntitlementNonZero,
+                Integer.toString(RSLCTBTotalCount_WeeklyHBEntitlementNonZero));
+        summary.put(
+                sRSLCTBTotalCount_WeeklyHBEntitlementZero,
+                Integer.toString(RSLCTBTotalWeeklyHBEntitlementZeroCount));
+        // WeeklyCTBEntitlement
+        summary.put(
+                sRSLTotalWeeklyCTBEntitlement,
+                BigDecimal.valueOf(RSLAllTotalWeeklyCTBEntitlement).toPlainString());
+        summary.put(
+                sRSLTotalCount_WeeklyCTBEntitlementNonZero,
+                Integer.toString(RSLAllTotalCount_WeeklyCTBEntitlementNonZero));
+        summary.put(
+                sRSLTotalCount_WeeklyCTBEntitlementZero,
+                Integer.toString(RSLAllTotalWeeklyCTBEntitlementZeroCount));
+        summary.put(
+                sRSLHBTotalWeeklyCTBEntitlement,
+                BigDecimal.valueOf(RSLHBTotalWeeklyCTBEntitlement).toPlainString());
+        summary.put(
+                sRSLHBTotalCount_WeeklyCTBEntitlementNonZero,
+                Integer.toString(RSLHBTotalCount_WeeklyCTBEntitlementNonZero));
+        summary.put(
+                sRSLHBTotalCount_WeeklyCTBEntitlementZero,
+                Integer.toString(RSLHBTotalWeeklyCTBEntitlementZeroCount));
+        summary.put(
+                sRSLCTBTotalWeeklyCTBEntitlement,
+                BigDecimal.valueOf(RSLCTBTotalWeeklyCTBEntitlement).toPlainString());
+        summary.put(
+                sRSLCTBTotalCount_WeeklyCTBEntitlementNonZero,
+                Integer.toString(RSLCTBTotalCount_WeeklyCTBEntitlementNonZero));
+        summary.put(
+                sRSLCTBTotalCount_WeeklyCTBEntitlementZero,
+                Integer.toString(RSLCTBTotalWeeklyCTBEntitlementZeroCount));
+        // WeeklyEligibleRentAmount
+        summary.put(
+                sRSLAllTotalWeeklyEligibleRentAmount,
+                BigDecimal.valueOf(RSLAllTotalWeeklyEligibleRentAmount).toPlainString());
+        summary.put(
+                sRSLAllTotalCount_WeeklyEligibleRentAmountNonZero,
+                Integer.toString(RSLAllTotalWeeklyEligibleRentAmountNonZeroCount));
+        summary.put(
+                sRSLAllTotalCount_WeeklyEligibleRentAmountZero,
+                Integer.toString(RSLAllTotalWeeklyEligibleRentAmountZeroCount));
+        summary.put(
+                sRSLHBTotalWeeklyEligibleRentAmount,
+                BigDecimal.valueOf(RSLHBTotalWeeklyEligibleRentAmount).toPlainString());
+        summary.put(
+                sRSLHBTotalCount_WeeklyEligibleRentAmountNonZero,
+                Integer.toString(RSLHBTotalWeeklyEligibleRentAmountNonZeroCount));
+        summary.put(
+                sRSLHBTotalCount_WeeklyEligibleRentAmountZero,
+                Integer.toString(RSLHBTotalWeeklyEligibleRentAmountZeroCount));
+        summary.put(
+                sRSLCTBTotalWeeklyEligibleRentAmount,
+                BigDecimal.valueOf(RSLCTBTotalWeeklyEligibleRentAmount).toPlainString());
+        summary.put(
+                sRSLCTBTotalCount_WeeklyEligibleRentAmountNonZero,
+                Integer.toString(RSLCTBTotalWeeklyEligibleRentAmountNonZeroCount));
+        summary.put(
+                sRSLCTBTotalCount_WeeklyEligibleRentAmountZero,
+                Integer.toString(RSLCTBTotalWeeklyEligibleRentAmountZeroCount));
+        // WeeklyEligibleCouncilTaxAmount
+        summary.put(
+                sRSLAllTotalWeeklyEligibleCouncilTaxAmount,
+                BigDecimal.valueOf(RSLAllTotalWeeklyEligibleCouncilTaxAmount).toPlainString());
+        summary.put(
+                sRSLAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
+                Integer.toString(RSLAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero));
+        summary.put(
+                sRSLAllTotalCount_WeeklyEligibleCouncilTaxAmountZero,
+                Integer.toString(RSLAllTotalCount_WeeklyEligibleCouncilTaxAmountZero));
+        summary.put(
+                sRSLHBTotalWeeklyEligibleCouncilTaxAmount,
+                BigDecimal.valueOf(RSLHBTotalWeeklyEligibleCouncilTaxAmount).toPlainString());
+        summary.put(
+                sRSLHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
+                Integer.toString(RSLHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero));
+        summary.put(
+                sRSLHBTotalCount_WeeklyEligibleCouncilTaxAmountZero,
+                Integer.toString(RSLHBTotalCount_WeeklyEligibleCouncilTaxAmountZero));
+        summary.put(
+                sRSLCTBTotalWeeklyEligibleCouncilTaxAmount,
+                BigDecimal.valueOf(RSLCTBTotalWeeklyEligibleCouncilTaxAmount).toPlainString());
+        summary.put(
+                sRSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero,
+                Integer.toString(RSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero));
+        summary.put(
+                sRSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero,
+                Integer.toString(RSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero));
+        // ContractualRentAmount
+        summary.put(
+                sRSLAllTotalContractualRentAmount,
+                BigDecimal.valueOf(RSLAllTotalContractualRentAmount).toPlainString());
+        summary.put(
+                sRSLAllTotalCountContractualRentAmountNonZeroCount,
+                Integer.toString(RSLAllTotalContractualRentAmountNonZeroCount));
+        summary.put(
+                sRSLAllTotalCountContractualRentAmountZeroCount,
+                Integer.toString(RSLAllTotalContractualRentAmountZeroCount));
+        summary.put(
+                sRSLHBTotalContractualRentAmount,
+                BigDecimal.valueOf(RSLHBTotalContractualRentAmount).toPlainString());
+        summary.put(
+                sRSLHBTotalCountContractualRentAmountNonZeroCount,
+                Integer.toString(RSLHBTotalContractualRentAmountNonZeroCount));
+        summary.put(
+                sRSLHBTotalCountContractualRentAmountZeroCount,
+                Integer.toString(RSLHBTotalContractualRentAmountZeroCount));
+        summary.put(
+                sRSLCTBTotalContractualRentAmount,
+                BigDecimal.valueOf(RSLCTBTotalContractualRentAmount).toPlainString());
+        summary.put(
+                sRSLCTBTotalCountContractualRentAmountNonZeroCount,
+                Integer.toString(RSLCTBTotalContractualRentAmountNonZeroCount));
+        summary.put(
+                sRSLCTBTotalCountContractualRentAmountZeroCount,
+                Integer.toString(RSLCTBTotalContractualRentAmountZeroCount));
+        // WeeklyAdditionalDiscretionaryPayment
+        summary.put(
+                sRSLAllTotalWeeklyAdditionalDiscretionaryPayment,
+                BigDecimal.valueOf(RSLAllTotalWeeklyAdditionalDiscretionaryPayment).toPlainString());
+        summary.put(
+                sRSLAllTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero,
+                Integer.toString(RSLAllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount));
+        summary.put(
+                sRSLAllTotalCount_WeeklyAdditionalDiscretionaryPaymentZero,
+                Integer.toString(RSLAllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount));
+        summary.put(
+                sRSLHBTotalWeeklyAdditionalDiscretionaryPayment,
+                BigDecimal.valueOf(RSLHBTotalWeeklyAdditionalDiscretionaryPayment).toPlainString());
+        summary.put(
+                sRSLHBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero,
+                Integer.toString(RSLHBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount));
+        summary.put(
+                sRSLHBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero,
+                Integer.toString(RSLHBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount));
+        summary.put(
+                sRSLCTBTotalWeeklyAdditionalDiscretionaryPayment,
+                BigDecimal.valueOf(RSLCTBTotalWeeklyAdditionalDiscretionaryPayment).toPlainString());
+        summary.put(
+                sRSLCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentNonZero,
+                Integer.toString(RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount));
+        summary.put(
+                sRSLCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentZero,
+                Integer.toString(RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount));
+        // WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability
+        summary.put(
+                sRSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                BigDecimal.valueOf(RSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability).toPlainString());
+        summary.put(
+                sRSLAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero,
+                Integer.toString(RSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount));
+        summary.put(
+                sRSLAllTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero,
+                Integer.toString(RSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount));
+        summary.put(
+                sRSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                BigDecimal.valueOf(RSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability).toPlainString());
+        summary.put(
+                sRSLHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero,
+                Integer.toString(RSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount));
+        summary.put(
+                sRSLHBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero,
+                Integer.toString(RSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount));
+        summary.put(
+                sRSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                BigDecimal.valueOf(RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability).toPlainString());
+        summary.put(
+                sRSLCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero,
+                Integer.toString(RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount));
+        summary.put(
+                sRSLCTBTotalCount_WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero,
+                Integer.toString(RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount));
+        // Employed
+        t = RSLHBTotalCount_EmployedClaimants + RSLCTBTotalCount_EmployedClaimants;
+        summary.put(
+                sRSLAllTotalCount_ClaimantsEmployed,
+                Integer.toString(t));
+        summary.put(
+                sRSLHBTotalCount_ClaimantsEmployed,
+                Integer.toString(RSLHBTotalCount_EmployedClaimants));
+        summary.put(
+                sRSLCTBTotalCount_ClaimantsEmployed,
+                Integer.toString(RSLCTBTotalCount_EmployedClaimants));
+        // Self Employed
+        summary.put(
+                sRSLHBTotalCountClaimantsSelfEmployed,
+                Integer.toString(RSLHBTotalCount_SelfEmployedClaimants));
+        summary.put(
+                sRSLCTBTotalCountClaimantsSelfEmployed,
+                Integer.toString(RSLCTBTotalCount_SelfEmployedClaimants));
+        // Students
+        summary.put(
+                sRSLHBTotalCountClaimantsStudents,
+                Integer.toString(RSLHBTotalCount_StudentsClaimants));
+        summary.put(
+                sRSLCTBTotalCountClaimantsStudents,
+                Integer.toString(RSLCTBTotalCount_StudentsClaimants));
+        // LHACases
+        t = RSLHBTotalCount_LHACases + RSLCTBTotalCount_LHACases;
+        summary.put(
+                sRSLAllTotalCount_LHACases,
+                Integer.toString(t));
+        summary.put(
+                sRSLHBTotalCount_LHACases,
+                Integer.toString(HBTotalCount_LHACases));
+        summary.put(
+                sRSLCTBTotalCount_LHACases,
                 Integer.toString(CTBTotalCount_LHACases));
     }
 
+    @Override
     protected void addToSummarySingleTimeRates1(
             HashMap<String, String> summary) {
+        //super.addToSummarySingleTimeRates1(summary);
         double ave;
         double d;
         double t;
+        // Council
         // WeeklyHBEntitlement
-        t = Double.valueOf(summary.get(sTotalWeeklyHBEntitlement));
-        d = AllTotalWeeklyHBEntitlementNonZeroCount;
+        t = Double.valueOf(summary.get(sCouncilTotalWeeklyHBEntitlement));
+        d = CouncilAllTotalWeeklyHBEntitlementNonZeroCount;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sAverageWeeklyHBEntitlement,
+                    sCouncilAverageWeeklyHBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sAverageWeeklyHBEntitlement,
+                    sCouncilAverageWeeklyHBEntitlement,
                     s0);
         }
-        t = Double.valueOf(summary.get(sHBTotalWeeklyHBEntitlement));
-        d = HBTotalCount_WeeklyHBEntitlementNonZero;
+        t = Double.valueOf(summary.get(sCouncilHBTotalWeeklyHBEntitlement));
+        d = CouncilHBTotalCount_WeeklyHBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sHBAverageWeeklyHBEntitlement,
+                    sCouncilHBAverageWeeklyHBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBAverageWeeklyHBEntitlement,
+                    sCouncilHBAverageWeeklyHBEntitlement,
                     s0);
         }
-        t = Double.valueOf(summary.get(sCTBTotalWeeklyHBEntitlement));
-        d = CTBTotalCount_WeeklyHBEntitlementNonZero;
+        t = Double.valueOf(summary.get(sCouncilCTBTotalWeeklyHBEntitlement));
+        d = CouncilCTBTotalCount_WeeklyHBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sCTBAverageWeeklyHBEntitlement,
+                    sCouncilCTBAverageWeeklyHBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBAverageWeeklyHBEntitlement,
+                    sCouncilCTBAverageWeeklyHBEntitlement,
                     s0);
         }
         // WeeklyCTBEntitlement
-        t = Double.valueOf(summary.get(sTotalWeeklyCTBEntitlement));
-        d = AllTotalCount_WeeklyCTBEntitlementNonZero;
+        t = Double.valueOf(summary.get(sCouncilTotalWeeklyCTBEntitlement));
+        d = CouncilAllTotalCount_WeeklyCTBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sAverageWeeklyCTBEntitlement,
+                    sCouncilAverageWeeklyCTBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sAverageWeeklyCTBEntitlement,
+                    sCouncilAverageWeeklyCTBEntitlement,
                     s0);
         }
-        t = Double.valueOf(summary.get(sHBTotalWeeklyCTBEntitlement));
-        d = HBTotalCount_WeeklyCTBEntitlementNonZero;
+        t = Double.valueOf(summary.get(sCouncilHBTotalWeeklyCTBEntitlement));
+        d = CouncilHBTotalCount_WeeklyCTBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sHBAverageWeeklyCTBEntitlement,
+                    sCouncilHBAverageWeeklyCTBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBAverageWeeklyCTBEntitlement,
+                    sCouncilHBAverageWeeklyCTBEntitlement,
                     s0);
         }
-        t = Double.valueOf(summary.get(sCTBTotalWeeklyCTBEntitlement));
-        d = CTBTotalCount_WeeklyCTBEntitlementNonZero;
+        t = Double.valueOf(summary.get(sCouncilCTBTotalWeeklyCTBEntitlement));
+        d = CouncilCTBTotalCount_WeeklyCTBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sCTBAverageWeeklyCTBEntitlement,
+                    sCouncilCTBAverageWeeklyCTBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBAverageWeeklyCTBEntitlement,
+                    sCouncilCTBAverageWeeklyCTBEntitlement,
                     s0);
         }
         // WeeklyEligibleRentAmount
-        t = Double.valueOf(summary.get(sAllTotalWeeklyEligibleRentAmount));
-        d = AllTotalWeeklyEligibleRentAmountNonZeroCount;
+        t = Double.valueOf(summary.get(sCouncilAllTotalWeeklyEligibleRentAmount));
+        d = CouncilAllTotalWeeklyEligibleRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sAllAverageWeeklyEligibleRentAmount,
+                    sCouncilAllAverageWeeklyEligibleRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sAllAverageWeeklyEligibleRentAmount,
+                    sCouncilAllAverageWeeklyEligibleRentAmount,
                     s0);
         }
-        t = Double.valueOf(summary.get(sHBTotalWeeklyEligibleRentAmount));
-        d = HBTotalWeeklyEligibleRentAmountNonZeroCount;
+        t = Double.valueOf(summary.get(sCouncilHBTotalWeeklyEligibleRentAmount));
+        d = CouncilHBTotalWeeklyEligibleRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sHBAverageWeeklyEligibleRentAmount,
+                    sCouncilHBAverageWeeklyEligibleRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBAverageWeeklyEligibleRentAmount,
+                    sCouncilHBAverageWeeklyEligibleRentAmount,
                     s0);
         }
-        t = Double.valueOf(summary.get(sCTBTotalWeeklyEligibleRentAmount));
-        d = CTBTotalWeeklyEligibleRentAmountNonZeroCount;
+        t = Double.valueOf(summary.get(sCouncilCTBTotalWeeklyEligibleRentAmount));
+        d = CouncilCTBTotalWeeklyEligibleRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sCTBAverageWeeklyEligibleRentAmount,
+                    sCouncilCTBAverageWeeklyEligibleRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBAverageWeeklyEligibleRentAmount,
+                    sCouncilCTBAverageWeeklyEligibleRentAmount,
                     s0);
         }
         // WeeklyEligibleCouncilTaxAmount
-        t = Double.valueOf(summary.get(sAllTotalWeeklyEligibleCouncilTaxAmount));
-        d = AllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
+        t = Double.valueOf(summary.get(sCouncilAllTotalWeeklyEligibleCouncilTaxAmount));
+        d = CouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sAllAverageWeeklyEligibleCouncilTaxAmount,
+                    sCouncilAllAverageWeeklyEligibleCouncilTaxAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sAllAverageWeeklyEligibleCouncilTaxAmount,
+                    sCouncilAllAverageWeeklyEligibleCouncilTaxAmount,
                     s0);
         }
-        t = Double.valueOf(summary.get(sHBTotalWeeklyEligibleCouncilTaxAmount));
-        d = HBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
+        t = Double.valueOf(summary.get(sCouncilHBTotalWeeklyEligibleCouncilTaxAmount));
+        d = CouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sHBAverageWeeklyEligibleCouncilTaxAmount,
+                    sCouncilHBAverageWeeklyEligibleCouncilTaxAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBAverageWeeklyEligibleCouncilTaxAmount,
+                    sCouncilHBAverageWeeklyEligibleCouncilTaxAmount,
                     s0);
         }
-        t = Double.valueOf(summary.get(sCTBTotalWeeklyEligibleCouncilTaxAmount));
-        d = CTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
+        t = Double.valueOf(summary.get(sCouncilCTBTotalWeeklyEligibleCouncilTaxAmount));
+        d = CouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sCTBAverageWeeklyEligibleCouncilTaxAmount,
+                    sCouncilCTBAverageWeeklyEligibleCouncilTaxAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBAverageWeeklyEligibleCouncilTaxAmount,
+                    sCouncilCTBAverageWeeklyEligibleCouncilTaxAmount,
                     s0);
         }
         // ContractualRentAmount
-        t = Double.valueOf(summary.get(sAllTotalContractualRentAmount));
-        d = AllTotalContractualRentAmountNonZeroCount;
+        t = Double.valueOf(summary.get(sCouncilAllTotalContractualRentAmount));
+        d = CouncilAllTotalContractualRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sAllAverageContractualRentAmount,
+                    sCouncilAllAverageContractualRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sAllAverageContractualRentAmount,
+                    sCouncilAllAverageContractualRentAmount,
                     s0);
         }
-        t = Double.valueOf(summary.get(sHBTotalContractualRentAmount));
-        d = HBTotalContractualRentAmountNonZeroCount;
+        t = Double.valueOf(summary.get(sCouncilHBTotalContractualRentAmount));
+        d = CouncilHBTotalContractualRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sHBAverageContractualRentAmount,
+                    sCouncilHBAverageContractualRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBAverageContractualRentAmount,
+                    sCouncilHBAverageContractualRentAmount,
                     s0);
         }
-        t = Double.valueOf(summary.get(sCTBTotalContractualRentAmount));
-        d = CTBTotalContractualRentAmountNonZeroCount;
+        t = Double.valueOf(summary.get(sCouncilCTBTotalContractualRentAmount));
+        d = CouncilCTBTotalContractualRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sCTBAverageContractualRentAmount,
+                    sCouncilCTBAverageContractualRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBAverageContractualRentAmount,
+                    sCouncilCTBAverageContractualRentAmount,
                     s0);
         }
         // WeeklyAdditionalDiscretionaryPayment
-        t = Double.valueOf(summary.get(sAllTotalWeeklyAdditionalDiscretionaryPayment));
-        d = AllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+        t = Double.valueOf(summary.get(sCouncilAllTotalWeeklyAdditionalDiscretionaryPayment));
+        d = CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sAllAverageWeeklyAdditionalDiscretionaryPayment,
+                    sCouncilAllAverageWeeklyAdditionalDiscretionaryPayment,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sAllAverageWeeklyAdditionalDiscretionaryPayment,
+                    sCouncilAllAverageWeeklyAdditionalDiscretionaryPayment,
                     s0);
         }
-        t = Double.valueOf(summary.get(sHBTotalWeeklyAdditionalDiscretionaryPayment));
-        d = HBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+        t = Double.valueOf(summary.get(sCouncilHBTotalWeeklyAdditionalDiscretionaryPayment));
+        d = CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sHBAverageWeeklyAdditionalDiscretionaryPayment,
+                    sCouncilHBAverageWeeklyAdditionalDiscretionaryPayment,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBAverageWeeklyAdditionalDiscretionaryPayment,
+                    sCouncilHBAverageWeeklyAdditionalDiscretionaryPayment,
                     s0);
         }
-        t = Double.valueOf(summary.get(sCTBTotalWeeklyAdditionalDiscretionaryPayment));
-        d = CTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+        t = Double.valueOf(summary.get(sCouncilCTBTotalWeeklyAdditionalDiscretionaryPayment));
+        d = CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sCTBAverageWeeklyAdditionalDiscretionaryPayment,
+                    sCouncilCTBAverageWeeklyAdditionalDiscretionaryPayment,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBAverageWeeklyAdditionalDiscretionaryPayment,
+                    sCouncilCTBAverageWeeklyAdditionalDiscretionaryPayment,
                     s0);
         }
         // WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability
-        t = Double.valueOf(summary.get(sAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability));
-        d = AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+        t = Double.valueOf(summary.get(sCouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability));
+        d = CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    sCouncilAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    sCouncilAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
                     s0);
         }
-        t = Double.valueOf(summary.get(sHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability));
-        d = HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+        t = Double.valueOf(summary.get(sCouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability));
+        d = CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    sCouncilHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    sCouncilHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
                     s0);
         }
-        t = Double.valueOf(summary.get(sCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability));
-        d = CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+        t = Double.valueOf(summary.get(sCouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability));
+        d = CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
         if (d > 0) {
             ave = t / d;
             summary.put(
-                    sCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    sCouncilCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    sCouncilCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
                     s0);
         }
         // Employed
-        t = Integer.valueOf(summary.get(sAllTotalCount_ClaimantsEmployed));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilAllTotalCount_ClaimantsEmployed));
+        d = CouncilAllCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
             summary.put(
-                    sAllPercentage_ClaimantsEmployed,
+                    sCouncilAllPercentage_ClaimantsEmployed,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sAllPercentage_ClaimantsEmployed,
+                    sCouncilAllPercentage_ClaimantsEmployed,
                     s0);
         }
-        t = Integer.valueOf(summary.get(sHBTotalCount_ClaimantsEmployed));
-        d = HBCount1;
+        t = Integer.valueOf(summary.get(sCouncilHBTotalCount_ClaimantsEmployed));
+        d = CouncilHBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
             summary.put(
-                    sHBPercentageOfHB_ClaimantsEmployed,
+                    sCouncilHBPercentageOfHB_ClaimantsEmployed,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBPercentageOfHB_ClaimantsEmployed,
+                    sCouncilHBPercentageOfHB_ClaimantsEmployed,
                     s0);
         }
-        t = Integer.valueOf(summary.get(sCTBTotalCount_ClaimantsEmployed));
-        d = CTBCount1;
+        t = Integer.valueOf(summary.get(sCouncilCTBTotalCount_ClaimantsEmployed));
+        d = CouncilCTBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
             summary.put(
-                    sCTBPercentageOfCTB_ClaimantsEmployed,
+                    sCouncilCTBPercentageOfCTB_ClaimantsEmployed,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBPercentageOfCTB_ClaimantsEmployed,
+                    sCouncilCTBPercentageOfCTB_ClaimantsEmployed,
                     s0);
         }
         // Self Employed
-        t = Integer.valueOf(summary.get(sHBTotalCountClaimantsSelfEmployed));
-        d = HBCount1;
+        t = Integer.valueOf(summary.get(sCouncilHBTotalCountClaimantsSelfEmployed));
+        d = CouncilHBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
             summary.put(
-                    sHBPercentageOfHB_ClaimantsSelfEmployed,
+                    sCouncilHBPercentageOfHB_ClaimantsSelfEmployed,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBPercentageOfHB_ClaimantsSelfEmployed,
+                    sCouncilHBPercentageOfHB_ClaimantsSelfEmployed,
                     s0);
         }
-        t = Integer.valueOf(summary.get(sCTBTotalCountClaimantsSelfEmployed));
-        d = CTBCount1;
+        t = Integer.valueOf(summary.get(sCouncilCTBTotalCountClaimantsSelfEmployed));
+        d = CouncilCTBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
             summary.put(
-                    sCTBPercentageOfCTB_ClaimantsSelfEmployed,
+                    sCouncilCTBPercentageOfCTB_ClaimantsSelfEmployed,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBPercentageOfCTB_ClaimantsSelfEmployed,
+                    sCouncilCTBPercentageOfCTB_ClaimantsSelfEmployed,
                     s0);
         }
         // Students
-        t = Integer.valueOf(summary.get(sHBTotalCountClaimantsStudents));
-        d = HBCount1;
+        t = Integer.valueOf(summary.get(sCouncilHBTotalCountClaimantsStudents));
+        d = CouncilHBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
             summary.put(
-                    sHBPercentageOfHB_ClaimantsStudents,
+                    sCouncilHBPercentageOfHB_ClaimantsStudents,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBPercentageOfHB_ClaimantsStudents,
+                    sCouncilHBPercentageOfHB_ClaimantsStudents,
                     s0);
         }
-        t = Integer.valueOf(summary.get(sCTBTotalCountClaimantsStudents));
-        d = CTBCount1;
+        t = Integer.valueOf(summary.get(sCouncilCTBTotalCountClaimantsStudents));
+        d = CouncilCTBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
             summary.put(
-                    sCTBPercentageOfCTB_ClaimantsStudents,
+                    sCouncilCTBPercentageOfCTB_ClaimantsStudents,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBPercentageOfCTB_ClaimantsStudents,
+                    sCouncilCTBPercentageOfCTB_ClaimantsStudents,
                     s0);
         }
         // LHACases
-        t = Integer.valueOf(summary.get(sAllTotalCount_LHACases));
-        d = AllCount1;
+        t = Integer.valueOf(summary.get(sCouncilAllTotalCount_LHACases));
+        d = CouncilAllCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
             summary.put(
-                    sAllPercentageOfAll_LHACases,
+                    sCouncilAllPercentageOfAll_LHACases,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sAllPercentageOfAll_LHACases,
+                    sCouncilAllPercentageOfAll_LHACases,
                     s0);
         }
-        t = Integer.valueOf(summary.get(sHBTotalCount_LHACases));
-        d = HBCount1;
+        t = Integer.valueOf(summary.get(sCouncilHBTotalCount_LHACases));
+        d = CouncilHBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
             summary.put(
-                    sHBPercentageOfHB_LHACases,
+                    sCouncilHBPercentageOfHB_LHACases,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sHBPercentageOfHB_LHACases,
+                    sCouncilHBPercentageOfHB_LHACases,
                     s0);
         }
-        t = Integer.valueOf(summary.get(sCTBTotalCount_LHACases));
-        d = CTBCount1;
+        t = Integer.valueOf(summary.get(sCouncilCTBTotalCount_LHACases));
+        d = CouncilCTBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
             summary.put(
-                    sCTBPercentageOfCTB_LHACases,
+                    sCouncilCTBPercentageOfCTB_LHACases,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
-                    sCTBPercentageOfCTB_LHACases,
+                    sCouncilCTBPercentageOfCTB_LHACases,
+                    s0);
+        }
+        // RSL
+        // WeeklyHBEntitlement
+        t = Double.valueOf(summary.get(sRSLTotalWeeklyHBEntitlement));
+        d = RSLAllTotalWeeklyHBEntitlementNonZeroCount;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLAverageWeeklyHBEntitlement,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLAverageWeeklyHBEntitlement,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLHBTotalWeeklyHBEntitlement));
+        d = RSLHBTotalCount_WeeklyHBEntitlementNonZero;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLHBAverageWeeklyHBEntitlement,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLHBAverageWeeklyHBEntitlement,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLCTBTotalWeeklyHBEntitlement));
+        d = RSLCTBTotalCount_WeeklyHBEntitlementNonZero;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLCTBAverageWeeklyHBEntitlement,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLCTBAverageWeeklyHBEntitlement,
+                    s0);
+        }
+        // WeeklyCTBEntitlement
+        t = Double.valueOf(summary.get(sRSLTotalWeeklyCTBEntitlement));
+        d = RSLAllTotalCount_WeeklyCTBEntitlementNonZero;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLAverageWeeklyCTBEntitlement,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLAverageWeeklyCTBEntitlement,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLHBTotalWeeklyCTBEntitlement));
+        d = RSLHBTotalCount_WeeklyCTBEntitlementNonZero;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLHBAverageWeeklyCTBEntitlement,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLHBAverageWeeklyCTBEntitlement,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLCTBTotalWeeklyCTBEntitlement));
+        d = RSLCTBTotalCount_WeeklyCTBEntitlementNonZero;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLCTBAverageWeeklyCTBEntitlement,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLCTBAverageWeeklyCTBEntitlement,
+                    s0);
+        }
+        // WeeklyEligibleRentAmount
+        t = Double.valueOf(summary.get(sRSLAllTotalWeeklyEligibleRentAmount));
+        d = RSLAllTotalWeeklyEligibleRentAmountNonZeroCount;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLAllAverageWeeklyEligibleRentAmount,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLAllAverageWeeklyEligibleRentAmount,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLHBTotalWeeklyEligibleRentAmount));
+        d = RSLHBTotalWeeklyEligibleRentAmountNonZeroCount;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLHBAverageWeeklyEligibleRentAmount,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLHBAverageWeeklyEligibleRentAmount,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLCTBTotalWeeklyEligibleRentAmount));
+        d = RSLCTBTotalWeeklyEligibleRentAmountNonZeroCount;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLCTBAverageWeeklyEligibleRentAmount,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLCTBAverageWeeklyEligibleRentAmount,
+                    s0);
+        }
+        // WeeklyEligibleCouncilTaxAmount
+        t = Double.valueOf(summary.get(sRSLAllTotalWeeklyEligibleCouncilTaxAmount));
+        d = RSLAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLAllAverageWeeklyEligibleCouncilTaxAmount,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLAllAverageWeeklyEligibleCouncilTaxAmount,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLHBTotalWeeklyEligibleCouncilTaxAmount));
+        d = RSLHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLHBAverageWeeklyEligibleCouncilTaxAmount,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLHBAverageWeeklyEligibleCouncilTaxAmount,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLCTBTotalWeeklyEligibleCouncilTaxAmount));
+        d = RSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLCTBAverageWeeklyEligibleCouncilTaxAmount,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLCTBAverageWeeklyEligibleCouncilTaxAmount,
+                    s0);
+        }
+        // ContractualRentAmount
+        t = Double.valueOf(summary.get(sRSLAllTotalContractualRentAmount));
+        d = RSLAllTotalContractualRentAmountNonZeroCount;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLAllAverageContractualRentAmount,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLAllAverageContractualRentAmount,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLHBTotalContractualRentAmount));
+        d = RSLHBTotalContractualRentAmountNonZeroCount;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLHBAverageContractualRentAmount,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLHBAverageContractualRentAmount,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLCTBTotalContractualRentAmount));
+        d = RSLCTBTotalContractualRentAmountNonZeroCount;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLCTBAverageContractualRentAmount,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLCTBAverageContractualRentAmount,
+                    s0);
+        }
+        // WeeklyAdditionalDiscretionaryPayment
+        t = Double.valueOf(summary.get(sRSLAllTotalWeeklyAdditionalDiscretionaryPayment));
+        d = RSLAllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLAllAverageWeeklyAdditionalDiscretionaryPayment,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLAllAverageWeeklyAdditionalDiscretionaryPayment,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLHBTotalWeeklyAdditionalDiscretionaryPayment));
+        d = RSLHBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLHBAverageWeeklyAdditionalDiscretionaryPayment,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLHBAverageWeeklyAdditionalDiscretionaryPayment,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLCTBTotalWeeklyAdditionalDiscretionaryPayment));
+        d = RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLCTBAverageWeeklyAdditionalDiscretionaryPayment,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLCTBAverageWeeklyAdditionalDiscretionaryPayment,
+                    s0);
+        }
+        // WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability
+        t = Double.valueOf(summary.get(sRSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability));
+        d = RSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability));
+        d = RSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    s0);
+        }
+        t = Double.valueOf(summary.get(sRSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability));
+        d = RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
+        if (d > 0) {
+            ave = t / d;
+            summary.put(
+                    sRSLCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    s0);
+        }
+        // Employed
+        t = Integer.valueOf(summary.get(sRSLAllTotalCount_ClaimantsEmployed));
+        d = RSLAllCount1;
+        if (d > 0) {
+            ave = (t * 100.0d) / d;
+            summary.put(
+                    sRSLAllPercentage_ClaimantsEmployed,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLAllPercentage_ClaimantsEmployed,
+                    s0);
+        }
+        t = Integer.valueOf(summary.get(sRSLHBTotalCount_ClaimantsEmployed));
+        d = RSLHBCount1;
+        if (d > 0) {
+            ave = (t * 100.0d) / d;
+            summary.put(
+                    sRSLHBPercentageOfHB_ClaimantsEmployed,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLHBPercentageOfHB_ClaimantsEmployed,
+                    s0);
+        }
+        t = Integer.valueOf(summary.get(sRSLCTBTotalCount_ClaimantsEmployed));
+        d = RSLCTBCount1;
+        if (d > 0) {
+            ave = (t * 100.0d) / d;
+            summary.put(
+                    sRSLCTBPercentageOfCTB_ClaimantsEmployed,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLCTBPercentageOfCTB_ClaimantsEmployed,
+                    s0);
+        }
+        // Self Employed
+        t = Integer.valueOf(summary.get(sRSLHBTotalCountClaimantsSelfEmployed));
+        d = RSLHBCount1;
+        if (d > 0) {
+            ave = (t * 100.0d) / d;
+            summary.put(
+                    sRSLHBPercentageOfHB_ClaimantsSelfEmployed,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLHBPercentageOfHB_ClaimantsSelfEmployed,
+                    s0);
+        }
+        t = Integer.valueOf(summary.get(sRSLCTBTotalCountClaimantsSelfEmployed));
+        d = RSLCTBCount1;
+        if (d > 0) {
+            ave = (t * 100.0d) / d;
+            summary.put(
+                    sRSLCTBPercentageOfCTB_ClaimantsSelfEmployed,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLCTBPercentageOfCTB_ClaimantsSelfEmployed,
+                    s0);
+        }
+        // Students
+        t = Integer.valueOf(summary.get(sRSLHBTotalCountClaimantsStudents));
+        d = RSLHBCount1;
+        if (d > 0) {
+            ave = (t * 100.0d) / d;
+            summary.put(
+                    sRSLHBPercentageOfHB_ClaimantsStudents,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLHBPercentageOfHB_ClaimantsStudents,
+                    s0);
+        }
+        t = Integer.valueOf(summary.get(sRSLCTBTotalCountClaimantsStudents));
+        d = RSLCTBCount1;
+        if (d > 0) {
+            ave = (t * 100.0d) / d;
+            summary.put(
+                    sRSLCTBPercentageOfCTB_ClaimantsStudents,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLCTBPercentageOfCTB_ClaimantsStudents,
+                    s0);
+        }
+        // LHACases
+        t = Integer.valueOf(summary.get(sRSLAllTotalCount_LHACases));
+        d = RSLAllCount1;
+        if (d > 0) {
+            ave = (t * 100.0d) / d;
+            summary.put(
+                    sRSLAllPercentageOfAll_LHACases,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLAllPercentageOfAll_LHACases,
+                    s0);
+        }
+        t = Integer.valueOf(summary.get(sRSLHBTotalCount_LHACases));
+        d = RSLHBCount1;
+        if (d > 0) {
+            ave = (t * 100.0d) / d;
+            summary.put(
+                    sRSLHBPercentageOfHB_LHACases,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLHBPercentageOfHB_LHACases,
+                    s0);
+        }
+        t = Integer.valueOf(summary.get(sRSLCTBTotalCount_LHACases));
+        d = RSLCTBCount1;
+        if (d > 0) {
+            ave = (t * 100.0d) / d;
+            summary.put(
+                    sRSLCTBPercentageOfCTB_LHACases,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
+        } else {
+            summary.put(
+                    sRSLCTBPercentageOfCTB_LHACases,
                     s0);
         }
     }
 
+    @Override
     protected void addToSummarySingleTimeEthnicityCounts(
             int nEG,
             HashMap<String, String> summary) {
+        //super.addToSummarySingleTimeEthnicityCounts(nEG, summary);
+        // Council
         for (int i = 1; i < nEG; i++) {
             int all;
-            all = HBEthnicGroupCount[i] + CTBEthnicGroupCount[i];
+            all = CouncilHBEthnicGroupCount[i] + CouncilCTBEthnicGroupCount[i];
             summary.put(
-                    sAllTotalCount_EthnicGroupClaimant[i],
+                    sCouncilAllTotalCount_EthnicGroupClaimant[i],
                     Integer.toString(all));
             summary.put(
-                    sHBTotalCount_EthnicGroupClaimant[i],
-                    Integer.toString(HBEthnicGroupCount[i]));
+                    sCouncilHBTotalCount_EthnicGroupClaimant[i],
+                    Integer.toString(CouncilHBEthnicGroupCount[i]));
             summary.put(
-                    sCTBTotalCount_EthnicGroupClaimant[i],
-                    Integer.toString(CTBEthnicGroupCount[i]));
+                    sCouncilCTBTotalCount_EthnicGroupClaimant[i],
+                    Integer.toString(CouncilCTBEthnicGroupCount[i]));
+        }
+        // RSL
+        for (int i = 1; i < nEG; i++) {
+            int all;
+            all = RSLHBEthnicGroupCount[i] + RSLCTBEthnicGroupCount[i];
+            summary.put(
+                    sRSLAllTotalCount_EthnicGroupClaimant[i],
+                    Integer.toString(all));
+            summary.put(
+                    sRSLHBTotalCount_EthnicGroupClaimant[i],
+                    Integer.toString(RSLHBEthnicGroupCount[i]));
+            summary.put(
+                    sRSLCTBTotalCount_EthnicGroupClaimant[i],
+                    Integer.toString(RSLCTBEthnicGroupCount[i]));
         }
     }
 
+    @Override
     protected void addToSummarySingleTimeEthnicityRates(
             int nEG,
             HashMap<String, String> summary) {
-        // Ethnicity
+        //super.addToSummarySingleTimeEthnicityRates(nEG, summary);
         double percentage;
         double all;
         double d;
+        // Council
         for (int i = 1; i < nEG; i++) {
-            all = Integer.valueOf(summary.get(sAllTotalCount_EthnicGroupClaimant[i]));
-            d = AllCount1;
+            all = Integer.valueOf(summary.get(sCouncilAllTotalCount_EthnicGroupClaimant[i]));
+            d = CouncilAllCount1;
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
                 summary.put(
-                        sAllPercentage_EthnicGroupClaimant[i],
+                        sCouncilAllPercentageOfAll_EthnicGroupClaimant[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            all = Integer.valueOf(summary.get(sHBTotalCount_EthnicGroupClaimant[i]));
-            d = HBCount1;
+            all = Integer.valueOf(summary.get(sCouncilHBTotalCount_EthnicGroupClaimant[i]));
+            d = CouncilHBCount1;
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
                 summary.put(
-                        sHBPercentage_EthnicGroupClaimant[i],
+                        sCouncilHBPercentageOfHB_EthnicGroupClaimant[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            all = Integer.valueOf(summary.get(sCTBTotalCount_EthnicGroupClaimant[i]));
-            d = CTBCount1;
+            all = Integer.valueOf(summary.get(sCouncilCTBTotalCount_EthnicGroupClaimant[i]));
+            d = CouncilCTBCount1;
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
                 summary.put(
-                        sCTBPercentageEthnicGroupClaimant[i],
+                        sCouncilCTBPercentageOfCTB_EthnicGroupClaimant[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+        }
+        // RSL
+        for (int i = 1; i < nEG; i++) {
+            all = Integer.valueOf(summary.get(sRSLAllTotalCount_EthnicGroupClaimant[i]));
+            d = RSLAllCount1;
+            if (d > 0) {
+                percentage = (all * 100.0d) / d;
+                summary.put(
+                        sRSLAllPercentageOfAll_EthnicGroupClaimant[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            all = Integer.valueOf(summary.get(sRSLHBTotalCount_EthnicGroupClaimant[i]));
+            d = RSLHBCount1;
+            if (d > 0) {
+                percentage = (all * 100.0d) / d;
+                summary.put(
+                        sRSLHBPercentageOfHB_EthnicGroupClaimant[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            all = Integer.valueOf(summary.get(sRSLCTBTotalCount_EthnicGroupClaimant[i]));
+            d = RSLCTBCount1;
+            if (d > 0) {
+                percentage = (all * 100.0d) / d;
+                summary.put(
+                        sRSLCTBPercentageOfCTB_EthnicGroupClaimant[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
@@ -5143,93 +7108,123 @@ public class SummaryUO extends Summary {
         }
     }
 
+    @Override
     protected void addToSummarySingleTimeTTCounts(
             int nTT,
             HashMap<String, String> summary) {
         int all;
-        all = TotalCount_TTClaimant1[1] + TotalCount_TTClaimant1[4];
+        // Council
+        all = CouncilTotalCount_TTClaimant1[1] + CouncilTotalCount_TTClaimant1[4];
         summary.put(
-                sTotalCount_SocialTTsClaimant,
+                sCouncilTotalCount_SocialTTsClaimant,
                 Integer.toString(all));
-        all = TotalCount_TTClaimant1[3] + TotalCount_TTClaimant1[6];
+        all = CouncilTotalCount_TTClaimant1[3] + CouncilTotalCount_TTClaimant1[6];
         summary.put(
-                sTotalCount_PrivateDeregulatedTTsClaimant,
+                sCouncilTotalCount_PrivateDeregulatedTTsClaimant,
                 Integer.toString(all));
         // TT
         for (int i = 1; i < nTT; i++) {
-            all = TotalCount_TTClaimant1[i];
+            all = CouncilTotalCount_TTClaimant1[i];
             summary.put(
-                    sTotalCount_ClaimantTT[i],
+                    sCouncilTotalCount_ClaimantTT[i],
                     Integer.toString(all));
         }
-        summary.put(
-                sAllPostcodeValidFormatCount,
-                Integer.toString(HBPostcodeValidFormatCount + CTBPostcodeValidFormatCount));
-        summary.put(
-                sAllPostcodeValidCount,
-                Integer.toString(HBPostcodeValidCount + CTBPostcodeValidCount));
+        summary.put(sCouncilAllTotalCount_PostcodeValidFormat,
+                Integer.toString(CouncilHBTotalCount_PostcodeValidFormat + CouncilCTBTotalCount_PostcodeValidFormat));
+        summary.put(sCouncilAllTotalCount_PostcodeValid,
+                Integer.toString(CouncilHBTotalCount_PostcodeValid + CouncilCTBTotalCount_PostcodeValid));
         // HB
-        summary.put(sHBCount1, Integer.toString(HBCount1));
-        summary.put(
-                sHBPostcodeValidFormatCount,
-                Integer.toString(HBPostcodeValidFormatCount));
-        summary.put(
-                sHBPostcodeValidCount,
-                Integer.toString(HBPostcodeValidCount));
+        summary.put(sCouncilHBCount1, Integer.toString(CouncilHBCount1));
+        summary.put(sCouncilHBTotalCount_PostcodeValidFormat,
+                Integer.toString(CouncilHBTotalCount_PostcodeValidFormat));
+        summary.put(sCouncilHBTotalCount_PostcodeValid,
+                Integer.toString(CouncilHBTotalCount_PostcodeValid));
         // CTB
-        summary.put(sCTBCount1, Integer.toString(CTBCount1));
+        summary.put(sCouncilCTBCount1, Integer.toString(CouncilCTBCount1));
+        summary.put(sCouncilCTBTotalCount_PostcodeValidFormat,
+                Integer.toString(CouncilCTBTotalCount_PostcodeValidFormat));
+        summary.put(sCouncilCTBTotalCount_PostcodeValid,
+                Integer.toString(CouncilCTBTotalCount_PostcodeValid));
+        // RSL
+        all = RSLTotalCount_TTClaimant1[1] + RSLTotalCount_TTClaimant1[4];
         summary.put(
-                sCTBPostcodeValidFormatCount,
-                Integer.toString(CTBPostcodeValidFormatCount));
+                sRSLTotalCount_SocialTTsClaimant,
+                Integer.toString(all));
+        all = RSLTotalCount_TTClaimant1[3] + RSLTotalCount_TTClaimant1[6];
         summary.put(
-                sCTBPostcodeValidCount,
-                Integer.toString(CTBPostcodeValidCount));
+                sRSLTotalCount_PrivateDeregulatedTTsClaimant,
+                Integer.toString(all));
+        // TT
+        for (int i = 1; i < nTT; i++) {
+            all = RSLTotalCount_TTClaimant1[i];
+            summary.put(
+                    sRSLTotalCount_ClaimantTT[i],
+                    Integer.toString(all));
+        }
+        summary.put(sRSLAllTotalCount_PostcodeValidFormat,
+                Integer.toString(RSLHBTotalCount_PostcodeValidFormat + RSLCTBTotalCount_PostcodeValidFormat));
+        summary.put(sRSLAllTotalCount_PostcodeValid,
+                Integer.toString(RSLHBTotalCount_PostcodeValid + RSLCTBTotalCount_PostcodeValid));
+        // HB
+        summary.put(sRSLHBCount1, Integer.toString(RSLHBCount1));
+        summary.put(sRSLHBTotalCount_PostcodeValidFormat,
+                Integer.toString(RSLHBTotalCount_PostcodeValidFormat));
+        summary.put(sRSLHBTotalCount_PostcodeValid,
+                Integer.toString(RSLHBTotalCount_PostcodeValid));
+        // CTB
+        summary.put(sRSLCTBCount1, Integer.toString(RSLCTBCount1));
+        summary.put(sRSLCTBTotalCount_PostcodeValidFormat,
+                Integer.toString(RSLCTBTotalCount_PostcodeValidFormat));
+        summary.put(sRSLCTBTotalCount_PostcodeValid,
+                Integer.toString(RSLCTBTotalCount_PostcodeValid));
     }
 
+    @Override
     protected void addToSummarySingleTimeTTRates(
             int nTT,
             HashMap<String, String> summary) {
-        // Ethnicity
+        //super.addToSummarySingleTimeTTRates(nTT, summary);
         double percentage;
         double d;
         int all;
-        all = Integer.valueOf(summary.get(sTotalCount_SocialTTsClaimant));
-        d = AllCount1;
-        if (AllCount1 > 0) {
+        // Council
+        all = Integer.valueOf(summary.get(sCouncilTotalCount_SocialTTsClaimant));
+        d = CouncilAllCount1;
+        if (CouncilAllCount1 > 0) {
             percentage = (all * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_SocialTTsClaimant,
+                    sCouncilPercentageOfAll_SocialTTsClaimant,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
-        if (HBCount1 > 0) {
+        d = CouncilHBCount1;
+        if (CouncilHBCount1 > 0) {
             percentage = (all * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_SocialTTsClaimant,
+                    sCouncilPercentageOfHB_SocialTTsClaimant,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        all = Integer.valueOf(summary.get(sTotalCount_PrivateDeregulatedTTsClaimant));
-        d = AllCount1;
-        if (AllCount1 > 0) {
+        all = Integer.valueOf(summary.get(sCouncilTotalCount_PrivateDeregulatedTTsClaimant));
+        d = CouncilAllCount1;
+        if (CouncilAllCount1 > 0) {
             percentage = (all * 100.0d) / d;
             summary.put(
-                    sPercentageOfAll_PrivateDeregulatedTTsClaimant,
+                    sCouncilPercentageOfAll_PrivateDeregulatedTTsClaimant,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
         }
-        d = HBCount1;
-        if (HBCount1 > 0) {
+        d = CouncilHBCount1;
+        if (CouncilHBCount1 > 0) {
             percentage = (all * 100.0d) / d;
             summary.put(
-                    sPercentageOfHB_PrivateDeregulatedTTsClaimant,
+                    sCouncilPercentageOfHB_PrivateDeregulatedTTsClaimant,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
@@ -5237,34 +7232,114 @@ public class SummaryUO extends Summary {
         }
         // TT
         for (int i = 1; i < nTT; i++) {
-            all = Integer.valueOf(summary.get(sTotalCount_ClaimantTT[i]));
-            d = AllCount1;
+            all = Integer.valueOf(summary.get(sCouncilTotalCount_ClaimantTT[i]));
+            d = CouncilAllCount1;
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
                 summary.put(
-                        sPercentageOfAll_ClaimantTT[i],
+                        sCouncilPercentageOfAll_ClaimantTT[i],
                         Generic_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
             if (i == 5 || i == 7) {
-                d = CTBCount1;
+                d = CouncilCTBCount1;
                 if (d > 0) {
                     percentage = (all * 100.0d) / d;
                     summary.put(
-                            sPercentageOfCTB_ClaimantTT[i],
+                            sCouncilPercentageOfCTB_ClaimantTT[i],
                             Generic_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(percentage),
                                     decimalPlacePrecisionForPercentage,
                                     RoundingMode.HALF_UP).toPlainString());
                 }
             } else {
-                d = HBCount1;
+                d = CouncilHBCount1;
                 if (d > 0) {
                     percentage = (all * 100.0d) / d;
                     summary.put(
-                            sPercentageOfHB_ClaimantTT[i],
+                            sCouncilPercentageOfHB_ClaimantTT[i],
+                            Generic_BigDecimal.roundIfNecessary(
+                                    BigDecimal.valueOf(percentage),
+                                    decimalPlacePrecisionForPercentage,
+                                    RoundingMode.HALF_UP).toPlainString());
+                }
+            }
+        }
+        // RSL
+        all = Integer.valueOf(summary.get(sRSLTotalCount_SocialTTsClaimant));
+        d = RSLAllCount1;
+        if (RSLAllCount1 > 0) {
+            percentage = (all * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_SocialTTsClaimant,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (RSLHBCount1 > 0) {
+            percentage = (all * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_SocialTTsClaimant,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        all = Integer.valueOf(summary.get(sRSLTotalCount_PrivateDeregulatedTTsClaimant));
+        d = RSLAllCount1;
+        if (RSLAllCount1 > 0) {
+            percentage = (all * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfAll_PrivateDeregulatedTTsClaimant,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        d = RSLHBCount1;
+        if (RSLHBCount1 > 0) {
+            percentage = (all * 100.0d) / d;
+            summary.put(
+                    sRSLPercentageOfHB_PrivateDeregulatedTTsClaimant,
+                    Generic_BigDecimal.roundIfNecessary(
+                            BigDecimal.valueOf(percentage),
+                            decimalPlacePrecisionForPercentage,
+                            RoundingMode.HALF_UP).toPlainString());
+        }
+        // TT
+        for (int i = 1; i < nTT; i++) {
+            all = Integer.valueOf(summary.get(sRSLTotalCount_ClaimantTT[i]));
+            d = RSLAllCount1;
+            if (d > 0) {
+                percentage = (all * 100.0d) / d;
+                summary.put(
+                        sRSLPercentageOfAll_ClaimantTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+            if (i == 5 || i == 7) {
+                d = RSLCTBCount1;
+                if (d > 0) {
+                    percentage = (all * 100.0d) / d;
+                    summary.put(
+                            sRSLPercentageOfCTB_ClaimantTT[i],
+                            Generic_BigDecimal.roundIfNecessary(
+                                    BigDecimal.valueOf(percentage),
+                                    decimalPlacePrecisionForPercentage,
+                                    RoundingMode.HALF_UP).toPlainString());
+                }
+            } else {
+                d = RSLHBCount1;
+                if (d > 0) {
+                    percentage = (all * 100.0d) / d;
+                    summary.put(
+                            sRSLPercentageOfHB_ClaimantTT[i],
                             Generic_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(percentage),
                                     decimalPlacePrecisionForPercentage,
@@ -5274,11 +7349,14 @@ public class SummaryUO extends Summary {
         }
     }
 
+
+    @Override
     protected void doCompare2TimesCounts(
             DW_SHBE_D_Record D_Record0,
             DW_SHBE_D_Record D_Record1,
             String yM30v,
             String yM31v) {
+        //super.doCompare2TimesCounts(D_Record0, D_Record1, yM30v, yM31v);
         boolean isHBClaim;
         isHBClaim = false;
         boolean isCTBOnlyClaim;
@@ -5334,21 +7412,24 @@ public class SummaryUO extends Summary {
                     postcode1,
                     isValidPostcode1);
         }
-        AllTotalCount_TTChangeClaimant = HBTotalCount_TTChangeClaimant + CTBTotalCount_TTChangeClaimant;
-        //AllTotalCount_TTChangeClaimantIgnoreMinus999 = HBTotalCount_TTChangeClaimantIgnoreMinus999 + CTBTotalCount_TTChangeClaimantIgnoreMinus999;
-        AllTotalCount_Postcode0ValidPostcode1Valid = HBTotalCount_Postcode0ValidPostcode1Valid + CTBTotalCount_Postcode0ValidPostcode1Valid;
-        AllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = HBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged + CTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
-        AllTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = HBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged + CTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
-        AllTotalCount_Postcode0ValidPostcode1NotValid = HBTotalCount_Postcode0ValidPostcode1NotValid + CTBTotalCount_Postcode0ValidPostcode1NotValid;
-        AllTotalCount_Postcode0NotValidPostcode1Valid = HBTotalCount_Postcode0NotValidPostcode1Valid + CTBTotalCount_Postcode0NotValidPostcode1Valid;
-        AllTotalCount_Postcode0NotValidPostcode1NotValid = HBTotalCount_Postcode0NotValidPostcode1NotValid + CTBTotalCount_Postcode0NotValidPostcode1NotValid;
-        AllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged + CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged;
-        AllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged + CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
+        // RSL
+        RSLAllTotalCount_TTChangeClaimant = RSLHBTotalCount_TTChangeClaimant + RSLCTBTotalCount_TTChangeClaimant;
+        RSLAllTotalCount_Postcode0ValidPostcode1Valid = RSLHBTotalCount_Postcode0ValidPostcode1Valid + RSLCTBTotalCount_Postcode0ValidPostcode1Valid;
+        RSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged = RSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged + RSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged;
+        RSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged = RSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged + RSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged;
+        RSLAllTotalCount_Postcode0ValidPostcode1NotValid = RSLHBTotalCount_Postcode0ValidPostcode1NotValid + RSLCTBTotalCount_Postcode0ValidPostcode1NotValid;
+        RSLAllTotalCount_Postcode0NotValidPostcode1Valid = RSLHBTotalCount_Postcode0NotValidPostcode1Valid + RSLCTBTotalCount_Postcode0NotValidPostcode1Valid;
+        RSLAllTotalCount_Postcode0NotValidPostcode1NotValid = RSLHBTotalCount_Postcode0NotValidPostcode1NotValid + RSLCTBTotalCount_Postcode0NotValidPostcode1NotValid;
+        RSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged = RSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged + RSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged;
+        RSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged = RSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged + RSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged;
     }
 
+    @Override
     protected void doSingleTimeCount(
             DW_SHBE_D_Record D_Record,
             String yM30v) {
+        //super.doSingleTimeCount(D_Record, yM30v);
+        // Council
         int ClaimantsEthnicGroup0;
         ClaimantsEthnicGroup0 = D_Record.getClaimantsEthnicGroup();
         int TT;
@@ -5356,131 +7437,124 @@ public class SummaryUO extends Summary {
         // All unfiltered counts
         TT = D_Record.getTenancyType();
         postcode = D_Record.getClaimantsPostcode();
-        TotalCount_TTClaimant1[TT]++;
-
+        CouncilTotalCount_TTClaimant1[TT]++;
         // Disability
         int DisabilityPremiumAwarded;
         DisabilityPremiumAwarded = D_Record.getDisabilityPremiumAwarded();
         if (DisabilityPremiumAwarded == 1) {
-            TotalCount_DisabilityPremiumAwardByTT[TT]++;
+            CouncilTotalCount_DisabilityPremiumAwardByTT[TT]++;
         }
         int SevereDisabilityPremiumAwarded;
         SevereDisabilityPremiumAwarded = D_Record.getSevereDisabilityPremiumAwarded();
         if (SevereDisabilityPremiumAwarded == 1) {
-            TotalCount_SevereDisabilityPremiumAwardByTT[TT]++;
+            CouncilTotalCount_SevereDisabilityPremiumAwardByTT[TT]++;
         }
         int DisabledChildPremiumAwarded;
         DisabledChildPremiumAwarded = D_Record.getDisabledChildPremiumAwarded();
         if (DisabledChildPremiumAwarded == 1) {
-            TotalCount_DisabledChildPremiumAwardByTT[TT]++;
+            CouncilTotalCount_DisabledChildPremiumAwardByTT[TT]++;
         }
         int EnhancedDisabilityPremiumAwarded;
         EnhancedDisabilityPremiumAwarded = D_Record.getEnhancedDisabilityPremiumAwarded();
         if (EnhancedDisabilityPremiumAwarded == 1) {
-            TotalCount_EnhancedDisabilityPremiumAwardByTT[TT]++;
+            CouncilTotalCount_EnhancedDisabilityPremiumAwardByTT[TT]++;
         }
         // General Household Disability Flag
         if (DisabilityPremiumAwarded == 1
                 || SevereDisabilityPremiumAwarded == 1
                 || DisabledChildPremiumAwarded == 1
                 || EnhancedDisabilityPremiumAwarded == 1) {
-            TotalCount_DisabilityAwardByTT[TT]++;
+            CouncilTotalCount_DisabilityAwardByTT[TT]++;
         }
-
         // Passported Standard Indicator
         int PSI;
         PSI = D_Record.getPassportedStandardIndicator();
-        AllTotalCount_PSI[PSI]++;
-        AllTotalCount_PSIByTT[PSI][TT]++;
-
+        CouncilAllTotalCount_PSI[PSI]++;
+        CouncilAllTotalCount_PSIByTT[PSI][TT]++;
         // Household size
         long HouseholdSize;
         HouseholdSize = DW_SHBE_Handler.getHouseholdSize(D_Record);
-        AllTotalHouseholdSize += HouseholdSize;
-
+        CouncilAllTotalHouseholdSize += HouseholdSize;
         // Entitlements
         int WeeklyHousingBenefitEntitlement;
         WeeklyHousingBenefitEntitlement = D_Record.getWeeklyHousingBenefitEntitlement();
         if (WeeklyHousingBenefitEntitlement > 0) {
-            AllTotalWeeklyHBEntitlement += WeeklyHousingBenefitEntitlement;
-            AllTotalWeeklyHBEntitlementNonZeroCount++;
+            CouncilAllTotalWeeklyHBEntitlement += WeeklyHousingBenefitEntitlement;
+            CouncilAllTotalWeeklyHBEntitlementNonZeroCount++;
         } else {
-            AllTotalWeeklyHBEntitlementZeroCount++;
+            CouncilAllTotalWeeklyHBEntitlementZeroCount++;
         }
         int WeeklyCouncilTaxBenefitBenefitEntitlement;
         WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
         if (WeeklyCouncilTaxBenefitBenefitEntitlement > 0) {
-            AllTotalWeeklyCTBEntitlement += WeeklyCouncilTaxBenefitBenefitEntitlement;
-            AllTotalCount_WeeklyCTBEntitlementNonZero++;
+            CouncilAllTotalWeeklyCTBEntitlement += WeeklyCouncilTaxBenefitBenefitEntitlement;
+            CouncilAllTotalCount_WeeklyCTBEntitlementNonZero++;
         } else {
-            AllTotalWeeklyCTBEntitlementZeroCount++;
+            CouncilAllTotalWeeklyCTBEntitlementZeroCount++;
         }
-
         // Eligible Amounts
         int WeeklyEligibleRentAmount;
         WeeklyEligibleRentAmount = D_Record.getWeeklyEligibleRentAmount();
         if (WeeklyEligibleRentAmount > 0) {
-            AllTotalWeeklyEligibleRentAmount += WeeklyEligibleRentAmount;
-            AllTotalWeeklyEligibleRentAmountNonZeroCount++;
+            CouncilAllTotalWeeklyEligibleRentAmount += WeeklyEligibleRentAmount;
+            CouncilAllTotalWeeklyEligibleRentAmountNonZeroCount++;
         } else {
-            AllTotalWeeklyEligibleRentAmountZeroCount++;
+            CouncilAllTotalWeeklyEligibleRentAmountZeroCount++;
         }
         int WeeklyEligibleCouncilTaxAmount;
         WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
         if (WeeklyEligibleCouncilTaxAmount > 0) {
-            AllTotalWeeklyEligibleCouncilTaxAmount += WeeklyEligibleCouncilTaxAmount;
-            AllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero++;
+            CouncilAllTotalWeeklyEligibleCouncilTaxAmount += WeeklyEligibleCouncilTaxAmount;
+            CouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero++;
         } else {
-            AllTotalCount_WeeklyEligibleCouncilTaxAmountZero++;
+            CouncilAllTotalCount_WeeklyEligibleCouncilTaxAmountZero++;
         }
         int ContractualRentAmount;
         ContractualRentAmount = D_Record.getContractualRentAmount();
         if (ContractualRentAmount > 0) {
-            AllTotalContractualRentAmount += ContractualRentAmount;
-            AllTotalContractualRentAmountNonZeroCount++;
+            CouncilAllTotalContractualRentAmount += ContractualRentAmount;
+            CouncilAllTotalContractualRentAmountNonZeroCount++;
         } else {
-            AllTotalContractualRentAmountZeroCount++;
+            CouncilAllTotalContractualRentAmountZeroCount++;
         }
-
         // Additional Payments
         int WeeklyAdditionalDiscretionaryPayment;
         WeeklyAdditionalDiscretionaryPayment = D_Record.getWeeklyAdditionalDiscretionaryPayment();
         if (WeeklyAdditionalDiscretionaryPayment > 0) {
-            AllTotalWeeklyAdditionalDiscretionaryPayment += WeeklyAdditionalDiscretionaryPayment;
-            AllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount++;
+            CouncilAllTotalWeeklyAdditionalDiscretionaryPayment += WeeklyAdditionalDiscretionaryPayment;
+            CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount++;
         } else {
-            AllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount++;
+            CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount++;
         }
         int WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
         WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = D_Record.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
         if (WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability > 0) {
-            AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability += WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
-            AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount++;
+            CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability += WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
+            CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount++;
         } else {
-            AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
+            CouncilAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
         }
-
         // HBClaim only counts
         if (DW_SHBE_Handler.isHBClaim(D_Record)) {
-            HBTotalCount_PSI[PSI]++;
-            HBTotalCount_PSIByTT[PSI][TT]++;
+            CouncilHBTotalCount_PSI[PSI]++;
+            CouncilHBTotalCount_PSIByTT[PSI][TT]++;
             //if (HBRef.equalsIgnoreCase(CTBRef)) {
-            HBTotalHouseholdSize += HouseholdSize;
+            CouncilHBTotalHouseholdSize += HouseholdSize;
             int ClaimantsNetWeeklyIncomeFromEmployment;
             ClaimantsNetWeeklyIncomeFromEmployment = D_Record.getClaimantsNetWeeklyIncomeFromEmployment();
             if (ClaimantsNetWeeklyIncomeFromEmployment > 0) {
-                HBTotalCount_EmployedClaimants++;
+                CouncilHBTotalCount_EmployedClaimants++;
             }
             int ClaimantsNetWeeklyIncomeFromSelfEmployment;
             ClaimantsNetWeeklyIncomeFromSelfEmployment = D_Record.getClaimantsNetWeeklyIncomeFromSelfEmployment();
             if (ClaimantsNetWeeklyIncomeFromSelfEmployment > 0) {
-                HBTotalCount_SelfEmployedClaimants++;
+                CouncilHBTotalCount_SelfEmployedClaimants++;
             }
             String ClaimantsStudentIndicator;
             ClaimantsStudentIndicator = D_Record.getClaimantsStudentIndicator();
             if (ClaimantsStudentIndicator != null) {
                 if (ClaimantsStudentIndicator.equalsIgnoreCase("Y")) {
-                    HBTotalCount_StudentsClaimants++;
+                    CouncilHBTotalCount_StudentsClaimants++;
                 }
             }
             String LHARegulationsApplied;
@@ -5488,56 +7562,56 @@ public class SummaryUO extends Summary {
             if (LHARegulationsApplied != null) {
                 if (LHARegulationsApplied.equalsIgnoreCase("1")
                         || LHARegulationsApplied.equalsIgnoreCase("Yes")) {
-                    HBTotalCount_LHACases++;
+                    CouncilHBTotalCount_LHACases++;
                 }
             }
             if (WeeklyHousingBenefitEntitlement > 0) {
-                HBTotalWeeklyHBEntitlement += WeeklyHousingBenefitEntitlement;
-                HBTotalCount_WeeklyHBEntitlementNonZero++;
+                CouncilHBTotalWeeklyHBEntitlement += WeeklyHousingBenefitEntitlement;
+                CouncilHBTotalCount_WeeklyHBEntitlementNonZero++;
             } else {
-                HBTotalCount_WeeklyHBEntitlementZero++;
+                CouncilHBTotalCount_WeeklyHBEntitlementZero++;
             }
             WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
             if (WeeklyCouncilTaxBenefitBenefitEntitlement > 0) {
-                HBTotalWeeklyCTBEntitlement += WeeklyCouncilTaxBenefitBenefitEntitlement;
-                HBTotalCount_WeeklyCTBEntitlementNonZero++;
+                CouncilHBTotalWeeklyCTBEntitlement += WeeklyCouncilTaxBenefitBenefitEntitlement;
+                CouncilHBTotalCount_WeeklyCTBEntitlementNonZero++;
             } else {
-                HBTotalWeeklyCTBEntitlementZeroCount++;
+                CouncilHBTotalWeeklyCTBEntitlementZeroCount++;
             }
             WeeklyEligibleRentAmount = D_Record.getWeeklyEligibleRentAmount();
             if (WeeklyEligibleRentAmount > 0) {
-                HBTotalWeeklyEligibleRentAmount += WeeklyEligibleRentAmount;
-                HBTotalWeeklyEligibleRentAmountNonZeroCount++;
+                CouncilHBTotalWeeklyEligibleRentAmount += WeeklyEligibleRentAmount;
+                CouncilHBTotalWeeklyEligibleRentAmountNonZeroCount++;
             } else {
-                HBTotalWeeklyEligibleRentAmountZeroCount++;
+                CouncilHBTotalWeeklyEligibleRentAmountZeroCount++;
             }
             WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
             if (WeeklyEligibleCouncilTaxAmount > 0) {
-                HBTotalWeeklyEligibleCouncilTaxAmount += WeeklyEligibleCouncilTaxAmount;
-                HBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero++;
+                CouncilHBTotalWeeklyEligibleCouncilTaxAmount += WeeklyEligibleCouncilTaxAmount;
+                CouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero++;
             } else {
-                HBTotalCount_WeeklyEligibleCouncilTaxAmountZero++;
+                CouncilHBTotalCount_WeeklyEligibleCouncilTaxAmountZero++;
             }
             ContractualRentAmount = D_Record.getContractualRentAmount();
             if (ContractualRentAmount > 0) {
-                HBTotalContractualRentAmount += ContractualRentAmount;
-                HBTotalContractualRentAmountNonZeroCount++;
+                CouncilHBTotalContractualRentAmount += ContractualRentAmount;
+                CouncilHBTotalContractualRentAmountNonZeroCount++;
             } else {
-                HBTotalContractualRentAmountZeroCount++;
+                CouncilHBTotalContractualRentAmountZeroCount++;
             }
             WeeklyAdditionalDiscretionaryPayment = D_Record.getWeeklyAdditionalDiscretionaryPayment();
             if (WeeklyAdditionalDiscretionaryPayment > 0) {
-                HBTotalWeeklyAdditionalDiscretionaryPayment += WeeklyAdditionalDiscretionaryPayment;
-                HBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount++;
+                CouncilHBTotalWeeklyAdditionalDiscretionaryPayment += WeeklyAdditionalDiscretionaryPayment;
+                CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount++;
             } else {
-                HBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount++;
+                CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount++;
             }
             WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = D_Record.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
             if (WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability > 0) {
-                HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability += WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
-                HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount++;
+                CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability += WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
+                CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount++;
             } else {
-                HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
+                CouncilHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
             }
             doSingleTimeHBCount(
                     ClaimantsEthnicGroup0,
@@ -5546,87 +7620,343 @@ public class SummaryUO extends Summary {
         }
         // CTB Claim only counts
         if (DW_SHBE_Handler.isCTBOnlyClaim(D_Record)) {
-            CTBTotalCount_PSI[PSI]++;
-            CTBTotalCount_PSIByTT[PSI][TT]++;
-            CTBTotalHouseholdSize += HouseholdSize;
+            CouncilCTBTotalCount_PSI[PSI]++;
+            CouncilCTBTotalCount_PSIByTT[PSI][TT]++;
+            CouncilCTBTotalHouseholdSize += HouseholdSize;
             int ClaimantsNetWeeklyIncomeFromEmployment;
             ClaimantsNetWeeklyIncomeFromEmployment = D_Record.getClaimantsNetWeeklyIncomeFromEmployment();
             if (ClaimantsNetWeeklyIncomeFromEmployment > 0) {
-                CTBTotalCount_EmployedClaimants++;
+                CouncilCTBTotalCount_EmployedClaimants++;
             }
             int ClaimantsNetWeeklyIncomeFromSelfEmployment;
             ClaimantsNetWeeklyIncomeFromSelfEmployment = D_Record.getClaimantsNetWeeklyIncomeFromSelfEmployment();
             if (ClaimantsNetWeeklyIncomeFromSelfEmployment > 0) {
-                CTBTotalCount_SelfEmployedClaimants++;
+                CouncilCTBTotalCount_SelfEmployedClaimants++;
             }
             String ClaimantsStudentIndicator;
             ClaimantsStudentIndicator = D_Record.getClaimantsStudentIndicator();
             if (ClaimantsStudentIndicator != null) {
                 if (ClaimantsStudentIndicator.equalsIgnoreCase("Y")) {
-                    CTBTotalCount_StudentsClaimants++;
+                    CouncilCTBTotalCount_StudentsClaimants++;
                 }
             }
             String LHARegulationsApplied;
             LHARegulationsApplied = D_Record.getLHARegulationsApplied();
             if (LHARegulationsApplied != null) {
                 if (LHARegulationsApplied.equalsIgnoreCase("1")) {
-                    CTBTotalCount_LHACases++;
+                    CouncilCTBTotalCount_LHACases++;
                 }
             }
             if (WeeklyHousingBenefitEntitlement > 0) {
-                CTBTotalWeeklyHBEntitlement += WeeklyHousingBenefitEntitlement;
-                CTBTotalCount_WeeklyHBEntitlementNonZero++;
+                CouncilCTBTotalWeeklyHBEntitlement += WeeklyHousingBenefitEntitlement;
+                CouncilCTBTotalCount_WeeklyHBEntitlementNonZero++;
             } else {
-                CTBTotalWeeklyHBEntitlementZeroCount++;
+                CouncilCTBTotalWeeklyHBEntitlementZeroCount++;
             }
             WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
             if (WeeklyCouncilTaxBenefitBenefitEntitlement > 0) {
-                CTBTotalWeeklyCTBEntitlement += WeeklyCouncilTaxBenefitBenefitEntitlement;
-                CTBTotalCount_WeeklyCTBEntitlementNonZero++;
+                CouncilCTBTotalWeeklyCTBEntitlement += WeeklyCouncilTaxBenefitBenefitEntitlement;
+                CouncilCTBTotalCount_WeeklyCTBEntitlementNonZero++;
             } else {
-                CTBTotalWeeklyCTBEntitlementZeroCount++;
+                CouncilCTBTotalWeeklyCTBEntitlementZeroCount++;
             }
             WeeklyEligibleRentAmount = D_Record.getWeeklyEligibleRentAmount();
             if (WeeklyEligibleRentAmount > 0) {
-                CTBTotalWeeklyEligibleRentAmount += WeeklyEligibleRentAmount;
-                CTBTotalWeeklyEligibleRentAmountNonZeroCount++;
+                CouncilCTBTotalWeeklyEligibleRentAmount += WeeklyEligibleRentAmount;
+                CouncilCTBTotalWeeklyEligibleRentAmountNonZeroCount++;
             } else {
-                CTBTotalWeeklyEligibleRentAmountZeroCount++;
+                CouncilCTBTotalWeeklyEligibleRentAmountZeroCount++;
             }
             WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
             if (WeeklyEligibleCouncilTaxAmount > 0) {
-                CTBTotalWeeklyEligibleCouncilTaxAmount += WeeklyEligibleCouncilTaxAmount;
-                CTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero++;
+                CouncilCTBTotalWeeklyEligibleCouncilTaxAmount += WeeklyEligibleCouncilTaxAmount;
+                CouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero++;
             } else {
-                CTBTotalCount_WeeklyEligibleCouncilTaxAmountZero++;
+                CouncilCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero++;
             }
             ContractualRentAmount = D_Record.getContractualRentAmount();
             if (ContractualRentAmount > 0) {
-                CTBTotalContractualRentAmount += ContractualRentAmount;
-                CTBTotalContractualRentAmountNonZeroCount++;
+                CouncilCTBTotalContractualRentAmount += ContractualRentAmount;
+                CouncilCTBTotalContractualRentAmountNonZeroCount++;
             } else {
-                CTBTotalContractualRentAmountZeroCount++;
+                CouncilCTBTotalContractualRentAmountZeroCount++;
             }
             WeeklyAdditionalDiscretionaryPayment = D_Record.getWeeklyAdditionalDiscretionaryPayment();
             if (WeeklyAdditionalDiscretionaryPayment > 0) {
-                CTBTotalWeeklyAdditionalDiscretionaryPayment += WeeklyAdditionalDiscretionaryPayment;
-                CTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount++;
+                CouncilCTBTotalWeeklyAdditionalDiscretionaryPayment += WeeklyAdditionalDiscretionaryPayment;
+                CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount++;
             } else {
-                CTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount++;
+                CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount++;
             }
             WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = D_Record.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
             if (WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability > 0) {
-                CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability += WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
-                CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount++;
+                CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability += WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
+                CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount++;
             } else {
-                CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
+                CouncilCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
             }
             doSingleTimeCTBCount(
                     ClaimantsEthnicGroup0,
                     postcode,
                     yM30v);
         }
-        AllCount1 = HBCount1 + CTBCount1;
+        CouncilAllCount1 = CouncilHBCount1 + CouncilCTBCount1;
+        // RSL
+        ClaimantsEthnicGroup0 = D_Record.getClaimantsEthnicGroup();
+        // All unfiltered counts
+        TT = D_Record.getTenancyType();
+        postcode = D_Record.getClaimantsPostcode();
+        RSLTotalCount_TTClaimant1[TT]++;
+        // Disability
+        DisabilityPremiumAwarded = D_Record.getDisabilityPremiumAwarded();
+        if (DisabilityPremiumAwarded == 1) {
+            RSLTotalCount_DisabilityPremiumAwardByTT[TT]++;
+        }
+        SevereDisabilityPremiumAwarded = D_Record.getSevereDisabilityPremiumAwarded();
+        if (SevereDisabilityPremiumAwarded == 1) {
+            RSLTotalCount_SevereDisabilityPremiumAwardByTT[TT]++;
+        }
+        DisabledChildPremiumAwarded = D_Record.getDisabledChildPremiumAwarded();
+        if (DisabledChildPremiumAwarded == 1) {
+            RSLTotalCount_DisabledChildPremiumAwardByTT[TT]++;
+        }
+        EnhancedDisabilityPremiumAwarded = D_Record.getEnhancedDisabilityPremiumAwarded();
+        if (EnhancedDisabilityPremiumAwarded == 1) {
+            RSLTotalCount_EnhancedDisabilityPremiumAwardByTT[TT]++;
+        }
+        // General Household Disability Flag
+        if (DisabilityPremiumAwarded == 1
+                || SevereDisabilityPremiumAwarded == 1
+                || DisabledChildPremiumAwarded == 1
+                || EnhancedDisabilityPremiumAwarded == 1) {
+            RSLTotalCount_DisabilityAwardByTT[TT]++;
+        }
+        // Passported Standard Indicator
+        PSI = D_Record.getPassportedStandardIndicator();
+        RSLAllTotalCount_PSI[PSI]++;
+        RSLAllTotalCount_PSIByTT[PSI][TT]++;
+        // Household size
+        HouseholdSize = DW_SHBE_Handler.getHouseholdSize(D_Record);
+        RSLAllTotalHouseholdSize += HouseholdSize;
+        // Entitlements
+        WeeklyHousingBenefitEntitlement = D_Record.getWeeklyHousingBenefitEntitlement();
+        if (WeeklyHousingBenefitEntitlement > 0) {
+            RSLAllTotalWeeklyHBEntitlement += WeeklyHousingBenefitEntitlement;
+            RSLAllTotalWeeklyHBEntitlementNonZeroCount++;
+        } else {
+            RSLAllTotalWeeklyHBEntitlementZeroCount++;
+        }
+        WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
+        if (WeeklyCouncilTaxBenefitBenefitEntitlement > 0) {
+            RSLAllTotalWeeklyCTBEntitlement += WeeklyCouncilTaxBenefitBenefitEntitlement;
+            RSLAllTotalCount_WeeklyCTBEntitlementNonZero++;
+        } else {
+            RSLAllTotalWeeklyCTBEntitlementZeroCount++;
+        }
+        // Eligible Amounts
+        WeeklyEligibleRentAmount = D_Record.getWeeklyEligibleRentAmount();
+        if (WeeklyEligibleRentAmount > 0) {
+            RSLAllTotalWeeklyEligibleRentAmount += WeeklyEligibleRentAmount;
+            RSLAllTotalWeeklyEligibleRentAmountNonZeroCount++;
+        } else {
+            RSLAllTotalWeeklyEligibleRentAmountZeroCount++;
+        }
+        WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
+        if (WeeklyEligibleCouncilTaxAmount > 0) {
+            RSLAllTotalWeeklyEligibleCouncilTaxAmount += WeeklyEligibleCouncilTaxAmount;
+            RSLAllTotalCount_WeeklyEligibleCouncilTaxAmountNonZero++;
+        } else {
+            RSLAllTotalCount_WeeklyEligibleCouncilTaxAmountZero++;
+        }
+        ContractualRentAmount = D_Record.getContractualRentAmount();
+        if (ContractualRentAmount > 0) {
+            RSLAllTotalContractualRentAmount += ContractualRentAmount;
+            RSLAllTotalContractualRentAmountNonZeroCount++;
+        } else {
+            RSLAllTotalContractualRentAmountZeroCount++;
+        }
+        // Additional Payments
+         WeeklyAdditionalDiscretionaryPayment = D_Record.getWeeklyAdditionalDiscretionaryPayment();
+        if (WeeklyAdditionalDiscretionaryPayment > 0) {
+            RSLAllTotalWeeklyAdditionalDiscretionaryPayment += WeeklyAdditionalDiscretionaryPayment;
+            RSLAllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount++;
+        } else {
+            RSLAllTotalWeeklyAdditionalDiscretionaryPaymentZeroCount++;
+        }
+        WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = D_Record.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
+        if (WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability > 0) {
+            RSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability += WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
+            RSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount++;
+        } else {
+            RSLAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
+        }
+        // HBClaim only counts
+        if (DW_SHBE_Handler.isHBClaim(D_Record)) {
+            RSLHBTotalCount_PSI[PSI]++;
+            RSLHBTotalCount_PSIByTT[PSI][TT]++;
+            //if (HBRef.equalsIgnoreCase(CTBRef)) {
+            RSLHBTotalHouseholdSize += HouseholdSize;
+            int ClaimantsNetWeeklyIncomeFromEmployment;
+            ClaimantsNetWeeklyIncomeFromEmployment = D_Record.getClaimantsNetWeeklyIncomeFromEmployment();
+            if (ClaimantsNetWeeklyIncomeFromEmployment > 0) {
+                RSLHBTotalCount_EmployedClaimants++;
+            }
+            int ClaimantsNetWeeklyIncomeFromSelfEmployment;
+            ClaimantsNetWeeklyIncomeFromSelfEmployment = D_Record.getClaimantsNetWeeklyIncomeFromSelfEmployment();
+            if (ClaimantsNetWeeklyIncomeFromSelfEmployment > 0) {
+                RSLHBTotalCount_SelfEmployedClaimants++;
+            }
+            String ClaimantsStudentIndicator;
+            ClaimantsStudentIndicator = D_Record.getClaimantsStudentIndicator();
+            if (ClaimantsStudentIndicator != null) {
+                if (ClaimantsStudentIndicator.equalsIgnoreCase("Y")) {
+                    RSLHBTotalCount_StudentsClaimants++;
+                }
+            }
+            String LHARegulationsApplied;
+            LHARegulationsApplied = D_Record.getLHARegulationsApplied();
+            if (LHARegulationsApplied != null) {
+                if (LHARegulationsApplied.equalsIgnoreCase("1")
+                        || LHARegulationsApplied.equalsIgnoreCase("Yes")) {
+                    RSLHBTotalCount_LHACases++;
+                }
+            }
+            if (WeeklyHousingBenefitEntitlement > 0) {
+                RSLHBTotalWeeklyHBEntitlement += WeeklyHousingBenefitEntitlement;
+                RSLHBTotalCount_WeeklyHBEntitlementNonZero++;
+            } else {
+                RSLHBTotalCount_WeeklyHBEntitlementZero++;
+            }
+            WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
+            if (WeeklyCouncilTaxBenefitBenefitEntitlement > 0) {
+                RSLHBTotalWeeklyCTBEntitlement += WeeklyCouncilTaxBenefitBenefitEntitlement;
+                RSLHBTotalCount_WeeklyCTBEntitlementNonZero++;
+            } else {
+                RSLHBTotalWeeklyCTBEntitlementZeroCount++;
+            }
+            WeeklyEligibleRentAmount = D_Record.getWeeklyEligibleRentAmount();
+            if (WeeklyEligibleRentAmount > 0) {
+                RSLHBTotalWeeklyEligibleRentAmount += WeeklyEligibleRentAmount;
+                RSLHBTotalWeeklyEligibleRentAmountNonZeroCount++;
+            } else {
+                RSLHBTotalWeeklyEligibleRentAmountZeroCount++;
+            }
+            WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
+            if (WeeklyEligibleCouncilTaxAmount > 0) {
+                RSLHBTotalWeeklyEligibleCouncilTaxAmount += WeeklyEligibleCouncilTaxAmount;
+                RSLHBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero++;
+            } else {
+                RSLHBTotalCount_WeeklyEligibleCouncilTaxAmountZero++;
+            }
+            ContractualRentAmount = D_Record.getContractualRentAmount();
+            if (ContractualRentAmount > 0) {
+                RSLHBTotalContractualRentAmount += ContractualRentAmount;
+                RSLHBTotalContractualRentAmountNonZeroCount++;
+            } else {
+                RSLHBTotalContractualRentAmountZeroCount++;
+            }
+            WeeklyAdditionalDiscretionaryPayment = D_Record.getWeeklyAdditionalDiscretionaryPayment();
+            if (WeeklyAdditionalDiscretionaryPayment > 0) {
+                RSLHBTotalWeeklyAdditionalDiscretionaryPayment += WeeklyAdditionalDiscretionaryPayment;
+                RSLHBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount++;
+            } else {
+                RSLHBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount++;
+            }
+            WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = D_Record.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
+            if (WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability > 0) {
+                RSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability += WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
+                RSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount++;
+            } else {
+                RSLHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
+            }
+            doSingleTimeHBCount(
+                    ClaimantsEthnicGroup0,
+                    postcode,
+                    yM30v);
+        }
+        // CTB Claim only counts
+        if (DW_SHBE_Handler.isCTBOnlyClaim(D_Record)) {
+            RSLCTBTotalCount_PSI[PSI]++;
+            RSLCTBTotalCount_PSIByTT[PSI][TT]++;
+            RSLCTBTotalHouseholdSize += HouseholdSize;
+            int ClaimantsNetWeeklyIncomeFromEmployment;
+            ClaimantsNetWeeklyIncomeFromEmployment = D_Record.getClaimantsNetWeeklyIncomeFromEmployment();
+            if (ClaimantsNetWeeklyIncomeFromEmployment > 0) {
+                RSLCTBTotalCount_EmployedClaimants++;
+            }
+            int ClaimantsNetWeeklyIncomeFromSelfEmployment;
+            ClaimantsNetWeeklyIncomeFromSelfEmployment = D_Record.getClaimantsNetWeeklyIncomeFromSelfEmployment();
+            if (ClaimantsNetWeeklyIncomeFromSelfEmployment > 0) {
+                RSLCTBTotalCount_SelfEmployedClaimants++;
+            }
+            String ClaimantsStudentIndicator;
+            ClaimantsStudentIndicator = D_Record.getClaimantsStudentIndicator();
+            if (ClaimantsStudentIndicator != null) {
+                if (ClaimantsStudentIndicator.equalsIgnoreCase("Y")) {
+                    RSLCTBTotalCount_StudentsClaimants++;
+                }
+            }
+            String LHARegulationsApplied;
+            LHARegulationsApplied = D_Record.getLHARegulationsApplied();
+            if (LHARegulationsApplied != null) {
+                if (LHARegulationsApplied.equalsIgnoreCase("1")) {
+                    RSLCTBTotalCount_LHACases++;
+                }
+            }
+            if (WeeklyHousingBenefitEntitlement > 0) {
+                RSLCTBTotalWeeklyHBEntitlement += WeeklyHousingBenefitEntitlement;
+                RSLCTBTotalCount_WeeklyHBEntitlementNonZero++;
+            } else {
+                RSLCTBTotalWeeklyHBEntitlementZeroCount++;
+            }
+            WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
+            if (WeeklyCouncilTaxBenefitBenefitEntitlement > 0) {
+                RSLCTBTotalWeeklyCTBEntitlement += WeeklyCouncilTaxBenefitBenefitEntitlement;
+                RSLCTBTotalCount_WeeklyCTBEntitlementNonZero++;
+            } else {
+                RSLCTBTotalWeeklyCTBEntitlementZeroCount++;
+            }
+            WeeklyEligibleRentAmount = D_Record.getWeeklyEligibleRentAmount();
+            if (WeeklyEligibleRentAmount > 0) {
+                RSLCTBTotalWeeklyEligibleRentAmount += WeeklyEligibleRentAmount;
+                RSLCTBTotalWeeklyEligibleRentAmountNonZeroCount++;
+            } else {
+                RSLCTBTotalWeeklyEligibleRentAmountZeroCount++;
+            }
+            WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
+            if (WeeklyEligibleCouncilTaxAmount > 0) {
+                RSLCTBTotalWeeklyEligibleCouncilTaxAmount += WeeklyEligibleCouncilTaxAmount;
+                RSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountNonZero++;
+            } else {
+                RSLCTBTotalCount_WeeklyEligibleCouncilTaxAmountZero++;
+            }
+            ContractualRentAmount = D_Record.getContractualRentAmount();
+            if (ContractualRentAmount > 0) {
+                RSLCTBTotalContractualRentAmount += ContractualRentAmount;
+                RSLCTBTotalContractualRentAmountNonZeroCount++;
+            } else {
+                RSLCTBTotalContractualRentAmountZeroCount++;
+            }
+            WeeklyAdditionalDiscretionaryPayment = D_Record.getWeeklyAdditionalDiscretionaryPayment();
+            if (WeeklyAdditionalDiscretionaryPayment > 0) {
+                RSLCTBTotalWeeklyAdditionalDiscretionaryPayment += WeeklyAdditionalDiscretionaryPayment;
+                RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount++;
+            } else {
+                RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentZeroCount++;
+            }
+            WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = D_Record.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
+            if (WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability > 0) {
+                RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability += WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
+                RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount++;
+            } else {
+                RSLCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
+            }
+            doSingleTimeCTBCount(
+                    ClaimantsEthnicGroup0,
+                    postcode,
+                    yM30v);
+        }
+        RSLAllCount1 = RSLHBCount1 + RSLCTBCount1;
     }
 
     protected void doSingleTimeRentArrearsCount(DW_UOReport_Record UORec) {
@@ -5643,6 +7973,7 @@ public class SummaryUO extends Summary {
         }
     }
 
+    @Override
     protected void doCompare2TimesHBCount(
             Integer tenancyType0,
             String postcode0,
@@ -5650,32 +7981,34 @@ public class SummaryUO extends Summary {
             Integer tenancyType1,
             String postcode1,
             boolean isValidPostcode1) {
+        super.doCompare2TimesHBCount(tenancyType0, postcode0, isValidPostcode0, tenancyType1, postcode1, isValidPostcode1);
+        // Council
         if (isValidPostcode0) {
             if (isValidPostcode1) {
-                HBTotalCount_Postcode0ValidPostcode1Valid++;
+                CouncilHBTotalCount_Postcode0ValidPostcode1Valid++;
                 if (postcode0.equalsIgnoreCase(postcode1)) {
-                    HBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged++;
+                    CouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged++;
                 } else {
-                    HBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged++;
+                    CouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged++;
                 }
             } else {
-                HBTotalCount_Postcode0ValidPostcode1NotValid++;
+                CouncilHBTotalCount_Postcode0ValidPostcode1NotValid++;
             }
         } else {
             if (isValidPostcode1) {
-                HBTotalCount_Postcode0NotValidPostcode1Valid++;
+                CouncilHBTotalCount_Postcode0NotValidPostcode1Valid++;
             } else {
-                HBTotalCount_Postcode0NotValidPostcode1NotValid++;
+                CouncilHBTotalCount_Postcode0NotValidPostcode1NotValid++;
                 if (postcode0 == null) {
-                    HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+                    CouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
                 } else {
                     if (postcode1 == null) {
-                        HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+                        CouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
                     } else {
                         if (postcode0.equalsIgnoreCase(postcode1)) {
-                            HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+                            CouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
                         } else {
-                            HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
+                            CouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
                         }
                     }
                 }
@@ -5684,15 +8017,14 @@ public class SummaryUO extends Summary {
         if (tenancyType0.compareTo(tenancyType1) != 0) {
             if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999
                     || tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
-                HBTotalCount_TTChangeClaimant++;
-                //HBTotalCount_TTChangeClaimantIgnoreMinus999++;
+                CouncilHBTotalCount_TTChangeClaimant++;
             }
             if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999) {
                 if (tenancyType1 == 1 || tenancyType1 == 4) {
-                    TotalCount_Minus999TTToSocialTTs++;
+                    CouncilTotalCount_Minus999TTToSocialTTs++;
                 }
                 if (tenancyType1 == 3 || tenancyType1 == 6) {
-                    TotalCount_Minus999TTToPrivateDeregulatedTTs++;
+                    CouncilTotalCount_Minus999TTToPrivateDeregulatedTTs++;
                 }
                 if (tenancyType1 == 1
                         || tenancyType1 == 2
@@ -5701,19 +8033,17 @@ public class SummaryUO extends Summary {
                         || tenancyType1 == 6
                         || tenancyType1 == 8
                         || tenancyType1 == 9) {
-                    TotalCount_HBTTsToMinus999TT++;
+                    CouncilTotalCount_HBTTsToMinus999TT++;
                 }
             }
-
             if (tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
                 if (tenancyType0 == 1 || tenancyType0 == 4) {
-                    TotalCount_SocialTTsToMinus999TT++;
+                    CouncilTotalCount_SocialTTsToMinus999TT++;
                 }
                 if (tenancyType0 == 3 || tenancyType0 == 6) {
-                    TotalCount_PrivateDeregulatedTTsToMinus999TT++;
+                    CouncilTotalCount_PrivateDeregulatedTTsToMinus999TT++;
                 }
             }
-
             if ((tenancyType0 == 5
                     || tenancyType0 == 7)
                     && (tenancyType1 == 1
@@ -5723,7 +8053,7 @@ public class SummaryUO extends Summary {
                     || tenancyType1 == 6
                     || tenancyType1 == 8
                     || tenancyType1 == 9)) {
-                TotalCount_CTBTTsToHBTTs++;
+                CouncilTotalCount_CTBTTsToHBTTs++;
             }
             if ((tenancyType0 == 1
                     || tenancyType0 == 2
@@ -5739,28 +8069,27 @@ public class SummaryUO extends Summary {
                     || tenancyType1 == 6
                     || tenancyType1 == 8
                     || tenancyType1 == 9)) {
-                TotalCount_HBTTsToHBTTs++;
+                CouncilTotalCount_HBTTsToHBTTs++;
             }
-
             if (tenancyType0 == 1 || tenancyType0 == 4) {
                 if (tenancyType1 == 3 || tenancyType0 == 6) {
-                    TotalCount_SocialTTsToPrivateDeregulatedTTs++;
+                    CouncilTotalCount_SocialTTsToPrivateDeregulatedTTs++;
                     if (tenancyType0 == 1) {
-                        TotalCount_TT1ToPrivateDeregulatedTTs++;
+                        CouncilTotalCount_TT1ToPrivateDeregulatedTTs++;
                     }
                     if (tenancyType0 == 4) {
-                        TotalCount_TT4ToPrivateDeregulatedTTs++;
+                        CouncilTotalCount_TT4ToPrivateDeregulatedTTs++;
                     }
                 }
             }
             if (tenancyType0 == 3 || tenancyType0 == 6) {
                 if (tenancyType1 == 1 || tenancyType1 == 4) {
-                    TotalCount_PrivateDeregulatedTTsToSocialTTs++;
+                    CouncilTotalCount_PrivateDeregulatedTTsToSocialTTs++;
                     if (tenancyType1 == 1) {
-                        TotalCount_PrivateDeregulatedTTsToTT1++;
+                        CouncilTotalCount_PrivateDeregulatedTTsToTT1++;
                     }
                     if (tenancyType1 == 4) {
-                        TotalCount_PrivateDeregulatedTTsToTT4++;
+                        CouncilTotalCount_PrivateDeregulatedTTsToTT4++;
                     }
                 }
             }
@@ -5771,12 +8100,12 @@ public class SummaryUO extends Summary {
                 || (tenancyType0 == 4 && tenancyType1 == 4)) {
             if (isValidPostcode0 && isValidPostcode1) {
                 if (!postcode0.equalsIgnoreCase(postcode1)) {
-                    TotalCount_PostcodeChangeWithinSocialTTs++;
+                    CouncilTotalCount_PostcodeChangeWithinSocialTTs++;
                     if (tenancyType0 == 1 && tenancyType1 == 1) {
-                        TotalCount_PostcodeChangeWithinTT1++;
+                        CouncilTotalCount_PostcodeChangeWithinTT1++;
                     }
                     if (tenancyType0 == 4 && tenancyType1 == 4) {
-                        TotalCount_PostcodeChangeWithinTT4++;
+                        CouncilTotalCount_PostcodeChangeWithinTT4++;
                     }
                 }
             }
@@ -5787,93 +8116,58 @@ public class SummaryUO extends Summary {
                 || (tenancyType0 == 6 && tenancyType1 == 6)) {
             if (isValidPostcode0 && isValidPostcode1) {
                 if (!postcode0.equalsIgnoreCase(postcode1)) {
-                    TotalCount_PostcodeChangeWithinPrivateDeregulatedTTs++;
+                    CouncilTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs++;
                 }
             }
         }
         if ((tenancyType0 == 5 || tenancyType0 == 7)
                 && (tenancyType1 == 3 || tenancyType1 == 6)) {
-            TotalCount_CTBTTsToPrivateDeregulatedTTs++;
+            CouncilTotalCount_CTBTTsToPrivateDeregulatedTTs++;
         }
         if (tenancyType0 == 1 && tenancyType1 == 4) {
-            TotalCount_TT1ToTT4++;
+            CouncilTotalCount_TT1ToTT4++;
         }
         if (tenancyType0 == 4 && tenancyType1 == 1) {
-            TotalCount_TT4ToTT1++;
+            CouncilTotalCount_TT4ToTT1++;
         }
         if (tenancyType0 == 5 || tenancyType0 == 7) {
             if (tenancyType1 == 1 || tenancyType1 == 4) {
-                TotalCount_CTBTTsToSocialTTs++;
+                CouncilTotalCount_CTBTTsToSocialTTs++;
                 if (tenancyType1 == 1) {
-                    TotalCount_CTBTTsToTT1++;
+                    CouncilTotalCount_CTBTTsToTT1++;
                 }
                 if (tenancyType1 == 4) {
-                    TotalCount_CTBTTsToTT4++;
+                    CouncilTotalCount_CTBTTsToTT4++;
                 }
             }
         }
-    }
-
-    /**
-     *
-     * @param tEG The Ethnic Group
-     * @param tTT The Tenancy Type
-     * @param tP The Postcode
-     * @param yM3v They yM3 for postcode lookup validity
-     */
-    protected void doSingleTimeHBCount(
-            int tEG,
-            String tP,
-            String yM3v) {
-        HBCount1++;
-        HBEthnicGroupCount[tEG]++;
-        if (tP != null) {
-            boolean isValidPostcodeFormat;
-            isValidPostcodeFormat = Generic_UKPostcode_Handler.isValidPostcodeForm(tP);
-            boolean isValidPostcode;
-            isValidPostcode = DW_Postcode_Handler.isValidPostcode(yM3v, tP);
-            if (isValidPostcodeFormat) {
-                HBPostcodeValidFormatCount++;
-            }
-            if (isValidPostcode) {
-                HBPostcodeValidCount++;
-            }
-        }
-    }
-
-    protected void doCompare2TimesCTBCount(
-            Integer tenancyType0,
-            String postcode0,
-            boolean isValidPostcode0,
-            Integer tenancyType1,
-            String postcode1,
-            boolean isValidPostcode1) {
+        // RSL
         if (isValidPostcode0) {
             if (isValidPostcode1) {
-                CTBTotalCount_Postcode0ValidPostcode1Valid++;
+                RSLHBTotalCount_Postcode0ValidPostcode1Valid++;
                 if (postcode0.equalsIgnoreCase(postcode1)) {
-                    CTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged++;
+                    RSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged++;
                 } else {
-                    CTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged++;
+                    RSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged++;
                 }
             } else {
-                CTBTotalCount_Postcode0ValidPostcode1NotValid++;
+                RSLHBTotalCount_Postcode0ValidPostcode1NotValid++;
             }
         } else {
             if (isValidPostcode1) {
-                CTBTotalCount_Postcode0NotValidPostcode1Valid++;
+                RSLHBTotalCount_Postcode0NotValidPostcode1Valid++;
             } else {
-                CTBTotalCount_Postcode0NotValidPostcode1NotValid++;
+                RSLHBTotalCount_Postcode0NotValidPostcode1NotValid++;
                 if (postcode0 == null) {
-                    CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+                    RSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
                 } else {
                     if (postcode1 == null) {
-                        CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+                        RSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
                     } else {
                         if (postcode0.equalsIgnoreCase(postcode1)) {
-                            CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+                            RSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
                         } else {
-                            CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
+                            RSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
                         }
                     }
                 }
@@ -5882,16 +8176,229 @@ public class SummaryUO extends Summary {
         if (tenancyType0.compareTo(tenancyType1) != 0) {
             if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999
                     || tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
-                CTBTotalCount_TTChangeClaimant++;
-                //CTBTotalCount_TTChangeClaimantIgnoreMinus999++;
+                RSLHBTotalCount_TTChangeClaimant++;
+            }
+            if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999) {
+                if (tenancyType1 == 1 || tenancyType1 == 4) {
+                    RSLTotalCount_Minus999TTToSocialTTs++;
+                }
+                if (tenancyType1 == 3 || tenancyType1 == 6) {
+                    RSLTotalCount_Minus999TTToPrivateDeregulatedTTs++;
+                }
+                if (tenancyType1 == 1
+                        || tenancyType1 == 2
+                        || tenancyType1 == 3
+                        || tenancyType1 == 4
+                        || tenancyType1 == 6
+                        || tenancyType1 == 8
+                        || tenancyType1 == 9) {
+                    RSLTotalCount_HBTTsToMinus999TT++;
+                }
+            }
+            if (tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
+                if (tenancyType0 == 1 || tenancyType0 == 4) {
+                    RSLTotalCount_SocialTTsToMinus999TT++;
+                }
+                if (tenancyType0 == 3 || tenancyType0 == 6) {
+                    RSLTotalCount_PrivateDeregulatedTTsToMinus999TT++;
+                }
+            }
+            if ((tenancyType0 == 5
+                    || tenancyType0 == 7)
+                    && (tenancyType1 == 1
+                    || tenancyType1 == 2
+                    || tenancyType1 == 3
+                    || tenancyType1 == 4
+                    || tenancyType1 == 6
+                    || tenancyType1 == 8
+                    || tenancyType1 == 9)) {
+                RSLTotalCount_CTBTTsToHBTTs++;
+            }
+            if ((tenancyType0 == 1
+                    || tenancyType0 == 2
+                    || tenancyType0 == 3
+                    || tenancyType0 == 4
+                    || tenancyType0 == 6
+                    || tenancyType0 == 8
+                    || tenancyType0 == 9)
+                    && (tenancyType1 == 1
+                    || tenancyType1 == 2
+                    || tenancyType1 == 3
+                    || tenancyType1 == 4
+                    || tenancyType1 == 6
+                    || tenancyType1 == 8
+                    || tenancyType1 == 9)) {
+                RSLTotalCount_HBTTsToHBTTs++;
+            }
+            if (tenancyType0 == 1 || tenancyType0 == 4) {
+                if (tenancyType1 == 3 || tenancyType0 == 6) {
+                    RSLTotalCount_SocialTTsToPrivateDeregulatedTTs++;
+                    if (tenancyType0 == 1) {
+                        RSLTotalCount_TT1ToPrivateDeregulatedTTs++;
+                    }
+                    if (tenancyType0 == 4) {
+                        RSLTotalCount_TT4ToPrivateDeregulatedTTs++;
+                    }
+                }
+            }
+            if (tenancyType0 == 3 || tenancyType0 == 6) {
+                if (tenancyType1 == 1 || tenancyType1 == 4) {
+                    RSLTotalCount_PrivateDeregulatedTTsToSocialTTs++;
+                    if (tenancyType1 == 1) {
+                        RSLTotalCount_PrivateDeregulatedTTsToTT1++;
+                    }
+                    if (tenancyType1 == 4) {
+                        RSLTotalCount_PrivateDeregulatedTTsToTT4++;
+                    }
+                }
+            }
+        }
+        if ((tenancyType0 == 1 && tenancyType1 == 1)
+                || (tenancyType0 == 1 && tenancyType1 == 4)
+                || (tenancyType0 == 4 && tenancyType1 == 1)
+                || (tenancyType0 == 4 && tenancyType1 == 4)) {
+            if (isValidPostcode0 && isValidPostcode1) {
+                if (!postcode0.equalsIgnoreCase(postcode1)) {
+                    RSLTotalCount_PostcodeChangeWithinSocialTTs++;
+                    if (tenancyType0 == 1 && tenancyType1 == 1) {
+                        RSLTotalCount_PostcodeChangeWithinTT1++;
+                    }
+                    if (tenancyType0 == 4 && tenancyType1 == 4) {
+                        RSLTotalCount_PostcodeChangeWithinTT4++;
+                    }
+                }
+            }
+        }
+        if ((tenancyType0 == 3 && tenancyType1 == 3)
+                || (tenancyType0 == 3 && tenancyType1 == 6)
+                || (tenancyType0 == 6 && tenancyType1 == 3)
+                || (tenancyType0 == 6 && tenancyType1 == 6)) {
+            if (isValidPostcode0 && isValidPostcode1) {
+                if (!postcode0.equalsIgnoreCase(postcode1)) {
+                    RSLTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs++;
+                }
+            }
+        }
+        if ((tenancyType0 == 5 || tenancyType0 == 7)
+                && (tenancyType1 == 3 || tenancyType1 == 6)) {
+            RSLTotalCount_CTBTTsToPrivateDeregulatedTTs++;
+        }
+        if (tenancyType0 == 1 && tenancyType1 == 4) {
+            RSLTotalCount_TT1ToTT4++;
+        }
+        if (tenancyType0 == 4 && tenancyType1 == 1) {
+            RSLTotalCount_TT4ToTT1++;
+        }
+        if (tenancyType0 == 5 || tenancyType0 == 7) {
+            if (tenancyType1 == 1 || tenancyType1 == 4) {
+                RSLTotalCount_CTBTTsToSocialTTs++;
+                if (tenancyType1 == 1) {
+                    RSLTotalCount_CTBTTsToTT1++;
+                }
+                if (tenancyType1 == 4) {
+                    RSLTotalCount_CTBTTsToTT4++;
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     * @param tEG The Ethnic Group
+     * @param tP The Postcode
+     * @param yM3v They yM3 for postcode lookup validity
+     */
+    @Override
+    protected void doSingleTimeHBCount(
+            int tEG,
+            String tP,
+            String yM3v) {
+        //super.doSingleTimeHBCount(tEG, tP, yM3v);
+        // RSL
+        RSLHBCount1++;
+        RSLHBEthnicGroupCount[tEG]++;
+        if (tP != null) {
+            boolean isValidPostcodeFormat;
+            isValidPostcodeFormat = Generic_UKPostcode_Handler.isValidPostcodeForm(tP);
+            boolean isValidPostcode;
+            isValidPostcode = DW_Postcode_Handler.isValidPostcode(yM3v, tP);
+            if (isValidPostcodeFormat) {
+                RSLHBTotalCount_PostcodeValidFormat++;
+            }
+            if (isValidPostcode) {
+                RSLHBTotalCount_PostcodeValid++;
+            }
+        }
+        // Council
+        CouncilHBCount1++;
+        CouncilHBEthnicGroupCount[tEG]++;
+        if (tP != null) {
+            boolean isValidPostcodeFormat;
+            isValidPostcodeFormat = Generic_UKPostcode_Handler.isValidPostcodeForm(tP);
+            boolean isValidPostcode;
+            isValidPostcode = DW_Postcode_Handler.isValidPostcode(yM3v, tP);
+            if (isValidPostcodeFormat) {
+                CouncilHBTotalCount_PostcodeValidFormat++;
+            }
+            if (isValidPostcode) {
+                CouncilHBTotalCount_PostcodeValid++;
+            }
+        }
+    }
+
+    @Override
+    protected void doCompare2TimesCTBCount(
+            Integer tenancyType0,
+            String postcode0,
+            boolean isValidPostcode0,
+            Integer tenancyType1,
+            String postcode1,
+            boolean isValidPostcode1) {
+        //super.doCompare2TimesCTBCount(tenancyType0, postcode0, isValidPostcode0, tenancyType1, postcode1, isValidPostcode1);
+        // Council
+        if (isValidPostcode0) {
+            if (isValidPostcode1) {
+                CouncilCTBTotalCount_Postcode0ValidPostcode1Valid++;
+                if (postcode0.equalsIgnoreCase(postcode1)) {
+                    CouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged++;
+                } else {
+                    CouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged++;
+                }
+            } else {
+                CouncilCTBTotalCount_Postcode0ValidPostcode1NotValid++;
+            }
+        } else {
+            if (isValidPostcode1) {
+                CouncilCTBTotalCount_Postcode0NotValidPostcode1Valid++;
+            } else {
+                CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValid++;
+                if (postcode0 == null) {
+                    CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+                } else {
+                    if (postcode1 == null) {
+                        CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+                    } else {
+                        if (postcode0.equalsIgnoreCase(postcode1)) {
+                            CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+                        } else {
+                            CouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
+                        }
+                    }
+                }
+            }
+        }
+        if (tenancyType0.compareTo(tenancyType1) != 0) {
+            if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999
+                    || tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
+                CouncilCTBTotalCount_TTChangeClaimant++;
             }
             if (tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
                 if (tenancyType0 == 5 || tenancyType0 == 7) {
-                    TotalCount_CTBTTsToMinus999TT++;
+                    CouncilTotalCount_CTBTTsToMinus999TT++;
                 }
             }
             if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999) {
-                TotalCount_Minus999TTToCTBTTs++;
+                CouncilTotalCount_Minus999TTToCTBTTs++;
             }
             if ((tenancyType0 == 1
                     || tenancyType0 == 2
@@ -5901,23 +8408,95 @@ public class SummaryUO extends Summary {
                     || tenancyType0 == 8
                     || tenancyType0 == 9)
                     && (tenancyType1 == 5 || tenancyType1 == 7)) {
-                TotalCount_HBTTsToCTBTTs++;
+                CouncilTotalCount_HBTTsToCTBTTs++;
             }
             if ((tenancyType0 == 1 || tenancyType0 == 4)
                     && (tenancyType1 == 5 || tenancyType1 == 7)) {
-                TotalCount_SocialTTsToCTBTTs++;
+                CouncilTotalCount_SocialTTsToCTBTTs++;
             }
             if ((tenancyType0 == 1)
                     && (tenancyType1 == 5 || tenancyType1 == 7)) {
-                TotalCount_TT1ToCTBTTs++;
+                CouncilTotalCount_TT1ToCTBTTs++;
             }
             if ((tenancyType0 == 4)
                     && (tenancyType1 == 5 || tenancyType1 == 7)) {
-                TotalCount_TT4ToCTBTTs++;
+                CouncilTotalCount_TT4ToCTBTTs++;
             }
             if ((tenancyType0 == 3 || tenancyType0 == 6)
                     && (tenancyType1 == 5 || tenancyType1 == 7)) {
-                TotalCount_PrivateDeregulatedTTsToCTBTTs++;
+                CouncilTotalCount_PrivateDeregulatedTTsToCTBTTs++;
+            }
+        }
+        // RSL
+        if (isValidPostcode0) {
+            if (isValidPostcode1) {
+                RSLCTBTotalCount_Postcode0ValidPostcode1Valid++;
+                if (postcode0.equalsIgnoreCase(postcode1)) {
+                    RSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged++;
+                } else {
+                    RSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged++;
+                }
+            } else {
+                RSLCTBTotalCount_Postcode0ValidPostcode1NotValid++;
+            }
+        } else {
+            if (isValidPostcode1) {
+                RSLCTBTotalCount_Postcode0NotValidPostcode1Valid++;
+            } else {
+                RSLCTBTotalCount_Postcode0NotValidPostcode1NotValid++;
+                if (postcode0 == null) {
+                    RSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+                } else {
+                    if (postcode1 == null) {
+                        RSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+                    } else {
+                        if (postcode0.equalsIgnoreCase(postcode1)) {
+                            RSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+                        } else {
+                            RSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
+                        }
+                    }
+                }
+            }
+        }
+        if (tenancyType0.compareTo(tenancyType1) != 0) {
+            if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999
+                    || tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
+                RSLCTBTotalCount_TTChangeClaimant++;
+            }
+            if (tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
+                if (tenancyType0 == 5 || tenancyType0 == 7) {
+                    RSLTotalCount_CTBTTsToMinus999TT++;
+                }
+            }
+            if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999) {
+                RSLTotalCount_Minus999TTToCTBTTs++;
+            }
+            if ((tenancyType0 == 1
+                    || tenancyType0 == 2
+                    || tenancyType0 == 3
+                    || tenancyType0 == 4
+                    || tenancyType0 == 6
+                    || tenancyType0 == 8
+                    || tenancyType0 == 9)
+                    && (tenancyType1 == 5 || tenancyType1 == 7)) {
+                RSLTotalCount_HBTTsToCTBTTs++;
+            }
+            if ((tenancyType0 == 1 || tenancyType0 == 4)
+                    && (tenancyType1 == 5 || tenancyType1 == 7)) {
+                RSLTotalCount_SocialTTsToCTBTTs++;
+            }
+            if ((tenancyType0 == 1)
+                    && (tenancyType1 == 5 || tenancyType1 == 7)) {
+                RSLTotalCount_TT1ToCTBTTs++;
+            }
+            if ((tenancyType0 == 4)
+                    && (tenancyType1 == 5 || tenancyType1 == 7)) {
+                RSLTotalCount_TT4ToCTBTTs++;
+            }
+            if ((tenancyType0 == 3 || tenancyType0 == 6)
+                    && (tenancyType1 == 5 || tenancyType1 == 7)) {
+                RSLTotalCount_PrivateDeregulatedTTsToCTBTTs++;
             }
         }
     }
@@ -5925,332 +8504,49 @@ public class SummaryUO extends Summary {
     /**
      *
      * @param tEG The Ethnic Group
-     * @param tTT The Tenancy Type
      * @param tP The Postcode
      * @param yM3v They yM3 for postcode lookup validity
      */
+    @Override
     protected void doSingleTimeCTBCount(
             int tEG,
             String tP,
             String yM3v) {
-        CTBCount1++;
-        CTBEthnicGroupCount[tEG]++;
+        // Council
+        CouncilCTBCount1++;
+        CouncilCTBEthnicGroupCount[tEG]++;
         if (tP != null) {
             boolean isValidPostcodeFormat;
             isValidPostcodeFormat = Generic_UKPostcode_Handler.isValidPostcodeForm(tP);
             boolean isValidPostcode;
             isValidPostcode = DW_Postcode_Handler.isValidPostcode(yM3v, tP);
             if (isValidPostcodeFormat) {
-                CTBPostcodeValidFormatCount++;
+                CouncilCTBTotalCount_PostcodeValidFormat++;
             }
             if (isValidPostcode) {
-                CTBPostcodeValidCount++;
+                CouncilCTBTotalCount_PostcodeValid++;
+            }
+        }
+        // RSL
+        RSLCTBCount1++;
+        RSLCTBEthnicGroupCount[tEG]++;
+        if (tP != null) {
+            boolean isValidPostcodeFormat;
+            isValidPostcodeFormat = Generic_UKPostcode_Handler.isValidPostcodeForm(tP);
+            boolean isValidPostcode;
+            isValidPostcode = DW_Postcode_Handler.isValidPostcode(yM3v, tP);
+            if (isValidPostcodeFormat) {
+                RSLCTBTotalCount_PostcodeValidFormat++;
+            }
+            if (isValidPostcode) {
+                RSLCTBTotalCount_PostcodeValid++;
             }
         }
     }
 
-    /**
-     *
-     * @param SHBEFilenames
-     * @param paymentType
-     * @param include
-     * @param forceNewSummaries
-     * @param nTT
-     * @param nEG
-     * @param nPSI
-     * @param handleOutOfMemoryError
-     * @return
-     */
-    public TreeMap<String, HashMap<String, String>> getSummaryTable(
-            String[] SHBEFilenames,
-            ArrayList<Integer> include,
-            boolean forceNewSummaries,
-            String paymentType,
-            int nTT,
-            int nEG,
-            int nPSI,
-            boolean handleOutOfMemoryError
-    ) {
-        AllCount0 = null;
-        HBCount0 = null;
-        CTBCount0 = null;
-        initCounts(nTT, nEG, nPSI);
-        // Initialise summaryTable
-        TreeMap<String, HashMap<String, String>> result;
-        result = new TreeMap<String, HashMap<String, String>>();
-        // All
-        Iterator<Integer> includeIte;
-        includeIte = include.iterator();
-        while (includeIte.hasNext()) {
-            int i;
-            i = includeIte.next();
-            HashMap<String, String> summary;
-            summary = new HashMap<String, String>();
-            String key;
-            key = DW_SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
-            result.put(key, summary);
-        }
-        includeIte = include.iterator();
-        int i;
-        i = includeIte.next();
-        // Load first data
-        String filename00;
-        filename00 = null;
-        String filename0;
-        filename0 = SHBEFilenames[i];
-        String yM30;
-        yM30 = DW_SHBE_Handler.getYM3(filename0);
-        System.out.println("Load " + filename0);
-        DW_SHBE_Collection tSHBEData0;
-        tSHBEData0 = new DW_SHBE_Collection(filename0, paymentType);
-        // These could be returned to save time recreating them for other includes.
-        // This would involve feeding them in to the method too per se.
-        String yM30v;
-        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-        String key;
-        key = DW_SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
-        HashMap<String, String> summary;
-        summary = result.get(key);
-        TreeMap<String, HashSet<DW_PersonID>> tClaimantIDs;
-        tClaimantIDs = new TreeMap<String, HashSet<DW_PersonID>>();
-        TreeMap<String, HashSet<DW_PersonID>> AllIDs;
-        AllIDs = new TreeMap<String, HashSet<DW_PersonID>>();
-        TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes;
-        tClaimantIDPostcodes = new TreeMap<String, HashSet<ID_PostcodeID>>();
-        TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs;
-        tClaimantIDTTs = new TreeMap<String, HashSet<ID_TenancyType>>();
-        TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs;
-        tClaimantIDPostcodeTTs = new TreeMap<String, HashSet<ID_TenancyType_PostcodeID>>();
-        TreeMap<String, DW_SHBE_Record> tDRecords0;
-        tDRecords0 = tSHBEData0.getRecords();
-        HashSet<DW_PersonID> tClaimantIDs0;
-        tClaimantIDs0 = tSHBEData0.getClaimantIDs();
-        tClaimantIDs.put(yM30, tClaimantIDs0);
-        HashSet<DW_PersonID> AllIDs0;
-        AllIDs0 = tSHBEData0.getAllIDs();
-        AllIDs.put(yM30, AllIDs0);
-        HashMap<DW_ID, String> tIDByPostcode0;
-        tIDByPostcode0 = tSHBEData0.getClaimantIDToPostcodeLookup();
-        //tIDByPostcode0 = loadIDByPostcode(loadData, filename, i);
-        HashMap<DW_ID, Integer> tIDByTT0;
-        tIDByTT0 = tSHBEData0.getClaimantIDToTenancyTypeLookup();
-        //tIDByTT0 = loadIDByTT(loadData, filename, i);
-        HashMap<String, DW_ID> CTBRefToIDLookup0;
-        CTBRefToIDLookup0 = tSHBEData0.getCTBRefToClaimantIDLookup();
-        //tCTBRefID0 = loadCTBRefByID(loadData, filename, i);        
-        HashMap<String, Integer> tLoadSummary;
-        tLoadSummary = tSHBEData0.getLoadSummary();
-        addToSummary(summary, tLoadSummary);
-        HashSet<ID_PostcodeID> tClaimantIDPostcodes0;
-        tClaimantIDPostcodes0 = tSHBEData0.getClaimantIDAndPostcodeSet();
-        tClaimantIDPostcodes.put(yM30, tClaimantIDPostcodes0);
-        HashSet<ID_TenancyType> tClaimantIDTT0;
-        tClaimantIDTT0 = tSHBEData0.getClaimantIDAndTenancyTypeSet();
-        tClaimantIDTTs.put(yM30, tClaimantIDTT0);
-        HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTTs0;
-        tClaimantIDPostcodeTTs0 = tSHBEData0.getClaimantIDAndPostcodeAndTenancyTypeSet();
-        tClaimantIDPostcodeTTs.put(yM30, tClaimantIDPostcodeTTs0);
-        // All
-        initCounts(nTT, nEG, nPSI);
-        Iterator<String> ite;
-        ite = CTBRefToIDLookup0.keySet().iterator();
-        while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
-            DW_SHBE_D_Record D_Record;
-            D_Record = tDRecords0.get(CTBRef).getDRecord();
-            doSingleTimeCount(
-                    D_Record,
-                    yM30v);
-        }
-        summary.put(sSHBEFilename1, filename0); // This looks odd but is right!
-        HashMap<String, BigDecimal> incomeAndRentSummary;
-        incomeAndRentSummary = DW_SHBE_Handler.getIncomeAndRentSummary(
-                tSHBEData0,
-                filename0,
-                paymentType,
-                null,
-                false,
-                forceNewSummaries);
-        addToSummarySingleTimeIncomeAndRent(
-                summary,
-                incomeAndRentSummary);
-        addToSummarySingleTime(nTT, nEG, nPSI, summary);
-        while (includeIte.hasNext()) {
-            i = includeIte.next();
-            String filename1;
-            filename1 = SHBEFilenames[i];
-            String yM31;
-            yM31 = DW_SHBE_Handler.getYM3(filename1);
-            String yM31v;
-            yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
-            // Load next data
-            System.out.println("Load " + filename1);
-            DW_SHBE_Collection tSHBEData1;
-            tSHBEData1 = new DW_SHBE_Collection(filename1, paymentType);
-            TreeMap<String, DW_SHBE_Record> tDRecords1;
-            tDRecords1 = tSHBEData1.getRecords();
-            HashSet<DW_PersonID> tClaimantIDs1;
-            tClaimantIDs1 = tSHBEData1.getClaimantIDs();
-            tClaimantIDs.put(yM31, tClaimantIDs1);
+    not sure what to do about this...;
 
-            HashSet<DW_PersonID> AllIDs1;
-            AllIDs1 = tSHBEData1.getAllIDs();
-            AllIDs.put(yM31, AllIDs1);
-            HashMap<DW_ID, String> tIDByPostcode1;
-            tIDByPostcode1 = tSHBEData1.getClaimantIDToPostcodeLookup();
-            HashMap<DW_ID, Integer> tIDByTT1;
-            tIDByTT1 = tSHBEData1.getClaimantIDToTenancyTypeLookup();
-            HashMap<String, DW_ID> CTBRefToIDLookup1;
-            CTBRefToIDLookup1 = tSHBEData1.getCTBRefToClaimantIDLookup();
-            HashSet<ID_PostcodeID> tClaimantIDPostcodes1;
-            tClaimantIDPostcodes1 = tSHBEData1.getClaimantIDAndPostcodeSet();
-            tClaimantIDPostcodes.put(yM31, tClaimantIDPostcodes1);
-            HashSet<ID_TenancyType> tClaimantIDTT1;
-            tClaimantIDTT1 = tSHBEData1.getClaimantIDAndTenancyTypeSet();
-            tClaimantIDTTs.put(yM31, tClaimantIDTT1);
-            HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTTs1;
-            tClaimantIDPostcodeTTs1 = tSHBEData1.getClaimantIDAndPostcodeAndTenancyTypeSet();
-            tClaimantIDPostcodeTTs.put(yM31, tClaimantIDPostcodeTTs1);
-
-            key = DW_SHBE_Handler.getYearMonthNumber(filename1);
-            summary = result.get(key);
-            // Counters
-            tLoadSummary = (HashMap<String, Integer>) tSHBEData1.getLoadSummary();
-            addToSummary(summary, tLoadSummary);
-            HashMap<String, BigDecimal> incomeAndRentSummary1;
-            incomeAndRentSummary1 = DW_SHBE_Handler.getIncomeAndRentSummary(
-                    tSHBEData1,
-                    filename1,
-                    paymentType,
-                    null,
-                    false,
-                    forceNewSummaries);
-            addToSummarySingleTimeIncomeAndRent(
-                    summary,
-                    incomeAndRentSummary1);
-            initCounts(nTT, nEG, nPSI);
-
-            // Loop over CTBRefToIDLookup0
-            ite = CTBRefToIDLookup0.keySet().iterator();
-            while (ite.hasNext()) {
-                String CTBRef;
-                CTBRef = ite.next();
-                DW_SHBE_Record Record0;
-                Record0 = tDRecords0.get(CTBRef);
-                DW_SHBE_D_Record D_Record0;
-                D_Record0 = null;
-                if (Record0 != null) {
-                    D_Record0 = Record0.getDRecord();
-                }
-                DW_SHBE_Record Record1;
-                Record1 = tDRecords1.get(CTBRef);
-                if (Record1 == null) {
-                    doCompare2TimesCounts(
-                            D_Record0,
-                            null,
-                            yM30v,
-                            yM31v);
-                }
-            }
-
-            // Loop over CTBRefToIDLookup1
-            ite = CTBRefToIDLookup1.keySet().iterator();
-            while (ite.hasNext()) {
-                String CTBRef;
-                CTBRef = ite.next();
-                DW_SHBE_Record Record0;
-                Record0 = tDRecords0.get(CTBRef);
-                DW_SHBE_D_Record D_Record0;
-                D_Record0 = null;
-                if (Record0 != null) {
-                    D_Record0 = Record0.getDRecord();
-                }
-                DW_SHBE_D_Record D_Record1;
-                D_Record1 = tDRecords1.get(CTBRef).getDRecord();
-                doCompare2TimesCounts(
-                        D_Record0,
-                        D_Record1,
-                        yM30v,
-                        yM31v);
-            }
-            summary.put(sSHBEFilename00, filename00);
-            summary.put(sSHBEFilename0, filename0);
-            summary.put(sSHBEFilename1, filename1);
-
-            // All
-            addToSummaryCompare2Times(nTT, nEG, nPSI, summary);
-            doCompare3TimesCounts(
-                    summary,
-                    nTT,
-                    SHBEFilenames,
-                    include,
-                    yM31,
-                    tClaimantIDPostcodes,
-                    tClaimantIDPostcodes1,
-                    tClaimantIDTTs,
-                    tClaimantIDTT1,
-                    tClaimantIDPostcodeTTs,
-                    tClaimantIDPostcodeTTs1);
-            filename00 = filename0;
-            filename0 = filename1;
-            tSHBEData0 = tSHBEData1;
-            tDRecords0 = tDRecords1;
-            tIDByPostcode0 = tIDByPostcode1;
-            tIDByTT0 = tIDByTT1;
-            CTBRefToIDLookup0 = CTBRefToIDLookup1;
-            yM30 = yM31;
-            yM30v = yM31v;
-            AllCount0 = null;
-            HBCount0 = null;
-            CTBCount0 = null;
-            // Not used at present. incomeAndRentSummary0 = incomeAndRentSummary1;
-
-        }
-        return result;
-    }
-
-    public void addToSummary(
-            HashMap<String, String> summary,
-            HashMap<String, Integer> tLoadSummary) {
-        summary.put(
-                DW_SHBE_Collection.sLineCount,
-                Integer.toString(tLoadSummary.get(DW_SHBE_Collection.sLineCount)));
-//        summary.put(
-//                "LineNotLoadedCount",
-//                Integer.toString(tLoadSummary.get("RecordIDsNotLoaded.size()")));
-        summary.put(
-                "LineNotLoadedCount",
-                Integer.toString(tLoadSummary.get(DW_SHBE_Collection.sCountRecordIDsNotLoaded)));
-        summary.put(
-                DW_SHBE_Collection.sCountDRecords,
-                Integer.toString(tLoadSummary.get(DW_SHBE_Collection.sCountDRecords)));
-        summary.put(
-                DW_SHBE_Collection.sCountSRecords,
-                Integer.toString(tLoadSummary.get(DW_SHBE_Collection.sCountSRecords)));
-        summary.put(
-                DW_SHBE_Collection.sCountOfSRecordsWithoutDRecord,
-                Integer.toString(tLoadSummary.get(DW_SHBE_Collection.sCountOfSRecordsWithoutDRecord)));
-        summary.put(
-                DW_SHBE_Collection.sCountUniqueClaimants,
-                Integer.toString(tLoadSummary.get(DW_SHBE_Collection.sCountUniqueClaimants)));
-        summary.put(
-                DW_SHBE_Collection.sCountUniquePartners,
-                Integer.toString(tLoadSummary.get(DW_SHBE_Collection.sCountUniquePartners)));
-        summary.put(
-                DW_SHBE_Collection.sCountUniqueDependents,
-                Integer.toString(tLoadSummary.get(DW_SHBE_Collection.sCountUniqueDependents)));
-        summary.put(
-                DW_SHBE_Collection.sCountUniqueNonDependents,
-                Integer.toString(tLoadSummary.get(DW_SHBE_Collection.sCountUniqueNonDependents)));
-        summary.put(
-                DW_SHBE_Collection.sCountUniqueIndividuals,
-                Integer.toString(tLoadSummary.get(DW_SHBE_Collection.sCountUniqueIndividuals)));
-        summary.put(sAllCount0, Integer.toString(AllCount1));
-        summary.put(sHBCount0, Integer.toString(HBCount1));
-        summary.put(sCTBCount0, Integer.toString(CTBCount1));
-    }
-
+    @Override
     public void doCompare3TimesCounts(
             HashMap<String, String> summary,
             int nTT,
@@ -6264,6 +8560,7 @@ public class SummaryUO extends Summary {
             TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
             HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTTs1
     ) {
+        //super.doCompare3TimesCounts(summary, nTT, SHBEFilenames, include, yM31, tClaimantIDPostcodes, tClaimantIDPostcodes1, tClaimantIDTTs, tClaimantIDTTs1, tClaimantIDPostcodeTTs, tClaimantIDPostcodeTTs1);
         Integer[] counts;
         counts = getCountsIDPostcode(
                 SHBEFilenames,
@@ -6271,11 +8568,11 @@ public class SummaryUO extends Summary {
                 yM31,
                 tClaimantIDPostcodes,
                 tClaimantIDPostcodes1);
-        summary.put(sSamePostcodeIII,
+        summary.put(sRSLSamePostcodeIII,
                 "" + counts[0]);
-        summary.put(sSamePostcodeIOI,
+        summary.put(sRSLSamePostcodeIOI,
                 "" + counts[1]);
-        summary.put(sSamePostcodeOIO,
+        summary.put(sRSLSamePostcodeOIO,
                 "" + counts[2]);
         Object[] countsIDTT = getCountsIDTT(
                 nTT,
@@ -6872,7 +9169,7 @@ public class SummaryUO extends Summary {
     }
 
     /**
-     * 
+     *
      * @param tSHBEData1
      * @param yM31
      * @param yM31v
@@ -6897,7 +9194,7 @@ public class SummaryUO extends Summary {
      * @param tClaimantIDTTs
      * @param tClaimantIDPostcodeTTs
      * @param DW_PersonIDToIDLookup
-     * @param PostcodeToPostcodeIDLookup 
+     * @param PostcodeToPostcodeIDLookup
      */
     protected void doPartSummaryCompare2Times(
             DW_SHBE_Collection tSHBEData1,
@@ -7402,6 +9699,7 @@ public class SummaryUO extends Summary {
                 nTT, nEG);
     }
 
+    @Override
     protected PrintWriter getPrintWriter(
             String name,
             TreeMap<String, HashMap<String, String>> summaryTable,
@@ -7412,11 +9710,11 @@ public class SummaryUO extends Summary {
         File dirOut;
         dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
         String outFilename;
-        outFilename = paymentType + "_";
+        outFilename = paymentType + "_" + includeKey + "_";
         if (underOccupancy) {
             outFilename += "UO_";
         }
-        outFilename += summaryTable.firstKey() + "To" + summaryTable.lastKey() + name + ".csv";
+        outFilename += summaryTable.firstKey() + "_To_" + summaryTable.lastKey() + "_" + name + ".csv";
         File outFile;
         outFile = new File(dirOut, outFilename);
         result = Generic_StaticIO.getPrintWriter(outFile, false);
@@ -7433,6 +9731,7 @@ public class SummaryUO extends Summary {
      * @param nTT
      * @param nEG
      */
+    @Override
     public void writeSummaryTableCompare3Times(
             TreeMap<String, HashMap<String, String>> summaryTable,
             String paymentType,
@@ -7456,7 +9755,6 @@ public class SummaryUO extends Summary {
         header += "PostCodeLookupDate00, PostCodeLookupFile00, "
                 + "PostCodeLookupDate0, PostCodeLookupFile0, "
                 + "PostCodeLookupDate1, PostCodeLookupFile1, ";
-        if (underOccupancy) {
             header += sCouncilFilename00 + ", ";
             header += sRSLFilename00 + ", ";
             header += sCouncilCount00 + ", ";
@@ -7475,8 +9773,8 @@ public class SummaryUO extends Summary {
             header += sRSLCount1 + ", ";
             header += sAllUOCount1 + ", ";
             header += sAllUOLinkedRecordCount1 + ", ";
-        }
-        header += sSamePostcodeIII + ", ";
+        // All UO
+            header += sSamePostcodeIII + ", ";
         header += sSamePostcodeIOI + ", ";
         header += sSamePostcodeOIO + ", ";
         header += sSameTenancyIII + ", ";
@@ -7494,6 +9792,46 @@ public class SummaryUO extends Summary {
             header += sSameTenancyAndPostcodeIIITT[i] + ", ";
             header += sSameTenancyAndPostcodeIOITT[i] + ", ";
             header += sSameTenancyAndPostcodeOIOTT[i] + ", ";
+        }
+        // Council
+        header += sCouncilSamePostcodeIII + ", ";
+        header += sCouncilSamePostcodeIOI + ", ";
+        header += sCouncilSamePostcodeOIO + ", ";
+        header += sCouncilSameTenancyIII + ", ";
+        header += sCouncilSameTenancyIOI + ", ";
+        header += sCouncilSameTenancyOIO + ", ";
+        for (int i = 1; i < nTT; i++) {
+            header += sCouncilSameTenancyIIITT[i] + ", ";
+            header += sCouncilSameTenancyIOITT[i] + ", ";
+            header += sCouncilSameTenancyOIOTT[i] + ", ";
+        }
+        header += sCouncilSameTenancyAndPostcodeIII + ", ";
+        header += sCouncilSameTenancyAndPostcodeIOI + ", ";
+        header += sCouncilSameTenancyAndPostcodeOIO + ", ";
+        for (int i = 1; i < nTT; i++) {
+            header += sCouncilSameTenancyAndPostcodeIIITT[i] + ", ";
+            header += sCouncilSameTenancyAndPostcodeIOITT[i] + ", ";
+            header += sCouncilSameTenancyAndPostcodeOIOTT[i] + ", ";
+        }
+        // RSL
+        header += sRSLSamePostcodeIII + ", ";
+        header += sRSLSamePostcodeIOI + ", ";
+        header += sRSLSamePostcodeOIO + ", ";
+        header += sRSLSameTenancyIII + ", ";
+        header += sRSLSameTenancyIOI + ", ";
+        header += sRSLSameTenancyOIO + ", ";
+        for (int i = 1; i < nTT; i++) {
+            header += sRSLSameTenancyIIITT[i] + ", ";
+            header += sRSLSameTenancyIOITT[i] + ", ";
+            header += sRSLSameTenancyOIOTT[i] + ", ";
+        }
+        header += sRSLSameTenancyAndPostcodeIII + ", ";
+        header += sRSLSameTenancyAndPostcodeIOI + ", ";
+        header += sRSLSameTenancyAndPostcodeOIO + ", ";
+        for (int i = 1; i < nTT; i++) {
+            header += sRSLSameTenancyAndPostcodeIIITT[i] + ", ";
+            header += sRSLSameTenancyAndPostcodeIOITT[i] + ", ";
+            header += sRSLSameTenancyAndPostcodeOIOTT[i] + ", ";
         }
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -7538,7 +9876,6 @@ public class SummaryUO extends Summary {
                 PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
             }
             line += PostCodeLookupDate1 + ", " + PostCodeLookupFile1Name + ", ";
-            if (underOccupancy) {
                 line += summary.get(sCouncilFilename00) + ", ";
                 line += summary.get(sRSLFilename00) + ", ";
                 line += summary.get(sCouncilCount00) + ", ";
@@ -7557,8 +9894,8 @@ public class SummaryUO extends Summary {
                 line += summary.get(sRSLCount1) + ", ";
                 line += summary.get(sAllUOCount1) + ", ";
                 line += summary.get(sAllUOLinkedRecordCount1) + ", ";
-            }
-            line += summary.get(sSamePostcodeIII) + ", ";
+            // All UO
+                line += summary.get(sSamePostcodeIII) + ", ";
             line += summary.get(sSamePostcodeIOI) + ", ";
             line += summary.get(sSamePostcodeOIO) + ", ";
             line += summary.get(sSameTenancyIII) + ", ";
@@ -7577,6 +9914,46 @@ public class SummaryUO extends Summary {
                 line += summary.get(sSameTenancyAndPostcodeIOITT[i]) + ", ";
                 line += summary.get(sSameTenancyAndPostcodeOIOTT[i]) + ", ";
             }
+            // Council
+                line += summary.get(sCouncilSamePostcodeIII) + ", ";
+            line += summary.get(sCouncilSamePostcodeIOI) + ", ";
+            line += summary.get(sCouncilSamePostcodeOIO) + ", ";
+            line += summary.get(sCouncilSameTenancyIII) + ", ";
+            line += summary.get(sCouncilSameTenancyIOI) + ", ";
+            line += summary.get(sCouncilSameTenancyOIO) + ", ";
+            for (int i = 1; i < nTT; i++) {
+                line += summary.get(sCouncilSameTenancyIIITT[i]) + ", ";
+                line += summary.get(sCouncilSameTenancyIOITT[i]) + ", ";
+                line += summary.get(sCouncilSameTenancyOIOTT[i]) + ", ";
+            }
+            line += summary.get(sCouncilSameTenancyAndPostcodeIII) + ", ";
+            line += summary.get(sCouncilSameTenancyAndPostcodeIOI) + ", ";
+            line += summary.get(sCouncilSameTenancyAndPostcodeOIO) + ", ";
+            for (int i = 1; i < nTT; i++) {
+                line += summary.get(sCouncilSameTenancyAndPostcodeIIITT[i]) + ", ";
+                line += summary.get(sCouncilSameTenancyAndPostcodeIOITT[i]) + ", ";
+                line += summary.get(sCouncilSameTenancyAndPostcodeOIOTT[i]) + ", ";
+            }
+            // RSL
+                line += summary.get(sRSLSamePostcodeIII) + ", ";
+            line += summary.get(sRSLSamePostcodeIOI) + ", ";
+            line += summary.get(sRSLSamePostcodeOIO) + ", ";
+            line += summary.get(sRSLSameTenancyIII) + ", ";
+            line += summary.get(sRSLSameTenancyIOI) + ", ";
+            line += summary.get(sRSLSameTenancyOIO) + ", ";
+            for (int i = 1; i < nTT; i++) {
+                line += summary.get(sRSLSameTenancyIIITT[i]) + ", ";
+                line += summary.get(sRSLSameTenancyIOITT[i]) + ", ";
+                line += summary.get(sRSLSameTenancyOIOTT[i]) + ", ";
+            }
+            line += summary.get(sRSLSameTenancyAndPostcodeIII) + ", ";
+            line += summary.get(sRSLSameTenancyAndPostcodeIOI) + ", ";
+            line += summary.get(sRSLSameTenancyAndPostcodeOIO) + ", ";
+            for (int i = 1; i < nTT; i++) {
+                line += summary.get(sRSLSameTenancyAndPostcodeIIITT[i]) + ", ";
+                line += summary.get(sRSLSameTenancyAndPostcodeIOITT[i]) + ", ";
+                line += summary.get(sRSLSameTenancyAndPostcodeOIOTT[i]) + ", ";
+            }
             line = line.substring(0, line.length() - 2);
             pw.println(line);
             //}
@@ -7594,6 +9971,7 @@ public class SummaryUO extends Summary {
      * @param nTT
      * @param nEG
      */
+    @Override
     public void writeSummaryTableCompare2Times(
             TreeMap<String, HashMap<String, String>> summaryTable,
             String paymentType,
@@ -7610,9 +9988,13 @@ public class SummaryUO extends Summary {
         pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
-        header = getHeaderCompare2TimesGeneric(underOccupancy);
+        header = getHeaderCompare2TimesGeneric();
         header += getHeaderCompare2TimesTTChange();
+        header += getHeaderCompare2TimesTTChangeCouncil();
+        header += getHeaderCompare2TimesTTChangeRSL();
         header += getHeaderCompare2TimesPostcodeChange();
+        header += getHeaderCompare2TimesPostcodeChangeCouncil();
+        header += getHeaderCompare2TimesPostcodeChangeRSL();
         header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
@@ -7625,290 +10007,526 @@ public class SummaryUO extends Summary {
             String line;
             line = getLineCompare2TimesGeneric(
                     summary,
-                    ONSPDFiles,
-                    underOccupancy);
+                    ONSPDFiles);
             line += getLineCompare2TimesTTChange(summary);
+            line += getLineCompare2TimesTTChangeCouncil(summary);
+            line += getLineCompare2TimesTTChangeRSL(summary);
             line += getLineCompare2TimesPostcodeChange(summary);
+            line += getLineCompare2TimesPostcodeChangeCouncil(summary);
+            line += getLineCompare2TimesPostcodeChangeRSL(summary);
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
         pw.close();
     }
 
-    protected String getHeaderCompare2TimesPostcodeChange() {
+    protected String getHeaderCompare2TimesPostcodeChangeCouncil() {
         String header = "";
         // All Postcode Related
-        header += sAllTotalCount_Postcode0ValidPostcode1Valid + ", ";
-        header += sAllPercentagePostcode0ValidPostcode1Valid + ", ";
-        header += sAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
-        header += sAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
-        header += sAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChange + ", ";
-        header += sAllPercentagePostcode0ValidPostcode1ValidPostcodeChange + ", ";
-        header += sAllTotalCount_Postcode0ValidPostcode1NotValid + ", ";
-        header += sAllPercentagePostcode0ValidPostcode1NotValid + ", ";
-        header += sAllTotalCount_Postcode0NotValidPostcode1Valid + ", ";
-        header += sAllPercentagePostcode0NotValidPostcode1Valid + ", ";
-        header += sAllTotalCount_Postcode0NotValidPostcode1NotValid + ", ";
-        header += sAllPercentagePostcode0NotValidPostcode1NotValid + ", ";
-        header += sAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
-        header += sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
-        header += sAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
-        header += sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        header += sCouncilAllTotalCount_Postcode0ValidPostcode1Valid + ", ";
+        header += sCouncilAllPercentagePostcode0ValidPostcode1Valid + ", ";
+        header += sCouncilAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sCouncilAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sCouncilAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChange + ", ";
+        header += sCouncilAllPercentagePostcode0ValidPostcode1ValidPostcodeChange + ", ";
+        header += sCouncilAllTotalCount_Postcode0ValidPostcode1NotValid + ", ";
+        header += sCouncilAllPercentagePostcode0ValidPostcode1NotValid + ", ";
+        header += sCouncilAllTotalCount_Postcode0NotValidPostcode1Valid + ", ";
+        header += sCouncilAllPercentagePostcode0NotValidPostcode1Valid + ", ";
+        header += sCouncilAllTotalCount_Postcode0NotValidPostcode1NotValid + ", ";
+        header += sCouncilAllPercentagePostcode0NotValidPostcode1NotValid + ", ";
+        header += sCouncilAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sCouncilAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sCouncilAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        header += sCouncilAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
         // HB Postcode Related
-        header += sHBTotalCount_Postcode0ValidPostcode1Valid + ", ";
-        header += sHBPercentagePostcode0ValidPostcode1Valid + ", ";
-        header += sHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
-        header += sHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
-        header += sHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChange + ", ";
-        header += sHBPercentagePostcode0ValidPostcode1ValidPostcodeChange + ", ";
-        header += sHBTotalCount_Postcode0ValidPostcode1NotValid + ", ";
-        header += sHBPercentagePostcode0ValidPostcode1NotValid + ", ";
-        header += sHBTotalCount_Postcode0NotValidPostcode1Valid + ", ";
-        header += sHBPercentagePostcode0NotValidPostcode1Valid + ", ";
-        header += sHBTotalCount_Postcode0NotValidPostcode1NotValid + ", ";
-        header += sHBPercentagePostcode0NotValidPostcode1NotValid + ", ";
-        header += sHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
-        header += sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
-        header += sHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
-        header += sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        header += sCouncilHBTotalCount_Postcode0ValidPostcode1Valid + ", ";
+        header += sCouncilHBPercentagePostcode0ValidPostcode1Valid + ", ";
+        header += sCouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sCouncilHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sCouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChange + ", ";
+        header += sCouncilHBPercentagePostcode0ValidPostcode1ValidPostcodeChange + ", ";
+        header += sCouncilHBTotalCount_Postcode0ValidPostcode1NotValid + ", ";
+        header += sCouncilHBPercentagePostcode0ValidPostcode1NotValid + ", ";
+        header += sCouncilHBTotalCount_Postcode0NotValidPostcode1Valid + ", ";
+        header += sCouncilHBPercentagePostcode0NotValidPostcode1Valid + ", ";
+        header += sCouncilHBTotalCount_Postcode0NotValidPostcode1NotValid + ", ";
+        header += sCouncilHBPercentagePostcode0NotValidPostcode1NotValid + ", ";
+        header += sCouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sCouncilHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sCouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        header += sCouncilHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
         // CTB Postcode Related
-        header += sCTBTotalCount_Postcode0ValidPostcode1Valid + ", ";
-        header += sCTBPercentageOfCTB_Postcode0ValidPostcode1Valid + ", ";
-        header += sCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
-        header += sCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
-        header += sCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged + ", ";
-        header += sCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged + ", ";
-        header += sCTBTotalCount_Postcode0ValidPostcode1NotValid + ", ";
-        header += sCTBPercentagePostcode0ValidPostcode1NotValid + ", ";
-        header += sCTBTotalCount_Postcode0NotValidPostcode1Valid + ", ";
-        header += sCTBPercentagePostcode0NotValidPostcode1Valid + ", ";
-        header += sCTBTotalCount_Postcode0NotValidPostcode1NotValid + ", ";
-        header += sCTBPercentagePostcode0NotValidPostcode1NotValid + ", ";
-        header += sCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
-        header += sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
-        header += sCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
-        header += sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        header += sCouncilCTBTotalCount_Postcode0ValidPostcode1Valid + ", ";
+        header += sCouncilCTBPercentageOfCTB_Postcode0ValidPostcode1Valid + ", ";
+        header += sCouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sCouncilCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sCouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged + ", ";
+        header += sCouncilCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged + ", ";
+        header += sCouncilCTBTotalCount_Postcode0ValidPostcode1NotValid + ", ";
+        header += sCouncilCTBPercentagePostcode0ValidPostcode1NotValid + ", ";
+        header += sCouncilCTBTotalCount_Postcode0NotValidPostcode1Valid + ", ";
+        header += sCouncilCTBPercentagePostcode0NotValidPostcode1Valid + ", ";
+        header += sCouncilCTBTotalCount_Postcode0NotValidPostcode1NotValid + ", ";
+        header += sCouncilCTBPercentagePostcode0NotValidPostcode1NotValid + ", ";
+        header += sCouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sCouncilCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sCouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        header += sCouncilCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
         return header;
     }
 
-    protected String getLineCompare2TimesPostcodeChange(HashMap<String, String> summary) {
+    protected String getHeaderCompare2TimesPostcodeChangeRSL() {
+        String header = "";
+        // All Postcode Related
+        header += sRSLAllTotalCount_Postcode0ValidPostcode1Valid + ", ";
+        header += sRSLAllPercentagePostcode0ValidPostcode1Valid + ", ";
+        header += sRSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sRSLAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sRSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChange + ", ";
+        header += sRSLAllPercentagePostcode0ValidPostcode1ValidPostcodeChange + ", ";
+        header += sRSLAllTotalCount_Postcode0ValidPostcode1NotValid + ", ";
+        header += sRSLAllPercentagePostcode0ValidPostcode1NotValid + ", ";
+        header += sRSLAllTotalCount_Postcode0NotValidPostcode1Valid + ", ";
+        header += sRSLAllPercentagePostcode0NotValidPostcode1Valid + ", ";
+        header += sRSLAllTotalCount_Postcode0NotValidPostcode1NotValid + ", ";
+        header += sRSLAllPercentagePostcode0NotValidPostcode1NotValid + ", ";
+        header += sRSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sRSLAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sRSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        header += sRSLAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        // HB Postcode Related
+        header += sRSLHBTotalCount_Postcode0ValidPostcode1Valid + ", ";
+        header += sRSLHBPercentagePostcode0ValidPostcode1Valid + ", ";
+        header += sRSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sRSLHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sRSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChange + ", ";
+        header += sRSLHBPercentagePostcode0ValidPostcode1ValidPostcodeChange + ", ";
+        header += sRSLHBTotalCount_Postcode0ValidPostcode1NotValid + ", ";
+        header += sRSLHBPercentagePostcode0ValidPostcode1NotValid + ", ";
+        header += sRSLHBTotalCount_Postcode0NotValidPostcode1Valid + ", ";
+        header += sRSLHBPercentagePostcode0NotValidPostcode1Valid + ", ";
+        header += sRSLHBTotalCount_Postcode0NotValidPostcode1NotValid + ", ";
+        header += sRSLHBPercentagePostcode0NotValidPostcode1NotValid + ", ";
+        header += sRSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sRSLHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sRSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        header += sRSLHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        // CTB Postcode Related
+        header += sRSLCTBTotalCount_Postcode0ValidPostcode1Valid + ", ";
+        header += sRSLCTBPercentageOfCTB_Postcode0ValidPostcode1Valid + ", ";
+        header += sRSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sRSLCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged + ", ";
+        header += sRSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged + ", ";
+        header += sRSLCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged + ", ";
+        header += sRSLCTBTotalCount_Postcode0ValidPostcode1NotValid + ", ";
+        header += sRSLCTBPercentagePostcode0ValidPostcode1NotValid + ", ";
+        header += sRSLCTBTotalCount_Postcode0NotValidPostcode1Valid + ", ";
+        header += sRSLCTBPercentagePostcode0NotValidPostcode1Valid + ", ";
+        header += sRSLCTBTotalCount_Postcode0NotValidPostcode1NotValid + ", ";
+        header += sRSLCTBPercentagePostcode0NotValidPostcode1NotValid + ", ";
+        header += sRSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sRSLCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged + ", ";
+        header += sRSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        header += sRSLCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged + ", ";
+        return header;
+    }
+    
+    protected String getLineCompare2TimesPostcodeChangeCouncil(HashMap<String, String> summary) {
         String line = "";
         // All
-        line += summary.get(sAllTotalCount_Postcode0ValidPostcode1Valid) + ", ";
-        line += summary.get(sAllPercentagePostcode0ValidPostcode1Valid) + ", ";
-        line += summary.get(sAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-        line += summary.get(sAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-        line += summary.get(sAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChange) + ", ";
-        line += summary.get(sAllPercentagePostcode0ValidPostcode1ValidPostcodeChange) + ", ";
-        line += summary.get(sAllTotalCount_Postcode0ValidPostcode1NotValid) + ", ";
-        line += summary.get(sAllPercentagePostcode0ValidPostcode1NotValid) + ", ";
-        line += summary.get(sAllTotalCount_Postcode0NotValidPostcode1Valid) + ", ";
-        line += summary.get(sAllPercentagePostcode0NotValidPostcode1Valid) + ", ";
-        line += summary.get(sAllTotalCount_Postcode0NotValidPostcode1NotValid) + ", ";
-        line += summary.get(sAllPercentagePostcode0NotValidPostcode1NotValid) + ", ";
-        line += summary.get(sAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-        line += summary.get(sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-        line += summary.get(sAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
-        line += summary.get(sAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        line += summary.get(sCouncilAllTotalCount_Postcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sCouncilAllPercentagePostcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sCouncilAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCouncilAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCouncilAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChange) + ", ";
+        line += summary.get(sCouncilAllPercentagePostcode0ValidPostcode1ValidPostcodeChange) + ", ";
+        line += summary.get(sCouncilAllTotalCount_Postcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sCouncilAllPercentagePostcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sCouncilAllTotalCount_Postcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sCouncilAllPercentagePostcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sCouncilAllTotalCount_Postcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sCouncilAllPercentagePostcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sCouncilAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCouncilAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCouncilAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        line += summary.get(sCouncilAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
         // HB
-        line += summary.get(sHBTotalCount_Postcode0ValidPostcode1Valid) + ", ";
-        line += summary.get(sHBPercentagePostcode0ValidPostcode1Valid) + ", ";
-        line += summary.get(sHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-        line += summary.get(sHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-        line += summary.get(sHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChange) + ", ";
-        line += summary.get(sHBPercentagePostcode0ValidPostcode1ValidPostcodeChange) + ", ";
-        line += summary.get(sHBTotalCount_Postcode0ValidPostcode1NotValid) + ", ";
-        line += summary.get(sHBPercentagePostcode0ValidPostcode1NotValid) + ", ";
-        line += summary.get(sHBTotalCount_Postcode0NotValidPostcode1Valid) + ", ";
-        line += summary.get(sHBPercentagePostcode0NotValidPostcode1Valid) + ", ";
-        line += summary.get(sHBTotalCount_Postcode0NotValidPostcode1NotValid) + ", ";
-        line += summary.get(sHBPercentagePostcode0NotValidPostcode1NotValid) + ", ";
-        line += summary.get(sHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-        line += summary.get(sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-        line += summary.get(sHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
-        line += summary.get(sHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        line += summary.get(sCouncilHBTotalCount_Postcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sCouncilHBPercentagePostcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sCouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCouncilHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCouncilHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChange) + ", ";
+        line += summary.get(sCouncilHBPercentagePostcode0ValidPostcode1ValidPostcodeChange) + ", ";
+        line += summary.get(sCouncilHBTotalCount_Postcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sCouncilHBPercentagePostcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sCouncilHBTotalCount_Postcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sCouncilHBPercentagePostcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sCouncilHBTotalCount_Postcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sCouncilHBPercentagePostcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sCouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCouncilHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCouncilHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        line += summary.get(sCouncilHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
         // CTB
-        line += summary.get(sCTBTotalCount_Postcode0ValidPostcode1Valid) + ", ";
-        line += summary.get(sCTBPercentageOfCTB_Postcode0ValidPostcode1Valid) + ", ";
-        line += summary.get(sCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-        line += summary.get(sCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
-        line += summary.get(sCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged) + ", ";
-        line += summary.get(sCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged) + ", ";
-        line += summary.get(sCTBTotalCount_Postcode0ValidPostcode1NotValid) + ", ";
-        line += summary.get(sCTBPercentagePostcode0ValidPostcode1NotValid) + ", ";
-        line += summary.get(sCTBTotalCount_Postcode0NotValidPostcode1Valid) + ", ";
-        line += summary.get(sCTBPercentagePostcode0NotValidPostcode1Valid) + ", ";
-        line += summary.get(sCTBTotalCount_Postcode0NotValidPostcode1NotValid) + ", ";
-        line += summary.get(sCTBPercentagePostcode0NotValidPostcode1NotValid) + ", ";
-        line += summary.get(sCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-        line += summary.get(sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
-        line += summary.get(sCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
-        line += summary.get(sCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        line += summary.get(sCouncilCTBTotalCount_Postcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sCouncilCTBPercentageOfCTB_Postcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sCouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCouncilCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCouncilCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged) + ", ";
+        line += summary.get(sCouncilCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged) + ", ";
+        line += summary.get(sCouncilCTBTotalCount_Postcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sCouncilCTBPercentagePostcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sCouncilCTBTotalCount_Postcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sCouncilCTBPercentagePostcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sCouncilCTBTotalCount_Postcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sCouncilCTBPercentagePostcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sCouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCouncilCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sCouncilCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        line += summary.get(sCouncilCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
         return line;
     }
 
-    public String getHeaderCompare2TimesTTChange() {
+    protected String getLineCompare2TimesPostcodeChangeRSL(HashMap<String, String> summary) {
+        String line = "";
+        // All
+        line += summary.get(sRSLAllTotalCount_Postcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sRSLAllPercentagePostcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sRSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sRSLAllPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sRSLAllTotalCount_Postcode0ValidPostcode1ValidPostcodeChange) + ", ";
+        line += summary.get(sRSLAllPercentagePostcode0ValidPostcode1ValidPostcodeChange) + ", ";
+        line += summary.get(sRSLAllTotalCount_Postcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sRSLAllPercentagePostcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sRSLAllTotalCount_Postcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sRSLAllPercentagePostcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sRSLAllTotalCount_Postcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sRSLAllPercentagePostcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sRSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sRSLAllPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sRSLAllTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        line += summary.get(sRSLAllPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        // HB
+        line += summary.get(sRSLHBTotalCount_Postcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sRSLHBPercentagePostcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sRSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sRSLHBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sRSLHBTotalCount_Postcode0ValidPostcode1ValidPostcodeChange) + ", ";
+        line += summary.get(sRSLHBPercentagePostcode0ValidPostcode1ValidPostcodeChange) + ", ";
+        line += summary.get(sRSLHBTotalCount_Postcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sRSLHBPercentagePostcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sRSLHBTotalCount_Postcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sRSLHBPercentagePostcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sRSLHBTotalCount_Postcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sRSLHBPercentagePostcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sRSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sRSLHBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sRSLHBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        line += summary.get(sRSLHBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        // CTB
+        line += summary.get(sRSLCTBTotalCount_Postcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sRSLCTBPercentageOfCTB_Postcode0ValidPostcode1Valid) + ", ";
+        line += summary.get(sRSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sRSLCTBPercentagePostcode0ValidPostcode1ValidPostcodeNotChanged) + ", ";
+        line += summary.get(sRSLCTBTotalCount_Postcode0ValidPostcode1ValidPostcodeChanged) + ", ";
+        line += summary.get(sRSLCTBPercentagePostcode0ValidPostcode1ValidPostcodeChanged) + ", ";
+        line += summary.get(sRSLCTBTotalCount_Postcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sRSLCTBPercentagePostcode0ValidPostcode1NotValid) + ", ";
+        line += summary.get(sRSLCTBTotalCount_Postcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sRSLCTBPercentagePostcode0NotValidPostcode1Valid) + ", ";
+        line += summary.get(sRSLCTBTotalCount_Postcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sRSLCTBPercentagePostcode0NotValidPostcode1NotValid) + ", ";
+        line += summary.get(sRSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sRSLCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeNotChanged) + ", ";
+        line += summary.get(sRSLCTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        line += summary.get(sRSLCTBPercentagePostcode0NotValidPostcode1NotValidPostcodeChanged) + ", ";
+        return line;
+    }
+    
+    public String getHeaderCompare2TimesTTChangeCouncil() {
         String header = "";
         // General
         // All
-        header += sAllTotalCount_TTChangeClaimant + ", ";
-        header += sAllPercentageOfAll_TTChangeClaimant + ", ";
-//        header += sAllTotalCount_TTChangeClaimantIgnoreMinus999 + ", ";
-//        header += sAllPercentageOfAll_TTChangeClaimantIgnoreMinus999 + ", ";
+        header += sCouncilAllTotalCount_TTChangeClaimant + ", ";
+        header += sCouncilAllPercentageOfAll_TTChangeClaimant + ", ";
         // General HB related
-        header += sHBTotalCount_TTChangeClaimant + ", ";
-        header += sHBPercentageOfHB_TTChangeClaimant + ", ";
-//        header += sHBTotalCount_TTChangeClaimantIgnoreMinus999 + ", ";
-//        header += sHBPercentageOfHB_TTChangeClaimantIgnoreMinus999 + ", ";
-
-        header += sTotalCount_Minus999TTToSocialTTs + ", ";
-        header += sTotalCount_Minus999TTToPrivateDeregulatedTTs + ", ";
-        header += sTotalCount_HBTTsToMinus999TT + ", ";
-        header += sPercentageOfHB_HBTTsToMinus999TT + ", ";
-        header += sTotalCount_SocialTTsToMinus999TT + ", ";
-        header += sPercentageOfSocialTTs_SocialTTsToMinus999TT + ", ";
-        header += sTotalCount_PrivateDeregulatedTTsToMinus999TT + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT + ", ";
-
-        header += sTotalCount_HBTTsToHBTTs + ", ";
-        header += sPercentageOfHB_HBTTsToHBTTs + ", ";
-        header += sTotalCount_SocialTTsToPrivateDeregulatedTTs + ", ";
-        header += sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs + ", ";
-        header += sTotalCount_PrivateDeregulatedTTsToSocialTTs + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs + ", ";
-        header += sTotalCount_TT1ToPrivateDeregulatedTTs + ", ";
-        header += sPercentageOfTT1_TT1ToPrivateDeregulatedTTs + ", ";
-        header += sTotalCount_TT4ToPrivateDeregulatedTTs + ", ";
-        header += sPercentageOfTT4_TT4ToPrivateDeregulatedTTs + ", ";
-        header += sTotalCount_PrivateDeregulatedTTsToTT1 + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1 + ", ";
-        header += sTotalCount_PrivateDeregulatedTTsToTT4 + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4 + ", ";
-        header += sTotalCount_TT1ToTT4 + ", ";
-        header += sPercentageOfTT1_TT1ToTT4 + ", ";
-        header += sTotalCount_TT4ToTT1 + ", ";
-        header += sPercentageOfTT4_TT4ToTT1 + ", ";
-        header += sTotalCount_PostcodeChangeWithinSocialTTs + ", ";
-        header += sPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs + ", ";
-        header += sTotalCount_PostcodeChangeWithinTT1 + ", ";
-        header += sPercentageOfTT1_PostcodeChangeWithinTT1 + ", ";
-        header += sTotalCount_PostcodeChangeWithinTT4 + ", ";
-        header += sPercentageOfTT4_PostcodeChangeWithinTT4 + ", ";
-        header += sTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs + ", ";
-
-        header += sTotalCount_HBTTsToCTBTTs + ", ";
-        header += sPercentageOfHB_HBTTsToCTBTTs + ", ";
+        header += sCouncilHBTotalCount_TTChangeClaimant + ", ";
+        header += sCouncilHBPercentageOfHB_TTChangeClaimant + ", ";
+        header += sCouncilTotalCount_Minus999TTToSocialTTs + ", ";
+        header += sCouncilTotalCount_Minus999TTToPrivateDeregulatedTTs + ", ";
+        header += sCouncilTotalCount_HBTTsToMinus999TT + ", ";
+        header += sCouncilPercentageOfHB_HBTTsToMinus999TT + ", ";
+        header += sCouncilTotalCount_SocialTTsToMinus999TT + ", ";
+        header += sCouncilPercentageOfSocialTTs_SocialTTsToMinus999TT + ", ";
+        header += sCouncilTotalCount_PrivateDeregulatedTTsToMinus999TT + ", ";
+        header += sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT + ", ";
+        header += sCouncilTotalCount_HBTTsToHBTTs + ", ";
+        header += sCouncilPercentageOfHB_HBTTsToHBTTs + ", ";
+        header += sCouncilTotalCount_SocialTTsToPrivateDeregulatedTTs + ", ";
+        header += sCouncilPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs + ", ";
+        header += sCouncilTotalCount_PrivateDeregulatedTTsToSocialTTs + ", ";
+        header += sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs + ", ";
+        header += sCouncilTotalCount_TT1ToPrivateDeregulatedTTs + ", ";
+        header += sCouncilPercentageOfTT1_TT1ToPrivateDeregulatedTTs + ", ";
+        header += sCouncilTotalCount_TT4ToPrivateDeregulatedTTs + ", ";
+        header += sCouncilPercentageOfTT4_TT4ToPrivateDeregulatedTTs + ", ";
+        header += sCouncilTotalCount_PrivateDeregulatedTTsToTT1 + ", ";
+        header += sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1 + ", ";
+        header += sCouncilTotalCount_PrivateDeregulatedTTsToTT4 + ", ";
+        header += sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4 + ", ";
+        header += sCouncilTotalCount_TT1ToTT4 + ", ";
+        header += sCouncilPercentageOfTT1_TT1ToTT4 + ", ";
+        header += sCouncilTotalCount_TT4ToTT1 + ", ";
+        header += sCouncilPercentageOfTT4_TT4ToTT1 + ", ";
+        header += sCouncilTotalCount_PostcodeChangeWithinSocialTTs + ", ";
+        header += sCouncilPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs + ", ";
+        header += sCouncilTotalCount_PostcodeChangeWithinTT1 + ", ";
+        header += sCouncilPercentageOfTT1_PostcodeChangeWithinTT1 + ", ";
+        header += sCouncilTotalCount_PostcodeChangeWithinTT4 + ", ";
+        header += sCouncilPercentageOfTT4_PostcodeChangeWithinTT4 + ", ";
+        header += sCouncilTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs + ", ";
+        header += sCouncilPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs + ", ";
+        header += sCouncilTotalCount_HBTTsToCTBTTs + ", ";
+        header += sCouncilPercentageOfHB_HBTTsToCTBTTs + ", ";
         // General CTB related
-        header += sCTBTotalCount_TTChangeClaimant + ", ";
-        header += sCTBPercentageOfCTB_TTChangeClaimant + ", ";
-//        header += sCTBTotalCount_TTChangeClaimantIgnoreMinus999 + ", ";
-//        header += sCTBPercentageOfCTB_TTChangeClaimantIgnoreMinus999 + ", ";
-
-        header += sTotalCount_Minus999TTToCTBTTs + ", ";
-        header += sTotalCount_CTBTTsToMinus999TT + ", ";
-        header += sPercentageOfCTB_CTBTTsToMinus999TT + ", ";
-
-        header += sTotalCount_SocialTTsToCTBTTs + ", ";
-        header += sPercentageOfSocialTTs_SocialTTsToCTBTTs + ", ";
-        header += sTotalCount_TT1ToCTBTTs + ", ";
-        header += sPercentageOfTT1_TT1ToCTBTTs + ", ";
-        header += sTotalCount_TT4ToCTBTTs + ", ";
-        header += sPercentageOfTT4_TT4ToCTBTTs + ", ";
-        header += sTotalCount_PrivateDeregulatedTTsToCTBTTs + ", ";
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs + ", ";
-        header += sTotalCount_CTBTTsToSocialTTs + ", ";
-        header += sPercentageOfCTB_CTBTTsToSocialTTs + ", ";
-        header += sTotalCount_CTBTTsToTT1 + ", ";
-        header += sPercentageOfCTB_CTBTTsToTT1 + ", ";
-        header += sTotalCount_CTBTTsToTT4 + ", ";
-        header += sPercentageOfCTB_CTBTTsToTT4 + ", ";
-        header += sTotalCount_CTBTTsToPrivateDeregulatedTTs + ", ";
-        header += sPercentageOfCTB_CTBTTsToPrivateDeregulatedTTs + ", ";
-        header += sTotalCount_CTBTTsToHBTTs + ", ";
-        header += sPercentageOfCTB_CTBTTsToHBTTs + ", ";
+        header += sCouncilCTBTotalCount_TTChangeClaimant + ", ";
+        header += sCouncilCTBPercentageOfCTB_TTChangeClaimant + ", ";
+        header += sCouncilTotalCount_Minus999TTToCTBTTs + ", ";
+        header += sCouncilTotalCount_CTBTTsToMinus999TT + ", ";
+        header += sCouncilPercentageOfCTB_CTBTTsToMinus999TT + ", ";
+        header += sCouncilTotalCount_SocialTTsToCTBTTs + ", ";
+        header += sCouncilPercentageOfSocialTTs_SocialTTsToCTBTTs + ", ";
+        header += sCouncilTotalCount_TT1ToCTBTTs + ", ";
+        header += sCouncilPercentageOfTT1_TT1ToCTBTTs + ", ";
+        header += sCouncilTotalCount_TT4ToCTBTTs + ", ";
+        header += sCouncilPercentageOfTT4_TT4ToCTBTTs + ", ";
+        header += sCouncilTotalCount_PrivateDeregulatedTTsToCTBTTs + ", ";
+        header += sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs + ", ";
+        header += sCouncilTotalCount_CTBTTsToSocialTTs + ", ";
+        header += sCouncilPercentageOfCTB_CTBTTsToSocialTTs + ", ";
+        header += sCouncilTotalCount_CTBTTsToTT1 + ", ";
+        header += sCouncilPercentageOfCTB_CTBTTsToTT1 + ", ";
+        header += sCouncilTotalCount_CTBTTsToTT4 + ", ";
+        header += sCouncilPercentageOfCTB_CTBTTsToTT4 + ", ";
+        header += sCouncilTotalCount_CTBTTsToPrivateDeregulatedTTs + ", ";
+        header += sCouncilPercentageOfCTB_CTBTTsToPrivateDeregulatedTTs + ", ";
+        header += sCouncilTotalCount_CTBTTsToHBTTs + ", ";
+        header += sCouncilPercentageOfCTB_CTBTTsToHBTTs + ", ";
         return header;
     }
 
-    protected String getLineCompare2TimesTTChange(HashMap<String, String> summary) {
+    public String getHeaderCompare2TimesTTChangeRSL() {
+        String header = "";
+        // General
+        // All
+        header += sRSLAllTotalCount_TTChangeClaimant + ", ";
+        header += sRSLAllPercentageOfAll_TTChangeClaimant + ", ";
+        // General HB related
+        header += sRSLHBTotalCount_TTChangeClaimant + ", ";
+        header += sRSLHBPercentageOfHB_TTChangeClaimant + ", ";
+        header += sRSLTotalCount_Minus999TTToSocialTTs + ", ";
+        header += sRSLTotalCount_Minus999TTToPrivateDeregulatedTTs + ", ";
+        header += sRSLTotalCount_HBTTsToMinus999TT + ", ";
+        header += sRSLPercentageOfHB_HBTTsToMinus999TT + ", ";
+        header += sRSLTotalCount_SocialTTsToMinus999TT + ", ";
+        header += sRSLPercentageOfSocialTTs_SocialTTsToMinus999TT + ", ";
+        header += sRSLTotalCount_PrivateDeregulatedTTsToMinus999TT + ", ";
+        header += sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT + ", ";
+        header += sRSLTotalCount_HBTTsToHBTTs + ", ";
+        header += sRSLPercentageOfHB_HBTTsToHBTTs + ", ";
+        header += sRSLTotalCount_SocialTTsToPrivateDeregulatedTTs + ", ";
+        header += sRSLPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs + ", ";
+        header += sRSLTotalCount_PrivateDeregulatedTTsToSocialTTs + ", ";
+        header += sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs + ", ";
+        header += sRSLTotalCount_TT1ToPrivateDeregulatedTTs + ", ";
+        header += sRSLPercentageOfTT1_TT1ToPrivateDeregulatedTTs + ", ";
+        header += sRSLTotalCount_TT4ToPrivateDeregulatedTTs + ", ";
+        header += sRSLPercentageOfTT4_TT4ToPrivateDeregulatedTTs + ", ";
+        header += sRSLTotalCount_PrivateDeregulatedTTsToTT1 + ", ";
+        header += sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1 + ", ";
+        header += sRSLTotalCount_PrivateDeregulatedTTsToTT4 + ", ";
+        header += sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4 + ", ";
+        header += sRSLTotalCount_TT1ToTT4 + ", ";
+        header += sRSLPercentageOfTT1_TT1ToTT4 + ", ";
+        header += sRSLTotalCount_TT4ToTT1 + ", ";
+        header += sRSLPercentageOfTT4_TT4ToTT1 + ", ";
+        header += sRSLTotalCount_PostcodeChangeWithinSocialTTs + ", ";
+        header += sRSLPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs + ", ";
+        header += sRSLTotalCount_PostcodeChangeWithinTT1 + ", ";
+        header += sRSLPercentageOfTT1_PostcodeChangeWithinTT1 + ", ";
+        header += sRSLTotalCount_PostcodeChangeWithinTT4 + ", ";
+        header += sRSLPercentageOfTT4_PostcodeChangeWithinTT4 + ", ";
+        header += sRSLTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs + ", ";
+        header += sRSLPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs + ", ";
+        header += sRSLTotalCount_HBTTsToCTBTTs + ", ";
+        header += sRSLPercentageOfHB_HBTTsToCTBTTs + ", ";
+        // General CTB related
+        header += sRSLCTBTotalCount_TTChangeClaimant + ", ";
+        header += sRSLCTBPercentageOfCTB_TTChangeClaimant + ", ";
+        header += sRSLTotalCount_Minus999TTToCTBTTs + ", ";
+        header += sRSLTotalCount_CTBTTsToMinus999TT + ", ";
+        header += sRSLPercentageOfCTB_CTBTTsToMinus999TT + ", ";
+        header += sRSLTotalCount_SocialTTsToCTBTTs + ", ";
+        header += sRSLPercentageOfSocialTTs_SocialTTsToCTBTTs + ", ";
+        header += sRSLTotalCount_TT1ToCTBTTs + ", ";
+        header += sRSLPercentageOfTT1_TT1ToCTBTTs + ", ";
+        header += sRSLTotalCount_TT4ToCTBTTs + ", ";
+        header += sRSLPercentageOfTT4_TT4ToCTBTTs + ", ";
+        header += sRSLTotalCount_PrivateDeregulatedTTsToCTBTTs + ", ";
+        header += sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs + ", ";
+        header += sRSLTotalCount_CTBTTsToSocialTTs + ", ";
+        header += sRSLPercentageOfCTB_CTBTTsToSocialTTs + ", ";
+        header += sRSLTotalCount_CTBTTsToTT1 + ", ";
+        header += sRSLPercentageOfCTB_CTBTTsToTT1 + ", ";
+        header += sRSLTotalCount_CTBTTsToTT4 + ", ";
+        header += sRSLPercentageOfCTB_CTBTTsToTT4 + ", ";
+        header += sRSLTotalCount_CTBTTsToPrivateDeregulatedTTs + ", ";
+        header += sRSLPercentageOfCTB_CTBTTsToPrivateDeregulatedTTs + ", ";
+        header += sRSLTotalCount_CTBTTsToHBTTs + ", ";
+        header += sRSLPercentageOfCTB_CTBTTsToHBTTs + ", ";
+        return header;
+    }
+    
+    protected String getLineCompare2TimesTTChangeCouncil(HashMap<String, String> summary) {
         String line = "";
         // All
-        line += summary.get(sAllTotalCount_TTChangeClaimant) + ", ";
-        line += summary.get(sAllPercentageOfAll_TTChangeClaimant) + ", ";
-//        line += summary.get(sAllTotalCount_TTChangeClaimantIgnoreMinus999) + ", ";
-//        line += summary.get(sAllPercentageOfAll_TTChangeClaimantIgnoreMinus999) + ", ";
+        line += summary.get(sCouncilAllTotalCount_TTChangeClaimant) + ", ";
+        line += summary.get(sCouncilAllPercentageOfAll_TTChangeClaimant) + ", ";
         // General HB related
-        line += summary.get(sHBTotalCount_TTChangeClaimant) + ", ";
-        line += summary.get(sHBPercentageOfHB_TTChangeClaimant) + ", ";
-//        line += summary.get(sHBTotalCount_TTChangeClaimantIgnoreMinus999) + ", ";
-//        line += summary.get(sHBPercentageOfHB_TTChangeClaimantIgnoreMinus999) + ", ";
-
-        line += summary.get(sTotalCount_Minus999TTToSocialTTs) + ", ";
-        line += summary.get(sTotalCount_Minus999TTToPrivateDeregulatedTTs) + ", ";
-        line += summary.get(sTotalCount_HBTTsToMinus999TT) + ", ";
-        line += summary.get(sPercentageOfHB_HBTTsToMinus999TT) + ", ";
-        line += summary.get(sTotalCount_SocialTTsToMinus999TT) + ", ";
-        line += summary.get(sPercentageOfSocialTTs_SocialTTsToMinus999TT) + ", ";
-        line += summary.get(sTotalCount_PrivateDeregulatedTTsToMinus999TT) + ", ";
-        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT) + ", ";
-
-        line += summary.get(sTotalCount_HBTTsToHBTTs) + ", ";
-        line += summary.get(sPercentageOfHB_HBTTsToHBTTs) + ", ";
-        line += summary.get(sTotalCount_SocialTTsToPrivateDeregulatedTTs) + ", ";
-        line += summary.get(sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs) + ", ";
-        line += summary.get(sTotalCount_PrivateDeregulatedTTsToSocialTTs) + ", ";
-        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs) + ", ";
-        line += summary.get(sTotalCount_TT1ToPrivateDeregulatedTTs) + ", ";
-        line += summary.get(sPercentageOfTT1_TT1ToPrivateDeregulatedTTs) + ", ";
-        line += summary.get(sTotalCount_TT4ToPrivateDeregulatedTTs) + ", ";
-        line += summary.get(sPercentageOfTT4_TT4ToPrivateDeregulatedTTs) + ", ";
-        line += summary.get(sTotalCount_PrivateDeregulatedTTsToTT1) + ", ";
-        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1) + ", ";
-        line += summary.get(sTotalCount_PrivateDeregulatedTTsToTT4) + ", ";
-        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4) + ", ";
-        line += summary.get(sTotalCount_TT1ToTT4) + ", ";
-        line += summary.get(sPercentageOfTT1_TT1ToTT4) + ", ";
-        line += summary.get(sTotalCount_TT4ToTT1) + ", ";
-        line += summary.get(sPercentageOfTT4_TT4ToTT1) + ", ";
-        line += summary.get(sTotalCount_PostcodeChangeWithinSocialTTs) + ", ";
-        line += summary.get(sPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs) + ", ";
-        line += summary.get(sTotalCount_PostcodeChangeWithinTT1) + ", ";
-        line += summary.get(sPercentageOfTT1_PostcodeChangeWithinTT1) + ", ";
-        line += summary.get(sTotalCount_PostcodeChangeWithinTT4) + ", ";
-        line += summary.get(sPercentageOfTT4_PostcodeChangeWithinTT4) + ", ";
-        line += summary.get(sTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs) + ", ";
-        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs) + ", ";
-
-        line += summary.get(sTotalCount_HBTTsToCTBTTs) + ", ";
-        line += summary.get(sPercentageOfHB_HBTTsToCTBTTs) + ", ";
+        line += summary.get(sCouncilHBTotalCount_TTChangeClaimant) + ", ";
+        line += summary.get(sCouncilHBPercentageOfHB_TTChangeClaimant) + ", ";
+        line += summary.get(sCouncilTotalCount_Minus999TTToSocialTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_Minus999TTToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_HBTTsToMinus999TT) + ", ";
+        line += summary.get(sCouncilPercentageOfHB_HBTTsToMinus999TT) + ", ";
+        line += summary.get(sCouncilTotalCount_SocialTTsToMinus999TT) + ", ";
+        line += summary.get(sCouncilPercentageOfSocialTTs_SocialTTsToMinus999TT) + ", ";
+        line += summary.get(sCouncilTotalCount_PrivateDeregulatedTTsToMinus999TT) + ", ";
+        line += summary.get(sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT) + ", ";
+        line += summary.get(sCouncilTotalCount_HBTTsToHBTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfHB_HBTTsToHBTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_SocialTTsToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_PrivateDeregulatedTTsToSocialTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_TT1ToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfTT1_TT1ToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_TT4ToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfTT4_TT4ToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_PrivateDeregulatedTTsToTT1) + ", ";
+        line += summary.get(sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1) + ", ";
+        line += summary.get(sCouncilTotalCount_PrivateDeregulatedTTsToTT4) + ", ";
+        line += summary.get(sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4) + ", ";
+        line += summary.get(sCouncilTotalCount_TT1ToTT4) + ", ";
+        line += summary.get(sCouncilPercentageOfTT1_TT1ToTT4) + ", ";
+        line += summary.get(sCouncilTotalCount_TT4ToTT1) + ", ";
+        line += summary.get(sCouncilPercentageOfTT4_TT4ToTT1) + ", ";
+        line += summary.get(sCouncilTotalCount_PostcodeChangeWithinSocialTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_PostcodeChangeWithinTT1) + ", ";
+        line += summary.get(sCouncilPercentageOfTT1_PostcodeChangeWithinTT1) + ", ";
+        line += summary.get(sCouncilTotalCount_PostcodeChangeWithinTT4) + ", ";
+        line += summary.get(sCouncilPercentageOfTT4_PostcodeChangeWithinTT4) + ", ";
+        line += summary.get(sCouncilTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_HBTTsToCTBTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfHB_HBTTsToCTBTTs) + ", ";
         // General CTB related
-        line += summary.get(sCTBTotalCount_TTChangeClaimant) + ", ";
-        line += summary.get(sCTBPercentageOfCTB_TTChangeClaimant) + ", ";
-//        line += summary.get(sCTBTotalCount_TTChangeClaimantIgnoreMinus999) + ", ";
-//        line += summary.get(sCTBPercentageOfCTB_TTChangeClaimantIgnoreMinus999) + ", ";
-
-        line += summary.get(sTotalCount_Minus999TTToCTBTTs) + ", ";
-        line += summary.get(sTotalCount_CTBTTsToMinus999TT) + ", ";
-        line += summary.get(sPercentageOfCTB_CTBTTsToMinus999TT) + ", ";
-
-        line += summary.get(sTotalCount_SocialTTsToCTBTTs) + ", ";
-        line += summary.get(sPercentageOfSocialTTs_SocialTTsToCTBTTs) + ", ";
-        line += summary.get(sTotalCount_TT1ToCTBTTs) + ", ";
-        line += summary.get(sPercentageOfTT1_TT1ToCTBTTs) + ", ";
-        line += summary.get(sTotalCount_TT4ToCTBTTs) + ", ";
-        line += summary.get(sPercentageOfTT4_TT4ToCTBTTs) + ", ";
-        line += summary.get(sTotalCount_PrivateDeregulatedTTsToCTBTTs) + ", ";
-        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs) + ", ";
-        line += summary.get(sTotalCount_CTBTTsToSocialTTs) + ", ";
-        line += summary.get(sPercentageOfCTB_CTBTTsToSocialTTs) + ", ";
-        line += summary.get(sTotalCount_CTBTTsToTT1) + ", ";
-        line += summary.get(sPercentageOfCTB_CTBTTsToTT1) + ", ";
-        line += summary.get(sTotalCount_CTBTTsToTT4) + ", ";
-        line += summary.get(sPercentageOfCTB_CTBTTsToTT4) + ", ";
-        line += summary.get(sTotalCount_CTBTTsToPrivateDeregulatedTTs) + ", ";
-        line += summary.get(sPercentageOfCTB_CTBTTsToPrivateDeregulatedTTs) + ", ";
-        line += summary.get(sTotalCount_CTBTTsToHBTTs) + ", ";
-        line += summary.get(sPercentageOfCTB_CTBTTsToHBTTs) + ", ";
+        line += summary.get(sCouncilCTBTotalCount_TTChangeClaimant) + ", ";
+        line += summary.get(sCouncilCTBPercentageOfCTB_TTChangeClaimant) + ", ";
+        line += summary.get(sCouncilTotalCount_Minus999TTToCTBTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_CTBTTsToMinus999TT) + ", ";
+        line += summary.get(sCouncilPercentageOfCTB_CTBTTsToMinus999TT) + ", ";
+        line += summary.get(sCouncilTotalCount_SocialTTsToCTBTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfSocialTTs_SocialTTsToCTBTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_TT1ToCTBTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfTT1_TT1ToCTBTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_TT4ToCTBTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfTT4_TT4ToCTBTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_PrivateDeregulatedTTsToCTBTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_CTBTTsToSocialTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfCTB_CTBTTsToSocialTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_CTBTTsToTT1) + ", ";
+        line += summary.get(sCouncilPercentageOfCTB_CTBTTsToTT1) + ", ";
+        line += summary.get(sCouncilTotalCount_CTBTTsToTT4) + ", ";
+        line += summary.get(sCouncilPercentageOfCTB_CTBTTsToTT4) + ", ";
+        line += summary.get(sCouncilTotalCount_CTBTTsToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfCTB_CTBTTsToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sCouncilTotalCount_CTBTTsToHBTTs) + ", ";
+        line += summary.get(sCouncilPercentageOfCTB_CTBTTsToHBTTs) + ", ";
+        return line;
+    }
+    
+    protected String getLineCompare2TimesTTChangeRSL(HashMap<String, String> summary) {
+        String line = "";
+        // All
+        line += summary.get(sRSLAllTotalCount_TTChangeClaimant) + ", ";
+        line += summary.get(sRSLAllPercentageOfAll_TTChangeClaimant) + ", ";
+        // General HB related
+        line += summary.get(sRSLHBTotalCount_TTChangeClaimant) + ", ";
+        line += summary.get(sRSLHBPercentageOfHB_TTChangeClaimant) + ", ";
+        line += summary.get(sRSLTotalCount_Minus999TTToSocialTTs) + ", ";
+        line += summary.get(sRSLTotalCount_Minus999TTToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sRSLTotalCount_HBTTsToMinus999TT) + ", ";
+        line += summary.get(sRSLPercentageOfHB_HBTTsToMinus999TT) + ", ";
+        line += summary.get(sRSLTotalCount_SocialTTsToMinus999TT) + ", ";
+        line += summary.get(sRSLPercentageOfSocialTTs_SocialTTsToMinus999TT) + ", ";
+        line += summary.get(sRSLTotalCount_PrivateDeregulatedTTsToMinus999TT) + ", ";
+        line += summary.get(sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT) + ", ";
+        line += summary.get(sRSLTotalCount_HBTTsToHBTTs) + ", ";
+        line += summary.get(sRSLPercentageOfHB_HBTTsToHBTTs) + ", ";
+        line += summary.get(sRSLTotalCount_SocialTTsToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sRSLPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sRSLTotalCount_PrivateDeregulatedTTsToSocialTTs) + ", ";
+        line += summary.get(sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs) + ", ";
+        line += summary.get(sRSLTotalCount_TT1ToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sRSLPercentageOfTT1_TT1ToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sRSLTotalCount_TT4ToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sRSLPercentageOfTT4_TT4ToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sRSLTotalCount_PrivateDeregulatedTTsToTT1) + ", ";
+        line += summary.get(sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1) + ", ";
+        line += summary.get(sRSLTotalCount_PrivateDeregulatedTTsToTT4) + ", ";
+        line += summary.get(sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4) + ", ";
+        line += summary.get(sRSLTotalCount_TT1ToTT4) + ", ";
+        line += summary.get(sRSLPercentageOfTT1_TT1ToTT4) + ", ";
+        line += summary.get(sRSLTotalCount_TT4ToTT1) + ", ";
+        line += summary.get(sRSLPercentageOfTT4_TT4ToTT1) + ", ";
+        line += summary.get(sRSLTotalCount_PostcodeChangeWithinSocialTTs) + ", ";
+        line += summary.get(sRSLPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs) + ", ";
+        line += summary.get(sRSLTotalCount_PostcodeChangeWithinTT1) + ", ";
+        line += summary.get(sRSLPercentageOfTT1_PostcodeChangeWithinTT1) + ", ";
+        line += summary.get(sRSLTotalCount_PostcodeChangeWithinTT4) + ", ";
+        line += summary.get(sRSLPercentageOfTT4_PostcodeChangeWithinTT4) + ", ";
+        line += summary.get(sRSLTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sRSLPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sRSLTotalCount_HBTTsToCTBTTs) + ", ";
+        line += summary.get(sRSLPercentageOfHB_HBTTsToCTBTTs) + ", ";
+        // General CTB related
+        line += summary.get(sRSLCTBTotalCount_TTChangeClaimant) + ", ";
+        line += summary.get(sRSLCTBPercentageOfCTB_TTChangeClaimant) + ", ";
+        line += summary.get(sRSLTotalCount_Minus999TTToCTBTTs) + ", ";
+        line += summary.get(sRSLTotalCount_CTBTTsToMinus999TT) + ", ";
+        line += summary.get(sRSLPercentageOfCTB_CTBTTsToMinus999TT) + ", ";
+        line += summary.get(sRSLTotalCount_SocialTTsToCTBTTs) + ", ";
+        line += summary.get(sRSLPercentageOfSocialTTs_SocialTTsToCTBTTs) + ", ";
+        line += summary.get(sRSLTotalCount_TT1ToCTBTTs) + ", ";
+        line += summary.get(sRSLPercentageOfTT1_TT1ToCTBTTs) + ", ";
+        line += summary.get(sRSLTotalCount_TT4ToCTBTTs) + ", ";
+        line += summary.get(sRSLPercentageOfTT4_TT4ToCTBTTs) + ", ";
+        line += summary.get(sRSLTotalCount_PrivateDeregulatedTTsToCTBTTs) + ", ";
+        line += summary.get(sRSLPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs) + ", ";
+        line += summary.get(sRSLTotalCount_CTBTTsToSocialTTs) + ", ";
+        line += summary.get(sRSLPercentageOfCTB_CTBTTsToSocialTTs) + ", ";
+        line += summary.get(sRSLTotalCount_CTBTTsToTT1) + ", ";
+        line += summary.get(sRSLPercentageOfCTB_CTBTTsToTT1) + ", ";
+        line += summary.get(sRSLTotalCount_CTBTTsToTT4) + ", ";
+        line += summary.get(sRSLPercentageOfCTB_CTBTTsToTT4) + ", ";
+        line += summary.get(sRSLTotalCount_CTBTTsToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sRSLPercentageOfCTB_CTBTTsToPrivateDeregulatedTTs) + ", ";
+        line += summary.get(sRSLTotalCount_CTBTTsToHBTTs) + ", ";
+        line += summary.get(sRSLPercentageOfCTB_CTBTTsToHBTTs) + ", ";
         return line;
     }
 
@@ -7922,6 +10540,7 @@ public class SummaryUO extends Summary {
      * @param nTT
      * @param nEG
      */
+    HEREIS WHEREWEAT;
     public void writeSummaryTableCompare2TimesTT(
             TreeMap<String, HashMap<String, String>> summaryTable,
             String paymentType,
@@ -7938,7 +10557,7 @@ public class SummaryUO extends Summary {
         pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
-        header = getHeaderCompare2TimesGeneric(underOccupancy);
+        header = getHeaderCompare2TimesGeneric();
         header += getHeaderCompare2TimesTTChange();
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -7963,7 +10582,8 @@ public class SummaryUO extends Summary {
         pw.close();
     }
 
-    public String getHeaderCompare2TimesGeneric(boolean underOccupancy) {
+    @Override
+    public String getHeaderCompare2TimesGeneric() {
         String header;
         header = "";
         header += sSHBEFilename0 + ", ";
@@ -7974,7 +10594,6 @@ public class SummaryUO extends Summary {
         header += "Month1 Year1, ";
         header += "PostCodeLookupDate0, PostCodeLookupFile0, "
                 + "PostCodeLookupDate1, PostCodeLookupFile1, ";
-        if (underOccupancy) {
             header += sCouncilFilename0 + ", ";
             header += sRSLFilename0 + ", ";
             header += sCouncilCount0 + ", ";
@@ -7991,7 +10610,6 @@ public class SummaryUO extends Summary {
             header += sRSLLinkedRecordCount1 + ", ";
             header += sAllUOCount1 + ", ";
             header += sAllUOLinkedRecordCount1 + ", ";
-        }
         header += sAllCount0 + ", ";
         header += sHBCount0 + ", ";
         header += sCTBCount0 + ", ";
@@ -8002,10 +10620,10 @@ public class SummaryUO extends Summary {
         return header;
     }
 
+    @Override
     public String getLineCompare2TimesGeneric(
             HashMap<String, String> summary,
-            TreeMap<String, File> ONSPDFiles,
-            boolean underOccupancy) {
+            TreeMap<String, File> ONSPDFiles) {
         String line = "";
         String filename0;
         filename0 = summary.get(sSHBEFilename0);
@@ -8055,7 +10673,6 @@ public class SummaryUO extends Summary {
             PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
         }
         line += PostCodeLookupDate1 + ", " + PostCodeLookupFile1Name + ", ";
-        if (underOccupancy) {
             line += summary.get(sCouncilFilename0) + ", ";
             line += summary.get(sRSLFilename0) + ", ";
             line += summary.get(sCouncilCount0) + ", ";
@@ -8072,7 +10689,6 @@ public class SummaryUO extends Summary {
             line += summary.get(sRSLLinkedRecordCount1) + ", ";
             line += summary.get(sAllUOCount1) + ", ";
             line += summary.get(sAllUOLinkedRecordCount1) + ", ";
-        }
         line += summary.get(sAllCount0) + ", ";
         line += summary.get(sHBCount0) + ", ";
         line += summary.get(sCTBCount0) + ", ";
@@ -8083,7 +10699,7 @@ public class SummaryUO extends Summary {
         //}
         return line;
     }
-
+fdsadfasd;
     /**
      * Provides comparisons with the previous period
      *
@@ -8171,12 +10787,12 @@ public class SummaryUO extends Summary {
         header += sHBAverageHouseholdSize + ", ";
         header += sCTBTotalHouseholdSize + ", ";
         header += sCTBAverageHouseholdSize + ", ";
-        header += sAllPostcodeValidFormatCount + ", ";
-        header += sAllPostcodeValidCount + ", ";
-        header += sHBPostcodeValidFormatCount + ", ";
-        header += sHBPostcodeValidCount + ", ";
-        header += sCTBPostcodeValidFormatCount + ", ";
-        header += sCTBPostcodeValidCount + ", ";
+        header += sAllTotalCount_PostcodeValidFormat + ", ";
+        header += sAllTotalCount_PostcodeValid + ", ";
+        header += sHBTotalCount_PostcodeValidFormat + ", ";
+        header += sHBTotalCount_PostcodeValid + ", ";
+        header += sCTBTotalCount_PostcodeValidFormat + ", ";
+        header += sCTBTotalCount_PostcodeValid + ", ";
         header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
@@ -8210,12 +10826,12 @@ public class SummaryUO extends Summary {
             line += summary.get(sHBAverageHouseholdSize) + ", ";
             line += summary.get(sCTBTotalHouseholdSize) + ", ";
             line += summary.get(sCTBAverageHouseholdSize) + ", ";
-            line += summary.get(sAllPostcodeValidFormatCount) + ", ";
-            line += summary.get(sAllPostcodeValidCount) + ", ";
-            line += summary.get(sHBPostcodeValidFormatCount) + ", ";
-            line += summary.get(sHBPostcodeValidCount) + ", ";
-            line += summary.get(sCTBPostcodeValidFormatCount) + ", ";
-            line += summary.get(sCTBPostcodeValidCount) + ", ";
+            line += summary.get(sAllTotalCount_PostcodeValidFormat) + ", ";
+            line += summary.get(sAllTotalCount_PostcodeValid) + ", ";
+            line += summary.get(sHBTotalCount_PostcodeValidFormat) + ", ";
+            line += summary.get(sHBTotalCount_PostcodeValid) + ", ";
+            line += summary.get(sCTBTotalCount_PostcodeValidFormat) + ", ";
+            line += summary.get(sCTBTotalCount_PostcodeValid) + ", ";
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
@@ -8664,15 +11280,15 @@ public class SummaryUO extends Summary {
         header += getHeaderSingleTimeGeneric(underOccupancy);
         for (int i = 1; i < nEG; i++) {
             header += sAllTotalCount_EthnicGroupClaimant[i] + ", ";
-            header += sAllPercentage_EthnicGroupClaimant[i] + ", ";
+            header += sAllPercentageOfAll_EthnicGroupClaimant[i] + ", ";
         }
         for (int i = 1; i < nEG; i++) {
             header += sHBTotalCount_EthnicGroupClaimant[i] + ", ";
-            header += sHBPercentage_EthnicGroupClaimant[i] + ", ";
+            header += sHBPercentageOfHB_EthnicGroupClaimant[i] + ", ";
         }
         for (int i = 1; i < nEG; i++) {
             header += sCTBTotalCount_EthnicGroupClaimant[i] + ", ";
-            header += sCTBPercentageEthnicGroupClaimant[i] + ", ";
+            header += sCTBPercentageOfCTB_EthnicGroupClaimant[i] + ", ";
         }
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -8693,15 +11309,15 @@ public class SummaryUO extends Summary {
                     summary, underOccupancy);
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sAllTotalCount_EthnicGroupClaimant[i]) + ", ";
-                line += summary.get(sAllPercentage_EthnicGroupClaimant[i]) + ", ";
+                line += summary.get(sAllPercentageOfAll_EthnicGroupClaimant[i]) + ", ";
             }
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sHBTotalCount_EthnicGroupClaimant[i]) + ", ";
-                line += summary.get(sHBPercentage_EthnicGroupClaimant[i]) + ", ";
+                line += summary.get(sHBPercentageOfHB_EthnicGroupClaimant[i]) + ", ";
             }
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sCTBTotalCount_EthnicGroupClaimant[i]) + ", ";
-                line += summary.get(sCTBPercentageEthnicGroupClaimant[i]) + ", ";
+                line += summary.get(sCTBPercentageOfCTB_EthnicGroupClaimant[i]) + ", ";
             }
             line = line.substring(0, line.length() - 2);
             pw.println(line);
