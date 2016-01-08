@@ -164,10 +164,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         // Includes
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
-        includes.remove("Yearly");
-        includes.remove("6Monthly");
-        includes.remove("3Monthly");
-        includes.remove("MonthlyUO");
+//        includes.remove("Yearly");
+//        includes.remove("6Monthly");
+//        includes.remove("3Monthly");
+//        includes.remove("MonthlyUO");
 //        includes.remove("Monthly");
 
         // Specifiy distances

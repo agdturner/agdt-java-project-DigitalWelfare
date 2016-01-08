@@ -79,6 +79,7 @@ public class Summary {
     // PSIByTT
     protected static String[][] sTotalCount_PSIByTT;
     protected static String[][] sPercentageOfAll_PSIByTT;
+    protected static String[][] sPercentageOfTT_PSIByTT;
     protected static String[][] sPercentageOfHB_PSIByTT;
     protected static String[][] sPercentageOfCTB_PSIByTT;
     // DisabilityPremiumAwardByTT
@@ -159,8 +160,8 @@ public class Summary {
     protected static final String sPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs = "PercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs";
     // DisabilityPremiumAwardPrivateDeregulatedTTs
     protected static final String sTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs = "TotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs = "PercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs = "PercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs";
     protected static final String sPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs = "PercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs";
     // SevereDisabilityPremiumAwardSocialTTs
     protected static final String sTotalCount_SevereDisabilityPremiumAwardSocialTTs = "TotalCount_SevereDisabilityPremiumAwardSocialTTs";
@@ -169,8 +170,8 @@ public class Summary {
     protected static final String sPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs = "PercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs";
     // SevereDisabilityPremiumAwardPrivateDeregulatedTTs
     protected static final String sTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "TotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "PercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "PercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
     protected static final String sPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs = "PercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs";
     // DisabledChildPremiumAwardSocialTTs
     protected static final String sTotalCount_DisabledChildPremiumAwardSocialTTs = "TotalCount_DisabledChildPremiumAwardSocialTTs";
@@ -179,8 +180,8 @@ public class Summary {
     protected static final String sPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs = "PercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs";
     // DisabledChildPremiumAwardPrivateDeregulatedTTs
     protected static final String sTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs = "TotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs = "sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs = "sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs = "PercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs = "PercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs";
     protected static final String sPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs = "PercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs";
     // EnhancedDisabilityPremiumAwardSocialTTs
     protected static final String sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs = "TotalCount_EnhancedDisabilityPremiumAwardSocialTTs";
@@ -189,8 +190,8 @@ public class Summary {
     protected static final String sPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs = "PercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs";
     // EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs
     protected static final String sTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "TotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "PercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
+    protected static final String sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "PercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
     protected static final String sPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs = "PercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs";
     // DisabilityAwardByTT
     protected static String[] sTotalCount_DisabilityAwardByTT;
@@ -210,11 +211,11 @@ public class Summary {
     protected static final String sTotalCount_DisabilityAwardSocialTTs = "TotalCount_DisabilityAwardSocialTTs";
     protected static final String sPercentageOfAll_DisabilityAwardSocialTTs = "PercentageOfAll_DisabilityAwardSocialTTs";
     protected static final String sPercentageOfHB_DisabilityAwardSocialTTs = "PercentageOfHB_DisabilityAwardSocialTTs";
-    protected static final String sPercentageOfSocialTTs_DisabilityAwardSocialTTs = "sPercentageOfSocialTTs_DisabilityAwardSocialTTs";
+    protected static final String sPercentageOfSocialTTs_DisabilityAwardSocialTTs = "PercentageOfSocialTTs_DisabilityAwardSocialTTs";
     // DisabilityAwardPrivateDeregulatedTTs
     protected static final String sTotalCount_DisabilityAwardPrivateDeregulatedTTs = "TotalCount_DisabilityAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs = "sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs";
-    protected static final String sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs = "sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs";
+    protected static final String sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs = "PercentageOfAll_DisabilityAwardPrivateDeregulatedTTs";
+    protected static final String sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs = "PercentageOfHB_DisabilityAwardPrivateDeregulatedTTs";
     protected static final String sPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs = "PercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs";
     // HBEntitlement
     public static final String sTotalWeeklyHBEntitlement = "TotalWeeklyHBEntitlement";
@@ -322,7 +323,7 @@ public class Summary {
     protected static final String sAllTotalCount_ClaimantsStudents = "AllTotalCount_ClaimantsStudents";
     protected static final String sAllPercentage_ClaimantsStudents = "AllPercentage_ClaimantsStudents";
     protected static final String sAllTotalCount_LHACases = "AllTotalCount_LHACases";
-    protected static final String sAllPercentageOfAll_LHACases = "AllPercentageOfHB__LHACases";
+    protected static final String sAllPercentageOfAll_LHACases = "AllPercentageOfHB_LHACases";
     protected static final String sHBTotalCount_ClaimantsEmployed = "HBTotalCount_ClaimantsEmployed";
     protected static final String sHBPercentageOfHB_ClaimantsEmployed = "HBPercentageOfHB_ClaimantsEmployed";
     protected static final String sHBTotalCountClaimantsSelfEmployed = "HBTotalCount_ClaimantsSelfEmployed";
@@ -792,6 +793,7 @@ public class Summary {
         sCTBPercentageOfCTB_PSI = new String[nPSI];
         sTotalCount_PSIByTT = new String[nPSI][nTT];
         sPercentageOfAll_PSIByTT = new String[nPSI][nTT];
+        sPercentageOfTT_PSIByTT = new String[nPSI][nTT];
         sPercentageOfHB_PSIByTT = new String[nPSI][nTT];
         sPercentageOfCTB_PSIByTT = new String[nPSI][nTT];
         for (int i = 1; i < nPSI; i++) {
@@ -809,6 +811,7 @@ public class Summary {
                 } else {
                     sPercentageOfHB_PSIByTT[i][j] = "PercentageOfHB_PSI" + i + "TT" + j;
                 }
+                sPercentageOfTT_PSIByTT[i][j] = "PercentageOfTT_PSI" + i + "TT" + j;
             }
         }
         // All
@@ -2268,6 +2271,16 @@ public class Summary {
                     ave = (all * 100.0d) / d;
                     summary.put(
                             sPercentageOfAll_PSIByTT[i][j],
+                            Generic_BigDecimal.roundIfNecessary(
+                                    BigDecimal.valueOf(ave),
+                                    decimalPlacePrecisionForAverage,
+                                    RoundingMode.HALF_UP).toPlainString());
+                }
+                d = TotalCount_TTClaimant1[j];
+                if (d > 0) {
+                    ave = (all * 100.0d) / d;
+                    summary.put(
+                            sPercentageOfTT_PSIByTT[i][j],
                             Generic_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(ave),
                                     decimalPlacePrecisionForAverage,
@@ -6103,7 +6116,7 @@ public class Summary {
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getHeaderSingleTimeGeneric(underOccupancy);
+        header += getHeaderSingleTimeGeneric();
         if (!underOccupancy) {
             header += "PostCodeLookupDate, ";
             header += "PostCodeLookupFile, ";
@@ -6189,7 +6202,7 @@ public class Summary {
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getHeaderSingleTimeGeneric(underOccupancy);
+        header += getHeaderSingleTimeGeneric();
         header += sTotalWeeklyHBEntitlement + ", ";
         header += sTotalCount_WeeklyHBEntitlementNonZero + ", ";
         header += sTotalCount_WeeklyHBEntitlementZero + ", ";
@@ -6366,7 +6379,7 @@ public class Summary {
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getHeaderSingleTimeGeneric(underOccupancy);
+        header += getHeaderSingleTimeGeneric();
         header += sAllTotalCount_ClaimantsEmployed + ", ";
         header += sAllPercentage_ClaimantsEmployed + ", ";
         header += sAllTotalCount_ClaimantsSelfEmployed + ", ";
@@ -6458,7 +6471,7 @@ public class Summary {
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getHeaderSingleTimeGeneric(underOccupancy);
+        header += getHeaderSingleTimeGeneric();
         header += sAllTotalIncome + ", ";
         header += sAllTotalCount_IncomeNonZero + ", ";
         header += sAllTotalCount_IncomeZero + ", ";
@@ -6562,7 +6575,7 @@ public class Summary {
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getHeaderSingleTimeGeneric(underOccupancy);
+        header += getHeaderSingleTimeGeneric();
         for (int i = 1; i < nEG; i++) {
             header += sAllTotalCount_EthnicGroupClaimant[i] + ", ";
             header += sAllPercentageOfAll_EthnicGroupClaimant[i] + ", ";
@@ -6625,7 +6638,7 @@ public class Summary {
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getHeaderSingleTimeGeneric(underOccupancy);
+        header += getHeaderSingleTimeGeneric();
         header += sTotalCount_SocialTTsClaimant + ", ";
         header += sPercentageOfAll_SocialTTsClaimant + ", ";
         header += sPercentageOfHB_SocialTTsClaimant + ", ";
@@ -6707,7 +6720,7 @@ public class Summary {
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getHeaderSingleTimeGeneric(underOccupancy);
+        header += getHeaderSingleTimeGeneric();
         for (int i = 1; i < nPSI; i++) {
             header += sAllTotalCount_PSI[i] + ", ";
             header += sAllPercentageOfAll_PSI[i] + ", ";
@@ -6734,6 +6747,7 @@ public class Summary {
                 } else {
                     header += sPercentageOfHB_PSIByTT[i][j] + ", ";
                 }
+                header += sPercentageOfTT_PSIByTT[i][j] + ", ";
             }
         }
         header = header.substring(0, header.length() - 2);
@@ -6778,6 +6792,7 @@ public class Summary {
                     } else {
                         line += summary.get(sPercentageOfHB_PSIByTT[i][j]) + ", ";
                     }
+                    line += summary.get(sPercentageOfTT_PSIByTT[i][j]) + ", ";
                 }
             }
             line = line.substring(0, line.length() - 2);
@@ -6802,7 +6817,7 @@ public class Summary {
         String header;
         header = "";
         header += sSHBEFilename1 + ", ";
-        header += getHeaderSingleTimeGeneric(underOccupancy);
+        header += getHeaderSingleTimeGeneric();
         // General
         // DisabilityAward
         header += sTotalCount_DisabilityAward + ", ";
@@ -7116,24 +7131,12 @@ public class Summary {
         pw.close();
     }
 
-    protected String getHeaderSingleTimeGeneric(boolean underoccupancy) {
+    protected String getHeaderSingleTimeGeneric() {
         String result;
         result = "year-month, ";
-        if (underoccupancy) {
-            result += "CouncilFilename, "
-                    + "CouncilCount, "
-                    + "CouncilLinkedRecordsCount,"
-                    + "RSLFilename, "
-                    //+ sRSLCount + ", "
-                    + "RSLCount, "
-                    + "RSLLinkedRecordsCount, "
-                    + "AllCount, "
-                    + "AllLinkedRecordsCount, ";
-        } else {
-            result += sAllCount1 + ", ";
+        result += sAllCount1 + ", ";
             result += sHBCount1 + ", ";
             result += sCTBCount1 + ", ";
-        }
         result += "Month Year, ";
         return result;
     }
