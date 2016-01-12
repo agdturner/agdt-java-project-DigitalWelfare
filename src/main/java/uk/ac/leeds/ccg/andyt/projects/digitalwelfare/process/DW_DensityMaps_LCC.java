@@ -74,32 +74,6 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         this.env = env;
     }
 
-    //DW_StyleParameters styleParameters;
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        try {
-            DW_Environment env;
-            env = new DW_Environment();
-            new DW_DensityMaps_LCC(env).run();
-        } catch (Exception e) {
-            System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
-//            StackTraceElement[] stes = e.getStackTrace();
-//            for (StackTraceElement ste : stes) {
-//                System.err.println(ste.toString());
-//            }
-        } catch (Error e) {
-            System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
-//            StackTraceElement[] stes = e.getStackTrace();
-//            for (StackTraceElement ste : stes) {
-//                System.err.println(ste.toString());
-//            }
-        }
-    }
-
     public void run() {
         ve = new Vector_Environment();
         // If showMapsInJMapPane is true, the maps are presented in individual 
@@ -589,9 +563,27 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                 while (ite.hasNext()) {
                     i = ite.next();
                     DW_SHBE_Collection SHBEData1;
+                    
+                    // This is not how to do it, but may be a workaround. 
+                    // Ideally need something recursive such as methods that 
+                    // input boolean handleOutOfMemoryError and handle 
+                    // OutOfMemoryErrors internally.
+                    // Consider using a factory to create DW_SHBE_Collections...
+                    
+                    try {
                     SHBEData1 = new DW_SHBE_Collection(
                             SHBEFilenames[i],
                             inPaymentType);
+                    } catch (OutOfMemoryError e) {
+                        env._DW_SHBE_CollectionHandler.swapToFile_Collection();
+                        SHBEData1 = new DW_SHBE_Collection(
+                            SHBEFilenames[i],
+                            inPaymentType);
+                    }
+                    
+                    
+                    
+                    
                     String yM31;
                     yM31 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                     // Init underOccupiedSets

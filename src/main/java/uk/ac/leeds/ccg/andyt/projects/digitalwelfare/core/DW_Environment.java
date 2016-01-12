@@ -34,6 +34,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 public class DW_Environment extends DW_OutOfMemoryErrorHandler
         implements Serializable {
 
+    public static String sDigitalWelfareDir = "/scratch02/DigitalWelfare";
+    
     /**
      * Used for Logging
      */
@@ -48,11 +50,12 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     public transient DW_SHBE_CollectionHandler _DW_SHBE_CollectionHandler;
 
-    public DW_Environment() {
-        init_DW_Environment();
+    public DW_Environment(String sDigitalWelfareDir) {
+        init_DW_Environment(sDigitalWelfareDir);
     }
 
-    private void init_DW_Environment() {
+    private void init_DW_Environment(String sDigitalWelfareDir) {
+        this.sDigitalWelfareDir = sDigitalWelfareDir;
         _Grids_Environment = new Grids_Environment();
         _DW_SHBE_CollectionHandler = new DW_SHBE_CollectionHandler(
                 this,

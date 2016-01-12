@@ -42,8 +42,16 @@ public class DW_MainProcessor {
      */
     public static void main(String[] args) {
         try {
-            DW_Environment env = new DW_Environment();
-            new DW_MainProcessor(env).run(args);
+            if (args.length != 1) {
+                System.err.println(
+                        "Expected an argument which is the location "
+                        + "of the directory containing the input data. "
+                                + "Aborting.");
+                System.exit(0);
+            } else {
+                DW_Environment env = new DW_Environment(args[0]);
+                new DW_MainProcessor(env).run(args);
+            }
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();

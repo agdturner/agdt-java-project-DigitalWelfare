@@ -22,6 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
  *
@@ -103,12 +104,12 @@ public class DW_Files {
     public static final String s2011 = "2011";
     public static final String sGenerated = "Generated";
     public static final String sOutput = "Output";
-    public static final String sAdviceLeeds = "AdviceLeeds";    
-    public static final String sDigitalWelfareDir = "/scratch02/DigitalWelfare";
+    public static final String sAdviceLeeds = "AdviceLeeds";
+    //public static final String sDigitalWelfareDir = "/scratch02/DigitalWelfare";
     
     public static File getDigitalWelfareDir() {
         if (dir == null) {
-            dir = new File(sDigitalWelfareDir);
+            dir = new File(DW_Environment.sDigitalWelfareDir);
         }
         return dir;
     }

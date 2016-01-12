@@ -51,7 +51,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  * @author geoagdt
  */
 public class Summary {
+
     // Generic vars
+
     protected transient DW_Environment env;
     public DW_SHBE_CollectionHandler collectionHandler;
     protected DW_SHBE_Handler tDW_SHBE_Handler;
@@ -341,6 +343,7 @@ public class Summary {
     protected static final String sCTBTotalCount_LHACases = "CTBTotalCountLHACases";
     protected static final String sCTBPercentageOfCTB_LHACases = "CTBPercentageOfCTB_LHACases";
     // Counts
+    protected static final String sAllCount00 = "AllCount00";
     protected static final String sAllCount0 = "AllCount0";
     protected static final String sHBCount0 = "HBCount0";
     protected static final String sCTBCount0 = "CTBOnlyCount0";
@@ -388,14 +391,12 @@ public class Summary {
     // Files
     protected static final String sSHBEFilename00 = "SHBEFilename00";
     protected static final String sSHBEFilename0 = "SHBEFilename0";
-    protected static final String sSHBEFilename1 = "SHBEFilename1";   
+    protected static final String sSHBEFilename1 = "SHBEFilename1";
     // Key Counts
     protected static String[] sTotalCount_ClaimantTT;
     protected static String[] sPercentageOfAll_ClaimantTT;
     protected static String[] sPercentageOfHB_ClaimantTT;
     protected static String[] sPercentageOfCTB_ClaimantTT;
-    protected static String[] sHBTotalCount_TTClaimant;
-    protected static String[] sCTBTotalCount_TTClaimant;
     // Postcode
     protected static String sHBTotalCount_PostcodeValidFormat;
     protected static String sHBTotalCount_PostcodeValid;
@@ -736,18 +737,18 @@ public class Summary {
     protected static int[] SameTenancyAndPostcodeIOITT;
     protected static int[] SameTenancyAndPostcodeOIOTT;
 
-    public Summary(){
+    public Summary() {
         this.env = null;
         this.collectionHandler = null;
         this.tDW_SHBE_Handler = null;
     }
-    
+
     public Summary(
             DW_Environment env,
             DW_SHBE_CollectionHandler collectionHandler,
             DW_SHBE_Handler tDW_SHBE_Handler,
-            int nTT, 
-            int nEG, 
+            int nTT,
+            int nEG,
             int nPSI,
             boolean handleOutOfMemoryError) {
         this.env = env;
@@ -1402,7 +1403,8 @@ public class Summary {
      */
     public static Integer[] getCountsIDPostcode(
             String[] SHBEFilenames, ArrayList<Integer> include,
-            String yM31, TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodeTypes,
+            String yM31,
+            TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodeTypes,
             HashSet<ID_PostcodeID> tClaimantIDPostcodeTypes1) {
         Integer[] result;
         result = new Integer[3];
@@ -2119,7 +2121,7 @@ public class Summary {
         HBCount0 = HBCount1;
         CTBCount0 = CTBCount1;
 //        for (int TT = 0; TT < nTT; TT++) {
-//            AllTotalCountTTClaimant0[TT] = AllTotalCountTTClaimant1[TT];
+//            TotalCount_TTClaimant0[TT] = TotalCount_TTClaimant1[TT];
 //        }
         System.arraycopy(TotalCount_TTClaimant1, 0, TotalCount_TTClaimant0, 0, nTT);
         // Add Counts
@@ -4255,6 +4257,7 @@ public class Summary {
             isHBClaim = DW_SHBE_Handler.isHBClaim(D_Record1);
             isCTBOnlyClaim = DW_SHBE_Handler.isCTBOnlyClaim(D_Record1);
         }
+        AllCount1 = HBCount1 + CTBCount1;
         String postcode0;
         postcode0 = null;
         int TT0;
@@ -4351,18 +4354,15 @@ public class Summary {
                 || EnhancedDisabilityPremiumAwarded == 1) {
             TotalCount_DisabilityAwardByTT[TT]++;
         }
-
         // Passported Standard Indicator
         int PSI;
         PSI = D_Record.getPassportedStandardIndicator();
         AllTotalCount_PSI[PSI]++;
         AllTotalCount_PSIByTT[PSI][TT]++;
-
         // Household size
         long HouseholdSize;
         HouseholdSize = DW_SHBE_Handler.getHouseholdSize(D_Record);
         AllTotalHouseholdSize += HouseholdSize;
-
         // Entitlements
         int WeeklyHousingBenefitEntitlement;
         WeeklyHousingBenefitEntitlement = D_Record.getWeeklyHousingBenefitEntitlement();
@@ -4380,7 +4380,6 @@ public class Summary {
         } else {
             AllTotalWeeklyCTBEntitlementZeroCount++;
         }
-
         // Eligible Amounts
         int WeeklyEligibleRentAmount;
         WeeklyEligibleRentAmount = D_Record.getWeeklyEligibleRentAmount();
@@ -4406,7 +4405,6 @@ public class Summary {
         } else {
             AllTotalContractualRentAmountZeroCount++;
         }
-
         // Additional Payments
         int WeeklyAdditionalDiscretionaryPayment;
         WeeklyAdditionalDiscretionaryPayment = D_Record.getWeeklyAdditionalDiscretionaryPayment();
@@ -4424,7 +4422,6 @@ public class Summary {
         } else {
             AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
         }
-
         // HBClaim only counts
         if (DW_SHBE_Handler.isHBClaim(D_Record)) {
             HBTotalCount_PSI[PSI]++;
@@ -4591,7 +4588,7 @@ public class Summary {
                     postcode,
                     yM30v);
         }
-        AllCount1 = HBCount1 + CTBCount1;
+//        AllCount1 = HBCount1 + CTBCount1;
     }
 
     protected void doCompare2TimesHBCount(
@@ -4655,7 +4652,6 @@ public class Summary {
                     TotalCount_HBTTsToMinus999TT++;
                 }
             }
-
             if (tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
                 if (tenancyType0 == 1 || tenancyType0 == 4) {
                     TotalCount_SocialTTsToMinus999TT++;
@@ -4664,7 +4660,6 @@ public class Summary {
                     TotalCount_PrivateDeregulatedTTsToMinus999TT++;
                 }
             }
-
             if ((tenancyType0 == 5
                     || tenancyType0 == 7)
                     && (tenancyType1 == 1
@@ -4692,7 +4687,6 @@ public class Summary {
                     || tenancyType1 == 9)) {
                 TotalCount_HBTTsToHBTTs++;
             }
-
             if (tenancyType0 == 1 || tenancyType0 == 4) {
                 if (tenancyType1 == 3 || tenancyType0 == 6) {
                     TotalCount_SocialTTsToPrivateDeregulatedTTs++;
@@ -5012,13 +5006,17 @@ public class Summary {
                     D_Record,
                     yM30v);
         }
+//        AllCount1 = HBCount1 + CTBCount1;
         summary.put(sSHBEFilename1, filename0); // This looks odd but is right!
         HashMap<String, BigDecimal> incomeAndRentSummary;
         incomeAndRentSummary = DW_SHBE_Handler.getIncomeAndRentSummary(
                 tSHBEData0,
-                filename0,
                 paymentType,
+                filename0,
                 null,
+                null,
+                false,
+                false,
                 false,
                 forceNewSummaries);
         addToSummarySingleTimeIncomeAndRent(
@@ -5070,9 +5068,12 @@ public class Summary {
             HashMap<String, BigDecimal> incomeAndRentSummary1;
             incomeAndRentSummary1 = DW_SHBE_Handler.getIncomeAndRentSummary(
                     tSHBEData1,
-                    filename1,
                     paymentType,
+                    filename1,
                     null,
+                    null,
+                    false,
+                    false,
                     false,
                     forceNewSummaries);
             addToSummarySingleTimeIncomeAndRent(
@@ -5338,9 +5339,15 @@ public class Summary {
             String includeKey,
             boolean doUnderOccupancy) {
         File result;
-        result = new File(
-                DW_Files.getOutputSHBETablesDir(),
-                "SummaryTables");
+        if (doUnderOccupancy) {
+            result = new File(
+                    DW_Files.getOutputSHBETablesDir(),
+                    "SummaryTablesUO");
+        } else {
+            result = new File(
+                    DW_Files.getOutputSHBETablesDir(),
+                    "SummaryTablesAll");
+        }
         result = new File(
                 result,
                 paymentType);
@@ -6737,11 +6744,6 @@ public class Summary {
             for (int j = 1; j < nTT; j++) {
                 header += sTotalCount_PSIByTT[i][j] + ", ";
                 header += sPercentageOfAll_PSIByTT[i][j] + ", ";
-            }
-        }
-        for (int i = 1; i < nPSI; i++) {
-            for (int j = 1; j < nTT; j++) {
-                header += sTotalCount_PSIByTT[i][j] + ", ";
                 if (j == 5 || j == 7) {
                     header += sPercentageOfCTB_PSIByTT[i][j] + ", ";
                 } else {
@@ -6782,11 +6784,6 @@ public class Summary {
                 for (int j = 1; j < nTT; j++) {
                     line += summary.get(sTotalCount_PSIByTT[i][j]) + ", ";
                     line += summary.get(sPercentageOfAll_PSIByTT[i][j]) + ", ";
-                }
-            }
-            for (int i = 1; i < nPSI; i++) {
-                for (int j = 1; j < nTT; j++) {
-                    line += summary.get(sTotalCount_PSIByTT[i][j]) + ", ";
                     if (j == 5 || j == 7) {
                         line += summary.get(sPercentageOfCTB_PSIByTT[i][j]) + ", ";
                     } else {
@@ -7135,8 +7132,8 @@ public class Summary {
         String result;
         result = "year-month, ";
         result += sAllCount1 + ", ";
-            result += sHBCount1 + ", ";
-            result += sCTBCount1 + ", ";
+        result += sHBCount1 + ", ";
+        result += sCTBCount1 + ", ";
         result += "Month Year, ";
         return result;
     }

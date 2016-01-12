@@ -72,16 +72,6 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         this.env = env;
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        DW_Environment env;
-        env = new DW_Environment();
-        new DW_DataProcessor_LCC(env).run();
-    }
-
     @Override
     public void run() {
         init_handlers();
@@ -91,6 +81,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        // Load Data
 //        ArrayList<Object[]> SHBEData;
 //        SHBEData = tDW_SHBE_Handler.getSHBEData();
+        
         Object[] underOccupiedData;
         underOccupiedData = DW_UnderOccupiedReport_Handler.loadUnderOccupiedReportData();
 
@@ -207,9 +198,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         boolean forceNewSummaries;
 //        forceNewSummaries = false;
         forceNewSummaries = true;
-        // Runtime approximately 3 minutes.
-        if (true) {
-//        if (false) {
+        // Runtime approximately 2 hours.
+//        if (true) {
+        if (false) {
             paymentTypesIte = paymentTypes.iterator();
             while (paymentTypesIte.hasNext()) {
                 String paymentType;
@@ -285,7 +276,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                                tPostcodeToPostcodeIDLookup,
 //                                handleOutOfMemoryError);
 //                        doUnderOccupancy = true;
-//                        tSummary.writeSummaryTables(
+//                        tSummaryUO.writeSummaryTables(
 //                                summaryTableUO,
 //                                paymentType,
 //                                includeKey,
@@ -297,6 +288,72 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             }
         }
 
+        
+        if (true) {
+//        if (false) {
+            paymentTypesIte = paymentTypes.iterator();
+            while (paymentTypesIte.hasNext()) {
+                String paymentType;
+                paymentType = paymentTypesIte.next();
+                //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
+                int nTT;
+                nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
+                int nEG;
+                nEG = DW_SHBE_Handler.getNumberOfClaimantsEthnicGroups();
+                int nPSI;
+                nPSI = DW_SHBE_Handler.getOneOverMaxValueOfPassportStandardIndicator();
+//                Summary tSummary = new Summary(
+//                        env,
+//                        collectionHandler,
+//                        tDW_SHBE_Handler,
+//                        nTT,
+//                        nEG,
+//                        nPSI,
+//                        handleOutOfMemoryError);
+                SummaryUO tSummaryUO = new SummaryUO(
+                        env,
+                        collectionHandler,
+                        tDW_SHBE_Handler,
+                        nTT,
+                        nEG,
+                        nPSI,
+                        handleOutOfMemoryError);
+                Iterator<String> includesIte;
+                includesIte = includes.keySet().iterator();
+                while (includesIte.hasNext()) {
+                    String includeKey;
+                    includeKey = includesIte.next();
+                    ArrayList<Integer> include;
+                    include = includes.get(includeKey);
+                    boolean doUnderOccupancy;
+                    TreeMap<String, HashMap<String, String>> summaryTableAll;
+                    summaryTableAll = null;
+                          TreeMap<String, HashMap<String, String>> summaryTableUO;
+                        summaryTableUO = tSummaryUO.getSummaryTable(
+                                summaryTableAll,
+                                SHBEFilenames,
+                                include,
+                                forceNewSummaries,
+                                paymentType,
+                                nTT,
+                                nEG,
+                                nPSI,
+                                underOccupiedData,
+                                tDW_PersonIDtoDW_IDLookup,
+                                tPostcodeToPostcodeIDLookup,
+                                handleOutOfMemoryError);
+                        doUnderOccupancy = true;
+                        tSummaryUO.writeSummaryTables(
+                                summaryTableUO,
+                                paymentType,
+                                includeKey,
+                                doUnderOccupancy,
+                                nTT, nEG, nPSI);
+                        System.exit(0);
+                }
+            }
+        }
+        
         System.exit(0);
 //        paymentTypes.remove(sAllPT);
 ////        paymentTypes.remove(sInPayment);
