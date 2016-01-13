@@ -739,6 +739,44 @@ public class DW_SHBE_Handler {
                             AllTotalCount_WeeklyEligibleRentAmountNonZeroBD,
                             2, RoundingMode.HALF_UP));
         }
+        for (int i = 0; i < nTT; i++) {
+            // Income
+            result.put(Summary.sAllTotalIncomeTT[i],
+                    AllTotalIncomeByTT[i]);
+            BigDecimal totalIncomeByTTGreaterThanZeroCountBD;
+            totalIncomeByTTGreaterThanZeroCountBD = BigDecimal.valueOf(
+                    AllTotalCount_IncomeByTTNonZero[i]);
+            result.put(Summary.sAllTotalCount_IncomeNonZeroTT[i],
+                    totalIncomeByTTGreaterThanZeroCountBD);
+            if (totalIncomeByTTGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
+                result.put(Summary.sAllAverageIncomeTT[i],
+                        Generic_BigDecimal.divideRoundIfNecessary(
+                                AllTotalIncomeByTT[i],
+                                totalIncomeByTTGreaterThanZeroCountBD,
+                                2, RoundingMode.HALF_UP));
+            } else {
+                result.put(Summary.sAllAverageIncomeTT[i],
+                        BigDecimal.ZERO);
+            }
+            // Rent
+            result.put(Summary.sAllTotalWeeklyEligibleRentAmountTT[i],
+                    AllTotalByTTWeeklyEligibleRentAmount[i]);
+            BigDecimal totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD;
+            totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD = BigDecimal.valueOf(
+                    AllTotalCount_ByTTWeeklyEligibleRentAmountNonZero[i]);
+            result.put(Summary.sAllTotalCount_WeeklyEligibleRentAmountNonZeroTT[i],
+                    totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD);
+            if (totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
+                result.put(Summary.sAllAverageWeeklyEligibleRentAmountTT[i],
+                        Generic_BigDecimal.divideRoundIfNecessary(
+                                AllTotalByTTWeeklyEligibleRentAmount[i],
+                                totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD,
+                                2, RoundingMode.HALF_UP));
+            } else {
+                result.put(Summary.sAllAverageWeeklyEligibleRentAmountTT[i],
+                        BigDecimal.ZERO);
+            }
+        }
         // HB
         BigDecimal HBTotalCount_IncomeNonZeroBD;
         HBTotalCount_IncomeNonZeroBD = BigDecimal.valueOf(HBTotalCount_IncomeNonZero);
@@ -774,6 +812,44 @@ public class DW_SHBE_Handler {
                             HBTotalWeeklyEligibleRentAmount,
                             HBTotalCount_WeeklyEligibleRentAmountNonZeroBD,
                             2, RoundingMode.HALF_UP));
+        }
+        for (int i = 0; i < nTT; i++) {
+            // Income
+            result.put(Summary.sHBTotalIncomeTT[i],
+                    HBTotalIncomeByTT[i]);
+            BigDecimal totalIncomeByTTGreaterThanZeroCountBD;
+            totalIncomeByTTGreaterThanZeroCountBD = BigDecimal.valueOf(
+                    AllTotalCount_IncomeByTTNonZero[i]);
+            result.put(Summary.sHBTotalCount_IncomeNonZeroTT[i],
+                    totalIncomeByTTGreaterThanZeroCountBD);
+            if (totalIncomeByTTGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
+                result.put(Summary.sHBAverageIncomeTT[i],
+                        Generic_BigDecimal.divideRoundIfNecessary(
+                                HBTotalIncomeByTT[i],
+                                totalIncomeByTTGreaterThanZeroCountBD,
+                                2, RoundingMode.HALF_UP));
+            } else {
+                result.put(Summary.sHBAverageIncomeTT[i],
+                        BigDecimal.ZERO);
+            }
+            // Rent
+            result.put(Summary.sHBTotalWeeklyEligibleRentAmountTT[i],
+                    HBAllTotalByTTWeeklyEligibleRentAmount[i]);
+            BigDecimal totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD;
+            totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD = BigDecimal.valueOf(
+                    AllTotalCount_ByTTWeeklyEligibleRentAmountNonZero[i]);
+            result.put(Summary.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i],
+                    totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD);
+            if (totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD.compareTo(BigDecimal.ZERO) == 1) {
+                result.put(Summary.sAverageWeeklyEligibleRentAmountTT[i],
+                        Generic_BigDecimal.divideRoundIfNecessary(
+                                AllTotalByTTWeeklyEligibleRentAmount[i],
+                                totalByTTWeeklyEligibleRentAmountGreaterThanZeroCountBD,
+                                2, RoundingMode.HALF_UP));
+            } else {
+                result.put(Summary.sAverageWeeklyEligibleRentAmountTT[i],
+                        BigDecimal.ZERO);
+            }
         }
         // CTB
         BigDecimal CTBTotalCount_IncomeNonZeroBD;

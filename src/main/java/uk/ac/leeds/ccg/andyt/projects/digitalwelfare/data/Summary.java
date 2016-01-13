@@ -231,13 +231,21 @@ public class Summary {
     public static final String sAverageWeeklyCTBEntitlement = "AverageWeeklyCTBEntitlement";
     // WeeklyEligibleRentAmount
     public static final String sAllTotalWeeklyEligibleRentAmount = "AllTotalWeeklyEligibleRentAmount";
-    public static String[] sTotalWeeklyEligibleRentAmountTT;
     public static final String sAllTotalCount_WeeklyEligibleRentAmountNonZero = "AllTotalCount_WeeklyEligibleRentAmountNonZero";
-    public static String[] sTotalCount_WeeklyEligibleRentAmountNonZeroTT;
     public static final String sAllTotalCount_WeeklyEligibleRentAmountZero = "AllTotalCount_WeeklyEligibleRentAmountZero";
-    public static String[] sTotalCount_WeeklyEligibleRentAmountZeroTT;
     public static final String sAllAverageWeeklyEligibleRentAmount = "AllAverageWeeklyEligibleRentAmount";
-    public static String[] sAverageWeeklyEligibleRentAmountTT;
+    public static String[] sAllTotalWeeklyEligibleRentAmountTT;
+    public static String[] sAllTotalCount_WeeklyEligibleRentAmountNonZeroTT;
+    public static String[] sAllTotalCount_WeeklyEligibleRentAmountZeroTT;
+    public static String[] sAllAverageWeeklyEligibleRentAmountTT;
+    public static String[] sHBTotalWeeklyEligibleRentAmountTT;
+    public static String[] sHBTotalCount_WeeklyEligibleRentAmountNonZeroTT;
+    public static String[] sHBTotalCount_WeeklyEligibleRentAmountZeroTT;
+    public static String[] sHBAverageWeeklyEligibleRentAmountTT;
+    public static String[] sCTBTotalWeeklyEligibleRentAmountTT;
+    public static String[] sCTBTotalCount_WeeklyEligibleRentAmountNonZeroTT;
+    public static String[] sCTBTotalCount_WeeklyEligibleRentAmountZeroTT;
+    public static String[] sCTBAverageWeeklyEligibleRentAmountTT;
     // WeeklyHBEntitlement
     public static final String sHBTotalWeeklyHBEntitlement = "HBTotalWeeklyHBEntitlement";
     public static final String sHBTotalCount_WeeklyHBEntitlementNonZero = "HBTotalCount_WeeklyHBEntitlementNonZero";
@@ -363,23 +371,31 @@ public class Summary {
     // Income
     // All
     public static final String sAllTotalIncome = "AllTotalIncome";
-    public static String[] sTotalIncomeTT;
     public static final String sAllTotalCount_IncomeNonZero = "AllTotalCount_IncomeNonZero";
     public static final String sAllTotalCount_IncomeZero = "AllTotalCount_IncomeZero";
-    public static String[] sTotalCount_IncomeNonZeroTT;
-    public static String[] sTotalCount_IncomeZeroTT;
     public static final String sAllAverageIncome = "AllAverageIncome";
-    public static String[] sAverageIncomeTT;
+    public static String[] sAllTotalIncomeTT;
+    public static String[] sAllTotalCount_IncomeNonZeroTT;
+    public static String[] sAllTotalCount_IncomeZeroTT;
+    public static String[] sAllAverageIncomeTT;
     //HB
     public static final String sHBTotalIncome = "HBTotalIncome";
     public static final String sHBTotalCount_IncomeNonZero = "HBTotalCount_IncomeNonZero";
     public static final String sHBTotalCount_IncomeZero = "HBTotalCount_IncomeZero";
     public static final String sHBAverageIncome = "HBAverageIncome";
+    public static String[] sHBTotalIncomeTT;
+    public static String[] sHBTotalCount_IncomeNonZeroTT;
+    public static String[] sHBTotalCount_IncomeZeroTT;
+    public static String[] sHBAverageIncomeTT;
     // CTB
     public static final String sCTBTotalIncome = "CTBTotalIncome";
     public static final String sCTBTotalCount_IncomeNonZero = "CTBTotalCount_IncomeNonZero";
     public static final String sCTBTotalCount_IncomeZero = "CTBTotalCount_IncomeZero";
     public static final String sCTBAverageIncome = "CTBAverageIncome";
+    public static String[] sCTBTotalIncomeTT;
+    public static String[] sCTBTotalCount_IncomeNonZeroTT;
+    public static String[] sCTBTotalCount_IncomeZeroTT;
+    public static String[] sCTBAverageIncomeTT;
     // Demographics
     // Ethnicity
     // HB
@@ -778,14 +794,30 @@ public class Summary {
     }
 
     protected void initSingleTimeStrings(int nTT, int nEG, int nPSI) {
-        sTotalIncomeTT = new String[nTT];
-        sTotalCount_IncomeNonZeroTT = new String[nTT];
-        sTotalCount_IncomeZeroTT = new String[nTT];
-        sAverageIncomeTT = new String[nTT];
-        sTotalWeeklyEligibleRentAmountTT = new String[nTT];
-        sTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        sTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
-        sAverageWeeklyEligibleRentAmountTT = new String[nTT];
+        sAllTotalIncomeTT = new String[nTT];
+        sAllTotalCount_IncomeNonZeroTT = new String[nTT];
+        sAllTotalCount_IncomeZeroTT = new String[nTT];
+        sAllAverageIncomeTT = new String[nTT];
+        sHBTotalIncomeTT = new String[nTT];
+        sHBTotalCount_IncomeNonZeroTT = new String[nTT];
+        sHBTotalCount_IncomeZeroTT = new String[nTT];
+        sHBAverageIncomeTT = new String[nTT];
+        sCTBTotalIncomeTT = new String[nTT];
+        sCTBTotalCount_IncomeNonZeroTT = new String[nTT];
+        sCTBTotalCount_IncomeZeroTT = new String[nTT];
+        sCTBAverageIncomeTT = new String[nTT];
+        sAllTotalWeeklyEligibleRentAmountTT = new String[nTT];
+        sAllTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        sAllTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
+        sAllAverageWeeklyEligibleRentAmountTT = new String[nTT];
+        sHBTotalWeeklyEligibleRentAmountTT = new String[nTT];
+        sHBTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        sHBTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
+        sHBAverageWeeklyEligibleRentAmountTT = new String[nTT];
+        sCTBTotalWeeklyEligibleRentAmountTT = new String[nTT];
+        sCTBTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        sCTBTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
+        sCTBAverageWeeklyEligibleRentAmountTT = new String[nTT];
         sAllTotalCount_PSI = new String[nPSI];
         sHBTotalCount_PSI = new String[nPSI];
         sCTBTotalCount_PSI = new String[nPSI];
@@ -863,15 +895,31 @@ public class Summary {
             sPercentageOfHB_ClaimantTT[i] = "PercentageOfHB_ClaimantTT" + i;
             sPercentageOfCTB_ClaimantTT[i] = "PercentageOfCTB_ClaimantTT" + i;
             // Income
-            sTotalIncomeTT[i] = "TotalIncomeTT" + i;
-            sTotalCount_IncomeNonZeroTT[i] = "TotalCount_IncomeNonZeroTT" + i;
-            sTotalCount_IncomeZeroTT[i] = "TotalCount_IncomeZeroTT" + i;
-            sAverageIncomeTT[i] = "AverageIncomeTT" + i;
+            sAllTotalIncomeTT[i] = "AllTotalIncomeTT" + i;
+            sAllTotalCount_IncomeNonZeroTT[i] = "AllTotalCount_IncomeNonZeroTT" + i;
+            sAllTotalCount_IncomeZeroTT[i] = "AllTotalCount_IncomeZeroTT" + i;
+            sAllAverageIncomeTT[i] = "AllAverageIncomeTT" + i;
+            sHBTotalIncomeTT[i] = "HBTotalIncomeTT" + i;
+            sHBTotalCount_IncomeNonZeroTT[i] = "HBTotalCount_IncomeNonZeroTT" + i;
+            sHBTotalCount_IncomeZeroTT[i] = "HBTotalCount_IncomeZeroTT" + i;
+            sHBAverageIncomeTT[i] = "HBAverageIncomeTT" + i;
+            sCTBTotalIncomeTT[i] = "CTBTotalIncomeTT" + i;
+            sCTBTotalCount_IncomeNonZeroTT[i] = "CTBTotalCount_IncomeNonZeroTT" + i;
+            sCTBTotalCount_IncomeZeroTT[i] = "CTBTotalCount_IncomeZeroTT" + i;
+            sCTBAverageIncomeTT[i] = "CTBAverageIncomeTT" + i;
             // WeeklyEligibleRentAmountTT
-            sTotalWeeklyEligibleRentAmountTT[i] = "TotalWeeklyEligibleRentAmountTT" + i;
-            sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
-            sTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountZeroTT" + i;
-            sAverageWeeklyEligibleRentAmountTT[i] = "AverageWeeklyEligibleRentAmountTT" + i;
+            sAllTotalWeeklyEligibleRentAmountTT[i] = "AllTotalWeeklyEligibleRentAmountTT" + i;
+            sAllTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "AllTotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
+            sAllTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "AllTotalCount_WeeklyEligibleRentAmountZeroTT" + i;
+            sAllAverageWeeklyEligibleRentAmountTT[i] = "AllAverageWeeklyEligibleRentAmountTT" + i;
+            sHBTotalWeeklyEligibleRentAmountTT[i] = "HBTotalWeeklyEligibleRentAmountTT" + i;
+            sHBTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "HBTotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
+            sHBTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "HBTotalCount_WeeklyEligibleRentAmountZeroTT" + i;
+            sHBAverageWeeklyEligibleRentAmountTT[i] = "HBAverageWeeklyEligibleRentAmountTT" + i;
+            sCTBTotalWeeklyEligibleRentAmountTT[i] = "CTBTotalWeeklyEligibleRentAmountTT" + i;
+            sCTBTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "CTBTotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
+            sCTBTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "CTBTotalCount_WeeklyEligibleRentAmountZeroTT" + i;
+            sCTBAverageWeeklyEligibleRentAmountTT[i] = "CTBAverageWeeklyEligibleRentAmountTT" + i;
             // DisabilityAwardByTT
             sTotalCount_DisabilityAwardByTT[i] = "TotalCount_DisabilityAwardByTT" + i;
             sPercentageOfAll_DisabilityAwardByTT[i] = "PercentageOfAll_DisabilityAwardByTT" + i;
@@ -2111,6 +2159,13 @@ public class Summary {
         }
     }
 
+    /**
+     *
+     * @param nTT
+     * @param nEG
+     * @param nPSI
+     * @param summary
+     */
     protected void addToSummarySingleTime(
             int nTT,
             int nEG,
@@ -4325,7 +4380,6 @@ public class Summary {
         TT = D_Record.getTenancyType();
         postcode = D_Record.getClaimantsPostcode();
         TotalCount_TTClaimant1[TT]++;
-
         // Disability
         int DisabilityPremiumAwarded;
         DisabilityPremiumAwarded = D_Record.getDisabilityPremiumAwarded();
@@ -4630,8 +4684,8 @@ public class Summary {
             }
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
-            if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999
-                    || tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (!(tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999
+                    || tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999)) {
                 HBTotalCount_TTChangeClaimant++;
                 //HBTotalCount_TTChangeClaimantIgnoreMinus999++;
             }
@@ -4824,8 +4878,8 @@ public class Summary {
             }
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
-            if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999
-                    || tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (!(tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999
+                    || tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999)) {
                 CTBTotalCount_TTChangeClaimant++;
                 //CTBTotalCount_TTChangeClaimantIgnoreMinus999++;
             }
@@ -6486,6 +6540,15 @@ public class Summary {
         header += sAllTotalWeeklyEligibleRentAmount + ", ";
         header += sAllTotalCount_WeeklyEligibleRentAmountNonZero + ", ";
         header += sAllAverageWeeklyEligibleRentAmount + ", ";
+        for (int i = 1; i < nTT; i++) {
+            header += sAllTotalIncomeTT[i] + ", ";
+            header += sAllTotalCount_IncomeNonZeroTT[i] + ", ";
+            header += sAllTotalCount_IncomeZeroTT[i] + ", ";
+            header += sAllAverageIncomeTT[i] + ", ";
+            header += sAllTotalWeeklyEligibleRentAmountTT[i] + ", ";
+            header += sAllTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + ", ";
+            header += sAllAverageWeeklyEligibleRentAmountTT[i] + ", ";
+        }
         // HB
         header += sHBTotalIncome + ", ";
         header += sHBTotalCount_IncomeNonZero + ", ";
@@ -6494,6 +6557,15 @@ public class Summary {
         header += sHBTotalWeeklyEligibleRentAmount + ", ";
         header += sHBTotalCount_WeeklyEligibleRentAmountNonZero + ", ";
         header += sHBAverageWeeklyEligibleRentAmount + ", ";
+        for (int i = 1; i < nTT; i++) {
+            header += sHBTotalIncomeTT[i] + ", ";
+            header += sHBTotalCount_IncomeNonZeroTT[i] + ", ";
+            header += sHBTotalCount_IncomeZeroTT[i] + ", ";
+            header += sHBAverageIncomeTT[i] + ", ";
+            header += sHBTotalWeeklyEligibleRentAmountTT[i] + ", ";
+            header += sHBTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + ", ";
+            header += sHBAverageWeeklyEligibleRentAmountTT[i] + ", ";
+        }
         // CTB
         header += sCTBTotalIncome + ", ";
         header += sCTBTotalCount_IncomeNonZero + ", ";
@@ -6503,13 +6575,13 @@ public class Summary {
         header += sCTBTotalCount_WeeklyEligibleRentAmountNonZero + ", ";
         header += sCTBAverageWeeklyEligibleRentAmount + ", ";
         for (int i = 1; i < nTT; i++) {
-            header += sTotalIncomeTT[i] + ", ";
-            header += sTotalCount_IncomeNonZeroTT[i] + ", ";
-            header += sTotalCount_IncomeZeroTT[i] + ", ";
-            header += sAverageIncomeTT[i] + ", ";
-            header += sTotalWeeklyEligibleRentAmountTT[i] + ", ";
-            header += sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + ", ";
-            header += sAverageWeeklyEligibleRentAmountTT[i] + ", ";
+            header += sCTBTotalIncomeTT[i] + ", ";
+            header += sCTBTotalCount_IncomeNonZeroTT[i] + ", ";
+            header += sCTBTotalCount_IncomeZeroTT[i] + ", ";
+            header += sCTBAverageIncomeTT[i] + ", ";
+            header += sCTBTotalWeeklyEligibleRentAmountTT[i] + ", ";
+            header += sCTBTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + ", ";
+            header += sCTBAverageWeeklyEligibleRentAmountTT[i] + ", ";
         }
         header = header.substring(0, header.length() - 2);
         pw.println(header);
