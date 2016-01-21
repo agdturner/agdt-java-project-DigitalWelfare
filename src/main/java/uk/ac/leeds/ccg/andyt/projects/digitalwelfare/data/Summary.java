@@ -62,6 +62,7 @@ public class Summary {
     // Special vars
     protected static final String postcodeLS277NS = "LS27 7NS";
     protected static final String s0 = "0";
+    protected static final String sSummaryTables = "SummaryTables";
     // Main vars
     // Counter Strings
     // HouseholdSize
@@ -5388,38 +5389,6 @@ public class Summary {
         }
     }
 
-    protected File getSummaryTableDir(
-            String paymentType,
-            String includeKey,
-            boolean doUnderOccupancy) {
-        File result;
-        if (doUnderOccupancy) {
-            result = new File(
-                    DW_Files.getOutputSHBETablesDir(),
-                    "SummaryTablesUO");
-        } else {
-            result = new File(
-                    DW_Files.getOutputSHBETablesDir(),
-                    "SummaryTablesAll");
-        }
-        result = new File(
-                result,
-                paymentType);
-        result = new File(
-                result,
-                includeKey);
-        if (doUnderOccupancy) {
-            result = new File(
-                    result,
-                    "UO");
-        } else {
-            result = new File(
-                    result,
-                    "All");
-        }
-        result.mkdirs();
-        return result;
-    }
 
     /**
      * Provides comparisons with the previous period
@@ -5507,15 +5476,16 @@ public class Summary {
                 nTT, nEG);
     }
 
-    protected PrintWriter getPrintWriter(
+    protected static PrintWriter getPrintWriter(
             String name,
+            String name2,
             TreeMap<String, HashMap<String, String>> summaryTable,
             String paymentType,
             String includeKey,
             boolean underOccupancy) {
         PrintWriter result;
         File dirOut;
-        dirOut = getSummaryTableDir(paymentType, includeKey, underOccupancy);
+        dirOut = DW_Files.getTableDir(name2, paymentType, includeKey, underOccupancy);
         String outFilename;
         outFilename = paymentType + "_" + includeKey + "_";
         if (underOccupancy) {
@@ -5551,7 +5521,7 @@ public class Summary {
         String name;
         name = "Compare3Times";
         PrintWriter pw;
-        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
@@ -5672,7 +5642,7 @@ public class Summary {
         String name;
         name = "Compare2Times";
         PrintWriter pw;
-        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = getHeaderCompare2TimesGeneric();
@@ -5999,7 +5969,7 @@ public class Summary {
         String name;
         name = "Compare2TimesTT";
         PrintWriter pw;
-        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = getHeaderCompare2TimesGeneric();
@@ -6133,7 +6103,7 @@ public class Summary {
         String name;
         name = "Compare2TimesPostcode";
         PrintWriter pw;
-        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = getHeaderCompare2TimesGeneric();
@@ -6172,7 +6142,7 @@ public class Summary {
         String name;
         name = "SingleTimeGenericCounts";
         PrintWriter pw;
-        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
@@ -6213,7 +6183,6 @@ public class Summary {
             line = "";
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
-            header = "";
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
@@ -6258,7 +6227,7 @@ public class Summary {
         String name;
         name = "SingleTimeEntitlementEligibleAmountContractualAmount";
         PrintWriter pw;
-        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
@@ -6344,7 +6313,6 @@ public class Summary {
             line = "";
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
-            header = "";
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
@@ -6435,7 +6403,7 @@ public class Summary {
         String name;
         name = "SingleTimeEmploymentEducationTraining";
         PrintWriter pw;
-        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
@@ -6470,7 +6438,6 @@ public class Summary {
             line = "";
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
-            header = "";
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
@@ -6527,7 +6494,7 @@ public class Summary {
         String name;
         name = "SingleTimeRentAndIncome";
         PrintWriter pw;
-        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
@@ -6594,7 +6561,6 @@ public class Summary {
             line = "";
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
-            header = "";
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
@@ -6607,6 +6573,15 @@ public class Summary {
             line += summary.get(sAllTotalWeeklyEligibleRentAmount) + ", ";
             line += summary.get(sAllTotalCount_WeeklyEligibleRentAmountNonZero) + ", ";
             line += summary.get(sAllAverageWeeklyEligibleRentAmount) + ", ";
+            for (int i = 1; i < nTT; i++) {
+                line += summary.get(sAllTotalIncomeTT[i]) + ", ";
+                line += summary.get(sAllTotalCount_IncomeNonZeroTT[i]) + ", ";
+                line += summary.get(sAllTotalCount_IncomeZeroTT[i]) + ", ";
+                line += summary.get(sAllAverageIncomeTT[i]) + ", ";
+                line += summary.get(sAllTotalWeeklyEligibleRentAmountTT[i]) + ", ";
+                line += summary.get(sAllTotalCount_WeeklyEligibleRentAmountNonZeroTT[i]) + ", ";
+                line += summary.get(sAllAverageWeeklyEligibleRentAmountTT[i]) + ", ";
+            }
             // HB
             line += summary.get(sHBTotalIncome) + ", ";
             line += summary.get(sHBTotalCount_IncomeNonZero) + ", ";
@@ -6615,6 +6590,15 @@ public class Summary {
             line += summary.get(sHBTotalWeeklyEligibleRentAmount) + ", ";
             line += summary.get(sHBTotalCount_WeeklyEligibleRentAmountNonZero) + ", ";
             line += summary.get(sHBAverageWeeklyEligibleRentAmount) + ", ";
+            for (int i = 1; i < nTT; i++) {
+                line += summary.get(sHBTotalIncomeTT[i]) + ", ";
+                line += summary.get(sHBTotalCount_IncomeNonZeroTT[i]) + ", ";
+                line += summary.get(sHBTotalCount_IncomeZeroTT[i]) + ", ";
+                line += summary.get(sHBAverageIncomeTT[i]) + ", ";
+                line += summary.get(sHBTotalWeeklyEligibleRentAmountTT[i]) + ", ";
+                line += summary.get(sHBTotalCount_WeeklyEligibleRentAmountNonZeroTT[i]) + ", ";
+                line += summary.get(sHBAverageWeeklyEligibleRentAmountTT[i]) + ", ";
+            }
             // CTB
             line += summary.get(sCTBTotalIncome) + ", ";
             line += summary.get(sCTBTotalCount_IncomeNonZero) + ", ";
@@ -6624,13 +6608,13 @@ public class Summary {
             line += summary.get(sCTBTotalCount_WeeklyEligibleRentAmountNonZero) + ", ";
             line += summary.get(sCTBAverageWeeklyEligibleRentAmount) + ", ";
             for (int i = 1; i < nTT; i++) {
-                line += summary.get(sTotalIncomeTT[i]) + ", ";
-                line += summary.get(sTotalCount_IncomeNonZeroTT[i]) + ", ";
-                line += summary.get(sTotalCount_IncomeZeroTT[i]) + ", ";
-                line += summary.get(sAverageIncomeTT[i]) + ", ";
-                line += summary.get(sTotalWeeklyEligibleRentAmountTT[i]) + ", ";
-                line += summary.get(sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i]) + ", ";
-                line += summary.get(sAverageWeeklyEligibleRentAmountTT[i]) + ", ";
+                line += summary.get(sCTBTotalIncomeTT[i]) + ", ";
+                line += summary.get(sCTBTotalCount_IncomeNonZeroTT[i]) + ", ";
+                line += summary.get(sCTBTotalCount_IncomeZeroTT[i]) + ", ";
+                line += summary.get(sCTBAverageIncomeTT[i]) + ", ";
+                line += summary.get(sCTBTotalWeeklyEligibleRentAmountTT[i]) + ", ";
+                line += summary.get(sCTBTotalCount_WeeklyEligibleRentAmountNonZeroTT[i]) + ", ";
+                line += summary.get(sCTBAverageWeeklyEligibleRentAmountTT[i]) + ", ";
             }
             line = line.substring(0, line.length() - 2);
             pw.println(line);
@@ -6649,7 +6633,7 @@ public class Summary {
         String name;
         name = "SingleTimeEthnicity";
         PrintWriter pw;
-        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
@@ -6678,7 +6662,6 @@ public class Summary {
             line = "";
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
-            header = "";
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
@@ -6712,7 +6695,7 @@ public class Summary {
         String name;
         name = "SingleTimeTT";
         PrintWriter pw;
-        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
@@ -6750,7 +6733,6 @@ public class Summary {
             line = "";
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
-            header = "";
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
@@ -6794,7 +6776,7 @@ public class Summary {
         String name;
         name = "SingleTimePSI";
         PrintWriter pw;
-        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
@@ -6835,7 +6817,6 @@ public class Summary {
             line = "";
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
-            header = "";
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
@@ -6881,7 +6862,7 @@ public class Summary {
         String name;
         name = "SingleTimeDisability";
         PrintWriter pw;
-        pw = getPrintWriter(name, summaryTable, paymentType, includeKey, underOccupancy);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, paymentType, includeKey, underOccupancy);
         // Write headers
         String header;
         header = "";
@@ -7043,7 +7024,6 @@ public class Summary {
             line = "";
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
-            header = "";
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";

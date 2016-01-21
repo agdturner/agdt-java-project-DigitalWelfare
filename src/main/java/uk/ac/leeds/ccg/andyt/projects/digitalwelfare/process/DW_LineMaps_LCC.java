@@ -761,6 +761,12 @@ public class DW_LineMaps_LCC extends DW_Maps {
 
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
+        includes.remove("All");
+//        includes.remove("Yearly");
+//        includes.remove("6Monthly");
+//        includes.remove("3Monthly");
+//        includes.remove("MonthlyUO");
+//        includes.remove("Monthly");
 
         HashMap<Boolean, ArrayList<ArrayList<String>>> allTenancyTypeChanges;
         allTenancyTypeChanges = getAllTenancyTypeChanges();

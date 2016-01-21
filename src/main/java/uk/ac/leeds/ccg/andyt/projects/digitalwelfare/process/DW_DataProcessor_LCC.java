@@ -31,6 +31,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.Summary;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.SummaryUO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.TenancyChangesUO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
@@ -81,7 +82,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        // Load Data
 //        ArrayList<Object[]> SHBEData;
 //        SHBEData = tDW_SHBE_Handler.getSHBEData();
-        
+
         Object[] underOccupiedData;
         underOccupiedData = DW_UnderOccupiedReport_Handler.loadUnderOccupiedReportData();
 
@@ -106,6 +107,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        processforChangeInTenancyMatrixesForApril(
 //                SHBEData);
 //        getTotalClaimantsByTenancyType();
+
+        boolean handleOutOfMemoryError = false;
+
         String[] SHBEFilenames;
         SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
 
@@ -154,12 +158,6 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 
         // Includes
         TreeMap<String, ArrayList<Integer>> includes;
-        includes = DW_SHBE_Handler.getIncludes();
-//        includes.remove("Yearly");
-//        includes.remove("6Monthly");
-//        includes.remove("3Monthly");
-//        includes.remove("MonthlyUO");
-//        includes.remove("Monthly");
 
         // Specifiy distances
         ArrayList<Double> distances;
@@ -184,23 +182,83 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         HashMap<DW_PersonID, DW_ID> tDW_PersonIDtoDW_IDLookup;
         tDW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
         ArrayList<String> paymentTypes;
+        Iterator<String> paymentTypesIte;
+
+        if (true) {
+//        if (false) {
+            includes = DW_SHBE_Handler.getIncludes();
+            includes.remove("All");
+            includes.remove("Yearly");
+            includes.remove("6Monthly");
+            includes.remove("3Monthly");
+//            includes.remove("MonthlyUO");
+            includes.remove("Monthly");
+            paymentTypes = DW_SHBE_Handler.getPaymentTypes();
+//        paymentTypes.remove(sAllPT);
+            paymentTypes.remove(sInPayment);
+            paymentTypes.remove(sSuspended);
+            paymentTypes.remove(sOtherPT);
+            boolean doUnderOccupancy;
+            doUnderOccupancy = true;
+            String name;
+            name = "TenancyChange";
+            paymentTypesIte = paymentTypes.iterator();
+            while (paymentTypesIte.hasNext()) {
+                String paymentType;
+                paymentType = paymentTypesIte.next();
+                TenancyChangesUO tTenancyChangesUO = new TenancyChangesUO(
+                        env,
+                        collectionHandler,
+                        tDW_SHBE_Handler,
+                        handleOutOfMemoryError);
+                Iterator<String> includesIte;
+                includesIte = includes.keySet().iterator();
+                while (includesIte.hasNext()) {
+                    String includeKey;
+                    includeKey = includesIte.next();
+                    ArrayList<Integer> include;
+                    include = includes.get(includeKey);
+                    Object[] table;
+                    table = null;
+                    table = tTenancyChangesUO.getTable(
+                            underOccupiedData,
+                            SHBEFilenames,
+                            include,
+                            paymentType);
+                    iteB = bArray.iterator();
+                    while (iteB.hasNext()) {
+                        tTenancyChangesUO.writeTenancyChangeTables(
+                                table,
+                                paymentType,
+                                includeKey,
+                                doUnderOccupancy,
+                                iteB.next(),
+                                name);
+                    }
+                    System.exit(0);
+                }
+            }
+        }
+
+        // Summary Tables
+        includes = DW_SHBE_Handler.getIncludes();
+        includes.remove("All");
+//        includes.remove("Yearly");
+//        includes.remove("6Monthly");
+//        includes.remove("3Monthly");
+//        includes.remove("MonthlyUO");
+//        includes.remove("Monthly");
         paymentTypes = DW_SHBE_Handler.getPaymentTypes();
 //        paymentTypes.remove(sAllPT);
 //        paymentTypes.remove(sInPayment);
 //        paymentTypes.remove(sSuspended);
 //        paymentTypes.remove(sOtherPT);
-
-        Iterator<String> paymentTypesIte;
-
-        boolean handleOutOfMemoryError = false;
-
-        // Summary Tables
         boolean forceNewSummaries;
 //        forceNewSummaries = false;
         forceNewSummaries = true;
         // Runtime approximately 2 hours.
-//        if (true) {
-        if (false) {
+        if (true) {
+//        if (false) {
             paymentTypesIte = paymentTypes.iterator();
             while (paymentTypesIte.hasNext()) {
                 String paymentType;
@@ -261,7 +319,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                    System.exit(0);
 //                    if (true) {
                     if (false) {
-                          TreeMap<String, HashMap<String, String>> summaryTableUO;
+                        TreeMap<String, HashMap<String, String>> summaryTableUO;
 //                        summaryTableUO = tSummaryUO.getSummaryTable(
 //                                summaryTableAll,
 //                                SHBEFilenames,
@@ -288,7 +346,6 @@ public class DW_DataProcessor_LCC extends DW_Processor {
             }
         }
 
-        
         if (true) {
 //        if (false) {
             paymentTypesIte = paymentTypes.iterator();
@@ -328,32 +385,32 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     boolean doUnderOccupancy;
                     TreeMap<String, HashMap<String, String>> summaryTableAll;
                     summaryTableAll = null;
-                          TreeMap<String, HashMap<String, String>> summaryTableUO;
-                        summaryTableUO = tSummaryUO.getSummaryTable(
-                                summaryTableAll,
-                                SHBEFilenames,
-                                include,
-                                forceNewSummaries,
-                                paymentType,
-                                nTT,
-                                nEG,
-                                nPSI,
-                                underOccupiedData,
-                                tDW_PersonIDtoDW_IDLookup,
-                                tPostcodeToPostcodeIDLookup,
-                                handleOutOfMemoryError);
-                        doUnderOccupancy = true;
-                        tSummaryUO.writeSummaryTables(
-                                summaryTableUO,
-                                paymentType,
-                                includeKey,
-                                doUnderOccupancy,
-                                nTT, nEG, nPSI);
-                        System.exit(0);
+                    TreeMap<String, HashMap<String, String>> summaryTableUO;
+                    summaryTableUO = tSummaryUO.getSummaryTable(
+                            summaryTableAll,
+                            SHBEFilenames,
+                            include,
+                            forceNewSummaries,
+                            paymentType,
+                            nTT,
+                            nEG,
+                            nPSI,
+                            underOccupiedData,
+                            tDW_PersonIDtoDW_IDLookup,
+                            tPostcodeToPostcodeIDLookup,
+                            handleOutOfMemoryError);
+                    doUnderOccupancy = true;
+                    tSummaryUO.writeSummaryTables(
+                            summaryTableUO,
+                            paymentType,
+                            includeKey,
+                            doUnderOccupancy,
+                            nTT, nEG, nPSI);
+                    //System.exit(0);
                 }
             }
         }
-        
+
         System.exit(0);
 //        paymentTypes.remove(sAllPT);
 ////        paymentTypes.remove(sInPayment);

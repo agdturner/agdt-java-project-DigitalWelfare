@@ -213,7 +213,12 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         // Includes
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
-        
+        includes.remove("All");
+//        includes.remove("Yearly");
+//        includes.remove("6Monthly");
+//        includes.remove("3Monthly");
+//        includes.remove("MonthlyUO");
+//        includes.remove("Monthly");
 
         // Specifiy distances
         ArrayList<Double> distances;

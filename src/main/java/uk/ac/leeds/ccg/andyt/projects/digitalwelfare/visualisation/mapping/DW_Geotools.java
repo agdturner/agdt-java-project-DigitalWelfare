@@ -136,7 +136,7 @@ public class DW_Geotools extends AGDT_Geotools {
                 outputFile, DW_Maps.png_String);
 
         AGDT_Geotools.writeImageFile(
-                //g._Grids_Environment,
+                g._Grids_Environment, // For handling OutOfMemoryErrors
                 mc,
                 newImageWidth,
                 newImageHeight,

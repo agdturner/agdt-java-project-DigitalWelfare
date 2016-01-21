@@ -90,6 +90,12 @@ public class DW_Report extends DW_HTMLPage {
 
         // Run for consecutive monthly data
         includes = DW_SHBE_Handler.getIncludes();
+        includes.remove("All");
+//        includes.remove("Yearly");
+//        includes.remove("6Monthly");
+//        includes.remove("3Monthly");
+//        includes.remove("MonthlyUO");
+//        includes.remove("Monthly");
 
         baseReportDir = mainDirectoryName + "/" + reportName;
         baseURLString0 = "http://www.geog.leeds.ac.uk/people/a.turner/projects/"

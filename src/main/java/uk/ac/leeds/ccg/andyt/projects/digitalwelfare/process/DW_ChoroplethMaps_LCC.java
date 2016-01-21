@@ -220,7 +220,14 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
 
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
-        ArrayList<Integer> include;
+                includes.remove("All");
+//        includes.remove("Yearly");
+//        includes.remove("6Monthly");
+//        includes.remove("3Monthly");
+//        includes.remove("MonthlyUO");
+//        includes.remove("Monthly");
+
+                ArrayList<Integer> include;
         ArrayList<Integer> includea;
         // Run for consecutive monthly data
         includea = includes.get("Monthly");

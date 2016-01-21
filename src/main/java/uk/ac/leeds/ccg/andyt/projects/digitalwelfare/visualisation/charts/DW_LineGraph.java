@@ -111,6 +111,12 @@ public class DW_LineGraph extends Generic_LineGraph {
 
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
+        includes.remove("All");
+//        includes.remove("Yearly");
+//        includes.remove("6Monthly");
+//        includes.remove("3Monthly");
+//        includes.remove("MonthlyUO");
+//        includes.remove("Monthly");
 
         ArrayList<Boolean> b;
         b = new ArrayList<Boolean>();
