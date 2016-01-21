@@ -184,6 +184,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         ArrayList<String> paymentTypes;
         Iterator<String> paymentTypesIte;
 
+        Object[] table;
+        table = null;
+
         if (true) {
 //        if (false) {
             includes = DW_SHBE_Handler.getIncludes();
@@ -218,21 +221,22 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     includeKey = includesIte.next();
                     ArrayList<Integer> include;
                     include = includes.get(includeKey);
-                    Object[] table;
-                    table = null;
-                    table = tTenancyChangesUO.getTable(
-                            underOccupiedData,
-                            SHBEFilenames,
-                            include,
-                            paymentType);
                     iteB = bArray.iterator();
                     while (iteB.hasNext()) {
+                        boolean includePreUnderOccupancyValues;
+                        includePreUnderOccupancyValues = iteB.next();
+                        table = tTenancyChangesUO.getTable(
+                                underOccupiedData,
+                                SHBEFilenames,
+                                include,
+                                paymentType,
+                                includePreUnderOccupancyValues);
                         tTenancyChangesUO.writeTenancyChangeTables(
                                 table,
                                 paymentType,
                                 includeKey,
                                 doUnderOccupancy,
-                                iteB.next(),
+                                includePreUnderOccupancyValues,
                                 name);
                     }
                     System.exit(0);

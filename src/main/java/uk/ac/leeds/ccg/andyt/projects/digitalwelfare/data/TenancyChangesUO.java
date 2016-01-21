@@ -60,8 +60,15 @@ public class TenancyChangesUO {
     String sWHBE = "WeeklyHousingBenefitEntitlement";
     String sWERA = "WeeklyEligibleRentAmount";
     String sHS = "HouseholdSize";
+    String sND = "NonDependents";
+    String sCD = "ChildDependents";
     String sDoB = "ClaimantDoB";
     String sD = "Disability";
+    String sDP = "DisabilityPremium";
+    String sDS = "DisabilitySevere";
+    String sDE = "DisabilityEnhanced";
+    String sDC = "DisabledChild";
+    String sPDeath = "PartnerDeath";
     String sHBDP = "HBDiscretionaryPayment";
     //String sCTBDP = "CTBDiscretionaryPayment";
     String sA = "Arrears";
@@ -70,11 +77,15 @@ public class TenancyChangesUO {
     String sComma = ",";
     String sCommaSpace = ", ";
     String sTT_ = sTT + sUnderscore;
-    
+
     String sBR = "BedroomRequirement";
     String sNB = "NumberOfBedrooms";
-    String sHSUO = "HouseholdSize(UO)";
-    
+    String sNDUO = "NonDependents(UO)";
+    String sCO16 = "ChildrenOver16";
+    String sFCU10 = "FemaleChildrenUnder10";
+    String sMCU10 = "MaleChildrenUnder10";
+    String sFC10To16 = "FemaleChildren10to16";
+    String sMC10To16 = "MaleChildren10to16";
 
     String sUniqueIndividualsEffected = "UniqueIndividualsEffected";
 
@@ -152,8 +163,22 @@ public class TenancyChangesUO {
             result.put(aCTBRef + sUnderscore + sWHBE, s);
             result.put(aCTBRef + sUnderscore + sWERA, s);
             result.put(aCTBRef + sUnderscore + sHS, s);
+            result.put(aCTBRef + sUnderscore + sND, s);
+            result.put(aCTBRef + sUnderscore + sCD, s);
+            result.put(aCTBRef + sUnderscore + sNDUO, s);
+            result.put(aCTBRef + sUnderscore + sCO16, s);
+            result.put(aCTBRef + sUnderscore + sFCU10, s);
+            result.put(aCTBRef + sUnderscore + sMCU10, s);
+            result.put(aCTBRef + sUnderscore + sFC10To16, s);
+            result.put(aCTBRef + sUnderscore + sMC10To16, s);
+            result.put(aCTBRef + sUnderscore + sBR, s);
+            result.put(aCTBRef + sUnderscore + sNB, s);
             result.put(aCTBRef + sUnderscore + sDoB, s);
-            result.put(aCTBRef + sUnderscore + sD, s);
+            result.put(aCTBRef + sUnderscore + sDP, s);
+            result.put(aCTBRef + sUnderscore + sDS, s);
+            result.put(aCTBRef + sUnderscore + sDE, s);
+            result.put(aCTBRef + sUnderscore + sDC, s);
+            result.put(aCTBRef + sUnderscore + sPDeath, s);
             result.put(aCTBRef + sUnderscore + sHBDP, s);
             result.put(aCTBRef + sUnderscore + sA, s);
         }
@@ -202,19 +227,72 @@ public class TenancyChangesUO {
                     key = aCTBRef + sUnderscore + sWHBE;
                     aS = result.get(key);
                     j = dRecord.getWeeklyHousingBenefitEntitlement();
-                    aS += sCommaSpace + j;
+                    aS += sCommaSpace + decimalise(j);
                     result.put(key, aS);
                     // Weekly Eligible Rent Amount
                     key = aCTBRef + sUnderscore + sWERA;
                     aS = result.get(key);
                     j = dRecord.getWeeklyEligibleRentAmount();
-                    aS += sCommaSpace + j;
+                    aS += sCommaSpace + decimalise(j);
                     result.put(key, aS);
                     // Household Size
                     key = aCTBRef + sUnderscore + sHS;
                     aS = result.get(key);
                     j = (int) DW_SHBE_Handler.getHouseholdSize(dRecord);
                     aS += sCommaSpace + j;
+                    result.put(key, aS);
+                    // NonDependents
+                    key = aCTBRef + sUnderscore + sND;
+                    aS = result.get(key);
+                    j = dRecord.getNumberOfNonDependents();
+                    aS += sCommaSpace + j;
+                    result.put(key, aS);
+                    // Child Dependents
+                    key = aCTBRef + sUnderscore + sCD;
+                    aS = result.get(key);
+                    j = dRecord.getNumberOfChildDependents();
+                    aS += sCommaSpace + j;
+                    result.put(key, aS);
+                    // NonDependents (UO)
+                    key = aCTBRef + sUnderscore + sNDUO;
+                    aS = result.get(key);
+                    j = dRecord.getNumberOfNonDependents();
+                    aS += sCommaSpace + j;
+                    result.put(key, aS);
+                    // ChildrenOver16
+                    key = aCTBRef + sUnderscore + sCO16;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // FemaleChildrenUnder10";
+                    key = aCTBRef + sUnderscore + sFCU10;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // MaleChildrenUnder10";
+                    key = aCTBRef + sUnderscore + sMCU10;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // FemaleChildren10to16";
+                    key = aCTBRef + sUnderscore + sFC10To16;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // MaleChildren10to16
+                    key = aCTBRef + sUnderscore + sMC10To16;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // Number of Bedrooms
+                    key = aCTBRef + sUnderscore + sNB;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // Bedroom Requirement
+                    key = aCTBRef + sUnderscore + sBR;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
                     result.put(key, aS);
                     // Date Of Birth
                     key = aCTBRef + sUnderscore + sDoB;
@@ -232,11 +310,57 @@ public class TenancyChangesUO {
                         aS += sCommaSpace;
                     }
                     result.put(key, aS);
+                    // Disability Premium
+                    key = aCTBRef + sUnderscore + sDP;
+                    aS = result.get(key);
+                    j = dRecord.getDisabledChildPremiumAwarded();
+                    if (j == 1) {
+                        aS += sCommaSpace + sDP;
+                    } else {
+                        aS += sCommaSpace;
+                    }
+                    result.put(key, aS);
+                    // Disability Severe
+                    key = aCTBRef + sUnderscore + sDS;
+                    aS = result.get(key);
+                    j = dRecord.getDisabledChildPremiumAwarded();
+                    if (j == 1) {
+                        aS += sCommaSpace + sDS;
+                    } else {
+                        aS += sCommaSpace;
+                    }
+                    result.put(key, aS);
+                    // Disability Enhanced
+                    key = aCTBRef + sUnderscore + sDE;
+                    aS = result.get(key);
+                    j = dRecord.getDisabledChildPremiumAwarded();
+                    if (j == 1) {
+                        aS += sCommaSpace + sDE;
+                    } else {
+                        aS += sCommaSpace;
+                    }
+                    result.put(key, aS);
+                    // Child Disability
+                    key = aCTBRef + sUnderscore + sDC;
+                    aS = result.get(key);
+                    j = dRecord.getDisabledChildPremiumAwarded();
+                    if (j == 1) {
+                        aS += sCommaSpace + sDC;
+                    } else {
+                        aS += sCommaSpace;
+                    }
+                    result.put(key, aS);
+                    // Partner Death
+                    key = aCTBRef + sUnderscore + sPDeath;
+                    aS = result.get(key);
+                    bS = dRecord.getPartnersDateOfDeath();
+                    aS += sCommaSpace + bS;
+                    result.put(key, aS);
                     // HB Discretionary Payment
                     key = aCTBRef + sUnderscore + sHBDP;
                     aS = result.get(key);
                     j = dRecord.getWeeklyAdditionalDiscretionaryPayment();
-                    aS += sCommaSpace + j;
+                    aS += sCommaSpace + decimalise(j);
                     result.put(key, aS);
                     // Arrears
                     key = aCTBRef + sUnderscore + sA;
@@ -261,16 +385,65 @@ public class TenancyChangesUO {
                     result.put(key, aS);
                     // Weekly Housing Benefit Entitlement
                     key = aCTBRef + sUnderscore + sWHBE;
-                    aS = decimalise(result.get(key));
+                    aS = result.get(key);
                     aS += sCommaSpace;
                     result.put(key, aS);
                     // Weekly Eligible Rent Amount
                     key = aCTBRef + sUnderscore + sWERA;
-                    aS = decimalise(result.get(key));
+                    aS = result.get(key);
                     aS += sCommaSpace;
                     result.put(key, aS);
                     // Household Size
                     key = aCTBRef + sUnderscore + sHS;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    // NonDependents
+                    key = aCTBRef + sUnderscore + sND;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // ChildDependents
+                    key = aCTBRef + sUnderscore + sCD;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // NonDependents (UO)
+                    key = aCTBRef + sUnderscore + sNDUO;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // ChildrenOver16
+                    key = aCTBRef + sUnderscore + sCO16;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // FemaleChildrenUnder10";
+                    key = aCTBRef + sUnderscore + sFCU10;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // MaleChildrenUnder10";
+                    key = aCTBRef + sUnderscore + sMCU10;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // FemaleChildren10to16";
+                    key = aCTBRef + sUnderscore + sFC10To16;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // MaleChildren10to16
+                    key = aCTBRef + sUnderscore + sMC10To16;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // Number of Bedrooms
+                    key = aCTBRef + sUnderscore + sNB;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // Bedroom Requirement
+                    key = aCTBRef + sUnderscore + sBR;
                     aS = result.get(key);
                     aS += sCommaSpace;
                     result.put(key, aS);
@@ -284,9 +457,34 @@ public class TenancyChangesUO {
                     aS = result.get(key);
                     aS += sCommaSpace;
                     result.put(key, aS);
+                    // Disability Premium
+                    key = aCTBRef + sUnderscore + sDP;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // Disability Severe
+                    key = aCTBRef + sUnderscore + sDS;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // Disability Enhanced
+                    key = aCTBRef + sUnderscore + sDE;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // Child Disability
+                    key = aCTBRef + sUnderscore + sDC;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
+                    // Partner Death
+                    key = aCTBRef + sUnderscore + sPDeath;
+                    aS = result.get(key);
+                    aS += sCommaSpace;
+                    result.put(key, aS);
                     // HB Discretionary Payment
                     key = aCTBRef + sUnderscore + sHBDP;
-                    aS = decimalise(result.get(key));
+                    aS = result.get(key);
                     aS += sCommaSpace;
                     result.put(key, aS);
                     // Arrears
@@ -317,11 +515,16 @@ public class TenancyChangesUO {
         //}
     }
 
+    public String decimalise(int i) {
+        return decimalise(Integer.toString(i));
+    }
+
     public Object[] getTable(
             Object[] underOccupiedData,
             String[] SHBEFilenames,
             ArrayList<Integer> include,
-            String paymentType
+            String paymentType,
+            boolean includePreUnderOccupancyValues
     ) {
         Object[] result;
         result = new Object[6];
@@ -361,10 +564,13 @@ public class TenancyChangesUO {
         NotMonthlyUO.removeAll(MonthlyUO);
 
         TreeMap<String, String> preUnderOccupancyValues;
-        preUnderOccupancyValues = getPreUnderOccupancyValues(tCTBRefs,
-                SHBEFilenames,
-                NotMonthlyUO);
-        result[4] = preUnderOccupancyValues;
+        preUnderOccupancyValues = null;
+        if (includePreUnderOccupancyValues) {
+            preUnderOccupancyValues = getPreUnderOccupancyValues(tCTBRefs,
+                    SHBEFilenames,
+                    NotMonthlyUO);
+            result[4] = preUnderOccupancyValues;
+        }
 
 //        HashSet<ID> tIDSetCouncilUniqueIndividualsEffected;
 //        tIDSetCouncilUniqueIndividualsEffected = new HashSet<ID>();
@@ -463,8 +669,23 @@ public class TenancyChangesUO {
             tableValues.put(aCTBRef + sUnderscore + sWHBE, s);
             tableValues.put(aCTBRef + sUnderscore + sWERA, s);
             tableValues.put(aCTBRef + sUnderscore + sHS, s);
+            tableValues.put(aCTBRef + sUnderscore + sND, s);
+            tableValues.put(aCTBRef + sUnderscore + sCD, s);
+            tableValues.put(aCTBRef + sUnderscore + sNDUO, s);
+            tableValues.put(aCTBRef + sUnderscore + sCO16, s);
+            tableValues.put(aCTBRef + sUnderscore + sFCU10, s);
+            tableValues.put(aCTBRef + sUnderscore + sMCU10, s);
+            tableValues.put(aCTBRef + sUnderscore + sFC10To16, s);
+            tableValues.put(aCTBRef + sUnderscore + sMC10To16, s);
+            tableValues.put(aCTBRef + sUnderscore + sNB, s);
+            tableValues.put(aCTBRef + sUnderscore + sBR, s);
             tableValues.put(aCTBRef + sUnderscore + sDoB, s);
             tableValues.put(aCTBRef + sUnderscore + sD, s);
+            tableValues.put(aCTBRef + sUnderscore + sDP, s);
+            tableValues.put(aCTBRef + sUnderscore + sDS, s);
+            tableValues.put(aCTBRef + sUnderscore + sDE, s);
+            tableValues.put(aCTBRef + sUnderscore + sDC, s);
+            tableValues.put(aCTBRef + sUnderscore + sPDeath, s);
             tableValues.put(aCTBRef + sUnderscore + sHBDP, s);
             tableValues.put(aCTBRef + sUnderscore + sA, s);
             DHP_Totals.put(aCTBRef, 0);
@@ -482,13 +703,15 @@ public class TenancyChangesUO {
 
         String header;
         header = "CTBRef, ";
-        Iterator<Integer> tNotMonthlyUOIte;
-        String yM3;
-        tNotMonthlyUOIte = NotMonthlyUO.iterator();
-        while (tNotMonthlyUOIte.hasNext()) {
-            i = tNotMonthlyUOIte.next();
-            yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
-            header += yM3 + sCommaSpace;
+        if (includePreUnderOccupancyValues) {
+            Iterator<Integer> tNotMonthlyUOIte;
+            String yM3;
+            tNotMonthlyUOIte = NotMonthlyUO.iterator();
+            while (tNotMonthlyUOIte.hasNext()) {
+                i = tNotMonthlyUOIte.next();
+                yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                header += yM3 + sCommaSpace;
+            }
         }
 
         boolean initFirst;
@@ -847,8 +1070,12 @@ public class TenancyChangesUO {
         int aWHBE;
         int aWERA;
         long aHS;
+        long aND;
+        long aCD;
+        String aPDD;
         String aDoB;
         String aD;
+        String aDC;
         int aHBDP = 0;
 //        int aCTBDP = 0;
         Double aArrears;
@@ -858,6 +1085,9 @@ public class TenancyChangesUO {
         int bWHBE;
         int bWERA = 0;
         long bHS = 0;
+        long bND = 0;
+        long bCD = 0;
+        String bPDD;
         String bDoB;
 //        String bD = "";
 //        int bHBDP = 0;
@@ -875,8 +1105,12 @@ public class TenancyChangesUO {
             aWHBE = 0;
             aWERA = 0;
             aHS = 0;
+            aND = 0;
+            aCD = 0;
+            aPDD = s;
             aDoB = s;
             aD = s;
+            aDC = s;
             aHBDP = 0;
 //            aCTBDP = 0;
         } else {
@@ -896,12 +1130,39 @@ public class TenancyChangesUO {
             aWHBE = aDW_SHBE_D_Record.getWeeklyHousingBenefitEntitlement();
             aWERA = aDW_SHBE_D_Record.getWeeklyEligibleRentAmount();
             aHS = DW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
+            aND = aDW_SHBE_D_Record.getNumberOfNonDependents();
+            aCD = aDW_SHBE_D_Record.getNumberOfChildDependents();
             aDoB = aDW_SHBE_D_Record.getClaimantsDateOfBirth();
             if (DW_SHBE_Handler.getDisability(aDW_SHBE_D_Record)) {
                 aD = sD;
             } else {
                 aD = s;
             }
+            // Disability Premium
+            if (aDW_SHBE_D_Record.getDisabilityPremiumAwarded() == 1) {
+                aDC = sDC;
+            } else {
+                aDC = s;
+            }
+            // Disability Severe
+            if (aDW_SHBE_D_Record.getSevereDisabilityPremiumAwarded() == 1) {
+                aDC = sDC;
+            } else {
+                aDC = s;
+            }
+            // Disability Enhanced
+            if (aDW_SHBE_D_Record.getEnhancedDisabilityPremiumAwarded() == 1) {
+                aDC = sDC;
+            } else {
+                aDC = s;
+            }
+            // Disabiled Child
+            if (aDW_SHBE_D_Record.getDisabledChildPremiumAwarded() == 1) {
+                aDC = sDC;
+            } else {
+                aDC = s;
+            }
+            aPDD = sPDeath + sUnderscore + aDW_SHBE_D_Record.getPartnersDateOfDeath();
             aHBDP = aDW_SHBE_D_Record.getWeeklyAdditionalDiscretionaryPayment();
 //            aCTBDP = aDW_SHBE_D_Record.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
         }
@@ -911,7 +1172,10 @@ public class TenancyChangesUO {
             bWHBE = 0;
             bWERA = 0;
             bHS = 0;
-            bDoB = "";
+            bND = 0;
+            bCD = 0;
+            bPDD = s;
+            bDoB = s;
 //            bD = "";
 //            bHBDP = 0;
 //            bCTBDP = 0;
@@ -925,6 +1189,9 @@ public class TenancyChangesUO {
             bWHBE = bDW_SHBE_D_Record.getWeeklyHousingBenefitEntitlement();
             bWERA = bDW_SHBE_D_Record.getWeeklyEligibleRentAmount();
             bHS = DW_SHBE_Handler.getHouseholdSize(bDW_SHBE_D_Record);
+            bND = bDW_SHBE_D_Record.getNumberOfNonDependents();
+            bCD = bDW_SHBE_D_Record.getNumberOfChildDependents();
+            bPDD = sPDeath + sUnderscore + bDW_SHBE_D_Record.getPartnersDateOfDeath();
             bDoB = bDW_SHBE_D_Record.getClaimantsDateOfBirth();
 //            if (DW_SHBE_Handler.getDisability(bDW_SHBE_D_Record)) {
 //                bD = "D";
@@ -1101,6 +1368,152 @@ public class TenancyChangesUO {
         }
         tableValues.put(key, aS);
 
+        // NonDependents
+        key = aCTBRef + sUnderscore + sND;
+        aS = tableValues.get(key);
+        if (aND == bND) {
+            aS += sCommaSpace;
+        } else {
+            aS += sCommaSpace + aND;
+        }
+        tableValues.put(key, aS);
+
+        // ChildDependents
+        key = aCTBRef + sUnderscore + sCD;
+        aS = tableValues.get(key);
+        if (aCD == bCD) {
+            aS += sCommaSpace;
+        } else {
+            aS += sCommaSpace + aCD;
+        }
+        tableValues.put(key, aS);
+
+        // UO
+        DW_UOReport_Record aDW_UOReport_Record;
+        if (councilUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)
+                || RSLUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)) {
+            if (councilUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)) {
+                aDW_UOReport_Record = councilUnderOccupiedSet1.getMap().get(aCTBRef);
+            } else {
+                aDW_UOReport_Record = RSLUnderOccupiedSet1.getMap().get(aCTBRef);
+            }
+            // NonDependents
+            key = aCTBRef + sUnderscore + sND;
+            aS = tableValues.get(key);
+            aS += sCommaSpace + aDW_UOReport_Record.getNonDependents();
+            tableValues.put(key, aS);
+            // Children 16 +
+            key = aCTBRef + sUnderscore + sCO16;
+            aS = tableValues.get(key);
+            aS += sCommaSpace + aDW_UOReport_Record.getChildrenOver16();
+            tableValues.put(key, aS);
+            // FemaleChildrenUnder10
+            key = aCTBRef + sUnderscore + sFCU10;
+            aS = tableValues.get(key);
+            aS += sCommaSpace + aDW_UOReport_Record.getFemaleChildrenUnder10();
+            tableValues.put(key, aS);
+            // MaleChildrenUnder10
+            key = aCTBRef + sUnderscore + sMCU10;
+            aS = tableValues.get(key);
+            aS += sCommaSpace + aDW_UOReport_Record.getMaleChildrenUnder10();
+            tableValues.put(key, aS);
+            // FemaleChildren10to16
+            key = aCTBRef + sUnderscore + sFC10To16;
+            aS = tableValues.get(key);
+            aS += sCommaSpace + aDW_UOReport_Record.getFemaleChildren10to16();
+            tableValues.put(key, aS);
+            // MaleChildren10to16
+            key = aCTBRef + sUnderscore + sMC10To16;
+            aS = tableValues.get(key);
+            aS += sCommaSpace + aDW_UOReport_Record.getMaleChildren10to16();
+            tableValues.put(key, aS);
+            // Number of Bedrooms
+            key = aCTBRef + sUnderscore + sNB;
+            aS = tableValues.get(key);
+            aS += sCommaSpace + aDW_UOReport_Record.getBedroomsInProperty();
+            tableValues.put(key, aS);
+            // Bedroom Requirement
+            key = aCTBRef + sUnderscore + sBR;
+            aS = tableValues.get(key);
+            aS += sCommaSpace + aDW_UOReport_Record.getBedroomRequirement();
+            tableValues.put(key, aS);
+        } else {
+            // NonDependents
+            key = aCTBRef + sUnderscore + sND;
+            aS = tableValues.get(key);
+            aS += sCommaSpace;
+            tableValues.put(key, aS);
+            // Children 16 +
+            key = aCTBRef + sUnderscore + sCO16;
+            aS = tableValues.get(key);
+            aS += sCommaSpace;
+            tableValues.put(key, aS);
+            // FemaleChildrenUnder10
+            key = aCTBRef + sUnderscore + sFCU10;
+            aS = tableValues.get(key);
+            aS += sCommaSpace;
+            tableValues.put(key, aS);
+            // MaleChildrenUnder10
+            key = aCTBRef + sUnderscore + sMCU10;
+            aS = tableValues.get(key);
+            aS += sCommaSpace;
+            tableValues.put(key, aS);
+            // FemaleChildren10to16
+            key = aCTBRef + sUnderscore + sFC10To16;
+            aS = tableValues.get(key);
+            aS += sCommaSpace;
+            tableValues.put(key, aS);
+            // MaleChildren10to16
+            key = aCTBRef + sUnderscore + sMC10To16;
+            aS = tableValues.get(key);
+            aS += sCommaSpace;
+            tableValues.put(key, aS);
+            // Number of Bedrooms
+            key = aCTBRef + sUnderscore + sNB;
+            aS = tableValues.get(key);
+            aS += sCommaSpace;
+            tableValues.put(key, aS);
+            // Bedroom Requirement
+            key = aCTBRef + sUnderscore + sBR;
+            aS = tableValues.get(key);
+            aS += sCommaSpace;
+            tableValues.put(key, aS);
+        }
+
+        // Claimant DoB
+        key = aCTBRef + sUnderscore + sDoB;
+        aS = tableValues.get(key);
+        if (aDoB.equalsIgnoreCase(bDoB)) {
+            aS += sCommaSpace;
+        } else {
+            aS += sCommaSpace + aDoB;
+        }
+        tableValues.put(key, aS);
+        // Disability
+        key = aCTBRef + sUnderscore + sD;
+        aS = tableValues.get(key);
+        aS += sCommaSpace + aD;
+        tableValues.put(key, aS);
+// Disability Premium
+        key = aCTBRef + sUnderscore + sDP;
+        aS = tableValues.get(key);
+        aS += sCommaSpace + aD;
+        tableValues.put(key, aS);
+        // Disability Severe
+        key = aCTBRef + sUnderscore + sDS;
+        aS = tableValues.get(key);
+        aS += sCommaSpace + aD;
+        tableValues.put(key, aS);
+        // Disability Enhanced
+        key = aCTBRef + sUnderscore + sDE;
+        aS = tableValues.get(key);
+        aS += sCommaSpace + aD;
+        tableValues.put(key, aS);
+        // Child Disability
+        key = aCTBRef + sUnderscore + sDC;
+        aS = tableValues.get(key);
+        aS += sCommaSpace + aDC;
+        tableValues.put(key, aS);
         // Claimant DoB
         key = aCTBRef + sUnderscore + sDoB;
         aS = tableValues.get(key);
@@ -1111,10 +1524,14 @@ public class TenancyChangesUO {
         }
         tableValues.put(key, aS);
 
-        // D
-        key = aCTBRef + sUnderscore + sD;
+        // Partner Death
+        key = aCTBRef + sUnderscore + sPDeath;
         aS = tableValues.get(key);
-        aS += sCommaSpace + aD;
+        if (aPDD.equalsIgnoreCase(bPDD)) {
+            aS += sCommaSpace;
+        } else {
+            aS += sCommaSpace + aPDD;
+        }
         tableValues.put(key, aS);
 
         // HBDP
@@ -1383,8 +1800,8 @@ public class TenancyChangesUO {
         groups = (HashMap<String, TreeSet<String>>) table[3];
         TreeMap<String, String> preUnderOccupancyValues;
         preUnderOccupancyValues = (TreeMap<String, String>) table[4];
-        HashMap<String, String> tHBDPTotals;
-        tHBDPTotals = (HashMap<String, String>) table[5];
+        HashMap<String, Integer> tHBDPTotals;
+        tHBDPTotals = (HashMap<String, Integer>) table[5];
         TreeMap<String, String> groupNameDescriptions;
         groupNameDescriptions = getGroupNameDescriptions(groups.keySet());
 
@@ -1434,7 +1851,7 @@ public class TenancyChangesUO {
                         otherGroupName = sTravellers;
                         otherGroup = groups.get(otherGroupName);
                         if (otherGroup.contains(aCTBRef)) {
-                            println(
+                            writeRecordCollection(
                                     tableValues,
                                     tHBDPTotals,
                                     includePreUnderOccupancyValues,
@@ -1454,7 +1871,7 @@ public class TenancyChangesUO {
                             otherGroupName = sTravellers;
                             otherGroup = groups.get(otherGroupName);
                             if (otherGroup.contains(aCTBRef)) {
-                                println(
+                                writeRecordCollection(
                                         tableValues,
                                         tHBDPTotals,
                                         includePreUnderOccupancyValues,
@@ -1465,7 +1882,7 @@ public class TenancyChangesUO {
                                 otherGroupName = sTTNot1Or4AndUnderOccupying;
                                 otherGroup = groups.get(otherGroupName);
                                 if (otherGroup.contains(aCTBRef)) {
-                                    println(
+                                    writeRecordCollection(
                                             tableValues,
                                             tHBDPTotals,
                                             includePreUnderOccupancyValues,
@@ -1486,7 +1903,7 @@ public class TenancyChangesUO {
                                 otherGroupName = sTravellers;
                                 otherGroup = groups.get(otherGroupName);
                                 if (otherGroup.contains(aCTBRef)) {
-                                    println(
+                                    writeRecordCollection(
                                             tableValues,
                                             tHBDPTotals,
                                             includePreUnderOccupancyValues,
@@ -1497,7 +1914,7 @@ public class TenancyChangesUO {
                                     otherGroupName = sTTNot1Or4AndUnderOccupying;
                                     otherGroup = groups.get(otherGroupName);
                                     if (otherGroup.contains(aCTBRef)) {
-                                        println(
+                                        writeRecordCollection(
                                                 tableValues,
                                                 tHBDPTotals,
                                                 includePreUnderOccupancyValues,
@@ -1508,7 +1925,7 @@ public class TenancyChangesUO {
                                         otherGroupName = sTT1_To_TT3OrTT6;
                                         otherGroup = groups.get(otherGroupName);
                                         if (otherGroup.contains(aCTBRef)) {
-                                            println(
+                                            writeRecordCollection(
                                                     tableValues,
                                                     tHBDPTotals,
                                                     includePreUnderOccupancyValues,
@@ -1530,7 +1947,7 @@ public class TenancyChangesUO {
                                     otherGroupName = sTravellers;
                                     otherGroup = groups.get(otherGroupName);
                                     if (otherGroup.contains(aCTBRef)) {
-                                        println(
+                                        writeRecordCollection(
                                                 tableValues,
                                                 tHBDPTotals,
                                                 includePreUnderOccupancyValues,
@@ -1541,7 +1958,7 @@ public class TenancyChangesUO {
                                         otherGroupName = sTTNot1Or4AndUnderOccupying;
                                         otherGroup = groups.get(otherGroupName);
                                         if (otherGroup.contains(aCTBRef)) {
-                                            println(
+                                            writeRecordCollection(
                                                     tableValues,
                                                     tHBDPTotals,
                                                     includePreUnderOccupancyValues,
@@ -1552,7 +1969,7 @@ public class TenancyChangesUO {
                                             otherGroupName = sTT1_To_TT3OrTT6;
                                             otherGroup = groups.get(otherGroupName);
                                             if (otherGroup.contains(aCTBRef)) {
-                                                println(
+                                                writeRecordCollection(
                                                         tableValues,
                                                         tHBDPTotals,
                                                         includePreUnderOccupancyValues,
@@ -1563,7 +1980,7 @@ public class TenancyChangesUO {
                                                 otherGroupName = sTT4_To_TT3OrTT6;
                                                 otherGroup = groups.get(otherGroupName);
                                                 if (otherGroup.contains(aCTBRef)) {
-                                                    println(
+                                                    writeRecordCollection(
                                                             tableValues,
                                                             tHBDPTotals,
                                                             includePreUnderOccupancyValues,
@@ -1586,7 +2003,7 @@ public class TenancyChangesUO {
                                         otherGroupName = sTravellers;
                                         otherGroup = groups.get(otherGroupName);
                                         if (otherGroup.contains(aCTBRef)) {
-                                            println(
+                                            writeRecordCollection(
                                                     tableValues,
                                                     tHBDPTotals,
                                                     includePreUnderOccupancyValues,
@@ -1597,7 +2014,7 @@ public class TenancyChangesUO {
                                             otherGroupName = sTTNot1Or4AndUnderOccupying;
                                             otherGroup = groups.get(otherGroupName);
                                             if (otherGroup.contains(aCTBRef)) {
-                                                println(
+                                                writeRecordCollection(
                                                         tableValues,
                                                         tHBDPTotals,
                                                         includePreUnderOccupancyValues,
@@ -1608,7 +2025,7 @@ public class TenancyChangesUO {
                                                 otherGroupName = sTT1_To_TT3OrTT6;
                                                 otherGroup = groups.get(otherGroupName);
                                                 if (otherGroup.contains(aCTBRef)) {
-                                                    println(
+                                                    writeRecordCollection(
                                                             tableValues,
                                                             tHBDPTotals,
                                                             includePreUnderOccupancyValues,
@@ -1619,7 +2036,7 @@ public class TenancyChangesUO {
                                                     otherGroupName = sTT4_To_TT3OrTT6;
                                                     otherGroup = groups.get(otherGroupName);
                                                     if (otherGroup.contains(aCTBRef)) {
-                                                        println(
+                                                        writeRecordCollection(
                                                                 tableValues,
                                                                 tHBDPTotals,
                                                                 includePreUnderOccupancyValues,
@@ -1630,7 +2047,7 @@ public class TenancyChangesUO {
                                                         otherGroupName = sTT3OrTT6_To_TT1;
                                                         otherGroup = groups.get(otherGroupName);
                                                         if (otherGroup.contains(aCTBRef)) {
-                                                            println(
+                                                            writeRecordCollection(
                                                                     tableValues,
                                                                     tHBDPTotals,
                                                                     includePreUnderOccupancyValues,
@@ -1654,7 +2071,7 @@ public class TenancyChangesUO {
                                             otherGroupName = sTravellers;
                                             otherGroup = groups.get(otherGroupName);
                                             if (otherGroup.contains(aCTBRef)) {
-                                                println(
+                                                writeRecordCollection(
                                                         tableValues,
                                                         tHBDPTotals,
                                                         includePreUnderOccupancyValues,
@@ -1665,7 +2082,7 @@ public class TenancyChangesUO {
                                                 otherGroupName = sTTNot1Or4AndUnderOccupying;
                                                 otherGroup = groups.get(otherGroupName);
                                                 if (otherGroup.contains(aCTBRef)) {
-                                                    println(
+                                                    writeRecordCollection(
                                                             tableValues,
                                                             tHBDPTotals,
                                                             includePreUnderOccupancyValues,
@@ -1676,7 +2093,7 @@ public class TenancyChangesUO {
                                                     otherGroupName = sTT1_To_TT3OrTT6;
                                                     otherGroup = groups.get(otherGroupName);
                                                     if (otherGroup.contains(aCTBRef)) {
-                                                        println(
+                                                        writeRecordCollection(
                                                                 tableValues,
                                                                 tHBDPTotals,
                                                                 includePreUnderOccupancyValues,
@@ -1687,7 +2104,7 @@ public class TenancyChangesUO {
                                                         otherGroupName = sTT4_To_TT3OrTT6;
                                                         otherGroup = groups.get(otherGroupName);
                                                         if (otherGroup.contains(aCTBRef)) {
-                                                            println(
+                                                            writeRecordCollection(
                                                                     tableValues,
                                                                     tHBDPTotals,
                                                                     includePreUnderOccupancyValues,
@@ -1698,7 +2115,7 @@ public class TenancyChangesUO {
                                                             otherGroupName = sTT3OrTT6_To_TT1;
                                                             otherGroup = groups.get(otherGroupName);
                                                             if (otherGroup.contains(aCTBRef)) {
-                                                                println(
+                                                                writeRecordCollection(
                                                                         tableValues,
                                                                         tHBDPTotals,
                                                                         includePreUnderOccupancyValues,
@@ -1709,7 +2126,7 @@ public class TenancyChangesUO {
                                                                 otherGroupName = sTT3OrTT6_To_TT4;
                                                                 otherGroup = groups.get(otherGroupName);
                                                                 if (otherGroup.contains(aCTBRef)) {
-                                                                    println(
+                                                                    writeRecordCollection(
                                                                             tableValues,
                                                                             tHBDPTotals,
                                                                             includePreUnderOccupancyValues,
@@ -1734,7 +2151,7 @@ public class TenancyChangesUO {
                                                 otherGroupName = sTravellers;
                                                 otherGroup = groups.get(otherGroupName);
                                                 if (otherGroup.contains(aCTBRef)) {
-                                                    println(
+                                                    writeRecordCollection(
                                                             tableValues,
                                                             tHBDPTotals,
                                                             includePreUnderOccupancyValues,
@@ -1745,7 +2162,7 @@ public class TenancyChangesUO {
                                                     otherGroupName = sTTNot1Or4AndUnderOccupying;
                                                     otherGroup = groups.get(otherGroupName);
                                                     if (otherGroup.contains(aCTBRef)) {
-                                                        println(
+                                                        writeRecordCollection(
                                                                 tableValues,
                                                                 tHBDPTotals,
                                                                 includePreUnderOccupancyValues,
@@ -1766,7 +2183,7 @@ public class TenancyChangesUO {
                                                     otherGroupName = sTravellers;
                                                     otherGroup = groups.get(otherGroupName);
                                                     if (otherGroup.contains(aCTBRef)) {
-                                                        println(
+                                                        writeRecordCollection(
                                                                 tableValues,
                                                                 tHBDPTotals,
                                                                 includePreUnderOccupancyValues,
@@ -1777,7 +2194,7 @@ public class TenancyChangesUO {
                                                         otherGroupName = sTTNot1Or4AndUnderOccupying;
                                                         otherGroup = groups.get(otherGroupName);
                                                         if (otherGroup.contains(aCTBRef)) {
-                                                            println(
+                                                            writeRecordCollection(
                                                                     tableValues,
                                                                     tHBDPTotals,
                                                                     includePreUnderOccupancyValues,
@@ -1798,7 +2215,7 @@ public class TenancyChangesUO {
                                                         otherGroupName = sTravellers;
                                                         otherGroup = groups.get(otherGroupName);
                                                         if (otherGroup.contains(aCTBRef)) {
-                                                            println(
+                                                            writeRecordCollection(
                                                                     tableValues,
                                                                     tHBDPTotals,
                                                                     includePreUnderOccupancyValues,
@@ -1809,7 +2226,7 @@ public class TenancyChangesUO {
                                                             otherGroupName = sTTNot1Or4AndUnderOccupying;
                                                             otherGroup = groups.get(otherGroupName);
                                                             if (otherGroup.contains(aCTBRef)) {
-                                                                println(
+                                                                writeRecordCollection(
                                                                         tableValues,
                                                                         tHBDPTotals,
                                                                         includePreUnderOccupancyValues,
@@ -1820,7 +2237,7 @@ public class TenancyChangesUO {
                                                                 otherGroupName = sTT1_To_TT3OrTT6;
                                                                 otherGroup = groups.get(otherGroupName);
                                                                 if (otherGroup.contains(aCTBRef)) {
-                                                                    println(
+                                                                    writeRecordCollection(
                                                                             tableValues,
                                                                             tHBDPTotals,
                                                                             includePreUnderOccupancyValues,
@@ -1831,7 +2248,7 @@ public class TenancyChangesUO {
                                                                     otherGroupName = sTT4_To_TT3OrTT6;
                                                                     otherGroup = groups.get(otherGroupName);
                                                                     if (otherGroup.contains(aCTBRef)) {
-                                                                        println(
+                                                                        writeRecordCollection(
                                                                                 tableValues,
                                                                                 tHBDPTotals,
                                                                                 includePreUnderOccupancyValues,
@@ -1842,7 +2259,7 @@ public class TenancyChangesUO {
                                                                         otherGroupName = sTT3OrTT6_To_TT1;
                                                                         otherGroup = groups.get(otherGroupName);
                                                                         if (otherGroup.contains(aCTBRef)) {
-                                                                            println(
+                                                                            writeRecordCollection(
                                                                                     tableValues,
                                                                                     tHBDPTotals,
                                                                                     includePreUnderOccupancyValues,
@@ -1853,7 +2270,7 @@ public class TenancyChangesUO {
                                                                             otherGroupName = sTT3OrTT6_To_TT4;
                                                                             otherGroup = groups.get(otherGroupName);
                                                                             if (otherGroup.contains(aCTBRef)) {
-                                                                                println(
+                                                                                writeRecordCollection(
                                                                                         tableValues,
                                                                                         tHBDPTotals,
                                                                                         includePreUnderOccupancyValues,
@@ -1878,7 +2295,7 @@ public class TenancyChangesUO {
                                                             otherGroupName = sTravellers;
                                                             otherGroup = groups.get(otherGroupName);
                                                             if (otherGroup.contains(aCTBRef)) {
-                                                                println(
+                                                                writeRecordCollection(
                                                                         tableValues,
                                                                         tHBDPTotals,
                                                                         includePreUnderOccupancyValues,
@@ -1889,7 +2306,7 @@ public class TenancyChangesUO {
                                                                 otherGroupName = sTTNot1Or4AndUnderOccupying;
                                                                 otherGroup = groups.get(otherGroupName);
                                                                 if (otherGroup.contains(aCTBRef)) {
-                                                                    println(
+                                                                    writeRecordCollection(
                                                                             tableValues,
                                                                             tHBDPTotals,
                                                                             includePreUnderOccupancyValues,
@@ -1908,7 +2325,7 @@ public class TenancyChangesUO {
                                                         } else {
                                                             System.out.println("CTBRef " + aCTBRef + " already added to"
                                                                     + " another group and in " + groupNameDescription);
-                                                            writeln(
+                                                            writeRecordCollectionToStdOut(
                                                                     tableValues,
                                                                     includePreUnderOccupancyValues,
                                                                     preUnderOccupancyValues,
@@ -1927,14 +2344,14 @@ public class TenancyChangesUO {
                     }
                 } else {
                     counter++;
-                    println(
+                    writeRecordCollection(
                             tableValues,
                             tHBDPTotals,
                             includePreUnderOccupancyValues,
                             preUnderOccupancyValues,
                             aCTBRef,
                             pw);
-                    println(
+                    writeRecordCollection(
                             tableValues,
                             tHBDPTotals,
                             includePreUnderOccupancyValues,
@@ -1967,7 +2384,7 @@ public class TenancyChangesUO {
         ite = remainder.iterator();
         while (ite.hasNext()) {
             aCTBRef = ite.next();
-            println(
+            writeRecordCollection(
                     tableValues,
                     tHBDPTotals,
                     includePreUnderOccupancyValues,
@@ -1978,9 +2395,9 @@ public class TenancyChangesUO {
         pw.close();
     }
 
-    private void println(
+    private void writeRecordCollection(
             TreeMap<String, String> tableValues,
-            HashMap<String, String> tHBDPTotals,
+            HashMap<String, Integer> tHBDPTotals,
             boolean includePreUnderOccupancyValues,
             TreeMap<String, String> preUnderOccupancyValues,
             String aCTBRef,
@@ -2059,8 +2476,143 @@ public class TenancyChangesUO {
         line += tableValues.get(key);
         line += sCommaSpace;
         pw.println(line);
+        // Disability Premium
+        key = aCTBRef + sUnderscore + sDP;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // Disability Severe
+        key = aCTBRef + sUnderscore + sDS;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // Disability Enhanced
+        key = aCTBRef + sUnderscore + sDE;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // Child Disability
+        key = aCTBRef + sUnderscore + sDC;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // Partner Death
+        key = aCTBRef + sUnderscore + sPDeath;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
         // Household Size
         key = aCTBRef + sUnderscore + sHS;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // NonDependents
+        key = aCTBRef + sUnderscore + sND;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // ChildDependents
+        key = aCTBRef + sUnderscore + sCD;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // NonDependents (UO)
+        key = aCTBRef + sUnderscore + sNDUO;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // Children 16 +
+        key = aCTBRef + sUnderscore + sCO16;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // FemaleChildrenUnder10
+        key = aCTBRef + sUnderscore + sFCU10;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // MaleChildrenUnder10
+        key = aCTBRef + sUnderscore + sMCU10;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // FemaleChildren10to16
+        key = aCTBRef + sUnderscore + sFC10To16;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // MaleChildren10to16
+        key = aCTBRef + sUnderscore + sMC10To16;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // Number of Bedrooms
+        key = aCTBRef + sUnderscore + sNB;
+        line = key;
+        if (includePreUnderOccupancyValues) {
+            line += preUnderOccupancyValues.get(key);
+        }
+        line += tableValues.get(key);
+        line += sCommaSpace;
+        pw.println(line);
+        // Bedroom Requirement
+        key = aCTBRef + sUnderscore + sBR;
         line = key;
         if (includePreUnderOccupancyValues) {
             line += preUnderOccupancyValues.get(key);
@@ -2085,7 +2637,7 @@ public class TenancyChangesUO {
         pw.println();
     }
 
-    private void writeln(
+    private void writeRecordCollectionToStdOut(
             TreeMap<String, String> tableValues,
             boolean includePreUnderOccupancyValues,
             TreeMap<String, String> preUnderOccupancyValues,
@@ -2156,6 +2708,10 @@ public class TenancyChangesUO {
         }
         line += tableValues.get(key);
         System.out.println(line);
+        // Disability Premium
+        // Disability Severe
+        // Disability Enhanced
+
         // Household Size
         key = aCTBRef + sUnderscore + sHS;
         line = key;
