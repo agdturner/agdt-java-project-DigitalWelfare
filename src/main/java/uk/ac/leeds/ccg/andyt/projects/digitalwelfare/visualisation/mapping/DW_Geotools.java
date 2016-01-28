@@ -258,7 +258,7 @@ public class DW_Geotools extends AGDT_Geotools {
                 mc,
                 styleParameters,
                 foregroundShapefiles);
-
+        
         // Add foreground1
         // ---------------
         if (foregroundDW_Shapefile1 != null) {

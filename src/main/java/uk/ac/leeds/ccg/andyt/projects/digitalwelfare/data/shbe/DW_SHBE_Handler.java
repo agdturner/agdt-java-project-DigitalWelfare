@@ -49,14 +49,13 @@ public class DW_SHBE_Handler {
     public static final String sHB = "HB";
     public static final String sCTB = "CTB";
     public static final String sDefaultNINO = "XX999999XX";
-    
+
     public static final String sAll = "All";
     public static final String sMonthlyUO = "MonthlyUO";
     public static final String sMonthly = "Monthly";
     public static final String s6Monthly = "6Monthly";
     public static final String s3Monthly = "3Monthly";
     public static final String sYearly = "Yearly";
-    
 
     static HashMap<String, DW_ID> NINOToDW_IDLookup;
     static HashMap<DW_ID, String> DW_IDToNINOLookup;
@@ -3032,14 +3031,83 @@ public class DW_SHBE_Handler {
 //                getPostcodeIDToPostcodeLookupFile());
         return result;
     }
+
+    /**
+     *
+     * @param D_Record
+     */
+    public static String getClaimantsAge(
+            String yM3,
+            DW_SHBE_D_Record D_Record) {
+        String result;
+        String[] syM3;
+        syM3 = yM3.split("_");
+        result = getClaimantsAge(syM3[0], syM3[1], D_Record);
+        return result;
+    }
     
     /**
-     * 
+     *
      * @param D_Record
-     * @return true iff there is any disability awards in the household of D_Record. 
+     */
+    public static String getClaimantsAge(
+            String year,
+            String month,
+            DW_SHBE_D_Record D_Record) {
+        String result;
+        String DoB = D_Record.getClaimantsDateOfBirth();
+        result = getAge(year, month, DoB);
+        return result;
+    }
+
+    /**
+     *
+     * @param D_Record
+     */
+    public static String getPartnersAge(
+            String year,
+            String month,
+            DW_SHBE_D_Record D_Record) {
+        String result;
+        String DoB = D_Record.getPartnersDateOfBirth();
+        result = getAge(year, month, DoB);
+        return result;
+    }
+
+    public static String getAge(
+            String year,
+            String month,
+            String DoB) {
+        if (DoB == null) {
+            return "";
+        }
+        if (DoB.isEmpty()) {
+            return DoB;
+        }
+        String result;
+        String[] sDoB = DoB.split("/");
+        Generic_Time tDoB;
+        tDoB = new Generic_Time(
+                Integer.valueOf(sDoB[0]),
+                Integer.valueOf(sDoB[1]),
+                Integer.valueOf(sDoB[2]));
+        Generic_Time tNow;
+        tNow = new Generic_Time(
+                Integer.valueOf(0),
+                Integer.valueOf(month),
+                Integer.valueOf(year));
+        result = Integer.toString(Generic_Time.getAgeInYears(tNow, tDoB));
+        return result;
+    }
+
+    /**
+     *
+     * @param D_Record
+     * @return true iff there is any disability awards in the household of
+     * D_Record.
      */
     public static boolean getDisability(DW_SHBE_D_Record D_Record) {
-    // Disability
+        // Disability
         int DisabilityPremiumAwarded = D_Record.getDisabilityPremiumAwarded();
         int SevereDisabilityPremiumAwarded = D_Record.getSevereDisabilityPremiumAwarded();
         int DisabledChildPremiumAwarded = D_Record.getDisabledChildPremiumAwarded();

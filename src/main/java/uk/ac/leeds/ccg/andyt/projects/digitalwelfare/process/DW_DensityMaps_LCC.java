@@ -53,6 +53,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UORep
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Set;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeGroups;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.initONSPDLookups;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 
 /**
@@ -176,7 +177,8 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
                 "LSOA", targetPropertyNameLSOA, getShapefileDataStoreFactory());
-        foregrounds.add(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
+        //foregrounds.add(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
+        foregrounds.add(getCommunityAreasDW_Shapefile());
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
     }
 
@@ -232,7 +234,15 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 //        int multiplier;
 //        multiplier = (int) (400 / cellsize);
         backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
-        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+//        backgroundDW_Shapefile = new DW_Shapefile(f);
+        //foregroundDW_Shapefile0 = new ArrayList<AGDT_Shapefile>();
+        //foregroundDW_Shapefile0.add(getCommunityAreasDW_Shapefile());
+//        foregroundDW_Shapefile1 = new DW_Shapefile(f);
+//        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+        foregroundDW_Shapefile1 = getCommunityAreasDW_Shapefile();
+//        DW_Shapefile sf = getCommunityAreasDW_Shapefile();
+//        sf.getFeatureLayer().getFeatureSource();
+
         nrows = 554;//70 * multiplier * resolutionMultiplier; //139 * multiplier; //277 * multiplier;
         ncols = 680;//85 * multiplier * resolutionMultiplier; //170 * multiplier; //340 * multiplier;
         xllcorner = 413000;
@@ -256,7 +266,6 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 //        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
 //        paymentTypes.remove(DW_SHBE_Handler.sSuspended);
 //        paymentTypes.remove(DW_SHBE_Handler.sOtherPT);
-
         Iterator<String> inPaymentTypesIte;
         inPaymentTypesIte = paymentTypes.iterator();
         while (inPaymentTypesIte.hasNext()) {
@@ -271,13 +280,17 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
             doUnderOccupied = false;
 //            while (iteb.hasNext()) {
 //                doUnderOccupied = iteb.next();
-                if (doUnderOccupied) {
-                    Iterator<Boolean> iteb2;
-                    iteb2 = b.iterator();
-                    while (iteb2.hasNext()) {
-                        boolean doCouncil;
-                        doCouncil = iteb2.next();
-                        //boolean doCouncil = false;
+            if (doUnderOccupied) {
+                Iterator<Boolean> iteb2;
+                iteb2 = b.iterator();
+                while (iteb2.hasNext()) {
+                    boolean doCouncil;
+                    doCouncil = iteb2.next();
+                    //boolean doCouncil = false;
+                    Iterator<Boolean> iteb3;
+                    iteb3 = b.iterator();
+                    while (iteb3.hasNext()) {
+                        boolean overlaycommunityAreas = iteb3.next();
                         run(
                                 collectionHandler,
                                 inPaymentType,
@@ -291,6 +304,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                                 false,
                                 scaleToFirst,
                                 DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil),
+                                overlaycommunityAreas,
                                 SHBEFilenames,
                                 tDW_SHBE_Handler,
                                 includes);
@@ -308,7 +322,12 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 //                            SHBEFilenames,
 //                            tDW_SHBE_Handler);
                     }
-                } else {
+                }
+            } else {
+                Iterator<Boolean> iteb3;
+                iteb3 = b.iterator();
+                while (iteb3.hasNext()) {
+                    boolean overlaycommunityAreas = iteb3.next();
                     run(
                             collectionHandler,
                             inPaymentType,
@@ -322,6 +341,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                             false,
                             scaleToFirst,
                             DW_Files.getUOFile(dirOut2, doUnderOccupied, false),
+                            overlaycommunityAreas,
                             SHBEFilenames,
                             tDW_SHBE_Handler,
                             includes);
@@ -341,6 +361,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 //                        SHBEFilenames,
 //                        tDW_SHBE_Handler);
 //                }
+                }
             }
         }
     }
@@ -424,11 +445,11 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                             String name;
                             name = DW_LineMaps_LCC.getName(TTs);
                             File dirOut2 = new File(
-                                        dirOut,
-                                        inPaymentType);
-                                dirOut2 = new File(
-                                        dirOut2,
-                                        name);
+                                    dirOut,
+                                    inPaymentType);
+                            dirOut2 = new File(
+                                    dirOut2,
+                                    name);
                             Grid2DSquareCellDouble g0 = doDensity(
                                     TTs,
                                     dirOut2,
@@ -459,6 +480,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
             boolean doCouncil,
             boolean scaleToFirst,
             File dirOut,
+            boolean overlaycommunityAreas,
             String[] SHBEFilenames,
             DW_SHBE_Handler tDW_SHBE_Handler,
             TreeMap<String, ArrayList<Integer>> includes) {
@@ -469,8 +491,18 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 //        Iterator<String> typesIte;
 //        Iterator<String> distanceTypesIte;
 //        Iterator<Double> distancesIte;
+//        backgroundDW_Shapefile = getCommunityAreasDW_Shapefile();
+        //foregroundDW_Shapefile0 = new DW_Shapefile(f);
+        //foregroundDW_Shapefile1 = getCommunityAreasDW_Shapefile();
         backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
-        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+        File dirOut1;
+        if (overlaycommunityAreas) {
+            foregroundDW_Shapefile1 = getCommunityAreasDW_Shapefile();
+            dirOut1 = new File(dirOut, "CommunityAreasOverlaid");
+        } else {
+            dirOut1 = new File(dirOut, "LADOverlaid");
+            foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+        }
         // Set grid dimensions    
         nrows = 554;//70 * multiplier * resolutionMultiplier; //139 * multiplier; //277 * multiplier;
         ncols = 680;//85 * multiplier * resolutionMultiplier; //170 * multiplier; //340 * multiplier;
@@ -513,8 +545,8 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
             includeName = includesIte.next();
             File dirOut2;
             dirOut2 = new File(
-            dirOut,
-            includeName);
+                    dirOut1,
+                    includeName);
             ArrayList<Integer> include;
             include = includes.get(includeName);
             Iterator<Integer> ite;
@@ -547,6 +579,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
             Iterator<ArrayList<String>> ites;
             ites = tenancyTypeGroups.iterator();
             while (ites.hasNext()) {
+                
                 ArrayList<String> TTs;
                 TTs = ites.next();
                 String name;
@@ -568,27 +601,23 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                 while (ite.hasNext()) {
                     i = ite.next();
                     DW_SHBE_Collection SHBEData1;
-                    
+
                     // This is not how to do it, but may be a workaround. 
                     // Ideally need something recursive such as methods that 
                     // input boolean handleOutOfMemoryError and handle 
                     // OutOfMemoryErrors internally.
                     // Consider using a factory to create DW_SHBE_Collections...
-                    
                     try {
-                    SHBEData1 = new DW_SHBE_Collection(
-                            SHBEFilenames[i],
-                            inPaymentType);
+                        SHBEData1 = new DW_SHBE_Collection(
+                                SHBEFilenames[i],
+                                inPaymentType);
                     } catch (OutOfMemoryError e) {
                         env._DW_SHBE_CollectionHandler.swapToFile_Collection();
                         SHBEData1 = new DW_SHBE_Collection(
-                            SHBEFilenames[i],
-                            inPaymentType);
+                                SHBEFilenames[i],
+                                inPaymentType);
                     }
-                    
-                    
-                    
-                    
+
                     String yM31;
                     yM31 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                     // Init underOccupiedSets
@@ -610,7 +639,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                             -1.0d, handleOutOfMemoryErrors);
                     outputGrid(
                             g1,
-                            dirOut2,
+                            dirOut3,
                             yM30 + "Minus" + yM31,
                             "Name" + yM30 + "Minus" + yM31,
                             scaleToFirst);
@@ -632,7 +661,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                         -1.0d, handleOutOfMemoryErrors);
                 outputGrid(
                         g1,
-                        dirOut2,
+                        dirOut3,
                         yM300 + "Minus" + yM30,
                         "Name" + yM300 + "Minus" + yM30,
                         scaleToFirst);
@@ -952,7 +981,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
             }
         }
     }
-    
+
     protected static ArrayList<ArrayList<String>> getAllTenancyTypeGroups() {
         ArrayList<ArrayList<String>> result;
         result = new ArrayList<ArrayList<String>>();
@@ -994,6 +1023,21 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         l.add(DW_SHBE_TenancyType_Handler.s5);
         l.add(DW_SHBE_TenancyType_Handler.s7);
         result.add(l);
+        return result;
+    }
+
+    public DW_Shapefile getCommunityAreasDW_Shapefile() {
+        DW_Shapefile result;
+        String name = "communityareas_region.shp";
+        File dir = new File(
+                DW_Files.getInputDir(),
+                "CommunityAreas");
+        dir = new File(dir, name);
+        File f;
+        f = new File(
+                dir,
+                name);
+        result = new DW_Shapefile(f);
         return result;
     }
 }

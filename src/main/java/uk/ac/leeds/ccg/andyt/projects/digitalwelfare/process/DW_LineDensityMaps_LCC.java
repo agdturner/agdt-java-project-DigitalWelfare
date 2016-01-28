@@ -509,6 +509,7 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
 //            multiplier = (int) (400 / cellsize);
             backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
             foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+            
             nrows = 554;//70 * multiplier * resolutionMultiplier; //139 * multiplier; //277 * multiplier;
             ncols = 680;//85 * multiplier * resolutionMultiplier; //170 * multiplier; //340 * multiplier;
             xllcorner = 413000;
