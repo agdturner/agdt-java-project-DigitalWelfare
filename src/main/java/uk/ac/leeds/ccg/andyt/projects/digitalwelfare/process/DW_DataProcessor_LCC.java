@@ -221,6 +221,21 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     includeKey = includesIte.next();
                     ArrayList<Integer> include;
                     include = includes.get(includeKey);
+                    int index;
+                    String startMonth;
+                    String startYear;
+                    String endMonth;
+                    String endYear;
+                    index = include.get(0);
+                    startMonth = DW_SHBE_Handler.getMonth(
+                            SHBEFilenames[index]);
+                    startYear = DW_SHBE_Handler.getYear(
+                            SHBEFilenames[index]);
+                    index = include.get(include.size() - 1);
+                    endMonth = DW_SHBE_Handler.getMonth(
+                            SHBEFilenames[index]);
+                    endYear = DW_SHBE_Handler.getYear(
+                            SHBEFilenames[index]);
                     iteB = bArray.iterator();
                     while (iteB.hasNext()) {
                         boolean includePreUnderOccupancyValues;
@@ -237,7 +252,11 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                 includeKey,
                                 doUnderOccupancy,
                                 includePreUnderOccupancyValues,
-                                name);
+                                name,
+                                startMonth,
+                                startYear,
+                                endMonth,
+                                endYear);
                     }
                     System.exit(0);
                 }
@@ -254,9 +273,9 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //        includes.remove("Monthly");
         paymentTypes = DW_SHBE_Handler.getPaymentTypes();
 //        paymentTypes.remove(sAllPT);
-//        paymentTypes.remove(sInPayment);
-//        paymentTypes.remove(sSuspended);
-//        paymentTypes.remove(sOtherPT);
+        paymentTypes.remove(sInPayment);
+        paymentTypes.remove(sSuspended);
+        paymentTypes.remove(sOtherPT);
         boolean forceNewSummaries;
 //        forceNewSummaries = false;
         forceNewSummaries = true;
@@ -271,7 +290,8 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 int nTT;
                 nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
                 int nEG;
-                nEG = DW_SHBE_Handler.getNumberOfClaimantsEthnicGroups();
+                //nEG = DW_SHBE_Handler.getNumberOfClaimantsEthnicGroups();
+                nEG = DW_SHBE_Handler.getNumberOfClaimantsEthnicGroupsGrouped();
                 int nPSI;
                 nPSI = DW_SHBE_Handler.getOneOverMaxValueOfPassportStandardIndicator();
                 Summary tSummary = new Summary(
@@ -282,14 +302,14 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                         nEG,
                         nPSI,
                         handleOutOfMemoryError);
-//                SummaryUO tSummaryUO = new SummaryUO(
-//                        env,
-//                        collectionHandler,
-//                        tDW_SHBE_Handler,
-//                        nTT,
-//                        nEG,
-//                        nPSI,
-//                        handleOutOfMemoryError);
+                SummaryUO tSummaryUO = new SummaryUO(
+                        env,
+                        collectionHandler,
+                        tDW_SHBE_Handler,
+                        nTT,
+                        nEG,
+                        nPSI,
+                        handleOutOfMemoryError);
                 Iterator<String> includesIte;
                 includesIte = includes.keySet().iterator();
                 while (includesIte.hasNext()) {
@@ -324,34 +344,34 @@ public class DW_DataProcessor_LCC extends DW_Processor {
 //                    if (true) {
                     if (false) {
                         TreeMap<String, HashMap<String, String>> summaryTableUO;
-//                        summaryTableUO = tSummaryUO.getSummaryTable(
-//                                summaryTableAll,
-//                                SHBEFilenames,
-//                                include,
-//                                forceNewSummaries,
-//                                paymentType,
-//                                nTT,
-//                                nEG,
-//                                nPSI,
-//                                underOccupiedData,
-//                                tDW_PersonIDtoDW_IDLookup,
-//                                tPostcodeToPostcodeIDLookup,
-//                                handleOutOfMemoryError);
-//                        doUnderOccupancy = true;
-//                        tSummaryUO.writeSummaryTables(
-//                                summaryTableUO,
-//                                paymentType,
-//                                includeKey,
-//                                doUnderOccupancy,
-//                                nTT, nEG, nPSI);
+                        summaryTableUO = tSummaryUO.getSummaryTable(
+                                summaryTableAll,
+                                SHBEFilenames,
+                                include,
+                                forceNewSummaries,
+                                paymentType,
+                                nTT,
+                                nEG,
+                                nPSI,
+                                underOccupiedData,
+                                tDW_PersonIDtoDW_IDLookup,
+                                tPostcodeToPostcodeIDLookup,
+                                handleOutOfMemoryError);
+                        doUnderOccupancy = true;
+                        tSummaryUO.writeSummaryTables(
+                                summaryTableUO,
+                                paymentType,
+                                includeKey,
+                                doUnderOccupancy,
+                                nTT, nEG, nPSI);
                     }
 //                    System.exit(0);
                 }
             }
         }
 
-        if (true) {
-//        if (false) {
+//        if (true) {
+        if (false) {
             paymentTypesIte = paymentTypes.iterator();
             while (paymentTypesIte.hasNext()) {
                 String paymentType;
@@ -360,17 +380,10 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                 int nTT;
                 nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
                 int nEG;
-                nEG = DW_SHBE_Handler.getNumberOfClaimantsEthnicGroups();
+                //nEG = DW_SHBE_Handler.getNumberOfClaimantsEthnicGroups();
+                nEG = DW_SHBE_Handler.getNumberOfClaimantsEthnicGroupsGrouped();
                 int nPSI;
                 nPSI = DW_SHBE_Handler.getOneOverMaxValueOfPassportStandardIndicator();
-//                Summary tSummary = new Summary(
-//                        env,
-//                        collectionHandler,
-//                        tDW_SHBE_Handler,
-//                        nTT,
-//                        nEG,
-//                        nPSI,
-//                        handleOutOfMemoryError);
                 SummaryUO tSummaryUO = new SummaryUO(
                         env,
                         collectionHandler,

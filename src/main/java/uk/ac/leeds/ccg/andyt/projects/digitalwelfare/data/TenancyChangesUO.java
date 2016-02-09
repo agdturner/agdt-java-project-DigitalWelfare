@@ -111,6 +111,9 @@ public class TenancyChangesUO {
 
     String sNotMoved = "NotMoved";
     String sChangedTT = "ChangedTT";
+    String sUOAtSomePoint = "sUOAtSomePoint";
+    String sUOTT1AtSomePoint = "sUOTT1AtSomePoint";
+    String sUOTT4AtSomePoint = "sUOTT4AtSomePoint";
     String sAlwaysUOFromStart = "AlwaysUOFromStart";
     String sAlwaysUOFromWhenStarted = "AlwaysUOFromWhenStarted";
     String sIntermitantUO = "IntermitantUO";
@@ -130,35 +133,124 @@ public class TenancyChangesUO {
     String sIntermitantUO__Moved_NotChangedTT;
     String sIntermitantUO__NotMoved_NotChangedTT;
 
-    String sUO_To_LeftSHBE = "UO_To_LeftSHBE";
+    String sUO_NotUO_UO;
+    String sUO_NotUO_UO_NotUO_UO;
+    String sUO_NotUO_UO_NotUO_UO_NotUO_UO;
+    String sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO;
+
+    String sUOTT1_To_NotUO_InSHBE_PostcodeChanged = "UOTT1_To_NotUO_InSHBE_PostcodeChanged";
+    String sUOTT1_To_NotUO_TT1_PostcodeChanged = "UOTT1_To_NotUO_TT1_PostcodeChanged";
+    String sUOTT1_To_NotUO_TT4_PostcodeChanged = "UOTT1_To_NotUO_TT4_PostcodeChanged";
+    String sUOTT4_To_NotUO_InSHBE_PostcodeChanged = "UOTT4_To_NotUO_InSHBE_PostcodeChanged";
+    String sUOTT4_To_NotUO_TT1_PostcodeChanged = "UOTT4_To_NotUO_TT1_PostcodeChanged";
+    String sUOTT4_To_NotUO_TT4_PostcodeChanged = "UOTT4_To_NotUO_TT4_PostcodeChanged";
+
+    String sUO_To_LeftSHBEAtSomePoint = "UO_To_LeftSHBEAtSomePoint";
     String sUOTT1_To_LeftSHBE = "UOTT1_To_LeftSHBE";
-    String sUOTT1_To_LeftSHBEPermanently = "UOTT1_To_LeftSHBEPermanently";
-    String sUOTT1_To_LeftSHBEReturnedAsTT1orTT4 = "UOTT1_To_LeftSHBEReturnedAsTT1orTT4";
-    String sUOTT1_To_LeftSHBEReturnedAsTT3OrTT6 = "UOTT1_To_LeftSHBEReturnedAsTT3OrTT6";
     String sUOTT4_To_LeftSHBE = "UOTT4_To_LeftSHBE";
-    String sUOTT4_To_LeftSHBEPermanently = "UOTT4_To_LeftSHBEPermanently";
-    String sUOTT4_To_LeftSHBEReturnedAsTT1orTT4 = "UOTT4_To_LeftSHBEReturnedAsTT1orTT4";
-    String sUOTT4_To_LeftSHBEReturnedAsTT3OrTT6 = "UOTT4_To_LeftSHBEReturnedAsTT3OrTT6";
+    String sUOTT3OrTT6_To_LeftSHBE = "UOTT3OrTT6_To_LeftSHBE";
+    String sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE = "UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE";
     String sUOTT1_To_TT3OrTT6 = "UOTT1_To_TT3OrTT6";
+    String sUOTT1_To_TT3OrTT6AtSomePoint = "UOTT1_To_TT3OrTT6AtSomePoint";
+    String sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999 = "UOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999";
     String sUOTT4_To_TT3OrTT6 = "UOTT4_To_TT3OrTT6";
+    String sUOTT4_To_TT3OrTT6AtSomePoint = "UOTT4_To_TT3OrTT6AtSomePoint";
+    String sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999 = "UOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999";
     String sTT3OrTT6_To_UOTT1 = "TT3OrTT6_To_UOTT1";
     String sTT3OrTT6_To_UOTT4 = "TT3OrTT6_To_UOTT4";
+
+    //String sUOTT1OrTT1_To_UOTT4 = "UOTT1OrTT1_To_UOTT4";
+    String sUOTT1_To_UOTT4 = "UOTT1_To_UOTT4";
+    String sTT1_To_UOTT4 = "TT1_To_UOTT4";
+    String sTT1_To_UOTT4GettingDHP = "TT1_To_UOTT4GettingDHP";
+    //String sUOTT4OrTT4_To_UOTT1 = "UOTT4OrTT4_To_UOTT1";
+    //String sUOTT4OrTT4_To_UOTT1InArrears = "UOTT4OrTT4_To_UOTT1InArrears";
+    //String sUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP = "UOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP";
+    String sUOTT4_To_UOTT1 = "UOTT4_To_UOTT1";
+    String sUOTT4_To_UOTT1InArrears = "UOTT4_To_UOTT1InArrears";
+    String sUOTT4_To_UOTT1GettingDHP = "UOTT4_To_UOTT1GettingDHP";
+    String sUOTT4_To_UOTT1InArrearsAndGettingDHP = "UOTT4_To_UOTT1InArrearsAndGettingDHP";
+    String sTT4_To_UOTT1 = "TT4_To_UOTT1";
+    String sTT4_To_UOTT1InArrears = "TT4_To_UOTT1InArrears";
+    String sTT4_To_UOTT1GettingDHP = "TT4_To_UOTT1GettingDHP";
+    String sTT4_To_UOTT1InArrearsAndGettingDHP = "TT4_To_UOTT1InArrearsAndGettingDHP";
+    String sInArrearsAtSomePoint = "InArrearsAtSomePoint";
+    String sDHPAtSomePoint = "sDHPAtSomePoint";
+    String sInArrearsAtSomePoint_And_DHPAtSomePoint = "sInArrearsAtSomePoint_And_DHPAtSomePoint";
+
     String sTT1_To_UOTT1_PostcodeUnchanged = "TT1_To_UOTT1_PostcodeUnchanged";
     String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month";
     String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months";
+    String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months";
     String sTT4_To_UOTT4_PostcodeUnchanged = "TT4_To_UOTT4_PostcodeUnchanged";
     String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month";
     String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months";
+    String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months";
     String sUOTT1_To_TT1_PostcodeUnchanged = "UOTT1_To_TT1_PostcodeUnchanged";
     String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month";
     String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months";
+    String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months";
     String sUOTT4_To_TT4_PostcodeUnchanged = "UOTT4_To_TT4_PostcodeUnchanged";
     String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month";
     String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months";
+    String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months";
     String sUOTT1_To_TT1_PostcodeChanged = "UOTT1_To_TT1_PostcodeChanged";
+    String sUOTT1_To_UOTT1_PostcodeChanged = "UOTT1_To_UOTT1_PostcodeChanged";
     String sUOTT4_To_TT4_PostcodeChanged = "UOTT4_To_TT4_PostcodeChanged";
+    String sUOTT4_To_UOTT4_PostcodeChanged = "UOTT4_To_UOTT4_PostcodeChanged";
     String sTT1_To_UOTT1_PostcodeChanged = "TT1_To_UOTT1_PostcodeChanged";
     String sTT4_To_UOTT4_PostcodeChanged = "TT4_To_UOTT4_PostcodeChanged";
+
+    String sUO_To_LeftSHBE = "UO_To_LeftSHBE";
+    String sUO_To_LeftSHBEBetweenOneAndTwoMonths = "UO_To_LeftSHBEBetweenOneAndTwoMonths";
+    String sUO_To_LeftSHBEBetweenTwoAndThreeMonths = "UO_To_LeftSHBEBetweenTwoAndThreeMonths";
+    String sUO_To_LeftSHBE_NotReturned = "UO_To_LeftSHBE_NotReturned";
+    String sUOTT1_To_LeftSHBE_NotReturned = "UOTT1_To_LeftSHBE_NotReturned";
+    String sUOTT4_To_LeftSHBE_NotReturned = "UOTT4_To_LeftSHBE_NotReturned";
+    String sUOTT3OrTT6_To_LeftSHBE_NotReturned = "UOTT3OrTT6_To_LeftSHBE_NotReturned";
+    String sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned = "UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned";
+    String sUOTT1_To_LeftSHBE_ReturnedAsTT1 = "UOTT1_To_LeftSHBE_ReturnedAsTT1";
+    String sUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6 = "UOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6";
+    String sUOTT1_To_LeftSHBE_ReturnedAsTT4 = "UOTT1_To_LeftSHBE_ReturnedAsTT4";
+    String sUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7 = "UOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7";
+    String sUOTT1_To_LeftSHBE_ReturnedAsTT8 = "UOTT1_To_LeftSHBE_ReturnedAsTT8";
+    String sUOTT1_To_LeftSHBE_ReturnedAsTT9 = "UOTT1_To_LeftSHBE_ReturnedAsTT9";
+    String sUOTT4_To_LeftSHBE_ReturnedAsTT1 = "UOTT4_To_LeftSHBE_ReturnedAsTT1";
+    String sUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6 = "UOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6";
+    String sUOTT4_To_LeftSHBE_ReturnedAsTT4 = "UOTT4_To_LeftSHBE_ReturnedAsTT4";
+    String sUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7 = "UOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7";
+    String sUOTT4_To_LeftSHBE_ReturnedAsTT8 = "UOTT4_To_LeftSHBE_ReturnedAsTT8";
+    String sUOTT4_To_LeftSHBE_ReturnedAsTT9 = "UOTT4_To_LeftSHBE_ReturnedAsTT9";
+    String sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1 = "UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1";
+    String sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6 = "UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6";
+    String sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4 = "UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4";
+    String sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7 = "UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7";
+    String sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8 = "UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8";
+    String sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9 = "UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9";
+    String sUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint = "UOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint";
+    String sUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint = "UOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint";
+    String sUOTT1_To_TT3OrTT6BetweenOneAndTwoMonths = "UOTT1_To_TT3OrTT6BetweenOneAndTwoMonths";
+    String sUOTT1_To_TT3OrTT6BetweenTwoAndThreeMonths = "UOTT1_To_TT3OrTT6BetweenTwoAndThreeMonths";
+    String sUOTT4_To_TT3OrTT6BetweenOneAndTwoMonths = "UOTT4_To_TT3OrTT6BetweenOneAndTwoMonths";
+    String sUOTT4_To_TT3OrTT6BetweenTwoAndThreeMonths = "UOTT4_To_TT3OrTT6BetweenTwoAndThreeMonths";
+    String sTT3OrTT6_To_UOTT1AsNextTTIncludingBreaks = "TT3OrTT6_To_UOTT1AsNextTTIncludingBreaks";
+    String sTT3OrTT6_To_UOTT4AsNextTTIncludingBreaks = "TT3OrTT6_To_UOTT4AsNextTTIncludingBreaks";
+
+    String sTT1_To_UOTT1 = "TT1_To_UOTT1";
+    String sTT1_To_UOTT1IncludingBreaks = "TT1_To_UOTT1IncludingBreaks";
+    String sTT1_To_UOTT1_PostcodeChangedAfter1MonthButStillUOTT1 = "TT1_To_UOTT1_PostcodeChangedAfter1MonthButStillUOTT1";
+    String sTT1_To_UOTT1_PostcodeChangedAfter2MonthsButStillUOTT1 = "TT1_To_UOTT1_PostcodeChangedAfter2MonthsButStillUOTT1";
+    String sTT1_To_UOTT1_PostcodeChangedAfter3MonthsButStillUOTT1 = "TT1_To_UOTT1_PostcodeChangedAfter3MonthsButStillUOTT1";
+
+    String sTT4_To_UOTT4 = "TT4_To_UOTT4";
+    String sTT4_To_UOTT4IncludingBreaks = "TT4_To_UOTT4IncludingBreaks";
+    String sTT4_To_UOTT4_PostcodeChangedAfter1MonthButStillUOTT4 = "TT4_To_UOTT4_PostcodeChangedAfter1MonthButStillUOTT4";
+    String sTT4_To_UOTT4_PostcodeChangedAfter2MonthsButStillUOTT4 = "TT4_To_UOTT4_PostcodeChangedAfter2MonthsButStillUOTT4";
+    String sTT4_To_UOTT4_PostcodeChangedAfter3MonthsButStillUOTT4 = "TT4_To_UOTT4_PostcodeChangedAfter3MonthsButStillUOTT4";
+
+    String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthButStillTT1 = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthButStillTT1";
+    String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2MonthsButStillTT1 = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2MonthsButStillTT1";
+    String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3MonthsButStillTT1 = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3MonthsButStillTT1";
 
     // For Aggregate Statistics
     String sTotal_DHP = "Total_DHP";
@@ -168,7 +260,12 @@ public class TenancyChangesUO {
     String sMax_Arrears = "Max_Arrears";
     String sTotalCount_Arrears = "TotalCount_Arrears";
     String sTotalCount_UnderOccupancy = "TotalCount_UnderOccupancy";
+
     // For General Statistics
+    String sUOClaimsRecievingDHP = "UOClaimsRecievingDHP";
+    String sUOTT1ClaimsInRentArrearsAtSomePoint = "UOTT1ClaimsInRentArrearsAtSomePoint";
+    String sUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint = "UOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint";
+
     String sTotalCount_AlwaysUOFromWhenStarted = "TotalCount_AlwaysUOFromWhenStarted";
     String sTotalCount_AlwaysUOFromStart = "TotalCount_AlwaysUOFromStart";
 //    String sTotalCount_ExistingSHBEClaimsThatBecameUOInApril2013 = "TotalCount_ExistingSHBEClaimsThatBecameUOInApril2013";
@@ -192,6 +289,488 @@ public class TenancyChangesUO {
     String sTotalCount_RSLUniquePartnersEffectedByUnderOccupancy = "TotalCount_RSLUniquePartnersEffectedByUnderOccupancy";
     String sTotalCount_RSLDependentsEffectedByUnderOccupancy = "TotalCount_RSLDependentsEffectedByUnderOccupancy";
     String sTotalCount_RSLUniqueNonDependentsEffectedByUnderOccupancy = "TotalCount_RSLUniqueNonDependentsEffectedByUnderOccupancy";
+    String sTotalCount_UniqueChildrenAgeLessThan10EffectedByUnderOccupancy = "TotalCount_UniqueChildrenAgeLessThan10EffectedByUnderOccupancy";
+
+    String sAverageHouseholdSizeOfThoseUOAlwaysFromStart = "AverageHouseholdSizeOfThoseUOAlwaysFromStart";
+    
+    HashMap<String, String> generalStatisticDescriptions;
+
+    // TimeStatistics
+    String sTotalCount_cumulativeUniqueClaims = "TotalCount_cumulativeUniqueClaims";
+    String sTotalCount_UOClaims = "TotalCounts_UOClaims";
+    String sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms = "sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms";
+
+    protected HashMap<String, String> getGeneralStatisticDescriptions(
+            String startMonth,
+            String startYear,
+            String endMonth,
+            String endYear) {
+        String dates;
+        dates = startMonth + " " + startYear + " to " + endMonth + " " + endYear;
+        generalStatisticDescriptions = new HashMap<String, String>();
+        generalStatisticDescriptions.put(
+                sTotalCount_AlwaysUOFromWhenStarted,
+                "Total count of claims that were always UnderOccupied from "
+                + dates + ".");
+        generalStatisticDescriptions.put(
+                sAverageHouseholdSizeOfThoseUOAlwaysFromStart,
+                "Average Household Size of claims that were always UnderOccupied from "
+                + dates + " in " + endMonth + " " + endYear + ".");
+        generalStatisticDescriptions.put(
+                sTotalCount_ClaimsEffectedByUnderOccupancy,
+                "Total count of claims that were effected by Under Occupancy "
+                + "(claims can have different Tenancy Types at different times).");
+        generalStatisticDescriptions.put(
+                sTotalCount_UniqueIndividualsEffectedByUnderOccupancy,
+                "Total count of unique individuals effected by underoccupancy "
+                + "(total count unique claimants + total count unique partners + "
+                + "total count of unique dependents + total count of unique non-dependents) : "
+                + "(uniqueness is based on date of birth and NINo) this should distinguish twins, "
+                + "but it does not deal with claims with multiple partners.");
+        // Council
+        generalStatisticDescriptions.put(
+                sTotalCount_CouncilClaimsEffectedByUnderOccupancy,
+                "Total count of claims effected by UnderOccupancy at some time between "
+                + dates + " and in Council tenancies.");
+        generalStatisticDescriptions.put(
+                sTotalCount_CouncilUniqueIndividualsEffectedByUnderOccupancy,
+                "Total count of unique individuals effected by UnderOccupancy and in Council tenancies.");
+        generalStatisticDescriptions.put(
+                sTotalCount_CouncilUniqueClaimantsEffectedByUnderOccupancy,
+                "Total count of unique claimants effected by UnderOccupancy and in Council tenancies.");
+        generalStatisticDescriptions.put(
+                sTotalCount_CouncilUniquePartnersEffectedByUnderOccupancy,
+                "Total count of unique partners effected by UnderOccupancy and in Council tenancies "
+                + "(this only deals with main partners, not for all partners in claims where there are multiple partners).");
+        generalStatisticDescriptions.put(
+                sTotalCount_CouncilDependentsEffectedByUnderOccupancy,
+                "Total count of unique Dependents effected by UnderOccupancy in Council tenancies.");
+        generalStatisticDescriptions.put(
+                sTotalCount_CouncilUniqueNonDependentsEffectedByUnderOccupancy,
+                "Total count of unique NonDependents effected by UnderOccupancy in Council tenancies.");
+        // RSL
+        generalStatisticDescriptions.put(
+                sTotalCount_RSLClaimsEffectedByUnderOccupancy,
+                "Total count of claims effected by UnderOccupancy at  "
+                + "some time between " + dates + " and in Registered Social Landlord tenancies.");
+        generalStatisticDescriptions.put(
+                sTotalCount_RSLUniqueIndividualsEffectedByUnderOccupancy,
+                "Total count of unique individuals effected by UnderOccupancy and in Registered Social Landlord tenancies.");
+        generalStatisticDescriptions.put(
+                sTotalCount_RSLUniqueClaimantsEffectedByUnderOccupancy,
+                "Total count of unique claimants effected by UnderOccupancy and in Registered Social Landlord tenancies.");
+        generalStatisticDescriptions.put(
+                sTotalCount_RSLUniquePartnersEffectedByUnderOccupancy,
+                "Total count of unique partners effected by UnderOccupancy and in Registered Social Landlord tenancies "
+                + "(this only deals with main partners, not for all partners in claims where there are multiple partners).");
+        generalStatisticDescriptions.put(
+                sTotalCount_RSLDependentsEffectedByUnderOccupancy,
+                "Total count of unique Dependents effected by UnderOccupancy in Registered Social Landlord tenancies.");
+        generalStatisticDescriptions.put(
+                sTotalCount_RSLUniqueNonDependentsEffectedByUnderOccupancy,
+                "Total count of unique NonDependents effected by UnderOccupancy in Registered Social Landlord tenancies.");
+        generalStatisticDescriptions.put(
+                sTotalCount_UniqueChildrenAgeLessThan10EffectedByUnderOccupancy,
+                "Total count of unique children under the Age of 10 effected by UnderOccupancy "
+                + "(the number may be higher as a result of twins or if dates of birth not being recorded in multiple cases).");
+        // LeftSHBE
+        generalStatisticDescriptions.put(
+                sUO_To_LeftSHBEAtSomePoint,
+                "Total count of UnderOccupied claims that have left SHBE at "
+                + "some time between " + dates + " after becoming UnderOccupied.");
+        generalStatisticDescriptions.put(
+                sUO_To_LeftSHBE,
+                "Total count of UO_To_LeftSHBE claims.");
+        generalStatisticDescriptions.put(
+                sUO_To_LeftSHBEBetweenOneAndTwoMonths,
+                "Total count of UO_To_LeftSHBE (not the next month, but the month after) claims.");
+        generalStatisticDescriptions.put(
+                sUO_To_LeftSHBEBetweenTwoAndThreeMonths,
+                "Total count of UO_To_LeftSHBE (not the next month, or the month after, but the month after that) claims.");
+        generalStatisticDescriptions.put(
+                sUO_To_LeftSHBE_NotReturned,
+                "Total count of UO_To_LeftSHBE and not returned claims "
+                + "(this may be bias and much of the count might be for "
+                + "those leaving in the last months in the collection "
+                + "and that may in fact return at a later date).");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_LeftSHBE_NotReturned,
+                "Total count of UOTT1_To_LeftSHBE and not returned claims "
+                + "(again this may be bias and much of the count might "
+                + "be for those leaving in the last months in the "
+                + "collection and that may in fact return at a later date).");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_LeftSHBE_NotReturned,
+                "Total count of UOTT4_To_LeftSHBE and not returned claims "
+                + "(again this may be bias and much of the count might "
+                + "be for those leaving in the last months in the "
+                + "collection and that may in fact return at a later date).");
+        generalStatisticDescriptions.put(
+                sUOTT3OrTT6_To_LeftSHBE_NotReturned,
+                "Total count of UOTT3OrTT6_To_LeftSHBE and not returned claims "
+                + "(again this may be bias and much of the count might "
+                + "be for those leaving in the last months in the "
+                + "collection and that may in fact return at a later date).");
+        generalStatisticDescriptions.put(
+                sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned,
+                "Total count of UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE and not returned claims "
+                + "(again this may be bias and much of the count might "
+                + "be for those leaving in the last months in the "
+                + "collection and that may in fact return at a later date).");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsTT1,
+                "Total count of UOTT1_To_LeftSHBE claims that next returned to the SHBE as TT1 "
+                + "(unique claims: if this happens more than once for "
+                + "the same claim, it is just counted once).");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                "Total count of UOTT1_To_LeftSHBE claims that next returned to the SHBE as TT3OrTT6.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsTT4,
+                "Total count of UOTT1_To_LeftSHBE claims that next returned to the SHBE as TT4.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                "Total count of UOTT1_To_LeftSHBE claims that next returned to the SHBE as TT5OrTT7.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsTT8,
+                "Total count of UOTT1_To_LeftSHBE claims that next returned to the SHBE as TT8.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsTT9,
+                "Total count of UOTT1_To_LeftSHBE claims that next returned to the SHBE as TT9.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsTT1,
+                "Total count of UOTT4_To_LeftSHBE claims that next returned to the SHBE as TT1.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                "Total count of UOTT4_To_LeftSHBE claims that next returned to the SHBE as TT3OrTT6.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsTT4,
+                "Total count of UOTT4_To_LeftSHBE claims that next returned to the SHBE as TT4.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                "Total count of UOTT4_To_LeftSHBE claims that next returned to the SHBE as TT5OrTT7.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsTT8,
+                "Total count of UOTT4_To_LeftSHBE claims that next returned to the SHBE as TT8.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsTT9,
+                "Total count of UOTT4_To_LeftSHBE claims that next returned to the SHBE as TT9.");
+        generalStatisticDescriptions.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1,
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next returned to the SHBE as TT1.");
+        generalStatisticDescriptions.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next returned to the SHBE as TT3OrTT6.");
+        generalStatisticDescriptions.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4,
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next returned to the SHBE as TT4.");
+        generalStatisticDescriptions.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next returned to the SHBE as TT5OrTT7.");
+        generalStatisticDescriptions.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8,
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next returned to the SHBE as TT8.");
+        generalStatisticDescriptions.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9,
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next returned to the SHBE as TT9.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+                "Total count of UOTT1_To_LeftSHBE claims that returned and became UnderOccupied again at "
+                + "some time between " + dates + ".");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+                "Total count of UOTT4_To_LeftSHBE claims that returned and became UnderOccupied again at "
+                + "some time between " + dates + ".");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_LeftSHBE,
+                "Total count of UOTT1_To_LeftSHBE claims.");
+//        generalStatisticDescriptions.put(
+//                sUOTT1_To_LeftSHBEReturnedAsTT1orTT4,
+//                "UOTT1_To_LeftSHBEReturnedAsTT1orTT4");
+//        generalStatisticDescriptions.put(
+//                sUOTT1_To_LeftSHBEReturnedAsTT3OrTT6,
+//                "UOTT1_To_LeftSHBEReturnedAsTT3OrTT6");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_LeftSHBE,
+                "Total count of UOTT4_To_LeftSHBE claims.");
+//        generalStatisticDescriptions.put(
+//                sUOTT4_To_LeftSHBEReturnedAsTT1orTT4,
+//                "UOTT4_To_LeftSHBEReturnedAsTT1orTT4");
+//        generalStatisticDescriptions.put(
+//                sUOTT4_To_LeftSHBEReturnedAsTT3OrTT6,
+//                "UOTT4_To_LeftSHBEReturnedAsTT3OrTT6");
+        generalStatisticDescriptions.put(
+                sUOTT3OrTT6_To_LeftSHBE,
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims.");
+        generalStatisticDescriptions.put(
+                sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE,
+                "Total count of NotTT1OrTT3OrTT4OrTT6_To_LeftSHBE claims.");
+
+        generalStatisticDescriptions.put(
+                sUO_NotUO_UO,
+                "Total count of sUO_NotUO_UO claims.");
+        generalStatisticDescriptions.put(
+                sUO_NotUO_UO_NotUO_UO,
+                "Total count of sUO_NotUO_UO_NotUO_UO claims.");
+        generalStatisticDescriptions.put(
+                sUO_NotUO_UO_NotUO_UO_NotUO_UO,
+                "Total count of sUO_NotUO_UO_NotUO_UO_NotUO_UO claims.");
+        generalStatisticDescriptions.put(
+                sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO,
+                "Total count of sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO claims.");
+
+        generalStatisticDescriptions.put(
+                sUOTT1_To_NotUO_InSHBE_PostcodeChanged,
+                "Total count of UOTT1_To_NotUO_InSHBE_PostcodeChanged claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_NotUO_TT1_PostcodeChanged,
+                "Total count of UOTT1_To_NotUO_TT1_PostcodeChanged claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_NotUO_TT4_PostcodeChanged,
+                "Total count of UOTT1_To_NotUO_TT4_PostcodeChanged claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_NotUO_InSHBE_PostcodeChanged,
+                "Total count of UOTT4_To_NotUO_InSHBE_PostcodeChanged claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_NotUO_TT1_PostcodeChanged,
+                "Total count of UOTT4_To_NotUO_TT1_PostcodeChanged claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_NotUO_TT4_PostcodeChanged,
+                "Total count of UOTT4_To_NotUO_TT4_PostcodeChanged claims.");
+
+// UOTT1_To_TT3OrTT6
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT3OrTT6,
+                "Total count of UOTT1_To_TT3OrTT6 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT3OrTT6BetweenOneAndTwoMonths,
+                "Total count of UOTT1_To_TT3OrTT6BetweenOneAndTwoMonths claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT3OrTT6BetweenTwoAndThreeMonths,
+                "Total count of UOTT1_To_TT3OrTT6BetweenTwoAndThreeMonths claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT3OrTT6AtSomePoint,
+                "Total count of UnderOccupied TT1 claims that became TT3OrTT6 at  "
+                + "some time between " + dates + ".");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                "Total count of UnderOccupied TT1 claims that became TT3OrTT6 "
+                + "in the next TT change ignoring those times they "
+                + "came out of the SHBE if indeed they have.");
+
+        // UOTT4_To_TT3OrTT6
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT3OrTT6,
+                "Total count of UOTT4_To_TT3OrTT6 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT3OrTT6BetweenOneAndTwoMonths,
+                "Total count of UOTT4_To_TT3OrTT6BetweenOneAndTwoMonths claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT3OrTT6BetweenTwoAndThreeMonths,
+                "Total count of UOTT4_To_TT3OrTT6BetweenTwoAndThreeMonths claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT3OrTT6AtSomePoint,
+                "Total count of UnderOccupied TT4 claims that became TT3OrTT6 at "
+                + "some time between " + dates + ".");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                "Total count of UnderOccupied TT4 claims that became TT3OrTT6 "
+                + "in the next TT change ignoring those times they "
+                + "came out of the SHBE if indeed they have.");
+
+        // TT3OrTT6_To_UOTT1
+        generalStatisticDescriptions.put(
+                sTT3OrTT6_To_UOTT1,
+                "Total count of TT3OrTT6_To_UOTT1 claims.");
+        generalStatisticDescriptions.put(
+                sTT3OrTT6_To_UOTT1AsNextTTIncludingBreaks,
+                "Total count of TT3OrTT6_To_UOTT1AsNextTTIncludingBreaks claims.");
+        // TT3OrTT6_To_UOTT4        
+        generalStatisticDescriptions.put(
+                sTT3OrTT6_To_UOTT4,
+                "Total count of TT3OrTT6_To_UOTT4 claims.");
+        generalStatisticDescriptions.put(
+                sTT3OrTT6_To_UOTT4AsNextTTIncludingBreaks,
+                "Total count of TT3OrTT6_To_UOTT4AsNextTTIncludingBreaks claims.");
+        // UOTT1_To_TT1
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchanged,
+                "Total count of UOTT1_To_TT1_PostcodeUnchanged claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
+                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months,
+                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthButStillTT1,
+                "Total count of UOTT1_To_TT1_PostcodeChangedAfter1MonthButStillTT1 separate from -999 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2MonthsButStillTT1,
+                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2MonthsButStillTT1 separate from -999 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3MonthsButStillTT1,
+                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3MonthsButStillTT1 separate from -999 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeChanged,
+                "Total count of UOTT1_To_TT1_PostcodeChanged claims.");
+        // UOTT4_To_TT4
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT4_PostcodeUnchanged,
+                "Total count of UOTT4_To_TT4_PostcodeUnchanged claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+                "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
+                "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months,
+                "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT4_PostcodeChanged,
+                "Total count of UOTT4_To_TT4_PostcodeChanged claims.");
+        // TT1_To_UOTT1        
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1,
+                "Total count of TT1_To_UOTT1 claims.");
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1IncludingBreaks,
+                "Total count of TT1_To_UOTT1 including breaks claims.");
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1_PostcodeUnchanged,
+                "Total count of TT1_To_UOTT1_PostcodeUnchanged claims.");
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month claims.");
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
+                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months claims.");
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months,
+                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months claims.");
+        generalStatisticDescriptions.put(sTT1_To_UOTT1_PostcodeChangedAfter1MonthButStillUOTT1,
+                "Total count of TT1_To_UOTT1_PostcodeChangedAfter1MonthButStillTT1UO claims.");
+        generalStatisticDescriptions.put(sTT1_To_UOTT1_PostcodeChangedAfter2MonthsButStillUOTT1,
+                "Total count of TT1_To_UOTT1_PostcodeChangedAfter2MonthsButStillTT1UO claims.");
+        generalStatisticDescriptions.put(sTT1_To_UOTT1_PostcodeChangedAfter3MonthsButStillUOTT1,
+                "Total count of TT1_To_UOTT1_PostcodeChangedAfter3MonthsButStillTT1UO claims.");
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1_PostcodeChanged,
+                "Total count of TT1_To_UOTT1_PostcodeChanged claims (includes corrections of postcodes).");
+
+        generalStatisticDescriptions.put(
+                sUOTT1_To_UOTT1_PostcodeChanged,
+                "Total count of UOTT1_To_UOTT1_PostcodeChanged claims (includes corrections of postcodes).");
+
+        // TT1_To_UOTT4
+        //generalStatisticDescriptions.put(sUOTT1OrTT1_To_UOTT4,
+        //        "Total count of UOTT1OrTT1_To_UOTT4 claims.");
+        generalStatisticDescriptions.put(sUOTT1_To_UOTT4,
+                "Total count of UOTT1_To_UOTT4 claims.");
+        generalStatisticDescriptions.put(sTT1_To_UOTT4,
+                "Total count of TT1_To_UOTT4 claims.");
+        generalStatisticDescriptions.put(sTT1_To_UOTT4GettingDHP,
+                "Total count of TT1_To_UOTT4 claims receiving "
+                + "Housing Benefit Discretionary Payment "
+                + "some time between " + dates + ".");
+
+        // TT4_To_UOTT4
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4,
+                "Total count of TT4_To_UOTT4 claims.");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4IncludingBreaks,
+                "Total count of TT4_To_UOTT4 including breaks claims.");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4_PostcodeUnchanged,
+                "Total count of TT4_To_UOTT4_PostcodeUnchanged claims.");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month claims.");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
+                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months claims.");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
+                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months claims.");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4_PostcodeChangedAfter1MonthButStillUOTT4,
+                "Total count of TT4_To_UOTT4_PostcodeChangedAfter1MonthButStillUOTT4 claims.");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4_PostcodeChangedAfter2MonthsButStillUOTT4,
+                "Total count of TT4_To_UOTT4_PostcodeChangedAfter2MonthsButStillUOTT4 claims.");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4_PostcodeChangedAfter3MonthsButStillUOTT4,
+                "Total count of TT4_To_UOTT4_PostcodeChangedAfter3MonthsButStillUOTT4 claims.");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4_PostcodeChanged,
+                "Total count of TT4_To_UOTT4_PostcodeChanged  claims (includes corrections of postcodes).");
+
+        generalStatisticDescriptions.put(
+                sUOTT4_To_UOTT4_PostcodeChanged,
+                "Total count of UOTT4_To_UOTT4_PostcodeChanged claims (includes corrections of postcodes).");
+
+        // TT4_To_UOTT1
+        //generalStatisticDescriptions.put(sUOTT4OrTT4_To_UOTT1,
+        //        "Total count of UOTT4OrTT4_To_UOTT1 claims.");
+        //generalStatisticDescriptions.put(sUOTT4OrTT4_To_UOTT1InArrears,
+        //        "Total count of UOTT4OrTT4_To_UOTT1 claims in arrears at  "
+        //        + "some time between " + dates + ".");
+        //generalStatisticDescriptions.put(sUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP,
+        //        "Total count of UOTT4OrTT4_To_UOTT1 claims simulatenously in "
+        //        + "arrears and receiving Housing Benefit Discretionary "
+        //        + "Payment at  "
+        //        + "some time between " + dates + ".");
+        generalStatisticDescriptions.put(sUOTT4_To_UOTT1,
+                "Total count of UOTT4_To_UOTT1 claims.");
+        generalStatisticDescriptions.put(sUOTT4_To_UOTT1InArrears,
+                "Total count of UOTT4_To_UOTT1 claims in arrears "
+                + "some time between " + dates + ".");
+        generalStatisticDescriptions.put(sUOTT4_To_UOTT1GettingDHP,
+                "Total count of UOTT4_To_UOTT1 claims receiving "
+                + "Housing Benefit Discretionary Payment "
+                + "some time between " + dates + ".");
+        generalStatisticDescriptions.put(sUOTT4_To_UOTT1InArrearsAndGettingDHP,
+                "Total count of UOTT4_To_UOTT1 claims simulatenously in "
+                + "arrears and receiving Housing Benefit Discretionary "
+                + "Payment "
+                + "some time between " + dates + ".");
+        generalStatisticDescriptions.put(sTT4_To_UOTT1,
+                "Total count of TT4_To_UOTT1 claims.");
+        generalStatisticDescriptions.put(sTT4_To_UOTT1InArrears,
+                "Total count of UOTT4OrTT4_To_UOTT1 claims in arrears  "
+                + "some time between " + dates + ".");
+        generalStatisticDescriptions.put(sTT4_To_UOTT1GettingDHP,
+                "Total count of TT4_To_UOTT1 claims receiving "
+                + "Housing Benefit Discretionary Payment "
+                + "some time between " + dates + ".");
+        generalStatisticDescriptions.put(sTT4_To_UOTT1InArrearsAndGettingDHP,
+                "Total count of UOTT4OrTT4_To_UOTT1 claims simulatenously in "
+                + "arrears and receiving Housing Benefit Discretionary "
+                + "Payment "
+                + "some time between " + dates + ".");
+        generalStatisticDescriptions.put(sInArrearsAtSomePoint_And_DHPAtSomePoint,
+                "Claims in arrears at some time between " + dates + " and also "
+                + "receiving a Housing Benefit Discretionary Payment "
+                + "some time between " + dates + ".");
+        generalStatisticDescriptions.put(
+                sUOClaimsRecievingDHP,
+                "Total count of claims receiving Housing Benefit Discretionary "
+                + "Payment some time between " + dates + ".");
+        generalStatisticDescriptions.put(
+                sUOTT1ClaimsInRentArrearsAtSomePoint,
+                "Total count of UnderOccupied TT1 claims in rent arrears at "
+                + "some time between " + dates + ".");
+        generalStatisticDescriptions.put(
+                sUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint,
+                "Total count of UnderOccupied TT1 claims in rent arrears and "
+                + "receiving DHP simultaneously some time between " + dates + ".");
+        return generalStatisticDescriptions;
+    }
 
     private void initString() {
         sTravellers = "a_Travellers"; // Letter_ added for ordering purposes.
@@ -357,7 +936,8 @@ public class TenancyChangesUO {
                     // ClaimantEthnicGroup
                     key = aCTBRef + sUnderscore + sCEG;
                     aS = result.get(key);
-                    j = dRecord.getClaimantsEthnicGroup();
+                    //j = dRecord.getClaimantsEthnicGroup();
+                    j = DW_SHBE_Handler.getEthnicityGroup(dRecord);
                     aS += sCommaSpace + j;
                     result.put(key, aS);
                     // Household Size
@@ -751,7 +1331,7 @@ public class TenancyChangesUO {
             boolean includePreUnderOccupancyValues
     ) {
         Object[] result;
-        result = new Object[7];
+        result = new Object[8];
         // Initialise result part 1
         TreeMap<String, String> tableValues;
         tableValues = new TreeMap<String, String>();
@@ -760,6 +1340,25 @@ public class TenancyChangesUO {
         TreeMap<String, DW_UnderOccupiedReport_Set> RSLUnderOccupiedSets = null;
         councilUnderOccupiedSets = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[0];
         RSLUnderOccupiedSets = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[1];
+
+        TreeSet<String> tUOClaims;
+        tUOClaims = new TreeSet<String>();
+        TreeMap<String, TreeMap<String, Integer>> timeStatistics;
+        timeStatistics = new TreeMap<String, TreeMap<String, Integer>>();
+        TreeMap<String, Integer> totalCounts_cumulativeUniqueClaims;
+        totalCounts_cumulativeUniqueClaims = new TreeMap<String, Integer>();
+        timeStatistics.put(sTotalCount_cumulativeUniqueClaims,
+                totalCounts_cumulativeUniqueClaims);
+        int totalCount_UOClaims;
+        TreeMap<String, Integer> totalCounts_UOClaims;
+        totalCounts_UOClaims = new TreeMap<String, Integer>();
+        timeStatistics.put(sTotalCount_UOClaims,
+                totalCounts_UOClaims);
+        int totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms;
+        TreeMap<String, Integer> totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms;
+        totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms = new TreeMap<String, Integer>();
+        timeStatistics.put(sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms,
+                totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms);
 
         HashSet<String>[] tAllCTBRefs;
         tAllCTBRefs = getCTBRefs(
@@ -824,6 +1423,9 @@ public class TenancyChangesUO {
         HashSet<ID> tIDSetRSLUniqueNonDependentsEffected;
         tIDSetRSLUniqueNonDependentsEffected = new HashSet<ID>();
 
+        HashSet<ID> tIDSetUniqueDependentChildrenUnderAge10Effected;
+        tIDSetUniqueDependentChildrenUnderAge10Effected = new HashSet<ID>();
+
         // groups is for ordering the table output. Keys are the group type and 
         // values are ordered sets of keys for writing rows.
         HashMap<String, TreeSet<String>> groups;
@@ -865,6 +1467,18 @@ public class TenancyChangesUO {
         tCTBRefSetChangedTT = new TreeSet<String>();
         groups.put(sChangedTT, tCTBRefSetChangedTT);
 
+        TreeSet<String> tCTBRefSetUOAtSomePoint;
+        tCTBRefSetUOAtSomePoint = new TreeSet<String>();
+        groups.put(sUOAtSomePoint, tCTBRefSetUOAtSomePoint);
+
+        TreeSet<String> tCTBRefSetUOTT1AtSomePoint;
+        tCTBRefSetUOTT1AtSomePoint = new TreeSet<String>();
+        groups.put(sUOTT1AtSomePoint, tCTBRefSetUOTT1AtSomePoint);
+
+        TreeSet<String> tCTBRefSetUOTT4AtSomePoint;
+        tCTBRefSetUOTT4AtSomePoint = new TreeSet<String>();
+        groups.put(sUOTT4AtSomePoint, tCTBRefSetUOTT4AtSomePoint);
+
         TreeSet<String> tCTBRefSetAlwaysUOFromStart;
         tCTBRefSetAlwaysUOFromStart = new TreeSet<String>();
         tCTBRefSetAlwaysUOFromStart.addAll(tCTBRefs);
@@ -879,49 +1493,235 @@ public class TenancyChangesUO {
         tCTBRefSetIntermitantUO = new TreeSet<String>();
         groups.put(sIntermitantUO, tCTBRefSetIntermitantUO);
 
-        TreeSet<String> tCTBRefSetUO_To_LeftSHBE;
-        tCTBRefSetUO_To_LeftSHBE = new TreeSet<String>();
-        groups.put(sUO_To_LeftSHBE, tCTBRefSetUO_To_LeftSHBE);
+        TreeSet<String> tCTBRefSetUO_To_LeftSHBEAtSomePoint;
+        tCTBRefSetUO_To_LeftSHBEAtSomePoint = new TreeSet<String>();
+        groups.put(sUO_To_LeftSHBEAtSomePoint, tCTBRefSetUO_To_LeftSHBEAtSomePoint);
+
+        TreeSet<String> tCTBRefSetUO_To_LeftSHBETheVeryNextMonth;
+        tCTBRefSetUO_To_LeftSHBETheVeryNextMonth = new TreeSet<String>();
+        groups.put(sUO_To_LeftSHBE, tCTBRefSetUO_To_LeftSHBETheVeryNextMonth);
+
+        TreeSet<String> tCTBRefSetUO_To_LeftSHBEBetweenOneAndTwoMonths;
+        tCTBRefSetUO_To_LeftSHBEBetweenOneAndTwoMonths = new TreeSet<String>();
+        groups.put(sUO_To_LeftSHBEBetweenOneAndTwoMonths, tCTBRefSetUO_To_LeftSHBEBetweenOneAndTwoMonths);
+
+        TreeSet<String> tCTBRefSetUO_To_LeftSHBEBetweenTwoAndThreeMonths;
+        tCTBRefSetUO_To_LeftSHBEBetweenTwoAndThreeMonths = new TreeSet<String>();
+        groups.put(sUO_To_LeftSHBEBetweenTwoAndThreeMonths, tCTBRefSetUO_To_LeftSHBEBetweenTwoAndThreeMonths);
+
+        TreeSet<String> tCTBRefSetUO_To_LeftSHBEAndNotReturned;
+        tCTBRefSetUO_To_LeftSHBEAndNotReturned = new TreeSet<String>();
+        groups.put(sUO_To_LeftSHBE_NotReturned, tCTBRefSetUO_To_LeftSHBEAndNotReturned);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBEAndNotReturned;
+        tCTBRefSetUOTT1_To_LeftSHBEAndNotReturned = new TreeSet<String>();
+        groups.put(sUOTT1_To_LeftSHBE_NotReturned, tCTBRefSetUOTT1_To_LeftSHBEAndNotReturned);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBEAndNotReturned;
+        tCTBRefSetUOTT4_To_LeftSHBEAndNotReturned = new TreeSet<String>();
+        groups.put(sUOTT4_To_LeftSHBE_NotReturned, tCTBRefSetUOTT4_To_LeftSHBEAndNotReturned);
+
+        TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBEAndNotReturned;
+        tCTBRefSetUOTT3OrTT6_To_LeftSHBEAndNotReturned = new TreeSet<String>();
+        groups.put(sUOTT3OrTT6_To_LeftSHBE_NotReturned, tCTBRefSetUOTT3OrTT6_To_LeftSHBEAndNotReturned);
+
+        TreeSet<String> tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEAndNotReturned;
+        tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEAndNotReturned = new TreeSet<String>();
+        groups.put(sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned, tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEAndNotReturned);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1;
+        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1 = new TreeSet<String>();
+        groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT1, tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6;
+        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6 = new TreeSet<String>();
+        groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6, tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4;
+        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4 = new TreeSet<String>();
+        groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT4, tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7;
+        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7 = new TreeSet<String>();
+        groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7, tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8;
+        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8 = new TreeSet<String>();
+        groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT8, tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9;
+        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9 = new TreeSet<String>();
+        groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT9, tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1;
+        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1 = new TreeSet<String>();
+        groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT1, tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6;
+        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6 = new TreeSet<String>();
+        groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6, tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4;
+        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4 = new TreeSet<String>();
+        groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT4, tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7;
+        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7 = new TreeSet<String>();
+        groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7, tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT8;
+        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT8 = new TreeSet<String>();
+        groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT8, tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT8);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9;
+        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9 = new TreeSet<String>();
+        groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT9, tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9);
+
+        TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1;
+        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1 = new TreeSet<String>();
+        groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1, tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1);
+
+        TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6;
+        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6 = new TreeSet<String>();
+        groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6, tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6);
+
+        TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4;
+        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4 = new TreeSet<String>();
+        groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4, tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4);
+
+        TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7;
+        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7 = new TreeSet<String>();
+        groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7, tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7);
+
+        TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8;
+        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8 = new TreeSet<String>();
+        groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8, tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8);
+
+        TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9;
+        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9 = new TreeSet<String>();
+        groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9, tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint;
+        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint = new TreeSet<String>();
+        groups.put(sUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+                tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint;
+        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint = new TreeSet<String>();
+        groups.put(sUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+                tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint);
 
         TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE;
         tCTBRefSetUOTT1_To_LeftSHBE = new TreeSet<String>();
         groups.put(sUOTT1_To_LeftSHBE, tCTBRefSetUOTT1_To_LeftSHBE);
 
-        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBEPermanently;
-        tCTBRefSetUOTT1_To_LeftSHBEPermanently = new TreeSet<String>();
-        groups.put(sUOTT1_To_LeftSHBEPermanently, tCTBRefSetUOTT1_To_LeftSHBEPermanently);
-
-        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT1orTT4;
-        tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT1orTT4 = new TreeSet<String>();
-        groups.put(sUOTT1_To_LeftSHBEReturnedAsTT1orTT4, tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT1orTT4);
-
-        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT3OrTT6;
-        tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT3OrTT6 = new TreeSet<String>();
-        groups.put(sUOTT1_To_LeftSHBEReturnedAsTT3OrTT6, tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT3OrTT6);
-
+//        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT1orTT4;
+//        tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT1orTT4 = new TreeSet<String>();
+//        groups.put(sUOTT1_To_LeftSHBEReturnedAsTT1orTT4, tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT1orTT4);
+//
+//        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT3OrTT6;
+//        tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT3OrTT6 = new TreeSet<String>();
+//        groups.put(sUOTT1_To_LeftSHBEReturnedAsTT3OrTT6, tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT3OrTT6);
         TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE;
         tCTBRefSetUOTT4_To_LeftSHBE = new TreeSet<String>();
         groups.put(sUOTT4_To_LeftSHBE, tCTBRefSetUOTT4_To_LeftSHBE);
 
-        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBEPermanently;
-        tCTBRefSetUOTT4_To_LeftSHBEPermanently = new TreeSet<String>();
-        groups.put(sUOTT4_To_LeftSHBEPermanently, tCTBRefSetUOTT4_To_LeftSHBEPermanently);
+//        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT1orTT4;
+//        tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT1orTT4 = new TreeSet<String>();
+//        groups.put(sUOTT4_To_LeftSHBEReturnedAsTT1orTT4, tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT1orTT4);
+//
+//        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT3OrTT6;
+//        tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT3OrTT6 = new TreeSet<String>();
+//        groups.put(sUOTT4_To_LeftSHBEReturnedAsTT3OrTT6, tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT3OrTT6);
+        TreeSet<String> tCTBRefSetUO_NotUO;
+        tCTBRefSetUO_NotUO = new TreeSet<String>();
 
-        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT1orTT4;
-        tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT1orTT4 = new TreeSet<String>();
-        groups.put(sUOTT4_To_LeftSHBEReturnedAsTT1orTT4, tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT1orTT4);
+        TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO;
+        tCTBRefSetUO_NotUO_UO_NotUO = new TreeSet<String>();
 
-        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT3OrTT6;
-        tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT3OrTT6 = new TreeSet<String>();
-        groups.put(sUOTT4_To_LeftSHBEReturnedAsTT3OrTT6, tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT3OrTT6);
+        TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO;
+        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO = new TreeSet<String>();
+
+        TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO;
+        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO = new TreeSet<String>();
+
+        TreeSet<String> tCTBRefSetUO_NotUO_UO;
+        tCTBRefSetUO_NotUO_UO = new TreeSet<String>();
+        groups.put(sUO_NotUO_UO, tCTBRefSetUO_NotUO_UO);
+
+        TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO;
+        tCTBRefSetUO_NotUO_UO_NotUO_UO = new TreeSet<String>();
+        groups.put(sUO_NotUO_UO_NotUO_UO, tCTBRefSetUO_NotUO_UO_NotUO_UO);
+
+        TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO;
+        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO = new TreeSet<String>();
+        groups.put(sUO_NotUO_UO_NotUO_UO_NotUO_UO, tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO);
+
+        TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO;
+        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO = new TreeSet<String>();
+        groups.put(sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO, tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged;
+        tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT1_To_NotUO_InSHBE_PostcodeChanged, tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged;
+        tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT1_To_NotUO_TT1_PostcodeChanged, tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged;
+        tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT1_To_NotUO_TT4_PostcodeChanged, tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged;
+        tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT4_To_NotUO_InSHBE_PostcodeChanged, tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged;
+        tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT4_To_NotUO_TT1_PostcodeChanged, tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged;
+        tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT4_To_NotUO_TT4_PostcodeChanged, tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged);
 
         TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6;
         tCTBRefSetUOTT1_To_TT3OrTT6 = new TreeSet<String>();
         groups.put(sUOTT1_To_TT3OrTT6, tCTBRefSetUOTT1_To_TT3OrTT6);
 
+        TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6AtSomePoint;
+        tCTBRefSetUOTT1_To_TT3OrTT6AtSomePoint = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT3OrTT6AtSomePoint, tCTBRefSetUOTT1_To_TT3OrTT6AtSomePoint);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999;
+        tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999 = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999, tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange;
+        tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange = new TreeSet<String>();
+
+        TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE;
+        tCTBRefSetUOTT3OrTT6_To_LeftSHBE = new TreeSet<String>();
+        groups.put(sUOTT3OrTT6_To_LeftSHBE, tCTBRefSetUOTT3OrTT6_To_LeftSHBE);
+
+        TreeSet<String> tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE;
+        tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE = new TreeSet<String>();
+        groups.put(sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE, tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE);
+
         TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6;
         tCTBRefSetUOTT4_To_TT3OrTT6 = new TreeSet<String>();
         groups.put(sUOTT4_To_TT3OrTT6, tCTBRefSetUOTT4_To_TT3OrTT6);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6AtSomePoint;
+        tCTBRefSetUOTT4_To_TT3OrTT6AtSomePoint = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT3OrTT6AtSomePoint, tCTBRefSetUOTT4_To_TT3OrTT6AtSomePoint);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999;
+        tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999 = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999, tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange;
+        tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange = new TreeSet<String>();
 
         TreeSet<String> tCTBRefSetTT3OrTT6_To_UOTT1;
         tCTBRefSetTT3OrTT6_To_UOTT1 = new TreeSet<String>();
@@ -936,65 +1736,169 @@ public class TenancyChangesUO {
         groups.put(sTT1_To_UOTT1_PostcodeUnchanged, tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged);
         TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month;
         tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month = new TreeSet<String>();
-        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month, tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month);
+        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month);
         TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months;
         tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months = new TreeSet<String>();
-        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months, tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months);
+        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
+                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months);
+        TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months;
+        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months = new TreeSet<String>();
+        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months,
+                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months);
+
+        //TreeSet<String> tCTBRefSetUOTT1OrTT1_To_UOTT4;
+        //tCTBRefSetUOTT1OrTT1_To_UOTT4 = new TreeSet<String>();
+        //groups.put(sUOTT1OrTT1_To_UOTT4, tCTBRefSetUOTT1OrTT1_To_UOTT4);
+        TreeSet<String> tCTBRefSetUOTT1_To_UOTT4;
+        tCTBRefSetUOTT1_To_UOTT4 = new TreeSet<String>();
+        groups.put(sUOTT1_To_UOTT4, tCTBRefSetUOTT1_To_UOTT4);
+        TreeSet<String> tCTBRefSetTT1_To_UOTT4;
+        tCTBRefSetTT1_To_UOTT4 = new TreeSet<String>();
+        groups.put(sTT1_To_UOTT4, tCTBRefSetTT1_To_UOTT4);
+        TreeSet<String> tCTBRefSetTT1_To_UOTT4GettingDHP;
+        tCTBRefSetTT1_To_UOTT4GettingDHP = new TreeSet<String>();
+        groups.put(sTT1_To_UOTT4GettingDHP, tCTBRefSetTT1_To_UOTT4GettingDHP);
 
         TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged;
         tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged = new TreeSet<String>();
         groups.put(sTT4_To_UOTT4_PostcodeUnchanged, tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged);
         TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month;
         tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month = new TreeSet<String>();
-        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month, tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month);
+        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month);
         TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months;
         tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months = new TreeSet<String>();
-        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months, tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months);
+        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
+                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months);
+        TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months;
+        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months = new TreeSet<String>();
+        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
+                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months);
+
+        //TreeSet<String> tCTBRefSetUOTT4OrTT4_To_UOTT1;
+        //tCTBRefSetUOTT4OrTT4_To_UOTT1 = new TreeSet<String>();
+        //groups.put(sUOTT4OrTT4_To_UOTT1, tCTBRefSetUOTT4OrTT4_To_UOTT1);
+        //TreeSet<String> tCTBRefSetUOTT4OrTT4_To_UOTT1InArrears;
+        //tCTBRefSetUOTT4OrTT4_To_UOTT1InArrears = new TreeSet<String>();
+        //groups.put(sUOTT4OrTT4_To_UOTT1InArrears, tCTBRefSetUOTT4OrTT4_To_UOTT1InArrears);
+        //TreeSet<String> tCTBRefSetUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP;
+        //tCTBRefSetUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP = new TreeSet<String>();
+        //groups.put(sUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP,
+        //        tCTBRefSetUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP);
+        TreeSet<String> tCTBRefSetUOTT4_To_UOTT1;
+        tCTBRefSetUOTT4_To_UOTT1 = new TreeSet<String>();
+        groups.put(sUOTT4_To_UOTT1, tCTBRefSetUOTT4_To_UOTT1);
+        TreeSet<String> tCTBRefSetUOTT4_To_UOTT1InArrears;
+        tCTBRefSetUOTT4_To_UOTT1InArrears = new TreeSet<String>();
+        groups.put(sUOTT4_To_UOTT1InArrears, tCTBRefSetUOTT4_To_UOTT1InArrears);
+        TreeSet<String> tCTBRefSetUOTT4_To_UOTT1GettingDHP;
+        tCTBRefSetUOTT4_To_UOTT1GettingDHP = new TreeSet<String>();
+        groups.put(sUOTT4_To_UOTT1GettingDHP,
+                tCTBRefSetUOTT4_To_UOTT1GettingDHP);
+        TreeSet<String> tCTBRefSetUOTT4_To_UOTT1InArrearsAndGettingDHP;
+        tCTBRefSetUOTT4_To_UOTT1InArrearsAndGettingDHP = new TreeSet<String>();
+        groups.put(sUOTT4_To_UOTT1InArrearsAndGettingDHP,
+                tCTBRefSetUOTT4_To_UOTT1InArrearsAndGettingDHP);
+        TreeSet<String> tCTBRefSetTT4_To_UOTT1;
+        tCTBRefSetTT4_To_UOTT1 = new TreeSet<String>();
+        groups.put(sTT4_To_UOTT1, tCTBRefSetTT4_To_UOTT1);
+        TreeSet<String> tCTBRefSetTT4_To_UOTT1InArrears;
+        tCTBRefSetTT4_To_UOTT1InArrears = new TreeSet<String>();
+        groups.put(sTT4_To_UOTT1InArrears, tCTBRefSetTT4_To_UOTT1InArrears);
+        TreeSet<String> tCTBRefSetTT4_To_UOTT1GettingDHP;
+        tCTBRefSetTT4_To_UOTT1GettingDHP = new TreeSet<String>();
+        groups.put(sTT4_To_UOTT1GettingDHP,
+                tCTBRefSetTT4_To_UOTT1GettingDHP);
+        TreeSet<String> tCTBRefSetTT4_To_UOTT1InArrearsAndGettingDHP;
+        tCTBRefSetTT4_To_UOTT1InArrearsAndGettingDHP = new TreeSet<String>();
+        groups.put(sTT4_To_UOTT1InArrearsAndGettingDHP,
+                tCTBRefSetTT4_To_UOTT1InArrearsAndGettingDHP);
+
+        TreeSet<String> tCTBRefSetInArrearsAtSomePoint;
+        tCTBRefSetInArrearsAtSomePoint = new TreeSet<String>();
+        TreeSet<String> tCTBRefSetDHPAtSomePoint;
+        tCTBRefSetDHPAtSomePoint = new TreeSet<String>();
+        TreeSet<String> tCTBRefSetInArrearsAtSomePoint_And_DHPAtSomePoint;
+        tCTBRefSetInArrearsAtSomePoint_And_DHPAtSomePoint = new TreeSet<String>();
+        groups.put(sInArrearsAtSomePoint_And_DHPAtSomePoint,
+                tCTBRefSetInArrearsAtSomePoint_And_DHPAtSomePoint);
 
         TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged;
         tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged = new TreeSet<String>();
         groups.put(sUOTT1_To_TT1_PostcodeUnchanged, tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged);
         TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month;
         tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month = new TreeSet<String>();
-        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month, tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month);
+        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month);
         TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months;
         tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months = new TreeSet<String>();
-        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months, tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months);
+        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
+                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months);
+        TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months;
+        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months,
+                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months);
 
         TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged;
         tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged = new TreeSet<String>();
         groups.put(sUOTT4_To_TT4_PostcodeUnchanged, tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged);
         TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month;
         tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month = new TreeSet<String>();
-        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month, tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month);
+        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month);
         TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months;
         tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months = new TreeSet<String>();
-        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months, tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months);
+        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
+                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months);
+        TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months;
+        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months,
+                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months);
 
         TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious;
         tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious = new TreeSet<String>();
         TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged2MonthsPrevious;
         tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged2MonthsPrevious = new TreeSet<String>();
+        TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged3MonthsPrevious;
+        tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged3MonthsPrevious = new TreeSet<String>();
+
         TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious;
         tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious = new TreeSet<String>();
         TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged2MonthsPrevious;
         tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged2MonthsPrevious = new TreeSet<String>();
+        TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged3MonthsPrevious;
+        tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged3MonthsPrevious = new TreeSet<String>();
+
         TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged1MonthPrevious;
         tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged1MonthPrevious = new TreeSet<String>();
         TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged2MonthsPrevious;
         tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged2MonthsPrevious = new TreeSet<String>();
+        TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged3MonthsPrevious;
+        tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged3MonthsPrevious = new TreeSet<String>();
+
         TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged1MonthPrevious;
         tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged1MonthPrevious = new TreeSet<String>();
         TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged2MonthsPrevious;
         tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged2MonthsPrevious = new TreeSet<String>();
+        TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged3MonthsPrevious;
+        tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged3MonthsPrevious = new TreeSet<String>();
 
         TreeSet<String> tCTBRefSetUOTT1_ToTT1_PostcodeChanged;
         tCTBRefSetUOTT1_ToTT1_PostcodeChanged = new TreeSet<String>();
         groups.put(sUOTT1_To_TT1_PostcodeChanged, tCTBRefSetUOTT1_ToTT1_PostcodeChanged);
 
+        TreeSet<String> tCTBRefSetUOTT1_ToUOTT1_PostcodeChanged;
+        tCTBRefSetUOTT1_ToUOTT1_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT1_To_UOTT1_PostcodeChanged, tCTBRefSetUOTT1_ToUOTT1_PostcodeChanged);
+
         TreeSet<String> tCTBRefSetUOTT4_ToTT4_PostcodeChanged;
         tCTBRefSetUOTT4_ToTT4_PostcodeChanged = new TreeSet<String>();
         groups.put(sUOTT4_To_TT4_PostcodeChanged, tCTBRefSetUOTT4_ToTT4_PostcodeChanged);
+
+        TreeSet<String> tCTBRefSetUOTT4_ToUOTT4_PostcodeChanged;
+        tCTBRefSetUOTT4_ToUOTT4_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT4_To_UOTT4_PostcodeChanged, tCTBRefSetUOTT4_ToUOTT4_PostcodeChanged);
 
         TreeSet<String> tCTBRefSetTT1_ToUOTT1_PostcodeChanged;
         tCTBRefSetTT1_ToUOTT1_PostcodeChanged = new TreeSet<String>();
@@ -1003,6 +1907,18 @@ public class TenancyChangesUO {
         TreeSet<String> tCTBRefSetTT4_ToUOTT4_PostcodeChanged;
         tCTBRefSetTT4_ToUOTT4_PostcodeChanged = new TreeSet<String>();
         groups.put(sTT4_To_UOTT4_PostcodeChanged, tCTBRefSetTT4_ToUOTT4_PostcodeChanged);
+
+        TreeSet<String> tCTBRefSetUOClaimsRecievingDHP;
+        tCTBRefSetUOClaimsRecievingDHP = new TreeSet<String>();
+        groups.put(sUOClaimsRecievingDHP, tCTBRefSetUOClaimsRecievingDHP);
+
+        TreeSet<String> tCTBRefSetUOTT1ClaimsInRentArrearsAtSomePoint;
+        tCTBRefSetUOTT1ClaimsInRentArrearsAtSomePoint = new TreeSet<String>();
+        groups.put(sUOTT1ClaimsInRentArrearsAtSomePoint, tCTBRefSetUOTT1ClaimsInRentArrearsAtSomePoint);
+
+        TreeSet<String> tCTBRefSetUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint;
+        tCTBRefSetUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint = new TreeSet<String>();
+        groups.put(sUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint, tCTBRefSetUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint);
 
         String aCTBRef;
         Iterator<String> tCTBRefsIte;
@@ -1131,13 +2047,17 @@ public class TenancyChangesUO {
         tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedThisMonth = new TreeSet<String>();
         TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth;
         tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth = new TreeSet<String>();
-        
+
         // Add TT of all CTBRefs to result
+        boolean[] processBoolean;
+        totalCount_UOClaims = 0;
+        totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms = 0;
         tCTBRefsIte = tCTBRefs.iterator();
         while (tCTBRefsIte.hasNext()) {
             aCTBRef = tCTBRefsIte.next();
             aDW_SHBE_Record = aRecords.get(aCTBRef);
-            process(
+            processBoolean = process(
+                    tUOClaims,
                     aggregateStatistics,
                     generalStatistics,
                     aCTBRef,
@@ -1156,6 +2076,7 @@ public class TenancyChangesUO {
                     tIDSetRSLUniquePartnersEffected,
                     tRSLMaxNumberOfDependentsInClaimWhenUO,
                     tIDSetRSLUniqueNonDependentsEffected,
+                    tIDSetUniqueDependentChildrenUnderAge10Effected,
                     tCTBRefSetTravellers,
                     tCTBRefSetTTNot1Or4AndUnderOccupying,
                     tCTBRefSetTT1_To_TT3,
@@ -1164,50 +2085,139 @@ public class TenancyChangesUO {
                     tCTBRefSetTT3_To_TT4,
                     tCTBRefSetMoved,
                     tCTBRefSetChangedTT,
+                    tCTBRefSetUOAtSomePoint,
+                    tCTBRefSetUOTT1AtSomePoint,
+                    tCTBRefSetUOTT4AtSomePoint,
                     tCTBRefSetAlwaysUOFromStart,
                     tCTBRefSetAlwaysUOFromWhenStarted,
                     tCTBRefSetIntermitantUO,
-                    tCTBRefSetUO_To_LeftSHBE,
+                    tCTBRefSetUO_To_LeftSHBEAtSomePoint,
                     tCTBRefSetUOTT1_To_LeftSHBE,
-                    tCTBRefSetUOTT1_To_LeftSHBEPermanently,
-                    tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT1orTT4,
-                    tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT3OrTT6,
                     tCTBRefSetUOTT4_To_LeftSHBE,
-                    tCTBRefSetUOTT4_To_LeftSHBEPermanently,
-                    tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT1orTT4,
-                    tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT3OrTT6,
+                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE,
+                    tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE,
+                    //tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT1orTT4,
+                    //tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT3OrTT6,
+                    //tCTBRefSetUOTT4_To_LeftSHBEAndHaveNotReturned,
+                    //tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT1orTT4,
+                    //tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT3OrTT6,
+                    //tCTBRefSetUO_To_LeftSHBETheVeryNextMonth,
+                    tCTBRefSetUO_To_LeftSHBETheVeryNextMonth,
+                    tCTBRefSetUO_To_LeftSHBEBetweenOneAndTwoMonths,
+                    tCTBRefSetUO_To_LeftSHBEBetweenTwoAndThreeMonths,
+                    tCTBRefSetUO_To_LeftSHBEAndNotReturned,
+                    tCTBRefSetUOTT1_To_LeftSHBEAndNotReturned,
+                    tCTBRefSetUOTT4_To_LeftSHBEAndNotReturned,
+                    tCTBRefSetUOTT3OrTT6_To_LeftSHBEAndNotReturned,
+                    tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEAndNotReturned,
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1,
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4,
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8,
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9,
+                    tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1,
+                    tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                    tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4,
+                    tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                    tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT8,
+                    tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9,
+                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1,
+                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4,
+                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8,
+                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9,
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+                    tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+                    tCTBRefSetUO_NotUO,
+                    tCTBRefSetUO_NotUO_UO,
+                    tCTBRefSetUO_NotUO_UO_NotUO,
+                    tCTBRefSetUO_NotUO_UO_NotUO_UO,
+                    tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO,
+                    tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO,
+                    tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO,
+                    tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO,
+                    tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged,
+                    tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged,
+                    tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged,
+                    tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged,
+                    tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged,
+                    tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged,
                     tCTBRefSetUOTT1_To_TT3OrTT6,
+                    tCTBRefSetUOTT1_To_TT3OrTT6AtSomePoint,
+                    tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                    tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange,
                     tCTBRefSetUOTT4_To_TT3OrTT6,
+                    tCTBRefSetUOTT4_To_TT3OrTT6AtSomePoint,
+                    tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                    tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange,
                     tCTBRefSetTT3OrTT6_To_UOTT1,
                     tCTBRefSetTT3OrTT6_To_UOTT4,
                     tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged,
                     tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth,
                     tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
                     tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
+                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months,
                     tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious,
                     tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged2MonthsPrevious,
+                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged3MonthsPrevious,
+                    //tCTBRefSetUOTT1OrTT1_To_UOTT4,
+                    tCTBRefSetUOTT1_To_UOTT4,
+                    tCTBRefSetTT1_To_UOTT4,
+                    tCTBRefSetTT1_To_UOTT4GettingDHP,
                     tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged,
                     tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedThisMonth,
                     tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
                     tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
+                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
                     tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious,
                     tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged2MonthsPrevious,
+                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged3MonthsPrevious,
+                    //tCTBRefSetUOTT4OrTT4_To_UOTT1,
+                    //tCTBRefSetUOTT4OrTT4_To_UOTT1InArrears,
+                    //tCTBRefSetUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP,
+                    tCTBRefSetUOTT4_To_UOTT1,
+                    tCTBRefSetUOTT4_To_UOTT1InArrears,
+                    tCTBRefSetUOTT4_To_UOTT1GettingDHP,
+                    tCTBRefSetUOTT4_To_UOTT1InArrearsAndGettingDHP,
+                    tCTBRefSetTT4_To_UOTT1,
+                    tCTBRefSetTT4_To_UOTT1InArrears,
+                    tCTBRefSetTT4_To_UOTT1GettingDHP,
+                    tCTBRefSetTT4_To_UOTT1InArrearsAndGettingDHP,
+                    tCTBRefSetInArrearsAtSomePoint,
+                    tCTBRefSetDHPAtSomePoint,
                     tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged,
                     tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedThisMonth,
                     tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
                     tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
+                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months,
                     tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged1MonthPrevious,
                     tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged2MonthsPrevious,
+                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged3MonthsPrevious,
                     tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged,
                     tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth,
                     tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
                     tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
+                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months,
                     tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged1MonthPrevious,
                     tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged2MonthsPrevious,
+                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged3MonthsPrevious,
                     tCTBRefSetUOTT1_ToTT1_PostcodeChanged,
+                    tCTBRefSetUOTT1_ToUOTT1_PostcodeChanged,
                     tCTBRefSetUOTT4_ToTT4_PostcodeChanged,
+                    tCTBRefSetUOTT4_ToUOTT4_PostcodeChanged,
                     tCTBRefSetTT1_ToUOTT1_PostcodeChanged,
-                    tCTBRefSetTT4_ToUOTT4_PostcodeChanged);
+                    tCTBRefSetTT4_ToUOTT4_PostcodeChanged,
+                    tCTBRefSetUOClaimsRecievingDHP,
+                    tCTBRefSetUOTT1ClaimsInRentArrearsAtSomePoint,
+                    tCTBRefSetUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint);
+            if (processBoolean[0]) {
+                totalCount_UOClaims++;
+            }
+            if (processBoolean[1]) {
+                totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms++;
+            }
         }
 
         tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious = tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth;
@@ -1219,8 +2229,22 @@ public class TenancyChangesUO {
         tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedThisMonth = new TreeSet<String>();
         tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth = new TreeSet<String>();
 
+        String yearMonth;
+        yearMonth = year + "-" + month;
+        totalCounts_cumulativeUniqueClaims.put(
+                yearMonth,
+                tUOClaims.size());
+        totalCounts_UOClaims.put(
+                yearMonth,
+                totalCount_UOClaims);
+        totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms.put(
+                yearMonth,
+                totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms);
+
         // Iterate over the rest of the data
         while (includeIte.hasNext()) {
+            totalCount_UOClaims = 0;
+            totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms = 0;
             i = includeIte.next();
             bRecords = aRecords;
             aSHBEFilename = SHBEFilenames[i];
@@ -1236,7 +2260,8 @@ public class TenancyChangesUO {
             while (tCTBRefsIte.hasNext()) {
                 aCTBRef = tCTBRefsIte.next();
                 aDW_SHBE_Record = aRecords.get(aCTBRef);
-                process(
+                processBoolean = process(
+                        tUOClaims,
                         aggregateStatistics,
                         generalStatistics,
                         aCTBRef,
@@ -1255,6 +2280,7 @@ public class TenancyChangesUO {
                         tIDSetRSLUniquePartnersEffected,
                         tRSLMaxNumberOfDependentsInClaimWhenUO,
                         tIDSetRSLUniqueNonDependentsEffected,
+                        tIDSetUniqueDependentChildrenUnderAge10Effected,
                         tCTBRefSetTravellers,
                         tCTBRefSetTTNot1Or4AndUnderOccupying,
                         tCTBRefSetTT1_To_TT3,
@@ -1263,64 +2289,177 @@ public class TenancyChangesUO {
                         tCTBRefSetTT3_To_TT4,
                         tCTBRefSetMoved,
                         tCTBRefSetChangedTT,
+                        tCTBRefSetUOAtSomePoint,
+                        tCTBRefSetUOTT1AtSomePoint,
+                        tCTBRefSetUOTT4AtSomePoint,
                         tCTBRefSetAlwaysUOFromStart,
                         tCTBRefSetAlwaysUOFromWhenStarted,
                         tCTBRefSetIntermitantUO,
-                        tCTBRefSetUO_To_LeftSHBE,
+                        tCTBRefSetUO_To_LeftSHBEAtSomePoint,
                         tCTBRefSetUOTT1_To_LeftSHBE,
-                        tCTBRefSetUOTT1_To_LeftSHBEPermanently,
-                        tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT1orTT4,
-                        tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT3OrTT6,
                         tCTBRefSetUOTT4_To_LeftSHBE,
-                        tCTBRefSetUOTT4_To_LeftSHBEPermanently,
-                        tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT1orTT4,
-                        tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT3OrTT6,
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE,
+                        tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE,
+                        //tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT1orTT4,
+                        //tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT3OrTT6,
+                        //tCTBRefSetUOTT4_To_LeftSHBEAndHaveNotReturned,
+                        //tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT1orTT4,
+                        //tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT3OrTT6,
+                        //tCTBRefSetUO_To_LeftSHBETheVeryNextMonth,
+                        tCTBRefSetUO_To_LeftSHBETheVeryNextMonth,
+                        tCTBRefSetUO_To_LeftSHBEBetweenOneAndTwoMonths,
+                        tCTBRefSetUO_To_LeftSHBEBetweenTwoAndThreeMonths,
+                        tCTBRefSetUO_To_LeftSHBEAndNotReturned,
+                        tCTBRefSetUOTT1_To_LeftSHBEAndNotReturned,
+                        tCTBRefSetUOTT4_To_LeftSHBEAndNotReturned,
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBEAndNotReturned,
+                        tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEAndNotReturned,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9,
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1,
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4,
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT8,
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9,
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1,
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4,
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8,
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+                        tCTBRefSetUO_NotUO,
+                        tCTBRefSetUO_NotUO_UO,
+                        tCTBRefSetUO_NotUO_UO_NotUO,
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO,
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO,
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO,
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO,
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO,
+                        tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged,
+                        tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged,
+                        tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged,
+                        tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged,
+                        tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged,
+                        tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged,
                         tCTBRefSetUOTT1_To_TT3OrTT6,
+                        tCTBRefSetUOTT1_To_TT3OrTT6AtSomePoint,
+                        tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                        tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange,
                         tCTBRefSetUOTT4_To_TT3OrTT6,
+                        tCTBRefSetUOTT4_To_TT3OrTT6AtSomePoint,
+                        tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                        tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange,
                         tCTBRefSetTT3OrTT6_To_UOTT1,
                         tCTBRefSetTT3OrTT6_To_UOTT4,
                         tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged,
                         tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth,
                         tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
                         tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
+                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months,
                         tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious,
                         tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged2MonthsPrevious,
+                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged3MonthsPrevious,
+                        //tCTBRefSetUOTT1OrTT1_To_UOTT4,
+                        tCTBRefSetUOTT1_To_UOTT4,
+                        tCTBRefSetTT1_To_UOTT4,
+                        tCTBRefSetTT1_To_UOTT4GettingDHP,
                         tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged,
                         tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedThisMonth,
                         tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
                         tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
+                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
                         tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious,
                         tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged2MonthsPrevious,
+                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged3MonthsPrevious,
+                        //tCTBRefSetUOTT4OrTT4_To_UOTT1,
+                        //tCTBRefSetUOTT4OrTT4_To_UOTT1InArrears,
+                        //tCTBRefSetUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP,
+                        tCTBRefSetUOTT4_To_UOTT1,
+                        tCTBRefSetUOTT4_To_UOTT1InArrears,
+                        tCTBRefSetUOTT4_To_UOTT1GettingDHP,
+                        tCTBRefSetUOTT4_To_UOTT1InArrearsAndGettingDHP,
+                        tCTBRefSetTT4_To_UOTT1,
+                        tCTBRefSetTT4_To_UOTT1InArrears,
+                        tCTBRefSetTT4_To_UOTT1GettingDHP,
+                        tCTBRefSetTT4_To_UOTT1InArrearsAndGettingDHP,
+                        tCTBRefSetInArrearsAtSomePoint,
+                        tCTBRefSetDHPAtSomePoint,
                         tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged,
                         tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedThisMonth,
                         tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
                         tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
+                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months,
                         tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged1MonthPrevious,
                         tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged2MonthsPrevious,
+                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged3MonthsPrevious,
                         tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged,
                         tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth,
                         tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
                         tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
+                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months,
                         tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged1MonthPrevious,
                         tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged2MonthsPrevious,
+                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged3MonthsPrevious,
                         tCTBRefSetUOTT1_ToTT1_PostcodeChanged,
+                        tCTBRefSetUOTT1_ToUOTT1_PostcodeChanged,
                         tCTBRefSetUOTT4_ToTT4_PostcodeChanged,
+                        tCTBRefSetUOTT4_ToUOTT4_PostcodeChanged,
                         tCTBRefSetTT1_ToUOTT1_PostcodeChanged,
-                        tCTBRefSetTT4_ToUOTT4_PostcodeChanged);
+                        tCTBRefSetTT4_ToUOTT4_PostcodeChanged,
+                        tCTBRefSetUOClaimsRecievingDHP,
+                        tCTBRefSetUOTT1ClaimsInRentArrearsAtSomePoint,
+                        tCTBRefSetUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint);
+                if (processBoolean[0]) {
+                    totalCount_UOClaims++;
+                }
+                if (processBoolean[1]) {
+                    totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms++;
+                }
             }
+            tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged3MonthsPrevious = tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged2MonthsPrevious;
+            tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged3MonthsPrevious = tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged2MonthsPrevious;
             tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged2MonthsPrevious = tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious;
             tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged2MonthsPrevious = tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious;
             tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious = tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth;
             tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious = tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedThisMonth;
             tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth = new TreeSet<String>();
             tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedThisMonth = new TreeSet<String>();
+
+            tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged3MonthsPrevious = tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged2MonthsPrevious;
+            tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged3MonthsPrevious = tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged2MonthsPrevious;
             tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged2MonthsPrevious = tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged1MonthPrevious;
             tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged2MonthsPrevious = tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged1MonthPrevious;
             tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged1MonthPrevious = tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedThisMonth;
             tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged1MonthPrevious = tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth;
             tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedThisMonth = new TreeSet<String>();
             tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth = new TreeSet<String>();
+
+            yearMonth = year + "-" + month;
+            totalCounts_cumulativeUniqueClaims.put(
+                    yearMonth,
+                    tUOClaims.size());
+            totalCounts_UOClaims.put(
+                    yearMonth,
+                    totalCount_UOClaims);
+            totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms.put(
+                    yearMonth,
+                    totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms);
         }
+
+        tCTBRefSetInArrearsAtSomePoint_And_DHPAtSomePoint.addAll(tCTBRefSetInArrearsAtSomePoint);
+        tCTBRefSetInArrearsAtSomePoint_And_DHPAtSomePoint.retainAll(tCTBRefSetDHPAtSomePoint);
+
+//        tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.removeAll(tCTBRefSetUOTT1_To_LeftSHBEAndNotReturned);
+//        tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.removeAll(tCTBRefSetUOTT4_To_LeftSHBEAndNotReturned);
+        tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.retainAll(tCTBRefSetUOTT1_To_TT3OrTT6AtSomePoint);
+        tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.retainAll(tCTBRefSetUOTT4_To_TT3OrTT6AtSomePoint);
 
         header += sCommaSpace + "HBDPTotal";
 
@@ -1417,7 +2556,7 @@ public class TenancyChangesUO {
         tCTBRefSetIntermitantUOMovedNotChangedTT.removeAll(tCTBRefSetChangedTT);
         groups.put(sIntermitantUO__Moved_NotChangedTT, tCTBRefSetIntermitantUOMovedNotChangedTT);
 
-        checkSets(
+        checkSetsAndAddToGeneralStatistics(
                 generalStatistics,
                 tCTBRefs,
                 tCouncilCTBRefs,
@@ -1430,10 +2569,22 @@ public class TenancyChangesUO {
                 tIDSetRSLUniquePartnersEffected,
                 tRSLMaxNumberOfDependentsInClaimWhenUO,
                 tIDSetRSLUniqueNonDependentsEffected,
+                tIDSetUniqueDependentChildrenUnderAge10Effected,
                 groups);
 
-        generalStatistics.put(sTotalCount_AlwaysUOFromStart,
-                BigDecimal.valueOf(tCTBRefSetAlwaysUOFromStart.size()));
+        long totalHouseholdSize = 0;
+        Iterator<String> iteS;
+        iteS = tCTBRefSetAlwaysUOFromStart.iterator();
+        while         (iteS.hasNext()) {
+            aCTBRef = iteS.next();
+            totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(aRecords.get(aCTBRef));
+        }
+        double averageHouseholdSizeOfThoseUOAlwaysFromStart;
+        averageHouseholdSizeOfThoseUOAlwaysFromStart = (double) totalHouseholdSize / (double) tCTBRefSetAlwaysUOFromStart.size();
+        generalStatistics.put(sAverageHouseholdSizeOfThoseUOAlwaysFromStart,
+                BigDecimal.valueOf(averageHouseholdSizeOfThoseUOAlwaysFromStart));
+        
+        
         generalStatistics.put(sTotalCount_AlwaysUOFromStart,
                 BigDecimal.valueOf(tCTBRefSetAlwaysUOFromStart.size()));
         generalStatistics.put(sTotalCount_AlwaysUOFromWhenStarted,
@@ -1453,10 +2604,11 @@ public class TenancyChangesUO {
         result[4] = preUnderOccupancyValues;
         result[5] = aggregateStatistics;
         result[6] = generalStatistics;
+        result[7] = timeStatistics;
         return result;
     }
 
-    protected void checkSets(
+    protected void checkSetsAndAddToGeneralStatistics(
             TreeMap<String, BigDecimal> generalStatistics,
             HashSet<String> tCTBRefs,
             HashSet<String> tCouncilCTBRefs,
@@ -1469,6 +2621,7 @@ public class TenancyChangesUO {
             HashSet<ID> tIDSetRSLUniquePartnersEffected,
             HashMap<String, Integer> tRSLMaxNumberOfDependentsInClaimWhenUO,
             HashSet<ID> tIDSetRSLUniqueNonDependentsEffected,
+            HashSet<ID> tIDSetUniqueDependentChildrenUnderAge10Effected,
             HashMap<String, TreeSet<String>> groups) {
         HashSet<ID> tIDSetCouncilUniqueIndividualsEffected;
         tIDSetCouncilUniqueIndividualsEffected = new HashSet<ID>();
@@ -1512,39 +2665,175 @@ public class TenancyChangesUO {
         System.out.println("From April 2013 to October 2015 there were the "
                 + "following counts of claims and individuals effected by "
                 + "UnderOccupancy:");
-        generalStatistics.put(
-                sUO_To_LeftSHBE,
-                BigDecimal.valueOf(groups.get(sUO_To_LeftSHBE).size()));
+        generalStatistics.put(sUO_To_LeftSHBEAtSomePoint,
+                BigDecimal.valueOf(groups.get(sUO_To_LeftSHBEAtSomePoint).size()));
         generalStatistics.put(
                 sUOTT1_To_LeftSHBE,
                 BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE).size()));
         generalStatistics.put(
-                sUOTT1_To_LeftSHBEPermanently,
-                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBEPermanently).size()));
-        generalStatistics.put(
-                sUOTT1_To_LeftSHBEReturnedAsTT1orTT4,
-                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBEReturnedAsTT1orTT4).size()));
-        generalStatistics.put(
-                sUOTT1_To_LeftSHBEReturnedAsTT3OrTT6,
-                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBEReturnedAsTT3OrTT6).size()));
-        generalStatistics.put(
                 sUOTT4_To_LeftSHBE,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE).size()));
         generalStatistics.put(
-                sUOTT4_To_LeftSHBEPermanently,
-                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBEPermanently).size()));
+                sUOTT3OrTT6_To_LeftSHBE,
+                BigDecimal.valueOf(groups.get(sUOTT3OrTT6_To_LeftSHBE).size()));
         generalStatistics.put(
-                sUOTT4_To_LeftSHBEReturnedAsTT1orTT4,
-                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBEReturnedAsTT1orTT4).size()));
+                sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE,
+                BigDecimal.valueOf(groups.get(sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE).size()));
+        generalStatistics.put(sUO_To_LeftSHBE,
+                BigDecimal.valueOf(groups.get(sUO_To_LeftSHBE).size()));
         generalStatistics.put(
-                sUOTT4_To_LeftSHBEReturnedAsTT3OrTT6,
-                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBEReturnedAsTT3OrTT6).size()));
+                sUO_To_LeftSHBEBetweenOneAndTwoMonths,
+                BigDecimal.valueOf(groups.get(sUO_To_LeftSHBEBetweenOneAndTwoMonths).size()));
+        generalStatistics.put(
+                sUO_To_LeftSHBEBetweenTwoAndThreeMonths,
+                BigDecimal.valueOf(groups.get(sUO_To_LeftSHBEBetweenTwoAndThreeMonths).size()));
+        generalStatistics.put(sUO_To_LeftSHBE_NotReturned,
+                BigDecimal.valueOf(groups.get(sUO_To_LeftSHBE_NotReturned).size()));
+        generalStatistics.put(sUOTT1_To_LeftSHBE_NotReturned,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_NotReturned).size()));
+        generalStatistics.put(sUOTT4_To_LeftSHBE_NotReturned,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_NotReturned).size()));
+        generalStatistics.put(sUOTT3OrTT6_To_LeftSHBE_NotReturned,
+                BigDecimal.valueOf(groups.get(sUOTT3OrTT6_To_LeftSHBE_NotReturned).size()));
+        generalStatistics.put(sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned,
+                BigDecimal.valueOf(groups.get(sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned).size()));
+        generalStatistics.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsTT1,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_ReturnedAsTT1).size()));
+        generalStatistics.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6).size()));
+        generalStatistics.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsTT4,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_ReturnedAsTT4).size()));
+        generalStatistics.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7).size()));
+        generalStatistics.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsTT8,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_ReturnedAsTT8).size()));
+        generalStatistics.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsTT9,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_ReturnedAsTT9).size()));
+        generalStatistics.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsTT1,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_ReturnedAsTT1).size()));
+        generalStatistics.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6).size()));
+        generalStatistics.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsTT4,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_ReturnedAsTT4).size()));
+        generalStatistics.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7).size()));
+        generalStatistics.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsTT8,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_ReturnedAsTT8).size()));
+        generalStatistics.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsTT9,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_ReturnedAsTT9).size()));
+        generalStatistics.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1,
+                BigDecimal.valueOf(groups.get(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1).size()));
+        generalStatistics.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                BigDecimal.valueOf(groups.get(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6).size()));
+        generalStatistics.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4,
+                BigDecimal.valueOf(groups.get(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4).size()));
+        generalStatistics.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                BigDecimal.valueOf(groups.get(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7).size()));
+        generalStatistics.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8,
+                BigDecimal.valueOf(groups.get(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8).size()));
+        generalStatistics.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9,
+                BigDecimal.valueOf(groups.get(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9).size()));
+        generalStatistics.put(
+                sUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint).size()));
+        generalStatistics.put(
+                sUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint).size()));
+//                sUOTT1_To_LeftSHBE,
+//                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE).size()));
+//        generalStatistics.put(
+//                sUOTT1_To_LeftSHBE,
+//                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE).size()));
+//        generalStatistics.put(
+//                sUOTT1_To_LeftSHBEAndHaveNotReturned,
+//                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBEAndHaveNotReturned).size()));
+//        generalStatistics.put(
+//                sUOTT1_To_LeftSHBEReturnedAsTT1orTT4,
+//                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBEReturnedAsTT1orTT4).size()));
+//        generalStatistics.put(
+//                sUOTT1_To_LeftSHBEReturnedAsTT3OrTT6,
+//                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBEReturnedAsTT3OrTT6).size()));
+//        generalStatistics.put(
+//                sUOTT4_To_LeftSHBE,
+//                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE).size()));
+//        generalStatistics.put(
+//                sUOTT4_To_LeftSHBEAndHaveNotReturned,
+//                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBEAndHaveNotReturned).size()));
+//        generalStatistics.put(
+//                sUOTT4_To_LeftSHBEReturnedAsTT1orTT4,
+//                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBEReturnedAsTT1orTT4).size()));
+//        generalStatistics.put(
+//                sUOTT4_To_LeftSHBEReturnedAsTT3OrTT6,
+//                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBEReturnedAsTT3OrTT6).size()));
+
+        generalStatistics.put(
+                sUO_NotUO_UO,
+                BigDecimal.valueOf(groups.get(sUO_NotUO_UO).size()));
+        generalStatistics.put(
+                sUO_NotUO_UO_NotUO_UO,
+                BigDecimal.valueOf(groups.get(sUO_NotUO_UO_NotUO_UO).size()));
+        generalStatistics.put(
+                sUO_NotUO_UO_NotUO_UO_NotUO_UO,
+                BigDecimal.valueOf(groups.get(sUO_NotUO_UO_NotUO_UO_NotUO_UO).size()));
+        generalStatistics.put(
+                sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO,
+                BigDecimal.valueOf(groups.get(sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO).size()));
+
+        generalStatistics.put(
+                sUOTT1_To_NotUO_InSHBE_PostcodeChanged,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_NotUO_InSHBE_PostcodeChanged).size()));
+        generalStatistics.put(
+                sUOTT1_To_NotUO_TT1_PostcodeChanged,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_NotUO_TT1_PostcodeChanged).size()));
+        generalStatistics.put(
+                sUOTT1_To_NotUO_TT4_PostcodeChanged,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_NotUO_TT4_PostcodeChanged).size()));
+        generalStatistics.put(
+                sUOTT4_To_NotUO_InSHBE_PostcodeChanged,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_NotUO_InSHBE_PostcodeChanged).size()));
+        generalStatistics.put(
+                sUOTT4_To_NotUO_TT1_PostcodeChanged,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_NotUO_TT1_PostcodeChanged).size()));
+        generalStatistics.put(
+                sUOTT4_To_NotUO_TT4_PostcodeChanged,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_NotUO_TT4_PostcodeChanged).size()));
+
         generalStatistics.put(
                 sUOTT1_To_TT3OrTT6,
                 BigDecimal.valueOf(groups.get(sUOTT1_To_TT3OrTT6).size()));
         generalStatistics.put(
+                sUOTT1_To_TT3OrTT6AtSomePoint,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT3OrTT6AtSomePoint).size()));
+        generalStatistics.put(
+                sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999).size()));
+        generalStatistics.put(
                 sUOTT4_To_TT3OrTT6,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_TT3OrTT6).size()));
+        generalStatistics.put(
+                sUOTT4_To_TT3OrTT6AtSomePoint,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT3OrTT6AtSomePoint).size()));
+        generalStatistics.put(
+                sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999).size()));
         generalStatistics.put(
                 sTT3OrTT6_To_UOTT1,
                 BigDecimal.valueOf(groups.get(sTT3OrTT6_To_UOTT1).size()));
@@ -1558,6 +2847,21 @@ public class TenancyChangesUO {
                 BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month).size()));
         generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
                 BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months).size()));
+        generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months,
+                BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months).size()));
+
+        //generalStatistics.put(sUOTT1OrTT1_To_UOTT4,
+        //        BigDecimal.valueOf(groups.get(sUOTT1OrTT1_To_UOTT4).size()));
+        generalStatistics.put(sUOTT1_To_UOTT4,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_UOTT4).size()));
+        generalStatistics.put(sTT1_To_UOTT4,
+                BigDecimal.valueOf(groups.get(sTT1_To_UOTT4).size()));
+        generalStatistics.put(sTT1_To_UOTT4GettingDHP,
+                BigDecimal.valueOf(groups.get(sTT1_To_UOTT4GettingDHP).size()));
+//        generalStatistics.put(sTT1_To_UOTT4InArrears,
+//                BigDecimal.valueOf(groups.get(sTT1_To_UOTT4InArrears).size()));
+//        generalStatistics.put(sTT1_To_UOTT4InArrearsAndGettingDHP,
+//                BigDecimal.valueOf(groups.get(sTT1_To_UOTT4InArrearsAndGettingDHP).size()));
 
         generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchanged,
                 BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchanged).size()));
@@ -1565,6 +2869,31 @@ public class TenancyChangesUO {
                 BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month).size()));
         generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
                 BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months).size()));
+        generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
+                BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months).size()));
+
+        //generalStatistics.put(sUOTT4OrTT4_To_UOTT1,
+        //        BigDecimal.valueOf(groups.get(sUOTT4OrTT4_To_UOTT1).size()));
+        //generalStatistics.put(sUOTT4OrTT4_To_UOTT1InArrears,
+        //        BigDecimal.valueOf(groups.get(sUOTT4OrTT4_To_UOTT1InArrears).size()));
+        //generalStatistics.put(sUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP,
+        //        BigDecimal.valueOf(groups.get(sUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP).size()));
+        generalStatistics.put(sUOTT4_To_UOTT1,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_UOTT1).size()));
+        generalStatistics.put(sUOTT4_To_UOTT1InArrears,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_UOTT1InArrears).size()));
+        generalStatistics.put(sUOTT4_To_UOTT1GettingDHP,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_UOTT1GettingDHP).size()));
+        generalStatistics.put(sUOTT4_To_UOTT1InArrearsAndGettingDHP,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_UOTT1InArrearsAndGettingDHP).size()));
+        generalStatistics.put(sTT4_To_UOTT1,
+                BigDecimal.valueOf(groups.get(sTT4_To_UOTT1).size()));
+        generalStatistics.put(sTT4_To_UOTT1InArrears,
+                BigDecimal.valueOf(groups.get(sTT4_To_UOTT1InArrears).size()));
+        generalStatistics.put(sTT4_To_UOTT1GettingDHP,
+                BigDecimal.valueOf(groups.get(sTT4_To_UOTT1GettingDHP).size()));
+        generalStatistics.put(sTT4_To_UOTT1InArrearsAndGettingDHP,
+                BigDecimal.valueOf(groups.get(sTT4_To_UOTT1InArrearsAndGettingDHP).size()));
 
         generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchanged,
                 BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchanged).size()));
@@ -1572,6 +2901,8 @@ public class TenancyChangesUO {
                 BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month).size()));
         generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
                 BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months).size()));
+        generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months).size()));
 
         generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchanged,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchanged).size()));
@@ -1579,11 +2910,17 @@ public class TenancyChangesUO {
                 BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month).size()));
         generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months).size()));
+        generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months).size()));
 
         generalStatistics.put(sUOTT1_To_TT1_PostcodeChanged,
                 BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeChanged).size()));
+        generalStatistics.put(sUOTT1_To_UOTT1_PostcodeChanged,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_UOTT1_PostcodeChanged).size()));
         generalStatistics.put(sUOTT4_To_TT4_PostcodeChanged,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeChanged).size()));
+        generalStatistics.put(sUOTT4_To_UOTT4_PostcodeChanged,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_UOTT4_PostcodeChanged).size()));
         generalStatistics.put(sTT1_To_UOTT1_PostcodeChanged,
                 BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeChanged).size()));
         generalStatistics.put(sTT4_To_UOTT4_PostcodeChanged,
@@ -1635,9 +2972,27 @@ public class TenancyChangesUO {
         generalStatistics.put(
                 sTotalCount_RSLUniqueNonDependentsEffectedByUnderOccupancy,
                 BigDecimal.valueOf(tIDSetRSLUniqueNonDependentsEffected.size()));
+        generalStatistics.put(
+                sTotalCount_UniqueChildrenAgeLessThan10EffectedByUnderOccupancy,
+                BigDecimal.valueOf(tIDSetUniqueDependentChildrenUnderAge10Effected.size()));
+
+        generalStatistics.put(
+                sUOClaimsRecievingDHP,
+                BigDecimal.valueOf(groups.get(sUOClaimsRecievingDHP).size()));
+        generalStatistics.put(
+                sUOTT1ClaimsInRentArrearsAtSomePoint,
+                BigDecimal.valueOf(groups.get(sUOTT1ClaimsInRentArrearsAtSomePoint).size()));
+
+        generalStatistics.put(
+                sUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint,
+                BigDecimal.valueOf(groups.get(sUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint).size()));
+        generalStatistics.put(
+                sInArrearsAtSomePoint_And_DHPAtSomePoint,
+                BigDecimal.valueOf(groups.get(sInArrearsAtSomePoint_And_DHPAtSomePoint).size()));
     }
 
-    public void process(
+    public boolean[] process(
+            TreeSet<String> tUOClaims,
             TreeMap<String, BigDecimal> aggregateStatistics,
             TreeMap<String, BigDecimal> generalStatistics,
             String aCTBRef,
@@ -1656,6 +3011,7 @@ public class TenancyChangesUO {
             HashSet<ID> tIDSetRSLUniquePartnersEffected,
             HashMap<String, Integer> tRSLMaxNumberOfDependentsInClaimWhenUO,
             HashSet<ID> tIDSetRSLUniqueNonDependentsEffected,
+            HashSet<ID> tIDSetUniqueDependentChildrenUnderAge10Effected,
             TreeSet<String> tCTBRefSetTraveller,
             TreeSet<String> tCTBRefSetTTNot1Or4AndUnderOccupying,
             TreeSet<String> tCTBRefSetTT1_To_TT3OrTT6,
@@ -1664,51 +3020,136 @@ public class TenancyChangesUO {
             TreeSet<String> tCTBRefSetTT3OrTT6_To_TT4,
             TreeSet<String> tCTBRefSetMoved,
             TreeSet<String> tCTBRefSetChangedTT,
+            TreeSet<String> tCTBRefSetUOAtSomePoint,
+            TreeSet<String> tCTBRefSetUOTT1AtSomePoint,
+            TreeSet<String> tCTBRefSetUOTT4AtSomePoint,
             TreeSet<String> tCTBRefSetAlwaysUOFromStart,
             TreeSet<String> tCTBRefSetAlwaysUOFromWhenStarted,
             TreeSet<String> tCTBRefSetIntermitantUO,
-            TreeSet<String> tCTBRefSetUO_To_LeftSHBE,
+            TreeSet<String> tCTBRefSetUO_To_LeftSHBEAtSomePoint,
             TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE,
-            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBEPermanently,
-            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT1orTT4,
-            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT3OrTT6,
             TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE,
-            TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBEPermanently,
-            TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT1orTT4,
-            TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT3OrTT6,
+            TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE,
+            TreeSet<String> tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE,
+            TreeSet<String> tCTBRefSetUO_To_LeftSHBETheVeryNextMonth,
+            TreeSet<String> tCTBRefSetUO_To_LeftSHBEBetweenOneAndTwoMonths,
+            TreeSet<String> tCTBRefSetUO_To_LeftSHBEBetweenTwoAndThreeMonths,
+            TreeSet<String> tCTBRefSetUO_To_LeftSHBE_NotReturned,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_NotReturned,
+            TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_NotReturned,
+            TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_NotReturned,
+            TreeSet<String> tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9,
+            TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1,
+            TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6,
+            TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4,
+            TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7,
+            TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT8,
+            TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9,
+            TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1,
+            TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
+            TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4,
+            TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7,
+            TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8,
+            TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+            TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+            //TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT1orTT4,
+            //TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT3OrTT6,
+            //TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT1orTT4,
+            //TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT3OrTT6,
+            TreeSet<String> tCTBRefSetUO_NotUO,
+            TreeSet<String> tCTBRefSetUO_NotUO_UO,
+            TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO,
+            TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO,
+            TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO,
+            TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO,
+            TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO,
+            TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO,
+            TreeSet<String> tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged,
             TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6AtSomePoint,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange,
             TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6AtSomePoint,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange,
             TreeSet<String> tCTBRefSetTT3OrTT6_To_UOTT1,
             TreeSet<String> tCTBRefSetTT3OrTT6_To_UOTT4,
             TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged,
             TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth,
             TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
             TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months,
             TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious,
             TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged2MonthsPrevious,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged3MonthsPrevious,
+            //TreeSet<String> tCTBRefSetUOTT1OrTT1_To_UOTT4,
+            TreeSet<String> tCTBRefSetUOTT1_To_UOTT4,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT4,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT4GettingDHP,
             TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged,
             TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedThisMonth,
             TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
             TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
             TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious,
             TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged2MonthsPrevious,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged3MonthsPrevious,
+            //TreeSet<String> tCTBRefSetUOTT4OrTT4_To_UOTT1,
+            //TreeSet<String> tCTBRefSetUOTT4OrTT4_To_UOTT1InArrears,
+            //TreeSet<String> tCTBRefSetUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP,
+            TreeSet<String> tCTBRefSetUOTT4_To_UOTT1,
+            TreeSet<String> tCTBRefSetUOTT4_To_UOTT1InArrears,
+            TreeSet<String> tCTBRefSetUOTT4_To_UOTT1GettingDHP,
+            TreeSet<String> tCTBRefSetUOTT4_To_UOTT1InArrearsAndGettingDHP,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT1,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT1InArrears,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT1GettingDHP,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT1InArrearsAndGettingDHP,
+            TreeSet<String> tCTBRefSetInArrearsAtSomePoint,
+            TreeSet<String> tCTBRefSetDHPAtSomePoint,
             TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged,
             TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedThisMonth,
             TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
             TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months,
             TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged1MonthPrevious,
             TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged2MonthsPrevious,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged3MonthsPrevious,
             TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged,
             TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth,
             TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
             TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months,
             TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged1MonthPrevious,
             TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged2MonthsPrevious,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged3MonthsPrevious,
             TreeSet<String> tCTBRefSetUOTT1_ToTT1_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT1_ToUOTT1_PostcodeChanged,
             TreeSet<String> tCTBRefSetUOTT4_ToTT4_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT4_ToUOTT4_PostcodeChanged,
             TreeSet<String> tCTBRefSetTT1_ToUOTT1_PostcodeChanged,
-            TreeSet<String> tCTBRefSetTT4_ToUOTT4_PostcodeChanged
+            TreeSet<String> tCTBRefSetTT4_ToUOTT4_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOClaimsRecievingDHP,
+            TreeSet<String> tCTBRefSetUOTT1ClaimsInRentArrearsAtSomePoint,
+            TreeSet<String> tCTBRefSetUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint
     ) {
+        boolean[] result = new boolean[2];
+        result[0] = false; // UnderOcuupied
+        result[1] = false; // 
+        int cumulativeClaims;
         String aS;
         String key;
         DW_SHBE_D_Record aDW_SHBE_D_Record = null;
@@ -1877,7 +3318,8 @@ public class TenancyChangesUO {
             bPSI = bDW_SHBE_D_Record.getPassportedStandardIndicator();
             bSHBC = bDW_SHBE_D_Record.getStatusOfHBClaimAtExtractDate();
             bRTHBCC = bDW_SHBE_D_Record.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
-            bCEG = bDW_SHBE_D_Record.getClaimantsEthnicGroup();
+            //bCEG = bDW_SHBE_D_Record.getClaimantsEthnicGroup();
+            bCEG = DW_SHBE_Handler.getEthnicityGroup(bDW_SHBE_D_Record);
             bHS = DW_SHBE_Handler.getHouseholdSize(bDW_SHBE_D_Record);
             bND = bDW_SHBE_D_Record.getNumberOfNonDependents();
             bCD = bDW_SHBE_D_Record.getNumberOfChildDependents();
@@ -1896,27 +3338,19 @@ public class TenancyChangesUO {
         boolean isUO;
         isUO = (councilUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)
                 || RSLUnderOccupiedSet1.getMap().keySet().contains(aCTBRef));
-
-        if (tCTBRefSetUOTT1_To_LeftSHBEPermanently.contains(aCTBRef)) {
-            tCTBRefSetUOTT1_To_LeftSHBEPermanently.remove(aCTBRef);
-            if (aTT == 1 || aTT == 4) {
-                tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT1orTT4.add(aCTBRef);
+        if (isUO) {
+            tCTBRefSetUOAtSomePoint.add(aCTBRef);
+            if (aTT == 1) {
+                tCTBRefSetUOTT1AtSomePoint.add(aCTBRef);
             } else {
-                if (aTT == 3 || aTT == 6) {
-                    tCTBRefSetUOTT1_To_LeftSHBEReturnedAsTT3OrTT6.add(aCTBRef);
+                if (aTT == 4) {
+                    tCTBRefSetUOTT4AtSomePoint.add(aCTBRef);
                 }
             }
         }
 
-        if (tCTBRefSetUOTT4_To_LeftSHBEPermanently.contains(aCTBRef)) {
-            tCTBRefSetUOTT4_To_LeftSHBEPermanently.remove(aCTBRef);
-            if (aTT == 1 || aTT == 4) {
-                tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT1orTT4.add(aCTBRef);
-            } else {
-                if (aTT == 3 || aTT == 6) {
-                    tCTBRefSetUOTT4_To_LeftSHBEReturnedAsTT3OrTT6.add(aCTBRef);
-                }
-            }
+        if (aHBDP > 0) {
+            tCTBRefSetUOClaimsRecievingDHP.add(aCTBRef);
         }
 
         // TenancyType
@@ -1932,29 +3366,187 @@ public class TenancyChangesUO {
                     if (isAnotherTT) {
                         tCTBRefSetChangedTT.add(aCTBRef);
                     }
+                    if (tCTBRefSetUOTT1_To_LeftSHBE.contains(aCTBRef)) {
+                        if (aTT != 3 || aTT != 6) {
+                            if (tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange.contains(aCTBRef)) {
+                                tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
+                            }
+                        }
+                    }
+                    if (tCTBRefSetUOTT4_To_LeftSHBE.contains(aCTBRef)) {
+                        if (aTT != 3 || aTT != 6) {
+                            if (tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange.contains(aCTBRef)) {
+                                tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
+                            }
+                        }
+                    }
                 }
                 if (aTT == DW_SHBE_TenancyType_Handler.iMinus999) {
+                    if (tCTBRefSetUOAtSomePoint.contains(aCTBRef)) {
+                        tCTBRefSetUO_To_LeftSHBEAtSomePoint.add(aCTBRef);
+                    }
                     // If previously UO then add to from UO to left the SHBE
                     if (wasUO) {
-                        tCTBRefSetUO_To_LeftSHBE.add(aCTBRef);
-                        tCTBRefSetUOTT1_To_LeftSHBEPermanently.add(aCTBRef);
+                        tCTBRefSetUO_To_LeftSHBE_NotReturned.add(aCTBRef);
                         if (bTT == 1) {
                             tCTBRefSetUOTT1_To_LeftSHBE.add(aCTBRef);
+                            tCTBRefSetUOTT1_To_LeftSHBE_NotReturned.add(aCTBRef);
+                            tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
+                            tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
                         } else {
                             if (bTT == 4) {
                                 tCTBRefSetUOTT4_To_LeftSHBE.add(aCTBRef);
+                                tCTBRefSetUOTT4_To_LeftSHBE_NotReturned.add(aCTBRef);
+                                tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
+                                tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
+                            } else {
+                                if (bTT == 3 || bTT == 6) {
+                                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE.add(aCTBRef);
+                                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE_NotReturned.add(aCTBRef);
+                                } else {
+                                    tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE.add(aCTBRef);
+                                    tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned.add(aCTBRef);
+                                }
                             }
                         }
                     }
                 }
             } else {
                 tCTBRefSetChangedTT.add(aCTBRef);
+                if (isUO) {
+                    if (aTT == 4 && bTT == 1) {
+                        //tCTBRefSetUOTT1OrTT1_To_UOTT4.add(aCTBRef);
+                        if (wasUO) {
+                            tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef);
+                        } else {
+                            tCTBRefSetTT1_To_UOTT4.add(aCTBRef);
+                            if (aHBDP > 0) {
+                                tCTBRefSetTT1_To_UOTT4GettingDHP.add(aCTBRef);
+                            }
+                        }
+                    }
+                }
+                if (tCTBRefSetUOTT1_To_LeftSHBE_NotReturned.contains(aCTBRef)) {
+                    tCTBRefSetUOTT1_To_LeftSHBE_NotReturned.remove(aCTBRef);
+                    if (aTT == 1) {
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1.add(aCTBRef);
+                    } else {
+                        if (aTT == 3 || aTT == 6) {
+                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6.add(aCTBRef);
+                        } else {
+                            if (aTT == 4) {
+                                tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
+                                if (isUO) {
+                                    if (bTT == 1) {
+                                        //tCTBRefSetUOTT1OrTT1_To_UOTT4.add(aCTBRef);
+                                        if (wasUO) {
+                                            tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef);
+                                        } else {
+                                            tCTBRefSetTT1_To_UOTT4.add(aCTBRef);
+                                            if (aHBDP > 0) {
+                                                tCTBRefSetTT1_To_UOTT4GettingDHP.add(aCTBRef);
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                if (aTT == 5 || aTT == 7) {
+                                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7.add(aCTBRef);
+                                } else {
+                                    if (aTT == 8) {
+                                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8.add(aCTBRef);
+                                    } else {
+                                        if (aTT == 9) {
+                                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9.add(aCTBRef);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (tCTBRefSetUOTT4_To_LeftSHBE_NotReturned.contains(aCTBRef)) {
+                    tCTBRefSetUOTT4_To_LeftSHBE_NotReturned.remove(aCTBRef);
+                    if (aTT == 1) {
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1.add(aCTBRef);
+                    } else {
+                        if (aTT == 4) {
+                            tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
+                        } else {
+                            if (aTT == 3 || aTT == 6) {
+                                tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6.add(aCTBRef);
+                            } else {
+                                if (aTT == 5 || aTT == 7) {
+                                    tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7.add(aCTBRef);
+                                } else {
+                                    if (aTT == 8) {
+                                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT8.add(aCTBRef);
+                                    } else {
+                                        if (aTT == 9) {
+                                            tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9.add(aCTBRef);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (tCTBRefSetUOTT3OrTT6_To_LeftSHBE_NotReturned.contains(aCTBRef)) {
+                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE_NotReturned.remove(aCTBRef);
+                    if (aTT == 1) {
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1.add(aCTBRef);
+                    } else {
+                        if (aTT == 4) {
+                            tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
+                        } else {
+                            if (aTT == 3 || aTT == 6) {
+                                tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6.add(aCTBRef);
+                            } else {
+                                if (aTT == 5 || aTT == 7) {
+                                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7.add(aCTBRef);
+                                } else {
+                                    if (aTT == 8) {
+                                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8.add(aCTBRef);
+                                    } else {
+                                        if (aTT == 9) {
+                                            tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9.add(aCTBRef);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned.contains(aCTBRef)) {
+                    tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned.remove(aCTBRef);
+                }
+                if (tCTBRefSetUO_To_LeftSHBE_NotReturned.contains(aCTBRef)) {
+                    tCTBRefSetUO_To_LeftSHBE_NotReturned.remove(aCTBRef);
+                }
                 if (aTT == 3 || aTT == 6) {
+                    if (tCTBRefSetUOTT1_To_LeftSHBE.contains(aCTBRef)) {
+                        if (tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange.contains(aCTBRef)) {
+                            tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
+                        }
+                    }
+                    if (tCTBRefSetUOTT4_To_LeftSHBE.contains(aCTBRef)) {
+                        if (tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange.contains(aCTBRef)) {
+                            tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
+                        }
+                    }
+                    if (tCTBRefSetUOTT1AtSomePoint.contains(aCTBRef)) {
+                        tCTBRefSetUOTT1_To_TT3OrTT6AtSomePoint.add(aCTBRef);
+                    }
+                    if (tCTBRefSetUOTT4AtSomePoint.contains(aCTBRef)) {
+                        tCTBRefSetUOTT4_To_TT3OrTT6AtSomePoint.add(aCTBRef);
+                    }
                     if (bTT == 1) {
                         tCTBRefSetTT1_To_TT3OrTT6.add(aCTBRef);
                         // If previously UO then add to set of those that move from UO TT1 to TT3 or TT6
                         if (wasUO) {
                             tCTBRefSetUOTT1_To_TT3OrTT6.add(aCTBRef);
+                            tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
+                            tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
                         }
                     } else {
                         if (bTT == 4) {
@@ -1962,11 +3554,23 @@ public class TenancyChangesUO {
                             // If previously UO then add to set of those that move from UO TT4 to TT3 or TT6
                             if (wasUO) {
                                 tCTBRefSetUOTT4_To_TT3OrTT6.add(aCTBRef);
+                                tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
+                                tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
                             }
                         }
                     }
                 } else {
-                    if (bTT == 3 || aTT == 6) {
+                    if (tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange.contains(aCTBRef)) {
+                        if (tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.contains(aCTBRef)) {
+                            tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
+                        }
+                    }
+                    if (tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange.contains(aCTBRef)) {
+                        if (tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.contains(aCTBRef)) {
+                            tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.remove(aCTBRef);
+                        }
+                    }
+                    if (bTT == 3 || bTT == 6) {
                         if (aTT == 1) {
                             tCTBRefSetTT3OrTT6_To_TT1.add(aCTBRef);
                             // If UO add to set that move from the PRS to Council UO.
@@ -1990,10 +3594,13 @@ public class TenancyChangesUO {
         }
         aS += sCommaSpace + sTT_ + aTT;
         tableValues.put(key, aS);
+
         // UnderOccupancy
         key = aCTBRef + sUnderscore + sUnderOccupancy;
         aS = tableValues.get(key);
         if (isUO) {
+            result[0] = true;
+            tUOClaims.add(aCTBRef);
             tCTBRefSetAlwaysUOFromWhenStarted.add(aCTBRef);
             aS += sCommaSpace + sU;
             BigDecimal bd;
@@ -2009,8 +3616,17 @@ public class TenancyChangesUO {
                             tIDSetCouncilUniquePartnersEffected,
                             tCouncilMaxNumberOfDependentsInClaimWhenUO,
                             tIDSetCouncilUniqueNonDependentsEffected,
+                            tIDSetUniqueDependentChildrenUnderAge10Effected,
+                            year,
+                            month,
                             aDW_SHBE_Record,
                             aDW_SHBE_D_Record);
+                    DW_UOReport_Record rec = councilUnderOccupiedSet1.getMap().get(aCTBRef);
+                    int bedrooms = rec.getBedroomsInProperty();
+                    long householdSize = DW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
+                    if (householdSize >= bedrooms) {
+                        result[1] = true;
+                    }
                 }
                 if (RSLUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)) {
                     addToSets(
@@ -2019,8 +3635,17 @@ public class TenancyChangesUO {
                             tIDSetRSLUniquePartnersEffected,
                             tRSLMaxNumberOfDependentsInClaimWhenUO,
                             tIDSetRSLUniqueNonDependentsEffected,
+                            tIDSetUniqueDependentChildrenUnderAge10Effected,
+                            year,
+                            month,
                             aDW_SHBE_Record,
                             aDW_SHBE_D_Record);
+                    DW_UOReport_Record rec = RSLUnderOccupiedSet1.getMap().get(aCTBRef);
+                    int bedrooms = rec.getBedroomsInProperty();
+                    long householdSize = DW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
+                    if (householdSize >= bedrooms) {
+                        result[1] = true;
+                    }
                 }
             }
             if (!(aTT == 1 || aTT == 4 || aTT == DW_SHBE_TenancyType_Handler.iMinus999)) {
@@ -2044,6 +3669,31 @@ public class TenancyChangesUO {
                         }
                     }
                 }
+                if (tCTBRefSetUO_NotUO.contains(aCTBRef)) {
+                    tCTBRefSetUO_NotUO_UO.add(aCTBRef);
+                    tCTBRefSetUO_NotUO.remove(aCTBRef);
+                } else {
+                    if (tCTBRefSetUO_NotUO_UO_NotUO.contains(aCTBRef)) {
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO.add(aCTBRef);
+                        tCTBRefSetUO_NotUO_UO_NotUO.remove(aCTBRef);
+                    } else {
+                        if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.contains(aCTBRef)) {
+                            tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.add(aCTBRef);
+                            tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.remove(aCTBRef);
+                        } else {
+                            if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.contains(aCTBRef)) {
+                                tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO.add(aCTBRef);
+                                tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.remove(aCTBRef);
+                            }
+                        }
+                    }
+                }
+            }
+            if (tCTBRefSetUOTT1_To_LeftSHBE.contains(aCTBRef)) {
+                tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint.add(aCTBRef);
+            }
+            if (tCTBRefSetUOTT4_To_LeftSHBE.contains(aCTBRef)) {
+                tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint.add(aCTBRef);
             }
         } else {
             aS += sCommaSpace;
@@ -2056,6 +3706,46 @@ public class TenancyChangesUO {
                 }
             }
             if (wasUO) {
+                tCTBRefSetUO_NotUO.add(aCTBRef);
+                if (tCTBRefSetUO_NotUO_UO.contains(aCTBRef)) {
+                    tCTBRefSetUO_NotUO_UO_NotUO.add(aCTBRef);
+                    tCTBRefSetUO_NotUO_UO.remove(aCTBRef);
+                } else {
+                    if (tCTBRefSetUO_NotUO_UO_NotUO_UO.contains(aCTBRef)) {
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.add(aCTBRef);
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO.remove(aCTBRef);
+                    } else {
+                        if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.contains(aCTBRef)) {
+                            tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.add(aCTBRef);
+                            tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.remove(aCTBRef);
+                        }
+                    }
+                }
+                if (aTT == DW_SHBE_TenancyType_Handler.iMinus999) {
+                    tCTBRefSetUO_To_LeftSHBETheVeryNextMonth.add(aCTBRef);
+                } else {
+                    tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
+                    if (aTT == 1) {
+                        if (bTT == 1) {
+                            tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged.add(aCTBRef);
+                        } else {
+                            if (bTT == 4) {
+                                tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged.add(aCTBRef);
+                            }
+                        }
+                    } else {
+                        if (aTT == 4) {
+                            tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
+                            if (bTT == 1) {
+                                tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged.add(aCTBRef);
+                            } else {
+                                if (bTT == 4) {
+                                    tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged.add(aCTBRef);
+                                }
+                            }
+                        }
+                    }
+                }
                 if (aTT == bTT) {
                     // SolvedUO problem staying in same TT
                     // Cases involving a postcode change are dealt with below.
@@ -2076,6 +3766,7 @@ public class TenancyChangesUO {
             }
         }
         tableValues.put(key, aS);
+
         // Postcode
         key = aCTBRef + sUnderscore + sP;
         aS = tableValues.get(key);
@@ -2145,6 +3836,18 @@ public class TenancyChangesUO {
                                     }
                                 }
                             }
+                        } else {
+                            if (wasUO && isUO) {
+                                if (aTT == bTT) {
+                                    if (aTT == 1) {
+                                        tCTBRefSetUOTT1_ToUOTT1_PostcodeChanged.add(aCTBRef);
+                                    } else {
+                                        if (aTT == 4) {
+                                            tCTBRefSetUOTT4_ToUOTT4_PostcodeChanged.add(aCTBRef);
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     if (tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious.contains(aCTBRef)) {
@@ -2159,6 +3862,12 @@ public class TenancyChangesUO {
                     if (tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged2MonthsPrevious.contains(aCTBRef)) {
                         tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months.add(aCTBRef);
                     }
+                    if (tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged3MonthsPrevious.contains(aCTBRef)) {
+                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months.add(aCTBRef);
+                    }
+                    if (tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged3MonthsPrevious.contains(aCTBRef)) {
+                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months.add(aCTBRef);
+                    }
                     if (tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged1MonthPrevious.contains(aCTBRef)) {
                         tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month.add(aCTBRef);
                     }
@@ -2171,10 +3880,17 @@ public class TenancyChangesUO {
                     if (tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged2MonthsPrevious.contains(aCTBRef)) {
                         tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months.add(aCTBRef);
                     }
+                    if (tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged3MonthsPrevious.contains(aCTBRef)) {
+                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months.add(aCTBRef);
+                    }
+                    if (tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged3MonthsPrevious.contains(aCTBRef)) {
+                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months.add(aCTBRef);
+                    }
                 }
             }
         }
         tableValues.put(key, aS);
+
         // HB Entitlement
         key = aCTBRef + sUnderscore + sWHBE;
         aS = tableValues.get(key);
@@ -2184,6 +3900,7 @@ public class TenancyChangesUO {
             aS += sCommaSpace + decimalise(aWHBE);
         }
         tableValues.put(key, aS);
+
         // ERA
         key = aCTBRef + sUnderscore + sWERA;
         aS = tableValues.get(key);
@@ -2193,6 +3910,7 @@ public class TenancyChangesUO {
             aS += sCommaSpace + decimalise(aWERA);
         }
         tableValues.put(key, aS);
+
         // PassportedStandardIndicator
         key = aCTBRef + sUnderscore + sPSI;
         aS = tableValues.get(key);
@@ -2202,6 +3920,7 @@ public class TenancyChangesUO {
             aS += sCommaSpace + aPSI;
         }
         tableValues.put(key, aS);
+
         // StatusOfHBClaim
         key = aCTBRef + sUnderscore + sSHBC;
         aS = tableValues.get(key);
@@ -2211,6 +3930,7 @@ public class TenancyChangesUO {
             aS += sCommaSpace + aSHBC;
         }
         tableValues.put(key, aS);
+
         // ReasonThatHBClaimClosed
         key = aCTBRef + sUnderscore + sRTHBCC;
         aS = tableValues.get(key);
@@ -2220,6 +3940,7 @@ public class TenancyChangesUO {
             aS += sCommaSpace + aRTHBCC;
         }
         tableValues.put(key, aS);
+
         // ClaimantEthnicGroup
         key = aCTBRef + sUnderscore + sCEG;
         aS = tableValues.get(key);
@@ -2229,6 +3950,7 @@ public class TenancyChangesUO {
             aS += sCommaSpace + aCEG;
         }
         tableValues.put(key, aS);
+
         // HS
         key = aCTBRef + sUnderscore + sHS;
         aS = tableValues.get(key);
@@ -2238,6 +3960,7 @@ public class TenancyChangesUO {
             aS += sCommaSpace + aHS;
         }
         tableValues.put(key, aS);
+
         // NonDependents
         key = aCTBRef + sUnderscore + sND;
         aS = tableValues.get(key);
@@ -2247,6 +3970,7 @@ public class TenancyChangesUO {
             aS += sCommaSpace + aND;
         }
         tableValues.put(key, aS);
+
         // ChildDependents
         key = aCTBRef + sUnderscore + sCD;
         aS = tableValues.get(key);
@@ -2256,6 +3980,7 @@ public class TenancyChangesUO {
             aS += sCommaSpace + aCD;
         }
         tableValues.put(key, aS);
+
         // UO
         DW_UOReport_Record aDW_UOReport_Record;
         if (councilUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)
@@ -2305,7 +4030,6 @@ public class TenancyChangesUO {
             aS = tableValues.get(key);
             aS += sCommaSpace + aDW_UOReport_Record.getBedroomRequirement();
             tableValues.put(key, aS);
-
             int loss;
             loss = aWERA - aWHBE;
             key = aCTBRef + sUnderscore + sTotal_HBLossDueToUO;
@@ -2465,6 +4189,7 @@ public class TenancyChangesUO {
         bd = bd.add(BigDecimal.valueOf(aHBDP));
         aggregateStatistics.put(key, bd);
         if (aHBDP > 0) {
+            tCTBRefSetDHPAtSomePoint.add(aCTBRef);
             key = aCTBRef + sUnderscore + sTotalCount_DHP;
             bd = aggregateStatistics.get(key);
             bd = bd.add(BigDecimal.ONE);
@@ -2499,10 +4224,53 @@ public class TenancyChangesUO {
                     bd = bd.max(BigDecimal.valueOf(aArrears));
                     aggregateStatistics.put(key, bd);
                     if (aArrears > 0) {
+                        tCTBRefSetInArrearsAtSomePoint.add(aCTBRef);
                         key = aCTBRef + sUnderscore + sTotalCount_Arrears;
                         bd = aggregateStatistics.get(key);
                         bd = bd.add(BigDecimal.ONE);
                         aggregateStatistics.put(key, bd);
+                    }
+                    if (aHBDP > 0) {
+                        if (aArrears > 0) {
+                            tCTBRefSetUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint.add(aCTBRef);
+                        }
+                    }
+                    if (aArrears > 0) {
+                        tCTBRefSetUOTT1ClaimsInRentArrearsAtSomePoint.add(aCTBRef);
+                    }
+                    if (isUO) {
+                        if (aTT == 1 && bTT == 4) {
+                            //tCTBRefSetUOTT4OrTT4_To_UOTT1.add(aCTBRef);
+                            //if (aArrears > 0) {
+                            //    tCTBRefSetUOTT4OrTT4_To_UOTT1InArrears.add(aCTBRef);
+                            //    if (aHBDP > 0) {
+                            //        tCTBRefSetUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP.add(aCTBRef);
+                            //    }
+                            //}
+                            if (wasUO) {
+                                tCTBRefSetUOTT4_To_UOTT1.add(aCTBRef);
+                                if (aHBDP > 0) {
+                                    tCTBRefSetUOTT4_To_UOTT1GettingDHP.add(aCTBRef);
+                                }
+                                if (aArrears > 0) {
+                                    tCTBRefSetUOTT4_To_UOTT1InArrears.add(aCTBRef);
+                                    if (aHBDP > 0) {
+                                        tCTBRefSetUOTT4_To_UOTT1InArrearsAndGettingDHP.add(aCTBRef);
+                                    }
+                                }
+                            } else {
+                                tCTBRefSetTT4_To_UOTT1.add(aCTBRef);
+                                if (aHBDP > 0) {
+                                    tCTBRefSetTT4_To_UOTT1GettingDHP.add(aCTBRef);
+                                }
+                                if (aArrears > 0) {
+                                    tCTBRefSetTT4_To_UOTT1InArrears.add(aCTBRef);
+                                    if (aHBDP > 0) {
+                                        tCTBRefSetTT4_To_UOTT1InArrearsAndGettingDHP.add(aCTBRef);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -2510,6 +4278,7 @@ public class TenancyChangesUO {
             aS += sCommaSpace;
         }
         tableValues.put(key, aS);
+        return result;
     }
 
     /**
@@ -2790,13 +4559,29 @@ public class TenancyChangesUO {
         return result;
     }
 
+    private void writeLine(
+            String generalStatistic,
+            TreeMap<String, BigDecimal> generalStatistics,
+            HashMap<String, String> generalStatisticsDescriptions,
+            PrintWriter pw) {
+        String line;
+        line = generalStatistic + sCommaSpace
+                + generalStatistics.get(generalStatistic) + sCommaSpace
+                + generalStatisticsDescriptions.get(generalStatistic);
+        pw.println(line);
+    }
+
     public void writeTenancyChangeTables(
             Object[] table,
             String paymentType,
             String includeKey,
             boolean underOccupancy,
             boolean includePreUnderOccupancyValues,
-            String name
+            String name,
+            String startMonth,
+            String startYear,
+            String endMonth,
+            String endYear
     ) {
         String header;
         header = (String) table[0];
@@ -2812,6 +4597,39 @@ public class TenancyChangesUO {
         aggregateStatistics = (TreeMap<String, BigDecimal>) table[5];
         TreeMap<String, BigDecimal> generalStatistics;
         generalStatistics = (TreeMap<String, BigDecimal>) table[6];
+        TreeMap<String, TreeMap<String, Integer>> timeStatistics;
+        timeStatistics = (TreeMap<String, TreeMap<String, Integer>>) table[7];
+
+        String dirName;
+        dirName = startMonth + startYear + "_To_" + endMonth + endYear;
+
+        PrintWriter pw5;
+        pw5 = getPrintWriter(
+                "TimeStatistics", dirName, paymentType, includeKey, underOccupancy);
+        pw5.println("Date, " + sTotalCount_cumulativeUniqueClaims + ", " + sTotalCount_UOClaims + ", " + sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms);
+        String date;
+        int cumulativeCount;
+        TreeMap<String, Integer> totalCounts_cumulativeUniqueClaims;
+        totalCounts_cumulativeUniqueClaims = timeStatistics.get(sTotalCount_cumulativeUniqueClaims);
+        int UOCount;
+        TreeMap<String, Integer> totalCounts_UOClaims;
+        totalCounts_UOClaims = timeStatistics.get(sTotalCount_UOClaims);
+        int UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms;
+        TreeMap<String, Integer> totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms;
+        totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms = timeStatistics.get(sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms);
+        Iterator<String> ite;
+        ite = totalCounts_cumulativeUniqueClaims.keySet().iterator();
+        while (ite.hasNext()) {
+            date = ite.next();
+            cumulativeCount = totalCounts_cumulativeUniqueClaims.get(date);
+            UOCount = totalCounts_UOClaims.get(date);
+            UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms = totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms.get(date);
+            pw5.println(date + ", " + Integer.toString(cumulativeCount)
+                    + ", " + Integer.toString(UOCount)
+                    + ", " + Integer.toString(UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms));
+        }
+        pw5.close();
+
         TreeMap<String, String> groupNameDescriptions;
         groupNameDescriptions = getGroupNameDescriptions(groups.keySet());
 
@@ -2827,124 +4645,258 @@ public class TenancyChangesUO {
                 + sTotalCount_UnderOccupancy;
 
         String generalStatisticsHeader;
-        generalStatisticsHeader = "GeneralStatistic, Value";
-        PrintWriter pw5;
-        pw5 = getPrintWriter("GeneralStatistics", paymentType, includeKey, underOccupancy);
+        generalStatisticsHeader = "GeneralStatistic, Value, GeneralStatisticDescription";
+        pw5 = getPrintWriter(
+                "GeneralStatistics", dirName, paymentType, includeKey, underOccupancy);
         pw5.println(generalStatisticsHeader);
-        String line;
-        line = sTotalCount_AlwaysUOFromWhenStarted + sCommaSpace
-                + generalStatistics.get(sTotalCount_AlwaysUOFromWhenStarted);
-        pw5.println(line);
-        line = sTotalCount_ClaimsEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_ClaimsEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sTotalCount_UniqueIndividualsEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_UniqueIndividualsEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sTotalCount_CouncilClaimsEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_CouncilClaimsEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sTotalCount_CouncilUniqueIndividualsEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_CouncilUniqueIndividualsEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sTotalCount_CouncilUniqueClaimantsEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_CouncilUniqueClaimantsEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sTotalCount_CouncilUniquePartnersEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_CouncilUniquePartnersEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sTotalCount_CouncilDependentsEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_CouncilDependentsEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sTotalCount_CouncilUniqueNonDependentsEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_CouncilUniqueNonDependentsEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sTotalCount_RSLClaimsEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_RSLClaimsEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sTotalCount_RSLUniqueIndividualsEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_RSLUniqueIndividualsEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sTotalCount_RSLUniqueClaimantsEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_RSLUniqueClaimantsEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sTotalCount_RSLUniquePartnersEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_RSLUniquePartnersEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sTotalCount_RSLDependentsEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_RSLDependentsEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sTotalCount_RSLUniqueNonDependentsEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_RSLUniqueNonDependentsEffectedByUnderOccupancy);
-        pw5.println(line);
-        line = sUO_To_LeftSHBE + sCommaSpace + generalStatistics.get(sUO_To_LeftSHBE);
+        HashMap<String, String> generalStatisticsDescriptions;
+        generalStatisticsDescriptions = getGeneralStatisticDescriptions(
+                startMonth, startYear, endMonth, endYear);
+        writeLine(sTotalCount_AlwaysUOFromWhenStarted,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sAverageHouseholdSizeOfThoseUOAlwaysFromStart,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_ClaimsEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_UniqueIndividualsEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_CouncilClaimsEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_CouncilUniqueIndividualsEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_CouncilUniqueClaimantsEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_CouncilUniquePartnersEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_CouncilDependentsEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_CouncilUniqueNonDependentsEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_RSLClaimsEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_RSLUniqueIndividualsEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_RSLUniqueClaimantsEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_RSLUniquePartnersEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_RSLDependentsEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_RSLUniqueNonDependentsEffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_UniqueChildrenAgeLessThan10EffectedByUnderOccupancy,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUO_To_LeftSHBEAtSomePoint,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_LeftSHBE,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+//        line = getLine(sUOTT1_To_LeftSHBEReturnedAsTT1orTT4 + sCommaSpace + generalStatistics.get(sUOTT1_To_LeftSHBEReturnedAsTT1orTT4);
+//        pw5.println(line);
+//        line = getLine(sUOTT1_To_LeftSHBEReturnedAsTT3OrTT6 + sCommaSpace + generalStatistics.get(sUOTT1_To_LeftSHBEReturnedAsTT3OrTT6);
+//        pw5.println(line);
+        writeLine(sUOTT4_To_LeftSHBE,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+//        line = getLine(sUOTT4_To_LeftSHBEReturnedAsTT1orTT4 + sCommaSpace + generalStatistics.get(sUOTT4_To_LeftSHBEReturnedAsTT1orTT4);
+//        pw5.println(line);
+//        line = getLine(sUOTT4_To_LeftSHBEReturnedAsTT3OrTT6 + sCommaSpace + generalStatistics.get(sUOTT4_To_LeftSHBEReturnedAsTT3OrTT6);
+//        pw5.println(line);
+        writeLine(sUOTT3OrTT6_To_LeftSHBE,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUO_To_LeftSHBE,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+//        writeLine(sUO_To_LeftSHBEBetweenOneAndTwoMonths,
+//                generalStatistics, generalStatisticsDescriptions, pw5);
+//        writeLine(sUO_To_LeftSHBEBetweenTwoAndThreeMonths,
+//                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUO_To_LeftSHBE_NotReturned,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_LeftSHBE_NotReturned,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_LeftSHBE_NotReturned,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT3OrTT6_To_LeftSHBE_NotReturned,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_LeftSHBE_ReturnedAsTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_LeftSHBE_ReturnedAsTT4,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_LeftSHBE_ReturnedAsTT8,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_LeftSHBE_ReturnedAsTT9,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_LeftSHBE_ReturnedAsTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_LeftSHBE_ReturnedAsTT4,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_LeftSHBE_ReturnedAsTT8,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_LeftSHBE_ReturnedAsTT9,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
+                generalStatistics, generalStatisticsDescriptions, pw5);
 
-        pw5.println(line);
-        line = sUOTT1_To_LeftSHBE + sCommaSpace + generalStatistics.get(sUOTT1_To_LeftSHBE);
-        pw5.println(line);
-        line = sUOTT1_To_LeftSHBEPermanently + sCommaSpace + generalStatistics.get(sUOTT1_To_LeftSHBEPermanently);
-        pw5.println(line);
-        line = sUOTT1_To_LeftSHBEReturnedAsTT1orTT4 + sCommaSpace + generalStatistics.get(sUOTT1_To_LeftSHBEReturnedAsTT1orTT4);
-        pw5.println(line);
-        line = sUOTT1_To_LeftSHBEReturnedAsTT3OrTT6 + sCommaSpace + generalStatistics.get(sUOTT1_To_LeftSHBEReturnedAsTT3OrTT6);
-        pw5.println(line);
-        line = sUOTT4_To_LeftSHBE + sCommaSpace + generalStatistics.get(sUOTT4_To_LeftSHBE);
-        pw5.println(line);
-        line = sUOTT4_To_LeftSHBEPermanently + sCommaSpace + generalStatistics.get(sUOTT4_To_LeftSHBEPermanently);
-        pw5.println(line);
-        line = sUOTT4_To_LeftSHBEReturnedAsTT1orTT4 + sCommaSpace + generalStatistics.get(sUOTT4_To_LeftSHBEReturnedAsTT1orTT4);
-        pw5.println(line);
-        line = sUOTT4_To_LeftSHBEReturnedAsTT3OrTT6 + sCommaSpace + generalStatistics.get(sUOTT4_To_LeftSHBEReturnedAsTT3OrTT6);
-        pw5.println(line);
+        writeLine(sUO_NotUO_UO,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUO_NotUO_UO_NotUO_UO,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUO_NotUO_UO_NotUO_UO_NotUO_UO,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO,
+                generalStatistics, generalStatisticsDescriptions, pw5);
 
-        line = sUOTT1_To_TT3OrTT6 + sCommaSpace + generalStatistics.get(sUOTT1_To_TT3OrTT6);
-        pw5.println(line);
-        line = sUOTT4_To_TT3OrTT6 + sCommaSpace + generalStatistics.get(sUOTT4_To_TT3OrTT6);
-        pw5.println(line);
-        line = sTT3OrTT6_To_UOTT1 + sCommaSpace + generalStatistics.get(sTT3OrTT6_To_UOTT1);
-        pw5.println(line);
-        line = sTT3OrTT6_To_UOTT4 + sCommaSpace + generalStatistics.get(sTT3OrTT6_To_UOTT4);
-        pw5.println(line);
+        writeLine(sUOTT1_To_NotUO_InSHBE_PostcodeChanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_NotUO_TT1_PostcodeChanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_NotUO_TT4_PostcodeChanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_NotUO_InSHBE_PostcodeChanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_NotUO_TT1_PostcodeChanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_NotUO_TT4_PostcodeChanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
 
-        line = sTT1_To_UOTT1_PostcodeUnchanged + sCommaSpace + generalStatistics.get(sTT1_To_UOTT1_PostcodeUnchanged);
-        pw5.println(line);
-        line = sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month + sCommaSpace + generalStatistics.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month);
-        pw5.println(line);
-        line = sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months + sCommaSpace + generalStatistics.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months);
-        pw5.println(line);
+        writeLine(sUOTT1_To_TT3OrTT6,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT3OrTT6AtSomePoint,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                generalStatistics, generalStatisticsDescriptions, pw5);
 
-        line = sTT4_To_UOTT4_PostcodeUnchanged + sCommaSpace + generalStatistics.get(sTT4_To_UOTT4_PostcodeUnchanged);
-        pw5.println(line);
-        line = sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month + sCommaSpace + generalStatistics.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month);
-        pw5.println(line);
-        line = sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months + sCommaSpace + generalStatistics.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months);
-        pw5.println(line);
+        writeLine(sUOTT4_To_TT3OrTT6,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT3OrTT6AtSomePoint,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                generalStatistics, generalStatisticsDescriptions, pw5);
 
-        line = sUOTT1_To_TT1_PostcodeUnchanged + sCommaSpace + generalStatistics.get(sUOTT1_To_TT1_PostcodeUnchanged);
-        pw5.println(line);
-        line = sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month + sCommaSpace + generalStatistics.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month);
-        pw5.println(line);
-        line = sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months + sCommaSpace + generalStatistics.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months);
-        pw5.println(line);
+        writeLine(sTT3OrTT6_To_UOTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT3OrTT6_To_UOTT4,
+                generalStatistics, generalStatisticsDescriptions, pw5);
 
-        line = sUOTT4_To_TT4_PostcodeUnchanged + sCommaSpace + generalStatistics.get(sUOTT4_To_TT4_PostcodeUnchanged);
-        pw5.println(line);
-        line = sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month + sCommaSpace + generalStatistics.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month);
-        pw5.println(line);
-        line = sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months + sCommaSpace + generalStatistics.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months);
-        pw5.println(line);
+        writeLine(sTT1_To_UOTT1_PostcodeUnchanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months,
+                generalStatistics, generalStatisticsDescriptions, pw5);
 
-        line = sUOTT1_To_TT1_PostcodeChanged + sCommaSpace + generalStatistics.get(sUOTT1_To_TT1_PostcodeChanged);
-        pw5.println(line);
-        line = sUOTT4_To_TT4_PostcodeChanged + sCommaSpace + generalStatistics.get(sUOTT4_To_TT4_PostcodeChanged);
-        pw5.println(line);
-        line = sTT1_To_UOTT1_PostcodeChanged + sCommaSpace + generalStatistics.get(sTT1_To_UOTT1_PostcodeChanged);
-        pw5.println(line);
-        line = sTT4_To_UOTT4_PostcodeChanged + sCommaSpace + generalStatistics.get(sTT4_To_UOTT4_PostcodeChanged);
-        pw5.println(line);
-        line = sTotalCount_RSLUniqueNonDependentsEffectedByUnderOccupancy + sCommaSpace
-                + generalStatistics.get(sTotalCount_RSLUniqueNonDependentsEffectedByUnderOccupancy);
-        pw5.println(line);
+        //writeLine(sUOTT1OrTT1_To_UOTT4,
+        //        generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_UOTT4,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT4,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT4GettingDHP,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+//        writeLine(sTT1_To_UOTT4InArrears,
+//                generalStatistics, generalStatisticsDescriptions, pw5);
+//        writeLine(sTT1_To_UOTT4InArrearsAndGettingDHP,
+//                generalStatistics, generalStatisticsDescriptions, pw5);
+
+        writeLine(sTT4_To_UOTT4_PostcodeUnchanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+
+        //writeLine(sUOTT4OrTT4_To_UOTT1,
+        //        generalStatistics, generalStatisticsDescriptions, pw5);
+        //writeLine(sUOTT4OrTT4_To_UOTT1InArrears,
+        //        generalStatistics, generalStatisticsDescriptions, pw5);
+        //writeLine(sUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP,
+        //        generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_UOTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_UOTT1InArrears,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_UOTT1GettingDHP,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_UOTT1InArrearsAndGettingDHP,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT1InArrears,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT1GettingDHP,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT1InArrearsAndGettingDHP,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+
+        writeLine(sUOTT1_To_TT1_PostcodeUnchanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+
+        writeLine(sUOTT4_To_TT4_PostcodeUnchanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+
+        writeLine(sUOTT1_To_TT1_PostcodeChanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_UOTT1_PostcodeChanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT4_PostcodeChanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_UOTT4_PostcodeChanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT1_PostcodeChanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT4_PostcodeChanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+
+        writeLine(sUOClaimsRecievingDHP,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1ClaimsInRentArrearsAtSomePoint,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sInArrearsAtSomePoint_And_DHPAtSomePoint,
+                generalStatistics, generalStatisticsDescriptions, pw5);
 
         pw5.close();
 
@@ -2962,7 +4914,7 @@ public class TenancyChangesUO {
         TreeSet<String> group;
         String aCTBRef;
         Iterator<String> iteG;
-        Iterator<String> ite;
+        //Iterator<String> ite;
         int counter;
 
         System.out.println("Group Size, Not previously exported, GroupName");
@@ -2970,15 +4922,20 @@ public class TenancyChangesUO {
         iteG = groupNameDescriptions.keySet().iterator();
         while (iteG.hasNext()) {
             groupName = iteG.next();
+
+            if (groupName.endsWith("Minus999")) {
+                int debug = 1;
+            }
+
             name2 = name + sUnderscore + groupName;
             if (includePreUnderOccupancyValues) {
                 name2 += sUnderscore + "IncludesPreUnderOccupancyValues";
             }
-            pw = getPrintWriter(name2, paymentType, includeKey, underOccupancy);
-            pwAggregateStatistics = getPrintWriter(name2 + "AggregateStatistics", paymentType, includeKey, underOccupancy);
+            pw = getPrintWriter(name2, dirName, paymentType, includeKey, underOccupancy);
+            pwAggregateStatistics = getPrintWriter(name2 + "AggregateStatistics", dirName, paymentType, includeKey, underOccupancy);
             name2 += sUnderscore + "WithDuplicates";
-            pw2 = getPrintWriter(name2, paymentType, includeKey, underOccupancy);
-            pwAggregateStatistics2 = getPrintWriter(name2 + "AggregateStatistics", paymentType, includeKey, underOccupancy);
+            pw2 = getPrintWriter(name2, dirName, paymentType, includeKey, underOccupancy);
+            pwAggregateStatistics2 = getPrintWriter(name2 + "AggregateStatistics", dirName, paymentType, includeKey, underOccupancy);
             // Write header
             groupNameDescription = groupNameDescriptions.get(groupName);
             pw.println(groupNameDescription);
@@ -3573,13 +5530,33 @@ public class TenancyChangesUO {
                                                                 }
                                                             }
                                                         } else {
-                                                            System.out.println("CTBRef " + aCTBRef + " already added to"
-                                                                    + " another group and in " + groupNameDescription);
-                                                            writeRecordCollectionToStdOut(
+//                                                            System.out.println("CTBRef " + aCTBRef + " already added to"
+//                                                                    + " another group and in " + groupNameDescription);
+//                                                            writeRecordCollectionToStdOut(
+//                                                                    tableValues,
+//                                                                    includePreUnderOccupancyValues,
+//                                                                    preUnderOccupancyValues,
+//                                                                    aCTBRef);
+                                                            writeRecordCollection(
                                                                     tableValues,
                                                                     includePreUnderOccupancyValues,
                                                                     preUnderOccupancyValues,
-                                                                    aCTBRef);
+                                                                    aCTBRef,
+                                                                    pw);
+                                                            writeAggregateRecords(
+                                                                    aggregateStatistics,
+                                                                    aCTBRef,
+                                                                    pwAggregateStatistics);
+                                                            writeRecordCollection(
+                                                                    tableValues,
+                                                                    includePreUnderOccupancyValues,
+                                                                    preUnderOccupancyValues,
+                                                                    aCTBRef,
+                                                                    pw2);
+                                                            writeAggregateRecords(
+                                                                    aggregateStatistics,
+                                                                    aCTBRef,
+                                                                    pwAggregateStatistics2);
                                                         }
                                                     }
 //                                        sAlwaysUOFromStart__NotMoved_NotChangedTT
@@ -3637,7 +5614,7 @@ public class TenancyChangesUO {
 
         groupName = "remainder";
         name2 = name + sUnderscore + groupName;
-        pw = getPrintWriter(name2, paymentType, includeKey, underOccupancy);
+        pw = getPrintWriter(name2, dirName, paymentType, includeKey, underOccupancy);
         pw.println(header);
         ite = remainder.iterator();
         while (ite.hasNext()) {
@@ -3718,12 +5695,19 @@ public class TenancyChangesUO {
 
     protected static PrintWriter getPrintWriter(
             String name,
+            String dirName,
             String paymentType,
             String includeKey,
             boolean underOccupancy) {
         PrintWriter result;
         File dirOut;
-        dirOut = DW_Files.getTableDir(sUnderOccupancyGroupTables, paymentType, includeKey, underOccupancy);
+        dirOut = DW_Files.getTableDir(
+                sUnderOccupancyGroupTables,
+                paymentType, includeKey, underOccupancy);
+        dirOut = new File(
+                dirOut,
+                dirName);
+        dirOut.mkdirs();
         String outFilename;
         outFilename = paymentType + "_" + includeKey + "_";
         if (underOccupancy) {
@@ -3745,81 +5729,181 @@ public class TenancyChangesUO {
         ite = groupNames.iterator();
         while (ite.hasNext()) {
             groupName = ite.next();
-            gn = sTravellers;
-            if (groupName.equalsIgnoreCase(gn)) {
-                result.put(groupName, "Type: " + gn);
-            } else {
-                gn = sTTNot1Or4AndUnderOccupying;
-                if (groupName.equalsIgnoreCase(gn)) {
-                    result.put(groupName, "Type: " + gn);
-                } else {
-                    gn = sTT1_To_TT3OrTT6;
-                    if (groupName.equalsIgnoreCase(gn)) {
-                        result.put(groupName, "Type: " + gn);
-                    } else {
-                        gn = sTT4_To_TT3OrTT6;
-                        if (groupName.equalsIgnoreCase(gn)) {
-                            result.put(groupName, "Type: " + gn);
-                        } else {
-                            gn = sTT3OrTT6_To_TT1;
-                            if (groupName.equalsIgnoreCase(gn)) {
-                                result.put(groupName, "Type: " + gn);
-                            } else {
-                                gn = sTT3OrTT6_To_TT4;
-                                if (groupName.equalsIgnoreCase(gn)) {
-                                    result.put(groupName, "Type: " + gn);
-                                } else {
-                                    gn = sAlwaysUOFromStart__NotMoved_NotChangedTT;
-                                    if (groupName.equalsIgnoreCase(gn)) {
-                                        result.put(groupName, "Type: " + gn);
-                                    } else {
-                                        gn = sAlwaysUOFromStart__ChangedTT;
-                                        if (groupName.equalsIgnoreCase(gn)) {
-                                            result.put(groupName, "Type: " + gn);
-                                        } else {
-                                            gn = sAlwaysUOFromStart__Moved_NotChangedTT;
-                                            if (groupName.equalsIgnoreCase(gn)) {
-                                                result.put(groupName, "Type: " + gn);
-                                            } else {
-                                                gn = sAlwaysUOFromWhenStarted__NotMoved_NotChangedTT;
-                                                if (groupName.equalsIgnoreCase(gn)) {
-                                                    result.put(groupName, "Type: " + gn);
-                                                } else {
-                                                    gn = sAlwaysUOFromWhenStarted__ChangedTT;
-                                                    if (groupName.equalsIgnoreCase(gn)) {
-                                                        result.put(groupName, "Type: " + gn);
-                                                    } else {
-                                                        gn = sAlwaysUOFromWhenStarted__Moved_NotChangedTT;
-                                                        if (groupName.equalsIgnoreCase(gn)) {
-                                                            result.put(groupName, "Type: " + gn);
-                                                        } else {
-                                                            gn = sIntermitantUO__NotMoved_NotChangedTT;
-                                                            if (groupName.equalsIgnoreCase(gn)) {
-                                                                result.put(groupName, "Type: " + gn);
-                                                            } else {
-                                                                gn = sIntermitantUO__ChangedTT;
-                                                                if (groupName.equalsIgnoreCase(gn)) {
-                                                                    result.put(groupName, "Type: " + gn);
-                                                                } else {
-                                                                    gn = sIntermitantUO__Moved_NotChangedTT;
-                                                                    if (groupName.equalsIgnoreCase(gn)) {
-                                                                        result.put(groupName, "Type: " + gn);
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            result.put(groupName, "Type: " + groupName);
         }
+//            gn = sTravellers;
+//            if (groupName.equalsIgnoreCase(gn)) {
+//                result.put(groupName, "Type: " + gn);
+//            } else {
+//                gn = sTTNot1Or4AndUnderOccupying;
+//                if (groupName.equalsIgnoreCase(gn)) {
+//                    result.put(groupName, "Type: " + gn);
+//                } else {
+//                    gn = sTT1_To_TT3OrTT6;
+//                    if (groupName.equalsIgnoreCase(gn)) {
+//                        result.put(groupName, "Type: " + gn);
+//                    } else {
+//                        gn = sTT4_To_TT3OrTT6;
+//                        if (groupName.equalsIgnoreCase(gn)) {
+//                            result.put(groupName, "Type: " + gn);
+//                        } else {
+//                            gn = sTT3OrTT6_To_TT1;
+//                            if (groupName.equalsIgnoreCase(gn)) {
+//                                result.put(groupName, "Type: " + gn);
+//                            } else {
+//                                gn = sTT3OrTT6_To_TT4;
+//                                if (groupName.equalsIgnoreCase(gn)) {
+//                                    result.put(groupName, "Type: " + gn);
+//                                } else {
+//                                    gn = sAlwaysUOFromStart__NotMoved_NotChangedTT;
+//                                    if (groupName.equalsIgnoreCase(gn)) {
+//                                        result.put(groupName, "Type: " + gn);
+//                                    } else {
+//                                        gn = sAlwaysUOFromStart__ChangedTT;
+//                                        if (groupName.equalsIgnoreCase(gn)) {
+//                                            result.put(groupName, "Type: " + gn);
+//                                        } else {
+//                                            gn = sAlwaysUOFromStart__Moved_NotChangedTT;
+//                                            if (groupName.equalsIgnoreCase(gn)) {
+//                                                result.put(groupName, "Type: " + gn);
+//                                            } else {
+//                                                gn = sAlwaysUOFromWhenStarted__NotMoved_NotChangedTT;
+//                                                if (groupName.equalsIgnoreCase(gn)) {
+//                                                    result.put(groupName, "Type: " + gn);
+//                                                } else {
+//                                                    gn = sAlwaysUOFromWhenStarted__ChangedTT;
+//                                                    if (groupName.equalsIgnoreCase(gn)) {
+//                                                        result.put(groupName, "Type: " + gn);
+//                                                    } else {
+//                                                        gn = sAlwaysUOFromWhenStarted__Moved_NotChangedTT;
+//                                                        if (groupName.equalsIgnoreCase(gn)) {
+//                                                            result.put(groupName, "Type: " + gn);
+//                                                        } else {
+//                                                            gn = sIntermitantUO__NotMoved_NotChangedTT;
+//                                                            if (groupName.equalsIgnoreCase(gn)) {
+//                                                                result.put(groupName, "Type: " + gn);
+//                                                            } else {
+//                                                                gn = sIntermitantUO__ChangedTT;
+//                                                                if (groupName.equalsIgnoreCase(gn)) {
+//                                                                    result.put(groupName, "Type: " + gn);
+//                                                                } else {
+//                                                                    gn = sIntermitantUO__Moved_NotChangedTT;
+//                                                                    if (groupName.equalsIgnoreCase(gn)) {
+//                                                                        result.put(groupName, "Type: " + gn);
+//                                                                    } else {
+//                                                                        gn = sUOTT1_To_TT3OrTT6;
+//                                                                        if (groupName.equalsIgnoreCase(gn)) {
+//                                                                            result.put(groupName, "Type: " + gn);
+//                                                                        } else {
+//                                                                            gn = sUOTT1_To_TT3OrTT6AtSomePoint;
+//                                                                            if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                result.put(groupName, "Type: " + gn);
+//                                                                            } else {
+//                                                                                gn = sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999;
+//                                                                                if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                    result.put(groupName, "Type: " + gn);
+//                                                                                } else {
+//                                                                                    gn = sUOTT4_To_TT3OrTT6;
+//                                                                                    if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                        result.put(groupName, "Type: " + gn);
+//                                                                                    } else {
+//                                                                                        gn = sUOTT4_To_TT3OrTT6AtSomePoint;
+//                                                                                        if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                            result.put(groupName, "Type: " + gn);
+//                                                                                        } else {
+//                                                                                            gn = sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999;
+//                                                                                            if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                result.put(groupName, "Type: " + gn);
+//                                                                                            } else {
+//                                                                                                gn = sTT3OrTT6_To_UOTT1;
+//                                                                                                if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                    result.put(groupName, "Type: " + gn);
+//                                                                                                } else {
+//                                                                                                    gn = sUOTT1OrTT1_To_UOTT4;
+//                                                                                                    if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                        result.put(groupName, "Type: " + gn);
+//                                                                                                    } else {
+//                                                                                                        gn = sTT1_To_UOTT4InArrears;
+//                                                                                                        if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                            result.put(groupName, "Type: " + gn);
+//                                                                                                        } else {
+//                                                                                                            gn = sTT1_To_UOTT4InArrearsAndGettingDHP;
+//                                                                                                            if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                                result.put(groupName, "Type: " + gn);
+//                                                                                                            } else {
+//                                                                                                                gn = sUOTT4OrTT4_To_UOTT1;
+//                                                                                                                if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                                    result.put(groupName, "Type: " + gn);
+//                                                                                                                } else {
+//                                                                                                                    gn = sUOTT4OrTT4_To_UOTT1InArrears;
+//                                                                                                                    if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                                        result.put(groupName, "Type: " + gn);
+//                                                                                                                    } else {
+//                                                                                                                        gn = sUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP;
+//                                                                                                                        if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                                            result.put(groupName, "Type: " + gn);
+//                                                                                                                        } else {
+//                                                                                                                            gn = sUOClaimsRecievingDHP;
+//                                                                                                                            if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                                                result.put(groupName, "Type: " + gn);
+//                                                                                                                            } else {
+//                                                                                                                                gn = sUOTT1ClaimsInRentArrearsAtSomePoint;
+//                                                                                                                                if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                                                    result.put(groupName, "Type: " + gn);
+//                                                                                                                                } else {
+//                                                                                                                                    gn = sUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint;
+//                                                                                                                                    if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                                                        result.put(groupName, "Type: " + gn);
+//                                                                                                                                    } else {
+//                                                                                                                                        gn = sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month;
+//                                                                                                                                        if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                                                            result.put(groupName, "Type: " + gn);
+//                                                                                                                                        } else {
+//                                                                                                                                            gn = sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month;
+//                                                                                                                                            if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                                                                result.put(groupName, "Type: " + gn);
+//                                                                                                                                            } else {
+//                                                                                                                                                gn = sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month;
+//                                                                                                                                                if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                                                                    result.put(groupName, "Type: " + gn);
+//                                                                                                                                                } else {
+//                                                                                                                                                    gn = sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month;
+//                                                                                                                                                    if (groupName.equalsIgnoreCase(gn)) {
+//                                                                                                                                                        result.put(groupName, "Type: " + gn);
+//                                                                                                                                                    }
+//                                                                                                                                                }
+//                                                                                                                                            }
+//                                                                                                                                        }
+//                                                                                                                                    }
+//                                                                                                                                }
+//                                                                                                                            }
+//                                                                                                                        }
+//                                                                                                                    }
+//                                                                                                                }
+//                                                                                                            }
+//                                                                                                        }
+//                                                                                                    }
+//                                                                                                }
+//                                                                                            }
+//                                                                                        }
+//                                                                                    }
+//                                                                                }
+//                                                                            }
+//                                                                        }
+//                                                                    }
+//                                                                }
+//                                                            }
+//                                                        }
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
         return result;
     }
 
@@ -3863,6 +5947,9 @@ public class TenancyChangesUO {
             HashSet<ID> partnersSet,
             HashMap<String, Integer> maxNumberOfDependentsInClaimWhenUO,
             HashSet<ID> nonDependentsSet,
+            HashSet<ID> tIDSetUniqueDependentChildrenUnderAge10Effected,
+            String year,
+            String month,
             DW_SHBE_Record aDW_SHBE_Record,
             DW_SHBE_D_Record aDW_SHBE_D_Record) {
         String claimantNINO;
@@ -3902,6 +5989,17 @@ public class TenancyChangesUO {
                 int max;
                 max = Math.max(m, numberOfChildDependents);
                 maxNumberOfDependentsInClaimWhenUO.put(aCTBRef, max);
+                String DoB = SRecord.getSubRecordDateOfBirth();
+                int age = Integer.valueOf(DW_SHBE_Handler.getAge(year, month, DoB));
+                if (age < 10) {
+                    aID = getSID(
+                            SRecord,
+                            subRecordType,
+                            claimantNINO,
+                            0,
+                            nonDependentsSet);
+                    tIDSetUniqueDependentChildrenUnderAge10Effected.add(aID);
+                }
             } else {
                 aID = getSID(
                         SRecord,

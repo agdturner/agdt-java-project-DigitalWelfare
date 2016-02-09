@@ -2817,6 +2817,10 @@ public class DW_SHBE_Handler {
         return 17;
     }
 
+    public static int getNumberOfClaimantsEthnicGroupsGrouped() {
+        return 10;
+    }
+
     public static int getOneOverMaxValueOfPassportStandardIndicator() {
         return 6;
     }
@@ -3121,5 +3125,107 @@ public class DW_SHBE_Handler {
         } else {
             return false;
         }
+    }
+    
+    public static int getEthnicityGroup(DW_SHBE_D_Record D_Record) {
+        int claimantsEthnicGroup = D_Record.getClaimantsEthnicGroup();
+        switch (claimantsEthnicGroup) {
+            case 1:
+                return 1;
+            case 2:
+                return 1;
+            case 3:
+                return 2;
+            case 4:
+                return 3;
+            case 5:
+                return 3;
+            case 6:
+                return 4;
+            case 7:
+                return 5;
+            case 8:
+                return 6;
+            case 9:
+                return 6;
+            case 10:
+                return 6;
+            case 11:
+                return 6;
+            case 12:
+                return 7;
+            case 13:
+                return 7;
+            case 14:
+                return 7;
+            case 15:
+                return 8;
+            case 16:
+                return 9;
+        }
+        return 0;        
+    }
+    
+    public static String getEthnicityName(DW_SHBE_D_Record D_Record) {
+        int claimantsEthnicGroup = D_Record.getClaimantsEthnicGroup();
+        switch (claimantsEthnicGroup) {
+            case 1:
+                return "White: British";
+            case 2:
+                return "White: Irish";
+            case 3:
+                return "White: Any Other";
+            case 4:
+                return "Mixed: White and Black Caribbean";
+            case 5:
+                return "Mixed: White and Black African";
+            case 6:
+                return "Mixed: White and Asian";
+            case 7:
+                return "Mixed: Any Other";
+            case 8:
+                return "Asian or Asian British: Indian";
+            case 9:
+                return "Asian or Asian British: Pakistani";
+            case 10:
+                return "Asian or Asian British: Bangladeshi";
+            case 11:
+                return "Asian or Asian British: Any Other";
+            case 12:
+                return "Black or Black British: Caribbean";
+            case 13:
+                return "Black or Black British: African";
+            case 14:
+                return "Black or Black British: Any Other";
+            case 15:
+                return "Chinese";
+            case 16:
+                return "Any Other";
+        }
+        return "";        
+    }
+    
+    public static String getEthnicityGroupName(int ethnicityGroup) {
+        switch (ethnicityGroup) {
+            case 1:
+                return "WhiteBritish_Or_WhiteIrish";
+            case 2:
+                return "WhiteOther";
+            case 3:
+                return "MixedWhiteAndBlackAfrican_Or_MixedWhiteAndBlackCaribbean";
+            case 4:
+                return "MixedWhiteAndAsian";
+            case 5:
+                return "MixedOther";
+            case 6:
+                return "Asian_Or_AsianBritish";
+            case 7:
+                return "BlackOrBlackBritishCaribbean_Or_BlackOrBlackBritishAfrican_Or_BlackOrBlackBritishOther";
+            case 8:
+                return "Chinese";
+            case 9:
+                return "Other";
+        }
+        return "";        
     }
 }

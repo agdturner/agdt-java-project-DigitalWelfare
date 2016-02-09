@@ -541,11 +541,11 @@ public class SummaryUO extends Summary {
     protected static double CouncilTotalWeeklyEligibleRentAmount;
     protected static int CouncilTotalWeeklyEligibleRentAmountNonZeroCount;
     protected static int CouncilTotalWeeklyEligibleRentAmountZeroCount;
-    
+
     protected static double CouncilTotalWeeklyEligibleRentAmountTT1;
     protected static int CouncilTotalWeeklyEligibleRentAmountNonZeroCountTT1;
     protected static int CouncilTotalWeeklyEligibleRentAmountZeroCountTT1;
-    
+
     protected static double CouncilTotalWeeklyEligibleCouncilTaxAmount;
     protected static int CouncilTotalCount_WeeklyEligibleCouncilTaxAmountNonZero;
     protected static int CouncilTotalCount_WeeklyEligibleCouncilTaxAmountZero;
@@ -580,6 +580,7 @@ public class SummaryUO extends Summary {
     protected static int CouncilCount1;
     protected static Integer CouncilCount0;
     protected static int[] CouncilEthnicGroupCount;
+    protected static int[] CouncilEthnicGroupCountByTT;
     protected static int CouncilTotalCount_PostcodeValidFormat;
     protected static int CouncilTotalCount_PostcodeValid;
     // Other summary stats
@@ -636,6 +637,7 @@ public class SummaryUO extends Summary {
     protected static int RSLCount1;
     protected static Integer RSLCount0;
     protected static int[] RSLEthnicGroupCount;
+    protected static int[] RSLEthnicGroupCountByTT;
     protected static int RSLTotalCount_PostcodeValidFormat;
     protected static int RSLTotalCount_PostcodeValid;
 
@@ -789,8 +791,9 @@ public class SummaryUO extends Summary {
         sCouncilTotalCount_EthnicGroupClaimant = new String[nEG];
         sCouncilPercentageOfHB_EthnicGroupClaimant = new String[nEG];
         for (int i = 1; i < nEG; i++) {
-            sCouncilTotalCount_EthnicGroupClaimant[i] = "CouncilTotalCount_EthnicGroup" + i + "Claimant";
-            sCouncilPercentageOfHB_EthnicGroupClaimant[i] = "CouncilPercentageOfAll_EthnicGroup" + i + "Claimant";
+            String EGN = DW_SHBE_Handler.getEthnicityGroupName(i);
+            sCouncilTotalCount_EthnicGroupClaimant[i] = "CouncilTotalCount_EthnicGroup_" + EGN + "_Claimant";
+            sCouncilPercentageOfHB_EthnicGroupClaimant[i] = "CouncilPercentageOfAll_EthnicGroup_" + EGN + "_Claimant";
         }
         sCouncilTotalCount_ClaimantTT = new String[nTT];
         for (int i = 1; i < nTT; i++) {
@@ -1615,15 +1618,15 @@ public class SummaryUO extends Summary {
         // Add Counts
         addToSummarySingleTimeCounts0(summary);
         addToSummarySingleTimeDisabilityCounts(nTT, summary);
-        addToSummarySingleTimeEthnicityCounts(nEG, summary);
+        addToSummarySingleTimeEthnicityCounts(nEG, nTT, summary);
         addToSummarySingleTimeTTCounts(nTT, summary);
         addToSummarySingleTimePSICounts(nTT, nPSI, summary);
         addToSummarySingleTimeCounts1(summary);
 
         // Add Rates
-        addToSummarySingleTimeRates0(summary);
+        addToSummarySingleTimeRates0(nTT, summary);
         addToSummarySingleTimeDisabilityRates(nTT, summary);
-        addToSummarySingleTimeEthnicityRates(nEG, summary);
+        addToSummarySingleTimeEthnicityRates(nEG, nTT, summary);
         addToSummarySingleTimeTTRates(nTT, summary);
         addToSummarySingleTimePSIRates(nTT, nPSI, summary);
         addToSummarySingleTimeRates1(summary);
@@ -1643,8 +1646,9 @@ public class SummaryUO extends Summary {
 
     @Override
     protected void addToSummarySingleTimeRates0(
+            int nTT,
             HashMap<String, String> summary) {
-        super.addToSummarySingleTimeRates0(summary);
+        super.addToSummarySingleTimeRates0(nTT, summary);
         double ave;
         // Council
         // HouseholdSize
@@ -3277,8 +3281,9 @@ public class SummaryUO extends Summary {
     @Override
     protected void addToSummarySingleTimeEthnicityCounts(
             int nEG,
+            int nTT,
             HashMap<String, String> summary) {
-        super.addToSummarySingleTimeEthnicityCounts(nEG, summary);
+        super.addToSummarySingleTimeEthnicityCounts(nEG, nTT, summary);
         // Council
         for (int i = 1; i < nEG; i++) {
             summary.put(
@@ -3295,8 +3300,9 @@ public class SummaryUO extends Summary {
     @Override
     protected void addToSummarySingleTimeEthnicityRates(
             int nEG,
+            int nTT,
             HashMap<String, String> summary) {
-        super.addToSummarySingleTimeEthnicityRates(nEG, summary);
+        super.addToSummarySingleTimeEthnicityRates(nEG, nTT, summary);
         double percentage;
         double all;
         double d;
@@ -3525,7 +3531,8 @@ public class SummaryUO extends Summary {
         int ClaimantsNetWeeklyIncomeFromSelfEmployment;
         String ClaimantsStudentIndicator;
         String LHARegulationsApplied;
-        ClaimantsEthnicGroup0 = D_Record.getClaimantsEthnicGroup();
+        //ClaimantsEthnicGroup0 = D_Record.getClaimantsEthnicGroup();
+        ClaimantsEthnicGroup0 = DW_SHBE_Handler.getEthnicityGroup(D_Record);
         // All unfiltered counts
         TT = D_Record.getTenancyType();
         postcode = D_Record.getClaimantsPostcode();
@@ -3616,12 +3623,12 @@ public class SummaryUO extends Summary {
                 CouncilTotalWeeklyEligibleRentAmountZeroCount++;
             }
             if (TT == 1) {
-            if (WeeklyEligibleRentAmount > 0) {
-                CouncilTotalWeeklyEligibleRentAmountTT1 += WeeklyEligibleRentAmount;
-                CouncilTotalWeeklyEligibleRentAmountNonZeroCountTT1 ++;
-            } else {
-                CouncilTotalWeeklyEligibleRentAmountZeroCountTT1++;
-            }
+                if (WeeklyEligibleRentAmount > 0) {
+                    CouncilTotalWeeklyEligibleRentAmountTT1 += WeeklyEligibleRentAmount;
+                    CouncilTotalWeeklyEligibleRentAmountNonZeroCountTT1++;
+                } else {
+                    CouncilTotalWeeklyEligibleRentAmountZeroCountTT1++;
+                }
             }
             WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
             if (WeeklyEligibleCouncilTaxAmount > 0) {
@@ -3653,6 +3660,7 @@ public class SummaryUO extends Summary {
             }
             doCouncilSingleTimeHBCount(
                     ClaimantsEthnicGroup0,
+                    TT,
                     postcode,
                     yM30v);
         }
@@ -3683,7 +3691,8 @@ public class SummaryUO extends Summary {
         String ClaimantsStudentIndicator;
         String LHARegulationsApplied;
         TT = D_Record.getTenancyType();
-        ClaimantsEthnicGroup0 = D_Record.getClaimantsEthnicGroup();
+        //ClaimantsEthnicGroup0 = D_Record.getClaimantsEthnicGroup();
+        ClaimantsEthnicGroup0 = DW_SHBE_Handler.getEthnicityGroup(D_Record);
         postcode = D_Record.getClaimantsPostcode();
         RSLTotalCount_TTClaimant1[TT]++;
         // Disability
@@ -3771,13 +3780,13 @@ public class SummaryUO extends Summary {
             } else {
                 RSLTotalWeeklyEligibleRentAmountZeroCount++;
             }
-                        if (TT == 4) {
-            if (WeeklyEligibleRentAmount > 0) {
-                RSLTotalWeeklyEligibleRentAmountTT4 += WeeklyEligibleRentAmount;
-                RSLTotalWeeklyEligibleRentAmountNonZeroCountTT4 ++;
-            } else {
-                RSLTotalWeeklyEligibleRentAmountZeroCountTT4++;
-            }
+            if (TT == 4) {
+                if (WeeklyEligibleRentAmount > 0) {
+                    RSLTotalWeeklyEligibleRentAmountTT4 += WeeklyEligibleRentAmount;
+                    RSLTotalWeeklyEligibleRentAmountNonZeroCountTT4++;
+                } else {
+                    RSLTotalWeeklyEligibleRentAmountZeroCountTT4++;
+                }
             }
 
             WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
@@ -3810,6 +3819,7 @@ public class SummaryUO extends Summary {
             }
             doRSLSingleTimeHBCount(
                     ClaimantsEthnicGroup0,
+                    TT,
                     postcode,
                     yM30v);
         }
@@ -4008,14 +4018,16 @@ public class SummaryUO extends Summary {
     /**
      *
      * @param tEG The Ethnic Group
+     * @param tTT
      * @param tP The Postcode
      * @param yM3v They yM3 for postcode lookup validity
      */
     protected void doCouncilSingleTimeHBCount(
             int tEG,
+            int tTT,
             String tP,
             String yM3v) {
-        super.doSingleTimeHBCount(tEG, tP, yM3v);
+        super.doSingleTimeHBCount(tEG, tTT, tP, yM3v);
         CouncilCount1++;
         CouncilEthnicGroupCount[tEG]++;
         if (tP != null) {
@@ -4040,9 +4052,10 @@ public class SummaryUO extends Summary {
      */
     protected void doRSLSingleTimeHBCount(
             int tEG,
+            int tTT,
             String tP,
             String yM3v) {
-        super.doSingleTimeHBCount(tEG, tP, yM3v);
+        super.doSingleTimeHBCount(tEG, tTT, tP, yM3v);
         // RSL
         RSLCount1++;
         RSLEthnicGroupCount[tEG]++;
@@ -5283,24 +5296,24 @@ public class SummaryUO extends Summary {
 //                includeKey,
 //                doUnderOccupancy,
 //                nTT, nEG);
-//        writeSummaryTableCompare2Times(
-//                summaryTable,
-//                paymentType,
-//                includeKey,
-//                doUnderOccupancy,
-//                nTT, nEG);
-//        writeSummaryTableCompare2TimesTT(
-//                summaryTable,
-//                paymentType,
-//                includeKey,
-//                doUnderOccupancy,
-//                nTT, nEG);
-//        writeSummaryTableCompare2TimesPostcode(
-//                summaryTable,
-//                paymentType,
-//                includeKey,
-//                doUnderOccupancy,
-//                nTT, nEG);
+        writeSummaryTableCompare2Times(
+                summaryTable,
+                paymentType,
+                includeKey,
+                doUnderOccupancy,
+                nTT, nEG);
+        writeSummaryTableCompare2TimesTT(
+                summaryTable,
+                paymentType,
+                includeKey,
+                doUnderOccupancy,
+                nTT, nEG);
+        writeSummaryTableCompare2TimesPostcode(
+                summaryTable,
+                paymentType,
+                includeKey,
+                doUnderOccupancy,
+                nTT, nEG);
         writeSummaryTableSingleTimeGenericCounts(
                 summaryTable,
                 paymentType,
@@ -6053,6 +6066,10 @@ public class SummaryUO extends Summary {
         header += "PostCodeLookupFile, ";
         header += sHBTotalHouseholdSize + ", ";
 //Not correct at present, wrong denominator        header += sHBAverageHouseholdSize + ", ";
+        header += sAllTotalHouseholdSizeByTT[1] + ", ";
+        header += sAllAverageHouseholdSizeByTT[1] + ", ";
+        header += sAllTotalHouseholdSizeByTT[4] + ", ";
+        header += sAllAverageHouseholdSizeByTT[4] + ", ";
         header += sAllTotalCount_PostcodeValidFormat + ", ";
         header += sAllTotalCount_PostcodeValid + ", ";
         header += sHBTotalCount_PostcodeValidFormat + ", ";
@@ -6075,6 +6092,10 @@ public class SummaryUO extends Summary {
             line += getPostcodeLookupDateAndFilenameLinePart(filename1, ONSPDFiles);
             line += summary.get(sHBTotalHouseholdSize) + ", ";
 //            line += summary.get(sHBAverageHouseholdSize) + ", ";
+            line += summary.get(sAllTotalHouseholdSizeByTT[1]) + ", ";
+            line += summary.get(sAllAverageHouseholdSizeByTT[1]) + ", ";
+            line += summary.get(sAllTotalHouseholdSizeByTT[4]) + ", ";
+            line += summary.get(sAllAverageHouseholdSizeByTT[4]) + ", ";
             line += summary.get(sAllTotalCount_PostcodeValidFormat) + ", ";
             line += summary.get(sAllTotalCount_PostcodeValid) + ", ";
             line += summary.get(sHBTotalCount_PostcodeValidFormat) + ", ";
@@ -6645,18 +6666,23 @@ public class SummaryUO extends Summary {
             header += sCouncilTotalCount_EthnicGroupClaimant[i] + ", ";
             header += sCouncilPercentageOfHB_EthnicGroupClaimant[i] + ", ";
         }
-        for (int i = 1; i < nEG; i++) {
-            header += sCouncilTotalCount_EthnicGroupClaimant[i] + ", ";
-            header += sCouncilPercentageOfHB_EthnicGroupClaimant[i] + ", ";
-        }
         // RSL
         for (int i = 1; i < nEG; i++) {
             header += sRSLTotalCount_EthnicGroupClaimant[i] + ", ";
             header += sRSLPercentageOfHB_EthnicGroupClaimant[i] + ", ";
         }
         for (int i = 1; i < nEG; i++) {
-            header += sRSLTotalCount_EthnicGroupClaimant[i] + ", ";
-            header += sRSLPercentageOfHB_EthnicGroupClaimant[i] + ", ";
+//            for (int j = 1; j < nTT; j++) {
+//                header += sAllTotalCount_EthnicGroupClaimantByTT[i][j] + ", ";
+//                header += sAllPercentageOfTT_EthnicGroupClaimantByTT[i][j] + ", ";
+//                header += sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT[i][j] + ", ";
+//            }
+            header += sAllTotalCount_EthnicGroupClaimantByTT[i][1] + ", ";
+            header += sAllPercentageOfTT_EthnicGroupClaimantByTT[i][1] + ", ";
+            header += sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT[i][1] + ", ";
+            header += sAllTotalCount_EthnicGroupClaimantByTT[i][4] + ", ";
+            header += sAllPercentageOfTT_EthnicGroupClaimantByTT[i][4] + ", ";
+            header += sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT[i][4] + ", ";
         }
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -6691,18 +6717,23 @@ public class SummaryUO extends Summary {
                 line += summary.get(sCouncilTotalCount_EthnicGroupClaimant[i]) + ", ";
                 line += summary.get(sCouncilPercentageOfHB_EthnicGroupClaimant[i]) + ", ";
             }
-            for (int i = 1; i < nEG; i++) {
-                line += summary.get(sCouncilTotalCount_EthnicGroupClaimant[i]) + ", ";
-                line += summary.get(sCouncilPercentageOfHB_EthnicGroupClaimant[i]) + ", ";
-            }
             // RSL
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sRSLTotalCount_EthnicGroupClaimant[i]) + ", ";
                 line += summary.get(sRSLPercentageOfHB_EthnicGroupClaimant[i]) + ", ";
             }
             for (int i = 1; i < nEG; i++) {
-                line += summary.get(sRSLTotalCount_EthnicGroupClaimant[i]) + ", ";
-                line += summary.get(sRSLPercentageOfHB_EthnicGroupClaimant[i]) + ", ";
+//                for (int j = 1; j < nTT; j++) {
+//                    line += summary.get(sAllTotalCount_EthnicGroupClaimantByTT[i][j]) + ", ";
+//                    line += summary.get(sAllPercentageOfTT_EthnicGroupClaimantByTT[i][j]) + ", ";
+//                    line += summary.get(sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT[i][j]) + ", ";
+//                }
+                line += summary.get(sAllTotalCount_EthnicGroupClaimantByTT[i][1]) + ", ";
+                line += summary.get(sAllPercentageOfTT_EthnicGroupClaimantByTT[i][1]) + ", ";
+                line += summary.get(sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT[i][1]) + ", ";
+                line += summary.get(sAllTotalCount_EthnicGroupClaimantByTT[i][4]) + ", ";
+                line += summary.get(sAllPercentageOfTT_EthnicGroupClaimantByTT[i][4]) + ", ";
+                line += summary.get(sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT[i][4]) + ", ";
             }
             line = line.substring(0, line.length() - 2);
             pw.println(line);

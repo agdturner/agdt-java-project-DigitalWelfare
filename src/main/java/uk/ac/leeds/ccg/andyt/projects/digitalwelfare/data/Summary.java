@@ -53,7 +53,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 public class Summary {
 
     // Generic vars
-
     protected transient DW_Environment env;
     public DW_SHBE_CollectionHandler collectionHandler;
     protected DW_SHBE_Handler tDW_SHBE_Handler;
@@ -72,6 +71,8 @@ public class Summary {
     protected static final String sHBAverageHouseholdSize = "HBAverageHouseholdSize";
     protected static final String sCTBTotalHouseholdSize = "CTBTotalHouseholdSize";
     protected static final String sCTBAverageHouseholdSize = "CTBAverageHouseholdSize";
+    protected static String[] sAllTotalHouseholdSizeByTT;
+    protected static String[] sAllAverageHouseholdSizeByTT;
     // PSI
     protected static String[] sAllTotalCount_PSI;
     protected static String[] sHBTotalCount_PSI;
@@ -367,6 +368,10 @@ public class Summary {
     protected static final String sPercentageOfHB_PrivateDeregulatedTTsClaimant = "PercentageOfHB_PrivateDeregulatedTTsClaimant";
     protected static String[] sAllTotalCount_EthnicGroupClaimant;
     protected static String[] sAllPercentageOfAll_EthnicGroupClaimant;
+    protected static String[][] sAllTotalCount_EthnicGroupClaimantByTT;
+    protected static String[][] sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT;
+    protected static String[][] sAllPercentageOfTT_EthnicGroupClaimantByTT;
+
     protected static String sAllTotalCount_PostcodeValidFormat;
     protected static String sAllTotalCount_PostcodeValid;
     // Income
@@ -398,7 +403,6 @@ public class Summary {
     public static String[] sCTBTotalCount_IncomeZeroTT;
     public static String[] sCTBAverageIncomeTT;
     // Demographics
-    // Ethnicity
     // HB
     protected static String[] sHBTotalCount_EthnicGroupClaimant;
     protected static String[] sHBPercentageOfHB_EthnicGroupClaimant;
@@ -655,8 +659,11 @@ public class Summary {
     protected static long AllTotalHouseholdSize;
     protected static long HBTotalHouseholdSize;
     protected static long CTBTotalHouseholdSize;
+    protected static long[] AllTotalHouseholdSizeByTT;
+    // All
     protected static int AllCount1;
     protected static Integer AllCount0;
+    protected static int[][] AllTotalCount_EthnicGroupClaimantByTT;
     // HB
     protected static int HBCount1;
     protected static Integer HBCount0;
@@ -782,6 +789,7 @@ public class Summary {
         TotalCount_DisabledChildPremiumAwardByTT = new int[nTT];
         TotalCount_EnhancedDisabilityPremiumAwardByTT = new int[nTT];
         TotalCount_DisabilityAwardByTT = new int[nTT];
+        AllTotalHouseholdSizeByTT = new long[nTT];
         AllTotalCount_PSI = new int[nPSI];
         HBTotalCount_PSI = new int[nPSI];
         CTBTotalCount_PSI = new int[nPSI];
@@ -790,6 +798,7 @@ public class Summary {
         CTBTotalCount_PSIByTT = new int[nPSI][nTT];
         TotalCount_TTClaimant1 = new int[nTT];
         TotalCount_TTClaimant0 = new int[nTT];
+        AllTotalCount_EthnicGroupClaimantByTT = new int[nEG][nTT];
         HBEthnicGroupCount = new int[nEG];
         CTBEthnicGroupCount = new int[nEG];
     }
@@ -819,6 +828,8 @@ public class Summary {
         sCTBTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
         sCTBTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
         sCTBAverageWeeklyEligibleRentAmountTT = new String[nTT];
+        sAllTotalHouseholdSizeByTT = new String[nTT];
+        sAllAverageHouseholdSizeByTT = new String[nTT];
         sAllTotalCount_PSI = new String[nPSI];
         sHBTotalCount_PSI = new String[nPSI];
         sCTBTotalCount_PSI = new String[nPSI];
@@ -849,12 +860,6 @@ public class Summary {
             }
         }
         // All
-        sAllTotalCount_EthnicGroupClaimant = new String[nEG];
-        sAllPercentageOfAll_EthnicGroupClaimant = new String[nEG];
-        for (int i = 1; i < nEG; i++) {
-            sAllTotalCount_EthnicGroupClaimant[i] = "AllTotalCount_EthnicGroup" + i + "Claimant";
-            sAllPercentageOfAll_EthnicGroupClaimant[i] = "AllPercentageEthnicGroup" + i + "Claimant";
-        }
         sTotalCount_ClaimantTT = new String[nTT];
         sPercentageOfAll_ClaimantTT = new String[nTT];
         sPercentageOfHB_ClaimantTT = new String[nTT];
@@ -890,6 +895,9 @@ public class Summary {
         sPercentageOfCTB_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
         sPercentageOfTT_EnhancedDisabilityPremiumAwardByTT = new String[nTT];
         for (int i = 1; i < nTT; i++) {
+            // HouseholdSize
+            sAllTotalHouseholdSizeByTT[i] = "AllTotalHouseholdSizeByTT" + i;
+            sAllAverageHouseholdSizeByTT[i] = "AllAverageHouseholdSizeByTT" + i;
             // Claimants
             sTotalCount_ClaimantTT[i] = "TotalCount_ClaimantTT" + i;
             sPercentageOfAll_ClaimantTT[i] = "PercentageOfAll_ClaimantTT" + i;
@@ -962,17 +970,26 @@ public class Summary {
         // EthnicGroup
         sAllTotalCount_EthnicGroupClaimant = new String[nEG];
         sAllPercentageOfAll_EthnicGroupClaimant = new String[nEG];
+        sAllTotalCount_EthnicGroupClaimantByTT = new String[nEG][nTT];
+        sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT = new String[nEG][nTT];
+        sAllPercentageOfTT_EthnicGroupClaimantByTT = new String[nEG][nTT];
         sHBTotalCount_EthnicGroupClaimant = new String[nEG];
         sHBPercentageOfHB_EthnicGroupClaimant = new String[nEG];
         sCTBTotalCount_EthnicGroupClaimant = new String[nEG];
         sCTBPercentageOfCTB_EthnicGroupClaimant = new String[nEG];
         for (int i = 1; i < nEG; i++) {
-            sAllTotalCount_EthnicGroupClaimant[i] = "AllTotalCount_EthnicGroup" + i + "Claimant";
-            sAllPercentageOfAll_EthnicGroupClaimant[i] = "AllPercentageOfAll_EthnicGroup" + i + "Claimant";
-            sHBTotalCount_EthnicGroupClaimant[i] = "HBTotalCount_EthnicGroup" + i + "Claimant";
-            sHBPercentageOfHB_EthnicGroupClaimant[i] = "HBPercentageOfHB_EthnicGroup" + i + "Claimant";
-            sCTBTotalCount_EthnicGroupClaimant[i] = "CTBTotalCount_ClaimantEthnicGroup" + i + "Claimant";
-            sCTBPercentageOfCTB_EthnicGroupClaimant[i] = "CTBPercentageOfCTB_ClaimantEthnicGroup" + i + "Claimant";
+            String EGN = DW_SHBE_Handler.getEthnicityGroupName(i);
+            for (int j = 1; j < nTT; j++) {
+                sAllTotalCount_EthnicGroupClaimantByTT[i][j] = "AllTotalCount__ClaimantEthnicGroup_" + EGN + "__ClaimantTT" + j;
+                sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT[i][j] = "AllPercentageOfEthnicGroup_" + EGN + "___ClaimantEthnicGroup_" + EGN + "__ClaimantTT" + j;
+                sAllPercentageOfTT_EthnicGroupClaimantByTT[i][j] = "AllPercentageOfTT" + j + "__EthnicGroup _" + EGN + "__ClaimantTT" + j;
+            }
+            sAllTotalCount_EthnicGroupClaimant[i] = "AllTotalCount_EthnicGroup_" + EGN + "_Claimant";
+            sAllPercentageOfAll_EthnicGroupClaimant[i] = "AllPercentageOfAll_EthnicGroup_" + EGN + "_Claimant";
+            sHBTotalCount_EthnicGroupClaimant[i] = "HBTotalCount_EthnicGroup_" + EGN + "_Claimant";
+            sHBPercentageOfHB_EthnicGroupClaimant[i] = "HBPercentageOfHB_EthnicGroup_" + EGN + "_Claimant";
+            sCTBTotalCount_EthnicGroupClaimant[i] = "CTBTotalCount_ClaimantEthnicGroup_" + EGN + "_Claimant";
+            sCTBPercentageOfCTB_EthnicGroupClaimant[i] = "CTBPercentageOfCTB_ClaimantEthnicGroup_" + EGN + "_Claimant";
         }
     }
 
@@ -1101,6 +1118,7 @@ public class Summary {
             TotalCount_DisabledChildPremiumAwardByTT[i] = 0;
             TotalCount_EnhancedDisabilityPremiumAwardByTT[i] = 0;
             TotalCount_DisabilityAwardByTT[i] = 0;
+            AllTotalHouseholdSizeByTT[i] = 0;
         }
         //AllCount0 = AllCount1;
         AllCount1 = 0;
@@ -1110,6 +1128,9 @@ public class Summary {
         CTBCount1 = 0;
         // Ethnicity
         for (int i = 1; i < nEG; i++) {
+            for (int j = 1; j < nTT; j++) {
+                AllTotalCount_EthnicGroupClaimantByTT[i][j] = 0;
+            }
             HBEthnicGroupCount[i] = 0;
             CTBEthnicGroupCount[i] = 0;
         }
@@ -2183,15 +2204,15 @@ public class Summary {
         // Add Counts
         addToSummarySingleTimeCounts0(summary);
         addToSummarySingleTimeDisabilityCounts(nTT, summary);
-        addToSummarySingleTimeEthnicityCounts(nEG, summary);
+        addToSummarySingleTimeEthnicityCounts(nEG, nTT, summary);
         addToSummarySingleTimeTTCounts(nTT, summary);
         addToSummarySingleTimePSICounts(nTT, nPSI, summary);
         addToSummarySingleTimeCounts1(summary);
 
         // Add Rates
-        addToSummarySingleTimeRates0(summary);
+        addToSummarySingleTimeRates0(nTT, summary);
         addToSummarySingleTimeDisabilityRates(nTT, summary);
-        addToSummarySingleTimeEthnicityRates(nEG, summary);
+        addToSummarySingleTimeEthnicityRates(nEG, nTT, summary);
         addToSummarySingleTimeTTRates(nTT, summary);
         addToSummarySingleTimePSIRates(nTT, nPSI, summary);
         addToSummarySingleTimeRates1(summary);
@@ -2211,15 +2232,22 @@ public class Summary {
     }
 
     protected void addToSummarySingleTimeRates0(
+            int nTT,
             HashMap<String, String> summary) {
         double ave;
+        double d;
+        double n;
         // All HouseholdSize
-        if (AllCount1 > 0) {
-            ave = AllTotalHouseholdSize / (double) AllCount1;
+        d = AllCount1;
+        n = AllTotalHouseholdSize;
+        if (d > 0) {
+            ave = n / d;
             summary.put(
                     sAllAverageHouseholdSize,
                     Generic_BigDecimal.roundIfNecessary(
-                            BigDecimal.valueOf(ave), decimalPlacePrecisionForAverage, RoundingMode.HALF_UP).toPlainString());
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
                     sAllAverageHouseholdSize,
@@ -2229,12 +2257,16 @@ public class Summary {
         summary.put(
                 sHBTotalHouseholdSize,
                 Long.toString(HBTotalHouseholdSize));
-        if (HBCount1 > 0) {
-            ave = HBTotalHouseholdSize / (double) HBCount1;
+        d = HBCount1;
+        n = HBTotalHouseholdSize;
+        if (d > 0) {
+            ave = n / d;
             summary.put(
                     sHBAverageHouseholdSize,
                     Generic_BigDecimal.roundIfNecessary(
-                            BigDecimal.valueOf(ave), decimalPlacePrecisionForAverage, RoundingMode.HALF_UP).toPlainString());
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
                     sHBAverageHouseholdSize,
@@ -2244,16 +2276,41 @@ public class Summary {
         summary.put(
                 sCTBTotalHouseholdSize,
                 Long.toString(CTBTotalHouseholdSize));
-        if (CTBCount1 > 0) {
-            ave = CTBTotalHouseholdSize / (double) CTBCount1;
+        d = CTBCount1;
+        n = CTBTotalHouseholdSize;
+        if (d > 0) {
+            ave = n / d;
             summary.put(
                     sCTBAverageHouseholdSize,
                     Generic_BigDecimal.roundIfNecessary(
-                            BigDecimal.valueOf(ave), decimalPlacePrecisionForAverage, RoundingMode.HALF_UP).toPlainString());
+                            BigDecimal.valueOf(ave),
+                            decimalPlacePrecisionForAverage,
+                            RoundingMode.HALF_UP).toPlainString());
         } else {
             summary.put(
                     sCTBAverageHouseholdSize,
                     s0);
+        }
+        // TotalHouseholdSizeByTT
+        for (int i = 1; i < nTT; i++) {
+            summary.put(
+                    sAllTotalHouseholdSizeByTT[i],
+                    Long.toString(AllTotalHouseholdSizeByTT[i]));
+            d = TotalCount_TTClaimant1[i];
+            n = AllTotalHouseholdSizeByTT[i];
+            if (d > 0) {
+                ave = n / d;
+                summary.put(
+                        sAllAverageHouseholdSizeByTT[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(ave),
+                                decimalPlacePrecisionForAverage,
+                                RoundingMode.HALF_UP).toPlainString());
+            } else {
+                summary.put(
+                        sAllAverageHouseholdSizeByTT[i],
+                        s0);
+            }
         }
     }
 
@@ -4115,6 +4172,7 @@ public class Summary {
 
     protected void addToSummarySingleTimeEthnicityCounts(
             int nEG,
+            int nTT,
             HashMap<String, String> summary) {
         for (int i = 1; i < nEG; i++) {
             int all;
@@ -4128,11 +4186,17 @@ public class Summary {
             summary.put(
                     sCTBTotalCount_EthnicGroupClaimant[i],
                     Integer.toString(CTBEthnicGroupCount[i]));
+            for (int j = 0; j < nTT; j++) {
+                summary.put(
+                        sAllTotalCount_EthnicGroupClaimantByTT[i][j],
+                        Integer.toString(AllTotalCount_EthnicGroupClaimantByTT[i][j]));
+            }
         }
     }
 
     protected void addToSummarySingleTimeEthnicityRates(
             int nEG,
+            int nTT,
             HashMap<String, String> summary) {
         // Ethnicity
         double percentage;
@@ -4168,6 +4232,29 @@ public class Summary {
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
+            }
+            for (int j = 1; j < nTT; j++) {
+                all = Integer.valueOf(summary.get(sAllTotalCount_EthnicGroupClaimantByTT[i][j]));
+                d = TotalCount_TTClaimant1[j];
+                if (d > 0) {
+                    percentage = (all * 100.0d) / d;
+                    summary.put(
+                            sAllPercentageOfTT_EthnicGroupClaimantByTT[i][j],
+                            Generic_BigDecimal.roundIfNecessary(
+                                    BigDecimal.valueOf(percentage),
+                                    decimalPlacePrecisionForPercentage,
+                                    RoundingMode.HALF_UP).toPlainString());
+                }
+                d = Integer.valueOf(summary.get(sAllTotalCount_EthnicGroupClaimant[i]));
+                if (d > 0) {
+                    percentage = (all * 100.0d) / d;
+                    summary.put(
+                            sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT[i][j],
+                            Generic_BigDecimal.roundIfNecessary(
+                                    BigDecimal.valueOf(percentage),
+                                    decimalPlacePrecisionForPercentage,
+                                    RoundingMode.HALF_UP).toPlainString());
+                }
             }
         }
     }
@@ -4374,7 +4461,8 @@ public class Summary {
             DW_SHBE_D_Record D_Record,
             String yM30v) {
         int ClaimantsEthnicGroup0;
-        ClaimantsEthnicGroup0 = D_Record.getClaimantsEthnicGroup();
+        //ClaimantsEthnicGroup0 = D_Record.getClaimantsEthnicGroup();
+        ClaimantsEthnicGroup0 = DW_SHBE_Handler.getEthnicityGroup(D_Record);
         int TT;
         String postcode;
         // All unfiltered counts
@@ -4483,6 +4571,7 @@ public class Summary {
             HBTotalCount_PSIByTT[PSI][TT]++;
             //if (HBRef.equalsIgnoreCase(CTBRef)) {
             HBTotalHouseholdSize += HouseholdSize;
+            AllTotalHouseholdSizeByTT[TT] += HouseholdSize;
             int ClaimantsNetWeeklyIncomeFromEmployment;
             ClaimantsNetWeeklyIncomeFromEmployment = D_Record.getClaimantsNetWeeklyIncomeFromEmployment();
             if (ClaimantsNetWeeklyIncomeFromEmployment > 0) {
@@ -4558,6 +4647,7 @@ public class Summary {
             }
             doSingleTimeHBCount(
                     ClaimantsEthnicGroup0,
+                    TT,
                     postcode,
                     yM30v);
         }
@@ -4566,6 +4656,7 @@ public class Summary {
             CTBTotalCount_PSI[PSI]++;
             CTBTotalCount_PSIByTT[PSI][TT]++;
             CTBTotalHouseholdSize += HouseholdSize;
+            AllTotalHouseholdSizeByTT[TT] += HouseholdSize;
             int ClaimantsNetWeeklyIncomeFromEmployment;
             ClaimantsNetWeeklyIncomeFromEmployment = D_Record.getClaimantsNetWeeklyIncomeFromEmployment();
             if (ClaimantsNetWeeklyIncomeFromEmployment > 0) {
@@ -4640,6 +4731,7 @@ public class Summary {
             }
             doSingleTimeCTBCount(
                     ClaimantsEthnicGroup0,
+                    TT,
                     postcode,
                     yM30v);
         }
@@ -4822,10 +4914,12 @@ public class Summary {
      */
     protected void doSingleTimeHBCount(
             int tEG,
+            int tTT,
             String tP,
             String yM3v) {
         HBCount1++;
         HBEthnicGroupCount[tEG]++;
+        AllTotalCount_EthnicGroupClaimantByTT[tEG][tTT]++;
         if (tP != null) {
             boolean isValidPostcodeFormat;
             isValidPostcodeFormat = Generic_UKPostcode_Handler.isValidPostcodeForm(tP);
@@ -4924,15 +5018,18 @@ public class Summary {
     /**
      *
      * @param tEG The Ethnic Group
+     * @param tTT
      * @param tP The Postcode
      * @param yM3v They yM3 for postcode lookup validity
      */
     protected void doSingleTimeCTBCount(
             int tEG,
+            int tTT,
             String tP,
             String yM3v) {
         CTBCount1++;
         CTBEthnicGroupCount[tEG]++;
+        AllTotalCount_EthnicGroupClaimantByTT[tEG][tTT]++;
         if (tP != null) {
             boolean isValidPostcodeFormat;
             isValidPostcodeFormat = Generic_UKPostcode_Handler.isValidPostcodeForm(tP);
@@ -5388,7 +5485,6 @@ public class Summary {
                     value);
         }
     }
-
 
     /**
      * Provides comparisons with the previous period
@@ -6166,6 +6262,10 @@ public class Summary {
         header += sHBAverageHouseholdSize + ", ";
         header += sCTBTotalHouseholdSize + ", ";
         header += sCTBAverageHouseholdSize + ", ";
+        for (int i = 1; i < nTT; i++) {
+            header += sAllTotalHouseholdSizeByTT[i] + ", ";
+            header += sAllAverageHouseholdSizeByTT[i] + ", ";
+        }
         header += sAllTotalCount_PostcodeValidFormat + ", ";
         header += sAllTotalCount_PostcodeValid + ", ";
         header += sHBTotalCount_PostcodeValidFormat + ", ";
@@ -6204,6 +6304,10 @@ public class Summary {
             line += summary.get(sHBAverageHouseholdSize) + ", ";
             line += summary.get(sCTBTotalHouseholdSize) + ", ";
             line += summary.get(sCTBAverageHouseholdSize) + ", ";
+            for (int i = 1; i < nTT; i++) {
+                line += summary.get(sAllTotalHouseholdSizeByTT[i]) + ", ";
+                line += summary.get(sAllAverageHouseholdSizeByTT[i]) + ", ";
+            }
             line += summary.get(sAllTotalCount_PostcodeValidFormat) + ", ";
             line += summary.get(sAllTotalCount_PostcodeValid) + ", ";
             line += summary.get(sHBTotalCount_PostcodeValidFormat) + ", ";
@@ -6651,6 +6755,13 @@ public class Summary {
             header += sCTBTotalCount_EthnicGroupClaimant[i] + ", ";
             header += sCTBPercentageOfCTB_EthnicGroupClaimant[i] + ", ";
         }
+        for (int i = 1; i < nEG; i++) {
+            for (int j = 1; j < nTT; j++) {
+                header += sAllTotalCount_EthnicGroupClaimantByTT[i][j] + ", ";
+                header += sAllPercentageOfTT_EthnicGroupClaimantByTT[i][j] + ", ";
+                header += sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT[i][j] + ", ";
+            }
+        }
         header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
@@ -6677,6 +6788,13 @@ public class Summary {
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sCTBTotalCount_EthnicGroupClaimant[i]) + ", ";
                 line += summary.get(sCTBPercentageOfCTB_EthnicGroupClaimant[i]) + ", ";
+            }
+            for (int i = 1; i < nEG; i++) {
+                for (int j = 1; j < nTT; j++) {
+                    line += summary.get(sAllTotalCount_EthnicGroupClaimantByTT[i][j]) + ", ";
+                    line += summary.get(sAllPercentageOfTT_EthnicGroupClaimantByTT[i][j]) + ", ";
+                    line += summary.get(sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT[i][j]) + ", ";
+                }
             }
             line = line.substring(0, line.length() - 2);
             pw.println(line);
