@@ -303,7 +303,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                                     //                                unregulatedGroups,
                                     underOccupiedData,
                                     doUnderOccupied,
-                                    false,
+                                    doCouncil,
                                     scaleToFirst,
                                     DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil),
                                     overlaycommunityAreas,

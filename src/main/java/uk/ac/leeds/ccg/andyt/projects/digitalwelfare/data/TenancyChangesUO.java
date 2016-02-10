@@ -133,10 +133,13 @@ public class TenancyChangesUO {
     String sIntermitantUO__Moved_NotChangedTT;
     String sIntermitantUO__NotMoved_NotChangedTT;
 
-    String sUO_NotUO_UO;
-    String sUO_NotUO_UO_NotUO_UO;
-    String sUO_NotUO_UO_NotUO_UO_NotUO_UO;
-    String sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO;
+    String sUO_NotUO_UO = "UO_NotUO_UO";
+    String sUO_NotUO_UO_NotUO = "UO_NotUO_UO_NotUO";
+    String sUO_NotUO_UO_NotUO_UO = "UO_NotUO_UO_NotUO_UO";
+    String sUO_NotUO_UO_NotUO_UO_NotUO = "UO_NotUO_UO_NotUO_UO_NotUO";
+    String sUO_NotUO_UO_NotUO_UO_NotUO_UO = "UO_NotUO_UO_NotUO_UO_NotUO_UO";
+    String sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO = "UO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO";
+    String sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO = "UO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO";
 
     String sUOTT1_To_NotUO_InSHBE_PostcodeChanged = "UOTT1_To_NotUO_InSHBE_PostcodeChanged";
     String sUOTT1_To_NotUO_TT1_PostcodeChanged = "UOTT1_To_NotUO_TT1_PostcodeChanged";
@@ -292,7 +295,7 @@ public class TenancyChangesUO {
     String sTotalCount_UniqueChildrenAgeLessThan10EffectedByUnderOccupancy = "TotalCount_UniqueChildrenAgeLessThan10EffectedByUnderOccupancy";
 
     String sAverageHouseholdSizeOfThoseUOAlwaysFromStart = "AverageHouseholdSizeOfThoseUOAlwaysFromStart";
-    
+
     HashMap<String, String> generalStatisticDescriptions;
 
     // TimeStatistics
@@ -517,7 +520,7 @@ public class TenancyChangesUO {
                 "Total count of sUO_NotUO_UO_NotUO_UO_NotUO_UO claims.");
         generalStatisticDescriptions.put(
                 sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO,
-                "Total count of sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO claims.");
+                "Total count of sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO claims (including claims with even more _NotUO_UO occurrences).");
 
         generalStatisticDescriptions.put(
                 sUOTT1_To_NotUO_InSHBE_PostcodeChanged,
@@ -1638,12 +1641,15 @@ public class TenancyChangesUO {
 
         TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO;
         tCTBRefSetUO_NotUO_UO_NotUO = new TreeSet<String>();
+        groups.put(sUO_NotUO_UO_NotUO, tCTBRefSetUO_NotUO_UO_NotUO);
 
         TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO;
         tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO = new TreeSet<String>();
+        groups.put(sUO_NotUO_UO_NotUO_UO_NotUO, tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO);
 
         TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO;
         tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO = new TreeSet<String>();
+        groups.put(sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO, tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO);
 
         TreeSet<String> tCTBRefSetUO_NotUO_UO;
         tCTBRefSetUO_NotUO_UO = new TreeSet<String>();
@@ -2575,7 +2581,7 @@ public class TenancyChangesUO {
         long totalHouseholdSize = 0;
         Iterator<String> iteS;
         iteS = tCTBRefSetAlwaysUOFromStart.iterator();
-        while         (iteS.hasNext()) {
+        while (iteS.hasNext()) {
             aCTBRef = iteS.next();
             totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(aRecords.get(aCTBRef));
         }
@@ -2583,8 +2589,7 @@ public class TenancyChangesUO {
         averageHouseholdSizeOfThoseUOAlwaysFromStart = (double) totalHouseholdSize / (double) tCTBRefSetAlwaysUOFromStart.size();
         generalStatistics.put(sAverageHouseholdSizeOfThoseUOAlwaysFromStart,
                 BigDecimal.valueOf(averageHouseholdSizeOfThoseUOAlwaysFromStart));
-        
-        
+
         generalStatistics.put(sTotalCount_AlwaysUOFromStart,
                 BigDecimal.valueOf(tCTBRefSetAlwaysUOFromStart.size()));
         generalStatistics.put(sTotalCount_AlwaysUOFromWhenStarted,
@@ -2786,13 +2791,18 @@ public class TenancyChangesUO {
 
         generalStatistics.put(
                 sUO_NotUO_UO,
-                BigDecimal.valueOf(groups.get(sUO_NotUO_UO).size()));
+                BigDecimal.valueOf(
+                        groups.get(sUO_NotUO_UO).size()
+                        + groups.get(sUO_NotUO_UO_NotUO).size()));
         generalStatistics.put(
                 sUO_NotUO_UO_NotUO_UO,
-                BigDecimal.valueOf(groups.get(sUO_NotUO_UO_NotUO_UO).size()));
+                BigDecimal.valueOf(
+                        groups.get(sUO_NotUO_UO_NotUO_UO).size()
+                        + groups.get(sUO_NotUO_UO_NotUO_UO_NotUO).size()));
         generalStatistics.put(
                 sUO_NotUO_UO_NotUO_UO_NotUO_UO,
-                BigDecimal.valueOf(groups.get(sUO_NotUO_UO_NotUO_UO_NotUO_UO).size()));
+                BigDecimal.valueOf(groups.get(sUO_NotUO_UO_NotUO_UO_NotUO_UO).size()
+                        + groups.get(sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO).size()));
         generalStatistics.put(
                 sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO,
                 BigDecimal.valueOf(groups.get(sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO).size()));
@@ -3706,41 +3716,44 @@ public class TenancyChangesUO {
                 }
             }
             if (wasUO) {
-                tCTBRefSetUO_NotUO.add(aCTBRef);
-                if (tCTBRefSetUO_NotUO_UO.contains(aCTBRef)) {
-                    tCTBRefSetUO_NotUO_UO_NotUO.add(aCTBRef);
-                    tCTBRefSetUO_NotUO_UO.remove(aCTBRef);
+                if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.contains(aCTBRef)) {
+                    tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.add(aCTBRef);
+                    tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.remove(aCTBRef);
                 } else {
                     if (tCTBRefSetUO_NotUO_UO_NotUO_UO.contains(aCTBRef)) {
                         tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.add(aCTBRef);
                         tCTBRefSetUO_NotUO_UO_NotUO_UO.remove(aCTBRef);
                     } else {
-                        if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.contains(aCTBRef)) {
-                            tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.add(aCTBRef);
-                            tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.remove(aCTBRef);
+                        if (tCTBRefSetUO_NotUO_UO.contains(aCTBRef)) {
+                            tCTBRefSetUO_NotUO_UO_NotUO.add(aCTBRef);
+                            tCTBRefSetUO_NotUO_UO.remove(aCTBRef);
+                        } else {
+                            tCTBRefSetUO_NotUO.add(aCTBRef);
                         }
                     }
                 }
                 if (aTT == DW_SHBE_TenancyType_Handler.iMinus999) {
                     tCTBRefSetUO_To_LeftSHBETheVeryNextMonth.add(aCTBRef);
                 } else {
-                    tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
-                    if (aTT == 1) {
-                        if (bTT == 1) {
-                            tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged.add(aCTBRef);
-                        } else {
-                            if (bTT == 4) {
-                                tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged.add(aCTBRef);
-                            }
-                        }
-                    } else {
-                        if (aTT == 4) {
-                            tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
+                    if (!aPC.equalsIgnoreCase(bPC)) {
+                        tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
+                        if (aTT == 1) {
                             if (bTT == 1) {
-                                tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged.add(aCTBRef);
+                                tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged.add(aCTBRef);
                             } else {
                                 if (bTT == 4) {
-                                    tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged.add(aCTBRef);
+                                    tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged.add(aCTBRef);
+                                }
+                            }
+                        } else {
+                            if (aTT == 4) {
+                                tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
+                                if (bTT == 1) {
+                                    tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged.add(aCTBRef);
+                                } else {
+                                    if (bTT == 4) {
+                                        tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged.add(aCTBRef);
+                                    }
                                 }
                             }
                         }

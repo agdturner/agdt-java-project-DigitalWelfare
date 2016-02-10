@@ -342,7 +342,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                     }
 //                    System.exit(0);
 //                    if (true) {
-                    if (false) {
+//                    if (false) {
                         TreeMap<String, HashMap<String, String>> summaryTableUO;
                         summaryTableUO = tSummaryUO.getSummaryTable(
                                 summaryTableAll,
@@ -364,7 +364,7 @@ public class DW_DataProcessor_LCC extends DW_Processor {
                                 includeKey,
                                 doUnderOccupancy,
                                 nTT, nEG, nPSI);
-                    }
+//                    }
 //                    System.exit(0);
                 }
             }

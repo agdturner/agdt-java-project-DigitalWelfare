@@ -6648,11 +6648,13 @@ public class SummaryUO extends Summary {
         header = "";
         header += sSHBEFilename1 + ", ";
         header += getHeaderSingleTimeGeneric();
-//        // All UO
-//        for (int i = 1; i < nEG; i++) {
-//            header += sAllTotalCount_EthnicGroupClaimant[i] + ", ";
-//            header += sAllPercentageOfAll_EthnicGroupClaimant[i] + ", ";
-//        }
+        // All UO
+        for (int i = 1; i < nEG; i++) {
+            header += sAllTotalCount_EthnicGroupClaimant[i] + ", ";
+            header += sAllPercentageOfAll_EthnicGroupClaimant[i] + ", ";
+            header += sAllTotalCount_EthnicGroupSocialTTClaimant[i] + ", ";
+            header += sAllPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i] + ", ";
+        }
 //        for (int i = 1; i < nEG; i++) {
 //            header += sHBTotalCount_EthnicGroupClaimant[i] + ", ";
 //            header += sHBPercentageOfHB_EthnicGroupClaimant[i] + ", ";
@@ -6699,11 +6701,13 @@ public class SummaryUO extends Summary {
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + ", ";
             line += getLineSingleTimeGeneric(key, summary);
-//            // All UO
-//            for (int i = 1; i < nEG; i++) {
-//                line += summary.get(sAllTotalCount_EthnicGroupClaimant[i]) + ", ";
-//                line += summary.get(sAllPercentageOfAll_EthnicGroupClaimant[i]) + ", ";
-//            }
+            // All UO
+            for (int i = 1; i < nEG; i++) {
+                line += summary.get(sAllTotalCount_EthnicGroupSocialTTClaimant[i]) + ", ";
+                line += summary.get(sAllPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i]) + ", ";
+                line += summary.get(sAllTotalCount_EthnicGroupPrivateDeregulatedTTClaimant[i]) + ", ";
+                line += summary.get(sAllPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i]) + ", ";
+            }
 //            for (int i = 1; i < nEG; i++) {
 //                line += summary.get(sHBTotalCount_EthnicGroupClaimant[i]) + ", ";
 //                line += summary.get(sHBPercentageOfHB_EthnicGroupClaimant[i]) + ", ";

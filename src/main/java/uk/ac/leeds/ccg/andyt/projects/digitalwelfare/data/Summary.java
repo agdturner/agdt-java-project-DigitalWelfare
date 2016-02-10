@@ -367,7 +367,11 @@ public class Summary {
     protected static final String sPercentageOfAll_PrivateDeregulatedTTsClaimant = "PercentageOfAll_PrivateDeregulatedTTsClaimant";
     protected static final String sPercentageOfHB_PrivateDeregulatedTTsClaimant = "PercentageOfHB_PrivateDeregulatedTTsClaimant";
     protected static String[] sAllTotalCount_EthnicGroupClaimant;
+    protected static String[] sAllTotalCount_EthnicGroupSocialTTClaimant;
+    protected static String[] sAllTotalCount_EthnicGroupPrivateDeregulatedTTClaimant;
     protected static String[] sAllPercentageOfAll_EthnicGroupClaimant;
+    protected static String[] sAllPercentageOfSocialTT_EthnicGroupSocialTTClaimant;
+    protected static String[] sAllPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant;
     protected static String[][] sAllTotalCount_EthnicGroupClaimantByTT;
     protected static String[][] sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT;
     protected static String[][] sAllPercentageOfTT_EthnicGroupClaimantByTT;
@@ -969,6 +973,11 @@ public class Summary {
         sCTBTotalCount_PostcodeValid = "CTBTotalCount_PostcodeValid";
         // EthnicGroup
         sAllTotalCount_EthnicGroupClaimant = new String[nEG];
+        sAllTotalCount_EthnicGroupSocialTTClaimant = new String[nEG];
+        sAllTotalCount_EthnicGroupPrivateDeregulatedTTClaimant = new String[nEG];
+        sAllPercentageOfAll_EthnicGroupClaimant = new String[nEG];
+        sAllPercentageOfSocialTT_EthnicGroupSocialTTClaimant = new String[nEG];
+        sAllPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant = new String[nEG];
         sAllPercentageOfAll_EthnicGroupClaimant = new String[nEG];
         sAllTotalCount_EthnicGroupClaimantByTT = new String[nEG][nTT];
         sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT = new String[nEG][nTT];
@@ -985,7 +994,11 @@ public class Summary {
                 sAllPercentageOfTT_EthnicGroupClaimantByTT[i][j] = "AllPercentageOfTT" + j + "__EthnicGroup _" + EGN + "__ClaimantTT" + j;
             }
             sAllTotalCount_EthnicGroupClaimant[i] = "AllTotalCount_EthnicGroup_" + EGN + "_Claimant";
+            sAllTotalCount_EthnicGroupSocialTTClaimant[i] = "AllTotalCount_EthnicGroup_" + EGN + "_SocialTTClaimant";
+            sAllTotalCount_EthnicGroupPrivateDeregulatedTTClaimant[i] = "AllTotalCount_EthnicGroup_" + EGN + "_PrivateDeregulatedTTClaimant";
             sAllPercentageOfAll_EthnicGroupClaimant[i] = "AllPercentageOfAll_EthnicGroup_" + EGN + "_Claimant";
+            sAllPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i] = "AllPercentageOfSocialTT_EthnicGroup_" + EGN + "_SocialTTClaimant";
+            sAllPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i] = "AllPercentageOfPrivateDeregulatedTT_EthnicGroup_" + EGN + "_PrivateDeregulatedTTClaimant";
             sHBTotalCount_EthnicGroupClaimant[i] = "HBTotalCount_EthnicGroup_" + EGN + "_Claimant";
             sHBPercentageOfHB_EthnicGroupClaimant[i] = "HBPercentageOfHB_EthnicGroup_" + EGN + "_Claimant";
             sCTBTotalCount_EthnicGroupClaimant[i] = "CTBTotalCount_ClaimantEthnicGroup_" + EGN + "_Claimant";
@@ -4191,7 +4204,13 @@ public class Summary {
                         sAllTotalCount_EthnicGroupClaimantByTT[i][j],
                         Integer.toString(AllTotalCount_EthnicGroupClaimantByTT[i][j]));
             }
-        }
+            summary.put(
+                    sAllTotalCount_EthnicGroupSocialTTClaimant[i],
+                    Integer.toString(AllTotalCount_EthnicGroupClaimantByTT[i][1] + AllTotalCount_EthnicGroupClaimantByTT[i][4]));
+            summary.put(
+                    sAllTotalCount_EthnicGroupPrivateDeregulatedTTClaimant[i],
+                    Integer.toString(AllTotalCount_EthnicGroupClaimantByTT[i][3] + AllTotalCount_EthnicGroupClaimantByTT[i][6]));
+                    }
     }
 
     protected void addToSummarySingleTimeEthnicityRates(
@@ -4256,7 +4275,29 @@ public class Summary {
                                     RoundingMode.HALF_UP).toPlainString());
                 }
             }
-        }
+            all = Integer.valueOf(summary.get(sAllTotalCount_EthnicGroupSocialTTClaimant[i]));
+            d = TotalCount_TTClaimant1[1] + TotalCount_TTClaimant1[4];
+                if (d > 0) {
+                    percentage = (all * 100.0d) / d;
+                    summary.put(
+                            sAllPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i],
+                            Generic_BigDecimal.roundIfNecessary(
+                                    BigDecimal.valueOf(percentage),
+                                    decimalPlacePrecisionForPercentage,
+                                    RoundingMode.HALF_UP).toPlainString());
+                }
+                all = Integer.valueOf(summary.get(sAllTotalCount_EthnicGroupPrivateDeregulatedTTClaimant[i]));
+                d = TotalCount_TTClaimant1[3] + TotalCount_TTClaimant1[6];
+                if (d > 0) {
+                    percentage = (all * 100.0d) / d;
+                    summary.put(
+                            sAllPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i],
+                            Generic_BigDecimal.roundIfNecessary(
+                                    BigDecimal.valueOf(percentage),
+                                    decimalPlacePrecisionForPercentage,
+                                    RoundingMode.HALF_UP).toPlainString());
+                }
+            }
     }
 
     protected void addToSummarySingleTimeTTCounts(
@@ -6746,6 +6787,10 @@ public class Summary {
         for (int i = 1; i < nEG; i++) {
             header += sAllTotalCount_EthnicGroupClaimant[i] + ", ";
             header += sAllPercentageOfAll_EthnicGroupClaimant[i] + ", ";
+            header += sAllTotalCount_EthnicGroupSocialTTClaimant[i] + ", ";
+            header += sAllPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i] + ", ";
+            header += sAllTotalCount_EthnicGroupPrivateDeregulatedTTClaimant[i] + ", ";
+            header += sAllPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i] + ", ";
         }
         for (int i = 1; i < nEG; i++) {
             header += sHBTotalCount_EthnicGroupClaimant[i] + ", ";
@@ -6755,7 +6800,7 @@ public class Summary {
             header += sCTBTotalCount_EthnicGroupClaimant[i] + ", ";
             header += sCTBPercentageOfCTB_EthnicGroupClaimant[i] + ", ";
         }
-        for (int i = 1; i < nEG; i++) {
+         for (int i = 1; i < nEG; i++) {
             for (int j = 1; j < nTT; j++) {
                 header += sAllTotalCount_EthnicGroupClaimantByTT[i][j] + ", ";
                 header += sAllPercentageOfTT_EthnicGroupClaimantByTT[i][j] + ", ";
@@ -6780,6 +6825,10 @@ public class Summary {
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sAllTotalCount_EthnicGroupClaimant[i]) + ", ";
                 line += summary.get(sAllPercentageOfAll_EthnicGroupClaimant[i]) + ", ";
+                            line += summary.get(sAllTotalCount_EthnicGroupSocialTTClaimant[i]) + ", ";
+            line += summary.get(sAllPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i]) + ", ";
+            line += summary.get(sAllTotalCount_EthnicGroupPrivateDeregulatedTTClaimant[i]) + ", ";
+            line += summary.get(sAllPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i]) + ", ";
             }
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sHBTotalCount_EthnicGroupClaimant[i]) + ", ";
