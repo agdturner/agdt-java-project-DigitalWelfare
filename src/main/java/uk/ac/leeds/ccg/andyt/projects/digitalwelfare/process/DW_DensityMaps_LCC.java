@@ -82,7 +82,6 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         showMapsInJMapPane = false;
         //showMapsInJMapPane = true;
         //outputESRIAsciigrids = false;
-        imageWidth = 1000;
         initONSPDLookups();
         // Initialise styleParameters
         /*
@@ -105,14 +104,15 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 //        styleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
 //        styleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
         styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
-                Color.GREEN,
+                //Color.GREEN,
+                Color.BLACK,
                 Color.WHITE));
         styleParameters.setForegroundStyleTitle1("Foreground Style 1");
 
         mapDirectory = new File(
                 DW_Files.getOutputAdviceLeedsMapsDir(),
                 "density");
-        imageWidth = 1000;
+        imageWidth = 2000;
 
 //        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefiles();
         init();
@@ -217,7 +217,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         includes = DW_SHBE_Handler.getIncludes();
         includes.remove("All");
         includes.remove("Yearly");
-//        includes.remove("6Monthly");
+        includes.remove("6Monthly");
         includes.remove("3Monthly");
 //        includes.remove("MonthlyUO");
         includes.remove("Monthly");
@@ -261,11 +261,11 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 
         ArrayList<String> paymentTypes;
         paymentTypes = DW_SHBE_Handler.getPaymentTypes();
-        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
-//        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
+//        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
+        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
         paymentTypes.remove(DW_SHBE_Handler.sSuspended);
         paymentTypes.remove(DW_SHBE_Handler.sOtherPT);
-        
+
         Iterator<String> inPaymentTypesIte;
         inPaymentTypesIte = paymentTypes.iterator();
         while (inPaymentTypesIte.hasNext()) {
@@ -274,81 +274,96 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
             File dirOut2 = new File(
                     dirOut,
                     inPaymentType);
-            Iterator<Boolean> iteb;
-            iteb = b.iterator();
             boolean doUnderOccupied;
-//            doUnderOccupied = false;
-            while (iteb.hasNext()) {
-                doUnderOccupied = iteb.next();
-                if (doUnderOccupied) {
-                    Iterator<Boolean> iteb2;
-                    iteb2 = b.iterator();
-                    while (iteb2.hasNext()) {
-                        boolean doCouncil;
-                        doCouncil = iteb2.next();
-                        //boolean doCouncil = false;
-                        boolean overlaycommunityAreas;
-                        overlaycommunityAreas = true;
+            doUnderOccupied = true;
+//            Iterator<Boolean> iteb;
+//            iteb = b.iterator();
+//            while (iteb.hasNext()) {
+//                doUnderOccupied = iteb.next();
+            if (doUnderOccupied) {
+                boolean overlaycommunityAreas;
+                overlaycommunityAreas = true;
 //                        Iterator<Boolean> iteb3;
 //                        iteb3 = b.iterator();
 //                        while (iteb3.hasNext()) {
 //                            boolean overlaycommunityAreas = iteb3.next();
-                            run(
-                                    collectionHandler,
-                                    inPaymentType,
-                                    allTenancyTypeGroups,
-                                    //                                tenancyTypeGroups,
-                                    //                                tenancyTypesGrouped,
-                                    //                                regulatedGroups,
-                                    //                                unregulatedGroups,
-                                    underOccupiedData,
-                                    doUnderOccupied,
-                                    doCouncil,
-                                    scaleToFirst,
-                                    DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil),
-                                    overlaycommunityAreas,
-                                    SHBEFilenames,
-                                    tDW_SHBE_Handler,
-                                    includes);
-//                    run(
-//                            includes,
-//                            tenancyTypeGroups,
-//                            tenancyTypesGrouped,
-//                            regulatedGroups,
-//                            unregulatedGroups,
-//                            underOccupiedData,
-//                            doUnderOccupied,
-//                            doCouncil,
-//                            scaleToFirst,
-//                            DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil),
-//                            SHBEFilenames,
-//                            tDW_SHBE_Handler);
-//                        }
-                    }
-                } else {
-                    boolean overlaycommunityAreas;
-                        overlaycommunityAreas = true;
+                boolean doRSL;
+                boolean doCouncil;
+                doRSL = true;
+                doCouncil = true;
+                run(
+                        collectionHandler,
+                        inPaymentType,
+                        allTenancyTypeGroups,
+                        underOccupiedData,
+                        doUnderOccupied,
+                        doRSL,
+                        doCouncil,
+                        scaleToFirst,
+                        DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                        overlaycommunityAreas,
+                        SHBEFilenames,
+                        tDW_SHBE_Handler,
+                        includes);
+                doRSL = true;
+                doCouncil = false;
+                run(
+                        collectionHandler,
+                        inPaymentType,
+                        allTenancyTypeGroups,
+                        underOccupiedData,
+                        doUnderOccupied,
+                        doRSL,
+                        doCouncil,
+                        scaleToFirst,
+                        DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                        overlaycommunityAreas,
+                        SHBEFilenames,
+                        tDW_SHBE_Handler,
+                        includes);
+                doRSL = false;
+                doCouncil = true;
+                run(
+                        collectionHandler,
+                        inPaymentType,
+                        allTenancyTypeGroups,
+                        underOccupiedData,
+                        doUnderOccupied,
+                        doRSL,
+                        doCouncil,
+                        scaleToFirst,
+                        DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                        overlaycommunityAreas,
+                        SHBEFilenames,
+                        tDW_SHBE_Handler,
+                        includes);
+
+//                    }
+            } else {
+                boolean overlaycommunityAreas;
+                overlaycommunityAreas = true;
 //                        Iterator<Boolean> iteb3;
 //                    iteb3 = b.iterator();
 //                    while (iteb3.hasNext()) {
 //                        boolean overlaycommunityAreas = iteb3.next();
-                        run(
-                                collectionHandler,
-                                inPaymentType,
-                                allTenancyTypeGroups,
-                                //                            tenancyTypeGroups,
-                                //                            tenancyTypesGrouped,
-                                //                            regulatedGroups,
-                                //                            unregulatedGroups,
-                                underOccupiedData,
-                                doUnderOccupied,
-                                false,
-                                scaleToFirst,
-                                dirOut2,
-                                overlaycommunityAreas,
-                                SHBEFilenames,
-                                tDW_SHBE_Handler,
-                                includes);
+                run(
+                        collectionHandler,
+                        inPaymentType,
+                        allTenancyTypeGroups,
+                        //                            tenancyTypeGroups,
+                        //                            tenancyTypesGrouped,
+                        //                            regulatedGroups,
+                        //                            unregulatedGroups,
+                        underOccupiedData,
+                        doUnderOccupied,
+                        false,
+                        false,
+                        scaleToFirst,
+                        dirOut2,
+                        overlaycommunityAreas,
+                        SHBEFilenames,
+                        tDW_SHBE_Handler,
+                        includes);
 //                        startIndex,
 //                        endIndex);
 //                run(
@@ -365,112 +380,115 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 //                        SHBEFilenames,
 //                        tDW_SHBE_Handler);
 //                    }
-                }
+//                }
             }
         }
     }
 
-    public void run(
-            DW_SHBE_CollectionHandler collectionHandler,
-            String inPaymentType,
-            TreeMap<String, ArrayList<Integer>> includes,
-            ArrayList<ArrayList<String>> tenancyTypeGroups,
-            //            HashMap<Boolean, TreeMap<String, ArrayList<String>>> tenancyTypeGroups,
-            //            HashMap<Boolean, ArrayList<String>> tenancyTypesGrouped,
-            //            HashMap<Boolean, ArrayList<String>> regulatedGroups,
-            //            HashMap<Boolean, ArrayList<String>> unregulatedGroups,
-            Object[] underOccupiedData,
-            boolean doUnderOccupied,
-            boolean doCouncil,
-            boolean scaleToFirst,
-            File dirOut,
-            String[] SHBEFilenames,
-            DW_SHBE_Handler tDW_SHBE_Handler) {
-
-        Iterator<String> ite;
-        ite = includes.keySet().iterator();
-        while (ite.hasNext()) {
-            String includeName;
-            includeName = ite.next();
-            ArrayList<Integer> include;
-            include = includes.get(includeName);
-            for (int i = 0; i < SHBEFilenames.length; i++) {
-                if (include.contains(i)) {
-                    DW_SHBE_Collection SHBEData0;
-                    String yM0 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
-                    // Init underOccupiedSets
-                    TreeMap<String, DW_UnderOccupiedReport_Set> underOccupiedSets0 = null;
-                    DW_UnderOccupiedReport_Set underOccupiedSet0 = null;
-                    if (doUnderOccupied) {
-                        if (doCouncil) {
-                            underOccupiedSets0 = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[0];
-                        } else {
-                            underOccupiedSets0 = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[1];
-                        }
-                        underOccupiedSet0 = underOccupiedSets0.get(yM0);
-                        if (underOccupiedSet0 != null) {
-                            SHBEData0 = new DW_SHBE_Collection(
-                                    SHBEFilenames[i],
-                                    inPaymentType);
-                            Iterator<ArrayList<String>> ites;
-                            ites = tenancyTypeGroups.iterator();
-                            while (ites.hasNext()) {
-                                ArrayList<String> TTs;
-                                TTs = ites.next();
-                                String name;
-                                name = DW_LineMaps_LCC.getName(TTs);
-                                File dirOut2 = new File(
-                                        dirOut,
-                                        inPaymentType);
-                                dirOut2 = new File(
-                                        dirOut2,
-                                        name);
-                                Grid2DSquareCellDouble g0 = doDensity(
-                                        TTs,
-                                        dirOut2,
-                                        yM0,
-                                        SHBEData0,
-                                        underOccupiedData,
-                                        doUnderOccupied,
-                                        underOccupiedSet0,
-                                        doCouncil,
-                                        scaleToFirst);
-                            }
-                        }
-                    } else {
-                        SHBEData0 = new DW_SHBE_Collection(
-                                SHBEFilenames[i],
-                                inPaymentType);
-                        Iterator<ArrayList<String>> ites;
-                        ites = tenancyTypeGroups.iterator();
-                        while (ites.hasNext()) {
-                            ArrayList<String> TTs;
-                            TTs = ites.next();
-                            String name;
-                            name = DW_LineMaps_LCC.getName(TTs);
-                            File dirOut2 = new File(
-                                    dirOut,
-                                    inPaymentType);
-                            dirOut2 = new File(
-                                    dirOut2,
-                                    name);
-                            Grid2DSquareCellDouble g0 = doDensity(
-                                    TTs,
-                                    dirOut2,
-                                    yM0,
-                                    SHBEData0,
-                                    underOccupiedData,
-                                    doUnderOccupied,
-                                    underOccupiedSet0,
-                                    doCouncil,
-                                    scaleToFirst);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
+//    public void run(
+//            DW_SHBE_CollectionHandler collectionHandler,
+//            String inPaymentType,
+//            TreeMap<String, ArrayList<Integer>> includes,
+//            ArrayList<ArrayList<String>> tenancyTypeGroups,
+//            //            HashMap<Boolean, TreeMap<String, ArrayList<String>>> tenancyTypeGroups,
+//            //            HashMap<Boolean, ArrayList<String>> tenancyTypesGrouped,
+//            //            HashMap<Boolean, ArrayList<String>> regulatedGroups,
+//            //            HashMap<Boolean, ArrayList<String>> unregulatedGroups,
+//            Object[] underOccupiedData,
+//            boolean doUnderOccupied,
+//            boolean doCouncil,
+//            boolean doRSL,
+//            boolean scaleToFirst,
+//            File dirOut,
+//            String[] SHBEFilenames,
+//            DW_SHBE_Handler tDW_SHBE_Handler) {
+//
+//        Iterator<String> ite;
+//        ite = includes.keySet().iterator();
+//        while (ite.hasNext()) {
+//            String includeName;
+//            includeName = ite.next();
+//            ArrayList<Integer> include;
+//            include = includes.get(includeName);
+//            for (int i = 0; i < SHBEFilenames.length; i++) {
+//                if (include.contains(i)) {
+//                    DW_SHBE_Collection SHBEData0;
+//                    String yM0 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+//                    // Init underOccupiedSets
+//                    TreeMap<String, DW_UnderOccupiedReport_Set> underOccupiedSets0 = null;
+//                    DW_UnderOccupiedReport_Set underOccupiedSet0 = null;
+//                    if (doUnderOccupied) {
+//                        if (doCouncil) {
+//                            underOccupiedSets0 = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[0];
+//                        } else {
+//                            underOccupiedSets0 = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[1];
+//                        }
+//                        underOccupiedSet0 = underOccupiedSets0.get(yM0);
+//                        if (underOccupiedSet0 != null) {
+//                            SHBEData0 = new DW_SHBE_Collection(
+//                                    SHBEFilenames[i],
+//                                    inPaymentType);
+//                            Iterator<ArrayList<String>> ites;
+//                            ites = tenancyTypeGroups.iterator();
+//                            while (ites.hasNext()) {
+//                                ArrayList<String> TTs;
+//                                TTs = ites.next();
+//                                String name;
+//                                name = DW_LineMaps_LCC.getName(TTs);
+//                                File dirOut2 = new File(
+//                                        dirOut,
+//                                        inPaymentType);
+//                                dirOut2 = new File(
+//                                        dirOut2,
+//                                        name);
+//                                Grid2DSquareCellDouble g0 = doDensity(
+//                                        TTs,
+//                                        dirOut2,
+//                                        yM0,
+//                                        SHBEData0,
+//                                        underOccupiedData,
+//                                        doUnderOccupied,
+//                                        underOccupiedSet0,
+//                                        doCouncil,
+//                                        doRSL,
+//                                        scaleToFirst);
+//                            }
+//                        }
+//                    } else {
+//                        SHBEData0 = new DW_SHBE_Collection(
+//                                SHBEFilenames[i],
+//                                inPaymentType);
+//                        Iterator<ArrayList<String>> ites;
+//                        ites = tenancyTypeGroups.iterator();
+//                        while (ites.hasNext()) {
+//                            ArrayList<String> TTs;
+//                            TTs = ites.next();
+//                            String name;
+//                            name = DW_LineMaps_LCC.getName(TTs);
+//                            File dirOut2 = new File(
+//                                    dirOut,
+//                                    inPaymentType);
+//                            dirOut2 = new File(
+//                                    dirOut2,
+//                                    name);
+//                            Grid2DSquareCellDouble g0 = doDensity(
+//                                    TTs,
+//                                    dirOut2,
+//                                    yM0,
+//                                    SHBEData0,
+//                                    underOccupiedData,
+//                                    doUnderOccupied,
+//                                    underOccupiedSet0,
+//                                    underOccupiedSet0,fdsfdss
+//                                    doRSL,
+//                                    doCouncil,
+//                                    scaleToFirst);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
     public void run(
             DW_SHBE_CollectionHandler collectionHandler,
             String inPaymentType,
@@ -482,6 +500,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
             Object[] underOccupiedData,
             boolean doUnderOccupied,
             boolean doCouncil,
+            boolean doRSL,
             boolean scaleToFirst,
             File dirOut,
             boolean overlaycommunityAreas,
@@ -533,58 +552,79 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         dimensions[4] = BigDecimal.valueOf(yllcorner
                 + (cellsize * nrows));
 
-        DW_UnderOccupiedReport_Set underOccupiedSet0 = null;
-        TreeMap<String, DW_UnderOccupiedReport_Set> underOccupiedSets = null;
+        DW_UnderOccupiedReport_Set underOccupiedSetCouncil0 = null;
+        DW_UnderOccupiedReport_Set underOccupiedSetRSL0 = null;
+        TreeMap<String, DW_UnderOccupiedReport_Set> underOccupiedSetsCouncil = null;
+        TreeMap<String, DW_UnderOccupiedReport_Set> underOccupiedSetsRSL = null;
         if (doUnderOccupied) {
             if (doCouncil) {
-                underOccupiedSets = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[0];
-            } else {
-                underOccupiedSets = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[1];
+                underOccupiedSetsCouncil = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[0];
+            }
+            if (doRSL) {
+                underOccupiedSetsRSL = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[1];
             }
         }
+        String tenancyTypeGroupName;
         Iterator<String> includesIte;
-        includesIte = includes.keySet().iterator();
-        while (includesIte.hasNext()) {
-            String includeName;
-            includeName = includesIte.next();
-            File dirOut2;
-            dirOut2 = new File(
-                    dirOut1,
-                    includeName);
-            ArrayList<Integer> include;
-            include = includes.get(includeName);
-            Iterator<Integer> ite;
-            ite = include.iterator();
-            int i;
-            i = ite.next();
-            String yM30;
-            yM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
-            if (doUnderOccupied) {
-                boolean initialised = false;
-                while (!initialised) {
-                    underOccupiedSet0 = underOccupiedSets.get(yM30);
-                    if (underOccupiedSet0 != null) {
-                        initialised = true;
-                    } else {
-                        i = ite.next();
-                        yM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+        String includeName;
+        File dirOut2;
+        ArrayList<Integer> include;
+        Iterator<Integer> ite;
+        int i;
+        boolean initialised;
+        String yM30;
+        DW_SHBE_Collection SHBEData0;
+        String yM300;
+
+        Iterator<String> ites;
+        ites = tenancyTypeGroups.keySet().iterator();
+        while (ites.hasNext()) {
+            tenancyTypeGroupName = ites.next();
+            includesIte = includes.keySet().iterator();
+            while (includesIte.hasNext()) {
+                includeName = includesIte.next();
+                dirOut2 = new File(
+                        dirOut1,
+                        includeName);
+                include = includes.get(includeName);
+                ite = include.iterator();
+                i = ite.next();
+                yM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                if (doUnderOccupied) {
+                    initialised = false;
+                    while (!initialised) {
+                        if (doRSL) {
+                            underOccupiedSetRSL0 = underOccupiedSetsRSL.get(yM30);
+                            if (underOccupiedSetRSL0 != null) {
+                                initialised = true;
+                            } else {
+                                i = ite.next();
+                                yM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                            }
+                        }
+                        if (doCouncil) {
+                            underOccupiedSetCouncil0 = underOccupiedSetsCouncil.get(yM30);
+                            if (underOccupiedSetCouncil0 != null) {
+                                initialised = true;
+                            } else {
+                                i = ite.next();
+                                yM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                            }
+                        }
                     }
                 }
-            }
-            DW_SHBE_Collection SHBEData0;
-            SHBEData0 = new DW_SHBE_Collection(
-                    SHBEFilenames[i],
-                    inPaymentType);
+                SHBEData0 = new DW_SHBE_Collection(
+                        SHBEFilenames[i],
+                        inPaymentType);
 //            DW_SHBE_Collection SHBEData00;
 //            SHBEData00 = SHBEData0;
-            String yM300;
-            yM300 = yM30;
+                yM300 = yM30;
 
-            Iterator<String> ites;
-            ites = tenancyTypeGroups.keySet().iterator();
-            while (ites.hasNext()) {
-                String tenancyTypeGroupName;
-                tenancyTypeGroupName = ites.next();
+//            Iterator<String> ites;
+//            ites = tenancyTypeGroups.keySet().iterator();
+//            while (ites.hasNext()) {
+//                String tenancyTypeGroupName;
+//                tenancyTypeGroupName = ites.next();
                 ArrayList<String> TTs;
                 TTs = tenancyTypeGroups.get(tenancyTypeGroupName);
                 File dirOut3 = new File(
@@ -597,14 +637,28 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                         SHBEData0,
                         underOccupiedData,
                         doUnderOccupied,
-                        underOccupiedSet0,
+                        underOccupiedSetCouncil0,
+                        underOccupiedSetRSL0,
                         doCouncil,
+                        doRSL,
                         scaleToFirst);
+//                outputGrid(
+//                        g0,
+//                        dirOut3,
+//                        yM30,
+//                        "Name" + yM30,
+//                        scaleToFirst);
                 Grid2DSquareCellDouble g00 = g0;
                 boolean hasNext = false;
                 while (ite.hasNext()) {
                     hasNext = true;
                     i = ite.next();
+
+                    // Just go for the last.
+                    while (ite.hasNext()) {
+                        i = ite.next();
+                    }
+
                     DW_SHBE_Collection SHBEData1;
 
                     // This is not how to do it, but may be a workaround. 
@@ -626,9 +680,13 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                     String yM31;
                     yM31 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                     // Init underOccupiedSets
-                    DW_UnderOccupiedReport_Set underOccupiedSet1 = null;
-                    if (doUnderOccupied) {
-                        underOccupiedSet1 = underOccupiedSets.get(yM31);
+                    DW_UnderOccupiedReport_Set underOccupiedSetCouncil1 = null;
+                    if (doCouncil) {
+                        underOccupiedSetCouncil1 = underOccupiedSetsCouncil.get(yM31);
+                    }
+                    DW_UnderOccupiedReport_Set underOccupiedSetRSL1 = null;
+                    if (doRSL) {
+                        underOccupiedSetRSL1 = underOccupiedSetsRSL.get(yM31);
                     }
                     Grid2DSquareCellDouble g1 = doDensity(
                             TTs,
@@ -637,9 +695,17 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                             SHBEData1,
                             underOccupiedData,
                             doUnderOccupied,
-                            underOccupiedSet1,
+                            underOccupiedSetCouncil1,
+                            underOccupiedSetRSL1,
                             doCouncil,
+                            doRSL,
                             scaleToFirst);
+//                    outputGrid(
+//                            g0,
+//                            dirOut3,
+//                            yM30,
+//                            "Name" + yM30,
+//                            scaleToFirst);
                     gp.addToGrid(g1, g0,
                             -1.0d, handleOutOfMemoryErrors);
                     outputGrid(
@@ -648,7 +714,8 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                             yM30 + "Minus" + yM31,
                             "Name" + yM30 + "Minus" + yM31,
                             scaleToFirst);
-                    underOccupiedSet0 = underOccupiedSet1;
+                    underOccupiedSetCouncil0 = underOccupiedSetCouncil1;
+                    underOccupiedSetRSL0 = underOccupiedSetRSL1;
                     yM30 = yM31;
                     SHBEData0 = SHBEData1;
                 }
@@ -660,8 +727,10 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                             SHBEData0,
                             underOccupiedData,
                             doUnderOccupied,
-                            underOccupiedSet0,
+                            underOccupiedSetCouncil0,
+                            underOccupiedSetRSL0,
                             doCouncil,
+                            doRSL,
                             scaleToFirst);
                     gp.addToGrid(g1, g00,
                             -1.0d, handleOutOfMemoryErrors);
@@ -683,8 +752,10 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
             DW_SHBE_Collection SHBEData,
             Object[] underOccupiedData,
             boolean doUnderOccupied,
-            DW_UnderOccupiedReport_Set underOccupiedSet,
+            DW_UnderOccupiedReport_Set underOccupiedSetCouncil,
+            DW_UnderOccupiedReport_Set underOccupiedSetRSL,
             boolean doCouncil,
+            boolean doRSL,
             boolean scaleToFirst) {
 
         File dirOut2 = new File(
@@ -745,12 +816,42 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                 // Check for UnderOccupied
                 if (doUnderOccupied) {
                     // UnderOccupancy
-                    DW_UOReport_Record underOccupied0 = null;
-                    if (underOccupiedSet != null) {
-                        underOccupied0 = underOccupiedSet.getMap().get(
-                                councilTaxBenefitClaimReferenceNumber);
+                    if (doCouncil && doRSL) {
+                        doMainLoop = false;
+                        DW_UOReport_Record underOccupied0 = null;
+                        if (underOccupiedSetCouncil != null) {
+                            underOccupied0 = underOccupiedSetCouncil.getMap().get(
+                                    councilTaxBenefitClaimReferenceNumber);
+                        }
+                        if (underOccupied0 != null) {
+                            doMainLoop = true;
+                        }
+                        if (underOccupiedSetRSL != null) {
+                            underOccupied0 = underOccupiedSetRSL.getMap().get(
+                                        councilTaxBenefitClaimReferenceNumber);
+                            }
+                        if (underOccupied0 != null) {
+                            doMainLoop = true;
+                        }
                     }
-                    doMainLoop = underOccupied0 != null;
+                    if (doCouncil) {
+                        DW_UOReport_Record underOccupied0 = null;
+                        if (underOccupiedSetCouncil != null) {
+                            underOccupied0 = underOccupiedSetCouncil.getMap().get(
+                                    councilTaxBenefitClaimReferenceNumber);
+                        }
+                        doMainLoop = underOccupied0 != null;
+                    } else {
+                        if (doRSL) {
+     DW_UOReport_Record underOccupied0 = null;
+                                               if (underOccupiedSetRSL != null) {
+                            underOccupied0 = underOccupiedSetRSL.getMap().get(
+                                        councilTaxBenefitClaimReferenceNumber);
+                            }
+     doMainLoop = underOccupied0 != null;
+                        }
+                    }
+
                 }
                 if (doMainLoop) {
                     if (postcode != null) {
@@ -1020,6 +1121,15 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         l.add(DW_SHBE_TenancyType_Handler.s1);
         l.add(DW_SHBE_TenancyType_Handler.s4);
         result.put("Social", l);
+        // Council
+        l = new ArrayList<String>();
+        l.add(DW_SHBE_TenancyType_Handler.s1);
+        result.put("Council", l);
+        // RSL
+        l = new ArrayList<String>();
+        l.add(DW_SHBE_TenancyType_Handler.s1);
+        l.add(DW_SHBE_TenancyType_Handler.s4);
+        result.put("RSL", l);
         // Private Deregulated
         l = new ArrayList<String>();
         l.add(DW_SHBE_TenancyType_Handler.s3);
@@ -1033,18 +1143,5 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         return result;
     }
 
-    public DW_Shapefile getCommunityAreasDW_Shapefile() {
-        DW_Shapefile result;
-        String name = "communityareas_region.shp";
-        File dir = new File(
-                DW_Files.getInputDir(),
-                "CommunityAreas");
-        dir = new File(dir, name);
-        File f;
-        f = new File(
-                dir,
-                name);
-        result = new DW_Shapefile(f);
-        return result;
-    }
+    
 }

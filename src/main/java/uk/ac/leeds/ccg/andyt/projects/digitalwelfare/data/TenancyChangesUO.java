@@ -30,6 +30,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Collection;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_CollectionHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
@@ -52,6 +54,9 @@ public class TenancyChangesUO {
     DW_Environment env;
     DW_SHBE_CollectionHandler collectionHandler;
     DW_SHBE_Handler tDW_SHBE_Handler;
+    HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup;
+    HashSet<String> validPostcodes;
+    //HashMap<String, HashSet<String>> validPostcodes;
 
     static String sUnderOccupancyGroupTables = "UnderOccupancyGroupTables";
     String defaultPostcode = "AAN NAA";
@@ -109,7 +114,7 @@ public class TenancyChangesUO {
 
     String sUniqueIndividualsEffected = "UniqueIndividualsEffected";
 
-    String sNotMoved = "NotMoved";
+    String sNoValidPostcodeChange = "NoValidPostcodeChange";
     String sChangedTT = "ChangedTT";
     String sUOAtSomePoint = "sUOAtSomePoint";
     String sUOTT1AtSomePoint = "sUOTT1AtSomePoint";
@@ -123,15 +128,15 @@ public class TenancyChangesUO {
     String sTT1_To_TT3OrTT6;
     String sTT3OrTT6_To_TT4;
     String sTT4_To_TT3OrTT6;
-    String sAlwaysUOFromStart__NotMoved_NotChangedTT;
+    String sAlwaysUOFromStart__NoValidPostcodeChange_NotChangedTT;
     String sAlwaysUOFromStart__ChangedTT;
-    String sAlwaysUOFromStart__Moved_NotChangedTT;
-    String sAlwaysUOFromWhenStarted__NotMoved_NotChangedTT;
+    String sAlwaysUOFromStart__ValidPostcodeChange_NotChangedTT;
+    String sAlwaysUOFromWhenStarted__NoValidPostcodeChange_NotChangedTT;
     String sAlwaysUOFromWhenStarted__ChangedTT;
-    String sAlwaysUOFromWhenStarted__Moved_NotChangedTT;
+    String sAlwaysUOFromWhenStarted__ValidPostcodeChange_NotChangedTT;
     String sIntermitantUO__ChangedTT;
-    String sIntermitantUO__Moved_NotChangedTT;
-    String sIntermitantUO__NotMoved_NotChangedTT;
+    String sIntermitantUO__ValidPostcodeChange_NotChangedTT;
+    String sIntermitantUO__NoValidPostcodeChange_NotChangedTT;
 
     String sUO_NotUO_UO = "UO_NotUO_UO";
     String sUO_NotUO_UO_NotUO = "UO_NotUO_UO_NotUO";
@@ -142,11 +147,15 @@ public class TenancyChangesUO {
     String sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO = "UO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO";
 
     String sUOTT1_To_NotUO_InSHBE_PostcodeChanged = "UOTT1_To_NotUO_InSHBE_PostcodeChanged";
-    String sUOTT1_To_NotUO_TT1_PostcodeChanged = "UOTT1_To_NotUO_TT1_PostcodeChanged";
-    String sUOTT1_To_NotUO_TT4_PostcodeChanged = "UOTT1_To_NotUO_TT4_PostcodeChanged";
+    String sUOTT1_To_UOTT1_PostcodeChanged = "UOTT1_To_UOTT1_PostcodeChanged";
+    String sUOTT1_To_TT1_PostcodeChanged = "UOTT1_To_TT1_PostcodeChanged";
+    String sUOTT1_To_UOTT4_PostcodeChanged = "UOTT1_To_UOTT4_PostcodeChanged";
+    String sUOTT1_To_TT4_PostcodeChanged = "UOTT1_To_TT4_PostcodeChanged";
     String sUOTT4_To_NotUO_InSHBE_PostcodeChanged = "UOTT4_To_NotUO_InSHBE_PostcodeChanged";
-    String sUOTT4_To_NotUO_TT1_PostcodeChanged = "UOTT4_To_NotUO_TT1_PostcodeChanged";
-    String sUOTT4_To_NotUO_TT4_PostcodeChanged = "UOTT4_To_NotUO_TT4_PostcodeChanged";
+    String sUOTT4_To_UOTT1_PostcodeChanged = "UOTT4_To_UOTT1_PostcodeChanged";
+    String sUOTT4_To_TT1_PostcodeChanged = "UOTT4_To_TT1_PostcodeChanged";
+    String sUOTT4_To_UOTT4_PostcodeChanged = "UOTT4_To_UOTT4_PostcodeChanged";
+    String sUOTT4_To_TT4_PostcodeChanged = "UOTT4_To_TT4_PostcodeChanged";
 
     String sUO_To_LeftSHBEAtSomePoint = "UO_To_LeftSHBEAtSomePoint";
     String sUOTT1_To_LeftSHBE = "UOTT1_To_LeftSHBE";
@@ -156,9 +165,11 @@ public class TenancyChangesUO {
     String sUOTT1_To_TT3OrTT6 = "UOTT1_To_TT3OrTT6";
     String sUOTT1_To_TT3OrTT6AtSomePoint = "UOTT1_To_TT3OrTT6AtSomePoint";
     String sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999 = "UOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999";
+    String sUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint = "UOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint";
     String sUOTT4_To_TT3OrTT6 = "UOTT4_To_TT3OrTT6";
     String sUOTT4_To_TT3OrTT6AtSomePoint = "UOTT4_To_TT3OrTT6AtSomePoint";
     String sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999 = "UOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999";
+    String sUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint = "UOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint";
     String sTT3OrTT6_To_UOTT1 = "TT3OrTT6_To_UOTT1";
     String sTT3OrTT6_To_UOTT4 = "TT3OrTT6_To_UOTT4";
 
@@ -182,25 +193,57 @@ public class TenancyChangesUO {
     String sInArrearsAtSomePoint_And_DHPAtSomePoint = "sInArrearsAtSomePoint_And_DHPAtSomePoint";
 
     String sTT1_To_UOTT1_PostcodeUnchanged = "TT1_To_UOTT1_PostcodeUnchanged";
-    String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month";
+    //String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month";
+    String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1 = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1";
+    String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1 = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1";
+    String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6 = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6";
+    String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4 = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4";
+    String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4 = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4";
+    String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7 = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7";
+    String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8 = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8";
+    String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9 = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9";
     String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months";
     String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months";
     String sTT4_To_UOTT4_PostcodeUnchanged = "TT4_To_UOTT4_PostcodeUnchanged";
-    String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month";
+    //String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month";
+    String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1 = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1";
+    String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1 = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1";
+    String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6 = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6";
+    String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4 = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4";
+    String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4 = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4";
+    String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7 = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OtTT7";
+    String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8 = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8";
+    String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9 = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9";
     String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months";
     String sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months = "TT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months";
     String sUOTT1_To_TT1_PostcodeUnchanged = "UOTT1_To_TT1_PostcodeUnchanged";
-    String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month";
+    //String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month";
+    String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1 = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1";
+    String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1 = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1";
+    String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6 = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6";
+    String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4 = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4";
+    String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4 = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4";
+    String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7 = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7";
+    String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8 = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8";
+    String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9 = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9";
     String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months";
     String sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months = "UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months";
     String sUOTT4_To_TT4_PostcodeUnchanged = "UOTT4_To_TT4_PostcodeUnchanged";
-    String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month";
+    //String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month";
+    String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1 = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1";
+    String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1 = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1";
+    String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6 = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6";
+    String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4 = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4";
+    String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4 = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4";
+    String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7 = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7";
+    String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8 = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8";
+    String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9 = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9";
     String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months";
     String sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months = "UOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months";
-    String sUOTT1_To_TT1_PostcodeChanged = "UOTT1_To_TT1_PostcodeChanged";
-    String sUOTT1_To_UOTT1_PostcodeChanged = "UOTT1_To_UOTT1_PostcodeChanged";
-    String sUOTT4_To_TT4_PostcodeChanged = "UOTT4_To_TT4_PostcodeChanged";
-    String sUOTT4_To_UOTT4_PostcodeChanged = "UOTT4_To_UOTT4_PostcodeChanged";
+    //String sUOTT1_To_TT1_PostcodeChanged = "UOTT1_To_TT1_PostcodeChanged";
+    //String sUOTT1_To_UOTT1_PostcodeChanged = "UOTT1_To_UOTT1_PostcodeChanged";
+    //String sUOTT4_To_TT4_PostcodeChanged = "UOTT4_To_TT4_PostcodeChanged";
+    //String sUOTT4_To_UOTT4_PostcodeChanged = "UOTT4_To_UOTT4_PostcodeChanged";
     String sTT1_To_UOTT1_PostcodeChanged = "TT1_To_UOTT1_PostcodeChanged";
     String sTT4_To_UOTT4_PostcodeChanged = "TT4_To_UOTT4_PostcodeChanged";
 
@@ -212,20 +255,26 @@ public class TenancyChangesUO {
     String sUOTT4_To_LeftSHBE_NotReturned = "UOTT4_To_LeftSHBE_NotReturned";
     String sUOTT3OrTT6_To_LeftSHBE_NotReturned = "UOTT3OrTT6_To_LeftSHBE_NotReturned";
     String sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned = "UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned";
+    String sUOTT1_To_LeftSHBE_ReturnedAsUOTT1 = "UOTT1_To_LeftSHBE_ReturnedAsUOTT1";
     String sUOTT1_To_LeftSHBE_ReturnedAsTT1 = "UOTT1_To_LeftSHBE_ReturnedAsTT1";
     String sUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6 = "UOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6";
+    String sUOTT1_To_LeftSHBE_ReturnedAsUOTT4 = "UOTT1_To_LeftSHBE_ReturnedAsUOTT4";
     String sUOTT1_To_LeftSHBE_ReturnedAsTT4 = "UOTT1_To_LeftSHBE_ReturnedAsTT4";
     String sUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7 = "UOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7";
     String sUOTT1_To_LeftSHBE_ReturnedAsTT8 = "UOTT1_To_LeftSHBE_ReturnedAsTT8";
     String sUOTT1_To_LeftSHBE_ReturnedAsTT9 = "UOTT1_To_LeftSHBE_ReturnedAsTT9";
+    String sUOTT4_To_LeftSHBE_ReturnedAsUOTT1 = "UOTT4_To_LeftSHBE_ReturnedAsUOTT1";
     String sUOTT4_To_LeftSHBE_ReturnedAsTT1 = "UOTT4_To_LeftSHBE_ReturnedAsTT1";
     String sUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6 = "UOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6";
+    String sUOTT4_To_LeftSHBE_ReturnedAsUOTT4 = "UOTT4_To_LeftSHBE_ReturnedAsUOTT4";
     String sUOTT4_To_LeftSHBE_ReturnedAsTT4 = "UOTT4_To_LeftSHBE_ReturnedAsTT4";
     String sUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7 = "UOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7";
     String sUOTT4_To_LeftSHBE_ReturnedAsTT8 = "UOTT4_To_LeftSHBE_ReturnedAsTT8";
     String sUOTT4_To_LeftSHBE_ReturnedAsTT9 = "UOTT4_To_LeftSHBE_ReturnedAsTT9";
+    String sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1 = "UOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1";
     String sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1 = "UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1";
     String sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6 = "UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6";
+    String sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4 = "UOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4";
     String sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4 = "UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4";
     String sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7 = "UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7";
     String sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8 = "UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8";
@@ -312,20 +361,29 @@ public class TenancyChangesUO {
         dates = startMonth + " " + startYear + " to " + endMonth + " " + endYear;
         generalStatisticDescriptions = new HashMap<String, String>();
         generalStatisticDescriptions.put(
+                sTotalCount_AlwaysUOFromStart,
+                "Total count of claims that were always in under-occupancy from "
+                + dates + " (includes claims that were not in under-occupancy "
+                + "for months when their Housing Benefit Claim Status was In "
+                + "Suspension).");
+        generalStatisticDescriptions.put(
                 sTotalCount_AlwaysUOFromWhenStarted,
-                "Total count of claims that were always UnderOccupied from "
-                + dates + ".");
+                "Total count of claims that were always in under-occupancy from "
+                + dates + " (includes claims that were not in under-occupancy "
+                + "for months when their Housing Benefit Claim Status was In "
+                + "Suspension).");
         generalStatisticDescriptions.put(
                 sAverageHouseholdSizeOfThoseUOAlwaysFromStart,
-                "Average Household Size of claims that were always UnderOccupied from "
-                + dates + " in " + endMonth + " " + endYear + ".");
+                "Average Household Size of claims that were always in under-"
+                + "occupancy from " + dates + " in " + endMonth + " "
+                + endYear + ".");
         generalStatisticDescriptions.put(
                 sTotalCount_ClaimsEffectedByUnderOccupancy,
-                "Total count of claims that were effected by Under Occupancy "
+                "Total count of claims that were effected by under-occupancy "
                 + "(claims can have different Tenancy Types at different times).");
         generalStatisticDescriptions.put(
                 sTotalCount_UniqueIndividualsEffectedByUnderOccupancy,
-                "Total count of unique individuals effected by underoccupancy "
+                "Total count of unique individuals effected by under-occupancy "
                 + "(total count unique claimants + total count unique partners + "
                 + "total count of unique dependents + total count of unique non-dependents) : "
                 + "(uniqueness is based on date of birth and NINo) this should distinguish twins, "
@@ -333,63 +391,81 @@ public class TenancyChangesUO {
         // Council
         generalStatisticDescriptions.put(
                 sTotalCount_CouncilClaimsEffectedByUnderOccupancy,
-                "Total count of claims effected by UnderOccupancy at some time between "
-                + dates + " and in Council tenancies.");
+                "Total count of claims effected by under-occupancy at some time "
+                + "between " + dates + " and in Council tenancies.");
         generalStatisticDescriptions.put(
                 sTotalCount_CouncilUniqueIndividualsEffectedByUnderOccupancy,
-                "Total count of unique individuals effected by UnderOccupancy and in Council tenancies.");
+                "Total count of unique individuals effected by under-occupancy "
+                + "and in Council tenancies.");
         generalStatisticDescriptions.put(
                 sTotalCount_CouncilUniqueClaimantsEffectedByUnderOccupancy,
-                "Total count of unique claimants effected by UnderOccupancy and in Council tenancies.");
+                "Total count of unique claimants effected by under-occupancy "
+                + "and in Council tenancies.");
         generalStatisticDescriptions.put(
                 sTotalCount_CouncilUniquePartnersEffectedByUnderOccupancy,
-                "Total count of unique partners effected by UnderOccupancy and in Council tenancies "
-                + "(this only deals with main partners, not for all partners in claims where there are multiple partners).");
+                "Total count of unique partners effected by under-occupancy "
+                + "and in Council tenancies (this only deals with main "
+                + "partners, not for all partners in claims where there are "
+                + "multiple partners).");
         generalStatisticDescriptions.put(
                 sTotalCount_CouncilDependentsEffectedByUnderOccupancy,
-                "Total count of unique Dependents effected by UnderOccupancy in Council tenancies.");
+                "Total count of unique Dependents effected by under-occupancy "
+                + "in Council tenancies.");
         generalStatisticDescriptions.put(
                 sTotalCount_CouncilUniqueNonDependentsEffectedByUnderOccupancy,
-                "Total count of unique NonDependents effected by UnderOccupancy in Council tenancies.");
+                "Total count of unique NonDependents effected by under-"
+                + "occupancy in Council tenancies.");
         // RSL
         generalStatisticDescriptions.put(
                 sTotalCount_RSLClaimsEffectedByUnderOccupancy,
-                "Total count of claims effected by UnderOccupancy at  "
-                + "some time between " + dates + " and in Registered Social Landlord tenancies.");
+                "Total count of claims effected by under-occupancy at  "
+                + "some time between " + dates + " and in Registered Social "
+                + "Landlord tenancies.");
         generalStatisticDescriptions.put(
                 sTotalCount_RSLUniqueIndividualsEffectedByUnderOccupancy,
-                "Total count of unique individuals effected by UnderOccupancy and in Registered Social Landlord tenancies.");
+                "Total count of unique individuals effected by under-occupancy "
+                + "and in Registered Social Landlord tenancies.");
         generalStatisticDescriptions.put(
                 sTotalCount_RSLUniqueClaimantsEffectedByUnderOccupancy,
-                "Total count of unique claimants effected by UnderOccupancy and in Registered Social Landlord tenancies.");
+                "Total count of unique claimants effected by under-occupancy "
+                + "and in Registered Social Landlord tenancies.");
         generalStatisticDescriptions.put(
                 sTotalCount_RSLUniquePartnersEffectedByUnderOccupancy,
-                "Total count of unique partners effected by UnderOccupancy and in Registered Social Landlord tenancies "
-                + "(this only deals with main partners, not for all partners in claims where there are multiple partners).");
+                "Total count of unique partners effected by under-occupancy "
+                + "and in Registered Social Landlord tenancies (this only "
+                + "deals with main partners, not for all partners in claims "
+                + "where there are multiple partners).");
         generalStatisticDescriptions.put(
                 sTotalCount_RSLDependentsEffectedByUnderOccupancy,
-                "Total count of unique Dependents effected by UnderOccupancy in Registered Social Landlord tenancies.");
+                "Total count of unique Dependents effected by under-occupancy "
+                + "in Registered Social Landlord tenancies.");
         generalStatisticDescriptions.put(
                 sTotalCount_RSLUniqueNonDependentsEffectedByUnderOccupancy,
-                "Total count of unique NonDependents effected by UnderOccupancy in Registered Social Landlord tenancies.");
+                "Total count of unique NonDependents effected by under-"
+                + "occupancy in Registered Social Landlord tenancies.");
         generalStatisticDescriptions.put(
                 sTotalCount_UniqueChildrenAgeLessThan10EffectedByUnderOccupancy,
-                "Total count of unique children under the Age of 10 effected by UnderOccupancy "
-                + "(the number may be higher as a result of twins or if dates of birth not being recorded in multiple cases).");
+                "Total count of unique children under the Age of 10 effected "
+                + "by under-occupancy (the number may be higher as a result "
+                + "of twins or if dates of birth not being recorded in "
+                + "multiple cases).");
         // LeftSHBE
         generalStatisticDescriptions.put(
                 sUO_To_LeftSHBEAtSomePoint,
-                "Total count of UnderOccupied claims that have left SHBE at "
-                + "some time between " + dates + " after becoming UnderOccupied.");
+                "Total count of under-occupancy claims that have left SHBE at "
+                + "some time between " + dates + " after becoming under-"
+                + "occupied.");
         generalStatisticDescriptions.put(
                 sUO_To_LeftSHBE,
                 "Total count of UO_To_LeftSHBE claims.");
         generalStatisticDescriptions.put(
                 sUO_To_LeftSHBEBetweenOneAndTwoMonths,
-                "Total count of UO_To_LeftSHBE (not the next month, but the month after) claims.");
+                "Total count of UO_To_LeftSHBE (not the next month, but the "
+                + "month after) claims.");
         generalStatisticDescriptions.put(
                 sUO_To_LeftSHBEBetweenTwoAndThreeMonths,
-                "Total count of UO_To_LeftSHBE (not the next month, or the month after, but the month after that) claims.");
+                "Total count of UO_To_LeftSHBE (not the next month, or the "
+                + "month after, but the month after that) claims.");
         generalStatisticDescriptions.put(
                 sUO_To_LeftSHBE_NotReturned,
                 "Total count of UO_To_LeftSHBE and not returned claims "
@@ -416,74 +492,121 @@ public class TenancyChangesUO {
                 + "collection and that may in fact return at a later date).");
         generalStatisticDescriptions.put(
                 sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned,
-                "Total count of UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE and not returned claims "
+                "Total count of UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE and not "
+                + "returned claims "
                 + "(again this may be bias and much of the count might "
                 + "be for those leaving in the last months in the "
                 + "collection and that may in fact return at a later date).");
         generalStatisticDescriptions.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsUOTT1,
+                "Total count of UOTT1_To_LeftSHBE claims that next returned "
+                + "to the SHBE as UOTT1 "
+                + "(unique claims: if this happens more than once for "
+                + "the same claim, it is just counted once).");
+        generalStatisticDescriptions.put(
                 sUOTT1_To_LeftSHBE_ReturnedAsTT1,
-                "Total count of UOTT1_To_LeftSHBE claims that next returned to the SHBE as TT1 "
+                "Total count of UOTT1_To_LeftSHBE claims that next returned "
+                + "to the SHBE as TT1 "
                 + "(unique claims: if this happens more than once for "
                 + "the same claim, it is just counted once).");
         generalStatisticDescriptions.put(
                 sUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
-                "Total count of UOTT1_To_LeftSHBE claims that next returned to the SHBE as TT3OrTT6.");
+                "Total count of UOTT1_To_LeftSHBE claims that next returned "
+                + "to the SHBE as TT3OrTT6.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsUOTT4,
+                "Total count of UOTT1_To_LeftSHBE claims that next returned "
+                + "to the SHBE as UOTT4.");
         generalStatisticDescriptions.put(
                 sUOTT1_To_LeftSHBE_ReturnedAsTT4,
-                "Total count of UOTT1_To_LeftSHBE claims that next returned to the SHBE as TT4.");
+                "Total count of UOTT1_To_LeftSHBE claims that next returned "
+                + "to the SHBE as TT4.");
         generalStatisticDescriptions.put(
                 sUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7,
-                "Total count of UOTT1_To_LeftSHBE claims that next returned to the SHBE as TT5OrTT7.");
+                "Total count of UOTT1_To_LeftSHBE claims that next returned "
+                + "to the SHBE as TT5OrTT7.");
         generalStatisticDescriptions.put(
                 sUOTT1_To_LeftSHBE_ReturnedAsTT8,
-                "Total count of UOTT1_To_LeftSHBE claims that next returned to the SHBE as TT8.");
+                "Total count of UOTT1_To_LeftSHBE claims that next returned "
+                + "to the SHBE as TT8.");
         generalStatisticDescriptions.put(
                 sUOTT1_To_LeftSHBE_ReturnedAsTT9,
-                "Total count of UOTT1_To_LeftSHBE claims that next returned to the SHBE as TT9.");
+                "Total count of UOTT1_To_LeftSHBE claims that next returned "
+                + "to the SHBE as TT9.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsUOTT1,
+                "Total count of UOTT4_To_LeftSHBE claims that next returned "
+                + "to the SHBE as UOTT1.");
         generalStatisticDescriptions.put(
                 sUOTT4_To_LeftSHBE_ReturnedAsTT1,
-                "Total count of UOTT4_To_LeftSHBE claims that next returned to the SHBE as TT1.");
+                "Total count of UOTT4_To_LeftSHBE claims that next returned "
+                + "to the SHBE as TT1.");
         generalStatisticDescriptions.put(
                 sUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6,
-                "Total count of UOTT4_To_LeftSHBE claims that next returned to the SHBE as TT3OrTT6.");
+                "Total count of UOTT4_To_LeftSHBE claims that next returned "
+                + "to the SHBE as TT3OrTT6.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsUOTT4,
+                "Total count of UOTT4_To_LeftSHBE claims that next returned "
+                + "to the SHBE as UOTT4.");
         generalStatisticDescriptions.put(
                 sUOTT4_To_LeftSHBE_ReturnedAsTT4,
-                "Total count of UOTT4_To_LeftSHBE claims that next returned to the SHBE as TT4.");
+                "Total count of UOTT4_To_LeftSHBE claims that next returned "
+                + "to the SHBE as TT4.");
         generalStatisticDescriptions.put(
                 sUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7,
-                "Total count of UOTT4_To_LeftSHBE claims that next returned to the SHBE as TT5OrTT7.");
+                "Total count of UOTT4_To_LeftSHBE claims that next returned "
+                + "to the SHBE as TT5OrTT7.");
         generalStatisticDescriptions.put(
                 sUOTT4_To_LeftSHBE_ReturnedAsTT8,
-                "Total count of UOTT4_To_LeftSHBE claims that next returned to the SHBE as TT8.");
+                "Total count of UOTT4_To_LeftSHBE claims that next returned "
+                + "to the SHBE as TT8.");
         generalStatisticDescriptions.put(
                 sUOTT4_To_LeftSHBE_ReturnedAsTT9,
-                "Total count of UOTT4_To_LeftSHBE claims that next returned to the SHBE as TT9.");
+                "Total count of UOTT4_To_LeftSHBE claims that next returned "
+                + "to the SHBE as TT9.");
+        generalStatisticDescriptions.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1,
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next "
+                + "returned to the SHBE as UOTT1.");
         generalStatisticDescriptions.put(
                 sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1,
-                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next returned to the SHBE as TT1.");
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next "
+                + "returned to the SHBE as TT1.");
         generalStatisticDescriptions.put(
                 sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
-                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next returned to the SHBE as TT3OrTT6.");
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next "
+                + "returned to the SHBE as TT3OrTT6.");
+        generalStatisticDescriptions.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4,
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next "
+                + "returned to the SHBE as UOTT4.");
         generalStatisticDescriptions.put(
                 sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4,
-                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next returned to the SHBE as TT4.");
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next "
+                + "returned to the SHBE as TT4.");
         generalStatisticDescriptions.put(
                 sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7,
-                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next returned to the SHBE as TT5OrTT7.");
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next "
+                + "returned to the SHBE as TT5OrTT7.");
         generalStatisticDescriptions.put(
                 sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8,
-                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next returned to the SHBE as TT8.");
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next "
+                + "returned to the SHBE as TT8.");
         generalStatisticDescriptions.put(
                 sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9,
-                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next returned to the SHBE as TT9.");
+                "Total count of UOTT3OrTT6_To_LeftSHBE claims that next "
+                + "returned to the SHBE as TT9.");
         generalStatisticDescriptions.put(
                 sUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
-                "Total count of UOTT1_To_LeftSHBE claims that returned and became UnderOccupied again at "
-                + "some time between " + dates + ".");
+                "Total count of UOTT1_To_LeftSHBE claims that returned and "
+                + "became under-occupancy again at some time between "
+                + dates + ".");
         generalStatisticDescriptions.put(
                 sUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
-                "Total count of UOTT4_To_LeftSHBE claims that returned and became UnderOccupied again at "
-                + "some time between " + dates + ".");
+                "Total count of UOTT4_To_LeftSHBE claims that returned and "
+                + "became under-occupancy again at  some time between "
+                + dates + ".");
         generalStatisticDescriptions.put(
                 sUOTT1_To_LeftSHBE,
                 "Total count of UOTT1_To_LeftSHBE claims.");
@@ -520,28 +643,41 @@ public class TenancyChangesUO {
                 "Total count of sUO_NotUO_UO_NotUO_UO_NotUO_UO claims.");
         generalStatisticDescriptions.put(
                 sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO,
-                "Total count of sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO claims (including claims with even more _NotUO_UO occurrences).");
+                "Total count of sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO claims "
+                + "(including claims with even more _NotUO_UO occurrences).");
 
         generalStatisticDescriptions.put(
                 sUOTT1_To_NotUO_InSHBE_PostcodeChanged,
-                "Total count of UOTT1_To_NotUO_InSHBE_PostcodeChanged claims.");
+                "Total count of UOTT1_To_NotUO_InSHBE_PostcodeChanged claims "
+                + "(only postcode changes where both the origin and "
+                + "destination postcodes validate are included).");
         generalStatisticDescriptions.put(
-                sUOTT1_To_NotUO_TT1_PostcodeChanged,
-                "Total count of UOTT1_To_NotUO_TT1_PostcodeChanged claims.");
+                sUOTT1_To_TT1_PostcodeChanged,
+                "Total count of UOTT1_To_TT1_PostcodeChanged claims "
+                + "(only postcode changes where both the origin and "
+                + "destination postcodes validate are included).");
         generalStatisticDescriptions.put(
-                sUOTT1_To_NotUO_TT4_PostcodeChanged,
-                "Total count of UOTT1_To_NotUO_TT4_PostcodeChanged claims.");
+                sUOTT1_To_TT4_PostcodeChanged,
+                "Total count of UOTT1_To_TT4_PostcodeChanged claims "
+                + "(only postcode changes where both the origin and "
+                + "destination postcodes validate are included).");
         generalStatisticDescriptions.put(
                 sUOTT4_To_NotUO_InSHBE_PostcodeChanged,
-                "Total count of UOTT4_To_NotUO_InSHBE_PostcodeChanged claims.");
+                "Total count of UOTT4_To_NotUO_InSHBE_PostcodeChanged claims "
+                + "(only postcode changes where both the origin and "
+                + "destination postcodes validate are included).");
         generalStatisticDescriptions.put(
-                sUOTT4_To_NotUO_TT1_PostcodeChanged,
-                "Total count of UOTT4_To_NotUO_TT1_PostcodeChanged claims.");
+                sUOTT4_To_TT1_PostcodeChanged,
+                "Total count of UOTT4_To_TT1_PostcodeChanged claims "
+                + "(only postcode changes where both the origin and "
+                + "destination postcodes validate are included).");
         generalStatisticDescriptions.put(
-                sUOTT4_To_NotUO_TT4_PostcodeChanged,
-                "Total count of UOTT4_To_NotUO_TT4_PostcodeChanged claims.");
+                sUOTT4_To_TT4_PostcodeChanged,
+                "Total count of UOTT4_To_TT4_PostcodeChanged claims "
+                + "(only postcode changes where both the origin and "
+                + "destination postcodes validate are included).");
 
-// UOTT1_To_TT3OrTT6
+        // UOTT1_To_TT3OrTT6
         generalStatisticDescriptions.put(
                 sUOTT1_To_TT3OrTT6,
                 "Total count of UOTT1_To_TT3OrTT6 claims.");
@@ -553,13 +689,19 @@ public class TenancyChangesUO {
                 "Total count of UOTT1_To_TT3OrTT6BetweenTwoAndThreeMonths claims.");
         generalStatisticDescriptions.put(
                 sUOTT1_To_TT3OrTT6AtSomePoint,
-                "Total count of UnderOccupied TT1 claims that became TT3OrTT6 at  "
+                "Total count of under-occupied TT1 claims that became TT3OrTT6 at  "
                 + "some time between " + dates + ".");
         generalStatisticDescriptions.put(
                 sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
-                "Total count of UnderOccupied TT1 claims that became TT3OrTT6 "
+                "Total count of under-occupied TT1 claims that became TT3OrTT6 "
                 + "in the next TT change ignoring those times they "
                 + "came out of the SHBE if indeed they have.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint,
+                "Total count of under-occupied TT1 claims that became TT3OrTT6 "
+                + "in the next TT change ignoring those times they "
+                + "came out of the SHBE if indeed they have and which returned "
+                + "at some later point to be either TT1 or UOTT1.");
 
         // UOTT4_To_TT3OrTT6
         generalStatisticDescriptions.put(
@@ -573,13 +715,19 @@ public class TenancyChangesUO {
                 "Total count of UOTT4_To_TT3OrTT6BetweenTwoAndThreeMonths claims.");
         generalStatisticDescriptions.put(
                 sUOTT4_To_TT3OrTT6AtSomePoint,
-                "Total count of UnderOccupied TT4 claims that became TT3OrTT6 at "
+                "Total count of under-occupied TT4 claims that became TT3OrTT6 at "
                 + "some time between " + dates + ".");
         generalStatisticDescriptions.put(
                 sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
-                "Total count of UnderOccupied TT4 claims that became TT3OrTT6 "
+                "Total count of under-occupied TT4 claims that became TT3OrTT6 "
                 + "in the next TT change ignoring those times they "
                 + "came out of the SHBE if indeed they have.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint,
+                "Total count of under-occupied TT4 claims that became TT3OrTT6 "
+                + "in the next TT change ignoring those times they "
+                + "came out of the SHBE if indeed they have and which returned "
+                + "at some later point to be either TT4 or UOTT4.");
 
         // TT3OrTT6_To_UOTT1
         generalStatisticDescriptions.put(
@@ -599,9 +747,33 @@ public class TenancyChangesUO {
         generalStatisticDescriptions.put(
                 sUOTT1_To_TT1_PostcodeUnchanged,
                 "Total count of UOTT1_To_TT1_PostcodeUnchanged claims.");
+//        generalStatisticDescriptions.put(
+//                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+//                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month claims.");
         generalStatisticDescriptions.put(
-                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
-                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month claims.");
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9,
+                "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9 claims.");
         generalStatisticDescriptions.put(
                 sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
                 "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months claims.");
@@ -619,14 +791,39 @@ public class TenancyChangesUO {
                 "Total count of UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3MonthsButStillTT1 separate from -999 claims.");
         generalStatisticDescriptions.put(
                 sUOTT1_To_TT1_PostcodeChanged,
-                "Total count of UOTT1_To_TT1_PostcodeChanged claims.");
+                "Total count of UOTT1_To_TT1_PostcodeChanged claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         // UOTT4_To_TT4
         generalStatisticDescriptions.put(
                 sUOTT4_To_TT4_PostcodeUnchanged,
                 "Total count of UOTT4_To_TT4_PostcodeUnchanged claims.");
+//        generalStatisticDescriptions.put(
+//                sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+//                "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month claims.");
         generalStatisticDescriptions.put(
-                sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
-                "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month claims.");
+                sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+                "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+                "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+                "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8 claims.");
+        generalStatisticDescriptions.put(
+                sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9,
+                "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9 claims.");
         generalStatisticDescriptions.put(
                 sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
                 "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months claims.");
@@ -635,7 +832,8 @@ public class TenancyChangesUO {
                 "Total count of UOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months claims.");
         generalStatisticDescriptions.put(
                 sUOTT4_To_TT4_PostcodeChanged,
-                "Total count of UOTT4_To_TT4_PostcodeChanged claims.");
+                "Total count of UOTT4_To_TT4_PostcodeChanged claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         // TT1_To_UOTT1        
         generalStatisticDescriptions.put(
                 sTT1_To_UOTT1,
@@ -646,28 +844,70 @@ public class TenancyChangesUO {
         generalStatisticDescriptions.put(
                 sTT1_To_UOTT1_PostcodeUnchanged,
                 "Total count of TT1_To_UOTT1_PostcodeUnchanged claims.");
+//        generalStatisticDescriptions.put(
+//                sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+//                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month claims "
+//                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(
-                sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
-                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month claims.");
+                sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
+        generalStatisticDescriptions.put(
+                sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9,
+                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(
                 sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
-                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months claims.");
+                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(
                 sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months,
-                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months claims.");
+                "Total count of TT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(sTT1_To_UOTT1_PostcodeChangedAfter1MonthButStillUOTT1,
-                "Total count of TT1_To_UOTT1_PostcodeChangedAfter1MonthButStillTT1UO claims.");
+                "Total count of TT1_To_UOTT1_PostcodeChangedAfter1MonthButStillTT1UO claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(sTT1_To_UOTT1_PostcodeChangedAfter2MonthsButStillUOTT1,
-                "Total count of TT1_To_UOTT1_PostcodeChangedAfter2MonthsButStillTT1UO claims.");
+                "Total count of TT1_To_UOTT1_PostcodeChangedAfter2MonthsButStillTT1UO claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(sTT1_To_UOTT1_PostcodeChangedAfter3MonthsButStillUOTT1,
-                "Total count of TT1_To_UOTT1_PostcodeChangedAfter3MonthsButStillTT1UO claims.");
+                "Total count of TT1_To_UOTT1_PostcodeChangedAfter3MonthsButStillTT1UO claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(
                 sTT1_To_UOTT1_PostcodeChanged,
-                "Total count of TT1_To_UOTT1_PostcodeChanged claims (includes corrections of postcodes).");
+                "Total count of TT1_To_UOTT1_PostcodeChanged claims "
+                + "(includes corrections of postcodes) "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
 
         generalStatisticDescriptions.put(
                 sUOTT1_To_UOTT1_PostcodeChanged,
-                "Total count of UOTT1_To_UOTT1_PostcodeChanged claims (includes corrections of postcodes).");
+                "Total count of UOTT1_To_UOTT1_PostcodeChanged claims "
+                + "(includes corrections of postcodes) "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
 
         // TT1_To_UOTT4
         //generalStatisticDescriptions.put(sUOTT1OrTT1_To_UOTT4,
@@ -691,31 +931,65 @@ public class TenancyChangesUO {
         generalStatisticDescriptions.put(
                 sTT4_To_UOTT4_PostcodeUnchanged,
                 "Total count of TT4_To_UOTT4_PostcodeUnchanged claims.");
+//        generalStatisticDescriptions.put(
+//                sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+//                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month claims "
+//                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(
-                sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
-                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month claims.");
+                sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
+        generalStatisticDescriptions.put(
+                sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9,
+                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(
                 sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
-                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months claims.");
+                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(
                 sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
-                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months claims.");
+                "Total count of TT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(
                 sTT4_To_UOTT4_PostcodeChangedAfter1MonthButStillUOTT4,
-                "Total count of TT4_To_UOTT4_PostcodeChangedAfter1MonthButStillUOTT4 claims.");
+                "Total count of TT4_To_UOTT4_PostcodeChangedAfter1MonthButStillUOTT4 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(
                 sTT4_To_UOTT4_PostcodeChangedAfter2MonthsButStillUOTT4,
-                "Total count of TT4_To_UOTT4_PostcodeChangedAfter2MonthsButStillUOTT4 claims.");
+                "Total count of TT4_To_UOTT4_PostcodeChangedAfter2MonthsButStillUOTT4 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(
                 sTT4_To_UOTT4_PostcodeChangedAfter3MonthsButStillUOTT4,
-                "Total count of TT4_To_UOTT4_PostcodeChangedAfter3MonthsButStillUOTT4 claims.");
+                "Total count of TT4_To_UOTT4_PostcodeChangedAfter3MonthsButStillUOTT4 claims "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
         generalStatisticDescriptions.put(
                 sTT4_To_UOTT4_PostcodeChanged,
-                "Total count of TT4_To_UOTT4_PostcodeChanged  claims (includes corrections of postcodes).");
+                "Total count of TT4_To_UOTT4_PostcodeChanged claims "
+                + "(includes corrections of postcodes) "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
 
         generalStatisticDescriptions.put(
                 sUOTT4_To_UOTT4_PostcodeChanged,
-                "Total count of UOTT4_To_UOTT4_PostcodeChanged claims (includes corrections of postcodes).");
+                "Total count of UOTT4_To_UOTT4_PostcodeChanged claims "
+                + "(includes corrections of postcodes) "
+                + "(only postcode changes where both the origin and destination postcodes validate are included).");
 
         // TT4_To_UOTT1
         //generalStatisticDescriptions.put(sUOTT4OrTT4_To_UOTT1,
@@ -766,11 +1040,11 @@ public class TenancyChangesUO {
                 + "Payment some time between " + dates + ".");
         generalStatisticDescriptions.put(
                 sUOTT1ClaimsInRentArrearsAtSomePoint,
-                "Total count of UnderOccupied TT1 claims in rent arrears at "
+                "Total count of under-occupied TT1 claims in rent arrears at "
                 + "some time between " + dates + ".");
         generalStatisticDescriptions.put(
                 sUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint,
-                "Total count of UnderOccupied TT1 claims in rent arrears and "
+                "Total count of under-occupied TT1 claims in rent arrears and "
                 + "receiving DHP simultaneously some time between " + dates + ".");
         return generalStatisticDescriptions;
     }
@@ -784,28 +1058,30 @@ public class TenancyChangesUO {
         sTT3OrTT6_To_TT1 = "g_TT3OrTT6_To_TT1";
         sTT3OrTT6_To_TT4 = "h_TT3OrTT6_To_TT4";
 
-        sAlwaysUOFromStart__NotMoved_NotChangedTT = "k_AlwaysUOFromStart__NotMoved_NotChangedTT";
+        sAlwaysUOFromStart__NoValidPostcodeChange_NotChangedTT = "k_AlwaysUOFromStart__NoValidPostcodeChange_NotChangedTT";
         sAlwaysUOFromStart__ChangedTT = "l_AlwaysUOFromStart__ChangedTT";
-        sAlwaysUOFromStart__Moved_NotChangedTT = "m_AlwaysUOFromStart__Moved_NotChangedTT";
+        sAlwaysUOFromStart__ValidPostcodeChange_NotChangedTT = "m_AlwaysUOFromStart__ValidPostcodeChange_NotChangedTT";
 
-        sAlwaysUOFromWhenStarted__NotMoved_NotChangedTT = "p_AlwaysUOFromWhenStarted__NotMoved_NotChangedTT";
+        sAlwaysUOFromWhenStarted__NoValidPostcodeChange_NotChangedTT = "p_AlwaysUOFromWhenStarted__NoValidPostcodeChange_NotChangedTT";
         sAlwaysUOFromWhenStarted__ChangedTT = "q_AlwaysUOFromWhenStarted__ChangedTT";
-        sAlwaysUOFromWhenStarted__Moved_NotChangedTT = "r_AlwaysUOFromWhenStarted__Moved_NotChangedTT";
+        sAlwaysUOFromWhenStarted__ValidPostcodeChange_NotChangedTT = "r_AlwaysUOFromWhenStarted__ValidPostcodeChange_NotChangedTT";
 
-        sIntermitantUO__NotMoved_NotChangedTT = "u_" + "IntermitantUO__NotMoved_NotChangedTT";
+        sIntermitantUO__NoValidPostcodeChange_NotChangedTT = "u_" + "IntermitantUO__NoValidPostcodeChange_NotChangedTT";
         sIntermitantUO__ChangedTT = "v_" + "IntermitantUO__ChangedTT";
-        sIntermitantUO__Moved_NotChangedTT = "w_" + "IntermitantUO__Moved_NotChangedTT";
+        sIntermitantUO__ValidPostcodeChange_NotChangedTT = "w_" + "IntermitantUO__ValidPostcodeChange_NotChangedTT";
     }
 
     public TenancyChangesUO(
             DW_Environment env,
             DW_SHBE_CollectionHandler collectionHandler,
             DW_SHBE_Handler tDW_SHBE_Handler,
+            HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup,
             boolean handleOutOfMemoryError) {
         this.env = env;
         this.collectionHandler = collectionHandler;
         this.tDW_SHBE_Handler = tDW_SHBE_Handler;
         this.handleOutOfMemoryError = handleOutOfMemoryError;
+        this.tPostcodeToPostcodeIDLookup = tPostcodeToPostcodeIDLookup;
         initString();
     }
 
@@ -1335,6 +1611,9 @@ public class TenancyChangesUO {
     ) {
         Object[] result;
         result = new Object[8];
+        //validPostcodes = new HashMap<String, HashSet<String>>();
+        validPostcodes = new HashSet<String>();
+
         // Initialise result part 1
         TreeMap<String, String> tableValues;
         tableValues = new TreeMap<String, String>();
@@ -1458,13 +1737,13 @@ public class TenancyChangesUO {
         tCTBRefSetTT3_To_TT4 = new TreeSet<String>();
         groups.put(sTT3OrTT6_To_TT4, tCTBRefSetTT3_To_TT4);
 
-//        TreeSet<String> tCTBRefSetNotMoved;
-//        tCTBRefSetNotMoved = new TreeSet<String>();
-//        tCTBRefSetNotMoved.addAll(tCTBRefs);
-//        groups.put(sNotMoved, tCTBRefSetNotMoved);
-        TreeSet<String> tCTBRefSetMoved;
-        tCTBRefSetMoved = new TreeSet<String>();
-        groups.put(sNotMoved, tCTBRefSetMoved);
+//        TreeSet<String> tCTBRefSetNoValidPostcodeChange;
+//        tCTBRefSetNoValidPostcodeChange = new TreeSet<String>();
+//        tCTBRefSetNoValidPostcodeChange.addAll(tCTBRefs);
+//        groups.put(sNoValidPostcodeChange, tCTBRefSetNoValidPostcodeChange);
+        TreeSet<String> tCTBRefSetValidPostcodeChange;
+        tCTBRefSetValidPostcodeChange = new TreeSet<String>();
+        groups.put(sNoValidPostcodeChange, tCTBRefSetValidPostcodeChange);
 
         TreeSet<String> tCTBRefSetChangedTT;
         tCTBRefSetChangedTT = new TreeSet<String>();
@@ -1532,6 +1811,10 @@ public class TenancyChangesUO {
         tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEAndNotReturned = new TreeSet<String>();
         groups.put(sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned, tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEAndNotReturned);
 
+        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT1;
+        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT1 = new TreeSet<String>();
+        groups.put(sUOTT1_To_LeftSHBE_ReturnedAsUOTT1, tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT1);
+
         TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1;
         tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1 = new TreeSet<String>();
         groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT1, tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1);
@@ -1539,6 +1822,10 @@ public class TenancyChangesUO {
         TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6;
         tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6 = new TreeSet<String>();
         groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6, tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT4;
+        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT4 = new TreeSet<String>();
+        groups.put(sUOTT1_To_LeftSHBE_ReturnedAsUOTT4, tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT4);
 
         TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4;
         tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4 = new TreeSet<String>();
@@ -1556,6 +1843,10 @@ public class TenancyChangesUO {
         tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9 = new TreeSet<String>();
         groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT9, tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9);
 
+        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT1;
+        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT1 = new TreeSet<String>();
+        groups.put(sUOTT4_To_LeftSHBE_ReturnedAsUOTT1, tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT1);
+
         TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1;
         tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1 = new TreeSet<String>();
         groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT1, tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1);
@@ -1563,6 +1854,10 @@ public class TenancyChangesUO {
         TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6;
         tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6 = new TreeSet<String>();
         groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6, tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT4;
+        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT4 = new TreeSet<String>();
+        groups.put(sUOTT4_To_LeftSHBE_ReturnedAsUOTT4, tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT4);
 
         TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4;
         tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4 = new TreeSet<String>();
@@ -1580,6 +1875,10 @@ public class TenancyChangesUO {
         tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9 = new TreeSet<String>();
         groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT9, tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9);
 
+        TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1;
+        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1 = new TreeSet<String>();
+        groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1, tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1);
+
         TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1;
         tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1 = new TreeSet<String>();
         groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1, tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1);
@@ -1587,6 +1886,10 @@ public class TenancyChangesUO {
         TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6;
         tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6 = new TreeSet<String>();
         groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6, tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6);
+
+        TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4;
+        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4 = new TreeSet<String>();
+        groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4, tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4);
 
         TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4;
         tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4 = new TreeSet<String>();
@@ -1671,25 +1974,41 @@ public class TenancyChangesUO {
         tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged = new TreeSet<String>();
         groups.put(sUOTT1_To_NotUO_InSHBE_PostcodeChanged, tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged);
 
-        TreeSet<String> tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged;
-        tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged = new TreeSet<String>();
-        groups.put(sUOTT1_To_NotUO_TT1_PostcodeChanged, tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged);
+        TreeSet<String> tCTBRefSetUOTT1_To_UOTT1_PostcodeChanged;
+        tCTBRefSetUOTT1_To_UOTT1_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT1_To_UOTT1_PostcodeChanged, tCTBRefSetUOTT1_To_UOTT1_PostcodeChanged);
 
-        TreeSet<String> tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged;
-        tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged = new TreeSet<String>();
-        groups.put(sUOTT1_To_NotUO_TT4_PostcodeChanged, tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged);
+        TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeChanged;
+        tCTBRefSetUOTT1_To_TT1_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT1_PostcodeChanged, tCTBRefSetUOTT1_To_TT1_PostcodeChanged);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_UOTT4_PostcodeChanged;
+        tCTBRefSetUOTT1_To_UOTT4_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT1_To_UOTT4_PostcodeChanged, tCTBRefSetUOTT1_To_UOTT4_PostcodeChanged);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_TT4_PostcodeChanged;
+        tCTBRefSetUOTT1_To_TT4_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT4_PostcodeChanged, tCTBRefSetUOTT1_To_TT4_PostcodeChanged);
 
         TreeSet<String> tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged;
         tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged = new TreeSet<String>();
         groups.put(sUOTT4_To_NotUO_InSHBE_PostcodeChanged, tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged);
 
-        TreeSet<String> tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged;
-        tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged = new TreeSet<String>();
-        groups.put(sUOTT4_To_NotUO_TT1_PostcodeChanged, tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged);
+        TreeSet<String> tCTBRefSetUOTT4_To_UOTT1_PostcodeChanged;
+        tCTBRefSetUOTT4_To_UOTT1_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT4_To_UOTT1_PostcodeChanged, tCTBRefSetUOTT4_To_UOTT1_PostcodeChanged);
 
-        TreeSet<String> tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged;
-        tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged = new TreeSet<String>();
-        groups.put(sUOTT4_To_NotUO_TT4_PostcodeChanged, tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged);
+        TreeSet<String> tCTBRefSetUOTT4_To_TT1_PostcodeChanged;
+        tCTBRefSetUOTT4_To_TT1_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT1_PostcodeChanged, tCTBRefSetUOTT4_To_TT1_PostcodeChanged);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_UOTT4_PostcodeChanged;
+        tCTBRefSetUOTT4_To_UOTT4_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT4_To_UOTT4_PostcodeChanged, tCTBRefSetUOTT4_To_UOTT4_PostcodeChanged);
+
+        TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeChanged;
+        tCTBRefSetUOTT4_To_TT4_PostcodeChanged = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT4_PostcodeChanged, tCTBRefSetUOTT4_To_TT4_PostcodeChanged);
 
         TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6;
         tCTBRefSetUOTT1_To_TT3OrTT6 = new TreeSet<String>();
@@ -1702,6 +2021,10 @@ public class TenancyChangesUO {
         TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999;
         tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999 = new TreeSet<String>();
         groups.put(sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999, tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999);
+
+        TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint;
+        tCTBRefSetUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint, tCTBRefSetUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint);
 
         TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange;
         tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange = new TreeSet<String>();
@@ -1726,6 +2049,10 @@ public class TenancyChangesUO {
         tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999 = new TreeSet<String>();
         groups.put(sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999, tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999);
 
+        TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint;
+        tCTBRefSetUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint, tCTBRefSetUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint);
+
         TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange;
         tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange = new TreeSet<String>();
 
@@ -1740,10 +2067,43 @@ public class TenancyChangesUO {
         TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged;
         tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged = new TreeSet<String>();
         groups.put(sTT1_To_UOTT1_PostcodeUnchanged, tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged);
-        TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month;
-        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month = new TreeSet<String>();
-        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
-                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month);
+//        TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month;
+//        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month = new TreeSet<String>();
+//        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+//                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month);
+        TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1;
+        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1 = new TreeSet<String>();
+        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1);
+        TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1;
+        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1 = new TreeSet<String>();
+        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1);
+        TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6;
+        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6 = new TreeSet<String>();
+        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6);
+        TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4;
+        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4 = new TreeSet<String>();
+        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4);
+        TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4;
+        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4 = new TreeSet<String>();
+        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4);
+        TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7;
+        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7 = new TreeSet<String>();
+        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7);
+        TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8;
+        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8 = new TreeSet<String>();
+        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8);
+        TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9;
+        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9 = new TreeSet<String>();
+        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9,
+                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9);
+
         TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months;
         tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months = new TreeSet<String>();
         groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
@@ -1769,10 +2129,43 @@ public class TenancyChangesUO {
         TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged;
         tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged = new TreeSet<String>();
         groups.put(sTT4_To_UOTT4_PostcodeUnchanged, tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged);
-        TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month;
-        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month = new TreeSet<String>();
-        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
-                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month);
+//        TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month;
+//        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month = new TreeSet<String>();
+//        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+//                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month);        
+        TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1;
+        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1 = new TreeSet<String>();
+        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1);
+        TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1;
+        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1 = new TreeSet<String>();
+        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1);
+        TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6;
+        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6 = new TreeSet<String>();
+        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6);
+        TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4;
+        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4 = new TreeSet<String>();
+        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4);
+        TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4;
+        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4 = new TreeSet<String>();
+        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4);
+        TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7;
+        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7 = new TreeSet<String>();
+        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7);
+        TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8;
+        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8 = new TreeSet<String>();
+        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8);
+        TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9;
+        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9 = new TreeSet<String>();
+        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9,
+                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9);
+
         TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months;
         tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months = new TreeSet<String>();
         groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
@@ -1833,10 +2226,43 @@ public class TenancyChangesUO {
         TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged;
         tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged = new TreeSet<String>();
         groups.put(sUOTT1_To_TT1_PostcodeUnchanged, tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged);
-        TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month;
-        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month = new TreeSet<String>();
-        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
-                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month);
+//        TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month;
+//        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month = new TreeSet<String>();
+//        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+//                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month);
+        TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1;
+        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1 = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1);
+        TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1;
+        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1 = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1);
+        TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6;
+        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6 = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6);
+        TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4;
+        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4 = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4);
+        TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4;
+        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4 = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4);
+        TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7;
+        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7 = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7);
+        TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8;
+        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8 = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8);
+        TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9;
+        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9 = new TreeSet<String>();
+        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9,
+                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9);
+
         TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months;
         tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months = new TreeSet<String>();
         groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
@@ -1849,10 +2275,42 @@ public class TenancyChangesUO {
         TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged;
         tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged = new TreeSet<String>();
         groups.put(sUOTT4_To_TT4_PostcodeUnchanged, tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged);
-        TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month;
-        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month = new TreeSet<String>();
-        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
-                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month);
+//        TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month;
+//        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month = new TreeSet<String>();
+//        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+//                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month);
+        TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1;
+        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1 = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1);
+        TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1;
+        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1 = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1);
+        TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6;
+        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6 = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6);
+        TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4;
+        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4 = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4);
+        TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4;
+        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4 = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4);
+        TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7;
+        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7 = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7);
+        TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8;
+        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8 = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8);
+        TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9;
+        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9 = new TreeSet<String>();
+        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9,
+                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9);
         TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months;
         tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months = new TreeSet<String>();
         groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
@@ -2042,6 +2500,8 @@ public class TenancyChangesUO {
         aRecords = aSHBEData.getRecords();
         TreeMap<String, DW_SHBE_Record> bRecords;
         bRecords = null;
+        TreeMap<String, DW_SHBE_Record> cRecords;
+        cRecords = null;
 
         DW_SHBE_Record aDW_SHBE_Record;
 
@@ -2069,8 +2529,10 @@ public class TenancyChangesUO {
                     aCTBRef,
                     year,
                     month,
+                    aYM3,
                     aDW_SHBE_Record,
                     bRecords,
+                    cRecords,
                     tableValues,
                     councilUnderOccupiedSet1,
                     RSLUnderOccupiedSet1,
@@ -2089,7 +2551,7 @@ public class TenancyChangesUO {
                     tCTBRefSetTT4_To_TT3,
                     tCTBRefSetTT3_To_TT1,
                     tCTBRefSetTT3_To_TT4,
-                    tCTBRefSetMoved,
+                    tCTBRefSetValidPostcodeChange,
                     tCTBRefSetChangedTT,
                     tCTBRefSetUOAtSomePoint,
                     tCTBRefSetUOTT1AtSomePoint,
@@ -2116,20 +2578,26 @@ public class TenancyChangesUO {
                     tCTBRefSetUOTT4_To_LeftSHBEAndNotReturned,
                     tCTBRefSetUOTT3OrTT6_To_LeftSHBEAndNotReturned,
                     tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEAndNotReturned,
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT1,
                     tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1,
                     tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT4,
                     tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4,
                     tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7,
                     tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8,
                     tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9,
+                    tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT1,
                     tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1,
                     tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                    tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT4,
                     tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4,
                     tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7,
                     tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT8,
                     tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9,
+                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1,
                     tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1,
                     tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4,
                     tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4,
                     tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7,
                     tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8,
@@ -2145,24 +2613,38 @@ public class TenancyChangesUO {
                     tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO,
                     tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO,
                     tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged,
-                    tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged,
-                    tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged,
+                    tCTBRefSetUOTT1_To_UOTT1_PostcodeChanged,
+                    tCTBRefSetUOTT1_To_TT1_PostcodeChanged,
+                    tCTBRefSetUOTT1_To_UOTT4_PostcodeChanged,
+                    tCTBRefSetUOTT1_To_TT4_PostcodeChanged,
                     tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged,
-                    tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged,
-                    tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged,
+                    tCTBRefSetUOTT4_To_UOTT1_PostcodeChanged,
+                    tCTBRefSetUOTT4_To_TT1_PostcodeChanged,
+                    tCTBRefSetUOTT4_To_UOTT4_PostcodeChanged,
+                    tCTBRefSetUOTT4_To_TT4_PostcodeChanged,
                     tCTBRefSetUOTT1_To_TT3OrTT6,
                     tCTBRefSetUOTT1_To_TT3OrTT6AtSomePoint,
                     tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                    tCTBRefSetUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint,
                     tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange,
                     tCTBRefSetUOTT4_To_TT3OrTT6,
                     tCTBRefSetUOTT4_To_TT3OrTT6AtSomePoint,
                     tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                    tCTBRefSetUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint,
                     tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange,
                     tCTBRefSetTT3OrTT6_To_UOTT1,
                     tCTBRefSetTT3OrTT6_To_UOTT4,
                     tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged,
                     tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth,
-                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+                    //tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9,
                     tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
                     tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months,
                     tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious,
@@ -2174,7 +2656,15 @@ public class TenancyChangesUO {
                     tCTBRefSetTT1_To_UOTT4GettingDHP,
                     tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged,
                     tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedThisMonth,
-                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+                    //tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9,
                     tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
                     tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
                     tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious,
@@ -2195,7 +2685,15 @@ public class TenancyChangesUO {
                     tCTBRefSetDHPAtSomePoint,
                     tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged,
                     tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedThisMonth,
-                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+                    //tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9,
                     tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
                     tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months,
                     tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged1MonthPrevious,
@@ -2203,7 +2701,15 @@ public class TenancyChangesUO {
                     tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged3MonthsPrevious,
                     tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged,
                     tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth,
-                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+                    //tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9,
                     tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
                     tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months,
                     tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged1MonthPrevious,
@@ -2252,6 +2758,7 @@ public class TenancyChangesUO {
             totalCount_UOClaims = 0;
             totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms = 0;
             i = includeIte.next();
+            cRecords = bRecords;
             bRecords = aRecords;
             aSHBEFilename = SHBEFilenames[i];
             aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
@@ -2273,8 +2780,10 @@ public class TenancyChangesUO {
                         aCTBRef,
                         year,
                         month,
+                        aYM3,
                         aDW_SHBE_Record,
                         bRecords,
+                        cRecords,
                         tableValues,
                         councilUnderOccupiedSet1,
                         RSLUnderOccupiedSet1,
@@ -2293,7 +2802,7 @@ public class TenancyChangesUO {
                         tCTBRefSetTT4_To_TT3,
                         tCTBRefSetTT3_To_TT1,
                         tCTBRefSetTT3_To_TT4,
-                        tCTBRefSetMoved,
+                        tCTBRefSetValidPostcodeChange,
                         tCTBRefSetChangedTT,
                         tCTBRefSetUOAtSomePoint,
                         tCTBRefSetUOTT1AtSomePoint,
@@ -2320,20 +2829,26 @@ public class TenancyChangesUO {
                         tCTBRefSetUOTT4_To_LeftSHBEAndNotReturned,
                         tCTBRefSetUOTT3OrTT6_To_LeftSHBEAndNotReturned,
                         tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEAndNotReturned,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT1,
                         tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1,
                         tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT4,
                         tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4,
                         tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7,
                         tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8,
                         tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9,
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT1,
                         tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1,
                         tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT4,
                         tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4,
                         tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7,
                         tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT8,
                         tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9,
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1,
                         tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1,
                         tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4,
                         tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4,
                         tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7,
                         tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8,
@@ -2349,24 +2864,38 @@ public class TenancyChangesUO {
                         tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO,
                         tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO,
                         tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged,
-                        tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged,
-                        tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged,
+                        tCTBRefSetUOTT1_To_UOTT1_PostcodeChanged,
+                        tCTBRefSetUOTT1_To_TT1_PostcodeChanged,
+                        tCTBRefSetUOTT1_To_UOTT4_PostcodeChanged,
+                        tCTBRefSetUOTT1_To_TT4_PostcodeChanged,
                         tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged,
-                        tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged,
-                        tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged,
+                        tCTBRefSetUOTT4_To_UOTT1_PostcodeChanged,
+                        tCTBRefSetUOTT4_To_TT1_PostcodeChanged,
+                        tCTBRefSetUOTT4_To_UOTT4_PostcodeChanged,
+                        tCTBRefSetUOTT4_To_TT4_PostcodeChanged,
                         tCTBRefSetUOTT1_To_TT3OrTT6,
                         tCTBRefSetUOTT1_To_TT3OrTT6AtSomePoint,
                         tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                        tCTBRefSetUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint,
                         tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange,
                         tCTBRefSetUOTT4_To_TT3OrTT6,
                         tCTBRefSetUOTT4_To_TT3OrTT6AtSomePoint,
                         tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                        tCTBRefSetUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint,
                         tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange,
                         tCTBRefSetTT3OrTT6_To_UOTT1,
                         tCTBRefSetTT3OrTT6_To_UOTT4,
                         tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged,
                         tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth,
-                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+                        //tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9,
                         tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
                         tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months,
                         tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious,
@@ -2378,7 +2907,15 @@ public class TenancyChangesUO {
                         tCTBRefSetTT1_To_UOTT4GettingDHP,
                         tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged,
                         tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedThisMonth,
-                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+                        //tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9,
                         tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
                         tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
                         tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious,
@@ -2399,7 +2936,15 @@ public class TenancyChangesUO {
                         tCTBRefSetDHPAtSomePoint,
                         tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged,
                         tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedThisMonth,
-                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+                        //tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9,
                         tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
                         tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months,
                         tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged1MonthPrevious,
@@ -2407,7 +2952,15 @@ public class TenancyChangesUO {
                         tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged3MonthsPrevious,
                         tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged,
                         tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth,
-                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+                        //tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9,
                         tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
                         tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months,
                         tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged1MonthPrevious,
@@ -2469,16 +3022,16 @@ public class TenancyChangesUO {
 
         header += sCommaSpace + "HBDPTotal";
 
-//        TreeSet<String> tCTBRefSetMoved; // Calculate by removing all from tCTBRefSetNotMoved.
-//        tCTBRefSetMoved = new TreeSet<String>();
-//        tCTBRefSetMoved.addAll(tCTBRefs);
-//        tCTBRefSetMoved.removeAll(tCTBRefSetNotMoved);
-//        groups.put("Moved", tCTBRefSetMoved);
-        TreeSet<String> tCTBRefSetNotMoved; // Calculate by removing all from tCTBRefSetNotMoved.
-        tCTBRefSetNotMoved = new TreeSet<String>();
-        tCTBRefSetNotMoved.addAll(tCTBRefs);
-        tCTBRefSetNotMoved.removeAll(tCTBRefSetMoved);
-        groups.put(sNotMoved, tCTBRefSetMoved);
+//        TreeSet<String> tCTBRefSetValidPostcodeChange; // Calculate by removing all from tCTBRefSetNoValidPostcodeChange.
+//        tCTBRefSetValidPostcodeChange = new TreeSet<String>();
+//        tCTBRefSetValidPostcodeChange.addAll(tCTBRefs);
+//        tCTBRefSetValidPostcodeChange.removeAll(tCTBRefSetNoValidPostcodeChange);
+//        groups.put("ValidPostcodeChange", tCTBRefSetValidPostcodeChange);
+        TreeSet<String> tCTBRefSetNoValidPostcodeChange; // Calculate by removing all from tCTBRefSetNoValidPostcodeChange.
+        tCTBRefSetNoValidPostcodeChange = new TreeSet<String>();
+        tCTBRefSetNoValidPostcodeChange.addAll(tCTBRefs);
+        tCTBRefSetNoValidPostcodeChange.removeAll(tCTBRefSetValidPostcodeChange);
+        groups.put(sNoValidPostcodeChange, tCTBRefSetValidPostcodeChange);
 
         TreeSet<String> tCTBRefSetNotChangedTT; // Calculate by removing all from tCTBRefSetChangedTT.
         tCTBRefSetNotChangedTT = new TreeSet<String>();
@@ -2486,12 +3039,12 @@ public class TenancyChangesUO {
         tCTBRefSetNotChangedTT.removeAll(tCTBRefSetChangedTT);
         groups.put("NotChangedTT", tCTBRefSetNotChangedTT);
 
-        TreeSet<String> tCTBRefSetAlwaysUOFromStartNotMovedNotChangedTT; // Calculate by intersect of sets.
-        tCTBRefSetAlwaysUOFromStartNotMovedNotChangedTT = new TreeSet<String>();
-        tCTBRefSetAlwaysUOFromStartNotMovedNotChangedTT.addAll(tCTBRefSetAlwaysUOFromStart);
-        tCTBRefSetAlwaysUOFromStartNotMovedNotChangedTT.retainAll(tCTBRefSetNotMoved);
-        tCTBRefSetAlwaysUOFromStartNotMovedNotChangedTT.retainAll(tCTBRefSetNotChangedTT);
-        groups.put(sAlwaysUOFromStart__NotMoved_NotChangedTT, tCTBRefSetAlwaysUOFromStartNotMovedNotChangedTT);
+        TreeSet<String> tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT; // Calculate by intersect of sets.
+        tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT = new TreeSet<String>();
+        tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOFromStart);
+        tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT.retainAll(tCTBRefSetNoValidPostcodeChange);
+        tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT.retainAll(tCTBRefSetNotChangedTT);
+        groups.put(sAlwaysUOFromStart__NoValidPostcodeChange_NotChangedTT, tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT);
 
         TreeSet<String> tCTBRefSetAlwaysUOFromStartChangedTT; // Calculate by intersect of sets.
         tCTBRefSetAlwaysUOFromStartChangedTT = new TreeSet<String>();
@@ -2499,12 +3052,12 @@ public class TenancyChangesUO {
         tCTBRefSetAlwaysUOFromStartChangedTT.retainAll(tCTBRefSetAlwaysUOFromStart);
         groups.put(sAlwaysUOFromStart__ChangedTT, tCTBRefSetAlwaysUOFromStartChangedTT);
 
-        TreeSet<String> tCTBRefSetAlwaysUOFromStartMovedNotChangedTT; // Calculate by intersect of sets.
-        tCTBRefSetAlwaysUOFromStartMovedNotChangedTT = new TreeSet<String>();
-        tCTBRefSetAlwaysUOFromStartMovedNotChangedTT.addAll(tCTBRefSetAlwaysUOFromStart);
-        tCTBRefSetAlwaysUOFromStartMovedNotChangedTT.removeAll(tCTBRefSetAlwaysUOFromStartChangedTT);
-        tCTBRefSetAlwaysUOFromStartMovedNotChangedTT.retainAll(tCTBRefSetMoved);
-        groups.put(sAlwaysUOFromStart__Moved_NotChangedTT, tCTBRefSetAlwaysUOFromStartMovedNotChangedTT);
+        TreeSet<String> tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT; // Calculate by intersect of sets.
+        tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT = new TreeSet<String>();
+        tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOFromStart);
+        tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT.removeAll(tCTBRefSetAlwaysUOFromStartChangedTT);
+        tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT.retainAll(tCTBRefSetValidPostcodeChange);
+        groups.put(sAlwaysUOFromStart__ValidPostcodeChange_NotChangedTT, tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT);
 
         String aS;
         String key;
@@ -2522,12 +3075,12 @@ public class TenancyChangesUO {
         tCTBRefSetAlwaysUOFromWhenStarted.removeAll(tCTBRefSetAlwaysUOFromStart);
         tCTBRefSetAlwaysUOFromWhenStarted.removeAll(tCTBRefSetIntermitantUO);
 
-        TreeSet<String> tCTBRefSetAlwaysUOFromWhenStartedNotMovedNotChangedTT; // Calculate by intersect of sets.
-        tCTBRefSetAlwaysUOFromWhenStartedNotMovedNotChangedTT = new TreeSet<String>();
-        tCTBRefSetAlwaysUOFromWhenStartedNotMovedNotChangedTT.addAll(tCTBRefSetAlwaysUOFromWhenStarted);
-        tCTBRefSetAlwaysUOFromWhenStartedNotMovedNotChangedTT.removeAll(tCTBRefSetChangedTT);
-        tCTBRefSetAlwaysUOFromWhenStartedNotMovedNotChangedTT.retainAll(tCTBRefSetNotMoved);
-        groups.put(sAlwaysUOFromWhenStarted__NotMoved_NotChangedTT, tCTBRefSetAlwaysUOFromWhenStartedNotMovedNotChangedTT);
+        TreeSet<String> tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT; // Calculate by intersect of sets.
+        tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT = new TreeSet<String>();
+        tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOFromWhenStarted);
+        tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT.removeAll(tCTBRefSetChangedTT);
+        tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT.retainAll(tCTBRefSetNoValidPostcodeChange);
+        groups.put(sAlwaysUOFromWhenStarted__NoValidPostcodeChange_NotChangedTT, tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT);
 
         TreeSet<String> tCTBRefSetAlwaysUOFromWhenStartedChangedTT; // Calculate by intersect of sets.
         tCTBRefSetAlwaysUOFromWhenStartedChangedTT = new TreeSet<String>();
@@ -2535,19 +3088,19 @@ public class TenancyChangesUO {
         tCTBRefSetAlwaysUOFromWhenStartedChangedTT.retainAll(tCTBRefSetChangedTT);
         groups.put(sAlwaysUOFromWhenStarted__ChangedTT, tCTBRefSetAlwaysUOFromWhenStartedChangedTT);
 
-        TreeSet<String> tCTBRefSetAlwaysUOFromWhenStartedMovedNotChangedTT; // Calculate by intersect of sets.
-        tCTBRefSetAlwaysUOFromWhenStartedMovedNotChangedTT = new TreeSet<String>();
-        tCTBRefSetAlwaysUOFromWhenStartedMovedNotChangedTT.addAll(tCTBRefSetAlwaysUOFromWhenStarted);
-        tCTBRefSetAlwaysUOFromWhenStartedMovedNotChangedTT.removeAll(tCTBRefSetNotMoved);
-        tCTBRefSetAlwaysUOFromWhenStartedMovedNotChangedTT.removeAll(tCTBRefSetChangedTT);
-        groups.put(sAlwaysUOFromWhenStarted__Moved_NotChangedTT, tCTBRefSetAlwaysUOFromWhenStartedMovedNotChangedTT);
+        TreeSet<String> tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT; // Calculate by intersect of sets.
+        tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT = new TreeSet<String>();
+        tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOFromWhenStarted);
+        tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT.removeAll(tCTBRefSetNoValidPostcodeChange);
+        tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT.removeAll(tCTBRefSetChangedTT);
+        groups.put(sAlwaysUOFromWhenStarted__ValidPostcodeChange_NotChangedTT, tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT);
 
-        TreeSet<String> tCTBRefSetIntermitantUONotMovedNotChangedTT;
-        tCTBRefSetIntermitantUONotMovedNotChangedTT = new TreeSet<String>();
-        tCTBRefSetIntermitantUONotMovedNotChangedTT.addAll(tCTBRefSetIntermitantUO);
-        tCTBRefSetIntermitantUONotMovedNotChangedTT.retainAll(tCTBRefSetNotMoved);
-        tCTBRefSetIntermitantUONotMovedNotChangedTT.retainAll(tCTBRefSetNotChangedTT);
-        groups.put(sIntermitantUO__NotMoved_NotChangedTT, tCTBRefSetIntermitantUONotMovedNotChangedTT);
+        TreeSet<String> tCTBRefSetIntermitantUONoValidPostcodeChangeNotChangedTT;
+        tCTBRefSetIntermitantUONoValidPostcodeChangeNotChangedTT = new TreeSet<String>();
+        tCTBRefSetIntermitantUONoValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetIntermitantUO);
+        tCTBRefSetIntermitantUONoValidPostcodeChangeNotChangedTT.retainAll(tCTBRefSetNoValidPostcodeChange);
+        tCTBRefSetIntermitantUONoValidPostcodeChangeNotChangedTT.retainAll(tCTBRefSetNotChangedTT);
+        groups.put(sIntermitantUO__NoValidPostcodeChange_NotChangedTT, tCTBRefSetIntermitantUONoValidPostcodeChangeNotChangedTT);
 
         TreeSet<String> tCTBRefSetIntermitantUOChangedTT;
         tCTBRefSetIntermitantUOChangedTT = new TreeSet<String>();
@@ -2555,12 +3108,12 @@ public class TenancyChangesUO {
         tCTBRefSetIntermitantUOChangedTT.retainAll(tCTBRefSetChangedTT);
         groups.put(sIntermitantUO__ChangedTT, tCTBRefSetIntermitantUOChangedTT);
 
-        TreeSet<String> tCTBRefSetIntermitantUOMovedNotChangedTT;
-        tCTBRefSetIntermitantUOMovedNotChangedTT = new TreeSet<String>();
-        tCTBRefSetIntermitantUOMovedNotChangedTT.addAll(tCTBRefSetIntermitantUO);
-        tCTBRefSetIntermitantUOMovedNotChangedTT.removeAll(tCTBRefSetNotMoved);
-        tCTBRefSetIntermitantUOMovedNotChangedTT.removeAll(tCTBRefSetChangedTT);
-        groups.put(sIntermitantUO__Moved_NotChangedTT, tCTBRefSetIntermitantUOMovedNotChangedTT);
+        TreeSet<String> tCTBRefSetIntermitantUOValidPostcodeChangeNotChangedTT;
+        tCTBRefSetIntermitantUOValidPostcodeChangeNotChangedTT = new TreeSet<String>();
+        tCTBRefSetIntermitantUOValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetIntermitantUO);
+        tCTBRefSetIntermitantUOValidPostcodeChangeNotChangedTT.removeAll(tCTBRefSetNoValidPostcodeChange);
+        tCTBRefSetIntermitantUOValidPostcodeChangeNotChangedTT.removeAll(tCTBRefSetChangedTT);
+        groups.put(sIntermitantUO__ValidPostcodeChange_NotChangedTT, tCTBRefSetIntermitantUOValidPostcodeChangeNotChangedTT);
 
         checkSetsAndAddToGeneralStatistics(
                 generalStatistics,
@@ -2703,11 +3256,17 @@ public class TenancyChangesUO {
         generalStatistics.put(sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned,
                 BigDecimal.valueOf(groups.get(sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned).size()));
         generalStatistics.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsUOTT1,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_ReturnedAsUOTT1).size()));
+        generalStatistics.put(
                 sUOTT1_To_LeftSHBE_ReturnedAsTT1,
                 BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_ReturnedAsTT1).size()));
         generalStatistics.put(
                 sUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
                 BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6).size()));
+        generalStatistics.put(
+                sUOTT1_To_LeftSHBE_ReturnedAsUOTT4,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_ReturnedAsUOTT4).size()));
         generalStatistics.put(
                 sUOTT1_To_LeftSHBE_ReturnedAsTT4,
                 BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_ReturnedAsTT4).size()));
@@ -2721,11 +3280,17 @@ public class TenancyChangesUO {
                 sUOTT1_To_LeftSHBE_ReturnedAsTT9,
                 BigDecimal.valueOf(groups.get(sUOTT1_To_LeftSHBE_ReturnedAsTT9).size()));
         generalStatistics.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsUOTT1,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_ReturnedAsUOTT1).size()));
+        generalStatistics.put(
                 sUOTT4_To_LeftSHBE_ReturnedAsTT1,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_ReturnedAsTT1).size()));
         generalStatistics.put(
                 sUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6).size()));
+        generalStatistics.put(
+                sUOTT4_To_LeftSHBE_ReturnedAsUOTT4,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_ReturnedAsUOTT4).size()));
         generalStatistics.put(
                 sUOTT4_To_LeftSHBE_ReturnedAsTT4,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_ReturnedAsTT4).size()));
@@ -2739,11 +3304,17 @@ public class TenancyChangesUO {
                 sUOTT4_To_LeftSHBE_ReturnedAsTT9,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_LeftSHBE_ReturnedAsTT9).size()));
         generalStatistics.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1,
+                BigDecimal.valueOf(groups.get(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1).size()));
+        generalStatistics.put(
                 sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1,
                 BigDecimal.valueOf(groups.get(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1).size()));
         generalStatistics.put(
                 sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
                 BigDecimal.valueOf(groups.get(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6).size()));
+        generalStatistics.put(
+                sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4,
+                BigDecimal.valueOf(groups.get(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4).size()));
         generalStatistics.put(
                 sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4,
                 BigDecimal.valueOf(groups.get(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4).size()));
@@ -2811,20 +3382,20 @@ public class TenancyChangesUO {
                 sUOTT1_To_NotUO_InSHBE_PostcodeChanged,
                 BigDecimal.valueOf(groups.get(sUOTT1_To_NotUO_InSHBE_PostcodeChanged).size()));
         generalStatistics.put(
-                sUOTT1_To_NotUO_TT1_PostcodeChanged,
-                BigDecimal.valueOf(groups.get(sUOTT1_To_NotUO_TT1_PostcodeChanged).size()));
+                sUOTT1_To_TT1_PostcodeChanged,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeChanged).size()));
         generalStatistics.put(
-                sUOTT1_To_NotUO_TT4_PostcodeChanged,
-                BigDecimal.valueOf(groups.get(sUOTT1_To_NotUO_TT4_PostcodeChanged).size()));
+                sUOTT1_To_TT4_PostcodeChanged,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT4_PostcodeChanged).size()));
         generalStatistics.put(
                 sUOTT4_To_NotUO_InSHBE_PostcodeChanged,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_NotUO_InSHBE_PostcodeChanged).size()));
         generalStatistics.put(
-                sUOTT4_To_NotUO_TT1_PostcodeChanged,
-                BigDecimal.valueOf(groups.get(sUOTT4_To_NotUO_TT1_PostcodeChanged).size()));
+                sUOTT4_To_TT1_PostcodeChanged,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT1_PostcodeChanged).size()));
         generalStatistics.put(
-                sUOTT4_To_NotUO_TT4_PostcodeChanged,
-                BigDecimal.valueOf(groups.get(sUOTT4_To_NotUO_TT4_PostcodeChanged).size()));
+                sUOTT4_To_TT4_PostcodeChanged,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeChanged).size()));
 
         generalStatistics.put(
                 sUOTT1_To_TT3OrTT6,
@@ -2836,6 +3407,10 @@ public class TenancyChangesUO {
                 sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
                 BigDecimal.valueOf(groups.get(sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999).size()));
         generalStatistics.put(
+                sUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint).size()));
+
+        generalStatistics.put(
                 sUOTT4_To_TT3OrTT6,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_TT3OrTT6).size()));
         generalStatistics.put(
@@ -2845,6 +3420,10 @@ public class TenancyChangesUO {
                 sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999).size()));
         generalStatistics.put(
+                sUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint).size()));
+
+        generalStatistics.put(
                 sTT3OrTT6_To_UOTT1,
                 BigDecimal.valueOf(groups.get(sTT3OrTT6_To_UOTT1).size()));
         generalStatistics.put(
@@ -2853,8 +3432,24 @@ public class TenancyChangesUO {
 
         generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchanged,
                 BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchanged).size()));
-        generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
-                BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month).size()));
+//        generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+//                BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month).size()));
+        generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1).size()));
+        generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+                BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1).size()));
+        generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6).size()));
+        generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4).size()));
+        generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+                BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4).size()));
+        generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7).size()));
+        generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+                BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8).size()));
+        generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9,
+                BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9).size()));
         generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
                 BigDecimal.valueOf(groups.get(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months).size()));
         generalStatistics.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months,
@@ -2875,8 +3470,20 @@ public class TenancyChangesUO {
 
         generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchanged,
                 BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchanged).size()));
-        generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
-                BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month).size()));
+//        generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+//                BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month).size()));
+        generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+                BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1).size()));
+        generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6).size()));
+        generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+                BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4).size()));
+        generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7).size()));
+        generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+                BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8).size()));
+        generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9,
+                BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9).size()));
         generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
                 BigDecimal.valueOf(groups.get(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months).size()));
         generalStatistics.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
@@ -2907,8 +3514,24 @@ public class TenancyChangesUO {
 
         generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchanged,
                 BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchanged).size()));
-        generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
-                BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month).size()));
+//        generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+//                BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month).size()));
+        generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1).size()));
+        generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1).size()));
+        generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6).size()));
+        generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4).size()));
+        generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4).size()));
+        generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7).size()));
+        generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8).size()));
+        generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9,
+                BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9).size()));
         generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
                 BigDecimal.valueOf(groups.get(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months).size()));
         generalStatistics.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months,
@@ -2916,8 +3539,24 @@ public class TenancyChangesUO {
 
         generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchanged,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchanged).size()));
-        generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
-                BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month).size()));
+//        generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+//                BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month).size()));
+        generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1).size()));
+        generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1).size()));
+        generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6).size()));
+        generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4).size()));
+        generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4).size()));
+        generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7).size()));
+        generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8).size()));
+        generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9,
+                BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9).size()));
         generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
                 BigDecimal.valueOf(groups.get(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months).size()));
         generalStatistics.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months,
@@ -3008,8 +3647,10 @@ public class TenancyChangesUO {
             String aCTBRef,
             String year,
             String month,
+            String aYM3,
             DW_SHBE_Record aDW_SHBE_Record,
             TreeMap<String, DW_SHBE_Record> bRecords,
+            TreeMap<String, DW_SHBE_Record> cRecords,
             TreeMap<String, String> tableValues,
             DW_UnderOccupiedReport_Set councilUnderOccupiedSet1,
             DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1,
@@ -3028,7 +3669,7 @@ public class TenancyChangesUO {
             TreeSet<String> tCTBRefSetTT4_To_TT3OrTT6,
             TreeSet<String> tCTBRefSetTT3OrTT6_To_TT1,
             TreeSet<String> tCTBRefSetTT3OrTT6_To_TT4,
-            TreeSet<String> tCTBRefSetMoved,
+            TreeSet<String> tCTBRefSetValidPostcodeChange,
             TreeSet<String> tCTBRefSetChangedTT,
             TreeSet<String> tCTBRefSetUOAtSomePoint,
             TreeSet<String> tCTBRefSetUOTT1AtSomePoint,
@@ -3049,20 +3690,26 @@ public class TenancyChangesUO {
             TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_NotReturned,
             TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_NotReturned,
             TreeSet<String> tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT1,
             TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1,
             TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT4,
             TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4,
             TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7,
             TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8,
             TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9,
+            TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT1,
             TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1,
             TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6,
+            TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT4,
             TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4,
             TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7,
             TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT8,
             TreeSet<String> tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9,
+            TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1,
             TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1,
             TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
+            TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4,
             TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4,
             TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7,
             TreeSet<String> tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8,
@@ -3082,24 +3729,38 @@ public class TenancyChangesUO {
             TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO,
             TreeSet<String> tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO,
             TreeSet<String> tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged,
-            TreeSet<String> tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged,
-            TreeSet<String> tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT1_To_UOTT1_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT1_To_UOTT4_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT4_PostcodeChanged,
             TreeSet<String> tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged,
-            TreeSet<String> tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged,
-            TreeSet<String> tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT4_To_UOTT1_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT1_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT4_To_UOTT4_PostcodeChanged,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeChanged,
             TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6,
             TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6AtSomePoint,
             TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint,
             TreeSet<String> tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange,
             TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6,
             TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6AtSomePoint,
             TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint,
             TreeSet<String> tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange,
             TreeSet<String> tCTBRefSetTT3OrTT6_To_UOTT1,
             TreeSet<String> tCTBRefSetTT3OrTT6_To_UOTT4,
             TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged,
             TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth,
-            TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+            //TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9,
             TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
             TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months,
             TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious,
@@ -3111,7 +3772,15 @@ public class TenancyChangesUO {
             TreeSet<String> tCTBRefSetTT1_To_UOTT4GettingDHP,
             TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged,
             TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedThisMonth,
-            TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+            //TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+            TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9,
             TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
             TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
             TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious,
@@ -3132,7 +3801,15 @@ public class TenancyChangesUO {
             TreeSet<String> tCTBRefSetDHPAtSomePoint,
             TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged,
             TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedThisMonth,
-            TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+            //TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+            TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9,
             TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
             TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months,
             TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged1MonthPrevious,
@@ -3140,7 +3817,15 @@ public class TenancyChangesUO {
             TreeSet<String> tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged3MonthsPrevious,
             TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged,
             TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth,
-            TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+            //TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+            TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9,
             TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
             TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months,
             TreeSet<String> tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged1MonthPrevious,
@@ -3162,10 +3847,19 @@ public class TenancyChangesUO {
         int cumulativeClaims;
         String aS;
         String key;
+        // Declare
         DW_SHBE_D_Record aDW_SHBE_D_Record = null;
         boolean isPairedRecord;
         int aTT;
         String aPC;
+        //HashSet<String> validPostcodesYM3;
+        //if (validPostcodes.containsKey(aYM3)) {
+        //    validPostcodesYM3 = validPostcodes.get(aYM3);
+        //} else {
+        //    validPostcodesYM3 = new HashSet<String>();
+        //    validPostcodes.put(aYM3, validPostcodesYM3);
+        //}
+        int aStatus;
         int aWHBE;
         int aWERA;
         int aPSI;
@@ -3192,6 +3886,7 @@ public class TenancyChangesUO {
         DW_SHBE_D_Record bDW_SHBE_D_Record;
         int bTT;
         String bPC;
+        int bStatus;
         int bWHBE;
         int bWERA = 0;
         int bPSI;
@@ -3212,10 +3907,22 @@ public class TenancyChangesUO {
         } else {
             bDW_SHBE_Record = bRecords.get(aCTBRef);
         }
+        DW_SHBE_D_Record cDW_SHBE_D_Record;
+        int cTT;
+        String cPC;
+        int cStatus;
+        DW_SHBE_Record cDW_SHBE_Record;
+        if (cRecords == null) {
+            cDW_SHBE_Record = null;
+        } else {
+            cDW_SHBE_Record = cRecords.get(aCTBRef);
+        }
+        // Init
         if (aDW_SHBE_Record == null) {
             isPairedRecord = false;
             aTT = DW_SHBE_TenancyType_Handler.iMinus999;
             aPC = defaultPostcode;
+            aStatus = 0;
             aWHBE = 0;
             aWERA = 0;
             aPSI = 0;
@@ -3249,9 +3956,23 @@ public class TenancyChangesUO {
 //                tCTBRefSetTT3.add(aCTBRef);
 //            }
             aPC = aDW_SHBE_D_Record.getClaimantsPostcode();
+            // Add postcode to validPostcodes if it is valid
             if (aPC.isEmpty()) {
                 aPC = defaultPostcode;
+            } else {
+                //if (!validPostcodesYM3.contains(aPC)) {
+                //    if(DW_Postcode_Handler.isValidPostcode(aYM3, aPC)) {
+                //        validPostcodesYM3.add(aPC);
+                //    }
+                //}
+                if (!validPostcodes.contains(aPC)) {
+                    if (DW_Postcode_Handler.isValidPostcode(
+                            DW_Postcode_Handler.getNearestYM3ForONSPDLookup(aYM3), aPC)) {
+                        validPostcodes.add(aPC);
+                    }
+                }
             }
+            aStatus = aDW_SHBE_D_Record.getStatusOfHBClaimAtExtractDate();
             aWHBE = aDW_SHBE_D_Record.getWeeklyHousingBenefitEntitlement();
             aWERA = aDW_SHBE_D_Record.getWeeklyEligibleRentAmount();
             aPSI = aDW_SHBE_D_Record.getPassportedStandardIndicator();
@@ -3302,6 +4023,7 @@ public class TenancyChangesUO {
         if (bDW_SHBE_Record == null) {
             bTT = DW_SHBE_TenancyType_Handler.iMinus999;
             bPC = defaultPostcode;
+            bStatus = 0;
             bWHBE = 0;
             bWERA = 0;
             bPSI = 0;
@@ -3323,6 +4045,7 @@ public class TenancyChangesUO {
             if (bPC.isEmpty()) {
                 bPC = defaultPostcode;
             }
+            bStatus = bDW_SHBE_D_Record.getStatusOfHBClaimAtExtractDate();
             bWHBE = bDW_SHBE_D_Record.getWeeklyHousingBenefitEntitlement();
             bWERA = bDW_SHBE_D_Record.getWeeklyEligibleRentAmount();
             bPSI = bDW_SHBE_D_Record.getPassportedStandardIndicator();
@@ -3339,10 +4062,30 @@ public class TenancyChangesUO {
             bCA = DW_SHBE_Handler.getClaimantsAge(year, month, bDW_SHBE_D_Record);
             bPA = DW_SHBE_Handler.getPartnersAge(year, month, bDW_SHBE_D_Record);
         }
-
-        boolean wasUO;
+        if (cDW_SHBE_Record == null) {
+            cTT = DW_SHBE_TenancyType_Handler.iMinus999;
+            cPC = defaultPostcode;
+            cStatus = 0;
+        } else {
+            cDW_SHBE_D_Record = cDW_SHBE_Record.getDRecord();
+            cTT = cDW_SHBE_D_Record.getTenancyType();
+            cPC = cDW_SHBE_D_Record.getClaimantsPostcode();
+            if (cPC.isEmpty()) {
+                cPC = defaultPostcode;
+            }
+            cStatus = cDW_SHBE_D_Record.getStatusOfHBClaimAtExtractDate();
+        }
         key = aCTBRef + sUnderscore + sUnderOccupancy;
         aS = tableValues.get(key);
+
+        boolean wasUOBefore;
+        if (aS.endsWith(sU + sCommaSpace + sU)
+                || aS.endsWith(sU + sCommaSpace)) {
+            wasUOBefore = true;
+        } else {
+            wasUOBefore = false;
+        }
+        boolean wasUO;
         wasUO = aS.endsWith(sU);
 
         boolean isUO;
@@ -3390,13 +4133,42 @@ public class TenancyChangesUO {
                             }
                         }
                     }
+                    doX(aCTBRef, aHBDP, aTT, bTT, isUO, wasUO, wasUOBefore,
+                            bStatus,
+                            tCTBRefSetUOTT1_To_LeftSHBE_NotReturned,
+                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT1,
+                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1,
+                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT4,
+                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4,
+                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8,
+                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9,
+                            tCTBRefSetUOTT1_To_UOTT4,
+                            tCTBRefSetTT1_To_UOTT4,
+                            tCTBRefSetTT1_To_UOTT4GettingDHP);
                 }
                 if (aTT == DW_SHBE_TenancyType_Handler.iMinus999) {
                     if (tCTBRefSetUOAtSomePoint.contains(aCTBRef)) {
                         tCTBRefSetUO_To_LeftSHBEAtSomePoint.add(aCTBRef);
                     }
-                    // If previously UO then add to from UO to left the SHBE
+                    /*
+                     * If previously UO (or previously not UO but status 2 and 
+                     * prior to previously UO) then add to from UO to left the 
+                     * SHBE.
+                     */
+                    boolean doA;
+                    doA = false;
                     if (wasUO) {
+                        doA = true;
+                    } else {
+                        if (bStatus == 2) {
+                            if (wasUOBefore) {
+                                doA = true;
+                            }
+                        }
+                    }
+                    if (doA) {
                         tCTBRefSetUO_To_LeftSHBE_NotReturned.add(aCTBRef);
                         if (bTT == 1) {
                             tCTBRefSetUOTT1_To_LeftSHBE.add(aCTBRef);
@@ -3427,61 +4199,48 @@ public class TenancyChangesUO {
                     if (aTT == 4 && bTT == 1) {
                         //tCTBRefSetUOTT1OrTT1_To_UOTT4.add(aCTBRef);
                         if (wasUO) {
-                            tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef);
+                            tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef); // Looking forward, we may see that this claim actually comes out of being UO. To filter for this we should look back in the next iteration and perhaps move claim refs to other sets based upon some logic...
                         } else {
-                            tCTBRefSetTT1_To_UOTT4.add(aCTBRef);
-                            if (aHBDP > 0) {
-                                tCTBRefSetTT1_To_UOTT4GettingDHP.add(aCTBRef);
-                            }
-                        }
-                    }
-                }
-                if (tCTBRefSetUOTT1_To_LeftSHBE_NotReturned.contains(aCTBRef)) {
-                    tCTBRefSetUOTT1_To_LeftSHBE_NotReturned.remove(aCTBRef);
-                    if (aTT == 1) {
-                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1.add(aCTBRef);
-                    } else {
-                        if (aTT == 3 || aTT == 6) {
-                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6.add(aCTBRef);
-                        } else {
-                            if (aTT == 4) {
-                                tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
-                                if (isUO) {
-                                    if (bTT == 1) {
-                                        //tCTBRefSetUOTT1OrTT1_To_UOTT4.add(aCTBRef);
-                                        if (wasUO) {
-                                            tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef);
-                                        } else {
-                                            tCTBRefSetTT1_To_UOTT4.add(aCTBRef);
-                                            if (aHBDP > 0) {
-                                                tCTBRefSetTT1_To_UOTT4GettingDHP.add(aCTBRef);
-                                            }
-                                        }
-                                    }
-                                }
+                            if (bStatus == 2 && wasUOBefore) {
+                                tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef); // Looking forward, we may see that this claim actually comes out of being UO. To filter for this we should look back in the next iteration and perhaps move claim refs to other sets based upon some logic...
                             } else {
-                                if (aTT == 5 || aTT == 7) {
-                                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7.add(aCTBRef);
-                                } else {
-                                    if (aTT == 8) {
-                                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8.add(aCTBRef);
-                                    } else {
-                                        if (aTT == 9) {
-                                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9.add(aCTBRef);
-                                        }
-                                    }
+                                tCTBRefSetTT1_To_UOTT4.add(aCTBRef);
+                                if (aHBDP > 0) {
+                                    tCTBRefSetTT1_To_UOTT4GettingDHP.add(aCTBRef);
                                 }
                             }
                         }
                     }
                 }
+                doX(aCTBRef, aHBDP, aTT, bTT, isUO, wasUO, wasUOBefore,
+                        bStatus,
+                        tCTBRefSetUOTT1_To_LeftSHBE_NotReturned,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT1,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT4,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8,
+                        tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9,
+                        tCTBRefSetUOTT1_To_UOTT4,
+                        tCTBRefSetTT1_To_UOTT4,
+                        tCTBRefSetTT1_To_UOTT4GettingDHP);
                 if (tCTBRefSetUOTT4_To_LeftSHBE_NotReturned.contains(aCTBRef)) {
                     tCTBRefSetUOTT4_To_LeftSHBE_NotReturned.remove(aCTBRef);
                     if (aTT == 1) {
-                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1.add(aCTBRef);
+                        if (isUO) {
+                            tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT1.add(aCTBRef);
+                        } else {
+                            tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1.add(aCTBRef);
+                        }
                     } else {
                         if (aTT == 4) {
-                            tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
+                            if (isUO) {
+                                tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT4.add(aCTBRef);
+                            } else {
+                                tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
+                            }
                         } else {
                             if (aTT == 3 || aTT == 6) {
                                 tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6.add(aCTBRef);
@@ -3504,10 +4263,18 @@ public class TenancyChangesUO {
                 if (tCTBRefSetUOTT3OrTT6_To_LeftSHBE_NotReturned.contains(aCTBRef)) {
                     tCTBRefSetUOTT3OrTT6_To_LeftSHBE_NotReturned.remove(aCTBRef);
                     if (aTT == 1) {
-                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1.add(aCTBRef);
+                        if (isUO) {
+                            tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1.add(aCTBRef);
+                        } else {
+                            tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1.add(aCTBRef);
+                        }
                     } else {
                         if (aTT == 4) {
-                            tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
+                            if (isUO) {
+                                tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4.add(aCTBRef);
+                            } else {
+                                tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
+                            }
                         } else {
                             if (aTT == 3 || aTT == 6) {
                                 tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6.add(aCTBRef);
@@ -3557,6 +4324,14 @@ public class TenancyChangesUO {
                             tCTBRefSetUOTT1_To_TT3OrTT6.add(aCTBRef);
                             tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
                             tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
+                        } else {
+                            if (bStatus == 2) {
+                                if (wasUOBefore) {
+                                    tCTBRefSetUOTT1_To_TT3OrTT6.add(aCTBRef);
+                                    tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
+                                    tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
+                                }
+                            }
                         }
                     } else {
                         if (bTT == 4) {
@@ -3566,6 +4341,14 @@ public class TenancyChangesUO {
                                 tCTBRefSetUOTT4_To_TT3OrTT6.add(aCTBRef);
                                 tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
                                 tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
+                            } else {
+                                if (bStatus == 2) {
+                                    if (wasUOBefore) {
+                                        tCTBRefSetUOTT4_To_TT3OrTT6.add(aCTBRef);
+                                        tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
+                                        tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
+                                    }
+                                }
                             }
                         }
                     }
@@ -3582,19 +4365,19 @@ public class TenancyChangesUO {
                     }
                     if (bTT == 3 || bTT == 6) {
                         if (aTT == 1) {
-                            tCTBRefSetTT3OrTT6_To_TT1.add(aCTBRef);
                             // If UO add to set that move from the PRS to Council UO.
-                            if (councilUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)
-                                    || RSLUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)) {
-                                tCTBRefSetTT3OrTT6_To_UOTT1.add(aCTBRef);
+                            if (isUO) {
+                                tCTBRefSetTT3OrTT6_To_UOTT1.add(aCTBRef);  // Looking forward, we may see that this claim actually comes out of being UO almost immediately. This is kind of different to those claims that get stuck in UO for a significant period.
+                            } else {
+                                tCTBRefSetTT3OrTT6_To_TT1.add(aCTBRef);
                             }
                         } else {
                             if (aTT == 4) {
-                                tCTBRefSetTT3OrTT6_To_TT4.add(aCTBRef);
                                 // If UO add to set that move from the PRS to RSL UO.
-                                if (councilUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)
-                                        || RSLUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)) {
-                                    tCTBRefSetTT3OrTT6_To_UOTT4.add(aCTBRef);
+                                if (isUO) {
+                                    tCTBRefSetTT3OrTT6_To_UOTT4.add(aCTBRef);  // Looking forward, we may see that this claim actually comes out of being UO almost immediately. This is kind of different to those claims that get stuck in UO for a significant period.
+                                } else {
+                                    tCTBRefSetTT3OrTT6_To_TT4.add(aCTBRef);
                                 }
                             }
                         }
@@ -3603,6 +4386,7 @@ public class TenancyChangesUO {
             }
         }
         aS += sCommaSpace + sTT_ + aTT;
+
         tableValues.put(key, aS);
 
         // UnderOccupancy
@@ -3662,38 +4446,40 @@ public class TenancyChangesUO {
                 tCTBRefSetTTNot1Or4AndUnderOccupying.add(aCTBRef);
             }
             if (!wasUO) {
-                // UO OnFlow
-                if (aTT == bTT) {
-                    // Became UO staying in the same TT and postcode.
-                    // Here we only count room requirement changes at the same 
-                    // postcode (postcode changes are dealt with below).
-                    if (aPC.equalsIgnoreCase(bPC)) {
-                        if (aTT == 1) {
-                            tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged.add(aCTBRef);
-                            tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth.add(aCTBRef);
-                        } else {
-                            if (aTT == 4) {
-                                tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged.add(aCTBRef);
-                                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedThisMonth.add(aCTBRef);
+                if (!(bStatus == 2 && wasUOBefore)) {
+                    // UO OnFlow
+                    if (aTT == bTT) {
+                        // Became UO staying in the same TT and postcode.
+                        // Here we only count room requirement changes at the same 
+                        // postcode (postcode changes are dealt with below).
+                        if (aPC.equalsIgnoreCase(bPC)) {
+                            if (aTT == 1) {
+                                tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged.add(aCTBRef);
+                                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth.add(aCTBRef);
+                            } else {
+                                if (aTT == 4) {
+                                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged.add(aCTBRef);
+                                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedThisMonth.add(aCTBRef);
+                                }
                             }
                         }
                     }
-                }
-                if (tCTBRefSetUO_NotUO.contains(aCTBRef)) {
-                    tCTBRefSetUO_NotUO_UO.add(aCTBRef);
-                    tCTBRefSetUO_NotUO.remove(aCTBRef);
-                } else {
-                    if (tCTBRefSetUO_NotUO_UO_NotUO.contains(aCTBRef)) {
-                        tCTBRefSetUO_NotUO_UO_NotUO_UO.add(aCTBRef);
-                        tCTBRefSetUO_NotUO_UO_NotUO.remove(aCTBRef);
+                    if (tCTBRefSetUO_NotUO.contains(aCTBRef)) {
+                        tCTBRefSetUO_NotUO_UO.add(aCTBRef);
+                        tCTBRefSetUO_NotUO.remove(aCTBRef);
                     } else {
-                        if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.contains(aCTBRef)) {
-                            tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.add(aCTBRef);
-                            tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.remove(aCTBRef);
+                        if (tCTBRefSetUO_NotUO_UO_NotUO.contains(aCTBRef)) {
+                            tCTBRefSetUO_NotUO_UO_NotUO_UO.add(aCTBRef);
+                            tCTBRefSetUO_NotUO_UO_NotUO.remove(aCTBRef);
                         } else {
-                            if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.contains(aCTBRef)) {
-                                tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO.add(aCTBRef);
-                                tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.remove(aCTBRef);
+                            if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.contains(aCTBRef)) {
+                                tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.add(aCTBRef);
+                                tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.remove(aCTBRef);
+                            } else {
+                                if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.contains(aCTBRef)) {
+                                    tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO.add(aCTBRef);
+                                    tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.remove(aCTBRef);
+                                }
                             }
                         }
                     }
@@ -3707,82 +4493,90 @@ public class TenancyChangesUO {
             }
         } else {
             aS += sCommaSpace;
-            tCTBRefSetAlwaysUOFromStart.remove(aCTBRef);
-            if (aS.contains(sU)) {
-                tCTBRefSetAlwaysUOFromWhenStarted.remove(aCTBRef);
-                if (aS.contains(sU + sCommaSpace + sCommaSpace)) {
-                    // ..., U, ,
-                    tCTBRefSetIntermitantUO.add(aCTBRef);
-                }
-            }
-            if (wasUO) {
-                if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.contains(aCTBRef)) {
-                    tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.add(aCTBRef);
-                    tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.remove(aCTBRef);
-                } else {
-                    if (tCTBRefSetUO_NotUO_UO_NotUO_UO.contains(aCTBRef)) {
-                        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.add(aCTBRef);
-                        tCTBRefSetUO_NotUO_UO_NotUO_UO.remove(aCTBRef);
-                    } else {
-                        if (tCTBRefSetUO_NotUO_UO.contains(aCTBRef)) {
-                            tCTBRefSetUO_NotUO_UO_NotUO.add(aCTBRef);
-                            tCTBRefSetUO_NotUO_UO.remove(aCTBRef);
-                        } else {
-                            tCTBRefSetUO_NotUO.add(aCTBRef);
-                        }
+            if (aStatus == 2) {
+                // Filter added as suspended claims that were UO are probably still UO
+            } else {
+                tCTBRefSetAlwaysUOFromStart.remove(aCTBRef);
+                if (aS.contains(sU)) {
+                    tCTBRefSetAlwaysUOFromWhenStarted.remove(aCTBRef);
+                    if (aS.contains(sU + sCommaSpace + sCommaSpace)) {
+                        // ..., U, ,
+                        tCTBRefSetIntermitantUO.add(aCTBRef);
                     }
                 }
-                if (aTT == DW_SHBE_TenancyType_Handler.iMinus999) {
-                    tCTBRefSetUO_To_LeftSHBETheVeryNextMonth.add(aCTBRef);
-                } else {
-                    if (!aPC.equalsIgnoreCase(bPC)) {
-                        tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
-                        if (aTT == 1) {
-                            if (bTT == 1) {
-                                tCTBRefSetUOTT1_To_NotUO_TT1_PostcodeChanged.add(aCTBRef);
-                            } else {
-                                if (bTT == 4) {
-                                    tCTBRefSetUOTT4_To_NotUO_TT1_PostcodeChanged.add(aCTBRef);
-                                }
-                            }
+                if (wasUO) {
+                    if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.contains(aCTBRef)) {
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.add(aCTBRef);
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.remove(aCTBRef);
+                    } else {
+                        if (tCTBRefSetUO_NotUO_UO_NotUO_UO.contains(aCTBRef)) {
+                            tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.add(aCTBRef);
+                            tCTBRefSetUO_NotUO_UO_NotUO_UO.remove(aCTBRef);
                         } else {
-                            if (aTT == 4) {
-                                tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
-                                if (bTT == 1) {
-                                    tCTBRefSetUOTT1_To_NotUO_TT4_PostcodeChanged.add(aCTBRef);
+                            if (tCTBRefSetUO_NotUO_UO.contains(aCTBRef)) {
+                                tCTBRefSetUO_NotUO_UO_NotUO.add(aCTBRef);
+                                tCTBRefSetUO_NotUO_UO.remove(aCTBRef);
+                            } else {
+                                tCTBRefSetUO_NotUO.add(aCTBRef);
+                            }
+                        }
+                    }
+                    if (aTT == DW_SHBE_TenancyType_Handler.iMinus999) {
+                        tCTBRefSetUO_To_LeftSHBETheVeryNextMonth.add(aCTBRef);
+                    } else {
+                        if (!aPC.equalsIgnoreCase(bPC)) {
+                            if (validPostcodes.contains(aPC) && validPostcodes.contains(bPC)) {
+                                tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
+                                if (aTT == 1) {
+                                    if (bTT == 1) {
+                                        tCTBRefSetUOTT1_To_TT1_PostcodeChanged.add(aCTBRef);
+                                    } else {
+                                        if (bTT == 4) {
+                                            tCTBRefSetUOTT4_To_TT1_PostcodeChanged.add(aCTBRef);
+                                        }
+                                    }
                                 } else {
-                                    if (bTT == 4) {
-                                        tCTBRefSetUOTT4_To_NotUO_TT4_PostcodeChanged.add(aCTBRef);
+                                    if (aTT == 4) {
+                                        tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
+                                        if (bTT == 1) {
+                                            tCTBRefSetUOTT1_To_TT4_PostcodeChanged.add(aCTBRef);
+                                        } else {
+                                            if (bTT == 4) {
+                                                tCTBRefSetUOTT4_To_TT4_PostcodeChanged.add(aCTBRef);
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
-                if (aTT == bTT) {
-                    // SolvedUO problem staying in same TT
-                    // Cases involving a postcode change are dealt with below.
-                    if (aPC.equalsIgnoreCase(bPC)) {
-                        // Resolved UO without moving
-                        // Room requirement changed or number of rooms reduced or both?
-                        if (aTT == 1) {
-                            tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged.add(aCTBRef);
-                            tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedThisMonth.add(aCTBRef);
-                        } else {
-                            if (aTT == 4) {
-                                tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged.add(aCTBRef);
-                                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth.add(aCTBRef);
+                    if (aTT == bTT) {
+                        // SolvedUO problem staying in same TT
+                        // Cases involving a postcode change are dealt with below.
+                        if (aPC.equalsIgnoreCase(bPC)) {
+                            // Resolved UO without moving
+                            // Room requirement changed or number of rooms reduced or both?
+                            if (aTT == 1) {
+                                tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged.add(aCTBRef);
+                                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedThisMonth.add(aCTBRef);
+                            } else {
+                                if (aTT == 4) {
+                                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged.add(aCTBRef);
+                                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth.add(aCTBRef);
+                                }
                             }
                         }
                     }
                 }
             }
         }
+
         tableValues.put(key, aS);
 
         // Postcode
         key = aCTBRef + sUnderscore + sP;
         aS = tableValues.get(key);
+
         if (aPC.equalsIgnoreCase(bPC)) {
             aS += sCommaSpace;
         } else {
@@ -3791,27 +4585,29 @@ public class TenancyChangesUO {
             if (!aPC.equalsIgnoreCase(defaultPostcode)) {
                 boolean containsAnotherPostcode;
                 if (bPC.equalsIgnoreCase(defaultPostcode)) {
+                    containsAnotherPostcode = getContainsAnotherPostcode(aS, aPC);
                     if (aSContainsaPC) {
-                        containsAnotherPostcode = getContainsAnotherPostcode(aS, aPC);
                         if (containsAnotherPostcode) {
                             boolean likelyTraveller;
                             likelyTraveller = getLikelyTraveller(aS, aPC);
                             if (likelyTraveller) {
                                 tCTBRefSetTraveller.add(aCTBRef);
                             }
-                            //tCTBRefSetNotMoved.remove(aCTBRef);
-                            tCTBRefSetMoved.add(aCTBRef);
+                            if (validPostcodes.contains(aPC) && validPostcodes.contains(bPC)) {
+                                tCTBRefSetValidPostcodeChange.add(aCTBRef);
+                            }
                         }
                     } else {
-                        containsAnotherPostcode = getContainsAnotherPostcode(aS, aPC);
                         if (containsAnotherPostcode) {
-                            //tCTBRefSetNotMoved.remove(aCTBRef);
-                            tCTBRefSetMoved.add(aCTBRef);
+                            if (validPostcodes.contains(aPC) && validPostcodes.contains(bPC)) {
+                                tCTBRefSetValidPostcodeChange.add(aCTBRef);
+                            }
                         }
                     }
                 } else {
-                    //tCTBRefSetNotMoved.remove(aCTBRef);
-                    tCTBRefSetMoved.add(aCTBRef);
+                    if (validPostcodes.contains(aPC) && validPostcodes.contains(bPC)) {
+                        tCTBRefSetValidPostcodeChange.add(aCTBRef);
+                    }
                     if (aSContainsaPC) {
 //                        containsAnotherPostcode = getContainsAnotherPostcode(aS, aPC);
 //                        if (containsAnotherPostcode) {
@@ -3821,20 +4617,24 @@ public class TenancyChangesUO {
                             tCTBRefSetTraveller.add(aCTBRef);
                         }
 //                        }
-//                        tCTBRefSetNotMoved.remove(aCTBRef);
+//                        tCTBRefSetNoValidPostcodeChange.remove(aCTBRef);
 //                    } else {
 //                        containsAnotherPostcode = getContainsAnotherPostcode(aS, aPC);
 //                        if (containsAnotherPostcode) {
-//                            tCTBRefSetNotMoved.remove(aCTBRef);
+//                            tCTBRefSetNoValidPostcodeChange.remove(aCTBRef);
 //                        }
                     }
                     if (wasUO && !isUO) {
                         if (aTT == bTT) {
                             if (aTT == 1) {
-                                tCTBRefSetUOTT1_ToTT1_PostcodeChanged.add(aCTBRef);
+                                if (validPostcodes.contains(aPC)) {
+                                    tCTBRefSetUOTT1_ToTT1_PostcodeChanged.add(aCTBRef);
+                                }
                             } else {
                                 if (aTT == 4) {
-                                    tCTBRefSetUOTT4_ToTT4_PostcodeChanged.add(aCTBRef);
+                                    if (validPostcodes.contains(aPC)) {
+                                        tCTBRefSetUOTT4_ToTT4_PostcodeChanged.add(aCTBRef);
+                                    }
                                 }
                             }
                         }
@@ -3842,10 +4642,14 @@ public class TenancyChangesUO {
                         if (!wasUO && isUO) {
                             if (aTT == bTT) {
                                 if (aTT == 1) {
-                                    tCTBRefSetTT1_ToUOTT1_PostcodeChanged.add(aCTBRef);
+                                    if (validPostcodes.contains(aPC)) {
+                                        tCTBRefSetTT1_ToUOTT1_PostcodeChanged.add(aCTBRef);
+                                    }
                                 } else {
                                     if (aTT == 4) {
-                                        tCTBRefSetTT4_ToUOTT4_PostcodeChanged.add(aCTBRef);
+                                        if (validPostcodes.contains(aPC)) {
+                                            tCTBRefSetTT4_ToUOTT4_PostcodeChanged.add(aCTBRef);
+                                        }
                                     }
                                 }
                             }
@@ -3853,55 +4657,201 @@ public class TenancyChangesUO {
                             if (wasUO && isUO) {
                                 if (aTT == bTT) {
                                     if (aTT == 1) {
-                                        tCTBRefSetUOTT1_ToUOTT1_PostcodeChanged.add(aCTBRef);
+                                        if (validPostcodes.contains(aPC)) {
+                                            tCTBRefSetUOTT1_ToUOTT1_PostcodeChanged.add(aCTBRef);
+                                        }
                                     } else {
                                         if (aTT == 4) {
-                                            tCTBRefSetUOTT4_ToUOTT4_PostcodeChanged.add(aCTBRef);
+                                            if (validPostcodes.contains(aPC)) {
+                                                tCTBRefSetUOTT4_ToUOTT4_PostcodeChanged.add(aCTBRef);
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                    if (tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious.contains(aCTBRef)) {
-                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month.add(aCTBRef);
-                    }
-                    if (tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious.contains(aCTBRef)) {
-                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month.add(aCTBRef);
-                    }
-                    if (tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged2MonthsPrevious.contains(aCTBRef)) {
-                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months.add(aCTBRef);
-                    }
-                    if (tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged2MonthsPrevious.contains(aCTBRef)) {
-                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months.add(aCTBRef);
-                    }
-                    if (tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged3MonthsPrevious.contains(aCTBRef)) {
-                        tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months.add(aCTBRef);
-                    }
-                    if (tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged3MonthsPrevious.contains(aCTBRef)) {
-                        tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months.add(aCTBRef);
-                    }
-                    if (tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged1MonthPrevious.contains(aCTBRef)) {
-                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month.add(aCTBRef);
-                    }
-                    if (tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged1MonthPrevious.contains(aCTBRef)) {
-                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month.add(aCTBRef);
-                    }
-                    if (tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged2MonthsPrevious.contains(aCTBRef)) {
-                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months.add(aCTBRef);
-                    }
-                    if (tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged2MonthsPrevious.contains(aCTBRef)) {
-                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months.add(aCTBRef);
-                    }
-                    if (tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged3MonthsPrevious.contains(aCTBRef)) {
-                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months.add(aCTBRef);
-                    }
-                    if (tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged3MonthsPrevious.contains(aCTBRef)) {
-                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months.add(aCTBRef);
+                    if (validPostcodes.contains(aPC) && validPostcodes.contains(bPC)) {
+                        if (tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious.contains(aCTBRef)) {
+                            if (aTT == 1) {
+                                //tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month.add(aCTBRef);
+                                if (isUO) {
+                                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1.add(aCTBRef);
+                                } else {
+                                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1.add(aCTBRef);
+                                }
+                            } else {
+                                if (aTT == 3 || aTT == 6) {
+                                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6.add(aCTBRef);
+                                } else {
+                                    if (aTT == 4) {
+                                        if (isUO) {
+                                            tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4.add(aCTBRef);
+                                        } else {
+                                            tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4.add(aCTBRef);
+                                        }
+                                    } else {
+                                        if (aTT == 5 || aTT == 7) {
+                                            tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7.add(aCTBRef);
+                                        } else {
+                                            if (aTT == 8) {
+                                                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8.add(aCTBRef);
+                                            } else {
+                                                if (aTT == 9) {
+                                                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9.add(aCTBRef);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious.contains(aCTBRef)) {
+                            if (aTT == 1) {
+                                //tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month.add(aCTBRef);
+                                if (isUO) {
+                                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1.add(aCTBRef);
+                                } else {
+                                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1.add(aCTBRef);
+                                }
+                            } else {
+                                if (aTT == 3 || aTT == 6) {
+                                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6.add(aCTBRef);
+                                } else {
+                                    if (aTT == 4) {
+                                        if (isUO) {
+                                            tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1.add(aCTBRef);
+                                        } else {
+                                            tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4.add(aCTBRef);
+                                        }
+                                    } else {
+                                        if (aTT == 5 || aTT == 7) {
+                                            tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7.add(aCTBRef);
+                                        } else {
+                                            if (aTT == 8) {
+                                                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8.add(aCTBRef);
+                                            } else {
+                                                if (aTT == 9) {
+                                                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9.add(aCTBRef);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged2MonthsPrevious.contains(aCTBRef)) {
+                            if (aTT == 4) {
+                                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months.add(aCTBRef);
+                            }
+                        }
+                        if (tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged2MonthsPrevious.contains(aCTBRef)) {
+                            if (aTT == 1) { // Additional filter added as we only want those that are in the same TT.
+                                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months.add(aCTBRef);
+                            }
+                        }
+                        if (tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged3MonthsPrevious.contains(aCTBRef)) {
+                            if (aTT == 4) { // Additional filter added as we only want those that are in the same TT.
+                                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months.add(aCTBRef);
+                            }
+                        }
+                        if (tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged3MonthsPrevious.contains(aCTBRef)) {
+                            if (aTT == 1) {
+                                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months.add(aCTBRef);
+                            }
+                        }
+                        if (tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged1MonthPrevious.contains(aCTBRef)) {
+                            if (aTT == 1) {
+                                if (isUO) {
+                                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1.add(aCTBRef);
+                                } else {
+                                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1.add(aCTBRef);
+                                }
+                            } else {
+                                if (aTT == 4) {
+                                    if (isUO) {
+                                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4.add(aCTBRef);
+                                    } else {
+                                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4.add(aCTBRef);
+                                    }
+                                } else {
+                                    if (aTT == 3 || aTT == 6) {
+                                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6.add(aCTBRef);
+                                    } else {
+                                        if (aTT == 5 || aTT == 7) {
+                                            tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7.add(aCTBRef);
+                                        } else {
+                                            if (aTT == 8) {
+                                                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8.add(aCTBRef);
+                                            } else {
+                                                if (aTT == 9) {
+                                                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9.add(aCTBRef);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged1MonthPrevious.contains(aCTBRef)) {
+                            if (aTT == 1) {
+                                if (isUO) {
+                                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1.add(aCTBRef);
+                                } else {
+                                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1.add(aCTBRef);
+                                }
+                            } else {
+                                if (aTT == 4) {
+                                    if (isUO) {
+                                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4.add(aCTBRef);
+                                    } else {
+                                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4.add(aCTBRef);
+                                    }
+                                } else {
+                                    if (aTT == 3 || aTT == 6) {
+                                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6.add(aCTBRef);
+                                    } else {
+                                        if (aTT == 5 || aTT == 7) {
+                                            tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7.add(aCTBRef);
+                                        } else {
+                                            if (aTT == 8) {
+                                                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8.add(aCTBRef);
+                                            } else {
+                                                if (aTT == 9) {
+                                                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9.add(aCTBRef);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged2MonthsPrevious.contains(aCTBRef)) {
+                            if (aTT == 4) { // Additional filter added as we only want those that are in the same TT.
+                                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months.add(aCTBRef);
+                            }
+                        }
+                        if (tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged2MonthsPrevious.contains(aCTBRef)) {
+                            if (aTT == 1) { // Additional filter added as we only want those that are in the same TT.
+                                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months.add(aCTBRef);
+                            }
+                        }
+                        if (tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged3MonthsPrevious.contains(aCTBRef)) {
+                            if (aTT == 4) { // Additional filter added as we only want those that are in the same TT.
+                                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months.add(aCTBRef);
+                            }
+                        }
+                        if (tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged3MonthsPrevious.contains(aCTBRef)) {
+                            if (aTT == 1) { // Additional filter added as we only want those that are in the same TT.
+                                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months.add(aCTBRef);
+                            }
+                        }
                     }
                 }
             }
         }
+
         tableValues.put(key, aS);
 
         // HB Entitlement
@@ -3912,6 +4862,7 @@ public class TenancyChangesUO {
         } else {
             aS += sCommaSpace + decimalise(aWHBE);
         }
+
         tableValues.put(key, aS);
 
         // ERA
@@ -3922,6 +4873,7 @@ public class TenancyChangesUO {
         } else {
             aS += sCommaSpace + decimalise(aWERA);
         }
+
         tableValues.put(key, aS);
 
         // PassportedStandardIndicator
@@ -3932,6 +4884,7 @@ public class TenancyChangesUO {
         } else {
             aS += sCommaSpace + aPSI;
         }
+
         tableValues.put(key, aS);
 
         // StatusOfHBClaim
@@ -3942,6 +4895,7 @@ public class TenancyChangesUO {
         } else {
             aS += sCommaSpace + aSHBC;
         }
+
         tableValues.put(key, aS);
 
         // ReasonThatHBClaimClosed
@@ -3952,6 +4906,7 @@ public class TenancyChangesUO {
         } else {
             aS += sCommaSpace + aRTHBCC;
         }
+
         tableValues.put(key, aS);
 
         // ClaimantEthnicGroup
@@ -3962,6 +4917,7 @@ public class TenancyChangesUO {
         } else {
             aS += sCommaSpace + aCEG;
         }
+
         tableValues.put(key, aS);
 
         // HS
@@ -3972,6 +4928,7 @@ public class TenancyChangesUO {
         } else {
             aS += sCommaSpace + aHS;
         }
+
         tableValues.put(key, aS);
 
         // NonDependents
@@ -3982,6 +4939,7 @@ public class TenancyChangesUO {
         } else {
             aS += sCommaSpace + aND;
         }
+
         tableValues.put(key, aS);
 
         // ChildDependents
@@ -3992,11 +4950,14 @@ public class TenancyChangesUO {
         } else {
             aS += sCommaSpace + aCD;
         }
+
         tableValues.put(key, aS);
 
         // UO
         DW_UOReport_Record aDW_UOReport_Record;
-        if (councilUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)
+
+        if (councilUnderOccupiedSet1.getMap()
+                .keySet().contains(aCTBRef)
                 || RSLUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)) {
             if (councilUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)) {
                 aDW_UOReport_Record = councilUnderOccupiedSet1.getMap().get(aCTBRef);
@@ -4101,85 +5062,103 @@ public class TenancyChangesUO {
         // Claimants DoB
         key = aCTBRef + sUnderscore + sCDoB;
         aS = tableValues.get(key);
+
         if (aCDoB.equalsIgnoreCase(bCDoB)) {
             aS += sCommaSpace;
         } else {
             aS += sCommaSpace + aCDoB;
         }
+
         tableValues.put(key, aS);
         // Claimants Age
         key = aCTBRef + sUnderscore + sCA;
         aS = tableValues.get(key);
+
         if (aCA.equalsIgnoreCase(bCA)) {
             aS += sCommaSpace;
         } else {
             aS += sCommaSpace + aCA;
         }
+
         tableValues.put(key, aS);
         // Partners DoB
         key = aCTBRef + sUnderscore + sPDoB;
         aS = tableValues.get(key);
+
         if (aPDoB.equalsIgnoreCase(bPDoB)) {
             aS += sCommaSpace;
         } else {
             aS += sCommaSpace + aPDoB;
         }
+
         tableValues.put(key, aS);
         // Partners Age
         key = aCTBRef + sUnderscore + sPA;
         aS = tableValues.get(key);
+
         if (aPA.equalsIgnoreCase(bPA)) {
             aS += sCommaSpace;
         } else {
             aS += sCommaSpace + aPA;
         }
+
         tableValues.put(key, aS);
         // ClaimantsGender
         key = aCTBRef + sUnderscore + sCG;
         aS = tableValues.get(key);
+
         if (aCA.equalsIgnoreCase(bCA)) {
             aS += sCommaSpace;
         } else {
             aS += sCommaSpace + aCG;
         }
+
         tableValues.put(key, aS);
         // PartnersGender
         key = aCTBRef + sUnderscore + sPG;
         aS = tableValues.get(key);
+
         if (aPA.equalsIgnoreCase(bPA)) {
             aS += sCommaSpace;
         } else {
             aS += sCommaSpace + aPG;
         }
+
         tableValues.put(key, aS);
         // Disability
         key = aCTBRef + sUnderscore + sDisability;
         aS = tableValues.get(key);
         aS += sCommaSpace + aD;
+
         tableValues.put(key, aS);
         // Disability Premium
         key = aCTBRef + sUnderscore + sDisabilityPremium;
         aS = tableValues.get(key);
         aS += sCommaSpace + aDP;
+
         tableValues.put(key, aS);
         // Disability Severe
         key = aCTBRef + sUnderscore + sDisabilitySevere;
         aS = tableValues.get(key);
         aS += sCommaSpace + aDS;
+
         tableValues.put(key, aS);
         // Disability Enhanced
         key = aCTBRef + sUnderscore + sDisabilityEnhanced;
         aS = tableValues.get(key);
         aS += sCommaSpace + aDE;
+
         tableValues.put(key, aS);
         // Child Disability
         key = aCTBRef + sUnderscore + sDisabledChild;
         aS = tableValues.get(key);
         aS += sCommaSpace + aDC;
+
         tableValues.put(key, aS);
         // Partner Death
         key = aCTBRef + sUnderscore + sPDeath;
         aS = tableValues.get(key);
+
         if (aPDD.equalsIgnoreCase(bPDD)) {
             aS += sCommaSpace;
         } else {
@@ -4193,6 +5172,7 @@ public class TenancyChangesUO {
                 }
             }
         }
+
         tableValues.put(key, aS);
 
         // HBDP
@@ -4200,8 +5180,10 @@ public class TenancyChangesUO {
         key = aCTBRef + sUnderscore + sTotal_DHP;
         bd = aggregateStatistics.get(key);
         bd = bd.add(BigDecimal.valueOf(aHBDP));
+
         aggregateStatistics.put(key, bd);
-        if (aHBDP > 0) {
+        if (aHBDP
+                > 0) {
             tCTBRefSetDHPAtSomePoint.add(aCTBRef);
             key = aCTBRef + sUnderscore + sTotalCount_DHP;
             bd = aggregateStatistics.get(key);
@@ -4221,7 +5203,9 @@ public class TenancyChangesUO {
         // Arrears
         key = aCTBRef + sUnderscore + sA;
         aS = tableValues.get(key);
-        if (councilUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)) {
+
+        if (councilUnderOccupiedSet1.getMap()
+                .keySet().contains(aCTBRef)) {
             DW_UOReport_Record UORec;
             UORec = councilUnderOccupiedSet1.getMap().get(aCTBRef);
             if (UORec == null) {
@@ -4290,8 +5274,130 @@ public class TenancyChangesUO {
         } else {
             aS += sCommaSpace;
         }
+
+        if (tCTBRefSetUOTT1_To_TT1_PostcodeChanged.contains(aCTBRef)) {
+            if (wasUOBefore && cTT == 1
+                    && (!wasUO) && bTT == 1
+                    && !(cPC.equalsIgnoreCase(bPC))
+                    && (validPostcodes.contains(cPC) && validPostcodes.contains(bPC))) {
+                if (isUO) {
+                    tCTBRefSetUOTT1_To_TT1_PostcodeChanged.remove(aCTBRef);
+                    if (aTT == 1) {
+                        tCTBRefSetUOTT1_To_UOTT1_PostcodeChanged.add(aCTBRef);
+                    } else {
+                        if (aTT == 4) {
+                            tCTBRefSetUOTT1_To_UOTT4_PostcodeChanged.add(aCTBRef);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (tCTBRefSetUOTT4_To_TT4_PostcodeChanged.contains(aCTBRef)) {
+            if (wasUOBefore && cTT == 1
+                    && (!wasUO) && bTT == 1
+                    && !(cPC.equalsIgnoreCase(bPC))
+                    && (validPostcodes.contains(cPC) && validPostcodes.contains(bPC))) {
+                if (isUO) {
+                    tCTBRefSetUOTT4_To_TT4_PostcodeChanged.remove(aCTBRef);
+                    if (aTT == 1) {
+                        tCTBRefSetUOTT4_To_UOTT1_PostcodeChanged.add(aCTBRef);
+                    } else {
+                        if (aTT == 4) {
+                            tCTBRefSetUOTT4_To_UOTT4_PostcodeChanged.add(aCTBRef);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (tCTBRefSetUOTT1_To_TT3OrTT6.contains(aCTBRef)) {
+            if (aTT == 1) {
+                tCTBRefSetUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint.add(aCTBRef);
+            }
+        }
+        
+        if (tCTBRefSetUOTT4_To_TT3OrTT6.contains(aCTBRef)) {
+            if (aTT == 4) {
+                tCTBRefSetUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint.add(aCTBRef);
+            }
+        }
+        
         tableValues.put(key, aS);
         return result;
+    }
+
+    private void doX(
+            String aCTBRef,
+            int aHBDP,
+            int aTT,
+            int bTT,
+            boolean isUO,
+            boolean wasUO,
+            boolean wasUOBefore,
+            int bStatus,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_NotReturned,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT1,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT4,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8,
+            TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9,
+            TreeSet<String> tCTBRefSetUOTT1_To_UOTT4,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT4,
+            TreeSet<String> tCTBRefSetTT1_To_UOTT4GettingDHP
+    ) {
+        if (tCTBRefSetUOTT1_To_LeftSHBE_NotReturned.contains(aCTBRef)) {
+            tCTBRefSetUOTT1_To_LeftSHBE_NotReturned.remove(aCTBRef);
+            if (aTT == 1) {
+                if (isUO) {
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT1.add(aCTBRef);
+                } else {
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1.add(aCTBRef);
+                }
+            } else {
+                if (aTT == 3 || aTT == 6) {
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6.add(aCTBRef);
+                } else {
+                    if (aTT == 4) {
+                        if (isUO) {
+                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT4.add(aCTBRef);
+                            if (bTT == 1) {
+                                //tCTBRefSetUOTT1OrTT1_To_UOTT4.add(aCTBRef);
+                                if (wasUO) {
+                                    tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef); // Looking forward, we may see that this claim actually comes out of being UO. To filter for this we should look back in the next iteration and perhaps move claim refs to other sets based upon some logic...
+                                } else {
+                                    if (bStatus == 2 && wasUOBefore) {
+                                        tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef); // Looking forward, we may see that this claim actually comes out of being UO. To filter for this we should look back in the next iteration and perhaps move claim refs to other sets based upon some logic...
+                                    } else {
+                                        tCTBRefSetTT1_To_UOTT4.add(aCTBRef);
+                                        if (aHBDP > 0) {
+                                            tCTBRefSetTT1_To_UOTT4GettingDHP.add(aCTBRef);
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
+                        }
+                    } else {
+                        if (aTT == 5 || aTT == 7) {
+                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7.add(aCTBRef);
+                        } else {
+                            if (aTT == 8) {
+                                tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8.add(aCTBRef);
+                            } else {
+                                if (aTT == 9) {
+                                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9.add(aCTBRef);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -4336,12 +5442,16 @@ public class TenancyChangesUO {
         String[] split;
         split = aS.split(sComma);
         String s1;
-        for (String split1 : split) {
-            s1 = split1.trim();
+        for (int i = 0; i < split.length; i++) {
+            //for (String split1 : split) {
+            //    s1 = split1.trim();
+            s1 = split[i];
             if (!s1.isEmpty()) {
                 if (!(s1.equalsIgnoreCase(defaultPostcode))) {
                     if (!(s1.equalsIgnoreCase(aPC))) {
-                        return true;
+                        if (validPostcodes.contains(s1)) {
+                            return true;
+                        }
                     }
                 }
             }
@@ -4665,6 +5775,8 @@ public class TenancyChangesUO {
         HashMap<String, String> generalStatisticsDescriptions;
         generalStatisticsDescriptions = getGeneralStatisticDescriptions(
                 startMonth, startYear, endMonth, endYear);
+        writeLine(sTotalCount_AlwaysUOFromStart,
+                generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sTotalCount_AlwaysUOFromWhenStarted,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sAverageHouseholdSizeOfThoseUOAlwaysFromStart,
@@ -4733,9 +5845,13 @@ public class TenancyChangesUO {
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned,
                 generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_LeftSHBE_ReturnedAsUOTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT1_To_LeftSHBE_ReturnedAsTT1,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_LeftSHBE_ReturnedAsUOTT4,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT1_To_LeftSHBE_ReturnedAsTT4,
                 generalStatistics, generalStatisticsDescriptions, pw5);
@@ -4745,9 +5861,13 @@ public class TenancyChangesUO {
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT1_To_LeftSHBE_ReturnedAsTT9,
                 generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_LeftSHBE_ReturnedAsUOTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT4_To_LeftSHBE_ReturnedAsTT1,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_LeftSHBE_ReturnedAsUOTT4,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT4_To_LeftSHBE_ReturnedAsTT4,
                 generalStatistics, generalStatisticsDescriptions, pw5);
@@ -4757,11 +5877,15 @@ public class TenancyChangesUO {
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT4_To_LeftSHBE_ReturnedAsTT9,
                 generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4,
                 generalStatistics, generalStatisticsDescriptions, pw5);
@@ -4787,15 +5911,15 @@ public class TenancyChangesUO {
 
         writeLine(sUOTT1_To_NotUO_InSHBE_PostcodeChanged,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        writeLine(sUOTT1_To_NotUO_TT1_PostcodeChanged,
+        writeLine(sUOTT1_To_TT1_PostcodeChanged,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        writeLine(sUOTT1_To_NotUO_TT4_PostcodeChanged,
+        writeLine(sUOTT1_To_TT4_PostcodeChanged,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT4_To_NotUO_InSHBE_PostcodeChanged,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        writeLine(sUOTT4_To_NotUO_TT1_PostcodeChanged,
+        writeLine(sUOTT4_To_TT1_PostcodeChanged,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        writeLine(sUOTT4_To_NotUO_TT4_PostcodeChanged,
+        writeLine(sUOTT4_To_TT4_PostcodeChanged,
                 generalStatistics, generalStatisticsDescriptions, pw5);
 
         writeLine(sUOTT1_To_TT3OrTT6,
@@ -4804,12 +5928,16 @@ public class TenancyChangesUO {
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
                 generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint,
+                generalStatistics, generalStatisticsDescriptions, pw5);
 
         writeLine(sUOTT4_To_TT3OrTT6,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT4_To_TT3OrTT6AtSomePoint,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint,
                 generalStatistics, generalStatisticsDescriptions, pw5);
 
         writeLine(sTT3OrTT6_To_UOTT1,
@@ -4819,7 +5947,23 @@ public class TenancyChangesUO {
 
         writeLine(sTT1_To_UOTT1_PostcodeUnchanged,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+//        writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
+//                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
                 generalStatistics, generalStatisticsDescriptions, pw5);
@@ -4841,7 +5985,19 @@ public class TenancyChangesUO {
 
         writeLine(sTT4_To_UOTT4_PostcodeUnchanged,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        writeLine(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+//        writeLine(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
+//                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
                 generalStatistics, generalStatisticsDescriptions, pw5);
@@ -4873,7 +6029,23 @@ public class TenancyChangesUO {
 
         writeLine(sUOTT1_To_TT1_PostcodeUnchanged,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+//        writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
+//                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
                 generalStatistics, generalStatisticsDescriptions, pw5);
@@ -4882,7 +6054,23 @@ public class TenancyChangesUO {
 
         writeLine(sUOTT4_To_TT4_PostcodeUnchanged,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+//        writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
+//                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
                 generalStatistics, generalStatisticsDescriptions, pw5);
@@ -5331,7 +6519,7 @@ public class TenancyChangesUO {
                                                 }
                                             }
                                         } else {
-                                            if (groupName.equalsIgnoreCase(sAlwaysUOFromWhenStarted__Moved_NotChangedTT)) {
+                                            if (groupName.equalsIgnoreCase(sAlwaysUOFromWhenStarted__ValidPostcodeChange_NotChangedTT)) {
                                                 otherGroupName = sTravellers;
                                                 otherGroup = groups.get(otherGroupName);
                                                 if (otherGroup.contains(aCTBRef)) {
@@ -5369,7 +6557,7 @@ public class TenancyChangesUO {
                                                     }
                                                 }
                                             } else {
-                                                if (groupName.equalsIgnoreCase(sAlwaysUOFromWhenStarted__NotMoved_NotChangedTT)) {
+                                                if (groupName.equalsIgnoreCase(sAlwaysUOFromWhenStarted__NoValidPostcodeChange_NotChangedTT)) {
                                                     otherGroupName = sTravellers;
                                                     otherGroup = groups.get(otherGroupName);
                                                     if (otherGroup.contains(aCTBRef)) {
@@ -5505,7 +6693,7 @@ public class TenancyChangesUO {
                                                             }
                                                         }
                                                     } else {
-                                                        if (groupName.equalsIgnoreCase(sIntermitantUO__Moved_NotChangedTT)) {
+                                                        if (groupName.equalsIgnoreCase(sIntermitantUO__ValidPostcodeChange_NotChangedTT)) {
                                                             otherGroupName = sTravellers;
                                                             otherGroup = groups.get(otherGroupName);
                                                             if (otherGroup.contains(aCTBRef)) {
@@ -5572,8 +6760,8 @@ public class TenancyChangesUO {
                                                                     pwAggregateStatistics2);
                                                         }
                                                     }
-//                                        sAlwaysUOFromStart__NotMoved_NotChangedTT
-//                                        sIntermitantUO__NotMoved_NotChangedTT                                                    
+//                                        sAlwaysUOFromStart__NoValidPostcodeChange_NotChangedTT
+//                                        sIntermitantUO__NoValidPostcodeChange_NotChangedTT                                                    
                                                 }
                                             }
                                         }
@@ -5768,7 +6956,7 @@ public class TenancyChangesUO {
 //                                if (groupName.equalsIgnoreCase(gn)) {
 //                                    result.put(groupName, "Type: " + gn);
 //                                } else {
-//                                    gn = sAlwaysUOFromStart__NotMoved_NotChangedTT;
+//                                    gn = sAlwaysUOFromStart__NoValidPostcodeChange_NotChangedTT;
 //                                    if (groupName.equalsIgnoreCase(gn)) {
 //                                        result.put(groupName, "Type: " + gn);
 //                                    } else {
@@ -5776,11 +6964,11 @@ public class TenancyChangesUO {
 //                                        if (groupName.equalsIgnoreCase(gn)) {
 //                                            result.put(groupName, "Type: " + gn);
 //                                        } else {
-//                                            gn = sAlwaysUOFromStart__Moved_NotChangedTT;
+//                                            gn = sAlwaysUOFromStart__ValidPostcodeChange_NotChangedTT;
 //                                            if (groupName.equalsIgnoreCase(gn)) {
 //                                                result.put(groupName, "Type: " + gn);
 //                                            } else {
-//                                                gn = sAlwaysUOFromWhenStarted__NotMoved_NotChangedTT;
+//                                                gn = sAlwaysUOFromWhenStarted__NoValidPostcodeChange_NotChangedTT;
 //                                                if (groupName.equalsIgnoreCase(gn)) {
 //                                                    result.put(groupName, "Type: " + gn);
 //                                                } else {
@@ -5788,11 +6976,11 @@ public class TenancyChangesUO {
 //                                                    if (groupName.equalsIgnoreCase(gn)) {
 //                                                        result.put(groupName, "Type: " + gn);
 //                                                    } else {
-//                                                        gn = sAlwaysUOFromWhenStarted__Moved_NotChangedTT;
+//                                                        gn = sAlwaysUOFromWhenStarted__ValidPostcodeChange_NotChangedTT;
 //                                                        if (groupName.equalsIgnoreCase(gn)) {
 //                                                            result.put(groupName, "Type: " + gn);
 //                                                        } else {
-//                                                            gn = sIntermitantUO__NotMoved_NotChangedTT;
+//                                                            gn = sIntermitantUO__NoValidPostcodeChange_NotChangedTT;
 //                                                            if (groupName.equalsIgnoreCase(gn)) {
 //                                                                result.put(groupName, "Type: " + gn);
 //                                                            } else {
@@ -5800,7 +6988,7 @@ public class TenancyChangesUO {
 //                                                                if (groupName.equalsIgnoreCase(gn)) {
 //                                                                    result.put(groupName, "Type: " + gn);
 //                                                                } else {
-//                                                                    gn = sIntermitantUO__Moved_NotChangedTT;
+//                                                                    gn = sIntermitantUO__ValidPostcodeChange_NotChangedTT;
 //                                                                    if (groupName.equalsIgnoreCase(gn)) {
 //                                                                        result.put(groupName, "Type: " + gn);
 //                                                                    } else {
@@ -5918,6 +7106,7 @@ public class TenancyChangesUO {
 //                    }
 //                }
         return result;
+
     }
 
     protected class ID {

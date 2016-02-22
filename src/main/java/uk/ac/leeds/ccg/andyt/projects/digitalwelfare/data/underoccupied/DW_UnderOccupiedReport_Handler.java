@@ -45,13 +45,13 @@ public class DW_UnderOccupiedReport_Handler {
     }
 
     /**
-     * 
-     * @param args 
+     *
+     * @param args
      */
     public static void main(String[] args) {
-     new    DW_UnderOccupiedReport_Handler().run();
+        new DW_UnderOccupiedReport_Handler().run();
     }
-    
+
     public void run() {
         Object[] underOccupiedReportData;
         underOccupiedReportData = loadUnderOccupiedReportData();
@@ -118,12 +118,11 @@ public class DW_UnderOccupiedReport_Handler {
          */
         String filename;
         filename = "2014 15 Under Occupied Report For University Month 7 Council Tenants.csv";
-            DW_UnderOccupiedReport_Set set = new DW_UnderOccupiedReport_Set(
-                    filename);
-            
+        DW_UnderOccupiedReport_Set set = new DW_UnderOccupiedReport_Set(
+                filename);
+
     }
-    
-    
+
     /**
      * @param directory
      * @param filename
@@ -161,7 +160,7 @@ public class DW_UnderOccupiedReport_Handler {
             String[] fieldnames = line.split(",");
 //            // Skip the first line
 //            Generic_StaticIO.skipline(st);
-            
+
             // Read data
             tokenType = st.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
@@ -175,7 +174,7 @@ public class DW_UnderOccupiedReport_Handler {
                             DW_UOReport_Record aUnderOccupiedReport_Record;
                             aUnderOccupiedReport_Record = new DW_UOReport_Record(
                                     RecordID, line, fieldnames);
-                                    //RecordID, line, type);
+                            //RecordID, line, type);
                             Object o = result.put(
                                     aUnderOccupiedReport_Record.getClaimReferenceNumber(),
                                     aUnderOccupiedReport_Record);
@@ -436,4 +435,33 @@ public class DW_UnderOccupiedReport_Handler {
         return getMonth(i).substring(0, 3);
     }
 
+    public static HashSet<String> getUnderOccupiedInApril2013() {
+        HashSet<String> result;
+        result = new HashSet<String>();
+        Object[] filenames;
+        filenames = getFilenames();
+        TreeMap<String, String> councilFilenames;
+        TreeMap<String, String> registeredSocialLandlordFilenames;
+        councilFilenames = (TreeMap<String, String>) filenames[0];
+        registeredSocialLandlordFilenames = (TreeMap<String, String>) filenames[1];
+        String yearAll;
+        yearAll = "2013 14";
+        int i;
+        i = 1;
+        String year = getYear(yearAll, i);
+        String month = getMonth3(i);
+        String year_Month = year + "_" + month;
+        String councilFilename;
+        councilFilename = councilFilenames.get(year_Month);
+        String RSLFilename;
+        RSLFilename = registeredSocialLandlordFilenames.get(year_Month);
+        DW_UnderOccupiedReport_Set set;
+        set = new DW_UnderOccupiedReport_Set(
+                councilFilename);
+        result.addAll(set.map.keySet());
+        set = new DW_UnderOccupiedReport_Set(
+                RSLFilename);
+        result.addAll(set.map.keySet());
+        return result;
+    }
 }

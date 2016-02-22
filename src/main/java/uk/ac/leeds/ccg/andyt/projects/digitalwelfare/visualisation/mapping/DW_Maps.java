@@ -1174,4 +1174,18 @@ public abstract class DW_Maps extends AGDT_Maps {
         return result;
     }
 
+    public DW_Shapefile getCommunityAreasDW_Shapefile() {
+        DW_Shapefile result;
+        String name = "communityareas_region.shp";
+        File dir = new File(
+                DW_Files.getInputDir(),
+                "CommunityAreas");
+        dir = new File(dir, name);
+        File f;
+        f = new File(
+                dir,
+                name);
+        result = new DW_Shapefile(f);
+        return result;
+    }
 }

@@ -165,7 +165,7 @@ public class DW_SHBE_TenancyType_Handler {
         result.add(s4);
         if (doUnderOccupiedData) {
             result.add(s1 + sUO);
-            result.add(s2 + sUO);
+            //result.add(s2 + sUO);
             result.add(s4 + sUO);
         }
         return result;
@@ -174,7 +174,7 @@ public class DW_SHBE_TenancyType_Handler {
     public static ArrayList<String> getTenancyTypeAll() {
         ArrayList<String> result;
         result = new ArrayList<String>();
-        result.add(s0);
+        //result.add(s0);
         result.add(s1);
         result.add(s2);
         result.add(s3);
@@ -191,16 +191,16 @@ public class DW_SHBE_TenancyType_Handler {
         ArrayList<String> result;
         result = getTenancyTypeAll();
         if (doUnderOccupiedData) {
-            result.add(s0 + sUO);
+            //result.add(s0 + sUO);
             result.add(s1 + sUO);
-            result.add(s2 + sUO);
-            result.add(s3 + sUO);
+            //result.add(s2 + sUO);
+            //result.add(s3 + sUO);
             result.add(s4 + sUO);
-            result.add(s5 + sUO);
-            result.add(s6 + sUO);
-            result.add(s7 + sUO);
-            result.add(s8 + sUO);
-            result.add(s9 + sUO);
+            //result.add(s5 + sUO);
+            //result.add(s6 + sUO);
+            //result.add(s7 + sUO);
+            //result.add(s8 + sUO);
+            //result.add(s9 + sUO);
         }
         return result;
     }

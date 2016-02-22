@@ -1636,6 +1636,9 @@ public class DW_SHBE_Handler {
         result += NumberOfNonDependents;
         HashSet<DW_SHBE_S_Record> S_Records;
         S_Records = rec.SRecords;
+        if (S_Records == null) {
+            return 0L;
+        }
         long NumberOfS_Records;
         NumberOfS_Records = S_Records.size();
         if (NumberOfS_Records != NumberOfNonDependents) {

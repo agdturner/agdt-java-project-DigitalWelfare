@@ -3461,7 +3461,7 @@ public class SummaryUO extends Summary {
             DW_SHBE_D_Record D_Record1,
             String yM30v,
             String yM31v) {
-        super.doCompare2TimesCounts(D_Record0, D_Record1, yM30v, yM31v);
+        //super.doCompare2TimesCounts(D_Record0, D_Record1, yM30v, yM31v);
         boolean isHBClaim;
         isHBClaim = false;
         if (D_Record1 != null && addToSingleTimeMetrics) {
@@ -4681,6 +4681,33 @@ public class SummaryUO extends Summary {
         councilUnderOccupiedSet1Map = councilUnderOccupiedSet1.getMap();
         TreeMap<String, DW_UOReport_Record> RSLUnderOccupiedSet1Map;
         RSLUnderOccupiedSet1Map = RSLUnderOccupiedSet1.getMap();
+        
+        Iterator<String> ite;
+//        // Go through all those in D_Records0 and do non single time counts for 
+//        // those in current.
+//        ite = tDRecords0.keySet().iterator();
+//        while (ite.hasNext()) {
+//            String CTBRef;
+//            CTBRef = ite.next();
+//            DW_SHBE_Record Record0;
+//            Record0 = tDRecords0.get(CTBRef);
+//            if (councilUnderOccupiedSet1Map.containsKey(CTBRef) || RSLUnderOccupiedSet1Map.containsKey(CTBRef)) {
+//                DW_SHBE_Record Record1;
+//                Record1 = tDRecords0.get(CTBRef);
+//                DW_SHBE_D_Record D_Record0;
+//                D_Record0 = null;
+//                if (Record0 != null) {
+//                    D_Record0 = Record0.getDRecord();
+//                }
+//                DW_SHBE_D_Record D_Record1;
+//                D_Record1 = null;
+//                if (D_Record1 != null) {
+//                    D_Record1 = Record1.getDRecord();
+//                    super.doCompare2TimesCounts(D_Record0, D_Record1, yM30v, yM31v);
+//                }
+//            }
+//        }
+        
         // Loop over underoccupancy data
         // Loop over Council
         doCouncilCompare2TimesLoopOverSet(

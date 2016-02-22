@@ -100,7 +100,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
         result.put(doUnderOccupancy, attc);
         return result;
     }
-            
+
     protected static HashMap<Boolean, ArrayList<ArrayList<String>>> getAllTenancyTypeChangesSocial() {
         HashMap<Boolean, ArrayList<ArrayList<String>>> result;
         result = new HashMap<Boolean, ArrayList<ArrayList<String>>>();
@@ -114,7 +114,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
         result.put(doUnderOccupancy, attc);
         return result;
     }
-            
+
     protected static HashMap<Boolean, ArrayList<ArrayList<String>>> getAllTenancyTypeChanges() {
         HashMap<Boolean, ArrayList<ArrayList<String>>> result;
         result = new HashMap<Boolean, ArrayList<ArrayList<String>>>();
@@ -328,7 +328,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
         result.add(tenancyTypeChanges);
         return result;
     }
-    
+
     protected static ArrayList<ArrayList<String>> getAllTenancyTypeChangesSocialGrouped(
             boolean doUnderOccupancy) {
         ArrayList<ArrayList<String>> result;
@@ -345,7 +345,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
         result.add(tenancyTypeChanges);
         return result;
     }
-    
+
     protected static ArrayList<ArrayList<String>> getAllTenancyTypeChangesSocial(
             boolean doUnderOccupancy) {
         ArrayList<ArrayList<String>> result;
@@ -364,6 +364,28 @@ public class DW_LineMaps_LCC extends DW_Maps {
             tenancyTypeChanges.add("1UO - 4");
             tenancyTypeChanges.add("1UO - 4UO");
             tenancyTypeChanges.add("4 - 1UO");
+            tenancyTypeChanges.add("4UO - 1");
+            tenancyTypeChanges.add("4UO - 1UO");
+            result.add(tenancyTypeChanges);
+        tenancyTypeChanges = new ArrayList<String>();
+            // Social To UO
+            tenancyTypeChanges.add("1 - 1UO");
+            tenancyTypeChanges.add("1UO - 1UO");
+            tenancyTypeChanges.add("4 - 4UO");
+            tenancyTypeChanges.add("4UO - 4UO");
+            tenancyTypeChanges.add("1 - 4UO");
+            tenancyTypeChanges.add("1UO - 4UO");
+            tenancyTypeChanges.add("4 - 1UO");
+            tenancyTypeChanges.add("4UO - 1UO");
+            result.add(tenancyTypeChanges);
+        tenancyTypeChanges = new ArrayList<String>();
+            // Social From UO
+            tenancyTypeChanges.add("1UO - 1");
+            tenancyTypeChanges.add("1UO - 1UO");
+            tenancyTypeChanges.add("4UO - 4");
+            tenancyTypeChanges.add("4UO - 4UO");
+            tenancyTypeChanges.add("1UO - 4");
+            tenancyTypeChanges.add("1UO - 4UO");
             tenancyTypeChanges.add("4UO - 1");
             tenancyTypeChanges.add("4UO - 1UO");
         } else {
@@ -747,13 +769,12 @@ public class DW_LineMaps_LCC extends DW_Maps {
         // screen in a JMapPane otherwise maps are only written to file.
 //        showMapsInJMapPane = true;
         showMapsInJMapPane = false;
-        imageWidth = 1000;
-        init();
+        imageWidth = 2000;
 
         ArrayList<String> paymentTypes;
         paymentTypes = DW_SHBE_Handler.getPaymentTypes();
-        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
-//        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
+//        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
+        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
         paymentTypes.remove(DW_SHBE_Handler.sSuspended);
         paymentTypes.remove(DW_SHBE_Handler.sOtherPT);
 
@@ -762,11 +783,11 @@ public class DW_LineMaps_LCC extends DW_Maps {
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
         includes.remove("All");
-//        includes.remove("Yearly");
-//        includes.remove("6Monthly");
-//        includes.remove("3Monthly");
+        includes.remove("Yearly");
+        includes.remove("6Monthly");
+        includes.remove("3Monthly");
 //        includes.remove("MonthlyUO");
-//        includes.remove("Monthly");
+        includes.remove("Monthly");
 
         HashMap<Boolean, ArrayList<ArrayList<String>>> allTenancyTypeChanges;
         allTenancyTypeChanges = getAllTenancyTypeChanges();
@@ -786,110 +807,69 @@ public class DW_LineMaps_LCC extends DW_Maps {
         HashMap<Boolean, ArrayList<ArrayList<String>>> allTenancyTypeChangesSocialGrouped;
         allTenancyTypeChangesSocialGrouped = getAllTenancyTypeChangesSocialGrouped();
 
-                
         ArrayList<Boolean> b;
         b = new ArrayList<Boolean>();
         b.add(true);
         b.add(false);
 
-        paymentTypesIte = paymentTypes.iterator();
-        while (paymentTypesIte.hasNext()) {
-            String paymentType;
-            paymentType = paymentTypesIte.next();
-            Iterator<String> includesIte;
-            includesIte = includes.keySet().iterator();
-            while (includesIte.hasNext()) {
-                String includeName;
-                includeName = includesIte.next();
-                ArrayList<Integer> include;
-                include = includes.get(includeName);
+        boolean doCommunityAreasOverlay;
+//        doCommunityAreasOverlay = true;
+//        doCommunityAreasOverlay = false;
+        Iterator<Boolean> iteCAO;
+        iteCAO = b.iterator();
+        while (iteCAO.hasNext()) {
+            doCommunityAreasOverlay = iteCAO.next();
 
-                TreeMap<String, ArrayList<String>> yM3s;
-                yM3s = getYM3s(include);
-                // Postcode And Tenancy Type
-//                if (true) {
-                if (false) {
-                    boolean doTenancyTypeAndPostcodeChange;
-                    Iterator<Boolean> iteb0;
-                    iteb0 = b.iterator();
-                    while (iteb0.hasNext()) {
-                        doTenancyTypeAndPostcodeChange = iteb0.next();
-                        Iterator<Boolean> iteb;
-                        iteb = b.iterator();
-                        while (iteb.hasNext()) {
-                            boolean doUnderOccupancyData;
-                            doUnderOccupancyData = iteb.next();
-                            if (doUnderOccupancyData) {
-                                boolean doCouncil;
-                                doCouncil = true;
-                                boolean doRSL;
-                                doRSL = true;
-                                Iterator<Boolean> iteb1;
-                                iteb1 = b.iterator();
-                                while (iteb1.hasNext()) {
-                                    boolean doCheckedPreviousTenure;
-                                    doCheckedPreviousTenure = iteb1.next();
-                                    Iterator<Boolean> iteb2;
-                                    iteb2 = b.iterator();
-                                    while (iteb2.hasNext()) {
-                                        boolean doCheckedPreviousPostcode;
-                                        doCheckedPreviousPostcode = iteb2.next();
-                                        Iterator<Boolean> iteb3;
-                                        iteb3 = b.iterator();
-                                        while (iteb3.hasNext()) {
-                                            boolean grouped;
-                                            grouped = iteb3.next();
-                                            if (grouped) {
-                                                postcodeMaps(
-                                                        paymentType,
-                                                        yM3s,
-                                                        includeName,
-                                                        include,
-                                                        allTenancyTypeChangesGrouped.get(doUnderOccupancyData),
-                                                        doTenancyTypeAndPostcodeChange,
-                                                        doUnderOccupancyData,
-                                                        doCouncil,
-                                                        doRSL,
-                                                        doCheckedPreviousTenure,
-                                                        doCheckedPreviousPostcode,
-                                                        grouped);
-                                            } else {
-                                                postcodeMaps(
-                                                        paymentType,
-                                                        yM3s,
-                                                        includeName,
-                                                        include,
-                                                        allTenancyTypeChanges.get(doUnderOccupancyData),
-                                                        doTenancyTypeAndPostcodeChange,
-                                                        doUnderOccupancyData,
-                                                        doCouncil,
-                                                        doRSL,
-                                                        doCheckedPreviousTenure,
-                                                        doCheckedPreviousPostcode,
-                                                        grouped);
-                                            }
-                                        }
-                                    }
-                                }
-                                iteb1 = b.iterator();
-                                while (iteb1.hasNext()) {
-                                    doCouncil = iteb1.next();
-                                    Iterator<Boolean> iteb2;
-                                    iteb2 = b.iterator();
-                                    while (iteb2.hasNext()) {
+            init(doCommunityAreasOverlay);
+
+            paymentTypesIte = paymentTypes.iterator();
+            while (paymentTypesIte.hasNext()) {
+                String paymentType;
+                paymentType = paymentTypesIte.next();
+                Iterator<String> includesIte;
+                includesIte = includes.keySet().iterator();
+                while (includesIte.hasNext()) {
+                    String includeName;
+                    includeName = includesIte.next();
+                    ArrayList<Integer> include;
+                    include = includes.get(includeName);
+
+                    TreeMap<String, ArrayList<String>> yM3s;
+                    yM3s = getYM3s(include);
+                    // Postcode And Tenancy Type
+                if (true) {
+//                    if (false) {
+                        boolean doTenancyTypeAndPostcodeChange;
+                        Iterator<Boolean> iteb0;
+                        iteb0 = b.iterator();
+                        while (iteb0.hasNext()) {
+                            doTenancyTypeAndPostcodeChange = iteb0.next();
+                            Iterator<Boolean> iteb;
+                            iteb = b.iterator();
+                            while (iteb.hasNext()) {
+                                boolean doUnderOccupancyData;
+                                doUnderOccupancyData = iteb.next();
+                                if (doUnderOccupancyData) {
+                                    boolean doCouncil;
+                                    doCouncil = true;
+                                    boolean doRSL;
+                                    doRSL = true;
+                                    Iterator<Boolean> iteb1;
+                                    iteb1 = b.iterator();
+                                    while (iteb1.hasNext()) {
                                         boolean doCheckedPreviousTenure;
-                                        doCheckedPreviousTenure = iteb2.next();
-                                        Iterator<Boolean> iteb3;
-                                        iteb3 = b.iterator();
-                                        while (iteb3.hasNext()) {
+                                        doCheckedPreviousTenure = iteb1.next();
+                                        Iterator<Boolean> iteb2;
+                                        iteb2 = b.iterator();
+                                        while (iteb2.hasNext()) {
                                             boolean doCheckedPreviousPostcode;
-                                            doCheckedPreviousPostcode = iteb3.next();
-                                            Iterator<Boolean> iteb4;
-                                            iteb4 = b.iterator();
-                                            while (iteb4.hasNext()) {
-                                                boolean doGrouped;
-                                                doGrouped = iteb4.next();
-                                                if (doGrouped) {
+                                            doCheckedPreviousPostcode = iteb2.next();
+                                            Iterator<Boolean> iteb3;
+                                            iteb3 = b.iterator();
+                                            while (iteb3.hasNext()) {
+                                                boolean grouped;
+                                                grouped = iteb3.next();
+                                                if (grouped) {
                                                     postcodeMaps(
                                                             paymentType,
                                                             yM3s,
@@ -899,6 +879,105 @@ public class DW_LineMaps_LCC extends DW_Maps {
                                                             doTenancyTypeAndPostcodeChange,
                                                             doUnderOccupancyData,
                                                             doCouncil,
+                                                            doRSL,
+                                                            doCheckedPreviousTenure,
+                                                            doCheckedPreviousPostcode,
+                                                            grouped);
+                                                } else {
+                                                    postcodeMaps(
+                                                            paymentType,
+                                                            yM3s,
+                                                            includeName,
+                                                            include,
+                                                            allTenancyTypeChanges.get(doUnderOccupancyData),
+                                                            doTenancyTypeAndPostcodeChange,
+                                                            doUnderOccupancyData,
+                                                            doCouncil,
+                                                            doRSL,
+                                                            doCheckedPreviousTenure,
+                                                            doCheckedPreviousPostcode,
+                                                            grouped);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    iteb1 = b.iterator();
+                                    while (iteb1.hasNext()) {
+                                        doCouncil = iteb1.next();
+                                        Iterator<Boolean> iteb2;
+                                        iteb2 = b.iterator();
+                                        while (iteb2.hasNext()) {
+                                            boolean doCheckedPreviousTenure;
+                                            doCheckedPreviousTenure = iteb2.next();
+                                            Iterator<Boolean> iteb3;
+                                            iteb3 = b.iterator();
+                                            while (iteb3.hasNext()) {
+                                                boolean doCheckedPreviousPostcode;
+                                                doCheckedPreviousPostcode = iteb3.next();
+                                                Iterator<Boolean> iteb4;
+                                                iteb4 = b.iterator();
+                                                while (iteb4.hasNext()) {
+                                                    boolean doGrouped;
+                                                    doGrouped = iteb4.next();
+                                                    if (doGrouped) {
+                                                        postcodeMaps(
+                                                                paymentType,
+                                                                yM3s,
+                                                                includeName,
+                                                                include,
+                                                                allTenancyTypeChangesGrouped.get(doUnderOccupancyData),
+                                                                doTenancyTypeAndPostcodeChange,
+                                                                doUnderOccupancyData,
+                                                                doCouncil,
+                                                                false,
+                                                                doCheckedPreviousTenure,
+                                                                doCheckedPreviousPostcode,
+                                                                doGrouped);
+                                                    } else {
+                                                        postcodeMaps(
+                                                                paymentType,
+                                                                yM3s,
+                                                                includeName,
+                                                                include,
+                                                                allTenancyTypeChanges.get(doUnderOccupancyData),
+                                                                doTenancyTypeAndPostcodeChange,
+                                                                doUnderOccupancyData,
+                                                                doCouncil,
+                                                                false,
+                                                                doCheckedPreviousTenure,
+                                                                doCheckedPreviousPostcode,
+                                                                doGrouped);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    Iterator<Boolean> iteb1;
+                                    iteb1 = b.iterator();
+                                    while (iteb1.hasNext()) {
+                                        boolean doCheckedPreviousTenure;
+                                        doCheckedPreviousTenure = iteb1.next();
+                                        Iterator<Boolean> iteb2;
+                                        iteb2 = b.iterator();
+                                        while (iteb2.hasNext()) {
+                                            boolean doCheckedPreviousPostcode;
+                                            doCheckedPreviousPostcode = iteb2.next();
+                                            Iterator<Boolean> iteb3;
+                                            iteb3 = b.iterator();
+                                            while (iteb3.hasNext()) {
+                                                boolean doGrouped;
+                                                doGrouped = iteb3.next();
+                                                if (doGrouped) {
+                                                    postcodeMaps(
+                                                            paymentType,
+                                                            yM3s,
+                                                            includeName,
+                                                            include,
+                                                            allTenancyTypeChangesGrouped.get(doUnderOccupancyData),
+                                                            doTenancyTypeAndPostcodeChange,
+                                                            doUnderOccupancyData,
+                                                            false,
                                                             false,
                                                             doCheckedPreviousTenure,
                                                             doCheckedPreviousPostcode,
@@ -912,7 +991,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
                                                             allTenancyTypeChanges.get(doUnderOccupancyData),
                                                             doTenancyTypeAndPostcodeChange,
                                                             doUnderOccupancyData,
-                                                            doCouncil,
+                                                            false,
                                                             false,
                                                             doCheckedPreviousTenure,
                                                             doCheckedPreviousPostcode,
@@ -922,12 +1001,62 @@ public class DW_LineMaps_LCC extends DW_Maps {
                                         }
                                     }
                                 }
-                            } else {
+                            }
+                        }
+                    }
+                    // Postcode Only Changes (does not includes postcode changes between different TTs)
+                if (true) {
+//                    if (false) {
+                        Iterator<Boolean> iteb;
+                        iteb = b.iterator();
+                        boolean doUnderOccupancyData;
+                        while (iteb.hasNext()) {
+                            doUnderOccupancyData = iteb.next();
+                            if (doUnderOccupancyData) {
+                                boolean doCouncil;
+                                doCouncil = true;
+                                boolean doRSL;
+                                doRSL = true;
                                 Iterator<Boolean> iteb1;
                                 iteb1 = b.iterator();
                                 while (iteb1.hasNext()) {
-                                    boolean doCheckedPreviousTenure;
-                                    doCheckedPreviousTenure = iteb1.next();
+                                    boolean doCheckedPreviousPostcode;
+                                    doCheckedPreviousPostcode = iteb1.next();
+                                    Iterator<Boolean> iteb2;
+                                    iteb2 = b.iterator();
+                                    while (iteb2.hasNext()) {
+                                        boolean grouped;
+                                        grouped = iteb2.next();
+                                        if (grouped) {
+                                            postcodeMaps(
+                                                    paymentType,
+                                                    yM3s,
+                                                    includeName,
+                                                    include,
+                                                    allTenancyTypeGroupsGrouped.get(doUnderOccupancyData),
+                                                    doUnderOccupancyData,
+                                                    doCouncil,
+                                                    doRSL,
+                                                    doCheckedPreviousPostcode,
+                                                    grouped);
+                                        } else {
+                                            postcodeMaps(
+                                                    paymentType,
+                                                    yM3s,
+                                                    includeName,
+                                                    include,
+                                                    allTenancyTypeGroups.get(doUnderOccupancyData),
+                                                    doUnderOccupancyData,
+                                                    doCouncil,
+                                                    doRSL,
+                                                    doCheckedPreviousPostcode,
+                                                    grouped);
+                                        }
+                                    }
+                                }
+                                iteb1 = b.iterator();
+                                while (iteb1.hasNext()) {
+                                    doCouncil = iteb1.next();
                                     Iterator<Boolean> iteb2;
                                     iteb2 = b.iterator();
                                     while (iteb2.hasNext()) {
@@ -944,12 +1073,10 @@ public class DW_LineMaps_LCC extends DW_Maps {
                                                         yM3s,
                                                         includeName,
                                                         include,
-                                                        allTenancyTypeChangesGrouped.get(doUnderOccupancyData),
-                                                        doTenancyTypeAndPostcodeChange,
+                                                        allTenancyTypeGroupsGrouped.get(doUnderOccupancyData),
                                                         doUnderOccupancyData,
+                                                        doCouncil,
                                                         false,
-                                                        false,
-                                                        doCheckedPreviousTenure,
                                                         doCheckedPreviousPostcode,
                                                         doGrouped);
                                             } else {
@@ -958,85 +1085,27 @@ public class DW_LineMaps_LCC extends DW_Maps {
                                                         yM3s,
                                                         includeName,
                                                         include,
-                                                        allTenancyTypeChanges.get(doUnderOccupancyData),
-                                                        doTenancyTypeAndPostcodeChange,
+                                                        allTenancyTypeGroups.get(doUnderOccupancyData),
                                                         doUnderOccupancyData,
+                                                        doCouncil,
                                                         false,
-                                                        false,
-                                                        doCheckedPreviousTenure,
                                                         doCheckedPreviousPostcode,
                                                         doGrouped);
                                             }
                                         }
                                     }
                                 }
-                            }
-                        }
-                    }
-                }
-                // Postcode Only Changes (does not includes postcode changes between different TTs)
-//                if (true) {
-                if (false) {
-                    Iterator<Boolean> iteb;
-                    iteb = b.iterator();
-                    boolean doUnderOccupancyData;
-                    while (iteb.hasNext()) {
-                        doUnderOccupancyData = iteb.next();
-                        if (doUnderOccupancyData) {
-                            boolean doCouncil;
-                            doCouncil = true;
-                            boolean doRSL;
-                            doRSL = true;
-                            Iterator<Boolean> iteb1;
-                            iteb1 = b.iterator();
-                            while (iteb1.hasNext()) {
-                                boolean doCheckedPreviousPostcode;
-                                doCheckedPreviousPostcode = iteb1.next();
-                                Iterator<Boolean> iteb2;
-                                iteb2 = b.iterator();
-                                while (iteb2.hasNext()) {
-                                    boolean grouped;
-                                    grouped = iteb2.next();
-                                    if (grouped) {
-                                        postcodeMaps(
-                                                paymentType,
-                                                yM3s,
-                                                includeName,
-                                                include,
-                                                allTenancyTypeGroupsGrouped.get(doUnderOccupancyData),
-                                                doUnderOccupancyData,
-                                                doCouncil,
-                                                doRSL,
-                                                doCheckedPreviousPostcode,
-                                                grouped);
-                                    } else {
-                                        postcodeMaps(
-                                                paymentType,
-                                                yM3s,
-                                                includeName,
-                                                include,
-                                                allTenancyTypeGroups.get(doUnderOccupancyData),
-                                                doUnderOccupancyData,
-                                                doCouncil,
-                                                doRSL,
-                                                doCheckedPreviousPostcode,
-                                                grouped);
-                                    }
-                                }
-                            }
-                            iteb1 = b.iterator();
-                            while (iteb1.hasNext()) {
-                                doCouncil = iteb1.next();
-                                Iterator<Boolean> iteb2;
-                                iteb2 = b.iterator();
-                                while (iteb2.hasNext()) {
+                            } else {
+                                Iterator<Boolean> iteb1;
+                                iteb1 = b.iterator();
+                                while (iteb1.hasNext()) {
                                     boolean doCheckedPreviousPostcode;
-                                    doCheckedPreviousPostcode = iteb2.next();
-                                    Iterator<Boolean> iteb3;
-                                    iteb3 = b.iterator();
-                                    while (iteb3.hasNext()) {
+                                    doCheckedPreviousPostcode = iteb1.next();
+                                    Iterator<Boolean> iteb2;
+                                    iteb2 = b.iterator();
+                                    while (iteb2.hasNext()) {
                                         boolean doGrouped;
-                                        doGrouped = iteb3.next();
+                                        doGrouped = iteb2.next();
                                         if (doGrouped) {
                                             postcodeMaps(
                                                     paymentType,
@@ -1045,7 +1114,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
                                                     include,
                                                     allTenancyTypeGroupsGrouped.get(doUnderOccupancyData),
                                                     doUnderOccupancyData,
-                                                    doCouncil,
+                                                    false,
                                                     false,
                                                     doCheckedPreviousPostcode,
                                                     doGrouped);
@@ -1057,7 +1126,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
                                                     include,
                                                     allTenancyTypeGroups.get(doUnderOccupancyData),
                                                     doUnderOccupancyData,
-                                                    doCouncil,
+                                                    false,
                                                     false,
                                                     doCheckedPreviousPostcode,
                                                     doGrouped);
@@ -1065,132 +1134,144 @@ public class DW_LineMaps_LCC extends DW_Maps {
                                     }
                                 }
                             }
-                        } else {
-                            Iterator<Boolean> iteb1;
-                            iteb1 = b.iterator();
-                            while (iteb1.hasNext()) {
-                                boolean doCheckedPreviousPostcode;
-                                doCheckedPreviousPostcode = iteb1.next();
-                                Iterator<Boolean> iteb2;
-                                iteb2 = b.iterator();
-                                while (iteb2.hasNext()) {
-                                    boolean doGrouped;
-                                    doGrouped = iteb2.next();
-                                    if (doGrouped) {
-                                        postcodeMaps(
-                                                paymentType,
-                                                yM3s,
-                                                includeName,
-                                                include,
-                                                allTenancyTypeGroupsGrouped.get(doUnderOccupancyData),
-                                                doUnderOccupancyData,
-                                                false,
-                                                false,
-                                                doCheckedPreviousPostcode,
-                                                doGrouped);
-                                    } else {
-                                        postcodeMaps(
-                                                paymentType,
-                                                yM3s,
-                                                includeName,
-                                                include,
-                                                allTenancyTypeGroups.get(doUnderOccupancyData),
-                                                doUnderOccupancyData,
-                                                false,
-                                                false,
-                                                doCheckedPreviousPostcode,
-                                                doGrouped);
-                                    }
-                                }
-                            }
                         }
                     }
-                }
-                // Postcode changes all (includes changes within the same TT and between TTs)
-                if (true) {
+                    // Postcode changes all (includes changes within the same TT and between TTs)
+                    if (true) {
 //                if (false) {
-                    boolean doTenancyTypeAndPostcodeChange;
-                    Iterator<Boolean> iteb0;
-                    iteb0 = b.iterator();
-                    while (iteb0.hasNext()) {
-                        doTenancyTypeAndPostcodeChange = iteb0.next();
-                        Iterator<Boolean> iteb;
-                        iteb = b.iterator();
-                        while (iteb.hasNext()) {
-                            boolean doUnderOccupancyData;
-                            doUnderOccupancyData = iteb.next();
-                            if (doUnderOccupancyData) {
-                                boolean doCouncil;
-                                doCouncil = true;
-                                boolean doRSL;
-                                doRSL = true;
-                                Iterator<Boolean> iteb1;
-                                iteb1 = b.iterator();
-                                while (iteb1.hasNext()) {
-                                    boolean doCheckedPreviousTenure;
-                                    doCheckedPreviousTenure = iteb1.next();
-                                    Iterator<Boolean> iteb2;
-                                    iteb2 = b.iterator();
-                                    while (iteb2.hasNext()) {
-                                        boolean doCheckedPreviousPostcode;
-                                        doCheckedPreviousPostcode = iteb2.next();
-                                        Iterator<Boolean> iteb3;
-                                        iteb3 = b.iterator();
-                                        while (iteb3.hasNext()) {
-                                            boolean grouped;
-                                            grouped = iteb3.next();
-                                            if (grouped) {
-                                                postcodeMaps(
-                                                        paymentType,
-                                                        yM3s,
-                                                        includeName,
-                                                        include,
-                                                        allTenancyTypeChangesSocialGrouped.get(doUnderOccupancyData),
-                                                        true,
-                                                        doTenancyTypeAndPostcodeChange,
-                                                        doUnderOccupancyData,
-                                                        doCouncil,
-                                                        doRSL,
-                                                        doCheckedPreviousTenure,
-                                                        doCheckedPreviousPostcode,
-                                                        grouped);
-                                            } else {
-                                                postcodeMaps(
-                                                        paymentType,
-                                                        yM3s,
-                                                        includeName,
-                                                        include,
-                                                        allTenancyTypeChangesSocial.get(doUnderOccupancyData),
-                                                        true,
-                                                        doTenancyTypeAndPostcodeChange,
-                                                        doUnderOccupancyData,
-                                                        doCouncil,
-                                                        doRSL,
-                                                        doCheckedPreviousTenure,
-                                                        doCheckedPreviousPostcode,
-                                                        grouped);
+                        boolean doTenancyTypeAndPostcodeChange;
+                        Iterator<Boolean> iteb0;
+                        iteb0 = b.iterator();
+                        while (iteb0.hasNext()) {
+                            doTenancyTypeAndPostcodeChange = iteb0.next();
+                            Iterator<Boolean> iteb;
+                            iteb = b.iterator();
+                            while (iteb.hasNext()) {
+                                boolean doUnderOccupancyData;
+                                doUnderOccupancyData = iteb.next();
+                                if (doUnderOccupancyData) {
+                                    boolean doCouncil;
+                                    doCouncil = true;
+                                    boolean doRSL;
+                                    doRSL = true;
+                                    Iterator<Boolean> iteb1;
+                                    iteb1 = b.iterator();
+                                    while (iteb1.hasNext()) {
+                                        boolean doCheckedPreviousTenure;
+                                        doCheckedPreviousTenure = iteb1.next();
+                                        Iterator<Boolean> iteb2;
+                                        iteb2 = b.iterator();
+                                        while (iteb2.hasNext()) {
+                                            boolean doCheckedPreviousPostcode;
+                                            doCheckedPreviousPostcode = iteb2.next();
+                                            Iterator<Boolean> iteb3;
+                                            iteb3 = b.iterator();
+                                            while (iteb3.hasNext()) {
+                                                boolean grouped;
+                                                grouped = iteb3.next();
+                                                if (grouped) {
+                                                    postcodeMaps(
+                                                            paymentType,
+                                                            yM3s,
+                                                            includeName,
+                                                            include,
+                                                            allTenancyTypeChangesSocialGrouped.get(doUnderOccupancyData),
+                                                            true,
+                                                            doTenancyTypeAndPostcodeChange,
+                                                            doUnderOccupancyData,
+                                                            doCouncil,
+                                                            doRSL,
+                                                            doCheckedPreviousTenure,
+                                                            doCheckedPreviousPostcode,
+                                                            grouped);
+                                                } else {
+                                                    postcodeMaps(
+                                                            paymentType,
+                                                            yM3s,
+                                                            includeName,
+                                                            include,
+                                                            allTenancyTypeChangesSocial.get(doUnderOccupancyData),
+                                                            true,
+                                                            doTenancyTypeAndPostcodeChange,
+                                                            doUnderOccupancyData,
+                                                            doCouncil,
+                                                            doRSL,
+                                                            doCheckedPreviousTenure,
+                                                            doCheckedPreviousPostcode,
+                                                            grouped);
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                iteb1 = b.iterator();
-                                while (iteb1.hasNext()) {
-                                    doCouncil = iteb1.next();
-                                    Iterator<Boolean> iteb2;
-                                    iteb2 = b.iterator();
-                                    while (iteb2.hasNext()) {
+                                    iteb1 = b.iterator();
+                                    while (iteb1.hasNext()) {
+                                        doCouncil = iteb1.next();
+                                        Iterator<Boolean> iteb2;
+                                        iteb2 = b.iterator();
+                                        while (iteb2.hasNext()) {
+                                            boolean doCheckedPreviousTenure;
+                                            doCheckedPreviousTenure = iteb2.next();
+                                            Iterator<Boolean> iteb3;
+                                            iteb3 = b.iterator();
+                                            while (iteb3.hasNext()) {
+                                                boolean doCheckedPreviousPostcode;
+                                                doCheckedPreviousPostcode = iteb3.next();
+                                                Iterator<Boolean> iteb4;
+                                                iteb4 = b.iterator();
+                                                while (iteb4.hasNext()) {
+                                                    boolean doGrouped;
+                                                    doGrouped = iteb4.next();
+                                                    if (doGrouped) {
+                                                        postcodeMaps(
+                                                                paymentType,
+                                                                yM3s,
+                                                                includeName,
+                                                                include,
+                                                                allTenancyTypeChangesSocialGrouped.get(doUnderOccupancyData),
+                                                                true,
+                                                                doTenancyTypeAndPostcodeChange,
+                                                                doUnderOccupancyData,
+                                                                doCouncil,
+                                                                false,
+                                                                doCheckedPreviousTenure,
+                                                                doCheckedPreviousPostcode,
+                                                                doGrouped);
+                                                    } else {
+                                                        postcodeMaps(
+                                                                paymentType,
+                                                                yM3s,
+                                                                includeName,
+                                                                include,
+                                                                allTenancyTypeChangesSocial.get(doUnderOccupancyData),
+                                                                true,
+                                                                doTenancyTypeAndPostcodeChange,
+                                                                doUnderOccupancyData,
+                                                                doCouncil,
+                                                                false,
+                                                                doCheckedPreviousTenure,
+                                                                doCheckedPreviousPostcode,
+                                                                doGrouped);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    Iterator<Boolean> iteb1;
+                                    iteb1 = b.iterator();
+                                    while (iteb1.hasNext()) {
                                         boolean doCheckedPreviousTenure;
-                                        doCheckedPreviousTenure = iteb2.next();
-                                        Iterator<Boolean> iteb3;
-                                        iteb3 = b.iterator();
-                                        while (iteb3.hasNext()) {
+                                        doCheckedPreviousTenure = iteb1.next();
+                                        Iterator<Boolean> iteb2;
+                                        iteb2 = b.iterator();
+                                        while (iteb2.hasNext()) {
                                             boolean doCheckedPreviousPostcode;
-                                            doCheckedPreviousPostcode = iteb3.next();
-                                            Iterator<Boolean> iteb4;
-                                            iteb4 = b.iterator();
-                                            while (iteb4.hasNext()) {
+                                            doCheckedPreviousPostcode = iteb2.next();
+                                            Iterator<Boolean> iteb3;
+                                            iteb3 = b.iterator();
+                                            while (iteb3.hasNext()) {
                                                 boolean doGrouped;
-                                                doGrouped = iteb4.next();
+                                                doGrouped = iteb3.next();
                                                 if (doGrouped) {
                                                     postcodeMaps(
                                                             paymentType,
@@ -1198,10 +1279,10 @@ public class DW_LineMaps_LCC extends DW_Maps {
                                                             includeName,
                                                             include,
                                                             allTenancyTypeChangesSocialGrouped.get(doUnderOccupancyData),
-                                                        true,
-                                                        doTenancyTypeAndPostcodeChange,
+                                                            true,
+                                                            doTenancyTypeAndPostcodeChange,
                                                             doUnderOccupancyData,
-                                                            doCouncil,
+                                                            false,
                                                             false,
                                                             doCheckedPreviousTenure,
                                                             doCheckedPreviousPostcode,
@@ -1213,65 +1294,15 @@ public class DW_LineMaps_LCC extends DW_Maps {
                                                             includeName,
                                                             include,
                                                             allTenancyTypeChangesSocial.get(doUnderOccupancyData),
-                                                        true,
-                                                        doTenancyTypeAndPostcodeChange,
+                                                            true,
+                                                            doTenancyTypeAndPostcodeChange,
                                                             doUnderOccupancyData,
-                                                            doCouncil,
+                                                            false,
                                                             false,
                                                             doCheckedPreviousTenure,
                                                             doCheckedPreviousPostcode,
                                                             doGrouped);
                                                 }
-                                            }
-                                        }
-                                    }
-                                }
-                            } else {
-                                Iterator<Boolean> iteb1;
-                                iteb1 = b.iterator();
-                                while (iteb1.hasNext()) {
-                                    boolean doCheckedPreviousTenure;
-                                    doCheckedPreviousTenure = iteb1.next();
-                                    Iterator<Boolean> iteb2;
-                                    iteb2 = b.iterator();
-                                    while (iteb2.hasNext()) {
-                                        boolean doCheckedPreviousPostcode;
-                                        doCheckedPreviousPostcode = iteb2.next();
-                                        Iterator<Boolean> iteb3;
-                                        iteb3 = b.iterator();
-                                        while (iteb3.hasNext()) {
-                                            boolean doGrouped;
-                                            doGrouped = iteb3.next();
-                                            if (doGrouped) {
-                                                postcodeMaps(
-                                                        paymentType,
-                                                        yM3s,
-                                                        includeName,
-                                                        include,
-                                                        allTenancyTypeChangesSocialGrouped.get(doUnderOccupancyData),
-                                                        true,
-                                                        doTenancyTypeAndPostcodeChange,
-                                                        doUnderOccupancyData,
-                                                        false,
-                                                        false,
-                                                        doCheckedPreviousTenure,
-                                                        doCheckedPreviousPostcode,
-                                                        doGrouped);
-                                            } else {
-                                                postcodeMaps(
-                                                        paymentType,
-                                                        yM3s,
-                                                        includeName,
-                                                        include,
-                                                        allTenancyTypeChangesSocial.get(doUnderOccupancyData),
-                                                        true,
-                                                        doTenancyTypeAndPostcodeChange,
-                                                        doUnderOccupancyData,
-                                                        false,
-                                                        false,
-                                                        doCheckedPreviousTenure,
-                                                        doCheckedPreviousPostcode,
-                                                        doGrouped);
                                             }
                                         }
                                     }
@@ -1300,16 +1331,23 @@ public class DW_LineMaps_LCC extends DW_Maps {
         }
     }
 
-    private void init() {
+    private void init(boolean doCommunityAreasOverlay) {
         initStyleParameters();
-        mapDirectory = DW_Files.getOutputSHBELineMapsDir();
         foregrounds = new ArrayList<AGDT_Shapefile>();
+        mapDirectory = DW_Files.getOutputSHBELineMapsDir();
+        if (doCommunityAreasOverlay) {
+            mapDirectory = new File(
+                    mapDirectory,
+                    "CommunityAreasOverlaid");
+            foregrounds.add(getCommunityAreasDW_Shapefile());
+        } else {
+            DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
+                    "LSOA", targetPropertyNameLSOA, getShapefileDataStoreFactory());
+            foregrounds.add(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
+        }
         //midgrounds = new ArrayList<AGDT_Shapefile>();
-//        backgrounds = new ArrayList<AGDT_Shapefile>();
+        //backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
-        DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                "LSOA", targetPropertyNameLSOA, getShapefileDataStoreFactory());
-        foregrounds.add(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
     }
 
@@ -1317,7 +1355,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
         styleParameters = new DW_StyleParameters();
         styleParameters.setForegroundStyle(
                 DW_Style.createDefaultPolygonStyle(
-                        Color.GREEN,
+                        Color.BLACK, //Color.GREEN,
                         Color.WHITE), 0);
         styleParameters.setMidgroundStyle(
                 DW_Style.createDefaultLineStyle(Color.LIGHT_GRAY), 0);
@@ -2236,7 +2274,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
             }
         }
     }
-    
+
     public void postcodeMaps(
             String paymentType,
             TreeMap<String, ArrayList<String>> yearMonths,
@@ -2778,7 +2816,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
             }
         }
     }
-    
+
     /**
      * For changes within the same TT.
      *
