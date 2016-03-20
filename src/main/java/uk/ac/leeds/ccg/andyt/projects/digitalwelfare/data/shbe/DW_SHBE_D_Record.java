@@ -3238,7 +3238,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
      */
     private int PartnersIncomeFromWidowsBenefit;
     /**
-     * 196 204 TotalNumberOfRooms
+     * 196 204 TotalNumberOfRooms (LHA cases only)
      */
     private int TotalNumberOfRooms;
     /**

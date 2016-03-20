@@ -35,6 +35,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         implements Serializable {
 
     public static String sDigitalWelfareDir = "/scratch02/DigitalWelfare";
+    //public static String sDigitalWelfareDir = "C:/Users/geoagdt/projects/DigitalWelfare";
     
     /**
      * Used for Logging

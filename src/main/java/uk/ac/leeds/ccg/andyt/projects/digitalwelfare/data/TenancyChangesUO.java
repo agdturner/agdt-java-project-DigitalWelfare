@@ -112,6 +112,14 @@ public class TenancyChangesUO {
     String sFC10To16 = "FemaleChildren10to16";
     String sMC10To16 = "MaleChildren10to16";
 
+    String sSubsequentlyEffectedUOStillUOInOctober2015 = "SubsequentlyEffectedUOStillUOInOctober2015";
+    String sPercentageReceivingDHPInOctober2015 = "PercentageReceivingDHPInOctober2015";
+    String sPercentageInArrearsOctober2015 = "PercentageInArrearsOctober2015";
+    String sPercentageInArrearsAndReceivingDHPInOctober2015 = "PercentageInArrearsAndReceivingDHPInOctober2015";
+    String sPercentageReceivingDHPInOctober2015ThatWereUOInApril2008 = "PercentageReceivingDHPInOctober2015ThatWereUOInApril2008";
+    String sPercentageInArrearsOctober2015ThatWereUOInApril2008 = "PercentageInArrearsOctober2015ThatWereUOInApril2008";
+    String sPercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2008 = "PercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2008";
+
     String sUniqueIndividualsEffected = "UniqueIndividualsEffected";
 
     String sNoValidPostcodeChange = "NoValidPostcodeChange";
@@ -485,6 +493,43 @@ public class TenancyChangesUO {
                 + "by under-occupancy (the number may be higher as a result "
                 + "of twins or if dates of birth not being recorded in "
                 + "multiple cases).");
+
+        generalStatisticDescriptions.put(
+                sSubsequentlyEffectedUOStillUOInOctober2015,
+                "Total count of under-occupancy claims that were not "
+                + "under-occupancy claims in April 2013, but were "
+                + "still under-occupancy claims in October 2015.");
+
+        generalStatisticDescriptions.put(
+                sPercentageReceivingDHPInOctober2015,
+                "Percentage of under-occupancy claims receiving a weekly "
+                + "discretionary Payment for Housing Benefit in October 2015.");
+        generalStatisticDescriptions.put(
+                sPercentageInArrearsOctober2015,
+                "Percentage of Council under-occupancy claims in arrears in "
+                + "October 2015.");
+        generalStatisticDescriptions.put(
+                sPercentageInArrearsAndReceivingDHPInOctober2015,
+                "Percentage of Council under-occupancy claims in arrears and "
+                + "receiving a weekly discretionary Payment for Housing "
+                + "Benefit in October 2015.");
+
+        generalStatisticDescriptions.put(
+                sPercentageReceivingDHPInOctober2015ThatWereUOInApril2008,
+                "Percentage of under-occupancy claims (that were under-"
+                + "occupancy claims in April 2008) receiving a weekly "
+                + "discretionary Payment for Housing Benefit in October 2015.");
+        generalStatisticDescriptions.put(
+                sPercentageInArrearsOctober2015ThatWereUOInApril2008,
+                "Percentage of Council under-occupancy claims (that were under-"
+                + "occupancy claims in April 2008) in arrears in October 2015.");
+        generalStatisticDescriptions.put(
+                sPercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2008,
+                "Percentage of Council under-occupancy claims (that were under-"
+                + "occupancy claims in April 2008) in arrears and receiving a "
+                + "weekly discretionary Payment for Housing Benefit in October "
+                + "2015.");
+
         // LeftSHBE
         generalStatisticDescriptions.put(
                 sUO_To_LeftSHBEAtSomePoint,
@@ -1082,24 +1127,24 @@ public class TenancyChangesUO {
                 sUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint,
                 "Total count of under-occupied TT1 claims in rent arrears and "
                 + "receiving DHP simultaneously some time between " + dates + ".");
-           String sPermanantlyLeftUOButRemainedInSHBE = "PermanantlyLeftUOButRemainedInSHBE";
-    String sPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged = "PermanantlyLeftUOButRemainedInSHBE_PostcodeChanged";
-    String sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased = "PermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased";
+        String sPermanantlyLeftUOButRemainedInSHBE = "PermanantlyLeftUOButRemainedInSHBE";
+        String sPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged = "PermanantlyLeftUOButRemainedInSHBE_PostcodeChanged";
+        String sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased = "PermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased";
         generalStatisticDescriptions.put(
                 sPermanantlyLeftUOButRemainedInSHBE,
                 "Total count of under-occupied claims that stopped being "
-                        + "under-occupied and "
-                        + " which have not returned to under-occupancy.");
+                + "under-occupied and "
+                + " which have not returned to under-occupancy.");
         generalStatisticDescriptions.put(
                 sPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged,
                 "Total count of under-occupied claims that stopped being "
-                        + "under-occupied and changed postcode and "
-                        + " which have not returned to under-occupancy.");
+                + "under-occupied and changed postcode and "
+                + " which have not returned to under-occupancy.");
         generalStatisticDescriptions.put(
                 sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased,
                 "Total count of under-occupied claims that stopped being "
-                        + "under-occupied because of an increase in household size and"
-                        + " which have not returned to under-occupancy.");
+                + "under-occupied because of an increase in household size and"
+                + " which have not returned to under-occupancy.");
         return generalStatisticDescriptions;
     }
 
@@ -1431,12 +1476,10 @@ public class TenancyChangesUO {
                     bS = dRecord.getPartnersDateOfDeath();
                     if (bS == null) {
                         aS += sCommaSpace;
+                    } else if (bS.isEmpty()) {
+                        aS += sCommaSpace;
                     } else {
-                        if (bS.isEmpty()) {
-                            aS += sCommaSpace;
-                        } else {
-                            aS += sCommaSpace + sPDeath + sUnderscore + bS;
-                        }
+                        aS += sCommaSpace + sPDeath + sUnderscore + bS;
                     }
                     result.put(key, aS);
                     // HB Discretionary Payment
@@ -1679,6 +1722,8 @@ public class TenancyChangesUO {
 
         TreeSet<String> tUOClaims;
         tUOClaims = new TreeSet<String>();
+
+        // Init Time Statistics
         TreeMap<String, TreeMap<String, Integer>> timeStatistics;
         timeStatistics = new TreeMap<String, TreeMap<String, Integer>>();
         TreeMap<String, Integer> totalCounts_cumulativeUniqueClaims;
@@ -1697,7 +1742,7 @@ public class TenancyChangesUO {
                 totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms);
 
         HashSet<String>[] tAllCTBRefs;
-        tAllCTBRefs = getCTBRefs(
+        tAllCTBRefs = getUOCTBRefs(
                 councilUnderOccupiedSets,
                 RSLUnderOccupiedSets,
                 SHBEFilenames,
@@ -1710,6 +1755,41 @@ public class TenancyChangesUO {
         tCTBRefs = new HashSet<String>();
         tCTBRefs.addAll(tCouncilCTBRefs);
         tCTBRefs.addAll(tRSLCTBRefs);
+
+        HashSet<String>[] tStartUOCTBRefsX;
+        tStartUOCTBRefsX = getStartUOCTBRefs(
+                councilUnderOccupiedSets,
+                RSLUnderOccupiedSets,
+                SHBEFilenames,
+                include);
+        HashSet<String> tStartUOCTBRefs;
+        tStartUOCTBRefs = new HashSet<String>();
+        tStartUOCTBRefs.addAll(tStartUOCTBRefsX[0]);
+        tStartUOCTBRefs.addAll(tStartUOCTBRefsX[1]);
+
+        HashSet<String>[] tEndUOCTBRefsX;
+        tEndUOCTBRefsX = getEndUOCTBRefs(
+                councilUnderOccupiedSets,
+                RSLUnderOccupiedSets,
+                SHBEFilenames,
+                include);
+        HashSet<String> tEndUOCTBRefs;
+        tEndUOCTBRefs = new HashSet<String>();
+        tEndUOCTBRefs.addAll(tEndUOCTBRefsX[0]);
+        tEndUOCTBRefs.addAll(tEndUOCTBRefsX[1]);
+
+        HashSet<String> subsequentlyEffectedUOStillUOInOctober2015;
+        subsequentlyEffectedUOStillUOInOctober2015 = new HashSet<String>();
+        subsequentlyEffectedUOStillUOInOctober2015.removeAll(tStartUOCTBRefs);
+        subsequentlyEffectedUOStillUOInOctober2015.retainAll(tEndUOCTBRefs);
+
+        tableValues.put(sSubsequentlyEffectedUOStillUOInOctober2015,
+                "" + subsequentlyEffectedUOStillUOInOctober2015.size());
+
+        HashSet<String> tEndUOThatWereAlsoStartUOCTBRefs;
+        tEndUOThatWereAlsoStartUOCTBRefs = new HashSet<String>();
+        tEndUOThatWereAlsoStartUOCTBRefs.addAll(tEndUOCTBRefs);
+        tEndUOThatWereAlsoStartUOCTBRefs.retainAll(tStartUOCTBRefs);
 
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
@@ -1730,7 +1810,163 @@ public class TenancyChangesUO {
                     NotMonthlyUO);
             result[4] = preUnderOccupancyValues;
         }
+        // Load dataset 1
+        Iterator<Integer> includeIte;
+        DW_SHBE_Collection aSHBEData = null;
+        includeIte = include.iterator();
+        String aYM3 = s;
+        String year = s;
+        String month = s;
+        DW_UnderOccupiedReport_Set councilUnderOccupiedSet1 = null;
+        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1 = null;
+        String aSHBEFilename = null;
+        int i;
 
+        String header;
+        header = "CTBRef, ";
+        if (includePreUnderOccupancyValues) {
+            Iterator<Integer> tNotMonthlyUOIte;
+            String yM3;
+            tNotMonthlyUOIte = NotMonthlyUO.iterator();
+            while (tNotMonthlyUOIte.hasNext()) {
+                i = tNotMonthlyUOIte.next();
+                yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                header += yM3 + sCommaSpace;
+            }
+        }
+
+        boolean initFirst;
+        initFirst = false;
+        // Load first data
+        while (!initFirst) {
+            i = includeIte.next();
+            aSHBEFilename = SHBEFilenames[i];
+            aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
+            year = DW_SHBE_Handler.getYear(aSHBEFilename);
+            month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
+            councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
+            if (councilUnderOccupiedSet1 != null) {
+                RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
+                aSHBEData = new DW_SHBE_Collection(aSHBEFilename, paymentType);
+                initFirst = true;
+            }
+            header += aYM3;
+        }
+
+        TreeMap<String, DW_SHBE_Record> aRecords;
+        aRecords = aSHBEData.getRecords();
+        DW_SHBE_Record aDW_SHBE_Record;
+
+        // % in arrears
+        // % getting DHP
+        // % in arrears and getting DHP
+        // All October 2015
+        // All October 2015 that were also there in April 2013
+        String endYM3;
+        Iterator<Integer> iteX;
+        iteX = include.iterator();
+        int j = 0;
+        while (iteX.hasNext()) {
+            j = iteX.next();
+        }
+        endYM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[j]);
+        DW_UnderOccupiedReport_Set endCouncilUnderOccupiedSet;
+        endCouncilUnderOccupiedSet = councilUnderOccupiedSets.get(aYM3);
+        TreeMap<String, DW_UOReport_Record> endCouncilUnderOccupiedSetMap;
+        endCouncilUnderOccupiedSetMap = endCouncilUnderOccupiedSet.getMap();
+        int inArrearsCount = 0;
+        int receivingDHPCount = 0;
+        int inArrearsAndReceivingDHPCount = 0;
+        String aCTBRef;
+        DW_SHBE_D_Record aDRecord;
+        Iterator<String> tCTBRefsIte;
+        tCTBRefsIte = tEndUOCTBRefs.iterator();
+        while (tCTBRefsIte.hasNext()) {
+            aCTBRef = tCTBRefsIte.next();
+            aDW_SHBE_Record = aRecords.get(aCTBRef);
+            aDRecord = aDW_SHBE_Record.getDRecord();
+            int DHP;
+            DHP = aDRecord.getWeeklyAdditionalDiscretionaryPayment();
+            if (DHP > 0) {
+                receivingDHPCount++;
+            }
+            if (endCouncilUnderOccupiedSetMap.containsKey(aCTBRef)) {
+                DW_UOReport_Record UORec;
+                UORec = endCouncilUnderOccupiedSetMap.get(aCTBRef);
+                double arrears;
+                arrears = UORec.getTotalRentArrears();
+                if (arrears > 0) {
+                    inArrearsCount++;
+                    if (DHP > 0) {
+                        inArrearsAndReceivingDHPCount++;
+                    }
+                }
+            }
+        }
+        double p;
+        p = ((double) receivingDHPCount) * 100.0d / (double) tEndUOCTBRefs.size();
+        tableValues.put(sPercentageReceivingDHPInOctober2015,
+                "" + p);
+        p = ((double) inArrearsCount) * 100.0d / (double) endCouncilUnderOccupiedSetMap.size();
+        tableValues.put(sPercentageInArrearsOctober2015,
+                "" + p);
+        p = ((double) inArrearsAndReceivingDHPCount) * 100.0d / (double) tEndUOCTBRefs.size();
+        tableValues.put(sPercentageInArrearsAndReceivingDHPInOctober2015,
+                "" + p);
+
+        tCTBRefsIte = tEndUOThatWereAlsoStartUOCTBRefs.iterator();
+        while (tCTBRefsIte.hasNext()) {
+            aCTBRef = tCTBRefsIte.next();
+            aDW_SHBE_Record = aRecords.get(aCTBRef);
+            aDRecord = aDW_SHBE_Record.getDRecord();
+            int DHP;
+            DHP = aDRecord.getWeeklyAdditionalDiscretionaryPayment();
+            if (DHP > 0) {
+                receivingDHPCount++;
+            }
+            if (endCouncilUnderOccupiedSetMap.containsKey(aCTBRef)) {
+                DW_UOReport_Record UORec;
+                UORec = endCouncilUnderOccupiedSetMap.get(aCTBRef);
+                double arrears;
+                arrears = UORec.getTotalRentArrears();
+                if (arrears > 0) {
+                    inArrearsCount++;
+                    if (DHP > 0) {
+                        inArrearsAndReceivingDHPCount++;
+                    }
+                }
+            }
+        }
+        p = ((double) receivingDHPCount) * 100.0d / (double) tEndUOCTBRefs.size();
+        tableValues.put(sPercentageReceivingDHPInOctober2015ThatWereUOInApril2008,
+                "" + p);
+        p = ((double) inArrearsCount) * 100.0d / (double) endCouncilUnderOccupiedSetMap.size();
+        tableValues.put(sPercentageInArrearsOctober2015ThatWereUOInApril2008,
+                "" + p);
+        p = ((double) inArrearsAndReceivingDHPCount) * 100.0d / (double) tEndUOCTBRefs.size();
+        tableValues.put(sPercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2008,
+                "" + p);
+
+
+//        TreeMap<String, ArrayList<Integer>> includes;
+//        includes = DW_SHBE_Handler.getIncludes();
+//        ArrayList<Integer> MonthlyUO;
+//        MonthlyUO = includes.get(DW_SHBE_Handler.sMonthlyUO);
+//        ArrayList<Integer> All;
+//        All = includes.get(DW_SHBE_Handler.sAll);
+//        ArrayList<Integer> NotMonthlyUO;
+//        NotMonthlyUO = new ArrayList<Integer>();
+//        NotMonthlyUO.addAll(All);
+//        NotMonthlyUO.removeAll(MonthlyUO);
+//
+//        TreeMap<String, String> preUnderOccupancyValues;
+//        preUnderOccupancyValues = null;
+//        if (includePreUnderOccupancyValues) {
+//            preUnderOccupancyValues = getPreUnderOccupancyValues(tCTBRefs,
+//                    SHBEFilenames,
+//                    NotMonthlyUO);
+//            result[4] = preUnderOccupancyValues;
+//        }
 //        HashSet<ID> tIDSetCouncilUniqueIndividualsEffected;
 //        tIDSetCouncilUniqueIndividualsEffected = new HashSet<ID>();
         HashSet<ID> tIDSetCouncilUniqueClaimantsEffected;
@@ -1770,15 +2006,15 @@ public class TenancyChangesUO {
         TreeSet<String> tCTBRefSetPermanantlyLeftUOButRemainedInSHBE;
         tCTBRefSetPermanantlyLeftUOButRemainedInSHBE = new TreeSet<String>();
         groups.put(sPermanantlyLeftUOButRemainedInSHBE, tCTBRefSetPermanantlyLeftUOButRemainedInSHBE);
-        
+
         TreeSet<String> tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged;
         tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged = new TreeSet<String>();
         groups.put(sPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged, tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged);
-        
+
         TreeSet<String> tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased;
         tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased = new TreeSet<String>();
         groups.put(sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased, tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased);
-            
+
         TreeSet<String> tCTBRefSetTravellers;
         tCTBRefSetTravellers = new TreeSet<String>();
         groups.put(sTravellers, tCTBRefSetTravellers);
@@ -2470,9 +2706,8 @@ public class TenancyChangesUO {
         tCTBRefSetUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint = new TreeSet<String>();
         groups.put(sUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint, tCTBRefSetUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint);
 
-        String aCTBRef;
-        Iterator<String> tCTBRefsIte;
-
+//        String aCTBRef;
+//        Iterator<String> tCTBRefsIte;
         // Initialise aggregateStatistics and generalStatistics
         TreeMap<String, BigDecimal> aggregateStatistics;
         aggregateStatistics = new TreeMap<String, BigDecimal>();
@@ -2540,57 +2775,56 @@ public class TenancyChangesUO {
             DHP_Totals.put(aCTBRef, 0);
         }
 
-        // Load dataset 1
-        Iterator<Integer> includeIte;
-        DW_SHBE_Collection aSHBEData = null;
-        includeIte = include.iterator();
-        String aYM3 = s;
-        String year = s;
-        String month = s;
-        DW_UnderOccupiedReport_Set councilUnderOccupiedSet1 = null;
-        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1 = null;
-        String aSHBEFilename = null;
-        int i;
-
-        String header;
-        header = "CTBRef, ";
-        if (includePreUnderOccupancyValues) {
-            Iterator<Integer> tNotMonthlyUOIte;
-            String yM3;
-            tNotMonthlyUOIte = NotMonthlyUO.iterator();
-            while (tNotMonthlyUOIte.hasNext()) {
-                i = tNotMonthlyUOIte.next();
-                yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
-                header += yM3 + sCommaSpace;
-            }
-        }
-
-        boolean initFirst;
-        initFirst = false;
-        // Load first data
-        while (!initFirst) {
-            i = includeIte.next();
-            aSHBEFilename = SHBEFilenames[i];
-            aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
-            year = DW_SHBE_Handler.getYear(aSHBEFilename);
-            month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
-            councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
-            if (councilUnderOccupiedSet1 != null) {
-                RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
-                aSHBEData = new DW_SHBE_Collection(aSHBEFilename, paymentType);
-                initFirst = true;
-            }
-            header += aYM3;
-        }
-        TreeMap<String, DW_SHBE_Record> aRecords;
+//        // Load dataset 1
+//        Iterator<Integer> includeIte;
+//        DW_SHBE_Collection aSHBEData = null;
+//        includeIte = include.iterator();
+//        String aYM3 = s;
+//        String year = s;
+//        String month = s;
+//        DW_UnderOccupiedReport_Set councilUnderOccupiedSet1 = null;
+//        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1 = null;
+//        String aSHBEFilename = null;
+//        int i;
+//
+//        String header;
+//        header = "CTBRef, ";
+//        if (includePreUnderOccupancyValues) {
+//            Iterator<Integer> tNotMonthlyUOIte;
+//            String yM3;
+//            tNotMonthlyUOIte = NotMonthlyUO.iterator();
+//            while (tNotMonthlyUOIte.hasNext()) {
+//                i = tNotMonthlyUOIte.next();
+//                yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+//                header += yM3 + sCommaSpace;
+//            }
+//        }
+//
+//        boolean initFirst;
+//        initFirst = false;
+//        // Load first data
+//        while (!initFirst) {
+//            i = includeIte.next();
+//            aSHBEFilename = SHBEFilenames[i];
+//            aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
+//            year = DW_SHBE_Handler.getYear(aSHBEFilename);
+//            month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
+//            councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
+//            if (councilUnderOccupiedSet1 != null) {
+//                RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
+//                aSHBEData = new DW_SHBE_Collection(aSHBEFilename, paymentType);
+//                initFirst = true;
+//            }
+//            header += aYM3;
+//        }
+        //TreeMap<String, DW_SHBE_Record> aRecords;
         aRecords = aSHBEData.getRecords();
         TreeMap<String, DW_SHBE_Record> bRecords;
         bRecords = null;
         TreeMap<String, DW_SHBE_Record> cRecords;
         cRecords = null;
 
-        DW_SHBE_Record aDW_SHBE_Record;
-
+        //DW_SHBE_Record aDW_SHBE_Record;
         TreeSet<String> tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth;
         tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth = new TreeSet<String>();
         TreeSet<String> tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedThisMonth;
@@ -3766,7 +4000,7 @@ public class TenancyChangesUO {
         generalStatistics.put(
                 sInArrearsAtSomePoint_And_DHPAtSomePoint,
                 BigDecimal.valueOf(groups.get(sInArrearsAtSomePoint_And_DHPAtSomePoint).size()));
-        
+
         generalStatistics.put(
                 sPermanantlyLeftUOButRemainedInSHBE,
                 BigDecimal.valueOf(groups.get(sPermanantlyLeftUOButRemainedInSHBE).size()));
@@ -3775,7 +4009,7 @@ public class TenancyChangesUO {
                 BigDecimal.valueOf(groups.get(sPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged).size()));
         generalStatistics.put(
                 sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased,
-                BigDecimal.valueOf(groups.get(sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased).size())); 
+                BigDecimal.valueOf(groups.get(sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased).size()));
     }
 
     public boolean[] process(
@@ -4104,19 +4338,17 @@ public class TenancyChangesUO {
             // Add postcode to validPostcodes if it is valid
             if (aPC.isEmpty()) {
                 aPC = defaultPostcode;
-            } else {
-                //if (!validPostcodesYM3.contains(aPC)) {
-                //    if(DW_Postcode_Handler.isValidPostcode(aYM3, aPC)) {
-                //        validPostcodesYM3.add(aPC);
-                //    }
-                //}
-                if (!validPostcodes.contains(aPC)) {
+            } else //if (!validPostcodesYM3.contains(aPC)) {
+            //    if(DW_Postcode_Handler.isValidPostcode(aYM3, aPC)) {
+            //        validPostcodesYM3.add(aPC);
+            //    }
+            //}
+             if (!validPostcodes.contains(aPC)) {
                     if (DW_Postcode_Handler.isValidPostcode(
                             DW_Postcode_Handler.getNearestYM3ForONSPDLookup(aYM3), aPC)) {
                         validPostcodes.add(aPC);
                     }
                 }
-            }
             aStatus = aDW_SHBE_D_Record.getStatusOfHBClaimAtExtractDate();
             aWHBE = aDW_SHBE_D_Record.getWeeklyHousingBenefitEntitlement();
             aWERA = aDW_SHBE_D_Record.getWeeklyEligibleRentAmount();
@@ -4240,10 +4472,8 @@ public class TenancyChangesUO {
             tCTBRefSetUOAtSomePoint.add(aCTBRef);
             if (aTT == 1) {
                 tCTBRefSetUOTT1AtSomePoint.add(aCTBRef);
-            } else {
-                if (aTT == 4) {
-                    tCTBRefSetUOTT4AtSomePoint.add(aCTBRef);
-                }
+            } else if (aTT == 4) {
+                tCTBRefSetUOTT4AtSomePoint.add(aCTBRef);
             }
         }
 
@@ -4306,11 +4536,9 @@ public class TenancyChangesUO {
                     doA = false;
                     if (wasUO) {
                         doA = true;
-                    } else {
-                        if (bStatus == 2) {
-                            if (wasUOBefore) {
-                                doA = true;
-                            }
+                    } else if (bStatus == 2) {
+                        if (wasUOBefore) {
+                            doA = true;
                         }
                     }
                     if (doA) {
@@ -4320,21 +4548,17 @@ public class TenancyChangesUO {
                             tCTBRefSetUOTT1_To_LeftSHBE_NotReturned.add(aCTBRef);
                             tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
                             tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
+                        } else if (bTT == 4) {
+                            tCTBRefSetUOTT4_To_LeftSHBE.add(aCTBRef);
+                            tCTBRefSetUOTT4_To_LeftSHBE_NotReturned.add(aCTBRef);
+                            tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
+                            tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
+                        } else if (bTT == 3 || bTT == 6) {
+                            tCTBRefSetUOTT3OrTT6_To_LeftSHBE.add(aCTBRef);
+                            tCTBRefSetUOTT3OrTT6_To_LeftSHBE_NotReturned.add(aCTBRef);
                         } else {
-                            if (bTT == 4) {
-                                tCTBRefSetUOTT4_To_LeftSHBE.add(aCTBRef);
-                                tCTBRefSetUOTT4_To_LeftSHBE_NotReturned.add(aCTBRef);
-                                tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
-                                tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
-                            } else {
-                                if (bTT == 3 || bTT == 6) {
-                                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE.add(aCTBRef);
-                                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE_NotReturned.add(aCTBRef);
-                                } else {
-                                    tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE.add(aCTBRef);
-                                    tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned.add(aCTBRef);
-                                }
-                            }
+                            tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE.add(aCTBRef);
+                            tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned.add(aCTBRef);
                         }
                     }
                 }
@@ -4345,14 +4569,12 @@ public class TenancyChangesUO {
                         //tCTBRefSetUOTT1OrTT1_To_UOTT4.add(aCTBRef);
                         if (wasUO) {
                             tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef); // Looking forward, we may see that this claim actually comes out of being UO. To filter for this we should look back in the next iteration and perhaps move claim refs to other sets based upon some logic...
+                        } else if (bStatus == 2 && wasUOBefore) {
+                            tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef); // Looking forward, we may see that this claim actually comes out of being UO. To filter for this we should look back in the next iteration and perhaps move claim refs to other sets based upon some logic...
                         } else {
-                            if (bStatus == 2 && wasUOBefore) {
-                                tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef); // Looking forward, we may see that this claim actually comes out of being UO. To filter for this we should look back in the next iteration and perhaps move claim refs to other sets based upon some logic...
-                            } else {
-                                tCTBRefSetTT1_To_UOTT4.add(aCTBRef);
-                                if (aHBDP > 0) {
-                                    tCTBRefSetTT1_To_UOTT4GettingDHP.add(aCTBRef);
-                                }
+                            tCTBRefSetTT1_To_UOTT4.add(aCTBRef);
+                            if (aHBDP > 0) {
+                                tCTBRefSetTT1_To_UOTT4GettingDHP.add(aCTBRef);
                             }
                         }
                     }
@@ -4379,30 +4601,20 @@ public class TenancyChangesUO {
                         } else {
                             tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT1.add(aCTBRef);
                         }
-                    } else {
-                        if (aTT == 4) {
-                            if (isUO) {
-                                tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT4.add(aCTBRef);
-                            } else {
-                                tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
-                            }
+                    } else if (aTT == 4) {
+                        if (isUO) {
+                            tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsUOTT4.add(aCTBRef);
                         } else {
-                            if (aTT == 3 || aTT == 6) {
-                                tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6.add(aCTBRef);
-                            } else {
-                                if (aTT == 5 || aTT == 7) {
-                                    tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7.add(aCTBRef);
-                                } else {
-                                    if (aTT == 8) {
-                                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT8.add(aCTBRef);
-                                    } else {
-                                        if (aTT == 9) {
-                                            tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9.add(aCTBRef);
-                                        }
-                                    }
-                                }
-                            }
+                            tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
                         }
+                    } else if (aTT == 3 || aTT == 6) {
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6.add(aCTBRef);
+                    } else if (aTT == 5 || aTT == 7) {
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7.add(aCTBRef);
+                    } else if (aTT == 8) {
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT8.add(aCTBRef);
+                    } else if (aTT == 9) {
+                        tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAsTT9.add(aCTBRef);
                     }
                 }
                 if (tCTBRefSetUOTT3OrTT6_To_LeftSHBE_NotReturned.contains(aCTBRef)) {
@@ -4413,30 +4625,20 @@ public class TenancyChangesUO {
                         } else {
                             tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1.add(aCTBRef);
                         }
-                    } else {
-                        if (aTT == 4) {
-                            if (isUO) {
-                                tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4.add(aCTBRef);
-                            } else {
-                                tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
-                            }
+                    } else if (aTT == 4) {
+                        if (isUO) {
+                            tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4.add(aCTBRef);
                         } else {
-                            if (aTT == 3 || aTT == 6) {
-                                tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6.add(aCTBRef);
-                            } else {
-                                if (aTT == 5 || aTT == 7) {
-                                    tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7.add(aCTBRef);
-                                } else {
-                                    if (aTT == 8) {
-                                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8.add(aCTBRef);
-                                    } else {
-                                        if (aTT == 9) {
-                                            tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9.add(aCTBRef);
-                                        }
-                                    }
-                                }
-                            }
+                            tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
                         }
+                    } else if (aTT == 3 || aTT == 6) {
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6.add(aCTBRef);
+                    } else if (aTT == 5 || aTT == 7) {
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7.add(aCTBRef);
+                    } else if (aTT == 8) {
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8.add(aCTBRef);
+                    } else if (aTT == 9) {
+                        tCTBRefSetUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9.add(aCTBRef);
                     }
                 }
                 if (tCTBRefSetUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned.contains(aCTBRef)) {
@@ -4469,31 +4671,25 @@ public class TenancyChangesUO {
                             tCTBRefSetUOTT1_To_TT3OrTT6.add(aCTBRef);
                             tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
                             tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
-                        } else {
-                            if (bStatus == 2) {
-                                if (wasUOBefore) {
-                                    tCTBRefSetUOTT1_To_TT3OrTT6.add(aCTBRef);
-                                    tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
-                                    tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
-                                }
+                        } else if (bStatus == 2) {
+                            if (wasUOBefore) {
+                                tCTBRefSetUOTT1_To_TT3OrTT6.add(aCTBRef);
+                                tCTBRefSetUOTT1_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
+                                tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
                             }
                         }
-                    } else {
-                        if (bTT == 4) {
-                            tCTBRefSetTT4_To_TT3OrTT6.add(aCTBRef);
-                            // If previously UO then add to set of those that move from UO TT4 to TT3 or TT6
-                            if (wasUO) {
+                    } else if (bTT == 4) {
+                        tCTBRefSetTT4_To_TT3OrTT6.add(aCTBRef);
+                        // If previously UO then add to set of those that move from UO TT4 to TT3 or TT6
+                        if (wasUO) {
+                            tCTBRefSetUOTT4_To_TT3OrTT6.add(aCTBRef);
+                            tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
+                            tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
+                        } else if (bStatus == 2) {
+                            if (wasUOBefore) {
                                 tCTBRefSetUOTT4_To_TT3OrTT6.add(aCTBRef);
                                 tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
                                 tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
-                            } else {
-                                if (bStatus == 2) {
-                                    if (wasUOBefore) {
-                                        tCTBRefSetUOTT4_To_TT3OrTT6.add(aCTBRef);
-                                        tCTBRefSetUOTT4_To_TT3OrTT6NotDoneNextChange.add(aCTBRef);
-                                        tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.add(aCTBRef);
-                                    }
-                                }
                             }
                         }
                     }
@@ -4516,14 +4712,12 @@ public class TenancyChangesUO {
                             } else {
                                 tCTBRefSetTT3OrTT6_To_TT1.add(aCTBRef);
                             }
-                        } else {
-                            if (aTT == 4) {
-                                // If UO add to set that move from the PRS to RSL UO.
-                                if (isUO) {
-                                    tCTBRefSetTT3OrTT6_To_UOTT4.add(aCTBRef);  // Looking forward, we may see that this claim actually comes out of being UO almost immediately. This is kind of different to those claims that get stuck in UO for a significant period.
-                                } else {
-                                    tCTBRefSetTT3OrTT6_To_TT4.add(aCTBRef);
-                                }
+                        } else if (aTT == 4) {
+                            // If UO add to set that move from the PRS to RSL UO.
+                            if (isUO) {
+                                tCTBRefSetTT3OrTT6_To_UOTT4.add(aCTBRef);  // Looking forward, we may see that this claim actually comes out of being UO almost immediately. This is kind of different to those claims that get stuck in UO for a significant period.
+                            } else {
+                                tCTBRefSetTT3OrTT6_To_TT4.add(aCTBRef);
                             }
                         }
                     }
@@ -4545,10 +4739,8 @@ public class TenancyChangesUO {
             tUOClaims.add(aCTBRef);
             if (aTT == 1) {
                 tCTBRefSetAlwaysUOTT1FromWhenStarted.add(aCTBRef);
-            } else {
-                if (aTT == 4) {
-                    tCTBRefSetAlwaysUOTT4FromWhenStarted.add(aCTBRef);
-                }
+            } else if (aTT == 4) {
+                tCTBRefSetAlwaysUOTT4FromWhenStarted.add(aCTBRef);
             }
             aS += sCommaSpace + sU;
             BigDecimal bd;
@@ -4610,32 +4802,24 @@ public class TenancyChangesUO {
                             if (aTT == 1) {
                                 tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged.add(aCTBRef);
                                 tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth.add(aCTBRef);
-                            } else {
-                                if (aTT == 4) {
-                                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged.add(aCTBRef);
-                                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedThisMonth.add(aCTBRef);
-                                }
+                            } else if (aTT == 4) {
+                                tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged.add(aCTBRef);
+                                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedThisMonth.add(aCTBRef);
                             }
                         }
                     }
                     if (tCTBRefSetUO_NotUO.contains(aCTBRef)) {
                         tCTBRefSetUO_NotUO_UO.add(aCTBRef);
                         tCTBRefSetUO_NotUO.remove(aCTBRef);
-                    } else {
-                        if (tCTBRefSetUO_NotUO_UO_NotUO.contains(aCTBRef)) {
-                            tCTBRefSetUO_NotUO_UO_NotUO_UO.add(aCTBRef);
-                            tCTBRefSetUO_NotUO_UO_NotUO.remove(aCTBRef);
-                        } else {
-                            if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.contains(aCTBRef)) {
-                                tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.add(aCTBRef);
-                                tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.remove(aCTBRef);
-                            } else {
-                                if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.contains(aCTBRef)) {
-                                    tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO.add(aCTBRef);
-                                    tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.remove(aCTBRef);
-                                }
-                            }
-                        }
+                    } else if (tCTBRefSetUO_NotUO_UO_NotUO.contains(aCTBRef)) {
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO.add(aCTBRef);
+                        tCTBRefSetUO_NotUO_UO_NotUO.remove(aCTBRef);
+                    } else if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.contains(aCTBRef)) {
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.add(aCTBRef);
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.remove(aCTBRef);
+                    } else if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.contains(aCTBRef)) {
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO.add(aCTBRef);
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.remove(aCTBRef);
                     }
                 }
             }
@@ -4666,25 +4850,21 @@ public class TenancyChangesUO {
                     if (tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.contains(aCTBRef)) {
                         tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO.add(aCTBRef);
                         tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO_UO.remove(aCTBRef);
+                    } else if (tCTBRefSetUO_NotUO_UO_NotUO_UO.contains(aCTBRef)) {
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.add(aCTBRef);
+                        tCTBRefSetUO_NotUO_UO_NotUO_UO.remove(aCTBRef);
+                    } else if (tCTBRefSetUO_NotUO_UO.contains(aCTBRef)) {
+                        tCTBRefSetUO_NotUO_UO_NotUO.add(aCTBRef);
+                        tCTBRefSetUO_NotUO_UO.remove(aCTBRef);
                     } else {
-                        if (tCTBRefSetUO_NotUO_UO_NotUO_UO.contains(aCTBRef)) {
-                            tCTBRefSetUO_NotUO_UO_NotUO_UO_NotUO.add(aCTBRef);
-                            tCTBRefSetUO_NotUO_UO_NotUO_UO.remove(aCTBRef);
-                        } else {
-                            if (tCTBRefSetUO_NotUO_UO.contains(aCTBRef)) {
-                                tCTBRefSetUO_NotUO_UO_NotUO.add(aCTBRef);
-                                tCTBRefSetUO_NotUO_UO.remove(aCTBRef);
-                            } else {
-                                tCTBRefSetUO_NotUO.add(aCTBRef);
-                            }
-                        }
+                        tCTBRefSetUO_NotUO.add(aCTBRef);
                     }
                     if (aTT == DW_SHBE_TenancyType_Handler.iMinus999) {
                         tCTBRefSetUO_To_LeftSHBETheVeryNextMonth.add(aCTBRef);
                     } else {
                         tCTBRefSetPermanantlyLeftUOButRemainedInSHBE.add(aCTBRef);
                         if (aHS > bHS) {
-                           tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased.add(aCTBRef);
+                            tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased.add(aCTBRef);
                         }
                         if (!aPC.equalsIgnoreCase(bPC)) {
                             if (validPostcodes.contains(aPC) && validPostcodes.contains(bPC)) {
@@ -4695,21 +4875,15 @@ public class TenancyChangesUO {
                                 if (aTT == 1) {
                                     if (bTT == 1) {
                                         tCTBRefSetUOTT1_To_TT1_PostcodeChanged.add(aCTBRef);
-                                    } else {
-                                        if (bTT == 4) {
-                                            tCTBRefSetUOTT4_To_TT1_PostcodeChanged.add(aCTBRef);
-                                        }
+                                    } else if (bTT == 4) {
+                                        tCTBRefSetUOTT4_To_TT1_PostcodeChanged.add(aCTBRef);
                                     }
-                                } else {
-                                    if (aTT == 4) {
-                                        tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
-                                        if (bTT == 1) {
-                                            tCTBRefSetUOTT1_To_TT4_PostcodeChanged.add(aCTBRef);
-                                        } else {
-                                            if (bTT == 4) {
-                                                tCTBRefSetUOTT4_To_TT4_PostcodeChanged.add(aCTBRef);
-                                            }
-                                        }
+                                } else if (aTT == 4) {
+                                    tCTBRefSetUOTT4_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
+                                    if (bTT == 1) {
+                                        tCTBRefSetUOTT1_To_TT4_PostcodeChanged.add(aCTBRef);
+                                    } else if (bTT == 4) {
+                                        tCTBRefSetUOTT4_To_TT4_PostcodeChanged.add(aCTBRef);
                                     }
                                 }
                             }
@@ -4724,11 +4898,9 @@ public class TenancyChangesUO {
                             if (aTT == 1) {
                                 tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged.add(aCTBRef);
                                 tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedThisMonth.add(aCTBRef);
-                            } else {
-                                if (aTT == 4) {
-                                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged.add(aCTBRef);
-                                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth.add(aCTBRef);
-                                }
+                            } else if (aTT == 4) {
+                                tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged.add(aCTBRef);
+                                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth.add(aCTBRef);
                             }
                         }
                     }
@@ -4762,11 +4934,9 @@ public class TenancyChangesUO {
                                 tCTBRefSetValidPostcodeChange.add(aCTBRef);
                             }
                         }
-                    } else {
-                        if (containsAnotherPostcode) {
-                            if (validPostcodes.contains(aPC) && validPostcodes.contains(bPC)) {
-                                tCTBRefSetValidPostcodeChange.add(aCTBRef);
-                            }
+                    } else if (containsAnotherPostcode) {
+                        if (validPostcodes.contains(aPC) && validPostcodes.contains(bPC)) {
+                            tCTBRefSetValidPostcodeChange.add(aCTBRef);
                         }
                     }
                 } else {
@@ -4795,43 +4965,33 @@ public class TenancyChangesUO {
                                 if (validPostcodes.contains(aPC)) {
                                     tCTBRefSetUOTT1_ToTT1_PostcodeChanged.add(aCTBRef);
                                 }
-                            } else {
-                                if (aTT == 4) {
-                                    if (validPostcodes.contains(aPC)) {
-                                        tCTBRefSetUOTT4_ToTT4_PostcodeChanged.add(aCTBRef);
-                                    }
+                            } else if (aTT == 4) {
+                                if (validPostcodes.contains(aPC)) {
+                                    tCTBRefSetUOTT4_ToTT4_PostcodeChanged.add(aCTBRef);
                                 }
                             }
                         }
-                    } else {
-                        if (!wasUO && isUO) {
-                            if (aTT == bTT) {
-                                if (aTT == 1) {
-                                    if (validPostcodes.contains(aPC)) {
-                                        tCTBRefSetTT1_ToUOTT1_PostcodeChanged.add(aCTBRef);
-                                    }
-                                } else {
-                                    if (aTT == 4) {
-                                        if (validPostcodes.contains(aPC)) {
-                                            tCTBRefSetTT4_ToUOTT4_PostcodeChanged.add(aCTBRef);
-                                        }
-                                    }
+                    } else if (!wasUO && isUO) {
+                        if (aTT == bTT) {
+                            if (aTT == 1) {
+                                if (validPostcodes.contains(aPC)) {
+                                    tCTBRefSetTT1_ToUOTT1_PostcodeChanged.add(aCTBRef);
+                                }
+                            } else if (aTT == 4) {
+                                if (validPostcodes.contains(aPC)) {
+                                    tCTBRefSetTT4_ToUOTT4_PostcodeChanged.add(aCTBRef);
                                 }
                             }
-                        } else {
-                            if (wasUO && isUO) {
-                                if (aTT == bTT) {
-                                    if (aTT == 1) {
-                                        if (validPostcodes.contains(aPC)) {
-                                            tCTBRefSetUOTT1_ToUOTT1_PostcodeChanged.add(aCTBRef);
-                                        }
-                                    } else {
-                                        if (aTT == 4) {
-                                            if (validPostcodes.contains(aPC)) {
-                                                tCTBRefSetUOTT4_ToUOTT4_PostcodeChanged.add(aCTBRef);
-                                            }
-                                        }
-                                    }
+                        }
+                    } else if (wasUO && isUO) {
+                        if (aTT == bTT) {
+                            if (aTT == 1) {
+                                if (validPostcodes.contains(aPC)) {
+                                    tCTBRefSetUOTT1_ToUOTT1_PostcodeChanged.add(aCTBRef);
+                                }
+                            } else if (aTT == 4) {
+                                if (validPostcodes.contains(aPC)) {
+                                    tCTBRefSetUOTT4_ToUOTT4_PostcodeChanged.add(aCTBRef);
                                 }
                             }
                         }
@@ -4845,30 +5005,20 @@ public class TenancyChangesUO {
                                 } else {
                                     tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1.add(aCTBRef);
                                 }
-                            } else {
-                                if (aTT == 3 || aTT == 6) {
-                                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6.add(aCTBRef);
+                            } else if (aTT == 3 || aTT == 6) {
+                                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6.add(aCTBRef);
+                            } else if (aTT == 4) {
+                                if (isUO) {
+                                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4.add(aCTBRef);
                                 } else {
-                                    if (aTT == 4) {
-                                        if (isUO) {
-                                            tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4.add(aCTBRef);
-                                        } else {
-                                            tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4.add(aCTBRef);
-                                        }
-                                    } else {
-                                        if (aTT == 5 || aTT == 7) {
-                                            tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7.add(aCTBRef);
-                                        } else {
-                                            if (aTT == 8) {
-                                                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8.add(aCTBRef);
-                                            } else {
-                                                if (aTT == 9) {
-                                                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9.add(aCTBRef);
-                                                }
-                                            }
-                                        }
-                                    }
+                                    tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4.add(aCTBRef);
                                 }
+                            } else if (aTT == 5 || aTT == 7) {
+                                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7.add(aCTBRef);
+                            } else if (aTT == 8) {
+                                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8.add(aCTBRef);
+                            } else if (aTT == 9) {
+                                tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9.add(aCTBRef);
                             }
                         }
                         if (tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged1MonthPrevious.contains(aCTBRef)) {
@@ -4879,30 +5029,20 @@ public class TenancyChangesUO {
                                 } else {
                                     tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1.add(aCTBRef);
                                 }
-                            } else {
-                                if (aTT == 3 || aTT == 6) {
-                                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6.add(aCTBRef);
+                            } else if (aTT == 3 || aTT == 6) {
+                                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6.add(aCTBRef);
+                            } else if (aTT == 4) {
+                                if (isUO) {
+                                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1.add(aCTBRef);
                                 } else {
-                                    if (aTT == 4) {
-                                        if (isUO) {
-                                            tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1.add(aCTBRef);
-                                        } else {
-                                            tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4.add(aCTBRef);
-                                        }
-                                    } else {
-                                        if (aTT == 5 || aTT == 7) {
-                                            tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7.add(aCTBRef);
-                                        } else {
-                                            if (aTT == 8) {
-                                                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8.add(aCTBRef);
-                                            } else {
-                                                if (aTT == 9) {
-                                                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9.add(aCTBRef);
-                                                }
-                                            }
-                                        }
-                                    }
+                                    tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4.add(aCTBRef);
                                 }
+                            } else if (aTT == 5 || aTT == 7) {
+                                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7.add(aCTBRef);
+                            } else if (aTT == 8) {
+                                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8.add(aCTBRef);
+                            } else if (aTT == 9) {
+                                tCTBRefSetTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9.add(aCTBRef);
                             }
                         }
 
@@ -4933,30 +5073,20 @@ public class TenancyChangesUO {
                                 } else {
                                     tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1.add(aCTBRef);
                                 }
-                            } else {
-                                if (aTT == 4) {
-                                    if (isUO) {
-                                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4.add(aCTBRef);
-                                    } else {
-                                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4.add(aCTBRef);
-                                    }
+                            } else if (aTT == 4) {
+                                if (isUO) {
+                                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4.add(aCTBRef);
                                 } else {
-                                    if (aTT == 3 || aTT == 6) {
-                                        tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6.add(aCTBRef);
-                                    } else {
-                                        if (aTT == 5 || aTT == 7) {
-                                            tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7.add(aCTBRef);
-                                        } else {
-                                            if (aTT == 8) {
-                                                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8.add(aCTBRef);
-                                            } else {
-                                                if (aTT == 9) {
-                                                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9.add(aCTBRef);
-                                                }
-                                            }
-                                        }
-                                    }
+                                    tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4.add(aCTBRef);
                                 }
+                            } else if (aTT == 3 || aTT == 6) {
+                                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6.add(aCTBRef);
+                            } else if (aTT == 5 || aTT == 7) {
+                                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7.add(aCTBRef);
+                            } else if (aTT == 8) {
+                                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8.add(aCTBRef);
+                            } else if (aTT == 9) {
+                                tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9.add(aCTBRef);
                             }
                         }
                         if (tCTBRefSetUOTT1_To_TT1_PostcodeUnchanged1MonthPrevious.contains(aCTBRef)) {
@@ -4966,30 +5096,20 @@ public class TenancyChangesUO {
                                 } else {
                                     tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1.add(aCTBRef);
                                 }
-                            } else {
-                                if (aTT == 4) {
-                                    if (isUO) {
-                                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4.add(aCTBRef);
-                                    } else {
-                                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4.add(aCTBRef);
-                                    }
+                            } else if (aTT == 4) {
+                                if (isUO) {
+                                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4.add(aCTBRef);
                                 } else {
-                                    if (aTT == 3 || aTT == 6) {
-                                        tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6.add(aCTBRef);
-                                    } else {
-                                        if (aTT == 5 || aTT == 7) {
-                                            tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7.add(aCTBRef);
-                                        } else {
-                                            if (aTT == 8) {
-                                                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8.add(aCTBRef);
-                                            } else {
-                                                if (aTT == 9) {
-                                                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9.add(aCTBRef);
-                                                }
-                                            }
-                                        }
-                                    }
+                                    tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4.add(aCTBRef);
                                 }
+                            } else if (aTT == 3 || aTT == 6) {
+                                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6.add(aCTBRef);
+                            } else if (aTT == 5 || aTT == 7) {
+                                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7.add(aCTBRef);
+                            } else if (aTT == 8) {
+                                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8.add(aCTBRef);
+                            } else if (aTT == 9) {
+                                tCTBRefSetUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9.add(aCTBRef);
                             }
                         }
                         if (tCTBRefSetUOTT4_To_TT4_PostcodeUnchanged2MonthsPrevious.contains(aCTBRef)) {
@@ -5326,16 +5446,12 @@ public class TenancyChangesUO {
 
         if (aPDD.equalsIgnoreCase(bPDD)) {
             aS += sCommaSpace;
+        } else if (aPDD == null) {
+            aS += sCommaSpace;
+        } else if (aPDD.isEmpty()) {
+            aS += sCommaSpace;
         } else {
-            if (aPDD == null) {
-                aS += sCommaSpace;
-            } else {
-                if (aPDD.isEmpty()) {
-                    aS += sCommaSpace;
-                } else {
-                    aS += sCommaSpace + sPDeath + sUnderscore + aPDD;
-                }
-            }
+            aS += sCommaSpace + sPDeath + sUnderscore + aPDD;
         }
 
         tableValues.put(key, aS);
@@ -5449,10 +5565,8 @@ public class TenancyChangesUO {
                     tCTBRefSetUOTT1_To_TT1_PostcodeChanged.remove(aCTBRef);
                     if (aTT == 1) {
                         tCTBRefSetUOTT1_To_UOTT1_PostcodeChanged.add(aCTBRef);
-                    } else {
-                        if (aTT == 4) {
-                            tCTBRefSetUOTT1_To_UOTT4_PostcodeChanged.add(aCTBRef);
-                        }
+                    } else if (aTT == 4) {
+                        tCTBRefSetUOTT1_To_UOTT4_PostcodeChanged.add(aCTBRef);
                     }
                 }
             }
@@ -5467,10 +5581,8 @@ public class TenancyChangesUO {
                     tCTBRefSetUOTT4_To_TT4_PostcodeChanged.remove(aCTBRef);
                     if (aTT == 1) {
                         tCTBRefSetUOTT4_To_UOTT1_PostcodeChanged.add(aCTBRef);
-                    } else {
-                        if (aTT == 4) {
-                            tCTBRefSetUOTT4_To_UOTT4_PostcodeChanged.add(aCTBRef);
-                        }
+                    } else if (aTT == 4) {
+                        tCTBRefSetUOTT4_To_UOTT4_PostcodeChanged.add(aCTBRef);
                     }
                 }
             }
@@ -5522,45 +5634,33 @@ public class TenancyChangesUO {
                 } else {
                     tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT1.add(aCTBRef);
                 }
-            } else {
-                if (aTT == 3 || aTT == 6) {
-                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6.add(aCTBRef);
-                } else {
-                    if (aTT == 4) {
-                        if (isUO) {
-                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT4.add(aCTBRef);
-                            if (bTT == 1) {
-                                //tCTBRefSetUOTT1OrTT1_To_UOTT4.add(aCTBRef);
-                                if (wasUO) {
-                                    tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef); // Looking forward, we may see that this claim actually comes out of being UO. To filter for this we should look back in the next iteration and perhaps move claim refs to other sets based upon some logic...
-                                } else {
-                                    if (bStatus == 2 && wasUOBefore) {
-                                        tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef); // Looking forward, we may see that this claim actually comes out of being UO. To filter for this we should look back in the next iteration and perhaps move claim refs to other sets based upon some logic...
-                                    } else {
-                                        tCTBRefSetTT1_To_UOTT4.add(aCTBRef);
-                                        if (aHBDP > 0) {
-                                            tCTBRefSetTT1_To_UOTT4GettingDHP.add(aCTBRef);
-                                        }
-                                    }
-                                }
-                            }
+            } else if (aTT == 3 || aTT == 6) {
+                tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6.add(aCTBRef);
+            } else if (aTT == 4) {
+                if (isUO) {
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsUOTT4.add(aCTBRef);
+                    if (bTT == 1) {
+                        //tCTBRefSetUOTT1OrTT1_To_UOTT4.add(aCTBRef);
+                        if (wasUO) {
+                            tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef); // Looking forward, we may see that this claim actually comes out of being UO. To filter for this we should look back in the next iteration and perhaps move claim refs to other sets based upon some logic...
+                        } else if (bStatus == 2 && wasUOBefore) {
+                            tCTBRefSetUOTT1_To_UOTT4.add(aCTBRef); // Looking forward, we may see that this claim actually comes out of being UO. To filter for this we should look back in the next iteration and perhaps move claim refs to other sets based upon some logic...
                         } else {
-                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
-                        }
-                    } else {
-                        if (aTT == 5 || aTT == 7) {
-                            tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7.add(aCTBRef);
-                        } else {
-                            if (aTT == 8) {
-                                tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8.add(aCTBRef);
-                            } else {
-                                if (aTT == 9) {
-                                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9.add(aCTBRef);
-                                }
+                            tCTBRefSetTT1_To_UOTT4.add(aCTBRef);
+                            if (aHBDP > 0) {
+                                tCTBRefSetTT1_To_UOTT4GettingDHP.add(aCTBRef);
                             }
                         }
                     }
+                } else {
+                    tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT4.add(aCTBRef);
                 }
+            } else if (aTT == 5 || aTT == 7) {
+                tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7.add(aCTBRef);
+            } else if (aTT == 8) {
+                tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT8.add(aCTBRef);
+            } else if (aTT == 9) {
+                tCTBRefSetUOTT1_To_LeftSHBE_ReturnedAsTT9.add(aCTBRef);
             }
         }
     }
@@ -5588,10 +5688,8 @@ public class TenancyChangesUO {
                 if (!(s1.equalsIgnoreCase(defaultPostcode))) {
                     if (s1.equalsIgnoreCase(aPC)) {
                         firstIsTheSame = true;
-                    } else {
-                        if (!firstIsTheSame) {
-                            return true;
-                        }
+                    } else if (!firstIsTheSame) {
+                        return true;
                     }
                 }
             }
@@ -5739,13 +5837,75 @@ public class TenancyChangesUO {
         return result;
     }
 
-    public HashSet<String>[] getCTBRefs(
+    public HashSet<String>[] getStartUOCTBRefs(
             TreeMap<String, DW_UnderOccupiedReport_Set> councilUnderOccupiedSets,
             TreeMap<String, DW_UnderOccupiedReport_Set> RSLUnderOccupiedSets,
             String[] SHBEFilenames,
             ArrayList<Integer> include
     ) {
+        HashSet<String>[] result;
+        result = new HashSet[2];
+        result[0] = new HashSet<String>();
+        result[1] = new HashSet<String>();
+        String yM31 = s;
+        DW_UnderOccupiedReport_Set councilUnderOccupiedSet1 = null;
+        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1 = null;
+        String filename1 = null;
+        Iterator<Integer> includeIte;
+        includeIte = include.iterator();
+        int i;
+        i = includeIte.next();
+        filename1 = SHBEFilenames[i];
+        yM31 = DW_SHBE_Handler.getYM3(filename1);
+        councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
+        if (councilUnderOccupiedSet1 != null) {
+            RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
+            // Add to result
+            result[0].addAll(councilUnderOccupiedSet1.getMap().keySet());
+            result[1].addAll(RSLUnderOccupiedSet1.getMap().keySet());
+        }
+        return result;
+    }
 
+    public HashSet<String>[] getEndUOCTBRefs(
+            TreeMap<String, DW_UnderOccupiedReport_Set> councilUnderOccupiedSets,
+            TreeMap<String, DW_UnderOccupiedReport_Set> RSLUnderOccupiedSets,
+            String[] SHBEFilenames,
+            ArrayList<Integer> include
+    ) {
+        HashSet<String>[] result;
+        result = new HashSet[2];
+        result[0] = new HashSet<String>();
+        result[1] = new HashSet<String>();
+        String yM31 = s;
+        DW_UnderOccupiedReport_Set councilUnderOccupiedSet1 = null;
+        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1 = null;
+        String filename1 = null;
+        Iterator<Integer> includeIte;
+        includeIte = include.iterator();
+        int i;
+        i = includeIte.next();
+        while (includeIte.hasNext()) {
+            i = includeIte.next();
+        }
+        filename1 = SHBEFilenames[i];
+        yM31 = DW_SHBE_Handler.getYM3(filename1);
+        councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
+        if (councilUnderOccupiedSet1 != null) {
+            RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
+            // Add to result
+            result[0].addAll(councilUnderOccupiedSet1.getMap().keySet());
+            result[1].addAll(RSLUnderOccupiedSet1.getMap().keySet());
+        }
+        return result;
+    }
+
+    public HashSet<String>[] getUOCTBRefs(
+            TreeMap<String, DW_UnderOccupiedReport_Set> councilUnderOccupiedSets,
+            TreeMap<String, DW_UnderOccupiedReport_Set> RSLUnderOccupiedSets,
+            String[] SHBEFilenames,
+            ArrayList<Integer> include
+    ) {
         HashSet<String>[] result;
         result = new HashSet[2];
         result[0] = new HashSet<String>();
@@ -5759,7 +5919,6 @@ public class TenancyChangesUO {
         int i;
         while (includeIte.hasNext()) {
             i = includeIte.next();
-            // Load first data
             filename1 = SHBEFilenames[i];
             yM31 = DW_SHBE_Handler.getYM3(filename1);
             councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
@@ -5982,6 +6141,22 @@ public class TenancyChangesUO {
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sTotalCount_UniqueChildrenAgeLessThan10EffectedByUnderOccupancy,
                 generalStatistics, generalStatisticsDescriptions, pw5);
+        
+        writeLine(sSubsequentlyEffectedUOStillUOInOctober2015,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sPercentageReceivingDHPInOctober2015,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sPercentageInArrearsOctober2015,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sPercentageInArrearsAndReceivingDHPInOctober2015,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sPercentageReceivingDHPInOctober2015ThatWereUOInApril2008,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sPercentageInArrearsOctober2015ThatWereUOInApril2008,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sPercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2008,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        
         writeLine(sUO_To_LeftSHBEAtSomePoint,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT1_To_LeftSHBE,
@@ -6276,7 +6451,7 @@ public class TenancyChangesUO {
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        
+
         pw5.close();
 
         HashSet<String> tCTBRefsCheck;
@@ -6356,9 +6531,22 @@ public class TenancyChangesUO {
                                     + "expected other groups "
                                     + "previously written out.");
                         }
-                    } else {
-                        if (groupName.equalsIgnoreCase(sTT1_To_TT3OrTT6)) {
-                            otherGroupName = sTravellers;
+                    } else if (groupName.equalsIgnoreCase(sTT1_To_TT3OrTT6)) {
+                        otherGroupName = sTravellers;
+                        otherGroup = groups.get(otherGroupName);
+                        if (otherGroup.contains(aCTBRef)) {
+                            writeRecordCollection(
+                                    tableValues,
+                                    includePreUnderOccupancyValues,
+                                    preUnderOccupancyValues,
+                                    aCTBRef,
+                                    pw2);
+                            writeAggregateRecords(
+                                    aggregateStatistics,
+                                    aCTBRef,
+                                    pwAggregateStatistics2);
+                        } else {
+                            otherGroupName = sTTNot1Or4AndUnderOccupying;
                             otherGroup = groups.get(otherGroupName);
                             if (otherGroup.contains(aCTBRef)) {
                                 writeRecordCollection(
@@ -6372,7 +6560,44 @@ public class TenancyChangesUO {
                                         aCTBRef,
                                         pwAggregateStatistics2);
                             } else {
-                                otherGroupName = sTTNot1Or4AndUnderOccupying;
+                                System.out.println(
+                                        "CTBRef " + aCTBRef
+                                        + " is in group " + groupName
+                                        + " and is in one of the not "
+                                        + "expected other groups "
+                                        + "previously written out.");
+                            }
+                        }
+                    } else if (groupName.equalsIgnoreCase(sTT4_To_TT3OrTT6)) {
+                        otherGroupName = sTravellers;
+                        otherGroup = groups.get(otherGroupName);
+                        if (otherGroup.contains(aCTBRef)) {
+                            writeRecordCollection(
+                                    tableValues,
+                                    includePreUnderOccupancyValues,
+                                    preUnderOccupancyValues,
+                                    aCTBRef,
+                                    pw2);
+                            writeAggregateRecords(
+                                    aggregateStatistics,
+                                    aCTBRef,
+                                    pwAggregateStatistics2);
+                        } else {
+                            otherGroupName = sTTNot1Or4AndUnderOccupying;
+                            otherGroup = groups.get(otherGroupName);
+                            if (otherGroup.contains(aCTBRef)) {
+                                writeRecordCollection(
+                                        tableValues,
+                                        includePreUnderOccupancyValues,
+                                        preUnderOccupancyValues,
+                                        aCTBRef,
+                                        pw2);
+                                writeAggregateRecords(
+                                        aggregateStatistics,
+                                        aCTBRef,
+                                        pwAggregateStatistics2);
+                            } else {
+                                otherGroupName = sTT1_To_TT3OrTT6;
                                 otherGroup = groups.get(otherGroupName);
                                 if (otherGroup.contains(aCTBRef)) {
                                     writeRecordCollection(
@@ -6394,9 +6619,37 @@ public class TenancyChangesUO {
                                             + "previously written out.");
                                 }
                             }
+                        }
+                    } else if (groupName.equalsIgnoreCase(sTT3OrTT6_To_TT1)) {
+                        otherGroupName = sTravellers;
+                        otherGroup = groups.get(otherGroupName);
+                        if (otherGroup.contains(aCTBRef)) {
+                            writeRecordCollection(
+                                    tableValues,
+                                    includePreUnderOccupancyValues,
+                                    preUnderOccupancyValues,
+                                    aCTBRef,
+                                    pw2);
+                            writeAggregateRecords(
+                                    aggregateStatistics,
+                                    aCTBRef,
+                                    pwAggregateStatistics2);
                         } else {
-                            if (groupName.equalsIgnoreCase(sTT4_To_TT3OrTT6)) {
-                                otherGroupName = sTravellers;
+                            otherGroupName = sTTNot1Or4AndUnderOccupying;
+                            otherGroup = groups.get(otherGroupName);
+                            if (otherGroup.contains(aCTBRef)) {
+                                writeRecordCollection(
+                                        tableValues,
+                                        includePreUnderOccupancyValues,
+                                        preUnderOccupancyValues,
+                                        aCTBRef,
+                                        pw2);
+                                writeAggregateRecords(
+                                        aggregateStatistics,
+                                        aCTBRef,
+                                        pwAggregateStatistics2);
+                            } else {
+                                otherGroupName = sTT1_To_TT3OrTT6;
                                 otherGroup = groups.get(otherGroupName);
                                 if (otherGroup.contains(aCTBRef)) {
                                     writeRecordCollection(
@@ -6410,7 +6663,7 @@ public class TenancyChangesUO {
                                             aCTBRef,
                                             pwAggregateStatistics2);
                                 } else {
-                                    otherGroupName = sTTNot1Or4AndUnderOccupying;
+                                    otherGroupName = sTT4_To_TT3OrTT6;
                                     otherGroup = groups.get(otherGroupName);
                                     if (otherGroup.contains(aCTBRef)) {
                                         writeRecordCollection(
@@ -6424,7 +6677,74 @@ public class TenancyChangesUO {
                                                 aCTBRef,
                                                 pwAggregateStatistics2);
                                     } else {
-                                        otherGroupName = sTT1_To_TT3OrTT6;
+                                        System.out.println(
+                                                "CTBRef " + aCTBRef
+                                                + " is in group " + groupName
+                                                + " and is in one of the not "
+                                                + "expected other groups "
+                                                + "previously written out.");
+                                    }
+                                }
+                            }
+                        }
+                    } else if (groupName.equalsIgnoreCase(sTT3OrTT6_To_TT4)) {
+                        otherGroupName = sTravellers;
+                        otherGroup = groups.get(otherGroupName);
+                        if (otherGroup.contains(aCTBRef)) {
+                            writeRecordCollection(
+                                    tableValues,
+                                    includePreUnderOccupancyValues,
+                                    preUnderOccupancyValues,
+                                    aCTBRef,
+                                    pw2);
+                            writeAggregateRecords(
+                                    aggregateStatistics,
+                                    aCTBRef,
+                                    pwAggregateStatistics2);
+                        } else {
+                            otherGroupName = sTTNot1Or4AndUnderOccupying;
+                            otherGroup = groups.get(otherGroupName);
+                            if (otherGroup.contains(aCTBRef)) {
+                                writeRecordCollection(
+                                        tableValues,
+                                        includePreUnderOccupancyValues,
+                                        preUnderOccupancyValues,
+                                        aCTBRef,
+                                        pw2);
+                                writeAggregateRecords(
+                                        aggregateStatistics,
+                                        aCTBRef,
+                                        pwAggregateStatistics2);
+                            } else {
+                                otherGroupName = sTT1_To_TT3OrTT6;
+                                otherGroup = groups.get(otherGroupName);
+                                if (otherGroup.contains(aCTBRef)) {
+                                    writeRecordCollection(
+                                            tableValues,
+                                            includePreUnderOccupancyValues,
+                                            preUnderOccupancyValues,
+                                            aCTBRef,
+                                            pw2);
+                                    writeAggregateRecords(
+                                            aggregateStatistics,
+                                            aCTBRef,
+                                            pwAggregateStatistics2);
+                                } else {
+                                    otherGroupName = sTT4_To_TT3OrTT6;
+                                    otherGroup = groups.get(otherGroupName);
+                                    if (otherGroup.contains(aCTBRef)) {
+                                        writeRecordCollection(
+                                                tableValues,
+                                                includePreUnderOccupancyValues,
+                                                preUnderOccupancyValues,
+                                                aCTBRef,
+                                                pw2);
+                                        writeAggregateRecords(
+                                                aggregateStatistics,
+                                                aCTBRef,
+                                                pwAggregateStatistics2);
+                                    } else {
+                                        otherGroupName = sTT3OrTT6_To_TT1;
                                         otherGroup = groups.get(otherGroupName);
                                         if (otherGroup.contains(aCTBRef)) {
                                             writeRecordCollection(
@@ -6447,9 +6767,52 @@ public class TenancyChangesUO {
                                         }
                                     }
                                 }
+                            }
+                        }
+                    } else if (groupName.equalsIgnoreCase(sAlwaysUOFromWhenStarted__ChangedTT)) {
+                        otherGroupName = sTravellers;
+                        otherGroup = groups.get(otherGroupName);
+                        if (otherGroup.contains(aCTBRef)) {
+                            writeRecordCollection(
+                                    tableValues,
+                                    includePreUnderOccupancyValues,
+                                    preUnderOccupancyValues,
+                                    aCTBRef,
+                                    pw2);
+                            writeAggregateRecords(
+                                    aggregateStatistics,
+                                    aCTBRef,
+                                    pwAggregateStatistics2);
+                        } else {
+                            otherGroupName = sTTNot1Or4AndUnderOccupying;
+                            otherGroup = groups.get(otherGroupName);
+                            if (otherGroup.contains(aCTBRef)) {
+                                writeRecordCollection(
+                                        tableValues,
+                                        includePreUnderOccupancyValues,
+                                        preUnderOccupancyValues,
+                                        aCTBRef,
+                                        pw2);
+                                writeAggregateRecords(
+                                        aggregateStatistics,
+                                        aCTBRef,
+                                        pwAggregateStatistics2);
                             } else {
-                                if (groupName.equalsIgnoreCase(sTT3OrTT6_To_TT1)) {
-                                    otherGroupName = sTravellers;
+                                otherGroupName = sTT1_To_TT3OrTT6;
+                                otherGroup = groups.get(otherGroupName);
+                                if (otherGroup.contains(aCTBRef)) {
+                                    writeRecordCollection(
+                                            tableValues,
+                                            includePreUnderOccupancyValues,
+                                            preUnderOccupancyValues,
+                                            aCTBRef,
+                                            pw2);
+                                    writeAggregateRecords(
+                                            aggregateStatistics,
+                                            aCTBRef,
+                                            pwAggregateStatistics2);
+                                } else {
+                                    otherGroupName = sTT4_To_TT3OrTT6;
                                     otherGroup = groups.get(otherGroupName);
                                     if (otherGroup.contains(aCTBRef)) {
                                         writeRecordCollection(
@@ -6463,7 +6826,7 @@ public class TenancyChangesUO {
                                                 aCTBRef,
                                                 pwAggregateStatistics2);
                                     } else {
-                                        otherGroupName = sTTNot1Or4AndUnderOccupying;
+                                        otherGroupName = sTT3OrTT6_To_TT1;
                                         otherGroup = groups.get(otherGroupName);
                                         if (otherGroup.contains(aCTBRef)) {
                                             writeRecordCollection(
@@ -6477,7 +6840,7 @@ public class TenancyChangesUO {
                                                     aCTBRef,
                                                     pwAggregateStatistics2);
                                         } else {
-                                            otherGroupName = sTT1_To_TT3OrTT6;
+                                            otherGroupName = sTT3OrTT6_To_TT4;
                                             otherGroup = groups.get(otherGroupName);
                                             if (otherGroup.contains(aCTBRef)) {
                                                 writeRecordCollection(
@@ -6491,33 +6854,150 @@ public class TenancyChangesUO {
                                                         aCTBRef,
                                                         pwAggregateStatistics2);
                                             } else {
-                                                otherGroupName = sTT4_To_TT3OrTT6;
-                                                otherGroup = groups.get(otherGroupName);
-                                                if (otherGroup.contains(aCTBRef)) {
-                                                    writeRecordCollection(
-                                                            tableValues,
-                                                            includePreUnderOccupancyValues,
-                                                            preUnderOccupancyValues,
-                                                            aCTBRef,
-                                                            pw2);
-                                                    writeAggregateRecords(
-                                                            aggregateStatistics,
-                                                            aCTBRef,
-                                                            pwAggregateStatistics2);
-                                                } else {
-                                                    System.out.println(
-                                                            "CTBRef " + aCTBRef
-                                                            + " is in group " + groupName
-                                                            + " and is in one of the not "
-                                                            + "expected other groups "
-                                                            + "previously written out.");
-                                                }
+                                                System.out.println(
+                                                        "CTBRef " + aCTBRef
+                                                        + " is in group " + groupName
+                                                        + " and is in one of the not "
+                                                        + "expected other groups "
+                                                        + "previously written out.");
                                             }
                                         }
                                     }
+                                }
+                            }
+                        }
+                    } else if (groupName.equalsIgnoreCase(sAlwaysUOFromWhenStarted__ValidPostcodeChange_NotChangedTT)) {
+                        otherGroupName = sTravellers;
+                        otherGroup = groups.get(otherGroupName);
+                        if (otherGroup.contains(aCTBRef)) {
+                            writeRecordCollection(
+                                    tableValues,
+                                    includePreUnderOccupancyValues,
+                                    preUnderOccupancyValues,
+                                    aCTBRef,
+                                    pw2);
+                            writeAggregateRecords(
+                                    aggregateStatistics,
+                                    aCTBRef,
+                                    pwAggregateStatistics2);
+                        } else {
+                            otherGroupName = sTTNot1Or4AndUnderOccupying;
+                            otherGroup = groups.get(otherGroupName);
+                            if (otherGroup.contains(aCTBRef)) {
+                                writeRecordCollection(
+                                        tableValues,
+                                        includePreUnderOccupancyValues,
+                                        preUnderOccupancyValues,
+                                        aCTBRef,
+                                        pw2);
+                                writeAggregateRecords(
+                                        aggregateStatistics,
+                                        aCTBRef,
+                                        pwAggregateStatistics2);
+                            } else {
+                                System.out.println(
+                                        "CTBRef " + aCTBRef
+                                        + " is in group " + groupName
+                                        + " and is in one of the not "
+                                        + "expected other groups "
+                                        + "previously written out.");
+                            }
+                        }
+                    } else if (groupName.equalsIgnoreCase(sAlwaysUOFromWhenStarted__NoValidPostcodeChange_NotChangedTT)) {
+                        otherGroupName = sTravellers;
+                        otherGroup = groups.get(otherGroupName);
+                        if (otherGroup.contains(aCTBRef)) {
+                            writeRecordCollection(
+                                    tableValues,
+                                    includePreUnderOccupancyValues,
+                                    preUnderOccupancyValues,
+                                    aCTBRef,
+                                    pw2);
+                            writeAggregateRecords(
+                                    aggregateStatistics,
+                                    aCTBRef,
+                                    pwAggregateStatistics2);
+                        } else {
+                            otherGroupName = sTTNot1Or4AndUnderOccupying;
+                            otherGroup = groups.get(otherGroupName);
+                            if (otherGroup.contains(aCTBRef)) {
+                                writeRecordCollection(
+                                        tableValues,
+                                        includePreUnderOccupancyValues,
+                                        preUnderOccupancyValues,
+                                        aCTBRef,
+                                        pw2);
+                                writeAggregateRecords(
+                                        aggregateStatistics,
+                                        aCTBRef,
+                                        pwAggregateStatistics2);
+                            } else {
+                                System.out.println(
+                                        "CTBRef " + aCTBRef
+                                        + " is in group " + groupName
+                                        + " and is in one of the not "
+                                        + "expected other groups "
+                                        + "previously written out.");
+                            }
+                        }
+                    } else if (groupName.equalsIgnoreCase(sIntermitantUO__ChangedTT)) {
+                        otherGroupName = sTravellers;
+                        otherGroup = groups.get(otherGroupName);
+                        if (otherGroup.contains(aCTBRef)) {
+                            writeRecordCollection(
+                                    tableValues,
+                                    includePreUnderOccupancyValues,
+                                    preUnderOccupancyValues,
+                                    aCTBRef,
+                                    pw2);
+                            writeAggregateRecords(
+                                    aggregateStatistics,
+                                    aCTBRef,
+                                    pwAggregateStatistics2);
+                        } else {
+                            otherGroupName = sTTNot1Or4AndUnderOccupying;
+                            otherGroup = groups.get(otherGroupName);
+                            if (otherGroup.contains(aCTBRef)) {
+                                writeRecordCollection(
+                                        tableValues,
+                                        includePreUnderOccupancyValues,
+                                        preUnderOccupancyValues,
+                                        aCTBRef,
+                                        pw2);
+                                writeAggregateRecords(
+                                        aggregateStatistics,
+                                        aCTBRef,
+                                        pwAggregateStatistics2);
+                            } else {
+                                otherGroupName = sTT1_To_TT3OrTT6;
+                                otherGroup = groups.get(otherGroupName);
+                                if (otherGroup.contains(aCTBRef)) {
+                                    writeRecordCollection(
+                                            tableValues,
+                                            includePreUnderOccupancyValues,
+                                            preUnderOccupancyValues,
+                                            aCTBRef,
+                                            pw2);
+                                    writeAggregateRecords(
+                                            aggregateStatistics,
+                                            aCTBRef,
+                                            pwAggregateStatistics2);
                                 } else {
-                                    if (groupName.equalsIgnoreCase(sTT3OrTT6_To_TT4)) {
-                                        otherGroupName = sTravellers;
+                                    otherGroupName = sTT4_To_TT3OrTT6;
+                                    otherGroup = groups.get(otherGroupName);
+                                    if (otherGroup.contains(aCTBRef)) {
+                                        writeRecordCollection(
+                                                tableValues,
+                                                includePreUnderOccupancyValues,
+                                                preUnderOccupancyValues,
+                                                aCTBRef,
+                                                pw2);
+                                        writeAggregateRecords(
+                                                aggregateStatistics,
+                                                aCTBRef,
+                                                pwAggregateStatistics2);
+                                    } else {
+                                        otherGroupName = sTT3OrTT6_To_TT1;
                                         otherGroup = groups.get(otherGroupName);
                                         if (otherGroup.contains(aCTBRef)) {
                                             writeRecordCollection(
@@ -6531,7 +7011,7 @@ public class TenancyChangesUO {
                                                     aCTBRef,
                                                     pwAggregateStatistics2);
                                         } else {
-                                            otherGroupName = sTTNot1Or4AndUnderOccupying;
+                                            otherGroupName = sTT3OrTT6_To_TT4;
                                             otherGroup = groups.get(otherGroupName);
                                             if (otherGroup.contains(aCTBRef)) {
                                                 writeRecordCollection(
@@ -6545,370 +7025,56 @@ public class TenancyChangesUO {
                                                         aCTBRef,
                                                         pwAggregateStatistics2);
                                             } else {
-                                                otherGroupName = sTT1_To_TT3OrTT6;
-                                                otherGroup = groups.get(otherGroupName);
-                                                if (otherGroup.contains(aCTBRef)) {
-                                                    writeRecordCollection(
-                                                            tableValues,
-                                                            includePreUnderOccupancyValues,
-                                                            preUnderOccupancyValues,
-                                                            aCTBRef,
-                                                            pw2);
-                                                    writeAggregateRecords(
-                                                            aggregateStatistics,
-                                                            aCTBRef,
-                                                            pwAggregateStatistics2);
-                                                } else {
-                                                    otherGroupName = sTT4_To_TT3OrTT6;
-                                                    otherGroup = groups.get(otherGroupName);
-                                                    if (otherGroup.contains(aCTBRef)) {
-                                                        writeRecordCollection(
-                                                                tableValues,
-                                                                includePreUnderOccupancyValues,
-                                                                preUnderOccupancyValues,
-                                                                aCTBRef,
-                                                                pw2);
-                                                        writeAggregateRecords(
-                                                                aggregateStatistics,
-                                                                aCTBRef,
-                                                                pwAggregateStatistics2);
-                                                    } else {
-                                                        otherGroupName = sTT3OrTT6_To_TT1;
-                                                        otherGroup = groups.get(otherGroupName);
-                                                        if (otherGroup.contains(aCTBRef)) {
-                                                            writeRecordCollection(
-                                                                    tableValues,
-                                                                    includePreUnderOccupancyValues,
-                                                                    preUnderOccupancyValues,
-                                                                    aCTBRef,
-                                                                    pw2);
-                                                            writeAggregateRecords(
-                                                                    aggregateStatistics,
-                                                                    aCTBRef,
-                                                                    pwAggregateStatistics2);
-                                                        } else {
-                                                            System.out.println(
-                                                                    "CTBRef " + aCTBRef
-                                                                    + " is in group " + groupName
-                                                                    + " and is in one of the not "
-                                                                    + "expected other groups "
-                                                                    + "previously written out.");
-                                                        }
-                                                    }
-                                                }
+                                                System.out.println(
+                                                        "CTBRef " + aCTBRef
+                                                        + " is in group " + groupName
+                                                        + " and is in one of the not "
+                                                        + "expected other groups "
+                                                        + "previously written out.");
                                             }
                                         }
-                                    } else {
-                                        if (groupName.equalsIgnoreCase(sAlwaysUOFromWhenStarted__ChangedTT)) {
-                                            otherGroupName = sTravellers;
-                                            otherGroup = groups.get(otherGroupName);
-                                            if (otherGroup.contains(aCTBRef)) {
-                                                writeRecordCollection(
-                                                        tableValues,
-                                                        includePreUnderOccupancyValues,
-                                                        preUnderOccupancyValues,
-                                                        aCTBRef,
-                                                        pw2);
-                                                writeAggregateRecords(
-                                                        aggregateStatistics,
-                                                        aCTBRef,
-                                                        pwAggregateStatistics2);
-                                            } else {
-                                                otherGroupName = sTTNot1Or4AndUnderOccupying;
-                                                otherGroup = groups.get(otherGroupName);
-                                                if (otherGroup.contains(aCTBRef)) {
-                                                    writeRecordCollection(
-                                                            tableValues,
-                                                            includePreUnderOccupancyValues,
-                                                            preUnderOccupancyValues,
-                                                            aCTBRef,
-                                                            pw2);
-                                                    writeAggregateRecords(
-                                                            aggregateStatistics,
-                                                            aCTBRef,
-                                                            pwAggregateStatistics2);
-                                                } else {
-                                                    otherGroupName = sTT1_To_TT3OrTT6;
-                                                    otherGroup = groups.get(otherGroupName);
-                                                    if (otherGroup.contains(aCTBRef)) {
-                                                        writeRecordCollection(
-                                                                tableValues,
-                                                                includePreUnderOccupancyValues,
-                                                                preUnderOccupancyValues,
-                                                                aCTBRef,
-                                                                pw2);
-                                                        writeAggregateRecords(
-                                                                aggregateStatistics,
-                                                                aCTBRef,
-                                                                pwAggregateStatistics2);
-                                                    } else {
-                                                        otherGroupName = sTT4_To_TT3OrTT6;
-                                                        otherGroup = groups.get(otherGroupName);
-                                                        if (otherGroup.contains(aCTBRef)) {
-                                                            writeRecordCollection(
-                                                                    tableValues,
-                                                                    includePreUnderOccupancyValues,
-                                                                    preUnderOccupancyValues,
-                                                                    aCTBRef,
-                                                                    pw2);
-                                                            writeAggregateRecords(
-                                                                    aggregateStatistics,
-                                                                    aCTBRef,
-                                                                    pwAggregateStatistics2);
-                                                        } else {
-                                                            otherGroupName = sTT3OrTT6_To_TT1;
-                                                            otherGroup = groups.get(otherGroupName);
-                                                            if (otherGroup.contains(aCTBRef)) {
-                                                                writeRecordCollection(
-                                                                        tableValues,
-                                                                        includePreUnderOccupancyValues,
-                                                                        preUnderOccupancyValues,
-                                                                        aCTBRef,
-                                                                        pw2);
-                                                                writeAggregateRecords(
-                                                                        aggregateStatistics,
-                                                                        aCTBRef,
-                                                                        pwAggregateStatistics2);
-                                                            } else {
-                                                                otherGroupName = sTT3OrTT6_To_TT4;
-                                                                otherGroup = groups.get(otherGroupName);
-                                                                if (otherGroup.contains(aCTBRef)) {
-                                                                    writeRecordCollection(
-                                                                            tableValues,
-                                                                            includePreUnderOccupancyValues,
-                                                                            preUnderOccupancyValues,
-                                                                            aCTBRef,
-                                                                            pw2);
-                                                                    writeAggregateRecords(
-                                                                            aggregateStatistics,
-                                                                            aCTBRef,
-                                                                            pwAggregateStatistics2);
-                                                                } else {
-                                                                    System.out.println(
-                                                                            "CTBRef " + aCTBRef
-                                                                            + " is in group " + groupName
-                                                                            + " and is in one of the not "
-                                                                            + "expected other groups "
-                                                                            + "previously written out.");
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            if (groupName.equalsIgnoreCase(sAlwaysUOFromWhenStarted__ValidPostcodeChange_NotChangedTT)) {
-                                                otherGroupName = sTravellers;
-                                                otherGroup = groups.get(otherGroupName);
-                                                if (otherGroup.contains(aCTBRef)) {
-                                                    writeRecordCollection(
-                                                            tableValues,
-                                                            includePreUnderOccupancyValues,
-                                                            preUnderOccupancyValues,
-                                                            aCTBRef,
-                                                            pw2);
-                                                    writeAggregateRecords(
-                                                            aggregateStatistics,
-                                                            aCTBRef,
-                                                            pwAggregateStatistics2);
-                                                } else {
-                                                    otherGroupName = sTTNot1Or4AndUnderOccupying;
-                                                    otherGroup = groups.get(otherGroupName);
-                                                    if (otherGroup.contains(aCTBRef)) {
-                                                        writeRecordCollection(
-                                                                tableValues,
-                                                                includePreUnderOccupancyValues,
-                                                                preUnderOccupancyValues,
-                                                                aCTBRef,
-                                                                pw2);
-                                                        writeAggregateRecords(
-                                                                aggregateStatistics,
-                                                                aCTBRef,
-                                                                pwAggregateStatistics2);
-                                                    } else {
-                                                        System.out.println(
-                                                                "CTBRef " + aCTBRef
-                                                                + " is in group " + groupName
-                                                                + " and is in one of the not "
-                                                                + "expected other groups "
-                                                                + "previously written out.");
-                                                    }
-                                                }
-                                            } else {
-                                                if (groupName.equalsIgnoreCase(sAlwaysUOFromWhenStarted__NoValidPostcodeChange_NotChangedTT)) {
-                                                    otherGroupName = sTravellers;
-                                                    otherGroup = groups.get(otherGroupName);
-                                                    if (otherGroup.contains(aCTBRef)) {
-                                                        writeRecordCollection(
-                                                                tableValues,
-                                                                includePreUnderOccupancyValues,
-                                                                preUnderOccupancyValues,
-                                                                aCTBRef,
-                                                                pw2);
-                                                        writeAggregateRecords(
-                                                                aggregateStatistics,
-                                                                aCTBRef,
-                                                                pwAggregateStatistics2);
-                                                    } else {
-                                                        otherGroupName = sTTNot1Or4AndUnderOccupying;
-                                                        otherGroup = groups.get(otherGroupName);
-                                                        if (otherGroup.contains(aCTBRef)) {
-                                                            writeRecordCollection(
-                                                                    tableValues,
-                                                                    includePreUnderOccupancyValues,
-                                                                    preUnderOccupancyValues,
-                                                                    aCTBRef,
-                                                                    pw2);
-                                                            writeAggregateRecords(
-                                                                    aggregateStatistics,
-                                                                    aCTBRef,
-                                                                    pwAggregateStatistics2);
-                                                        } else {
-                                                            System.out.println(
-                                                                    "CTBRef " + aCTBRef
-                                                                    + " is in group " + groupName
-                                                                    + " and is in one of the not "
-                                                                    + "expected other groups "
-                                                                    + "previously written out.");
-                                                        }
-                                                    }
-                                                } else {
-                                                    if (groupName.equalsIgnoreCase(sIntermitantUO__ChangedTT)) {
-                                                        otherGroupName = sTravellers;
-                                                        otherGroup = groups.get(otherGroupName);
-                                                        if (otherGroup.contains(aCTBRef)) {
-                                                            writeRecordCollection(
-                                                                    tableValues,
-                                                                    includePreUnderOccupancyValues,
-                                                                    preUnderOccupancyValues,
-                                                                    aCTBRef,
-                                                                    pw2);
-                                                            writeAggregateRecords(
-                                                                    aggregateStatistics,
-                                                                    aCTBRef,
-                                                                    pwAggregateStatistics2);
-                                                        } else {
-                                                            otherGroupName = sTTNot1Or4AndUnderOccupying;
-                                                            otherGroup = groups.get(otherGroupName);
-                                                            if (otherGroup.contains(aCTBRef)) {
-                                                                writeRecordCollection(
-                                                                        tableValues,
-                                                                        includePreUnderOccupancyValues,
-                                                                        preUnderOccupancyValues,
-                                                                        aCTBRef,
-                                                                        pw2);
-                                                                writeAggregateRecords(
-                                                                        aggregateStatistics,
-                                                                        aCTBRef,
-                                                                        pwAggregateStatistics2);
-                                                            } else {
-                                                                otherGroupName = sTT1_To_TT3OrTT6;
-                                                                otherGroup = groups.get(otherGroupName);
-                                                                if (otherGroup.contains(aCTBRef)) {
-                                                                    writeRecordCollection(
-                                                                            tableValues,
-                                                                            includePreUnderOccupancyValues,
-                                                                            preUnderOccupancyValues,
-                                                                            aCTBRef,
-                                                                            pw2);
-                                                                    writeAggregateRecords(
-                                                                            aggregateStatistics,
-                                                                            aCTBRef,
-                                                                            pwAggregateStatistics2);
-                                                                } else {
-                                                                    otherGroupName = sTT4_To_TT3OrTT6;
-                                                                    otherGroup = groups.get(otherGroupName);
-                                                                    if (otherGroup.contains(aCTBRef)) {
-                                                                        writeRecordCollection(
-                                                                                tableValues,
-                                                                                includePreUnderOccupancyValues,
-                                                                                preUnderOccupancyValues,
-                                                                                aCTBRef,
-                                                                                pw2);
-                                                                        writeAggregateRecords(
-                                                                                aggregateStatistics,
-                                                                                aCTBRef,
-                                                                                pwAggregateStatistics2);
-                                                                    } else {
-                                                                        otherGroupName = sTT3OrTT6_To_TT1;
-                                                                        otherGroup = groups.get(otherGroupName);
-                                                                        if (otherGroup.contains(aCTBRef)) {
-                                                                            writeRecordCollection(
-                                                                                    tableValues,
-                                                                                    includePreUnderOccupancyValues,
-                                                                                    preUnderOccupancyValues,
-                                                                                    aCTBRef,
-                                                                                    pw2);
-                                                                            writeAggregateRecords(
-                                                                                    aggregateStatistics,
-                                                                                    aCTBRef,
-                                                                                    pwAggregateStatistics2);
-                                                                        } else {
-                                                                            otherGroupName = sTT3OrTT6_To_TT4;
-                                                                            otherGroup = groups.get(otherGroupName);
-                                                                            if (otherGroup.contains(aCTBRef)) {
-                                                                                writeRecordCollection(
-                                                                                        tableValues,
-                                                                                        includePreUnderOccupancyValues,
-                                                                                        preUnderOccupancyValues,
-                                                                                        aCTBRef,
-                                                                                        pw2);
-                                                                                writeAggregateRecords(
-                                                                                        aggregateStatistics,
-                                                                                        aCTBRef,
-                                                                                        pwAggregateStatistics2);
-                                                                            } else {
-                                                                                System.out.println(
-                                                                                        "CTBRef " + aCTBRef
-                                                                                        + " is in group " + groupName
-                                                                                        + " and is in one of the not "
-                                                                                        + "expected other groups "
-                                                                                        + "previously written out.");
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    } else {
-                                                        if (groupName.equalsIgnoreCase(sIntermitantUO__ValidPostcodeChange_NotChangedTT)) {
-                                                            otherGroupName = sTravellers;
-                                                            otherGroup = groups.get(otherGroupName);
-                                                            if (otherGroup.contains(aCTBRef)) {
-                                                                writeRecordCollection(
-                                                                        tableValues,
-                                                                        includePreUnderOccupancyValues,
-                                                                        preUnderOccupancyValues,
-                                                                        aCTBRef,
-                                                                        pw2);
-                                                                writeAggregateRecords(
-                                                                        aggregateStatistics,
-                                                                        aCTBRef,
-                                                                        pwAggregateStatistics2);
-                                                            } else {
-                                                                otherGroupName = sTTNot1Or4AndUnderOccupying;
-                                                                otherGroup = groups.get(otherGroupName);
-                                                                if (otherGroup.contains(aCTBRef)) {
-                                                                    writeRecordCollection(
-                                                                            tableValues,
-                                                                            includePreUnderOccupancyValues,
-                                                                            preUnderOccupancyValues,
-                                                                            aCTBRef,
-                                                                            pw2);
-                                                                    writeAggregateRecords(
-                                                                            aggregateStatistics,
-                                                                            aCTBRef,
-                                                                            pwAggregateStatistics2);
-                                                                } else {
-                                                                    System.out.println(
-                                                                            "CTBRef " + aCTBRef
-                                                                            + " is in group " + groupName
-                                                                            + " and is in one of the not "
-                                                                            + "expected other groups "
-                                                                            + "previously written out.");
-                                                                }
-                                                            }
-                                                        } else {
+                                    }
+                                }
+                            }
+                        }
+                    } else if (groupName.equalsIgnoreCase(sIntermitantUO__ValidPostcodeChange_NotChangedTT)) {
+                        otherGroupName = sTravellers;
+                        otherGroup = groups.get(otherGroupName);
+                        if (otherGroup.contains(aCTBRef)) {
+                            writeRecordCollection(
+                                    tableValues,
+                                    includePreUnderOccupancyValues,
+                                    preUnderOccupancyValues,
+                                    aCTBRef,
+                                    pw2);
+                            writeAggregateRecords(
+                                    aggregateStatistics,
+                                    aCTBRef,
+                                    pwAggregateStatistics2);
+                        } else {
+                            otherGroupName = sTTNot1Or4AndUnderOccupying;
+                            otherGroup = groups.get(otherGroupName);
+                            if (otherGroup.contains(aCTBRef)) {
+                                writeRecordCollection(
+                                        tableValues,
+                                        includePreUnderOccupancyValues,
+                                        preUnderOccupancyValues,
+                                        aCTBRef,
+                                        pw2);
+                                writeAggregateRecords(
+                                        aggregateStatistics,
+                                        aCTBRef,
+                                        pwAggregateStatistics2);
+                            } else {
+                                System.out.println(
+                                        "CTBRef " + aCTBRef
+                                        + " is in group " + groupName
+                                        + " and is in one of the not "
+                                        + "expected other groups "
+                                        + "previously written out.");
+                            }
+                        }
+                    } else {
 //                                                            System.out.println("CTBRef " + aCTBRef + " already added to"
 //                                                                    + " another group and in " + groupNameDescription);
 //                                                            writeRecordCollectionToStdOut(
@@ -6916,38 +7082,28 @@ public class TenancyChangesUO {
 //                                                                    includePreUnderOccupancyValues,
 //                                                                    preUnderOccupancyValues,
 //                                                                    aCTBRef);
-                                                            writeRecordCollection(
-                                                                    tableValues,
-                                                                    includePreUnderOccupancyValues,
-                                                                    preUnderOccupancyValues,
-                                                                    aCTBRef,
-                                                                    pw);
-                                                            writeAggregateRecords(
-                                                                    aggregateStatistics,
-                                                                    aCTBRef,
-                                                                    pwAggregateStatistics);
-                                                            writeRecordCollection(
-                                                                    tableValues,
-                                                                    includePreUnderOccupancyValues,
-                                                                    preUnderOccupancyValues,
-                                                                    aCTBRef,
-                                                                    pw2);
-                                                            writeAggregateRecords(
-                                                                    aggregateStatistics,
-                                                                    aCTBRef,
-                                                                    pwAggregateStatistics2);
-                                                        }
-                                                    }
-//                                        sAlwaysUOFromStart__NoValidPostcodeChange_NotChangedTT
-//                                        sIntermitantUO__NoValidPostcodeChange_NotChangedTT                                                    
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                        writeRecordCollection(
+                                tableValues,
+                                includePreUnderOccupancyValues,
+                                preUnderOccupancyValues,
+                                aCTBRef,
+                                pw);
+                        writeAggregateRecords(
+                                aggregateStatistics,
+                                aCTBRef,
+                                pwAggregateStatistics);
+                        writeRecordCollection(
+                                tableValues,
+                                includePreUnderOccupancyValues,
+                                preUnderOccupancyValues,
+                                aCTBRef,
+                                pw2);
+                        writeAggregateRecords(
+                                aggregateStatistics,
+                                aCTBRef,
+                                pwAggregateStatistics2);
+                    } //                                        sAlwaysUOFromStart__NoValidPostcodeChange_NotChangedTT
+                    //                                        sIntermitantUO__NoValidPostcodeChange_NotChangedTT                                                    
                 } else {
                     counter++;
                     writeRecordCollection(

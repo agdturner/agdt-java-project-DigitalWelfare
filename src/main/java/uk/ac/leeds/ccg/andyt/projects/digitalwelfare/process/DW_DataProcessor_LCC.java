@@ -208,20 +208,20 @@ public class DW_DataProcessor_LCC extends DW_Processor {
         doGrouped = true;
         doGrouped = false;
         doTenancyChangesUO = true;
-        doTenancyChangesUO = false;
+//        doTenancyChangesUO = false;
         doSummaryTables = true;
         doSummaryTables = false;
         doSummaryTablesUOOnly = true;
         doSummaryTablesUOOnly = false;
 
         doTenancyTransitions = true;
-//        doTenancyTransitions = false;
+        doTenancyTransitions = false;
         doPostcodeChanges = true;
-//        doPostcodeChanges = false;
+        doPostcodeChanges = false;
         doTenancyChanges = true;
-//        doTenancyChanges = false;
+        doTenancyChanges = false;
         doTenancyAndPostcodeChanges = true;
-//        doTenancyAndPostcodeChanges = false;
+        doTenancyAndPostcodeChanges = false;
 
         doAggregation = true;
         doAggregation = false;

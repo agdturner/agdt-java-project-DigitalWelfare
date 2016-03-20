@@ -161,7 +161,8 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         //int resolutionMultiplier = 4;
         cellsize = 50;
         maxCellDistanceForGeneralisation = 4; // 8;
-        runAll();
+//        runAll();
+        runRateMap();
 //        for (maxCellDistanceForGeneralisation = 4; maxCellDistanceForGeneralisation <= 32; maxCellDistanceForGeneralisation *= 2) {
 //            cellsize = (1600 / maxCellDistanceForGeneralisation) / resolutionMultiplier;
 //            runAll(resolutionMultiplier);
@@ -180,6 +181,154 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         //foregrounds.add(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
         foregrounds.add(getCommunityAreasDW_Shapefile());
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+    }
+
+    public void runRateMap() {
+        File dirOut;
+        dirOut = new File(
+                DW_Files.getOutputSHBEMapsDir(),
+                "Density");
+
+        String[] SHBEFilenames;
+        SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
+        // Specifiy distances
+        ArrayList<Double> distances;
+        distances = new ArrayList<Double>();
+        for (double distance = 1000.0d; distance < 5000.0d; distance += 1000.0d) {
+//        for (double distance = 1000.0d; distance < 2000.0d; distance += 1000.0d) {
+            distances.add(distance);
+        }
+        // Set grid dimensions    
+//        int multiplier;
+//        multiplier = (int) (400 / cellsize);
+        backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+//        backgroundDW_Shapefile = new DW_Shapefile(f);
+        //foregroundDW_Shapefile0 = new ArrayList<AGDT_Shapefile>();
+        //foregroundDW_Shapefile0.add(getCommunityAreasDW_Shapefile());
+//        foregroundDW_Shapefile1 = new DW_Shapefile(f);
+//        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+        foregroundDW_Shapefile1 = getCommunityAreasDW_Shapefile();
+//        DW_Shapefile sf = getCommunityAreasDW_Shapefile();
+//        sf.getFeatureLayer().getFeatureSource();
+
+        nrows = 554;//70 * multiplier * resolutionMultiplier; //139 * multiplier; //277 * multiplier;
+        ncols = 680;//85 * multiplier * resolutionMultiplier; //170 * multiplier; //340 * multiplier;
+        xllcorner = 413000;
+        yllcorner = 422500;
+        dimensions = new BigDecimal[5];
+        dimensions[0] = BigDecimal.valueOf(cellsize);
+        dimensions[1] = BigDecimal.valueOf(xllcorner);
+        dimensions[2] = BigDecimal.valueOf(yllcorner);
+        dimensions[3] = BigDecimal.valueOf(xllcorner + (cellsize * ncols));
+        dimensions[4] = BigDecimal.valueOf(yllcorner + (cellsize * nrows));
+        backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+
+        boolean overlaycommunityAreas;
+        overlaycommunityAreas = true;
+        File dirOut1;
+        if (overlaycommunityAreas) {
+            foregroundDW_Shapefile1 = getCommunityAreasDW_Shapefile();
+            dirOut1 = new File(dirOut, "CommunityAreasOverlaid");
+        } else {
+            dirOut1 = new File(dirOut, "LADOverlaid");
+            foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+        }
+        Grids_Environment ge;
+        ge = new Grids_Environment();
+        Grid2DSquareCellDoubleFactory f;
+        f = new Grid2DSquareCellDoubleFactory(ge, handleOutOfMemoryErrors);
+        Grid2DSquareCellProcessorGWS p;
+        p = new Grid2DSquareCellProcessorGWS(ge);
+
+        Grid2DSquareCellDouble numerator;
+        Grid2DSquareCellDouble denominator1;
+        Grid2DSquareCellDouble denominator2;
+        Grid2DSquareCellDouble rate;
+        rate = (Grid2DSquareCellDouble) f.create(nrows, ncols);
+
+        File dirIn;
+        dirIn = new File(
+                dirOut,
+                "AllPT/UO/All/CommunityAreasOverlaid/MonthlyUO/HB");
+
+        File numeratorFile = new File(
+                dirIn,
+                "2013_AprMinus2015_Oct.asc");
+        numerator = (Grid2DSquareCellDouble) f.create(numeratorFile);
+        File denominatorFile;
+        denominatorFile = new File(
+                dirIn,
+                "2013_Apr/Density2013_Apr_554_ncols_680_cellsize_50.0.asc");
+        denominator1 = (Grid2DSquareCellDouble) f.create(denominatorFile);
+        denominatorFile = new File(
+                dirIn,
+                "2015_Oct/Density2015_Oct_554_ncols_680_cellsize_50.0.asc");
+        denominator2 = (Grid2DSquareCellDouble) f.create(denominatorFile);
+        p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
+
+        for (long row = 0; row < nrows; row++) {
+            for (long col = 0; col < ncols; col++) {
+                double n = numerator.getCell(row, col, handleOutOfMemoryErrors);
+                double d = denominator1.getCell(row, col, handleOutOfMemoryErrors);
+                double r;
+                if (d == 0) {
+                    r = 0;
+                } else {
+                    r = n / (d / 2.0d);
+                }
+                rate.setCell(row, col, r, handleOutOfMemoryErrors);
+            }
+        }
+
+        List<String> stats = new ArrayList<String>();
+        stats.add("WSum");
+        //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
+        for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
+                cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
+            double distance = maxCellDistanceForGeneralisation * cellsize;
+            double weightIntersect = 1.0d;
+            double weightFactor = 2.0d;
+            // RegionUnivariateStatistics
+            List<AbstractGrid2DSquareCell> gws;
+            gws = gp.regionUnivariateStatistics(
+                    rate,
+                    stats,
+                    distance,
+                    weightIntersect,
+                    weightFactor,
+                    gf);
+            Iterator<AbstractGrid2DSquareCell> itegws;
+            itegws = gws.iterator();
+            // Set normaliser part of the result to null to save space
+            AbstractGrid2DSquareCell normaliser = itegws.next();
+            normaliser = null;
+            // Write out grid
+            AbstractGrid2DSquareCell gwsgrid = itegws.next();
+            String outputName2;
+            outputName2 = "Rate" + "GWS_" + cellDistanceForGeneralisation;// + "_" + i;
+//                        imageFile = new File(
+//                                outletmapDirectory,
+//                                outputName + ".png");
+//                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png", handleOutOfMemoryErrors);
+
+            File asciigridFile = new File(
+                    dirIn,
+                    outputName2 + ".asc");
+            eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+
+            int index = 0;
+            boolean scaleToFirst = false;
+            // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
+            outputGridToImageUsingGeoToolsAndSetCommonStyle(
+                    100.0d,//(double) Math.PI * cellDistanceForGeneralisation * cellDistanceForGeneralisation,
+                    gwsgrid,
+                    asciigridFile,
+                    dirIn,
+                    outputName2,
+                    index,
+                    scaleToFirst);
+
+        }
     }
 
     //public void runAll(int resolutionMultiplier) {
@@ -848,15 +997,13 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                                     councilTaxBenefitClaimReferenceNumber);
                         }
                         doMainLoop = underOccupied0 != null;
-                    } else {
-                        if (doRSL) {
-                            DW_UOReport_Record underOccupied0 = null;
-                            if (underOccupiedSetRSL != null) {
-                                underOccupied0 = underOccupiedSetRSL.getMap().get(
-                                        councilTaxBenefitClaimReferenceNumber);
-                            }
-                            doMainLoop = underOccupied0 != null;
+                    } else if (doRSL) {
+                        DW_UOReport_Record underOccupied0 = null;
+                        if (underOccupiedSetRSL != null) {
+                            underOccupied0 = underOccupiedSetRSL.getMap().get(
+                                    councilTaxBenefitClaimReferenceNumber);
                         }
+                        doMainLoop = underOccupied0 != null;
                     }
 
                 }
