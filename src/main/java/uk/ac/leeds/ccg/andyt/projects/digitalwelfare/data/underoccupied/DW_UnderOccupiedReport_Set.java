@@ -19,7 +19,6 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
@@ -28,38 +27,39 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  * @author geoagdt
  */
 public class DW_UnderOccupiedReport_Set {
-    
+
     /**
-     * aUnderOccupiedReport_Record.getClaimReferenceNumber(), aUnderOccupiedReport_Record
-     */ 
+     * aUnderOccupiedReport_Record.getClaimReferenceNumber(),
+     * aUnderOccupiedReport_Record
+     */
     TreeMap<String, DW_UOReport_Record> map;
-    
-    public DW_UnderOccupiedReport_Set() {}
-    
+
+    public DW_UnderOccupiedReport_Set() {
+        map = new TreeMap<String, DW_UOReport_Record>();
+    }
+
     /**
      * @param filename
-     * @param handler 
      */
     public DW_UnderOccupiedReport_Set(
             String filename) {
         File dir;
-        dir = DW_Files.getInputUnderOccupiedDir();        
+        dir = DW_Files.getInputUnderOccupiedDir();
         map = DW_UnderOccupiedReport_Handler.loadInputData(
-                    dir,
-                    filename);
+                dir,
+                filename);
     }
-       
+
 //        councilRecords = new TreeMap[numberOfUnderOccupiedReportFiles];
 //        result[0] = councilRecords;
 //        RSLRecords = new TreeMap[numberOfUnderOccupiedReportFiles];
-
     public TreeMap<String, DW_UOReport_Record> getMap() {
         return map;
     }
 
-    public void setSet(
-            TreeMap<String, DW_UOReport_Record> set) {
-        this.map = set;
+    public void setMap(
+            TreeMap<String, DW_UOReport_Record> map) {
+        this.map = map;
     }
-    
+
 }

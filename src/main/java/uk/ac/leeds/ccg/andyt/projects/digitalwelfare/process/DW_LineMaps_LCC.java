@@ -367,7 +367,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
             tenancyTypeChanges.add("4UO - 1");
             tenancyTypeChanges.add("4UO - 1UO");
             result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+            tenancyTypeChanges = new ArrayList<String>();
             // Social To UO
             tenancyTypeChanges.add("1 - 1UO");
             tenancyTypeChanges.add("1UO - 1UO");
@@ -378,7 +378,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
             tenancyTypeChanges.add("4 - 1UO");
             tenancyTypeChanges.add("4UO - 1UO");
             result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+            tenancyTypeChanges = new ArrayList<String>();
             // Social From UO
             tenancyTypeChanges.add("1UO - 1");
             tenancyTypeChanges.add("1UO - 1UO");
@@ -782,11 +782,11 @@ public class DW_LineMaps_LCC extends DW_Maps {
 
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
-        includes.remove("All");
+//        includes.remove("All");
         includes.remove("Yearly");
         includes.remove("6Monthly");
         includes.remove("3Monthly");
-//        includes.remove("MonthlyUO");
+        includes.remove("MonthlyUO");
         includes.remove("Monthly");
 
         HashMap<Boolean, ArrayList<ArrayList<String>>> allTenancyTypeChanges;
@@ -813,12 +813,12 @@ public class DW_LineMaps_LCC extends DW_Maps {
         b.add(false);
 
         boolean doCommunityAreasOverlay;
-//        doCommunityAreasOverlay = true;
+        doCommunityAreasOverlay = true;
 //        doCommunityAreasOverlay = false;
-        Iterator<Boolean> iteCAO;
-        iteCAO = b.iterator();
-        while (iteCAO.hasNext()) {
-            doCommunityAreasOverlay = iteCAO.next();
+//        Iterator<Boolean> iteCAO;
+//        iteCAO = b.iterator();
+//        while (iteCAO.hasNext()) {
+//            doCommunityAreasOverlay = iteCAO.next();
 
             init(doCommunityAreasOverlay);
 
@@ -837,7 +837,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
                     TreeMap<String, ArrayList<String>> yM3s;
                     yM3s = getYM3s(include);
                     // Postcode And Tenancy Type
-                if (true) {
+                    if (true) {
 //                    if (false) {
                         boolean doTenancyTypeAndPostcodeChange;
                         Iterator<Boolean> iteb0;
@@ -1005,7 +1005,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
                         }
                     }
                     // Postcode Only Changes (does not includes postcode changes between different TTs)
-                if (true) {
+                    if (true) {
 //                    if (false) {
                         Iterator<Boolean> iteb;
                         iteb = b.iterator();
@@ -1312,7 +1312,7 @@ public class DW_LineMaps_LCC extends DW_Maps {
                     }
                 }
             }
-        }
+        //}
         // Tidy up
         if (!showMapsInJMapPane) {
 //            Iterator<AGDT_Shapefile> ite1;

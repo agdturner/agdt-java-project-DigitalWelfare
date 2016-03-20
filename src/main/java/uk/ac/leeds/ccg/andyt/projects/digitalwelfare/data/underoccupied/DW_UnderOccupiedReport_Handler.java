@@ -435,7 +435,7 @@ public class DW_UnderOccupiedReport_Handler {
         return getMonth(i).substring(0, 3);
     }
 
-    public static HashSet<String> getUnderOccupiedInApril2013() {
+    public static HashSet<String> getUnderOccupiedInApril2013CTBRefs() {
         HashSet<String> result;
         result = new HashSet<String>();
         Object[] filenames;
@@ -462,6 +462,79 @@ public class DW_UnderOccupiedReport_Handler {
         set = new DW_UnderOccupiedReport_Set(
                 RSLFilename);
         result.addAll(set.map.keySet());
+        return result;
+    }
+    
+    public static HashSet<String> getUnderOccupiedCTBRefs() {
+        HashSet<String> result;
+        result = new HashSet<String>();
+        Object[] filenames;
+        filenames = getFilenames();
+        TreeMap<String, String> CouncilFilenames;
+        TreeMap<String, String> RSLFilenames;
+        CouncilFilenames = (TreeMap<String, String>) filenames[0];
+        RSLFilenames = (TreeMap<String, String>) filenames[1];
+        Iterator<String> ite;
+        ite = CouncilFilenames.keySet().iterator();
+        String yM3;
+        String CouncilFilename;
+        String RSLFilename;
+        while (ite.hasNext()) {
+            yM3 = ite.next();
+            CouncilFilename = CouncilFilenames.get(yM3);
+            RSLFilename = RSLFilenames.get(yM3);
+            DW_UnderOccupiedReport_Set set;
+            set = new DW_UnderOccupiedReport_Set(
+                CouncilFilename);
+            result.addAll(set.map.keySet());
+            set = new DW_UnderOccupiedReport_Set(
+                RSLFilename);
+            result.addAll(set.map.keySet());
+        }
+        return result;
+    }
+    
+    public static HashSet<String> getUnderOccupiedCouncilCTBRefs() {
+        HashSet<String> result;
+        result = new HashSet<String>();
+        Object[] filenames;
+        filenames = getFilenames();
+        TreeMap<String, String> CouncilFilenames;
+        CouncilFilenames = (TreeMap<String, String>) filenames[0];
+        Iterator<String> ite;
+        ite = CouncilFilenames.keySet().iterator();
+        String yM3;
+        String CouncilFilename;
+        while (ite.hasNext()) {
+            yM3 = ite.next();
+            CouncilFilename = CouncilFilenames.get(yM3);
+            DW_UnderOccupiedReport_Set set;
+            set = new DW_UnderOccupiedReport_Set(
+                CouncilFilename);
+            result.addAll(set.map.keySet());
+        }
+        return result;
+    }
+    
+    public static HashSet<String> getUnderOccupiedRSLCTBRefs() {
+        HashSet<String> result;
+        result = new HashSet<String>();
+        Object[] filenames;
+        filenames = getFilenames();
+        TreeMap<String, String> RSLFilenames;
+        RSLFilenames = (TreeMap<String, String>) filenames[1];
+        Iterator<String> ite;
+        ite = RSLFilenames.keySet().iterator();
+        String yM3;
+        String RSLFilename;
+        while (ite.hasNext()) {
+            yM3 = ite.next();
+            RSLFilename = RSLFilenames.get(yM3);
+            DW_UnderOccupiedReport_Set set;
+            set = new DW_UnderOccupiedReport_Set(
+                RSLFilename);
+            result.addAll(set.map.keySet());
+        }
         return result;
     }
 }

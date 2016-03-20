@@ -134,25 +134,35 @@ public class DW_SHBE_Handler {
             System.out.println("----------------------");
             System.out.println("Payment Type " + paymentType);
             System.out.println("----------------------");
-            //for (int i = 0; i < SHBEFilenames.length; i++) {
-            for (int i = 0; i < SHBEFilenames.length; i++) {
+//            for (int i = 0; i < SHBEFilenames.length; i++) {
+//                File collectionDir = new File(
+//                        DW_Files.getSwapSHBEDir(),
+//                        paymentType);
+//                collectionDir = new File(
+//                        collectionDir,
+//                        SHBEFilenames[i]);
+//                DW_SHBE_CollectionHandler handler;
+//                handler = new DW_SHBE_CollectionHandler(
+//                        env,
+//                        collectionDir);
+//                DW_SHBE_Collection SHBEData;
+//                SHBEData = new DW_SHBE_Collection(
+//                        handler.nextID,
+//                        handler,
+//                        dir,
+//                        SHBEFilenames[i],
+//                        paymentType);
+            for (String SHBEFilename : SHBEFilenames) {
                 File collectionDir = new File(
                         DW_Files.getSwapSHBEDir(),
                         paymentType);
-                collectionDir = new File(
-                        collectionDir,
-                        SHBEFilenames[i]);
+                collectionDir = new File(collectionDir, SHBEFilename);
                 DW_SHBE_CollectionHandler handler;
                 handler = new DW_SHBE_CollectionHandler(
                         env,
                         collectionDir);
                 DW_SHBE_Collection SHBEData;
-                SHBEData = new DW_SHBE_Collection(
-                        handler.nextID,
-                        handler,
-                        dir,
-                        SHBEFilenames[i],
-                        paymentType);
+                SHBEData = new DW_SHBE_Collection(handler.nextID, handler, dir, SHBEFilename, paymentType);
             }
         }
         Generic_StaticIO.writeObject(NINOToDW_IDLookup, NINOToDW_IDLookupFile);
@@ -410,7 +420,7 @@ public class DW_SHBE_Handler {
      * @return {@code ArrayList<DW_SHBE_Collection>}
      *
      */
-    public ArrayList<DW_SHBE_Collection> loadSHBEData() {
+    public static ArrayList<DW_SHBE_Collection> loadSHBEData() {
 
         String paymentType = "AllPT";
 
@@ -426,6 +436,54 @@ public class DW_SHBE_Handler {
                     filename, paymentType);
             result.add(SHBEData);
             System.out.println("... loaded SHBE data from " + filename + ".");
+        }
+        return result;
+    }
+
+    /**
+     * Attempts to load all SHBE collections.
+     *
+     * @param CTBRefs
+     * @return {@code ArrayList<DW_SHBE_Collection>}
+     *
+     */
+    public static HashMap<String, DW_SHBE_Collection> loadSHBEData(int i, HashSet<String> CTBRefs) {
+
+        int j = 0;
+        String paymentType = "AllPT";
+
+        HashMap<String, DW_SHBE_Collection> result;
+        result = new HashMap<String, DW_SHBE_Collection>();
+        File dir;
+        dir = DW_Files.getInputSHBEDir();
+        String[] filenames = getSHBEFilenamesAll();
+        for (String filename : filenames) {
+            j++;
+            if (j > i) {
+                System.out.println("Load SHBE data from " + filename + " ...");
+                DW_SHBE_Collection SHBEData;
+                SHBEData = new DW_SHBE_Collection(
+                        filename, paymentType);
+                if (CTBRefs != null) {
+                    SHBEData.getRecords().keySet().retainAll(CTBRefs);
+                }
+                result.put(getYM3(filename), SHBEData);
+                System.out.println("... loaded SHBE data from " + filename + ".");
+            }
+        }
+        return result;
+    }
+
+    public static HashMap<Integer, String> getIndexYM3s() {
+        HashMap<Integer, String> result;
+        result = new HashMap<Integer, String>();
+        String[] filenames = getSHBEFilenamesAll();
+        int i = 0;
+        String yM3;
+        for (String filename : filenames) {
+            yM3 = getYM3(filename);
+            result.put(i, yM3);
+            i++;
         }
         return result;
     }
@@ -3052,7 +3110,7 @@ public class DW_SHBE_Handler {
         result = getClaimantsAge(syM3[0], syM3[1], D_Record);
         return result;
     }
-    
+
     /**
      *
      * @param D_Record
@@ -3129,7 +3187,7 @@ public class DW_SHBE_Handler {
             return false;
         }
     }
-    
+
     public static int getEthnicityGroup(DW_SHBE_D_Record D_Record) {
         int claimantsEthnicGroup = D_Record.getClaimantsEthnicGroup();
         switch (claimantsEthnicGroup) {
@@ -3166,9 +3224,9 @@ public class DW_SHBE_Handler {
             case 16:
                 return 9;
         }
-        return 0;        
+        return 0;
     }
-    
+
     public static String getEthnicityName(DW_SHBE_D_Record D_Record) {
         int claimantsEthnicGroup = D_Record.getClaimantsEthnicGroup();
         switch (claimantsEthnicGroup) {
@@ -3205,9 +3263,9 @@ public class DW_SHBE_Handler {
             case 16:
                 return "Any Other";
         }
-        return "";        
+        return "";
     }
-    
+
     public static String getEthnicityGroupName(int ethnicityGroup) {
         switch (ethnicityGroup) {
             case 1:
@@ -3229,6 +3287,6 @@ public class DW_SHBE_Handler {
             case 9:
                 return "Other";
         }
-        return "";        
+        return "";
     }
 }

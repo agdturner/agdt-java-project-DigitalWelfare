@@ -50,7 +50,7 @@ public class DW_SHBE_TenancyType_Handler {
     public static final String s7 = "7";
     public static final String s8 = "8";
     public static final String s9 = "9";
-    public static final String sUO = "UO";
+    public static final String sU = "U";
     public static final String sUnderOccupied = "Under Occupied";
     public static final String sall = "all";
     public static final String space = " ";
@@ -100,7 +100,7 @@ public class DW_SHBE_TenancyType_Handler {
                                             if (tenancyType.startsWith(sMinus999)) {
                                                 result = sNoTenancy;
                                             } else {
-                                                result = tenancyType.replaceAll(sUO, sEmpty);
+                                                result = tenancyType.replaceAll(sU, sEmpty);
                                             }
                                         }
                                     }
@@ -111,7 +111,7 @@ public class DW_SHBE_TenancyType_Handler {
                 }
             }
         }
-        if (tenancyType.endsWith(sUO)) {
+        if (tenancyType.endsWith(sU)) {
             result += space + sUnderOccupied;
         }
         return result;
@@ -164,9 +164,9 @@ public class DW_SHBE_TenancyType_Handler {
         result.add(s2);
         result.add(s4);
         if (doUnderOccupiedData) {
-            result.add(s1 + sUO);
-            //result.add(s2 + sUO);
-            result.add(s4 + sUO);
+            result.add(s1 + sU);
+            //result.add(s2 + sU);
+            result.add(s4 + sU);
         }
         return result;
     }
@@ -191,16 +191,16 @@ public class DW_SHBE_TenancyType_Handler {
         ArrayList<String> result;
         result = getTenancyTypeAll();
         if (doUnderOccupiedData) {
-            //result.add(s0 + sUO);
-            result.add(s1 + sUO);
-            //result.add(s2 + sUO);
-            //result.add(s3 + sUO);
-            result.add(s4 + sUO);
-            //result.add(s5 + sUO);
-            //result.add(s6 + sUO);
-            //result.add(s7 + sUO);
-            //result.add(s8 + sUO);
-            //result.add(s9 + sUO);
+            //result.add(s0 + sU);
+            result.add(s1 + sU);
+            result.add(s2 + sU);
+            result.add(s3 + sU);
+            result.add(s4 + sU);
+            result.add(s5 + sU);
+            result.add(s6 + sU);
+            result.add(s7 + sU);
+            result.add(s8 + sU);
+            result.add(s9 + sU);
         }
         return result;
     }

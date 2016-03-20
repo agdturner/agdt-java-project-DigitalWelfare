@@ -18,6 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io;
 
+import com.itextpdf.text.BadElementException;
 import java.io.FileOutputStream;
 
 import com.itextpdf.text.Document;
@@ -27,6 +28,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,11 +46,11 @@ public class ImageToPDF {
         String name;
         File[] inFiles;
         inFiles = dirIn.listFiles();
-        for (int i = 0; i < inFiles.length; i++) {
+        for (File inFile : inFiles) {
             document = new Document();
-                float marginWidth = document.leftMargin() + document.rightMargin();
-                float marginHeight = document.topMargin() + document.bottomMargin();
-            name = inFiles[i].getName();
+            float marginWidth = document.leftMargin() + document.rightMargin();
+            float marginHeight = document.topMargin() + document.bottomMargin();
+            name = inFile.getName();
             name = name.substring(0, name.length() - 3);
             name += "pdf";
             outFile = new File(dirOut, name);
@@ -58,7 +60,7 @@ public class ImageToPDF {
                 writer.open();
                 document.open();
                 Image im;
-                im = Image.getInstance(inFiles[i].toString());
+                im = Image.getInstance(inFile.toString());
                 float width = im.getWidth() + marginWidth;
                 float height = im.getHeight() + marginHeight;
                 Rectangle r;
@@ -66,10 +68,15 @@ public class ImageToPDF {
                 document.setPageSize(r);
                 document.newPage();
                 document.add(im);
+                //document.
                 document.close();
                 writer.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (BadElementException ex) {
+                Logger.getLogger(ImageToPDF.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (DocumentException ex) {
+                Logger.getLogger(ImageToPDF.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(ImageToPDF.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

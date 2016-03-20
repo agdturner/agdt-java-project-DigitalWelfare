@@ -119,9 +119,16 @@ public class TenancyChangesUO {
     String sUOAtSomePoint = "sUOAtSomePoint";
     String sUOTT1AtSomePoint = "sUOTT1AtSomePoint";
     String sUOTT4AtSomePoint = "sUOTT4AtSomePoint";
-    String sAlwaysUOFromStart = "AlwaysUOFromStart";
-    String sAlwaysUOFromWhenStarted = "AlwaysUOFromWhenStarted";
+    String sAlwaysUOTT1FromStart = "AlwaysUOTT1FromStart";
+    String sAlwaysUOTT1FromStartExceptWhenSuspended = "AlwaysUOTT1FromStartExceptWhenSuspended";
+    String sAlwaysUOTT1FromWhenStarted = "AlwaysUOTT1FromWhenStarted";
+    String sAlwaysUOTT4FromStart = "AlwaysUOTT4FromStart";
+    String sAlwaysUOTT4FromStartExceptWhenSuspended = "AlwaysUOTT4FromStartExceptWhenSuspended";
+    String sAlwaysUOTT4FromWhenStarted = "AlwaysUOTT4FromWhenStarted";
     String sIntermitantUO = "IntermitantUO";
+    String sPermanantlyLeftUOButRemainedInSHBE = "PermanantlyLeftUOButRemainedInSHBE";
+    String sPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged = "PermanantlyLeftUOButRemainedInSHBE_PostcodeChanged";
+    String sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased = "PermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased";
     String sTravellers;
     String sTTNot1Or4AndUnderOccupying;
     String sTT3OrTT6_To_TT1;
@@ -189,8 +196,8 @@ public class TenancyChangesUO {
     String sTT4_To_UOTT1GettingDHP = "TT4_To_UOTT1GettingDHP";
     String sTT4_To_UOTT1InArrearsAndGettingDHP = "TT4_To_UOTT1InArrearsAndGettingDHP";
     String sInArrearsAtSomePoint = "InArrearsAtSomePoint";
-    String sDHPAtSomePoint = "sDHPAtSomePoint";
-    String sInArrearsAtSomePoint_And_DHPAtSomePoint = "sInArrearsAtSomePoint_And_DHPAtSomePoint";
+    String sDHPAtSomePoint = "DHPAtSomePoint";
+    String sInArrearsAtSomePoint_And_DHPAtSomePoint = "InArrearsAtSomePoint_And_DHPAtSomePoint";
 
     String sTT1_To_UOTT1_PostcodeUnchanged = "TT1_To_UOTT1_PostcodeUnchanged";
     //String sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month = "TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month";
@@ -318,8 +325,13 @@ public class TenancyChangesUO {
     String sUOTT1ClaimsInRentArrearsAtSomePoint = "UOTT1ClaimsInRentArrearsAtSomePoint";
     String sUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint = "UOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint";
 
-    String sTotalCount_AlwaysUOFromWhenStarted = "TotalCount_AlwaysUOFromWhenStarted";
-    String sTotalCount_AlwaysUOFromStart = "TotalCount_AlwaysUOFromStart";
+    String sTotalCount_AlwaysUOTT1FromWhenStarted = "TotalCount_AlwaysUOTT1FromWhenStarted";
+    String sTotalCount_AlwaysUOTT1FromStart = "TotalCount_AlwaysUOTT1FromStart";
+    String sTotalCount_AlwaysUOTT1FromStartExceptWhenSuspended = "TotalCount_AlwaysUOTT1FromStartExceptWhenSuspended";
+
+    String sTotalCount_AlwaysUOTT4FromWhenStarted = "TotalCount_AlwaysUOTT4FromWhenStarted";
+    String sTotalCount_AlwaysUOTT4FromStart = "TotalCount_AlwaysUOTT4FromStart";
+    String sTotalCount_AlwaysUOTT4FromStartExceptWhenSuspended = "TotalCount_AlwaysUOTT4FromStartExceptWhenSuspended";
 //    String sTotalCount_ExistingSHBEClaimsThatBecameUOInApril2013 = "TotalCount_ExistingSHBEClaimsThatBecameUOInApril2013";
 //    String sTotalCount_ExistingSHBEClaimsThatBecameUOAfterApril2013 = "TotalCount_ExistingSHBEClaimsThatBecameUOAfterApril2013";
 //    String sTotalCount_ExistingSHBEClaimsThatBecameUOAfterChangePostcodeAndOrTT = "TotalCount_ExistingSHBEClaimsThatBecameUOAfterChangePostcodeAndOrTT";
@@ -343,7 +355,8 @@ public class TenancyChangesUO {
     String sTotalCount_RSLUniqueNonDependentsEffectedByUnderOccupancy = "TotalCount_RSLUniqueNonDependentsEffectedByUnderOccupancy";
     String sTotalCount_UniqueChildrenAgeLessThan10EffectedByUnderOccupancy = "TotalCount_UniqueChildrenAgeLessThan10EffectedByUnderOccupancy";
 
-    String sAverageHouseholdSizeOfThoseUOAlwaysFromStart = "AverageHouseholdSizeOfThoseUOAlwaysFromStart";
+    String sAverageHouseholdSizeOfThoseUOTT1AlwaysFromStart = "AverageHouseholdSizeOfThoseUOTT1AlwaysFromStart";
+    String sAverageHouseholdSizeOfThoseUOTT4AlwaysFromStart = "AverageHouseholdSizeOfThoseUOTT4AlwaysFromStart";
 
     HashMap<String, String> generalStatisticDescriptions;
 
@@ -361,20 +374,43 @@ public class TenancyChangesUO {
         dates = startMonth + " " + startYear + " to " + endMonth + " " + endYear;
         generalStatisticDescriptions = new HashMap<String, String>();
         generalStatisticDescriptions.put(
-                sTotalCount_AlwaysUOFromStart,
-                "Total count of claims that were always in under-occupancy from "
-                + dates + " (includes claims that were not in under-occupancy "
+                sTotalCount_AlwaysUOTT1FromStart,
+                "Total count of claims that were always TT1 and in the "
+                + "under-occupancy from " + dates
+                + " (includes claims that were not in under-occupancy "
                 + "for months when their Housing Benefit Claim Status was In "
                 + "Suspension).");
         generalStatisticDescriptions.put(
-                sTotalCount_AlwaysUOFromWhenStarted,
-                "Total count of claims that were always in under-occupancy from "
-                + dates + " (includes claims that were not in under-occupancy "
+                sTotalCount_AlwaysUOTT1FromWhenStarted,
+                "Total count of claims that were always TT1 and in the "
+                + "under-occupancy data from " + dates + " but which only became "
+                + "claims after " + startMonth + " " + startYear
+                + " (includes claims that were not in under-occupancy "
                 + "for months when their Housing Benefit Claim Status was In "
                 + "Suspension).");
         generalStatisticDescriptions.put(
-                sAverageHouseholdSizeOfThoseUOAlwaysFromStart,
-                "Average Household Size of claims that were always in under-"
+                sTotalCount_AlwaysUOTT4FromStart,
+                "Total count of claims that were always TT4 and in the "
+                + "under-occupancy from " + dates
+                + " (includes claims that were not in under-occupancy "
+                + "for months when their Housing Benefit Claim Status was In "
+                + "Suspension).");
+        generalStatisticDescriptions.put(
+                sTotalCount_AlwaysUOTT4FromWhenStarted,
+                "Total count of claims that were always TT4 and in the "
+                + "under-occupancy data from " + dates + " but which only became "
+                + "claims after " + startMonth + " " + startYear
+                + " (includes claims that were not in under-occupancy "
+                + "for months when their Housing Benefit Claim Status was In "
+                + "Suspension).");
+        generalStatisticDescriptions.put(
+                sAverageHouseholdSizeOfThoseUOTT1AlwaysFromStart,
+                "Average Household Size of claims that were always TT1 in under-"
+                + "occupancy from " + dates + " in " + endMonth + " "
+                + endYear + ".");
+        generalStatisticDescriptions.put(
+                sAverageHouseholdSizeOfThoseUOTT4AlwaysFromStart,
+                "Average Household Size of claims that were always TT4 in under-"
                 + "occupancy from " + dates + " in " + endMonth + " "
                 + endYear + ".");
         generalStatisticDescriptions.put(
@@ -998,7 +1034,7 @@ public class TenancyChangesUO {
         //        "Total count of UOTT4OrTT4_To_UOTT1 claims in arrears at  "
         //        + "some time between " + dates + ".");
         //generalStatisticDescriptions.put(sUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP,
-        //        "Total count of UOTT4OrTT4_To_UOTT1 claims simulatenously in "
+        //        "Total count of UOTT4OrTT4_To_UOTT1 claims simultaneously in "
         //        + "arrears and receiving Housing Benefit Discretionary "
         //        + "Payment at  "
         //        + "some time between " + dates + ".");
@@ -1012,7 +1048,7 @@ public class TenancyChangesUO {
                 + "Housing Benefit Discretionary Payment "
                 + "some time between " + dates + ".");
         generalStatisticDescriptions.put(sUOTT4_To_UOTT1InArrearsAndGettingDHP,
-                "Total count of UOTT4_To_UOTT1 claims simulatenously in "
+                "Total count of UOTT4_To_UOTT1 claims simultaneously in "
                 + "arrears and receiving Housing Benefit Discretionary "
                 + "Payment "
                 + "some time between " + dates + ".");
@@ -1026,7 +1062,7 @@ public class TenancyChangesUO {
                 + "Housing Benefit Discretionary Payment "
                 + "some time between " + dates + ".");
         generalStatisticDescriptions.put(sTT4_To_UOTT1InArrearsAndGettingDHP,
-                "Total count of UOTT4OrTT4_To_UOTT1 claims simulatenously in "
+                "Total count of UOTT4OrTT4_To_UOTT1 claims simultaneously in "
                 + "arrears and receiving Housing Benefit Discretionary "
                 + "Payment "
                 + "some time between " + dates + ".");
@@ -1046,6 +1082,24 @@ public class TenancyChangesUO {
                 sUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint,
                 "Total count of under-occupied TT1 claims in rent arrears and "
                 + "receiving DHP simultaneously some time between " + dates + ".");
+           String sPermanantlyLeftUOButRemainedInSHBE = "PermanantlyLeftUOButRemainedInSHBE";
+    String sPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged = "PermanantlyLeftUOButRemainedInSHBE_PostcodeChanged";
+    String sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased = "PermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased";
+        generalStatisticDescriptions.put(
+                sPermanantlyLeftUOButRemainedInSHBE,
+                "Total count of under-occupied claims that stopped being "
+                        + "under-occupied and "
+                        + " which have not returned to under-occupancy.");
+        generalStatisticDescriptions.put(
+                sPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged,
+                "Total count of under-occupied claims that stopped being "
+                        + "under-occupied and changed postcode and "
+                        + " which have not returned to under-occupancy.");
+        generalStatisticDescriptions.put(
+                sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased,
+                "Total count of under-occupied claims that stopped being "
+                        + "under-occupied because of an increase in household size and"
+                        + " which have not returned to under-occupancy.");
         return generalStatisticDescriptions;
     }
 
@@ -1713,6 +1767,18 @@ public class TenancyChangesUO {
         HashMap<String, TreeSet<String>> groups;
         groups = new HashMap<String, TreeSet<String>>();
 
+        TreeSet<String> tCTBRefSetPermanantlyLeftUOButRemainedInSHBE;
+        tCTBRefSetPermanantlyLeftUOButRemainedInSHBE = new TreeSet<String>();
+        groups.put(sPermanantlyLeftUOButRemainedInSHBE, tCTBRefSetPermanantlyLeftUOButRemainedInSHBE);
+        
+        TreeSet<String> tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged;
+        tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged = new TreeSet<String>();
+        groups.put(sPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged, tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged);
+        
+        TreeSet<String> tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased;
+        tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased = new TreeSet<String>();
+        groups.put(sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased, tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased);
+            
         TreeSet<String> tCTBRefSetTravellers;
         tCTBRefSetTravellers = new TreeSet<String>();
         groups.put(sTravellers, tCTBRefSetTravellers);
@@ -1761,15 +1827,35 @@ public class TenancyChangesUO {
         tCTBRefSetUOTT4AtSomePoint = new TreeSet<String>();
         groups.put(sUOTT4AtSomePoint, tCTBRefSetUOTT4AtSomePoint);
 
-        TreeSet<String> tCTBRefSetAlwaysUOFromStart;
-        tCTBRefSetAlwaysUOFromStart = new TreeSet<String>();
-        tCTBRefSetAlwaysUOFromStart.addAll(tCTBRefs);
-        groups.put(sAlwaysUOFromStart, tCTBRefSetAlwaysUOFromStart);
+        TreeSet<String> tCTBRefSetAlwaysUOTT1FromStart;
+        tCTBRefSetAlwaysUOTT1FromStart = new TreeSet<String>();
+        tCTBRefSetAlwaysUOTT1FromStart.addAll(tCouncilCTBRefs);
+        groups.put(sAlwaysUOTT1FromStart, tCTBRefSetAlwaysUOTT1FromStart);
 
-        TreeSet<String> tCTBRefSetAlwaysUOFromWhenStarted;
-        tCTBRefSetAlwaysUOFromWhenStarted = new TreeSet<String>();
+        TreeSet<String> tCTBRefSetAlwaysUOTT1FromStartExceptWhenSuspended;
+        tCTBRefSetAlwaysUOTT1FromStartExceptWhenSuspended = new TreeSet<String>();
+        tCTBRefSetAlwaysUOTT1FromStartExceptWhenSuspended.addAll(tCouncilCTBRefs);
+        groups.put(sAlwaysUOTT1FromStartExceptWhenSuspended, tCTBRefSetAlwaysUOTT1FromStartExceptWhenSuspended);
+
+        TreeSet<String> tCTBRefSetAlwaysUOTT1FromWhenStarted;
+        tCTBRefSetAlwaysUOTT1FromWhenStarted = new TreeSet<String>();
         //tCTBRefSetAlwaysUOFromWhenStarted.addAll(tCTBRefs);
-        groups.put(sAlwaysUOFromWhenStarted, tCTBRefSetAlwaysUOFromWhenStarted);
+        groups.put(sAlwaysUOTT1FromWhenStarted, tCTBRefSetAlwaysUOTT1FromWhenStarted);
+
+        TreeSet<String> tCTBRefSetAlwaysUOTT4FromStart;
+        tCTBRefSetAlwaysUOTT4FromStart = new TreeSet<String>();
+        tCTBRefSetAlwaysUOTT4FromStart.addAll(tRSLCTBRefs);
+        groups.put(sAlwaysUOTT4FromStart, tCTBRefSetAlwaysUOTT4FromStart);
+
+        TreeSet<String> tCTBRefSetAlwaysUOTT4FromStartExceptWhenSuspended;
+        tCTBRefSetAlwaysUOTT4FromStartExceptWhenSuspended = new TreeSet<String>();
+        tCTBRefSetAlwaysUOTT4FromStartExceptWhenSuspended.addAll(tRSLCTBRefs);
+        groups.put(sAlwaysUOTT4FromStartExceptWhenSuspended, tCTBRefSetAlwaysUOTT4FromStartExceptWhenSuspended);
+
+        TreeSet<String> tCTBRefSetAlwaysUOTT4FromWhenStarted;
+        tCTBRefSetAlwaysUOTT4FromWhenStarted = new TreeSet<String>();
+        //tCTBRefSetAlwaysUOFromWhenStarted.addAll(tCTBRefs);
+        groups.put(sAlwaysUOTT4FromWhenStarted, tCTBRefSetAlwaysUOTT4FromWhenStarted);
 
         TreeSet<String> tCTBRefSetIntermitantUO;
         tCTBRefSetIntermitantUO = new TreeSet<String>();
@@ -2545,6 +2631,9 @@ public class TenancyChangesUO {
                     tRSLMaxNumberOfDependentsInClaimWhenUO,
                     tIDSetRSLUniqueNonDependentsEffected,
                     tIDSetUniqueDependentChildrenUnderAge10Effected,
+                    tCTBRefSetPermanantlyLeftUOButRemainedInSHBE,
+                    tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged,
+                    tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased,
                     tCTBRefSetTravellers,
                     tCTBRefSetTTNot1Or4AndUnderOccupying,
                     tCTBRefSetTT1_To_TT3,
@@ -2556,8 +2645,12 @@ public class TenancyChangesUO {
                     tCTBRefSetUOAtSomePoint,
                     tCTBRefSetUOTT1AtSomePoint,
                     tCTBRefSetUOTT4AtSomePoint,
-                    tCTBRefSetAlwaysUOFromStart,
-                    tCTBRefSetAlwaysUOFromWhenStarted,
+                    tCTBRefSetAlwaysUOTT1FromStart,
+                    tCTBRefSetAlwaysUOTT1FromStartExceptWhenSuspended,
+                    tCTBRefSetAlwaysUOTT1FromWhenStarted,
+                    tCTBRefSetAlwaysUOTT4FromStart,
+                    tCTBRefSetAlwaysUOTT4FromStartExceptWhenSuspended,
+                    tCTBRefSetAlwaysUOTT4FromWhenStarted,
                     tCTBRefSetIntermitantUO,
                     tCTBRefSetUO_To_LeftSHBEAtSomePoint,
                     tCTBRefSetUOTT1_To_LeftSHBE,
@@ -2796,6 +2889,9 @@ public class TenancyChangesUO {
                         tRSLMaxNumberOfDependentsInClaimWhenUO,
                         tIDSetRSLUniqueNonDependentsEffected,
                         tIDSetUniqueDependentChildrenUnderAge10Effected,
+                        tCTBRefSetPermanantlyLeftUOButRemainedInSHBE,
+                        tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged,
+                        tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased,
                         tCTBRefSetTravellers,
                         tCTBRefSetTTNot1Or4AndUnderOccupying,
                         tCTBRefSetTT1_To_TT3,
@@ -2807,8 +2903,12 @@ public class TenancyChangesUO {
                         tCTBRefSetUOAtSomePoint,
                         tCTBRefSetUOTT1AtSomePoint,
                         tCTBRefSetUOTT4AtSomePoint,
-                        tCTBRefSetAlwaysUOFromStart,
-                        tCTBRefSetAlwaysUOFromWhenStarted,
+                        tCTBRefSetAlwaysUOTT1FromStart,
+                        tCTBRefSetAlwaysUOTT1FromStartExceptWhenSuspended,
+                        tCTBRefSetAlwaysUOTT1FromWhenStarted,
+                        tCTBRefSetAlwaysUOTT4FromStart,
+                        tCTBRefSetAlwaysUOTT4FromStartExceptWhenSuspended,
+                        tCTBRefSetAlwaysUOTT4FromWhenStarted,
                         tCTBRefSetIntermitantUO,
                         tCTBRefSetUO_To_LeftSHBEAtSomePoint,
                         tCTBRefSetUOTT1_To_LeftSHBE,
@@ -3041,7 +3141,8 @@ public class TenancyChangesUO {
 
         TreeSet<String> tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT; // Calculate by intersect of sets.
         tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT = new TreeSet<String>();
-        tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOFromStart);
+        tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOTT1FromStart);
+        tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOTT4FromStart);
         tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT.retainAll(tCTBRefSetNoValidPostcodeChange);
         tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT.retainAll(tCTBRefSetNotChangedTT);
         groups.put(sAlwaysUOFromStart__NoValidPostcodeChange_NotChangedTT, tCTBRefSetAlwaysUOFromStartNoValidPostcodeChangeNotChangedTT);
@@ -3049,12 +3150,14 @@ public class TenancyChangesUO {
         TreeSet<String> tCTBRefSetAlwaysUOFromStartChangedTT; // Calculate by intersect of sets.
         tCTBRefSetAlwaysUOFromStartChangedTT = new TreeSet<String>();
         tCTBRefSetAlwaysUOFromStartChangedTT.addAll(tCTBRefSetChangedTT);
-        tCTBRefSetAlwaysUOFromStartChangedTT.retainAll(tCTBRefSetAlwaysUOFromStart);
+        tCTBRefSetAlwaysUOFromStartChangedTT.retainAll(tCTBRefSetAlwaysUOTT1FromStart);
+        tCTBRefSetAlwaysUOFromStartChangedTT.retainAll(tCTBRefSetAlwaysUOTT4FromStart);
         groups.put(sAlwaysUOFromStart__ChangedTT, tCTBRefSetAlwaysUOFromStartChangedTT);
 
         TreeSet<String> tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT; // Calculate by intersect of sets.
         tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT = new TreeSet<String>();
-        tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOFromStart);
+        tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOTT1FromStart);
+        tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOTT4FromStart);
         tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT.removeAll(tCTBRefSetAlwaysUOFromStartChangedTT);
         tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT.retainAll(tCTBRefSetValidPostcodeChange);
         groups.put(sAlwaysUOFromStart__ValidPostcodeChange_NotChangedTT, tCTBRefSetAlwaysUOFromStartValidPostcodeChangeNotChangedTT);
@@ -3072,25 +3175,30 @@ public class TenancyChangesUO {
             }
         }
 
-        tCTBRefSetAlwaysUOFromWhenStarted.removeAll(tCTBRefSetAlwaysUOFromStart);
-        tCTBRefSetAlwaysUOFromWhenStarted.removeAll(tCTBRefSetIntermitantUO);
+        tCTBRefSetAlwaysUOTT1FromWhenStarted.removeAll(tCTBRefSetAlwaysUOTT1FromStart);
+        tCTBRefSetAlwaysUOTT1FromWhenStarted.removeAll(tCTBRefSetIntermitantUO);
+        tCTBRefSetAlwaysUOTT4FromWhenStarted.removeAll(tCTBRefSetAlwaysUOTT4FromStart);
+        tCTBRefSetAlwaysUOTT4FromWhenStarted.removeAll(tCTBRefSetIntermitantUO);
 
         TreeSet<String> tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT; // Calculate by intersect of sets.
         tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT = new TreeSet<String>();
-        tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOFromWhenStarted);
+        tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOTT1FromWhenStarted);
+        tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOTT4FromWhenStarted);
         tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT.removeAll(tCTBRefSetChangedTT);
         tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT.retainAll(tCTBRefSetNoValidPostcodeChange);
         groups.put(sAlwaysUOFromWhenStarted__NoValidPostcodeChange_NotChangedTT, tCTBRefSetAlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT);
 
         TreeSet<String> tCTBRefSetAlwaysUOFromWhenStartedChangedTT; // Calculate by intersect of sets.
         tCTBRefSetAlwaysUOFromWhenStartedChangedTT = new TreeSet<String>();
-        tCTBRefSetAlwaysUOFromWhenStartedChangedTT.addAll(tCTBRefSetAlwaysUOFromWhenStarted);
+        tCTBRefSetAlwaysUOFromWhenStartedChangedTT.addAll(tCTBRefSetAlwaysUOTT1FromWhenStarted);
+        tCTBRefSetAlwaysUOFromWhenStartedChangedTT.addAll(tCTBRefSetAlwaysUOTT4FromWhenStarted);
         tCTBRefSetAlwaysUOFromWhenStartedChangedTT.retainAll(tCTBRefSetChangedTT);
         groups.put(sAlwaysUOFromWhenStarted__ChangedTT, tCTBRefSetAlwaysUOFromWhenStartedChangedTT);
 
         TreeSet<String> tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT; // Calculate by intersect of sets.
         tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT = new TreeSet<String>();
-        tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOFromWhenStarted);
+        tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOTT1FromWhenStarted);
+        tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT.addAll(tCTBRefSetAlwaysUOTT4FromWhenStarted);
         tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT.removeAll(tCTBRefSetNoValidPostcodeChange);
         tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT.removeAll(tCTBRefSetChangedTT);
         groups.put(sAlwaysUOFromWhenStarted__ValidPostcodeChange_NotChangedTT, tCTBRefSetAlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT);
@@ -3131,22 +3239,42 @@ public class TenancyChangesUO {
                 tIDSetUniqueDependentChildrenUnderAge10Effected,
                 groups);
 
-        long totalHouseholdSize = 0;
+        long totalHouseholdSize;
+        double averageHouseholdSizeOfThoseUOAlwaysFromStart;
         Iterator<String> iteS;
-        iteS = tCTBRefSetAlwaysUOFromStart.iterator();
+        // TT1
+        totalHouseholdSize = 0;
+        iteS = tCTBRefSetAlwaysUOTT1FromStart.iterator();
         while (iteS.hasNext()) {
             aCTBRef = iteS.next();
             totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(aRecords.get(aCTBRef));
         }
-        double averageHouseholdSizeOfThoseUOAlwaysFromStart;
-        averageHouseholdSizeOfThoseUOAlwaysFromStart = (double) totalHouseholdSize / (double) tCTBRefSetAlwaysUOFromStart.size();
-        generalStatistics.put(sAverageHouseholdSizeOfThoseUOAlwaysFromStart,
+        averageHouseholdSizeOfThoseUOAlwaysFromStart = (double) totalHouseholdSize / (double) tCTBRefSetAlwaysUOTT1FromStart.size();
+        generalStatistics.put(sAverageHouseholdSizeOfThoseUOTT1AlwaysFromStart,
+                BigDecimal.valueOf(averageHouseholdSizeOfThoseUOAlwaysFromStart));
+        // TT4
+        totalHouseholdSize = 0;
+        iteS = tCTBRefSetAlwaysUOTT4FromStart.iterator();
+        while (iteS.hasNext()) {
+            aCTBRef = iteS.next();
+            totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(aRecords.get(aCTBRef));
+        }
+        averageHouseholdSizeOfThoseUOAlwaysFromStart = (double) totalHouseholdSize / (double) tCTBRefSetAlwaysUOTT4FromStart.size();
+        generalStatistics.put(sAverageHouseholdSizeOfThoseUOTT4AlwaysFromStart,
                 BigDecimal.valueOf(averageHouseholdSizeOfThoseUOAlwaysFromStart));
 
-        generalStatistics.put(sTotalCount_AlwaysUOFromStart,
-                BigDecimal.valueOf(tCTBRefSetAlwaysUOFromStart.size()));
-        generalStatistics.put(sTotalCount_AlwaysUOFromWhenStarted,
-                BigDecimal.valueOf(tCTBRefSetAlwaysUOFromWhenStarted.size()));
+        generalStatistics.put(sTotalCount_AlwaysUOTT1FromStart,
+                BigDecimal.valueOf(tCTBRefSetAlwaysUOTT1FromStart.size()));
+        generalStatistics.put(sTotalCount_AlwaysUOTT1FromStartExceptWhenSuspended,
+                BigDecimal.valueOf(tCTBRefSetAlwaysUOTT1FromStartExceptWhenSuspended.size()));
+        generalStatistics.put(sTotalCount_AlwaysUOTT1FromWhenStarted,
+                BigDecimal.valueOf(tCTBRefSetAlwaysUOTT1FromWhenStarted.size()));
+        generalStatistics.put(sTotalCount_AlwaysUOTT4FromStart,
+                BigDecimal.valueOf(tCTBRefSetAlwaysUOTT4FromStart.size()));
+        generalStatistics.put(sTotalCount_AlwaysUOTT4FromStartExceptWhenSuspended,
+                BigDecimal.valueOf(tCTBRefSetAlwaysUOTT4FromStartExceptWhenSuspended.size()));
+        generalStatistics.put(sTotalCount_AlwaysUOTT4FromWhenStarted,
+                BigDecimal.valueOf(tCTBRefSetAlwaysUOTT4FromWhenStarted.size()));
 
 // Use sets?
 //        generalStatistics.put(sTotalCount_ExistingSHBEClaimsThatBecameUOInApril2013, BigDecimal.ZERO);
@@ -3638,6 +3766,16 @@ public class TenancyChangesUO {
         generalStatistics.put(
                 sInArrearsAtSomePoint_And_DHPAtSomePoint,
                 BigDecimal.valueOf(groups.get(sInArrearsAtSomePoint_And_DHPAtSomePoint).size()));
+        
+        generalStatistics.put(
+                sPermanantlyLeftUOButRemainedInSHBE,
+                BigDecimal.valueOf(groups.get(sPermanantlyLeftUOButRemainedInSHBE).size()));
+        generalStatistics.put(
+                sPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged,
+                BigDecimal.valueOf(groups.get(sPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged).size()));
+        generalStatistics.put(
+                sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased,
+                BigDecimal.valueOf(groups.get(sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased).size())); 
     }
 
     public boolean[] process(
@@ -3663,6 +3801,9 @@ public class TenancyChangesUO {
             HashMap<String, Integer> tRSLMaxNumberOfDependentsInClaimWhenUO,
             HashSet<ID> tIDSetRSLUniqueNonDependentsEffected,
             HashSet<ID> tIDSetUniqueDependentChildrenUnderAge10Effected,
+            TreeSet<String> tCTBRefSetPermanantlyLeftUOButRemainedInSHBE,
+            TreeSet<String> tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged,
+            TreeSet<String> tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased,
             TreeSet<String> tCTBRefSetTraveller,
             TreeSet<String> tCTBRefSetTTNot1Or4AndUnderOccupying,
             TreeSet<String> tCTBRefSetTT1_To_TT3OrTT6,
@@ -3674,8 +3815,12 @@ public class TenancyChangesUO {
             TreeSet<String> tCTBRefSetUOAtSomePoint,
             TreeSet<String> tCTBRefSetUOTT1AtSomePoint,
             TreeSet<String> tCTBRefSetUOTT4AtSomePoint,
-            TreeSet<String> tCTBRefSetAlwaysUOFromStart,
-            TreeSet<String> tCTBRefSetAlwaysUOFromWhenStarted,
+            TreeSet<String> tCTBRefSetAlwaysUOTT1FromStart,
+            TreeSet<String> tCTBRefSetAlwaysUOTT1FromStartExceptWhenSuspended,
+            TreeSet<String> tCTBRefSetAlwaysUOTT1FromWhenStarted,
+            TreeSet<String> tCTBRefSetAlwaysUOTT4FromStart,
+            TreeSet<String> tCTBRefSetAlwaysUOTT4FromStartExceptWhenSuspended,
+            TreeSet<String> tCTBRefSetAlwaysUOTT4FromWhenStarted,
             TreeSet<String> tCTBRefSetIntermitantUO,
             TreeSet<String> tCTBRefSetUO_To_LeftSHBEAtSomePoint,
             TreeSet<String> tCTBRefSetUOTT1_To_LeftSHBE,
@@ -4393,9 +4538,18 @@ public class TenancyChangesUO {
         key = aCTBRef + sUnderscore + sUnderOccupancy;
         aS = tableValues.get(key);
         if (isUO) {
+            tCTBRefSetPermanantlyLeftUOButRemainedInSHBE.remove(aCTBRef);
+            tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged.remove(aCTBRef);
+            tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased.remove(aCTBRef);
             result[0] = true;
             tUOClaims.add(aCTBRef);
-            tCTBRefSetAlwaysUOFromWhenStarted.add(aCTBRef);
+            if (aTT == 1) {
+                tCTBRefSetAlwaysUOTT1FromWhenStarted.add(aCTBRef);
+            } else {
+                if (aTT == 4) {
+                    tCTBRefSetAlwaysUOTT4FromWhenStarted.add(aCTBRef);
+                }
+            }
             aS += sCommaSpace + sU;
             BigDecimal bd;
             String key2 = aCTBRef + sUnderscore + sTotalCount_UnderOccupancy;
@@ -4493,12 +4647,16 @@ public class TenancyChangesUO {
             }
         } else {
             aS += sCommaSpace;
+            tCTBRefSetAlwaysUOTT1FromStart.remove(aCTBRef);
+            tCTBRefSetAlwaysUOTT4FromStart.remove(aCTBRef);
             if (aStatus == 2) {
                 // Filter added as suspended claims that were UO are probably still UO
             } else {
-                tCTBRefSetAlwaysUOFromStart.remove(aCTBRef);
+                tCTBRefSetAlwaysUOTT1FromStartExceptWhenSuspended.remove(aCTBRef);
+                tCTBRefSetAlwaysUOTT4FromStartExceptWhenSuspended.remove(aCTBRef);
                 if (aS.contains(sU)) {
-                    tCTBRefSetAlwaysUOFromWhenStarted.remove(aCTBRef);
+                    tCTBRefSetAlwaysUOTT1FromWhenStarted.remove(aCTBRef);
+                    tCTBRefSetAlwaysUOTT4FromWhenStarted.remove(aCTBRef);
                     if (aS.contains(sU + sCommaSpace + sCommaSpace)) {
                         // ..., U, ,
                         tCTBRefSetIntermitantUO.add(aCTBRef);
@@ -4524,9 +4682,16 @@ public class TenancyChangesUO {
                     if (aTT == DW_SHBE_TenancyType_Handler.iMinus999) {
                         tCTBRefSetUO_To_LeftSHBETheVeryNextMonth.add(aCTBRef);
                     } else {
+                        tCTBRefSetPermanantlyLeftUOButRemainedInSHBE.add(aCTBRef);
+                        if (aHS > bHS) {
+                           tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased.add(aCTBRef);
+                        }
                         if (!aPC.equalsIgnoreCase(bPC)) {
                             if (validPostcodes.contains(aPC) && validPostcodes.contains(bPC)) {
-                                tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
+                                tCTBRefSetPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged.add(aCTBRef);
+                                if (bTT == 1) {
+                                    tCTBRefSetUOTT1_To_NotUO_InSHBE_PostcodeChanged.add(aCTBRef);
+                                }
                                 if (aTT == 1) {
                                     if (bTT == 1) {
                                         tCTBRefSetUOTT1_To_TT1_PostcodeChanged.add(aCTBRef);
@@ -5316,13 +5481,13 @@ public class TenancyChangesUO {
                 tCTBRefSetUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint.add(aCTBRef);
             }
         }
-        
+
         if (tCTBRefSetUOTT4_To_TT3OrTT6.contains(aCTBRef)) {
             if (aTT == 4) {
                 tCTBRefSetUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint.add(aCTBRef);
             }
         }
-        
+
         tableValues.put(key, aS);
         return result;
     }
@@ -5775,11 +5940,17 @@ public class TenancyChangesUO {
         HashMap<String, String> generalStatisticsDescriptions;
         generalStatisticsDescriptions = getGeneralStatisticDescriptions(
                 startMonth, startYear, endMonth, endYear);
-        writeLine(sTotalCount_AlwaysUOFromStart,
+        writeLine(sTotalCount_AlwaysUOTT1FromStart,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        writeLine(sTotalCount_AlwaysUOFromWhenStarted,
+        writeLine(sTotalCount_AlwaysUOTT1FromWhenStarted,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        writeLine(sAverageHouseholdSizeOfThoseUOAlwaysFromStart,
+        writeLine(sTotalCount_AlwaysUOTT4FromStart,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sTotalCount_AlwaysUOTT4FromWhenStarted,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sAverageHouseholdSizeOfThoseUOTT1AlwaysFromStart,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sAverageHouseholdSizeOfThoseUOTT4AlwaysFromStart,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sTotalCount_ClaimsEffectedByUnderOccupancy,
                 generalStatistics, generalStatisticsDescriptions, pw5);
@@ -6099,6 +6270,13 @@ public class TenancyChangesUO {
         writeLine(sInArrearsAtSomePoint_And_DHPAtSomePoint,
                 generalStatistics, generalStatisticsDescriptions, pw5);
 
+        writeLine(sPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sPermanantlyLeftUOButRemainedInSHBE,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        writeLine(sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased,
+                generalStatistics, generalStatisticsDescriptions, pw5);
+        
         pw5.close();
 
         HashSet<String> tCTBRefsCheck;

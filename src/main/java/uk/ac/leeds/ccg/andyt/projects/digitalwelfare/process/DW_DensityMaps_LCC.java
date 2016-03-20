@@ -211,6 +211,13 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 //        unregulatedGroups = (HashMap<Boolean, ArrayList<String>>) ttgs[3];
         TreeMap<String, ArrayList<String>> allTenancyTypeGroups;
         allTenancyTypeGroups = getAllTenancyTypeGroups();
+        allTenancyTypeGroups.remove("All");
+//        allTenancyTypeGroups.remove("HB");
+        allTenancyTypeGroups.remove("Social");
+        allTenancyTypeGroups.remove("Council");
+        allTenancyTypeGroups.remove("RSL");
+        allTenancyTypeGroups.remove("PrivateDeregulated");
+        allTenancyTypeGroups.remove("CTBOnly");
 
         // Includes
         TreeMap<String, ArrayList<Integer>> includes;
@@ -276,6 +283,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                     inPaymentType);
             boolean doUnderOccupied;
             doUnderOccupied = true;
+            doUnderOccupied = false;
 //            Iterator<Boolean> iteb;
 //            iteb = b.iterator();
 //            while (iteb.hasNext()) {
@@ -654,11 +662,10 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                     hasNext = true;
                     i = ite.next();
 
-                    // Just go for the last.
-                    while (ite.hasNext()) {
-                        i = ite.next();
-                    }
-
+//                    // Just go for the last.
+//                    while (ite.hasNext()) {
+//                        i = ite.next();
+//                    }
                     DW_SHBE_Collection SHBEData1;
 
                     // This is not how to do it, but may be a workaround. 
@@ -828,8 +835,8 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                         }
                         if (underOccupiedSetRSL != null) {
                             underOccupied0 = underOccupiedSetRSL.getMap().get(
-                                        councilTaxBenefitClaimReferenceNumber);
-                            }
+                                    councilTaxBenefitClaimReferenceNumber);
+                        }
                         if (underOccupied0 != null) {
                             doMainLoop = true;
                         }
@@ -843,12 +850,12 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                         doMainLoop = underOccupied0 != null;
                     } else {
                         if (doRSL) {
-     DW_UOReport_Record underOccupied0 = null;
-                                               if (underOccupiedSetRSL != null) {
-                            underOccupied0 = underOccupiedSetRSL.getMap().get(
+                            DW_UOReport_Record underOccupied0 = null;
+                            if (underOccupiedSetRSL != null) {
+                                underOccupied0 = underOccupiedSetRSL.getMap().get(
                                         councilTaxBenefitClaimReferenceNumber);
                             }
-     doMainLoop = underOccupied0 != null;
+                            doMainLoop = underOccupied0 != null;
                         }
                     }
 
@@ -1143,5 +1150,4 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         return result;
     }
 
-    
 }

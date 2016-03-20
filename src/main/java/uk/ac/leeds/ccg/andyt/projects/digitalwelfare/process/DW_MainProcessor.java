@@ -86,11 +86,11 @@ public class DW_MainProcessor {
 ////        DW_ChoroplethMaps_LCC aDW_ChoroplethMaps_LCC;
 ////        aDW_ChoroplethMaps_LCC = new DW_ChoroplethMaps_LCC();
 ////        aDW_ChoroplethMaps_LCC.run();
-//
-//        DW_LineMaps_LCC aDW_LineMaps_LCC;
-//        aDW_LineMaps_LCC = new DW_LineMaps_LCC();
-//        aDW_LineMaps_LCC.run();
-//
+
+        DW_LineMaps_LCC aDW_LineMaps_LCC;
+        aDW_LineMaps_LCC = new DW_LineMaps_LCC();
+        aDW_LineMaps_LCC.run();
+
 ////        DW_Report aDW_Report;
 ////        aDW_Report = new DW_Report();
 ////        aDW_Report.run();
