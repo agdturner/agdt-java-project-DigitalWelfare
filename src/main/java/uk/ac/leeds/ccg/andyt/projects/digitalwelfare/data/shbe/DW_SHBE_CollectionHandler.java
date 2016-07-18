@@ -32,8 +32,8 @@ public class DW_SHBE_CollectionHandler
     /**
      * For storing DRecordID indexed by CouncilTaxReferenceNumber
      */
-    public HashMap<String,Long> lookup;
-    
+    public HashMap<String, Long> lookup;
+
     /**
      * Directory.
      */
@@ -71,7 +71,7 @@ public class DW_SHBE_CollectionHandler
                 "Collection" + System.currentTimeMillis());
         init();
     }
-    
+
     public DW_SHBE_CollectionHandler(
             DW_Environment env,
             String filename) {
@@ -81,7 +81,7 @@ public class DW_SHBE_CollectionHandler
                 filename);
         init();
     }
-    
+
     public DW_SHBE_CollectionHandler(
             DW_Environment env,
             File dir) {
@@ -96,13 +96,36 @@ public class DW_SHBE_CollectionHandler
         _MaximumNumberOfObjectsPerDirectory = 100;
         _MaximumNumberPerCollection = 1000;
         collections = new HashMap<Long, DW_SHBE_Collection>();
-        lookup = new HashMap<String,Long>();
+        lookup = new HashMap<String, Long>();
     }
 
-    public void add(DW_SHBE_Collection col){
+    public void add(DW_SHBE_Collection col) {
         collections.put(col.getID(), col);
     }
-    
+
+    public DW_SHBE_Collection load_DW_SHBE_Collection(
+            String filename,
+            String inPaymentType,
+            boolean handleOutOfMemoryError) {
+        DW_SHBE_Collection result;
+        result = null;
+        try {
+            result = new DW_SHBE_Collection(
+                    filename,
+                    inPaymentType);
+        } catch (OutOfMemoryError e) {
+            if (handleOutOfMemoryError) {
+                this.swapToFile_Collection();
+                System.err.println(e.getLocalizedMessage());
+                return load_DW_SHBE_Collection(
+                        filename,
+                        inPaymentType,
+                        handleOutOfMemoryError);
+            }
+        }
+        return result;
+    }
+
     /**
      * <code>
      * return new File(_Directory.toString());
@@ -125,7 +148,6 @@ public class DW_SHBE_CollectionHandler
 //        this._Directory = f;
 //        f.mkdirs();
 //    }
-
 //    /**
 //     * <code>
 //     * return new File(_SHBECollectionsDirectory.toString());
@@ -148,7 +170,6 @@ public class DW_SHBE_CollectionHandler
 //        this._SHBECollectionsDirectory = f;
 //        f.mkdirs();
 //    }
-
     /**
      * @return a number representing the ID of the Collection with the highest
      * ID
@@ -215,7 +236,7 @@ public class DW_SHBE_CollectionHandler
         if (result == null) {
             File dir;
             dir = Generic_StaticIO.getObjectDirectory(
-                    DW_Files.getSwapSHBEDir(), 
+                    DW_Files.getSwapSHBEDir(),
                     ID,
                     ID,
                     _MaximumNumberPerCollection);
@@ -322,8 +343,7 @@ public class DW_SHBE_CollectionHandler
      * a_DW_SHBE_Collection is very small and total available memory is almost
      * low and handleOutOfMemoryError is true
      *
-     * @param c The DW_SHBE_Collection to attempt to swap to
-     * file
+     * @param c The DW_SHBE_Collection to attempt to swap to file
      * @param handleOutOfMemoryError
      */
     public void swapToFile_Collection(
@@ -377,7 +397,7 @@ public class DW_SHBE_CollectionHandler
         return true;
     }
 
-    public DW_SHBE_Record getRecord(String councilTaxClaimNumber){
+    public DW_SHBE_Record getRecord(String councilTaxClaimNumber) {
         DW_SHBE_Record result;
         Long DRecordID;
         DRecordID = lookup.get(councilTaxClaimNumber);

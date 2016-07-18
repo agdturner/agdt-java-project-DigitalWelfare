@@ -2208,6 +2208,7 @@ public class Summary {
             HashMap<String, String> summary) {
         // Set the last results
         AllCount0 = AllCount1;
+        //AllCount0 = HBCount1 + CTBCount1;
         HBCount0 = HBCount1;
         CTBCount0 = CTBCount1;
 //        for (int TT = 0; TT < nTT; TT++) {
@@ -4346,7 +4347,7 @@ public class Summary {
         int all;
         all = Integer.valueOf(summary.get(sTotalCount_SocialTTsClaimant));
         d = AllCount1;
-        if (AllCount1 > 0) {
+        if (d > 0) {
             percentage = (all * 100.0d) / d;
             summary.put(
                     sPercentageOfAll_SocialTTsClaimant,
@@ -4356,7 +4357,7 @@ public class Summary {
                             RoundingMode.HALF_UP).toPlainString());
         }
         d = HBCount1;
-        if (HBCount1 > 0) {
+        if (d > 0) {
             percentage = (all * 100.0d) / d;
             summary.put(
                     sPercentageOfHB_SocialTTsClaimant,
@@ -4367,7 +4368,7 @@ public class Summary {
         }
         all = Integer.valueOf(summary.get(sTotalCount_PrivateDeregulatedTTsClaimant));
         d = AllCount1;
-        if (AllCount1 > 0) {
+        if (d > 0) {
             percentage = (all * 100.0d) / d;
             summary.put(
                     sPercentageOfAll_PrivateDeregulatedTTsClaimant,
@@ -4377,7 +4378,7 @@ public class Summary {
                             RoundingMode.HALF_UP).toPlainString());
         }
         d = HBCount1;
-        if (HBCount1 > 0) {
+        if (d > 0) {
             percentage = (all * 100.0d) / d;
             summary.put(
                     sPercentageOfHB_PrivateDeregulatedTTsClaimant,
@@ -5622,7 +5623,11 @@ public class Summary {
             boolean underOccupancy) {
         PrintWriter result;
         File dirOut;
-        dirOut = DW_Files.getTableDir(name2, paymentType, includeKey, underOccupancy);
+        dirOut = DW_Files.getTableDir(
+                name2, 
+                paymentType, 
+                includeKey, 
+                underOccupancy);
         String outFilename;
         outFilename = paymentType + "_" + includeKey + "_";
         if (underOccupancy) {

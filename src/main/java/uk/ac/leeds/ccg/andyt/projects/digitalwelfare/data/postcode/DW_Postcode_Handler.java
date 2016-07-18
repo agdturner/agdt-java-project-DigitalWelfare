@@ -45,7 +45,7 @@ public class DW_Postcode_Handler implements Serializable {
     public static String TYPE_SECTOR = "Sector";
     public static String TYPE_DISTRICT = "District";
     public static String TYPE_AREA = "Area";
-    
+
     /**
      * A name for exception and error handling
      */
@@ -83,7 +83,7 @@ public class DW_Postcode_Handler implements Serializable {
         }
         return result;
     }
-    
+
     /**
      *
      * @param yM3v
@@ -133,6 +133,9 @@ public class DW_Postcode_Handler implements Serializable {
          * 2015_FEB
          * 2015_MAY
          * 2015_AUG
+         * 2015_NOV
+         * 2016_FEB
+         * 2016_MAY
          */
         String[] split;
         split = yM3.split("_");
@@ -142,54 +145,45 @@ public class DW_Postcode_Handler implements Serializable {
         if (yearint < 2008) {
             return "2008_FEB";
         }
-        if (yearint > 2015) {
-            return "2015_AUG";
+        if (yearint > 2016) {
+            return "2016_MAY";
         }
         if (yearint == 2011) {
             if (month.equalsIgnoreCase("JAN")
                     || month.equalsIgnoreCase("FEB")) {
                 return "2011_MAY";
+            } else if (month.equalsIgnoreCase("MAR")
+                    || month.equalsIgnoreCase("APR")
+                    || month.equalsIgnoreCase("MAY")) {
+                return "2011_MAY";
+            } else if (month.equalsIgnoreCase("JUN")
+                    || month.equalsIgnoreCase("JUL")
+                    || month.equalsIgnoreCase("AUG")) {
+                return "2011_AUG";
+            } else if (month.equalsIgnoreCase("SEP")
+                    || month.equalsIgnoreCase("OCT")
+                    || month.equalsIgnoreCase("NOV")) {
+                return "2011_NOV";
+            } else if (month.equalsIgnoreCase("DEC")) {
+                return "2012_FEB";
             } else {
-                if (month.equalsIgnoreCase("MAR")
-                        || month.equalsIgnoreCase("APR")
-                        || month.equalsIgnoreCase("MAY")) {
-                    return "2011_MAY";
-                } else {
-                    if (month.equalsIgnoreCase("JUN")
-                            || month.equalsIgnoreCase("JUL")
-                            || month.equalsIgnoreCase("AUG")) {
-                        return "2011_AUG";
-                    } else {
-                        if (month.equalsIgnoreCase("SEP")
-                                || month.equalsIgnoreCase("OCT")
-                                || month.equalsIgnoreCase("NOV")) {
-                            return "2011_NOV";
-                        } else {
-                            if (month.equalsIgnoreCase("DEC")) {
-                                return "2012_FEB";
-                            } else {
-                                return null;
-                            }
-                        }
-                    }
-                }
+                return null;
             }
         } else {
             // Special Cases
             if (yearint == 2010 && month.equalsIgnoreCase("DEC")) {
                 return "2011_MAY";
             }
-            if (yearint == 2015) {
+            if (yearint == 2016) {
                 if (month.equalsIgnoreCase("JAN")
-                    || month.equalsIgnoreCase("FEB")) {
-                return year + "_FEB";
-            } else {
-                if (month.equalsIgnoreCase("MAR")
-                        || month.equalsIgnoreCase("APR")
-                        || month.equalsIgnoreCase("MAY")) {
-                    return year + "_MAY";
+                        || month.equalsIgnoreCase("FEB")) {
+                    return year + "_FEB";
+//                } else if (month.equalsIgnoreCase("MAR")
+//                        || month.equalsIgnoreCase("APR")
+//                        || month.equalsIgnoreCase("MAY")) {
+//                    return year + "_MAY";
                 } else {
-                    return year + "_AUG";
+                    return year + "_MAY";
 // In due course it will be possible to add more ONSPD data in                    
 //                    if (month.equalsIgnoreCase("JUN")
 //                            || month.equalsIgnoreCase("JUL")
@@ -209,36 +203,25 @@ public class DW_Postcode_Handler implements Serializable {
 //                        }
 //                    }
                 }
-            }
+            } else if (month.equalsIgnoreCase("JAN")
+                    || month.equalsIgnoreCase("FEB")) {
+                return year + "_FEB";
+            } else if (month.equalsIgnoreCase("MAR")
+                    || month.equalsIgnoreCase("APR")
+                    || month.equalsIgnoreCase("MAY")) {
+                return year + "_MAY";
+            } else if (month.equalsIgnoreCase("JUN")
+                    || month.equalsIgnoreCase("JUL")
+                    || month.equalsIgnoreCase("AUG")) {
+                return year + "_AUG";
+            } else if (month.equalsIgnoreCase("SEP")
+                    || month.equalsIgnoreCase("OCT")
+                    || month.equalsIgnoreCase("NOV")) {
+                return year + "_NOV";
+            } else if (month.equalsIgnoreCase("DEC")) {
+                return Integer.toString(yearint + 1) + "_FEB";
             } else {
-                if (month.equalsIgnoreCase("JAN")
-                        || month.equalsIgnoreCase("FEB")) {
-                    return year + "_FEB";
-                } else {
-                    if (month.equalsIgnoreCase("MAR")
-                            || month.equalsIgnoreCase("APR")
-                            || month.equalsIgnoreCase("MAY")) {
-                        return year + "_MAY";
-                    } else {
-                        if (month.equalsIgnoreCase("JUN")
-                                || month.equalsIgnoreCase("JUL")
-                                || month.equalsIgnoreCase("AUG")) {
-                            return year + "_AUG";
-                        } else {
-                            if (month.equalsIgnoreCase("SEP")
-                                    || month.equalsIgnoreCase("OCT")
-                                    || month.equalsIgnoreCase("NOV")) {
-                                return year + "_NOV";
-                            } else {
-                                if (month.equalsIgnoreCase("DEC")) {
-                                    return Integer.toString(yearint + 1) + "_FEB";
-                                } else {
-                                    return null;
-                                }
-                            }
-                        }
-                    }
-                }
+                return null;
             }
         }
     }
@@ -394,25 +377,23 @@ public class DW_Postcode_Handler implements Serializable {
             if (pp.length == 2) {
                 result = pp[0];
                 return result;
-            } else {
-                if (pp.length == 1) {
-                    int length = p.length();
-                    result = p.substring(0, length - 2);
-                    result = result.trim();
-                    if (result.length() < 3) {
-                        return "";
-                    }
-                    return result;
-                } else {
-                    //throw new Exception("Postcode format exception 2 in getPostcodeSector(" + unitPostcode + " )");
-                    // Put the first and second parts together.
-                    result += pp[0];
-                    result += pp[1];
-                    if (result.length() < 3) {
-                        return "";
-                    }
-                    return result;
+            } else if (pp.length == 1) {
+                int length = p.length();
+                result = p.substring(0, length - 2);
+                result = result.trim();
+                if (result.length() < 3) {
+                    return "";
                 }
+                return result;
+            } else {
+                //throw new Exception("Postcode format exception 2 in getPostcodeSector(" + unitPostcode + " )");
+                // Put the first and second parts together.
+                result += pp[0];
+                result += pp[1];
+                if (result.length() < 3) {
+                    return "";
+                }
+                return result;
             }
         }
     }
@@ -1055,26 +1036,24 @@ public class DW_Postcode_Handler implements Serializable {
             if (pp.length == 2) {
                 result = pp[0] + " " + pp[1].substring(0, 1);
                 return result;
-            } else {
-                if (pp.length == 1) {
-                    int length = p.length();
-                    result = p.substring(0, length - 2);
-                    result = result.trim();
-                    if (result.length() < 5) {
-                        return "";
-                    }
-                    return result;
-                } else {
-                    //throw new Exception("Postcode format exception 2 in getPostcodeSector(" + unitPostcode + " )");
-                    // Put the first and second parts together and add the first part of the third
-                    result += pp[0];
-                    result += pp[1] + " ";
-                    result += pp[2].substring(0, 1);
-                    if (result.length() < 5) {
-                        return "";
-                    }
-                    return result;
+            } else if (pp.length == 1) {
+                int length = p.length();
+                result = p.substring(0, length - 2);
+                result = result.trim();
+                if (result.length() < 5) {
+                    return "";
                 }
+                return result;
+            } else {
+                //throw new Exception("Postcode format exception 2 in getPostcodeSector(" + unitPostcode + " )");
+                // Put the first and second parts together and add the first part of the third
+                result += pp[0];
+                result += pp[1] + " ";
+                result += pp[2].substring(0, 1);
+                if (result.length() < 5) {
+                    return "";
+                }
+                return result;
             }
         }
         //return result;
@@ -1126,24 +1105,7 @@ public class DW_Postcode_Handler implements Serializable {
 //                            }
                             if (easting < 1 || northing < 1) {
                                 int debug = 1;
-                            } else {
-                                if (postcode.startsWith("LS")
-                                        || postcode.startsWith("BD")
-                                        || postcode.startsWith("HG")
-                                        || postcode.startsWith("CR")
-                                        || postcode.startsWith("W")
-                                        || postcode.startsWith("NP")
-                                        || postcode.startsWith("BL")
-                                        || postcode.startsWith("HX")
-                                        || postcode.startsWith("HD")) {
-                                    result.put(rec.getPcd(), point);
-                                }
-                            }
-//                            if (postcode.endsWith("ZZ")) {
-//                                int debug = 1;
-//                            }
-                        } else {
-                            if (postcode.startsWith("LS")
+                            } else if (postcode.startsWith("LS")
                                     || postcode.startsWith("BD")
                                     || postcode.startsWith("HG")
                                     || postcode.startsWith("CR")
@@ -1154,6 +1116,19 @@ public class DW_Postcode_Handler implements Serializable {
                                     || postcode.startsWith("HD")) {
                                 result.put(rec.getPcd(), point);
                             }
+//                            if (postcode.endsWith("ZZ")) {
+//                                int debug = 1;
+//                            }
+                        } else if (postcode.startsWith("LS")
+                                || postcode.startsWith("BD")
+                                || postcode.startsWith("HG")
+                                || postcode.startsWith("CR")
+                                || postcode.startsWith("W")
+                                || postcode.startsWith("NP")
+                                || postcode.startsWith("BL")
+                                || postcode.startsWith("HX")
+                                || postcode.startsWith("HD")) {
+                            result.put(rec.getPcd(), point);
                         }
                         lineCounter++;
                         if (lineCounter % 100000 == 0) {
@@ -1298,28 +1273,22 @@ public class DW_Postcode_Handler implements Serializable {
                         if (level.equalsIgnoreCase("OA")) {
                             if (year == 2001) {
                                 value = rec.getOa01();
-                            } else {
-                                if (year == 2011) {
-                                    value = rec.getOa11();
-                                }
+                            } else if (year == 2011) {
+                                value = rec.getOa11();
                             }
                         }
                         if (level.equalsIgnoreCase("LSOA")) {
                             if (year == 2001) {
                                 value = rec.getLsoa01();
-                            } else {
-                                if (year == 2011) {
-                                    value = rec.getLsoa11();
-                                }
+                            } else if (year == 2011) {
+                                value = rec.getLsoa11();
                             }
                         }
                         if (level.equalsIgnoreCase("MSOA")) {
                             if (year == 2001) {
                                 value = rec.getMsoa01();
-                            } else {
-                                if (year == 2011) {
-                                    value = rec.getMsoa11();
-                                }
+                            } else if (year == 2011) {
+                                value = rec.getMsoa11();
                             }
                         }
                         String postcode = rec.getPcd();
@@ -1806,6 +1775,62 @@ public class DW_Postcode_Handler implements Serializable {
                 dir,
                 "ONSPD_AUG_2015_UK.csv");
         result.put("2015_AUG", f);
+        // NOV
+        dir = new File(
+                DW_Files.getInputONSPDDir(),
+                "ONSPD_NOV_2015");
+        dir = new File(
+                dir,
+                "Data");
+        f = new File(
+                dir,
+                "ONSPD_NOV_2015_UK.csv");
+        result.put("2015_NOV", f);
+        // 2016
+        // FEB     
+        dir = new File(
+                DW_Files.getInputONSPDDir(),
+                "ONSPD_FEB_2016");
+        dir = new File(
+                dir,
+                "Data");
+        f = new File(
+                dir,
+                "ONSPD_FEB_2016_UK.csv");
+        result.put("2016_FEB", f);
+        // MAY
+        dir = new File(
+                DW_Files.getInputONSPDDir(),
+                "ONSPD_MAY_2016");
+        dir = new File(
+                dir,
+                "Data");
+        f = new File(
+                dir,
+                "ONSPD_MAY_2016_UK.csv");
+        result.put("2016_MAY", f);
+//        // AUG
+//        dir = new File(
+//                DW_Files.getInputONSPDDir(),
+//                "ONSPD_AUG_2016");
+//        dir = new File(
+//                dir,
+//                "Data");
+//        f = new File(
+//                dir,
+//                "ONSPD_AUG_2016_UK.csv");
+//        result.put("2016_AUG", f);
+//        // NOV
+//        dir = new File(
+//                DW_Files.getInputONSPDDir(),
+//                "ONSPD_NOV_2016");
+//        dir = new File(
+//                dir,
+//                "Data");
+//        f = new File(
+//                dir,
+//                "ONSPD_NOV_2016_UK.csv");
+//        result.put("2016_AUG", f);
         return result;
     }
 

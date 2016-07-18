@@ -732,21 +732,25 @@ public class DW_Files {
         return outputUnderOccupiedDir;
     }
 
-    public static File getTableDir(String name, String paymentType, String includeKey, boolean doUnderOccupancy) {
+    public static File getTableDir(
+            String name, 
+            String paymentType, 
+            String includeKey, 
+            boolean doUnderOccupancy) {
         File result;
+        result = new File(
+                    DW_Files.getOutputSHBETablesDir(),
+                    name);
         if (doUnderOccupancy) {
-            result = new File(DW_Files.getOutputSHBETablesDir(), name + "UO");
+            result = new File(result, sUO);
         } else {
-            result = new File(DW_Files.getOutputSHBETablesDir(), name + "All");
+            result = new File(result, sAll);
         }
         result = new File(result, paymentType);
         result = new File(result, includeKey);
-        if (doUnderOccupancy) {
-            result = new File(result, "UO");
-        } else {
-            result = new File(result, "All");
+        if (!result.exists()) {
+            result.mkdirs();
         }
-        result.mkdirs();
         return result;
     }
 

@@ -21,6 +21,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data;
 import java.io.File;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,6 +30,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
@@ -40,6 +42,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_S_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UOReport_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
@@ -116,9 +119,9 @@ public class TenancyChangesUO {
     String sPercentageReceivingDHPInOctober2015 = "PercentageReceivingDHPInOctober2015";
     String sPercentageInArrearsOctober2015 = "PercentageInArrearsOctober2015";
     String sPercentageInArrearsAndReceivingDHPInOctober2015 = "PercentageInArrearsAndReceivingDHPInOctober2015";
-    String sPercentageReceivingDHPInOctober2015ThatWereUOInApril2008 = "PercentageReceivingDHPInOctober2015ThatWereUOInApril2008";
-    String sPercentageInArrearsOctober2015ThatWereUOInApril2008 = "PercentageInArrearsOctober2015ThatWereUOInApril2008";
-    String sPercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2008 = "PercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2008";
+    String sPercentageReceivingDHPInOctober2015ThatWereUOInApril2013 = "PercentageReceivingDHPInOctober2015ThatWereUOInApril2013";
+    String sPercentageInArrearsOctober2015ThatWereUOInApril2013 = "PercentageInArrearsOctober2015ThatWereUOInApril2013";
+    String sPercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2013 = "PercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2013";
 
     String sUniqueIndividualsEffected = "UniqueIndividualsEffected";
 
@@ -371,7 +374,23 @@ public class TenancyChangesUO {
     // TimeStatistics
     String sTotalCount_cumulativeUniqueClaims = "TotalCount_cumulativeUniqueClaims";
     String sTotalCount_UOClaims = "TotalCounts_UOClaims";
-    String sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms = "sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms";
+    String sTotalCount_UOCouncilClaims = "TotalCounts_UOCouncilClaims";
+    String sTotalCount_UORSLClaims = "TotalCounts_UORSLClaims";
+    String sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE = "TotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE";
+    String sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO = "TotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO";
+    String sTotalCount_UOClaimsCouncil = "TotalCount_UOClaimsCouncil";
+    String sTotalCount_UOClaimsRSL = "TotalCount_UOClaimsRSL";
+
+    String sTotalHouseholdSizeExcludingPartnersCouncilSHBE = "sTotalHouseholdSizeExcludingPartnersCouncilSHBE";
+    String sTotalHouseholdSizeExcludingPartnersCouncilUO = "sTotalHouseholdSizeExcludingPartnersCouncilUO";
+    String sTotalHouseholdSizeExcludingPartnersRSLSHBE = "sTotalHouseholdSizeExcludingPartnersRSLSHBE";
+    String sTotalHouseholdSizeExcludingPartnersRSLUO = "sTotalHouseholdSizeExcludingPartnersRSLUO";
+//    String sTotalAggregateHouseholdSize_UOClaims = "TotalAggregateHouseholdSize_UOClaims";
+//    String sAverageHouseholdSize_UOClaims = "TotalAverageHouseholdSize_UOClaims";
+//    String sTotalAggregateHouseholdSize_UOClaimsCouncil = "TotalAggregateHouseholdSize_UOClaimsCouncil";
+//    String sTotalAverageHouseholdSize_UOClaimsCouncil = "TotalAverageHouseholdSize_UOClaimsCouncil";
+//    String sTotalAggregateHouseholdSize_UOClaimsRSL = "TotalAggregateHouseholdSize_UOClaimsRSL";
+//    String sTotalAverageHouseholdSize_UOClaimsRSL = "TotalAverageHouseholdSize_UOClaimsRSL";
 
     protected HashMap<String, String> getGeneralStatisticDescriptions(
             String startMonth,
@@ -514,17 +533,14 @@ public class TenancyChangesUO {
                 + "receiving a weekly discretionary Payment for Housing "
                 + "Benefit in October 2015.");
 
-        generalStatisticDescriptions.put(
-                sPercentageReceivingDHPInOctober2015ThatWereUOInApril2008,
+        generalStatisticDescriptions.put(sPercentageReceivingDHPInOctober2015ThatWereUOInApril2013,
                 "Percentage of under-occupancy claims (that were under-"
                 + "occupancy claims in April 2008) receiving a weekly "
                 + "discretionary Payment for Housing Benefit in October 2015.");
-        generalStatisticDescriptions.put(
-                sPercentageInArrearsOctober2015ThatWereUOInApril2008,
+        generalStatisticDescriptions.put(sPercentageInArrearsOctober2015ThatWereUOInApril2013,
                 "Percentage of Council under-occupancy claims (that were under-"
                 + "occupancy claims in April 2008) in arrears in October 2015.");
-        generalStatisticDescriptions.put(
-                sPercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2008,
+        generalStatisticDescriptions.put(sPercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2013,
                 "Percentage of Council under-occupancy claims (that were under-"
                 + "occupancy claims in April 2008) in arrears and receiving a "
                 + "weekly discretionary Payment for Housing Benefit in October "
@@ -1724,23 +1740,82 @@ public class TenancyChangesUO {
         tUOClaims = new TreeSet<String>();
 
         // Init Time Statistics
-        TreeMap<String, TreeMap<String, Integer>> timeStatistics;
-        timeStatistics = new TreeMap<String, TreeMap<String, Integer>>();
+        TreeMap<String, TreeMap<String, ?>> timeStatistics;
+        timeStatistics = new TreeMap<String, TreeMap<String, ?>>();
         TreeMap<String, Integer> totalCounts_cumulativeUniqueClaims;
         totalCounts_cumulativeUniqueClaims = new TreeMap<String, Integer>();
-        timeStatistics.put(sTotalCount_cumulativeUniqueClaims,
+        timeStatistics.put(
+                sTotalCount_cumulativeUniqueClaims,
                 totalCounts_cumulativeUniqueClaims);
         int totalCount_UOClaims;
         TreeMap<String, Integer> totalCounts_UOClaims;
         totalCounts_UOClaims = new TreeMap<String, Integer>();
-        timeStatistics.put(sTotalCount_UOClaims,
+        timeStatistics.put(
+                sTotalCount_UOClaims,
                 totalCounts_UOClaims);
-        int totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms;
-        TreeMap<String, Integer> totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms;
-        totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms = new TreeMap<String, Integer>();
-        timeStatistics.put(sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms,
-                totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms);
+        int totalCount_UOCouncilClaims;
+        TreeMap<String, Integer> totalCounts_UOCouncilClaims;
+        totalCounts_UOCouncilClaims = new TreeMap<String, Integer>();
+        timeStatistics.put(
+                sTotalCount_UOCouncilClaims,
+                totalCounts_UOCouncilClaims);
+        int totalCount_UORSLClaims;
+        TreeMap<String, Integer> totalCounts_UORSLClaims;
+        totalCounts_UORSLClaims = new TreeMap<String, Integer>();
+        timeStatistics.put(
+                sTotalCount_UORSLClaims,
+                totalCounts_UORSLClaims);
+        int totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE;
+        TreeMap<String, Integer> totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE;
+        totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE = new TreeMap<String, Integer>();
+        timeStatistics.put(
+                sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE,
+                totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE);
+        int totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO;
+        TreeMap<String, Integer> totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO;
+        totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO = new TreeMap<String, Integer>();
+        timeStatistics.put(sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO,
+                totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO);
 
+        int totalHouseholdSizeExcludingPartnersCouncilSHBE;
+        TreeMap<String, Integer> totalHouseholdSizeExcludingPartnersCouncilSHBEs;
+        totalHouseholdSizeExcludingPartnersCouncilSHBEs = new TreeMap<String, Integer>();
+        timeStatistics.put(sTotalHouseholdSizeExcludingPartnersCouncilSHBE,
+                totalHouseholdSizeExcludingPartnersCouncilSHBEs);
+
+        int totalHouseholdSizeExcludingPartnersCouncilUO;
+        TreeMap<String, Integer> totalHouseholdSizeExcludingPartnersCouncilUOs;
+        totalHouseholdSizeExcludingPartnersCouncilUOs = new TreeMap<String, Integer>();
+        timeStatistics.put(sTotalHouseholdSizeExcludingPartnersCouncilUO,
+                totalHouseholdSizeExcludingPartnersCouncilUOs);
+
+        int totalHouseholdSizeExcludingPartnersRSLSHBE;
+        TreeMap<String, Integer> totalHouseholdSizeExcludingPartnersRSLSHBEs;
+        totalHouseholdSizeExcludingPartnersRSLSHBEs = new TreeMap<String, Integer>();
+        timeStatistics.put(sTotalHouseholdSizeExcludingPartnersRSLSHBE,
+                totalHouseholdSizeExcludingPartnersRSLSHBEs);
+
+        int totalHouseholdSizeExcludingPartnersRSLUO;
+        TreeMap<String, Integer> totalHouseholdSizeExcludingPartnersRSLUOs;
+        totalHouseholdSizeExcludingPartnersRSLUOs = new TreeMap<String, Integer>();
+        timeStatistics.put(sTotalHouseholdSizeExcludingPartnersRSLUO,
+                totalHouseholdSizeExcludingPartnersRSLUOs);
+
+//        int totalAggregateHouseholdSize_UOClaims;
+//        TreeMap<String, Integer> totalAggregateHouseholdSize_UOClaimss;
+//        totalAggregateHouseholdSize_UOClaimss = new TreeMap<String, Integer>();
+//        timeStatistics.put(
+//                sTotalAggregateHouseholdSize_UOClaims,
+//                totalAggregateHouseholdSize_UOClaimss);
+//        double averageHouseholdSize_UOClaims;
+//        TreeMap<String, Double> averageHouseholdSize_UOClaimss;
+//        averageHouseholdSize_UOClaimss = new TreeMap<String, Double>();
+//        timeStatistics.put(sAverageHouseholdSize_UOClaims,
+//                totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms);
+//         String sTotalAggregateHouseholdSize_UOClaimsCouncil = "TotalAggregateHouseholdSize_UOClaimsCouncil";
+//    String sTotalAverageHouseholdSize_UOClaimsCouncil = "TotalAverageHouseholdSize_UOClaimsCouncil";
+//    String sTotalAggregateHouseholdSize_UOClaimsRSL = "TotalAggregateHouseholdSize_UOClaimsRSL";
+//    String sTotalAverageHouseholdSize_UOClaimsRSL = "TotalAverageHouseholdSize_UOClaimsRSL";
         HashSet<String>[] tAllCTBRefs;
         tAllCTBRefs = getUOCTBRefs(
                 councilUnderOccupiedSets,
@@ -1780,12 +1855,14 @@ public class TenancyChangesUO {
 
         HashSet<String> subsequentlyEffectedUOStillUOInOctober2015;
         subsequentlyEffectedUOStillUOInOctober2015 = new HashSet<String>();
+        subsequentlyEffectedUOStillUOInOctober2015.addAll(tCTBRefs);
         subsequentlyEffectedUOStillUOInOctober2015.removeAll(tStartUOCTBRefs);
         subsequentlyEffectedUOStillUOInOctober2015.retainAll(tEndUOCTBRefs);
 
-        tableValues.put(sSubsequentlyEffectedUOStillUOInOctober2015,
-                "" + subsequentlyEffectedUOStillUOInOctober2015.size());
-
+        TreeMap<String, BigDecimal> generalStatistics;
+        generalStatistics = new TreeMap<String, BigDecimal>();
+        generalStatistics.put(sSubsequentlyEffectedUOStillUOInOctober2015,
+                BigDecimal.valueOf(subsequentlyEffectedUOStillUOInOctober2015.size()));
         HashSet<String> tEndUOThatWereAlsoStartUOCTBRefs;
         tEndUOThatWereAlsoStartUOCTBRefs = new HashSet<String>();
         tEndUOThatWereAlsoStartUOCTBRefs.addAll(tEndUOCTBRefs);
@@ -1810,66 +1887,39 @@ public class TenancyChangesUO {
                     NotMonthlyUO);
             result[4] = preUnderOccupancyValues;
         }
-        // Load dataset 1
-        Iterator<Integer> includeIte;
+
         DW_SHBE_Collection aSHBEData = null;
-        includeIte = include.iterator();
         String aYM3 = s;
         String year = s;
         String month = s;
         DW_UnderOccupiedReport_Set councilUnderOccupiedSet1 = null;
         DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1 = null;
         String aSHBEFilename = null;
-        int i;
-
-        String header;
-        header = "CTBRef, ";
-        if (includePreUnderOccupancyValues) {
-            Iterator<Integer> tNotMonthlyUOIte;
-            String yM3;
-            tNotMonthlyUOIte = NotMonthlyUO.iterator();
-            while (tNotMonthlyUOIte.hasNext()) {
-                i = tNotMonthlyUOIte.next();
-                yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
-                header += yM3 + sCommaSpace;
-            }
-        }
-
-        boolean initFirst;
-        initFirst = false;
-        // Load first data
-        while (!initFirst) {
-            i = includeIte.next();
-            aSHBEFilename = SHBEFilenames[i];
-            aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
-            year = DW_SHBE_Handler.getYear(aSHBEFilename);
-            month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
-            councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
-            if (councilUnderOccupiedSet1 != null) {
-                RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
-                aSHBEData = new DW_SHBE_Collection(aSHBEFilename, paymentType);
-                initFirst = true;
-            }
-            header += aYM3;
-        }
-
-        TreeMap<String, DW_SHBE_Record> aRecords;
-        aRecords = aSHBEData.getRecords();
-        DW_SHBE_Record aDW_SHBE_Record;
 
         // % in arrears
         // % getting DHP
         // % in arrears and getting DHP
         // All October 2015
         // All October 2015 that were also there in April 2013
-        String endYM3;
         Iterator<Integer> iteX;
         iteX = include.iterator();
         int j = 0;
         while (iteX.hasNext()) {
             j = iteX.next();
         }
-        endYM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[j]);
+        aSHBEFilename = SHBEFilenames[j];
+        aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
+        year = DW_SHBE_Handler.getYear(aSHBEFilename);
+        month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
+        councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
+        if (councilUnderOccupiedSet1 != null) {
+            RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
+            aSHBEData = new DW_SHBE_Collection(aSHBEFilename, paymentType);
+        }
+
+        TreeMap<String, DW_SHBE_Record> aRecords;
+        aRecords = aSHBEData.getRecords();
+        DW_SHBE_Record aDW_SHBE_Record;
         DW_UnderOccupiedReport_Set endCouncilUnderOccupiedSet;
         endCouncilUnderOccupiedSet = councilUnderOccupiedSets.get(aYM3);
         TreeMap<String, DW_UOReport_Record> endCouncilUnderOccupiedSetMap;
@@ -1884,69 +1934,76 @@ public class TenancyChangesUO {
         while (tCTBRefsIte.hasNext()) {
             aCTBRef = tCTBRefsIte.next();
             aDW_SHBE_Record = aRecords.get(aCTBRef);
-            aDRecord = aDW_SHBE_Record.getDRecord();
-            int DHP;
-            DHP = aDRecord.getWeeklyAdditionalDiscretionaryPayment();
-            if (DHP > 0) {
-                receivingDHPCount++;
-            }
-            if (endCouncilUnderOccupiedSetMap.containsKey(aCTBRef)) {
-                DW_UOReport_Record UORec;
-                UORec = endCouncilUnderOccupiedSetMap.get(aCTBRef);
-                double arrears;
-                arrears = UORec.getTotalRentArrears();
-                if (arrears > 0) {
-                    inArrearsCount++;
-                    if (DHP > 0) {
-                        inArrearsAndReceivingDHPCount++;
+            if (aDW_SHBE_Record == null) {
+                System.out.println(aCTBRef + " not in " + aYM3);
+            } else {
+                aDRecord = aDW_SHBE_Record.getDRecord();
+                int DHP;
+                DHP = aDRecord.getWeeklyAdditionalDiscretionaryPayment();
+                if (DHP > 0) {
+                    receivingDHPCount++;
+                }
+                if (endCouncilUnderOccupiedSetMap.containsKey(aCTBRef)) {
+                    DW_UOReport_Record UORec;
+                    UORec = endCouncilUnderOccupiedSetMap.get(aCTBRef);
+                    double arrears;
+                    arrears = UORec.getTotalRentArrears();
+                    if (arrears > 0) {
+                        inArrearsCount++;
+                        if (DHP > 0) {
+                            inArrearsAndReceivingDHPCount++;
+                        }
                     }
                 }
             }
         }
         double p;
         p = ((double) receivingDHPCount) * 100.0d / (double) tEndUOCTBRefs.size();
-        tableValues.put(sPercentageReceivingDHPInOctober2015,
-                "" + p);
+        generalStatistics.put(sPercentageReceivingDHPInOctober2015,
+                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         p = ((double) inArrearsCount) * 100.0d / (double) endCouncilUnderOccupiedSetMap.size();
-        tableValues.put(sPercentageInArrearsOctober2015,
-                "" + p);
+        generalStatistics.put(sPercentageInArrearsOctober2015,
+                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         p = ((double) inArrearsAndReceivingDHPCount) * 100.0d / (double) tEndUOCTBRefs.size();
-        tableValues.put(sPercentageInArrearsAndReceivingDHPInOctober2015,
-                "" + p);
+        generalStatistics.put(sPercentageInArrearsAndReceivingDHPInOctober2015,
+                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
 
         tCTBRefsIte = tEndUOThatWereAlsoStartUOCTBRefs.iterator();
         while (tCTBRefsIte.hasNext()) {
             aCTBRef = tCTBRefsIte.next();
             aDW_SHBE_Record = aRecords.get(aCTBRef);
-            aDRecord = aDW_SHBE_Record.getDRecord();
-            int DHP;
-            DHP = aDRecord.getWeeklyAdditionalDiscretionaryPayment();
-            if (DHP > 0) {
-                receivingDHPCount++;
-            }
-            if (endCouncilUnderOccupiedSetMap.containsKey(aCTBRef)) {
-                DW_UOReport_Record UORec;
-                UORec = endCouncilUnderOccupiedSetMap.get(aCTBRef);
-                double arrears;
-                arrears = UORec.getTotalRentArrears();
-                if (arrears > 0) {
-                    inArrearsCount++;
-                    if (DHP > 0) {
-                        inArrearsAndReceivingDHPCount++;
+            if (aDW_SHBE_Record == null) {
+                System.out.println(aCTBRef + " not in " + aYM3);
+            } else {
+                aDRecord = aDW_SHBE_Record.getDRecord();
+                int DHP;
+                DHP = aDRecord.getWeeklyAdditionalDiscretionaryPayment();
+                if (DHP > 0) {
+                    receivingDHPCount++;
+                }
+                if (endCouncilUnderOccupiedSetMap.containsKey(aCTBRef)) {
+                    DW_UOReport_Record UORec;
+                    UORec = endCouncilUnderOccupiedSetMap.get(aCTBRef);
+                    double arrears;
+                    arrears = UORec.getTotalRentArrears();
+                    if (arrears > 0) {
+                        inArrearsCount++;
+                        if (DHP > 0) {
+                            inArrearsAndReceivingDHPCount++;
+                        }
                     }
                 }
             }
         }
         p = ((double) receivingDHPCount) * 100.0d / (double) tEndUOCTBRefs.size();
-        tableValues.put(sPercentageReceivingDHPInOctober2015ThatWereUOInApril2008,
-                "" + p);
+        generalStatistics.put(sPercentageReceivingDHPInOctober2015ThatWereUOInApril2013,
+                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         p = ((double) inArrearsCount) * 100.0d / (double) endCouncilUnderOccupiedSetMap.size();
-        tableValues.put(sPercentageInArrearsOctober2015ThatWereUOInApril2008,
-                "" + p);
+        generalStatistics.put(sPercentageInArrearsOctober2015ThatWereUOInApril2013,
+                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         p = ((double) inArrearsAndReceivingDHPCount) * 100.0d / (double) tEndUOCTBRefs.size();
-        tableValues.put(sPercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2008,
-                "" + p);
-
+        generalStatistics.put(sPercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2013,
+                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
 
 //        TreeMap<String, ArrayList<Integer>> includes;
 //        includes = DW_SHBE_Handler.getIncludes();
@@ -2722,8 +2779,7 @@ public class TenancyChangesUO {
             aggregateStatistics.put(aCTBRef + sUnderscore + sTotalCount_Arrears, BigDecimal.ZERO);
             aggregateStatistics.put(aCTBRef + sUnderscore + sTotalCount_UnderOccupancy, BigDecimal.ZERO);
         }
-        TreeMap<String, BigDecimal> generalStatistics;
-        generalStatistics = new TreeMap<String, BigDecimal>();
+
         // Use sets?
 //        generalStatistics.put(sTotalCount_ExistingSHBEClaimsThatBecameUOInApril2013, BigDecimal.ZERO);
 //        generalStatistics.put(sTotalCount_ExistingSHBEClaimsThatBecameUOAfterApril2013, BigDecimal.ZERO);
@@ -2731,7 +2787,6 @@ public class TenancyChangesUO {
 //        generalStatistics.put(sTotalCount_ChangePostcodeAndOrTTToAvoidUO, BigDecimal.ZERO);
 //        generalStatistics.put(sTotalCount_StayPutAndAvoidedUO, BigDecimal.ZERO);
 //        generalStatistics.put(sCostOfUOToTaxPayer, BigDecimal.ZERO);
-
         HashMap<String, Integer> DHP_Totals;
         DHP_Totals = new HashMap<String, Integer>();
         // Initialise tableValues (part 2) and DHP_Totals
@@ -2775,48 +2830,41 @@ public class TenancyChangesUO {
             DHP_Totals.put(aCTBRef, 0);
         }
 
-//        // Load dataset 1
-//        Iterator<Integer> includeIte;
-//        DW_SHBE_Collection aSHBEData = null;
-//        includeIte = include.iterator();
-//        String aYM3 = s;
-//        String year = s;
-//        String month = s;
-//        DW_UnderOccupiedReport_Set councilUnderOccupiedSet1 = null;
-//        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1 = null;
-//        String aSHBEFilename = null;
-//        int i;
-//
-//        String header;
-//        header = "CTBRef, ";
-//        if (includePreUnderOccupancyValues) {
-//            Iterator<Integer> tNotMonthlyUOIte;
-//            String yM3;
-//            tNotMonthlyUOIte = NotMonthlyUO.iterator();
-//            while (tNotMonthlyUOIte.hasNext()) {
-//                i = tNotMonthlyUOIte.next();
-//                yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
-//                header += yM3 + sCommaSpace;
-//            }
-//        }
-//
-//        boolean initFirst;
-//        initFirst = false;
-//        // Load first data
-//        while (!initFirst) {
-//            i = includeIte.next();
-//            aSHBEFilename = SHBEFilenames[i];
-//            aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
-//            year = DW_SHBE_Handler.getYear(aSHBEFilename);
-//            month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
-//            councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
-//            if (councilUnderOccupiedSet1 != null) {
-//                RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
-//                aSHBEData = new DW_SHBE_Collection(aSHBEFilename, paymentType);
-//                initFirst = true;
-//            }
-//            header += aYM3;
-//        }
+        // Load dataset 1
+        Iterator<Integer> includeIte;
+        includeIte = include.iterator();
+        int i;
+
+        String header;
+        header = "CTBRef, ";
+        if (includePreUnderOccupancyValues) {
+            Iterator<Integer> tNotMonthlyUOIte;
+            String yM3;
+            tNotMonthlyUOIte = NotMonthlyUO.iterator();
+            while (tNotMonthlyUOIte.hasNext()) {
+                i = tNotMonthlyUOIte.next();
+                yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                header += yM3 + sCommaSpace;
+            }
+        }
+
+        boolean initFirst;
+        initFirst = false;
+        // Load first data
+        while (!initFirst) {
+            i = includeIte.next();
+            aSHBEFilename = SHBEFilenames[i];
+            aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
+            year = DW_SHBE_Handler.getYear(aSHBEFilename);
+            month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
+            councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
+            if (councilUnderOccupiedSet1 != null) {
+                RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
+                aSHBEData = new DW_SHBE_Collection(aSHBEFilename, paymentType);
+                initFirst = true;
+            }
+            header += aYM3;
+        }
         //TreeMap<String, DW_SHBE_Record> aRecords;
         aRecords = aSHBEData.getRecords();
         TreeMap<String, DW_SHBE_Record> bRecords;
@@ -2835,14 +2883,21 @@ public class TenancyChangesUO {
         tCTBRefSetUOTT4_To_TT4_PostcodeUnchangedThisMonth = new TreeSet<String>();
 
         // Add TT of all CTBRefs to result
-        boolean[] processBoolean;
+        Object[] processResult;
         totalCount_UOClaims = 0;
-        totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms = 0;
+        totalCount_UOCouncilClaims = 0;
+        totalCount_UORSLClaims = 0;
+        totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE = 0;
+        totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO = 0;
+        totalHouseholdSizeExcludingPartnersCouncilSHBE = 0;
+        totalHouseholdSizeExcludingPartnersCouncilUO = 0;
+        totalHouseholdSizeExcludingPartnersRSLSHBE = 0;
+        totalHouseholdSizeExcludingPartnersRSLUO = 0;
         tCTBRefsIte = tCTBRefs.iterator();
         while (tCTBRefsIte.hasNext()) {
             aCTBRef = tCTBRefsIte.next();
             aDW_SHBE_Record = aRecords.get(aCTBRef);
-            processBoolean = process(
+            processResult = process(
                     tUOClaims,
                     aggregateStatistics,
                     generalStatistics,
@@ -3051,12 +3106,25 @@ public class TenancyChangesUO {
                     tCTBRefSetUOClaimsRecievingDHP,
                     tCTBRefSetUOTT1ClaimsInRentArrearsAtSomePoint,
                     tCTBRefSetUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint);
-            if (processBoolean[0]) {
+            if ((Boolean) processResult[0]) {
                 totalCount_UOClaims++;
             }
-            if (processBoolean[1]) {
-                totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms++;
+            if ((Boolean) processResult[1]) {
+                totalCount_UOCouncilClaims++;
             }
+            if ((Boolean) processResult[2]) {
+                totalCount_UORSLClaims++;
+            }
+            if ((Boolean) processResult[3]) {
+                totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE++;
+            }
+            if ((Boolean) processResult[4]) {
+                totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO++;
+            }
+            totalHouseholdSizeExcludingPartnersCouncilSHBE += (Integer) processResult[5];
+            totalHouseholdSizeExcludingPartnersCouncilUO += (Integer) processResult[6];
+            totalHouseholdSizeExcludingPartnersRSLSHBE += (Integer) processResult[7];
+            totalHouseholdSizeExcludingPartnersRSLUO += (Integer) processResult[8];
         }
 
         tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged1MonthPrevious = tCTBRefSetTT1_To_UOTT1_PostcodeUnchangedThisMonth;
@@ -3076,14 +3144,42 @@ public class TenancyChangesUO {
         totalCounts_UOClaims.put(
                 yearMonth,
                 totalCount_UOClaims);
-        totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms.put(
+        totalCounts_UOCouncilClaims.put(
                 yearMonth,
-                totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms);
+                totalCount_UOCouncilClaims);
+        totalCounts_UORSLClaims.put(
+                yearMonth,
+                totalCount_UORSLClaims);
+        totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE.put(
+                yearMonth,
+                totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE);
+        totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO.put(
+                yearMonth,
+                totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO);
+        totalHouseholdSizeExcludingPartnersCouncilSHBEs.put(
+                yearMonth,
+                totalHouseholdSizeExcludingPartnersCouncilSHBE);
+        totalHouseholdSizeExcludingPartnersCouncilUOs.put(
+                yearMonth,
+                totalHouseholdSizeExcludingPartnersCouncilUO);
+        totalHouseholdSizeExcludingPartnersRSLSHBEs.put(
+                yearMonth,
+                totalHouseholdSizeExcludingPartnersRSLSHBE);
+        totalHouseholdSizeExcludingPartnersRSLUOs.put(
+                yearMonth,
+                totalHouseholdSizeExcludingPartnersRSLUO);
 
         // Iterate over the rest of the data
         while (includeIte.hasNext()) {
             totalCount_UOClaims = 0;
-            totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms = 0;
+            totalCount_UOCouncilClaims = 0;
+            totalCount_UORSLClaims = 0;
+            totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE = 0;
+            totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO = 0;
+            totalHouseholdSizeExcludingPartnersCouncilSHBE = 0;
+            totalHouseholdSizeExcludingPartnersCouncilUO = 0;
+            totalHouseholdSizeExcludingPartnersRSLSHBE = 0;
+            totalHouseholdSizeExcludingPartnersRSLUO = 0;
             i = includeIte.next();
             cRecords = bRecords;
             bRecords = aRecords;
@@ -3100,7 +3196,7 @@ public class TenancyChangesUO {
             while (tCTBRefsIte.hasNext()) {
                 aCTBRef = tCTBRefsIte.next();
                 aDW_SHBE_Record = aRecords.get(aCTBRef);
-                processBoolean = process(
+                processResult = process(
                         tUOClaims,
                         aggregateStatistics,
                         generalStatistics,
@@ -3309,12 +3405,26 @@ public class TenancyChangesUO {
                         tCTBRefSetUOClaimsRecievingDHP,
                         tCTBRefSetUOTT1ClaimsInRentArrearsAtSomePoint,
                         tCTBRefSetUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint);
-                if (processBoolean[0]) {
+                if ((Boolean) processResult[0]) {
                     totalCount_UOClaims++;
                 }
-                if (processBoolean[1]) {
-                    totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms++;
+                if ((Boolean) processResult[1]) {
+                    totalCount_UOCouncilClaims++;
                 }
+                if ((Boolean) processResult[2]) {
+                    totalCount_UORSLClaims++;
+                }
+                if ((Boolean) processResult[3]) {
+                    totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE++;
+                }
+                if ((Boolean) processResult[4]) {
+                    totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO++;
+                }
+                totalHouseholdSizeExcludingPartnersCouncilSHBE += (Integer) processResult[5];
+                totalHouseholdSizeExcludingPartnersCouncilUO += (Integer) processResult[6];
+                totalHouseholdSizeExcludingPartnersRSLSHBE += (Integer) processResult[7];
+                totalHouseholdSizeExcludingPartnersRSLUO += (Integer) processResult[8];
+
             }
             tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged3MonthsPrevious = tCTBRefSetTT1_To_UOTT1_PostcodeUnchanged2MonthsPrevious;
             tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged3MonthsPrevious = tCTBRefSetTT4_To_UOTT4_PostcodeUnchanged2MonthsPrevious;
@@ -3341,9 +3451,30 @@ public class TenancyChangesUO {
             totalCounts_UOClaims.put(
                     yearMonth,
                     totalCount_UOClaims);
-            totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms.put(
+            totalCounts_UOCouncilClaims.put(
                     yearMonth,
-                    totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms);
+                    totalCount_UOCouncilClaims);
+            totalCounts_UORSLClaims.put(
+                    yearMonth,
+                    totalCount_UORSLClaims);
+            totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE.put(
+                    yearMonth,
+                    totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE);
+            totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO.put(
+                    yearMonth,
+                    totalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO);
+            totalHouseholdSizeExcludingPartnersCouncilSHBEs.put(
+                    yearMonth,
+                    totalHouseholdSizeExcludingPartnersCouncilSHBE);
+            totalHouseholdSizeExcludingPartnersCouncilUOs.put(
+                    yearMonth,
+                    totalHouseholdSizeExcludingPartnersCouncilUO);
+            totalHouseholdSizeExcludingPartnersRSLSHBEs.put(
+                    yearMonth,
+                    totalHouseholdSizeExcludingPartnersRSLSHBE);
+            totalHouseholdSizeExcludingPartnersRSLUOs.put(
+                    yearMonth,
+                    totalHouseholdSizeExcludingPartnersRSLUO);
         }
 
         tCTBRefSetInArrearsAtSomePoint_And_DHPAtSomePoint.addAll(tCTBRefSetInArrearsAtSomePoint);
@@ -3475,25 +3606,46 @@ public class TenancyChangesUO {
 
         long totalHouseholdSize;
         double averageHouseholdSizeOfThoseUOAlwaysFromStart;
+        double d;
         Iterator<String> iteS;
         // TT1
         totalHouseholdSize = 0;
+        d = 0.0d;
         iteS = tCTBRefSetAlwaysUOTT1FromStart.iterator();
         while (iteS.hasNext()) {
             aCTBRef = iteS.next();
-            totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(aRecords.get(aCTBRef));
+            DW_SHBE_Record rec = aRecords.get(aCTBRef);
+            if (rec != null) {
+                totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(rec);
+                d += 1.0d;
+            }
         }
-        averageHouseholdSizeOfThoseUOAlwaysFromStart = (double) totalHouseholdSize / (double) tCTBRefSetAlwaysUOTT1FromStart.size();
+        if (d > 0) {
+            //averageHouseholdSizeOfThoseUOAlwaysFromStart = (double) totalHouseholdSize / (double) tCTBRefSetAlwaysUOTT1FromStart.size();
+            averageHouseholdSizeOfThoseUOAlwaysFromStart = (double) totalHouseholdSize / d;
+        } else {
+            averageHouseholdSizeOfThoseUOAlwaysFromStart = 0.0d;
+        }
         generalStatistics.put(sAverageHouseholdSizeOfThoseUOTT1AlwaysFromStart,
                 BigDecimal.valueOf(averageHouseholdSizeOfThoseUOAlwaysFromStart));
         // TT4
         totalHouseholdSize = 0;
+        d = 0.0d;
         iteS = tCTBRefSetAlwaysUOTT4FromStart.iterator();
         while (iteS.hasNext()) {
             aCTBRef = iteS.next();
-            totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(aRecords.get(aCTBRef));
+            DW_SHBE_Record rec = aRecords.get(aCTBRef);
+            if (rec != null) {
+                totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(rec);
+                d += 1.0d;
+            }
         }
-        averageHouseholdSizeOfThoseUOAlwaysFromStart = (double) totalHouseholdSize / (double) tCTBRefSetAlwaysUOTT4FromStart.size();
+        if (d > 0) {
+            //averageHouseholdSizeOfThoseUOAlwaysFromStart = (double) totalHouseholdSize / (double) tCTBRefSetAlwaysUOTT4FromStart.size();
+            averageHouseholdSizeOfThoseUOAlwaysFromStart = (double) totalHouseholdSize / d;
+        } else {
+            averageHouseholdSizeOfThoseUOAlwaysFromStart = 0.0d;
+        }
         generalStatistics.put(sAverageHouseholdSizeOfThoseUOTT4AlwaysFromStart,
                 BigDecimal.valueOf(averageHouseholdSizeOfThoseUOAlwaysFromStart));
 
@@ -4012,7 +4164,7 @@ public class TenancyChangesUO {
                 BigDecimal.valueOf(groups.get(sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased).size()));
     }
 
-    public boolean[] process(
+    public Object[] process(
             TreeSet<String> tUOClaims,
             TreeMap<String, BigDecimal> aggregateStatistics,
             TreeMap<String, BigDecimal> generalStatistics,
@@ -4220,9 +4372,16 @@ public class TenancyChangesUO {
             TreeSet<String> tCTBRefSetUOTT1ClaimsInRentArrearsAtSomePoint,
             TreeSet<String> tCTBRefSetUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint
     ) {
-        boolean[] result = new boolean[2];
+        Object[] result = new Object[9];
         result[0] = false; // UnderOcuupied
-        result[1] = false; // 
+        result[1] = false; // UnderOcuupied
+        result[2] = false; // UnderOcuupied
+        result[3] = false; // 
+        result[4] = false; // 
+        result[5] = 0; // 
+        result[6] = 0; // 
+        result[7] = 0; // 
+        result[8] = 0; // 
         int cumulativeClaims;
         String aS;
         String key;
@@ -4343,12 +4502,12 @@ public class TenancyChangesUO {
             //        validPostcodesYM3.add(aPC);
             //    }
             //}
-             if (!validPostcodes.contains(aPC)) {
-                    if (DW_Postcode_Handler.isValidPostcode(
-                            DW_Postcode_Handler.getNearestYM3ForONSPDLookup(aYM3), aPC)) {
-                        validPostcodes.add(aPC);
-                    }
+            if (!validPostcodes.contains(aPC)) {
+                if (DW_Postcode_Handler.isValidPostcode(
+                        DW_Postcode_Handler.getNearestYM3ForONSPDLookup(aYM3), aPC)) {
+                    validPostcodes.add(aPC);
                 }
+            }
             aStatus = aDW_SHBE_D_Record.getStatusOfHBClaimAtExtractDate();
             aWHBE = aDW_SHBE_D_Record.getWeeklyHousingBenefitEntitlement();
             aWERA = aDW_SHBE_D_Record.getWeeklyEligibleRentAmount();
@@ -4750,6 +4909,7 @@ public class TenancyChangesUO {
             aggregateStatistics.put(key2, bd);
             if (aDW_SHBE_D_Record != null) {
                 if (councilUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)) {
+                    result[1] = true;
                     addToSets(
                             aCTBRef,
                             tIDSetCouncilUniqueClaimantsEffected,
@@ -4763,12 +4923,21 @@ public class TenancyChangesUO {
                             aDW_SHBE_D_Record);
                     DW_UOReport_Record rec = councilUnderOccupiedSet1.getMap().get(aCTBRef);
                     int bedrooms = rec.getBedroomsInProperty();
-                    long householdSize = DW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
-                    if (householdSize >= bedrooms) {
-                        result[1] = true;
+                    int householdSizeSHBE;
+                    householdSizeSHBE = DW_SHBE_Handler.getHouseholdSizeint(aDW_SHBE_D_Record);
+                    result[5] = householdSizeSHBE;
+                    if (householdSizeSHBE >= bedrooms) {
+                        result[3] = true;
                     }
+                    int householdSizeUO;
+                    householdSizeUO = DW_UnderOccupiedReport_Handler.getHouseholdSizeExcludingPartners(rec);
+                    if (householdSizeUO >= bedrooms) {
+                        result[4] = true;
+                    }
+                    result[6] = householdSizeUO;
                 }
                 if (RSLUnderOccupiedSet1.getMap().keySet().contains(aCTBRef)) {
+                    result[2] = true;
                     addToSets(
                             aCTBRef,
                             tIDSetRSLUniqueClaimantsEffected,
@@ -4782,10 +4951,19 @@ public class TenancyChangesUO {
                             aDW_SHBE_D_Record);
                     DW_UOReport_Record rec = RSLUnderOccupiedSet1.getMap().get(aCTBRef);
                     int bedrooms = rec.getBedroomsInProperty();
-                    long householdSize = DW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
-                    if (householdSize >= bedrooms) {
-                        result[1] = true;
+                    //long householdSize = DW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
+                    int householdSizeSHBE;
+                    householdSizeSHBE = DW_SHBE_Handler.getHouseholdSizeint(aDW_SHBE_D_Record);
+                    result[7] = householdSizeSHBE;
+                    if (householdSizeSHBE >= bedrooms) {
+                        result[3] = true;
                     }
+                    int householdSizeUO;
+                    householdSizeUO = DW_UnderOccupiedReport_Handler.getHouseholdSizeExcludingPartners(rec);
+                    if (householdSizeUO >= bedrooms) {
+                        result[4] = true;
+                    }
+                    result[8] = householdSizeUO;
                 }
             }
             if (!(aTT == 1 || aTT == 4 || aTT == DW_SHBE_TenancyType_Handler.iMinus999)) {
@@ -6053,27 +6231,77 @@ public class TenancyChangesUO {
         PrintWriter pw5;
         pw5 = getPrintWriter(
                 "TimeStatistics", dirName, paymentType, includeKey, underOccupancy);
-        pw5.println("Date, " + sTotalCount_cumulativeUniqueClaims + ", " + sTotalCount_UOClaims + ", " + sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms);
+        pw5.println("Date, " + sTotalCount_cumulativeUniqueClaims
+                + ", " + sTotalCount_UOClaims
+                + ", " + sTotalCount_UOCouncilClaims
+                + ", " + sTotalCount_UORSLClaims
+                + ", " + sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE
+                + ", " + sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO
+                + ", " + sTotalHouseholdSizeExcludingPartnersCouncilSHBE
+                + ", " + sTotalHouseholdSizeExcludingPartnersCouncilUO
+                + ", " + sTotalHouseholdSizeExcludingPartnersRSLSHBE
+                + ", " + sTotalHouseholdSizeExcludingPartnersRSLUO);
         String date;
         int cumulativeCount;
         TreeMap<String, Integer> totalCounts_cumulativeUniqueClaims;
         totalCounts_cumulativeUniqueClaims = timeStatistics.get(sTotalCount_cumulativeUniqueClaims);
         int UOCount;
+        int UOCouncilCount;
+        int UORSLCount;
         TreeMap<String, Integer> totalCounts_UOClaims;
-        totalCounts_UOClaims = timeStatistics.get(sTotalCount_UOClaims);
-        int UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms;
-        TreeMap<String, Integer> totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms;
-        totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms = timeStatistics.get(sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms);
+        totalCounts_UOClaims = timeStatistics.get(
+                sTotalCount_UOClaims);
+        TreeMap<String, Integer> totalCounts_UOCouncilClaims;
+        totalCounts_UOCouncilClaims = timeStatistics.get(
+                sTotalCount_UOCouncilClaims);
+        TreeMap<String, Integer> totalCounts_UORSLClaims;
+        totalCounts_UORSLClaims = timeStatistics.get(
+                sTotalCount_UORSLClaims);
+        int UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE;
+        int UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO;
+
+        int totalHouseholdSizeExcludingPartnersCouncilSHBE;
+        int totalHouseholdSizeExcludingPartnersCouncilUO;
+        int totalHouseholdSizeExcludingPartnersRSLSHBE;
+        int totalHouseholdSizeExcludingPartnersRSLUO;
+        TreeMap<String, Integer> totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE;
+        totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE = timeStatistics.get(sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE);
+        TreeMap<String, Integer> totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO;
+        totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO = timeStatistics.get(sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO);
+
+        TreeMap<String, Integer> sTotalHouseholdSizeExcludingPartnersCouncilSHBEs;
+        sTotalHouseholdSizeExcludingPartnersCouncilSHBEs = timeStatistics.get(sTotalHouseholdSizeExcludingPartnersCouncilSHBE);
+        TreeMap<String, Integer> sTotalHouseholdSizeExcludingPartnersCouncilUOs;
+        sTotalHouseholdSizeExcludingPartnersCouncilUOs = timeStatistics.get(sTotalHouseholdSizeExcludingPartnersCouncilUO);
+        TreeMap<String, Integer> sTotalHouseholdSizeExcludingPartnersRSLSHBEs;
+        sTotalHouseholdSizeExcludingPartnersRSLSHBEs = timeStatistics.get(sTotalHouseholdSizeExcludingPartnersRSLSHBE);
+        TreeMap<String, Integer> sTotalHouseholdSizeExcludingPartnersRSLUOs;
+        sTotalHouseholdSizeExcludingPartnersRSLUOs = timeStatistics.get(sTotalHouseholdSizeExcludingPartnersRSLUO);
+
         Iterator<String> ite;
         ite = totalCounts_cumulativeUniqueClaims.keySet().iterator();
         while (ite.hasNext()) {
             date = ite.next();
             cumulativeCount = totalCounts_cumulativeUniqueClaims.get(date);
             UOCount = totalCounts_UOClaims.get(date);
-            UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms = totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms.get(date);
+            UOCouncilCount = totalCounts_UOCouncilClaims.get(date);
+            UORSLCount = totalCounts_UORSLClaims.get(date);
+            UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE = totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE.get(date);
+            UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO = totalCounts_UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO.get(date);
+            totalHouseholdSizeExcludingPartnersCouncilSHBE = sTotalHouseholdSizeExcludingPartnersCouncilSHBEs.get(date);
+            totalHouseholdSizeExcludingPartnersCouncilUO = sTotalHouseholdSizeExcludingPartnersCouncilUOs.get(date);
+            totalHouseholdSizeExcludingPartnersRSLSHBE = sTotalHouseholdSizeExcludingPartnersRSLSHBEs.get(date);
+            totalHouseholdSizeExcludingPartnersRSLUO = sTotalHouseholdSizeExcludingPartnersRSLUOs.get(date);
             pw5.println(date + ", " + Integer.toString(cumulativeCount)
                     + ", " + Integer.toString(UOCount)
-                    + ", " + Integer.toString(UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedrooms));
+                    + ", " + Integer.toString(UOCouncilCount)
+                    + ", " + Integer.toString(UORSLCount)
+                    + ", " + Integer.toString(UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsSHBE)
+                    + ", " + Integer.toString(UOClaimsInHouseholdsWithHouseholdSizeGreaterThanOrEqualToNumberOfBedroomsUO)
+                    + ", " + Integer.toString(totalHouseholdSizeExcludingPartnersCouncilSHBE)
+                    + ", " + Integer.toString(totalHouseholdSizeExcludingPartnersCouncilUO)
+                    + ", " + Integer.toString(totalHouseholdSizeExcludingPartnersRSLSHBE)
+                    + ", " + Integer.toString(totalHouseholdSizeExcludingPartnersRSLUO));
         }
         pw5.close();
 
@@ -6141,7 +6369,7 @@ public class TenancyChangesUO {
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sTotalCount_UniqueChildrenAgeLessThan10EffectedByUnderOccupancy,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        
+
         writeLine(sSubsequentlyEffectedUOStillUOInOctober2015,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sPercentageReceivingDHPInOctober2015,
@@ -6150,13 +6378,13 @@ public class TenancyChangesUO {
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sPercentageInArrearsAndReceivingDHPInOctober2015,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        writeLine(sPercentageReceivingDHPInOctober2015ThatWereUOInApril2008,
+        writeLine(sPercentageReceivingDHPInOctober2015ThatWereUOInApril2013,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        writeLine(sPercentageInArrearsOctober2015ThatWereUOInApril2008,
+        writeLine(sPercentageInArrearsOctober2015ThatWereUOInApril2013,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        writeLine(sPercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2008,
+        writeLine(sPercentageInArrearsAndReceivingDHPInOctober2015ThatWereUOInApril2013,
                 generalStatistics, generalStatisticsDescriptions, pw5);
-        
+
         writeLine(sUO_To_LeftSHBEAtSomePoint,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         writeLine(sUOTT1_To_LeftSHBE,
@@ -7238,7 +7466,9 @@ public class TenancyChangesUO {
         File dirOut;
         dirOut = DW_Files.getTableDir(
                 sUnderOccupancyGroupTables,
-                paymentType, includeKey, underOccupancy);
+                paymentType, 
+                includeKey, 
+                underOccupancy);
         dirOut = new File(
                 dirOut,
                 dirName);

@@ -33,6 +33,7 @@ import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleChunkArrayFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.GridStatistics0;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
@@ -161,8 +162,9 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         //int resolutionMultiplier = 4;
         cellsize = 50;
         maxCellDistanceForGeneralisation = 4; // 8;
-//        runAll();
-        runRateMap();
+        runAll();
+        //runRateMaps();
+
 //        for (maxCellDistanceForGeneralisation = 4; maxCellDistanceForGeneralisation <= 32; maxCellDistanceForGeneralisation *= 2) {
 //            cellsize = (1600 / maxCellDistanceForGeneralisation) / resolutionMultiplier;
 //            runAll(resolutionMultiplier);
@@ -183,7 +185,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
     }
 
-    public void runRateMap() {
+    public void runRateMaps() {
         File dirOut;
         dirOut = new File(
                 DW_Files.getOutputSHBEMapsDir(),
@@ -225,6 +227,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 
         boolean overlaycommunityAreas;
         overlaycommunityAreas = true;
+//        overlaycommunityAreas = false;
         File dirOut1;
         if (overlaycommunityAreas) {
             foregroundDW_Shapefile1 = getCommunityAreasDW_Shapefile();
@@ -237,98 +240,389 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         ge = new Grids_Environment();
         Grid2DSquareCellDoubleFactory f;
         f = new Grid2DSquareCellDoubleFactory(ge, handleOutOfMemoryErrors);
+        f.set_Dimensions(dimensions);
+        f.set_GridStatistics(new GridStatistics0());
         Grid2DSquareCellProcessorGWS p;
         p = new Grid2DSquareCellProcessorGWS(ge);
 
-        Grid2DSquareCellDouble numerator;
+        Grid2DSquareCellDouble numerator = null;
         Grid2DSquareCellDouble denominator1;
         Grid2DSquareCellDouble denominator2;
         Grid2DSquareCellDouble rate;
         rate = (Grid2DSquareCellDouble) f.create(nrows, ncols);
 
+        int index;
+        index = 0;
+        List<String> stats = new ArrayList<String>();
+        stats.add("WSum");
+
         File dirIn;
         dirIn = new File(
                 dirOut,
-                "AllPT/UO/All/CommunityAreasOverlaid/MonthlyUO/HB");
-
-        File numeratorFile = new File(
-                dirIn,
-                "2013_AprMinus2015_Oct.asc");
-        numerator = (Grid2DSquareCellDouble) f.create(numeratorFile);
-        File denominatorFile;
-        denominatorFile = new File(
-                dirIn,
-                "2013_Apr/Density2013_Apr_554_ncols_680_cellsize_50.0.asc");
-        denominator1 = (Grid2DSquareCellDouble) f.create(denominatorFile);
-        denominatorFile = new File(
-                dirIn,
-                "2015_Oct/Density2015_Oct_554_ncols_680_cellsize_50.0.asc");
-        denominator2 = (Grid2DSquareCellDouble) f.create(denominatorFile);
-        p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
-
-        for (long row = 0; row < nrows; row++) {
-            for (long col = 0; col < ncols; col++) {
-                double n = numerator.getCell(row, col, handleOutOfMemoryErrors);
-                double d = denominator1.getCell(row, col, handleOutOfMemoryErrors);
-                double r;
-                if (d == 0) {
-                    r = 0;
-                } else {
-                    r = n / (d / 2.0d);
-                }
-                rate.setCell(row, col, r, handleOutOfMemoryErrors);
+                "AllPT/UO/All/CommunityAreasOverlaid/MonthlyUO/Social");
+        File numeratorFile;
+        File denominatorFile = null;
+        if (false) {
+            numeratorFile = new File(
+                    dirIn,
+                    "2013_AprMinus2015_Oct.asc");
+            if (numeratorFile.exists()) {
+                numerator = (Grid2DSquareCellDouble) f.create(numeratorFile);
+                System.out.println(numerator.toString(handleOutOfMemoryErrors));
+            } else {
+                int debug = 1;
             }
-        }
+            denominatorFile = new File(
+                    dirIn,
+                    "2013_Apr/Density2013_Apr_554_ncols_680_cellsize_50.0.asc");
+            denominator1 = (Grid2DSquareCellDouble) f.create(denominatorFile);
+            System.out.println(denominator1.toString(handleOutOfMemoryErrors));
+            denominatorFile = new File(
+                    dirIn,
+                    "2015_Oct/Density2015_Oct_554_ncols_680_cellsize_50.0.asc");
+            denominator2 = (Grid2DSquareCellDouble) f.create(denominatorFile);
+            System.out.println(denominator2.toString(handleOutOfMemoryErrors));
+            //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
+            //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
 
-        List<String> stats = new ArrayList<String>();
-        stats.add("WSum");
-        //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
-        for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
-                cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
-            double distance = maxCellDistanceForGeneralisation * cellsize;
-            double weightIntersect = 1.0d;
-            double weightFactor = 2.0d;
-            // RegionUnivariateStatistics
-            List<AbstractGrid2DSquareCell> gws;
-            gws = gp.regionUnivariateStatistics(
-                    rate,
-                    stats,
-                    distance,
-                    weightIntersect,
-                    weightFactor,
-                    gf);
-            Iterator<AbstractGrid2DSquareCell> itegws;
-            itegws = gws.iterator();
-            // Set normaliser part of the result to null to save space
-            AbstractGrid2DSquareCell normaliser = itegws.next();
-            normaliser = null;
-            // Write out grid
-            AbstractGrid2DSquareCell gwsgrid = itegws.next();
-            String outputName2;
-            outputName2 = "Rate" + "GWS_" + cellDistanceForGeneralisation;// + "_" + i;
+            for (long row = 0; row < nrows; row++) {
+                for (long col = 0; col < ncols; col++) {
+                    double n = numerator.getCell(row, col, handleOutOfMemoryErrors);
+                    double d1 = denominator1.getCell(row, col, handleOutOfMemoryErrors);
+                    double d2 = denominator2.getCell(row, col, handleOutOfMemoryErrors);
+                    double d = d1 + d2;
+                    double r;
+                    if (d == 0) {
+                        r = 0;
+                    } else {
+                        r = n / (d / 2.0d);
+                    }
+                    rate.setCell(row, col, r, handleOutOfMemoryErrors);
+                }
+            }
+            System.out.println(rate.toString(handleOutOfMemoryErrors));
+
+            //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
+            for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
+                    cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
+                index++;
+                double distance = maxCellDistanceForGeneralisation * cellsize;
+                double weightIntersect = 1.0d;
+                double weightFactor = 2.0d;
+                // RegionUnivariateStatistics
+                List<AbstractGrid2DSquareCell> gws;
+                gws = gp.regionUnivariateStatistics(
+                        rate,
+                        stats,
+                        distance,
+                        weightIntersect,
+                        weightFactor,
+                        gf);
+                Iterator<AbstractGrid2DSquareCell> itegws;
+                itegws = gws.iterator();
+                // Set normaliser part of the result to null to save space
+                AbstractGrid2DSquareCell normaliser = itegws.next();
+                normaliser = null;
+                // Write out grid
+                AbstractGrid2DSquareCell gwsgrid = itegws.next();
+                String outputName2;
+                outputName2 = "Rate" + "GWS_" + cellDistanceForGeneralisation;// + "_" + i;
 //                        imageFile = new File(
 //                                outletmapDirectory,
 //                                outputName + ".png");
 //                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png", handleOutOfMemoryErrors);
 
-            File asciigridFile = new File(
-                    dirIn,
-                    outputName2 + ".asc");
-            eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+                File asciigridFile = new File(
+                        dirIn,
+                        //dirOut1,
+                        outputName2 + ".asc");
+                eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
 
-            int index = 0;
-            boolean scaleToFirst = false;
-            // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
-            outputGridToImageUsingGeoToolsAndSetCommonStyle(
-                    100.0d,//(double) Math.PI * cellDistanceForGeneralisation * cellDistanceForGeneralisation,
-                    gwsgrid,
-                    asciigridFile,
-                    dirIn,
-                    outputName2,
-                    index,
-                    scaleToFirst);
+                boolean scaleToFirst = false;
+                outputGrid(
+                        (Grid2DSquareCellDouble) gwsgrid,
+                        dirOut1,
+                        outputName2,
+                        "name" + index,
+                        scaleToFirst);
+
+//            // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
+//            outputGridToImageUsingGeoToolsAndSetCommonStyle(
+//                    100.0d,//(double) Math.PI * cellDistanceForGeneralisation * cellDistanceForGeneralisation,
+//                    gwsgrid,
+//                    asciigridFile,
+//                    dirIn,
+//                    outputName2,
+//                    index,
+//                    scaleToFirst);
+            }
+        }
+
+        // Includes
+        TreeMap<String, ArrayList<Integer>> includes;
+        includes = DW_SHBE_Handler.getIncludes();
+        includes.remove("All");
+        includes.remove("Yearly");
+        includes.remove("6Monthly");
+        includes.remove("3Monthly");
+//        includes.remove("MonthlyUO");
+        includes.remove("Monthly");
+
+        ArrayList<Integer> include;
+        include = includes.get("MonthlyUO");
+
+        File dirOut2;
+        dirOut2 = new File(
+                dirOut1,
+                "Clustering");
+        dirOut2.mkdirs();
+        Iterator<Integer> includesIte;
+        String type = "Social";
+
+//        if (true) {
+        if (true) {
+            File dirIn2 = new File(
+                    dirOut1,
+                    "AllPT/CommunityAreasOverlaid/MonthlyUO/" + type);
+            includesIte = include.iterator();
+            int i;
+            String year;
+            String month;
+            while (includesIte.hasNext()) {
+                i = includesIte.next();
+                year = DW_SHBE_Handler.getYear(SHBEFilenames[i]);
+                month = DW_SHBE_Handler.getMonth3(SHBEFilenames[i]);
+                numeratorFile = new File(
+                        dirIn,
+                        year + "_" + month + "/Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
+                numerator = (Grid2DSquareCellDouble) f.create(numeratorFile);
+                denominatorFile = new File(
+                        dirIn2,
+                        year + "_" + month + "/Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
+                denominator2 = (Grid2DSquareCellDouble) f.create(denominatorFile);
+                System.out.println(denominator2.toString(handleOutOfMemoryErrors));
+                //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
+                //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
+
+                for (long row = 0; row < nrows; row++) {
+                    for (long col = 0; col < ncols; col++) {
+                        double n = numerator.getCell(row, col, handleOutOfMemoryErrors);
+                        double d1 = denominator2.getCell(row, col, handleOutOfMemoryErrors);
+                        double r;
+                        if (d1 == 0) {
+                            r = 0;
+                        } else {
+                            r = n / d1;
+                        }
+                        rate.setCell(row, col, r, handleOutOfMemoryErrors);
+                    }
+                }
+                System.out.println(rate.toString(handleOutOfMemoryErrors));
+
+                //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
+                for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
+                        cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
+                    index++;
+                    double distance = maxCellDistanceForGeneralisation * cellsize;
+                    double weightIntersect = 1.0d;
+                    double weightFactor = 2.0d;
+                    // RegionUnivariateStatistics
+                    List<AbstractGrid2DSquareCell> gws;
+                    gws = gp.regionUnivariateStatistics(
+                            rate,
+                            stats,
+                            distance,
+                            weightIntersect,
+                            weightFactor,
+                            gf);
+                    Iterator<AbstractGrid2DSquareCell> itegws;
+                    itegws = gws.iterator();
+                    // Set normaliser part of the result to null to save space
+                    AbstractGrid2DSquareCell normaliser = itegws.next();
+                    normaliser = null;
+                    // Write out grid
+                    AbstractGrid2DSquareCell gwsgrid = itegws.next();
+                    String outputName2;
+                    outputName2 = year + "_" + month + "UO_Over_All_" + type + "_Rate";
+//                            + "GWS_" + cellDistanceForGeneralisation;// + "_" + i;
+//                        imageFile = new File(
+//                                outletmapDirectory,
+//                                outputName + ".png");
+//                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png", handleOutOfMemoryErrors);
+
+                    File asciigridFile = new File(
+                            dirIn,
+                            outputName2 + ".asc");
+                    eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+
+                    boolean scaleToFirst = false;
+                    outputGrid(
+                            (Grid2DSquareCellDouble) gwsgrid,
+                            dirOut2,
+                            outputName2,
+                            "name" + index,
+                            scaleToFirst);
+                }
+            }
+        }
+
+        if (true) {
+            includesIte = include.iterator();
+            int i;
+            String year0;
+            String month0;
+            String year00;
+            String month00;
+            String year;
+            String month;
+            i = includesIte.next();
+            year0 = DW_SHBE_Handler.getYear(SHBEFilenames[i]);
+            month0 = DW_SHBE_Handler.getMonth3(SHBEFilenames[i]);
+            year00 = year0;
+            month00 = month0;
+            while (includesIte.hasNext()) {
+                i = includesIte.next();
+                year = DW_SHBE_Handler.getYear(SHBEFilenames[i]);
+                month = DW_SHBE_Handler.getMonth3(SHBEFilenames[i]);
+                numeratorFile = new File(
+                        dirOut2,
+                        year0 + "_" + month0 + "UO_Over_All_" + type + "_Rate.asc");
+                numerator = (Grid2DSquareCellDouble) f.create(numeratorFile);
+                denominatorFile = new File(
+                        dirOut2,
+                        year + "_" + month + "UO_Over_All_" + type + "_Rate.asc");
+                denominator2 = (Grid2DSquareCellDouble) f.create(denominatorFile);
+                System.out.println(denominator2.toString(handleOutOfMemoryErrors));
+                //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
+                //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
+
+                for (long row = 0; row < nrows; row++) {
+                    for (long col = 0; col < ncols; col++) {
+                        double n = numerator.getCell(row, col, handleOutOfMemoryErrors);
+                        double d1 = denominator2.getCell(row, col, handleOutOfMemoryErrors);
+                        double r;
+                        r = n - d1;
+                        rate.setCell(row, col, r, handleOutOfMemoryErrors);
+                    }
+                }
+                System.out.println(rate.toString(handleOutOfMemoryErrors));
+
+                //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
+                for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
+                        cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
+                    index++;
+                    double distance = maxCellDistanceForGeneralisation * cellsize;
+                    double weightIntersect = 1.0d;
+                    double weightFactor = 2.0d;
+                    // RegionUnivariateStatistics
+                    List<AbstractGrid2DSquareCell> gws;
+                    gws = gp.regionUnivariateStatistics(
+                            rate,
+                            stats,
+                            distance,
+                            weightIntersect,
+                            weightFactor,
+                            gf);
+                    Iterator<AbstractGrid2DSquareCell> itegws;
+                    itegws = gws.iterator();
+                    // Set normaliser part of the result to null to save space
+                    AbstractGrid2DSquareCell normaliser = itegws.next();
+                    normaliser = null;
+                    // Write out grid
+                    AbstractGrid2DSquareCell gwsgrid = itegws.next();
+                    String outputName2;
+                    outputName2 = year0 + month0 + "To" + year + month + "_" + type + "_Diff" + cellDistanceForGeneralisation;// + "_" + i;
+//                        imageFile = new File(
+//                                outletmapDirectory,
+//                                outputName + ".png");
+//                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png", handleOutOfMemoryErrors);
+
+                    File asciigridFile = new File(
+                            dirIn,
+                            outputName2 + ".asc");
+                    eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+
+                    boolean scaleToFirst = false;
+                    outputGrid(
+                            (Grid2DSquareCellDouble) gwsgrid,
+                            dirOut2,
+                            outputName2,
+                            "name" + index,
+                            scaleToFirst);
+                }
+                year0 = year;
+                month0 = month;
+            }
+
+            numeratorFile = new File(
+                    dirOut2,
+                    year00 + "_" + month00 + "UO_Over_All_" + type + "_Rate.asc");
+            numerator = (Grid2DSquareCellDouble) f.create(numeratorFile);
+            denominatorFile = new File(
+                    dirOut2,
+                    year0 + "_" + month0 + "UO_Over_All_" + type + "_Rate.asc");
+            denominator2 = (Grid2DSquareCellDouble) f.create(denominatorFile);
+            System.out.println(denominator2.toString(handleOutOfMemoryErrors));
+            //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
+            //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
+
+            for (long row = 0; row < nrows; row++) {
+                for (long col = 0; col < ncols; col++) {
+                    double n = numerator.getCell(row, col, handleOutOfMemoryErrors);
+                    double d1 = denominator2.getCell(row, col, handleOutOfMemoryErrors);
+                    double r;
+                    r = n - d1;
+                    rate.setCell(row, col, r, handleOutOfMemoryErrors);
+                }
+            }
+            System.out.println(rate.toString(handleOutOfMemoryErrors));
+
+            //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
+            for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
+                    cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
+                index++;
+                double distance = maxCellDistanceForGeneralisation * cellsize;
+                double weightIntersect = 1.0d;
+                double weightFactor = 2.0d;
+                // RegionUnivariateStatistics
+                List<AbstractGrid2DSquareCell> gws;
+                gws = gp.regionUnivariateStatistics(
+                        rate,
+                        stats,
+                        distance,
+                        weightIntersect,
+                        weightFactor,
+                        gf);
+                Iterator<AbstractGrid2DSquareCell> itegws;
+                itegws = gws.iterator();
+                // Set normaliser part of the result to null to save space
+                AbstractGrid2DSquareCell normaliser = itegws.next();
+                normaliser = null;
+                // Write out grid
+                AbstractGrid2DSquareCell gwsgrid = itegws.next();
+                String outputName2;
+                outputName2 = year00 + month00 + "To" + year0 + month0 + "_" + type + "_Diff" + cellDistanceForGeneralisation;// + "_" + i;
+//                        imageFile = new File(
+//                                outletmapDirectory,
+//                                outputName + ".png");
+//                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png", handleOutOfMemoryErrors);
+
+                File asciigridFile = new File(
+                        dirIn,
+                        outputName2 + ".asc");
+                eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+
+                boolean scaleToFirst = false;
+                outputGrid(
+                        (Grid2DSquareCellDouble) gwsgrid,
+                        dirOut2,
+                        outputName2,
+                        "name" + index,
+                        scaleToFirst);
+            }
 
         }
+
     }
 
     //public void runAll(int resolutionMultiplier) {
@@ -362,20 +656,20 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         allTenancyTypeGroups = getAllTenancyTypeGroups();
         allTenancyTypeGroups.remove("All");
 //        allTenancyTypeGroups.remove("HB");
-        allTenancyTypeGroups.remove("Social");
-        allTenancyTypeGroups.remove("Council");
-        allTenancyTypeGroups.remove("RSL");
-        allTenancyTypeGroups.remove("PrivateDeregulated");
-        allTenancyTypeGroups.remove("CTBOnly");
+//        allTenancyTypeGroups.remove("Social");
+//        allTenancyTypeGroups.remove("Council");
+//        allTenancyTypeGroups.remove("RSL");
+//        allTenancyTypeGroups.remove("PrivateDeregulated");
+//        allTenancyTypeGroups.remove("CTBOnly");
 
         // Includes
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
-        includes.remove("All");
+//        includes.remove("All");
         includes.remove("Yearly");
         includes.remove("6Monthly");
         includes.remove("3Monthly");
-//        includes.remove("MonthlyUO");
+        includes.remove("MonthlyUO");
         includes.remove("Monthly");
 
         // Specifiy distances
@@ -417,10 +711,10 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 
         ArrayList<String> paymentTypes;
         paymentTypes = DW_SHBE_Handler.getPaymentTypes();
-//        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
-        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
-        paymentTypes.remove(DW_SHBE_Handler.sSuspended);
-        paymentTypes.remove(DW_SHBE_Handler.sOtherPT);
+        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
+//        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
+//        paymentTypes.remove(DW_SHBE_Handler.sSuspended);
+//        paymentTypes.remove(DW_SHBE_Handler.sOtherPT);
 
         Iterator<String> inPaymentTypesIte;
         inPaymentTypesIte = paymentTypes.iterator();
@@ -431,96 +725,96 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                     dirOut,
                     inPaymentType);
             boolean doUnderOccupied;
-            doUnderOccupied = true;
-            doUnderOccupied = false;
-//            Iterator<Boolean> iteb;
-//            iteb = b.iterator();
-//            while (iteb.hasNext()) {
-//                doUnderOccupied = iteb.next();
-            if (doUnderOccupied) {
-                boolean overlaycommunityAreas;
-                overlaycommunityAreas = true;
+//            doUnderOccupied = true;
+//            doUnderOccupied = false;
+            Iterator<Boolean> iteb;
+            iteb = b.iterator();
+            while (iteb.hasNext()) {
+                doUnderOccupied = iteb.next();
+                if (doUnderOccupied) {
+                    boolean overlaycommunityAreas;
+                    overlaycommunityAreas = true;
 //                        Iterator<Boolean> iteb3;
 //                        iteb3 = b.iterator();
 //                        while (iteb3.hasNext()) {
 //                            boolean overlaycommunityAreas = iteb3.next();
-                boolean doRSL;
-                boolean doCouncil;
-                doRSL = true;
-                doCouncil = true;
-                run(
-                        collectionHandler,
-                        inPaymentType,
-                        allTenancyTypeGroups,
-                        underOccupiedData,
-                        doUnderOccupied,
-                        doRSL,
-                        doCouncil,
-                        scaleToFirst,
-                        DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
-                        overlaycommunityAreas,
-                        SHBEFilenames,
-                        tDW_SHBE_Handler,
-                        includes);
-                doRSL = true;
-                doCouncil = false;
-                run(
-                        collectionHandler,
-                        inPaymentType,
-                        allTenancyTypeGroups,
-                        underOccupiedData,
-                        doUnderOccupied,
-                        doRSL,
-                        doCouncil,
-                        scaleToFirst,
-                        DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
-                        overlaycommunityAreas,
-                        SHBEFilenames,
-                        tDW_SHBE_Handler,
-                        includes);
-                doRSL = false;
-                doCouncil = true;
-                run(
-                        collectionHandler,
-                        inPaymentType,
-                        allTenancyTypeGroups,
-                        underOccupiedData,
-                        doUnderOccupied,
-                        doRSL,
-                        doCouncil,
-                        scaleToFirst,
-                        DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
-                        overlaycommunityAreas,
-                        SHBEFilenames,
-                        tDW_SHBE_Handler,
-                        includes);
+                    boolean doRSL;
+                    boolean doCouncil;
+                    doRSL = true;
+                    doCouncil = true;
+                    run(
+                            collectionHandler,
+                            inPaymentType,
+                            allTenancyTypeGroups,
+                            underOccupiedData,
+                            doUnderOccupied,
+                            doRSL,
+                            doCouncil,
+                            scaleToFirst,
+                            DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            overlaycommunityAreas,
+                            SHBEFilenames,
+                            tDW_SHBE_Handler,
+                            includes);
+                    doRSL = true;
+                    doCouncil = false;
+                    run(
+                            collectionHandler,
+                            inPaymentType,
+                            allTenancyTypeGroups,
+                            underOccupiedData,
+                            doUnderOccupied,
+                            doRSL,
+                            doCouncil,
+                            scaleToFirst,
+                            DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            overlaycommunityAreas,
+                            SHBEFilenames,
+                            tDW_SHBE_Handler,
+                            includes);
+                    doRSL = false;
+                    doCouncil = true;
+                    run(
+                            collectionHandler,
+                            inPaymentType,
+                            allTenancyTypeGroups,
+                            underOccupiedData,
+                            doUnderOccupied,
+                            doRSL,
+                            doCouncil,
+                            scaleToFirst,
+                            DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            overlaycommunityAreas,
+                            SHBEFilenames,
+                            tDW_SHBE_Handler,
+                            includes);
 
 //                    }
-            } else {
-                boolean overlaycommunityAreas;
-                overlaycommunityAreas = true;
+                } else {
+                    boolean overlaycommunityAreas;
+                    overlaycommunityAreas = true;
 //                        Iterator<Boolean> iteb3;
 //                    iteb3 = b.iterator();
 //                    while (iteb3.hasNext()) {
 //                        boolean overlaycommunityAreas = iteb3.next();
-                run(
-                        collectionHandler,
-                        inPaymentType,
-                        allTenancyTypeGroups,
-                        //                            tenancyTypeGroups,
-                        //                            tenancyTypesGrouped,
-                        //                            regulatedGroups,
-                        //                            unregulatedGroups,
-                        underOccupiedData,
-                        doUnderOccupied,
-                        false,
-                        false,
-                        scaleToFirst,
-                        dirOut2,
-                        overlaycommunityAreas,
-                        SHBEFilenames,
-                        tDW_SHBE_Handler,
-                        includes);
+                    run(
+                            collectionHandler,
+                            inPaymentType,
+                            allTenancyTypeGroups,
+                            //                            tenancyTypeGroups,
+                            //                            tenancyTypesGrouped,
+                            //                            regulatedGroups,
+                            //                            unregulatedGroups,
+                            underOccupiedData,
+                            doUnderOccupied,
+                            false,
+                            false,
+                            scaleToFirst,
+                            dirOut2,
+                            overlaycommunityAreas,
+                            SHBEFilenames,
+                            tDW_SHBE_Handler,
+                            includes);
 //                        startIndex,
 //                        endIndex);
 //                run(
@@ -537,7 +831,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 //                        SHBEFilenames,
 //                        tDW_SHBE_Handler);
 //                    }
-//                }
+                }
             }
         }
     }
@@ -816,22 +1110,10 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 //                        i = ite.next();
 //                    }
                     DW_SHBE_Collection SHBEData1;
-
-                    // This is not how to do it, but may be a workaround. 
-                    // Ideally need something recursive such as methods that 
-                    // input boolean handleOutOfMemoryError and handle 
-                    // OutOfMemoryErrors internally.
-                    // Consider using a factory to create DW_SHBE_Collections...
-                    try {
-                        SHBEData1 = new DW_SHBE_Collection(
-                                SHBEFilenames[i],
-                                inPaymentType);
-                    } catch (OutOfMemoryError e) {
-                        env._DW_SHBE_CollectionHandler.swapToFile_Collection();
-                        SHBEData1 = new DW_SHBE_Collection(
-                                SHBEFilenames[i],
-                                inPaymentType);
-                    }
+                    SHBEData1 = env._DW_SHBE_CollectionHandler.load_DW_SHBE_Collection(
+                            SHBEFilenames[i],
+                            inPaymentType,
+                            handleOutOfMemoryErrors);
 
                     String yM31;
                     yM31 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);

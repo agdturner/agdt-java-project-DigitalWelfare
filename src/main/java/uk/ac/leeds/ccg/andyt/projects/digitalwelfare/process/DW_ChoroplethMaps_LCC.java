@@ -72,7 +72,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
         showMapsInJMapPane = false;
 //        showMapsInJMapPane = true;
         //The size of the map images in pixels (this does not include the legends)
-        imageWidth = 1000;
+        imageWidth = 2000;
         // Initialise Parameters
         // Style Parameters
         /*
@@ -97,7 +97,8 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
 //        styleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
 //        styleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
         styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
-                Color.GREEN,
+                Color.DARK_GRAY,
+                //Color.GREEN,
                 Color.WHITE));
         styleParameters.setForegroundStyleTitle1("Foreground Style 1");
         styleParameters.setBackgroundStyle(DW_Style.createDefaultPolygonStyle(
@@ -220,14 +221,14 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
 
         TreeMap<String, ArrayList<Integer>> includes;
         includes = DW_SHBE_Handler.getIncludes();
-                includes.remove("All");
+//        includes.remove("All");
 //        includes.remove("Yearly");
 //        includes.remove("6Monthly");
 //        includes.remove("3Monthly");
 //        includes.remove("MonthlyUO");
 //        includes.remove("Monthly");
 
-                ArrayList<Integer> include;
+        ArrayList<Integer> include;
         ArrayList<Integer> includea;
         // Run for consecutive monthly data
         includea = includes.get("Monthly");

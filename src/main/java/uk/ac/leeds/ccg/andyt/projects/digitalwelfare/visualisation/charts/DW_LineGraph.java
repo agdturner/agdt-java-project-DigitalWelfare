@@ -42,6 +42,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.data.generated.DW_Tabl
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DataProcessor_LCC.sWithOrWithoutPostcodeChange;
 
 /**
  *
@@ -194,8 +195,8 @@ public class DW_LineGraph extends Generic_LineGraph {
 
         ArrayList<String> paymentTypes;
         paymentTypes = DW_SHBE_Handler.getPaymentTypes();
-        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
-//        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
+//        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
+        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
         paymentTypes.remove(DW_SHBE_Handler.sSuspended);
         paymentTypes.remove(DW_SHBE_Handler.sOtherPT);
 
@@ -234,10 +235,12 @@ public class DW_LineGraph extends Generic_LineGraph {
                 if (tenancyOnly) {
                     File dirIn2 = new File(
                             dirIn,
-                            "TenancyOnly");
+                            sWithOrWithoutPostcodeChange);
+                            //"TenancyOnly");
                     File dirOut2 = new File(
                             dirOut,
-                            "TenancyOnly");
+                            sWithOrWithoutPostcodeChange);
+                            //"TenancyOnly");
                     Iterator<Boolean> iteB2;
                     iteB2 = bArray.iterator();
 
@@ -253,13 +256,128 @@ public class DW_LineGraph extends Generic_LineGraph {
                             File dirOut3 = new File(
                                     dirOut2,
                                     DW_Files.sUO);
+                            File dirIn4;
+                                File dirOut4;
+                                boolean doAll = true;
+                            if (doAll) {
+                                dirIn4 = new File(
+                                            dirIn3,
+                                            DW_Files.sAll);
+                                    dirOut4 = new File(
+                                            dirOut3,
+                                            DW_Files.sAll);
+                                    Iterator<Boolean> iteB4;
+                                iteB4 = bArray.iterator();
+                                while (iteB4.hasNext()) {
+                                    boolean do999 = iteB4.next();
+                                    File dirOut5;
+                                    if (do999) {
+                                        dirOut5 = new File(
+                                                dirOut4,
+                                                "Include999");
+                                        Iterator<Boolean> iteB5;
+                                        iteB5 = bArray.iterator();
+                                        while (iteB5.hasNext()) {
+                                            boolean doSameTenancy;
+                                            doSameTenancy = iteB5.next();
+                                            File dirOut6;
+                                            if (doSameTenancy) {
+                                                dirOut6 = new File(
+                                                        dirOut5,
+                                                        "IncludeSameTenancy");
+                                            } else {
+                                                dirOut6 = new File(
+                                                        dirOut5,
+                                                        "NotIncludeSameTenancy");
+                                            }
+                                            Iterator<Boolean> iteB6;
+                                            iteB6 = bArray.iterator();
+                                            while (iteB6.hasNext()) {
+                                                boolean grouped;
+                                                grouped = iteB6.next();
+                                                if (grouped) {
+                                                    doSumat(
+                                                            dirIn4,
+                                                            dirOut6,
+                                                            includes,
+                                                            allSelectionsGrouped.get(doSameTenancy).get(do999).get(doUnderOccupancyData),
+                                                            futures,
+                                                            format,
+                                                            SHBEFilenames,
+                                                            grouped,
+                                                            month3Letters);
+                                                } else {
+                                                    doSumat(
+                                                            dirIn4,
+                                                            dirOut6,
+                                                            includes,
+                                                            allSelections.get(doSameTenancy).get(do999).get(doUnderOccupancyData),
+                                                            futures,
+                                                            format,
+                                                            SHBEFilenames,
+                                                            grouped,
+                                                            month3Letters);
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        dirOut5 = new File(
+                                                dirOut4,
+                                                "Exclude999");
+                                        Iterator<Boolean> iteB5;
+                                        iteB5 = bArray.iterator();
+                                        while (iteB5.hasNext()) {
+                                            boolean doSameTenancy;
+                                            doSameTenancy = iteB5.next();
+                                            File dirOut6;
+                                            if (doSameTenancy) {
+                                                dirOut6 = new File(
+                                                        dirOut5,
+                                                        "IncludeSameTenancy");
+                                            } else {
+                                                dirOut6 = new File(
+                                                        dirOut5,
+                                                        "NotIncludeSameTenancy");
+                                            }
+                                            Iterator<Boolean> iteB6;
+                                            iteB6 = bArray.iterator();
+                                            while (iteB6.hasNext()) {
+                                                boolean grouped;
+                                                grouped = iteB6.next();
+                                                if (grouped) {
+                                                    doSumat(
+                                                            dirIn4,
+                                                            dirOut6,
+                                                            includes,
+                                                            allSelectionsGrouped.get(doSameTenancy).get(do999).get(doUnderOccupancyData),
+                                                            futures,
+                                                            format,
+                                                            SHBEFilenames,
+                                                            grouped,
+                                                            month3Letters);
+                                                } else {
+                                                    doSumat(
+                                                            dirIn4,
+                                                            dirOut6,
+                                                            includes,
+                                                            allSelections.get(doSameTenancy).get(do999).get(doUnderOccupancyData),
+                                                            futures,
+                                                            format,
+                                                            SHBEFilenames,
+                                                            grouped,
+                                                            month3Letters);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                    
+                            }
                             Iterator<Boolean> iteB3;
                             iteB3 = bArray.iterator();
                             while (iteB3.hasNext()) {
                                 boolean doCouncil;
                                 doCouncil = iteB3.next();
-                                File dirIn4;
-                                File dirOut4;
                                 if (doCouncil) {
                                     dirIn4 = new File(
                                             dirIn3,
@@ -489,13 +607,162 @@ public class DW_LineGraph extends Generic_LineGraph {
                             dirOut3 = new File(
                                     dirOut2,
                                     DW_Files.sUO);
+                            File dirIn4;
+                                File dirOut4;
+                                boolean doAll;
+                            doAll = true;
+                            if (doAll) {
+                                dirIn4 = new File(
+                                            dirIn3,
+                                            DW_Files.sAll);
+                                    dirOut4 = new File(
+                                            dirOut3,
+                                            DW_Files.sAll);
+                                    Iterator<String> includesIte;
+                                    includesIte = includes.keySet().iterator();
+                                    while (includesIte.hasNext()) {
+                                        String include;
+                                        include = includesIte.next();
+                                        File dirIn5;
+                                        File dirOut5;
+                                        dirIn5 = new File(
+                                                    dirIn4,
+                                                    include);
+                                            dirOut5 = new File(
+                                                    dirOut4,
+                                                    include);
+                                    }
+                                    
+                                    Iterator<Boolean> iteB4;
+                                iteB4 = bArray.iterator();
+                                while (iteB4.hasNext()) {
+                                    boolean grouped;
+                                    grouped = iteB4.next();
+                                    Iterator<Boolean> iteB5;
+                                    iteB5 = bArray.iterator();
+                                    while (iteB5.hasNext()) {
+                                        boolean postcodeChanged;
+                                        postcodeChanged = iteB5.next();
+                                        File dirIn5;
+                                        File dirOut5;
+                                        if (postcodeChanged) {
+                                            dirIn5 = new File(
+                                                    dirIn4,
+                                                    DW_Files.sPostcodeChanged);
+                                            dirOut5 = new File(
+                                                    dirOut4,
+                                                    DW_Files.sPostcodeChanged);
+                                        } else {
+                                            dirIn5 = new File(
+                                                    dirIn4,
+                                                    DW_Files.sPostcodeUnchanged);
+                                            dirOut5 = new File(
+                                                    dirOut4,
+                                                    DW_Files.sPostcodeUnchanged);
+                                        }
+                                        Iterator<Boolean> iteB6;
+                                        iteB6 = bArray.iterator();
+                                        while (iteB6.hasNext()) {
+                                            boolean do999 = iteB6.next();
+                                            File dirOut6;
+                                            if (do999) {
+                                                dirOut6 = new File(
+                                                        dirOut5,
+                                                        "Include999");
+                                                Iterator<Boolean> iteB7;
+                                                iteB7 = bArray.iterator();
+                                                while (iteB7.hasNext()) {
+                                                    boolean doSameTenancy;
+                                                    doSameTenancy = iteB7.next();
+                                                    File dirOut7;
+                                                    if (doSameTenancy) {
+                                                        dirOut7 = new File(
+                                                                dirOut6,
+                                                                "IncludeSameTenancy");
+                                                    } else {
+                                                        dirOut7 = new File(
+                                                                dirOut6,
+                                                                "NotIncludeSameTenancy");
+                                                    }
+                                                    if (grouped) {
+                                                        doSumat(
+                                                                dirIn5,
+                                                                dirOut7,
+                                                                includes,
+                                                                allSelectionsGrouped.get(doSameTenancy).get(do999).get(doUnderOccupancyData),
+                                                                futures,
+                                                                format,
+                                                                SHBEFilenames,
+                                                                grouped,
+                                                                month3Letters);
+                                                    } else {
+                                                        doSumat(
+                                                                dirIn5,
+                                                                dirOut7,
+                                                                includes,
+                                                                allSelections.get(doSameTenancy).get(do999).get(doUnderOccupancyData),
+                                                                futures,
+                                                                format,
+                                                                SHBEFilenames,
+                                                                grouped,
+                                                                month3Letters);
+                                                    }
+                                                }
+                                            } else {
+                                                dirOut6 = new File(
+                                                        dirOut5,
+                                                        "Exclude999");
+                                                Iterator<Boolean> iteB7;
+                                                iteB7 = bArray.iterator();
+                                                while (iteB7.hasNext()) {
+                                                    boolean doSameTenancy;
+                                                    doSameTenancy = iteB7.next();
+                                                    File dirOut7;
+                                                    if (doSameTenancy) {
+                                                        dirOut7 = new File(
+                                                                dirOut6,
+                                                                "IncludeSameTenancy");
+                                                    } else {
+                                                        dirOut7 = new File(
+                                                                dirOut6,
+                                                                "NotIncludeSameTenancy");
+                                                    }
+                                                    if (grouped) {
+                                                        doSumat(
+                                                                dirIn5,
+                                                                dirOut7,
+                                                                includes,
+                                                                allSelectionsGrouped.get(doSameTenancy).get(do999).get(doUnderOccupancyData),
+                                                                futures,
+                                                                format,
+                                                                SHBEFilenames,
+                                                                grouped,
+                                                                month3Letters);
+                                                    } else {
+                                                        doSumat(
+                                                                dirIn5,
+                                                                dirOut7,
+                                                                includes,
+                                                                allSelections.get(doSameTenancy).get(do999).get(doUnderOccupancyData),
+                                                                futures,
+                                                                format,
+                                                                SHBEFilenames,
+                                                                grouped,
+                                                                month3Letters);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                    
+                            }
+                            
                             Iterator<Boolean> iteB3;
                             iteB3 = bArray.iterator();
                             while (iteB3.hasNext()) {
                                 boolean doCouncil;
                                 doCouncil = iteB3.next();
-                                File dirIn4;
-                                File dirOut4;
                                 if (doCouncil) {
                                     dirIn4 = new File(
                                             dirIn3,

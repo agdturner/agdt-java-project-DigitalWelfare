@@ -3414,6 +3414,8 @@ public class SummaryUO extends Summary {
         isHBClaim = false;
         if (D_Record1 != null && addToSingelTimeMetrics) {
             doCouncilSingleTimeCount(D_Record1, yM30v);
+        }
+        if (D_Record1 != null) {
             isHBClaim = DW_SHBE_Handler.isHBClaim(D_Record1);
         }
 //        CouncilAllCount1 = CouncilCount1 + CouncilCTBCount1;
@@ -3466,6 +3468,8 @@ public class SummaryUO extends Summary {
         isHBClaim = false;
         if (D_Record1 != null && addToSingleTimeMetrics) {
             doRSLSingleTimeCount(D_Record1, yM30v);
+        }
+        if (D_Record1 != null) {
             isHBClaim = DW_SHBE_Handler.isHBClaim(D_Record1);
         }
 //        CouncilAllCount1 = CouncilCount1 + CouncilCTBCount1;
@@ -3510,7 +3514,9 @@ public class SummaryUO extends Summary {
     protected void doCouncilSingleTimeCount(
             DW_SHBE_D_Record D_Record,
             String yM30v) {
+
         super.doSingleTimeCount(D_Record, yM30v);
+
         int ClaimantsEthnicGroup0;
         int TT;
         String postcode;
@@ -3858,24 +3864,18 @@ public class SummaryUO extends Summary {
             } else {
                 CouncilTotalCount_Postcode0ValidPostcode1NotValid++;
             }
+        } else if (isValidPostcode1) {
+            CouncilTotalCount_Postcode0NotValidPostcode1Valid++;
         } else {
-            if (isValidPostcode1) {
-                CouncilTotalCount_Postcode0NotValidPostcode1Valid++;
+            CouncilTotalCount_Postcode0NotValidPostcode1NotValid++;
+            if (postcode0 == null) {
+                CouncilTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+            } else if (postcode1 == null) {
+                CouncilTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+            } else if (postcode0.equalsIgnoreCase(postcode1)) {
+                CouncilTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
             } else {
-                CouncilTotalCount_Postcode0NotValidPostcode1NotValid++;
-                if (postcode0 == null) {
-                    CouncilTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
-                } else {
-                    if (postcode1 == null) {
-                        CouncilTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
-                    } else {
-                        if (postcode0.equalsIgnoreCase(postcode1)) {
-                            CouncilTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
-                        } else {
-                            CouncilTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
-                        }
-                    }
-                }
+                CouncilTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
             }
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
@@ -3937,7 +3937,8 @@ public class SummaryUO extends Summary {
             Integer tenancyType1,
             String postcode1,
             boolean isValidPostcode1) {
-        super.doCompare2TimesHBCount(tenancyType0, postcode0, isValidPostcode0, tenancyType1, postcode1, isValidPostcode1);
+        super.doCompare2TimesHBCount(tenancyType0, postcode0, isValidPostcode0,
+                tenancyType1, postcode1, isValidPostcode1);
         if (isValidPostcode0) {
             if (isValidPostcode1) {
                 RSLTotalCount_Postcode0ValidPostcode1Valid++;
@@ -3949,24 +3950,18 @@ public class SummaryUO extends Summary {
             } else {
                 RSLTotalCount_Postcode0ValidPostcode1NotValid++;
             }
+        } else if (isValidPostcode1) {
+            RSLTotalCount_Postcode0NotValidPostcode1Valid++;
         } else {
-            if (isValidPostcode1) {
-                RSLTotalCount_Postcode0NotValidPostcode1Valid++;
+            RSLTotalCount_Postcode0NotValidPostcode1NotValid++;
+            if (postcode0 == null) {
+                RSLTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+            } else if (postcode1 == null) {
+                RSLTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+            } else if (postcode0.equalsIgnoreCase(postcode1)) {
+                RSLTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
             } else {
-                RSLTotalCount_Postcode0NotValidPostcode1NotValid++;
-                if (postcode0 == null) {
-                    RSLTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
-                } else {
-                    if (postcode1 == null) {
-                        RSLTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
-                    } else {
-                        if (postcode0.equalsIgnoreCase(postcode1)) {
-                            RSLTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
-                        } else {
-                            RSLTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
-                        }
-                    }
-                }
+                RSLTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
             }
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
@@ -4681,7 +4676,7 @@ public class SummaryUO extends Summary {
         councilUnderOccupiedSet1Map = councilUnderOccupiedSet1.getMap();
         TreeMap<String, DW_UOReport_Record> RSLUnderOccupiedSet1Map;
         RSLUnderOccupiedSet1Map = RSLUnderOccupiedSet1.getMap();
-        
+
         Iterator<String> ite;
 //        // Go through all those in D_Records0 and do non single time counts for 
 //        // those in current.
@@ -4707,7 +4702,7 @@ public class SummaryUO extends Summary {
 //                }
 //            }
 //        }
-        
+
         // Loop over underoccupancy data
         // Loop over Council
         doCouncilCompare2TimesLoopOverSet(
@@ -4933,27 +4928,13 @@ public class SummaryUO extends Summary {
         while (ite.hasNext()) {
             String CTBRef;
             CTBRef = ite.next();
-            DW_SHBE_Record Record0;
-            Record0 = D_Records0.get(CTBRef);
             if (map1.containsKey(CTBRef)) {
-                DW_SHBE_Record Record1;
-                Record1 = D_Records1.get(CTBRef);
-                DW_SHBE_D_Record D_Record0;
-                D_Record0 = null;
-                if (Record0 != null) {
-                    D_Record0 = Record0.getDRecord();
-                }
-                DW_SHBE_D_Record D_Record1;
-                D_Record1 = null;
-                if (D_Record1 != null) {
-                    D_Record1 = Record1.getDRecord();
-                    doCouncilCompare2TimesCounts(
-                            false,
-                            D_Record0,
-                            D_Record1,
-                            yM30v,
-                            yM31v);
-                }
+                doCouncilCompare2TimesCountsAsNecessary(
+                        CTBRef,
+                        D_Records0,
+                        D_Records1,
+                        yM30v,
+                        yM31v);
             }
         }
         // Go through all those in current UO data.      
@@ -4967,27 +4948,13 @@ public class SummaryUO extends Summary {
             doSingleTimeRentArrearsCount(UORec);
 //            String CTBRef;
 //            CTBRef = UORec.getClaimReferenceNumber();
-            DW_SHBE_Record Record0;
-            Record0 = D_Records0.get(CTBRef);
-            DW_SHBE_Record Record1;
-            Record1 = D_Records1.get(CTBRef);
-            DW_SHBE_D_Record D_Record0;
-            D_Record0 = null;
-            if (Record0 != null) {
-                D_Record0 = Record0.getDRecord();
-            }
-            DW_SHBE_D_Record D_Record1;
-            D_Record1 = null;
-            if (Record1 != null) {
-                D_Record1 = Record1.getDRecord();
-                //if (D_Record0 == null) {
-                doCouncilCompare2TimesCounts(
-                        false,
-                        D_Record0,
-                        D_Record1,
-                        yM30v,
-                        yM31v);
-                //}
+            if (!map0.keySet().contains(CTBRef)) {
+            doCouncilCompare2TimesCountsAsNecessary(
+                    CTBRef,
+                    D_Records0,
+                    D_Records1,
+                    yM30v,
+                    yM31v);
             }
         }
         // Go through all those that were in the UO data, but have come out.
@@ -4999,31 +4966,48 @@ public class SummaryUO extends Summary {
         while (ite.hasNext()) {
             String CTBRef;
             CTBRef = ite.next();
-//            DW_UOReport_Record UORec;
-//            UORec = map0.get(CTBRef);
-//            // Rent Arrears Summary
-//            doSingleTimeRentArrearsCount(UORec);
+            DW_UOReport_Record UORec;
+            UORec = map0.get(CTBRef);
+            // Rent Arrears Summary
+            doSingleTimeRentArrearsCount(UORec);
 //            String CTBRef;
 //            CTBRef = UORec.getClaimReferenceNumber();
-            DW_SHBE_Record Record0;
-            Record0 = D_Records0.get(CTBRef);
-            DW_SHBE_Record Record1;
-            Record1 = D_Records1.get(CTBRef);
-            DW_SHBE_D_Record D_Record0;
-            D_Record0 = null;
-            if (Record0 != null) {
-                D_Record0 = Record0.getDRecord();
-            }
-            DW_SHBE_D_Record D_Record1;
-            D_Record1 = null;
-            if (Record1 == null) {
-                doCouncilCompare2TimesCounts(
-                        false,
-                        D_Record0,
-                        D_Record1,
-                        yM30v,
-                        yM31v);
-            }
+            doCouncilCompare2TimesCountsAsNecessary(
+                    CTBRef,
+                    D_Records0,
+                    D_Records1,
+                    yM30v,
+                    yM31v);
+        }
+    }
+
+    private void doCouncilCompare2TimesCountsAsNecessary(
+            String CTBRef,
+            TreeMap<String, DW_SHBE_Record> D_Records0,
+            TreeMap<String, DW_SHBE_Record> D_Records1,
+            String yM30v,
+            String yM31v) {
+        DW_SHBE_Record Record0;
+        Record0 = D_Records0.get(CTBRef);
+        DW_SHBE_Record Record1;
+        Record1 = D_Records1.get(CTBRef);
+        DW_SHBE_D_Record D_Record0;
+        D_Record0 = null;
+        if (Record0 != null) {
+            D_Record0 = Record0.getDRecord();
+        }
+        DW_SHBE_D_Record D_Record1;
+        D_Record1 = null;
+        if (Record1 != null) {
+            D_Record1 = Record1.getDRecord();
+            //if (D_Record0 == null) {
+            doCouncilCompare2TimesCounts(
+                    false,
+                    D_Record0,
+                    D_Record1,
+                    yM30v,
+                    yM31v);
+            //}
         }
     }
 
@@ -5041,27 +5025,13 @@ public class SummaryUO extends Summary {
         while (ite.hasNext()) {
             String CTBRef;
             CTBRef = ite.next();
-            DW_SHBE_Record Record0;
-            Record0 = D_Records0.get(CTBRef);
             if (map1.containsKey(CTBRef)) {
-                DW_SHBE_Record Record1;
-                Record1 = D_Records1.get(CTBRef);
-                DW_SHBE_D_Record D_Record0;
-                D_Record0 = null;
-                if (Record0 != null) {
-                    D_Record0 = Record0.getDRecord();
-                }
-                DW_SHBE_D_Record D_Record1;
-                D_Record1 = null;
-                if (D_Record1 != null) {
-                    D_Record1 = Record1.getDRecord();
-                    doRSLCompare2TimesCounts(
-                            false,
-                            D_Record0,
-                            D_Record1,
-                            yM30v,
-                            yM31v);
-                }
+                doRSLCompare2TimesCountsAsNecessary(
+                        CTBRef,
+                        D_Records0,
+                        D_Records1,
+                        yM30v,
+                        yM31v);
             }
         }
         // Go through all those in current UO data.
@@ -5069,33 +5039,19 @@ public class SummaryUO extends Summary {
         while (ite.hasNext()) {
             String CTBRef;
             CTBRef = ite.next();
-//            DW_UOReport_Record UORec;
-//            UORec = map1.get(CTBRef);
-//            // Rent Arrears Summary
-//            doSingleTimeRentArrearsCount(UORec);
+            DW_UOReport_Record UORec;
+            UORec = map1.get(CTBRef);
+            // Rent Arrears Summary
+            doSingleTimeRentArrearsCount(UORec);
 //            String CTBRef;
 //            CTBRef = UORec.getClaimReferenceNumber();
-            DW_SHBE_Record Record0;
-            Record0 = D_Records0.get(CTBRef);
-            DW_SHBE_Record Record1;
-            Record1 = D_Records1.get(CTBRef);
-            DW_SHBE_D_Record D_Record0;
-            D_Record0 = null;
-            if (Record0 != null) {
-                D_Record0 = Record0.getDRecord();
-            }
-            DW_SHBE_D_Record D_Record1;
-            D_Record1 = null;
-            if (Record1 != null) {
-                D_Record1 = Record1.getDRecord();
-                //if (D_Record0 == null) {
-                doRSLCompare2TimesCounts(
-                        false,
-                        D_Record0,
-                        D_Record1,
+            if (!map0.keySet().contains(CTBRef)) {
+                doRSLCompare2TimesCountsAsNecessary(
+                        CTBRef,
+                        D_Records0,
+                        D_Records1,
                         yM30v,
                         yM31v);
-                //}
             }
         }
         // Go through all those that were in the UO data, but have come out.
@@ -5109,29 +5065,43 @@ public class SummaryUO extends Summary {
             CTBRef = ite.next();
             DW_UOReport_Record UORec;
             UORec = map0.get(CTBRef);
-//            // Rent Arrears Summary
-//            doSingleTimeRentArrearsCount(UORec);
+            // Rent Arrears Summary
+            doSingleTimeRentArrearsCount(UORec);
 //            String CTBRef;
 //            CTBRef = UORec.getClaimReferenceNumber();
-            DW_SHBE_Record Record0;
-            Record0 = D_Records0.get(CTBRef);
-            DW_SHBE_Record Record1;
-            Record1 = D_Records1.get(CTBRef);
-            DW_SHBE_D_Record D_Record0;
-            D_Record0 = null;
-            if (Record0 != null) {
-                D_Record0 = Record0.getDRecord();
-            }
-            DW_SHBE_D_Record D_Record1;
-            D_Record1 = null;
-            if (Record1 == null) {
-                doRSLCompare2TimesCounts(
-                        false,
-                        D_Record0,
-                        D_Record1,
-                        yM30v,
-                        yM31v);
-            }
+            doRSLCompare2TimesCountsAsNecessary(
+                    CTBRef,
+                    D_Records0,
+                    D_Records1,
+                    yM30v,
+                    yM31v);
+        }
+    }
+
+    private void doRSLCompare2TimesCountsAsNecessary(
+            String CTBRef,
+            TreeMap<String, DW_SHBE_Record> D_Records0,
+            TreeMap<String, DW_SHBE_Record> D_Records1,
+            String yM30v,
+            String yM31v) {
+        DW_SHBE_Record Record0;
+        Record0 = D_Records0.get(CTBRef);
+        DW_SHBE_Record Record1;
+        Record1 = D_Records1.get(CTBRef);
+        DW_SHBE_D_Record D_Record0;
+        D_Record0 = null;
+        if (Record0 != null) {
+            D_Record0 = Record0.getDRecord();
+        }
+        DW_SHBE_D_Record D_Record1;
+        D_Record1 = null;
+        if (Record1 == null) {
+            doRSLCompare2TimesCounts(
+                    false,
+                    D_Record0,
+                    D_Record1,
+                    yM30v,
+                    yM31v);
         }
     }
 

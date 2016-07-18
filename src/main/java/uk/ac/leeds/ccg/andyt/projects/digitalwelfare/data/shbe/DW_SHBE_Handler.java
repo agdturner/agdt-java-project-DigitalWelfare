@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
@@ -190,6 +191,40 @@ public class DW_SHBE_Handler {
         //result.add("NotInPaymentNotSuspended");
         return result;
     }
+    
+    public void runCount() {
+        File dir;
+        dir = DW_Files.getInputSHBEDir();
+        // NINO
+        File NINOToDW_IDLookupFile;
+        File DW_IDToNINOLookupFile;
+        NINOToDW_IDLookupFile = getNINOToDW_IDLookupFile();
+        DW_IDToNINOLookupFile = getDW_IDToNINOLookupFile();
+        NINOToDW_IDLookup = getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
+        DW_IDToNINOLookup = getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
+        System.out.println("NINOToDW_IDLookup.size() " + NINOToDW_IDLookup.size());
+//        // Postcode
+//        File PostcodeToPostcodeIDLookupFile;
+//        File PostcodeIDToPostcodeLookupFile;
+//        PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
+//        PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
+//        PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
+//                PostcodeToPostcodeIDLookupFile);
+//        PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
+//                PostcodeIDToPostcodeLookupFile);
+        // Person
+        File DW_PersonIDToDW_IDLookupFile;
+        File DW_IDToDW_PersonIDLookupFile;
+        DW_PersonIDToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile();
+        DW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
+        DW_PersonIDToDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(
+                DW_PersonIDToDW_IDLookupFile);
+        DW_IDToDW_PersonIDLookup = getDW_IDToDW_PersonIDLookup(
+                DW_IDToDW_PersonIDLookupFile);
+        System.out.println("DW_PersonIDToDW_IDLookup.size() " + DW_PersonIDToDW_IDLookup.size());
+        
+        
+    }
 
 //    public void runNew() {
 //        String SHBEFilename;
@@ -292,12 +327,10 @@ public class DW_SHBE_Handler {
         String result;
         if (HBClaimRefNo == null) {
             result = sCTB;
+        } else if (HBClaimRefNo.isEmpty()) {
+            result = sCTB;
         } else {
-            if (HBClaimRefNo.isEmpty()) {
-                result = sCTB;
-            } else {
-                result = sHB;
-            }
+            result = sHB;
         }
         return result;
     }
@@ -1711,15 +1744,37 @@ public class DW_SHBE_Handler {
         return result;
     }
 
-    public static long getHouseholdSize(DW_SHBE_D_Record D_Record) {
+    public static long getHouseholdSizeExcludingPartnerslong(DW_SHBE_D_Record D_Record) {
         long result;
         result = 1;
-        result += D_Record.getPartnerFlag();
-        //result += D_Record.getNumberOfChildDependents();
         result += D_Record.getNumberOfChildDependents();
         long NumberOfNonDependents;
         NumberOfNonDependents = D_Record.getNumberOfNonDependents();
         result += NumberOfNonDependents;
+        return result;
+    }
+
+    public static int getHouseholdSizeExcludingPartnersint(DW_SHBE_D_Record D_Record) {
+        int result;
+        result = 1;
+        result += D_Record.getNumberOfChildDependents();
+        long NumberOfNonDependents;
+        NumberOfNonDependents = D_Record.getNumberOfNonDependents();
+        result += NumberOfNonDependents;
+        return result;
+    }
+
+    public static long getHouseholdSize(DW_SHBE_D_Record D_Record) {
+        long result;
+        result = getHouseholdSizeExcludingPartnerslong(D_Record);
+        result += D_Record.getPartnerFlag();
+        return result;
+    }
+
+    public static int getHouseholdSizeint(DW_SHBE_D_Record D_Record) {
+        int result;
+        result = getHouseholdSizeExcludingPartnersint(D_Record);
+        result += D_Record.getPartnerFlag();
         return result;
     }
 
@@ -1942,107 +1997,142 @@ public class DW_SHBE_Handler {
     /**
      * Method for getting SHBE collections filenames in an array
      *
-     * @return String[] result of SHBE collections filenames where--------------
-     * result[0] = "hb9803_SHBE_206728k April 2008.csv";------------------------
-     * result[1] = "hb9803_SHBE_234696k October 2008.csv";----------------------
-     * result[2] = "hb9803_SHBE_265149k April 2009.csv";------------------------
-     * result[3] = "hb9803_SHBE_295723k October 2009.csv";----------------------
-     * result[4] = "hb9803_SHBE_329509k April 2010.csv";------------------------
-     * result[5] = "hb9803_SHBE_363186k October 2010.csv";----------------------
-     * result[6] = "hb9803_SHBE_391746k March 2011.csv";------------------------
-     * result[7] = "hb9803_SHBE_397524k April 2011.csv";------------------------
-     * result[8] = "hb9803_SHBE_415181k July 2011.csv";-------------------------
-     * result[9] = "hb9803_SHBE_433970k October 2011.csv";----------------------
-     * result[11] = "hb9803_SHBE_470742k April 2012.csv";-----------------------
-     * result[12] = "hb9803_SHBE_490903k July 2012.csv";------------------------
-     * result[13] = "hb9803_SHBE_511038k October 2012.csv";---------------------
-     * result[14] = "hb9803_SHBE_530243k January 2013.csv";---------------------
-     * result[15] = "hb9803_SHBE_536123k February 2013.csv";--------------------
-     * result[16] = "hb9991_SHBE_543169k March 2013.csv";-----------------------
-     * result[17] = "hb9991_SHBE_549416k April 2013.csv";-----------------------
-     * result[18] = "hb9991_SHBE_555086k May 2013.csv";-------------------------
-     * result[19] = "hb9991_SHBE_562036k June 2013.csv";------------------------
-     * result[20] = "hb9991_SHBE_568694k July 2013.csv";------------------------
-     * result[21] = "hb9991_SHBE_576432k August 2013.csv";----------------------
-     * result[22] = "hb9991_SHBE_582832k September 2013.csv";-------------------
-     * result[23] = "hb9991_SHBE_589664k Oct 2013.csv";-------------------------
-     * result[24] = "hb9991_SHBE_596500k Nov 2013.csv";-------------------------
-     * result[25] = "hb9991_SHBE_603335k Dec 2013.csv";-------------------------
-     * result[26] = "hb9991_SHBE_609791k Jan 2014.csv";-------------------------
-     * result[27] = "hb9991_SHBE_615103k Feb 2014.csv";-------------------------
-     * result[28] = "hb9991_SHBE_621666k Mar 2014.csv";-------------------------
-     * result[29] = "hb9991_SHBE_629066k Apr 2014.csv";-------------------------
-     * result[30] = "hb9991_SHBE_635115k May 2014.csv";-------------------------
-     * result[31] = "hb9991_SHBE_641800k June 2014.csv";------------------------
-     * result[32] = "hb9991_SHBE_648859k July 2014.csv";------------------------
-     * result[33] = "hb9991_SHBE_656520k August 2014.csv";----------------------
-     * result[34] = "hb9991_SHBE_663169k September 2014.csv";-------------------
-     * result[35] = "hb9991_SHBE_670535k October 2014.csv";---------------------
-     * result[36] = "hb9991_SHBE_677543k November 2014.csv";--------------------
-     * result[37] = "hb9991_SHBE_684519k December 2014.csv";--------------------
-     * result[38] = "hb9991_SHBE_691401k January 2015.csv";---------------------
-     * result[39] = "hb9991_SHBE_697933k February 2015.csv";--------------------
-     * result[40] = "hb9991_SHBE_705679k March 2015.csv";-----------------------
-     * result[41] = "hb9991_SHBE_712197k April 2015.csv";-----------------------
-     * result[42] = "hb9991_SHBE_718782k May 2015.csv";-------------------------
-     * result[43] = "hb9991_SHBE_725465k June 2015.csv";------------------------
-     * result[44] = "hb9991_SHBE_733325k July 2015.csv";------------------------
-     * result[45] = "hb9991_SHBE_740520k August 2015.csv";----------------------
+     * @return String[] result of SHBE collections filenames where
+     * @code {
+     * result[0] = "hb9803_SHBE_206728k April 2008.csv";
+     * result[1] = "hb9803_SHBE_234696k October 2008.csv";
+     * result[2] = "hb9803_SHBE_265149k April 2009.csv";
+     * result[3] = "hb9803_SHBE_295723k October 2009.csv";
+     * result[4] = "hb9803_SHBE_329509k April 2010.csv";
+     * result[5] = "hb9803_SHBE_363186k October 2010.csv";
+     * result[6] = "hb9803_SHBE_391746k March 2011.csv";
+     * result[7] = "hb9803_SHBE_397524k April 2011.csv";
+     * result[8] = "hb9803_SHBE_415181k July 2011.csv";
+     * result[9] = "hb9803_SHBE_433970k October 2011.csv";
+     * result[10] = "hb9803_SHBE_451836k January 2012.csv";
+     * result[11] = "hb9803_SHBE_470742k April 2012.csv";
+     * result[12] = "hb9803_SHBE_490903k July 2012.csv";
+     * result[13] = "hb9803_SHBE_511038k October 2012.csv";
+     * result[14] = "hb9803_SHBE_530243k January 2013.csv";
+     * result[15] = "hb9803_SHBE_536123k February 2013.csv";
+     * result[16] = "hb9991_SHBE_543169k March 2013.csv";
+     * result[17] = "hb9991_SHBE_549416k April 2013.csv";
+     * result[18] = "hb9991_SHBE_555086k May 2013.csv";
+     * result[19] = "hb9991_SHBE_562036k June 2013.csv";
+     * result[20] = "hb9991_SHBE_568694k July 2013.csv";
+     * result[21] = "hb9991_SHBE_576432k August 2013.csv";
+     * result[22] = "hb9991_SHBE_582832k September 2013.csv";
+     * result[23] = "hb9991_SHBE_589664k Oct 2013.csv";
+     * result[24] = "hb9991_SHBE_596500k Nov 2013.csv";
+     * result[25] = "hb9991_SHBE_603335k Dec 2013.csv";
+     * result[26] = "hb9991_SHBE_609791k Jan 2014.csv";
+     * result[27] = "hb9991_SHBE_615103k Feb 2014.csv";
+     * result[28] = "hb9991_SHBE_621666k Mar 2014.csv";
+     * result[29] = "hb9991_SHBE_629066k Apr 2014.csv";
+     * result[30] = "hb9991_SHBE_635115k May 2014.csv";
+     * result[31] = "hb9991_SHBE_641800k June 2014.csv";
+     * result[32] = "hb9991_SHBE_648859k July 2014.csv";
+     * result[33] = "hb9991_SHBE_656520k August 2014.csv";
+     * result[34] = "hb9991_SHBE_663169k September 2014.csv";
+     * result[35] = "hb9991_SHBE_670535k October 2014.csv";
+     * result[36] = "hb9991_SHBE_677543k November 2014.csv";
+     * result[37] = "hb9991_SHBE_684519k December 2014.csv";
+     * result[38] = "hb9991_SHBE_691401k January 2015.csv";
+     * result[39] = "hb9991_SHBE_697933k February 2015.csv";
+     * result[40] = "hb9991_SHBE_705679k March 2015.csv";
+     * result[41] = "hb9991_SHBE_712197k April 2015.csv";
+     * result[42] = "hb9991_SHBE_718782k May 2015.csv";
+     * result[43] = "hb9991_SHBE_725465k June 2015.csv";
+     * result[44] = "hb9991_SHBE_733325k July 2015.csv";
+     * result[45] = "hb9991_SHBE_740520k August 2015.csv";
      * result[46] = "hb9991_SHBE_747387k September 2015.csv";
+     * result[47] = "hb9991_SHBE_754889k October 2015.csv";
+     * result[48] = "hb9991_SHBE_762221k November 2015.csv";
+     * result[49] = "hb9991_SHBE_769407k December 2015.csv";
+     * result[50] = "hb9991_SHBE_776516k January 2016.csv";
+     * result[51] = "hb9991_SHBE_783330k February.csv;
+     * }
      */
+    private static String[] SHBEFilenamesAll;
+
     public static String[] getSHBEFilenamesAll() {
-//        String[] result = new String[1];
-//        result[0] = "hb9991_SHBE_670535k October 2014 v2.csv";
-        String[] result = new String[48];
-        result[0] = "hb9803_SHBE_206728k April 2008.csv";
-        result[1] = "hb9803_SHBE_234696k October 2008.csv";
-        result[2] = "hb9803_SHBE_265149k April 2009.csv";
-        result[3] = "hb9803_SHBE_295723k October 2009.csv";
-        result[4] = "hb9803_SHBE_329509k April 2010.csv";
-        result[5] = "hb9803_SHBE_363186k October 2010.csv";
-        result[6] = "hb9803_SHBE_391746k March 2011.csv"; // For some reason we have March when we probably should have January!
-        result[7] = "hb9803_SHBE_397524k April 2011.csv";
-        result[8] = "hb9803_SHBE_415181k July 2011.csv";
-        result[9] = "hb9803_SHBE_433970k October 2011.csv";
-        result[10] = "hb9803_SHBE_451836k January 2012.csv";
-        result[11] = "hb9803_SHBE_470742k April 2012.csv";
-        result[12] = "hb9803_SHBE_490903k July 2012.csv";
-        result[13] = "hb9803_SHBE_511038k October 2012.csv";
-        result[14] = "hb9803_SHBE_530243k January 2013.csv";
-        result[15] = "hb9803_SHBE_536123k February 2013.csv";
-        result[16] = "hb9991_SHBE_543169k March 2013.csv";
-        result[17] = "hb9991_SHBE_549416k April 2013.csv";
-        result[18] = "hb9991_SHBE_555086k May 2013.csv";
-        result[19] = "hb9991_SHBE_562036k June 2013.csv";
-        result[20] = "hb9991_SHBE_568694k July 2013.csv";
-        result[21] = "hb9991_SHBE_576432k August 2013.csv";
-        result[22] = "hb9991_SHBE_582832k September 2013.csv";
-        result[23] = "hb9991_SHBE_589664k Oct 2013.csv";
-        result[24] = "hb9991_SHBE_596500k Nov 2013.csv";
-        result[25] = "hb9991_SHBE_603335k Dec 2013.csv";
-        result[26] = "hb9991_SHBE_609791k Jan 2014.csv";
-        result[27] = "hb9991_SHBE_615103k Feb 2014.csv";
-        result[28] = "hb9991_SHBE_621666k Mar 2014.csv";
-        result[29] = "hb9991_SHBE_629066k Apr 2014.csv";
-        result[30] = "hb9991_SHBE_635115k May 2014.csv";
-        result[31] = "hb9991_SHBE_641800k June 2014.csv";
-        result[32] = "hb9991_SHBE_648859k July 2014.csv";
-        result[33] = "hb9991_SHBE_656520k August 2014.csv";
-        result[34] = "hb9991_SHBE_663169k September 2014.csv"; // Original file sent was corrupt!
-        result[35] = "hb9991_SHBE_670535k October 2014.csv";
-        result[36] = "hb9991_SHBE_677543k November 2014.csv";
-        result[37] = "hb9991_SHBE_684519k December 2014.csv";
-        result[38] = "hb9991_SHBE_691401k January 2015.csv";
-        result[39] = "hb9991_SHBE_697933k February 2015.csv";
-        result[40] = "hb9991_SHBE_705679k March 2015.csv";
-        result[41] = "hb9991_SHBE_712197k April 2015.csv";
-        result[42] = "hb9991_SHBE_718782k May 2015.csv";
-        result[43] = "hb9991_SHBE_725465k June 2015.csv";
-        result[44] = "hb9991_SHBE_733325k July 2015.csv";
-        result[45] = "hb9991_SHBE_740520k August 2015.csv";
-        result[46] = "hb9991_SHBE_747387k September 2015.csv";
-        result[47] = "hb9991_SHBE_754889k October 2015.csv";
-        return result;
+        if (SHBEFilenamesAll == null) {
+            String[] list = DW_Files.getInputSHBEDir().list();
+            SHBEFilenamesAll = new String[list.length];
+            String s;
+            String ym;
+            TreeMap<String,String> yms;
+            yms = new TreeMap<String,String>();
+            for (String list1 : list) {
+                s = list1;
+                ym = getYearMonthNumber(s);
+                yms.put(ym, s);
+            }
+            Iterator<String> ite;
+            ite = yms.keySet().iterator();
+            int i = 0;
+            while (ite.hasNext()) {
+                ym = ite.next();
+                SHBEFilenamesAll[i] = yms.get(ym);
+                i ++;
+            }
+//            SHBEFilenamesAll = new String[54];
+//            SHBEFilenamesAll[0] = "hb9803_SHBE_206728k April 2008.csv";
+//            SHBEFilenamesAll[1] = "hb9803_SHBE_234696k October 2008.csv";
+//            SHBEFilenamesAll[2] = "hb9803_SHBE_265149k April 2009.csv";
+//            SHBEFilenamesAll[3] = "hb9803_SHBE_295723k October 2009.csv";
+//            SHBEFilenamesAll[4] = "hb9803_SHBE_329509k April 2010.csv";
+//            SHBEFilenamesAll[5] = "hb9803_SHBE_363186k October 2010.csv";
+//            SHBEFilenamesAll[6] = "hb9803_SHBE_391746k March 2011.csv"; // For some reason we have March when we probably should have January!
+//            SHBEFilenamesAll[7] = "hb9803_SHBE_397524k April 2011.csv";
+//            SHBEFilenamesAll[8] = "hb9803_SHBE_415181k July 2011.csv";
+//            SHBEFilenamesAll[9] = "hb9803_SHBE_433970k October 2011.csv";
+//            SHBEFilenamesAll[10] = "hb9803_SHBE_451836k January 2012.csv";
+//            SHBEFilenamesAll[11] = "hb9803_SHBE_470742k April 2012.csv";
+//            SHBEFilenamesAll[12] = "hb9803_SHBE_490903k July 2012.csv";
+//            SHBEFilenamesAll[13] = "hb9803_SHBE_511038k October 2012.csv";
+//            SHBEFilenamesAll[14] = "hb9803_SHBE_530243k January 2013.csv";
+//            SHBEFilenamesAll[15] = "hb9803_SHBE_536123k February 2013.csv";
+//            SHBEFilenamesAll[16] = "hb9991_SHBE_543169k March 2013.csv";
+//            SHBEFilenamesAll[17] = "hb9991_SHBE_549416k April 2013.csv";
+//            SHBEFilenamesAll[18] = "hb9991_SHBE_555086k May 2013.csv";
+//            SHBEFilenamesAll[19] = "hb9991_SHBE_562036k June 2013.csv";
+//            SHBEFilenamesAll[20] = "hb9991_SHBE_568694k July 2013.csv";
+//            SHBEFilenamesAll[21] = "hb9991_SHBE_576432k August 2013.csv";
+//            SHBEFilenamesAll[22] = "hb9991_SHBE_582832k September 2013.csv";
+//            SHBEFilenamesAll[23] = "hb9991_SHBE_589664k Oct 2013.csv";
+//            SHBEFilenamesAll[24] = "hb9991_SHBE_596500k Nov 2013.csv";
+//            SHBEFilenamesAll[25] = "hb9991_SHBE_603335k Dec 2013.csv";
+//            SHBEFilenamesAll[26] = "hb9991_SHBE_609791k Jan 2014.csv";
+//            SHBEFilenamesAll[27] = "hb9991_SHBE_615103k Feb 2014.csv";
+//            SHBEFilenamesAll[28] = "hb9991_SHBE_621666k Mar 2014.csv";
+//            SHBEFilenamesAll[29] = "hb9991_SHBE_629066k Apr 2014.csv";
+//            SHBEFilenamesAll[30] = "hb9991_SHBE_635115k May 2014.csv";
+//            SHBEFilenamesAll[31] = "hb9991_SHBE_641800k June 2014.csv";
+//            SHBEFilenamesAll[32] = "hb9991_SHBE_648859k July 2014.csv";
+//            SHBEFilenamesAll[33] = "hb9991_SHBE_656520k August 2014.csv";
+//            SHBEFilenamesAll[34] = "hb9991_SHBE_663169k September 2014.csv"; // Original file sent was corrupt!
+//            SHBEFilenamesAll[35] = "hb9991_SHBE_670535k October 2014.csv";
+//            SHBEFilenamesAll[36] = "hb9991_SHBE_677543k November 2014.csv";
+//            SHBEFilenamesAll[37] = "hb9991_SHBE_684519k December 2014.csv";
+//            SHBEFilenamesAll[38] = "hb9991_SHBE_691401k January 2015.csv";
+//            SHBEFilenamesAll[39] = "hb9991_SHBE_697933k February 2015.csv";
+//            SHBEFilenamesAll[40] = "hb9991_SHBE_705679k March 2015.csv";
+//            SHBEFilenamesAll[41] = "hb9991_SHBE_712197k April 2015.csv";
+//            SHBEFilenamesAll[42] = "hb9991_SHBE_718782k May 2015.csv";
+//            SHBEFilenamesAll[43] = "hb9991_SHBE_725465k June 2015.csv";
+//            SHBEFilenamesAll[44] = "hb9991_SHBE_733325k July 2015.csv";
+//            SHBEFilenamesAll[45] = "hb9991_SHBE_740520k August 2015.csv";
+//            SHBEFilenamesAll[46] = "hb9991_SHBE_747387k September 2015.csv";
+//            SHBEFilenamesAll[47] = "hb9991_SHBE_754889k October 2015.csv";
+//            SHBEFilenamesAll[48] = "hb9991_SHBE_762221k November 2015.csv";
+//            SHBEFilenamesAll[49] = "hb9991_SHBE_769407k December 2015.csv";
+//            SHBEFilenamesAll[50] = "hb9991_SHBE_776516k January 2016.csv";
+//            SHBEFilenamesAll[51] = "hb9991_SHBE_783330k February 2016.csv";
+//            SHBEFilenamesAll[52] = "hb9991_SHBE_791786k March 2016.csv";
+//            SHBEFilenamesAll[53] = "hb9991_SHBE_798388k April 2016.csv";
+        }
+        return SHBEFilenamesAll;
     }
 
     public static ArrayList<Integer> getSHBEFilenameIndexes() {
@@ -2967,7 +3057,11 @@ public class DW_SHBE_Handler {
         omitYearly.add(44);
         omitYearly.add(45);
         omitYearly.add(46);
-        omitYearly.add(47);
+        omitYearly.add(47); //Oct 15
+        omitYearly.add(48); //Nov 15
+        omitYearly.add(49); //Dec 15
+        omitYearly.add(50); //Jan 16
+        omitYearly.add(51); //Feb 16
         result.put(omitKey, omitYearly);
         omitKey = s6Monthly;
         ArrayList<Integer> omit6Monthly;
@@ -2998,12 +3092,16 @@ public class DW_SHBE_Handler {
         omit6Monthly.add(37);
         omit6Monthly.add(38);
         omit6Monthly.add(39);
-        omit6Monthly.add(40);
-        omit6Monthly.add(42);
-        omit6Monthly.add(43);
-        omit6Monthly.add(44);
-        omit6Monthly.add(45);
-        omit6Monthly.add(46);
+        omit6Monthly.add(40); //Mar 15
+        omit6Monthly.add(42); //May 15
+        omit6Monthly.add(43); //Jun 15
+        omit6Monthly.add(44); //Jul 15
+        omit6Monthly.add(45); //Aug 15
+        omit6Monthly.add(46); //Sep 15
+        omit6Monthly.add(48); //Nov 15
+        omit6Monthly.add(49); //Dec 15
+        omit6Monthly.add(50); //Jan 16
+        omit6Monthly.add(51); //Feb 16
         result.put(omitKey, omit6Monthly);
         omitKey = s3Monthly;
         ArrayList<Integer> omit3Monthly;
@@ -3031,9 +3129,11 @@ public class DW_SHBE_Handler {
         omit3Monthly.add(40);
         omit3Monthly.add(42);
         omit3Monthly.add(43);
-//        omit3Monthly.add(44); // Only added for final report graphs as we only wanted April 2013 to April 2015
         omit3Monthly.add(45);
         omit3Monthly.add(46);
+        omit6Monthly.add(48); //Nov 15
+        omit6Monthly.add(49); //Dec 15
+        omit6Monthly.add(51); //Feb 16
         result.put(omitKey, omit3Monthly);
         omitKey = sMonthly;
         ArrayList<Integer> omitMonthly;
