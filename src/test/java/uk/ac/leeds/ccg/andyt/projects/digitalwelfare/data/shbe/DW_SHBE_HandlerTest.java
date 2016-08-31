@@ -27,6 +27,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
@@ -100,8 +101,16 @@ public class DW_SHBE_HandlerTest {
     @Test
     public void testLoadInputData_File_String() {
         System.out.println("loadInputData");
-        File directory = DW_Files.getInputSHBEDir();
-        String[] filenames = DW_SHBE_Handler.getSHBEFilenamesAll();
+        DW_Files tDW_Files;
+        tDW_Files = new DW_Files();
+        String dir;
+        dir = tDW_Files.getDigitalWelfareDir().toString();
+        DW_Environment env;
+        env = new DW_Environment(dir);
+        DW_SHBE_Handler tDW_SHBE_Handler;
+        tDW_SHBE_Handler = env.getDW_SHBE_Handler();
+        File directory = tDW_Files.getInputSHBEDir();
+        String[] filenames = tDW_SHBE_Handler.getSHBEFilenamesAll();
 //        filenames[0] = "hb9803_SHBE_206728k April 2008.csv";
 //        filenames[1] = "hb9803_SHBE_234696k October 2008.csv";
 //        filenames[2] = "hb9803_SHBE_265149k April 2009.csv";
