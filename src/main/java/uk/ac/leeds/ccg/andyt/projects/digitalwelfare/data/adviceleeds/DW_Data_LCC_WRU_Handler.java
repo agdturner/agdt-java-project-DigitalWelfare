@@ -18,6 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +29,7 @@ import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
-public class DW_Data_LCC_WRU_Handler extends DW_Data_Abstract_Handler {
+public class DW_Data_LCC_WRU_Handler extends DW_Object {
 
     public DW_Data_LCC_WRU_Handler() {
     }
@@ -54,7 +55,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Data_Abstract_Handler {
             String filename,
             Object IDType) {
         File directory = new File(
-                DW_Files.getInputAdviceLeedsDir(),
+                env.getDW_Files().getInputAdviceLeedsDir(),
                 "LCC_WRU");
         return loadInputData(
                 directory,

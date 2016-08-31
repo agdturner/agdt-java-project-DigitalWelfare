@@ -29,6 +29,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 
 /**
@@ -39,7 +40,8 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
 
     private double distanceThreshold;
 
-    public DW_ChoroplethMaps_LCC() {
+    public DW_ChoroplethMaps_LCC(DW_Environment env) {
+        super(env);
     }
 
     /**
@@ -47,7 +49,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
      */
     public static void main(String[] args) {
         try {
-            new DW_ChoroplethMaps_LCC().run();
+            new DW_ChoroplethMaps_LCC(null).run();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -213,14 +215,14 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
         tenureTypeGroups.add("regulated");
         tenureTypeGroups.add("unregulated");
         mapDirectory = new File(
-                DW_Files.getOutputSHBEDir(),
+                tDW_Files.getOutputSHBEDir(),
                 "Maps");
         mapDirectory = new File(
                 mapDirectory,
                 "Choropleth");
 
         TreeMap<String, ArrayList<Integer>> includes;
-        includes = DW_SHBE_Handler.getIncludes();
+        includes = env.getDW_SHBE_Handler().getIncludes();
 //        includes.remove("All");
 //        includes.remove("Yearly");
 //        includes.remove("6Monthly");
@@ -339,7 +341,8 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
             targetPropertyName = targetPropertyNames.get(level);
             DW_AreaCodesAndShapefiles tAreaCodesAndShapefiles;
             tAreaCodesAndShapefiles = new DW_AreaCodesAndShapefiles(
-                    level,
+                   env,
+                 level,
                     targetPropertyName,
                     getShapefileDataStoreFactory());
             TreeMap<String, Deprivation_DataRecord> deprivationRecords;
@@ -381,7 +384,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
                             String type;
                             type = typesIte.next();
                             File dirIn = new File(
-                                    DW_Files.getGeneratedSHBEDir(
+                                    tDW_Files.getGeneratedSHBEDir(
                                             level,
                                             doUnderOccupied,
                                             doCouncil),
@@ -431,7 +434,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
                             distanceMax = new TreeMap<Double, Double>();
                             distanceTypeDistanceMax.put(type, distanceMax);
                             File dirIn = new File(
-                                    DW_Files.getGeneratedSHBEDir(
+                                    tDW_Files.getGeneratedSHBEDir(
                                             level,
                                             doUnderOccupied,
                                             doCouncil),
@@ -491,7 +494,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
                         String type;
                         type = typesIte.next();
                         File dirIn = new File(
-                                DW_Files.getGeneratedSHBEDir(
+                                tDW_Files.getGeneratedSHBEDir(
                                         level,
                                         doUnderOccupied,
                                         doCouncil),
@@ -530,7 +533,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
                                             tenure,
                                             claimantType);
                                     if (doDeprivation) {
-                                        deprivationRecords = DW_Processor.getDeprivation_Data();
+                                        deprivationRecords = DW_Processor.getDeprivation_Data(env);
                                         runSHBE(
                                                 doUnderOccupied,
                                                 doCouncil,
@@ -567,7 +570,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
                                             claimantType);
                                     // Clear commonStyle?
                                     if (doDeprivation) {
-                                        deprivationRecords = DW_Processor.getDeprivation_Data();
+                                        deprivationRecords = DW_Processor.getDeprivation_Data(env);
                                         runSHBE(
                                                 doUnderOccupied,
                                                 doCouncil,
@@ -608,7 +611,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
                         String type;
                         type = distanceTypesIte.next();
                         File dirIn = new File(
-                                DW_Files.getGeneratedSHBEDir(
+                                tDW_Files.getGeneratedSHBEDir(
                                         level,
                                         doUnderOccupied,
                                         doCouncil),
@@ -653,7 +656,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
                                                 tenure,
                                                 claimantType);
                                         if (doDeprivation) {
-                                            deprivationRecords = DW_Processor.getDeprivation_Data();
+                                            deprivationRecords = DW_Processor.getDeprivation_Data(env);
                                             runSHBE(
                                                     doUnderOccupied,
                                                     doCouncil,
@@ -691,7 +694,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
                                         // Clear commonStyle
 
                                         if (doDeprivation) {
-                                            deprivationRecords = DW_Processor.getDeprivation_Data();
+                                            deprivationRecords = DW_Processor.getDeprivation_Data(env);
                                             runSHBE(
                                                     doUnderOccupied,
                                                     doCouncil,
@@ -756,7 +759,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
         dirOut = new File(
                 mapDirectory,
                 level);
-        dirOut = DW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
+        dirOut = tDW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
         dirOut = new File(
                 dirOut,
                 claimantType);

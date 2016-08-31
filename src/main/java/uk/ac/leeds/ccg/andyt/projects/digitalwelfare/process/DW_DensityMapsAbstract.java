@@ -41,6 +41,7 @@ import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler.getNearestYM3ForONSPDLookup;
 
@@ -71,6 +72,10 @@ public abstract class DW_DensityMapsAbstract extends DW_Maps {
     //protected boolean outputESRIAsciigrids;
     protected boolean handleOutOfMemoryErrors;
 
+    public DW_DensityMapsAbstract(DW_Environment env) {
+        super(env);
+    }
+    
     // Add from postcodes
     protected int addFromPostcodes(
             Grid2DSquareCellDouble g,
@@ -91,7 +96,8 @@ public abstract class DW_DensityMapsAbstract extends DW_Maps {
                 if (deprivationRecords == null) {
                     String postcodeLevel;
                     postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(postcode);
-                    AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(nearestYM3ForONSPDLookup).get(postcode);
+                    AGDT_Point aPoint;
+                    aPoint = getONSPDlookups(env).get(postcodeLevel).get(nearestYM3ForONSPDLookup).get(postcode);
                     if (aPoint != null) {
                         int x = aPoint.getX();
                         int y = aPoint.getY();
@@ -112,7 +118,8 @@ public abstract class DW_DensityMapsAbstract extends DW_Maps {
                         if (thisDeprivationClass == deprivationClass.intValue()) {
                             String postcodeLevel;
                             postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(postcode);
-                            AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(nearestYM3ForONSPDLookup).get(postcode);
+                            AGDT_Point aPoint;
+                            aPoint = getONSPDlookups(env).get(postcodeLevel).get(nearestYM3ForONSPDLookup).get(postcode);
                             if (aPoint != null) {
                                 int x = aPoint.getX();
                                 int y = aPoint.getY();

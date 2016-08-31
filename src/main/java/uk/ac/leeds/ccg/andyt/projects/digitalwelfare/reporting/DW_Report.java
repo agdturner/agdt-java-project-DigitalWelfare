@@ -9,6 +9,7 @@ import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -34,11 +35,12 @@ public class DW_Report extends DW_HTMLPage {
     protected String baseURLString0;
     protected String date;
 
-    public DW_Report() {
+    public DW_Report(DW_Environment env) {
+        this.env = env;
     }
 
     public static void main(String[] args) {
-        new DW_Report().run();
+        new DW_Report(null).run();
     }
 
     public void run() {
@@ -89,7 +91,7 @@ public class DW_Report extends DW_HTMLPage {
         distanceTypes.add("OutDistanceChurn"); // A count of all claimants that have moved out from this area.
 
         // Run for consecutive monthly data
-        includes = DW_SHBE_Handler.getIncludes();
+        includes = env.getDW_SHBE_Handler().getIncludes();
         includes.remove("All");
 //        includes.remove("Yearly");
 //        includes.remove("6Monthly");
@@ -172,10 +174,12 @@ public class DW_Report extends DW_HTMLPage {
             boolean doUnderOccupied,
             boolean doCouncil) {
         try {
+            DW_Files tDW_Files;
+            tDW_Files = env.getDW_Files();
             File dirOut = new File(
-                    DW_Files.getOutputDir(),
+                    tDW_Files.getOutputDir(),
                     baseReportDir);
-            dirOut = DW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
+            dirOut = tDW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
             dirOut.mkdirs();
             String pageTitle = "Results";
             File f;
@@ -199,7 +203,7 @@ public class DW_Report extends DW_HTMLPage {
     public void writeToMaster() {
         try {
             File dir0 = new File(
-                    DW_Files.getOutputDir(),
+                    env.getDW_Files().getOutputDir(),
                     baseReportDir);
             File dir1 = new File(
                     dir0,
@@ -254,13 +258,15 @@ public class DW_Report extends DW_HTMLPage {
     public void write(
             boolean doUnderOccupied,
             boolean doCouncil) {
-        File dirOut = new File(
-                DW_Files.getOutputDir(),
+        DW_Files tDW_Files;
+            tDW_Files = env.getDW_Files();
+            File dirOut = new File(
+                tDW_Files.getOutputDir(),
                 baseReportDir);
         dirOut = new File(
                 dirOut,
                 levelsString);
-        dirOut = DW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
+        dirOut = tDW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
         String[] tFilenames;
         tFilenames = getFilenames();
         Iterator<String> claimantTypesIte;
@@ -539,12 +545,14 @@ public class DW_Report extends DW_HTMLPage {
         writeLine("<img src=\"" + imageSource + "\" alt=\"[" + imageSource + "]\" />", componentFOS);
         writeLine("", componentFOS);
         writeLine("", componentFOS);
-        File dir;
+        DW_Files tDW_Files;
+            tDW_Files = env.getDW_Files();
+            File dir;
         File f;
         ArrayList<String> table;
         // Total, In and Out Count Table
         dir = new File(
-                DW_Files.getOutputSHBEChoroplethDir(level),
+                tDW_Files.getOutputSHBEChoroplethDir(level),
                 filepath);
         f = new File(
                 dir,
@@ -558,7 +566,7 @@ public class DW_Report extends DW_HTMLPage {
         }
         // Counts By Tenure Table
         dir = new File(
-                DW_Files.getGeneratedSHBEDir(
+                tDW_Files.getGeneratedSHBEDir(
                         level,
                         doUnderOccupied,
                         doCouncil),

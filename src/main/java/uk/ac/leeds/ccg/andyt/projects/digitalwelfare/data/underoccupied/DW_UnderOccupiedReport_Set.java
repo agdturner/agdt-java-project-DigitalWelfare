@@ -20,13 +20,15 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied;
 
 import java.io.File;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_UnderOccupiedReport_Set {
+public class DW_UnderOccupiedReport_Set extends DW_Object {
 
     /**
      * aUnderOccupiedReport_Record.getClaimReferenceNumber(),
@@ -34,7 +36,8 @@ public class DW_UnderOccupiedReport_Set {
      */
     TreeMap<String, DW_UOReport_Record> map;
 
-    public DW_UnderOccupiedReport_Set() {
+    public DW_UnderOccupiedReport_Set(DW_Environment env) {
+        this.env = env;
         map = new TreeMap<String, DW_UOReport_Record>();
     }
 
@@ -42,9 +45,11 @@ public class DW_UnderOccupiedReport_Set {
      * @param filename
      */
     public DW_UnderOccupiedReport_Set(
+            DW_Environment env,
             String filename) {
+        this.env = env;
         File dir;
-        dir = DW_Files.getInputUnderOccupiedDir();
+        dir = env.getDW_Files().getInputUnderOccupiedDir();
         map = DW_UnderOccupiedReport_Handler.loadInputData(
                 dir,
                 filename);

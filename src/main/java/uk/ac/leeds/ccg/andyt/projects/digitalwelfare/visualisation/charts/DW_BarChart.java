@@ -36,6 +36,7 @@ import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Execution;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.charts.Generic_BarChart;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -46,6 +47,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_BarChart extends Generic_BarChart {
 
+    transient DW_Environment env;
     private int dataWidth;
     private int dataHeight;
     private String xAxisLabel;
@@ -62,11 +64,15 @@ public class DW_BarChart extends Generic_BarChart {
 
     HashMap<String, HashSet<String>> areaCodes;
 
+    public DW_BarChart(DW_Environment env){
+        this.env = env;
+    }
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new DW_BarChart().run(args);
+        new DW_BarChart(null).run(args);
     }
 
     /**
@@ -97,7 +103,7 @@ public class DW_BarChart extends Generic_BarChart {
         executorService = Executors.newSingleThreadExecutor();
 
         String[] SHBEFilenames;
-        SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
+        SHBEFilenames = env.getDW_SHBE_Handler().getSHBEFilenamesAll();
         ArrayList<String> claimantTypes;
         claimantTypes = new ArrayList<String>();
         claimantTypes.add("HB");
@@ -206,11 +212,13 @@ public class DW_BarChart extends Generic_BarChart {
             ArrayList<Double> distances) {
 
         String format = "PNG";
+        DW_Files tDW_Files;
+        tDW_Files = env.getDW_Files();
         File dirOut;
         dirOut = new File(
-                DW_Files.getOutputSHBEPlotsDir(),
+                tDW_Files.getOutputSHBEPlotsDir(),
                 "BarCharts");
-        dirOut = DW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
+        dirOut = tDW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
         Iterator<String> levelsIte;
         Iterator<String> claimantTypesIte;
         Iterator<String> tenureTypesIte;
@@ -218,10 +226,13 @@ public class DW_BarChart extends Generic_BarChart {
         Iterator<String> distanceTypesIte;
         Iterator<Double> distancesIte;
 
+        DW_SHBE_Handler tDW_SHBE_Handler;
+        tDW_SHBE_Handler = env.getDW_SHBE_Handler();
+        
         for (int i = startIndex + 1; i < SHBEFilenames.length; i++) {
             String aSHBEFilename = SHBEFilenames[i];
-            String month = DW_SHBE_Handler.getMonth(aSHBEFilename);
-            String year = DW_SHBE_Handler.getYear(aSHBEFilename);
+            String month = tDW_SHBE_Handler.getMonth(aSHBEFilename);
+            String year = tDW_SHBE_Handler.getYear(aSHBEFilename);
 
             levelsIte = levels.iterator();
             while (levelsIte.hasNext()) {
@@ -260,7 +271,7 @@ public class DW_BarChart extends Generic_BarChart {
                             title = year + " " + month + " Bar Chart";
                             xAxisLabel = type + " Count";
                             File dirIn = new File(
-                                    DW_Files.getGeneratedSHBEDir(
+                                    tDW_Files.getGeneratedSHBEDir(
                                             level,
                                             doUnderOccupied,
                                             doCouncil),
@@ -290,7 +301,7 @@ public class DW_BarChart extends Generic_BarChart {
                             while (distancesIte.hasNext()) {
                                 Double distanceThreshold = distancesIte.next();
                                 File dir;
-                                dir = DW_Files.getOutputSHBEPlotsDir();
+                                dir = tDW_Files.getOutputSHBEPlotsDir();
                                 dir = new File(
                                         dir,
                                         level);
@@ -315,7 +326,7 @@ public class DW_BarChart extends Generic_BarChart {
                                 title = year + " " + month + " Bar Chart";
                                 xAxisLabel = distanceType + " " + distanceThreshold + " Count";
                                 dir = new File(
-                                        DW_Files.getGeneratedSHBEDir(
+                                        tDW_Files.getGeneratedSHBEDir(
                                                 level,
                                                 doUnderOccupied,
                                                 doCouncil),
@@ -492,6 +503,8 @@ public class DW_BarChart extends Generic_BarChart {
 
     public void initAreaCodes(ArrayList<String> levels) {
         areaCodes = new HashMap<String, HashSet<String>>();
+        DW_Files tDW_Files;
+        tDW_Files = env.getDW_Files();
         Iterator<String> ite;
         ite = levels.iterator();
         while (ite.hasNext()) {
@@ -502,7 +515,7 @@ public class DW_BarChart extends Generic_BarChart {
             File fout;
             if (level.startsWith("Post")) {
                 dir = new File(
-                        DW_Files.getGeneratedPostcodeDir(),
+                        tDW_Files.getGeneratedPostcodeDir(),
                         "Leeds");
                 dir = new File(
                         dir,
@@ -515,13 +528,13 @@ public class DW_BarChart extends Generic_BarChart {
                         "AreaCodes_HashSetString.thisFile");
             } else {
                 dir = new File(
-                        DW_Files.getInputCensus2011AttributeDataDir(level),
+                        tDW_Files.getInputCensus2011AttributeDataDir(level),
                         "Leeds");
                 fin = new File(
                         dir,
                         "censusCodes.csv");
                 dir = new File(
-                        DW_Files.getGeneratedCensus2011Dir(level),
+                        tDW_Files.getGeneratedCensus2011Dir(level),
                         "AttributeData");
                 dir = new File(
                         dir,

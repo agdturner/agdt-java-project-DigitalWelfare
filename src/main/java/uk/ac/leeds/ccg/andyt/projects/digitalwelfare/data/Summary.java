@@ -987,7 +987,7 @@ public class Summary {
         sCTBTotalCount_EthnicGroupClaimant = new String[nEG];
         sCTBPercentageOfCTB_EthnicGroupClaimant = new String[nEG];
         for (int i = 1; i < nEG; i++) {
-            String EGN = DW_SHBE_Handler.getEthnicityGroupName(i);
+            String EGN = tDW_SHBE_Handler.getEthnicityGroupName(i);
             for (int j = 1; j < nTT; j++) {
                 sAllTotalCount_EthnicGroupClaimantByTT[i][j] = "AllTotalCount__ClaimantEthnicGroup_" + EGN + "__ClaimantTT" + j;
                 sAllPercentageOfEthnicGroup_EthnicGroupClaimantByTT[i][j] = "AllPercentageOfEthnicGroup_" + EGN + "___ClaimantEthnicGroup_" + EGN + "__ClaimantTT" + j;
@@ -1314,7 +1314,7 @@ public class Summary {
      * @param tClaimantIDPostcodeTTs1
      * @return
      */
-    public static Object[] getCountsIDPostcodeTT(
+    public Object[] getCountsIDPostcodeTT(
             int nTT,
             String[] SHBEFilenames,
             ArrayList<Integer> include,
@@ -1400,7 +1400,7 @@ public class Summary {
      * @param tClaimantIDTTs1
      * @return
      */
-    public static Object[] getCountsIDTT(
+    public Object[] getCountsIDTT(
             int nTT, String[] SHBEFilenames,
             ArrayList<Integer> include,
             String yM31,
@@ -1484,7 +1484,7 @@ public class Summary {
      * @param tClaimantIDPostcodeTypes1
      * @return
      */
-    public static Integer[] getCountsIDPostcode(
+    public Integer[] getCountsIDPostcode(
             String[] SHBEFilenames, ArrayList<Integer> include,
             String yM31,
             TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodeTypes,
@@ -1513,7 +1513,7 @@ public class Summary {
         return result;
     }
 
-    protected static Object[] getPreviousYM3s(String[] SHBEFilenames, ArrayList<Integer> include, String yM31) {
+    protected Object[] getPreviousYM3s(String[] SHBEFilenames, ArrayList<Integer> include, String yM31) {
         Object[] result;
         result = new Object[3];
         String yM300 = null;
@@ -1526,21 +1526,19 @@ public class Summary {
         while (ite.hasNext()) {
             int i = ite.next();
             String yM3;
-            yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+            yM3 = tDW_SHBE_Handler.getYM3(SHBEFilenames[i]);
             if (yM3.equalsIgnoreCase(yM31)) {
                 break;
             }
             if (yM300set && yM30set) {
                 yM300 = yM30;
                 yM30 = yM3;
+            } else if (yM300set) {
+                yM30 = yM3;
+                yM30set = true;
             } else {
-                if (yM300set) {
-                    yM30 = yM3;
-                    yM30set = true;
-                } else {
-                    yM300 = yM3;
-                    yM300set = true;
-                }
+                yM300 = yM3;
+                yM300set = true;
             }
         }
         result[0] = yM300set && yM30set;
@@ -4211,7 +4209,7 @@ public class Summary {
             summary.put(
                     sAllTotalCount_EthnicGroupPrivateDeregulatedTTClaimant[i],
                     Integer.toString(AllTotalCount_EthnicGroupClaimantByTT[i][3] + AllTotalCount_EthnicGroupClaimantByTT[i][6]));
-                    }
+        }
     }
 
     protected void addToSummarySingleTimeEthnicityRates(
@@ -4278,27 +4276,27 @@ public class Summary {
             }
             all = Integer.valueOf(summary.get(sAllTotalCount_EthnicGroupSocialTTClaimant[i]));
             d = TotalCount_TTClaimant1[1] + TotalCount_TTClaimant1[4];
-                if (d > 0) {
-                    percentage = (all * 100.0d) / d;
-                    summary.put(
-                            sAllPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i],
-                            Generic_BigDecimal.roundIfNecessary(
-                                    BigDecimal.valueOf(percentage),
-                                    decimalPlacePrecisionForPercentage,
-                                    RoundingMode.HALF_UP).toPlainString());
-                }
-                all = Integer.valueOf(summary.get(sAllTotalCount_EthnicGroupPrivateDeregulatedTTClaimant[i]));
-                d = TotalCount_TTClaimant1[3] + TotalCount_TTClaimant1[6];
-                if (d > 0) {
-                    percentage = (all * 100.0d) / d;
-                    summary.put(
-                            sAllPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i],
-                            Generic_BigDecimal.roundIfNecessary(
-                                    BigDecimal.valueOf(percentage),
-                                    decimalPlacePrecisionForPercentage,
-                                    RoundingMode.HALF_UP).toPlainString());
-                }
+            if (d > 0) {
+                percentage = (all * 100.0d) / d;
+                summary.put(
+                        sAllPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
             }
+            all = Integer.valueOf(summary.get(sAllTotalCount_EthnicGroupPrivateDeregulatedTTClaimant[i]));
+            d = TotalCount_TTClaimant1[3] + TotalCount_TTClaimant1[6];
+            if (d > 0) {
+                percentage = (all * 100.0d) / d;
+                summary.put(
+                        sAllPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i],
+                        Generic_BigDecimal.roundIfNecessary(
+                                BigDecimal.valueOf(percentage),
+                                decimalPlacePrecisionForPercentage,
+                                RoundingMode.HALF_UP).toPlainString());
+            }
+        }
     }
 
     protected void addToSummarySingleTimeTTCounts(
@@ -4431,6 +4429,8 @@ public class Summary {
             DW_SHBE_D_Record D_Record1,
             String yM30v,
             String yM31v) {
+        DW_Postcode_Handler tDW_Postcode_Handler;
+        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
         boolean isHBClaim;
         isHBClaim = false;
         boolean isCTBOnlyClaim;
@@ -4439,8 +4439,8 @@ public class Summary {
             doSingleTimeCount(
                     D_Record1,
                     yM30v);
-            isHBClaim = DW_SHBE_Handler.isHBClaim(D_Record1);
-            isCTBOnlyClaim = DW_SHBE_Handler.isCTBOnlyClaim(D_Record1);
+            isHBClaim = tDW_SHBE_Handler.isHBClaim(D_Record1);
+            isCTBOnlyClaim = tDW_SHBE_Handler.isCTBOnlyClaim(D_Record1);
         }
         AllCount1 = HBCount1 + CTBCount1;
         String postcode0;
@@ -4452,7 +4452,7 @@ public class Summary {
         if (D_Record0 != null) {
             postcode0 = D_Record0.getClaimantsPostcode();
             if (postcode0 != null) {
-                isValidPostcode0 = DW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
+                isValidPostcode0 = tDW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
             }
             TT0 = D_Record0.getTenancyType();
         }
@@ -4465,7 +4465,7 @@ public class Summary {
         if (D_Record1 != null) {
             postcode1 = D_Record1.getClaimantsPostcode();
             if (postcode1 != null) {
-                isValidPostcode1 = DW_Postcode_Handler.isValidPostcode(yM31v, postcode1);
+                isValidPostcode1 = tDW_Postcode_Handler.isValidPostcode(yM31v, postcode1);
             }
             TT1 = D_Record1.getTenancyType();
         }
@@ -4504,7 +4504,7 @@ public class Summary {
             String yM30v) {
         int ClaimantsEthnicGroup0;
         //ClaimantsEthnicGroup0 = D_Record.getClaimantsEthnicGroup();
-        ClaimantsEthnicGroup0 = DW_SHBE_Handler.getEthnicityGroup(D_Record);
+        ClaimantsEthnicGroup0 = tDW_SHBE_Handler.getEthnicityGroup(D_Record);
         int TT;
         String postcode;
         // All unfiltered counts
@@ -4546,7 +4546,7 @@ public class Summary {
         AllTotalCount_PSIByTT[PSI][TT]++;
         // Household size
         long HouseholdSize;
-        HouseholdSize = DW_SHBE_Handler.getHouseholdSize(D_Record);
+        HouseholdSize = tDW_SHBE_Handler.getHouseholdSize(D_Record);
         AllTotalHouseholdSize += HouseholdSize;
         // Entitlements
         int WeeklyHousingBenefitEntitlement;
@@ -4608,7 +4608,7 @@ public class Summary {
             AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
         }
         // HBClaim only counts
-        if (DW_SHBE_Handler.isHBClaim(D_Record)) {
+        if (tDW_SHBE_Handler.isHBClaim(D_Record)) {
             HBTotalCount_PSI[PSI]++;
             HBTotalCount_PSIByTT[PSI][TT]++;
             //if (HBRef.equalsIgnoreCase(CTBRef)) {
@@ -4694,7 +4694,7 @@ public class Summary {
                     yM30v);
         }
         // CTB Claim only counts
-        if (DW_SHBE_Handler.isCTBOnlyClaim(D_Record)) {
+        if (tDW_SHBE_Handler.isCTBOnlyClaim(D_Record)) {
             CTBTotalCount_PSI[PSI]++;
             CTBTotalCount_PSIByTT[PSI][TT]++;
             CTBTotalHouseholdSize += HouseholdSize;
@@ -4798,24 +4798,18 @@ public class Summary {
             } else {
                 HBTotalCount_Postcode0ValidPostcode1NotValid++;
             }
+        } else if (isValidPostcode1) {
+            HBTotalCount_Postcode0NotValidPostcode1Valid++;
         } else {
-            if (isValidPostcode1) {
-                HBTotalCount_Postcode0NotValidPostcode1Valid++;
+            HBTotalCount_Postcode0NotValidPostcode1NotValid++;
+            if (postcode0 == null) {
+                HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+            } else if (postcode1 == null) {
+                HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+            } else if (postcode0.equalsIgnoreCase(postcode1)) {
+                HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
             } else {
-                HBTotalCount_Postcode0NotValidPostcode1NotValid++;
-                if (postcode0 == null) {
-                    HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
-                } else {
-                    if (postcode1 == null) {
-                        HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
-                    } else {
-                        if (postcode0.equalsIgnoreCase(postcode1)) {
-                            HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
-                        } else {
-                            HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
-                        }
-                    }
-                }
+                HBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
             }
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
@@ -4959,6 +4953,8 @@ public class Summary {
             int tTT,
             String tP,
             String yM3v) {
+        DW_Postcode_Handler tDW_Postcode_Handler;
+        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
         HBCount1++;
         HBEthnicGroupCount[tEG]++;
         AllTotalCount_EthnicGroupClaimantByTT[tEG][tTT]++;
@@ -4966,7 +4962,7 @@ public class Summary {
             boolean isValidPostcodeFormat;
             isValidPostcodeFormat = Generic_UKPostcode_Handler.isValidPostcodeForm(tP);
             boolean isValidPostcode;
-            isValidPostcode = DW_Postcode_Handler.isValidPostcode(yM3v, tP);
+            isValidPostcode = tDW_Postcode_Handler.isValidPostcode(yM3v, tP);
             if (isValidPostcodeFormat) {
                 HBTotalCount_PostcodeValidFormat++;
             }
@@ -4994,24 +4990,18 @@ public class Summary {
             } else {
                 CTBTotalCount_Postcode0ValidPostcode1NotValid++;
             }
+        } else if (isValidPostcode1) {
+            CTBTotalCount_Postcode0NotValidPostcode1Valid++;
         } else {
-            if (isValidPostcode1) {
-                CTBTotalCount_Postcode0NotValidPostcode1Valid++;
+            CTBTotalCount_Postcode0NotValidPostcode1NotValid++;
+            if (postcode0 == null) {
+                CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+            } else if (postcode1 == null) {
+                CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
+            } else if (postcode0.equalsIgnoreCase(postcode1)) {
+                CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
             } else {
-                CTBTotalCount_Postcode0NotValidPostcode1NotValid++;
-                if (postcode0 == null) {
-                    CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
-                } else {
-                    if (postcode1 == null) {
-                        CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
-                    } else {
-                        if (postcode0.equalsIgnoreCase(postcode1)) {
-                            CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeNotChanged++;
-                        } else {
-                            CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
-                        }
-                    }
-                }
+                CTBTotalCount_Postcode0NotValidPostcode1NotValidPostcodeChanged++;
             }
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
@@ -5069,6 +5059,8 @@ public class Summary {
             int tTT,
             String tP,
             String yM3v) {
+        DW_Postcode_Handler tDW_Postcode_Handler;
+        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
         CTBCount1++;
         CTBEthnicGroupCount[tEG]++;
         AllTotalCount_EthnicGroupClaimantByTT[tEG][tTT]++;
@@ -5076,7 +5068,7 @@ public class Summary {
             boolean isValidPostcodeFormat;
             isValidPostcodeFormat = Generic_UKPostcode_Handler.isValidPostcodeForm(tP);
             boolean isValidPostcode;
-            isValidPostcode = DW_Postcode_Handler.isValidPostcode(yM3v, tP);
+            isValidPostcode = tDW_Postcode_Handler.isValidPostcode(yM3v, tP);
             if (isValidPostcodeFormat) {
                 CTBTotalCount_PostcodeValidFormat++;
             }
@@ -5124,7 +5116,7 @@ public class Summary {
             HashMap<String, String> summary;
             summary = new HashMap<String, String>();
             String key;
-            key = DW_SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
+            key = tDW_SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
             result.put(key, summary);
         }
         includeIte = include.iterator();
@@ -5136,16 +5128,16 @@ public class Summary {
         String filename0;
         filename0 = SHBEFilenames[i];
         String yM30;
-        yM30 = DW_SHBE_Handler.getYM3(filename0);
+        yM30 = tDW_SHBE_Handler.getYM3(filename0);
         System.out.println("Load " + filename0);
         DW_SHBE_Collection tSHBEData0;
-        tSHBEData0 = new DW_SHBE_Collection(filename0, paymentType);
+        tSHBEData0 = new DW_SHBE_Collection(env, filename0, paymentType);
         // These could be returned to save time recreating them for other includes.
         // This would involve feeding them in to the method too per se.
         String yM30v;
         yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
         String key;
-        key = DW_SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
+        key = tDW_SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
         HashMap<String, String> summary;
         summary = result.get(key);
         TreeMap<String, HashSet<DW_PersonID>> tClaimantIDs;
@@ -5203,7 +5195,7 @@ public class Summary {
 //        AllCount1 = HBCount1 + CTBCount1;
         summary.put(sSHBEFilename1, filename0); // This looks odd but is right!
         HashMap<String, BigDecimal> incomeAndRentSummary;
-        incomeAndRentSummary = DW_SHBE_Handler.getIncomeAndRentSummary(
+        incomeAndRentSummary = tDW_SHBE_Handler.getIncomeAndRentSummary(
                 tSHBEData0,
                 paymentType,
                 filename0,
@@ -5222,13 +5214,14 @@ public class Summary {
             String filename1;
             filename1 = SHBEFilenames[i];
             String yM31;
-            yM31 = DW_SHBE_Handler.getYM3(filename1);
+            yM31 = tDW_SHBE_Handler.getYM3(filename1);
             String yM31v;
             yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
             // Load next data
             System.out.println("Load " + filename1);
             DW_SHBE_Collection tSHBEData1;
-            tSHBEData1 = new DW_SHBE_Collection(filename1, paymentType);
+            tSHBEData1 = new DW_SHBE_Collection(env,
+                    filename1, paymentType);
             TreeMap<String, DW_SHBE_Record> tDRecords1;
             tDRecords1 = tSHBEData1.getRecords();
             HashSet<DW_PersonID> tClaimantIDs1;
@@ -5254,13 +5247,13 @@ public class Summary {
             tClaimantIDPostcodeTTs1 = tSHBEData1.getClaimantIDAndPostcodeAndTenancyTypeSet();
             tClaimantIDPostcodeTTs.put(yM31, tClaimantIDPostcodeTTs1);
 
-            key = DW_SHBE_Handler.getYearMonthNumber(filename1);
+            key = tDW_SHBE_Handler.getYearMonthNumber(filename1);
             summary = result.get(key);
             // Counters
             tLoadSummary = (HashMap<String, Integer>) tSHBEData1.getLoadSummary();
             addToSummary(summary, tLoadSummary);
             HashMap<String, BigDecimal> incomeAndRentSummary1;
-            incomeAndRentSummary1 = DW_SHBE_Handler.getIncomeAndRentSummary(
+            incomeAndRentSummary1 = tDW_SHBE_Handler.getIncomeAndRentSummary(
                     tSHBEData1,
                     paymentType,
                     filename1,
@@ -5614,7 +5607,17 @@ public class Summary {
                 nTT, nEG);
     }
 
-    protected static PrintWriter getPrintWriter(
+    /**
+     *
+     * @param name
+     * @param name2
+     * @param summaryTable
+     * @param paymentType
+     * @param includeKey
+     * @param underOccupancy
+     * @return
+     */
+    protected PrintWriter getPrintWriter(
             String name,
             String name2,
             TreeMap<String, HashMap<String, String>> summaryTable,
@@ -5623,10 +5626,10 @@ public class Summary {
             boolean underOccupancy) {
         PrintWriter result;
         File dirOut;
-        dirOut = DW_Files.getTableDir(
-                name2, 
-                paymentType, 
-                includeKey, 
+        dirOut = env.getDW_Files().getTableDir(
+                name2,
+                paymentType,
+                includeKey,
                 underOccupancy);
         String outFilename;
         outFilename = paymentType + "_" + includeKey + "_";
@@ -5659,7 +5662,7 @@ public class Summary {
             int nEG
     ) {
         TreeMap<String, File> ONSPDFiles;
-        ONSPDFiles = DW_Postcode_Handler.getONSPDFiles();
+        ONSPDFiles = env.getDW_Postcode_Handler().getONSPDFiles();
         String name;
         name = "Compare3Times";
         PrintWriter pw;
@@ -5715,7 +5718,7 @@ public class Summary {
             String PostCodeLookupFile00Name = null;
             if (filename00 != null) {
                 PostCodeLookupDate00 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
-                        DW_SHBE_Handler.getYM3(filename00));
+                        tDW_SHBE_Handler.getYM3(filename00));
                 PostCodeLookupFile00Name = ONSPDFiles.get(PostCodeLookupDate00).getName();
             }
             line += PostCodeLookupDate00 + ", " + PostCodeLookupFile00Name + ", ";
@@ -5723,7 +5726,7 @@ public class Summary {
             String PostCodeLookupFile0Name = null;
             if (filename0 != null) {
                 PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
-                        DW_SHBE_Handler.getYM3(filename0));
+                        tDW_SHBE_Handler.getYM3(filename0));
                 PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
             }
             line += PostCodeLookupDate0 + ", " + PostCodeLookupFile0Name + ", ";
@@ -5731,7 +5734,7 @@ public class Summary {
             String PostCodeLookupFile1Name = null;
             if (filename1 != null) {
                 PostCodeLookupDate1 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
-                        DW_SHBE_Handler.getYM3(filename1));
+                        tDW_SHBE_Handler.getYM3(filename1));
                 PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
             }
             line += PostCodeLookupDate1 + ", " + PostCodeLookupFile1Name + ", ";
@@ -5780,7 +5783,7 @@ public class Summary {
             int nEG
     ) {
         TreeMap<String, File> ONSPDFiles;
-        ONSPDFiles = DW_Postcode_Handler.getONSPDFiles();
+        ONSPDFiles = env.getDW_Postcode_Handler().getONSPDFiles();
         String name;
         name = "Compare2Times";
         PrintWriter pw;
@@ -6107,7 +6110,7 @@ public class Summary {
             int nEG
     ) {
         TreeMap<String, File> ONSPDFiles;
-        ONSPDFiles = DW_Postcode_Handler.getONSPDFiles();
+        ONSPDFiles = env.getDW_Postcode_Handler().getONSPDFiles();
         String name;
         name = "Compare2TimesTT";
         PrintWriter pw;
@@ -6169,9 +6172,9 @@ public class Summary {
         String month0;
         String year0;
         if (filename0 != null) {
-            line += DW_SHBE_Handler.getYearMonthNumber(filename0) + ", ";
-            month0 = DW_SHBE_Handler.getMonth3(filename0);
-            year0 = DW_SHBE_Handler.getYear(filename0);
+            line += tDW_SHBE_Handler.getYearMonthNumber(filename0) + ", ";
+            month0 = tDW_SHBE_Handler.getMonth3(filename0);
+            year0 = tDW_SHBE_Handler.getYear(filename0);
             line += month0 + " " + year0 + ", ";
         } else {
             month0 = "null";
@@ -6185,9 +6188,9 @@ public class Summary {
         String month1;
         String year1;
         if (filename1 != null) {
-            line += DW_SHBE_Handler.getYearMonthNumber(filename1) + ", ";
-            month1 = DW_SHBE_Handler.getMonth3(filename1);
-            year1 = DW_SHBE_Handler.getYear(filename1);
+            line += tDW_SHBE_Handler.getYearMonthNumber(filename1) + ", ";
+            month1 = tDW_SHBE_Handler.getMonth3(filename1);
+            year1 = tDW_SHBE_Handler.getYear(filename1);
             line += month1 + " " + year1 + ", ";
         } else {
             month1 = "null";
@@ -6199,7 +6202,7 @@ public class Summary {
         String PostCodeLookupFile0Name = null;
         if (filename0 != null) {
             PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
-                    DW_SHBE_Handler.getYM3(filename0));
+                    tDW_SHBE_Handler.getYM3(filename0));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }
         line += PostCodeLookupDate0 + ", " + PostCodeLookupFile0Name + ", ";
@@ -6207,7 +6210,7 @@ public class Summary {
         String PostCodeLookupFile1Name = null;
         if (filename1 != null) {
             PostCodeLookupDate1 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
-                    DW_SHBE_Handler.getYM3(filename1));
+                    tDW_SHBE_Handler.getYM3(filename1));
             PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
         }
         line += PostCodeLookupDate1 + ", " + PostCodeLookupFile1Name + ", ";
@@ -6241,7 +6244,7 @@ public class Summary {
             int nEG
     ) {
         TreeMap<String, File> ONSPDFiles;
-        ONSPDFiles = DW_Postcode_Handler.getONSPDFiles();
+        ONSPDFiles = env.getDW_Postcode_Handler().getONSPDFiles();
         String name;
         name = "Compare2TimesPostcode";
         PrintWriter pw;
@@ -6280,7 +6283,7 @@ public class Summary {
             int nPSI
     ) {
         TreeMap<String, File> ONSPDFiles;
-        ONSPDFiles = DW_Postcode_Handler.getONSPDFiles();
+        ONSPDFiles = env.getDW_Postcode_Handler().getONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
         PrintWriter pw;
@@ -6626,7 +6629,7 @@ public class Summary {
         String PostCodeLookupFile0Name = null;
         if (filename != null) {
             PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
-                    DW_SHBE_Handler.getYM3(filename));
+                    tDW_SHBE_Handler.getYM3(filename));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }
         result = PostCodeLookupDate0 + ", " + PostCodeLookupFile0Name + ", ";
@@ -6805,7 +6808,7 @@ public class Summary {
             header += sCTBTotalCount_EthnicGroupClaimant[i] + ", ";
             header += sCTBPercentageOfCTB_EthnicGroupClaimant[i] + ", ";
         }
-         for (int i = 1; i < nEG; i++) {
+        for (int i = 1; i < nEG; i++) {
             for (int j = 1; j < nTT; j++) {
                 header += sAllTotalCount_EthnicGroupClaimantByTT[i][j] + ", ";
                 header += sAllPercentageOfTT_EthnicGroupClaimantByTT[i][j] + ", ";
@@ -6830,10 +6833,10 @@ public class Summary {
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sAllTotalCount_EthnicGroupClaimant[i]) + ", ";
                 line += summary.get(sAllPercentageOfAll_EthnicGroupClaimant[i]) + ", ";
-                            line += summary.get(sAllTotalCount_EthnicGroupSocialTTClaimant[i]) + ", ";
-            line += summary.get(sAllPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i]) + ", ";
-            line += summary.get(sAllTotalCount_EthnicGroupPrivateDeregulatedTTClaimant[i]) + ", ";
-            line += summary.get(sAllPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i]) + ", ";
+                line += summary.get(sAllTotalCount_EthnicGroupSocialTTClaimant[i]) + ", ";
+                line += summary.get(sAllPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i]) + ", ";
+                line += summary.get(sAllTotalCount_EthnicGroupPrivateDeregulatedTTClaimant[i]) + ", ";
+                line += summary.get(sAllPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i]) + ", ";
             }
             for (int i = 1; i < nEG; i++) {
                 line += summary.get(sHBTotalCount_EthnicGroupClaimant[i]) + ", ";

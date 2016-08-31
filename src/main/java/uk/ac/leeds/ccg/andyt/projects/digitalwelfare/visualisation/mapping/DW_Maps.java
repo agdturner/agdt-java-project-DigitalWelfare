@@ -55,6 +55,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
@@ -65,8 +66,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
  */
 public abstract class DW_Maps extends AGDT_Maps {
 
-    //private static TreeMap<String, AGDT_Point>[] ONSPDlookups;
-    //private static TreeMap<String, TreeMap<String, AGDT_Point>> tONSPDlookups;
+    public transient DW_Environment env;
+    protected DW_Files tDW_Files;
+
+    //private TreeMap<String, AGDT_Point>[] ONSPDlookups;
+    //private TreeMap<String, TreeMap<String, AGDT_Point>> tONSPDlookups;
     private static TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> tONSPDlookups;
 
     /**
@@ -78,32 +82,37 @@ public abstract class DW_Maps extends AGDT_Maps {
 
     protected boolean doDebug;
 
-    public DW_Maps() {
+    public DW_Maps(DW_Environment env) {
+        this.env = env;
+        tDW_Files = env.getDW_Files();
     }
 
-    //public static TreeMap<String, AGDT_Point>[] getONSPDlookups() {
-    public static TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> getONSPDlookups() {
+    //public TreeMap<String, AGDT_Point>[] getONSPDlookups() {
+    public static TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> getONSPDlookups(
+            DW_Environment env) {
         if (tONSPDlookups == null) {
-            initONSPDLookups();
+            initONSPDLookups(env);
         }
         return tONSPDlookups;
     }
 
-    public static void initONSPDLookups() {
+    public static void initONSPDLookups(DW_Environment env) {
         tONSPDlookups = new TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>>();
         ArrayList<String> levels;
         levels = new ArrayList<String>();
         levels.add("Unit");
         //levels.add("Sector");
         //levels.add("Area");
+        DW_Postcode_Handler tDW_Postcode_Handler;
+        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
         TreeMap<String, File> ONSPDFiles;
-        ONSPDFiles = DW_Postcode_Handler.getONSPDFiles();
+        ONSPDFiles = tDW_Postcode_Handler.getONSPDFiles();
         Iterator<String> ite2;
         ite2 = levels.iterator();
         while (ite2.hasNext()) {
             String level = ite2.next();
             TreeMap<String, TreeMap<String, AGDT_Point>> tONSPDlookup;
-            tONSPDlookup = DW_Postcode_Handler.getPostcodeUnitPointLookups(
+            tONSPDlookup = tDW_Postcode_Handler.getPostcodeUnitPointLookups(
                     true,
                     ONSPDFiles,
                     DW_Postcode_Handler.getDefaultLookupFilename());
@@ -112,6 +121,7 @@ public abstract class DW_Maps extends AGDT_Maps {
     }
 
     public static DW_Shapefile getPostcodeUnitPoly_DW_Shapefile(
+            DW_Environment env,
             ShapefileDataStoreFactory sdsf) {
         DW_Shapefile result;
         // Code Point Boundaries
@@ -130,7 +140,7 @@ public abstract class DW_Maps extends AGDT_Maps {
         year = "2012";
         File generatedCodePointDir;
         generatedCodePointDir = new File(
-                DW_Files.getGeneratedCodePointDir(),
+                env.getDW_Files().getGeneratedCodePointDir(),
                 year);
         File polyShapefile = new File(
                 generatedCodePointDir,
@@ -204,11 +214,12 @@ public abstract class DW_Maps extends AGDT_Maps {
      * @return
      */
     public static DW_Shapefile getPostcodePoly_DW_Shapefile(
+            DW_Environment env,
             String level) {
         DW_Shapefile result;
         File dir;
         dir = new File(
-                DW_Files.getInputPostcodeDir(),
+                env.getDW_Files().getInputPostcodeDir(),
                 "BoundaryData");
         dir = new File(
                 dir,
@@ -318,7 +329,7 @@ public abstract class DW_Maps extends AGDT_Maps {
 //     * ---------------------------- result[1] is the max of all the maximum
 //     * counts.
 //     */
-//    protected static Object[] getLevelData(
+//    protected Object[] getLevelData(
 //            File dir,
 //            String[] filenames,
 //            ArrayList<Integer> omit) {
@@ -355,7 +366,7 @@ public abstract class DW_Maps extends AGDT_Maps {
 //     * Codes and values that are counts;
 //     * --------------------------------------------- result[1] is the max count.
 //     */
-//    protected static Object[] getLevelData(
+//    protected Object[] getLevelData(
 //            File dir,
 //            String filename) {
 //        Object[] result = new Object[2];
@@ -417,7 +428,7 @@ public abstract class DW_Maps extends AGDT_Maps {
         TreeMap<String, Integer> result;
         result = new TreeMap<String, Integer>();
         File dir = new File(
-                DW_Files.getInputCensus2011AttributeDataDir(level),
+                env.getDW_Files().getInputCensus2011AttributeDataDir(level),
                 area);
         File file = new File(
                 dir,
@@ -477,6 +488,7 @@ public abstract class DW_Maps extends AGDT_Maps {
      * @return File
      */
     protected static File getAreaBoundaryShapefile(
+            DW_Environment env,
             String level) {
         File result = null;
         String name;
@@ -484,36 +496,37 @@ public abstract class DW_Maps extends AGDT_Maps {
             if (level.equalsIgnoreCase("PostcodeUnit")) {
                 // Get Postcode Unit Boundaries
                 DW_Shapefile postcodeUnitPoly_DW_Shapefile;
-                postcodeUnitPoly_DW_Shapefile = DW_Maps.getPostcodeUnitPoly_DW_Shapefile(
+                postcodeUnitPoly_DW_Shapefile = getPostcodeUnitPoly_DW_Shapefile(
+                        env,
                         new ShapefileDataStoreFactory());
                 result = postcodeUnitPoly_DW_Shapefile.getFile();
             }
             if (level.equalsIgnoreCase("PostcodeSector")) {
                 // Get PostcodeSector Boundaries
                 DW_Shapefile postcodeSectorPoly_DW_Shapefile;
-                postcodeSectorPoly_DW_Shapefile = DW_Maps.getPostcodePoly_DW_Shapefile(
+                postcodeSectorPoly_DW_Shapefile = getPostcodePoly_DW_Shapefile(
+                        env,
                         "Sector");
                 result = postcodeSectorPoly_DW_Shapefile.getFile();
             }
             if (level.equalsIgnoreCase("PostcodeDistrict")) {
                 // Get PostcodeSector Boundaries
                 DW_Shapefile postcodeSectorPoly_DW_Shapefile;
-                postcodeSectorPoly_DW_Shapefile = DW_Maps.getPostcodePoly_DW_Shapefile(
+                postcodeSectorPoly_DW_Shapefile = getPostcodePoly_DW_Shapefile(
+                        env,
                         "District");
                 result = postcodeSectorPoly_DW_Shapefile.getFile();
             }
         } else {
             if (level.equalsIgnoreCase("LAD")) {
                 name = "England_lad_2011_gen_clipped.shp";
+            } else if (level.equalsIgnoreCase("OA")) {
+                name = "England_oa_2011_gen_clipped.shp";
             } else {
-                if (level.equalsIgnoreCase("OA")) {
-                    name = "England_oa_2011_gen_clipped.shp";
-                } else {
-                    name = level + "_2011_EW_BGC.shp";
-                }
+                name = level + "_2011_EW_BGC.shp";
             }
             ///scratch02/DigitalWelfare/Input/Census/2011/LSOA/BoundaryData/
-            File censusDirectory = DW_Files.getInputCensus2011Dir(level);
+            File censusDirectory = env.getDW_Files().getInputCensus2011Dir(level);
             File boundaryDirectory = new File(
                     censusDirectory,
                     "/BoundaryData/");
@@ -534,12 +547,13 @@ public abstract class DW_Maps extends AGDT_Maps {
      * @return File
      */
     protected static File getCensusBoundaryShapefile(
+            DW_Environment env,
             String area,
             String level) {
         File result;
         String name = area + "_" + level + "_2011_EW_BGC.shp";
         File boundaryDirectory = new File(
-                DW_Files.getGeneratedCensus2011Dir(level),
+                env.getDW_Files().getGeneratedCensus2011Dir(level),
                 "/BoundaryData/" + name);
         if (!boundaryDirectory.exists()) {
             boolean dirCreated;
@@ -557,11 +571,11 @@ public abstract class DW_Maps extends AGDT_Maps {
     /**
      * @return File
      */
-    protected static File getLeedsPostcodeSectorShapefile() {
+    protected File getLeedsPostcodeSectorShapefile() {
         File result;
         String fileAndDirName = "LSPostalSector.shp";
         File boundaryDirectory = new File(
-                DW_Files.getInputPostcodeDir(),
+                env.getDW_Files().getInputPostcodeDir(),
                 "BoundaryData");
         File shapefileDir = new File(
                 boundaryDirectory,
@@ -904,35 +918,27 @@ public abstract class DW_Maps extends AGDT_Maps {
                         populationMultiplier,
                         countClientsInAndOutOfRegion,
                         inAndOutOfRegionCount);
-            } else {
-                if (countClientsInAndOutOfRegion) {
-                    Generic_Collections.addToTreeMapIntegerInteger(
-                            inAndOutOfRegionCount, 0, clientCount);
-                }
-
-                //DEBUG
-            }
-        } else {
-            if (levelDataKeySet.contains(areaCode) || areaCodes.contains(areaCode)) {
-                id_int = calculate(
-                        clientCount,
-                        attributeName,
-                        sf,
-                        sfb,
-                        tsfc,
-                        id_int,
-                        area,
-                        population,
-                        areaCode,
-                        populationMultiplier,
-                        countClientsInAndOutOfRegion,
-                        inAndOutOfRegionCount);
-            } else {
-                if (countClientsInAndOutOfRegion) {
-                    Generic_Collections.addToTreeMapIntegerInteger(
-                            inAndOutOfRegionCount, 0, clientCount);
-                }
-            }
+            } else if (countClientsInAndOutOfRegion) {
+                Generic_Collections.addToTreeMapIntegerInteger(
+                        inAndOutOfRegionCount, 0, clientCount);
+            } //DEBUG
+        } else if (levelDataKeySet.contains(areaCode) || areaCodes.contains(areaCode)) {
+            id_int = calculate(
+                    clientCount,
+                    attributeName,
+                    sf,
+                    sfb,
+                    tsfc,
+                    id_int,
+                    area,
+                    population,
+                    areaCode,
+                    populationMultiplier,
+                    countClientsInAndOutOfRegion,
+                    inAndOutOfRegionCount);
+        } else if (countClientsInAndOutOfRegion) {
+            Generic_Collections.addToTreeMapIntegerInteger(
+                    inAndOutOfRegionCount, 0, clientCount);
         }
         //}
         return id_int;
@@ -1029,11 +1035,11 @@ public abstract class DW_Maps extends AGDT_Maps {
         return result;
     }
 
-    public static TreeSetFeatureCollection getAdviceLeedsPointFeatureCollection(
+    public TreeSetFeatureCollection getAdviceLeedsPointFeatureCollection(
             SimpleFeatureType sft) {
         TreeSetFeatureCollection result;
         TreeMap<String, AGDT_Point> tAdviceLeedsNamesAndPoints;
-        tAdviceLeedsNamesAndPoints = DW_Processor.getAdviceLeedsNamesAndPoints();
+        tAdviceLeedsNamesAndPoints = DW_Processor.getAdviceLeedsNamesAndPoints(env);
         TreeMap<String, AGDT_Point> map = tAdviceLeedsNamesAndPoints;
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
@@ -1052,7 +1058,7 @@ public abstract class DW_Maps extends AGDT_Maps {
         return result;
     }
 
-    public static TreeSetFeatureCollection getAdviceLeedsPointFeatureCollection(
+    public TreeSetFeatureCollection getAdviceLeedsPointFeatureCollection(
             SimpleFeatureType sft,
             String outletTarget) {
         TreeSetFeatureCollection result;
@@ -1066,7 +1072,7 @@ public abstract class DW_Maps extends AGDT_Maps {
         return result;
     }
 
-    public static TreeSetFeatureCollection getAdviceLeedsPointFeatureCollection(
+    public TreeSetFeatureCollection getAdviceLeedsPointFeatureCollection(
             SimpleFeatureType sft,
             String outletTarget,
             GeometryFactory gf,
@@ -1074,7 +1080,7 @@ public abstract class DW_Maps extends AGDT_Maps {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
         TreeMap<String, AGDT_Point> tAdviceLeedsNamesAndPoints;
-        tAdviceLeedsNamesAndPoints = DW_Processor.getAdviceLeedsNamesAndPoints();
+        tAdviceLeedsNamesAndPoints = DW_Processor.getAdviceLeedsNamesAndPoints(env);
         TreeMap<String, AGDT_Point> map = tAdviceLeedsNamesAndPoints;
         Iterator<String> ite = map.keySet().iterator();
         while (ite.hasNext()) {
@@ -1088,7 +1094,7 @@ public abstract class DW_Maps extends AGDT_Maps {
         return result;
     }
 
-    public static File createAdviceLeedsPointShapefileIfItDoesNotExist(
+    public File createAdviceLeedsPointShapefileIfItDoesNotExist(
             File dir,
             String shapefileFilename) {
         File result;
@@ -1110,7 +1116,7 @@ public abstract class DW_Maps extends AGDT_Maps {
      * @param outletTarget
      * @return
      */
-    public static File createAdviceLeedsPointShapefileIfItDoesNotExist(
+    public File createAdviceLeedsPointShapefileIfItDoesNotExist(
             File dir,
             String shapefileFilename,
             String outletTarget) {
@@ -1131,11 +1137,11 @@ public abstract class DW_Maps extends AGDT_Maps {
     /**
      * @return
      */
-    public static DW_Shapefile getAdviceLeedsPointDW_Shapefile() {
+    public DW_Shapefile getAdviceLeedsPointDW_Shapefile() {
         String tAdviceLeedsPointName = "AllAdviceLeedsPoints";
         File tAdviceLeedsPointShapefileDir;
         tAdviceLeedsPointShapefileDir = new File(
-                DW_Files.getGeneratedAdviceLeedsDir(),
+                env.getDW_Files().getGeneratedAdviceLeedsDir(),
                 tAdviceLeedsPointName);
         String tAdviceLeedsPointShapefileFilename;
         tAdviceLeedsPointShapefileFilename = tAdviceLeedsPointName + ".shp";
@@ -1149,18 +1155,20 @@ public abstract class DW_Maps extends AGDT_Maps {
     /**
      * @return
      */
-    public static ArrayList<AGDT_Shapefile> getAdviceLeedsPointDW_Shapefiles() {
+    public ArrayList<AGDT_Shapefile> getAdviceLeedsPointDW_Shapefiles() {
         ArrayList<AGDT_Shapefile> result;
         result = new ArrayList<AGDT_Shapefile>();
         ArrayList<String> tAdviceLeedsServiceNames;
         tAdviceLeedsServiceNames = DW_Processor.getAdviceLeedsServiceNames();
+        DW_Files tDW_Files;
+        tDW_Files = env.getDW_Files();
         Iterator<String> ite;
         ite = tAdviceLeedsServiceNames.iterator();
         while (ite.hasNext()) {
             String tAdviceLeedsPointName = ite.next();
             File tAdviceLeedsPointShapefileDir;
             tAdviceLeedsPointShapefileDir = new File(
-                    DW_Files.getGeneratedAdviceLeedsDir(),
+                    tDW_Files.getGeneratedAdviceLeedsDir(),
                     tAdviceLeedsPointName);
             String tAdviceLeedsPointShapefileFilename;
             tAdviceLeedsPointShapefileFilename = tAdviceLeedsPointName + ".shp";
@@ -1178,7 +1186,7 @@ public abstract class DW_Maps extends AGDT_Maps {
         DW_Shapefile result;
         String name = "communityareas_region.shp";
         File dir = new File(
-                DW_Files.getInputDir(),
+                env.getDW_Files().getInputDir(),
                 "CommunityAreas");
         dir = new File(dir, name);
         File f;

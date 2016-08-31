@@ -20,12 +20,13 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
 /**
  *
  * @author geoagdt
  */
-public abstract class DW_HTMLPage {
+public abstract class DW_HTMLPage extends DW_Object {
 
     protected byte[] lineSeparator;
 

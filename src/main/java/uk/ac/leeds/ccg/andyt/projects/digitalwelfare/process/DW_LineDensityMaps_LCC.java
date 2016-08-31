@@ -43,12 +43,13 @@ import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorGWS;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getYM3s;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.initONSPDLookups;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.initONSPDLookups;
 import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 import uk.ac.leeds.ccg.andyt.vector.geometry.Vector_LineSegment2D;
 import uk.ac.leeds.ccg.andyt.vector.geometry.Vector_Point2D;
@@ -68,13 +69,17 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
     protected ArrayList<AGDT_Shapefile> midgrounds;
     protected ArrayList<AGDT_Shapefile> foregrounds;
 
+    public DW_LineDensityMaps_LCC(DW_Environment env) {
+        super(env);
+    }
+    
     //DW_StyleParameters styleParameters;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         try {
-            new DW_LineDensityMaps_LCC().run();
+            new DW_LineDensityMaps_LCC(null).run();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -100,7 +105,7 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
         //showMapsInJMapPane = true;
         //outputESRIAsciigrids = false;
         imageWidth = 1000;
-        initONSPDLookups();
+        initONSPDLookups(env);
         // Initialise styleParameters
         /*
          * YlOrRd,PRGn,PuOr,RdGy,Spectral,Grays,PuBuGn,RdPu,BuPu,YlOrBr,Greens,
@@ -127,7 +132,7 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
         styleParameters.setForegroundStyleTitle1("Foreground Style 1");
 
         mapDirectory = new File(
-                DW_Files.getOutputAdviceLeedsMapsDir(),
+                tDW_Files.getOutputAdviceLeedsMapsDir(),
                 "density");
         imageWidth = 1000;
 
@@ -188,7 +193,7 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
     //public void runAll(int resolutionMultiplier) {
     public void runAll() {
         TreeMap<String, ArrayList<Integer>> includes;
-        includes = DW_SHBE_Handler.getIncludes();
+        includes = env.getDW_SHBE_Handler().getIncludes();
         includes.remove("All");
 //        includes.remove("Yearly");
 //        includes.remove("6Monthly");
@@ -211,7 +216,7 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
             include = includes.get(includeName);
 
             TreeMap<String, ArrayList<String>> yearMonths;
-            yearMonths = getYM3s(include);
+            yearMonths = getYM3s(env, include);
 
             ArrayList<Boolean> b;
             b = new ArrayList<Boolean>();
@@ -304,13 +309,16 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
 
     private void init() {
         //initStyleParameters();
-        mapDirectory = DW_Files.getOutputSHBELineMapsDir();
+        mapDirectory = tDW_Files.getOutputSHBELineMapsDir();
         foregrounds = new ArrayList<AGDT_Shapefile>();
         //midgrounds = new ArrayList<AGDT_Shapefile>();
 //        backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                "LSOA", targetPropertyNameLSOA, getShapefileDataStoreFactory());
+                env,
+                "LSOA",
+                targetPropertyNameLSOA,
+                getShapefileDataStoreFactory());
         foregrounds.add(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
     }

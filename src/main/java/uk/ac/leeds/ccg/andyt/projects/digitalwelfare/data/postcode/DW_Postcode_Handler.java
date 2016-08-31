@@ -32,6 +32,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 
@@ -39,7 +41,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
  * A class for adding coordinate data and area codes for UK postcodes.
  * https://geoportal.statistics.gov.uk/Docs/PostCodes/ONSPD_AUG_2013_csv.zip
  */
-public class DW_Postcode_Handler implements Serializable {
+public class DW_Postcode_Handler extends DW_Object implements Serializable {
 
     public static String TYPE_UNIT = "Unit";
     public static String TYPE_SECTOR = "Sector";
@@ -51,7 +53,7 @@ public class DW_Postcode_Handler implements Serializable {
      */
     private static final String className = "PostcodeGeocoder";
 
-    public static double getDistanceBetweenPostcodes(
+    public double getDistanceBetweenPostcodes(
             String yM30v,
             String yM31v,
             String postcode0,
@@ -91,14 +93,14 @@ public class DW_Postcode_Handler implements Serializable {
      * @param postcode
      * @return
      */
-    public static AGDT_Point getPointFromPostcode(
+    public AGDT_Point getPointFromPostcode(
             String yM3v,
             String level,
             String postcode) {
         AGDT_Point result;
         String formattedPostcode;
         formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
-        result = DW_Maps.getONSPDlookups().get(level).get(getNearestYM3ForONSPDLookup(yM3v)).get(formattedPostcode);
+        result = DW_Maps.getONSPDlookups(env).get(level).get(getNearestYM3ForONSPDLookup(yM3v)).get(formattedPostcode);
         return result;
     }
 
@@ -337,7 +339,7 @@ public class DW_Postcode_Handler implements Serializable {
      * calculated using getPointFromPostcode(value). If no look up is found for
      * a postcode its key does not get put into the result.
      */
-    public static TreeMap<String, AGDT_Point> postcodeToPoints(
+    public TreeMap<String, AGDT_Point> postcodeToPoints(
             TreeMap<String, String> input,
             String yM3v) {
         TreeMap<String, AGDT_Point> result;
@@ -347,6 +349,7 @@ public class DW_Postcode_Handler implements Serializable {
             String key = ite_String.next();
             String postcode = input.get(key);
             AGDT_Point p = getPointFromPostcode(
+                    //env,
                     yM3v,
                     TYPE_UNIT,
                     postcode);
@@ -398,7 +401,8 @@ public class DW_Postcode_Handler implements Serializable {
         }
     }
 
-    public DW_Postcode_Handler() {
+    public DW_Postcode_Handler(DW_Environment env) {
+        this.env = env;
     }
 
     public static String getDefaultLookupFilename() {
@@ -416,7 +420,7 @@ public class DW_Postcode_Handler implements Serializable {
     }
 
     public static void main(String[] args) {
-        new DW_Postcode_Handler().run();
+        new DW_Postcode_Handler(null).run();
         //new DW_Postcode_Handler(inputFile, processedFile).run1();
         //new DW_Postcode_Handler(inputFile, processedFile).getPostcodeUnitCensusCodesLookup();
         //new DW_Postcode_Handler(inputFile, processedFile).run3();
@@ -454,7 +458,7 @@ public class DW_Postcode_Handler implements Serializable {
         return result;
     }
 
-    public static TreeMap<String, TreeMap<String, AGDT_Point>> getPostcodeUnitPointLookups(
+    public TreeMap<String, TreeMap<String, AGDT_Point>> getPostcodeUnitPointLookups(
             boolean ignorePointsAtOrigin,
             TreeMap<String, File> ONSPDFiles,
             String processedFilename) {
@@ -466,7 +470,7 @@ public class DW_Postcode_Handler implements Serializable {
             String yM3;
             yM3 = ite.next();
             File outDir = new File(
-                    DW_Files.getGeneratedONSPDDir(),
+                    env.getDW_Files().getGeneratedONSPDDir(),
                     yM3);
             File outFile = new File(
                     outDir,
@@ -970,7 +974,7 @@ public class DW_Postcode_Handler implements Serializable {
         return postcode;
     }
 
-    public static boolean isValidPostcode(
+    public boolean isValidPostcode(
             String yM3,
             String postcode) {
         if (postcode == null) {
@@ -989,7 +993,7 @@ public class DW_Postcode_Handler implements Serializable {
                 boolean isMappablePostcode;
 //                isMappablePostcode = DW_Maps.getONSPDlookups().get(getNearestYM3ForONSPDLookup(yM3)).get(TYPE_UNIT).containsKey(formattedPostcode);
                 TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> ONSPDLookups;
-                ONSPDLookups = DW_Maps.getONSPDlookups();
+                ONSPDLookups = DW_Maps.getONSPDlookups(env);
                 TreeMap<String, TreeMap<String, AGDT_Point>> unitPostcodeONSPDLookups;
                 unitPostcodeONSPDLookups = ONSPDLookups.get(TYPE_UNIT);
                 TreeMap<String, AGDT_Point> yM3UnitPostcodeONSPDLookupsONS;
@@ -1422,7 +1426,7 @@ public class DW_Postcode_Handler implements Serializable {
      *
      * @return
      */
-    public static TreeMap<String, File> getONSPDFiles() {
+    public TreeMap<String, File> getONSPDFiles() {
         TreeMap<String, File> result;
         result = new TreeMap<String, File>();
         File dir;
@@ -1430,7 +1434,7 @@ public class DW_Postcode_Handler implements Serializable {
         // 2008
         // FEB
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_FEB_2008");
         dir = new File(
                 dir,
@@ -1441,7 +1445,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2008_FEB", f);
         // MAY
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_MAY_2008");
         dir = new File(
                 dir,
@@ -1452,7 +1456,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2008_MAY", f);
         // AUG
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_AUG_2008");
         dir = new File(
                 dir,
@@ -1463,7 +1467,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2008_AUG", f);
         // NOV
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_NOV_2008");
         dir = new File(
                 dir,
@@ -1476,7 +1480,7 @@ public class DW_Postcode_Handler implements Serializable {
         // 2009
         // FEB
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_FEB_2009");
         dir = new File(
                 dir,
@@ -1487,7 +1491,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2009_FEB", f);
         // MAY
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_MAY_2009");
         dir = new File(
                 dir,
@@ -1498,7 +1502,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2009_MAY", f);
         // AUG
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_AUG_2009");
         dir = new File(
                 dir,
@@ -1509,7 +1513,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2009_AUG", f);
         // NOV
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_NOV_2009");
         dir = new File(
                 dir,
@@ -1522,7 +1526,7 @@ public class DW_Postcode_Handler implements Serializable {
         // 2010
         // FEB
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_FEB_2010");
         dir = new File(
                 dir,
@@ -1533,7 +1537,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2010_FEB", f);
         // MAY
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_MAY_2010");
         dir = new File(
                 dir,
@@ -1545,7 +1549,7 @@ public class DW_Postcode_Handler implements Serializable {
         // AUG
         // "AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","00","QA","MJ","0","385386","0801193","1","SN9","S00","179"," "," ","X","0","","11","","","","","99ZZ0099","ZZ0099","9","1","1","0","0","SN9","QA","SN9","","","","99ZZ00",""," ","","99","Z99999999","","Z99999999","9"," ","Z","","99ZZ99Z9","","X98"
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_AUG_2010");
         dir = new File(
                 dir,
@@ -1556,7 +1560,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2010_AUG", f);
         // NOV
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_NOV_2010");
         dir = new File(
                 dir,
@@ -1569,7 +1573,7 @@ public class DW_Postcode_Handler implements Serializable {
         // 2011
         // MAY
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_MAY_2011");
         dir = new File(
                 dir,
@@ -1581,7 +1585,7 @@ public class DW_Postcode_Handler implements Serializable {
         // AUG
         // "AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","S99999999","S12000033","S13002484","0","385386","0801193","1","S08000006","S99999999","S92000003","S99999999","0","S14000002","S15000001","S09000001","S22000001","S03000012","UKM5001031","99ZZ0099","ZZ0099","9","SN9","QA","SN9","72UB43","72UB43","","99ZZ00","S00001364","7","01C30","S99999999","S99999999","S01000011","S99999999","9","6","Z","S02000007","99ZZ99Z9","3C2","X98"
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_AUG_2011");
         dir = new File(
                 dir,
@@ -1592,7 +1596,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2011_AUG", f);
         // NOV
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_NOV_2011");
         dir = new File(
                 dir,
@@ -1605,7 +1609,7 @@ public class DW_Postcode_Handler implements Serializable {
         // 2012
         // FEB
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_FEB_2012");
         dir = new File(
                 dir,
@@ -1616,7 +1620,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2012_FEB", f);
         // MAY
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_MAY_2012");
         dir = new File(
                 dir,
@@ -1627,7 +1631,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2012_MAY", f);
         // AUG
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_AUG_2012");
         dir = new File(
                 dir,
@@ -1638,7 +1642,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2012_AUG", f);
         // NOV
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_NOV_2012");
         dir = new File(
                 dir,
@@ -1651,7 +1655,7 @@ public class DW_Postcode_Handler implements Serializable {
         // 2013
         // FEB
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_FEB_2013");
         dir = new File(
                 dir,
@@ -1662,7 +1666,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2013_FEB", f);
         // MAY
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_MAY_2013");
         dir = new File(
                 dir,
@@ -1673,7 +1677,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2013_MAY", f);
         // AUG
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_AUG_2013");
         dir = new File(
                 dir,
@@ -1684,7 +1688,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2013_AUG", f);
         // NOV
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_NOV_2013");
         dir = new File(
                 dir,
@@ -1697,7 +1701,7 @@ public class DW_Postcode_Handler implements Serializable {
         // 2014
         // FEB
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_FEB_2014");
         dir = new File(
                 dir,
@@ -1708,7 +1712,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2014_FEB", f);
         // MAY
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_MAY_2014");
         dir = new File(
                 dir,
@@ -1719,7 +1723,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2014_MAY", f);
         // AUG
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_AUG_2014");
         dir = new File(
                 dir,
@@ -1731,7 +1735,7 @@ public class DW_Postcode_Handler implements Serializable {
 
         // NOV
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_NOV_2014");
         dir = new File(
                 dir,
@@ -1744,7 +1748,7 @@ public class DW_Postcode_Handler implements Serializable {
         // 2015
         // FEB     
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_FEB_2015");
         dir = new File(
                 dir,
@@ -1755,7 +1759,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2015_FEB", f);
         // MAY
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_MAY_2015");
         dir = new File(
                 dir,
@@ -1766,7 +1770,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2015_MAY", f);
         // AUG
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_AUG_2015");
         dir = new File(
                 dir,
@@ -1777,7 +1781,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2015_AUG", f);
         // NOV
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_NOV_2015");
         dir = new File(
                 dir,
@@ -1789,7 +1793,7 @@ public class DW_Postcode_Handler implements Serializable {
         // 2016
         // FEB     
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_FEB_2016");
         dir = new File(
                 dir,
@@ -1800,7 +1804,7 @@ public class DW_Postcode_Handler implements Serializable {
         result.put("2016_FEB", f);
         // MAY
         dir = new File(
-                DW_Files.getInputONSPDDir(),
+                env.getDW_Files().getInputONSPDDir(),
                 "ONSPD_MAY_2016");
         dir = new File(
                 dir,

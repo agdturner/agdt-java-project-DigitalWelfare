@@ -18,6 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -28,8 +29,9 @@ import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
-public class DW_Data_BLC_Handler {
+public class DW_Data_BLC_Handler extends DW_Object {
 
+    
     public DW_Data_BLC_Handler() {
     }
 
@@ -55,7 +57,7 @@ public class DW_Data_BLC_Handler {
         TreeMap<String, DW_Data_BLC_Record> result;
         result = new TreeMap<String, DW_Data_BLC_Record>();
         File directory = new File(
-                DW_Files.getInputAdviceLeedsDir(),
+                env.getDW_Files().getInputAdviceLeedsDir(),
                 "BurleyLodgeCentre");
         File inputFile = new File(
                 directory,

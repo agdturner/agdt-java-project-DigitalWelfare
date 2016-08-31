@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.log.DW_Log;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
@@ -21,11 +22,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  * CollectionManager. This class contains methods for creating and deleting file
  * stores/caches.
  */
-public class DW_SHBE_CollectionHandler
-        //        extends GENESIS_OutOfMemoryErrorHandler
+public class DW_SHBE_CollectionHandler extends DW_Object
         implements Serializable {
-
-    final transient DW_Environment env;
 
     protected HashMap<Long, DW_SHBE_Collection> collections;
 
@@ -67,7 +65,7 @@ public class DW_SHBE_CollectionHandler
             DW_Environment env) {
         this.env = env;
         _Directory = new File(
-                DW_Files.getSwapSHBEDir(),
+                env.getDW_Files().getSwapSHBEDir(),
                 "Collection" + System.currentTimeMillis());
         init();
     }
@@ -77,7 +75,7 @@ public class DW_SHBE_CollectionHandler
             String filename) {
         this.env = env;
         _Directory = new File(
-                DW_Files.getSwapSHBEDir(),
+                env.getDW_Files().getSwapSHBEDir(),
                 filename);
         init();
     }
@@ -111,6 +109,7 @@ public class DW_SHBE_CollectionHandler
         result = null;
         try {
             result = new DW_SHBE_Collection(
+                    env,
                     filename,
                     inPaymentType);
         } catch (OutOfMemoryError e) {
@@ -176,7 +175,7 @@ public class DW_SHBE_CollectionHandler
      */
     public Long getMaxCollectionID() {
         return Generic_StaticIO.getArchiveHighestLeaf(
-                DW_Files.getSwapSHBEDir(),
+                env.getDW_Files().getSwapSHBEDir(),
                 "_");
     }
 
@@ -186,7 +185,7 @@ public class DW_SHBE_CollectionHandler
         long maxCollectionID = getMaxCollectionID();
         result = new File(
                 Generic_StaticIO.getObjectDirectory(
-                        DW_Files.getSwapSHBEDir(),
+                        env.getDW_Files().getSwapSHBEDir(),
                         a_Agent_ID,
                         maxCollectionID,
                         _MaximumNumberOfObjectsPerDirectory),
@@ -236,7 +235,7 @@ public class DW_SHBE_CollectionHandler
         if (result == null) {
             File dir;
             dir = Generic_StaticIO.getObjectDirectory(
-                    DW_Files.getSwapSHBEDir(),
+                    env.getDW_Files().getSwapSHBEDir(),
                     ID,
                     ID,
                     _MaximumNumberPerCollection);

@@ -34,15 +34,14 @@ import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_SHBE_Collection implements Serializable {
-
-    transient DW_Environment env;
+public class DW_SHBE_Collection extends DW_Object implements Serializable {
 
     private transient DW_SHBE_CollectionHandler handler;
 
@@ -217,28 +216,32 @@ public class DW_SHBE_Collection implements Serializable {
      * @param paymentType
      */
     public DW_SHBE_Collection(
+            DW_Environment env,
             String inputFilename,
             String paymentType
     ) {
-        File DRecordsFile = DW_SHBE_Handler.getDRecordsFile(paymentType, inputFilename);
-        File SRecordsWithoutDRecordsFile = DW_SHBE_Handler.getSRecordsWithoutDRecordsFile(paymentType, inputFilename);
-        File SRecordIDToCTBRefFile = DW_SHBE_Handler.getSRecordIDToCTBRefFile(paymentType, inputFilename);
-        File ClaimantIDsFile = DW_SHBE_Handler.getClaimantIDsFile(paymentType, inputFilename);
-        File PartnerIDsFile = DW_SHBE_Handler.getPartnerIDsFile(paymentType, inputFilename);
-        File DependentsIDsFile = DW_SHBE_Handler.getDependentIDsFile(paymentType, inputFilename);
-        File NonDependentsIDsFile = DW_SHBE_Handler.getNonDependentIDsFile(paymentType, inputFilename);
-        File AllHouseholdIDsFile = DW_SHBE_Handler.getAllHouseholdIDsFile(paymentType, inputFilename);
-        File PairedClaimantIDsFile = DW_SHBE_Handler.getPairedClaimantIDsFile(paymentType, inputFilename);
-        File ClaimantIDToRecordIDLookupFile = DW_SHBE_Handler.getClaimantIDToRecordIDLookupFile(paymentType, inputFilename);
-        File ClaimantIDToPostcodeLookupFile = DW_SHBE_Handler.getClaimantIDToPostcodeLookupFile(paymentType, inputFilename);
-        File ClaimantIDToTenancyTypeLookupFile = DW_SHBE_Handler.getClaimantIDToTenancyTypeLookupFile(paymentType, inputFilename);
-        File CTBRefToClaimantIDLookupFile = DW_SHBE_Handler.getCTBRefToClaimantIDLookupFile(paymentType, inputFilename);
-        File ClaimantIDToCTBRefLookupFile = DW_SHBE_Handler.getClaimantIDToCTBRefLookupFile(paymentType, inputFilename);
-        File LoadSummaryFile = DW_SHBE_Handler.getLoadSummaryFile(paymentType, inputFilename);
-        File ClaimantIDAndPostcodeFile = DW_SHBE_Handler.getClaimantIDPostcodeSetFile(paymentType, inputFilename);
-        File ClaimantIDAndTenancyTypeFile = DW_SHBE_Handler.getClaimantIDTenancyTypeSetFile(paymentType, inputFilename);
-        File ClaimantIDAndPostcodeAndTenancyTypeFile = DW_SHBE_Handler.getClaimantIDTenancyPostcodeTypeSetFile(paymentType, inputFilename);
-        File RecordIDsNotLoadedFile = DW_SHBE_Handler.getRecordIDsNotLoadedFile(paymentType, inputFilename);
+        this.env = env;
+        DW_SHBE_Handler tDW_SHBE_Handler;
+        tDW_SHBE_Handler = env.getDW_SHBE_Handler();
+        File DRecordsFile = tDW_SHBE_Handler.getDRecordsFile(paymentType, inputFilename);
+        File SRecordsWithoutDRecordsFile = tDW_SHBE_Handler.getSRecordsWithoutDRecordsFile(paymentType, inputFilename);
+        File SRecordIDToCTBRefFile = tDW_SHBE_Handler.getSRecordIDToCTBRefFile(paymentType, inputFilename);
+        File ClaimantIDsFile = tDW_SHBE_Handler.getClaimantIDsFile(paymentType, inputFilename);
+        File PartnerIDsFile = tDW_SHBE_Handler.getPartnerIDsFile(paymentType, inputFilename);
+        File DependentsIDsFile = tDW_SHBE_Handler.getDependentIDsFile(paymentType, inputFilename);
+        File NonDependentsIDsFile = tDW_SHBE_Handler.getNonDependentIDsFile(paymentType, inputFilename);
+        File AllHouseholdIDsFile = tDW_SHBE_Handler.getAllHouseholdIDsFile(paymentType, inputFilename);
+        File PairedClaimantIDsFile = tDW_SHBE_Handler.getPairedClaimantIDsFile(paymentType, inputFilename);
+        File ClaimantIDToRecordIDLookupFile = tDW_SHBE_Handler.getClaimantIDToRecordIDLookupFile(paymentType, inputFilename);
+        File ClaimantIDToPostcodeLookupFile = tDW_SHBE_Handler.getClaimantIDToPostcodeLookupFile(paymentType, inputFilename);
+        File ClaimantIDToTenancyTypeLookupFile = tDW_SHBE_Handler.getClaimantIDToTenancyTypeLookupFile(paymentType, inputFilename);
+        File CTBRefToClaimantIDLookupFile = tDW_SHBE_Handler.getCTBRefToClaimantIDLookupFile(paymentType, inputFilename);
+        File ClaimantIDToCTBRefLookupFile = tDW_SHBE_Handler.getClaimantIDToCTBRefLookupFile(paymentType, inputFilename);
+        File LoadSummaryFile = tDW_SHBE_Handler.getLoadSummaryFile(paymentType, inputFilename);
+        File ClaimantIDAndPostcodeFile = tDW_SHBE_Handler.getClaimantIDPostcodeSetFile(paymentType, inputFilename);
+        File ClaimantIDAndTenancyTypeFile = tDW_SHBE_Handler.getClaimantIDTenancyTypeSetFile(paymentType, inputFilename);
+        File ClaimantIDAndPostcodeAndTenancyTypeFile = tDW_SHBE_Handler.getClaimantIDTenancyPostcodeTypeSetFile(paymentType, inputFilename);
+        File RecordIDsNotLoadedFile = tDW_SHBE_Handler.getRecordIDsNotLoadedFile(paymentType, inputFilename);
         Records = (TreeMap<String, DW_SHBE_Record>) Generic_StaticIO.readObject(DRecordsFile);
         SRecordsWithoutDRecords = (TreeMap<String, DW_SHBE_S_Record>) Generic_StaticIO.readObject(SRecordsWithoutDRecordsFile);
         SRecordIDToCTBRef = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(SRecordIDToCTBRefFile);
@@ -282,6 +285,7 @@ public class DW_SHBE_Collection implements Serializable {
         System.err.println("----------------------");
         this.ID = ID;
         this.handler = handler;
+        this.env = handler.env;
         this.InputFile = new File(inputDirectory, inputFilename);
         this.PaymentType = paymentType;
         // NINO
@@ -293,33 +297,35 @@ public class DW_SHBE_Collection implements Serializable {
         HashMap<DW_ID, DW_PersonID> DW_IDToDW_PersonIDLookup;
         HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
         HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
-        NINOToDW_IDLookup = DW_SHBE_Handler.getNINOToDW_IDLookup();
-        DW_IDToNINOLookup = DW_SHBE_Handler.getDW_IDToNINOLookup();
-        DOBToDW_IDLookup = DW_SHBE_Handler.getDOBToDW_IDLookup();
-        DW_IDToDOBLookup = DW_SHBE_Handler.getDW_IDToDOBLookup();
-        PostcodeToPostcodeIDLookup = DW_SHBE_Handler.getPostcodeToPostcodeIDLookup();
-        PostcodeIDToPostcodeLookup = DW_SHBE_Handler.getPostcodeIDToPostcodeLookup();
-        DW_PersonIDToDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
-        DW_IDToDW_PersonIDLookup = DW_SHBE_Handler.getDW_IDToDW_PersonIDLookup();
-        File DRecordsFile = DW_SHBE_Handler.getDRecordsFile(paymentType, inputFilename);
-        File SRecordsWithoutDRecordsFile = DW_SHBE_Handler.getSRecordsWithoutDRecordsFile(paymentType, inputFilename);
-        File SRecordIDToCTBRefFile = DW_SHBE_Handler.getSRecordIDToCTBRefFile(paymentType, inputFilename);
-        File ClaimantIDsFile = DW_SHBE_Handler.getClaimantIDsFile(paymentType, inputFilename);
-        File PartnerIDsFile = DW_SHBE_Handler.getPartnerIDsFile(paymentType, inputFilename);
-        File DependentsIDsFile = DW_SHBE_Handler.getDependentIDsFile(paymentType, inputFilename);
-        File NonDependentsIDsFile = DW_SHBE_Handler.getNonDependentIDsFile(paymentType, inputFilename);
-        File AllHouseholdIDsFile = DW_SHBE_Handler.getAllHouseholdIDsFile(paymentType, inputFilename);
-        File PairedClaimantIDsFile = DW_SHBE_Handler.getPairedClaimantIDsFile(paymentType, inputFilename);
-        File ClaimantIDToRecordIDLookupFile = DW_SHBE_Handler.getClaimantIDToRecordIDLookupFile(paymentType, inputFilename);
-        File ClaimantIDToPostcodeLookupFile = DW_SHBE_Handler.getClaimantIDToPostcodeLookupFile(paymentType, inputFilename);
-        File ClaimantIDToTenancyTypeLookupFile = DW_SHBE_Handler.getClaimantIDToTenancyTypeLookupFile(paymentType, inputFilename);
-        File CTBRefToClaimantIDLookupFile = DW_SHBE_Handler.getCTBRefToClaimantIDLookupFile(paymentType, inputFilename);
-        File ClaimantIDToCTBRefLookupFile = DW_SHBE_Handler.getClaimantIDToCTBRefLookupFile(paymentType, inputFilename);
-        File LoadSummaryFile = DW_SHBE_Handler.getLoadSummaryFile(paymentType, inputFilename);
-        File ClaimantIDAndPostcodeFile = DW_SHBE_Handler.getClaimantIDPostcodeSetFile(paymentType, inputFilename);
-        File ClaimantIDAndTenancyTypeFile = DW_SHBE_Handler.getClaimantIDTenancyTypeSetFile(paymentType, inputFilename);
-        File ClaimantIDAndPostcodeAndTenancyTypeFile = DW_SHBE_Handler.getClaimantIDTenancyPostcodeTypeSetFile(paymentType, inputFilename);
-        File RecordIDsNotLoadedFile = DW_SHBE_Handler.getRecordIDsNotLoadedFile(paymentType, inputFilename);
+        DW_SHBE_Handler tDW_SHBE_Handler;
+        tDW_SHBE_Handler = env.getDW_SHBE_Handler();
+        NINOToDW_IDLookup = tDW_SHBE_Handler.getNINOToDW_IDLookup();
+        DW_IDToNINOLookup = tDW_SHBE_Handler.getDW_IDToNINOLookup();
+        DOBToDW_IDLookup = tDW_SHBE_Handler.getDOBToDW_IDLookup();
+        DW_IDToDOBLookup = tDW_SHBE_Handler.getDW_IDToDOBLookup();
+        PostcodeToPostcodeIDLookup = tDW_SHBE_Handler.getPostcodeToPostcodeIDLookup();
+        PostcodeIDToPostcodeLookup = tDW_SHBE_Handler.getPostcodeIDToPostcodeLookup();
+        DW_PersonIDToDW_IDLookup = tDW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
+        DW_IDToDW_PersonIDLookup = tDW_SHBE_Handler.getDW_IDToDW_PersonIDLookup();
+        File DRecordsFile = tDW_SHBE_Handler.getDRecordsFile(paymentType, inputFilename);
+        File SRecordsWithoutDRecordsFile = tDW_SHBE_Handler.getSRecordsWithoutDRecordsFile(paymentType, inputFilename);
+        File SRecordIDToCTBRefFile = tDW_SHBE_Handler.getSRecordIDToCTBRefFile(paymentType, inputFilename);
+        File ClaimantIDsFile = tDW_SHBE_Handler.getClaimantIDsFile(paymentType, inputFilename);
+        File PartnerIDsFile = tDW_SHBE_Handler.getPartnerIDsFile(paymentType, inputFilename);
+        File DependentsIDsFile = tDW_SHBE_Handler.getDependentIDsFile(paymentType, inputFilename);
+        File NonDependentsIDsFile = tDW_SHBE_Handler.getNonDependentIDsFile(paymentType, inputFilename);
+        File AllHouseholdIDsFile = tDW_SHBE_Handler.getAllHouseholdIDsFile(paymentType, inputFilename);
+        File PairedClaimantIDsFile = tDW_SHBE_Handler.getPairedClaimantIDsFile(paymentType, inputFilename);
+        File ClaimantIDToRecordIDLookupFile = tDW_SHBE_Handler.getClaimantIDToRecordIDLookupFile(paymentType, inputFilename);
+        File ClaimantIDToPostcodeLookupFile = tDW_SHBE_Handler.getClaimantIDToPostcodeLookupFile(paymentType, inputFilename);
+        File ClaimantIDToTenancyTypeLookupFile = tDW_SHBE_Handler.getClaimantIDToTenancyTypeLookupFile(paymentType, inputFilename);
+        File CTBRefToClaimantIDLookupFile = tDW_SHBE_Handler.getCTBRefToClaimantIDLookupFile(paymentType, inputFilename);
+        File ClaimantIDToCTBRefLookupFile = tDW_SHBE_Handler.getClaimantIDToCTBRefLookupFile(paymentType, inputFilename);
+        File LoadSummaryFile = tDW_SHBE_Handler.getLoadSummaryFile(paymentType, inputFilename);
+        File ClaimantIDAndPostcodeFile = tDW_SHBE_Handler.getClaimantIDPostcodeSetFile(paymentType, inputFilename);
+        File ClaimantIDAndTenancyTypeFile = tDW_SHBE_Handler.getClaimantIDTenancyTypeSetFile(paymentType, inputFilename);
+        File ClaimantIDAndPostcodeAndTenancyTypeFile = tDW_SHBE_Handler.getClaimantIDTenancyPostcodeTypeSetFile(paymentType, inputFilename);
+        File RecordIDsNotLoadedFile = tDW_SHBE_Handler.getRecordIDsNotLoadedFile(paymentType, inputFilename);
         long collectionID = 0L;
         DW_SHBE_Collection collection;
         collection = new DW_SHBE_Collection(collectionID, handler);
@@ -399,7 +405,7 @@ public class DW_SHBE_Collection implements Serializable {
                                             throw new Exception("Duplicate SRecord " + SRecord);
                                         }
                                         boolean doLoop = false;
-                                        if (paymentType.equalsIgnoreCase(DW_SHBE_Handler.sAllPT)) {
+                                        if (paymentType.equalsIgnoreCase(tDW_SHBE_Handler.sAllPT)) {
                                             doLoop = true;
                                         } else {
                                             DW_SHBE_D_Record DRecord;
@@ -408,17 +414,17 @@ public class DW_SHBE_Collection implements Serializable {
                                             StatusOfHBClaimAtExtractDate = DRecord.getStatusOfHBClaimAtExtractDate();
                                             int StatusOfCTBClaimAtExtractDate;
                                             StatusOfCTBClaimAtExtractDate = DRecord.getStatusOfCTBClaimAtExtractDate();
-                                            if (paymentType.equalsIgnoreCase(DW_SHBE_Handler.sInPayment)
+                                            if (paymentType.equalsIgnoreCase(tDW_SHBE_Handler.sInPayment)
                                                     && (StatusOfHBClaimAtExtractDate == 1
                                                     || StatusOfCTBClaimAtExtractDate == 1)) {
                                                 doLoop = true;
                                             }
-                                            if (paymentType.equalsIgnoreCase(DW_SHBE_Handler.sSuspended)
+                                            if (paymentType.equalsIgnoreCase(tDW_SHBE_Handler.sSuspended)
                                                     && (StatusOfHBClaimAtExtractDate == 2
                                                     || StatusOfCTBClaimAtExtractDate == 2)) {
                                                 doLoop = true;
                                             }
-                                            if (paymentType.equalsIgnoreCase(DW_SHBE_Handler.sOtherPT)
+                                            if (paymentType.equalsIgnoreCase(tDW_SHBE_Handler.sOtherPT)
                                                     && (StatusOfHBClaimAtExtractDate == 0
                                                     || StatusOfCTBClaimAtExtractDate == 0)) {
                                                 doLoop = true;
@@ -426,6 +432,7 @@ public class DW_SHBE_Collection implements Serializable {
                                         }
                                         if (doLoop) {
                                             doSRecordLoop(
+                                                    tDW_SHBE_Handler,
                                                     NINOToDW_IDLookup,
                                                     DW_IDToNINOLookup,
                                                     DOBToDW_IDLookup,
@@ -487,17 +494,17 @@ public class DW_SHBE_Collection implements Serializable {
                                     CTBRef = aDRecord.getCouncilTaxBenefitClaimReferenceNumber();
                                     if (CTBRef != null) {
                                         boolean doLoop = false;
-                                        if (paymentType.equalsIgnoreCase(DW_SHBE_Handler.sAllPT)) {
+                                        if (paymentType.equalsIgnoreCase(tDW_SHBE_Handler.sAllPT)) {
                                             doLoop = true;
                                             if (!CTBRef.trim().isEmpty()) {
                                                 totalCouncilTaxBenefitClaims++;
-                                                if (DW_SHBE_Handler.isHBClaim(aDRecord)) {
+                                                if (tDW_SHBE_Handler.isHBClaim(aDRecord)) {
                                                     totalCouncilTaxAndHousingBenefitClaims++;
                                                     totalHousingBenefitClaims++;
                                                 }
                                             } else {
                                                 int Debug = 1; // Did think that all records had a CTBRef
-                                                if (DW_SHBE_Handler.isHBClaim(aDRecord)) {
+                                                if (tDW_SHBE_Handler.isHBClaim(aDRecord)) {
                                                     totalHousingBenefitClaims++;
                                                 }
                                             }
@@ -506,11 +513,11 @@ public class DW_SHBE_Collection implements Serializable {
                                             StatusOfCTBClaimAtExtractDate = aDRecord.getStatusOfCTBClaimAtExtractDate();
                                             int StatusOfHBClaimAtExtractDate;
                                             StatusOfHBClaimAtExtractDate = aDRecord.getStatusOfHBClaimAtExtractDate();
-                                            if (paymentType.equalsIgnoreCase(DW_SHBE_Handler.sInPayment) && (StatusOfHBClaimAtExtractDate == 1 || StatusOfCTBClaimAtExtractDate == 1)) {
+                                            if (paymentType.equalsIgnoreCase(tDW_SHBE_Handler.sInPayment) && (StatusOfHBClaimAtExtractDate == 1 || StatusOfCTBClaimAtExtractDate == 1)) {
                                                 doLoop = true;
                                                 boolean isCTBClaimInPayment;
-                                                isCTBClaimInPayment = DW_SHBE_Handler.isCTBOnlyClaimInPayment(aDRecord);
-                                                if (DW_SHBE_Handler.isHBClaimInPayment(aDRecord)) {
+                                                isCTBClaimInPayment = tDW_SHBE_Handler.isCTBOnlyClaimInPayment(aDRecord);
+                                                if (tDW_SHBE_Handler.isHBClaimInPayment(aDRecord)) {
                                                     totalHousingBenefitClaims++;
                                                     if (isCTBClaimInPayment) {
                                                         totalCouncilTaxAndHousingBenefitClaims++;
@@ -520,11 +527,11 @@ public class DW_SHBE_Collection implements Serializable {
                                                     totalCouncilTaxBenefitClaims++;
                                                 }
                                             }
-                                            if (paymentType.equalsIgnoreCase(DW_SHBE_Handler.sSuspended) && (StatusOfHBClaimAtExtractDate == 2 || StatusOfCTBClaimAtExtractDate == 2)) {
+                                            if (paymentType.equalsIgnoreCase(tDW_SHBE_Handler.sSuspended) && (StatusOfHBClaimAtExtractDate == 2 || StatusOfCTBClaimAtExtractDate == 2)) {
                                                 doLoop = true;
                                                 boolean isCTBClaimSuspended;
-                                                isCTBClaimSuspended = DW_SHBE_Handler.isCTBOnlyClaimSuspended(aDRecord);
-                                                if (DW_SHBE_Handler.isHBClaimSuspended(aDRecord)) {
+                                                isCTBClaimSuspended = tDW_SHBE_Handler.isCTBOnlyClaimSuspended(aDRecord);
+                                                if (tDW_SHBE_Handler.isHBClaimSuspended(aDRecord)) {
                                                     totalHousingBenefitClaims++;
                                                     if (isCTBClaimSuspended) {
                                                         totalCouncilTaxAndHousingBenefitClaims++;
@@ -534,11 +541,11 @@ public class DW_SHBE_Collection implements Serializable {
                                                     totalCouncilTaxBenefitClaims++;
                                                 }
                                             }
-                                            if (paymentType.equalsIgnoreCase(DW_SHBE_Handler.sOtherPT) && (StatusOfHBClaimAtExtractDate == 0 || StatusOfCTBClaimAtExtractDate == 0)) {
+                                            if (paymentType.equalsIgnoreCase(tDW_SHBE_Handler.sOtherPT) && (StatusOfHBClaimAtExtractDate == 0 || StatusOfCTBClaimAtExtractDate == 0)) {
                                                 doLoop = true;
                                                 boolean isCTBClaimOtherPT;
-                                                isCTBClaimOtherPT = DW_SHBE_Handler.isCTBOnlyClaimOtherPT(aDRecord);
-                                                if (DW_SHBE_Handler.isHBClaimOtherPT(aDRecord)) {
+                                                isCTBClaimOtherPT = tDW_SHBE_Handler.isCTBOnlyClaimOtherPT(aDRecord);
+                                                if (tDW_SHBE_Handler.isHBClaimOtherPT(aDRecord)) {
                                                     totalHousingBenefitClaims++;
                                                     if (isCTBClaimOtherPT) {
                                                         totalCouncilTaxAndHousingBenefitClaims++;
@@ -550,7 +557,7 @@ public class DW_SHBE_Collection implements Serializable {
                                             }
                                         }
                                         if (doLoop) {
-                                            totalIncome = DW_SHBE_Handler.getClaimantsAndPartnersIncomeTotal(aDRecord);
+                                            totalIncome = tDW_SHBE_Handler.getClaimantsAndPartnersIncomeTotal(aDRecord);
                                             grandTotalIncome += totalIncome;
                                             if (totalIncome > 0) {
                                                 totalIncomeGreaterThanZeroCount++;
@@ -570,14 +577,14 @@ public class DW_SHBE_Collection implements Serializable {
                                             String claimantNINO;
                                             claimantNINO = aDRecord.getClaimantsNationalInsuranceNumber();
                                             DW_ID claimantNINODW_ID;
-                                            claimantNINODW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
+                                            claimantNINODW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                                                     claimantNINO,
                                                     NINOToDW_IDLookup,
                                                     DW_IDToNINOLookup);
                                             String claimantDOB;
                                             claimantDOB = aDRecord.getClaimantsDateOfBirth();
                                             DW_ID claimantDOBDW_ID;
-                                            claimantDOBDW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
+                                            claimantDOBDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                                                     claimantDOB,
                                                     DOBToDW_IDLookup,
                                                     DW_IDToDOBLookup);
@@ -618,7 +625,7 @@ public class DW_SHBE_Collection implements Serializable {
                                                 postcode = DW_Postcode_Handler.formatPostcode(aDRecord.getClaimantsPostcode());
                                                 ClaimantIDToPostcodeLookup.put(claimantID, postcode);
                                                 DW_ID postcodeID;
-                                                postcodeID = DW_SHBE_Handler.getPostcodeIDAddIfNeeded(
+                                                postcodeID = tDW_SHBE_Handler.getPostcodeIDAddIfNeeded(
                                                         postcode,
                                                         PostcodeToPostcodeIDLookup,
                                                         PostcodeIDToPostcodeLookup);
@@ -632,7 +639,7 @@ public class DW_SHBE_Collection implements Serializable {
                                                 AllIDs.add(claimantDW_PersonID);
                                             } else {
                                                 ClaimantIDs.add(claimantDW_PersonID);
-                                                DW_ID claimantID = DW_SHBE_Handler.getIDAddIfNeeded(
+                                                DW_ID claimantID = tDW_SHBE_Handler.getIDAddIfNeeded(
                                                         claimantDW_PersonID,
                                                         DW_PersonIDToDW_IDLookup,
                                                         DW_IDToDW_PersonIDLookup);
@@ -643,7 +650,7 @@ public class DW_SHBE_Collection implements Serializable {
                                                 postcode = DW_Postcode_Handler.formatPostcode(aDRecord.getClaimantsPostcode());
                                                 ClaimantIDToPostcodeLookup.put(claimantID, postcode);
                                                 DW_ID postcodeID;
-                                                postcodeID = DW_SHBE_Handler.getPostcodeIDAddIfNeeded(
+                                                postcodeID = tDW_SHBE_Handler.getPostcodeIDAddIfNeeded(
                                                         postcode,
                                                         PostcodeToPostcodeIDLookup,
                                                         PostcodeIDToPostcodeLookup);
@@ -659,14 +666,14 @@ public class DW_SHBE_Collection implements Serializable {
                                                     String partnerNINO;
                                                     partnerNINO = aDRecord.getPartnersNationalInsuranceNumber();
                                                     DW_ID partnerNINODW_ID;
-                                                    partnerNINODW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
+                                                    partnerNINODW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                                                             partnerNINO,
                                                             NINOToDW_IDLookup,
                                                             DW_IDToNINOLookup);
                                                     String partnerDOB;
                                                     partnerDOB = aDRecord.getPartnersDateOfBirth();
                                                     DW_ID partnerDOBDW_ID;
-                                                    partnerDOBDW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
+                                                    partnerDOBDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                                                             partnerDOB,
                                                             DOBToDW_IDLookup,
                                                             DW_IDToDOBLookup);
@@ -681,7 +688,7 @@ public class DW_SHBE_Collection implements Serializable {
                                                         int debug = 1;
                                                     }
                                                     PartnerIDs.add(partnerDW_PersonID);
-                                                    DW_ID partnerID = DW_SHBE_Handler.getIDAddIfNeeded(
+                                                    DW_ID partnerID = tDW_SHBE_Handler.getIDAddIfNeeded(
                                                             partnerDW_PersonID,
                                                             DW_PersonIDToDW_IDLookup,
                                                             DW_IDToDW_PersonIDLookup);
@@ -737,6 +744,7 @@ public class DW_SHBE_Collection implements Serializable {
                 DW_SHBE_S_Record SRecord;
                 SRecord = SRecordsWithoutDRecords.get(CTBRef);
                 doSRecordLoop(
+                        tDW_SHBE_Handler,
                         NINOToDW_IDLookup,
                         DW_IDToNINOLookup,
                         DOBToDW_IDLookup,
@@ -811,6 +819,7 @@ public class DW_SHBE_Collection implements Serializable {
     }
 
     private void doSRecordLoop(
+            DW_SHBE_Handler tDW_SHBE_Handler,
             HashMap<String, DW_ID> NINOToDW_IDLookup,
             HashMap<DW_ID, String> DW_IDToNINOLookup,
             HashMap<String, DW_ID> DOBToDW_IDLookup,
@@ -838,18 +847,18 @@ public class DW_SHBE_Collection implements Serializable {
             sNINO += "_" + SRecord.getClaimantsNationalInsuranceNumber();
         }
         DW_ID sNINODW_ID;
-        sNINODW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
+        sNINODW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                 sNINO, NINOToDW_IDLookup,
                 DW_IDToNINOLookup);
         String sDOB;
         sDOB = SRecord.getSubRecordDateOfBirth();
         DW_ID sDOBDW_ID;
-        sDOBDW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
+        sDOBDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                 sDOB, DOBToDW_IDLookup,
                 DW_IDToDOBLookup);
         DW_PersonID sDW_PersonID;
         sDW_PersonID = new DW_PersonID(sNINODW_ID, sDOBDW_ID);
-        DW_ID sDW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
+        DW_ID sDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                 sDW_PersonID,
                 DW_PersonIDToDW_IDLookup,
                 DW_IDToDW_PersonIDLookup);
@@ -870,10 +879,14 @@ public class DW_SHBE_Collection implements Serializable {
                     //System.out.println("SRecord does not have a DRecord and SRecord ID not unique");
                     Object[] SRecordIDUpdate;
                     SRecordIDUpdate = getSRecordIDUpdate(
-                            NINOToDW_IDLookup, DW_IDToNINOLookup,
-                            DOBToDW_IDLookup, DW_IDToDOBLookup,
+                            tDW_SHBE_Handler,
+                            NINOToDW_IDLookup, 
+                            DW_IDToNINOLookup,
+                            DOBToDW_IDLookup, 
+                            DW_IDToDOBLookup,
                             DW_PersonIDToDW_IDLookup,
-                            DW_IDToDW_PersonIDLookup, SRecord);
+                            DW_IDToDW_PersonIDLookup, 
+                            SRecord);
                     sDW_ID = (DW_ID) SRecordIDUpdate[0];
                     sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
                 } else {
@@ -881,10 +894,14 @@ public class DW_SHBE_Collection implements Serializable {
                         //System.out.println("Not Paired DRecord and NonDependent SRecord ID not unique");
                         Object[] SRecordIDUpdate;
                         SRecordIDUpdate = getSRecordIDUpdate(
-                                NINOToDW_IDLookup, DW_IDToNINOLookup,
-                                DOBToDW_IDLookup, DW_IDToDOBLookup,
+                                tDW_SHBE_Handler,
+                                NINOToDW_IDLookup, 
+                                DW_IDToNINOLookup,
+                                DOBToDW_IDLookup, 
+                                DW_IDToDOBLookup,
                                 DW_PersonIDToDW_IDLookup,
-                                DW_IDToDW_PersonIDLookup, SRecord);
+                                DW_IDToDW_PersonIDLookup, 
+                                SRecord);
                         sDW_ID = (DW_ID) SRecordIDUpdate[0];
                         sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
                     }
@@ -910,10 +927,14 @@ public class DW_SHBE_Collection implements Serializable {
                     //System.out.println("SRecord does not have a DRecord and SRecord ID not unique");
                     Object[] SRecordIDUpdate;
                     SRecordIDUpdate = getSRecordIDUpdate(
-                            NINOToDW_IDLookup, DW_IDToNINOLookup,
-                            DOBToDW_IDLookup, DW_IDToDOBLookup,
+                            tDW_SHBE_Handler,
+                            NINOToDW_IDLookup,
+                            DW_IDToNINOLookup,
+                            DOBToDW_IDLookup,
+                            DW_IDToDOBLookup,
                             DW_PersonIDToDW_IDLookup,
-                            DW_IDToDW_PersonIDLookup, SRecord);
+                            DW_IDToDW_PersonIDLookup,
+                            SRecord);
                     sDW_ID = (DW_ID) SRecordIDUpdate[0];
                     sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
                 } else {
@@ -921,10 +942,14 @@ public class DW_SHBE_Collection implements Serializable {
                         //System.out.println("Not Paired DRecord and Dependent SRecord ID not unique");
                         Object[] SRecordIDUpdate;
                         SRecordIDUpdate = getSRecordIDUpdate(
-                                NINOToDW_IDLookup, DW_IDToNINOLookup,
-                                DOBToDW_IDLookup, DW_IDToDOBLookup,
+                                tDW_SHBE_Handler,
+                                NINOToDW_IDLookup,
+                                DW_IDToNINOLookup,
+                                DOBToDW_IDLookup,
+                                DW_IDToDOBLookup,
                                 DW_PersonIDToDW_IDLookup,
-                                DW_IDToDW_PersonIDLookup, SRecord);
+                                DW_IDToDW_PersonIDLookup,
+                                SRecord);
                         sDW_ID = (DW_ID) SRecordIDUpdate[0];
                         sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
                     }
@@ -942,6 +967,7 @@ public class DW_SHBE_Collection implements Serializable {
      * @return
      */
     private Object[] getSRecordIDUpdate(
+            DW_SHBE_Handler tDW_SHBE_Handler,
             HashMap<String, DW_ID> NINOToDW_IDLookup,
             HashMap<DW_ID, String> DW_IDToNINOLookup,
             HashMap<String, DW_ID> DOBToDW_IDLookup,
@@ -961,20 +987,20 @@ public class DW_SHBE_Collection implements Serializable {
             String sNINO;
             sNINO = "" + i + "_" + SRecord.getClaimantsNationalInsuranceNumber();
             DW_ID sNINODW_ID;
-            sNINODW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
+            sNINODW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                     sNINO, NINOToDW_IDLookup,
                     DW_IDToNINOLookup);
             String sDOB;
             sDOB = SRecord.getSubRecordDateOfBirth();
             DW_ID sDOBDW_ID;
-            sDOBDW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
+            sDOBDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                     sDOB, DOBToDW_IDLookup,
                     DW_IDToDOBLookup);
             sDW_PersonID = new DW_PersonID(sNINODW_ID, sDOBDW_ID);
             if (DW_PersonIDToDW_IDLookup.containsKey(sDW_PersonID)) {
                 i++;
             } else {
-                DW_ID sDW_ID = DW_SHBE_Handler.getIDAddIfNeeded(
+                DW_ID sDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                         sDW_PersonID,
                         DW_PersonIDToDW_IDLookup,
                         DW_IDToDW_PersonIDLookup);

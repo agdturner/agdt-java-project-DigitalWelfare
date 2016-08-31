@@ -24,6 +24,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_H
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
  * This is the main class for the Digital Welfare Project. For more details of
@@ -33,6 +34,14 @@ import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
  * @author geoagdt
  */
 public abstract class DW_Processor {
+
+    public transient DW_Environment env;
+    public transient DW_Files tDW_Files;
+
+    public DW_Processor(DW_Environment env) {
+        this.env = env;
+        this.tDW_Files = env.getDW_Files();
+    }
 
     /**
      * Returns a transformation of outlet. The first part of outlet (part before
@@ -54,7 +63,6 @@ public abstract class DW_Processor {
         result = outletInUpperCaseFirstLetter + outletInLowerCaseNotFirstLetter;
         return result;
     }
-
 
 //    protected File _DW_directory;
 //    protected PrintWriter pw;
@@ -288,23 +296,27 @@ public abstract class DW_Processor {
      * Keys are postcodes; values are census area codes.
      */
     public static TreeMap<String, String> getLookupFromPostcodeToLevelCode(
+            DW_Environment env,
             String level,
             int year) {
         TreeMap<String, String> result;
+        DW_Files tDW_Files;
+        tDW_Files = env.getDW_Files();
         String outputFilename;
         outputFilename = "PostcodeTo" + level + year
                 + "LookUp_TreeMap_String_Strings.thisFile";
         File outFile = new File(
-                DW_Files.getGeneratedONSPDDir(),
+                tDW_Files.getGeneratedONSPDDir(),
                 outputFilename);
         if (!outFile.exists()) {
             File inputONSPDDir = new File(
-                    DW_Files.getInputONSPDDir(),
+                    tDW_Files.getInputONSPDDir(),
                     "ONSPD_NOV_2013/Data");
             File tONSPD_NOV_2013DataFile = new File(
                     inputONSPDDir,
                     "ONSPD_NOV_2013_UK.csv");
             result = initLookupFromPostcodeToCensusCodes(
+                    env,
                     tONSPD_NOV_2013DataFile,
                     outFile,
                     level,
@@ -353,18 +365,18 @@ public abstract class DW_Processor {
 //        }
 //        return result;
 //    }
-
     /**
      * @return TreeMap<String, String> result where:----------------------------
      * Keys are postcodes; values are census codes:-----------------------------
      */
     private static TreeMap<String, String> initLookupFromPostcodeToCensusCodes(
+            DW_Environment env,
             File tONSPD_NOV_2013DataFile,
             File outFile,
             String level,
             int year) {
         TreeMap<String, String> result = null;
-        result = new DW_Postcode_Handler().getPostcodeUnitCensusCodeLookup(
+        result = env.getDW_Postcode_Handler().getPostcodeUnitCensusCodeLookup(
                 level,
                 year,
                 tONSPD_NOV_2013DataFile,
@@ -372,9 +384,10 @@ public abstract class DW_Processor {
         return result;
     }
 
-    public static TreeMap<String, Deprivation_DataRecord> getDeprivation_Data() {
+    public static TreeMap<String, Deprivation_DataRecord> getDeprivation_Data(
+            DW_Environment env) {
         File depravationDir = new File(
-                DW_Files.getInputCensus2011AttributeDataDir("LSOA"),
+                env.getDW_Files().getInputCensus2011AttributeDataDir("LSOA"),
                 "England/Deprivation");
         String deprivationFilename = "1871524.csv";
         Deprivation_DataHandler aDeprivation_DataHandler;
@@ -419,14 +432,16 @@ public abstract class DW_Processor {
         return result;
     }
 
-    public static TreeMap<String, AGDT_Point> getOutletsAndPoints() {
+    public static TreeMap<String, AGDT_Point> getOutletsAndPoints(
+            DW_Environment env) {
         TreeMap<String, AGDT_Point> result;
-        result = DW_Postcode_Handler.postcodeToPoints(
+        DW_Postcode_Handler tDW_Postcode_Handler;
+        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
+        result = tDW_Postcode_Handler.postcodeToPoints(
                 DW_Processor.getOutletsAndPostcodes(),
                 DW_Postcode_Handler.getDefaultYM3());
         return result;
     }
-
 
     public static TreeMap<String, String> getAdviceLeedsNamesAndPostcodes() {
         TreeMap<String, String> result;
@@ -494,9 +509,12 @@ public abstract class DW_Processor {
         return result;
     }
 
-    public static TreeMap<String, AGDT_Point> getAdviceLeedsNamesAndPoints() {
+    public static TreeMap<String, AGDT_Point> getAdviceLeedsNamesAndPoints(
+            DW_Environment env) {
         TreeMap<String, AGDT_Point> result;
-        result = DW_Postcode_Handler.postcodeToPoints(
+        DW_Postcode_Handler tDW_Postcode_Handler;
+        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
+        result = tDW_Postcode_Handler.postcodeToPoints(
                 DW_Processor.getAdviceLeedsNamesAndPostcodes(),
                 DW_Postcode_Handler.getDefaultYM3());
         return result;

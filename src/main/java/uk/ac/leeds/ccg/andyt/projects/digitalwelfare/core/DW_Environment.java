@@ -24,8 +24,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.log.DW_Log;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_CollectionHandler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 
 /**
  *
@@ -36,20 +39,68 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     public static String sDigitalWelfareDir = "/scratch02/DigitalWelfare";
     //public static String sDigitalWelfareDir = "C:/Users/geoagdt/projects/DigitalWelfare";
-    
-    /**
-     * Used for Logging
-     */
-    private static final String sourceClass = DW_Environment.class.getName();
-    private static final String sourcePackage = DW_Environment.class.getPackage().getName();
-    //= Logger.getLogger(sourcePackage);
-    public File _Directory;
-    /**
-     * A store and reference for all AbstractGrid2DSquareCell
-     */
-    public transient Grids_Environment _Grids_Environment;
 
+    /**
+     * For storing an instance of DW_Files for accessing filenames and Files
+     * therein.
+     */
+    private DW_Files tDW_Files;
+
+    /**
+     * For returning an instance of DW_Files for convenience.
+     */
+    public DW_Files getDW_Files() {
+        if (tDW_Files == null) {
+            tDW_Files = new DW_Files();
+        }
+        return tDW_Files;
+    }
+
+    /**
+     * For storing an instance of Grids_Environment
+     */
+    private transient Grids_Environment tGrids_Environment;
+
+    /**
+     * For returning an instance of Grids_Environment for convenience.
+     */
+    public Grids_Environment getGrids_Environment() {
+        if (tGrids_Environment == null) {
+            tGrids_Environment = new Grids_Environment();
+        }
+        return tGrids_Environment;
+    }
     public transient DW_SHBE_CollectionHandler _DW_SHBE_CollectionHandler;
+
+    /**
+     * For storing an instance of DW_Postcode_Handler for convenience.
+     */
+    private static DW_Postcode_Handler tDW_Postcode_Handler;
+
+    /**
+     * For returning an instance of DW_Postcode_Handler for convenience.
+     */
+    public DW_Postcode_Handler getDW_Postcode_Handler() {
+        if (tDW_Postcode_Handler == null) {
+            tDW_Postcode_Handler = new DW_Postcode_Handler(this);
+        }
+        return tDW_Postcode_Handler;
+    }
+
+    /**
+     * For storing an instance of DW_SHBE_Handler for convenience.
+     */
+    private static DW_SHBE_Handler tDW_SHBE_Handler;
+
+    /**
+     * For returning an instance of DW_SHBE_Handler for convenience.
+     */
+    public DW_SHBE_Handler getDW_SHBE_Handler() {
+        if (tDW_SHBE_Handler == null) {
+            tDW_SHBE_Handler = new DW_SHBE_Handler(this);
+        }
+        return tDW_SHBE_Handler;
+    }
 
     public DW_Environment(String sDigitalWelfareDir) {
         init_DW_Environment(sDigitalWelfareDir);
@@ -57,10 +108,10 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     private void init_DW_Environment(String sDigitalWelfareDir) {
         this.sDigitalWelfareDir = sDigitalWelfareDir;
-        _Grids_Environment = new Grids_Environment();
+        this.tDW_Files = new DW_Files();
         _DW_SHBE_CollectionHandler = new DW_SHBE_CollectionHandler(
                 this,
-                DW_Files.getSwapSHBEDir());
+                tDW_Files.getSwapSHBEDir());
     }
 
     @Override
@@ -82,7 +133,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         }
     }
 
-    public static int getDefaultMaximumNumberOfObjectsPerDirectory() {
+    public int getDefaultMaximumNumberOfObjectsPerDirectory() {
         return 100;
     }
 
@@ -172,37 +223,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             }
         }
         return true;
-    }
-
-    /**
-     * @param handleOutOfMemoryError
-     * @return _Directory
-     */
-    public File get_Directory(
-            boolean handleOutOfMemoryError) {
-        try {
-            File result = get_Directory();
-            tryToEnsureThereIsEnoughMemoryToContinue(
-                    handleOutOfMemoryError);
-            return result;
-        } catch (OutOfMemoryError a_OutOfMemoryError) {
-            if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
-                swapToFile_DataAny();
-                init_MemoryReserve();
-                return get_Directory(
-                        handleOutOfMemoryError);
-            } else {
-                throw a_OutOfMemoryError;
-            }
-        }
-    }
-
-    /**
-     * @return _Directory
-     */
-    protected File get_Directory() {
-        return _Directory;
     }
 
     private static void log(

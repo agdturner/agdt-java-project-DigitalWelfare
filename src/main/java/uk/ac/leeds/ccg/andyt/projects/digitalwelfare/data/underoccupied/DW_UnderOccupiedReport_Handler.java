@@ -28,17 +28,20 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_UnderOccupiedReport_Handler {
+public class DW_UnderOccupiedReport_Handler extends DW_Object {
 
     private HashSet<String> RecordTypes;
 
-    public DW_UnderOccupiedReport_Handler() {
+    public DW_UnderOccupiedReport_Handler(DW_Environment env) {
+        this.env = env;
     }
 
     public HashSet<String> getRecordTypes() {
@@ -50,12 +53,12 @@ public class DW_UnderOccupiedReport_Handler {
      * @param args
      */
     public static void main(String[] args) {
-        new DW_UnderOccupiedReport_Handler().run();
+        new DW_UnderOccupiedReport_Handler(null).run();
     }
 
     public void run() {
         Object[] underOccupiedReportData;
-        underOccupiedReportData = loadUnderOccupiedReportData();
+        underOccupiedReportData = loadUnderOccupiedReportData(env);
         /*
          * 0 2013 14 Under Occupied Report For University Year Start Council Tenants.csv
          * 1 2013 14 Under Occupied Report For University Month 1 Council Tenants.csv
@@ -120,6 +123,7 @@ public class DW_UnderOccupiedReport_Handler {
         String filename;
         filename = "2014 15 Under Occupied Report For University Month 7 Council Tenants.csv";
         DW_UnderOccupiedReport_Set set = new DW_UnderOccupiedReport_Set(
+                env,
                 filename);
 
     }
@@ -215,7 +219,7 @@ public class DW_UnderOccupiedReport_Handler {
      * {@code TreeMap<String, DW_UnderOccupiedReport_Set>}; result[1] = RSLSets
      * {@code TreeMap<String, DW_UnderOccupiedReport_Set>}
      */
-    public static Object[] loadUnderOccupiedReportData() {
+    public static Object[] loadUnderOccupiedReportData(DW_Environment env) {
         Object[] result;
         result = new Object[2];
         TreeMap<String, DW_UnderOccupiedReport_Set> councilSets;
@@ -235,6 +239,7 @@ public class DW_UnderOccupiedReport_Handler {
             String year_Month = ite.next();
             String filename = councilFilenames.get(year_Month);
             DW_UnderOccupiedReport_Set set = new DW_UnderOccupiedReport_Set(
+                    env,
                     filename);
             councilSets.put(year_Month, set);
         }
@@ -243,6 +248,7 @@ public class DW_UnderOccupiedReport_Handler {
             String year_Month = ite.next();
             String filename = RSLFilenames.get(year_Month);
             DW_UnderOccupiedReport_Set set = new DW_UnderOccupiedReport_Set(
+                    env,
                     filename);
             RSLSets.put(year_Month, set);
         }
@@ -407,7 +413,8 @@ public class DW_UnderOccupiedReport_Handler {
         return getMonth(i).substring(0, 3);
     }
 
-    public static HashSet<String> getUnderOccupiedInApril2013CTBRefs() {
+    public static HashSet<String> getUnderOccupiedInApril2013CTBRefs(
+    DW_Environment env) {
         HashSet<String> result;
         result = new HashSet<String>();
         Object[] filenames;
@@ -429,15 +436,17 @@ public class DW_UnderOccupiedReport_Handler {
         RSLFilename = registeredSocialLandlordFilenames.get(year_Month);
         DW_UnderOccupiedReport_Set set;
         set = new DW_UnderOccupiedReport_Set(
+                env,
                 councilFilename);
         result.addAll(set.map.keySet());
         set = new DW_UnderOccupiedReport_Set(
+                env,
                 RSLFilename);
         result.addAll(set.map.keySet());
         return result;
     }
 
-    public static HashSet<String> getUnderOccupiedCTBRefs() {
+    public HashSet<String> getUnderOccupiedCTBRefs() {
         HashSet<String> result;
         result = new HashSet<String>();
         Object[] filenames;
@@ -457,16 +466,18 @@ public class DW_UnderOccupiedReport_Handler {
             RSLFilename = RSLFilenames.get(yM3);
             DW_UnderOccupiedReport_Set set;
             set = new DW_UnderOccupiedReport_Set(
+                    env,
                     CouncilFilename);
             result.addAll(set.map.keySet());
             set = new DW_UnderOccupiedReport_Set(
+                    env,
                     RSLFilename);
             result.addAll(set.map.keySet());
         }
         return result;
     }
 
-    public static HashSet<String> getUnderOccupiedCouncilCTBRefs() {
+    public HashSet<String> getUnderOccupiedCouncilCTBRefs() {
         HashSet<String> result;
         result = new HashSet<String>();
         Object[] filenames;
@@ -482,13 +493,14 @@ public class DW_UnderOccupiedReport_Handler {
             CouncilFilename = CouncilFilenames.get(yM3);
             DW_UnderOccupiedReport_Set set;
             set = new DW_UnderOccupiedReport_Set(
+                    env,
                     CouncilFilename);
             result.addAll(set.map.keySet());
         }
         return result;
     }
 
-    public static HashSet<String> getUnderOccupiedRSLCTBRefs() {
+    public HashSet<String> getUnderOccupiedRSLCTBRefs() {
         HashSet<String> result;
         result = new HashSet<String>();
         Object[] filenames;
@@ -504,6 +516,7 @@ public class DW_UnderOccupiedReport_Handler {
             RSLFilename = RSLFilenames.get(yM3);
             DW_UnderOccupiedReport_Set set;
             set = new DW_UnderOccupiedReport_Set(
+                    env,
                     RSLFilename);
             result.addAll(set.map.keySet());
         }

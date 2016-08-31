@@ -40,14 +40,16 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.agdtcensus.AGDT_Census;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.getCensusBoundaryShapefile;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.getCensusBoundaryShapefile;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_AreaCodesAndShapefiles {
+public class DW_AreaCodesAndShapefiles extends DW_Object {
 
     private final TreeSet<String> _LeedsAreaCodes;
     private final TreeSet<String> _LeedsAndNeighbouringLADAreaCodes;
@@ -69,9 +71,11 @@ public class DW_AreaCodesAndShapefiles {
      * @param sdsf
      */
     public DW_AreaCodesAndShapefiles(
+            DW_Environment env,
             String level,
             String targetPropertyName,
             ShapefileDataStoreFactory sdsf) {
+        this.env = env;
         String tLeedsString = "Leeds";
         String tLeedsAndNeighbouringLADsString;
         tLeedsAndNeighbouringLADsString = "LeedsAndNeighbouringLADs";
@@ -123,13 +127,13 @@ public class DW_AreaCodesAndShapefiles {
                 tLeedsAndNearNeighbouringLADCodes,
                 sdsf);
         File censusDataDirectory = new File(
-                DW_Files.getInputCensus2011AttributeDataDir(level),
+                env.getDW_Files().getInputCensus2011AttributeDataDir(level),
                 tLeedsString);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
                 || level.equalsIgnoreCase("MSOA")) {
             // Read Census Boundary Data of level
-            File levelShapefile = DW_Maps.getAreaBoundaryShapefile(level);
+            File levelShapefile = DW_Maps.getAreaBoundaryShapefile(env, level);
             _LevelDW_Shapefile = new DW_Shapefile(levelShapefile);
 
             // Read area level Census Codes
@@ -158,8 +162,10 @@ public class DW_AreaCodesAndShapefiles {
              * and set this Leeds LAD LSOA Boundary Data Shapefile as the
              * backgroundShapefile
              */
-            File leedsLevelShapefile = getCensusBoundaryShapefile(
-                    tLeedsString,
+            File leedsLevelShapefile;
+           leedsLevelShapefile = DW_Maps.getCensusBoundaryShapefile(
+                    env,
+                   tLeedsString,
                     level);
             _LeedsLevelDW_Shapefile = new DW_Shapefile(leedsLevelShapefile);
             if (!leedsLevelShapefile.exists()) {
@@ -171,24 +177,27 @@ public class DW_AreaCodesAndShapefiles {
                         leedsLevelShapefile);
             }
         } else {
-            File levelShapefile = DW_Maps.getAreaBoundaryShapefile(level);
+            File levelShapefile = DW_Maps.getAreaBoundaryShapefile(env, level);
             if (levelShapefile == null) {
                 int debug = 1;
             }
             _LevelDW_Shapefile = new DW_Shapefile(levelShapefile);
             _LeedsAreaCodes = getAreaCodesAndShapefile(
+                    env,
                     tLeedsString,
                     level,
                     targetPropertyName,
                     _LeedsLADDW_Shapefile,
                     _LevelDW_Shapefile);
             _LeedsAndNeighbouringLADAreaCodes = getAreaCodesAndShapefile(
+                    env,
                     tLeedsAndNeighbouringLADsString,
                     level,
                     targetPropertyName,
                     _LeedsLADDW_Shapefile,
                     _LevelDW_Shapefile);
             _LeedsAndNearNeighbouringLADAreaCodes = getAreaCodesAndShapefile(
+                    env,
                     tLeedsAndNearNeighbouringLADsString,
                     level,
                     targetPropertyName,
@@ -201,7 +210,8 @@ public class DW_AreaCodesAndShapefiles {
         }
     }
 
-    public static TreeSet<String> getAreaCodesAndShapefile(
+    public TreeSet<String> getAreaCodesAndShapefile(
+            DW_Environment env,
             String area,
             String level,
             String targetPropertyName,
@@ -209,7 +219,7 @@ public class DW_AreaCodesAndShapefiles {
             DW_Shapefile tLevelDW_Shapefile) {
         TreeSet<String> result;
         File censusDataDirectory = new File(
-                DW_Files.getInputCensus2011AttributeDataDir(level),
+                env.getDW_Files().getInputCensus2011AttributeDataDir(level),
                 area);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
@@ -287,12 +297,12 @@ public class DW_AreaCodesAndShapefiles {
         return result;
     }
 
-    public static File getPostcodeShapefile(
+    public File getPostcodeShapefile(
             String area,
             String level) {
         File result;
         result = new File(
-                DW_Files.getGeneratedPostcodeDir(),
+                env.getDW_Files().getGeneratedPostcodeDir(),
                 area + level + "PolyShapefile.shp");
         result = new File(
                 result,
@@ -300,7 +310,7 @@ public class DW_AreaCodesAndShapefiles {
         return result;
     }
 
-    public static DW_Shapefile getLADShapefile(
+    public DW_Shapefile getLADShapefile(
             String name,
             TreeSet<String> tLADCensusCodes,
             ShapefileDataStoreFactory sdsf) {
@@ -308,7 +318,9 @@ public class DW_AreaCodesAndShapefiles {
         // Get LAD shapefiles
         String levelLAD = "LAD";
         // Read LAD Census Boundary Data
-        File tLADShapefile = DW_Maps.getAreaBoundaryShapefile(levelLAD);
+        File tLADShapefile = DW_Maps.getAreaBoundaryShapefile(
+                env,
+                levelLAD);
         DW_Shapefile tLAD_DW_Shapefile;
         tLAD_DW_Shapefile = new DW_Shapefile(tLADShapefile);
         result = getLADShapefile(
@@ -319,7 +331,7 @@ public class DW_AreaCodesAndShapefiles {
         return result;
     }
 
-    public static DW_Shapefile getLADShapefile(
+    public DW_Shapefile getLADShapefile(
             String name,
             TreeSet<String> tLADCensusCodes,
             DW_Shapefile tLAD_DW_Shapefile,
@@ -328,8 +340,9 @@ public class DW_AreaCodesAndShapefiles {
         FeatureCollection tLAD_FC = tLAD_DW_Shapefile.getFeatureCollection();
         SimpleFeatureType tLAD_SFT = tLAD_DW_Shapefile.getSimpleFeatureType();
         // Select tLADCensusCodes from LAD Census Boundary Data
-        File tLADShapefile = getCensusBoundaryShapefile(
-                name,
+        File tLADShapefile = DW_Maps.getCensusBoundaryShapefile(
+                env,
+                    name,
                 "LAD");
         result = new DW_Shapefile(tLADShapefile);
         if (!tLADShapefile.exists()) {
@@ -344,12 +357,12 @@ public class DW_AreaCodesAndShapefiles {
         return result;
     }
 
-    public static File getPostcodeDataAreaCodesFile(
+    public File getPostcodeDataAreaCodesFile(
             String area,
             String level) {
         File result;
         File postcodeDataDirectory = new File(
-                DW_Files.getGeneratedPostcodeDir(),
+                env.getDW_Files().getGeneratedPostcodeDir(),
                 area);
         postcodeDataDirectory = new File(
                 postcodeDataDirectory,
@@ -389,12 +402,12 @@ public class DW_AreaCodesAndShapefiles {
      * Local Authority District loaded from a specific file within
      * digitalWelfareDir.
      */
-    public static TreeSet<String> getAreaCodes(
+    public TreeSet<String> getAreaCodes(
             String area,
             String level) {
         TreeSet<String> result = null;
         File postcodeDataDirectory = new File(
-                DW_Files.getGeneratedPostcodeDir(),
+                env.getDW_Files().getGeneratedPostcodeDir(),
                 area);
         postcodeDataDirectory = new File(
                 postcodeDataDirectory,

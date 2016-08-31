@@ -53,7 +53,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_Under
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UOReport_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Set;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeGroups;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.initONSPDLookups;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.initONSPDLookups;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 
@@ -63,7 +63,6 @@ import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
  */
 public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 
-    private transient final DW_Environment env;
     protected Vector_Environment ve;
 
     private static final String targetPropertyNameLSOA = "LSOA11CD";
@@ -73,7 +72,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
     protected ArrayList<AGDT_Shapefile> foregrounds;
 
     public DW_DensityMaps_LCC(DW_Environment env) {
-        this.env = env;
+        super(env);
     }
 
     public void run() {
@@ -83,7 +82,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         showMapsInJMapPane = false;
         //showMapsInJMapPane = true;
         //outputESRIAsciigrids = false;
-        initONSPDLookups();
+        initONSPDLookups(env);
         // Initialise styleParameters
         /*
          * YlOrRd,PRGn,PuOr,RdGy,Spectral,Grays,PuBuGn,RdPu,BuPu,YlOrBr,Greens,
@@ -111,7 +110,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         styleParameters.setForegroundStyleTitle1("Foreground Style 1");
 
         mapDirectory = new File(
-                DW_Files.getOutputAdviceLeedsMapsDir(),
+                tDW_Files.getOutputAdviceLeedsMapsDir(),
                 "density");
         imageWidth = 2000;
 
@@ -173,13 +172,16 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 
     private void init() {
         //initStyleParameters();
-        mapDirectory = DW_Files.getOutputSHBELineMapsDir();
+        mapDirectory = tDW_Files.getOutputSHBELineMapsDir();
         foregrounds = new ArrayList<AGDT_Shapefile>();
         //midgrounds = new ArrayList<AGDT_Shapefile>();
 //        backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                "LSOA", targetPropertyNameLSOA, getShapefileDataStoreFactory());
+                env,
+                "LSOA",
+                targetPropertyNameLSOA,
+                getShapefileDataStoreFactory());
         //foregrounds.add(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
         foregrounds.add(getCommunityAreasDW_Shapefile());
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
@@ -188,11 +190,11 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
     public void runRateMaps() {
         File dirOut;
         dirOut = new File(
-                DW_Files.getOutputSHBEMapsDir(),
+                tDW_Files.getOutputSHBEMapsDir(),
                 "Density");
 
         String[] SHBEFilenames;
-        SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
+        SHBEFilenames = env.getDW_SHBE_Handler().getSHBEFilenamesAll();
         // Specifiy distances
         ArrayList<Double> distances;
         distances = new ArrayList<Double>();
@@ -360,7 +362,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 
         // Includes
         TreeMap<String, ArrayList<Integer>> includes;
-        includes = DW_SHBE_Handler.getIncludes();
+        includes = env.getDW_SHBE_Handler().getIncludes();
         includes.remove("All");
         includes.remove("Yearly");
         includes.remove("6Monthly");
@@ -379,6 +381,9 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         Iterator<Integer> includesIte;
         String type = "Social";
 
+        DW_SHBE_Handler tDW_SHBE_Handler;
+        tDW_SHBE_Handler = env.getDW_SHBE_Handler();
+
 //        if (true) {
         if (true) {
             File dirIn2 = new File(
@@ -390,8 +395,8 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
             String month;
             while (includesIte.hasNext()) {
                 i = includesIte.next();
-                year = DW_SHBE_Handler.getYear(SHBEFilenames[i]);
-                month = DW_SHBE_Handler.getMonth3(SHBEFilenames[i]);
+                year = tDW_SHBE_Handler.getYear(SHBEFilenames[i]);
+                month = tDW_SHBE_Handler.getMonth3(SHBEFilenames[i]);
                 numeratorFile = new File(
                         dirIn,
                         year + "_" + month + "/Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
@@ -476,14 +481,14 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
             String year;
             String month;
             i = includesIte.next();
-            year0 = DW_SHBE_Handler.getYear(SHBEFilenames[i]);
-            month0 = DW_SHBE_Handler.getMonth3(SHBEFilenames[i]);
+            year0 = tDW_SHBE_Handler.getYear(SHBEFilenames[i]);
+            month0 = tDW_SHBE_Handler.getMonth3(SHBEFilenames[i]);
             year00 = year0;
             month00 = month0;
             while (includesIte.hasNext()) {
                 i = includesIte.next();
-                year = DW_SHBE_Handler.getYear(SHBEFilenames[i]);
-                month = DW_SHBE_Handler.getMonth3(SHBEFilenames[i]);
+                year = tDW_SHBE_Handler.getYear(SHBEFilenames[i]);
+                month = tDW_SHBE_Handler.getMonth3(SHBEFilenames[i]);
                 numeratorFile = new File(
                         dirOut2,
                         year0 + "_" + month0 + "UO_Over_All_" + type + "_Rate.asc");
@@ -630,18 +635,18 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         boolean scaleToFirst = false;
         File dirOut;
         dirOut = new File(
-                DW_Files.getOutputSHBEMapsDir(),
+                tDW_Files.getOutputSHBEMapsDir(),
                 "Density");
-
+        DW_SHBE_Handler tDW_SHBE_Handler;
+        tDW_SHBE_Handler = env.getDW_SHBE_Handler();
         String[] SHBEFilenames;
-        SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
+        SHBEFilenames = tDW_SHBE_Handler.getSHBEFilenamesAll();
 
-        DW_SHBE_Handler tDW_SHBE_Handler = new DW_SHBE_Handler(env);
         DW_SHBE_CollectionHandler collectionHandler;
         collectionHandler = new DW_SHBE_CollectionHandler(env);
 
         Object[] underOccupiedData;
-        underOccupiedData = DW_UnderOccupiedReport_Handler.loadUnderOccupiedReportData();
+        underOccupiedData = DW_UnderOccupiedReport_Handler.loadUnderOccupiedReportData(env);
 
 //        Object[] ttgs = DW_SHBE_TenancyType_Handler.getTenancyTypeGroups();
 //        HashMap<Boolean, TreeMap<String, ArrayList<String>>> tenancyTypeGroups;
@@ -664,7 +669,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
 
         // Includes
         TreeMap<String, ArrayList<Integer>> includes;
-        includes = DW_SHBE_Handler.getIncludes();
+        includes = tDW_SHBE_Handler.getIncludes();
 //        includes.remove("All");
         includes.remove("Yearly");
         includes.remove("6Monthly");
@@ -710,11 +715,11 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         b.add(false);
 
         ArrayList<String> paymentTypes;
-        paymentTypes = DW_SHBE_Handler.getPaymentTypes();
-        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
-//        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
-//        paymentTypes.remove(DW_SHBE_Handler.sSuspended);
-//        paymentTypes.remove(DW_SHBE_Handler.sOtherPT);
+        paymentTypes = tDW_SHBE_Handler.getPaymentTypes();
+        paymentTypes.remove(tDW_SHBE_Handler.sAllPT);
+//        paymentTypes.remove(tDW_SHBE_Handler.sInPayment);
+//        paymentTypes.remove(tDW_SHBE_Handler.sSuspended);
+//        paymentTypes.remove(tDW_SHBE_Handler.sOtherPT);
 
         Iterator<String> inPaymentTypesIte;
         inPaymentTypesIte = paymentTypes.iterator();
@@ -751,7 +756,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                             doRSL,
                             doCouncil,
                             scaleToFirst,
-                            DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            tDW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
                             SHBEFilenames,
                             tDW_SHBE_Handler,
@@ -767,7 +772,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                             doRSL,
                             doCouncil,
                             scaleToFirst,
-                            DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            tDW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
                             SHBEFilenames,
                             tDW_SHBE_Handler,
@@ -783,7 +788,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                             doRSL,
                             doCouncil,
                             scaleToFirst,
-                            DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            tDW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
                             SHBEFilenames,
                             tDW_SHBE_Handler,
@@ -1040,7 +1045,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                 include = includes.get(includeName);
                 ite = include.iterator();
                 i = ite.next();
-                yM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                yM30 = tDW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                 if (doUnderOccupied) {
                     initialised = false;
                     while (!initialised) {
@@ -1050,7 +1055,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                                 initialised = true;
                             } else {
                                 i = ite.next();
-                                yM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                                yM30 = tDW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                             }
                         }
                         if (doCouncil) {
@@ -1059,12 +1064,13 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                                 initialised = true;
                             } else {
                                 i = ite.next();
-                                yM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                                yM30 = tDW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                             }
                         }
                     }
                 }
                 SHBEData0 = new DW_SHBE_Collection(
+                        env,
                         SHBEFilenames[i],
                         inPaymentType);
 //            DW_SHBE_Collection SHBEData00;
@@ -1116,7 +1122,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                             handleOutOfMemoryErrors);
 
                     String yM31;
-                    yM31 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                    yM31 = tDW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                     // Init underOccupiedSets
                     DW_UnderOccupiedReport_Set underOccupiedSetCouncil1 = null;
                     if (doCouncil) {
@@ -1214,7 +1220,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         Grid2DSquareCellDouble g0 = initiliseGrid(grid);
 
         TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> lookups;
-        lookups = getONSPDlookups();
+        lookups = getONSPDlookups(env);
         TreeMap<String, AGDT_Point> lookup;
         lookup = lookups.get("Unit").get(DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 

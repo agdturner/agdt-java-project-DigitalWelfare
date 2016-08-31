@@ -27,24 +27,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
-import java.util.TreeSet;
-import org.geotools.feature.FeatureCollection;
-import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientEnquiryID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletEnquiryID;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 //import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
  *
@@ -65,15 +57,18 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
      */
     private String IDTypeName;
 
-    public DW_ChoroplethMaps_AdviceLeeds() {
+    public DW_ChoroplethMaps_AdviceLeeds(DW_Environment env) {
+        super(env);
     }
+
+    
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         try {
-            new DW_ChoroplethMaps_AdviceLeeds().run();
+            new DW_ChoroplethMaps_AdviceLeeds(null).run();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -222,7 +217,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
             IDTypeName = IDType.getClass().getSimpleName();
             // General
             mapDirectory = new File(
-                    DW_Files.getOutputAdviceLeedsMapsDir(),
+                    tDW_Files.getOutputAdviceLeedsMapsDir(),
                     "choropleth");
             mapDirectory = new File(
                     mapDirectory,
@@ -263,6 +258,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
         }
         DW_AreaCodesAndShapefiles tAreaCodesAndShapefiles;
         tAreaCodesAndShapefiles = new DW_AreaCodesAndShapefiles(
+                env,
                 level,
                 targetPropertyName,
                 getShapefileDataStoreFactory());
@@ -282,7 +278,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
         String[] tAdviceLeedsFilenames;
 
         generatedAdviceLeedsDir = new File(
-                DW_Files.getGeneratedAdviceLeedsDir(),
+                tDW_Files.getGeneratedAdviceLeedsDir(),
                 "Combined");
         generatedAdviceLeedsDir = new File(
                 generatedAdviceLeedsDir,
@@ -335,7 +331,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
                 }
                 if (doDeprivation) {
                     // Get deprivation data
-                    deprivationRecords = DW_Processor.getDeprivation_Data();
+                    deprivationRecords = DW_Processor.getDeprivation_Data(env);
                     if (individualStyling) {
                         scaleToFirst = false;
                         runAdviceLeeds(
@@ -451,7 +447,7 @@ public class DW_ChoroplethMaps_AdviceLeeds extends DW_ChoroplethMaps {
             aIDTypeName = IDType.getClass().getSimpleName();
             File outputInAndOutOfRegionCountsDir;
             outputInAndOutOfRegionCountsDir = new File(
-                    DW_Files.getOutputAdviceLeedsTablesDir(),
+                    tDW_Files.getOutputAdviceLeedsTablesDir(),
                     aIDTypeName);
             outputInAndOutOfRegionCountsDir.mkdirs();
             File outputInAndOutOfRegionCountsFile;

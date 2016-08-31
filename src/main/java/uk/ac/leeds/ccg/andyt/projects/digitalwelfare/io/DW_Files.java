@@ -25,96 +25,310 @@ import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
- *
+ * A basic convenience class that does not need a reference to the main 
+ * DW_Environment.
  * @author geoagdt
  */
 public class DW_Files {
 
-    private static File dir;
-    private static File inputDir;
-    private static File inputAdviceLeedsDir;
-    private static File inputCensusDir;
-    private static File inputCensus2011Dir;
-    private static File inputPostcodeDir;
-    private static File inputCodePointDir;
-    private static File inputONSPDDir;
-    private static File inputLCCDir;
-    private static File inputSHBEDir;
-    private static File inputUnderOccupiedDir;
+    /**
+     * For storing the main directory location where the project files are
+     * stored. This is initialised from DW_Environment.sDigitalWelfareDir.
+     */
+    private File dir;
 
-    private static File swapDir;
-    private static File swapLCCDir;
-    private static File swapSHBEDir;
+    /**
+     * For storing the main input data directory.
+     */
+    private File inputDir;
 
-    private static File generatedDir;
-    private static File generatedAdviceLeedsDir;
-    private static File generatedCensusDir;
-    private static File generatedCensus2011Dir;
-    private static File generatedCensus2011LUTsDir;
-    private static File generatedPostcodeDir;
-    private static File generatedCodePointDir;
-    private static File generatedONSPDDir;
-    private static File generatedLCCDir;
-    private static File generatedSHBEDir;
-    private static File generatedUnderOccupiedDir;
-
-    private static File outputDir;
-    private static File outputAdviceLeedsDir;
-    private static File outputAdviceLeedsMapsDir;
-    private static File outputCensusDir;
-    private static File outputCensus2011Dir;
-    private static File outputLCCDir;
-    private static File outputSHBEDir;
-    private static File outputSHBEMapsDir;
-    private static File outputSHBETablesDir;
-    private static File outputSHBEPlotsDir;
-    private static File outputAdviceLeedsTablesDir;
-    private static File outputUnderOccupiedDir;
+    /**
+     * For storing the input AdviceLeeds data directory inside
+     * <code>inputDir</code>.
+     */
+    private File inputAdviceLeedsDir;
     
-    public static final String sTenancy = "Tenancy";
-    public static final String sBoundaryData = "BoundaryData";
-    public static final String sONSPD = "ONSPD";
-    public static final String sSHBE = "SHBE";
-    public static final String sUO = "UO";
-    public static final String sUnderOccupied = "UnderOccupied";
-    public static final String sGrouped = "Grouped";
-    public static final String sUngrouped = "Ungrouped";
-    public static final String sPostcode = "Postcode";
-    public static final String sPostcodeChanges = "PostcodeChanges";
-    public static final String sPostcodeChanged = "PostcodeChanged";
-    public static final String sPostcodeUnchanged = "PostcodeUnchanged";
-    public static final String sTenancyTypeTransition = "TenancyTypeTransition";
-    public static final String sTenancyAndPostcodeChanges = "TenancyAndPostcodeChanges";
-    public static final String sCheckedPreviousTenure = "CheckedPreviousTenure";
-    public static final String sNotCheckedPreviousTenure = "NotCheckedPreviousTenure";
-    public static final String sCheckedPreviousPostcode = "CheckedPreviousPostcode";
-    public static final String sNotCheckedPreviousPostcode = "NotCheckedPreviousPostcode";
-    public static final String sLCC = "LCC";
-    public static final String sCouncil = "Council";
-    public static final String sRSL = "RSL";
-    public static final String sMaps = "Maps";
-    public static final String sPlots = "Plots";
-    public static final String sTenancyTypeTransitionLineGraphs = "TenancyTypeTransitionLineGraphs";
-    public static final String sTables = "Tables";
-    public static final String sLine = "Line";
-    public static final String sChoropleth = "Choropleth";
-    public static final String sAll = "All";
-    public static final String sInput = "Input";
-    public static final String sCensus = "Census";
-    public static final String s2011 = "2011";
-    public static final String sGenerated = "Generated";
-    public static final String sOutput = "Output";
-    public static final String sAdviceLeeds = "AdviceLeeds";
-    //public static final String sDigitalWelfareDir = "/scratch02/DigitalWelfare";
+    /**
+     * For storing the input Census data directory inside the main input data
+     * directory.
+     */
+    private File inputCensusDir;
     
-    public static File getDigitalWelfareDir() {
+    /**
+     * For storing the 2011 Census directory inside the Census data directory.
+     */
+    private File inputCensus2011Dir;
+    
+    /**
+     * For storing the Postcode directory inside the main input data directory.
+     */
+    private File inputPostcodeDir;
+    
+    /**
+     * For storing the CodePoint directory inside the main input data directory.
+     */
+    private File inputCodePointDir;
+    private File inputONSPDDir;
+    private File inputLCCDir;
+    private File inputSHBEDir;
+    private File inputUnderOccupiedDir;
+
+    private File swapDir;
+    private File swapLCCDir;
+    private File swapSHBEDir;
+
+    private File generatedDir;
+    private File generatedAdviceLeedsDir;
+    private File generatedCensusDir;
+    private File generatedCensus2011Dir;
+    private File generatedCensus2011LUTsDir;
+    private File generatedPostcodeDir;
+    private File generatedCodePointDir;
+    private File generatedONSPDDir;
+    private File generatedLCCDir;
+    private File generatedSHBEDir;
+    private File generatedUnderOccupiedDir;
+
+    private File outputDir;
+    private File outputAdviceLeedsDir;
+    private File outputAdviceLeedsMapsDir;
+    private File outputCensusDir;
+    private File outputCensus2011Dir;
+    private File outputLCCDir;
+    private File outputSHBEDir;
+    private File outputSHBEMapsDir;
+    private File outputSHBETablesDir;
+    private File outputSHBEPlotsDir;
+    private File outputAdviceLeedsTablesDir;
+    private File outputUnderOccupiedDir;
+
+    // More generic
+    
+    /**
+     * Short code for AttributeData.
+     */
+    private final String sAttributeData = "AttributeData";
+    
+    /**
+     * Short code for BoundaryData.
+     */
+    private final String sBoundaryData = "BoundaryData";
+    
+    /**
+     * Short code for CodePoint.
+     */
+    private final String sCodePoint = "CodePoint";
+    
+    /**
+     * Short code for Swap.
+     */
+    private final String sSwap = "Swap";
+    
+    /**
+     * Short code for Look Up Tables.
+     */
+    public final String sLUTs = "LUTs";
+    
+    /**
+     * Short code for ONS Postcode Directory
+     */
+    public final String sONSPD = "ONSPD";
+    
+    /**
+     * Short code for SHBE.
+     */
+    public final String sSHBE = "SHBE";
+    
+    /**
+     * Short code for LeedsCityCouncil.
+     */
+    public final String sUO = "UO";
+    
+    /**
+     * Short code for LeedsCityCouncil.
+     */
+    public final String sUnderOccupied = "UnderOccupied";
+    
+    /**
+     * Short code for LeedsCityCouncil.
+     */
+    public final String sLCC = "LCC";
+    
+    /**
+     * Short code for Maps.
+     */
+    public final String sMaps = "Maps";
+    
+    /**
+     * Short code for Plots.
+     */
+    public final String sPlots = "Plots";
+    
+    /**
+     * Short code for Tables.
+     */
+    public final String sTables = "Tables";
+    
+    
+    
+    /**
+     * Short code for Tenancy.
+     */
+    public final String sTenancy = "T";
+    //public final String sTenancy = "Tenancy";
+
+    /**
+     * Short code for Grouped.
+     */
+    public final String sGrouped = "G";
+    //public final String sGrouped = "Grouped";
+
+    /**
+     * Short code for Ungrouped.
+     */
+    public final String sUngrouped = "U";
+    //public final String sUngrouped = "Ungrouped";
+
+    /**
+     * Short code for Postcode.
+     */
+    public final String sPostcode = "P";
+    //public final String sPostcode = "Postcode";
+    
+    /**
+     * Short code for PostcodeChanges.
+     */
+    public final String sPostcodeChanges = "PCs";
+    //public final String sPostcodeChanges = "PostcodeChanges";
+    
+    /**
+     * Short code for PostcodeChanged.
+     */
+    public final String sPostcodeChanged = "PCd";
+    //public final String sPostcodeChanged = "PostcodeChanged";
+    
+    /**
+     * Short code for PostcodeUnchanged.
+     */
+    public final String sPostcodeUnchanged = "PUd";
+    //public final String sPostcodeUnchanged = "PostcodeUnchanged";
+    
+    /**
+     * Short code for TenancyTypeTransition.
+     */
+    public final String sTenancyTypeTransition = "TTT";
+    //public final String sTenancyTypeTransition = "TenancyTypeTransition";
+    
+    /**
+     * Short code for TenancyAndPostcodeChanges.
+     */
+    public final String sTenancyAndPostcodeChanges = "TAPC";
+    //public final String sTenancyAndPostcodeChanges = "TenancyAndPostcodeChanges";
+    
+    /**
+     * Short code for CheckedPreviousTenancyType.
+     */
+    public final String sCheckedPreviousTenancyType = "YCPTT";
+    //public final String sCheckedPreviousTenancyType = "CheckedPreviousTenancyType";
+    
+    /**
+     * Short code for NotCheckedPreviousTenancyType.
+     */
+    public final String sNotCheckedPreviousTenancyType = "NCPTT";
+    //public final String sNotCheckedPreviousTenancyType = "NotCheckedPreviousTenancyType";
+
+    /**
+     * Short code for CheckedPreviousPostcode.
+     */
+    public final String sCheckedPreviousPostcode = "YCPP";
+    //public final String sCheckedPreviousPostcode = "CheckedPreviousPostcode";
+
+    /**
+     * Short code for NotCheckedPreviousPostcode.
+     */
+    public final String sNotCheckedPreviousPostcode = "NCPP";
+    //public final String sNotCheckedPreviousPostcode = "NotCheckedPreviousPostcode";
+
+    /**
+     * Short code for Council.
+     */
+    public final String sCouncil = "C";
+    //public final String sCouncil = "Council";
+    
+    /**
+     * Short code for Registered Social Landlord.
+     */
+    public final String sRSL = "R";
+    //public final String sRSL = "RSL";
+    
+    
+
+
+    /**
+     * Short code for TenancyTypeTransitionLineGraphs.
+     */
+    public final String sTenancyTypeTransitionLineGraphs = "TTTLG";
+    //public final String sTenancyTypeTransitionLineGraphs = "TenancyTypeTransitionLineGraphs";
+    
+    /**
+     * Short code for NotCheckedPreviousPostcode.
+     */
+    public final String sLine = "Line";
+    
+    /**
+     * Short code for NotCheckedPreviousPostcode.
+     */
+    public final String sChoropleth = "Choropleth";
+    
+    /**
+     * Short code for NotCheckedPreviousPostcode.
+     */
+    public final String sAll = "All";
+    
+    /**
+     * Short code for NotCheckedPreviousPostcode.
+     */
+    public final String sInput = "Input";
+    
+    /**
+     * Short code for NotCheckedPreviousPostcode.
+     */
+    public final String sCensus = "Census";
+    
+    /**
+     * Short code for NotCheckedPreviousPostcode.
+     */
+    public final String s2011 = "2011";
+    
+    /**
+     * Short code for NotCheckedPreviousPostcode.
+     */
+    public final String sGenerated = "Generated";
+    
+    /**
+     * Short code for NotCheckedPreviousPostcode.
+     */
+    public final String sOutput = "Output";
+    
+    /**
+     * Short code for NotCheckedPreviousPostcode.
+     */
+    public final String sAdviceLeeds = "AdviceLeeds";
+    //public final String sDigitalWelfareDir = "/scratch02/DigitalWelfare";
+
+    /**
+     * Create a new instance.
+     */
+    public DW_Files(){}
+    
+    public File getDigitalWelfareDir() {
         if (dir == null) {
             dir = new File(DW_Environment.sDigitalWelfareDir);
         }
         return dir;
     }
 
-    public static File getInputDir() {
+    public File getInputDir() {
         if (inputDir == null) {
             inputDir = new File(
                     getDigitalWelfareDir(),
@@ -123,7 +337,7 @@ public class DW_Files {
         return inputDir;
     }
 
-    public static File getInputAdviceLeedsDir() {
+    public File getInputAdviceLeedsDir() {
         if (inputAdviceLeedsDir == null) {
             inputAdviceLeedsDir = new File(
                     getInputDir(),
@@ -132,7 +346,7 @@ public class DW_Files {
         return inputAdviceLeedsDir;
     }
 
-    public static File getInputCensusDir() {
+    public File getInputCensusDir() {
         if (inputCensusDir == null) {
             inputCensusDir = new File(
                     getInputDir(),
@@ -141,7 +355,7 @@ public class DW_Files {
         return inputCensusDir;
     }
 
-    public static File getInputCensus2011Dir() {
+    public File getInputCensus2011Dir() {
         if (inputCensus2011Dir == null) {
             inputCensus2011Dir = new File(
                     getInputCensusDir(),
@@ -150,27 +364,27 @@ public class DW_Files {
         return inputCensus2011Dir;
     }
 
-    public static File getInputCensus2011Dir(
+    public File getInputCensus2011Dir(
             String level) {
         return new File(getInputCensus2011Dir(),
                 level);
     }
 
-    public static File getInputCensus2011AttributeDataDir(
+    public File getInputCensus2011AttributeDataDir(
             String level) {
         return new File(
                 getInputCensus2011Dir(level),
-                "AttributeData");
+                sAttributeData);
     }
 
-    public static File getInputCensus2011BoundaryDataDir(
+    public File getInputCensus2011BoundaryDataDir(
             String level) {
         return new File(
                 getInputCensus2011Dir(level),
                 sBoundaryData);
     }
 
-    public static File getInputCodePointDir(
+    public File getInputCodePointDir(
             String year,
             String dirname) {
         if (inputCodePointDir == null) {
@@ -179,7 +393,7 @@ public class DW_Files {
                     sBoundaryData);
             inputCodePointDir = new File(
                     inputCodePointDir,
-                    "CodePoint");
+                    sCodePoint);
             inputCodePointDir = new File(
                     inputCodePointDir,
                     year);//"2015");
@@ -190,7 +404,7 @@ public class DW_Files {
         return inputCodePointDir;
     }
 
-    public static File getInputPostcodeDir() {
+    public File getInputPostcodeDir() {
         if (inputPostcodeDir == null) {
             inputPostcodeDir = new File(getInputDir(),
                     sPostcode);
@@ -198,7 +412,7 @@ public class DW_Files {
         return inputPostcodeDir;
     }
 
-    public static File getInputONSPDDir() {
+    public File getInputONSPDDir() {
         if (inputONSPDDir == null) {
             inputONSPDDir = new File(
                     getInputPostcodeDir(),
@@ -207,7 +421,7 @@ public class DW_Files {
         return inputONSPDDir;
     }
 
-    public static File getInputLCCDir() {
+    public File getInputLCCDir() {
         if (inputLCCDir == null) {
             inputLCCDir = new File(
                     getInputDir(),
@@ -216,7 +430,7 @@ public class DW_Files {
         return inputLCCDir;
     }
 
-    public static File getInputSHBEDir() {
+    public File getInputSHBEDir() {
         if (inputSHBEDir == null) {
             inputSHBEDir = new File(
                     getInputLCCDir(),
@@ -225,7 +439,7 @@ public class DW_Files {
         return inputSHBEDir;
     }
 
-    public static File getInputUnderOccupiedDir() {
+    public File getInputUnderOccupiedDir() {
         if (inputUnderOccupiedDir == null) {
             inputUnderOccupiedDir = new File(
                     getInputLCCDir(),
@@ -234,17 +448,17 @@ public class DW_Files {
         return inputUnderOccupiedDir;
     }
 
-    public static File getSwapDir() {
+    public File getSwapDir() {
         if (swapDir == null) {
             swapDir = new File(
                     getDigitalWelfareDir(),
-                    "Swap");
+                    sSwap);
             swapDir.mkdirs();
         }
         return swapDir;
     }
 
-    public static File getSwapLCCDir() {
+    public File getSwapLCCDir() {
         if (swapLCCDir == null) {
             swapLCCDir = new File(
                     getSwapDir(),
@@ -254,7 +468,7 @@ public class DW_Files {
         return swapLCCDir;
     }
 
-    public static File getSwapSHBEDir() {
+    public File getSwapSHBEDir() {
         if (swapSHBEDir == null) {
             swapSHBEDir = new File(
                     getSwapLCCDir(),
@@ -264,7 +478,7 @@ public class DW_Files {
         return swapSHBEDir;
     }
 
-    public static File getGeneratedDir() {
+    public File getGeneratedDir() {
         if (generatedDir == null) {
             generatedDir = new File(
                     getDigitalWelfareDir(),
@@ -274,7 +488,7 @@ public class DW_Files {
         return generatedDir;
     }
 
-    public static File getGeneratedAdviceLeedsDir() {
+    public File getGeneratedAdviceLeedsDir() {
         if (generatedAdviceLeedsDir == null) {
             generatedAdviceLeedsDir = new File(
                     getGeneratedDir(),
@@ -284,7 +498,7 @@ public class DW_Files {
         return generatedAdviceLeedsDir;
     }
 
-    public static File getGeneratedCensusDir() {
+    public File getGeneratedCensusDir() {
         if (generatedCensusDir == null) {
             generatedCensusDir = new File(
                     getGeneratedDir(),
@@ -294,7 +508,7 @@ public class DW_Files {
         return generatedCensusDir;
     }
 
-    public static File getGeneratedCensus2011Dir() {
+    public File getGeneratedCensus2011Dir() {
         if (generatedCensus2011Dir == null) {
             generatedCensus2011Dir = new File(
                     getGeneratedCensusDir(),
@@ -304,23 +518,23 @@ public class DW_Files {
         return generatedCensus2011Dir;
     }
 
-    public static File getGeneratedCensus2011Dir(
+    public File getGeneratedCensus2011Dir(
             String level) {
         return new File(getGeneratedCensus2011Dir(),
                 level);
     }
 
-    public static File getGeneratedCensus2011LUTsDir() {
+    public File getGeneratedCensus2011LUTsDir() {
         if (generatedCensus2011LUTsDir == null) {
             generatedCensus2011LUTsDir = new File(
                     getGeneratedCensus2011Dir(),
-                    "LUTs");
+                    sLUTs);
             generatedCensus2011LUTsDir.mkdirs();
         }
         return generatedCensus2011LUTsDir;
     }
 
-    public static File getGeneratedPostcodeDir() {
+    public File getGeneratedPostcodeDir() {
         if (generatedPostcodeDir == null) {
             generatedPostcodeDir = new File(
                     getGeneratedDir(),
@@ -330,20 +544,20 @@ public class DW_Files {
         return generatedPostcodeDir;
     }
 
-    public static File getGeneratedCodePointDir() {
+    public File getGeneratedCodePointDir() {
         if (generatedCodePointDir == null) {
             generatedCodePointDir = new File(
                     getGeneratedPostcodeDir(),
                     sBoundaryData);
             generatedCodePointDir = new File(
                     generatedCodePointDir,
-                    "CodePoint");
+                    sCodePoint);
             generatedCodePointDir.mkdirs();
         }
         return generatedCodePointDir;
     }
 
-    public static File getGeneratedONSPDDir() {
+    public File getGeneratedONSPDDir() {
         if (generatedONSPDDir == null) {
             generatedONSPDDir = new File(
                     getGeneratedPostcodeDir(),
@@ -353,7 +567,7 @@ public class DW_Files {
         return generatedONSPDDir;
     }
 
-    public static File getGeneratedLCCDir() {
+    public File getGeneratedLCCDir() {
         if (generatedLCCDir == null) {
             generatedLCCDir = new File(
                     getGeneratedDir(),
@@ -363,7 +577,7 @@ public class DW_Files {
         return generatedLCCDir;
     }
 
-    public static File getGeneratedSHBEDir() {
+    public File getGeneratedSHBEDir() {
         if (generatedSHBEDir == null) {
             generatedSHBEDir = new File(
                     getGeneratedLCCDir(),
@@ -373,7 +587,7 @@ public class DW_Files {
         return generatedSHBEDir;
     }
 
-    public static File getGeneratedSHBEDir(
+    public File getGeneratedSHBEDir(
             String dirname) {
         if (dirname == null) {
             return getGeneratedSHBEDir();
@@ -383,7 +597,7 @@ public class DW_Files {
                 dirname);
     }
 
-    public static File getGeneratedSHBEDir(
+    public File getGeneratedSHBEDir(
             String level,
             boolean doUnderOccupied,
             boolean doCouncil) {
@@ -398,7 +612,7 @@ public class DW_Files {
         return result;
     }
 
-    public static File getUOFile(
+    public File getUOFile(
             File f,
             boolean doUnderOccupied,
             boolean doCouncil) {
@@ -425,7 +639,7 @@ public class DW_Files {
         return result;
     }
 
-    public static File getUOFile(
+    public File getUOFile(
             File f,
             boolean doUnderOccupied,
             boolean doCouncil,
@@ -440,16 +654,14 @@ public class DW_Files {
                 result = new File(
                         result,
                         sAll);
+            } else if (doCouncil) {
+                result = new File(
+                        result,
+                        sCouncil);
             } else {
-                if (doCouncil) {
-                    result = new File(
-                            result,
-                            sCouncil);
-                } else {
-                    result = new File(
-                            result,
-                            sRSL);
-                }
+                result = new File(
+                        result,
+                        sRSL);
             }
         } else {
             result = new File(
@@ -459,7 +671,7 @@ public class DW_Files {
         return result;
     }
 
-    public static ArrayList<File> getGeneratedSHBELevelDirsArrayList(
+    public ArrayList<File> getGeneratedSHBELevelDirsArrayList(
             ArrayList<String> levels,
             boolean doUnderOccupied,
             boolean doCouncil) {
@@ -470,7 +682,7 @@ public class DW_Files {
         while (ite.hasNext()) {
             String level = ite.next();
             File outputDir = new File(
-                    DW_Files.getGeneratedSHBEDir(),
+                    getGeneratedSHBEDir(),
                     level);
             outputDir = getUOFile(outputDir, doUnderOccupied, doCouncil);
             result.add(outputDir);
@@ -478,7 +690,7 @@ public class DW_Files {
         return result;
     }
 
-    public static TreeMap<String, File> getGeneratedSHBELevelDirsTreeMap(
+    public TreeMap<String, File> getGeneratedSHBELevelDirsTreeMap(
             ArrayList<String> levels,
             boolean doUnderOccupied,
             boolean doCouncil) {
@@ -489,7 +701,7 @@ public class DW_Files {
         while (ite.hasNext()) {
             String level = ite.next();
             File outputDir = new File(
-                    DW_Files.getGeneratedSHBEDir(),
+                    getGeneratedSHBEDir(),
                     level);
             outputDir = getUOFile(outputDir, doUnderOccupied, doCouncil);
             result.put(level, outputDir);
@@ -497,7 +709,7 @@ public class DW_Files {
         return result;
     }
 
-    public static TreeMap<String, File> getGeneratedSHBELevelDirsTreeMap(
+    public TreeMap<String, File> getGeneratedSHBELevelDirsTreeMap(
             ArrayList<String> levels,
             boolean doUnderOccupied,
             boolean doCouncil,
@@ -509,7 +721,7 @@ public class DW_Files {
         while (ite.hasNext()) {
             String level = ite.next();
             File outputDir = new File(
-                    DW_Files.getGeneratedSHBEDir(),
+                    getGeneratedSHBEDir(),
                     level);
             outputDir = getUOFile(outputDir, doUnderOccupied, doCouncil);
             result.put(level, outputDir);
@@ -517,7 +729,7 @@ public class DW_Files {
         return result;
     }
 
-    public static File getGeneratedUnderOccupiedDir() {
+    public File getGeneratedUnderOccupiedDir() {
         if (generatedUnderOccupiedDir == null) {
             generatedUnderOccupiedDir = new File(
                     getGeneratedLCCDir(),
@@ -527,7 +739,7 @@ public class DW_Files {
         return generatedUnderOccupiedDir;
     }
 
-    public static File getOutputDir() {
+    public File getOutputDir() {
         if (outputDir == null) {
             outputDir = new File(
                     getDigitalWelfareDir(),
@@ -537,7 +749,7 @@ public class DW_Files {
         return outputDir;
     }
 
-    public static File getOutputAdviceLeedsDir() {
+    public File getOutputAdviceLeedsDir() {
         if (outputAdviceLeedsDir == null) {
             outputAdviceLeedsDir = new File(
                     getOutputDir(),
@@ -547,7 +759,7 @@ public class DW_Files {
         return outputAdviceLeedsDir;
     }
 
-    public static File getOutputAdviceLeedsMapsDir() {
+    public File getOutputAdviceLeedsMapsDir() {
         if (outputAdviceLeedsMapsDir == null) {
             outputAdviceLeedsMapsDir = new File(
                     getOutputAdviceLeedsDir(),
@@ -558,7 +770,7 @@ public class DW_Files {
         return outputAdviceLeedsMapsDir;
     }
 
-    public static File getOutputAdviceLeedsTablesDir() {
+    public File getOutputAdviceLeedsTablesDir() {
         if (outputAdviceLeedsTablesDir == null) {
             outputAdviceLeedsTablesDir = new File(
                     getOutputAdviceLeedsDir(),
@@ -568,7 +780,7 @@ public class DW_Files {
         return outputAdviceLeedsTablesDir;
     }
 
-    public static File getOutputCensusDir() {
+    public File getOutputCensusDir() {
         if (outputCensusDir == null) {
             outputCensusDir = new File(
                     getOutputDir(),
@@ -578,7 +790,7 @@ public class DW_Files {
         return outputCensusDir;
     }
 
-    public static File getOutputCensus2011Dir() {
+    public File getOutputCensus2011Dir() {
         if (outputCensus2011Dir == null) {
             outputCensus2011Dir = new File(
                     getOutputCensusDir(),
@@ -588,7 +800,7 @@ public class DW_Files {
         return outputCensus2011Dir;
     }
 
-    public static File getOutputCensus2011Dir(String level) {
+    public File getOutputCensus2011Dir(String level) {
         File result;
         result = new File(
                 getOutputCensus2011Dir(),
@@ -597,7 +809,7 @@ public class DW_Files {
         return result;
     }
 
-    public static File getOutputLCCDir() {
+    public File getOutputLCCDir() {
         if (outputLCCDir == null) {
             outputLCCDir = new File(
                     getOutputDir(),
@@ -607,7 +819,7 @@ public class DW_Files {
         return outputLCCDir;
     }
 
-    public static File getOutputSHBEDir() {
+    public File getOutputSHBEDir() {
         if (outputSHBEDir == null) {
             outputSHBEDir = new File(
                     getOutputLCCDir(),
@@ -617,7 +829,7 @@ public class DW_Files {
         return outputSHBEDir;
     }
 
-    public static File getOutputSHBEMapsDir() {
+    public File getOutputSHBEMapsDir() {
         if (outputSHBEMapsDir == null) {
             outputSHBEMapsDir = new File(
                     getOutputSHBEDir(),
@@ -627,7 +839,7 @@ public class DW_Files {
         return outputSHBEMapsDir;
     }
 
-    public static File getOutputSHBETablesDir() {
+    public File getOutputSHBETablesDir() {
         if (outputSHBETablesDir == null) {
             outputSHBETablesDir = new File(
                     getOutputSHBEDir(),
@@ -637,12 +849,12 @@ public class DW_Files {
         return outputSHBETablesDir;
     }
 
-    public static File getOutputSHBETablesTenancyTypeTransitionDir(
+    public File getOutputSHBETablesTenancyTypeTransitionDir(
             String type,
             String paymentType,
-            boolean checkPreviousTenure) {
+            boolean checkPreviousTenancyType) {
         File result = new File(
-                DW_Files.getOutputSHBETablesDir(),
+                getOutputSHBETablesDir(),
                 sTenancy);
         result = new File(
                 result,
@@ -653,19 +865,19 @@ public class DW_Files {
         result = new File(
                 result,
                 sTenancyTypeTransition);
-        if (checkPreviousTenure) {
+        if (checkPreviousTenancyType) {
             result = new File(
                     result,
-                    sCheckedPreviousTenure);
+                    sCheckedPreviousTenancyType);
         } else {
             result = new File(
                     result,
-                    sNotCheckedPreviousTenure);
+                    sNotCheckedPreviousTenancyType);
         }
         return result;
     }
 
-    public static File getOutputSHBEPlotsDir() {
+    public File getOutputSHBEPlotsDir() {
         if (outputSHBEPlotsDir == null) {
             outputSHBEPlotsDir = new File(
                     getOutputSHBEDir(),
@@ -675,12 +887,12 @@ public class DW_Files {
         return outputSHBEPlotsDir;
     }
 
-    public static File getOutputSHBEPlotsTenancyTypeTransitionDir(
+    public File getOutputSHBEPlotsTenancyTypeTransitionDir(
             String type,
             String paymentType,
-            boolean checkPreviousTenure) {
+            boolean checkPreviousTenancyType) {
         File result = new File(
-                DW_Files.getOutputSHBEPlotsDir(),
+                getOutputSHBEPlotsDir(),
                 sTenancy);
         result = new File(
                 result,
@@ -691,38 +903,38 @@ public class DW_Files {
         result = new File(
                 result,
                 sTenancyTypeTransitionLineGraphs);
-        if (checkPreviousTenure) {
+        if (checkPreviousTenancyType) {
             result = new File(
                     result,
-                    sCheckedPreviousTenure);
+                    sCheckedPreviousTenancyType);
         } else {
             result = new File(
                     result,
-                    sNotCheckedPreviousTenure);
+                    sNotCheckedPreviousTenancyType);
         }
         return result;
     }
 
-    public static File getOutputSHBELineMapsDir() {
+    public File getOutputSHBELineMapsDir() {
         return new File(
                 getOutputSHBEMapsDir(),
                 sLine);
     }
 
-    public static File getOutputSHBEChoroplethDir() {
+    public File getOutputSHBEChoroplethDir() {
         return new File(
                 getOutputSHBEMapsDir(),
                 sChoropleth);
     }
 
-    public static File getOutputSHBEChoroplethDir(
+    public File getOutputSHBEChoroplethDir(
             String level) {
         return new File(
                 getOutputSHBEChoroplethDir(),
                 level);
     }
 
-    public static File getOutputUnderOccupiedDir() {
+    public File getOutputUnderOccupiedDir() {
         if (outputUnderOccupiedDir == null) {
             outputUnderOccupiedDir = new File(
                     getOutputLCCDir(),
@@ -732,15 +944,15 @@ public class DW_Files {
         return outputUnderOccupiedDir;
     }
 
-    public static File getTableDir(
-            String name, 
-            String paymentType, 
-            String includeKey, 
+    public File getTableDir(
+            String name,
+            String paymentType,
+            String includeKey,
             boolean doUnderOccupancy) {
         File result;
         result = new File(
-                    DW_Files.getOutputSHBETablesDir(),
-                    name);
+                getOutputSHBETablesDir(),
+                name);
         if (doUnderOccupancy) {
             result = new File(result, sUO);
         } else {
@@ -753,5 +965,4 @@ public class DW_Files {
         }
         return result;
     }
-
 }

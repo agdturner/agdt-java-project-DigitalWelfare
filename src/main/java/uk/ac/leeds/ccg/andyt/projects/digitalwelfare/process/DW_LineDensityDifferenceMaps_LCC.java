@@ -37,13 +37,14 @@ import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorGWS;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeChanges;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getYM3s;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.initONSPDLookups;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.initONSPDLookups;
 import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 
 /**
@@ -60,13 +61,17 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
     protected ArrayList<AGDT_Shapefile> midgrounds;
     protected ArrayList<AGDT_Shapefile> foregrounds;
 
+    public DW_LineDensityDifferenceMaps_LCC(DW_Environment env) {
+        super(env);
+    }
+
     //DW_StyleParameters styleParameters;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         try {
-            new DW_LineDensityDifferenceMaps_LCC().run();
+            new DW_LineDensityDifferenceMaps_LCC(null).run();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -92,7 +97,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
         //showMapsInJMapPane = true;
         //outputESRIAsciigrids = false;
         imageWidth = 1000;
-        initONSPDLookups();
+        initONSPDLookups(env);
         // Initialise styleParameters
         /*
          * YlOrRd,PRGn,PuOr,RdGy,Spectral,Grays,PuBuGn,RdPu,BuPu,YlOrBr,Greens,
@@ -120,7 +125,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
         styleParameters.setForegroundStyleTitle1("Foreground Style 1");
 
         mapDirectory = new File(
-                DW_Files.getOutputAdviceLeedsMapsDir(),
+                tDW_Files.getOutputAdviceLeedsMapsDir(),
                 "density");
         imageWidth = 1000;
 
@@ -181,7 +186,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
     //public void runAll(int resolutionMultiplier) {
     public void runAll() {
         TreeMap<String, ArrayList<Integer>> includes;
-        includes = DW_SHBE_Handler.getIncludes();
+        includes = env.getDW_SHBE_Handler().getIncludes();
         includes.remove("All");
 //        includes.remove("Yearly");
 //        includes.remove("6Monthly");
@@ -191,10 +196,10 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 
         HashMap<Boolean, ArrayList<ArrayList<String>>> allTenancyTypeChanges;
         allTenancyTypeChanges = getAllTenancyTypeChanges();
-        
+
         HashMap<Boolean, ArrayList<ArrayList<String>>> allTenancyTypeChangesGrouped;
         allTenancyTypeChangesGrouped = DW_LineMaps_LCC.getAllTenancyTypeChangesGrouped();
-        
+
         Iterator<String> includesIte;
         includesIte = includes.keySet().iterator();
         while (includesIte.hasNext()) {
@@ -204,7 +209,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
             include = includes.get(includeName);
 
             TreeMap<String, ArrayList<String>> yearMonths;
-            yearMonths = getYM3s(include);
+            yearMonths = getYM3s(env, include);
 
             ArrayList<Boolean> b;
             b = new ArrayList<Boolean>();
@@ -297,13 +302,16 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 
     private void init() {
         //initStyleParameters();
-        mapDirectory = DW_Files.getOutputSHBELineMapsDir();
+        mapDirectory = tDW_Files.getOutputSHBELineMapsDir();
         foregrounds = new ArrayList<AGDT_Shapefile>();
         //midgrounds = new ArrayList<AGDT_Shapefile>();
 //        backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                "LSOA", targetPropertyNameLSOA, getShapefileDataStoreFactory());
+                env,
+                "LSOA", 
+                targetPropertyNameLSOA, 
+                getShapefileDataStoreFactory());
         foregrounds.add(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
     }
@@ -326,28 +334,28 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
             boolean doUnderOccupancyData,
             boolean doCouncil,
             boolean scaleToFirst) {
-        
+
         // Single run
         File dirIn1 = new File("/scratch02/DigitalWelfare/Output/LCC/SHBE/Maps/Line/Tenancy/All/TenancyTypeTransition/CheckedPreviousTenure/TenancyAndPostcodeChanges/All/PostcodeChanged/Monthly/Ungrouped/PostcodeChanges/CheckedPreviousPostcode/2013_January_TO_2015_September/");
         File dirOut1 = new File(
-                        dirIn1,
-                        "Density");
+                dirIn1,
+                "Density");
 //        grida File /scratch02/DigitalWelfare/Output/LCC/SHBE/Maps/Line/Tenancy/All/TenancyTypeTransition/CheckedPreviousTenure/TenancyAndPostcodeChanges/All/PostcodeChanged/Monthly/Ungrouped/PostcodeChanges/CheckedPreviousPostcode/2013_January_TO_2015_September/1-3/1-3E/Density/IndividualStyle/1-3EE/1-3EE_554_ncols_680_cellsize_50.0.asc does not exist!
 //grida File /scratch02/DigitalWelfare/Output/LCC/SHBE/Maps/Line/Tenancy/All/TenancyTypeTransition/CheckedPreviousTenure/TenancyAndPostcodeChanges/All/PostcodeChanged/Monthly/Ungrouped/PostcodeChanges/CheckedPreviousPostcode/2013_January_TO_2015_September/1-3/3E-1/Density/IndividualStyle/1-3ES/1-3ES_554_ncols_680_cellsize_50.0.asc does not exist!
         String name;
         name = "2013_January_TO_2015_September";
-                String namea;
-                namea = "1-3";
-                String nameb;
-                nameb = getReverseName(namea);
-       doDensity(
-                        dirIn1,
-                        name,
-                        namea,
-                        nameb,
-                        scaleToFirst);
+        String namea;
+        namea = "1-3";
+        String nameb;
+        nameb = getReverseName(namea);
+        doDensity(
+                dirIn1,
+                name,
+                namea,
+                nameb,
+                scaleToFirst);
         System.exit(0);
-        
+
 //        //        backgroundDW_Shapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
 //        //        foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
 //        // Other variables for selecting and output
@@ -680,7 +688,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
             eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
 
             System.out.println(asciigridFile);
-        //System.exit(0);
+            //System.exit(0);
             // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
             outputGridToImageUsingGeoToolsAndSetCommonStyle(
                     100.0d,//(double) Math.PI * cellDistanceForGeneralisation * cellDistanceForGeneralisation,

@@ -54,6 +54,10 @@ public class TenancyChangesUO {
 
     // Go through all the UO data and get a list of all UO Claim refs
     boolean handleOutOfMemoryError = false;
+    
+    /**
+     * A reference to DW_Environment
+     */
     DW_Environment env;
     DW_SHBE_CollectionHandler collectionHandler;
     DW_SHBE_Handler tDW_SHBE_Handler;
@@ -1251,7 +1255,7 @@ public class TenancyChangesUO {
         Iterator<Integer> tNotMonthlyUOIte;
         DW_SHBE_Collection tSHBEData;
         String paymentType;
-        paymentType = DW_SHBE_Handler.sAllPT;
+        paymentType = tDW_SHBE_Handler.sAllPT;
         int i;
         String key;
         String aS;
@@ -1266,9 +1270,9 @@ public class TenancyChangesUO {
         tNotMonthlyUOIte = NotMonthlyUO.iterator();
         while (tNotMonthlyUOIte.hasNext()) {
             i = tNotMonthlyUOIte.next();
-            tSHBEData = new DW_SHBE_Collection(SHBEFilenames[i], paymentType);
-            year = DW_SHBE_Handler.getYear(SHBEFilenames[i]);
-            month = DW_SHBE_Handler.getMonthNumber(SHBEFilenames[i]);
+            tSHBEData = new DW_SHBE_Collection(env, SHBEFilenames[i], paymentType);
+            year = tDW_SHBE_Handler.getYear(SHBEFilenames[i]);
+            month = tDW_SHBE_Handler.getMonthNumber(SHBEFilenames[i]);
             records = tSHBEData.getRecords();
             tCTBRefsIte = tCTBRefs.iterator();
             while (tCTBRefsIte.hasNext()) {
@@ -1331,13 +1335,13 @@ public class TenancyChangesUO {
                     key = aCTBRef + sUnderscore + sCEG;
                     aS = result.get(key);
                     //j = dRecord.getClaimantsEthnicGroup();
-                    j = DW_SHBE_Handler.getEthnicityGroup(dRecord);
+                    j = tDW_SHBE_Handler.getEthnicityGroup(dRecord);
                     aS += sCommaSpace + j;
                     result.put(key, aS);
                     // Household Size
                     key = aCTBRef + sUnderscore + sHS;
                     aS = result.get(key);
-                    j = (int) DW_SHBE_Handler.getHouseholdSize(dRecord);
+                    j = (int) tDW_SHBE_Handler.getHouseholdSize(dRecord);
                     aS += sCommaSpace + j;
                     result.put(key, aS);
                     // NonDependents
@@ -1409,7 +1413,7 @@ public class TenancyChangesUO {
                     // ClaimantsAge
                     key = aCTBRef + sUnderscore + sCA;
                     aS = result.get(key);
-                    bS = DW_SHBE_Handler.getClaimantsAge(year, month, dRecord);
+                    bS = tDW_SHBE_Handler.getClaimantsAge(year, month, dRecord);
                     aS += sCommaSpace + bS;
                     result.put(key, aS);
                     // Partners Date Of Birth
@@ -1421,7 +1425,7 @@ public class TenancyChangesUO {
                     // PartnersAge
                     key = aCTBRef + sUnderscore + sPA;
                     aS = result.get(key);
-                    bS = DW_SHBE_Handler.getPartnersAge(year, month, dRecord);
+                    bS = tDW_SHBE_Handler.getPartnersAge(year, month, dRecord);
                     aS += sCommaSpace + bS;
                     result.put(key, aS);
                     // ClaimantsGender
@@ -1439,7 +1443,7 @@ public class TenancyChangesUO {
                     // Disability
                     key = aCTBRef + sUnderscore + sDisability;
                     aS = result.get(key);
-                    b = DW_SHBE_Handler.getDisability(dRecord);
+                    b = tDW_SHBE_Handler.getDisability(dRecord);
                     if (b == true) {
                         aS += sCommaSpace + sDisability;
                     } else {
@@ -1869,11 +1873,11 @@ public class TenancyChangesUO {
         tEndUOThatWereAlsoStartUOCTBRefs.retainAll(tStartUOCTBRefs);
 
         TreeMap<String, ArrayList<Integer>> includes;
-        includes = DW_SHBE_Handler.getIncludes();
+        includes = tDW_SHBE_Handler.getIncludes();
         ArrayList<Integer> MonthlyUO;
-        MonthlyUO = includes.get(DW_SHBE_Handler.sMonthlyUO);
+        MonthlyUO = includes.get(tDW_SHBE_Handler.sMonthlyUO);
         ArrayList<Integer> All;
-        All = includes.get(DW_SHBE_Handler.sAll);
+        All = includes.get(tDW_SHBE_Handler.sAll);
         ArrayList<Integer> NotMonthlyUO;
         NotMonthlyUO = new ArrayList<Integer>();
         NotMonthlyUO.addAll(All);
@@ -1908,13 +1912,13 @@ public class TenancyChangesUO {
             j = iteX.next();
         }
         aSHBEFilename = SHBEFilenames[j];
-        aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
-        year = DW_SHBE_Handler.getYear(aSHBEFilename);
-        month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
+        aYM3 = tDW_SHBE_Handler.getYM3(aSHBEFilename);
+        year = tDW_SHBE_Handler.getYear(aSHBEFilename);
+        month = tDW_SHBE_Handler.getMonthNumber(aSHBEFilename);
         councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
         if (councilUnderOccupiedSet1 != null) {
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
-            aSHBEData = new DW_SHBE_Collection(aSHBEFilename, paymentType);
+            aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, paymentType);
         }
 
         TreeMap<String, DW_SHBE_Record> aRecords;
@@ -2843,7 +2847,7 @@ public class TenancyChangesUO {
             tNotMonthlyUOIte = NotMonthlyUO.iterator();
             while (tNotMonthlyUOIte.hasNext()) {
                 i = tNotMonthlyUOIte.next();
-                yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                yM3 = tDW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                 header += yM3 + sCommaSpace;
             }
         }
@@ -2854,13 +2858,13 @@ public class TenancyChangesUO {
         while (!initFirst) {
             i = includeIte.next();
             aSHBEFilename = SHBEFilenames[i];
-            aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
-            year = DW_SHBE_Handler.getYear(aSHBEFilename);
-            month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
+            aYM3 = tDW_SHBE_Handler.getYM3(aSHBEFilename);
+            year = tDW_SHBE_Handler.getYear(aSHBEFilename);
+            month = tDW_SHBE_Handler.getMonthNumber(aSHBEFilename);
             councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
             if (councilUnderOccupiedSet1 != null) {
                 RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
-                aSHBEData = new DW_SHBE_Collection(aSHBEFilename, paymentType);
+                aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, paymentType);
                 initFirst = true;
             }
             header += aYM3;
@@ -3184,10 +3188,10 @@ public class TenancyChangesUO {
             cRecords = bRecords;
             bRecords = aRecords;
             aSHBEFilename = SHBEFilenames[i];
-            aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
-            year = DW_SHBE_Handler.getYear(aSHBEFilename);
-            month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
-            aSHBEData = new DW_SHBE_Collection(aSHBEFilename, paymentType);
+            aYM3 = tDW_SHBE_Handler.getYM3(aSHBEFilename);
+            year = tDW_SHBE_Handler.getYear(aSHBEFilename);
+            month = tDW_SHBE_Handler.getMonthNumber(aSHBEFilename);
+            aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, paymentType);
             aRecords = aSHBEData.getRecords();
             councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
@@ -3616,7 +3620,7 @@ public class TenancyChangesUO {
             aCTBRef = iteS.next();
             DW_SHBE_Record rec = aRecords.get(aCTBRef);
             if (rec != null) {
-                totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(rec);
+                totalHouseholdSize += tDW_SHBE_Handler.getHouseholdSize(rec);
                 d += 1.0d;
             }
         }
@@ -3636,7 +3640,7 @@ public class TenancyChangesUO {
             aCTBRef = iteS.next();
             DW_SHBE_Record rec = aRecords.get(aCTBRef);
             if (rec != null) {
-                totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(rec);
+                totalHouseholdSize += tDW_SHBE_Handler.getHouseholdSize(rec);
                 d += 1.0d;
             }
         }
@@ -4381,7 +4385,9 @@ public class TenancyChangesUO {
         result[5] = 0; // 
         result[6] = 0; // 
         result[7] = 0; // 
-        result[8] = 0; // 
+        result[8] = 0; //
+        DW_Postcode_Handler tDW_Postcode_Handler;
+        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
         int cumulativeClaims;
         String aS;
         String key;
@@ -4503,7 +4509,7 @@ public class TenancyChangesUO {
             //    }
             //}
             if (!validPostcodes.contains(aPC)) {
-                if (DW_Postcode_Handler.isValidPostcode(
+                if (tDW_Postcode_Handler.isValidPostcode(
                         DW_Postcode_Handler.getNearestYM3ForONSPDLookup(aYM3), aPC)) {
                     validPostcodes.add(aPC);
                 }
@@ -4515,12 +4521,12 @@ public class TenancyChangesUO {
             aSHBC = aDW_SHBE_D_Record.getStatusOfHBClaimAtExtractDate();
             aRTHBCC = aDW_SHBE_D_Record.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
             aCEG = aDW_SHBE_D_Record.getClaimantsEthnicGroup();
-            aHS = DW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
+            aHS = tDW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
             aND = aDW_SHBE_D_Record.getNumberOfNonDependents();
             aCD = aDW_SHBE_D_Record.getNumberOfChildDependents();
             aCDoB = aDW_SHBE_D_Record.getClaimantsDateOfBirth();
             aPDoB = aDW_SHBE_D_Record.getPartnersDateOfBirth();
-            if (DW_SHBE_Handler.getDisability(aDW_SHBE_D_Record)) {
+            if (tDW_SHBE_Handler.getDisability(aDW_SHBE_D_Record)) {
                 aD = sDisability;
             } else {
                 aD = s;
@@ -4549,8 +4555,8 @@ public class TenancyChangesUO {
             } else {
                 aDC = s;
             }
-            aCA = DW_SHBE_Handler.getClaimantsAge(year, month, aDW_SHBE_D_Record);
-            aPA = DW_SHBE_Handler.getPartnersAge(year, month, aDW_SHBE_D_Record);
+            aCA = tDW_SHBE_Handler.getClaimantsAge(year, month, aDW_SHBE_D_Record);
+            aPA = tDW_SHBE_Handler.getPartnersAge(year, month, aDW_SHBE_D_Record);
             aCG = aDW_SHBE_D_Record.getClaimantsGender();
             aPG = aDW_SHBE_D_Record.getPartnersGender();
             aPDD = aDW_SHBE_D_Record.getPartnersDateOfDeath();
@@ -4588,15 +4594,15 @@ public class TenancyChangesUO {
             bSHBC = bDW_SHBE_D_Record.getStatusOfHBClaimAtExtractDate();
             bRTHBCC = bDW_SHBE_D_Record.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
             //bCEG = bDW_SHBE_D_Record.getClaimantsEthnicGroup();
-            bCEG = DW_SHBE_Handler.getEthnicityGroup(bDW_SHBE_D_Record);
-            bHS = DW_SHBE_Handler.getHouseholdSize(bDW_SHBE_D_Record);
+            bCEG = tDW_SHBE_Handler.getEthnicityGroup(bDW_SHBE_D_Record);
+            bHS = tDW_SHBE_Handler.getHouseholdSize(bDW_SHBE_D_Record);
             bND = bDW_SHBE_D_Record.getNumberOfNonDependents();
             bCD = bDW_SHBE_D_Record.getNumberOfChildDependents();
             bPDD = bDW_SHBE_D_Record.getPartnersDateOfDeath();
             bCDoB = bDW_SHBE_D_Record.getClaimantsDateOfBirth();
             bPDoB = bDW_SHBE_D_Record.getPartnersDateOfBirth();
-            bCA = DW_SHBE_Handler.getClaimantsAge(year, month, bDW_SHBE_D_Record);
-            bPA = DW_SHBE_Handler.getPartnersAge(year, month, bDW_SHBE_D_Record);
+            bCA = tDW_SHBE_Handler.getClaimantsAge(year, month, bDW_SHBE_D_Record);
+            bPA = tDW_SHBE_Handler.getPartnersAge(year, month, bDW_SHBE_D_Record);
         }
         if (cDW_SHBE_Record == null) {
             cTT = DW_SHBE_TenancyType_Handler.iMinus999;
@@ -4924,7 +4930,7 @@ public class TenancyChangesUO {
                     DW_UOReport_Record rec = councilUnderOccupiedSet1.getMap().get(aCTBRef);
                     int bedrooms = rec.getBedroomsInProperty();
                     int householdSizeSHBE;
-                    householdSizeSHBE = DW_SHBE_Handler.getHouseholdSizeint(aDW_SHBE_D_Record);
+                    householdSizeSHBE = tDW_SHBE_Handler.getHouseholdSizeint(aDW_SHBE_D_Record);
                     result[5] = householdSizeSHBE;
                     if (householdSizeSHBE >= bedrooms) {
                         result[3] = true;
@@ -4951,9 +4957,9 @@ public class TenancyChangesUO {
                             aDW_SHBE_D_Record);
                     DW_UOReport_Record rec = RSLUnderOccupiedSet1.getMap().get(aCTBRef);
                     int bedrooms = rec.getBedroomsInProperty();
-                    //long householdSize = DW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
+                    //long householdSize = tDW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
                     int householdSizeSHBE;
-                    householdSizeSHBE = DW_SHBE_Handler.getHouseholdSizeint(aDW_SHBE_D_Record);
+                    householdSizeSHBE = tDW_SHBE_Handler.getHouseholdSizeint(aDW_SHBE_D_Record);
                     result[7] = householdSizeSHBE;
                     if (householdSizeSHBE >= bedrooms) {
                         result[3] = true;
@@ -6034,7 +6040,7 @@ public class TenancyChangesUO {
         int i;
         i = includeIte.next();
         filename1 = SHBEFilenames[i];
-        yM31 = DW_SHBE_Handler.getYM3(filename1);
+        yM31 = tDW_SHBE_Handler.getYM3(filename1);
         councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
         if (councilUnderOccupiedSet1 != null) {
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
@@ -6067,7 +6073,7 @@ public class TenancyChangesUO {
             i = includeIte.next();
         }
         filename1 = SHBEFilenames[i];
-        yM31 = DW_SHBE_Handler.getYM3(filename1);
+        yM31 = tDW_SHBE_Handler.getYM3(filename1);
         councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
         if (councilUnderOccupiedSet1 != null) {
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
@@ -6098,7 +6104,7 @@ public class TenancyChangesUO {
         while (includeIte.hasNext()) {
             i = includeIte.next();
             filename1 = SHBEFilenames[i];
-            yM31 = DW_SHBE_Handler.getYM3(filename1);
+            yM31 = tDW_SHBE_Handler.getYM3(filename1);
             councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
             if (councilUnderOccupiedSet1 != null) {
                 RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
@@ -7456,7 +7462,7 @@ public class TenancyChangesUO {
         System.out.println();
     }
 
-    protected static PrintWriter getPrintWriter(
+    protected PrintWriter getPrintWriter(
             String name,
             String dirName,
             String paymentType,
@@ -7464,7 +7470,7 @@ public class TenancyChangesUO {
             boolean underOccupancy) {
         PrintWriter result;
         File dirOut;
-        dirOut = DW_Files.getTableDir(
+        dirOut = env.getDW_Files().getTableDir(
                 sUnderOccupancyGroupTables,
                 paymentType, 
                 includeKey, 
@@ -7756,7 +7762,7 @@ public class TenancyChangesUO {
                 max = Math.max(m, numberOfChildDependents);
                 maxNumberOfDependentsInClaimWhenUO.put(aCTBRef, max);
                 String DoB = SRecord.getSubRecordDateOfBirth();
-                int age = Integer.valueOf(DW_SHBE_Handler.getAge(year, month, DoB));
+                int age = Integer.valueOf(tDW_SHBE_Handler.getAge(year, month, DoB));
                 if (age < 10) {
                     aID = getSID(
                             SRecord,

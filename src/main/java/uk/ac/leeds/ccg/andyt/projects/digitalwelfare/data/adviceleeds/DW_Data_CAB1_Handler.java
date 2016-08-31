@@ -18,6 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +33,7 @@ import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 /**
  * For handling data from CASE.
  */
-public class DW_Data_CAB1_Handler {
+public class DW_Data_CAB1_Handler extends DW_Object {
 
     public DW_Data_CAB1_Handler() {
     }

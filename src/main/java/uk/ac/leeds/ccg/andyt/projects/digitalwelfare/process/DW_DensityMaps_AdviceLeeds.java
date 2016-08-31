@@ -48,8 +48,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ar
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor.getLookupFromPostcodeToLevelCode;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor.getLookupFromPostcodeToLevelCode;
 
 /**
  *
@@ -57,15 +58,15 @@ import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor
  */
 public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
 
-    public DW_DensityMaps_AdviceLeeds() {
+    public DW_DensityMaps_AdviceLeeds(DW_Environment env) {
+        super(env);
     }
-
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         try {
-            new DW_DensityMaps_AdviceLeeds().run();
+            new DW_DensityMaps_AdviceLeeds(null).run();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -93,7 +94,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
         showMapsInJMapPane = true;
         //outputESRIAsciigrids = false;
         imageWidth = 1000;
-        initONSPDLookups();
+        initONSPDLookups(env);
         // Initialise styleParameters
         /*
          * YlOrRd,PRGn,PuOr,RdGy,Spectral,Grays,PuBuGn,RdPu,BuPu,YlOrBr,Greens,
@@ -120,7 +121,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
         styleParameters.setForegroundStyleTitle1("Foreground Style 1");
 
         mapDirectory = new File(
-                DW_Files.getOutputAdviceLeedsMapsDir(),
+                tDW_Files.getOutputAdviceLeedsMapsDir(),
                 "density");
         imageWidth = 1000;
 
@@ -197,10 +198,13 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
             // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
             DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
             tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                    level, targetPropertyName, getShapefileDataStoreFactory());
-            tLookupFromPostcodeToCensusCodes = getLookupFromPostcodeToLevelCode(
-                    level, 2011);
-
+                    env,
+                level, targetPropertyName, getShapefileDataStoreFactory());
+            tLookupFromPostcodeToCensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
+                    env,                
+                    level,
+                    2011);
+            
             TreeMap<String, Deprivation_DataRecord> deprivationRecords;
 
             // Map CAB data
@@ -693,7 +697,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
         }
     }
 
-    public static TreeMap<String, ArrayList<AGDT_Point>> getLeedsCABDataPoints(
+    public TreeMap<String, ArrayList<AGDT_Point>> getLeedsCABDataPoints(
             Object IDType) {
         TreeMap<String, ArrayList<AGDT_Point>> result;
         result = new TreeMap<String, ArrayList<AGDT_Point>>();
@@ -702,6 +706,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
         aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler();
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
         tLeedsCABData = DW_DataProcessor_AdviceLeeds.loadLeedsCABData(
+                env,
                 filename,
                 aCAB_DataRecord2_Handler,
                 IDType);
@@ -716,7 +721,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
             String formattedpostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
             String postcodeLevel;
             postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(formattedpostcode);
-            AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(DW_Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
+            AGDT_Point aPoint = getONSPDlookups(env).get(postcodeLevel).get(DW_Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
             if (aPoint != null) {
                 if (result.containsKey(outlet)) {
                     result.get(outlet).add(aPoint);
@@ -734,7 +739,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
         return result;
     }
 
-    public static TreeMap<String, ArrayList<String>> getLeedsCABDataPostcodes(
+    public TreeMap<String, ArrayList<String>> getLeedsCABDataPostcodes(
             Object IDType) {
         TreeMap<String, ArrayList<String>> result;
         result = new TreeMap<String, ArrayList<String>>();
@@ -743,6 +748,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
         aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler();
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
         tLeedsCABData = DW_DataProcessor_AdviceLeeds.loadLeedsCABData(
+                env,
                 filename,
                 aCAB_DataRecord2_Handler,
                 IDType);
@@ -766,7 +772,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
         return result;
     }
 
-    public static ArrayList<AGDT_Point> getChapeltownCABDataPoints(
+    public ArrayList<AGDT_Point> getChapeltownCABDataPoints(
             Object IDType) {
         ArrayList<AGDT_Point> result;
         result = new ArrayList<AGDT_Point>();
@@ -786,7 +792,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
             String formattedpostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
             String postcodeLevel;
             postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(formattedpostcode);
-            AGDT_Point aPoint = getONSPDlookups().get(postcodeLevel).get(DW_Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
+            AGDT_Point aPoint = getONSPDlookups(env).get(postcodeLevel).get(DW_Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
             if (aPoint != null) {
                 result.add(aPoint);
             } else {

@@ -56,6 +56,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ge
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 
 /**
@@ -78,12 +79,16 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
     private DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
     private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
 
+    public DW_LineMaps_AdviceLeeds(DW_Environment env) {
+        super(env);
+    }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         try {
-            new DW_LineMaps_AdviceLeeds().run();
+            new DW_LineMaps_AdviceLeeds(null).run();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace();
@@ -138,12 +143,12 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
     private void init() {
         level = "MSOA";
         initStyleParameters();
-        mapDirectory = DW_Files.getOutputAdviceLeedsMapsDir();
+        mapDirectory = tDW_Files.getOutputAdviceLeedsMapsDir();
         // init tLSOACodesAndLeedsLSOAShapefile
         initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         // init tMSOACodesAndLeedsMSOAShapefile
         initMSOACodesAndLeedsMSOAShapefile(targetPropertyNameMSOA);
-        initONSPDLookups();
+        initONSPDLookups(env);
         initCABOutletPoints();
         aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler();
         tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler();
@@ -161,7 +166,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
 //        styleParameters.setnClasses(9);
 //        styleParameters.setPaletteName("Reds");
 //        styleParameters.setAddWhiteForZero(true);
-        styleParameters.setForegroundStyleName(0,"Foreground Style 0");
+        styleParameters.setForegroundStyleName(0, "Foreground Style 0");
 //        styleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
         styleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
         styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
@@ -177,23 +182,31 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
     private void initLSOACodesAndLeedsLSOAShapefile(
             String targetPropertyNameLSOA) {
         tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                "LSOA", targetPropertyNameLSOA, getShapefileDataStoreFactory());
+                env,
+                "LSOA",
+                targetPropertyNameLSOA,
+                getShapefileDataStoreFactory());
     }
 
     private void initMSOACodesAndLeedsMSOAShapefile(
             String targetPropertyNameMSOA) {
         tMSOACodesAndLeedsMSOAShapefile = new DW_AreaCodesAndShapefiles(
-                "MSOA", targetPropertyNameMSOA, getShapefileDataStoreFactory());
+                env,
+                "MSOA",
+                targetPropertyNameMSOA,
+                getShapefileDataStoreFactory());
     }
 
     private void initCABOutletPoints() {
+        DW_Postcode_Handler tDW_Postcode_Handler;
+        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
         tCABOutletPostcodes = DW_Processor.getOutletsAndPostcodes();
         tCABOutletPoints = new TreeMap<String, AGDT_Point>();
         Iterator<String> ite_String = tCABOutletPostcodes.keySet().iterator();
         while (ite_String.hasNext()) {
             String outletName = ite_String.next();
             String postcode = tCABOutletPostcodes.get(outletName);
-            AGDT_Point p = DW_Postcode_Handler.getPointFromPostcode(
+            AGDT_Point p = tDW_Postcode_Handler.getPointFromPostcode(
                     DW_Postcode_Handler.getDefaultYM3(),
                     DW_Postcode_Handler.TYPE_UNIT,
                     postcode);
@@ -209,15 +222,19 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
     public void postcodeToLSOAToMSOAToOutletMaps(
             String outname,
             Object IDType) throws Exception {
+        DW_Postcode_Handler tDW_Postcode_Handler;
+        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
         backgroundDW_Shapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
         foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
         int year_int = 2011;
         // init postcode to LSOA lookup
         tLookupFromPostcodeToLSOACensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
+                env,
                 "LSOA",
                 year_int);
         // init postcode to MSOA lookup
         tLookupFromPostcodeToMSOACensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
+                env,
                 "MSOA",
                 year_int);
         // Other variables for selecting and output
@@ -233,9 +250,10 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
         tLeedsCABData = DW_DataProcessor_AdviceLeeds.loadLeedsCABData(
-                    filename,
-                    aCAB_DataRecord2_Handler,
-                    IDType);
+                env,
+                filename,
+                aCAB_DataRecord2_Handler,
+                IDType);
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessor_AdviceLeeds.getChapeltownCABData(
@@ -320,7 +338,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
             DW_Data_CAB2_Record r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
-            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(
+            AGDT_Point origin = tDW_Postcode_Handler.getPointFromPostcode(
                     DW_Postcode_Handler.getDefaultYM3(),
                     DW_Postcode_Handler.TYPE_UNIT,
                     postcode);
@@ -462,7 +480,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
             DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
-            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(
+            AGDT_Point origin = tDW_Postcode_Handler.getPointFromPostcode(
                     DW_Postcode_Handler.getDefaultYM3(),
                     DW_Postcode_Handler.TYPE_UNIT,
                     postcode);
@@ -632,15 +650,19 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
     public void postcodeToLSOAToOutletMaps(
             String outname,
             Object IDType) throws Exception {
+        DW_Postcode_Handler tDW_Postcode_Handler;
+        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
         backgroundDW_Shapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
         foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
         int year_int = 2011;
         // Get postcode to LSOA lookup
         tLookupFromPostcodeToLSOACensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
+                env,
                 "LSOA",
                 year_int);
         // Get postcode to LSOA lookup
         tLookupFromPostcodeToMSOACensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
+                env,
                 "MSOA",
                 year_int);
         // Other variables for selecting and output
@@ -656,9 +678,10 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
         tLeedsCABData = DW_DataProcessor_AdviceLeeds.loadLeedsCABData(
-                    filename,
-                    aCAB_DataRecord2_Handler,
-                    IDType);
+                env,
+                filename,
+                aCAB_DataRecord2_Handler,
+                IDType);
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessor_AdviceLeeds.getChapeltownCABData(
@@ -705,7 +728,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
             DW_Data_CAB2_Record r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
-            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(
+            AGDT_Point origin = tDW_Postcode_Handler.getPointFromPostcode(
                     DW_Postcode_Handler.getDefaultYM3(),
                     DW_Postcode_Handler.TYPE_UNIT,
                     postcode);
@@ -793,7 +816,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
             DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
-            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(
+            AGDT_Point origin = tDW_Postcode_Handler.getPointFromPostcode(
                     DW_Postcode_Handler.getDefaultYM3(),
                     DW_Postcode_Handler.TYPE_UNIT,
                     postcode);
@@ -901,6 +924,8 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
     public void postcodeToOutletMaps(
             String outname,
             Object IDType) throws Exception {
+        DW_Postcode_Handler tDW_Postcode_Handler;
+        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
         backgroundDW_Shapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
         foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
         // Other variables for selecting and output
@@ -915,9 +940,10 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
         tLeedsCABData = DW_DataProcessor_AdviceLeeds.loadLeedsCABData(
-                    filename,
-                    aCAB_DataRecord2_Handler,
-                    IDType);
+                env,
+                filename,
+                aCAB_DataRecord2_Handler,
+                IDType);
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessor_AdviceLeeds.getChapeltownCABData(
@@ -965,7 +991,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
             DW_Data_CAB2_Record r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
-            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(
+            AGDT_Point origin = tDW_Postcode_Handler.getPointFromPostcode(
                     DW_Postcode_Handler.getDefaultYM3(),
                     DW_Postcode_Handler.TYPE_UNIT,
                     postcode);
@@ -1033,7 +1059,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
             DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
-            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(
+            AGDT_Point origin = tDW_Postcode_Handler.getPointFromPostcode(
                     DW_Postcode_Handler.getDefaultYM3(),
                     DW_Postcode_Handler.TYPE_UNIT,
                     postcode);
@@ -1134,7 +1160,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
             String level,
             String targetPropertyName) {
         TreeMap<String, Point> result;
-        File generatedCensus2011LUTsDir = DW_Files.getGeneratedCensus2011LUTsDir();
+        File generatedCensus2011LUTsDir = tDW_Files.getGeneratedCensus2011LUTsDir();
         File tLSOAToCentroidLookupTableFile = new File(
                 generatedCensus2011LUTsDir,
                 level + "ToCentroidLookupTable_TreeMap.thisFile");

@@ -32,6 +32,7 @@ import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 import static uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Maps.png_String;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools.getOutputFile;
@@ -49,6 +50,11 @@ public class DW_ChoroplethMaps extends DW_Maps {
     protected boolean doDensity;
     protected boolean doDeprivation;
     protected boolean[] doFilter;
+    
+    public DW_ChoroplethMaps(DW_Environment env) {
+        super(env);
+    }
+
     /**
      * For storing property for selecting
      */
