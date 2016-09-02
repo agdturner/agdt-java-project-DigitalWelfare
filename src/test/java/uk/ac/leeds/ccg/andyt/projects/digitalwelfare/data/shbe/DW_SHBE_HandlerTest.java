@@ -101,9 +101,9 @@ public class DW_SHBE_HandlerTest {
     @Test
     public void testLoadInputData_File_String() {
         System.out.println("loadInputData");
-        DW_Files tDW_Files;
-        tDW_Files = new DW_Files();
         String dir;
+        DW_Files tDW_Files;
+        tDW_Files = new DW_Files(null);
         dir = tDW_Files.getDigitalWelfareDir().toString();
         DW_Environment env;
         env = new DW_Environment(dir);
