@@ -39,6 +39,7 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 //import uk.ac.leeds.ccg.andyt.generic.visualisation.charts.Generic_BarChart;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.charts.Generic_LineGraph;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
@@ -51,11 +52,18 @@ import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DataProce
  */
 public class DW_LineGraph extends Generic_LineGraph {
 
-    transient DW_Environment env;
+    protected transient DW_Environment env;
+    protected DW_Files tDW_Files;
+    protected DW_Strings tDW_Strings;
+    protected DW_SHBE_Handler tDW_SHBE_Handler;
+
     HashMap<String, HashSet<String>> areaCodes;
 
     public DW_LineGraph(DW_Environment env) {
         this.env = env;
+        this.tDW_Files = env.getDW_Files();
+        this.tDW_Strings = env.getDW_Strings();
+        this.tDW_SHBE_Handler = env.getDW_SHBE_Handler();
     }
 
     public DW_LineGraph(
@@ -80,6 +88,9 @@ public class DW_LineGraph extends Generic_LineGraph {
                 numberOfYAxisTicks, decimalPlacePrecisionForCalculations,
                 decimalPlacePrecisionForDisplay, aRoundingMode);
         this.env = env;
+        this.tDW_Files = env.getDW_Files();
+        this.tDW_Strings = env.getDW_Strings();
+        this.tDW_SHBE_Handler = env.getDW_SHBE_Handler();
     }
 
     /**
@@ -126,9 +137,6 @@ public class DW_LineGraph extends Generic_LineGraph {
 //        includes.remove("MonthlyUO");
 //        includes.remove("Monthly");
 
-        DW_Files tDW_Files;
-        tDW_Files = env.getDW_Files();
-
         ArrayList<Boolean> b;
         b = new ArrayList<Boolean>();
         b.add(true);
@@ -167,13 +175,11 @@ public class DW_LineGraph extends Generic_LineGraph {
                     boolean doSameTenancy;
                     doSameTenancy = iteB3.next();
                     as = getAllSelections(
-                            tDW_Files,
                             doUnderOccupancy,
                             do999,
                             doSameTenancy);
                     ass.put(doSameTenancy, as);
                     asg = getAllSelectionsGrouped(
-                            tDW_Files,
                             doUnderOccupancy,
                             do999,
                             doSameTenancy);
@@ -194,7 +200,7 @@ public class DW_LineGraph extends Generic_LineGraph {
 //        ArrayList<String> types;
 //        types = new ArrayList<String>();
 //        types.add(DW_Files.sPostcodeChanged);
-//        types.add(sPostcodeUnchanged);
+//        types.add(sPostcodeChangedNo);
 //        types.add("Multiple");
 //        types.add("");
         ArrayList<Boolean> bArray;
@@ -206,11 +212,11 @@ public class DW_LineGraph extends Generic_LineGraph {
         month3Letters = Generic_Time.getMonths3Letters();
 
         ArrayList<String> paymentTypes;
-        paymentTypes = tDW_SHBE_Handler.getPaymentTypes();
-//        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
-        paymentTypes.remove(tDW_SHBE_Handler.sInPayment);
-        paymentTypes.remove(tDW_SHBE_Handler.sSuspended);
-        paymentTypes.remove(tDW_SHBE_Handler.sOtherPT);
+        paymentTypes = tDW_Strings.getPaymentTypes();
+//        paymentTypes.remove(DW_SHBE_Handler.sPaymentTypeAll);
+        paymentTypes.remove(tDW_Strings.sPaymentTypeIn);
+        paymentTypes.remove(tDW_Strings.sPaymentTypeSuspended);
+        paymentTypes.remove(tDW_Strings.sPaymentTypeOther);
 
         Iterator<String> paymentTypesIte;
         paymentTypesIte = paymentTypes.iterator();
@@ -264,20 +270,20 @@ public class DW_LineGraph extends Generic_LineGraph {
                         if (doUnderOccupancyData) {
                             File dirIn3 = new File(
                                     dirIn2,
-                                    tDW_Files.sUO);
+                                    tDW_Strings.sU);
                             File dirOut3 = new File(
                                     dirOut2,
-                                    tDW_Files.sUO);
+                                    tDW_Strings.sU);
                             File dirIn4;
                             File dirOut4;
                             boolean doAll = true;
                             if (doAll) {
                                 dirIn4 = new File(
                                         dirIn3,
-                                        tDW_Files.sAll);
+                                        tDW_Strings.sA);
                                 dirOut4 = new File(
                                         dirOut3,
-                                        tDW_Files.sAll);
+                                        tDW_Strings.sA);
                                 Iterator<Boolean> iteB4;
                                 iteB4 = bArray.iterator();
                                 while (iteB4.hasNext()) {
@@ -309,8 +315,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                 grouped = iteB6.next();
                                                 if (grouped) {
                                                     doSumat(
-                                                            tDW_SHBE_Handler,
-                                                            tDW_Files,
                                                             dirIn4,
                                                             dirOut6,
                                                             includes,
@@ -322,8 +326,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                             month3Letters);
                                                 } else {
                                                     doSumat(
-                                                            tDW_SHBE_Handler,
-                                                            tDW_Files,
                                                             dirIn4,
                                                             dirOut6,
                                                             includes,
@@ -362,8 +364,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                 grouped = iteB6.next();
                                                 if (grouped) {
                                                     doSumat(
-                                                            tDW_SHBE_Handler,
-                                                            tDW_Files,
                                                             dirIn4,
                                                             dirOut6,
                                                             includes,
@@ -375,8 +375,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                             month3Letters);
                                                 } else {
                                                     doSumat(
-                                                            tDW_SHBE_Handler,
-                                                            tDW_Files,
                                                             dirIn4,
                                                             dirOut6,
                                                             includes,
@@ -401,17 +399,17 @@ public class DW_LineGraph extends Generic_LineGraph {
                                 if (doCouncil) {
                                     dirIn4 = new File(
                                             dirIn3,
-                                            tDW_Files.sCouncil);
+                                            tDW_Strings.sCouncil);
                                     dirOut4 = new File(
                                             dirOut3,
-                                            tDW_Files.sCouncil);
+                                            tDW_Strings.sCouncil);
                                 } else {
                                     dirIn4 = new File(
                                             dirIn3,
-                                            tDW_Files.sRSL);
+                                            tDW_Strings.sRSL);
                                     dirOut4 = new File(
                                             dirOut3,
-                                            tDW_Files.sRSL);
+                                            tDW_Strings.sRSL);
                                 }
                                 Iterator<Boolean> iteB4;
                                 iteB4 = bArray.iterator();
@@ -444,8 +442,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                 grouped = iteB6.next();
                                                 if (grouped) {
                                                     doSumat(
-                                                            tDW_SHBE_Handler,
-                                                            tDW_Files,
                                                             dirIn4,
                                                             dirOut6,
                                                             includes,
@@ -457,8 +453,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                             month3Letters);
                                                 } else {
                                                     doSumat(
-                                                            tDW_SHBE_Handler,
-                                                            tDW_Files,
                                                             dirIn4,
                                                             dirOut6,
                                                             includes,
@@ -497,8 +491,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                 grouped = iteB6.next();
                                                 if (grouped) {
                                                     doSumat(
-                                                            tDW_SHBE_Handler,
-                                                            tDW_Files,
                                                             dirIn4,
                                                             dirOut6,
                                                             includes,
@@ -510,8 +502,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                             month3Letters);
                                                 } else {
                                                     doSumat(
-                                                            tDW_SHBE_Handler,
-                                                            tDW_Files,
                                                             dirIn4,
                                                             dirOut6,
                                                             includes,
@@ -550,8 +540,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                         grouped = iteB4.next();
                                         if (grouped) {
                                             doSumat(
-                                                    tDW_SHBE_Handler,
-                                                    tDW_Files,
                                                     dirIn3,
                                                     dirOut4,
                                                     includes,
@@ -563,8 +551,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                     month3Letters);
                                         } else {
                                             doSumat(
-                                                    tDW_SHBE_Handler,
-                                                    tDW_Files,
                                                     dirIn3,
                                                     dirOut4,
                                                     includes,
@@ -587,8 +573,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                         grouped = iteB4.next();
                                         if (grouped) {
                                             doSumat(
-                                                    tDW_SHBE_Handler,
-                                                    tDW_Files,
                                                     dirIn3,
                                                     dirOut4,
                                                     includes,
@@ -600,8 +584,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                     month3Letters);
                                         } else {
                                             doSumat(
-                                                    tDW_SHBE_Handler,
-                                                    tDW_Files,
                                                     dirIn3,
                                                     dirOut4,
                                                     includes,
@@ -621,11 +603,11 @@ public class DW_LineGraph extends Generic_LineGraph {
                     File dirIn2;
                     dirIn2 = new File(
                             dirIn,
-                            tDW_Files.sTenancyAndPostcodeChanges);
+                            tDW_Strings.sTenancyAndPostcodeChanges);
                     File dirOut2;
                     dirOut2 = new File(
                             dirOut,
-                            tDW_Files.sTenancyAndPostcodeChanges);
+                            tDW_Strings.sTenancyAndPostcodeChanges);
 
                     boolean doUnderOccupancyData;
 //                    doUnderOccupancyData = false;
@@ -639,10 +621,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                             File dirOut3;
                             dirIn3 = new File(
                                     dirIn2,
-                                    tDW_Files.sUO);
+                                    tDW_Strings.sU);
                             dirOut3 = new File(
                                     dirOut2,
-                                    tDW_Files.sUO);
+                                    tDW_Strings.sU);
                             File dirIn4;
                             File dirOut4;
                             boolean doAll;
@@ -650,10 +632,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                             if (doAll) {
                                 dirIn4 = new File(
                                         dirIn3,
-                                        tDW_Files.sAll);
+                                        tDW_Strings.sA);
                                 dirOut4 = new File(
                                         dirOut3,
-                                        tDW_Files.sAll);
+                                        tDW_Strings.sA);
                                 Iterator<String> includesIte;
                                 includesIte = includes.keySet().iterator();
                                 while (includesIte.hasNext()) {
@@ -684,17 +666,17 @@ public class DW_LineGraph extends Generic_LineGraph {
                                         if (postcodeChanged) {
                                             dirIn5 = new File(
                                                     dirIn4,
-                                                    tDW_Files.sPostcodeChanged);
+                                                    tDW_Strings.sPostcodeChanged);
                                             dirOut5 = new File(
                                                     dirOut4,
-                                                    tDW_Files.sPostcodeChanged);
+                                                    tDW_Strings.sPostcodeChanged);
                                         } else {
                                             dirIn5 = new File(
                                                     dirIn4,
-                                                    tDW_Files.sPostcodeUnchanged);
+                                                    tDW_Strings.sPostcodeChangedNo);
                                             dirOut5 = new File(
                                                     dirOut4,
-                                                    tDW_Files.sPostcodeUnchanged);
+                                                    tDW_Strings.sPostcodeChangedNo);
                                         }
                                         Iterator<Boolean> iteB6;
                                         iteB6 = bArray.iterator();
@@ -722,8 +704,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                     }
                                                     if (grouped) {
                                                         doSumat(
-                                                                tDW_SHBE_Handler,
-                                                                tDW_Files,
                                                                 dirIn5,
                                                                 dirOut7,
                                                                 includes,
@@ -735,8 +715,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                                 month3Letters);
                                                     } else {
                                                         doSumat(
-                                                                tDW_SHBE_Handler,
-                                                                tDW_Files,
                                                                 dirIn5,
                                                                 dirOut7,
                                                                 includes,
@@ -769,8 +747,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                     }
                                                     if (grouped) {
                                                         doSumat(
-                                                                tDW_SHBE_Handler,
-                                                                tDW_Files,
                                                                 dirIn5,
                                                                 dirOut7,
                                                                 includes,
@@ -782,8 +758,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                                 month3Letters);
                                                     } else {
                                                         doSumat(
-                                                                tDW_SHBE_Handler,
-                                                                tDW_Files,
                                                                 dirIn5,
                                                                 dirOut7,
                                                                 includes,
@@ -810,17 +784,17 @@ public class DW_LineGraph extends Generic_LineGraph {
                                 if (doCouncil) {
                                     dirIn4 = new File(
                                             dirIn3,
-                                            tDW_Files.sCouncil);
+                                            tDW_Strings.sCouncil);
                                     dirOut4 = new File(
                                             dirOut3,
-                                            tDW_Files.sCouncil);
+                                            tDW_Strings.sCouncil);
                                 } else {
                                     dirIn4 = new File(
                                             dirIn3,
-                                            tDW_Files.sRSL);
+                                            tDW_Strings.sRSL);
                                     dirOut4 = new File(
                                             dirOut3,
-                                            tDW_Files.sRSL);
+                                            tDW_Strings.sRSL);
                                 }
                                 Iterator<Boolean> iteB4;
                                 iteB4 = bArray.iterator();
@@ -837,17 +811,17 @@ public class DW_LineGraph extends Generic_LineGraph {
                                         if (postcodeChanged) {
                                             dirIn5 = new File(
                                                     dirIn4,
-                                                    tDW_Files.sPostcodeChanged);
+                                                    tDW_Strings.sPostcodeChanged);
                                             dirOut5 = new File(
                                                     dirOut4,
-                                                    tDW_Files.sPostcodeChanged);
+                                                    tDW_Strings.sPostcodeChanged);
                                         } else {
                                             dirIn5 = new File(
                                                     dirIn4,
-                                                    tDW_Files.sPostcodeUnchanged);
+                                                    tDW_Strings.sPostcodeChangedNo);
                                             dirOut5 = new File(
                                                     dirOut4,
-                                                    tDW_Files.sPostcodeUnchanged);
+                                                    tDW_Strings.sPostcodeChangedNo);
                                         }
                                         Iterator<Boolean> iteB6;
                                         iteB6 = bArray.iterator();
@@ -875,8 +849,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                     }
                                                     if (grouped) {
                                                         doSumat(
-                                                                tDW_SHBE_Handler,
-                                                                tDW_Files,
                                                                 dirIn5,
                                                                 dirOut7,
                                                                 includes,
@@ -888,8 +860,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                                 month3Letters);
                                                     } else {
                                                         doSumat(
-                                                                tDW_SHBE_Handler,
-                                                                tDW_Files,
                                                                 dirIn5,
                                                                 dirOut7,
                                                                 includes,
@@ -922,8 +892,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                     }
                                                     if (grouped) {
                                                         doSumat(
-                                                                tDW_SHBE_Handler,
-                                                                tDW_Files,
                                                                 dirIn5,
                                                                 dirOut7,
                                                                 includes,
@@ -935,8 +903,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                                 month3Letters);
                                                     } else {
                                                         doSumat(
-                                                                tDW_SHBE_Handler,
-                                                                tDW_Files,
                                                                 dirIn5,
                                                                 dirOut7,
                                                                 includes,
@@ -977,17 +943,17 @@ public class DW_LineGraph extends Generic_LineGraph {
                                     if (postcodeChanged) {
                                         dirIn4 = new File(
                                                 dirIn3,
-                                                tDW_Files.sPostcodeChanged);
+                                                tDW_Strings.sPostcodeChanged);
                                         dirOut4 = new File(
                                                 dirOut3,
-                                                tDW_Files.sPostcodeChanged);
+                                                tDW_Strings.sPostcodeChanged);
                                     } else {
                                         dirIn4 = new File(
                                                 dirIn3,
-                                                tDW_Files.sPostcodeUnchanged);
+                                                tDW_Strings.sPostcodeChangedNo);
                                         dirOut4 = new File(
                                                 dirOut3,
-                                                tDW_Files.sPostcodeUnchanged);
+                                                tDW_Strings.sPostcodeChangedNo);
                                     }
                                     Iterator<Boolean> iteB5;
                                     iteB5 = bArray.iterator();
@@ -1000,8 +966,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                     "Include999");
                                             if (grouped) {
                                                 doSumat(
-                                                        tDW_SHBE_Handler,
-                                                        tDW_Files,
                                                         dirIn4,
                                                         dirOut5,
                                                         includes,
@@ -1013,8 +977,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                         month3Letters);
                                             } else {
                                                 doSumat(
-                                                        tDW_SHBE_Handler,
-                                                        tDW_Files,
                                                         dirIn4,
                                                         dirOut5,
                                                         includes,
@@ -1031,8 +993,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                     "Exclude999");
                                             if (grouped) {
                                                 doSumat(
-                                                        tDW_SHBE_Handler,
-                                                        tDW_Files,
                                                         dirIn4,
                                                         dirOut5,
                                                         includes,
@@ -1044,8 +1004,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                         month3Letters);
                                             } else {
                                                 doSumat(
-                                                        tDW_SHBE_Handler,
-                                                        tDW_Files,
                                                         dirIn4,
                                                         dirOut5,
                                                         includes,
@@ -1071,8 +1029,6 @@ public class DW_LineGraph extends Generic_LineGraph {
     }
 
     private void doSumat(
-            DW_SHBE_Handler tDW_SHBE_Handler,
-            DW_Files tDW_Files,
             File dirIn,
             File dirOut,
             TreeMap<String, ArrayList<Integer>> includes,
@@ -1150,7 +1106,7 @@ public class DW_LineGraph extends Generic_LineGraph {
                         if (grouped) {
                             dirIn3 = new File(
                                     dirIn2,
-                                    tDW_Files.sGrouped);
+                                    tDW_Strings.sGrouped);
                             File f;
                             f = new File(
                                     dirIn3,
@@ -1173,7 +1129,7 @@ public class DW_LineGraph extends Generic_LineGraph {
                         } else {
                             dirIn3 = new File(
                                     dirIn2,
-                                    tDW_Files.sUngrouped);
+                                    tDW_Strings.sGroupedNo);
                             File f;
                             f = new File(
                                     dirIn3,
@@ -1226,11 +1182,11 @@ public class DW_LineGraph extends Generic_LineGraph {
                 if (grouped) {
                     dirOut2 = new File(
                             dirOut2,
-                            tDW_Files.sGrouped);
+                            tDW_Strings.sGrouped);
                 } else {
                     dirOut2 = new File(
                             dirOut2,
-                            tDW_Files.sUngrouped);
+                            tDW_Strings.sGroupedNo);
                 }
                 Iterator<String> allSelectionsIte;
                 allSelectionsIte = allSelections.keySet().iterator();
@@ -1281,22 +1237,21 @@ public class DW_LineGraph extends Generic_LineGraph {
     }
 
     /**
-     * 
+     *
      * @param tDW_Files
      * @param doUnderOccupancy
      * @param do999
      * @param sameTenancyType
-     * @return 
+     * @return
      */
     protected TreeMap<String, HashSet<String>> getAllSelections(
-            DW_Files tDW_Files,
             boolean doUnderOccupancy,
             boolean do999,
             boolean sameTenancyType) {
         TreeMap<String, HashSet<String>> result;
         result = new TreeMap<String, HashSet<String>>();
         String selectionName;
-        selectionName = tDW_Files.sCouncil;
+        selectionName = tDW_Strings.sCouncil;
         HashSet<String> councilSelection;
         councilSelection = new HashSet<String>();
         if (doUnderOccupancy) {
@@ -1899,15 +1854,14 @@ public class DW_LineGraph extends Generic_LineGraph {
     }
 
     /**
-     * 
+     *
      * @param tDW_Files
      * @param doUnderOccupancy
      * @param do999
      * @param sameTenancyType
-     * @return 
+     * @return
      */
     protected TreeMap<String, HashSet<String>> getAllSelectionsGrouped(
-            DW_Files tDW_Files,
             boolean doUnderOccupancy,
             boolean do999,
             boolean sameTenancyType) {
@@ -1986,7 +1940,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         result.put(selectionName, unregulatedSelection);
         HashSet<String> ungroupedSelection;
         ungroupedSelection = new HashSet<String>();
-        selectionName = tDW_Files.sUngrouped;
+        selectionName = tDW_Strings.sGroupedNo;
         if (doUnderOccupancy) {
             if (sameTenancyType) {
                 ungroupedSelection.add("UngroupedUO - Ungrouped");

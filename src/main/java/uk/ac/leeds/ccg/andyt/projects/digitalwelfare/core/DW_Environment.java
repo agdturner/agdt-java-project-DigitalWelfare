@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 geoagdt.
+ * Copyright (C) 2016 geoagdt.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,17 +28,36 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_H
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_CollectionHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_AbstractProcessor;
 
 /**
- *
- * @author geoagdt
+ * This class is for an instance of the environment for the Digital Welfare 
+ * program. It contains holders for commonly referred to objects that might 
+ * otherwise be constructed multiple times. It is also for handling memory 
+ * although for the time being, there has not been a need for convoluted 
+ * swapping of data from memory to disk.  
+ * @author agdturner
  */
 public class DW_Environment extends DW_OutOfMemoryErrorHandler
         implements Serializable {
 
     public static String sDigitalWelfareDir = "/scratch02/DigitalWelfare";
     //public static String sDigitalWelfareDir = "C:/Users/geoagdt/projects/DigitalWelfare";
+
+    /**
+     * For storing an instance of DW_Strings for accessing Strings.
+     */
+    private DW_Strings tDW_Strings;
+
+    /**
+     * For returning an instance of DW_Strings for convenience.
+     */
+    public DW_Strings getDW_Strings() {
+        if (tDW_Strings == null) {
+            tDW_Strings = new DW_Strings();
+        }
+        return tDW_Strings;
+    }
 
     /**
      * For storing an instance of DW_Files for accessing filenames and Files
@@ -51,7 +70,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      */
     public DW_Files getDW_Files() {
         if (tDW_Files == null) {
-            tDW_Files = new DW_Files();
+            tDW_Files = new DW_Files(this);
         }
         return tDW_Files;
     }
@@ -108,7 +127,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     private void init_DW_Environment(String sDigitalWelfareDir) {
         this.sDigitalWelfareDir = sDigitalWelfareDir;
-        this.tDW_Files = new DW_Files();
+        this.tDW_Files = new DW_Files(this);
+        this.tDW_Strings = new DW_Strings();
         _DW_SHBE_CollectionHandler = new DW_SHBE_CollectionHandler(
                 this,
                 tDW_Files.getSwapSHBEDir());

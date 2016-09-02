@@ -25,6 +25,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 
 /**
  * This is the main class for the Digital Welfare Project. For more details of
@@ -33,14 +35,18 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
  *
  * @author geoagdt
  */
-public abstract class DW_Processor {
+public abstract class DW_AbstractProcessor extends DW_Object {
 
-    public transient DW_Environment env;
-    public transient DW_Files tDW_Files;
+    protected DW_Files tDW_Files;
+    protected DW_Strings tDW_Strings;
+    protected DW_Postcode_Handler tDW_Postcode_Handler;
+            
 
-    public DW_Processor(DW_Environment env) {
+    public DW_AbstractProcessor(DW_Environment env) {
         this.env = env;
         this.tDW_Files = env.getDW_Files();
+        this.tDW_Strings = env.getDW_Strings();
+        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
     }
 
     /**
@@ -67,10 +73,10 @@ public abstract class DW_Processor {
 //    protected File _DW_directory;
 //    protected PrintWriter pw;
 //    protected PrintWriter pw2;
-    public DW_Processor() {
+    public DW_AbstractProcessor() {
     }
 
-    public abstract void run();
+    public abstract void run() throws Exception;
 
 //    /**
 //     * initialises output text files for reporting.
@@ -98,14 +104,14 @@ public abstract class DW_Processor {
         try {
             outputTextFile.createNewFile();
         } catch (IOException ex) {
-            Logger.getLogger(DW_Processor.class
+            Logger.getLogger(DW_AbstractProcessor.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
         try {
             result = new PrintWriter(outputTextFile);
 
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(DW_Processor.class
+            Logger.getLogger(DW_AbstractProcessor.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
         return result;
@@ -437,8 +443,7 @@ public abstract class DW_Processor {
         TreeMap<String, AGDT_Point> result;
         DW_Postcode_Handler tDW_Postcode_Handler;
         tDW_Postcode_Handler = env.getDW_Postcode_Handler();
-        result = tDW_Postcode_Handler.postcodeToPoints(
-                DW_Processor.getOutletsAndPostcodes(),
+        result = tDW_Postcode_Handler.postcodeToPoints(DW_AbstractProcessor.getOutletsAndPostcodes(),
                 DW_Postcode_Handler.getDefaultYM3());
         return result;
     }
@@ -514,8 +519,7 @@ public abstract class DW_Processor {
         TreeMap<String, AGDT_Point> result;
         DW_Postcode_Handler tDW_Postcode_Handler;
         tDW_Postcode_Handler = env.getDW_Postcode_Handler();
-        result = tDW_Postcode_Handler.postcodeToPoints(
-                DW_Processor.getAdviceLeedsNamesAndPostcodes(),
+        result = tDW_Postcode_Handler.postcodeToPoints(DW_AbstractProcessor.getAdviceLeedsNamesAndPostcodes(),
                 DW_Postcode_Handler.getDefaultYM3());
         return result;
     }

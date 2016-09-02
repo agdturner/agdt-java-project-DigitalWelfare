@@ -41,7 +41,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 /**
  * For processing data from the Citizens Advice Bureau branches
  */
-public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
+public class DW_DataProcessor_AdviceLeeds extends DW_AbstractProcessor {
 
     private DW_Data_CAB2_Handler tCAB_DataRecord2_Handler;
     private DW_Data_CAB1_Handler tCAB_DataRecord1_Handler;
@@ -1167,7 +1167,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
         String outlet;
 
         TreeMap<String, String> outletsAndPostcodes;
-        outletsAndPostcodes = DW_Processor.getOutletsAndPostcodes();
+        outletsAndPostcodes = DW_AbstractProcessor.getOutletsAndPostcodes();
 
         // AllAdviceLeeds
         String allAdviceLeedsString = "AllAdviceLeeds";
@@ -1253,7 +1253,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                 }
             }
             // Add to allCABOutletCounts or allCABNonOutletCounts
-            String tCABOutletString = DW_Processor.getCABOutletString(outlet);
+            String tCABOutletString = DW_AbstractProcessor.getCABOutletString(outlet);
             if (outletsAndPostcodes.keySet().contains(tCABOutletString)) {
                 // Add to allCABOutletCounts
                 if (!allCABOutletIDs.contains(id)) {
@@ -1327,7 +1327,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_Processor {
                 allCABCounts.put(key, 1);
             }
             // Add to allCABOutletCounts or allCABNonOutletCounts
-            String tCABOutletString = DW_Processor.getCABOutletString(outlet);
+            String tCABOutletString = DW_AbstractProcessor.getCABOutletString(outlet);
             if (outletsAndPostcodes.keySet().contains(tCABOutletString)) {
                 // Add to allCABOutletCounts
                 if (allCABOutletCounts.keySet().contains(key)) {

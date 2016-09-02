@@ -50,7 +50,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_St
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
-//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor.getLookupFromPostcodeToLevelCode;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_AbstractProcessor.getLookupFromPostcodeToLevelCode;
 
 /**
  *
@@ -200,7 +200,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
             tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
                     env,
                 level, targetPropertyName, getShapefileDataStoreFactory());
-            tLookupFromPostcodeToCensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
+            tLookupFromPostcodeToCensusCodes = DW_AbstractProcessor.getLookupFromPostcodeToLevelCode(
                     env,                
                     level,
                     2011);
@@ -255,7 +255,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
                     }
 
 //            // Get deprivation data
-//            deprivationRecords = DW_Processor.getDeprivation_Data();
+//            deprivationRecords = DW_AbstractProcessor.getDeprivation_Data();
 //            if (commonStyling) {
 //                scaleToFirst = true;
 //                runCAB(deprivationRecords,

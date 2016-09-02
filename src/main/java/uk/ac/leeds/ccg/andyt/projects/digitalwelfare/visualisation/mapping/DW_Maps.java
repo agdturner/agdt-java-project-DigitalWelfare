@@ -56,9 +56,10 @@ import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_AbstractProcessor;
 
 /**
  *
@@ -66,8 +67,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
  */
 public abstract class DW_Maps extends AGDT_Maps {
 
-    public transient DW_Environment env;
+    protected transient DW_Environment env;
     protected DW_Files tDW_Files;
+    protected DW_Strings tDW_Strings;
+    protected DW_Postcode_Handler tDW_Postcode_Handler;
 
     //private TreeMap<String, AGDT_Point>[] ONSPDlookups;
     //private TreeMap<String, TreeMap<String, AGDT_Point>> tONSPDlookups;
@@ -85,6 +88,8 @@ public abstract class DW_Maps extends AGDT_Maps {
     public DW_Maps(DW_Environment env) {
         this.env = env;
         tDW_Files = env.getDW_Files();
+        tDW_Strings = env.getDW_Strings();
+        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
     }
 
     //public TreeMap<String, AGDT_Point>[] getONSPDlookups() {
@@ -1039,7 +1044,7 @@ public abstract class DW_Maps extends AGDT_Maps {
             SimpleFeatureType sft) {
         TreeSetFeatureCollection result;
         TreeMap<String, AGDT_Point> tAdviceLeedsNamesAndPoints;
-        tAdviceLeedsNamesAndPoints = DW_Processor.getAdviceLeedsNamesAndPoints(env);
+        tAdviceLeedsNamesAndPoints = DW_AbstractProcessor.getAdviceLeedsNamesAndPoints(env);
         TreeMap<String, AGDT_Point> map = tAdviceLeedsNamesAndPoints;
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
@@ -1080,7 +1085,7 @@ public abstract class DW_Maps extends AGDT_Maps {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
         TreeMap<String, AGDT_Point> tAdviceLeedsNamesAndPoints;
-        tAdviceLeedsNamesAndPoints = DW_Processor.getAdviceLeedsNamesAndPoints(env);
+        tAdviceLeedsNamesAndPoints = DW_AbstractProcessor.getAdviceLeedsNamesAndPoints(env);
         TreeMap<String, AGDT_Point> map = tAdviceLeedsNamesAndPoints;
         Iterator<String> ite = map.keySet().iterator();
         while (ite.hasNext()) {
@@ -1159,7 +1164,7 @@ public abstract class DW_Maps extends AGDT_Maps {
         ArrayList<AGDT_Shapefile> result;
         result = new ArrayList<AGDT_Shapefile>();
         ArrayList<String> tAdviceLeedsServiceNames;
-        tAdviceLeedsServiceNames = DW_Processor.getAdviceLeedsServiceNames();
+        tAdviceLeedsServiceNames = DW_AbstractProcessor.getAdviceLeedsServiceNames();
         DW_Files tDW_Files;
         tDW_Files = env.getDW_Files();
         Iterator<String> ite;

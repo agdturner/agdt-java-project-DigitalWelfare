@@ -334,7 +334,7 @@ public class DW_UnderOccupiedReport_Handler extends DW_Object {
                     RSLEndFilename2,
                     CouncilFilenames,
                     RSLFilenames,
-                    1); // This number needs increasing as there are more datasets....
+                    4); // This number needs increasing as there are more datasets....
         }
         return filenames;
     }

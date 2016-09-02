@@ -200,7 +200,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
     private void initCABOutletPoints() {
         DW_Postcode_Handler tDW_Postcode_Handler;
         tDW_Postcode_Handler = env.getDW_Postcode_Handler();
-        tCABOutletPostcodes = DW_Processor.getOutletsAndPostcodes();
+        tCABOutletPostcodes = DW_AbstractProcessor.getOutletsAndPostcodes();
         tCABOutletPoints = new TreeMap<String, AGDT_Point>();
         Iterator<String> ite_String = tCABOutletPostcodes.keySet().iterator();
         while (ite_String.hasNext()) {
@@ -228,12 +228,12 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
         foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
         int year_int = 2011;
         // init postcode to LSOA lookup
-        tLookupFromPostcodeToLSOACensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
+        tLookupFromPostcodeToLSOACensusCodes = DW_AbstractProcessor.getLookupFromPostcodeToLevelCode(
                 env,
                 "LSOA",
                 year_int);
         // init postcode to MSOA lookup
-        tLookupFromPostcodeToMSOACensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
+        tLookupFromPostcodeToMSOACensusCodes = DW_AbstractProcessor.getLookupFromPostcodeToLevelCode(
                 env,
                 "MSOA",
                 year_int);
@@ -343,7 +343,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
                     DW_Postcode_Handler.TYPE_UNIT,
                     postcode);
             if (origin != null) {
-                String tCABOutletString = DW_Processor.getCABOutletString(outlet);
+                String tCABOutletString = DW_AbstractProcessor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
                 if (tCABOutletPostcodes.containsKey(tCABOutletString)) {
                     // Get feature collection and counters
@@ -485,7 +485,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
                     DW_Postcode_Handler.TYPE_UNIT,
                     postcode);
             if (origin != null) {
-                String tCABOutletString = DW_Processor.getCABOutletString(outlet);
+                String tCABOutletString = DW_AbstractProcessor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
                 if (tCABOutletPostcodes.containsKey(tCABOutletString)) {
                     // Get feature collection and counters
@@ -656,12 +656,12 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
         foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
         int year_int = 2011;
         // Get postcode to LSOA lookup
-        tLookupFromPostcodeToLSOACensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
+        tLookupFromPostcodeToLSOACensusCodes = DW_AbstractProcessor.getLookupFromPostcodeToLevelCode(
                 env,
                 "LSOA",
                 year_int);
         // Get postcode to LSOA lookup
-        tLookupFromPostcodeToMSOACensusCodes = DW_Processor.getLookupFromPostcodeToLevelCode(
+        tLookupFromPostcodeToMSOACensusCodes = DW_AbstractProcessor.getLookupFromPostcodeToLevelCode(
                 env,
                 "MSOA",
                 year_int);
@@ -733,7 +733,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
                     DW_Postcode_Handler.TYPE_UNIT,
                     postcode);
             if (origin != null) {
-                String tCABOutletString = DW_Processor.getCABOutletString(outlet);
+                String tCABOutletString = DW_AbstractProcessor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
                 if (tCABOutletPostcodes.containsKey(tCABOutletString)) {
                     // Get feature collection and counters
@@ -821,7 +821,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
                     DW_Postcode_Handler.TYPE_UNIT,
                     postcode);
             if (origin != null) {
-                String tCABOutletString = DW_Processor.getCABOutletString(outlet);
+                String tCABOutletString = DW_AbstractProcessor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
                 if (tCABOutletPostcodes.containsKey(tCABOutletString)) {
                     // Get feature collection and counters
@@ -996,7 +996,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
                     DW_Postcode_Handler.TYPE_UNIT,
                     postcode);
             if (origin != null) {
-                String tCABOutletString = DW_Processor.getCABOutletString(outlet);
+                String tCABOutletString = DW_AbstractProcessor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
                 if (tCABOutletPostcodes.containsKey(tCABOutletString)) {
                     // Get feature collection and counters
@@ -1064,7 +1064,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
                     DW_Postcode_Handler.TYPE_UNIT,
                     postcode);
             if (origin != null) {
-                String tCABOutletString = DW_Processor.getCABOutletString(outlet);
+                String tCABOutletString = DW_AbstractProcessor.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
                 if (tCABOutletPostcodes.containsKey(tCABOutletString)) {
                     // Get feature collection and counters

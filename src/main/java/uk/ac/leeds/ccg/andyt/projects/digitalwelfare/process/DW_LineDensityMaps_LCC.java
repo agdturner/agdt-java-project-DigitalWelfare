@@ -44,6 +44,7 @@ import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorGWS;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
@@ -54,6 +55,19 @@ import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 import uk.ac.leeds.ccg.andyt.vector.geometry.Vector_LineSegment2D;
 import uk.ac.leeds.ccg.andyt.vector.geometry.Vector_Point2D;
 import uk.ac.leeds.ccg.andyt.vector.grids.Vector_LineGrid;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings.sCheckedPreviousTenure;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings.sCheckedPreviousPostcode;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings.sCouncil;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings.sDensity;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings.sPostcodeChanged;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings.sPostcodeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings.sRSL;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings.sTenancy;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings.sTenancyAndPostcodeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings.sTenancyTypeTransition;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings.sUnderOccupied;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings.sGroupedNo;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings.sAll;
 
 /**
  *
@@ -62,6 +76,8 @@ import uk.ac.leeds.ccg.andyt.vector.grids.Vector_LineGrid;
 public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
 
     protected Vector_Environment ve;
+    
+    protected DW_Strings tDW_Strings;
 
     private static final String targetPropertyNameLSOA = "LSOA11CD";
     private DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
@@ -71,32 +87,9 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
 
     public DW_LineDensityMaps_LCC(DW_Environment env) {
         super(env);
+        tDW_Strings = env.getDW_Strings();
     }
     
-    //DW_StyleParameters styleParameters;
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        try {
-            new DW_LineDensityMaps_LCC(null).run();
-        } catch (Exception e) {
-            System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
-//            StackTraceElement[] stes = e.getStackTrace();
-//            for (StackTraceElement ste : stes) {
-//                System.err.println(ste.toString());
-//            }
-        } catch (Error e) {
-            System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
-//            StackTraceElement[] stes = e.getStackTrace();
-//            for (StackTraceElement ste : stes) {
-//                System.err.println(ste.toString());
-//            }
-        }
-    }
-
     public void run() {
         ve = new Vector_Environment();
         // If showMapsInJMapPane is true, the maps are presented in individual 
@@ -133,7 +126,7 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
 
         mapDirectory = new File(
                 tDW_Files.getOutputAdviceLeedsMapsDir(),
-                "density");
+                tDW_Files.sDensity);
         imageWidth = 1000;
 
 //        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefiles();
@@ -385,52 +378,52 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
         // Other variables for selecting and output
         File dirIn = new File(
                 mapDirectory,
-                "Tenancy");
+                tDW_Strings.sTenancy);
         dirIn = new File(
                 dirIn,
-                "All");
+                tDW_Strings.sA);
         dirIn = new File(
                 dirIn,
-                "TenancyTypeTransition");
+                tDW_Strings.sTenancyTypeTransition);
         dirIn = new File(
                 dirIn,
-                "CheckedPreviousTenure");
+                tDW_Strings.sCheckedPreviousTenancyType);
         dirIn = new File(
                 dirIn,
-                "TenancyAndPostcodeChanges");
+                tDW_Strings.sTenancyAndPostcodeChanges);
         if (doUnderOccupancyData) {
             dirIn = new File(
                     dirIn,
-                    "UnderOccupied");
+                    tDW_Strings.sU);
             if (doCouncil) {
                 dirIn = new File(
                         dirIn,
-                        "Council");
+                        tDW_Strings.sCouncil);
             } else {
                 dirIn = new File(
                         dirIn,
-                        "RSL");
+                        tDW_Strings.sRSL);
             }
         } else {
             dirIn = new File(
                     dirIn,
-                    "All");
+                    tDW_Strings.sA);
         }
         dirIn = new File(
                 dirIn,
-                "PostcodeChanged");
+                tDW_Strings.sPostcodeChanged);
         dirIn = new File(
                 dirIn,
                 includeName);
         dirIn = new File(
                 dirIn,
-                "Ungrouped");
+                tDW_Strings.sGroupedNo);
         dirIn = new File(
                 dirIn,
-                "PostcodeChanges");
+                tDW_Strings.sPostcodeChanges);
         dirIn = new File(
                 dirIn,
-                "CheckedPreviousPostcode");
+                tDW_Strings.sCheckedPreviousPostcode);
         //dirOut.mkdirs(); // done later
         //filename = "PostcodeChanges.csv";
         Iterator<String> yearMonthsIte;
@@ -455,15 +448,15 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
                         name);
                 File dirOut = new File(
                         dirIn3,
-                        "Density");
+                        tDW_Files.sDensity);
                 if (scaleToFirst) {
                     dirOut = new File(
                             dirOut,
-                            "CommonStyle");
+                            tDW_Strings.sStyleCommon);
                 } else {
                     dirOut = new File(
                             dirOut,
-                            "IndividualStyle");
+                            tDW_Strings.sStyleIndividual);
                 }
                 String nameS;
                 nameS = name + "S";

@@ -43,7 +43,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ge
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler.getNearestYM3ForONSPDLookup;
 
 /**
  *
@@ -85,7 +84,7 @@ public abstract class DW_DensityMapsAbstract extends DW_Maps {
             Integer deprivationClass,
             String yM3) {
         String nearestYM3ForONSPDLookup;
-        nearestYM3ForONSPDLookup = getNearestYM3ForONSPDLookup(yM3);
+        nearestYM3ForONSPDLookup = env.getDW_Postcode_Handler().getNearestYM3ForONSPDLookup(yM3);
         int countNonMatchingPostcodes = 0;
         Iterator<String> itep = postcodes.iterator();
         while (itep.hasNext()) {

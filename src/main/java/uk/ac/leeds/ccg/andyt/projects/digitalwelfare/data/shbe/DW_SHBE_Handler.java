@@ -33,6 +33,7 @@ import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.Summary;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UOReport_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Set;
@@ -44,17 +45,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_SHBE_Handler extends DW_Object {
 
-    private HashSet<String> RecordTypes;
+    protected DW_Strings tDW_Strings;
+    protected HashSet<String> RecordTypes;
 
-    public final String sHB = "HB";
-    public final String sCTB = "CTB";
-    public final String sDefaultNINO = "XX999999XX";
-    public final String sAll = "All";
-    public final String sMonthlyUO = "MonthlyUO";
-    public final String sMonthly = "Monthly";
-    public final String s6Monthly = "6Monthly";
-    public final String s3Monthly = "3Monthly";
-    public final String sYearly = "Yearly";
+        public final String sDefaultNINO = "XX999999XX";
+
 
     HashMap<String, DW_ID> NINOToDW_IDLookup;
     HashMap<DW_ID, String> DW_IDToNINOLookup;
@@ -67,6 +62,7 @@ public class DW_SHBE_Handler extends DW_Object {
 
     public DW_SHBE_Handler(DW_Environment env) {
         this.env = env;
+        this.tDW_Strings = env.getDW_Strings();
 //        NINOToDW_IDLookup = new HashMap<String, DW_ID>();
 //        DW_IDToNINOLookup = new HashMap<DW_ID, String>();
 //        DOBToDW_IDLookup = new HashMap<String, DW_ID>();
@@ -79,8 +75,8 @@ public class DW_SHBE_Handler extends DW_Object {
     }
 
     public void run() {
-        String[] SHBEFilenames;
-        SHBEFilenames = getSHBEFilenamesAll();
+        String[] tSHBEFilenames;
+        tSHBEFilenames = getSHBEFilenamesAll();
         File dir;
         dir = env.getDW_Files().getInputSHBEDir();
         // NINO
@@ -113,10 +109,10 @@ public class DW_SHBE_Handler extends DW_Object {
 //                PostcodeIDToPostcodeLookupFile);
         PostcodeIDToPostcodeLookup = new HashMap<DW_ID, String>();
         // Person
-        File DW_PersonIDToDW_IDLookupFile;
-        File DW_IDToDW_PersonIDLookupFile;
-        DW_PersonIDToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile();
-        DW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
+        File tDW_PersonIDToDW_IDLookupFile;
+        File tDW_IDToDW_PersonIDLookupFile;
+        tDW_PersonIDToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile();
+        tDW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
 //        DW_PersonIDToDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(
 //                DW_PersonIDToDW_IDLookupFile);
         DW_PersonIDToDW_IDLookup = new HashMap<DW_PersonID, DW_ID>();
@@ -125,7 +121,7 @@ public class DW_SHBE_Handler extends DW_Object {
         DW_IDToDW_PersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
         // Loop
         ArrayList<String> paymentTypes;
-        paymentTypes = getPaymentTypes();
+        paymentTypes = tDW_Strings.getPaymentTypes();
         Iterator<String> ite = paymentTypes.iterator();
         while (ite.hasNext()) {
             String paymentType;
@@ -133,64 +129,35 @@ public class DW_SHBE_Handler extends DW_Object {
             System.out.println("----------------------");
             System.out.println("Payment Type " + paymentType);
             System.out.println("----------------------");
-//            for (int i = 0; i < SHBEFilenames.length; i++) {
-//                File collectionDir = new File(
-//                        DW_Files.getSwapSHBEDir(),
-//                        paymentType);
-//                collectionDir = new File(
-//                        collectionDir,
-//                        SHBEFilenames[i]);
-//                DW_SHBE_CollectionHandler handler;
-//                handler = new DW_SHBE_CollectionHandler(
-//                        env,
-//                        collectionDir);
-//                DW_SHBE_Collection SHBEData;
-//                SHBEData = new DW_SHBE_Collection(
-//                        handler.nextID,
-//                        handler,
-//                        dir,
-//                        SHBEFilenames[i],
-//                        paymentType);
-            for (String SHBEFilename : SHBEFilenames) {
+            for (String aSHBEFilename : tSHBEFilenames) {
                 File collectionDir = new File(
                         env.getDW_Files().getSwapSHBEDir(),
                         paymentType);
-                collectionDir = new File(collectionDir, SHBEFilename);
+                collectionDir = new File(collectionDir, aSHBEFilename);
                 DW_SHBE_CollectionHandler handler;
                 handler = new DW_SHBE_CollectionHandler(
                         env,
                         collectionDir);
                 DW_SHBE_Collection SHBEData;
                 SHBEData = new DW_SHBE_Collection(
+                        this,
                         handler.nextID,
-                        handler, dir, SHBEFilename, paymentType);
+                        handler, 
+                        dir,
+                        aSHBEFilename,
+                        paymentType);
             }
         }
         Generic_StaticIO.writeObject(NINOToDW_IDLookup, NINOToDW_IDLookupFile);
         Generic_StaticIO.writeObject(DW_IDToNINOLookup, DW_IDToNINOLookupFile);
         Generic_StaticIO.writeObject(DOBToDW_IDLookup, DOBToDW_IDLookupFile);
         Generic_StaticIO.writeObject(DW_IDToDOBLookup, DW_IDToDOBLookupFile);
-        Generic_StaticIO.writeObject(DW_PersonIDToDW_IDLookup, DW_PersonIDToDW_IDLookupFile);
-        Generic_StaticIO.writeObject(DW_IDToDW_PersonIDLookup, DW_IDToDW_PersonIDLookupFile);
+        Generic_StaticIO.writeObject(DW_PersonIDToDW_IDLookup, tDW_PersonIDToDW_IDLookupFile);
+        Generic_StaticIO.writeObject(DW_IDToDW_PersonIDLookup, tDW_IDToDW_PersonIDLookupFile);
         Generic_StaticIO.writeObject(PostcodeToPostcodeIDLookup, PostcodeToPostcodeIDLookupFile);
         Generic_StaticIO.writeObject(PostcodeIDToPostcodeLookup, PostcodeIDToPostcodeLookupFile);
     }
 
-    public final String sAllPT = "AllPT";
-    public final String sInPayment = "InPayment";
-    public final String sSuspended = "Suspended";
-    public final String sOtherPT = "OtherPT";
-
-    public ArrayList<String> getPaymentTypes() {
-        ArrayList<String> result;
-        result = new ArrayList<String>();
-        result.add(sAllPT);
-        result.add(sInPayment);
-        result.add(sSuspended);
-        result.add(sOtherPT);
-        //result.add("NotInPaymentNotSuspended");
-        return result;
-    }
 
     public void runCount() {
         File dir;
@@ -241,7 +208,7 @@ public class DW_SHBE_Handler extends DW_Object {
         // Get the location of the DRecords file for AllPT assuming here that 
         String paymentType;
         //paymentType = "Suspended";
-        paymentType = "AllPT";
+        paymentType = tDW_Strings.sPaymentTypeAll;
         ArrayList<String> newFilesToRead;
         newFilesToRead = new ArrayList<String>();
         for (String SHBEFilename : SHBEFilenames) {
@@ -287,7 +254,7 @@ public class DW_SHBE_Handler extends DW_Object {
             tDW_Files = env.getDW_Files();
             // Loop
             ArrayList<String> paymentTypes;
-            paymentTypes = getPaymentTypes();
+            paymentTypes = tDW_Strings.getPaymentTypes();
             Iterator<String> itePT = paymentTypes.iterator();
             while (itePT.hasNext()) {
                 paymentType = itePT.next();
@@ -308,8 +275,11 @@ public class DW_SHBE_Handler extends DW_Object {
                             collectionDir);
                     DW_SHBE_Collection SHBEData;
                     SHBEData = new DW_SHBE_Collection(
+                            this,
                             handler.nextID,
-                            handler, dir, SHBEFilename, paymentType);
+                            handler, 
+                            dir, 
+                            SHBEFilename, paymentType);
                 }
             }
             Generic_StaticIO.writeObject(NINOToDW_IDLookup, NINOToDW_IDLookupFile);
@@ -349,18 +319,18 @@ public class DW_SHBE_Handler extends DW_Object {
 //    }
     public String getClaimantType(DW_SHBE_D_Record D_Record) {
         if (isHBClaim(D_Record)) {
-            return sHB;
+            return tDW_Strings.sHB;
         }
         //if (isCTBOnlyClaim(D_Record)) {
-        return sCTB;
+        return tDW_Strings.sCTB;
         //}
     }
 
     public ArrayList<String> getClaimantTypes() {
         ArrayList<String> result;
         result = new ArrayList<String>();
-        result.add(sHB);
-        result.add(sCTB);
+        result.add(tDW_Strings.sHB);
+        result.add(tDW_Strings.sCTB);
         return result;
     }
 
@@ -368,11 +338,11 @@ public class DW_SHBE_Handler extends DW_Object {
     public String getClaimantType(String HBClaimRefNo) {
         String result;
         if (HBClaimRefNo == null) {
-            result = sCTB;
+            result = tDW_Strings.sCTB;
         } else if (HBClaimRefNo.isEmpty()) {
-            result = sCTB;
+            result = tDW_Strings.sCTB;
         } else {
-            result = sHB;
+            result = tDW_Strings.sHB;
         }
         return result;
     }
@@ -489,66 +459,66 @@ public class DW_SHBE_Handler extends DW_Object {
         }
     }
 
-    /**
-     * Attempts to load all SHBE collections.
-     *
-     * @return {@code ArrayList<DW_SHBE_Collection>}
-     *
-     */
-    public ArrayList<DW_SHBE_Collection> loadSHBEData() {
+//    /**
+//     * Attempts to load all SHBE collections.
+//     *
+//     * @return {@code ArrayList<DW_SHBE_Collection>}
+//     *
+//     */
+//    public ArrayList<DW_SHBE_Collection> loadSHBEData() {
+//
+//        String paymentType = "AllPT";
+//
+//        ArrayList<DW_SHBE_Collection> result;
+//        result = new ArrayList();
+//        File dir;
+//        dir = env.getDW_Files().getInputSHBEDir();
+//        String[] filenames = getSHBEFilenamesAll();
+//        for (String filename : filenames) {
+//            System.out.println("Load SHBE data from " + filename + " ...");
+//            DW_SHBE_Collection SHBEData;
+//            SHBEData = new DW_SHBE_Collection(
+//                    env,
+//                    filename, paymentType);
+//            result.add(SHBEData);
+//            System.out.println("... loaded SHBE data from " + filename + ".");
+//        }
+//        return result;
+//    }
 
-        String paymentType = "AllPT";
-
-        ArrayList<DW_SHBE_Collection> result;
-        result = new ArrayList();
-        File dir;
-        dir = env.getDW_Files().getInputSHBEDir();
-        String[] filenames = getSHBEFilenamesAll();
-        for (String filename : filenames) {
-            System.out.println("Load SHBE data from " + filename + " ...");
-            DW_SHBE_Collection SHBEData;
-            SHBEData = new DW_SHBE_Collection(
-                    env,
-                    filename, paymentType);
-            result.add(SHBEData);
-            System.out.println("... loaded SHBE data from " + filename + ".");
-        }
-        return result;
-    }
-
-    /**
-     * Attempts to load all SHBE collections.
-     *
-     * @param CTBRefs
-     * @return {@code ArrayList<DW_SHBE_Collection>}
-     *
-     */
-    public HashMap<String, DW_SHBE_Collection> loadSHBEData(int i, HashSet<String> CTBRefs) {
-
-        int j = 0;
-        String paymentType = "AllPT";
-
-        HashMap<String, DW_SHBE_Collection> result;
-        result = new HashMap<String, DW_SHBE_Collection>();
-        File dir;
-        dir = env.getDW_Files().getInputSHBEDir();
-        String[] filenames = getSHBEFilenamesAll();
-        for (String filename : filenames) {
-            j++;
-            if (j > i) {
-                System.out.println("Load SHBE data from " + filename + " ...");
-                DW_SHBE_Collection SHBEData;
-                SHBEData = new DW_SHBE_Collection(
-                        env, filename, paymentType);
-                if (CTBRefs != null) {
-                    SHBEData.getRecords().keySet().retainAll(CTBRefs);
-                }
-                result.put(getYM3(filename), SHBEData);
-                System.out.println("... loaded SHBE data from " + filename + ".");
-            }
-        }
-        return result;
-    }
+//    /**
+//     * Attempts to load all SHBE collections.
+//     *
+//     * @param CTBRefs
+//     * @return {@code ArrayList<DW_SHBE_Collection>}
+//     *
+//     */
+//    public HashMap<String, DW_SHBE_Collection> loadSHBEData(int i, HashSet<String> CTBRefs) {
+//
+//        int j = 0;
+//        String paymentType = "AllPT";
+//
+//        HashMap<String, DW_SHBE_Collection> result;
+//        result = new HashMap<String, DW_SHBE_Collection>();
+//        File dir;
+//        dir = env.getDW_Files().getInputSHBEDir();
+//        String[] filenames = getSHBEFilenamesAll();
+//        for (String filename : filenames) {
+//            j++;
+//            if (j > i) {
+//                System.out.println("Load SHBE data from " + filename + " ...");
+//                DW_SHBE_Collection SHBEData;
+//                SHBEData = new DW_SHBE_Collection(
+//                        env, filename, paymentType);
+//                if (CTBRefs != null) {
+//                    SHBEData.getRecords().keySet().retainAll(CTBRefs);
+//                }
+//                result.put(getYM3(filename), SHBEData);
+//                System.out.println("... loaded SHBE data from " + filename + ".");
+//            }
+//        }
+//        return result;
+//    }
 
     public HashMap<Integer, String> getIndexYM3s() {
         HashMap<Integer, String> result;
@@ -2500,7 +2470,7 @@ public class DW_SHBE_Handler extends DW_Object {
     }
 
     public HashMap<DW_ID, String> getDW_IDToNINOLookup() {
-        return getDW_IDToStringLookup(getDW_IDToNINOLookupFile());
+        return getDW_IDToNINOLookup(getDW_IDToNINOLookupFile());
     }
 
     public HashMap<DW_ID, String> getDW_IDToDOBLookup(
@@ -2512,7 +2482,7 @@ public class DW_SHBE_Handler extends DW_Object {
     }
 
     public HashMap<DW_ID, String> getDW_IDToDOBLookup() {
-        return getDW_IDToStringLookup(getDW_IDToDOBLookupFile());
+        return getDW_IDToDOBLookup(getDW_IDToDOBLookupFile());
     }
 
     public HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup(
@@ -3046,19 +3016,22 @@ public class DW_SHBE_Handler extends DW_Object {
     }
 
     /**
-     * Negation of getIncludes()
+     * Negation of getIncludes().
+     * This method will want modifying if data prior to January 2013 is added.
      *
      * @return
      */
     public TreeMap<String, ArrayList<Integer>> getOmits() {
         TreeMap<String, ArrayList<Integer>> result;
         result = new TreeMap<String, ArrayList<Integer>>();
+        String[] tSHBEFilenames;
+        tSHBEFilenames = getSHBEFilenamesAll();
         String omitKey;
         ArrayList<Integer> omitAll;
-        omitKey = sAll;
+        omitKey = tDW_Strings.sIncludeAll;
         omitAll = new ArrayList<Integer>();
         result.put(omitKey, omitAll);
-        omitKey = sYearly;
+        omitKey = tDW_Strings.sIncludeYearly;
         ArrayList<Integer> omitYearly;
         omitYearly = new ArrayList<Integer>();
         omitYearly.add(1);
@@ -3070,122 +3043,57 @@ public class DW_SHBE_Handler extends DW_Object {
         omitYearly.add(10);
         omitYearly.add(12);
         omitYearly.add(13);
-        omitYearly.add(14);
-        omitYearly.add(15);
-        omitYearly.add(16);
-        omitYearly.add(18);
-        omitYearly.add(19);
-        omitYearly.add(20);
-        omitYearly.add(21);
-        omitYearly.add(22);
-        omitYearly.add(23);
-        omitYearly.add(24);
-        omitYearly.add(25);
-        omitYearly.add(26);
-        omitYearly.add(27);
-        omitYearly.add(28);
-        omitYearly.add(30);
-        omitYearly.add(31);
-        omitYearly.add(32);
-        omitYearly.add(33);
-        omitYearly.add(34);
-        omitYearly.add(35);
-        omitYearly.add(36);
-        omitYearly.add(37);
-        omitYearly.add(38);
-        omitYearly.add(39);
-        omitYearly.add(40);
-        omitYearly.add(42);
-        omitYearly.add(43);
-        omitYearly.add(44);
-        omitYearly.add(45);
-        omitYearly.add(46);
-        omitYearly.add(47); //Oct 15
-        omitYearly.add(48); //Nov 15
-        omitYearly.add(49); //Dec 15
-        omitYearly.add(50); //Jan 16
-        omitYearly.add(51); //Feb 16
+        omitYearly.add(14); //Jan 13 NB. Prior to this data not monthly
+        omitYearly.add(15); //Feb 13
+        omitYearly.add(16); //Mar 13
+        int i0 = 17;
+        for (int i = i0; i < tSHBEFilenames.length; i ++) {
+            // Do not add 17,29,41,53...
+            if(!((i - i0) % 12 == 0)) {
+                omitYearly.add(i);
+            }
+        }
         result.put(omitKey, omitYearly);
-        omitKey = s6Monthly;
+        omitKey = tDW_Strings.sInclude6Monthly;
         ArrayList<Integer> omit6Monthly;
         omit6Monthly = new ArrayList<Integer>();
         omit6Monthly.add(6);
         omit6Monthly.add(8);
-        omit6Monthly.add(10);
-        omit6Monthly.add(12);
-        omit6Monthly.add(14);
-        omit6Monthly.add(15);
-        omit6Monthly.add(16);
-        omit6Monthly.add(18);
-        omit6Monthly.add(19);
-        omit6Monthly.add(20);
-        omit6Monthly.add(21);
-        omit6Monthly.add(22);
-        omit6Monthly.add(24);
-        omit6Monthly.add(25);
-        omit6Monthly.add(26);
-        omit6Monthly.add(27);
-        omit6Monthly.add(28);
-        omit6Monthly.add(30);
-        omit6Monthly.add(31);
-        omit6Monthly.add(32);
-        omit6Monthly.add(33);
-        omit6Monthly.add(34);
-        omit6Monthly.add(36);
-        omit6Monthly.add(37);
-        omit6Monthly.add(38);
-        omit6Monthly.add(39);
-        omit6Monthly.add(40); //Mar 15
-        omit6Monthly.add(42); //May 15
-        omit6Monthly.add(43); //Jun 15
-        omit6Monthly.add(44); //Jul 15
-        omit6Monthly.add(45); //Aug 15
-        omit6Monthly.add(46); //Sep 15
-        omit6Monthly.add(48); //Nov 15
-        omit6Monthly.add(49); //Dec 15
-        omit6Monthly.add(50); //Jan 16
-        omit6Monthly.add(51); //Feb 16
+        omit6Monthly.add(10); 
+        omit6Monthly.add(12); 
+        omit6Monthly.add(14); //Jan 13 NB. Prior to this data not monthly
+        omit6Monthly.add(15); //Feb 13
+        omit6Monthly.add(16); //Mar 13
+        for (int i = i0; i < tSHBEFilenames.length; i ++) {
+            // Do not add 17,23,29,35,41,47,53...
+            if(!((i - i0) % 6 == 0)) {
+                omit6Monthly.add(i);
+            }
+        }
         result.put(omitKey, omit6Monthly);
-        omitKey = s3Monthly;
+        omitKey = tDW_Strings.sInclude3Monthly;
         ArrayList<Integer> omit3Monthly;
         omit3Monthly = new ArrayList<Integer>();
         for (int i = 0; i < 7; i++) {
             omit3Monthly.add(i);
         }
-        omit3Monthly.add(15);
-        omit3Monthly.add(16);
-        omit3Monthly.add(18);
-        omit3Monthly.add(19);
-        omit3Monthly.add(21);
-        omit3Monthly.add(22);
-        omit3Monthly.add(24);
-        omit3Monthly.add(25);
-        omit3Monthly.add(27);
-        omit3Monthly.add(28);
-        omit3Monthly.add(30);
-        omit3Monthly.add(31);
-        omit3Monthly.add(33);
-        omit3Monthly.add(34);
-        omit3Monthly.add(36);
-        omit3Monthly.add(37);
-        omit3Monthly.add(39);
-        omit3Monthly.add(40);
-        omit3Monthly.add(42);
-        omit3Monthly.add(43);
-        omit3Monthly.add(45);
-        omit3Monthly.add(46);
-        omit6Monthly.add(48); //Nov 15
-        omit6Monthly.add(49); //Dec 15
-        omit6Monthly.add(51); //Feb 16
+        omit3Monthly.add(15); //Feb 13 NB. Prior to this data not monthly
+        omit3Monthly.add(16); //Mar 13
+        for (int i = i0; i < tSHBEFilenames.length; i ++) {
+            // Do not add 17,20,23,26,29,32,35,38,41,44,47,50,53...
+            if(!((i - i0) % 3 == 0)) {
+                omit3Monthly.add(i);
+            }
+        }
         result.put(omitKey, omit3Monthly);
-        omitKey = sMonthly;
+        omitKey = tDW_Strings.sIncludeMonthly;
         ArrayList<Integer> omitMonthly;
         omitMonthly = new ArrayList<Integer>();
         for (int i = 0; i < 14; i++) {
             omitMonthly.add(i);
         }
         result.put(omitKey, omitMonthly);
-        omitKey = sMonthlyUO;
+        omitKey = tDW_Strings.sIncludeMonthlySinceApril2013;
         ArrayList<Integer> omitMonthlyUO;
         omitMonthlyUO = new ArrayList<Integer>();
         for (int i = 0; i < 17; i++) {
@@ -3220,6 +3128,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType) {
         DW_SHBE_Collection result;
         result = new DW_SHBE_Collection(
+                this,
                 handler.nextID,
                 handler,
                 directory,
@@ -3241,15 +3150,17 @@ public class DW_SHBE_Handler extends DW_Object {
     }
 
     /**
-     *
+     * 
+     * @param yM3
      * @param D_Record
+     * @return 
      */
     public String getClaimantsAge(
             String yM3,
             DW_SHBE_D_Record D_Record) {
         String result;
         String[] syM3;
-        syM3 = yM3.split("_");
+        syM3 = yM3.split(tDW_Strings.sUnderscore);
         result = getClaimantsAge(syM3[0], syM3[1], D_Record);
         return result;
     }

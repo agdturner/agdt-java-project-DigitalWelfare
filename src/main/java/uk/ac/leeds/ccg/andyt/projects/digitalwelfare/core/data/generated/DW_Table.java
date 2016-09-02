@@ -28,11 +28,17 @@ import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 
 /**
- *
+ * A class for methods dealing with tables of data.
  * @author geoagdt
  */
 public class DW_Table {
 
+    /**
+     * Reads a CSV file and returns each line as a String in the result.
+     * @param f
+     * @return the contents of the file as an {@code ArrayList<String>} with 
+     * the elements being consecutive lines in the file.
+     */
     public static ArrayList<String> readCSV(File f) {
         ArrayList<String> result;
         result = new ArrayList<String>();

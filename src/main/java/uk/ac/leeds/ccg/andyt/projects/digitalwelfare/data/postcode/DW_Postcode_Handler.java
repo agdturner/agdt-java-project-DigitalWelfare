@@ -35,7 +35,7 @@ import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_AbstractProcessor;
 
 /**
  * A class for adding coordinate data and area codes for UK postcodes.
@@ -104,7 +104,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         return result;
     }
 
-    public static String getNearestYM3ForONSPDLookup(String yM3) {
+    public String getNearestYM3ForONSPDLookup(String yM3) {
         /* 2008_FEB
          * 2008_MAY
          * 2008_AUG

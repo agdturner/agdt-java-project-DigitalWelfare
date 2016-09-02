@@ -23,13 +23,120 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 
 /**
  * A basic convenience class that does not need a reference to the main 
  * DW_Environment.
  * @author geoagdt
  */
-public class DW_Files {
+public class DW_Files extends DW_Object {
+
+    /**
+     * Provided for convenience. This is a reference to env.tDW_Strings.
+     */
+    protected DW_Strings tDW_Strings;
+    
+    /**
+     * Short code for 2011.
+     */
+    public final String s2011 = "2011";
+    
+    /**
+     * Short code for AdviceLeeds.
+     */
+    public final String sAdviceLeeds = "AdviceLeeds";
+
+    /**
+     * Short code for AttributeData.
+     */
+    public final String sAttributeData = "AttributeData";
+
+    /**
+     * Short code for BoundaryData.
+     */
+    public final String sBoundaryData = "BoundaryData";
+
+    /**
+     * Short code for Census.
+     */
+    public final String sCensus = "Census";
+
+    /**
+     * Short code for Choropleth.
+     */
+    public final String sChoropleth = "Choropleth";
+    
+    /**
+     * Short code for CodePoint.
+     */
+    public final String sCodePoint = "CodePoint";
+
+    /**
+     * Short code for Generated.
+     */
+    public final String sGenerated = "Generated";
+
+    /**
+     * Short code for Input.
+     */
+    public final String sInput = "Input";
+
+    /**
+     * Short code for Look Up Tables.
+     */
+    public final String sLUTs = "LUTs";
+    
+    /**
+     * Short code for LeedsCityCouncil.
+     */
+    public final String sLCC = "LCC";
+
+    /**
+     * Short code for Maps.
+     */
+    public final String sMaps = "Maps";
+
+    /**
+     * Short code for ONS Postcode Directory
+     */
+    public final String sONSPD = "ONSPD";
+
+    /**
+     * Short code for Output.
+     */
+    public final String sOutput = "Output";
+
+    /**
+     * Short code for Plots.
+     */
+    public final String sPlots = "Plots";
+
+    /**
+     * Short code for PostcodeChanged.
+     */
+    public final String sPostcode = "Postcode";
+    
+    /**
+     * Short code for SHBE.
+     */
+    public final String sSHBE = "SHBE";
+
+    /**
+     * Short code for Swap.
+     */
+    public final String sSwap = "Swap";
+    
+    /**
+     * Short code for UnderOccupied.
+     */
+    public final String sUnderOccupied = "UnderOccupied";
+
+    /**
+     * Short code for Tables.
+     */
+    public final String sTables = "Tables";
 
     /**
      * For storing the main directory location where the project files are
@@ -101,225 +208,27 @@ public class DW_Files {
     private File outputSHBEPlotsDir;
     private File outputAdviceLeedsTablesDir;
     private File outputUnderOccupiedDir;
-
-    // More generic
-    
     /**
-     * Short code for AttributeData.
-     */
-    private final String sAttributeData = "AttributeData";
-    
-    /**
-     * Short code for BoundaryData.
-     */
-    private final String sBoundaryData = "BoundaryData";
-    
-    /**
-     * Short code for CodePoint.
-     */
-    private final String sCodePoint = "CodePoint";
-    
-    /**
-     * Short code for Swap.
-     */
-    private final String sSwap = "Swap";
-    
-    /**
-     * Short code for Look Up Tables.
-     */
-    public final String sLUTs = "LUTs";
-    
-    /**
-     * Short code for ONS Postcode Directory
-     */
-    public final String sONSPD = "ONSPD";
-    
-    /**
-     * Short code for SHBE.
-     */
-    public final String sSHBE = "SHBE";
-    
-    /**
-     * Short code for LeedsCityCouncil.
-     */
-    public final String sUO = "UO";
-    
-    /**
-     * Short code for LeedsCityCouncil.
-     */
-    public final String sUnderOccupied = "UnderOccupied";
-    
-    /**
-     * Short code for LeedsCityCouncil.
-     */
-    public final String sLCC = "LCC";
-    
-    /**
-     * Short code for Maps.
-     */
-    public final String sMaps = "Maps";
-    
-    /**
-     * Short code for Plots.
-     */
-    public final String sPlots = "Plots";
-    
-    /**
-     * Short code for Tables.
-     */
-    public final String sTables = "Tables";
-    
-    
-    
-    /**
-     * Short code for Tenancy.
-     */
-    public final String sTenancy = "T";
-    //public final String sTenancy = "Tenancy";
-
-    /**
-     * Short code for Grouped.
-     */
-    public final String sGrouped = "G";
-    //public final String sGrouped = "Grouped";
-
-    /**
-     * Short code for Ungrouped.
-     */
-    public final String sUngrouped = "U";
-    //public final String sUngrouped = "Ungrouped";
-
-    /**
-     * Short code for Postcode.
-     */
-    public final String sPostcode = "P";
-    //public final String sPostcode = "Postcode";
-    
-    /**
-     * Short code for PostcodeChanges.
-     */
-    public final String sPostcodeChanges = "PCs";
-    //public final String sPostcodeChanges = "PostcodeChanges";
-    
-    /**
-     * Short code for PostcodeChanged.
-     */
-    public final String sPostcodeChanged = "PCd";
-    //public final String sPostcodeChanged = "PostcodeChanged";
-    
-    /**
-     * Short code for PostcodeUnchanged.
-     */
-    public final String sPostcodeUnchanged = "PUd";
-    //public final String sPostcodeUnchanged = "PostcodeUnchanged";
-    
-    /**
-     * Short code for TenancyTypeTransition.
-     */
-    public final String sTenancyTypeTransition = "TTT";
-    //public final String sTenancyTypeTransition = "TenancyTypeTransition";
-    
-    /**
-     * Short code for TenancyAndPostcodeChanges.
-     */
-    public final String sTenancyAndPostcodeChanges = "TAPC";
-    //public final String sTenancyAndPostcodeChanges = "TenancyAndPostcodeChanges";
-    
-    /**
-     * Short code for CheckedPreviousTenancyType.
-     */
-    public final String sCheckedPreviousTenancyType = "YCPTT";
-    //public final String sCheckedPreviousTenancyType = "CheckedPreviousTenancyType";
-    
-    /**
-     * Short code for NotCheckedPreviousTenancyType.
-     */
-    public final String sNotCheckedPreviousTenancyType = "NCPTT";
-    //public final String sNotCheckedPreviousTenancyType = "NotCheckedPreviousTenancyType";
-
-    /**
-     * Short code for CheckedPreviousPostcode.
-     */
-    public final String sCheckedPreviousPostcode = "YCPP";
-    //public final String sCheckedPreviousPostcode = "CheckedPreviousPostcode";
-
-    /**
-     * Short code for NotCheckedPreviousPostcode.
-     */
-    public final String sNotCheckedPreviousPostcode = "NCPP";
-    //public final String sNotCheckedPreviousPostcode = "NotCheckedPreviousPostcode";
-
-    /**
-     * Short code for Council.
-     */
-    public final String sCouncil = "C";
-    //public final String sCouncil = "Council";
-    
-    /**
-     * Short code for Registered Social Landlord.
-     */
-    public final String sRSL = "R";
-    //public final String sRSL = "RSL";
-    
-    
-
-
-    /**
-     * Short code for TenancyTypeTransitionLineGraphs.
-     */
-    public final String sTenancyTypeTransitionLineGraphs = "TTTLG";
-    //public final String sTenancyTypeTransitionLineGraphs = "TenancyTypeTransitionLineGraphs";
-    
-    /**
-     * Short code for NotCheckedPreviousPostcode.
+     * Short code for Line.
      */
     public final String sLine = "Line";
-    
     /**
-     * Short code for NotCheckedPreviousPostcode.
+     * Short code for Density.
      */
-    public final String sChoropleth = "Choropleth";
+    public final String sDensity = "Density";
     
-    /**
-     * Short code for NotCheckedPreviousPostcode.
-     */
-    public final String sAll = "All";
-    
-    /**
-     * Short code for NotCheckedPreviousPostcode.
-     */
-    public final String sInput = "Input";
-    
-    /**
-     * Short code for NotCheckedPreviousPostcode.
-     */
-    public final String sCensus = "Census";
-    
-    /**
-     * Short code for NotCheckedPreviousPostcode.
-     */
-    public final String s2011 = "2011";
-    
-    /**
-     * Short code for NotCheckedPreviousPostcode.
-     */
-    public final String sGenerated = "Generated";
-    
-    /**
-     * Short code for NotCheckedPreviousPostcode.
-     */
-    public final String sOutput = "Output";
-    
-    /**
-     * Short code for NotCheckedPreviousPostcode.
-     */
-    public final String sAdviceLeeds = "AdviceLeeds";
-    //public final String sDigitalWelfareDir = "/scratch02/DigitalWelfare";
 
     /**
      * Create a new instance.
      */
-    public DW_Files(){}
+    public DW_Files(DW_Environment env){
+        this.env = env;
+        if (env != null) {
+            this.tDW_Strings = env.getDW_Strings();
+        } else {
+            this.tDW_Strings = new DW_Strings();
+        }
+    }
     
     public File getDigitalWelfareDir() {
         if (dir == null) {
@@ -620,21 +529,21 @@ public class DW_Files {
         if (doUnderOccupied) {
             result = new File(
                     f,
-                    sUO);
+                    tDW_Strings.sU);
             //UnderOccupiedString);
             if (doCouncil) {
                 result = new File(
                         result,
-                        sCouncil);
+                        tDW_Strings.sCouncil);
             } else {
                 result = new File(
                         result,
-                        sRSL);
+                        tDW_Strings.sRSL);
             }
         } else {
             result = new File(
                     f,
-                    sAll);
+                    tDW_Strings.sA);
         }
         return result;
     }
@@ -648,25 +557,25 @@ public class DW_Files {
         if (doUnderOccupied) {
             result = new File(
                     f,
-                    sUO);
+                    tDW_Strings.sU);
             //UnderOccupiedString);
             if (doCouncil & doRSL) {
                 result = new File(
                         result,
-                        sAll);
+                        tDW_Strings.sB);
             } else if (doCouncil) {
                 result = new File(
                         result,
-                        sCouncil);
+                        tDW_Strings.sCouncil);
             } else {
                 result = new File(
                         result,
-                        sRSL);
+                        tDW_Strings.sRSL);
             }
         } else {
             result = new File(
                     f,
-                    sAll);
+                    tDW_Strings.sA);
         }
         return result;
     }
@@ -677,15 +586,17 @@ public class DW_Files {
             boolean doCouncil) {
         ArrayList<File> result;
         result = new ArrayList<File>();
+        File tGeneratedSHBEDir;
+        tGeneratedSHBEDir = getGeneratedSHBEDir();
         Iterator<String> ite;
         ite = levels.iterator();
         while (ite.hasNext()) {
             String level = ite.next();
-            File outputDir = new File(
-                    getGeneratedSHBEDir(),
+            File d = new File(
+                    tGeneratedSHBEDir,
                     level);
-            outputDir = getUOFile(outputDir, doUnderOccupied, doCouncil);
-            result.add(outputDir);
+            d = getUOFile(d, doUnderOccupied, doCouncil);
+            result.add(d);
         }
         return result;
     }
@@ -696,15 +607,18 @@ public class DW_Files {
             boolean doCouncil) {
         TreeMap<String, File> result;
         result = new TreeMap<String, File>();
+        File tGeneratedSHBEDir;
+        tGeneratedSHBEDir = getGeneratedSHBEDir();
         Iterator<String> ite;
         ite = levels.iterator();
         while (ite.hasNext()) {
             String level = ite.next();
-            File outputDir = new File(
-                    getGeneratedSHBEDir(),
+            File d;
+            d = new File(
+                    tGeneratedSHBEDir,
                     level);
-            outputDir = getUOFile(outputDir, doUnderOccupied, doCouncil);
-            result.put(level, outputDir);
+            d = getUOFile(d, doUnderOccupied, doCouncil);
+            result.put(level, d);
         }
         return result;
     }
@@ -716,15 +630,17 @@ public class DW_Files {
             boolean doRSL) {
         TreeMap<String, File> result;
         result = new TreeMap<String, File>();
+        File tGeneratedSHBEDir;
+        tGeneratedSHBEDir = getGeneratedSHBEDir();
         Iterator<String> ite;
         ite = levels.iterator();
         while (ite.hasNext()) {
             String level = ite.next();
-            File outputDir = new File(
-                    getGeneratedSHBEDir(),
+            File d = new File(
+                    tGeneratedSHBEDir,
                     level);
-            outputDir = getUOFile(outputDir, doUnderOccupied, doCouncil);
-            result.put(level, outputDir);
+            d = getUOFile(d, doUnderOccupied, doCouncil, doRSL);
+            result.put(level, d);
         }
         return result;
     }
@@ -773,8 +689,7 @@ public class DW_Files {
     public File getOutputAdviceLeedsTablesDir() {
         if (outputAdviceLeedsTablesDir == null) {
             outputAdviceLeedsTablesDir = new File(
-                    getOutputAdviceLeedsDir(),
-                    sTables);
+                    getOutputAdviceLeedsDir(), sTables);
             outputAdviceLeedsTablesDir.mkdirs();
         }
         return outputAdviceLeedsTablesDir;
@@ -842,8 +757,7 @@ public class DW_Files {
     public File getOutputSHBETablesDir() {
         if (outputSHBETablesDir == null) {
             outputSHBETablesDir = new File(
-                    getOutputSHBEDir(),
-                    sTables);
+                    getOutputSHBEDir(), sTables);
             outputSHBETablesDir.mkdirs();
         }
         return outputSHBETablesDir;
@@ -855,7 +769,7 @@ public class DW_Files {
             boolean checkPreviousTenancyType) {
         File result = new File(
                 getOutputSHBETablesDir(),
-                sTenancy);
+                tDW_Strings.sTenancy);
         result = new File(
                 result,
                 paymentType);
@@ -864,15 +778,15 @@ public class DW_Files {
                 type);
         result = new File(
                 result,
-                sTenancyTypeTransition);
+                tDW_Strings.sTenancyTypeTransition);
         if (checkPreviousTenancyType) {
             result = new File(
                     result,
-                    sCheckedPreviousTenancyType);
+                    tDW_Strings.sCheckedPreviousTenancyType);
         } else {
             result = new File(
                     result,
-                    sNotCheckedPreviousTenancyType);
+                    tDW_Strings.sCheckedPreviousTenancyTypeNo);
         }
         return result;
     }
@@ -893,7 +807,7 @@ public class DW_Files {
             boolean checkPreviousTenancyType) {
         File result = new File(
                 getOutputSHBEPlotsDir(),
-                sTenancy);
+                tDW_Strings.sTenancy);
         result = new File(
                 result,
                 paymentType);
@@ -902,23 +816,22 @@ public class DW_Files {
                 type);
         result = new File(
                 result,
-                sTenancyTypeTransitionLineGraphs);
+                tDW_Strings.sTenancyTypeTransitionLineGraphs);
         if (checkPreviousTenancyType) {
             result = new File(
                     result,
-                    sCheckedPreviousTenancyType);
+                    tDW_Strings.sCheckedPreviousTenancyType);
         } else {
             result = new File(
                     result,
-                    sNotCheckedPreviousTenancyType);
+                    tDW_Strings.sCheckedPreviousTenancyTypeNo);
         }
         return result;
     }
 
     public File getOutputSHBELineMapsDir() {
         return new File(
-                getOutputSHBEMapsDir(),
-                sLine);
+                getOutputSHBEMapsDir(), sLine);
     }
 
     public File getOutputSHBEChoroplethDir() {
@@ -944,6 +857,14 @@ public class DW_Files {
         return outputUnderOccupiedDir;
     }
 
+    /**
+     * 
+     * @param name
+     * @param paymentType
+     * @param includeKey
+     * @param doUnderOccupancy
+     * @return 
+     */
     public File getTableDir(
             String name,
             String paymentType,
@@ -954,9 +875,9 @@ public class DW_Files {
                 getOutputSHBETablesDir(),
                 name);
         if (doUnderOccupancy) {
-            result = new File(result, sUO);
+            result = new File(result, tDW_Strings.sU);
         } else {
-            result = new File(result, sAll);
+            result = new File(result, tDW_Strings.sA);
         }
         result = new File(result, paymentType);
         result = new File(result, includeKey);

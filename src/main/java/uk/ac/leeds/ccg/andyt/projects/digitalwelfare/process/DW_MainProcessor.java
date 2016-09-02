@@ -29,9 +29,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_Lin
  *
  * @author geoagdt
  */
-public class DW_MainProcessor {
-
-    private transient final DW_Environment env;
+public class DW_MainProcessor extends DW_AbstractProcessor {
 
     public DW_MainProcessor(DW_Environment env) {
         this.env = env;
@@ -46,11 +44,11 @@ public class DW_MainProcessor {
                 System.err.println(
                         "Expected an argument which is the location "
                         + "of the directory containing the input data. "
-                                + "Aborting.");
+                        + "Aborting.");
                 System.exit(0);
             } else {
                 DW_Environment env = new DW_Environment(args[0]);
-                new DW_MainProcessor(env).run(args);
+                new DW_MainProcessor(env).run();
             }
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
@@ -69,21 +67,57 @@ public class DW_MainProcessor {
         }
     }
 
-    public void run(String[] args) throws Exception {
-//        DW_Postcode_Handler aDW_Postcode_Handler;
-//        aDW_Postcode_Handler = new DW_Postcode_Handler();
-//        aDW_Postcode_Handler.run();
-//
-        DW_SHBE_Handler aDW_SHBE_Handler;
-        aDW_SHBE_Handler = new DW_SHBE_Handler(env);
-        aDW_SHBE_Handler.run();
-//        aDW_SHBE_Handler.runCount();
-//        aDW_SHBE_Handler.runNew();
-//        
-        DW_DataProcessor_LCC aDW_DataProcessor_LCC;
-        aDW_DataProcessor_LCC = new DW_DataProcessor_LCC(env);
-        aDW_DataProcessor_LCC.run();
-//
+    /**
+     * This is the main run method for the Digital welfare project.
+     *
+     * @param args
+     * @throws Exception
+     */
+    public void run() throws Exception {
+        boolean runPostcode_Handler; // switch for running Postcode_Handler code.
+        boolean runSHBE_Handler; // switch for running SHBE_Handler code.
+        boolean runDataProcessor_LCC; // switch for running DataProcessor_LCC code.
+
+        runPostcode_Handler = true;
+        runPostcode_Handler = false;
+        runSHBE_Handler = true;
+        runSHBE_Handler = false;
+        runDataProcessor_LCC = true;
+//        runDataProcessor_LCC = false;
+
+        /**
+         * Format Postcode_Handling data.
+         */
+        if (runPostcode_Handler) {
+            DW_Postcode_Handler aDW_Postcode_Handler;
+            aDW_Postcode_Handler = new DW_Postcode_Handler(env);
+            aDW_Postcode_Handler.run();
+        }
+
+        /**
+         * Format SHBE data.
+         */
+        if (runSHBE_Handler) {
+            DW_SHBE_Handler aDW_SHBE_Handler;
+            aDW_SHBE_Handler = new DW_SHBE_Handler(env);
+            // <Reformat all data from source>
+//            aDW_SHBE_Handler.run();  
+            // </Reformat all data from source>
+            // <Count and report unique National Insurance Numbers and unique person IDs so far encountered.>
+            aDW_SHBE_Handler.runCount();
+            // </Count and report unique National Insurance Numbers and unique person IDs so far encountered.>
+            // <Format data not already formattede>
+            // As this assigns IDs assumption being that the new data is subsequent to the existing data.
+//            aDW_SHBE_Handler.runNew();
+            // </Format data not already formattede>
+        }
+
+        if (runDataProcessor_LCC) {
+            DW_DataProcessor_LCC aDW_DataProcessor_LCC;
+            aDW_DataProcessor_LCC = new DW_DataProcessor_LCC(env);
+            aDW_DataProcessor_LCC.run();
+        }
+
 //        DW_ChoroplethMaps_LCC aDW_ChoroplethMaps_LCC;
 //        aDW_ChoroplethMaps_LCC = new DW_ChoroplethMaps_LCC();
 //        aDW_ChoroplethMaps_LCC.run();
@@ -91,7 +125,6 @@ public class DW_MainProcessor {
 //        DW_LineMaps_LCC aDW_LineMaps_LCC;
 //        aDW_LineMaps_LCC = new DW_LineMaps_LCC();
 //        aDW_LineMaps_LCC.run();
-
 ////        DW_Report aDW_Report;
 ////        aDW_Report = new DW_Report();
 ////        aDW_Report.run();
@@ -99,11 +132,9 @@ public class DW_MainProcessor {
 //        DW_LineGraph aDW_LineGraph;
 //        aDW_LineGraph = new DW_LineGraph();
 //        aDW_LineGraph.run(args);
-
 //        DW_DensityMaps_LCC aDW_DensityMaps_LCC;
 //        aDW_DensityMaps_LCC = new DW_DensityMaps_LCC(env);
 //        aDW_DensityMaps_LCC.run();
-        
 //        DW_LineDensityMaps_LCC aDW_LineDensityMaps_LCC;
 //        aDW_LineDensityMaps_LCC = new DW_LineDensityMaps_LCC();
 //        aDW_LineDensityMaps_LCC.run();

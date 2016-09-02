@@ -26,7 +26,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CA
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_AbstractProcessor;
 
 /**
  *
@@ -150,7 +150,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
 //            DW_ID_ClientOutletEnquiryID id = ite.next();
 //            DW_Data_CAB2_Record aLeedsCABData_DataRecord = tLeedsCABData.get(id);
 //            String postcode = aLeedsCABData_DataRecord.getPostcode();
-//            postcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
+//            postcode = DW_AbstractProcessor.formatPostcodeForONSPDLookup(postcode);
 //            if (!postcode.isEmpty()) {
 //                String SOACode = tLookupFromPostcodeToCensusCodes.get(postcode);
 //                if (SOACode == null) {
@@ -210,7 +210,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
 //            String clientProfileID = ite.next();
 //            DW_Data_CAB2_Record aLeedsCABData_DataRecord = tLeedsCABData.get(clientProfileID);
 //            String postcode = aLeedsCABData_DataRecord.getPostcode();
-//            postcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
+//            postcode = DW_AbstractProcessor.formatPostcodeForONSPDLookup(postcode);
 //            if (!postcode.isEmpty()) {
 //                String[] codes = tLookupFromPostcodeToCensusCodes.get(postcode);
 //                if (codes == null) {
@@ -271,7 +271,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
 //            String clientProfileID = ite.next();
 //            DW_Data_CAB1_Record aLeedsCABData_DataRecord = tLeedsCABData.get(clientProfileID);
 //            String postcode = aLeedsCABData_DataRecord.getPostalCode();
-//            postcode = DW_Processor.formatPostcodeForONSPDLookup(postcode);
+//            postcode = DW_AbstractProcessor.formatPostcodeForONSPDLookup(postcode);
 //            if (!postcode.isEmpty()) {
 //                String SOACode = tLookupFromPostcodeToCensusCodes.get(postcode);
 //                if (SOACode == null) {

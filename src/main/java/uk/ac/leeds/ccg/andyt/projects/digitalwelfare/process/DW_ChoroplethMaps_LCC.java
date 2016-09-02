@@ -533,7 +533,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
                                             tenure,
                                             claimantType);
                                     if (doDeprivation) {
-                                        deprivationRecords = DW_Processor.getDeprivation_Data(env);
+                                        deprivationRecords = DW_AbstractProcessor.getDeprivation_Data(env);
                                         runSHBE(
                                                 doUnderOccupied,
                                                 doCouncil,
@@ -570,7 +570,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
                                             claimantType);
                                     // Clear commonStyle?
                                     if (doDeprivation) {
-                                        deprivationRecords = DW_Processor.getDeprivation_Data(env);
+                                        deprivationRecords = DW_AbstractProcessor.getDeprivation_Data(env);
                                         runSHBE(
                                                 doUnderOccupied,
                                                 doCouncil,
@@ -656,7 +656,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
                                                 tenure,
                                                 claimantType);
                                         if (doDeprivation) {
-                                            deprivationRecords = DW_Processor.getDeprivation_Data(env);
+                                            deprivationRecords = DW_AbstractProcessor.getDeprivation_Data(env);
                                             runSHBE(
                                                     doUnderOccupied,
                                                     doCouncil,
@@ -694,7 +694,7 @@ public class DW_ChoroplethMaps_LCC extends DW_ChoroplethMaps {
                                         // Clear commonStyle
 
                                         if (doDeprivation) {
-                                            deprivationRecords = DW_Processor.getDeprivation_Data(env);
+                                            deprivationRecords = DW_AbstractProcessor.getDeprivation_Data(env);
                                             runSHBE(
                                                     doUnderOccupied,
                                                     doCouncil,

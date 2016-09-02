@@ -21,7 +21,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core;
 import java.io.Serializable;
 
 /**
- *
+ * A simple class for representing identifiers using an int. 
  * @author geoagdt
  */
 public class DW_ID implements Serializable {

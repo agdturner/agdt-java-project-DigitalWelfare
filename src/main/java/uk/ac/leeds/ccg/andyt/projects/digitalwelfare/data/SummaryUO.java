@@ -731,20 +731,16 @@ public class SummaryUO extends Summary {
     public SummaryUO(
             DW_Environment env,
             DW_SHBE_CollectionHandler collectionHandler,
-            DW_SHBE_Handler tDW_SHBE_Handler,
             int nTT,
             int nEG,
             int nPSI,
             boolean handleOutOfMemoryError) {
-        this.env = env;
-        this.collectionHandler = collectionHandler;
-        this.tDW_SHBE_Handler = tDW_SHBE_Handler;
+        super(env, collectionHandler, nTT, nEG, nPSI, handleOutOfMemoryError);
         init(nTT, nEG, nPSI);
     }
 
     @Override
     protected void init(int nTT, int nEG, int nPSI) {
-        super.init(nTT, nEG, nPSI);
         initSingleTimeStrings(nTT, nEG, nPSI);
         initCompare3TimesStrings(nTT, nEG);
         // Council
@@ -4313,7 +4309,7 @@ public class SummaryUO extends Summary {
         TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs;
         tClaimantIDPostcodeTTs = new TreeMap<String, HashSet<ID_TenancyType_PostcodeID>>();
 
-        yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+        yM31v = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
 
         // Summarise first data
         doPartSummarySingleTime(
@@ -4357,7 +4353,7 @@ public class SummaryUO extends Summary {
 
             filename1 = SHBEFilenames[i];
             yM31 = tDW_SHBE_Handler.getYM3(filename1);
-            yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+            yM31v = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
             councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
             System.out.println("Load " + filename1);
@@ -4410,7 +4406,7 @@ public class SummaryUO extends Summary {
 
                 filename1 = SHBEFilenames[i];
                 yM31 = tDW_SHBE_Handler.getYM3(filename1);
-                yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+                yM31v = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                 councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
                 RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
                 System.out.println("Load " + filename1);
@@ -5501,7 +5497,7 @@ public class SummaryUO extends Summary {
             String PostCodeLookupDate00 = null;
             String PostCodeLookupFile00Name = null;
             if (filename00 != null) {
-                PostCodeLookupDate00 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+                PostCodeLookupDate00 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                         tDW_SHBE_Handler.getYM3(filename00));
                 PostCodeLookupFile00Name = ONSPDFiles.get(PostCodeLookupDate00).getName();
             }
@@ -5509,7 +5505,7 @@ public class SummaryUO extends Summary {
             String PostCodeLookupDate0 = null;
             String PostCodeLookupFile0Name = null;
             if (filename0 != null) {
-                PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+                PostCodeLookupDate0 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                         tDW_SHBE_Handler.getYM3(filename0));
                 PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
             }
@@ -5517,7 +5513,7 @@ public class SummaryUO extends Summary {
             String PostCodeLookupDate1 = null;
             String PostCodeLookupFile1Name = null;
             if (filename1 != null) {
-                PostCodeLookupDate1 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+                PostCodeLookupDate1 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                         tDW_SHBE_Handler.getYM3(filename1));
                 PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
             }
@@ -5951,7 +5947,7 @@ public class SummaryUO extends Summary {
         String PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename0 != null) {
-            PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+            PostCodeLookupDate0 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                     tDW_SHBE_Handler.getYM3(filename0));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }
@@ -5959,7 +5955,7 @@ public class SummaryUO extends Summary {
         String PostCodeLookupDate1 = null;
         String PostCodeLookupFile1Name = null;
         if (filename1 != null) {
-            PostCodeLookupDate1 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+            PostCodeLookupDate1 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                     tDW_SHBE_Handler.getYM3(filename1));
             PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
         }
