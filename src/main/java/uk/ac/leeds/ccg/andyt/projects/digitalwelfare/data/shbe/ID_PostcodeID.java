@@ -18,9 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_intID;
 import java.io.Serializable;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 
 /**
  *
@@ -28,15 +27,15 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeID;
  */
 public class ID_PostcodeID implements Serializable {
 
-    private DW_intID ID;
-    private DW_intID PostcodeID; // Rather than using a detailed PostcodeID use a simple DW_ID.
-    
+    private DW_ID ID;
+    private DW_ID PostcodeID; // Rather than using a detailed PostcodeID use a simple DW_ID.
+
     public ID_PostcodeID() {
     }
 
     public ID_PostcodeID(
-            DW_intID ID,
-            DW_intID PostcodeID
+            DW_ID ID,
+            DW_ID PostcodeID
     ) {
         this.ID = ID;
         this.PostcodeID = PostcodeID;
@@ -45,17 +44,22 @@ public class ID_PostcodeID implements Serializable {
     /**
      * @return the Postcode
      */
-    public DW_intID getID() {
+    public DW_ID getID() {
         return ID;
     }
-    
+
     /**
      * @return the Postcode
      */
-    public DW_intID getPostcodeID() {
+    public DW_ID getPostcodeID() {
         return PostcodeID;
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -67,11 +71,9 @@ public class ID_PostcodeID implements Serializable {
         if (obj instanceof ID_PostcodeID) {
             ID_PostcodeID o;
             o = (ID_PostcodeID) obj;
-            if (this.hashCode() == o.hashCode()) {
-                if (ID.equals(o.ID)) {
-                    if (PostcodeID.equals(o.PostcodeID)) {
-                        return true;
-                    }
+            if (this.ID.equals(o.ID)) {
+                if (PostcodeID.equals(o.PostcodeID)) {
+                    return true;
                 }
             }
         }
@@ -81,8 +83,9 @@ public class ID_PostcodeID implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 89 * hash + (this.ID != null ? this.ID.hashCode() : 0);
-        hash = 89 * hash + (this.PostcodeID != null ? this.PostcodeID.hashCode() : 0);
+        hash = 67 * hash + (this.ID != null ? this.ID.hashCode() : 0);
+        hash = 67 * hash + (this.PostcodeID != null ? this.PostcodeID.hashCode() : 0);
         return hash;
     }
+   
 }

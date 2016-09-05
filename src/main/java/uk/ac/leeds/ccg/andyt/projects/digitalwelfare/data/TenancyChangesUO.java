@@ -32,7 +32,7 @@ import java.util.TreeSet;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_intID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
@@ -63,7 +63,7 @@ public class TenancyChangesUO extends DW_Object {
     DW_SHBE_CollectionHandler collectionHandler;
     DW_Strings tDW_Strings;
     DW_SHBE_Handler tDW_SHBE_Handler;
-    HashMap<String, DW_intID> tPostcodeToPostcodeIDLookup;
+    HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup;
     HashSet<String> validPostcodes;
     //HashMap<String, HashSet<String>> validPostcodes;
 
@@ -1192,7 +1192,7 @@ public class TenancyChangesUO extends DW_Object {
             DW_Environment env,
             DW_SHBE_CollectionHandler collectionHandler,
             DW_SHBE_Handler tDW_SHBE_Handler,
-            HashMap<String, DW_intID> tPostcodeToPostcodeIDLookup,
+            HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup,
             boolean handleOutOfMemoryError) {
         this.env = env;
         this.tDW_Strings = env.getDW_Strings();

@@ -5,20 +5,20 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode;
 
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_longID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 
 /**
  * @author geoagdt
  */
 public class PostcodeID {
 
-    protected final DW_longID longID;
+    protected final DW_ID ID;
     protected final AGDT_Point p;
 
     public PostcodeID(
-            DW_longID longID,
+            DW_ID ID,
             AGDT_Point p) {
-        this.longID = longID;
+        this.ID = ID;
         this.p = p;
     }
 
@@ -45,11 +45,9 @@ public class PostcodeID {
         if (obj instanceof PostcodeID) {
             PostcodeID o;
             o = (PostcodeID) obj;
-            if (longID.equals(o.longID)) {
-                if (this.hashCode() == o.hashCode()) {
-                    if (this.p == o.p) {
-                        return true;
-                    }
+            if (ID.equals(o.ID)) {
+                if (this.p == o.p) {
+                    return true;
                 }
             }
         }
@@ -59,8 +57,10 @@ public class PostcodeID {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 31 * hash + (this.p != null ? this.p.hashCode() : 0);
+        hash = 23 * hash + (this.ID != null ? this.ID.hashCode() : 0);
+        hash = 23 * hash + (this.p != null ? this.p.hashCode() : 0);
         return hash;
     }
 
+    
 }

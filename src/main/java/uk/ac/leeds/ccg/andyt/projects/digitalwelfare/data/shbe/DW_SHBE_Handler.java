@@ -31,7 +31,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_intID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.Summary;
@@ -51,14 +51,14 @@ public class DW_SHBE_Handler extends DW_Object {
         public final String sDefaultNINO = "XX999999XX";
 
 
-    HashMap<String, DW_intID> NINOToDW_IDLookup;
-    HashMap<DW_intID, String> DW_IDToNINOLookup;
-    HashMap<String, DW_intID> DOBToDW_IDLookup;
-    HashMap<DW_intID, String> DW_IDToDOBLookup;
-    HashMap<DW_PersonID, DW_intID> DW_PersonIDToDW_IDLookup;
-    HashMap<DW_intID, DW_PersonID> DW_IDToDW_PersonIDLookup;
-    HashMap<String, DW_intID> PostcodeToPostcodeIDLookup;
-    HashMap<DW_intID, String> PostcodeIDToPostcodeLookup;
+    HashMap<String, DW_ID> NINOToDW_IDLookup;
+    HashMap<DW_ID, String> DW_IDToNINOLookup;
+    HashMap<String, DW_ID> DOBToDW_IDLookup;
+    HashMap<DW_ID, String> DW_IDToDOBLookup;
+    HashMap<DW_PersonID, DW_ID> DW_PersonIDToDW_IDLookup;
+    HashMap<DW_ID, DW_PersonID> DW_IDToDW_PersonIDLookup;
+    HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
+    HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
 
     public DW_SHBE_Handler(DW_Environment env) {
         this.env = env;
@@ -85,18 +85,18 @@ public class DW_SHBE_Handler extends DW_Object {
         NINOToDW_IDLookupFile = getNINOToDW_IDLookupFile();
         DW_IDToNINOLookupFile = getDW_IDToNINOLookupFile();
 //        NINOToDW_IDLookup = getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
-        NINOToDW_IDLookup = new HashMap<String, DW_intID>();
+        NINOToDW_IDLookup = new HashMap<String, DW_ID>();
 //        DW_IDToNINOLookup = getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
-        DW_IDToNINOLookup = new HashMap<DW_intID, String>();
+        DW_IDToNINOLookup = new HashMap<DW_ID, String>();
         // DOB
         File DOBToDW_IDLookupFile;
         File DW_IDToDOBLookupFile;
         DOBToDW_IDLookupFile = getDOBToDW_IDLookupFile();
         DW_IDToDOBLookupFile = getDW_IDToDOBLookupFile();
 //        DOBToDW_IDLookup = getDOBToDW_IDLookup(DOBToDW_IDLookupFile);
-        DOBToDW_IDLookup = new HashMap<String, DW_intID>();
+        DOBToDW_IDLookup = new HashMap<String, DW_ID>();
 //        DW_IDToDOBLookup = getDW_IDToDOBLookup(DW_IDToDOBLookupFile);
-        DW_IDToDOBLookup = new HashMap<DW_intID, String>();
+        DW_IDToDOBLookup = new HashMap<DW_ID, String>();
         // Postcode
         File PostcodeToPostcodeIDLookupFile;
         File PostcodeIDToPostcodeLookupFile;
@@ -104,10 +104,10 @@ public class DW_SHBE_Handler extends DW_Object {
         PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
 //        PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(
 //                PostcodeToPostcodeIDLookupFile);
-        PostcodeToPostcodeIDLookup = new HashMap<String, DW_intID>();
+        PostcodeToPostcodeIDLookup = new HashMap<String, DW_ID>();
 //        PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(
 //                PostcodeIDToPostcodeLookupFile);
-        PostcodeIDToPostcodeLookup = new HashMap<DW_intID, String>();
+        PostcodeIDToPostcodeLookup = new HashMap<DW_ID, String>();
         // Person
         File tDW_PersonIDToDW_IDLookupFile;
         File tDW_IDToDW_PersonIDLookupFile;
@@ -115,10 +115,10 @@ public class DW_SHBE_Handler extends DW_Object {
         tDW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
 //        DW_PersonIDToDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(
 //                DW_PersonIDToDW_IDLookupFile);
-        DW_PersonIDToDW_IDLookup = new HashMap<DW_PersonID, DW_intID>();
+        DW_PersonIDToDW_IDLookup = new HashMap<DW_PersonID, DW_ID>();
 //        DW_IDToDW_PersonIDLookup = getDW_IDToDW_PersonIDLookup(
 //                DW_IDToDW_PersonIDLookupFile);
-        DW_IDToDW_PersonIDLookup = new HashMap<DW_intID, DW_PersonID>();
+        DW_IDToDW_PersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
         // Loop
         ArrayList<String> paymentTypes;
         paymentTypes = tDW_Strings.getPaymentTypes();
@@ -227,29 +227,29 @@ public class DW_SHBE_Handler extends DW_Object {
             File DW_IDToNINOLookupFile;
             NINOToDW_IDLookupFile = getNINOToDW_IDLookupFile();
             DW_IDToNINOLookupFile = getDW_IDToNINOLookupFile();
-            NINOToDW_IDLookup = (HashMap<String, DW_intID>) Generic_StaticIO.readObject(NINOToDW_IDLookupFile);
-            DW_IDToNINOLookup = (HashMap<DW_intID, String>) Generic_StaticIO.readObject(DW_IDToNINOLookupFile);
+            NINOToDW_IDLookup = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(NINOToDW_IDLookupFile);
+            DW_IDToNINOLookup = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(DW_IDToNINOLookupFile);
             // DOB
             File DOBToDW_IDLookupFile;
             File DW_IDToDOBLookupFile;
             DOBToDW_IDLookupFile = getDOBToDW_IDLookupFile();
             DW_IDToDOBLookupFile = getDW_IDToDOBLookupFile();
-            DOBToDW_IDLookup = (HashMap<String, DW_intID>) Generic_StaticIO.readObject(DOBToDW_IDLookupFile);
-            DW_IDToDOBLookup = (HashMap<DW_intID, String>) Generic_StaticIO.readObject(DW_IDToDOBLookupFile);
+            DOBToDW_IDLookup = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(DOBToDW_IDLookupFile);
+            DW_IDToDOBLookup = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(DW_IDToDOBLookupFile);
             // Person
             File DW_PersonIDToDW_IDLookupFile;
             File DW_IDToDW_PersonIDLookupFile;
             DW_PersonIDToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile();
             DW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
-            DW_PersonIDToDW_IDLookup = (HashMap<DW_PersonID, DW_intID>) Generic_StaticIO.readObject(DW_PersonIDToDW_IDLookupFile);
-            DW_IDToDW_PersonIDLookup = (HashMap<DW_intID, DW_PersonID>) Generic_StaticIO.readObject(DW_IDToDW_PersonIDLookupFile);
+            DW_PersonIDToDW_IDLookup = (HashMap<DW_PersonID, DW_ID>) Generic_StaticIO.readObject(DW_PersonIDToDW_IDLookupFile);
+            DW_IDToDW_PersonIDLookup = (HashMap<DW_ID, DW_PersonID>) Generic_StaticIO.readObject(DW_IDToDW_PersonIDLookupFile);
             // Postcode
             File PostcodeToPostcodeIDLookupFile;
             File PostcodeIDToPostcodeLookupFile;
             PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
             PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
-            PostcodeToPostcodeIDLookup = (HashMap<String, DW_intID>) Generic_StaticIO.readObject(PostcodeToPostcodeIDLookupFile);
-            PostcodeIDToPostcodeLookup = (HashMap<DW_intID, String>) Generic_StaticIO.readObject(PostcodeIDToPostcodeLookupFile);
+            PostcodeToPostcodeIDLookup = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(PostcodeToPostcodeIDLookupFile);
+            PostcodeIDToPostcodeLookup = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(PostcodeIDToPostcodeLookupFile);
             DW_Files tDW_Files;
             tDW_Files = env.getDW_Files();
             // Loop
@@ -533,7 +533,7 @@ public class DW_SHBE_Handler extends DW_Object {
         }
         return result;
     }
-
+    
     /**
      *
      * @param S
@@ -541,15 +541,15 @@ public class DW_SHBE_Handler extends DW_Object {
      * @param DW_IDToStringLookup
      * @return
      */
-    public DW_intID getIDAddIfNeeded(
+    public DW_ID getIDAddIfNeeded(
             String S,
-            HashMap<String, DW_intID> StringToDW_IDLookup,
-            HashMap<DW_intID, String> DW_IDToStringLookup) {
-        DW_intID result;
+            HashMap<String, DW_ID> StringToDW_IDLookup,
+            HashMap<DW_ID, String> DW_IDToStringLookup) {
+        DW_ID result;
         if (StringToDW_IDLookup.containsKey(S)) {
             result = StringToDW_IDLookup.get(S);
         } else {
-            result = new DW_intID(DW_IDToStringLookup.size());
+            result = new DW_ID(DW_IDToStringLookup.size());
             DW_IDToStringLookup.put(result, S);
             StringToDW_IDLookup.put(S, result);
         }
@@ -563,15 +563,15 @@ public class DW_SHBE_Handler extends DW_Object {
      * @param DW_IDToDW_PersonIDLookup
      * @return
      */
-    public DW_intID getIDAddIfNeeded(
+    public DW_ID getIDAddIfNeeded(
             DW_PersonID P,
-            HashMap<DW_PersonID, DW_intID> DW_PersonIDToDW_IDLookup,
-            HashMap<DW_intID, DW_PersonID> DW_IDToDW_PersonIDLookup) {
-        DW_intID result;
+            HashMap<DW_PersonID, DW_ID> DW_PersonIDToDW_IDLookup,
+            HashMap<DW_ID, DW_PersonID> DW_IDToDW_PersonIDLookup) {
+        DW_ID result;
         if (DW_PersonIDToDW_IDLookup.containsKey(P)) {
             result = DW_PersonIDToDW_IDLookup.get(P);
         } else {
-            result = new DW_intID(DW_IDToDW_PersonIDLookup.size());
+            result = new DW_ID(DW_IDToDW_PersonIDLookup.size());
             DW_IDToDW_PersonIDLookup.put(result, P);
             DW_PersonIDToDW_IDLookup.put(P, result);
         }
@@ -584,15 +584,18 @@ public class DW_SHBE_Handler extends DW_Object {
      * @param IDToSLookup
      * @return
      */
-    public DW_intID getPostcodeIDAddIfNeeded(
+    public DW_ID getPostcodeIDAddIfNeeded(
             String S,
-            HashMap<String, DW_intID> SToIDLookup,
-            HashMap<DW_intID, String> IDToSLookup) {
-        DW_intID result;
+            HashMap<String, DW_ID> SToIDLookup,
+            HashMap<DW_ID, String> IDToSLookup) {
+        DW_ID result;
         if (SToIDLookup.containsKey(S)) {
             result = SToIDLookup.get(S);
         } else {
-            result = new DW_intID(IDToSLookup.size());
+            result = new DW_ID(IDToSLookup.size());
+//            if (IDToSLookup.size() > Integer.MAX_VALUE) {
+//                throw new Error("LookupFiles are full!");
+//            }
             IDToSLookup.put(result, S);
             SToIDLookup.put(S, result);
         }
@@ -2415,29 +2418,51 @@ public class DW_SHBE_Handler extends DW_Object {
         return result;
     }
 
-    public HashMap<DW_intID, String> getDW_IDToStringLookup(
+    public HashMap<DW_ID, String> getDW_IDToStringLookup(
             File f) {
-        HashMap<DW_intID, String> result;
+        HashMap<DW_ID, String> result;
         if (f.exists()) {
-            result = (HashMap<DW_intID, String>) Generic_StaticIO.readObject(f);
+            result = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(f);
         } else {
-            result = new HashMap<DW_intID, String>();
+            result = new HashMap<DW_ID, String>();
         }
         return result;
     }
 
-    public HashMap<String, DW_intID> getStringToDW_IDLookup(
+    public HashMap<String, DW_ID> getStringToDW_IDLookup(
             File f) {
-        HashMap<String, DW_intID> result;
+        HashMap<String, DW_ID> result;
         if (f.exists()) {
-            result = (HashMap<String, DW_intID>) Generic_StaticIO.readObject(f);
+            result = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(f);
         } else {
-            result = new HashMap<String, DW_intID>();
+            result = new HashMap<String, DW_ID>();
+        }
+        return result;
+    }
+    
+    public HashMap<DW_ID, String> getDW_intIDToStringLookup(
+            File f) {
+        HashMap<DW_ID, String> result;
+        if (f.exists()) {
+            result = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(f);
+        } else {
+            result = new HashMap<DW_ID, String>();
         }
         return result;
     }
 
-    public HashMap<String, DW_intID> getNINOToDW_IDLookup(
+    public HashMap<String, DW_ID> getStringToDW_intIDLookup(
+            File f) {
+        HashMap<String, DW_ID> result;
+        if (f.exists()) {
+            result = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(f);
+        } else {
+            result = new HashMap<String, DW_ID>();
+        }
+        return result;
+    }
+
+    public HashMap<String, DW_ID> getNINOToDW_IDLookup(
             File f) {
         if (NINOToDW_IDLookup == null) {
             NINOToDW_IDLookup = getStringToDW_IDLookup(f);
@@ -2445,23 +2470,23 @@ public class DW_SHBE_Handler extends DW_Object {
         return NINOToDW_IDLookup;
     }
 
-    public HashMap<String, DW_intID> getNINOToDW_IDLookup() {
+    public HashMap<String, DW_ID> getNINOToDW_IDLookup() {
         return getNINOToDW_IDLookup(getNINOToDW_IDLookupFile());
     }
 
-    public HashMap<String, DW_intID> getDOBToDW_IDLookup(
+    public HashMap<String, DW_ID> getDOBToDW_IDLookup(
             File f) {
         if (DOBToDW_IDLookup == null) {
-            DOBToDW_IDLookup = getStringToDW_IDLookup(f);
+            DOBToDW_IDLookup = getStringToDW_intIDLookup(f);
         }
         return DOBToDW_IDLookup;
     }
 
-    public HashMap<String, DW_intID> getDOBToDW_IDLookup() {
+    public HashMap<String, DW_ID> getDOBToDW_IDLookup() {
         return getDOBToDW_IDLookup(getDOBToDW_IDLookupFile());
     }
 
-    public HashMap<DW_intID, String> getDW_IDToNINOLookup(
+    public HashMap<DW_ID, String> getDW_IDToNINOLookup(
             File f) {
         if (DW_IDToNINOLookup == null) {
             DW_IDToNINOLookup = getDW_IDToStringLookup(f);
@@ -2469,23 +2494,23 @@ public class DW_SHBE_Handler extends DW_Object {
         return DW_IDToNINOLookup;
     }
 
-    public HashMap<DW_intID, String> getDW_IDToNINOLookup() {
+    public HashMap<DW_ID, String> getDW_IDToNINOLookup() {
         return getDW_IDToNINOLookup(getDW_IDToNINOLookupFile());
     }
 
-    public HashMap<DW_intID, String> getDW_IDToDOBLookup(
+    public HashMap<DW_ID, String> getDW_IDToDOBLookup(
             File f) {
         if (DW_IDToDOBLookup == null) {
-            DW_IDToDOBLookup = getDW_IDToStringLookup(f);
+            DW_IDToDOBLookup = getDW_intIDToStringLookup(f);
         }
         return DW_IDToDOBLookup;
     }
 
-    public HashMap<DW_intID, String> getDW_IDToDOBLookup() {
+    public HashMap<DW_ID, String> getDW_IDToDOBLookup() {
         return getDW_IDToDOBLookup(getDW_IDToDOBLookupFile());
     }
 
-    public HashMap<String, DW_intID> getPostcodeToPostcodeIDLookup(
+    public HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup(
             File f) {
         if (PostcodeToPostcodeIDLookup == null) {
             PostcodeToPostcodeIDLookup = getStringToDW_IDLookup(f);
@@ -2493,11 +2518,11 @@ public class DW_SHBE_Handler extends DW_Object {
         return PostcodeToPostcodeIDLookup;
     }
 
-    public HashMap<String, DW_intID> getPostcodeToPostcodeIDLookup() {
+    public HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup() {
         return getPostcodeToPostcodeIDLookup(getPostcodeToPostcodeIDLookupFile());
     }
 
-    public HashMap<DW_intID, String> getPostcodeIDToPostcodeLookup(
+    public HashMap<DW_ID, String> getPostcodeIDToPostcodeLookup(
             File f) {
         if (PostcodeIDToPostcodeLookup == null) {
             PostcodeIDToPostcodeLookup = getDW_IDToStringLookup(f);
@@ -2505,41 +2530,41 @@ public class DW_SHBE_Handler extends DW_Object {
         return PostcodeIDToPostcodeLookup;
     }
 
-    public HashMap<DW_intID, String> getPostcodeIDToPostcodeLookup() {
+    public HashMap<DW_ID, String> getPostcodeIDToPostcodeLookup() {
         File f;
         f = getPostcodeIDToPostcodeLookupFile();
         return getPostcodeIDToPostcodeLookup(f);
     }
 
-    public HashMap<DW_PersonID, DW_intID> getDW_PersonIDToDW_IDLookup(
+    public HashMap<DW_PersonID, DW_ID> getDW_PersonIDToDW_IDLookup(
             File f) {
         if (DW_PersonIDToDW_IDLookup == null) {
             if (f.exists()) {
-                DW_PersonIDToDW_IDLookup = (HashMap<DW_PersonID, DW_intID>) Generic_StaticIO.readObject(f);
+                DW_PersonIDToDW_IDLookup = (HashMap<DW_PersonID, DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                DW_PersonIDToDW_IDLookup = new HashMap<DW_PersonID, DW_intID>();
+                DW_PersonIDToDW_IDLookup = new HashMap<DW_PersonID, DW_ID>();
             }
         }
         return DW_PersonIDToDW_IDLookup;
     }
 
-    public HashMap<DW_PersonID, DW_intID> getDW_PersonIDToDW_IDLookup() {
+    public HashMap<DW_PersonID, DW_ID> getDW_PersonIDToDW_IDLookup() {
         return getDW_PersonIDToDW_IDLookup(getDW_PersonIDToDW_IDLookupFile());
     }
 
-    public HashMap<DW_intID, DW_PersonID> getDW_IDToDW_PersonIDLookup(
+    public HashMap<DW_ID, DW_PersonID> getDW_IDToDW_PersonIDLookup(
             File f) {
         if (DW_IDToDW_PersonIDLookup == null) {
             if (f.exists()) {
-                DW_IDToDW_PersonIDLookup = (HashMap<DW_intID, DW_PersonID>) Generic_StaticIO.readObject(f);
+                DW_IDToDW_PersonIDLookup = (HashMap<DW_ID, DW_PersonID>) Generic_StaticIO.readObject(f);
             } else {
-                DW_IDToDW_PersonIDLookup = new HashMap<DW_intID, DW_PersonID>();
+                DW_IDToDW_PersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
             }
         }
         return DW_IDToDW_PersonIDLookup;
     }
 
-    public HashMap<DW_intID, DW_PersonID> getDW_IDToDW_PersonIDLookup() {
+    public HashMap<DW_ID, DW_PersonID> getDW_IDToDW_PersonIDLookup() {
         return getDW_IDToDW_PersonIDLookup(getDW_IDToDW_PersonIDLookupFile());
     }
 
@@ -3105,9 +3130,9 @@ public class DW_SHBE_Handler extends DW_Object {
 
     public DW_PersonID getClaimantDW_PersonID(DW_SHBE_D_Record D_Record) {
         DW_PersonID result;
-        DW_intID NINO_ID;
+        DW_ID NINO_ID;
         NINO_ID = getNINOToDW_IDLookup().get(D_Record.getClaimantsNationalInsuranceNumber());
-        DW_intID DOB_ID;
+        DW_ID DOB_ID;
         DOB_ID = getDOBToDW_IDLookup().get(D_Record.getClaimantsDateOfBirth());
         result = new DW_PersonID(NINO_ID, DOB_ID);
         return result;

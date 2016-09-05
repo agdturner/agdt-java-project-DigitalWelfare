@@ -25,32 +25,32 @@ import java.io.Serializable;
  *
  * @author geoagdt
  */
-public class DW_longID implements Serializable {
+public class DW_ID implements Serializable {
 
-    protected final long l;
+    protected final int i;
 
-    public DW_longID(
-            DW_longID longID
+    public DW_ID(
+            DW_ID ID
     ) {
-        this.l = longID.l;
+        this.i = ID.i;
     }
     
-    public DW_longID(
-            long l
+    public DW_ID(
+            int ID
     ) {
-        this.l = l;
+        this.i = ID;
     }
 
     /**
      * @return the DW_ID
      */
-    public long getID() {
-        return l;
+    public int getID() {
+        return i;
     }
 
     @Override
     public String toString() {
-        return "" + l;
+        return "" + i;
     }
 
     @Override
@@ -61,11 +61,11 @@ public class DW_longID implements Serializable {
         if (obj == null) {
             return false;
         }
-        if (obj instanceof DW_longID) {
-            DW_longID o;
-            o = (DW_longID) obj;
+        if (obj instanceof DW_ID) {
+            DW_ID o;
+            o = (DW_ID) obj;
             if (this.hashCode() == o.hashCode()) {
-                return o.l == l;
+                return o.i == i;
             }
         }
         return false;
@@ -73,8 +73,8 @@ public class DW_longID implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 83 * hash + (int) (this.l ^ (this.l >>> 32));
+        int hash = 7;
+        hash = 67 * hash + this.i;
         return hash;
     }
 

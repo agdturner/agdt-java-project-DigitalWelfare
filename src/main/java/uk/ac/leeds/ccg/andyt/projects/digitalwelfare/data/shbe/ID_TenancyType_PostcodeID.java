@@ -19,7 +19,8 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
 import java.io.Serializable;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_intID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 
 /**
  *
@@ -28,11 +29,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_intID;
 public class ID_TenancyType_PostcodeID implements Serializable {
 
     private final ID_TenancyType ID_TenancyType;
-    private final DW_intID PostcodeID; // Rather than using a detailed PostcodeID use a simple DW_ID.
+    private final DW_ID PostcodeID; // Rather than using a detailed PostcodeID use a simple DW_ID.
 
     public ID_TenancyType_PostcodeID(
             ID_TenancyType ID_TenancyType,
-            DW_intID PostcodeID
+            DW_ID PostcodeID
     ) {
         this.ID_TenancyType = ID_TenancyType;
         this.PostcodeID = PostcodeID;
@@ -48,14 +49,14 @@ public class ID_TenancyType_PostcodeID implements Serializable {
     /**
      * @return the TenancyType.ID
      */
-    public DW_intID getID() {
+    public DW_ID getID() {
         return ID_TenancyType.getID(); // For convenience
     }
 
     /**
      * @return the PostcodeID
      */
-    public DW_intID getPostcodeID() {
+    public DW_ID getPostcodeID() {
         return PostcodeID;
     }
 
@@ -70,22 +71,23 @@ public class ID_TenancyType_PostcodeID implements Serializable {
         if (obj instanceof ID_TenancyType_PostcodeID) {
             ID_TenancyType_PostcodeID o;
             o = (ID_TenancyType_PostcodeID) obj;
-            if (this.hashCode() == o.hashCode()) {
+            //if (this.hashCode() == o.hashCode()) {
                 if (PostcodeID.equals(o.PostcodeID)) {
                     if (ID_TenancyType.equals(o.ID_TenancyType)) {
                         return true;
                     }
                 }
-            }
+            //}
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 67 * hash + (this.ID_TenancyType != null ? this.ID_TenancyType.hashCode() : 0);
-        hash = 67 * hash + (this.PostcodeID != null ? this.PostcodeID.hashCode() : 0);
+        int hash = 5;
+        hash = 97 * hash + (this.ID_TenancyType != null ? this.ID_TenancyType.hashCode() : 0);
+        hash = 97 * hash + (this.PostcodeID != null ? this.PostcodeID.hashCode() : 0);
         return hash;
     }
+
 }

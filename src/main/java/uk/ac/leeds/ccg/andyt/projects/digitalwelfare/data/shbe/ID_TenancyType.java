@@ -18,7 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_intID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import java.io.Serializable;
 
 /**
@@ -27,11 +27,11 @@ import java.io.Serializable;
  */
 public class ID_TenancyType implements Serializable {
 
-    private final DW_intID ID;
+    private final DW_ID ID;
     private final int TenancyType;
 
     public ID_TenancyType(
-            DW_intID ID,
+            DW_ID ID,
             int TenancyType
     ) {
         this.ID = ID;
@@ -48,7 +48,7 @@ public class ID_TenancyType implements Serializable {
     /**
      * @return the TenancyType.ID
      */
-    public DW_intID getID() {
+    public DW_ID getID() {
         return ID;
     }
 

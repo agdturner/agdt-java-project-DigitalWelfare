@@ -28,7 +28,7 @@ import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 //import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_intID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.Summary;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.SummaryUO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.TenancyChangesUO;
@@ -119,7 +119,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 
 //        DW_SHBE_Handler DW_SHBE_Handler;
 //        DW_SHBE_Handler = new DW_SHBE_Handler(env);
-        HashMap<String, DW_intID> tPostcodeToPostcodeIDLookup;
+        HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup;
         tPostcodeToPostcodeIDLookup = tDW_SHBE_Handler.getPostcodeToPostcodeIDLookup();
 //        reportUnderOccupancyTotals(underOccupiedData);
 //        // Data generalisation and output
@@ -210,7 +210,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         bArray.add(false);
         Iterator<Boolean> iteB;
 
-        HashMap<DW_PersonID, DW_intID> tDW_PersonIDtoDW_IDLookup;
+        HashMap<DW_PersonID, DW_ID> tDW_PersonIDtoDW_IDLookup;
         tDW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
         ArrayList<String> paymentTypes;
         Iterator<String> paymentTypesIte;
@@ -1406,8 +1406,8 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         //tSHBECollections = DW_SHBE_Handler.loadSHBEData(15, tCTBRefs);
 //        tSHBECollections = DW_SHBE_Handler.loadSHBEData(0, tCTBRefs);
 //        System.out.println("Hurray, loaded all the data!");
-        HashMap<Integer, HashMap<DW_intID, String>> tIDByPostcodes;
-        tIDByPostcodes = new HashMap<Integer, HashMap<DW_intID, String>>();
+        HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes;
+        tIDByPostcodes = new HashMap<Integer, HashMap<DW_ID, String>>();
 
         File dirOut;
         dirOut = tDW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
@@ -1465,10 +1465,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             String yM30;
             yM30 = tDW_SHBE_Handler.getYM3(filename);
 
-            HashMap<Integer, HashMap<DW_intID, String>> tIDByCTBRefs = null;
-            tIDByCTBRefs = new HashMap<Integer, HashMap<DW_intID, String>>();
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs = null;
-            tCTBRefByIDs = new HashMap<Integer, HashMap<String, DW_intID>>();
+            HashMap<Integer, HashMap<DW_ID, String>> tIDByCTBRefs = null;
+            tIDByCTBRefs = new HashMap<Integer, HashMap<DW_ID, String>>();
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs = null;
+            tCTBRefByIDs = new HashMap<Integer, HashMap<String, DW_ID>>();
 
             DW_UnderOccupiedReport_Set underOccupiedSet0 = null;
             DW_UnderOccupiedReport_Set underOccupiedSetCouncil0 = null;
@@ -1481,8 +1481,8 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     filename,
                     paymentType);
 
-            HashMap<DW_intID, String> tIDByCTBRef0 = null;
-            HashMap<String, DW_intID> tCTBRefByID0 = null;
+            HashMap<DW_ID, String> tIDByCTBRef0 = null;
+            HashMap<String, DW_ID> tCTBRefByID0 = null;
             tIDByCTBRef0 = loadIDByCTBRef(
                     loadData,
                     filename,
@@ -1497,9 +1497,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     tCTBRefByIDs);
 
             // tIDByTenancyType0
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes;
-            HashMap<DW_intID, Integer> tIDByTenancyType0;
-            tIDByTenancyTypes = new HashMap<Integer, HashMap<DW_intID, Integer>>();
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes;
+            HashMap<DW_ID, Integer> tIDByTenancyType0;
+            tIDByTenancyTypes = new HashMap<Integer, HashMap<DW_ID, Integer>>();
             tIDByTenancyType0 = loadIDByTenancyType(
                     loadData,
                     filename,
@@ -1508,7 +1508,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     tIDByTenancyTypes);
 
             // tIDByPostcode0
-            HashMap<DW_intID, String> tIDByPostcode0;
+            HashMap<DW_ID, String> tIDByPostcode0;
             tIDByPostcode0 = loadIDByPostcode(
                     loadData,
                     filename,
@@ -1516,24 +1516,24 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     i,
                     tIDByPostcodes);
 
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupancies = null;
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesCouncil = null;
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesRSL = null;
-            HashSet<DW_intID> tUnderOccupiedIDs0 = null;
-            HashSet<DW_intID> tUnderOccupiedIDsCouncil0 = null;
-            HashSet<DW_intID> tUnderOccupiedIDsRSL0 = null;
-            HashSet<DW_intID> tUnderOccupiedIDs1 = null;
-            HashSet<DW_intID> tUnderOccupiedIDsCouncil1 = null;
-            HashSet<DW_intID> tUnderOccupiedIDsRSL1 = null;
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies = null;
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesCouncil = null;
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesRSL = null;
+            HashSet<DW_ID> tUnderOccupiedIDs0 = null;
+            HashSet<DW_ID> tUnderOccupiedIDsCouncil0 = null;
+            HashSet<DW_ID> tUnderOccupiedIDsRSL0 = null;
+            HashSet<DW_ID> tUnderOccupiedIDs1 = null;
+            HashSet<DW_ID> tUnderOccupiedIDsCouncil1 = null;
+            HashSet<DW_ID> tUnderOccupiedIDsRSL1 = null;
 
             boolean doloop = true;
             if (doUnderOccupied) {
                 underOccupiedSet0 = underOccupiedSets.get(yM30);
                 underOccupiedSetCouncil0 = underOccupiedSetsCouncil.get(yM30);
                 underOccupiedSetRSL0 = underOccupiedSetsRSL.get(yM30);
-                tUnderOccupancies = new HashMap<Integer, HashSet<DW_intID>>();
-                tUnderOccupanciesCouncil = new HashMap<Integer, HashSet<DW_intID>>();
-                tUnderOccupanciesRSL = new HashMap<Integer, HashSet<DW_intID>>();
+                tUnderOccupancies = new HashMap<Integer, HashSet<DW_ID>>();
+                tUnderOccupanciesCouncil = new HashMap<Integer, HashSet<DW_ID>>();
+                tUnderOccupanciesRSL = new HashMap<Integer, HashSet<DW_ID>>();
                 if (underOccupiedSet0 != null) {
                     tUnderOccupiedIDs0 = getUnderOccupiedIDs(
                             underOccupiedSet0,
@@ -1591,9 +1591,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     DW_UnderOccupiedReport_Set underOccupiedSet1 = null;
                     DW_UnderOccupiedReport_Set underOccupiedSetCouncil1 = null;
                     DW_UnderOccupiedReport_Set underOccupiedSetRSL1 = null;
-                    HashMap<DW_intID, String> tIDByCTBRef1 = null;
+                    HashMap<DW_ID, String> tIDByCTBRef1 = null;
                     // tIDByTenancyType1
-                    HashMap<DW_intID, Integer> tIDByTenancyType1;
+                    HashMap<DW_ID, Integer> tIDByTenancyType1;
                     tIDByTenancyType1 = loadIDByTenancyType(
                             loadData,
                             filename,
@@ -1601,14 +1601,14 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                             i,
                             tIDByTenancyTypes);
                     // tIDByPostcode1
-                    HashMap<DW_intID, String> tIDByPostcode1;
+                    HashMap<DW_ID, String> tIDByPostcode1;
                     tIDByPostcode1 = loadIDByPostcode(
                             loadData,
                             filename,
                             paymentType,
                             i,
                             tIDByPostcodes);
-                    HashMap<String, DW_intID> tCTBRefByID1 = null;
+                    HashMap<String, DW_ID> tCTBRefByID1 = null;
                     tCTBRefByID1 = loadCTBRefByID(
                             loadData,
                             filename,
@@ -1912,8 +1912,8 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 dirOut,
                 tDW_Strings.sTenancyAndPostcodeChanges);
 
-        HashMap<Integer, HashMap<DW_intID, String>> tIDByPostcodes;
-        tIDByPostcodes = new HashMap<Integer, HashMap<DW_intID, String>>();
+        HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes;
+        tIDByPostcodes = new HashMap<Integer, HashMap<DW_ID, String>>();
 
         TreeMap<String, DW_UnderOccupiedReport_Set> underOccupiedSetsCouncil;
         underOccupiedSetsCouncil = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[0];
@@ -2013,10 +2013,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //                        tUnderOccupancies);
 //            }
 
-            HashMap<Integer, HashMap<DW_intID, String>> tIDByCTBRefs = null;
-            tIDByCTBRefs = new HashMap<Integer, HashMap<DW_intID, String>>();
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs = null;
-            tCTBRefByIDs = new HashMap<Integer, HashMap<String, DW_intID>>();
+            HashMap<Integer, HashMap<DW_ID, String>> tIDByCTBRefs = null;
+            tIDByCTBRefs = new HashMap<Integer, HashMap<DW_ID, String>>();
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs = null;
+            tCTBRefByIDs = new HashMap<Integer, HashMap<String, DW_ID>>();
 
             DW_UnderOccupiedReport_Set underOccupiedSet0 = null;
             DW_UnderOccupiedReport_Set underOccupiedSetCouncil0 = null;
@@ -2029,8 +2029,8 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     filename,
                     paymentType);
 
-            HashMap<DW_intID, String> tIDByCTBRef0 = null;
-            HashMap<String, DW_intID> tCTBRefByID0 = null;
+            HashMap<DW_ID, String> tIDByCTBRef0 = null;
+            HashMap<String, DW_ID> tCTBRefByID0 = null;
             tIDByCTBRef0 = loadIDByCTBRef(
                     loadData,
                     filename,
@@ -2045,9 +2045,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     tCTBRefByIDs);
 
             // tIDByTenancyType0
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes;
-            HashMap<DW_intID, Integer> tIDByTenancyType0;
-            tIDByTenancyTypes = new HashMap<Integer, HashMap<DW_intID, Integer>>();
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes;
+            HashMap<DW_ID, Integer> tIDByTenancyType0;
+            tIDByTenancyTypes = new HashMap<Integer, HashMap<DW_ID, Integer>>();
             tIDByTenancyType0 = loadIDByTenancyType(
                     loadData,
                     filename,
@@ -2056,7 +2056,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     tIDByTenancyTypes);
 
             // tIDByPostcode0
-            HashMap<DW_intID, String> tIDByPostcode0;
+            HashMap<DW_ID, String> tIDByPostcode0;
             tIDByPostcode0 = loadIDByPostcode(
                     loadData,
                     filename,
@@ -2064,24 +2064,24 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     i,
                     tIDByPostcodes);
 
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupancies = null;
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesCouncil = null;
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesRSL = null;
-            HashSet<DW_intID> tUnderOccupiedIDs0 = null;
-            HashSet<DW_intID> tUnderOccupiedIDsCouncil0 = null;
-            HashSet<DW_intID> tUnderOccupiedIDsRSL0 = null;
-            HashSet<DW_intID> tUnderOccupiedIDs1 = null;
-            HashSet<DW_intID> tUnderOccupiedIDsCouncil1 = null;
-            HashSet<DW_intID> tUnderOccupiedIDsRSL1 = null;
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies = null;
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesCouncil = null;
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesRSL = null;
+            HashSet<DW_ID> tUnderOccupiedIDs0 = null;
+            HashSet<DW_ID> tUnderOccupiedIDsCouncil0 = null;
+            HashSet<DW_ID> tUnderOccupiedIDsRSL0 = null;
+            HashSet<DW_ID> tUnderOccupiedIDs1 = null;
+            HashSet<DW_ID> tUnderOccupiedIDsCouncil1 = null;
+            HashSet<DW_ID> tUnderOccupiedIDsRSL1 = null;
 
             boolean doloop = true;
             if (doUnderOccupied) {
                 underOccupiedSet0 = underOccupiedSets.get(yM30);
                 underOccupiedSetCouncil0 = underOccupiedSetsCouncil.get(yM30);
                 underOccupiedSetRSL0 = underOccupiedSetsRSL.get(yM30);
-                tUnderOccupancies = new HashMap<Integer, HashSet<DW_intID>>();
-                tUnderOccupanciesCouncil = new HashMap<Integer, HashSet<DW_intID>>();
-                tUnderOccupanciesRSL = new HashMap<Integer, HashSet<DW_intID>>();
+                tUnderOccupancies = new HashMap<Integer, HashSet<DW_ID>>();
+                tUnderOccupanciesCouncil = new HashMap<Integer, HashSet<DW_ID>>();
+                tUnderOccupanciesRSL = new HashMap<Integer, HashSet<DW_ID>>();
                 if (underOccupiedSet0 != null) {
                     tUnderOccupiedIDs0 = getUnderOccupiedIDs(
                             underOccupiedSet0,
@@ -2130,14 +2130,14 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     String yM31 = tDW_SHBE_Handler.getYM3(filename);
                     // underOccupiedSet1
                     DW_UnderOccupiedReport_Set underOccupiedSet1 = null;
-                    HashMap<DW_intID, String> tIDByCTBRef1 = null;
+                    HashMap<DW_ID, String> tIDByCTBRef1 = null;
                     tIDByCTBRef1 = loadIDByCTBRef(
                             loadData,
                             filename,
                             paymentType,
                             i,
                             tIDByCTBRefs);
-                    HashMap<String, DW_intID> tCTBRefByID1;
+                    HashMap<String, DW_ID> tCTBRefByID1;
                     tCTBRefByID1 = loadCTBRefByID(
                             loadData,
                             filename,
@@ -2155,7 +2155,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                                 tUnderOccupancies);
                     }
                     // tIDByTenancyType1
-                    HashMap<DW_intID, Integer> tIDByTenancyType1;
+                    HashMap<DW_ID, Integer> tIDByTenancyType1;
                     tIDByTenancyType1 = loadIDByTenancyType(
                             loadData,
                             filename,
@@ -2163,7 +2163,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                             i,
                             tIDByTenancyTypes);
                     // tIDByPostcode1
-                    HashMap<DW_intID, String> tIDByPostcode1;
+                    HashMap<DW_ID, String> tIDByPostcode1;
                     tIDByPostcode1 = loadIDByPostcode(
                             loadData,
                             filename,
@@ -2464,8 +2464,8 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             includeIte = include.iterator();
             int i;
             i = includeIte.next();
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs = null;
-            tCTBRefByIDs = new HashMap<Integer, HashMap<String, DW_intID>>();
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs = null;
+            tCTBRefByIDs = new HashMap<Integer, HashMap<String, DW_ID>>();
             // Load first data
             String filename;
             filename = SHBEFilenames[i];
@@ -2473,39 +2473,39 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             yM30 = tDW_SHBE_Handler.getYM3(filename);
             // underOccupiedSet0
             DW_UnderOccupiedReport_Set underOccupiedSet0 = null;
-            HashMap<Integer, HashMap<DW_intID, String>> tIDByCTBRefs = null;
-            HashMap<String, DW_intID> tCTBRefByID0 = null;
-            HashMap<String, DW_intID> tCTBRefByID1 = null;
+            HashMap<Integer, HashMap<DW_ID, String>> tIDByCTBRefs = null;
+            HashMap<String, DW_ID> tCTBRefByID0 = null;
+            HashMap<String, DW_ID> tCTBRefByID1 = null;
             tCTBRefByID0 = loadCTBRefByID(
                     loadData,
                     filename,
                     paymentType,
                     i,
                     tCTBRefByIDs);
-            HashMap<DW_intID, String> tIDByCTBRef0 = null;
+            HashMap<DW_ID, String> tIDByCTBRef0 = null;
             // tIDByTenancyType0
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes;
-            tIDByTenancyTypes = new HashMap<Integer, HashMap<DW_intID, Integer>>();
-            HashMap<DW_intID, Integer> tIDByTenancyType0;
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes;
+            tIDByTenancyTypes = new HashMap<Integer, HashMap<DW_ID, Integer>>();
+            HashMap<DW_ID, Integer> tIDByTenancyType0;
             tIDByTenancyType0 = loadIDByTenancyType(
                     loadData,
                     filename,
                     paymentType,
                     i,
                     tIDByTenancyTypes);
-            HashMap<Integer, HashMap<DW_intID, String>> tIDByPostcodes;
-            tIDByPostcodes = new HashMap<Integer, HashMap<DW_intID, String>>();
-            HashMap<DW_intID, String> tIDByPostcode0;
+            HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes;
+            tIDByPostcodes = new HashMap<Integer, HashMap<DW_ID, String>>();
+            HashMap<DW_ID, String> tIDByPostcode0;
             tIDByPostcode0 = loadIDByPostcode(
                     loadData,
                     filename,
                     paymentType,
                     i,
                     tIDByPostcodes);
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupancies = null;
-            HashSet<DW_intID> tUnderOccupiedIDs0 = null;
-            HashSet<DW_intID> tUnderOccupiedIDs1 = null;
-            tIDByCTBRefs = new HashMap<Integer, HashMap<DW_intID, String>>();
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies = null;
+            HashSet<DW_ID> tUnderOccupiedIDs0 = null;
+            HashSet<DW_ID> tUnderOccupiedIDs1 = null;
+            tIDByCTBRefs = new HashMap<Integer, HashMap<DW_ID, String>>();
             tIDByCTBRef0 = loadIDByCTBRef(
                     loadData,
                     filename,
@@ -2513,7 +2513,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     i,
                     tIDByCTBRefs);
             if (doUnderOccupied) {
-                tUnderOccupancies = new HashMap<Integer, HashSet<DW_intID>>();
+                tUnderOccupancies = new HashMap<Integer, HashSet<DW_ID>>();
                 underOccupiedSet0 = underOccupiedSets.get(yM30);
                 if (underOccupiedSet0 == null) {
                     System.out.println("underOccupiedSet0 == null, yM30 = " + yM30);
@@ -2543,9 +2543,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 String yM31 = tDW_SHBE_Handler.getYM3(filename);
                 // underOccupiedSet1
                 DW_UnderOccupiedReport_Set underOccupiedSet1 = null;
-                HashMap<DW_intID, String> tIDByCTBRef1 = null;
+                HashMap<DW_ID, String> tIDByCTBRef1 = null;
                 // tIDByTenancyType1
-                HashMap<DW_intID, Integer> tIDByTenancyType1;
+                HashMap<DW_ID, Integer> tIDByTenancyType1;
                 tIDByTenancyType1 = loadIDByTenancyType(
                         loadData,
                         filename,
@@ -2559,7 +2559,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                         i,
                         tCTBRefByIDs);
                 // tIDByPostcode1
-                HashMap<DW_intID, String> tIDByPostcode1;
+                HashMap<DW_ID, String> tIDByPostcode1;
                 tIDByPostcode1 = loadIDByPostcode(
                         loadData,
                         filename,
@@ -2842,13 +2842,13 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * the ID to CTB ref lookup is loaded from the file it is specifically
      * stored in, then put in tIDByCTBRefs and returned).
      */
-    protected HashMap<DW_intID, String> loadIDByCTBRef(
+    protected HashMap<DW_ID, String> loadIDByCTBRef(
             boolean loadData,
             String filename,
             String paymentType,
             Integer key,
-            HashMap<Integer, HashMap<DW_intID, String>> tIDByCTBRefs) {
-        HashMap<DW_intID, String> result;
+            HashMap<Integer, HashMap<DW_ID, String>> tIDByCTBRefs) {
+        HashMap<DW_ID, String> result;
         if (tIDByCTBRefs.containsKey(key)) {
             return tIDByCTBRefs.get(key);
         }
@@ -2857,12 +2857,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         return result;
     }
 
-    protected HashMap<DW_intID, String> loadIDByCTBRef(
+    protected HashMap<DW_ID, String> loadIDByCTBRef(
             boolean loadData,
             String filename,
             String paymentType,
             Integer key) {
-        HashMap<DW_intID, String> result;
+        HashMap<DW_ID, String> result;
         if (loadData) {
             //System.out.print("Loading " + filename + " ...");
             DW_SHBE_Collection aSHBEData;
@@ -2870,24 +2870,24 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     env,
                     filename,
                     paymentType);
-            result = (HashMap<DW_intID, String>) aSHBEData.getClaimantIDToCTBRefLookup();
+            result = (HashMap<DW_ID, String>) aSHBEData.getClaimantIDToCTBRefLookup();
         } else {
             File f;
             f = tDW_SHBE_Handler.getClaimantIDToCTBRefLookupFile(paymentType, filename);
             //System.out.print("Loading " + f + " ...");
-            result = (HashMap<DW_intID, String>) Generic_StaticIO.readObject(f);
+            result = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(f);
         }
         //System.out.println("...done.");
         return result;
     }
 
-    protected HashMap<String, DW_intID> loadCTBRefByID(
+    protected HashMap<String, DW_ID> loadCTBRefByID(
             boolean loadData,
             String filename,
             String paymentType,
             Integer key,
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs) {
-        HashMap<String, DW_intID> result;
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs) {
+        HashMap<String, DW_ID> result;
         result = null;
         if (tCTBRefByIDs.containsKey(key)) {
             result = tCTBRefByIDs.get(key);
@@ -2899,12 +2899,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         return result;
     }
 
-    protected HashMap<String, DW_intID> loadCTBRefByID(
+    protected HashMap<String, DW_ID> loadCTBRefByID(
             boolean loadData,
             String filename,
             String paymentType,
             Integer key) {
-        HashMap<String, DW_intID> result;
+        HashMap<String, DW_ID> result;
         if (loadData) {
             //System.out.print("Loading " + filename + " ...");
             DW_SHBE_Collection aSHBEData;
@@ -2912,24 +2912,24 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     env,
                     filename,
                     paymentType);
-            result = (HashMap<String, DW_intID>) aSHBEData.getCTBRefToClaimantIDLookup();
+            result = (HashMap<String, DW_ID>) aSHBEData.getCTBRefToClaimantIDLookup();
         } else {
             File f;
             //f = DW_SHBE_Handler.getClaimantIDToCTBRefLookupFile(paymentType, filename);
             f = tDW_SHBE_Handler.getCTBRefToClaimantIDLookupFile(paymentType, filename);
             //System.out.print("Loading " + f + " ...");
-            result = (HashMap<String, DW_intID>) Generic_StaticIO.readObject(f);
+            result = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(f);
         }
         //System.out.println("...done.");
         return result;
     }
 
-    protected HashSet<DW_intID> getUnderOccupiedIDs(
+    protected HashSet<DW_ID> getUnderOccupiedIDs(
             DW_UnderOccupiedReport_Set underOccupiedSet,
-            HashMap<String, DW_intID> tCTBRefByID,
+            HashMap<String, DW_ID> tCTBRefByID,
             Integer key,
-            HashMap<Integer, HashSet<DW_intID>> tIDByUnderOccupancies) {
-        HashSet<DW_intID> result;
+            HashMap<Integer, HashSet<DW_ID>> tIDByUnderOccupancies) {
+        HashSet<DW_ID> result;
         if (tIDByUnderOccupancies.containsKey(key)) {
             return tIDByUnderOccupancies.get(key);
         }
@@ -2938,19 +2938,19 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         return result;
     }
 
-    protected HashSet<DW_intID> getUnderOccupiedIDs(
+    protected HashSet<DW_ID> getUnderOccupiedIDs(
             DW_UnderOccupiedReport_Set underOccupiedSet,
-            HashMap<String, DW_intID> tCTBRefByID) {
+            HashMap<String, DW_ID> tCTBRefByID) {
         if (underOccupiedSet == null) {
             return null;
         }
-        HashSet<DW_intID> result;
-        result = new HashSet<DW_intID>();
+        HashSet<DW_ID> result;
+        result = new HashSet<DW_ID>();
         TreeMap<String, DW_UOReport_Record> map;
         map = underOccupiedSet.getMap();
         Iterator<String> ite;
         ite = map.keySet().iterator();
-        DW_intID tID;
+        DW_ID tID;
         while (ite.hasNext()) {
             tID = tCTBRefByID.get(ite.next());
             result.add(tID);
@@ -2958,13 +2958,13 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         return result;
     }
 
-    protected HashMap<DW_intID, Integer> loadIDByTenancyType(
+    protected HashMap<DW_ID, Integer> loadIDByTenancyType(
             boolean loadData,
             String filename,
             String paymentType,
             Integer key,
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes) {
-        HashMap<DW_intID, Integer> result;
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes) {
+        HashMap<DW_ID, Integer> result;
         if (tIDByTenancyTypes.containsKey(key)) {
             return tIDByTenancyTypes.get(key);
         }
@@ -2981,12 +2981,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * @param key
      * @return
      */
-    protected HashMap<DW_intID, Integer> loadIDByTenancyType(
+    protected HashMap<DW_ID, Integer> loadIDByTenancyType(
             boolean loadData,
             String filename,
             String paymentType,
             Integer key) {
-        HashMap<DW_intID, Integer> result;
+        HashMap<DW_ID, Integer> result;
         if (loadData) {
             //System.out.print("Loading " + filename + " ...");
             DW_SHBE_Collection aSHBEData;
@@ -2994,25 +2994,25 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     env,
                     filename,
                     paymentType);
-            result = (HashMap<DW_intID, Integer>) aSHBEData.getClaimantIDToTenancyTypeLookup();
+            result = (HashMap<DW_ID, Integer>) aSHBEData.getClaimantIDToTenancyTypeLookup();
         } else {
             File f;
             f = tDW_SHBE_Handler.getClaimantIDToTenancyTypeLookupFile(
                     paymentType, filename);
             //System.out.print("Loading " + f + " ...");
-            result = (HashMap<DW_intID, Integer>) Generic_StaticIO.readObject(f);
+            result = (HashMap<DW_ID, Integer>) Generic_StaticIO.readObject(f);
         }
         //System.out.println("...done.");
         return result;
     }
 
-    protected HashMap<DW_intID, String> loadIDByPostcode(
+    protected HashMap<DW_ID, String> loadIDByPostcode(
             boolean loadData,
             String filename,
             String paymentType,
             Integer key,
-            HashMap<Integer, HashMap<DW_intID, String>> tIDByPostcodes) {
-        HashMap<DW_intID, String> result;
+            HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes) {
+        HashMap<DW_ID, String> result;
         if (tIDByPostcodes.containsKey(key)) {
             return tIDByPostcodes.get(key);
         }
@@ -3021,12 +3021,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         return result;
     }
 
-    protected HashMap<DW_intID, String> loadIDByPostcode(
+    protected HashMap<DW_ID, String> loadIDByPostcode(
             boolean loadData,
             String filename,
             String paymentType,
             Integer key) {
-        HashMap<DW_intID, String> result;
+        HashMap<DW_ID, String> result;
         if (loadData) {
             //System.out.print("Loading " + filename + " ...");
             DW_SHBE_Collection aSHBEData;
@@ -3034,13 +3034,13 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     env,
                     filename,
                     paymentType);
-            result = (HashMap<DW_intID, String>) aSHBEData.getClaimantIDToPostcodeLookup();
+            result = (HashMap<DW_ID, String>) aSHBEData.getClaimantIDToPostcodeLookup();
         } else {
             File f;
             f = tDW_SHBE_Handler.getClaimantIDToPostcodeLookupFile(
                     paymentType, filename);
             //System.out.print("Loading " + f + " ...");
-            result = (HashMap<DW_intID, String>) Generic_StaticIO.readObject(f);
+            result = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(f);
         }
         //System.out.println("...done.");
         return result;
@@ -3516,7 +3516,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             ArrayList<String> types,
             ArrayList<String> distanceTypes,
             ArrayList<Double> distances,
-            HashMap<DW_PersonID, DW_intID> DW_PersonIDtoDW_IDLookup) {
+            HashMap<DW_PersonID, DW_ID> DW_PersonIDtoDW_IDLookup) {
         TreeMap<String, File> outputDirs;
         outputDirs = tDW_Files.getGeneratedSHBELevelDirsTreeMap(
                 levels,
@@ -3818,9 +3818,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                         env,
                         SHBEFilenames[i],
                         paymentType);
-                HashMap<DW_intID, String> tIDByPostcode1;
+                HashMap<DW_ID, String> tIDByPostcode1;
                 tIDByPostcode1 = SHBEData1.getClaimantIDToPostcodeLookup();
-                HashMap<DW_intID, Integer> tIDByTenancyType1;
+                HashMap<DW_ID, Integer> tIDByTenancyType1;
                 tIDByTenancyType1 = SHBEData1.getClaimantIDToTenancyTypeLookup();
                 // Set Year and Month variables
                 String yM31 = tDW_SHBE_Handler.getYM3(SHBEFilenames[i]);
@@ -4927,10 +4927,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
     }
 
     public static boolean getHasPreviousTenureChange(
-            DW_intID tID,
-            HashMap<String, HashMap<DW_intID, Integer>> tIDByTenancyTypes,
+            DW_ID tID,
+            HashMap<String, HashMap<DW_ID, Integer>> tIDByTenancyTypes,
             String yM30) {
-        HashMap<DW_intID, Integer> tIDByTenancyType;
+        HashMap<DW_ID, Integer> tIDByTenancyType;
         tIDByTenancyType = tIDByTenancyTypes.get(yM30);
         return tIDByTenancyType.containsKey(tID);
     }
@@ -5041,9 +5041,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * }
      */
     public Object[] getMultipleTenancyTypeTranistionMatrix(
-            HashMap<DW_intID, Integer> tIDByTenancyType0,
-            HashMap<DW_intID, Integer> tIDByTenancyType1,
-            HashMap<String, HashMap<DW_intID, Integer>> tIDByTenancyTypes,
+            HashMap<DW_ID, Integer> tIDByTenancyType0,
+            HashMap<DW_ID, Integer> tIDByTenancyType1,
+            HashMap<String, HashMap<DW_ID, Integer>> tIDByTenancyTypes,
             //ArrayList<Integer> include,
             String yM30) {
         Object[] result;
@@ -5051,13 +5051,13 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         TreeMap<Integer, TreeMap<Integer, Integer>> tenancyTypeTranistionMatrix;
         tenancyTypeTranistionMatrix = new TreeMap<Integer, TreeMap<Integer, Integer>>();
         result[0] = tenancyTypeTranistionMatrix;
-        HashMap<DW_intID, String> tIDTenureChange;
-        tIDTenureChange = new HashMap<DW_intID, String>();
+        HashMap<DW_ID, String> tIDTenureChange;
+        tIDTenureChange = new HashMap<DW_ID, String>();
         result[1] = tIDTenureChange;
-        Iterator<DW_intID> ite;
+        Iterator<DW_ID> ite;
         ite = tIDByTenancyType1.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID;
+            DW_ID tID;
             tID = ite.next();
             boolean hasPreviousTenureChange;
             hasPreviousTenureChange = getHasPreviousTenureChange(
@@ -5088,11 +5088,11 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                         "" + tenancyType0 + " - " + tenancyType1);
             }
         }
-        Set<DW_intID> set;
+        Set<DW_ID> set;
         set = tIDByTenancyType1.keySet();
         ite = tIDByTenancyType0.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID;
+            DW_ID tID;
             tID = ite.next();
             boolean hasPreviousTenureChange;
             hasPreviousTenureChange = getHasPreviousTenureChange(
@@ -5146,18 +5146,18 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * @return
      */
     public Object[] getPreviousTenureAndPostcode(
-            HashMap<Integer, HashMap<DW_intID, String>> tIDByPostcodes,
+            HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes,
             //HashMap<String, DW_SHBE_Collection> tSHBECollections,
             HashMap<Integer, String> indexYM3s,
-            DW_intID tID0,
+            DW_ID tID0,
             String CTBRef,
             //HashMap<Integer, HashMap<DW_ID, String>> tIDByCTBRefs,
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs,
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes,
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs,
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes,
             boolean doUnderOccupancy,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupancies,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesCouncil,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesRSL,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesCouncil,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesRSL,
             int i,
             ArrayList<Integer> include) {
         Object[] result;
@@ -5171,13 +5171,13 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         String postcode = sAAN_NAA;
         DW_SHBE_Collection tSHBECollection;
 
-        HashMap<DW_intID, String> tIDByPostcode;
+        HashMap<DW_ID, String> tIDByPostcode;
 
 //        HashMap<DW_ID, String> tIDByCTBRef;
 //        tIDByCTBRef = tIDByCTBRefs.get(index);
 //        String CTBRef;
 //        CTBRef = tIDByCTBRef.get(tID0);
-        DW_intID tID;
+        DW_ID tID;
 
 //        System.out.println("i " + i);
 //        System.out.println("index " + index);
@@ -5190,7 +5190,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             yM3 = indexYM3s.get(previousIndex);
             result[3] = yM3;
 
-            HashMap<String, DW_intID> tCTBRefByID;
+            HashMap<String, DW_ID> tCTBRefByID;
             tCTBRefByID = tCTBRefByIDs.get(previousIndex);
             tID = tCTBRefByID.get(CTBRef);
 
@@ -5200,19 +5200,19 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 
                 //tSHBECollection = tSHBECollections.get(yM3);
 //            System.out.println("previousIndex " + previousIndex);
-                HashMap<DW_intID, Integer> tIDByTenancyType;
+                HashMap<DW_ID, Integer> tIDByTenancyType;
                 tIDByTenancyType = tIDByTenancyTypes.get(previousIndex);
                 if (tIDByTenancyType != null) {
                     tenancyType = tIDByTenancyType.get(tID);
                     if (doUnderOccupancy) {
-                        HashSet<DW_intID> tUnderOccupancy;
+                        HashSet<DW_ID> tUnderOccupancy;
                         tUnderOccupancy = tUnderOccupancies.get(previousIndex);
                         if (tUnderOccupancy != null) {
                             if (tUnderOccupancy.contains(tID)) {
                                 underOccupancy = sU;
                                 if (tenancyType == null) {
                                     tenancyType = -999;
-                                    HashSet<DW_intID> tUnderOccupancyCouncil;
+                                    HashSet<DW_ID> tUnderOccupancyCouncil;
                                     tUnderOccupancyCouncil = tUnderOccupanciesCouncil.get(previousIndex);
                                     if (tUnderOccupancyCouncil.contains(tID)) {
                                         result[0] = Integer.toString(tenancyType) + underOccupancy + "1";
@@ -5229,7 +5229,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                                     result[2] = postcode;
                                     return result;
                                 } else if (tenancyType == -999) {
-                                    HashSet<DW_intID> tUnderOccupancyCouncil;
+                                    HashSet<DW_ID> tUnderOccupancyCouncil;
                                     tUnderOccupancyCouncil = tUnderOccupanciesCouncil.get(previousIndex);
                                     if (tUnderOccupancyCouncil.contains(tID)) {
                                         result[0] = Integer.toString(tenancyType) + underOccupancy + "1";
@@ -5294,14 +5294,14 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             boolean flag,
             HashMap<String, DW_SHBE_Collection> tSHBECollections,
             HashMap<Integer, String> indexYM3s,
-            DW_intID tID0,
+            DW_ID tID0,
             String CTBRef,
             //HashMap<Integer, HashMap<DW_ID, String>> tIDByCTBRefs,
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs,
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupancies,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesCouncil,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesRSL,
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs,
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesCouncil,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesRSL,
             int i,
             ArrayList<Integer> include) {
         Object[] result;
@@ -5319,7 +5319,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //        tIDByCTBRef = tIDByCTBRefs.get(index);
 //        String CTBRef;
 //        CTBRef = tIDByCTBRef.get(tID0);
-        DW_intID tID;
+        DW_ID tID;
 
 //        System.out.println("i " + i);
 //        System.out.println("index " + index);
@@ -5334,15 +5334,15 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             tSHBECollection = tSHBECollections.get(yM3);
 //            System.out.println("previousIndex " + previousIndex);
 
-            HashMap<String, DW_intID> tCTBRefByID;
+            HashMap<String, DW_ID> tCTBRefByID;
             tCTBRefByID = tCTBRefByIDs.get(previousIndex);
             tID = tCTBRefByID.get(CTBRef);
 
             if (tID != null) {
 
-                HashMap<DW_intID, Integer> tIDByTenancyType;
+                HashMap<DW_ID, Integer> tIDByTenancyType;
                 tIDByTenancyType = tIDByTenancyTypes.get(previousIndex);
-                HashSet<DW_intID> tUnderOccupancy;
+                HashSet<DW_ID> tUnderOccupancy;
                 tUnderOccupancy = tUnderOccupancies.get(previousIndex);
                 if (tIDByTenancyType != null) {
                     tenancyType = tIDByTenancyType.get(tID);
@@ -5350,7 +5350,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                         underOccupancy = sU;
                         if (tenancyType == null) {
                             tenancyType = -999;
-                            HashSet<DW_intID> tUnderOccupancyCouncil;
+                            HashSet<DW_ID> tUnderOccupancyCouncil;
                             tUnderOccupancyCouncil = tUnderOccupanciesCouncil.get(previousIndex);
                             if (tUnderOccupancyCouncil.contains(tID)) {
                                 result[0] = Integer.toString(tenancyType) + underOccupancy + "1";
@@ -5368,7 +5368,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                             }
                             return result;
                         } else if (tenancyType == -999) {
-                            HashSet<DW_intID> tUnderOccupancyCouncil;
+                            HashSet<DW_ID> tUnderOccupancyCouncil;
                             tUnderOccupancyCouncil = tUnderOccupanciesCouncil.get(previousIndex);
                             if (tUnderOccupancyCouncil.contains(tID)) {
                                 result[0] = Integer.toString(tenancyType) + underOccupancy + "1";
@@ -5432,14 +5432,14 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * @return 
      */
     public Object[] getPreviousTenure(
-            DW_intID tID0,
+            DW_ID tID0,
             String CTBRef,
             //HashMap<Integer, HashMap<DW_ID, String>> tIDByCTBRefs,
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs,
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupancies,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesCouncil,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesRSL,
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs,
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesCouncil,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesRSL,
             int i,
             ArrayList<Integer> include) {
         Object[] result;
@@ -5452,7 +5452,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //        tIDByCTBRef = tIDByCTBRefs.get(index);
 //        String CTBRef;
 //        CTBRef = tIDByCTBRef.get(tID0);
-        DW_intID tID;
+        DW_ID tID;
 
 //        System.out.println("i " + i);
 //        System.out.println("index " + index);
@@ -5464,15 +5464,15 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             previousIndex = li.previous();
 //            System.out.println("previousIndex " + previousIndex);
 
-            HashMap<String, DW_intID> tCTBRefByID;
+            HashMap<String, DW_ID> tCTBRefByID;
             tCTBRefByID = tCTBRefByIDs.get(previousIndex);
             tID = tCTBRefByID.get(CTBRef);
 
             if (tID != null) {
 
-                HashMap<DW_intID, Integer> tIDByTenancyType;
+                HashMap<DW_ID, Integer> tIDByTenancyType;
                 tIDByTenancyType = tIDByTenancyTypes.get(previousIndex);
-                HashSet<DW_intID> tUnderOccupancy;
+                HashSet<DW_ID> tUnderOccupancy;
                 tUnderOccupancy = tUnderOccupancies.get(previousIndex);
                 if (tIDByTenancyType != null) {
                     tenancyType = tIDByTenancyType.get(tID);
@@ -5480,7 +5480,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                         underOccupancy = sU;
                         if (tenancyType == null) {
                             tenancyType = -999;
-                            HashSet<DW_intID> tUnderOccupancyCouncil;
+                            HashSet<DW_ID> tUnderOccupancyCouncil;
                             tUnderOccupancyCouncil = tUnderOccupanciesCouncil.get(previousIndex);
                             if (tUnderOccupancyCouncil.contains(tID)) {
                                 result[0] = Integer.toString(tenancyType) + underOccupancy + "1";
@@ -5491,7 +5491,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                             result[1] = previousIndex;
                             return result;
                         } else if (tenancyType == -999) {
-                            HashSet<DW_intID> tUnderOccupancyCouncil;
+                            HashSet<DW_ID> tUnderOccupancyCouncil;
                             tUnderOccupancyCouncil = tUnderOccupanciesCouncil.get(previousIndex);
                             if (tUnderOccupancyCouncil.contains(tID)) {
                                 result[0] = Integer.toString(tenancyType) + underOccupancy + "1";
@@ -5542,12 +5542,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * @return
      */
     public Object[] getPreviousTenure(
-            DW_intID tID0,
+            DW_ID tID0,
             String CTBRef,
             //HashMap<Integer, HashMap<DW_ID, String>> tIDByCTBRefs,
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs,
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupancies,
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs,
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies,
             int i,
             ArrayList<Integer> include) {
         Object[] result;
@@ -5560,7 +5560,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //        tIDByCTBRef = tIDByCTBRefs.get(index);
 //        String CTBRef;
 //        CTBRef = tIDByCTBRef.get(tID0);
-        DW_intID tID;
+        DW_ID tID;
 
 //        System.out.println("i " + i);
 //        System.out.println("index " + index);
@@ -5572,15 +5572,15 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             previousIndex = li.previous();
 //            System.out.println("previousIndex " + previousIndex);
 
-            HashMap<String, DW_intID> tCTBRefByID;
+            HashMap<String, DW_ID> tCTBRefByID;
             tCTBRefByID = tCTBRefByIDs.get(previousIndex);
             tID = tCTBRefByID.get(CTBRef);
 
             if (tID != null) {
 
-                HashMap<DW_intID, Integer> tIDByTenancyType;
+                HashMap<DW_ID, Integer> tIDByTenancyType;
                 tIDByTenancyType = tIDByTenancyTypes.get(previousIndex);
-                HashSet<DW_intID> tUnderOccupancy;
+                HashSet<DW_ID> tUnderOccupancy;
                 tUnderOccupancy = tUnderOccupancies.get(previousIndex);
                 if (tIDByTenancyType != null) {
                     tenancyType = tIDByTenancyType.get(tID);
@@ -5651,21 +5651,21 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      */
     public TreeMap<String, TreeMap<String, Integer>> getTenancyTypeTransitionMatrixAndRecordTenancyChange(
             //HashMap<String, DW_SHBE_Collection> tSHBECollections,
-            HashMap<Integer, HashMap<DW_intID, String>> tIDByPostcodes,
+            HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes,
             DW_SHBE_Collection tSHBECollection0,
             DW_SHBE_Collection tSHBECollection1,
-            HashMap<DW_intID, Integer> tIDByTenancyType0,
-            HashMap<DW_intID, Integer> tIDByTenancyType1,
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes,
-            HashSet<DW_intID> tUnderOccupiedIDs0,
-            HashSet<DW_intID> tUnderOccupiedIDsRSL0,
-            HashSet<DW_intID> tUnderOccupiedIDsCouncil0,
-            HashSet<DW_intID> tUnderOccupiedIDs1,
-            HashSet<DW_intID> tUnderOccupiedIDsCouncil1,
-            HashSet<DW_intID> tUnderOccupiedIDsRSL1,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupancies,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesCouncil,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesRSL,
+            HashMap<DW_ID, Integer> tIDByTenancyType0,
+            HashMap<DW_ID, Integer> tIDByTenancyType1,
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes,
+            HashSet<DW_ID> tUnderOccupiedIDs0,
+            HashSet<DW_ID> tUnderOccupiedIDsRSL0,
+            HashSet<DW_ID> tUnderOccupiedIDsCouncil0,
+            HashSet<DW_ID> tUnderOccupiedIDs1,
+            HashSet<DW_ID> tUnderOccupiedIDsCouncil1,
+            HashSet<DW_ID> tUnderOccupiedIDsRSL1,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesCouncil,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesRSL,
             //HashMap<DW_ID, ArrayList<String>> tenancyTypeChanges,
             HashMap<String, ArrayList<String>> tenancyTypeChanges,
             String yM30,
@@ -5677,14 +5677,14 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             DW_UnderOccupiedReport_Set underOccupiedSet0,
             DW_UnderOccupiedReport_Set underOccupiedSetCouncil0,
             DW_UnderOccupiedReport_Set underOccupiedSetRSL0,
-            HashMap<DW_intID, String> tIDByCTBRef0,
-            HashMap<String, DW_intID> tCTBRefByID0,
+            HashMap<DW_ID, String> tIDByCTBRef0,
+            HashMap<String, DW_ID> tCTBRefByID0,
             DW_UnderOccupiedReport_Set underOccupiedSet1,
             DW_UnderOccupiedReport_Set underOccupiedSetCouncil1,
             DW_UnderOccupiedReport_Set underOccupiedSetRSL1,
-            HashMap<DW_intID, String> tIDByCTBRef1,
-            HashMap<String, DW_intID> tCTBRefByID1,
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs,
+            HashMap<DW_ID, String> tIDByCTBRef1,
+            HashMap<String, DW_ID> tCTBRefByID1,
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs,
             boolean doUnderOccupiedData,
             HashSet<String> tCTBRefs
     ) {
@@ -5713,9 +5713,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             nearestYM30 = nearestYM300;
             nearestYM31 = nearestYM310;
             String CTBRef = iteS.next();
-            DW_intID tID0;
+            DW_ID tID0;
             tID0 = tCTBRefByID0.get(CTBRef);
-            DW_intID tID1;
+            DW_ID tID1;
             tID1 = tCTBRefByID1.get(CTBRef);
 
             String tt0;
@@ -5917,11 +5917,11 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         }
 
         // Go through current
-        Iterator<DW_intID> ite;
+        Iterator<DW_ID> ite;
         ite = tIDByTenancyType1.keySet().iterator();
         while (ite.hasNext()) {
             boolean doMainLoop = true;
-            DW_intID tID1;
+            DW_ID tID1;
             tID1 = ite.next();
             String CTBRef = tIDByCTBRef1.get(tID1);
 
@@ -5969,7 +5969,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 }
                 if (doMainLoop) {
                     Integer tenancyType0Integer;
-                    DW_intID tID0;
+                    DW_ID tID0;
                     tID0 = tCTBRefByID0.get(CTBRef);
                     tenancyType0Integer = tIDByTenancyType0.get(tID0);
                     String tenancyType0;
@@ -6096,7 +6096,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         // Go through previous for those records not in current
         ite = tIDByTenancyType0.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID0;
+            DW_ID tID0;
             tID0 = ite.next();
             String CTBRef = tIDByCTBRef0.get(tID0);
 
@@ -6283,14 +6283,14 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      */
     public TreeMap<String, TreeMap<String, Integer>> getTenancyTypeTransitionMatrixAndWritePostcodeChangeDetails(
             File dirOut,
-            HashMap<DW_intID, Integer> tIDByTenancyType0,
-            HashMap<DW_intID, Integer> tIDByTenancyType1,
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes,
-            HashSet<DW_intID> tUnderOccupancy0,
-            HashSet<DW_intID> tUnderOccupancy1,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupancies,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesCouncil,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupanciesRSL,
+            HashMap<DW_ID, Integer> tIDByTenancyType0,
+            HashMap<DW_ID, Integer> tIDByTenancyType1,
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes,
+            HashSet<DW_ID> tUnderOccupancy0,
+            HashSet<DW_ID> tUnderOccupancy1,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesCouncil,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupanciesRSL,
             //HashMap<DW_ID, ArrayList<String>> tenancyTypeChanges,
             HashMap<String, ArrayList<String>> tenancyTypeChanges,
             String yM30,
@@ -6299,16 +6299,16 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             int i,
             ArrayList<Integer> include,
             Generic_UKPostcode_Handler postCodeHandler,
-            HashMap<DW_intID, String> tIDByPostcode0,
-            HashMap<DW_intID, String> tIDByPostcode1,
-            HashMap<Integer, HashMap<DW_intID, String>> tIDByPostcodes,
+            HashMap<DW_ID, String> tIDByPostcode0,
+            HashMap<DW_ID, String> tIDByPostcode1,
+            HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes,
             boolean postcodeChange,
             boolean checkPreviousPostcode,
             DW_UnderOccupiedReport_Set underOccupiedSet0,
-            HashMap<DW_intID, String> tIDByCTBRef0,
+            HashMap<DW_ID, String> tIDByCTBRef0,
             DW_UnderOccupiedReport_Set underOccupiedSet1,
-            HashMap<DW_intID, String> tIDByCTBRef1,
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs,
+            HashMap<DW_ID, String> tIDByCTBRef1,
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs,
             boolean doUnderOccupiedData,
             HashSet<String> underOccupiedInApril2013) {
         DW_Postcode_Handler tDW_Postcode_Handler;
@@ -6329,11 +6329,11 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         if (postcodeChange) {
             postcodeChanges = new ArrayList<String[]>();
         }
-        Iterator<DW_intID> ite;
+        Iterator<DW_ID> ite;
         // Go through current Tenancy Type
         ite = tIDByTenancyType1.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID;
+            DW_ID tID;
             tID = ite.next();
             String CTBRef;
             CTBRef = tIDByCTBRef1.get(tID);
@@ -6492,7 +6492,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         // Go through previous for those records not in current
         ite = tIDByTenancyType0.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID;
+            DW_ID tID;
             tID = ite.next();
             String CTBRef = tIDByCTBRef0.get(tID);
             if (!tIDByCTBRef1.containsValue(CTBRef)) {
@@ -6640,7 +6640,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
     }
 
     public String[] getPostcodeChangeResult(
-            DW_intID ID,
+            DW_ID ID,
             String yM30,
             String yM31,
             String tenancyTypeChange,
@@ -6689,12 +6689,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      */
     public TreeMap<String, TreeMap<String, Integer>> getPostcodeTransitionCountsNoTenancyTypeChange(
             File dirOut,
-            HashMap<DW_intID, Integer> tIDByTenancyType0,
-            HashMap<DW_intID, Integer> tIDByTenancyType1,
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes,
-            HashSet<DW_intID> tUnderOccupancyIDs0,
-            HashSet<DW_intID> tUnderOccupancyIDs1,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupancies,
+            HashMap<DW_ID, Integer> tIDByTenancyType0,
+            HashMap<DW_ID, Integer> tIDByTenancyType1,
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes,
+            HashSet<DW_ID> tUnderOccupancyIDs0,
+            HashSet<DW_ID> tUnderOccupancyIDs1,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies,
             //HashMap<DW_ID, ArrayList<String>> tenancyTypeChanges,
             HashMap<String, ArrayList<String>> tenancyTypeChanges,
             String yM30,
@@ -6703,16 +6703,16 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             int i,
             ArrayList<Integer> include,
             Generic_UKPostcode_Handler postCodeHandler,
-            HashMap<DW_intID, String> tIDByPostcode0,
-            HashMap<DW_intID, String> tIDByPostcode1,
-            HashMap<Integer, HashMap<DW_intID, String>> tIDByPostcodes,
+            HashMap<DW_ID, String> tIDByPostcode0,
+            HashMap<DW_ID, String> tIDByPostcode1,
+            HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes,
             boolean postcodeChange,
             boolean checkPreviousPostcode,
             DW_UnderOccupiedReport_Set underOccupiedSet0,
-            HashMap<DW_intID, String> tIDByCTBRef0,
+            HashMap<DW_ID, String> tIDByCTBRef0,
             DW_UnderOccupiedReport_Set underOccupiedSet1,
-            HashMap<DW_intID, String> tIDByCTBRef1,
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs,
+            HashMap<DW_ID, String> tIDByCTBRef1,
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs,
             boolean doUnderOccupiedData,
             HashSet<String> tCTBRefs
     ) {
@@ -6730,11 +6730,11 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         if (postcodeChange) {
             postcodeChanges = new ArrayList<String[]>();
         }
-        Iterator<DW_intID> ite;
+        Iterator<DW_ID> ite;
         // Go through current claimants
         ite = tIDByTenancyType1.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID;
+            DW_ID tID;
             tID = ite.next();
             String CTBRef;
 
@@ -6933,10 +6933,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         // Go through all those previously and record for all those that are not
         // in the current data. Also record for all those that were under 
         // occupying, but are now not and have changed postcode.
-        Set<DW_intID> set;
+        Set<DW_ID> set;
         ite = tIDByTenancyType0.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID;
+            DW_ID tID;
             tID = ite.next();
 
             if (tIDByCTBRef0 == null) {
@@ -7119,12 +7119,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             File dirOut,
             ArrayList<Integer> regulatedGroups,
             ArrayList<Integer> unregulatedGroups,
-            HashMap<DW_intID, Integer> tIDByTenancyType0,
-            HashMap<DW_intID, Integer> tIDByTenancyType1,
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes,
-            HashSet<DW_intID> tUnderOccupancy0,
-            HashSet<DW_intID> tUnderOccupancy1,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupancies,
+            HashMap<DW_ID, Integer> tIDByTenancyType0,
+            HashMap<DW_ID, Integer> tIDByTenancyType1,
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes,
+            HashSet<DW_ID> tUnderOccupancy0,
+            HashSet<DW_ID> tUnderOccupancy1,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies,
             //HashMap<DW_ID, ArrayList<String>> tenancyTypeChanges,
             HashMap<String, ArrayList<String>> tenancyTypeChanges,
             String yM30,
@@ -7133,16 +7133,16 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             int i,
             ArrayList<Integer> include,
             Generic_UKPostcode_Handler postCodeHandler,
-            HashMap<DW_intID, String> tIDByPostcode0,
-            HashMap<DW_intID, String> tIDByPostcode1,
-            HashMap<Integer, HashMap<DW_intID, String>> tIDByPostcodes,
+            HashMap<DW_ID, String> tIDByPostcode0,
+            HashMap<DW_ID, String> tIDByPostcode1,
+            HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes,
             boolean postcodeChange,
             boolean checkPreviousPostcode,
             DW_UnderOccupiedReport_Set underOccupiedSet0,
-            HashMap<DW_intID, String> tIDByCTBRef0,
+            HashMap<DW_ID, String> tIDByCTBRef0,
             DW_UnderOccupiedReport_Set underOccupiedSet1,
-            HashMap<DW_intID, String> tIDByCTBRef1,
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs,
+            HashMap<DW_ID, String> tIDByCTBRef1,
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs,
             boolean doUnderOccupiedData,
             HashSet<String> underOccupiedInApril2013) {
         TreeMap<String, TreeMap<String, Integer>> result;
@@ -7159,11 +7159,11 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         if (postcodeChange) {
             postcodeChanges = new ArrayList<String[]>();
         }
-        Iterator<DW_intID> ite;
+        Iterator<DW_ID> ite;
         // Go through current claimants
         ite = tIDByTenancyType1.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID;
+            DW_ID tID;
             tID = ite.next();
             String CTBRef = tIDByCTBRef1.get(tID);
             boolean doMainLoop = true;
@@ -7322,7 +7322,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         // occupying but are now not (and vice vesa) and have changed postcode.
         ite = tIDByTenancyType0.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID;
+            DW_ID tID;
             tID = ite.next();
             String CTBRef = tIDByCTBRef0.get(tID);
             if (!tIDByCTBRef1.containsValue(CTBRef)) {
@@ -7442,12 +7442,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      */
     public TreeMap<String, TreeMap<String, Integer>> getTenancyTypeTransitionMatrixGroupedAndWritePostcodeChangeDetails(
             File dirOut,
-            HashMap<DW_intID, Integer> tIDByTenancyType0,
-            HashMap<DW_intID, Integer> tIDByTenancyType1,
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes,
-            HashSet<DW_intID> tUnderOccupancy0,
-            HashSet<DW_intID> tUnderOccupancy1,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupancies,
+            HashMap<DW_ID, Integer> tIDByTenancyType0,
+            HashMap<DW_ID, Integer> tIDByTenancyType1,
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes,
+            HashSet<DW_ID> tUnderOccupancy0,
+            HashSet<DW_ID> tUnderOccupancy1,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies,
             ArrayList<Integer> regulatedGroups,
             ArrayList<Integer> unregulatedGroups,
             //HashMap<DW_ID, ArrayList<String>> tenancyTypeChanges,
@@ -7458,16 +7458,16 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             int index,
             ArrayList<Integer> include,
             Generic_UKPostcode_Handler postCodeHandler,
-            HashMap<DW_intID, String> tIDByPostcode0,
-            HashMap<DW_intID, String> tIDByPostcode1,
-            HashMap<Integer, HashMap<DW_intID, String>> tIDByPostcodes,
+            HashMap<DW_ID, String> tIDByPostcode0,
+            HashMap<DW_ID, String> tIDByPostcode1,
+            HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes,
             boolean postcodeChange,
             boolean checkPreviousPostcode,
             DW_UnderOccupiedReport_Set underOccupiedSet0,
-            HashMap<DW_intID, String> tIDByCTBRef0,
+            HashMap<DW_ID, String> tIDByCTBRef0,
             DW_UnderOccupiedReport_Set underOccupiedSet1,
-            HashMap<DW_intID, String> tIDByCTBRef1,
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs,
+            HashMap<DW_ID, String> tIDByCTBRef1,
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs,
             boolean doUnderOccupiedData,
             HashSet<String> underOccupiedInApril2013) {
         TreeMap<String, TreeMap<String, Integer>> result;
@@ -7484,11 +7484,11 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         if (postcodeChange) {
             postcodeChanges = new ArrayList<String[]>();
         }
-        Iterator<DW_intID> ite;
+        Iterator<DW_ID> ite;
         // Go through for current
         ite = tIDByTenancyType1.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID;
+            DW_ID tID;
             tID = ite.next();
             String CTBRef = tIDByCTBRef1.get(tID);
             boolean doMainLoop = true;
@@ -7625,7 +7625,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         // Go through for previous not in current
         ite = tIDByTenancyType0.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID;
+            DW_ID tID;
             tID = ite.next();
             String CTBRef = tIDByCTBRef0.get(tID);
             if (!tIDByCTBRef1.containsValue(CTBRef)) {
@@ -7808,11 +7808,11 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
     }
 
     public Object[] getMultipleTenancyTypeTranistionMatrixGrouped(
-            HashMap<DW_intID, Integer> tIDByTenancyType0,
-            HashMap<DW_intID, Integer> tIDByTenancyType1,
+            HashMap<DW_ID, Integer> tIDByTenancyType0,
+            HashMap<DW_ID, Integer> tIDByTenancyType1,
             ArrayList<Integer> regulatedGroups,
             ArrayList<Integer> unregulatedGroups,
-            HashMap<String, HashMap<DW_intID, Integer>> tIDByTenancyTypes,
+            HashMap<String, HashMap<DW_ID, Integer>> tIDByTenancyTypes,
             //ArrayList<Integer> include,
             String yM30) {
         Object[] result;
@@ -7820,13 +7820,13 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         TreeMap<String, TreeMap<String, Integer>> tenancyTypeTranistionMatrix;
         tenancyTypeTranistionMatrix = new TreeMap<String, TreeMap<String, Integer>>();
         result[0] = tenancyTypeTranistionMatrix;
-        HashMap<DW_intID, String> tIDTenureChange;
-        tIDTenureChange = new HashMap<DW_intID, String>();
+        HashMap<DW_ID, String> tIDTenureChange;
+        tIDTenureChange = new HashMap<DW_ID, String>();
         result[1] = tIDTenureChange;
-        Iterator<DW_intID> ite;
+        Iterator<DW_ID> ite;
         ite = tIDByTenancyType1.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID;
+            DW_ID tID;
             tID = ite.next();
             boolean hasPreviousTenureChange;
             hasPreviousTenureChange = getHasPreviousTenureChange(
@@ -7872,11 +7872,11 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                         "" + tenancyType0 + " - " + tenancyType1);
             }
         }
-        Set<DW_intID> set;
+        Set<DW_ID> set;
         set = tIDByTenancyType1.keySet();
         ite = tIDByTenancyType0.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID;
+            DW_ID tID;
             tID = ite.next();
             boolean hasPreviousTenureChange;
             hasPreviousTenureChange = getHasPreviousTenureChange(
@@ -7917,12 +7917,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
     }
 
     public TreeMap<String, TreeMap<String, Integer>> getTenancyTypeTranistionMatrixGroupedAndRecordTenancyChange(
-            HashMap<DW_intID, Integer> tIDByTenancyType0,
-            HashMap<DW_intID, Integer> tIDByTenancyType1,
-            HashMap<Integer, HashMap<DW_intID, Integer>> tIDByTenancyTypes,
-            HashSet<DW_intID> tUnderOccupancy0,
-            HashSet<DW_intID> tUnderOccupancy1,
-            HashMap<Integer, HashSet<DW_intID>> tUnderOccupancies,
+            HashMap<DW_ID, Integer> tIDByTenancyType0,
+            HashMap<DW_ID, Integer> tIDByTenancyType1,
+            HashMap<Integer, HashMap<DW_ID, Integer>> tIDByTenancyTypes,
+            HashSet<DW_ID> tUnderOccupancy0,
+            HashSet<DW_ID> tUnderOccupancy1,
+            HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies,
             ArrayList<Integer> regulatedGroups,
             ArrayList<Integer> unregulatedGroups,
             //HashMap<DW_ID, ArrayList<String>> tenancyTypeChanges,
@@ -7932,21 +7932,21 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             int index,
             ArrayList<Integer> include,
             DW_UnderOccupiedReport_Set underOccupiedSet0,
-            HashMap<DW_intID, String> tIDByCTBRef0,
-            HashMap<String, DW_intID> tCTBRefByID0,
+            HashMap<DW_ID, String> tIDByCTBRef0,
+            HashMap<String, DW_ID> tCTBRefByID0,
             DW_UnderOccupiedReport_Set underOccupiedSet1,
-            HashMap<DW_intID, String> tIDByCTBRef1,
-            HashMap<String, DW_intID> tCTBRefByID1,
-            HashMap<Integer, HashMap<String, DW_intID>> tCTBRefByIDs,
+            HashMap<DW_ID, String> tIDByCTBRef1,
+            HashMap<String, DW_ID> tCTBRefByID1,
+            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs,
             boolean doUnderOccupiedData,
             HashSet<String> underOccupiedInApril2013) {
         TreeMap<String, TreeMap<String, Integer>> result;
         result = new TreeMap<String, TreeMap<String, Integer>>();
         // Go through current
-        Iterator<DW_intID> ite;
+        Iterator<DW_ID> ite;
         ite = tIDByTenancyType1.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID1;
+            DW_ID tID1;
             tID1 = ite.next();
             String CTBRef = tIDByCTBRef1.get(tID1);
             boolean doMainLoop = true;
@@ -7986,7 +7986,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 Integer tenancyType0Integer;
                 String tenancyType0;
                 if (tIDByTenancyType0 != null) {
-                    DW_intID tID0;
+                    DW_ID tID0;
                     tID0 = tCTBRefByID0.get(CTBRef);
                     tenancyType0Integer = tIDByTenancyType0.get(
                             tID0);
@@ -8075,7 +8075,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         // Go through previous for those not in current
         ite = tIDByTenancyType0.keySet().iterator();
         while (ite.hasNext()) {
-            DW_intID tID0;
+            DW_ID tID0;
             tID0 = ite.next();
             String CTBRef = tIDByCTBRef0.get(tID0);
 //            DW_ID tID1;
@@ -10976,7 +10976,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             ArrayList<String> paymentTypes,
             TreeMap<String, ArrayList<Integer>> includes,
             ArrayList<String> levels,
-            HashMap<DW_PersonID, DW_intID> tDW_PersonIDtoDW_IDLookup) {
+            HashMap<DW_PersonID, DW_ID> tDW_PersonIDtoDW_IDLookup) {
 
 //        Iterator<String> includesIte;
         String includeName;

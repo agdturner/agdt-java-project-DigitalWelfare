@@ -33,9 +33,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_intID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 
 /**
@@ -60,18 +61,18 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
     private File InputFile;
     private TreeMap<String, DW_SHBE_Record> Records;
     private TreeMap<String, DW_SHBE_S_Record> SRecordsWithoutDRecords;
-    private HashMap<DW_intID, String> SRecordIDToCTBRef;
+    private HashMap<DW_ID, String> SRecordIDToCTBRef;
     private HashSet<DW_PersonID> ClaimantIDs;
     private HashSet<DW_PersonID> PartnerIDs;
     private HashSet<DW_PersonID> DependentIDs;
     private HashSet<DW_PersonID> NonDependentIDs;
     private HashSet<DW_PersonID> AllIDs;
     private HashSet<DW_PersonID> PairedClaimantIDs;
-    private HashMap<DW_intID, Long> ClaimantIDToRecordIDLookup;
-    private HashMap<DW_intID, String> ClaimantIDToPostcodeLookup;
-    private HashMap<DW_intID, Integer> ClaimantIDToTenancyTypeLookup;
-    private HashMap<String, DW_intID> CTBRefToClaimantIDLookup;
-    private HashMap<DW_intID, String> ClaimantIDToCTBRefLookup;
+    private HashMap<DW_ID, Long> ClaimantIDToRecordIDLookup;
+    private HashMap<DW_ID, String> ClaimantIDToPostcodeLookup;
+    private HashMap<DW_ID, Integer> ClaimantIDToTenancyTypeLookup;
+    private HashMap<String, DW_ID> CTBRefToClaimantIDLookup;
+    private HashMap<DW_ID, String> ClaimantIDToCTBRefLookup;
     private HashMap<String, Integer> LoadSummary;
     private HashSet<ID_PostcodeID> ClaimantIDAndPostcodeSet;
     private HashSet<ID_TenancyType> ClaimantIDAndTenancyTypeSet;
@@ -176,18 +177,18 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
     private void init() {
         Records = new TreeMap<String, DW_SHBE_Record>();
         SRecordsWithoutDRecords = new TreeMap<String, DW_SHBE_S_Record>();
-        SRecordIDToCTBRef = new HashMap<DW_intID, String>();
+        SRecordIDToCTBRef = new HashMap<DW_ID, String>();
         ClaimantIDs = new HashSet<DW_PersonID>();
         PartnerIDs = new HashSet<DW_PersonID>();
         DependentIDs = new HashSet<DW_PersonID>();
         NonDependentIDs = new HashSet<DW_PersonID>();
         AllIDs = new HashSet<DW_PersonID>();
         PairedClaimantIDs = new HashSet<DW_PersonID>();
-        ClaimantIDToRecordIDLookup = new HashMap<DW_intID, Long>();
-        ClaimantIDToPostcodeLookup = new HashMap<DW_intID, String>();
-        ClaimantIDToTenancyTypeLookup = new HashMap<DW_intID, Integer>();
-        CTBRefToClaimantIDLookup = new HashMap<String, DW_intID>();
-        ClaimantIDToCTBRefLookup = new HashMap<DW_intID, String>();
+        ClaimantIDToRecordIDLookup = new HashMap<DW_ID, Long>();
+        ClaimantIDToPostcodeLookup = new HashMap<DW_ID, String>();
+        ClaimantIDToTenancyTypeLookup = new HashMap<DW_ID, Integer>();
+        CTBRefToClaimantIDLookup = new HashMap<String, DW_ID>();
+        ClaimantIDToCTBRefLookup = new HashMap<DW_ID, String>();
         LoadSummary = new HashMap<String, Integer>();
         ClaimantIDAndPostcodeSet = new HashSet<ID_PostcodeID>();
         ClaimantIDAndTenancyTypeSet = new HashSet<ID_TenancyType>();
@@ -245,18 +246,18 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
         File RecordIDsNotLoadedFile = tDW_SHBE_Handler.getRecordIDsNotLoadedFile(paymentType, inputFilename);
         Records = (TreeMap<String, DW_SHBE_Record>) Generic_StaticIO.readObject(DRecordsFile);
         SRecordsWithoutDRecords = (TreeMap<String, DW_SHBE_S_Record>) Generic_StaticIO.readObject(SRecordsWithoutDRecordsFile);
-        SRecordIDToCTBRef = (HashMap<DW_intID, String>) Generic_StaticIO.readObject(SRecordIDToCTBRefFile);
+        SRecordIDToCTBRef = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(SRecordIDToCTBRefFile);
         ClaimantIDs = (HashSet<DW_PersonID>) Generic_StaticIO.readObject(ClaimantIDsFile);
         PartnerIDs = (HashSet<DW_PersonID>) Generic_StaticIO.readObject(PartnerIDsFile);
         DependentIDs = (HashSet<DW_PersonID>) Generic_StaticIO.readObject(DependentsIDsFile);
         NonDependentIDs = (HashSet<DW_PersonID>) Generic_StaticIO.readObject(NonDependentsIDsFile);
         AllIDs = (HashSet<DW_PersonID>) Generic_StaticIO.readObject(AllHouseholdIDsFile);
         PairedClaimantIDs = (HashSet<DW_PersonID>) Generic_StaticIO.readObject(PairedClaimantIDsFile);
-        ClaimantIDToRecordIDLookup = (HashMap<DW_intID, Long>) Generic_StaticIO.readObject(ClaimantIDToRecordIDLookupFile);
-        ClaimantIDToPostcodeLookup = (HashMap<DW_intID, String>) Generic_StaticIO.readObject(ClaimantIDToPostcodeLookupFile);
-        ClaimantIDToTenancyTypeLookup = (HashMap<DW_intID, Integer>) Generic_StaticIO.readObject(ClaimantIDToTenancyTypeLookupFile);
-        CTBRefToClaimantIDLookup = (HashMap<String, DW_intID>) Generic_StaticIO.readObject(CTBRefToClaimantIDLookupFile);
-        ClaimantIDToCTBRefLookup = (HashMap<DW_intID, String>) Generic_StaticIO.readObject(ClaimantIDToCTBRefLookupFile);
+        ClaimantIDToRecordIDLookup = (HashMap<DW_ID, Long>) Generic_StaticIO.readObject(ClaimantIDToRecordIDLookupFile);
+        ClaimantIDToPostcodeLookup = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(ClaimantIDToPostcodeLookupFile);
+        ClaimantIDToTenancyTypeLookup = (HashMap<DW_ID, Integer>) Generic_StaticIO.readObject(ClaimantIDToTenancyTypeLookupFile);
+        CTBRefToClaimantIDLookup = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(CTBRefToClaimantIDLookupFile);
+        ClaimantIDToCTBRefLookup = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(ClaimantIDToCTBRefLookupFile);
         LoadSummary = (HashMap<String, Integer>) Generic_StaticIO.readObject(LoadSummaryFile);
         ClaimantIDAndPostcodeSet = (HashSet<ID_PostcodeID>) Generic_StaticIO.readObject(ClaimantIDAndPostcodeFile);
         ClaimantIDAndTenancyTypeSet = (HashSet<ID_TenancyType>) Generic_StaticIO.readObject(ClaimantIDAndTenancyTypeFile);
@@ -293,14 +294,14 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
         this.InputFile = new File(inputDirectory, inputFilename);
         this.PaymentType = paymentType;
         // NINO
-        HashMap<String, DW_intID> tNINOToDW_IDLookup;
-        HashMap<DW_intID, String> tDW_IDToNINOLookup;
-        HashMap<String, DW_intID> tDOBToDW_IDLookup;
-        HashMap<DW_intID, String> tDW_IDToDOBLookup;
-        HashMap<DW_PersonID, DW_intID> tDW_PersonIDToDW_IDLookup;
-        HashMap<DW_intID, DW_PersonID> tDW_IDToDW_PersonIDLookup;
-        HashMap<String, DW_intID> tPostcodeToPostcodeIDLookup;
-        HashMap<DW_intID, String> tPostcodeIDToPostcodeLookup;
+        HashMap<String, DW_ID> tNINOToDW_IDLookup;
+        HashMap<DW_ID, String> tDW_IDToNINOLookup;
+        HashMap<String, DW_ID> tDOBToDW_IDLookup;
+        HashMap<DW_ID, String> tDW_IDToDOBLookup;
+        HashMap<DW_PersonID, DW_ID> tDW_PersonIDToDW_IDLookup;
+        HashMap<DW_ID, DW_PersonID> tDW_IDToDW_PersonIDLookup;
+        HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup;
+        HashMap<DW_ID, String> tPostcodeIDToPostcodeLookup;
         tNINOToDW_IDLookup = tDW_SHBE_Handler.getNINOToDW_IDLookup();
         tDW_IDToNINOLookup = tDW_SHBE_Handler.getDW_IDToNINOLookup();
         tDOBToDW_IDLookup = tDW_SHBE_Handler.getDOBToDW_IDLookup();
@@ -599,14 +600,14 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                                             }
                                             String claimantNINO;
                                             claimantNINO = aDRecord.getClaimantsNationalInsuranceNumber();
-                                            DW_intID claimantNINODW_ID;
+                                            DW_ID claimantNINODW_ID;
                                             claimantNINODW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                                                     claimantNINO,
                                                     tNINOToDW_IDLookup,
                                                     tDW_IDToNINOLookup);
                                             String claimantDOB;
                                             claimantDOB = aDRecord.getClaimantsDateOfBirth();
-                                            DW_intID claimantDOBDW_ID;
+                                            DW_ID claimantDOBDW_ID;
                                             claimantDOBDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                                                     claimantDOB,
                                                     tDOBToDW_IDLookup,
@@ -621,7 +622,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                                                 // that two have this set and have the same
                                                 // date of birth!
 //                                                    System.out.println("Claimant may have mulitple claims!");
-                                                DW_intID DW_ID;
+                                                DW_ID DW_ID;
                                                 DW_ID = tDW_PersonIDToDW_IDLookup.get(claimantDW_PersonID);
                                                 String previousCTBRef;
                                                 previousCTBRef = ClaimantIDToCTBRefLookup.get(DW_ID);
@@ -643,11 +644,11 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                                                             tDW_IDToDW_PersonIDLookup.get(
                                                                     CTBRefToClaimantIDLookup.get(previousCTBRef)));
                                                 }
-                                                DW_intID claimantID = CTBRefToClaimantIDLookup.get(previousCTBRef);
+                                                DW_ID claimantID = CTBRefToClaimantIDLookup.get(previousCTBRef);
                                                 String postcode;
                                                 postcode = DW_Postcode_Handler.formatPostcode(aDRecord.getClaimantsPostcode());
                                                 ClaimantIDToPostcodeLookup.put(claimantID, postcode);
-                                                DW_intID postcodeID;
+                                                DW_ID postcodeID;
                                                 postcodeID = tDW_SHBE_Handler.getPostcodeIDAddIfNeeded(
                                                         postcode,
                                                         tPostcodeToPostcodeIDLookup,
@@ -662,7 +663,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                                                 AllIDs.add(claimantDW_PersonID);
                                             } else {
                                                 ClaimantIDs.add(claimantDW_PersonID);
-                                                DW_intID claimantID = tDW_SHBE_Handler.getIDAddIfNeeded(
+                                                DW_ID claimantID = tDW_SHBE_Handler.getIDAddIfNeeded(
                                                         claimantDW_PersonID,
                                                         tDW_PersonIDToDW_IDLookup,
                                                         tDW_IDToDW_PersonIDLookup);
@@ -672,7 +673,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                                                 String postcode;
                                                 postcode = DW_Postcode_Handler.formatPostcode(aDRecord.getClaimantsPostcode());
                                                 ClaimantIDToPostcodeLookup.put(claimantID, postcode);
-                                                DW_intID postcodeID;
+                                                DW_ID postcodeID;
                                                 postcodeID = tDW_SHBE_Handler.getPostcodeIDAddIfNeeded(
                                                         postcode,
                                                         tPostcodeToPostcodeIDLookup,
@@ -688,14 +689,14 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                                                 if (aDRecord.getPartnerFlag() > 0) {
                                                     String partnerNINO;
                                                     partnerNINO = aDRecord.getPartnersNationalInsuranceNumber();
-                                                    DW_intID partnerNINODW_ID;
+                                                    DW_ID partnerNINODW_ID;
                                                     partnerNINODW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                                                             partnerNINO,
                                                             tNINOToDW_IDLookup,
                                                             tDW_IDToNINOLookup);
                                                     String partnerDOB;
                                                     partnerDOB = aDRecord.getPartnersDateOfBirth();
-                                                    DW_intID partnerDOBDW_ID;
+                                                    DW_ID partnerDOBDW_ID;
                                                     partnerDOBDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                                                             partnerDOB,
                                                             tDOBToDW_IDLookup,
@@ -711,7 +712,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                                                         int debug = 1;
                                                     }
                                                     PartnerIDs.add(partnerDW_PersonID);
-                                                    DW_intID partnerID = tDW_SHBE_Handler.getIDAddIfNeeded(
+                                                    DW_ID partnerID = tDW_SHBE_Handler.getIDAddIfNeeded(
                                                             partnerDW_PersonID,
                                                             tDW_PersonIDToDW_IDLookup,
                                                             tDW_IDToDW_PersonIDLookup);
@@ -843,12 +844,12 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
 
     private void doSRecordLoop(
             DW_SHBE_Handler tDW_SHBE_Handler,
-            HashMap<String, DW_intID> tNINOToDW_IDLookup,
-            HashMap<DW_intID, String> tDW_IDToNINOLookup,
-            HashMap<String, DW_intID> tDOBToDW_IDLookup,
-            HashMap<DW_intID, String> tDW_IDToDOBLookup,
-            HashMap<DW_PersonID, DW_intID> tDW_PersonIDToDW_IDLookup,
-            HashMap<DW_intID, DW_PersonID> tDW_IDToDW_PersonIDLookup,
+            HashMap<String, DW_ID> tNINOToDW_IDLookup,
+            HashMap<DW_ID, String> tDW_IDToNINOLookup,
+            HashMap<String, DW_ID> tDOBToDW_IDLookup,
+            HashMap<DW_ID, String> tDW_IDToDOBLookup,
+            HashMap<DW_PersonID, DW_ID> tDW_PersonIDToDW_IDLookup,
+            HashMap<DW_ID, DW_PersonID> tDW_IDToDW_PersonIDLookup,
             DW_SHBE_S_Record tSRecord,
             String tCTBRef) {
         String sNINO;
@@ -869,21 +870,21 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
         if (sNINO.length() < 3) {
             sNINO += "_" + tSRecord.getClaimantsNationalInsuranceNumber();
         }
-        DW_intID sNINODW_ID;
+        DW_ID sNINODW_ID;
         sNINODW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                 sNINO, 
                 tNINOToDW_IDLookup,
                 tDW_IDToNINOLookup);
         String sDOB;
         sDOB = tSRecord.getSubRecordDateOfBirth();
-        DW_intID sDOBDW_ID;
+        DW_ID sDOBDW_ID;
         sDOBDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                 sDOB, 
                 tDOBToDW_IDLookup,
                 tDW_IDToDOBLookup);
         DW_PersonID sDW_PersonID;
         sDW_PersonID = new DW_PersonID(sNINODW_ID, sDOBDW_ID);
-        DW_intID sDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
+        DW_ID sDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                 sDW_PersonID,
                 tDW_PersonIDToDW_IDLookup,
                 tDW_IDToDW_PersonIDLookup);
@@ -894,7 +895,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                 // NINO set to XX999999XX and it is possible
                 // that two have this set and have the same
                 // date of birth!
-                DW_intID DW_ID;
+                DW_ID DW_ID;
                 DW_ID = tDW_PersonIDToDW_IDLookup.get(sDW_PersonID);
                 String previousCTBRef;
                 previousCTBRef = SRecordIDToCTBRef.get(DW_ID);
@@ -912,7 +913,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                             tDW_PersonIDToDW_IDLookup,
                             tDW_IDToDW_PersonIDLookup, 
                             tSRecord);
-                    sDW_ID = (DW_intID) SRecordIDUpdate[0];
+                    sDW_ID = (DW_ID) SRecordIDUpdate[0];
                     sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
                 } else {
                     if (!previousRecord.isPairedRecord()) {
@@ -927,7 +928,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                                 tDW_PersonIDToDW_IDLookup,
                                 tDW_IDToDW_PersonIDLookup, 
                                 tSRecord);
-                        sDW_ID = (DW_intID) SRecordIDUpdate[0];
+                        sDW_ID = (DW_ID) SRecordIDUpdate[0];
                         sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
                     }
                 }
@@ -942,7 +943,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                 // date of birth! Indeed, it is more likley for
                 // subrecords than for anything else as there
                 // could be twins or tripplets etc...
-                DW_intID DW_ID;
+                DW_ID DW_ID;
                 DW_ID = tDW_PersonIDToDW_IDLookup.get(sDW_PersonID);
                 String previousCTBRef;
                 previousCTBRef = SRecordIDToCTBRef.get(DW_ID);
@@ -960,7 +961,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                             tDW_PersonIDToDW_IDLookup,
                             tDW_IDToDW_PersonIDLookup,
                             tSRecord);
-                    sDW_ID = (DW_intID) SRecordIDUpdate[0];
+                    sDW_ID = (DW_ID) SRecordIDUpdate[0];
                     sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
                 } else {
                     if (!previousRecord.isPairedRecord()) {
@@ -975,7 +976,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                                 tDW_PersonIDToDW_IDLookup,
                                 tDW_IDToDW_PersonIDLookup,
                                 tSRecord);
-                        sDW_ID = (DW_intID) SRecordIDUpdate[0];
+                        sDW_ID = (DW_ID) SRecordIDUpdate[0];
                         sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
                     }
                 }
@@ -993,31 +994,31 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
      */
     private Object[] getSRecordIDUpdate(
             DW_SHBE_Handler tDW_SHBE_Handler,
-            HashMap<String, DW_intID> NINOToDW_IDLookup,
-            HashMap<DW_intID, String> DW_IDToNINOLookup,
-            HashMap<String, DW_intID> DOBToDW_IDLookup,
-            HashMap<DW_intID, String> DW_IDToDOBLookup,
-            HashMap<DW_PersonID, DW_intID> DW_PersonIDToDW_IDLookup,
-            HashMap<DW_intID, DW_PersonID> DW_IDToDW_PersonIDLookup,
+            HashMap<String, DW_ID> NINOToDW_IDLookup,
+            HashMap<DW_ID, String> DW_IDToNINOLookup,
+            HashMap<String, DW_ID> DOBToDW_IDLookup,
+            HashMap<DW_ID, String> DW_IDToDOBLookup,
+            HashMap<DW_PersonID, DW_ID> DW_PersonIDToDW_IDLookup,
+            HashMap<DW_ID, DW_PersonID> DW_IDToDW_PersonIDLookup,
             DW_SHBE_S_Record SRecord) {
         Object[] result;
         result = new Object[2];
         DW_PersonID sDW_PersonID;
         sDW_PersonID = null;
-        DW_intID DW_ID;
+        DW_ID DW_ID;
         DW_ID = null;
         int i = 1;
         boolean set = false;
         while (!set) {
             String sNINO;
             sNINO = "" + i + "_" + SRecord.getClaimantsNationalInsuranceNumber();
-            DW_intID sNINODW_ID;
+            DW_ID sNINODW_ID;
             sNINODW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                     sNINO, NINOToDW_IDLookup,
                     DW_IDToNINOLookup);
             String sDOB;
             sDOB = SRecord.getSubRecordDateOfBirth();
-            DW_intID sDOBDW_ID;
+            DW_ID sDOBDW_ID;
             sDOBDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                     sDOB, DOBToDW_IDLookup,
                     DW_IDToDOBLookup);
@@ -1025,7 +1026,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
             if (DW_PersonIDToDW_IDLookup.containsKey(sDW_PersonID)) {
                 i++;
             } else {
-                DW_intID sDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
+                DW_ID sDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
                         sDW_PersonID,
                         DW_PersonIDToDW_IDLookup,
                         DW_IDToDW_PersonIDLookup);
@@ -1409,35 +1410,35 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
     /**
      * @return the ClaimantIDToRecordIDLookup
      */
-    public HashMap<DW_intID, Long> getClaimantIDToRecordIDLookup() {
+    public HashMap<DW_ID, Long> getClaimantIDToRecordIDLookup() {
         return ClaimantIDToRecordIDLookup;
     }
 
     /**
      * @return the ClaimantIDToPostcodeLookup
      */
-    public HashMap<DW_intID, String> getClaimantIDToPostcodeLookup() {
+    public HashMap<DW_ID, String> getClaimantIDToPostcodeLookup() {
         return ClaimantIDToPostcodeLookup;
     }
 
     /**
      * @return the ClaimantIDToTenancyTypeLookup
      */
-    public HashMap<DW_intID, Integer> getClaimantIDToTenancyTypeLookup() {
+    public HashMap<DW_ID, Integer> getClaimantIDToTenancyTypeLookup() {
         return ClaimantIDToTenancyTypeLookup;
     }
 
     /**
      * @return the CTBRefToClaimantIDLookup
      */
-    public HashMap<String, DW_intID> getCTBRefToClaimantIDLookup() {
+    public HashMap<String, DW_ID> getCTBRefToClaimantIDLookup() {
         return CTBRefToClaimantIDLookup;
     }
 
     /**
      * @return the ClaimantIDToCTBRefLookup
      */
-    public HashMap<DW_intID, String> getClaimantIDToCTBRefLookup() {
+    public HashMap<DW_ID, String> getClaimantIDToCTBRefLookup() {
         return ClaimantIDToCTBRefLookup;
     }
 

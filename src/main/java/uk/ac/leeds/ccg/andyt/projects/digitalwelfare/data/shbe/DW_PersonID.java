@@ -18,9 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_intID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import java.io.Serializable;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeID;
 
 /**
  *
@@ -28,32 +27,32 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeID;
  */
 public class DW_PersonID implements Serializable {
 
-    private DW_intID NINO_ID;
-    private DW_intID DOB_ID;
+    private DW_ID tNINO_ID;
+    private DW_ID tDOB_ID;
     
     public DW_PersonID() {
     }
 
     public DW_PersonID(
-            DW_intID NINO_ID,
-            DW_intID DOB_ID
+            DW_ID tNINO_ID,
+            DW_ID tDOB_ID
     ) {
-        this.NINO_ID = NINO_ID;
-        this.DOB_ID = DOB_ID;
+        this.tNINO_ID = tNINO_ID;
+        this.tDOB_ID = tDOB_ID;
     }
 
     /**
-     * @return the NINO_ID
+     * @return the tNINO_ID
      */
-    public DW_intID getNINO_ID() {
-        return NINO_ID;
+    public DW_ID getNINO_ID() {
+        return tNINO_ID;
     }
     
     /**
-     * @return the Postcode
+     * @return the tDOB_ID
      */
-    public DW_intID getDOB_ID() {
-        return DOB_ID;
+    public DW_ID getDOB_ID() {
+        return tDOB_ID;
     }
 
     @Override
@@ -67,11 +66,9 @@ public class DW_PersonID implements Serializable {
         if (obj instanceof DW_PersonID) {
             DW_PersonID o;
             o = (DW_PersonID) obj;
-            if (this.hashCode() == o.hashCode()) {
-                if (NINO_ID.equals(o.NINO_ID)) {
-                    if (DOB_ID.equals(o.DOB_ID)) {
-                        return true;
-                    }
+            if (tNINO_ID.equals(o.getNINO_ID())) {
+                if (tDOB_ID.equals(o.getDOB_ID())) {
+                    return true;
                 }
             }
         }
@@ -80,10 +77,11 @@ public class DW_PersonID implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 59 * hash + (this.NINO_ID != null ? this.NINO_ID.hashCode() : 0);
-        hash = 59 * hash + (this.DOB_ID != null ? this.DOB_ID.hashCode() : 0);
+        int hash = 3;
+        hash = 59 * hash + (this.tNINO_ID != null ? this.tNINO_ID.hashCode() : 0);
+        hash = 59 * hash + (this.tDOB_ID != null ? this.tDOB_ID.hashCode() : 0);
         return hash;
     }
 
+    
 }
