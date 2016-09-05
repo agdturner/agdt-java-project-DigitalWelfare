@@ -29,9 +29,9 @@ import static org.junit.Assert.*;
  *
  * @author geoagdt
  */
-public class DW_intIDTest {
+public class DW_IDTest {
     
-    public DW_intIDTest() {
+    public DW_IDTest() {
     }
     
     @BeforeClass
@@ -51,50 +51,50 @@ public class DW_intIDTest {
     }
 
     /**
-     * Test of getID method, of class DW_intID.
+     * Test of getID method, of class DW_ID.
      */
     @Test
     public void testGetID() {
         System.out.println("getID");
-        DW_intID instance = null;
-        instance = new DW_intID(100);
+        DW_ID instance = null;
+        instance = new DW_ID(100);
         int expResult = 100;
         int result = instance.getID();
         assertEquals(expResult, result);
-        DW_intID instance2 = null;
-        instance2 = new DW_intID(instance);
+        DW_ID instance2 = null;
+        instance2 = new DW_ID(instance);
         result = instance.getID();
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of toString method, of class DW_intID.
+     * Test of toString method, of class DW_ID.
      */
     @Test
     public void testToString() {
         System.out.println("toString");
-        DW_intID instance = null;
-        instance = new DW_intID(100);
+        DW_ID instance = null;
+        instance = new DW_ID(100);
         String expResult = "100";
         String result = instance.toString();
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of equals method, of class DW_intID.
+     * Test of equals method, of class DW_ID.
      */
     @Test
     public void testEquals() {
         System.out.println("equals");
         Object obj = null;
-        obj = new DW_intID(100);
-        DW_intID instance = null;
-        instance = new DW_intID(100);
+        obj = new DW_ID(100);
+        DW_ID instance = null;
+        instance = new DW_ID(100);
         boolean expResult = true;
         boolean result = instance.equals(obj);
         assertEquals(expResult, result);
         // Second test
-        instance = new DW_intID(101);
+        instance = new DW_ID(101);
         expResult = false;
         result = instance.equals(obj);
         assertEquals(expResult, result);
