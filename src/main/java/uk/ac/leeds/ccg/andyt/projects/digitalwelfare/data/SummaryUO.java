@@ -32,7 +32,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_intID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_PersonID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Collection;
@@ -1063,7 +1063,7 @@ public class SummaryUO extends Summary {
             TreeMap<String, DW_SHBE_Record> D_Records,
             DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
             DW_UnderOccupiedReport_Set RSLUnderOccupiedSet,
-            HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup) {
+            HashMap<DW_PersonID, DW_intID> DW_PersonIDToIDLookup) {
         HashSet<ID_TenancyType> result;
         result = new HashSet<ID_TenancyType>();
         TreeMap<String, DW_UOReport_Record> RSLMap;
@@ -1080,7 +1080,7 @@ public class SummaryUO extends Summary {
                 D_Record = D_Records.get(CTBRef).getDRecord();
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
-                DW_ID ID;
+                DW_intID ID;
                 ID = DW_PersonIDToIDLookup.get(DW_PersonID);
                 int TT;
                 TT = D_Record.getTenancyType();
@@ -1102,7 +1102,7 @@ public class SummaryUO extends Summary {
                 D_Record = D_Records.get(CTBRef).getDRecord();
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
-                DW_ID ID;
+                DW_intID ID;
                 ID = DW_PersonIDToIDLookup.get(DW_PersonID);
                 int TT;
                 TT = D_Record.getTenancyType();
@@ -1122,8 +1122,8 @@ public class SummaryUO extends Summary {
             TreeMap<String, DW_SHBE_Record> D_Records,
             DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
             DW_UnderOccupiedReport_Set RSLUnderOccupiedSet,
-            HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
-            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
+            HashMap<DW_PersonID, DW_intID> DW_PersonIDToIDLookup,
+            HashMap<String, DW_intID> PostcodeToPostcodeIDLookup) {
         HashSet<ID_PostcodeID> result;
         result = new HashSet<ID_PostcodeID>();
         TreeMap<String, DW_UOReport_Record> RSLMap;
@@ -1140,9 +1140,9 @@ public class SummaryUO extends Summary {
                 D_Record = D_Records.get(CTBRef).getDRecord();
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
-                DW_ID ID;
+                DW_intID ID;
                 ID = DW_PersonIDToIDLookup.get(DW_PersonID);
-                DW_ID PostcodeID;
+                DW_intID PostcodeID;
                 PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
                 ID_PostcodeID ID_PostcodeID;
                 ID_PostcodeID = new ID_PostcodeID(ID, PostcodeID);
@@ -1162,9 +1162,9 @@ public class SummaryUO extends Summary {
                 D_Record = D_Records.get(CTBRef).getDRecord();
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
-                DW_ID ID;
+                DW_intID ID;
                 ID = DW_PersonIDToIDLookup.get(DW_PersonID);
-                DW_ID PostcodeID;
+                DW_intID PostcodeID;
                 PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
                 ID_PostcodeID ID_PostcodeID;
                 ID_PostcodeID = new ID_PostcodeID(ID, PostcodeID);
@@ -1182,8 +1182,8 @@ public class SummaryUO extends Summary {
             TreeMap<String, DW_SHBE_Record> D_Records,
             DW_UnderOccupiedReport_Set councilUnderOccupiedSet,
             DW_UnderOccupiedReport_Set RSLUnderOccupiedSet,
-            HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
-            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
+            HashMap<DW_PersonID, DW_intID> DW_PersonIDToIDLookup,
+            HashMap<String, DW_intID> PostcodeToPostcodeIDLookup) {
         HashSet<ID_TenancyType_PostcodeID> result;
         result = new HashSet<ID_TenancyType_PostcodeID>();
         TreeMap<String, DW_UOReport_Record> RSLMap;
@@ -1200,13 +1200,13 @@ public class SummaryUO extends Summary {
                 D_Record = D_Records.get(CTBRef).getDRecord();
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
-                DW_ID ID;
+                DW_intID ID;
                 ID = DW_PersonIDToIDLookup.get(DW_PersonID);
                 int TT;
                 TT = D_Record.getTenancyType();
                 ID_TenancyType ID_TenancyType;
                 ID_TenancyType = new ID_TenancyType(ID, TT);
-                DW_ID PostcodeID;
+                DW_intID PostcodeID;
                 PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
                 ID_TenancyType_PostcodeID ID_TenancyType_PostcodeID;
                 ID_TenancyType_PostcodeID = new ID_TenancyType_PostcodeID(ID_TenancyType, PostcodeID);
@@ -1226,13 +1226,13 @@ public class SummaryUO extends Summary {
                 D_Record = D_Records.get(CTBRef).getDRecord();
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
-                DW_ID ID;
+                DW_intID ID;
                 ID = DW_PersonIDToIDLookup.get(DW_PersonID);
                 int TT;
                 TT = D_Record.getTenancyType();
                 ID_TenancyType ID_TenancyType;
                 ID_TenancyType = new ID_TenancyType(ID, TT);
-                DW_ID PostcodeID;
+                DW_intID PostcodeID;
                 PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
                 ID_TenancyType_PostcodeID ID_TenancyType_PostcodeID;
                 ID_TenancyType_PostcodeID = new ID_TenancyType_PostcodeID(ID_TenancyType, PostcodeID);
@@ -4233,8 +4233,8 @@ public class SummaryUO extends Summary {
             int nEG,
             int nPSI,
             Object[] underOccupiedData,
-            HashMap<DW_PersonID, DW_ID> tDW_PersonIDToIDLookup,
-            HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup,
+            HashMap<DW_PersonID, DW_intID> tDW_PersonIDToIDLookup,
+            HashMap<String, DW_intID> tPostcodeToPostcodeIDLookup,
             boolean handleOutOfMemoryError
     ) {
         AllCount0 = null;
@@ -4510,8 +4510,8 @@ public class SummaryUO extends Summary {
             TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
             TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs,
             TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
-            HashMap<DW_PersonID, DW_ID> tDW_PersonIDToIDLookup,
-            HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup) {
+            HashMap<DW_PersonID, DW_intID> tDW_PersonIDToIDLookup,
+            HashMap<String, DW_intID> tPostcodeToPostcodeIDLookup) {
         // Set counters
         CouncilLinkedRecordCount00 = CouncilLinkedRecordCount0;
         RSLLinkedRecordCount00 = RSLLinkedRecordCount0;
@@ -4643,8 +4643,8 @@ public class SummaryUO extends Summary {
             TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
             TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs,
             TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
-            HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
-            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
+            HashMap<DW_PersonID, DW_intID> DW_PersonIDToIDLookup,
+            HashMap<String, DW_intID> PostcodeToPostcodeIDLookup) {
 
         doPartSummarySingleTime(
                 tSHBEData1,
@@ -4755,8 +4755,8 @@ public class SummaryUO extends Summary {
             TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
             TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs,
             TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
-            HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
-            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup
+            HashMap<DW_PersonID, DW_intID> DW_PersonIDToIDLookup,
+            HashMap<String, DW_intID> PostcodeToPostcodeIDLookup
     ) {
         HashSet<ID_PostcodeID> tClaimantIDPostcodes0;
         HashSet<ID_TenancyType> tClaimantIDTTs0;
@@ -4805,8 +4805,8 @@ public class SummaryUO extends Summary {
             TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
             TreeMap<String, HashSet<ID_TenancyType>> tClaimantIDTTs,
             TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
-            HashMap<DW_PersonID, DW_ID> tDW_PersonIDToIDLookup,
-            HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup) {
+            HashMap<DW_PersonID, DW_intID> tDW_PersonIDToIDLookup,
+            HashMap<String, DW_intID> tPostcodeToPostcodeIDLookup) {
 //        // Set the last results
 //        AllCount0 = AllCount1;
 //        HBCount0 = HBCount1;

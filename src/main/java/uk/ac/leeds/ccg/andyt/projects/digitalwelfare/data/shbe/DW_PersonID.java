@@ -18,7 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_intID;
 import java.io.Serializable;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeID;
 
@@ -28,15 +28,15 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.PostcodeID;
  */
 public class DW_PersonID implements Serializable {
 
-    private DW_ID NINO_ID;
-    private DW_ID DOB_ID;
+    private DW_intID NINO_ID;
+    private DW_intID DOB_ID;
     
     public DW_PersonID() {
     }
 
     public DW_PersonID(
-            DW_ID NINO_ID,
-            DW_ID DOB_ID
+            DW_intID NINO_ID,
+            DW_intID DOB_ID
     ) {
         this.NINO_ID = NINO_ID;
         this.DOB_ID = DOB_ID;
@@ -45,14 +45,14 @@ public class DW_PersonID implements Serializable {
     /**
      * @return the NINO_ID
      */
-    public DW_ID getNINO_ID() {
+    public DW_intID getNINO_ID() {
         return NINO_ID;
     }
     
     /**
      * @return the Postcode
      */
-    public DW_ID getDOB_ID() {
+    public DW_intID getDOB_ID() {
         return DOB_ID;
     }
 

@@ -16,40 +16,41 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
+package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_intID;
 import java.io.Serializable;
 
 /**
+ * A simple class for representing identifiers using an long.
  *
  * @author geoagdt
  */
-public class ID_TenancyType implements Serializable {
+public class DW_intID implements Serializable {
 
-    private final DW_intID ID;
-    private final int TenancyType;
+    protected final int i;
 
-    public ID_TenancyType(
-            DW_intID ID,
-            int TenancyType
+    public DW_intID(
+            DW_intID ID
     ) {
-        this.ID = ID;
-        this.TenancyType = TenancyType;
-    }
-
-    /**
-     * @return the TenancyType
-     */
-    public int getTenancyType() {
-        return TenancyType;
+        this.i = ID.i;
     }
     
+    public DW_intID(
+            int ID
+    ) {
+        this.i = ID;
+    }
+
     /**
-     * @return the TenancyType.ID
+     * @return the DW_ID
      */
-    public DW_intID getID() {
-        return ID;
+    public int getID() {
+        return i;
+    }
+
+    @Override
+    public String toString() {
+        return "" + i;
     }
 
     @Override
@@ -60,15 +61,11 @@ public class ID_TenancyType implements Serializable {
         if (obj == null) {
             return false;
         }
-        if (obj instanceof ID_TenancyType) {
-            ID_TenancyType o;
-            o = (ID_TenancyType) obj;
-            if (hashCode() == o.hashCode()) {
-                if (TenancyType == o.TenancyType) {
-                    if (ID.equals(o.ID)) {
-                        return true;
-                    }
-                }
+        if (obj instanceof DW_intID) {
+            DW_intID o;
+            o = (DW_intID) obj;
+            if (this.hashCode() == o.hashCode()) {
+                return o.i == i;
             }
         }
         return false;
@@ -76,9 +73,8 @@ public class ID_TenancyType implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 73 * hash + (this.ID != null ? this.ID.hashCode() : 0);
-        hash = 73 * hash + this.TenancyType;
+        int hash = 7;
+        hash = 67 * hash + this.i;
         return hash;
     }
 
