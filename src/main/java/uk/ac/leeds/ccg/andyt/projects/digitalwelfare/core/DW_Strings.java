@@ -142,6 +142,16 @@ public class DW_Strings {
     public final String sInclude3Monthly = "I3M";
     
     /**
+     * Short code for Output Area.
+     */
+    public final String sOA = "OA";
+
+    /**
+     * Short code for Lower-layer Super Output Area.
+     */
+    public final String sLSOA = "LSOA";
+    
+    /**
      * Short code for PaymentTypeIn.
      */
     public final String sPaymentTypeIn = "PTI";

@@ -1748,8 +1748,8 @@ public class TenancyChangesUO extends DW_Object {
 
         TreeMap<String, DW_UO_Set> councilUnderOccupiedSets = null;
         TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets = null;
-        councilUnderOccupiedSets = DW_UO_Data.getCouncil_Data();
-        RSLUnderOccupiedSets = DW_UO_Data.getRSL_Sets();
+        councilUnderOccupiedSets = DW_UO_Data.getCouncilSets();
+        RSLUnderOccupiedSets = DW_UO_Data.getRSLSets();
 
         TreeSet<String> tUOClaims;
         tUOClaims = new TreeSet<String>();

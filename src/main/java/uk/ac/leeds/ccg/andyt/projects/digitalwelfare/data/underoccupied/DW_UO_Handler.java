@@ -202,7 +202,7 @@ public class DW_UO_Handler extends DW_Object {
                     reload);
             tRSLSets.put(year_Month, set);
         }
-        result = new DW_UO_Data(tRSLSets, tCouncilSets);
+        result = new DW_UO_Data(env, tRSLSets, tCouncilSets);
         return result;
     }
 
@@ -294,7 +294,7 @@ public class DW_UO_Handler extends DW_Object {
                     "2013 14 Under Occupied Report For University Year Start Council Tenants.csv");
             RSLFilenames.put(
                     "2013_Mar",
-                    "2013 14 Under Occupied Report For University Year Start RSL Tenants.csv");
+                    "2013 14 Under Occupied Report For University Year Start RSLs.csv");
             String councilEndFilename = " Council Tenants.csv";
             String RSLEndFilename = " RSLs.csv";
             String RSLEndFilename2 = " RSL.csv";
@@ -422,103 +422,18 @@ public class DW_UO_Handler extends DW_Object {
     /**
      * Returns a HashSet<String> of the CTBRefs of those UnderOccupying at the 
      * start of April2013.
-     * @param underOccupiedData
-     * @param env
+     * @param DW_UO_Data
      * @return 
      */
     public HashSet<String> getUnderOccupiedStartApril2013CTBRefs(
-        DW_UO_Data tDW_UnderOccupiedReport_Data) {
-        return tDW_UnderOccupiedReport_Data.getCTBRefs().get("2013_Mar");
-//        HashSet<String> result;
-//        result = new HashSet<String>();
-//        
-//        Object[] filenames;
-//        filenames = getInputFilenames();
-//        TreeMap<String, String> tCouncilFilenames;
-//        TreeMap<String, String> tRSLFilenames;
-//        tCouncilFilenames = (TreeMap<String, String>) filenames[0];
-//        tRSLFilenames = (TreeMap<String, String>) filenames[1];
-//        String yearAll;
-//        yearAll = "2013 14";
-//        int i;
-//        i = 1;
-//        String year = getYear(yearAll, i);
-//        String month = getMonth3(i);
-//        String year_Month = year + "_" + month;
-//        String tCouncilFilename;
-//        tCouncilFilename = tCouncilFilenames.get(year_Month);
-//        String tRSLFilename;
-//        tRSLFilename = tRSLFilenames.get(year_Month);
-//        DW_UO_Set set;
-//        set = new DW_UO_Set(
-//                tDW_Files,
-//                this,
-//                tCouncilFilename,
-//                year_Month,
-//                false);
-//        result.addAll(set.map.keySet());
-//        set = new DW_UO_Set(
-//                tDW_Files,
-//                this,
-//                tRSLFilename,
-//                year_Month,
-//                false);
-//        result.addAll(set.map.keySet());
-//        return result;
-    }
-
-    public HashSet<String> getUnderOccupiedCTBRefs(Object[] underOccupiedData) {
-        HashSet<String> result;
-        result = null;
-//        result = new HashSet<String>();
-        // Go through data and add all CTBRefs to result
-//        extract 
-//        Iterator<String> ite;
-//        ite = CouncilFilenames.keySet().iterator();
-//        String yM3;
-//        String CouncilFilename;
-//        String RSLFilename;
-//        while (ite.hasNext()) {
-//            yM3 = ite.next();
-//            CouncilFilename = CouncilFilenames.get(yM3);
-//            RSLFilename = RSLFilenames.get(yM3);
-//            DW_UO_Set set;
-//            set = new DW_UO_Set(
-//                    tDW_Files,
-//                    this,
-//                    CouncilFilename,
-//                    false);
-//            result.addAll(set.map.keySet());
-//            set = new DW_UO_Set(
-//                    env,
-//                    RSLFilename);
-//            result.addAll(set.map.keySet());
-//        }
-        return result;
-    }
-
-    public HashSet<String> getUnderOccupiedCouncilCTBRefs(Object[] underOccupiedData) {
-        HashSet<String> result;
-        result = null;
-//        result = new HashSet<String>();
-        // Go through data and add all CTBRefs to result
-        //return result;
-        return result;
-    }
-
-    public HashSet<String> getUnderOccupiedRSLCTBRefs() {
-        HashSet<String> result;
-        result = null;
-//       result = new HashSet<String>();
-        // Go through data and add all CTBRefs to result
-        return result;
+        DW_UO_Data DW_UO_Data) {
+        return DW_UO_Data.getCTBRefs().get("2013_Mar");
     }
 
     public static int getHouseholdSizeExcludingPartners(DW_UO_Record rec) {
         int result;
-        result
-                = //rec.getTotalDependentChildren()
-                +rec.getChildrenOver16()
+        result = //rec.getTotalDependentChildren()
+                rec.getChildrenOver16()
                 + rec.getFemaleChildren10to16() + rec.getFemaleChildrenUnder10()
                 + rec.getMaleChildren10to16() + rec.getMaleChildrenUnder10()
                 + rec.getNonDependents();

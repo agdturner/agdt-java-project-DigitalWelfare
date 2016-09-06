@@ -180,9 +180,9 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                 tDW_UO_Data = (DW_UO_Data) Generic_StaticIO.readObject(f);
                 // For debugging/testing load
                 TreeMap<String, DW_UO_Set> tCouncilSets;
-                tCouncilSets = tDW_UO_Data.getCouncil_Data();
+                tCouncilSets = tDW_UO_Data.getCouncilSets();
                 TreeMap<String, DW_UO_Set> tRSLSets;
-                tRSLSets = tDW_UO_Data.getRSL_Sets();
+                tRSLSets = tDW_UO_Data.getRSLSets();
                 int totalSets;
                 totalSets = tCouncilSets.size() + tRSLSets.size();
                 System.out.println("totalSets loaded " + totalSets);

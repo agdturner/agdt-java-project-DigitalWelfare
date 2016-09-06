@@ -381,7 +381,7 @@ public abstract class DW_AbstractProcessor extends DW_Object {
             File outFile,
             String level,
             int year) {
-        TreeMap<String, String> result = null;
+        TreeMap<String, String> result;
         result = env.getDW_Postcode_Handler().getPostcodeUnitCensusCodeLookup(
                 level,
                 year,

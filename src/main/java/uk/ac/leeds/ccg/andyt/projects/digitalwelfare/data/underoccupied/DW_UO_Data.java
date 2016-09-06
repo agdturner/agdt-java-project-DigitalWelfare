@@ -22,25 +22,27 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
 /**
  * Class for holds and referring to all the UnderOccupancy data.
  *
  * @author geoagdt
  */
-public class DW_UO_Data implements Serializable {
+public class DW_UO_Data extends DW_Object implements Serializable {
 
     /**
      * The store of all UnderOccupancy RSL Sets. Keys are yM3s, values
      * are the respective sets.
      */
-    private TreeMap<String, DW_UO_Set> RSL_Sets;
+    private TreeMap<String, DW_UO_Set> RSLSets;
 
     /**
      * The store of all UnderOccupancy Council Sets. Keys are yM3s,
      * values are the respective sets.
      */
-    private TreeMap<String, DW_UO_Set> Council_Sets;
+    private TreeMap<String, DW_UO_Set> CouncilSets;
 
     /**
      * Store of Sets of CTBRefs. Keys are yM3s, values are the respective sets.
@@ -48,25 +50,27 @@ public class DW_UO_Data implements Serializable {
     private TreeMap<String, HashSet<String>> CTBRefs;
 
     public DW_UO_Data(
-            TreeMap<String, DW_UO_Set> tRSL_Data,
-            TreeMap<String, DW_UO_Set> tCouncil_Data) {
-        this.RSL_Sets = tRSL_Data;
-        this.Council_Sets = tCouncil_Data;
+            DW_Environment env,
+            TreeMap<String, DW_UO_Set> tRSLData,
+            TreeMap<String, DW_UO_Set> tCouncilData) {
+        this.env = env;
+        this.RSLSets = tRSLData;
+        this.CouncilSets = tCouncilData;
         initCTBRefs();
     }
 
     /**
      * @return the RSL_Sets
      */
-    public TreeMap<String, DW_UO_Set> getRSL_Sets() {
-        return RSL_Sets;
+    public TreeMap<String, DW_UO_Set> getRSLSets() {
+        return RSLSets;
     }
 
     /**
      * @return the tCouncil_Data
      */
-    public TreeMap<String, DW_UO_Set> getCouncil_Data() {
-        return Council_Sets;
+    public TreeMap<String, DW_UO_Set> getCouncilSets() {
+        return CouncilSets;
     }
 
     /**
@@ -83,13 +87,13 @@ public class DW_UO_Data implements Serializable {
         CTBRefs = new TreeMap<String, HashSet<String>>();
         String yM3;
         Iterator<String> ite;
-        ite = Council_Sets.keySet().iterator();
+        ite = CouncilSets.keySet().iterator();
         while (ite.hasNext()) {
             yM3 = ite.next();
             HashSet<String> tCTBRefsForYM3;
             tCTBRefsForYM3 = new HashSet<String>();
-            tCTBRefsForYM3.addAll(Council_Sets.get(yM3).getMap().keySet());
-            tCTBRefsForYM3.addAll(RSL_Sets.get(yM3).getMap().keySet());
+            tCTBRefsForYM3.addAll(CouncilSets.get(yM3).getMap().keySet());
+            tCTBRefsForYM3.addAll(RSLSets.get(yM3).getMap().keySet());
             CTBRefs.put(yM3, tCTBRefsForYM3);
         }
     }

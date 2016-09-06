@@ -37,6 +37,10 @@ public class DW_UO_Set implements Serializable {
      */
     protected TreeMap<String, DW_UO_Record> map;
 
+    public DW_UO_Set(){
+        map = new TreeMap<String, DW_UO_Record>();
+    }
+    
     /**
      * If reload == true then this reloads data from source. Otherwise it checks
      * to see if a generated file exists to load the data from there. If the

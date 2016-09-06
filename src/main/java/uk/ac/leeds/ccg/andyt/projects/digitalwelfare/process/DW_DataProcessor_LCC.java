@@ -64,7 +64,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 
-    String sU = "U";
+    /*
+    * For convenience.
+     */
+    String sU = tDW_Strings.sU;
+
     //String sUOInApril2013 = "UOInApril2013";
     String sUOInApril2013 = "UInApr13";
     //String sTenancyChange = "TenancyChange";
@@ -74,9 +78,6 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
     String sAll = "All";
     String sMinus999 = "-999";
     String sAAN_NAA = "AAN_NAA";
-
-    String sOA = "OA";
-    String sLSOA = "LSOA";
 
     //String sAllClaimants = "Al";
     String sAllClaimants = "All";
@@ -101,14 +102,14 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
     private DW_SHBE_Handler tDW_SHBE_Handler;
 
     /**
-     * For convenience tDW_UnderOccupiedReport_Handler = env.getDW_UO_Handler().
+     * For convenience tDW_UO_Handler = env.getDW_UO_Handler().
      */
-    protected DW_UO_Handler tDW_UnderOccupiedReport_Handler;
+    protected DW_UO_Handler tDW_UO_Handler;
 
     public DW_DataProcessor_LCC(DW_Environment env) {
         super(env);
         tDW_SHBE_Handler = env.getDW_SHBE_Handler();
-        tDW_UnderOccupiedReport_Handler = env.getDW_UO_Handler();
+        tDW_UO_Handler = env.getDW_UO_Handler();
     }
 
     @Override
@@ -155,8 +156,8 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 
         ArrayList<String> levels;
         levels = new ArrayList<String>();
-        levels.add(sOA);
-        levels.add(sLSOA);
+        levels.add(tDW_Strings.sOA);
+        levels.add(tDW_Strings.sLSOA);
 //        levels.add("MSOA");
 //        levels.add("PostcodeUnit");
 //        levels.add("PostcodeSector");
@@ -219,7 +220,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         HashMap<DW_PersonID, DW_ID> tDW_PersonIDtoDW_IDLookup;
         tDW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
         ArrayList<String> paymentTypes;
-        Iterator<String> paymentTypesIte;
+        Iterator<String> tPTIte;
 
         boolean doGrouped;
         boolean doTenancyChangesUO;
@@ -236,7 +237,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         doGrouped = true;
         doGrouped = false;
         doTenancyChangesUO = true;
-        //doTenancyChangesUO = false;
+        doTenancyChangesUO = false;
         doSummaryTables = true;
         doSummaryTables = false;
         doSummaryTablesAllOnly = true;
@@ -245,13 +246,13 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         doSummaryTablesUOOnly = false;
 
         doTenancyTransitions = true;
-//        doTenancyTransitions = false;
+        doTenancyTransitions = false;
         doPostcodeChanges = true;
-//        doPostcodeChanges = false;
+        doPostcodeChanges = false;
         doTenancyChanges = true;
-//        doTenancyChanges = false;
+        doTenancyChanges = false;
         doTenancyAndPostcodeChanges = true;
-//        doTenancyAndPostcodeChanges = false;
+        doTenancyAndPostcodeChanges = false;
 
         doAggregation = true;
 //        doAggregation = false;
@@ -263,6 +264,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         * Create data about the Tenancy changes of UnderOccupied Claims
          */
         if (doTenancyChangesUO) {
+            System.out.println("<doTenancyChangesUO>");
             Object[] table;
             includes = tDW_SHBE_Handler.getIncludes();
 //            includes.remove(tDW_SHBE_Handler.sIncludeAll);
@@ -280,13 +282,14 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             doUnderOccupancy = true;
             String name;
             name = sTenancyChange;
-            paymentTypesIte = paymentTypes.iterator();
-            while (paymentTypesIte.hasNext()) {
-                String paymentType;
-                paymentType = paymentTypesIte.next();
+            tPTIte = paymentTypes.iterator();
+            while (tPTIte.hasNext()) {
+                String aPT;
+                aPT = tPTIte.next();
+                System.out.println("<" + aPT + ">");
                 TenancyChangesUO tTenancyChangesUO = new TenancyChangesUO(
                         env,
-                        env.getDW_SHBE_CollectionHandler(paymentType),
+                        env.getDW_SHBE_CollectionHandler(aPT),
                         tDW_SHBE_Handler,
                         tPostcodeToPostcodeIDLookup,
                         handleOutOfMemoryError);
@@ -295,6 +298,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 while (includesIte.hasNext()) {
                     String includeKey;
                     includeKey = includesIte.next();
+                    System.out.println("<" + includeKey + ">");
                     ArrayList<Integer> include;
                     include = includes.get(includeKey);
                     int index;
@@ -316,15 +320,16 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     while (iteB.hasNext()) {
                         boolean includePreUnderOccupancyValues;
                         includePreUnderOccupancyValues = iteB.next();
+                        System.out.println("<includePreUnderOccupancyValues " + includePreUnderOccupancyValues + ">");
                         table = tTenancyChangesUO.getTable(
                                 DW_UO_Data,
                                 SHBEFilenames,
                                 include,
-                                paymentType,
+                                aPT,
                                 includePreUnderOccupancyValues);
                         tTenancyChangesUO.writeTenancyChangeTables(
                                 table,
-                                paymentType,
+                                aPT,
                                 includeKey,
                                 doUnderOccupancy,
                                 includePreUnderOccupancyValues,
@@ -333,10 +338,14 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                                 startYear,
                                 endMonth,
                                 endYear);
+                        System.out.println("</includePreUnderOccupancyValues " + includePreUnderOccupancyValues + ">");
                     }
+                    System.out.println("</" + includeKey + ">");
 //                    System.exit(0);
                 }
+                System.out.println("</" + aPT + ">");
             }
+            System.out.println("</doTenancyChangesUO>");
         }
 
         // Summary Tables
@@ -357,10 +366,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         forceNewSummaries = true;
         // Runtime approximately 2 hours.
         if (doSummaryTables) {
-            paymentTypesIte = paymentTypes.iterator();
-            while (paymentTypesIte.hasNext()) {
+            tPTIte = paymentTypes.iterator();
+            while (tPTIte.hasNext()) {
                 String paymentType;
-                paymentType = paymentTypesIte.next();
+                paymentType = tPTIte.next();
                 //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
                 int nTT;
                 nTT = tDW_SHBE_Handler.getNumberOfTenancyTypes();
@@ -450,10 +459,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         forceNewSummaries = true;
         // Runtime approximately 2 hours.
         if (doSummaryTablesAllOnly) {
-            paymentTypesIte = paymentTypes.iterator();
-            while (paymentTypesIte.hasNext()) {
+            tPTIte = paymentTypes.iterator();
+            while (tPTIte.hasNext()) {
                 String paymentType;
-                paymentType = paymentTypesIte.next();
+                paymentType = tPTIte.next();
                 //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
                 int nTT;
                 nTT = tDW_SHBE_Handler.getNumberOfTenancyTypes();
@@ -514,10 +523,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //            paymentTypes.remove(sPaymentTypeIn);
 //            paymentTypes.remove(sPaymentTypeSuspended);
 //            paymentTypes.remove(sPaymentTypeOther);
-            paymentTypesIte = paymentTypes.iterator();
-            while (paymentTypesIte.hasNext()) {
+            tPTIte = paymentTypes.iterator();
+            while (tPTIte.hasNext()) {
                 String paymentType;
-                paymentType = paymentTypesIte.next();
+                paymentType = tPTIte.next();
                 //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
                 int nTT;
                 nTT = tDW_SHBE_Handler.getNumberOfTenancyTypes();
@@ -586,14 +595,14 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 
             HashSet<String> tCTBRefs0;
 
-            tCTBRefs0 = tDW_UnderOccupiedReport_Handler.getUnderOccupiedInApril2013CTBRefs(); // run UOApril2013
+            tCTBRefs0 = tDW_UO_Handler.getUnderOccupiedStartApril2013CTBRefs(DW_UO_Data); // run UOApril2013
 //            tCTBRefs0 = DW_UO_Handler.getUnderOccupiedCTBRefs(); // AHH!!!
 //            tCTBRefs0.removeAll(DW_UO_Handler.getUnderOccupiedInApril2013CTBRefs());
 
-            paymentTypesIte = paymentTypes.iterator();
-            while (paymentTypesIte.hasNext()) {
+            tPTIte = paymentTypes.iterator();
+            while (tPTIte.hasNext()) {
                 String paymentType;
-                paymentType = paymentTypesIte.next();
+                paymentType = tPTIte.next();
                 //NINOtoIDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(paymentType);
                 // Postcode Changes (same tenancy)
                 if (doPostcodeChanges) {
@@ -917,12 +926,14 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 
         // Aggregate
         if (doAggregation) {
+            System.out.println("<doAggregation>");
             DW_Postcode_Handler tDW_Postcode_Handler;
             tDW_Postcode_Handler = env.getDW_Postcode_Handler();
-            paymentTypesIte = paymentTypes.iterator();
-            while (paymentTypesIte.hasNext()) {
+            tPTIte = paymentTypes.iterator();
+            while (tPTIte.hasNext()) {
                 String paymentType;
-                paymentType = paymentTypesIte.next();
+                paymentType = tPTIte.next();
+                System.out.println("<" + paymentType + ">");
                 //DW_SHBE_Handler.DW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
                 TreeMap<String, TreeMap<String, String>> lookupsFromPostcodeToLevelCode; // Work needed to load the appropriate look up for the appropriate years and months of postcode!
                 lookupsFromPostcodeToLevelCode = getLookupsFromPostcodeToLevelCode(levels);
@@ -931,12 +942,18 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 while (iteB.hasNext()) {
                     boolean doUnderOccupied;
                     doUnderOccupied = iteB.next();
-                    if (doUnderOccupied) {
+                    boolean doCouncil;
+                        boolean doRSL;
+                        if (doUnderOccupied) {
                         if (true) {
 //                        if (false) {
-                            aggregateClaimants(doUnderOccupied,
-                                    true,
-                                    true,
+                            doCouncil = true;
+                            doRSL = true;
+                            System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
+                            aggregateClaimants(
+                                    doUnderOccupied,
+                                    doCouncil,
+                                    doRSL,
                                     DW_UO_Data,
                                     lookupsFromPostcodeToLevelCode,
                                     SHBEFilenames,
@@ -952,9 +969,60 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                                     distanceTypes,
                                     distances,
                                     tDW_PersonIDtoDW_IDLookup);
+                            System.out.println("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
                         }
+                        doCouncil = true;
+                            doRSL = false;
+                            System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
+                        aggregateClaimants(
+                                doUnderOccupied,
+                                doCouncil,
+                                doRSL,
+                                DW_UO_Data,
+                                lookupsFromPostcodeToLevelCode,
+                                SHBEFilenames,
+                                paymentType,
+                                claimantTypes,
+                                tenancyTypeGroups.get(doUnderOccupied),
+                                tenancyTypesGrouped.get(doUnderOccupied),
+                                regulatedGroups.get(doUnderOccupied),
+                                unregulatedGroups.get(doUnderOccupied),
+                                includes,
+                                levels,
+                                types,
+                                distanceTypes,
+                                distances,
+                                tDW_PersonIDtoDW_IDLookup);
+                            System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
+                        doCouncil = false;
+                            doRSL = true;
+                            System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
+aggregateClaimants(
+                                doUnderOccupied,
+                                doCouncil,
+                                doRSL,
+                            DW_UO_Data,
+                                lookupsFromPostcodeToLevelCode,
+                                SHBEFilenames,
+                                paymentType,
+                                claimantTypes,
+                                tenancyTypeGroups.get(doUnderOccupied),
+                                tenancyTypesGrouped.get(doUnderOccupied),
+                                regulatedGroups.get(doUnderOccupied),
+                                unregulatedGroups.get(doUnderOccupied),
+                                includes,
+                                levels,
+                                types,
+                                distanceTypes,
+                                distances,
+                                tDW_PersonIDtoDW_IDLookup);
+                        System.out.println("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
+                        } else {
+                        doCouncil = false;
+                            doRSL = false;
+                         System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
                         aggregateClaimants(doUnderOccupied,
-                                true,
+                                false,
                                 false,
                                 DW_UO_Data,
                                 lookupsFromPostcodeToLevelCode,
@@ -971,46 +1039,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                                 distanceTypes,
                                 distances,
                                 tDW_PersonIDtoDW_IDLookup);
-                        aggregateClaimants(doUnderOccupied,
-                                false,
-                                true,
-                                DW_UO_Data,
-                                lookupsFromPostcodeToLevelCode,
-                                SHBEFilenames,
-                                paymentType,
-                                claimantTypes,
-                                tenancyTypeGroups.get(doUnderOccupied),
-                                tenancyTypesGrouped.get(doUnderOccupied),
-                                regulatedGroups.get(doUnderOccupied),
-                                unregulatedGroups.get(doUnderOccupied),
-                                includes,
-                                levels,
-                                types,
-                                distanceTypes,
-                                distances,
-                                tDW_PersonIDtoDW_IDLookup);
-                    } else {
-                        aggregateClaimants(doUnderOccupied,
-                                false,
-                                false,
-                                DW_UO_Data,
-                                lookupsFromPostcodeToLevelCode,
-                                SHBEFilenames,
-                                paymentType,
-                                claimantTypes,
-                                tenancyTypeGroups.get(doUnderOccupied),
-                                tenancyTypesGrouped.get(doUnderOccupied),
-                                regulatedGroups.get(doUnderOccupied),
-                                unregulatedGroups.get(doUnderOccupied),
-                                includes,
-                                levels,
-                                types,
-                                distanceTypes,
-                                distances,
-                                tDW_PersonIDtoDW_IDLookup);
-                    }
+                        System.out.println("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
+                        }
                 }
+                System.out.println("</" + paymentType + ">");
             }
+            System.out.println("</doAggregation>");
         }
     }
 
@@ -1325,46 +1359,43 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * @return
      */
     private TreeMap<String, DW_UO_Set> combineUOSets(
-            Object[] underOccupiedData) {
+            DW_UO_Data DW_UO_Data) {
         TreeMap<String, DW_UO_Set> result;
-        result = null;
-//        result = new TreeMap<String, DW_UO_Set>();
-//        TreeMap<String, DW_UO_Set> tCouncilPart;
-//        tCouncilPart = (TreeMap<String, DW_UO_Set>) DW_UO_Data[0];
-//        TreeMap<String, DW_UO_Set> tRSLPart;
-//        tRSLPart = (TreeMap<String, DW_UO_Set>) DW_UO_Data[1];
-//        String yM3;
-//        DW_UO_Set set;
-//        DW_UO_Set tCouncilSet;
-//        DW_UO_Set tRLSSet;
-//        Iterator<String> ite;
-//        ite = tCouncilPart.keySet().iterator();
-//        while (ite.hasNext()) {
-//            yM3 = ite.next();
-//            set = result.get(yM3);
-//            if (set == null) {
-//                set = new DW_UO_Set(
-//                        tDW_Files,
-//                        env.getDW_UO_Handler(),
-//                        fn,
-//                        yM3,
-//                        true);
-//                result.put(yM3, set);
-//            }
-//            tCouncilSet = tCouncilPart.get(yM3);
-//            set.getMap().putAll(tCouncilSet.getMap());
-//        }
-//        ite = tRSLPart.keySet().iterator();
-//        while (ite.hasNext()) {
-//            yM3 = ite.next();
-//            set = result.get(yM3);
-//            if (set == null) {
-//                set = new DW_UO_Set(env);
-//                result.put(yM3, set);
-//            }
-//            RSLSet = tRSLPart.get(yM3);
-//            set.getMap().putAll(RSLSet.getMap());
-//        }
+        result = new TreeMap<String, DW_UO_Set>();
+
+        TreeMap<String, DW_UO_Set> tCouncilPart;
+        tCouncilPart = DW_UO_Data.getCouncilSets();
+        TreeMap<String, DW_UO_Set> tRSLPart;
+        tRSLPart = DW_UO_Data.getRSLSets();
+
+        String yM3;
+        DW_UO_Set set;
+        DW_UO_Set tCouncilSet;
+        DW_UO_Set tRSLSet;
+
+        Iterator<String> ite;
+        ite = tCouncilPart.keySet().iterator();
+        while (ite.hasNext()) {
+            yM3 = ite.next();
+            set = result.get(yM3);
+            if (set == null) {
+                set = new DW_UO_Set();
+                result.put(yM3, set);
+            }
+            tCouncilSet = tCouncilPart.get(yM3);
+            set.getMap().putAll(tCouncilSet.getMap());
+        }
+        ite = tRSLPart.keySet().iterator();
+        while (ite.hasNext()) {
+            yM3 = ite.next();
+            set = result.get(yM3);
+            if (set == null) {
+                set = new DW_UO_Set();
+                result.put(yM3, set);
+            }
+            tRSLSet = tRSLPart.get(yM3);
+            set.getMap().putAll(tRSLSet.getMap());
+        }
         return result;
     }
 
@@ -1383,7 +1414,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * @param loadData
      * @param checkPreviousTenure
      * @param reportTenancyTransitionBreaks
-     * @param underOccupiedData
+     * @param DW_UO_Data
      * @param doUnderOccupied
      * @param tCTBRefs
      */
@@ -1399,7 +1430,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             boolean loadData,
             boolean checkPreviousTenure,
             boolean reportTenancyTransitionBreaks,
-            Object[] underOccupiedData,
+            DW_UO_Data DW_UO_Data,
             boolean doUnderOccupied,
             HashSet<String> tCTBRefs) {
 
@@ -1424,13 +1455,13 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         dirOut = new File(
                 dirOut,
                 sWithOrWithoutPostcodeChange);
-        TreeMap<String, DW_UO_Set> underOccupiedSetsCouncil;
-        underOccupiedSetsCouncil = (TreeMap<String, DW_UO_Set>) underOccupiedData[0];
-        TreeMap<String, DW_UO_Set> underOccupiedSetsRSL;
-        underOccupiedSetsRSL = (TreeMap<String, DW_UO_Set>) underOccupiedData[1];
+        TreeMap<String, DW_UO_Set> tUOCouuncilSets;
+        tUOCouuncilSets = DW_UO_Data.getCouncilSets();
+        TreeMap<String, DW_UO_Set> tUORSLSets;
+        tUORSLSets = DW_UO_Data.getRSLSets();
         TreeMap<String, DW_UO_Set> underOccupiedSets = null;
         if (doUnderOccupied) {
-            underOccupiedSets = combineUOSets(underOccupiedData);
+            underOccupiedSets = combineUOSets(DW_UO_Data);
         }
         dirOut = tDW_Files.getUOFile(
                 dirOut,
@@ -1536,8 +1567,8 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             boolean doloop = true;
             if (doUnderOccupied) {
                 underOccupiedSet0 = underOccupiedSets.get(yM30);
-                underOccupiedSetCouncil0 = underOccupiedSetsCouncil.get(yM30);
-                underOccupiedSetRSL0 = underOccupiedSetsRSL.get(yM30);
+                underOccupiedSetCouncil0 = tUOCouuncilSets.get(yM30);
+                underOccupiedSetRSL0 = tUORSLSets.get(yM30);
                 tUnderOccupancies = new HashMap<Integer, HashSet<DW_ID>>();
                 tUnderOccupanciesCouncil = new HashMap<Integer, HashSet<DW_ID>>();
                 tUnderOccupanciesRSL = new HashMap<Integer, HashSet<DW_ID>>();
@@ -1630,8 +1661,8 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                             tIDByCTBRefs);
                     if (doUnderOccupied) {
                         underOccupiedSet1 = underOccupiedSets.get(yM31);
-                        underOccupiedSetCouncil1 = underOccupiedSetsCouncil.get(yM31);
-                        underOccupiedSetRSL1 = underOccupiedSetsRSL.get(yM31);
+                        underOccupiedSetCouncil1 = tUOCouuncilSets.get(yM31);
+                        underOccupiedSetRSL1 = tUORSLSets.get(yM31);
                         tUnderOccupiedIDs1 = getUnderOccupiedIDs(
                                 underOccupiedSet1,
                                 tCTBRefByID1,
@@ -1907,7 +1938,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             Generic_UKPostcode_Handler postcodeHandler,
             boolean postcodeChange,
             boolean checkPreviousPostcode,
-            Object[] underOccupiedData,
+            DW_UO_Data DW_UO_Data,
             boolean doUnderOccupied,
             HashSet<String> underOccupiedInApril2013) {
         File dirOut;
@@ -1923,12 +1954,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         tIDByPostcodes = new HashMap<Integer, HashMap<DW_ID, String>>();
 
         TreeMap<String, DW_UO_Set> underOccupiedSetsCouncil;
-        underOccupiedSetsCouncil = (TreeMap<String, DW_UO_Set>) underOccupiedData[0];
+        underOccupiedSetsCouncil = DW_UO_Data.getCouncilSets();
         TreeMap<String, DW_UO_Set> underOccupiedSetsRSL;
-        underOccupiedSetsRSL = (TreeMap<String, DW_UO_Set>) underOccupiedData[1];
+        underOccupiedSetsRSL = DW_UO_Data.getRSLSets();
         TreeMap<String, DW_UO_Set> underOccupiedSets = null;
         if (doUnderOccupied) {
-            underOccupiedSets = combineUOSets(underOccupiedData);
+            underOccupiedSets = combineUOSets(DW_UO_Data);
         }
 
         dirOut = tDW_Files.getUOFile(dirOut, doUnderOccupied, doUnderOccupied, doUnderOccupied);
@@ -2397,7 +2428,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * @param postcodeHandler
      * @param postcodeChange
      * @param checkPreviousPostcode
-     * @param underOccupiedData
+     * @param DW_UO_Data
      * @param doUnderOccupied
      * @param tCTBRefs
      */
@@ -2416,7 +2447,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             Generic_UKPostcode_Handler postcodeHandler,
             boolean postcodeChange,
             boolean checkPreviousPostcode,
-            Object[] underOccupiedData,
+            DW_UO_Data DW_UO_Data,
             boolean doUnderOccupied,
             HashSet<String> tCTBRefs) {
         File dirOut;
@@ -2432,7 +2463,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 paymentType);
         TreeMap<String, DW_UO_Set> underOccupiedSets = null;
         if (doUnderOccupied) {
-            underOccupiedSets = combineUOSets(underOccupiedData);
+            underOccupiedSets = combineUOSets(DW_UO_Data);
         }
         dirOut = tDW_Files.getUOFile(dirOut, doUnderOccupied, doUnderOccupied, doUnderOccupied);
         if (postcodeChange) {
@@ -3489,7 +3520,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * @param doUnderOccupied
      * @param doCouncil
      * @param doRSL
-     * @param underOccupiedData
+     * @param DW_UO_Data
      * @param lookupsFromPostcodeToLevelCode
      * @param SHBEFilenames
      * @param paymentType
@@ -3509,7 +3540,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             boolean doUnderOccupied,
             boolean doCouncil,
             boolean doRSL,
-            Object[] underOccupiedData,
+            DW_UO_Data DW_UO_Data,
             TreeMap<String, TreeMap<String, String>> lookupsFromPostcodeToLevelCode,
             String[] SHBEFilenames,
             String paymentType,
@@ -3535,10 +3566,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets = null;
         if (doUnderOccupied) {
             if (doCouncil) {
-                councilUnderOccupiedSets = (TreeMap<String, DW_UO_Set>) underOccupiedData[0];
+                councilUnderOccupiedSets = DW_UO_Data.getCouncilSets();
             }
             if (doRSL) {
-                RSLUnderOccupiedSets = (TreeMap<String, DW_UO_Set>) underOccupiedData[1];
+                RSLUnderOccupiedSets = DW_UO_Data.getRSLSets();
             }
         }
 

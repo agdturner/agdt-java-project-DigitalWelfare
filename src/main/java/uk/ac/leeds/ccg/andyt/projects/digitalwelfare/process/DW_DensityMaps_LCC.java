@@ -9205,10 +9205,10 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         TreeMap<String, DW_UO_Set> underOccupiedSetsRSL = null;
         if (doUnderOccupied) {
             if (doCouncil) {
-                underOccupiedSetsCouncil = DW_UO_Data.getCouncil_Data();
+                underOccupiedSetsCouncil = DW_UO_Data.getCouncilSets();
             }
             if (doRSL) {
-                underOccupiedSetsRSL = DW_UO_Data.getRSL_Sets();
+                underOccupiedSetsRSL = DW_UO_Data.getRSLSets();
             }
         }
         String tenancyTypeGroupName;

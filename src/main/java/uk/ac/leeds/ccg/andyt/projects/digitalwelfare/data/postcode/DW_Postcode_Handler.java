@@ -426,38 +426,6 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         //new DW_Postcode_Handler(inputFile, processedFile).run3();
     }
 
-    public TreeMap<String, AGDT_Point> getPostcodeSectorPointLookup(
-            boolean ignorePointsAtOrigin,
-            String outputFilename,
-            TreeMap<String, AGDT_Point> postcodeUnitPointLookup) {
-        TreeMap<String, AGDT_Point> result = null;
-//        File outputFile2;
-//        outputFile2 = new File(
-//                outputFile.getParentFile(),
-//                outputFilename);
-//        try {
-//            result = initPostcodeSectorPointLookup(
-//                    postcodeUnitPointLookup,
-//                    ignorePointsAtOrigin);
-//        } catch (Exception e) {
-//            System.err.println(e.getMessage());
-//        }
-//        String postcode;
-//        // Test some postcodes
-//        postcode = "LS17 2";
-//        printTest0(
-//                result,
-//                postcode);
-//        postcode = "LS2 9";
-//        printTest0(
-//                result,
-//                postcode);
-//        Generic_StaticIO.writeObject(result, outputFile2);
-//        // For testing reading back in
-//        result = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(outputFile2);
-        return result;
-    }
-
     public TreeMap<String, TreeMap<String, AGDT_Point>> getPostcodeUnitPointLookups(
             boolean ignorePointsAtOrigin,
             TreeMap<String, File> ONSPDFiles,
@@ -1379,7 +1347,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
     }
 
     private static StreamTokenizer getStreamTokeniser(BufferedReader br) {
-        StreamTokenizer result = null;
+        StreamTokenizer result;
         result = new StreamTokenizer(br);
         result.resetSyntax();
         result.wordChars(',', ',');

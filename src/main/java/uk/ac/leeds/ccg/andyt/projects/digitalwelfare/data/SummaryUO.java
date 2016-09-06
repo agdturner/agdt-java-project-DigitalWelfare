@@ -4249,8 +4249,8 @@ public class SummaryUO extends Summary {
         // Initialise UO
         TreeMap<String, DW_UO_Set> councilUnderOccupiedSets;
         TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets;
-        councilUnderOccupiedSets = DW_UO_Data.getCouncil_Data();
-        RSLUnderOccupiedSets = DW_UO_Data.getRSL_Sets();
+        councilUnderOccupiedSets = DW_UO_Data.getCouncilSets();
+        RSLUnderOccupiedSets = DW_UO_Data.getRSLSets();
         // Initialise first data
         Iterator<Integer> includeIte;
         DW_SHBE_Collection tSHBEData1 = null;
