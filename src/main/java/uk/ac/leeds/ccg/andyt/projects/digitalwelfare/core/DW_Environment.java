@@ -30,6 +30,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.log.DW_Log;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_CollectionHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
@@ -164,8 +165,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     protected DW_UO_Data tDW_UO_Data;
 
     /**
-     * For returning an instance of DW_UO_Handler for
- convenience.
+     * For returning an instance of DW_UO_Handler for convenience.
      * @param reload
      * @return 
      */
@@ -234,6 +234,25 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         return tDW_SHBE_Handler;
     }
 
+    /**
+     * For storing an instance of DW_SHBE_TenancyType_Handler for convenience.
+     */
+    private static DW_SHBE_TenancyType_Handler tDW_SHBE_TenancyType_Handler;
+
+    /**
+     * For returning an instance of DW_SHBE_TenancyType_Handler for convenience.
+     *
+     * @return
+     */
+    public DW_SHBE_TenancyType_Handler getDW_SHBE_TenancyType_Handler() {
+        if (tDW_SHBE_TenancyType_Handler == null) {
+            tDW_SHBE_TenancyType_Handler = new DW_SHBE_TenancyType_Handler(this);
+        }
+        return tDW_SHBE_TenancyType_Handler;
+    }
+
+    
+            
     public DW_Environment(String sDigitalWelfareDir) {
         init_DW_Environment(sDigitalWelfareDir);
     }

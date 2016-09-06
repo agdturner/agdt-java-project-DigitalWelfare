@@ -54,11 +54,14 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class Summary extends DW_Object {
 
-    // Generic vars
+    // For convenience.
     public DW_SHBE_CollectionHandler collectionHandler;
     protected DW_SHBE_Handler tDW_SHBE_Handler;
     protected DW_Strings tDW_Strings;
     protected DW_Postcode_Handler tDW_Postcode_Handler;
+    protected DW_SHBE_TenancyType_Handler tDW_SHBE_TenancyType_Handler;
+    
+    
     protected static final int decimalPlacePrecisionForAverage = 3;
     protected static final int decimalPlacePrecisionForPercentage = 3;
     // Special vars
@@ -780,6 +783,7 @@ public class Summary extends DW_Object {
         this.tDW_SHBE_Handler = env.getDW_SHBE_Handler();
         this.tDW_Strings = env.getDW_Strings();
         this.tDW_Postcode_Handler = env.getDW_Postcode_Handler();
+        this.tDW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
     }
 
     public Summary(
@@ -4454,7 +4458,7 @@ public class Summary extends DW_Object {
         String postcode0;
         postcode0 = null;
         int TT0;
-        TT0 = DW_SHBE_TenancyType_Handler.iMinus999;
+        TT0 = tDW_SHBE_TenancyType_Handler.iMinus999;
         boolean isValidPostcode0;
         isValidPostcode0 = false;
         if (D_Record0 != null) {
@@ -4467,7 +4471,7 @@ public class Summary extends DW_Object {
         String postcode1;
         postcode1 = null;
         int TT1;
-        TT1 = DW_SHBE_TenancyType_Handler.iMinus999;
+        TT1 = tDW_SHBE_TenancyType_Handler.iMinus999;
         boolean isValidPostcode1;
         isValidPostcode1 = false;
         if (D_Record1 != null) {
@@ -4821,12 +4825,12 @@ public class Summary extends DW_Object {
             }
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
-            if (!(tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999
-                    || tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999)) {
+            if (!(tenancyType0 == tDW_SHBE_TenancyType_Handler.iMinus999
+                    || tenancyType1 == tDW_SHBE_TenancyType_Handler.iMinus999)) {
                 HBTotalCount_TTChangeClaimant++;
                 //HBTotalCount_TTChangeClaimantIgnoreMinus999++;
             }
-            if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (tenancyType0 == tDW_SHBE_TenancyType_Handler.iMinus999) {
                 if (tenancyType1 == 1 || tenancyType1 == 4) {
                     TotalCount_Minus999TTToSocialTTs++;
                 }
@@ -4843,7 +4847,7 @@ public class Summary extends DW_Object {
                     TotalCount_HBTTsToMinus999TT++;
                 }
             }
-            if (tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (tenancyType1 == tDW_SHBE_TenancyType_Handler.iMinus999) {
                 if (tenancyType0 == 1 || tenancyType0 == 4) {
                     TotalCount_SocialTTsToMinus999TT++;
                 }
@@ -5013,17 +5017,17 @@ public class Summary extends DW_Object {
             }
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
-            if (!(tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999
-                    || tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999)) {
+            if (!(tenancyType0 == tDW_SHBE_TenancyType_Handler.iMinus999
+                    || tenancyType1 == tDW_SHBE_TenancyType_Handler.iMinus999)) {
                 CTBTotalCount_TTChangeClaimant++;
                 //CTBTotalCount_TTChangeClaimantIgnoreMinus999++;
             }
-            if (tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (tenancyType1 == tDW_SHBE_TenancyType_Handler.iMinus999) {
                 if (tenancyType0 == 5 || tenancyType0 == 7) {
                     TotalCount_CTBTTsToMinus999TT++;
                 }
             }
-            if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (tenancyType0 == tDW_SHBE_TenancyType_Handler.iMinus999) {
                 TotalCount_Minus999TTToCTBTTs++;
             }
             if ((tenancyType0 == 1

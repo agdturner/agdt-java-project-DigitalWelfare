@@ -9723,7 +9723,9 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         }
     }
 
-    protected static TreeMap<String, ArrayList<String>> getAllTenancyTypeGroups() {
+    protected TreeMap<String, ArrayList<String>> getAllTenancyTypeGroups() {
+        DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
+        DW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
         TreeMap<String, ArrayList<String>> result;
         result = new TreeMap<String, ArrayList<String>>();
         ArrayList<String> l;

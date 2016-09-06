@@ -2282,6 +2282,8 @@ public class DW_LineGraph extends Generic_LineGraph {
         labels = new ArrayList<String>();
 //        labels.addAll(maps.keySet()); // This does not work as maps is gc resulting in labels becoming null for some reason.
         // Declare nonZero2
+        DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
+        DW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
         TreeMap<String, Boolean> nonZero2;
         nonZero2 = new TreeMap<String, Boolean>();
         Iterator<String> iteS;

@@ -60,10 +60,13 @@ public class TenancyChangesUO extends DW_Object {
     
     /**
      * A reference to DW_Environment
+     * For convenience;
      */
-    DW_SHBE_CollectionHandler collectionHandler;
-    DW_Strings tDW_Strings;
-    DW_SHBE_Handler tDW_SHBE_Handler;
+    DW_SHBE_CollectionHandler DW_SHBE_CollectionHandler;
+    DW_Strings DW_Strings;
+    DW_SHBE_Handler DW_SHBE_Handler;
+    DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
+    
     HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup;
     HashSet<String> validPostcodes;
     //HashMap<String, HashSet<String>> validPostcodes;
@@ -1168,7 +1171,7 @@ public class TenancyChangesUO extends DW_Object {
     }
 
     private void initString() {
-        sTT_ = sTT + tDW_Strings.sUnderscore;
+        sTT_ = sTT + DW_Strings.sUnderscore;
     
         sTravellers = "a_Travellers"; // Letter_ added for ordering purposes.
         sTTNot1Or4AndUnderOccupying = "b_TTNot1Or4AndUnderOccupying";
@@ -1193,14 +1196,14 @@ public class TenancyChangesUO extends DW_Object {
 
     public TenancyChangesUO(
             DW_Environment env,
-            DW_SHBE_CollectionHandler collectionHandler,
-            DW_SHBE_Handler tDW_SHBE_Handler,
+            String aPT,
             HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup,
             boolean handleOutOfMemoryError) {
         this.env = env;
-        this.tDW_Strings = env.getDW_Strings();
-        this.collectionHandler = collectionHandler;
-        this.tDW_SHBE_Handler = tDW_SHBE_Handler;
+        this.DW_Strings = env.getDW_Strings();
+        this.DW_SHBE_CollectionHandler = env.getDW_SHBE_CollectionHandler(aPT);
+        this.DW_SHBE_Handler = env.getDW_SHBE_Handler();
+        this.DW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
         this.handleOutOfMemoryError = handleOutOfMemoryError;
         this.tPostcodeToPostcodeIDLookup = tPostcodeToPostcodeIDLookup;
         initString();
@@ -1219,40 +1222,40 @@ public class TenancyChangesUO extends DW_Object {
         tCTBRefsIte = tCTBRefs.iterator();
         while (tCTBRefsIte.hasNext()) {
             aCTBRef = tCTBRefsIte.next();
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sTT, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sUnderOccupancy, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sP, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sWHBE, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sWERA, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sPSI, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sSHBC, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sRTHBCC, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sCEG, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sHS, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sND, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sCD, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sNDUO, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sCO16, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sFCU10, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sMCU10, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sFC10To16, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sMC10To16, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sBR, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sNB, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sCDoB, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sCA, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sPDoB, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sPA, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sCG, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sPG, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sDisability, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sDisabilityPremium, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sDisabilitySevere, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sDisabilityEnhanced, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sDisabledChild, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sPDeath, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sHBDP, s);
-            result.put(aCTBRef + tDW_Strings.sUnderscore + sA, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sTT, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sUnderOccupancy, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sP, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sWHBE, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sWERA, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sPSI, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sSHBC, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sRTHBCC, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sCEG, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sHS, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sND, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sCD, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sNDUO, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sCO16, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sFCU10, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sMCU10, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sFC10To16, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sMC10To16, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sBR, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sNB, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sCDoB, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sCA, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sPDoB, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sPA, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sCG, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sPG, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sDisability, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sDisabilityPremium, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sDisabilitySevere, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sDisabilityEnhanced, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sDisabledChild, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sPDeath, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sHBDP, s);
+            result.put(aCTBRef + DW_Strings.sUnderscore + sA, s);
         }
         Iterator<Integer> tNotMonthlyUOIte;
         DW_SHBE_Collection tSHBEData;
@@ -1273,8 +1276,8 @@ public class TenancyChangesUO extends DW_Object {
         while (tNotMonthlyUOIte.hasNext()) {
             i = tNotMonthlyUOIte.next();
             tSHBEData = new DW_SHBE_Collection(env, SHBEFilenames[i], paymentType);
-            year = tDW_SHBE_Handler.getYear(SHBEFilenames[i]);
-            month = tDW_SHBE_Handler.getMonthNumber(SHBEFilenames[i]);
+            year = DW_SHBE_Handler.getYear(SHBEFilenames[i]);
+            month = DW_SHBE_Handler.getMonthNumber(SHBEFilenames[i]);
             records = tSHBEData.getRecords();
             tCTBRefsIte = tCTBRefs.iterator();
             while (tCTBRefsIte.hasNext()) {
@@ -1283,408 +1286,408 @@ public class TenancyChangesUO extends DW_Object {
                 if (record != null) {
                     dRecord = record.getDRecord();
                     // Tenancy Type
-                    key = aCTBRef + tDW_Strings.sUnderscore + sTT;
+                    key = aCTBRef + DW_Strings.sUnderscore + sTT;
                     aS = result.get(key);
                     j = dRecord.getTenancyType();
-                    aS += tDW_Strings.sCommaSpace + sTT_ + j;
+                    aS += DW_Strings.sCommaSpace + sTT_ + j;
                     result.put(key, aS);
                     // Under Occupancy
-                    key = aCTBRef + tDW_Strings.sUnderscore + sUnderOccupancy;
+                    key = aCTBRef + DW_Strings.sUnderscore + sUnderOccupancy;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Postcode
-                    key = aCTBRef + tDW_Strings.sUnderscore + sP;
+                    key = aCTBRef + DW_Strings.sUnderscore + sP;
                     aS = result.get(key);
                     bS = dRecord.getClaimantsPostcode();
-                    aS += tDW_Strings.sCommaSpace + bS;
+                    aS += DW_Strings.sCommaSpace + bS;
                     result.put(key, aS);
                     // Weekly Housing Benefit Entitlement
-                    key = aCTBRef + tDW_Strings.sUnderscore + sWHBE;
+                    key = aCTBRef + DW_Strings.sUnderscore + sWHBE;
                     aS = result.get(key);
                     j = dRecord.getWeeklyHousingBenefitEntitlement();
-                    aS += tDW_Strings.sCommaSpace + decimalise(j);
+                    aS += DW_Strings.sCommaSpace + decimalise(j);
                     result.put(key, aS);
                     // Weekly Eligible Rent Amount
-                    key = aCTBRef + tDW_Strings.sUnderscore + sWERA;
+                    key = aCTBRef + DW_Strings.sUnderscore + sWERA;
                     aS = result.get(key);
                     j = dRecord.getWeeklyEligibleRentAmount();
-                    aS += tDW_Strings.sCommaSpace + decimalise(j);
+                    aS += DW_Strings.sCommaSpace + decimalise(j);
                     result.put(key, aS);
                     // PassportedStandardIndicator
-                    key = aCTBRef + tDW_Strings.sUnderscore + sPSI;
+                    key = aCTBRef + DW_Strings.sUnderscore + sPSI;
                     aS = result.get(key);
                     j = dRecord.getPassportedStandardIndicator();
-                    aS += tDW_Strings.sCommaSpace + j;
+                    aS += DW_Strings.sCommaSpace + j;
                     result.put(key, aS);
                     // StatusOfHBClaim
-                    key = aCTBRef + tDW_Strings.sUnderscore + sSHBC;
+                    key = aCTBRef + DW_Strings.sUnderscore + sSHBC;
                     aS = result.get(key);
                     j = dRecord.getStatusOfHBClaimAtExtractDate();
-                    aS += tDW_Strings.sCommaSpace + j;
+                    aS += DW_Strings.sCommaSpace + j;
                     result.put(key, aS);
                     // ReasonThatHBClaimClosed
-                    key = aCTBRef + tDW_Strings.sUnderscore + sRTHBCC;
+                    key = aCTBRef + DW_Strings.sUnderscore + sRTHBCC;
                     aS = result.get(key);
                     j = dRecord.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
                     if (j == 0) {
-                        aS += tDW_Strings.sCommaSpace;
+                        aS += DW_Strings.sCommaSpace;
                     } else {
-                        aS += tDW_Strings.sCommaSpace + j;
+                        aS += DW_Strings.sCommaSpace + j;
                     }
                     result.put(key, aS);
                     // ClaimantEthnicGroup
-                    key = aCTBRef + tDW_Strings.sUnderscore + sCEG;
+                    key = aCTBRef + DW_Strings.sUnderscore + sCEG;
                     aS = result.get(key);
                     //j = dRecord.getClaimantsEthnicGroup();
-                    j = tDW_SHBE_Handler.getEthnicityGroup(dRecord);
-                    aS += tDW_Strings.sCommaSpace + j;
+                    j = DW_SHBE_Handler.getEthnicityGroup(dRecord);
+                    aS += DW_Strings.sCommaSpace + j;
                     result.put(key, aS);
                     // Household Size
-                    key = aCTBRef + tDW_Strings.sUnderscore + sHS;
+                    key = aCTBRef + DW_Strings.sUnderscore + sHS;
                     aS = result.get(key);
-                    j = (int) tDW_SHBE_Handler.getHouseholdSize(dRecord);
-                    aS += tDW_Strings.sCommaSpace + j;
+                    j = (int) DW_SHBE_Handler.getHouseholdSize(dRecord);
+                    aS += DW_Strings.sCommaSpace + j;
                     result.put(key, aS);
                     // NonDependents
-                    key = aCTBRef + tDW_Strings.sUnderscore + sND;
+                    key = aCTBRef + DW_Strings.sUnderscore + sND;
                     aS = result.get(key);
                     j = dRecord.getNumberOfNonDependents();
                     if (j == 0) {
-                        aS += tDW_Strings.sCommaSpace;
+                        aS += DW_Strings.sCommaSpace;
                     } else {
-                        aS += tDW_Strings.sCommaSpace + j;
+                        aS += DW_Strings.sCommaSpace + j;
                     }
                     result.put(key, aS);
                     // Child Dependents
-                    key = aCTBRef + tDW_Strings.sUnderscore + sCD;
+                    key = aCTBRef + DW_Strings.sUnderscore + sCD;
                     aS = result.get(key);
                     j = dRecord.getNumberOfChildDependents();
                     if (j == 0) {
-                        aS += tDW_Strings.sCommaSpace;
+                        aS += DW_Strings.sCommaSpace;
                     } else {
-                        aS += tDW_Strings.sCommaSpace + j;
+                        aS += DW_Strings.sCommaSpace + j;
                     }
                     result.put(key, aS);
                     // NonDependents (UO)
-                    key = aCTBRef + tDW_Strings.sUnderscore + sNDUO;
+                    key = aCTBRef + DW_Strings.sUnderscore + sNDUO;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // ChildrenOver16
-                    key = aCTBRef + tDW_Strings.sUnderscore + sCO16;
+                    key = aCTBRef + DW_Strings.sUnderscore + sCO16;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // FemaleChildrenUnder10";
-                    key = aCTBRef + tDW_Strings.sUnderscore + sFCU10;
+                    key = aCTBRef + DW_Strings.sUnderscore + sFCU10;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // MaleChildrenUnder10";
-                    key = aCTBRef + tDW_Strings.sUnderscore + sMCU10;
+                    key = aCTBRef + DW_Strings.sUnderscore + sMCU10;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // FemaleChildren10to16";
-                    key = aCTBRef + tDW_Strings.sUnderscore + sFC10To16;
+                    key = aCTBRef + DW_Strings.sUnderscore + sFC10To16;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // MaleChildren10to16
-                    key = aCTBRef + tDW_Strings.sUnderscore + sMC10To16;
+                    key = aCTBRef + DW_Strings.sUnderscore + sMC10To16;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Number of Bedrooms
-                    key = aCTBRef + tDW_Strings.sUnderscore + sNB;
+                    key = aCTBRef + DW_Strings.sUnderscore + sNB;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Bedroom Requirement
-                    key = aCTBRef + tDW_Strings.sUnderscore + sBR;
+                    key = aCTBRef + DW_Strings.sUnderscore + sBR;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Claimants Date Of Birth
-                    key = aCTBRef + tDW_Strings.sUnderscore + sCDoB;
+                    key = aCTBRef + DW_Strings.sUnderscore + sCDoB;
                     aS = result.get(key);
                     bS = dRecord.getClaimantsDateOfBirth();
-                    aS += tDW_Strings.sCommaSpace + bS;
+                    aS += DW_Strings.sCommaSpace + bS;
                     result.put(key, aS);
                     // ClaimantsAge
-                    key = aCTBRef + tDW_Strings.sUnderscore + sCA;
+                    key = aCTBRef + DW_Strings.sUnderscore + sCA;
                     aS = result.get(key);
-                    bS = tDW_SHBE_Handler.getClaimantsAge(year, month, dRecord);
-                    aS += tDW_Strings.sCommaSpace + bS;
+                    bS = DW_SHBE_Handler.getClaimantsAge(year, month, dRecord);
+                    aS += DW_Strings.sCommaSpace + bS;
                     result.put(key, aS);
                     // Partners Date Of Birth
-                    key = aCTBRef + tDW_Strings.sUnderscore + sPDoB;
+                    key = aCTBRef + DW_Strings.sUnderscore + sPDoB;
                     aS = result.get(key);
                     bS = dRecord.getPartnersDateOfBirth();
-                    aS += tDW_Strings.sCommaSpace + bS;
+                    aS += DW_Strings.sCommaSpace + bS;
                     result.put(key, aS);
                     // PartnersAge
-                    key = aCTBRef + tDW_Strings.sUnderscore + sPA;
+                    key = aCTBRef + DW_Strings.sUnderscore + sPA;
                     aS = result.get(key);
-                    bS = tDW_SHBE_Handler.getPartnersAge(year, month, dRecord);
-                    aS += tDW_Strings.sCommaSpace + bS;
+                    bS = DW_SHBE_Handler.getPartnersAge(year, month, dRecord);
+                    aS += DW_Strings.sCommaSpace + bS;
                     result.put(key, aS);
                     // ClaimantsGender
-                    key = aCTBRef + tDW_Strings.sUnderscore + sCG;
+                    key = aCTBRef + DW_Strings.sUnderscore + sCG;
                     aS = result.get(key);
                     bS = dRecord.getClaimantsGender();
-                    aS += tDW_Strings.sCommaSpace + bS;
+                    aS += DW_Strings.sCommaSpace + bS;
                     result.put(key, aS);
                     // PartnersGender
-                    key = aCTBRef + tDW_Strings.sUnderscore + sPG;
+                    key = aCTBRef + DW_Strings.sUnderscore + sPG;
                     aS = result.get(key);
                     bS = dRecord.getPartnersGender();
-                    aS += tDW_Strings.sCommaSpace + bS;
+                    aS += DW_Strings.sCommaSpace + bS;
                     result.put(key, aS);
                     // Disability
-                    key = aCTBRef + tDW_Strings.sUnderscore + sDisability;
+                    key = aCTBRef + DW_Strings.sUnderscore + sDisability;
                     aS = result.get(key);
-                    b = tDW_SHBE_Handler.getDisability(dRecord);
+                    b = DW_SHBE_Handler.getDisability(dRecord);
                     if (b == true) {
-                        aS += tDW_Strings.sCommaSpace + sDisability;
+                        aS += DW_Strings.sCommaSpace + sDisability;
                     } else {
-                        aS += tDW_Strings.sCommaSpace;
+                        aS += DW_Strings.sCommaSpace;
                     }
                     result.put(key, aS);
                     // Disability Premium
-                    key = aCTBRef + tDW_Strings.sUnderscore + sDisabilityPremium;
+                    key = aCTBRef + DW_Strings.sUnderscore + sDisabilityPremium;
                     aS = result.get(key);
                     j = dRecord.getDisabilityPremiumAwarded();
                     if (j == 1) {
-                        aS += tDW_Strings.sCommaSpace + sDP;
+                        aS += DW_Strings.sCommaSpace + sDP;
                     } else {
-                        aS += tDW_Strings.sCommaSpace;
+                        aS += DW_Strings.sCommaSpace;
                     }
                     result.put(key, aS);
                     // Disability Severe
-                    key = aCTBRef + tDW_Strings.sUnderscore + sDisabilitySevere;
+                    key = aCTBRef + DW_Strings.sUnderscore + sDisabilitySevere;
                     aS = result.get(key);
                     j = dRecord.getSevereDisabilityPremiumAwarded();
                     if (j == 1) {
-                        aS += tDW_Strings.sCommaSpace + sDS;
+                        aS += DW_Strings.sCommaSpace + sDS;
                     } else {
-                        aS += tDW_Strings.sCommaSpace;
+                        aS += DW_Strings.sCommaSpace;
                     }
                     result.put(key, aS);
                     // Disability Enhanced
-                    key = aCTBRef + tDW_Strings.sUnderscore + sDisabilityEnhanced;
+                    key = aCTBRef + DW_Strings.sUnderscore + sDisabilityEnhanced;
                     aS = result.get(key);
                     j = dRecord.getEnhancedDisabilityPremiumAwarded();
                     if (j == 1) {
-                        aS += tDW_Strings.sCommaSpace + sDE;
+                        aS += DW_Strings.sCommaSpace + sDE;
                     } else {
-                        aS += tDW_Strings.sCommaSpace;
+                        aS += DW_Strings.sCommaSpace;
                     }
                     result.put(key, aS);
                     // Child Disability
-                    key = aCTBRef + tDW_Strings.sUnderscore + sDisabledChild;
+                    key = aCTBRef + DW_Strings.sUnderscore + sDisabledChild;
                     aS = result.get(key);
                     j = dRecord.getDisabledChildPremiumAwarded();
                     if (j == 1) {
-                        aS += tDW_Strings.sCommaSpace + sDC;
+                        aS += DW_Strings.sCommaSpace + sDC;
                     } else {
-                        aS += tDW_Strings.sCommaSpace;
+                        aS += DW_Strings.sCommaSpace;
                     }
                     result.put(key, aS);
                     // Partner Death
-                    key = aCTBRef + tDW_Strings.sUnderscore + sPDeath;
+                    key = aCTBRef + DW_Strings.sUnderscore + sPDeath;
                     aS = result.get(key);
                     bS = dRecord.getPartnersDateOfDeath();
                     if (bS == null) {
-                        aS += tDW_Strings.sCommaSpace;
+                        aS += DW_Strings.sCommaSpace;
                     } else if (bS.isEmpty()) {
-                        aS += tDW_Strings.sCommaSpace;
+                        aS += DW_Strings.sCommaSpace;
                     } else {
-                        aS += tDW_Strings.sCommaSpace + sPDeath + tDW_Strings.sUnderscore + bS;
+                        aS += DW_Strings.sCommaSpace + sPDeath + DW_Strings.sUnderscore + bS;
                     }
                     result.put(key, aS);
                     // HB Discretionary Payment
-                    key = aCTBRef + tDW_Strings.sUnderscore + sHBDP;
+                    key = aCTBRef + DW_Strings.sUnderscore + sHBDP;
                     aS = result.get(key);
                     j = dRecord.getWeeklyAdditionalDiscretionaryPayment();
-                    aS += tDW_Strings.sCommaSpace + decimalise(j);
+                    aS += DW_Strings.sCommaSpace + decimalise(j);
                     result.put(key, aS);
                     // Arrears
-                    key = aCTBRef + tDW_Strings.sUnderscore + sA;
+                    key = aCTBRef + DW_Strings.sUnderscore + sA;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                 } else {
                     // Tenancy Type
-                    key = aCTBRef + tDW_Strings.sUnderscore + sTT;
+                    key = aCTBRef + DW_Strings.sUnderscore + sTT;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Under Occupancy
-                    key = aCTBRef + tDW_Strings.sUnderscore + sUnderOccupancy;
+                    key = aCTBRef + DW_Strings.sUnderscore + sUnderOccupancy;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Postcode
-                    key = aCTBRef + tDW_Strings.sUnderscore + sP;
+                    key = aCTBRef + DW_Strings.sUnderscore + sP;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Weekly Housing Benefit Entitlement
-                    key = aCTBRef + tDW_Strings.sUnderscore + sWHBE;
+                    key = aCTBRef + DW_Strings.sUnderscore + sWHBE;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Weekly Eligible Rent Amount
-                    key = aCTBRef + tDW_Strings.sUnderscore + sWERA;
+                    key = aCTBRef + DW_Strings.sUnderscore + sWERA;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // PassportedStandardIndicator
-                    key = aCTBRef + tDW_Strings.sUnderscore + sPSI;
+                    key = aCTBRef + DW_Strings.sUnderscore + sPSI;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // StatusOfHBClaim
-                    key = aCTBRef + tDW_Strings.sUnderscore + sSHBC;
+                    key = aCTBRef + DW_Strings.sUnderscore + sSHBC;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // ReasonThatHBClaimClosed
-                    key = aCTBRef + tDW_Strings.sUnderscore + sRTHBCC;
+                    key = aCTBRef + DW_Strings.sUnderscore + sRTHBCC;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // ClaimantEthnicGroup
-                    key = aCTBRef + tDW_Strings.sUnderscore + sCEG;
+                    key = aCTBRef + DW_Strings.sUnderscore + sCEG;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Household Size
-                    key = aCTBRef + tDW_Strings.sUnderscore + sHS;
+                    key = aCTBRef + DW_Strings.sUnderscore + sHS;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // NonDependents
-                    key = aCTBRef + tDW_Strings.sUnderscore + sND;
+                    key = aCTBRef + DW_Strings.sUnderscore + sND;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // ChildDependents
-                    key = aCTBRef + tDW_Strings.sUnderscore + sCD;
+                    key = aCTBRef + DW_Strings.sUnderscore + sCD;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // NonDependents (UO)
-                    key = aCTBRef + tDW_Strings.sUnderscore + sNDUO;
+                    key = aCTBRef + DW_Strings.sUnderscore + sNDUO;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // ChildrenOver16
-                    key = aCTBRef + tDW_Strings.sUnderscore + sCO16;
+                    key = aCTBRef + DW_Strings.sUnderscore + sCO16;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // FemaleChildrenUnder10";
-                    key = aCTBRef + tDW_Strings.sUnderscore + sFCU10;
+                    key = aCTBRef + DW_Strings.sUnderscore + sFCU10;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // MaleChildrenUnder10";
-                    key = aCTBRef + tDW_Strings.sUnderscore + sMCU10;
+                    key = aCTBRef + DW_Strings.sUnderscore + sMCU10;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // FemaleChildren10to16";
-                    key = aCTBRef + tDW_Strings.sUnderscore + sFC10To16;
+                    key = aCTBRef + DW_Strings.sUnderscore + sFC10To16;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // MaleChildren10to16
-                    key = aCTBRef + tDW_Strings.sUnderscore + sMC10To16;
+                    key = aCTBRef + DW_Strings.sUnderscore + sMC10To16;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Number of Bedrooms
-                    key = aCTBRef + tDW_Strings.sUnderscore + sNB;
+                    key = aCTBRef + DW_Strings.sUnderscore + sNB;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Bedroom Requirement
-                    key = aCTBRef + tDW_Strings.sUnderscore + sBR;
+                    key = aCTBRef + DW_Strings.sUnderscore + sBR;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Claimants Date Of Birth
-                    key = aCTBRef + tDW_Strings.sUnderscore + sCDoB;
+                    key = aCTBRef + DW_Strings.sUnderscore + sCDoB;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // ClaimantsAge
-                    key = aCTBRef + tDW_Strings.sUnderscore + sCA;
+                    key = aCTBRef + DW_Strings.sUnderscore + sCA;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Partners Date Of Birth
-                    key = aCTBRef + tDW_Strings.sUnderscore + sPDoB;
+                    key = aCTBRef + DW_Strings.sUnderscore + sPDoB;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Partners Age
-                    key = aCTBRef + tDW_Strings.sUnderscore + sPA;
+                    key = aCTBRef + DW_Strings.sUnderscore + sPA;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // ClaimantsGender
-                    key = aCTBRef + tDW_Strings.sUnderscore + sCG;
+                    key = aCTBRef + DW_Strings.sUnderscore + sCG;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Partners Gender
-                    key = aCTBRef + tDW_Strings.sUnderscore + sPG;
+                    key = aCTBRef + DW_Strings.sUnderscore + sPG;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Disability
-                    key = aCTBRef + tDW_Strings.sUnderscore + sDisability;
+                    key = aCTBRef + DW_Strings.sUnderscore + sDisability;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Disability Premium
-                    key = aCTBRef + tDW_Strings.sUnderscore + sDisabilityPremium;
+                    key = aCTBRef + DW_Strings.sUnderscore + sDisabilityPremium;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Disability Severe
-                    key = aCTBRef + tDW_Strings.sUnderscore + sDisabilitySevere;
+                    key = aCTBRef + DW_Strings.sUnderscore + sDisabilitySevere;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Disability Enhanced
-                    key = aCTBRef + tDW_Strings.sUnderscore + sDisabilityEnhanced;
+                    key = aCTBRef + DW_Strings.sUnderscore + sDisabilityEnhanced;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Child Disability
-                    key = aCTBRef + tDW_Strings.sUnderscore + sDisabledChild;
+                    key = aCTBRef + DW_Strings.sUnderscore + sDisabledChild;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Partner Death
-                    key = aCTBRef + tDW_Strings.sUnderscore + sPDeath;
+                    key = aCTBRef + DW_Strings.sUnderscore + sPDeath;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // HB Discretionary Payment
-                    key = aCTBRef + tDW_Strings.sUnderscore + sHBDP;
+                    key = aCTBRef + DW_Strings.sUnderscore + sHBDP;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                     // Arrears
-                    key = aCTBRef + tDW_Strings.sUnderscore + sA;
+                    key = aCTBRef + DW_Strings.sUnderscore + sA;
                     aS = result.get(key);
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                     result.put(key, aS);
                 }
             }
@@ -1884,11 +1887,11 @@ public class TenancyChangesUO extends DW_Object {
         tEndUOThatWereAlsoStartUOCTBRefs.retainAll(tStartUOCTBRefs);
 
         TreeMap<String, ArrayList<Integer>> includes;
-        includes = tDW_SHBE_Handler.getIncludes();
+        includes = DW_SHBE_Handler.getIncludes();
         ArrayList<Integer> MonthlyUO;
-        MonthlyUO = includes.get(tDW_Strings.sIncludeMonthlySinceApril2013);
+        MonthlyUO = includes.get(DW_Strings.sIncludeMonthlySinceApril2013);
         ArrayList<Integer> All;
-        All = includes.get(tDW_Strings.sIncludeAll);
+        All = includes.get(DW_Strings.sIncludeAll);
         ArrayList<Integer> NotMonthlyUO;
         NotMonthlyUO = new ArrayList<Integer>();
         NotMonthlyUO.addAll(All);
@@ -1923,9 +1926,9 @@ public class TenancyChangesUO extends DW_Object {
             j = iteX.next();
         }
         aSHBEFilename = SHBEFilenames[j];
-        aYM3 = tDW_SHBE_Handler.getYM3(aSHBEFilename);
-        year = tDW_SHBE_Handler.getYear(aSHBEFilename);
-        month = tDW_SHBE_Handler.getMonthNumber(aSHBEFilename);
+        aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
+        year = DW_SHBE_Handler.getYear(aSHBEFilename);
+        month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
         councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
         if (councilUnderOccupiedSet1 != null) {
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
@@ -2789,13 +2792,13 @@ public class TenancyChangesUO extends DW_Object {
         tCTBRefsIte = tCTBRefs.iterator();
         while (tCTBRefsIte.hasNext()) {
             aCTBRef = tCTBRefsIte.next();
-            aggregateStatistics.put(aCTBRef + tDW_Strings.sUnderscore + sTotal_DHP, BigDecimal.ZERO);
-            aggregateStatistics.put(aCTBRef + tDW_Strings.sUnderscore + sTotalCount_DHP, BigDecimal.ZERO);
-            aggregateStatistics.put(aCTBRef + tDW_Strings.sUnderscore + sTotal_HBLossDueToUO, BigDecimal.ZERO);
-            aggregateStatistics.put(aCTBRef + tDW_Strings.sUnderscore + sTotalCount_HBLossDueToUO, BigDecimal.ZERO);
-            aggregateStatistics.put(aCTBRef + tDW_Strings.sUnderscore + sMax_Arrears, BigDecimal.ZERO);
-            aggregateStatistics.put(aCTBRef + tDW_Strings.sUnderscore + sTotalCount_Arrears, BigDecimal.ZERO);
-            aggregateStatistics.put(aCTBRef + tDW_Strings.sUnderscore + sTotalCount_UnderOccupancy, BigDecimal.ZERO);
+            aggregateStatistics.put(aCTBRef + DW_Strings.sUnderscore + sTotal_DHP, BigDecimal.ZERO);
+            aggregateStatistics.put(aCTBRef + DW_Strings.sUnderscore + sTotalCount_DHP, BigDecimal.ZERO);
+            aggregateStatistics.put(aCTBRef + DW_Strings.sUnderscore + sTotal_HBLossDueToUO, BigDecimal.ZERO);
+            aggregateStatistics.put(aCTBRef + DW_Strings.sUnderscore + sTotalCount_HBLossDueToUO, BigDecimal.ZERO);
+            aggregateStatistics.put(aCTBRef + DW_Strings.sUnderscore + sMax_Arrears, BigDecimal.ZERO);
+            aggregateStatistics.put(aCTBRef + DW_Strings.sUnderscore + sTotalCount_Arrears, BigDecimal.ZERO);
+            aggregateStatistics.put(aCTBRef + DW_Strings.sUnderscore + sTotalCount_UnderOccupancy, BigDecimal.ZERO);
         }
 
         // Use sets?
@@ -2811,40 +2814,40 @@ public class TenancyChangesUO extends DW_Object {
         tCTBRefsIte = tCTBRefs.iterator();
         while (tCTBRefsIte.hasNext()) {
             aCTBRef = tCTBRefsIte.next();
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sTT, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sUnderOccupancy, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sP, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sWHBE, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sWERA, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sPSI, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sSHBC, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sRTHBCC, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sCEG, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sHS, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sND, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sCD, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sNDUO, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sCO16, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sFCU10, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sMCU10, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sFC10To16, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sMC10To16, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sNB, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sBR, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sCDoB, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sCA, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sPDoB, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sPA, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sCG, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sPG, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sDisability, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sDisabilityPremium, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sDisabilitySevere, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sDisabilityEnhanced, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sDisabledChild, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sPDeath, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sHBDP, s);
-            tableValues.put(aCTBRef + tDW_Strings.sUnderscore + sA, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sTT, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sUnderOccupancy, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sP, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sWHBE, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sWERA, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sPSI, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sSHBC, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sRTHBCC, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sCEG, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sHS, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sND, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sCD, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sNDUO, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sCO16, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sFCU10, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sMCU10, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sFC10To16, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sMC10To16, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sNB, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sBR, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sCDoB, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sCA, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sPDoB, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sPA, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sCG, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sPG, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sDisability, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sDisabilityPremium, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sDisabilitySevere, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sDisabilityEnhanced, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sDisabledChild, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sPDeath, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sHBDP, s);
+            tableValues.put(aCTBRef + DW_Strings.sUnderscore + sA, s);
             DHP_Totals.put(aCTBRef, 0);
         }
 
@@ -2861,8 +2864,8 @@ public class TenancyChangesUO extends DW_Object {
             tNotMonthlyUOIte = NotMonthlyUO.iterator();
             while (tNotMonthlyUOIte.hasNext()) {
                 i = tNotMonthlyUOIte.next();
-                yM3 = tDW_SHBE_Handler.getYM3(SHBEFilenames[i]);
-                header += yM3 + tDW_Strings.sCommaSpace;
+                yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                header += yM3 + DW_Strings.sCommaSpace;
             }
         }
 
@@ -2872,9 +2875,9 @@ public class TenancyChangesUO extends DW_Object {
         while (!initFirst) {
             i = includeIte.next();
             aSHBEFilename = SHBEFilenames[i];
-            aYM3 = tDW_SHBE_Handler.getYM3(aSHBEFilename);
-            year = tDW_SHBE_Handler.getYear(aSHBEFilename);
-            month = tDW_SHBE_Handler.getMonthNumber(aSHBEFilename);
+            aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
+            year = DW_SHBE_Handler.getYear(aSHBEFilename);
+            month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
             councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
             if (councilUnderOccupiedSet1 != null) {
                 RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
@@ -3202,14 +3205,14 @@ public class TenancyChangesUO extends DW_Object {
             cRecords = bRecords;
             bRecords = aRecords;
             aSHBEFilename = SHBEFilenames[i];
-            aYM3 = tDW_SHBE_Handler.getYM3(aSHBEFilename);
-            year = tDW_SHBE_Handler.getYear(aSHBEFilename);
-            month = tDW_SHBE_Handler.getMonthNumber(aSHBEFilename);
+            aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
+            year = DW_SHBE_Handler.getYear(aSHBEFilename);
+            month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
             aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, aPT);
             aRecords = aSHBEData.getRecords();
             councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
-            header += tDW_Strings.sCommaSpace + aYM3;
+            header += DW_Strings.sCommaSpace + aYM3;
             tCTBRefsIte = tCTBRefs.iterator();
             while (tCTBRefsIte.hasNext()) {
                 aCTBRef = tCTBRefsIte.next();
@@ -3503,7 +3506,7 @@ public class TenancyChangesUO extends DW_Object {
         tCTBRefSetUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.retainAll(tCTBRefSetUOTT1_To_TT3OrTT6AtSomePoint);
         tCTBRefSetUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999.retainAll(tCTBRefSetUOTT4_To_TT3OrTT6AtSomePoint);
 
-        header += tDW_Strings.sCommaSpace + "HBDPTotal";
+        header += DW_Strings.sCommaSpace + "HBDPTotal";
 
 //        TreeSet<String> tCTBRefSetValidPostcodeChange; // Calculate by removing all from tCTBRefSetNoValidPostcodeChange.
 //        tCTBRefSetValidPostcodeChange = new TreeSet<String>();
@@ -3551,9 +3554,9 @@ public class TenancyChangesUO extends DW_Object {
         ite = tCTBRefs.iterator();
         while (ite.hasNext()) {
             aCTBRef = ite.next();
-            key = aCTBRef + tDW_Strings.sUnderscore + sUnderOccupancy;
+            key = aCTBRef + DW_Strings.sUnderscore + sUnderOccupancy;
             aS = tableValues.get(key);
-            if (aS.endsWith(tDW_Strings.sCommaSpace)) {
+            if (aS.endsWith(DW_Strings.sCommaSpace)) {
                 tCTBRefSetIntermitantUO.add(aCTBRef);
             }
         }
@@ -3634,7 +3637,7 @@ public class TenancyChangesUO extends DW_Object {
             aCTBRef = iteS.next();
             DW_SHBE_Record rec = aRecords.get(aCTBRef);
             if (rec != null) {
-                totalHouseholdSize += tDW_SHBE_Handler.getHouseholdSize(rec);
+                totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(rec);
                 d += 1.0d;
             }
         }
@@ -3654,7 +3657,7 @@ public class TenancyChangesUO extends DW_Object {
             aCTBRef = iteS.next();
             DW_SHBE_Record rec = aRecords.get(aCTBRef);
             if (rec != null) {
-                totalHouseholdSize += tDW_SHBE_Handler.getHouseholdSize(rec);
+                totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(rec);
                 d += 1.0d;
             }
         }
@@ -4535,12 +4538,12 @@ public class TenancyChangesUO extends DW_Object {
             aSHBC = aDW_SHBE_D_Record.getStatusOfHBClaimAtExtractDate();
             aRTHBCC = aDW_SHBE_D_Record.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
             aCEG = aDW_SHBE_D_Record.getClaimantsEthnicGroup();
-            aHS = tDW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
+            aHS = DW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
             aND = aDW_SHBE_D_Record.getNumberOfNonDependents();
             aCD = aDW_SHBE_D_Record.getNumberOfChildDependents();
             aCDoB = aDW_SHBE_D_Record.getClaimantsDateOfBirth();
             aPDoB = aDW_SHBE_D_Record.getPartnersDateOfBirth();
-            if (tDW_SHBE_Handler.getDisability(aDW_SHBE_D_Record)) {
+            if (DW_SHBE_Handler.getDisability(aDW_SHBE_D_Record)) {
                 aD = sDisability;
             } else {
                 aD = s;
@@ -4569,8 +4572,8 @@ public class TenancyChangesUO extends DW_Object {
             } else {
                 aDC = s;
             }
-            aCA = tDW_SHBE_Handler.getClaimantsAge(year, month, aDW_SHBE_D_Record);
-            aPA = tDW_SHBE_Handler.getPartnersAge(year, month, aDW_SHBE_D_Record);
+            aCA = DW_SHBE_Handler.getClaimantsAge(year, month, aDW_SHBE_D_Record);
+            aPA = DW_SHBE_Handler.getPartnersAge(year, month, aDW_SHBE_D_Record);
             aCG = aDW_SHBE_D_Record.getClaimantsGender();
             aPG = aDW_SHBE_D_Record.getPartnersGender();
             aPDD = aDW_SHBE_D_Record.getPartnersDateOfDeath();
@@ -4608,15 +4611,15 @@ public class TenancyChangesUO extends DW_Object {
             bSHBC = bDW_SHBE_D_Record.getStatusOfHBClaimAtExtractDate();
             bRTHBCC = bDW_SHBE_D_Record.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
             //bCEG = bDW_SHBE_D_Record.getClaimantsEthnicGroup();
-            bCEG = tDW_SHBE_Handler.getEthnicityGroup(bDW_SHBE_D_Record);
-            bHS = tDW_SHBE_Handler.getHouseholdSize(bDW_SHBE_D_Record);
+            bCEG = DW_SHBE_Handler.getEthnicityGroup(bDW_SHBE_D_Record);
+            bHS = DW_SHBE_Handler.getHouseholdSize(bDW_SHBE_D_Record);
             bND = bDW_SHBE_D_Record.getNumberOfNonDependents();
             bCD = bDW_SHBE_D_Record.getNumberOfChildDependents();
             bPDD = bDW_SHBE_D_Record.getPartnersDateOfDeath();
             bCDoB = bDW_SHBE_D_Record.getClaimantsDateOfBirth();
             bPDoB = bDW_SHBE_D_Record.getPartnersDateOfBirth();
-            bCA = tDW_SHBE_Handler.getClaimantsAge(year, month, bDW_SHBE_D_Record);
-            bPA = tDW_SHBE_Handler.getPartnersAge(year, month, bDW_SHBE_D_Record);
+            bCA = DW_SHBE_Handler.getClaimantsAge(year, month, bDW_SHBE_D_Record);
+            bPA = DW_SHBE_Handler.getPartnersAge(year, month, bDW_SHBE_D_Record);
         }
         if (cDW_SHBE_Record == null) {
             cTT = DW_SHBE_TenancyType_Handler.iMinus999;
@@ -4631,12 +4634,12 @@ public class TenancyChangesUO extends DW_Object {
             }
             cStatus = cDW_SHBE_D_Record.getStatusOfHBClaimAtExtractDate();
         }
-        key = aCTBRef + tDW_Strings.sUnderscore + sUnderOccupancy;
+        key = aCTBRef + DW_Strings.sUnderscore + sUnderOccupancy;
         aS = tableValues.get(key);
 
         boolean wasUOBefore;
-        if (aS.endsWith(sU + tDW_Strings.sCommaSpace + sU)
-                || aS.endsWith(sU + tDW_Strings.sCommaSpace)) {
+        if (aS.endsWith(sU + DW_Strings.sCommaSpace + sU)
+                || aS.endsWith(sU + DW_Strings.sCommaSpace)) {
             wasUOBefore = true;
         } else {
             wasUOBefore = false;
@@ -4661,7 +4664,7 @@ public class TenancyChangesUO extends DW_Object {
         }
 
         // TenancyType
-        key = aCTBRef + tDW_Strings.sUnderscore + sTT;
+        key = aCTBRef + DW_Strings.sUnderscore + sTT;
         aS = tableValues.get(key);
         if (aTT != bTT) {
             if (aTT == DW_SHBE_TenancyType_Handler.iMinus999
@@ -4903,12 +4906,12 @@ public class TenancyChangesUO extends DW_Object {
                 }
             }
         }
-        aS += tDW_Strings.sCommaSpace + sTT_ + aTT;
+        aS += DW_Strings.sCommaSpace + sTT_ + aTT;
 
         tableValues.put(key, aS);
 
         // UnderOccupancy
-        key = aCTBRef + tDW_Strings.sUnderscore + sUnderOccupancy;
+        key = aCTBRef + DW_Strings.sUnderscore + sUnderOccupancy;
         aS = tableValues.get(key);
         if (isUO) {
             tCTBRefSetPermanantlyLeftUOButRemainedInSHBE.remove(aCTBRef);
@@ -4921,9 +4924,9 @@ public class TenancyChangesUO extends DW_Object {
             } else if (aTT == 4) {
                 tCTBRefSetAlwaysUOTT4FromWhenStarted.add(aCTBRef);
             }
-            aS += tDW_Strings.sCommaSpace + sU;
+            aS += DW_Strings.sCommaSpace + sU;
             BigDecimal bd;
-            String key2 = aCTBRef + tDW_Strings.sUnderscore + sTotalCount_UnderOccupancy;
+            String key2 = aCTBRef + DW_Strings.sUnderscore + sTotalCount_UnderOccupancy;
             bd = aggregateStatistics.get(key2);
             bd = bd.add(BigDecimal.ONE);
             aggregateStatistics.put(key2, bd);
@@ -4944,7 +4947,7 @@ public class TenancyChangesUO extends DW_Object {
                     DW_UO_Record rec = councilUnderOccupiedSet1.getMap().get(aCTBRef);
                     int bedrooms = rec.getBedroomsInProperty();
                     int householdSizeSHBE;
-                    householdSizeSHBE = tDW_SHBE_Handler.getHouseholdSizeint(aDW_SHBE_D_Record);
+                    householdSizeSHBE = DW_SHBE_Handler.getHouseholdSizeint(aDW_SHBE_D_Record);
                     result[5] = householdSizeSHBE;
                     if (householdSizeSHBE >= bedrooms) {
                         result[3] = true;
@@ -4973,7 +4976,7 @@ public class TenancyChangesUO extends DW_Object {
                     int bedrooms = rec.getBedroomsInProperty();
                     //long householdSize = tDW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
                     int householdSizeSHBE;
-                    householdSizeSHBE = tDW_SHBE_Handler.getHouseholdSizeint(aDW_SHBE_D_Record);
+                    householdSizeSHBE = DW_SHBE_Handler.getHouseholdSizeint(aDW_SHBE_D_Record);
                     result[7] = householdSizeSHBE;
                     if (householdSizeSHBE >= bedrooms) {
                         result[3] = true;
@@ -5028,7 +5031,7 @@ public class TenancyChangesUO extends DW_Object {
                 tCTBRefSetUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint.add(aCTBRef);
             }
         } else {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
             tCTBRefSetAlwaysUOTT1FromStart.remove(aCTBRef);
             tCTBRefSetAlwaysUOTT4FromStart.remove(aCTBRef);
             if (aStatus == 2) {
@@ -5039,7 +5042,7 @@ public class TenancyChangesUO extends DW_Object {
                 if (aS.contains(sU)) {
                     tCTBRefSetAlwaysUOTT1FromWhenStarted.remove(aCTBRef);
                     tCTBRefSetAlwaysUOTT4FromWhenStarted.remove(aCTBRef);
-                    if (aS.contains(sU + tDW_Strings.sCommaSpace + tDW_Strings.sCommaSpace)) {
+                    if (aS.contains(sU + DW_Strings.sCommaSpace + DW_Strings.sCommaSpace)) {
                         // ..., U, ,
                         tCTBRefSetIntermitantUO.add(aCTBRef);
                     }
@@ -5109,14 +5112,14 @@ public class TenancyChangesUO extends DW_Object {
         tableValues.put(key, aS);
 
         // Postcode
-        key = aCTBRef + tDW_Strings.sUnderscore + sP;
+        key = aCTBRef + DW_Strings.sUnderscore + sP;
         aS = tableValues.get(key);
 
         if (aPC.equalsIgnoreCase(bPC)) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
             boolean aSContainsaPC = aS.contains(aPC);
-            aS += tDW_Strings.sCommaSpace + aPC;
+            aS += DW_Strings.sCommaSpace + aPC;
             if (!aPC.equalsIgnoreCase(defaultPostcode)) {
                 boolean containsAnotherPostcode;
                 if (bPC.equalsIgnoreCase(defaultPostcode)) {
@@ -5338,100 +5341,100 @@ public class TenancyChangesUO extends DW_Object {
         tableValues.put(key, aS);
 
         // HB Entitlement
-        key = aCTBRef + tDW_Strings.sUnderscore + sWHBE;
+        key = aCTBRef + DW_Strings.sUnderscore + sWHBE;
         aS = tableValues.get(key);
         if (aWHBE == bWHBE) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + decimalise(aWHBE);
+            aS += DW_Strings.sCommaSpace + decimalise(aWHBE);
         }
 
         tableValues.put(key, aS);
 
         // ERA
-        key = aCTBRef + tDW_Strings.sUnderscore + sWERA;
+        key = aCTBRef + DW_Strings.sUnderscore + sWERA;
         aS = tableValues.get(key);
         if (aWERA == bWERA) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + decimalise(aWERA);
+            aS += DW_Strings.sCommaSpace + decimalise(aWERA);
         }
 
         tableValues.put(key, aS);
 
         // PassportedStandardIndicator
-        key = aCTBRef + tDW_Strings.sUnderscore + sPSI;
+        key = aCTBRef + DW_Strings.sUnderscore + sPSI;
         aS = tableValues.get(key);
         if (aPSI == bPSI) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + aPSI;
+            aS += DW_Strings.sCommaSpace + aPSI;
         }
 
         tableValues.put(key, aS);
 
         // StatusOfHBClaim
-        key = aCTBRef + tDW_Strings.sUnderscore + sSHBC;
+        key = aCTBRef + DW_Strings.sUnderscore + sSHBC;
         aS = tableValues.get(key);
         if (aSHBC == bSHBC) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + aSHBC;
+            aS += DW_Strings.sCommaSpace + aSHBC;
         }
 
         tableValues.put(key, aS);
 
         // ReasonThatHBClaimClosed
-        key = aCTBRef + tDW_Strings.sUnderscore + sRTHBCC;
+        key = aCTBRef + DW_Strings.sUnderscore + sRTHBCC;
         aS = tableValues.get(key);
         if (aRTHBCC == bRTHBCC) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + aRTHBCC;
+            aS += DW_Strings.sCommaSpace + aRTHBCC;
         }
 
         tableValues.put(key, aS);
 
         // ClaimantEthnicGroup
-        key = aCTBRef + tDW_Strings.sUnderscore + sCEG;
+        key = aCTBRef + DW_Strings.sUnderscore + sCEG;
         aS = tableValues.get(key);
         if (aCEG == bCEG) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + aCEG;
+            aS += DW_Strings.sCommaSpace + aCEG;
         }
 
         tableValues.put(key, aS);
 
         // HS
-        key = aCTBRef + tDW_Strings.sUnderscore + sHS;
+        key = aCTBRef + DW_Strings.sUnderscore + sHS;
         aS = tableValues.get(key);
         if (aHS == bHS) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + aHS;
+            aS += DW_Strings.sCommaSpace + aHS;
         }
 
         tableValues.put(key, aS);
 
         // NonDependents
-        key = aCTBRef + tDW_Strings.sUnderscore + sND;
+        key = aCTBRef + DW_Strings.sUnderscore + sND;
         aS = tableValues.get(key);
         if (aND == bND) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + aND;
+            aS += DW_Strings.sCommaSpace + aND;
         }
 
         tableValues.put(key, aS);
 
         // ChildDependents
-        key = aCTBRef + tDW_Strings.sUnderscore + sCD;
+        key = aCTBRef + DW_Strings.sUnderscore + sCD;
         aS = tableValues.get(key);
         if (aCD == bCD) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + aCD;
+            aS += DW_Strings.sCommaSpace + aCD;
         }
 
         tableValues.put(key, aS);
@@ -5448,215 +5451,215 @@ public class TenancyChangesUO extends DW_Object {
                 aDW_UOReport_Record = RSLUnderOccupiedSet1.getMap().get(aCTBRef);
             }
             // NonDependents
-            key = aCTBRef + tDW_Strings.sUnderscore + sNDUO;
+            key = aCTBRef + DW_Strings.sUnderscore + sNDUO;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace + aDW_UOReport_Record.getNonDependents();
+            aS += DW_Strings.sCommaSpace + aDW_UOReport_Record.getNonDependents();
             tableValues.put(key, aS);
             // Children 16 +
-            key = aCTBRef + tDW_Strings.sUnderscore + sCO16;
+            key = aCTBRef + DW_Strings.sUnderscore + sCO16;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace + aDW_UOReport_Record.getChildrenOver16();
+            aS += DW_Strings.sCommaSpace + aDW_UOReport_Record.getChildrenOver16();
             tableValues.put(key, aS);
             // FemaleChildrenUnder10
-            key = aCTBRef + tDW_Strings.sUnderscore + sFCU10;
+            key = aCTBRef + DW_Strings.sUnderscore + sFCU10;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace + aDW_UOReport_Record.getFemaleChildrenUnder10();
+            aS += DW_Strings.sCommaSpace + aDW_UOReport_Record.getFemaleChildrenUnder10();
             tableValues.put(key, aS);
             // MaleChildrenUnder10
-            key = aCTBRef + tDW_Strings.sUnderscore + sMCU10;
+            key = aCTBRef + DW_Strings.sUnderscore + sMCU10;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace + aDW_UOReport_Record.getMaleChildrenUnder10();
+            aS += DW_Strings.sCommaSpace + aDW_UOReport_Record.getMaleChildrenUnder10();
             tableValues.put(key, aS);
             // FemaleChildren10to16
-            key = aCTBRef + tDW_Strings.sUnderscore + sFC10To16;
+            key = aCTBRef + DW_Strings.sUnderscore + sFC10To16;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace + aDW_UOReport_Record.getFemaleChildren10to16();
+            aS += DW_Strings.sCommaSpace + aDW_UOReport_Record.getFemaleChildren10to16();
             tableValues.put(key, aS);
             // MaleChildren10to16
-            key = aCTBRef + tDW_Strings.sUnderscore + sMC10To16;
+            key = aCTBRef + DW_Strings.sUnderscore + sMC10To16;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace + aDW_UOReport_Record.getMaleChildren10to16();
+            aS += DW_Strings.sCommaSpace + aDW_UOReport_Record.getMaleChildren10to16();
             tableValues.put(key, aS);
             // Number of Bedrooms
-            key = aCTBRef + tDW_Strings.sUnderscore + sNB;
+            key = aCTBRef + DW_Strings.sUnderscore + sNB;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace + aDW_UOReport_Record.getBedroomsInProperty();
+            aS += DW_Strings.sCommaSpace + aDW_UOReport_Record.getBedroomsInProperty();
             tableValues.put(key, aS);
             // Bedroom Requirement
-            key = aCTBRef + tDW_Strings.sUnderscore + sBR;
+            key = aCTBRef + DW_Strings.sUnderscore + sBR;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace + aDW_UOReport_Record.getBedroomRequirement();
+            aS += DW_Strings.sCommaSpace + aDW_UOReport_Record.getBedroomRequirement();
             tableValues.put(key, aS);
             int loss;
             loss = aWERA - aWHBE;
-            key = aCTBRef + tDW_Strings.sUnderscore + sTotal_HBLossDueToUO;
+            key = aCTBRef + DW_Strings.sUnderscore + sTotal_HBLossDueToUO;
             BigDecimal bd;
             bd = aggregateStatistics.get(key);
             bd = bd.add(BigDecimal.valueOf(loss));
             aggregateStatistics.put(key, bd);
             if (loss > 0) {
-                key = aCTBRef + tDW_Strings.sUnderscore + sTotalCount_HBLossDueToUO;
+                key = aCTBRef + DW_Strings.sUnderscore + sTotalCount_HBLossDueToUO;
                 bd = aggregateStatistics.get(key);
                 bd = bd.add(BigDecimal.ONE);
                 aggregateStatistics.put(key, bd);
             }
         } else {
             // NonDependents
-            key = aCTBRef + tDW_Strings.sUnderscore + sNDUO;
+            key = aCTBRef + DW_Strings.sUnderscore + sNDUO;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
             tableValues.put(key, aS);
             // Children 16 +
-            key = aCTBRef + tDW_Strings.sUnderscore + sCO16;
+            key = aCTBRef + DW_Strings.sUnderscore + sCO16;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
             tableValues.put(key, aS);
             // FemaleChildrenUnder10
-            key = aCTBRef + tDW_Strings.sUnderscore + sFCU10;
+            key = aCTBRef + DW_Strings.sUnderscore + sFCU10;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
             tableValues.put(key, aS);
             // MaleChildrenUnder10
-            key = aCTBRef + tDW_Strings.sUnderscore + sMCU10;
+            key = aCTBRef + DW_Strings.sUnderscore + sMCU10;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
             tableValues.put(key, aS);
             // FemaleChildren10to16
-            key = aCTBRef + tDW_Strings.sUnderscore + sFC10To16;
+            key = aCTBRef + DW_Strings.sUnderscore + sFC10To16;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
             tableValues.put(key, aS);
             // MaleChildren10to16
-            key = aCTBRef + tDW_Strings.sUnderscore + sMC10To16;
+            key = aCTBRef + DW_Strings.sUnderscore + sMC10To16;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
             tableValues.put(key, aS);
             // Number of Bedrooms
-            key = aCTBRef + tDW_Strings.sUnderscore + sNB;
+            key = aCTBRef + DW_Strings.sUnderscore + sNB;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
             tableValues.put(key, aS);
             // Bedroom Requirement
-            key = aCTBRef + tDW_Strings.sUnderscore + sBR;
+            key = aCTBRef + DW_Strings.sUnderscore + sBR;
             aS = tableValues.get(key);
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
             tableValues.put(key, aS);
         }
         // Claimants DoB
-        key = aCTBRef + tDW_Strings.sUnderscore + sCDoB;
+        key = aCTBRef + DW_Strings.sUnderscore + sCDoB;
         aS = tableValues.get(key);
 
         if (aCDoB.equalsIgnoreCase(bCDoB)) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + aCDoB;
+            aS += DW_Strings.sCommaSpace + aCDoB;
         }
 
         tableValues.put(key, aS);
         // Claimants Age
-        key = aCTBRef + tDW_Strings.sUnderscore + sCA;
+        key = aCTBRef + DW_Strings.sUnderscore + sCA;
         aS = tableValues.get(key);
 
         if (aCA.equalsIgnoreCase(bCA)) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + aCA;
+            aS += DW_Strings.sCommaSpace + aCA;
         }
 
         tableValues.put(key, aS);
         // Partners DoB
-        key = aCTBRef + tDW_Strings.sUnderscore + sPDoB;
+        key = aCTBRef + DW_Strings.sUnderscore + sPDoB;
         aS = tableValues.get(key);
 
         if (aPDoB.equalsIgnoreCase(bPDoB)) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + aPDoB;
+            aS += DW_Strings.sCommaSpace + aPDoB;
         }
 
         tableValues.put(key, aS);
         // Partners Age
-        key = aCTBRef + tDW_Strings.sUnderscore + sPA;
+        key = aCTBRef + DW_Strings.sUnderscore + sPA;
         aS = tableValues.get(key);
 
         if (aPA.equalsIgnoreCase(bPA)) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + aPA;
+            aS += DW_Strings.sCommaSpace + aPA;
         }
 
         tableValues.put(key, aS);
         // ClaimantsGender
-        key = aCTBRef + tDW_Strings.sUnderscore + sCG;
+        key = aCTBRef + DW_Strings.sUnderscore + sCG;
         aS = tableValues.get(key);
 
         if (aCA.equalsIgnoreCase(bCA)) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + aCG;
+            aS += DW_Strings.sCommaSpace + aCG;
         }
 
         tableValues.put(key, aS);
         // PartnersGender
-        key = aCTBRef + tDW_Strings.sUnderscore + sPG;
+        key = aCTBRef + DW_Strings.sUnderscore + sPG;
         aS = tableValues.get(key);
 
         if (aPA.equalsIgnoreCase(bPA)) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + aPG;
+            aS += DW_Strings.sCommaSpace + aPG;
         }
 
         tableValues.put(key, aS);
         // Disability
-        key = aCTBRef + tDW_Strings.sUnderscore + sDisability;
+        key = aCTBRef + DW_Strings.sUnderscore + sDisability;
         aS = tableValues.get(key);
-        aS += tDW_Strings.sCommaSpace + aD;
+        aS += DW_Strings.sCommaSpace + aD;
 
         tableValues.put(key, aS);
         // Disability Premium
-        key = aCTBRef + tDW_Strings.sUnderscore + sDisabilityPremium;
+        key = aCTBRef + DW_Strings.sUnderscore + sDisabilityPremium;
         aS = tableValues.get(key);
-        aS += tDW_Strings.sCommaSpace + aDP;
+        aS += DW_Strings.sCommaSpace + aDP;
 
         tableValues.put(key, aS);
         // Disability Severe
-        key = aCTBRef + tDW_Strings.sUnderscore + sDisabilitySevere;
+        key = aCTBRef + DW_Strings.sUnderscore + sDisabilitySevere;
         aS = tableValues.get(key);
-        aS += tDW_Strings.sCommaSpace + aDS;
+        aS += DW_Strings.sCommaSpace + aDS;
 
         tableValues.put(key, aS);
         // Disability Enhanced
-        key = aCTBRef + tDW_Strings.sUnderscore + sDisabilityEnhanced;
+        key = aCTBRef + DW_Strings.sUnderscore + sDisabilityEnhanced;
         aS = tableValues.get(key);
-        aS += tDW_Strings.sCommaSpace + aDE;
+        aS += DW_Strings.sCommaSpace + aDE;
 
         tableValues.put(key, aS);
         // Child Disability
-        key = aCTBRef + tDW_Strings.sUnderscore + sDisabledChild;
+        key = aCTBRef + DW_Strings.sUnderscore + sDisabledChild;
         aS = tableValues.get(key);
-        aS += tDW_Strings.sCommaSpace + aDC;
+        aS += DW_Strings.sCommaSpace + aDC;
 
         tableValues.put(key, aS);
         // Partner Death
-        key = aCTBRef + tDW_Strings.sUnderscore + sPDeath;
+        key = aCTBRef + DW_Strings.sUnderscore + sPDeath;
         aS = tableValues.get(key);
 
         if (aPDD.equalsIgnoreCase(bPDD)) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else if (aPDD == null) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else if (aPDD.isEmpty()) {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         } else {
-            aS += tDW_Strings.sCommaSpace + sPDeath + tDW_Strings.sUnderscore + aPDD;
+            aS += DW_Strings.sCommaSpace + sPDeath + DW_Strings.sUnderscore + aPDD;
         }
 
         tableValues.put(key, aS);
 
         // HBDP
         BigDecimal bd;
-        key = aCTBRef + tDW_Strings.sUnderscore + sTotal_DHP;
+        key = aCTBRef + DW_Strings.sUnderscore + sTotal_DHP;
         bd = aggregateStatistics.get(key);
         bd = bd.add(BigDecimal.valueOf(aHBDP));
 
@@ -5664,7 +5667,7 @@ public class TenancyChangesUO extends DW_Object {
         if (aHBDP
                 > 0) {
             tCTBRefSetDHPAtSomePoint.add(aCTBRef);
-            key = aCTBRef + tDW_Strings.sUnderscore + sTotalCount_DHP;
+            key = aCTBRef + DW_Strings.sUnderscore + sTotalCount_DHP;
             bd = aggregateStatistics.get(key);
             bd = bd.add(BigDecimal.ONE);
             aggregateStatistics.put(key, bd);
@@ -5680,7 +5683,7 @@ public class TenancyChangesUO extends DW_Object {
 //        }
 //        tableValues.put(key, aS);
         // Arrears
-        key = aCTBRef + tDW_Strings.sUnderscore + sA;
+        key = aCTBRef + DW_Strings.sUnderscore + sA;
         aS = tableValues.get(key);
 
         if (councilUnderOccupiedSet1.getMap()
@@ -5688,20 +5691,20 @@ public class TenancyChangesUO extends DW_Object {
             DW_UO_Record UORec;
             UORec = councilUnderOccupiedSet1.getMap().get(aCTBRef);
             if (UORec == null) {
-                aS += tDW_Strings.sCommaSpace;
+                aS += DW_Strings.sCommaSpace;
             } else {
                 aArrears = UORec.getTotalRentArrears();
                 if (aArrears == null) {
-                    aS += tDW_Strings.sCommaSpace;
+                    aS += DW_Strings.sCommaSpace;
                 } else {
-                    aS += tDW_Strings.sCommaSpace + aArrears;
-                    key = aCTBRef + tDW_Strings.sUnderscore + sMax_Arrears;
+                    aS += DW_Strings.sCommaSpace + aArrears;
+                    key = aCTBRef + DW_Strings.sUnderscore + sMax_Arrears;
                     bd = aggregateStatistics.get(key);
                     bd = bd.max(BigDecimal.valueOf(aArrears));
                     aggregateStatistics.put(key, bd);
                     if (aArrears > 0) {
                         tCTBRefSetInArrearsAtSomePoint.add(aCTBRef);
-                        key = aCTBRef + tDW_Strings.sUnderscore + sTotalCount_Arrears;
+                        key = aCTBRef + DW_Strings.sUnderscore + sTotalCount_Arrears;
                         bd = aggregateStatistics.get(key);
                         bd = bd.add(BigDecimal.ONE);
                         aggregateStatistics.put(key, bd);
@@ -5751,7 +5754,7 @@ public class TenancyChangesUO extends DW_Object {
                 }
             }
         } else {
-            aS += tDW_Strings.sCommaSpace;
+            aS += DW_Strings.sCommaSpace;
         }
 
         if (tCTBRefSetUOTT1_To_TT1_PostcodeChanged.contains(aCTBRef)) {
@@ -5877,7 +5880,7 @@ public class TenancyChangesUO extends DW_Object {
         boolean result;
         result = false;
         String[] split;
-        split = aS.split(tDW_Strings.sComma);
+        split = aS.split(DW_Strings.sComma);
         boolean firstIsTheSame = false;
         String s1;
         for (int i = split.length - 2; i > -1; i--) { // We don't go from the very end as we already added aPC to the end!
@@ -5901,7 +5904,7 @@ public class TenancyChangesUO extends DW_Object {
         boolean result;
         result = false;
         String[] split;
-        split = aS.split(tDW_Strings.sComma);
+        split = aS.split(DW_Strings.sComma);
         String s1;
         for (int i = 0; i < split.length; i++) {
             //for (String split1 : split) {
@@ -6067,7 +6070,7 @@ public class TenancyChangesUO extends DW_Object {
         int i;
         i = includeIte.next();
         filename1 = SHBEFilenames[i];
-        yM31 = tDW_SHBE_Handler.getYM3(filename1);
+        yM31 = DW_SHBE_Handler.getYM3(filename1);
         councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
         if (councilUnderOccupiedSet1 != null) {
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
@@ -6113,7 +6116,7 @@ public class TenancyChangesUO extends DW_Object {
             i = includeIte.next();
         }
         filename1 = SHBEFilenames[i];
-        yM31 = tDW_SHBE_Handler.getYM3(filename1);
+        yM31 = DW_SHBE_Handler.getYM3(filename1);
         councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
         if (councilUnderOccupiedSet1 != null) {
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
@@ -6144,7 +6147,7 @@ public class TenancyChangesUO extends DW_Object {
         while (includeIte.hasNext()) {
             i = includeIte.next();
             filename1 = SHBEFilenames[i];
-            yM31 = tDW_SHBE_Handler.getYM3(filename1);
+            yM31 = DW_SHBE_Handler.getYM3(filename1);
             councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
             if (councilUnderOccupiedSet1 != null) {
                 RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
@@ -6160,73 +6163,73 @@ public class TenancyChangesUO extends DW_Object {
         ArrayList<String> result;
         result = new ArrayList<String>();
         // TenancyType
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sTT);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sTT);
         // UnderOccupancy
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sUnderOccupancy);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sUnderOccupancy);
         // Postcode
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sP);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sP);
         // WeeklyHousingBenefitEntitlement
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sWHBE);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sWHBE);
         // WeeklyHousingBenefitEntitlement
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sWERA);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sWERA);
         // PassportedStandardIndicator
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sPSI);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sPSI);
         // StatusOfHBClaim
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sSHBC);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sSHBC);
         // ReasonThatHBClaimClosed
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sRTHBCC);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sRTHBCC);
         // ClaimantEthnicGroup
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sCEG);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sCEG);
         // Arrears
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sA);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sA);
         // HB DiscretionaryPayment
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sHBDP);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sHBDP);
         // Disability
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sDisability);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sDisability);
         // Disability Premium
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sDisabilityPremium);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sDisabilityPremium);
         // Disability Severe
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sDisabilitySevere);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sDisabilitySevere);
         // Disability Enhanced
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sDisabilityEnhanced);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sDisabilityEnhanced);
         // Child Disability
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sDisabledChild);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sDisabledChild);
         // Partner Death
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sPDeath);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sPDeath);
         // Household Size
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sHS);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sHS);
         // NonDependents
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sND);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sND);
         // ChildDependents
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sCD);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sCD);
         // NonDependents (UO)
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sNDUO);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sNDUO);
         // Children 16 +
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sCO16);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sCO16);
         // FemaleChildrenUnder10
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sFCU10);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sFCU10);
         // MaleChildrenUnder10
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sMCU10);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sMCU10);
         // FemaleChildren10to16
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sFC10To16);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sFC10To16);
         // MaleChildren10to16
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sMC10To16);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sMC10To16);
         // Number of Bedrooms
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sNB);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sNB);
         // Bedroom Requirement
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sBR);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sBR);
         // Claimants DoB
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sCDoB);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sCDoB);
         // Claimants Age
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sCA);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sCA);
         // Claimants Gender
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sCG);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sCG);
         // Partners DoB
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sPDoB);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sPDoB);
         // Partners Age
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sPA);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sPA);
         // Partners Gender
-        result.add(aCTBRef + tDW_Strings.sUnderscore + sPG);
+        result.add(aCTBRef + DW_Strings.sUnderscore + sPG);
         return result;
     }
 
@@ -6236,8 +6239,8 @@ public class TenancyChangesUO extends DW_Object {
             HashMap<String, String> generalStatisticsDescriptions,
             PrintWriter pw) {
         String line;
-        line = generalStatistic + tDW_Strings.sCommaSpace
-                + generalStatistics.get(generalStatistic) + tDW_Strings.sCommaSpace
+        line = generalStatistic + DW_Strings.sCommaSpace
+                + generalStatistics.get(generalStatistic) + DW_Strings.sCommaSpace
                 + generalStatisticsDescriptions.get(generalStatistic);
         pw.println(line);
     }
@@ -6356,13 +6359,13 @@ public class TenancyChangesUO extends DW_Object {
 
         String aggregateStatisticsHeader;
         //aggregateStatisticsHeader = "CTBRef, DHP_Total, Housing Benefit Loss as a Result of UnderOccupancy, Max_Arrears, NumberOfUnderOccupancyMonths";
-        aggregateStatisticsHeader = "CTBRef " + tDW_Strings.sCommaSpace
-                + sTotal_DHP + tDW_Strings.sCommaSpace
-                + sTotalCount_DHP + tDW_Strings.sCommaSpace
-                + sTotal_HBLossDueToUO + tDW_Strings.sCommaSpace
-                + sTotalCount_HBLossDueToUO + tDW_Strings.sCommaSpace
-                + sMax_Arrears + tDW_Strings.sCommaSpace
-                + sTotalCount_Arrears + tDW_Strings.sCommaSpace
+        aggregateStatisticsHeader = "CTBRef " + DW_Strings.sCommaSpace
+                + sTotal_DHP + DW_Strings.sCommaSpace
+                + sTotalCount_DHP + DW_Strings.sCommaSpace
+                + sTotal_HBLossDueToUO + DW_Strings.sCommaSpace
+                + sTotalCount_HBLossDueToUO + DW_Strings.sCommaSpace
+                + sMax_Arrears + DW_Strings.sCommaSpace
+                + sTotalCount_Arrears + DW_Strings.sCommaSpace
                 + sTotalCount_UnderOccupancy;
 
         String generalStatisticsHeader;
@@ -6755,13 +6758,13 @@ public class TenancyChangesUO extends DW_Object {
                 int debug = 1;
             }
 
-            name2 = name + tDW_Strings.sUnderscore + groupName;
+            name2 = name + DW_Strings.sUnderscore + groupName;
             if (includePreUnderOccupancyValues) {
-                name2 += tDW_Strings.sUnderscore + "IncludesPreUnderOccupancyValues";
+                name2 += DW_Strings.sUnderscore + "IncludesPreUnderOccupancyValues";
             }
             pw = getPrintWriter(name2, dirName, paymentType, includeKey, underOccupancy);
             pwAggregateStatistics = getPrintWriter(name2 + "AggregateStatistics", dirName, paymentType, includeKey, underOccupancy);
-            name2 += tDW_Strings.sUnderscore + "WithDuplicates";
+            name2 += DW_Strings.sUnderscore + "WithDuplicates";
             pw2 = getPrintWriter(name2, dirName, paymentType, includeKey, underOccupancy);
             pwAggregateStatistics2 = getPrintWriter(name2 + "AggregateStatistics", dirName, paymentType, includeKey, underOccupancy);
             // Write header
@@ -7422,7 +7425,7 @@ public class TenancyChangesUO extends DW_Object {
         remainder.removeAll(tCTBRefsCheck);
 
         groupName = "remainder";
-        name2 = name + tDW_Strings.sUnderscore + groupName;
+        name2 = name + DW_Strings.sUnderscore + groupName;
         pw = getPrintWriter(name2, dirName, paymentType, includeKey, underOccupancy);
         pw.println(header);
         ite = remainder.iterator();
@@ -7444,13 +7447,13 @@ public class TenancyChangesUO extends DW_Object {
             PrintWriter pw) {
         String line;
         line = aCTBRef;
-        line += tDW_Strings.sCommaSpace + decimalise(aggregateStatistics.get(aCTBRef + tDW_Strings.sUnderscore + sTotal_DHP).intValue());
-        line += tDW_Strings.sCommaSpace + aggregateStatistics.get(aCTBRef + tDW_Strings.sUnderscore + sTotalCount_DHP);
-        line += tDW_Strings.sCommaSpace + decimalise(aggregateStatistics.get(aCTBRef + tDW_Strings.sUnderscore + sTotal_HBLossDueToUO).intValue());
-        line += tDW_Strings.sCommaSpace + aggregateStatistics.get(aCTBRef + tDW_Strings.sUnderscore + sTotalCount_HBLossDueToUO);
-        line += tDW_Strings.sCommaSpace + aggregateStatistics.get(aCTBRef + tDW_Strings.sUnderscore + sMax_Arrears);
-        line += tDW_Strings.sCommaSpace + aggregateStatistics.get(aCTBRef + tDW_Strings.sUnderscore + sTotalCount_Arrears);
-        line += tDW_Strings.sCommaSpace + aggregateStatistics.get(aCTBRef + tDW_Strings.sUnderscore + sTotalCount_UnderOccupancy);
+        line += DW_Strings.sCommaSpace + decimalise(aggregateStatistics.get(aCTBRef + DW_Strings.sUnderscore + sTotal_DHP).intValue());
+        line += DW_Strings.sCommaSpace + aggregateStatistics.get(aCTBRef + DW_Strings.sUnderscore + sTotalCount_DHP);
+        line += DW_Strings.sCommaSpace + decimalise(aggregateStatistics.get(aCTBRef + DW_Strings.sUnderscore + sTotal_HBLossDueToUO).intValue());
+        line += DW_Strings.sCommaSpace + aggregateStatistics.get(aCTBRef + DW_Strings.sUnderscore + sTotalCount_HBLossDueToUO);
+        line += DW_Strings.sCommaSpace + aggregateStatistics.get(aCTBRef + DW_Strings.sUnderscore + sMax_Arrears);
+        line += DW_Strings.sCommaSpace + aggregateStatistics.get(aCTBRef + DW_Strings.sUnderscore + sTotalCount_Arrears);
+        line += DW_Strings.sCommaSpace + aggregateStatistics.get(aCTBRef + DW_Strings.sUnderscore + sTotalCount_UnderOccupancy);
         pw.println(line);
     }
 
@@ -7801,7 +7804,7 @@ public class TenancyChangesUO extends DW_Object {
                 max = Math.max(m, numberOfChildDependents);
                 maxNumberOfDependentsInClaimWhenUO.put(aCTBRef, max);
                 String DoB = SRecord.getSubRecordDateOfBirth();
-                int age = Integer.valueOf(tDW_SHBE_Handler.getAge(year, month, DoB));
+                int age = Integer.valueOf(DW_SHBE_Handler.getAge(year, month, DoB));
                 if (age < 10) {
                     aID = getSID(
                             SRecord,

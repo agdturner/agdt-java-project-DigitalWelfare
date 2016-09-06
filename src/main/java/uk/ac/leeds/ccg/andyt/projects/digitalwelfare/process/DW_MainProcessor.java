@@ -92,15 +92,18 @@ public class DW_MainProcessor extends DW_AbstractProcessor {
          * Format Postcode_Handling data.
          */
         if (runPostcode_Handler) {
+            System.out.println("<runPostcode_Handler>");
             DW_Postcode_Handler aDW_Postcode_Handler;
             aDW_Postcode_Handler = new DW_Postcode_Handler(env);
             aDW_Postcode_Handler.run();
+            System.out.println("</runPostcode_Handler>");
         }
 
         /**
          * Format SHBE data.
          */
         if (runSHBE_Handler) {
+            System.out.println("<runSHBE_Handler>");
             DW_SHBE_Handler aDW_SHBE_Handler;
             aDW_SHBE_Handler = new DW_SHBE_Handler(env);
             // <Reformat all data from source>
@@ -113,22 +116,27 @@ public class DW_MainProcessor extends DW_AbstractProcessor {
             // As this assigns IDs assumption being that the new data is subsequent to the existing data.
             aDW_SHBE_Handler.runNew();
             // </Format data not already formattede>
+            System.out.println("</runSHBE_Handler>");
         }
 
         /**
          * Format UnderOccupancy data.
          */
         if (runUnderOccupancy_Handler) {
+            System.out.println("<runUnderOccupancy_Handler>");
             boolean reload;
             reload = false;
             DW_UO_Data DW_UO_Data;
             DW_UO_Data = env.getDW_UO_Data();
+            System.out.println("</runUnderOccupancy_Handler>");
         }
 
         if (runDataProcessor_LCC) {
+            System.out.println("<runDataProcessor_LCC>");
             DW_DataProcessor_LCC aDW_DataProcessor_LCC;
             aDW_DataProcessor_LCC = new DW_DataProcessor_LCC(env);
             aDW_DataProcessor_LCC.run();
+            System.out.println("</runDataProcessor_LCC>");
         }
 
 //        DW_ChoroplethMaps_LCC aDW_ChoroplethMaps_LCC;

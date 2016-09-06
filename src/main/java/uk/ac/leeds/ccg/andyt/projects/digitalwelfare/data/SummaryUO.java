@@ -3422,7 +3422,7 @@ public class SummaryUO extends Summary {
         String postcode0;
         postcode0 = null;
         int TT0;
-        TT0 = DW_SHBE_TenancyType_Handler.iMinus999;
+        TT0 = tDW_SHBE_TenancyType_Handler.iMinus999;
         boolean isValidPostcode0;
         isValidPostcode0 = false;
         if (D_Record0 != null) {
@@ -3435,7 +3435,7 @@ public class SummaryUO extends Summary {
         String postcode1;
         postcode1 = null;
         int TT1;
-        TT1 = DW_SHBE_TenancyType_Handler.iMinus999;
+        TT1 = tDW_SHBE_TenancyType_Handler.iMinus999;
         boolean isValidPostcode1;
         isValidPostcode1 = false;
         if (D_Record1 != null) {
@@ -3478,7 +3478,7 @@ public class SummaryUO extends Summary {
         String postcode0;
         postcode0 = null;
         int TT0;
-        TT0 = DW_SHBE_TenancyType_Handler.iMinus999;
+        TT0 = tDW_SHBE_TenancyType_Handler.iMinus999;
         boolean isValidPostcode0;
         isValidPostcode0 = false;
         if (D_Record0 != null) {
@@ -3491,7 +3491,7 @@ public class SummaryUO extends Summary {
         String postcode1;
         postcode1 = null;
         int TT1;
-        TT1 = DW_SHBE_TenancyType_Handler.iMinus999;
+        TT1 = tDW_SHBE_TenancyType_Handler.iMinus999;
         boolean isValidPostcode1;
         isValidPostcode1 = false;
         if (D_Record1 != null) {
@@ -3880,16 +3880,16 @@ public class SummaryUO extends Summary {
             }
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
-            if (!(tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999
-                    || tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999)) {
+            if (!(tenancyType0 == tDW_SHBE_TenancyType_Handler.iMinus999
+                    || tenancyType1 == tDW_SHBE_TenancyType_Handler.iMinus999)) {
                 CouncilTotalCount_TTChangeClaimant++;
             }
-            if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (tenancyType0 == tDW_SHBE_TenancyType_Handler.iMinus999) {
                 if (tenancyType1 == 1) {
                     CouncilTotalCount_Minus999TTToTT1++;
                 }
             }
-            if (tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (tenancyType1 == tDW_SHBE_TenancyType_Handler.iMinus999) {
                 if (tenancyType0 == 1) {
                     CouncilTotalCount_TT1ToMinus999TT++;
                 }
@@ -3966,16 +3966,16 @@ public class SummaryUO extends Summary {
             }
         }
         if (tenancyType0.compareTo(tenancyType1) != 0) {
-            if (!(tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999
-                    || tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999)) {
+            if (!(tenancyType0 == tDW_SHBE_TenancyType_Handler.iMinus999
+                    || tenancyType1 == tDW_SHBE_TenancyType_Handler.iMinus999)) {
                 RSLTotalCount_TTChangeClaimant++;
             }
-            if (tenancyType0 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (tenancyType0 == tDW_SHBE_TenancyType_Handler.iMinus999) {
                 if (tenancyType1 == 4) {
                     RSLTotalCount_Minus999TTToTT4++;
                 }
             }
-            if (tenancyType1 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (tenancyType1 == tDW_SHBE_TenancyType_Handler.iMinus999) {
                 if (tenancyType0 == 4) {
                     RSLTotalCount_TT4ToMinus999TT++;
                 }
