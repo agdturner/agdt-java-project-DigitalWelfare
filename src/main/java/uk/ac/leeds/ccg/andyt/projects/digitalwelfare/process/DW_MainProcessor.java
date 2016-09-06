@@ -21,6 +21,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting.DW_Report;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_BarChart;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_LineGraph;
@@ -76,12 +77,14 @@ public class DW_MainProcessor extends DW_AbstractProcessor {
     public void run() throws Exception {
         boolean runPostcode_Handler; // switch for running Postcode_Handler code.
         boolean runSHBE_Handler; // switch for running SHBE_Handler code.
+        boolean runUnderOccupancy_Handler;
         boolean runDataProcessor_LCC; // switch for running DataProcessor_LCC code.
-
         runPostcode_Handler = true;
         runPostcode_Handler = false;
         runSHBE_Handler = true;
         runSHBE_Handler = false;
+        runUnderOccupancy_Handler = true;
+        runUnderOccupancy_Handler = false;
         runDataProcessor_LCC = true;
 //        runDataProcessor_LCC = false;
 
@@ -104,12 +107,22 @@ public class DW_MainProcessor extends DW_AbstractProcessor {
 //            aDW_SHBE_Handler.run();  
             // </Reformat all data from source>
             // <Count and report unique National Insurance Numbers and unique person IDs so far encountered.>
-            aDW_SHBE_Handler.runCount();
+            //aDW_SHBE_Handler.runCount();
             // </Count and report unique National Insurance Numbers and unique person IDs so far encountered.>
             // <Format data not already formattede>
             // As this assigns IDs assumption being that the new data is subsequent to the existing data.
-//            aDW_SHBE_Handler.runNew();
+            aDW_SHBE_Handler.runNew();
             // </Format data not already formattede>
+        }
+
+        /**
+         * Format UnderOccupancy data.
+         */
+        if (runUnderOccupancy_Handler) {
+            boolean reload;
+            reload = false;
+            DW_UO_Data DW_UO_Data;
+            DW_UO_Data = env.getDW_UO_Data();
         }
 
         if (runDataProcessor_LCC) {

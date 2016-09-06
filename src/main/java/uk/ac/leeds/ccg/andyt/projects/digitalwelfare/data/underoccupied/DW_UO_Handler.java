@@ -25,23 +25,38 @@ import java.io.StreamTokenizer;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_UnderOccupiedReport_Handler extends DW_Object {
+public class DW_UO_Handler extends DW_Object {
 
     private HashSet<String> RecordTypes;
 
-    public DW_UnderOccupiedReport_Handler(DW_Environment env) {
+    /**
+     * For convenience this is a reference to env.tDW_Files.
+     */
+    protected DW_Files tDW_Files;
+    
+    /**
+     * For convenience this is a reference to env.tDW_Strings.
+     */
+    protected DW_Strings tDW_Strings;
+    
+
+    public DW_UO_Handler(DW_Environment env) {
         this.env = env;
+        this.tDW_Files = env.getDW_Files();
+        this.tDW_Strings = env.getDW_Strings();
     }
 
     public HashSet<String> getRecordTypes() {
@@ -49,91 +64,11 @@ public class DW_UnderOccupiedReport_Handler extends DW_Object {
     }
 
     /**
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        new DW_UnderOccupiedReport_Handler(null).run();
-    }
-
-    public void run() {
-        Object[] underOccupiedReportData;
-        underOccupiedReportData = loadUnderOccupiedReportData(env);
-        /*
-         * 0 2013 14 Under Occupied Report For University Year Start Council Tenants.csv
-         * 1 2013 14 Under Occupied Report For University Month 1 Council Tenants.csv
-         * 2 2013 14 Under Occupied Report For University Month 2 Council Tenants.csv
-         * 3 2013 14 Under Occupied Report For University Month 3 Council Tenants.csv
-         * 4 2013 14 Under Occupied Report For University Month 4 Council Tenants.csv
-         * 5 2013 14 Under Occupied Report For University Month 5 Council Tenants.csv
-         * 6 2013 14 Under Occupied Report For University Month 6 Council Tenants.csv
-         * 7 2013 14 Under Occupied Report For University Month 7 Council Tenants.csv
-         * 8 2013 14 Under Occupied Report For University Month 8 Council Tenants.csv
-         * 9 2013 14 Under Occupied Report For University Month 9 Council Tenants.csv
-         * 10 2013 14 Under Occupied Report For University Month 10 Council Tenants.csv
-         * 11 2013 14 Under Occupied Report For University Month 11 Council Tenants.csv
-         * 12 2013 14 Under Occupied Report For University Month 12 Council Tenants.csv
-         * 13 2014 15 Under Occupied Report For University Month 1 Council Tenants.csv
-         * 14 2014 15 Under Occupied Report For University Month 2 Council Tenants.csv
-         * 15 2014 15 Under Occupied Report For University Month 3 Council Tenants.csv
-         * 16 2014 15 Under Occupied Report For University Month 4 Council Tenants.csv
-         * 17 2014 15 Under Occupied Report For University Month 5 Council Tenants.csv
-         * 18 2014 15 Under Occupied Report For University Month 6 Council Tenants.csv
-         * 19 2014 15 Under Occupied Report For University Month 7 Council Tenants.csv
-         * 20 2014 15 Under Occupied Report For University Month 8 Council Tenants.csv
-         * 21 2014 15 Under Occupied Report For University Month 9 Council Tenants.csv
-         * 22 2015 16 Under Occupied Report For University Month 1 Council Tenants.csv
-         * 23 2015 16 Under Occupied Report For University Month 2 Council Tenants.csv
-         * 24 2015 16 Under Occupied Report For University Month 3 Council Tenants.csv
-         * 25 2015 16 Under Occupied Report For University Month 4 Council Tenants.csv
-         * 26 2015 16 Under Occupied Report For University Month 5 Council Tenants.csv
-         * 27 2015 16 Under Occupied Report For University Month 6 Council Tenants.csv
-         * 28 2015 16 Under Occupied Report For University Month 7 Council Tenants.csv
-         *
-         * 0 2013 14 Under Occupied Report For University Year Start RSLs.csv
-         * 1 2013 14 Under Occupied Report For University Month 1 RSLs.csv
-         * 2 2013 14 Under Occupied Report For University Month 2 RSLs.csv
-         * 3 2013 14 Under Occupied Report For University Month 3 RSLs.csv
-         * 4 2013 14 Under Occupied Report For University Month 4 RSLs.csv
-         * 5 2013 14 Under Occupied Report For University Month 5 RSLs.csv
-         * 6 2013 14 Under Occupied Report For University Month 6 RSLs.csv
-         * 7 2013 14 Under Occupied Report For University Month 7 RSLs.csv
-         * 8 2013 14 Under Occupied Report For University Month 8 RSLs.csv
-         * 9 2013 14 Under Occupied Report For University Month 9 RSLs.csv
-         * 10 2013 14 Under Occupied Report For University Month 10 RSLs.csv
-         * 11 2013 14 Under Occupied Report For University Month 11 RSLs.csv
-         * 12 2013 14 Under Occupied Report For University Month 12 RSLs.csv
-         * 13 2014 15 Under Occupied Report For University Month 1 RSL.csv
-         * 14 2014 15 Under Occupied Report For University Month 2 RSL.csv
-         * 15 2014 15 Under Occupied Report For University Month 3 RSL.csv
-         * 16 2014 15 Under Occupied Report For University Month 4 RSL.csv
-         * 17 2014 15 Under Occupied Report For University Month 5 RSL.csv
-         * 18 2014 15 Under Occupied Report For University Month 6 RSL.csv
-         * 19 2014 15 Under Occupied Report For University Month 7 RSL.csv
-         * 20 2014 15 Under Occupied Report For University Month 8 RSL.csv
-         * 21 2014 15 Under Occupied Report For University Month 9 RSL.csv
-         * 22 2015 16 Under Occupied Report For University Month 1 RSL.csv
-         * 23 2015 16 Under Occupied Report For University Month 2 RSL.csv
-         * 24 2015 16 Under Occupied Report For University Month 3 RSL.csv
-         * 25 2015 16 Under Occupied Report For University Month 4 RSL.csv*
-         * 26 2015 16 Under Occupied Report For University Month 5 RSL.csv*
-         * 27 2015 16 Under Occupied Report For University Month 6 RSL.csv*
-         * 28 2015 16 Under Occupied Report For University Month 7 RSL.csv*
-         */
-        String filename;
-        filename = "2014 15 Under Occupied Report For University Month 7 Council Tenants.csv";
-        DW_UnderOccupiedReport_Set set = new DW_UnderOccupiedReport_Set(
-                env,
-                filename);
-
-    }
-
-    /**
      * @param directory
      * @param filename
      * @return
      */
-    public static TreeMap<String, DW_UOReport_Record> loadInputData(
+    public TreeMap<String, DW_UO_Record> loadInputData(
             File directory,
             String filename) {
 //        String type;
@@ -142,8 +77,8 @@ public class DW_UnderOccupiedReport_Handler extends DW_Object {
 //        } else {
 //            type = "Council";
 //        }
-        TreeMap<String, DW_UOReport_Record> result;
-        result = new TreeMap<String, DW_UOReport_Record>();
+        TreeMap<String, DW_UO_Record> result;
+        result = new TreeMap<String, DW_UO_Record>();
         File inputFile = new File(
                 directory,
                 filename);
@@ -176,16 +111,16 @@ public class DW_UnderOccupiedReport_Handler extends DW_Object {
                     case StreamTokenizer.TT_WORD:
                         line = st.sval;
                         try {
-                            DW_UOReport_Record aUnderOccupiedReport_Record;
-                            aUnderOccupiedReport_Record = new DW_UOReport_Record(
+                            DW_UO_Record aUnderOccupiedReport_Record;
+                            aUnderOccupiedReport_Record = new DW_UO_Record(
                                     RecordID, line, fieldnames);
                             //RecordID, line, type);
                             Object o = result.put(
                                     aUnderOccupiedReport_Record.getClaimReferenceNumber(),
                                     aUnderOccupiedReport_Record);
                             if (o != null) {
-                                DW_UOReport_Record existingUnderOccupiedReport_Record;
-                                existingUnderOccupiedReport_Record = (DW_UOReport_Record) o;
+                                DW_UO_Record existingUnderOccupiedReport_Record;
+                                existingUnderOccupiedReport_Record = (DW_UO_Record) o;
                                 if (!existingUnderOccupiedReport_Record.equals(aUnderOccupiedReport_Record)) {
                                     System.out.println("existingUnderOccupiedReport_DataRecord " + existingUnderOccupiedReport_Record);
                                     System.out.println("replacementUnderOccupiedReport_DataRecord " + aUnderOccupiedReport_Record);
@@ -207,7 +142,7 @@ public class DW_UnderOccupiedReport_Handler extends DW_Object {
             //System.out.println("replacementEntriesCount " + replacementEntriesCount);
             br.close();
         } catch (IOException ex) {
-            Logger.getLogger(DW_UnderOccupiedReport_Handler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DW_UO_Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }
@@ -216,19 +151,22 @@ public class DW_UnderOccupiedReport_Handler extends DW_Object {
      * Loads the Under-Occupied report data for Leeds.
      *
      * @return Object[] result where: result[0] = councilSets
-     * {@code TreeMap<String, DW_UnderOccupiedReport_Set>}; result[1] = RSLSets
-     * {@code TreeMap<String, DW_UnderOccupiedReport_Set>}
+     * {@code TreeMap<String, DW_UO_Set>}; result[1] = RSLSets
+     * {@code TreeMap<String, DW_UO_Set>}
      */
-    public static Object[] loadUnderOccupiedReportData(DW_Environment env) {
-        Object[] result;
-        result = new Object[2];
-        TreeMap<String, DW_UnderOccupiedReport_Set> councilSets;
-        councilSets = new TreeMap<String, DW_UnderOccupiedReport_Set>();
-        TreeMap<String, DW_UnderOccupiedReport_Set> RSLSets;
-        RSLSets = new TreeMap<String, DW_UnderOccupiedReport_Set>();
-        result[0] = councilSets;
-        result[1] = RSLSets;
-        Object[] filenames = getFilenames();
+    public DW_UO_Data loadUnderOccupiedReportData(boolean reload) {
+        DW_UO_Data result;
+        TreeMap<String, DW_UO_Set> tCouncilSets;
+        tCouncilSets = new TreeMap<String, DW_UO_Set>();
+        TreeMap<String, DW_UO_Set> tRSLSets;
+        tRSLSets = new TreeMap<String, DW_UO_Set>();
+
+        // Look where the generated data should be stored.
+        // Look where the input data are.
+        // Are there new files to load? If so, load them from source. If not, 
+        // then load and return the cached object.
+        String type;
+        Object[] filenames = getInputFilenames();
         TreeMap<String, String> councilFilenames;
         councilFilenames = (TreeMap<String, String>) filenames[0];
         TreeMap<String, String> RSLFilenames;
@@ -236,44 +174,103 @@ public class DW_UnderOccupiedReport_Handler extends DW_Object {
         Iterator<String> ite;
         ite = councilFilenames.keySet().iterator();
         while (ite.hasNext()) {
+            type = tDW_Strings.sRSL;
             String year_Month = ite.next();
             String filename = councilFilenames.get(year_Month);
-            DW_UnderOccupiedReport_Set set = new DW_UnderOccupiedReport_Set(
-                    env,
-                    filename);
-            councilSets.put(year_Month, set);
+            DW_UO_Set set;
+            set = new DW_UO_Set(
+                    tDW_Files,
+                    this,
+                    type,
+                    filename,
+                    year_Month,
+                    reload);
+            tCouncilSets.put(year_Month, set);
         }
         ite = RSLFilenames.keySet().iterator();
         while (ite.hasNext()) {
+            type = tDW_Strings.sCouncil;
             String year_Month = ite.next();
             String filename = RSLFilenames.get(year_Month);
-            DW_UnderOccupiedReport_Set set = new DW_UnderOccupiedReport_Set(
-                    env,
-                    filename);
-            RSLSets.put(year_Month, set);
+            DW_UO_Set set;
+            set = new DW_UO_Set(
+                    tDW_Files,
+                    this,
+                    type,
+                    filename,
+                    year_Month,
+                    reload);
+            tRSLSets.put(year_Month, set);
         }
+        result = new DW_UO_Data(tRSLSets, tCouncilSets);
         return result;
     }
 
     /**
+     * Returns the number of input files of UnderOccupied Data
      *
-     * @return Object[] result where:
-     * {@code 
+     * @return
+     */
+    public int getNumberOfInputFiles() {
+        int result;
+        File dirIn;
+        dirIn = tDW_Files.getInputUnderOccupiedDir();
+        File[] files;
+        files = dirIn.listFiles();
+        TreeSet<String> set;
+        set = new TreeSet<String>();
+        for (File file : files) {
+            //System.out.println(file);
+            set.add(file.toString());
+        }
+        Iterator<String> ite;
+        ite = set.iterator();
+        while (ite.hasNext()) {
+            System.out.println(ite.next());
+        }
+        System.out.println("set.size() " + set.size());
+        result = files.length;
+        return result;
+    }
+
+    /**
+     * Returns the number of generated files of UnderOccupied Data
+     *
+     * @return
+     */
+    public int getNumberOfGeneratedFiles() {
+        int result;
+        DW_Files tDW_Files;
+        tDW_Files = env.getDW_Files();
+        File dirIn;
+        dirIn = tDW_Files.getGeneratedUnderOccupiedDir();
+        result = dirIn.listFiles().length;
+        return result;
+    }
+
+    /**
+     * Do we really want to store these?
+     *
+     * @return Object[] result where: null     {@code 
      * result[0] TreeMap<String, String> councilFilenames (year_Month, filename)
-     * result[1] TreeMap<String, String> RSLFilenames (year_Month, filename) 
+     * result[1] TreeMap<String, String> RSLFilenames (year_Month, filename)
      * }
      */
-    private static Object[] filenames;
+    private Object[] inputFilenames;
 
-    public static Object[] getFilenames() {
-        if (filenames == null) {
-            filenames = new Object[2];
+    /**
+     *
+     * @return
+     */
+    public Object[] getInputFilenames() {
+        if (inputFilenames == null) {
+            inputFilenames = new Object[2];
             TreeMap<String, String> CouncilFilenames;
             TreeMap<String, String> RSLFilenames;
             CouncilFilenames = new TreeMap<String, String>();
             RSLFilenames = new TreeMap<String, String>();
-            filenames[0] = CouncilFilenames;
-            filenames[1] = RSLFilenames;
+            inputFilenames[0] = CouncilFilenames;
+            inputFilenames[1] = RSLFilenames;
 //            String[] list = DW_Files.getInputUnderOccupiedDir().list();
 //            String s;
 //            String ym;
@@ -292,6 +289,12 @@ public class DW_UnderOccupiedReport_Handler extends DW_Object {
 //                SHBEFilenamesAll[i] = yms.get(ym);
 //                i ++;
 //            }
+            CouncilFilenames.put(
+                    "2013_Mar",
+                    "2013 14 Under Occupied Report For University Year Start Council Tenants.csv");
+            RSLFilenames.put(
+                    "2013_Mar",
+                    "2013 14 Under Occupied Report For University Year Start RSL Tenants.csv");
             String councilEndFilename = " Council Tenants.csv";
             String RSLEndFilename = " RSLs.csv";
             String RSLEndFilename2 = " RSL.csv";
@@ -336,7 +339,7 @@ public class DW_UnderOccupiedReport_Handler extends DW_Object {
                     RSLFilenames,
                     4); // This number needs increasing as there are more datasets....
         }
-        return filenames;
+        return inputFilenames;
     }
 
     protected static void putFilenames(
@@ -353,6 +356,9 @@ public class DW_UnderOccupiedReport_Handler extends DW_Object {
             String year_Month = year + "_" + month;
             String s;
             s = yearAll + underOccupiedReportForUniversityString + "Month " + i;
+//            String filename;
+//            filename = s + councilEndFilename;
+//            env.getDW_Files().getInputUnderOccupiedDir();
             councilFilenames.put(
                     year_Month,
                     s + councilEndFilename);
@@ -413,117 +419,102 @@ public class DW_UnderOccupiedReport_Handler extends DW_Object {
         return getMonth(i).substring(0, 3);
     }
 
-    public static HashSet<String> getUnderOccupiedInApril2013CTBRefs(
-    DW_Environment env) {
+    /**
+     * Returns a HashSet<String> of the CTBRefs of those UnderOccupying at the 
+     * start of April2013.
+     * @param underOccupiedData
+     * @param env
+     * @return 
+     */
+    public HashSet<String> getUnderOccupiedStartApril2013CTBRefs(
+        DW_UO_Data tDW_UnderOccupiedReport_Data) {
+        return tDW_UnderOccupiedReport_Data.getCTBRefs().get("2013_Mar");
+//        HashSet<String> result;
+//        result = new HashSet<String>();
+//        
+//        Object[] filenames;
+//        filenames = getInputFilenames();
+//        TreeMap<String, String> tCouncilFilenames;
+//        TreeMap<String, String> tRSLFilenames;
+//        tCouncilFilenames = (TreeMap<String, String>) filenames[0];
+//        tRSLFilenames = (TreeMap<String, String>) filenames[1];
+//        String yearAll;
+//        yearAll = "2013 14";
+//        int i;
+//        i = 1;
+//        String year = getYear(yearAll, i);
+//        String month = getMonth3(i);
+//        String year_Month = year + "_" + month;
+//        String tCouncilFilename;
+//        tCouncilFilename = tCouncilFilenames.get(year_Month);
+//        String tRSLFilename;
+//        tRSLFilename = tRSLFilenames.get(year_Month);
+//        DW_UO_Set set;
+//        set = new DW_UO_Set(
+//                tDW_Files,
+//                this,
+//                tCouncilFilename,
+//                year_Month,
+//                false);
+//        result.addAll(set.map.keySet());
+//        set = new DW_UO_Set(
+//                tDW_Files,
+//                this,
+//                tRSLFilename,
+//                year_Month,
+//                false);
+//        result.addAll(set.map.keySet());
+//        return result;
+    }
+
+    public HashSet<String> getUnderOccupiedCTBRefs(Object[] underOccupiedData) {
         HashSet<String> result;
-        result = new HashSet<String>();
-        Object[] filenames;
-        filenames = getFilenames();
-        TreeMap<String, String> councilFilenames;
-        TreeMap<String, String> registeredSocialLandlordFilenames;
-        councilFilenames = (TreeMap<String, String>) filenames[0];
-        registeredSocialLandlordFilenames = (TreeMap<String, String>) filenames[1];
-        String yearAll;
-        yearAll = "2013 14";
-        int i;
-        i = 1;
-        String year = getYear(yearAll, i);
-        String month = getMonth3(i);
-        String year_Month = year + "_" + month;
-        String councilFilename;
-        councilFilename = councilFilenames.get(year_Month);
-        String RSLFilename;
-        RSLFilename = registeredSocialLandlordFilenames.get(year_Month);
-        DW_UnderOccupiedReport_Set set;
-        set = new DW_UnderOccupiedReport_Set(
-                env,
-                councilFilename);
-        result.addAll(set.map.keySet());
-        set = new DW_UnderOccupiedReport_Set(
-                env,
-                RSLFilename);
-        result.addAll(set.map.keySet());
+        result = null;
+//        result = new HashSet<String>();
+        // Go through data and add all CTBRefs to result
+//        extract 
+//        Iterator<String> ite;
+//        ite = CouncilFilenames.keySet().iterator();
+//        String yM3;
+//        String CouncilFilename;
+//        String RSLFilename;
+//        while (ite.hasNext()) {
+//            yM3 = ite.next();
+//            CouncilFilename = CouncilFilenames.get(yM3);
+//            RSLFilename = RSLFilenames.get(yM3);
+//            DW_UO_Set set;
+//            set = new DW_UO_Set(
+//                    tDW_Files,
+//                    this,
+//                    CouncilFilename,
+//                    false);
+//            result.addAll(set.map.keySet());
+//            set = new DW_UO_Set(
+//                    env,
+//                    RSLFilename);
+//            result.addAll(set.map.keySet());
+//        }
         return result;
     }
 
-    public HashSet<String> getUnderOccupiedCTBRefs() {
+    public HashSet<String> getUnderOccupiedCouncilCTBRefs(Object[] underOccupiedData) {
         HashSet<String> result;
-        result = new HashSet<String>();
-        Object[] filenames;
-        filenames = getFilenames();
-        TreeMap<String, String> CouncilFilenames;
-        TreeMap<String, String> RSLFilenames;
-        CouncilFilenames = (TreeMap<String, String>) filenames[0];
-        RSLFilenames = (TreeMap<String, String>) filenames[1];
-        Iterator<String> ite;
-        ite = CouncilFilenames.keySet().iterator();
-        String yM3;
-        String CouncilFilename;
-        String RSLFilename;
-        while (ite.hasNext()) {
-            yM3 = ite.next();
-            CouncilFilename = CouncilFilenames.get(yM3);
-            RSLFilename = RSLFilenames.get(yM3);
-            DW_UnderOccupiedReport_Set set;
-            set = new DW_UnderOccupiedReport_Set(
-                    env,
-                    CouncilFilename);
-            result.addAll(set.map.keySet());
-            set = new DW_UnderOccupiedReport_Set(
-                    env,
-                    RSLFilename);
-            result.addAll(set.map.keySet());
-        }
-        return result;
-    }
-
-    public HashSet<String> getUnderOccupiedCouncilCTBRefs() {
-        HashSet<String> result;
-        result = new HashSet<String>();
-        Object[] filenames;
-        filenames = getFilenames();
-        TreeMap<String, String> CouncilFilenames;
-        CouncilFilenames = (TreeMap<String, String>) filenames[0];
-        Iterator<String> ite;
-        ite = CouncilFilenames.keySet().iterator();
-        String yM3;
-        String CouncilFilename;
-        while (ite.hasNext()) {
-            yM3 = ite.next();
-            CouncilFilename = CouncilFilenames.get(yM3);
-            DW_UnderOccupiedReport_Set set;
-            set = new DW_UnderOccupiedReport_Set(
-                    env,
-                    CouncilFilename);
-            result.addAll(set.map.keySet());
-        }
+        result = null;
+//        result = new HashSet<String>();
+        // Go through data and add all CTBRefs to result
+        //return result;
         return result;
     }
 
     public HashSet<String> getUnderOccupiedRSLCTBRefs() {
         HashSet<String> result;
-        result = new HashSet<String>();
-        Object[] filenames;
-        filenames = getFilenames();
-        TreeMap<String, String> RSLFilenames;
-        RSLFilenames = (TreeMap<String, String>) filenames[1];
-        Iterator<String> ite;
-        ite = RSLFilenames.keySet().iterator();
-        String yM3;
-        String RSLFilename;
-        while (ite.hasNext()) {
-            yM3 = ite.next();
-            RSLFilename = RSLFilenames.get(yM3);
-            DW_UnderOccupiedReport_Set set;
-            set = new DW_UnderOccupiedReport_Set(
-                    env,
-                    RSLFilename);
-            result.addAll(set.map.keySet());
-        }
+        result = null;
+//       result = new HashSet<String>();
+        // Go through data and add all CTBRefs to result
         return result;
     }
 
-    public static int getHouseholdSizeExcludingPartners(DW_UOReport_Record rec) {
+    public static int getHouseholdSizeExcludingPartners(DW_UO_Record rec) {
         int result;
         result
                 = //rec.getTotalDependentChildren()

@@ -20,29 +20,36 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.log.DW_Log;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_CollectionHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_AbstractProcessor;
 
 /**
- * This class is for an instance of the environment for the Digital Welfare 
- * program. It contains holders for commonly referred to objects that might 
- * otherwise be constructed multiple times. It is also for handling memory 
- * although for the time being, there has not been a need for convoluted 
- * swapping of data from memory to disk.  
+ * This class is for an instance of the environment for the Digital Welfare
+ * program. It contains holders for commonly referred to objects that might
+ * otherwise be constructed multiple times. It is also for handling memory
+ * although for the time being, there has not been a need for convoluted
+ * swapping of data from memory to disk.
+ *
  * @author agdturner
  */
 public class DW_Environment extends DW_OutOfMemoryErrorHandler
         implements Serializable {
 
-    public static String sDigitalWelfareDir = "/scratch02/DigitalWelfare";
-    //public static String sDigitalWelfareDir = "C:/Users/geoagdt/projects/DigitalWelfare";
+    public String sDigitalWelfareDir = "/scratch02/DigitalWelfare";
+    //public String sDigitalWelfareDir = "C:/Users/geoagdt/projects/DigitalWelfare";
 
     /**
      * For storing an instance of DW_Strings for accessing Strings.
@@ -89,15 +96,119 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         }
         return tGrids_Environment;
     }
-    public transient DW_SHBE_CollectionHandler _DW_SHBE_CollectionHandler;
+
+    /**
+     * For storing an instance of HashMap<String, DW_SHBE_CollectionHandler>.
+     */
+    private HashMap<String, DW_SHBE_CollectionHandler> tDW_SHBE_CollectionHandlers;
+
+    /**
+     * For returning an instance of DW_SHBE_CollectionHandler for convenience.
+     *
+     * @return
+     */
+    public HashMap<String, DW_SHBE_CollectionHandler> getDW_SHBE_CollectionHandlers() {
+        if (tDW_SHBE_CollectionHandlers == null) {
+            tDW_SHBE_CollectionHandlers = new HashMap<String, DW_SHBE_CollectionHandler>();
+        }
+        return tDW_SHBE_CollectionHandlers;
+    }
+
+    /**
+     * For returning an instance of DW_SHBE_CollectionHandler for convenience.
+     *
+     * @param paymentType
+     * @return
+     */
+    public DW_SHBE_CollectionHandler getDW_SHBE_CollectionHandler(String paymentType) {
+        DW_SHBE_CollectionHandler result;
+        tDW_SHBE_CollectionHandlers = getDW_SHBE_CollectionHandlers();
+        if (tDW_SHBE_CollectionHandlers.containsKey(paymentType)) {
+            result = tDW_SHBE_CollectionHandlers.get(paymentType);
+        } else {
+            File dir;
+            dir = new File(
+                    tDW_Files.getSwapSHBEDir(),
+                    paymentType);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            result = new DW_SHBE_CollectionHandler(
+                    this,
+                    paymentType);
+            tDW_SHBE_CollectionHandlers.put(paymentType, result);
+        }
+        return result;
+    }
+
+    /**
+     * For storing an instance of DW_UO_Handler for
+ convenience.
+     */
+    private DW_UO_Handler tDW_UO_Handler;
+
+    /**
+     * For returning an instance of DW_UO_Handler for
+ convenience.
+     */
+    public DW_UO_Handler getDW_UO_Handler() {
+        if (tDW_UO_Handler == null) {
+            tDW_UO_Handler = new DW_UO_Handler(this);
+        }
+        return tDW_UO_Handler;
+    }
+
+    /**
+     * For storing an instance of DW_UO_Data.
+     */
+    protected DW_UO_Data tDW_UO_Data;
+
+    /**
+     * For returning an instance of DW_UO_Handler for
+ convenience.
+     * @param reload
+     * @return 
+     */
+    public DW_UO_Data getDW_UO_Data() {
+        if (tDW_UO_Data == null) {
+            tDW_UO_Handler = getDW_UO_Handler();
+            File f;
+            f = new File(
+                    tDW_Files.getGeneratedUnderOccupiedDir(),
+                    "DW_UO_Data.thisFile");
+            if (f.exists()) {
+                tDW_UO_Data = (DW_UO_Data) Generic_StaticIO.readObject(f);
+                // For debugging/testing load
+                TreeMap<String, DW_UO_Set> tCouncilSets;
+                tCouncilSets = tDW_UO_Data.getCouncil_Data();
+                TreeMap<String, DW_UO_Set> tRSLSets;
+                tRSLSets = tDW_UO_Data.getRSL_Sets();
+                int totalSets;
+                totalSets = tCouncilSets.size() + tRSLSets.size();
+                System.out.println("totalSets loaded " + totalSets);
+                int numberOfInputFiles;
+                numberOfInputFiles = tDW_UO_Handler.getNumberOfInputFiles();
+                System.out.println("numberOfInputFiles " + numberOfInputFiles);
+                //if ()
+            } else {
+                boolean reload;
+                reload = false;
+                tDW_UO_Data = tDW_UO_Handler.loadUnderOccupiedReportData(reload);
+                Generic_StaticIO.writeObject(tDW_UO_Data, f);
+            }
+        }
+        return tDW_UO_Data;
+    }
 
     /**
      * For storing an instance of DW_Postcode_Handler for convenience.
      */
-    private static DW_Postcode_Handler tDW_Postcode_Handler;
+    private DW_Postcode_Handler tDW_Postcode_Handler;
 
     /**
      * For returning an instance of DW_Postcode_Handler for convenience.
+     *
+     * @return
      */
     public DW_Postcode_Handler getDW_Postcode_Handler() {
         if (tDW_Postcode_Handler == null) {
@@ -113,6 +224,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     /**
      * For returning an instance of DW_SHBE_Handler for convenience.
+     *
+     * @return
      */
     public DW_SHBE_Handler getDW_SHBE_Handler() {
         if (tDW_SHBE_Handler == null) {
@@ -129,9 +242,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         this.sDigitalWelfareDir = sDigitalWelfareDir;
         this.tDW_Files = new DW_Files(this);
         this.tDW_Strings = new DW_Strings();
-        _DW_SHBE_CollectionHandler = new DW_SHBE_CollectionHandler(
-                this,
-                tDW_Files.getSwapSHBEDir());
     }
 
     @Override

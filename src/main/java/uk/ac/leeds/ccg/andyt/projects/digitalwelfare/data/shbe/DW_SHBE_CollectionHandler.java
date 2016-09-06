@@ -27,6 +27,8 @@ public class DW_SHBE_CollectionHandler extends DW_Object
 
     protected HashMap<Long, DW_SHBE_Collection> collections;
 
+    protected String type;
+    
     /**
      * For storing DRecordID indexed by CouncilTaxReferenceNumber
      */
@@ -35,11 +37,8 @@ public class DW_SHBE_CollectionHandler extends DW_Object
     /**
      * Directory.
      */
-    protected File _Directory;
-//    /**
-//     * Directory where all DW_SHBE)Collections are written.
-//     */
-//    protected File _SHBECollectionsDirectory;
+    protected File dir;
+
     /**
      * This is to be a sensible number of DW_SHBE_Records to hold in a single
      * collection. If this number is too small, IO will be slow. Too big and the
@@ -62,29 +61,13 @@ public class DW_SHBE_CollectionHandler extends DW_Object
     public long nextID;
 
     public DW_SHBE_CollectionHandler(
-            DW_Environment env) {
-        this.env = env;
-        _Directory = new File(
-                env.getDW_Files().getSwapSHBEDir(),
-                "Collection" + System.currentTimeMillis());
-        init();
-    }
-
-    public DW_SHBE_CollectionHandler(
             DW_Environment env,
-            String filename) {
+            String type) {
         this.env = env;
-        _Directory = new File(
+        this.type = type;
+        dir = new File(
                 env.getDW_Files().getSwapSHBEDir(),
-                filename);
-        init();
-    }
-
-    public DW_SHBE_CollectionHandler(
-            DW_Environment env,
-            File dir) {
-        this.env = env;
-        _Directory = dir;
+                type);
         init();
     }
 
@@ -103,22 +86,22 @@ public class DW_SHBE_CollectionHandler extends DW_Object
 
     public DW_SHBE_Collection load_DW_SHBE_Collection(
             String filename,
-            String inPaymentType,
+            String paymentType,
             boolean handleOutOfMemoryError) {
         DW_SHBE_Collection result;
         result = null;
         try {
             result = new DW_SHBE_Collection(
                     env,
-                    filename,
-                    inPaymentType);
+                    paymentType,
+                    filename);
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 this.swapToFile_Collection();
                 System.err.println(e.getLocalizedMessage());
                 return load_DW_SHBE_Collection(
                         filename,
-                        inPaymentType,
+                        paymentType,
                         handleOutOfMemoryError);
             }
         }
@@ -127,24 +110,24 @@ public class DW_SHBE_CollectionHandler extends DW_Object
 
     /**
      * <code>
-     * return new File(_Directory.toString());
-     * </code>
+ return new File(dir.toString());
+ </code>
      *
-     * @return a copy of _Directory
+     * @return a copy of dir
      */
     public File getDirectory() {
-        return new File(_Directory.toString());
+        return new File(dir.toString());
     }
 
 //    /**
 //     * <code>
-//     * this._Directory = f;
+//     * this.dir = f;
 //     * </code>
 //     *
 //     * @param f
 //     */
 //    public void setDirectory(File f) {
-//        this._Directory = f;
+//        this.dir = f;
 //        f.mkdirs();
 //    }
 //    /**

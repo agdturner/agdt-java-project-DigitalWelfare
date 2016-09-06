@@ -45,8 +45,18 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_H
  */
 public class DW_SHBE_Collection extends DW_Object implements Serializable {
 
-    private transient DW_SHBE_CollectionHandler handler;
-    
+    /**
+     * For convenience, this should be set as a reference to
+     * env.tDW_SHBE_Handler.
+     */
+    protected DW_SHBE_Handler tDW_SHBE_Handler;
+
+    /**
+     * For convenience, this should be set as a reference to
+     * env.tDW_SHBE_CollectionHandler.
+     */
+    protected DW_SHBE_CollectionHandler tDW_SHBE_CollectionHandler;
+
     /**
      * For storing DW_SHBE_Record indexed by DRecordID
      */
@@ -105,10 +115,9 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
     public static final String sAverageWeeklyEligibleRentAmountGreaterThanZeroCount = "AverageWeeklyEligibleRentAmountGreaterThanZeroCount";
 
     public DW_SHBE_Collection(
-            Long ID,
-            DW_SHBE_CollectionHandler handler) {
-        this.env = handler.env;
-        this.handler = handler;
+            DW_Environment env,
+            Long ID) {
+        init(env);
         data = new HashMap();
         this.ID = ID;
     }
@@ -138,7 +147,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
         getData().put(
                 rec.RecordID,
                 rec);
-        getEnv()._DW_SHBE_CollectionHandler.lookup.put(
+        tDW_SHBE_CollectionHandler.lookup.put(
                 rec.getCouncilTaxBenefitClaimReferenceNumber(),
                 rec.RecordID);
     }
@@ -156,8 +165,11 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
 
     protected File getDir() {
         File result;
-        result = Generic_StaticIO.getObjectDirectory(getHandler().getDirectory(), getID(), getID(),
-                getEnv()._DW_SHBE_CollectionHandler._MaximumNumberOfObjectsPerDirectory);
+        result = Generic_StaticIO.getObjectDirectory(
+                tDW_SHBE_CollectionHandler.getDirectory(), 
+                getID(), 
+                getID(),
+                tDW_SHBE_CollectionHandler._MaximumNumberOfObjectsPerDirectory);
         return result;
     }
 
@@ -174,7 +186,9 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
         return result;
     }
 
-    private void init() {
+    private void init(DW_Environment env) {
+        this.env = env;
+        this.tDW_SHBE_Handler = env.getDW_SHBE_Handler();
         Records = new TreeMap<String, DW_SHBE_Record>();
         SRecordsWithoutDRecords = new TreeMap<String, DW_SHBE_S_Record>();
         SRecordIDToCTBRef = new HashMap<DW_ID, String>();
@@ -222,9 +236,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
             String inputFilename,
             String paymentType
     ) {
-        this.env = env;
-        DW_SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = env.getDW_SHBE_Handler();
+        init(env);
         File DRecordsFile = tDW_SHBE_Handler.getDRecordsFile(paymentType, inputFilename);
         File SRecordsWithoutDRecordsFile = tDW_SHBE_Handler.getSRecordsWithoutDRecordsFile(paymentType, inputFilename);
         File SRecordIDToCTBRefFile = tDW_SHBE_Handler.getSRecordIDToCTBRefFile(paymentType, inputFilename);
@@ -268,6 +280,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
     /**
      * Loads data from source.
      *
+     * @param env
      * @param tDW_SHBE_Handler
      * @param ID
      * @param handler
@@ -276,21 +289,19 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
      * @param paymentType
      */
     public DW_SHBE_Collection(
-            DW_SHBE_Handler tDW_SHBE_Handler,
+            DW_Environment env,
             Long ID,
-            DW_SHBE_CollectionHandler handler,
             File inputDirectory,
             String inputFilename,
             String paymentType
     ) {
+        init(env);
         DW_Strings tDW_Strings;
         tDW_Strings = env.getDW_Strings();
         System.err.println("----------------------");
         System.err.println("Load " + inputFilename);
         System.err.println("----------------------");
         this.ID = ID;
-        this.handler = handler;
-        this.env = handler.env;
         this.InputFile = new File(inputDirectory, inputFilename);
         this.PaymentType = paymentType;
         // NINO
@@ -355,10 +366,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                 paymentType, inputFilename);
         File tRecordIDsNotLoadedFile = tDW_SHBE_Handler.getRecordIDsNotLoadedFile(
                 paymentType, inputFilename);
-        long collectionID = 0L;
-        DW_SHBE_Collection collection;
-        collection = new DW_SHBE_Collection(collectionID, handler);
-        handler.add(collection);
+        //long collectionID = 0L;
         long DRecordID = 0;
         // Loop
         int totalCouncilTaxBenefitClaims = 0;
@@ -383,7 +391,6 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
             st.wordChars('`', '`');
             st.wordChars('*', '*');
             String line = "";
-            init();
             long RecordID = 0;
             int lineCount = 0;
             int type = readAndCheckFirstLine(inputDirectory, inputFilename);
@@ -478,258 +485,259 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                                 RecordIDsNotLoaded.add(RecordID);
                             }
                             countSRecords++;
-                        } else {
-                            if (line.startsWith("D")) {
-                                try {
-                                    handler.nextID = DRecordID + 1L;
-                                    if (handler.nextID % handler._MaximumNumberPerCollection == 0) {
-                                        collectionID++;
-                                        handler.swapToFile_Collection(collection);
-                                        collection = new DW_SHBE_Collection(collectionID, handler);
-                                    }
-                                    DW_SHBE_D_Record aDRecord;
-                                    aDRecord = new DW_SHBE_D_Record(RecordID, type, line);
-                                    /*
+                        } else if (line.startsWith("D")) {
+                            try {
+                                tDW_SHBE_CollectionHandler.nextID = DRecordID + 1L;
+                                //        tDW_SHBE_CollectionHandler collection;
+//        collection = new DW_SHBE_Collection(collectionID, handler);
+//        handler.add(collection);
+                                if (tDW_SHBE_CollectionHandler.nextID % tDW_SHBE_CollectionHandler._MaximumNumberPerCollection == 0) {
+                                    ID++;
+//                                    tDW_SHBE_CollectionHandler.swapToFile_Collection(collection);
+//                                    collection = new DW_SHBE_Collection(collectionID, handler);
+                                }
+                                DW_SHBE_D_Record aDRecord;
+                                aDRecord = new DW_SHBE_D_Record(RecordID, type, line);
+                                /*
                                      * For the time being, if for some reason 
                                      * the record does not load correctly such 
                                      * that the TenancyType is not set, then
                                      * do not load this record. Ideally those 
                                      * do not load will be investigated and a 
                                      * solution for loading them found.
-                                     */
-                                    int TenancyType;
-                                    TenancyType = aDRecord.getTenancyType();
-                                    if (TenancyType == 0) {
-                                        int debug = 1;
-                                        aDRecord = new DW_SHBE_D_Record(RecordID, type, line);
-                                        //System.err.println("Incomplete record " + RecordID);
-                                        NumberOfIncompleteDRecords++;
-                                        RecordIDsNotLoaded.add(RecordID);
-                                        lineCount++;
-                                        RecordID++;
-                                        break;
-                                    }
+                                 */
+                                int TenancyType;
+                                TenancyType = aDRecord.getTenancyType();
+                                if (TenancyType == 0) {
+                                    int debug = 1;
+                                    aDRecord = new DW_SHBE_D_Record(RecordID, type, line);
+                                    //System.err.println("Incomplete record " + RecordID);
+                                    NumberOfIncompleteDRecords++;
+                                    RecordIDsNotLoaded.add(RecordID);
+                                    lineCount++;
+                                    RecordID++;
+                                    break;
+                                }
 
-                                    DW_SHBE_Record rec;
-                                    rec = new DW_SHBE_Record(RecordID, aDRecord);
-                                    collection.addRecord(rec);
+                                DW_SHBE_Record rec;
+                                rec = new DW_SHBE_Record(RecordID, aDRecord);
+                                addRecord(rec);
 
-                                    String CTBRef;
-                                    CTBRef = aDRecord.getCouncilTaxBenefitClaimReferenceNumber();
-                                    if (CTBRef != null) {
-                                        boolean doLoop = false;
-                                        if (paymentType.equalsIgnoreCase(tDW_Strings.sPaymentTypeAll)) {
-                                            doLoop = true;
-                                            if (!CTBRef.trim().isEmpty()) {
-                                                totalCouncilTaxBenefitClaims++;
-                                                if (tDW_SHBE_Handler.isHBClaim(aDRecord)) {
-                                                    totalCouncilTaxAndHousingBenefitClaims++;
-                                                    totalHousingBenefitClaims++;
-                                                }
-                                            } else {
-                                                int Debug = 1; // Did think that all records had a CTBRef
-                                                if (tDW_SHBE_Handler.isHBClaim(aDRecord)) {
-                                                    totalHousingBenefitClaims++;
-                                                }
+                                String CTBRef;
+                                CTBRef = aDRecord.getCouncilTaxBenefitClaimReferenceNumber();
+                                if (CTBRef != null) {
+                                    boolean doLoop = false;
+                                    if (paymentType.equalsIgnoreCase(tDW_Strings.sPaymentTypeAll)) {
+                                        doLoop = true;
+                                        if (!CTBRef.trim().isEmpty()) {
+                                            totalCouncilTaxBenefitClaims++;
+                                            if (tDW_SHBE_Handler.isHBClaim(aDRecord)) {
+                                                totalCouncilTaxAndHousingBenefitClaims++;
+                                                totalHousingBenefitClaims++;
                                             }
                                         } else {
-                                            int StatusOfCTBClaimAtExtractDate;
-                                            StatusOfCTBClaimAtExtractDate = aDRecord.getStatusOfCTBClaimAtExtractDate();
-                                            int StatusOfHBClaimAtExtractDate;
-                                            StatusOfHBClaimAtExtractDate = aDRecord.getStatusOfHBClaimAtExtractDate();
-                                            if (paymentType.equalsIgnoreCase(tDW_Strings.sPaymentTypeIn) && (StatusOfHBClaimAtExtractDate == 1 || StatusOfCTBClaimAtExtractDate == 1)) {
-                                                doLoop = true;
-                                                boolean isCTBClaimInPayment;
-                                                isCTBClaimInPayment = tDW_SHBE_Handler.isCTBOnlyClaimInPayment(aDRecord);
-                                                if (tDW_SHBE_Handler.isHBClaimInPayment(aDRecord)) {
-                                                    totalHousingBenefitClaims++;
-                                                    if (isCTBClaimInPayment) {
-                                                        totalCouncilTaxAndHousingBenefitClaims++;
-                                                    }
-                                                }
-                                                if (isCTBClaimInPayment) {
-                                                    totalCouncilTaxBenefitClaims++;
-                                                }
-                                            }
-                                            if (paymentType.equalsIgnoreCase(tDW_Strings.sPaymentTypeSuspended) && (StatusOfHBClaimAtExtractDate == 2 || StatusOfCTBClaimAtExtractDate == 2)) {
-                                                doLoop = true;
-                                                boolean isCTBClaimSuspended;
-                                                isCTBClaimSuspended = tDW_SHBE_Handler.isCTBOnlyClaimSuspended(aDRecord);
-                                                if (tDW_SHBE_Handler.isHBClaimSuspended(aDRecord)) {
-                                                    totalHousingBenefitClaims++;
-                                                    if (isCTBClaimSuspended) {
-                                                        totalCouncilTaxAndHousingBenefitClaims++;
-                                                    }
-                                                }
-                                                if (isCTBClaimSuspended) {
-                                                    totalCouncilTaxBenefitClaims++;
-                                                }
-                                            }
-                                            if (paymentType.equalsIgnoreCase(tDW_Strings.sPaymentTypeOther) && (StatusOfHBClaimAtExtractDate == 0 || StatusOfCTBClaimAtExtractDate == 0)) {
-                                                doLoop = true;
-                                                boolean isCTBClaimOtherPT;
-                                                isCTBClaimOtherPT = tDW_SHBE_Handler.isCTBOnlyClaimOtherPT(aDRecord);
-                                                if (tDW_SHBE_Handler.isHBClaimOtherPT(aDRecord)) {
-                                                    totalHousingBenefitClaims++;
-                                                    if (isCTBClaimOtherPT) {
-                                                        totalCouncilTaxAndHousingBenefitClaims++;
-                                                    }
-                                                }
-                                                if (isCTBClaimOtherPT) {
-                                                    totalCouncilTaxBenefitClaims++;
-                                                }
+                                            int Debug = 1; // Did think that all records had a CTBRef
+                                            if (tDW_SHBE_Handler.isHBClaim(aDRecord)) {
+                                                totalHousingBenefitClaims++;
                                             }
                                         }
-                                        if (doLoop) {
-                                            totalIncome = tDW_SHBE_Handler.getClaimantsAndPartnersIncomeTotal(aDRecord);
-                                            grandTotalIncome += totalIncome;
-                                            if (totalIncome > 0) {
-                                                totalIncomeGreaterThanZeroCount++;
-                                            }
-                                            totalWeeklyEligibleRentAmount = aDRecord.getWeeklyEligibleRentAmount();
-                                            grandTotalWeeklyEligibleRentAmount += totalWeeklyEligibleRentAmount;
-                                            if (totalWeeklyEligibleRentAmount > 0) {
-                                                totalWeeklyEligibleRentAmountGreaterThanZeroCount++;
-                                            }
-                                            Object o = Records.put(CTBRef, rec);
-                                            if (o != null) {
-                                                DW_SHBE_Record existingSHBE_DataRecord = (DW_SHBE_Record) o;
-                                                System.err.println("Warning existing SHBE Record overwritten:");
-                                                System.err.println("Existing SHBE_DataRecord: " + existingSHBE_DataRecord);
-                                                System.err.println("Replacement SHBE_DataRecord: " + aDRecord);
-                                            }
-                                            String claimantNINO;
-                                            claimantNINO = aDRecord.getClaimantsNationalInsuranceNumber();
-                                            DW_ID claimantNINODW_ID;
-                                            claimantNINODW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
-                                                    claimantNINO,
-                                                    tNINOToDW_IDLookup,
-                                                    tDW_IDToNINOLookup);
-                                            String claimantDOB;
-                                            claimantDOB = aDRecord.getClaimantsDateOfBirth();
-                                            DW_ID claimantDOBDW_ID;
-                                            claimantDOBDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
-                                                    claimantDOB,
-                                                    tDOBToDW_IDLookup,
-                                                    tDW_IDToDOBLookup);
-                                            DW_PersonID claimantDW_PersonID;
-                                            claimantDW_PersonID = new DW_PersonID(claimantNINODW_ID, claimantDOBDW_ID);
-                                            if (ClaimantIDs.contains(claimantDW_PersonID)) {
-                                                // This claimant has two claims in the month.
-                                                // This can happen and most commonly happens
-                                                // for travellers. Some claimants have their
-                                                // NINO set to XX999999XX and it is possible
-                                                // that two have this set and have the same
-                                                // date of birth!
-//                                                    System.out.println("Claimant may have mulitple claims!");
-                                                DW_ID DW_ID;
-                                                DW_ID = tDW_PersonIDToDW_IDLookup.get(claimantDW_PersonID);
-                                                String previousCTBRef;
-                                                previousCTBRef = ClaimantIDToCTBRefLookup.get(DW_ID);
-                                                DW_SHBE_Record previousRecord;
-                                                previousRecord = Records.get(previousCTBRef);
-                                                //System.out.println("Previous D Record");
-//                                                    System.out.println(previousRecord.DRecord.toString());
-                                                //System.out.println("This D Record");
-//                                                    System.out.println(aDRecord.toString());
-                                                if (previousRecord.isPairedRecord()) {
-                                                    System.out.println("Claimant already has a paired record!");
-                                                    System.out.println("Claimant appears to have multiple claims!");
-                                                    System.out.println("This might happen if a claimant moves in a "
-                                                            + "month and sets up different claims. This could in "
-                                                            + "theory happen a number of times!");
-                                                    int debug = 1;
-                                                } else {
-                                                    PairedClaimantIDs.add(
-                                                            tDW_IDToDW_PersonIDLookup.get(
-                                                                    CTBRefToClaimantIDLookup.get(previousCTBRef)));
+                                    } else {
+                                        int StatusOfCTBClaimAtExtractDate;
+                                        StatusOfCTBClaimAtExtractDate = aDRecord.getStatusOfCTBClaimAtExtractDate();
+                                        int StatusOfHBClaimAtExtractDate;
+                                        StatusOfHBClaimAtExtractDate = aDRecord.getStatusOfHBClaimAtExtractDate();
+                                        if (paymentType.equalsIgnoreCase(tDW_Strings.sPaymentTypeIn) && (StatusOfHBClaimAtExtractDate == 1 || StatusOfCTBClaimAtExtractDate == 1)) {
+                                            doLoop = true;
+                                            boolean isCTBClaimInPayment;
+                                            isCTBClaimInPayment = tDW_SHBE_Handler.isCTBOnlyClaimInPayment(aDRecord);
+                                            if (tDW_SHBE_Handler.isHBClaimInPayment(aDRecord)) {
+                                                totalHousingBenefitClaims++;
+                                                if (isCTBClaimInPayment) {
+                                                    totalCouncilTaxAndHousingBenefitClaims++;
                                                 }
-                                                DW_ID claimantID = CTBRefToClaimantIDLookup.get(previousCTBRef);
-                                                String postcode;
-                                                postcode = DW_Postcode_Handler.formatPostcode(aDRecord.getClaimantsPostcode());
-                                                ClaimantIDToPostcodeLookup.put(claimantID, postcode);
-                                                DW_ID postcodeID;
-                                                postcodeID = tDW_SHBE_Handler.getPostcodeIDAddIfNeeded(
-                                                        postcode,
-                                                        tPostcodeToPostcodeIDLookup,
-                                                        tPostcodeIDToPostcodeLookup);
-                                                ClaimantIDAndPostcodeSet.add(new ID_PostcodeID(claimantID, postcodeID));
-                                                ID_TenancyType ID_TenancyType;
-                                                ID_TenancyType = new ID_TenancyType(claimantID, TenancyType);
-                                                ClaimantIDAndTenancyTypeSet.add(ID_TenancyType);
-                                                ClaimantIDAndPostcodeAndTenancyTypeSet.add(
-                                                        new ID_TenancyType_PostcodeID(ID_TenancyType, postcodeID));
-                                                ClaimantIDToTenancyTypeLookup.put(claimantID, TenancyType);
-                                                AllIDs.add(claimantDW_PersonID);
+                                            }
+                                            if (isCTBClaimInPayment) {
+                                                totalCouncilTaxBenefitClaims++;
+                                            }
+                                        }
+                                        if (paymentType.equalsIgnoreCase(tDW_Strings.sPaymentTypeSuspended) && (StatusOfHBClaimAtExtractDate == 2 || StatusOfCTBClaimAtExtractDate == 2)) {
+                                            doLoop = true;
+                                            boolean isCTBClaimSuspended;
+                                            isCTBClaimSuspended = tDW_SHBE_Handler.isCTBOnlyClaimSuspended(aDRecord);
+                                            if (tDW_SHBE_Handler.isHBClaimSuspended(aDRecord)) {
+                                                totalHousingBenefitClaims++;
+                                                if (isCTBClaimSuspended) {
+                                                    totalCouncilTaxAndHousingBenefitClaims++;
+                                                }
+                                            }
+                                            if (isCTBClaimSuspended) {
+                                                totalCouncilTaxBenefitClaims++;
+                                            }
+                                        }
+                                        if (paymentType.equalsIgnoreCase(tDW_Strings.sPaymentTypeOther) && (StatusOfHBClaimAtExtractDate == 0 || StatusOfCTBClaimAtExtractDate == 0)) {
+                                            doLoop = true;
+                                            boolean isCTBClaimOtherPT;
+                                            isCTBClaimOtherPT = tDW_SHBE_Handler.isCTBOnlyClaimOtherPT(aDRecord);
+                                            if (tDW_SHBE_Handler.isHBClaimOtherPT(aDRecord)) {
+                                                totalHousingBenefitClaims++;
+                                                if (isCTBClaimOtherPT) {
+                                                    totalCouncilTaxAndHousingBenefitClaims++;
+                                                }
+                                            }
+                                            if (isCTBClaimOtherPT) {
+                                                totalCouncilTaxBenefitClaims++;
+                                            }
+                                        }
+                                    }
+                                    if (doLoop) {
+                                        totalIncome = tDW_SHBE_Handler.getClaimantsAndPartnersIncomeTotal(aDRecord);
+                                        grandTotalIncome += totalIncome;
+                                        if (totalIncome > 0) {
+                                            totalIncomeGreaterThanZeroCount++;
+                                        }
+                                        totalWeeklyEligibleRentAmount = aDRecord.getWeeklyEligibleRentAmount();
+                                        grandTotalWeeklyEligibleRentAmount += totalWeeklyEligibleRentAmount;
+                                        if (totalWeeklyEligibleRentAmount > 0) {
+                                            totalWeeklyEligibleRentAmountGreaterThanZeroCount++;
+                                        }
+                                        Object o = Records.put(CTBRef, rec);
+                                        if (o != null) {
+                                            DW_SHBE_Record existingSHBE_DataRecord = (DW_SHBE_Record) o;
+                                            System.err.println("Warning existing SHBE Record overwritten:");
+                                            System.err.println("Existing SHBE_DataRecord: " + existingSHBE_DataRecord);
+                                            System.err.println("Replacement SHBE_DataRecord: " + aDRecord);
+                                        }
+                                        String claimantNINO;
+                                        claimantNINO = aDRecord.getClaimantsNationalInsuranceNumber();
+                                        DW_ID claimantNINODW_ID;
+                                        claimantNINODW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
+                                                claimantNINO,
+                                                tNINOToDW_IDLookup,
+                                                tDW_IDToNINOLookup);
+                                        String claimantDOB;
+                                        claimantDOB = aDRecord.getClaimantsDateOfBirth();
+                                        DW_ID claimantDOBDW_ID;
+                                        claimantDOBDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
+                                                claimantDOB,
+                                                tDOBToDW_IDLookup,
+                                                tDW_IDToDOBLookup);
+                                        DW_PersonID claimantDW_PersonID;
+                                        claimantDW_PersonID = new DW_PersonID(claimantNINODW_ID, claimantDOBDW_ID);
+                                        if (ClaimantIDs.contains(claimantDW_PersonID)) {
+                                            // This claimant has two claims in the month.
+                                            // This can happen and most commonly happens
+                                            // for travellers. Some claimants have their
+                                            // NINO set to XX999999XX and it is possible
+                                            // that two have this set and have the same
+                                            // date of birth!
+//                                                    System.out.println("Claimant may have mulitple claims!");
+                                            DW_ID DW_ID;
+                                            DW_ID = tDW_PersonIDToDW_IDLookup.get(claimantDW_PersonID);
+                                            String previousCTBRef;
+                                            previousCTBRef = ClaimantIDToCTBRefLookup.get(DW_ID);
+                                            DW_SHBE_Record previousRecord;
+                                            previousRecord = Records.get(previousCTBRef);
+                                            //System.out.println("Previous D Record");
+//                                                    System.out.println(previousRecord.DRecord.toString());
+                                            //System.out.println("This D Record");
+//                                                    System.out.println(aDRecord.toString());
+                                            if (previousRecord.isPairedRecord()) {
+                                                System.out.println("Claimant already has a paired record!");
+                                                System.out.println("Claimant appears to have multiple claims!");
+                                                System.out.println("This might happen if a claimant moves in a "
+                                                        + "month and sets up different claims. This could in "
+                                                        + "theory happen a number of times!");
+                                                int debug = 1;
                                             } else {
-                                                ClaimantIDs.add(claimantDW_PersonID);
-                                                DW_ID claimantID = tDW_SHBE_Handler.getIDAddIfNeeded(
-                                                        claimantDW_PersonID,
+                                                PairedClaimantIDs.add(
+                                                        tDW_IDToDW_PersonIDLookup.get(
+                                                                CTBRefToClaimantIDLookup.get(previousCTBRef)));
+                                            }
+                                            DW_ID claimantID = CTBRefToClaimantIDLookup.get(previousCTBRef);
+                                            String postcode;
+                                            postcode = DW_Postcode_Handler.formatPostcode(aDRecord.getClaimantsPostcode());
+                                            ClaimantIDToPostcodeLookup.put(claimantID, postcode);
+                                            DW_ID postcodeID;
+                                            postcodeID = tDW_SHBE_Handler.getPostcodeIDAddIfNeeded(
+                                                    postcode,
+                                                    tPostcodeToPostcodeIDLookup,
+                                                    tPostcodeIDToPostcodeLookup);
+                                            ClaimantIDAndPostcodeSet.add(new ID_PostcodeID(claimantID, postcodeID));
+                                            ID_TenancyType ID_TenancyType;
+                                            ID_TenancyType = new ID_TenancyType(claimantID, TenancyType);
+                                            ClaimantIDAndTenancyTypeSet.add(ID_TenancyType);
+                                            ClaimantIDAndPostcodeAndTenancyTypeSet.add(
+                                                    new ID_TenancyType_PostcodeID(ID_TenancyType, postcodeID));
+                                            ClaimantIDToTenancyTypeLookup.put(claimantID, TenancyType);
+                                            AllIDs.add(claimantDW_PersonID);
+                                        } else {
+                                            ClaimantIDs.add(claimantDW_PersonID);
+                                            DW_ID claimantID = tDW_SHBE_Handler.getIDAddIfNeeded(
+                                                    claimantDW_PersonID,
+                                                    tDW_PersonIDToDW_IDLookup,
+                                                    tDW_IDToDW_PersonIDLookup);
+                                            CTBRefToClaimantIDLookup.put(CTBRef, claimantID);
+                                            ClaimantIDToCTBRefLookup.put(claimantID, CTBRef);
+                                            ClaimantIDToRecordIDLookup.put(claimantID, RecordID);
+                                            String postcode;
+                                            postcode = DW_Postcode_Handler.formatPostcode(aDRecord.getClaimantsPostcode());
+                                            ClaimantIDToPostcodeLookup.put(claimantID, postcode);
+                                            DW_ID postcodeID;
+                                            postcodeID = tDW_SHBE_Handler.getPostcodeIDAddIfNeeded(
+                                                    postcode,
+                                                    tPostcodeToPostcodeIDLookup,
+                                                    tPostcodeIDToPostcodeLookup);
+                                            ClaimantIDAndPostcodeSet.add(new ID_PostcodeID(claimantID, postcodeID));
+                                            ID_TenancyType ID_TenancyType;
+                                            ID_TenancyType = new ID_TenancyType(claimantID, TenancyType);
+                                            ClaimantIDAndTenancyTypeSet.add(ID_TenancyType);
+                                            ClaimantIDAndPostcodeAndTenancyTypeSet.add(
+                                                    new ID_TenancyType_PostcodeID(ID_TenancyType, postcodeID));
+                                            ClaimantIDToTenancyTypeLookup.put(claimantID, TenancyType);
+                                            AllIDs.add(claimantDW_PersonID);
+                                            if (aDRecord.getPartnerFlag() > 0) {
+                                                String partnerNINO;
+                                                partnerNINO = aDRecord.getPartnersNationalInsuranceNumber();
+                                                DW_ID partnerNINODW_ID;
+                                                partnerNINODW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
+                                                        partnerNINO,
+                                                        tNINOToDW_IDLookup,
+                                                        tDW_IDToNINOLookup);
+                                                String partnerDOB;
+                                                partnerDOB = aDRecord.getPartnersDateOfBirth();
+                                                DW_ID partnerDOBDW_ID;
+                                                partnerDOBDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
+                                                        partnerDOB,
+                                                        tDOBToDW_IDLookup,
+                                                        tDW_IDToDOBLookup);
+                                                DW_PersonID partnerDW_PersonID;
+                                                partnerDW_PersonID = new DW_PersonID(partnerNINODW_ID, partnerDOBDW_ID);
+                                                if (PartnerIDs.contains(partnerDW_PersonID)) {
+                                                    // This partner is in two claims in the month.
+                                                    // Some claimants have their NINO set to
+                                                    // XX999999XX and it is possible that two
+                                                    // have this set and have the same
+                                                    // date of birth!
+                                                    int debug = 1;
+                                                }
+                                                PartnerIDs.add(partnerDW_PersonID);
+                                                DW_ID partnerID = tDW_SHBE_Handler.getIDAddIfNeeded(
+                                                        partnerDW_PersonID,
                                                         tDW_PersonIDToDW_IDLookup,
                                                         tDW_IDToDW_PersonIDLookup);
-                                                CTBRefToClaimantIDLookup.put(CTBRef, claimantID);
-                                                ClaimantIDToCTBRefLookup.put(claimantID, CTBRef);
-                                                ClaimantIDToRecordIDLookup.put(claimantID, RecordID);
-                                                String postcode;
-                                                postcode = DW_Postcode_Handler.formatPostcode(aDRecord.getClaimantsPostcode());
-                                                ClaimantIDToPostcodeLookup.put(claimantID, postcode);
-                                                DW_ID postcodeID;
-                                                postcodeID = tDW_SHBE_Handler.getPostcodeIDAddIfNeeded(
-                                                        postcode,
-                                                        tPostcodeToPostcodeIDLookup,
-                                                        tPostcodeIDToPostcodeLookup);
-                                                ClaimantIDAndPostcodeSet.add(new ID_PostcodeID(claimantID, postcodeID));
-                                                ID_TenancyType ID_TenancyType;
-                                                ID_TenancyType = new ID_TenancyType(claimantID, TenancyType);
-                                                ClaimantIDAndTenancyTypeSet.add(ID_TenancyType);
-                                                ClaimantIDAndPostcodeAndTenancyTypeSet.add(
-                                                        new ID_TenancyType_PostcodeID(ID_TenancyType, postcodeID));
-                                                ClaimantIDToTenancyTypeLookup.put(claimantID, TenancyType);
-                                                AllIDs.add(claimantDW_PersonID);
-                                                if (aDRecord.getPartnerFlag() > 0) {
-                                                    String partnerNINO;
-                                                    partnerNINO = aDRecord.getPartnersNationalInsuranceNumber();
-                                                    DW_ID partnerNINODW_ID;
-                                                    partnerNINODW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
-                                                            partnerNINO,
-                                                            tNINOToDW_IDLookup,
-                                                            tDW_IDToNINOLookup);
-                                                    String partnerDOB;
-                                                    partnerDOB = aDRecord.getPartnersDateOfBirth();
-                                                    DW_ID partnerDOBDW_ID;
-                                                    partnerDOBDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
-                                                            partnerDOB,
-                                                            tDOBToDW_IDLookup,
-                                                            tDW_IDToDOBLookup);
-                                                    DW_PersonID partnerDW_PersonID;
-                                                    partnerDW_PersonID = new DW_PersonID(partnerNINODW_ID, partnerDOBDW_ID);
-                                                    if (PartnerIDs.contains(partnerDW_PersonID)) {
-                                                        // This partner is in two claims in the month.
-                                                        // Some claimants have their NINO set to
-                                                        // XX999999XX and it is possible that two
-                                                        // have this set and have the same
-                                                        // date of birth!
-                                                        int debug = 1;
-                                                    }
-                                                    PartnerIDs.add(partnerDW_PersonID);
-                                                    DW_ID partnerID = tDW_SHBE_Handler.getIDAddIfNeeded(
-                                                            partnerDW_PersonID,
-                                                            tDW_PersonIDToDW_IDLookup,
-                                                            tDW_IDToDW_PersonIDLookup);
-                                                    AllIDs.add(partnerDW_PersonID);
-                                                }
+                                                AllIDs.add(partnerDW_PersonID);
                                             }
-                                        } else {
-                                            RecordIDsNotLoaded.add(RecordID);
                                         }
+                                    } else {
+                                        RecordIDsNotLoaded.add(RecordID);
                                     }
-                                } catch (Exception e) {
-                                    System.err.println(line);
-                                    System.err.println("RecordID " + RecordID);
-                                    System.err.println(e.getLocalizedMessage());
-                                    e.printStackTrace();
-                                    RecordIDsNotLoaded.add(RecordID);
                                 }
+                            } catch (Exception e) {
+                                System.err.println(line);
+                                System.err.println("RecordID " + RecordID);
+                                System.err.println(e.getLocalizedMessage());
+                                e.printStackTrace();
+                                RecordIDsNotLoaded.add(RecordID);
                             }
                         }
                         lineCount++;
@@ -872,14 +880,14 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
         }
         DW_ID sNINODW_ID;
         sNINODW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
-                sNINO, 
+                sNINO,
                 tNINOToDW_IDLookup,
                 tDW_IDToNINOLookup);
         String sDOB;
         sDOB = tSRecord.getSubRecordDateOfBirth();
         DW_ID sDOBDW_ID;
         sDOBDW_ID = tDW_SHBE_Handler.getIDAddIfNeeded(
-                sDOB, 
+                sDOB,
                 tDOBToDW_IDLookup,
                 tDW_IDToDOBLookup);
         DW_PersonID sDW_PersonID;
@@ -906,31 +914,29 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                     Object[] SRecordIDUpdate;
                     SRecordIDUpdate = getSRecordIDUpdate(
                             tDW_SHBE_Handler,
-                            tNINOToDW_IDLookup, 
+                            tNINOToDW_IDLookup,
                             tDW_IDToNINOLookup,
-                            tDOBToDW_IDLookup, 
+                            tDOBToDW_IDLookup,
                             tDW_IDToDOBLookup,
                             tDW_PersonIDToDW_IDLookup,
-                            tDW_IDToDW_PersonIDLookup, 
+                            tDW_IDToDW_PersonIDLookup,
                             tSRecord);
                     sDW_ID = (DW_ID) SRecordIDUpdate[0];
                     sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
-                } else {
-                    if (!previousRecord.isPairedRecord()) {
-                        //System.out.println("Not Paired DRecord and NonDependent SRecord ID not unique");
-                        Object[] SRecordIDUpdate;
-                        SRecordIDUpdate = getSRecordIDUpdate(
-                                tDW_SHBE_Handler,
-                                tNINOToDW_IDLookup, 
-                                tDW_IDToNINOLookup,
-                                tDOBToDW_IDLookup, 
-                                tDW_IDToDOBLookup,
-                                tDW_PersonIDToDW_IDLookup,
-                                tDW_IDToDW_PersonIDLookup, 
-                                tSRecord);
-                        sDW_ID = (DW_ID) SRecordIDUpdate[0];
-                        sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
-                    }
+                } else if (!previousRecord.isPairedRecord()) {
+                    //System.out.println("Not Paired DRecord and NonDependent SRecord ID not unique");
+                    Object[] SRecordIDUpdate;
+                    SRecordIDUpdate = getSRecordIDUpdate(
+                            tDW_SHBE_Handler,
+                            tNINOToDW_IDLookup,
+                            tDW_IDToNINOLookup,
+                            tDOBToDW_IDLookup,
+                            tDW_IDToDOBLookup,
+                            tDW_PersonIDToDW_IDLookup,
+                            tDW_IDToDW_PersonIDLookup,
+                            tSRecord);
+                    sDW_ID = (DW_ID) SRecordIDUpdate[0];
+                    sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
                 }
             }
             NonDependentIDs.add(sDW_PersonID);
@@ -963,22 +969,20 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
                             tSRecord);
                     sDW_ID = (DW_ID) SRecordIDUpdate[0];
                     sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
-                } else {
-                    if (!previousRecord.isPairedRecord()) {
-                        //System.out.println("Not Paired DRecord and Dependent SRecord ID not unique");
-                        Object[] SRecordIDUpdate;
-                        SRecordIDUpdate = getSRecordIDUpdate(
-                                tDW_SHBE_Handler,
-                                tNINOToDW_IDLookup,
-                                tDW_IDToNINOLookup,
-                                tDOBToDW_IDLookup,
-                                tDW_IDToDOBLookup,
-                                tDW_PersonIDToDW_IDLookup,
-                                tDW_IDToDW_PersonIDLookup,
-                                tSRecord);
-                        sDW_ID = (DW_ID) SRecordIDUpdate[0];
-                        sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
-                    }
+                } else if (!previousRecord.isPairedRecord()) {
+                    //System.out.println("Not Paired DRecord and Dependent SRecord ID not unique");
+                    Object[] SRecordIDUpdate;
+                    SRecordIDUpdate = getSRecordIDUpdate(
+                            tDW_SHBE_Handler,
+                            tNINOToDW_IDLookup,
+                            tDW_IDToNINOLookup,
+                            tDOBToDW_IDLookup,
+                            tDW_IDToDOBLookup,
+                            tDW_PersonIDToDW_IDLookup,
+                            tDW_IDToDW_PersonIDLookup,
+                            tSRecord);
+                    sDW_ID = (DW_ID) SRecordIDUpdate[0];
+                    sDW_PersonID = (DW_PersonID) SRecordIDUpdate[1];
                 }
             }
             DependentIDs.add(sDW_PersonID);
@@ -1328,20 +1332,6 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
             Logger.getLogger(DW_SHBE_Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 2;
-    }
-
-    /**
-     * @return the env
-     */
-    public DW_Environment getEnv() {
-        return env;
-    }
-
-    /**
-     * @return the handler
-     */
-    public DW_SHBE_CollectionHandler getHandler() {
-        return handler;
     }
 
     /**

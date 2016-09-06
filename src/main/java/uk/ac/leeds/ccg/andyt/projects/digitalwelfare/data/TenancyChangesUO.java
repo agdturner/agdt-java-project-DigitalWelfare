@@ -43,9 +43,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_S_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UOReport_Record;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UnderOccupiedReport_Set;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
@@ -67,7 +68,7 @@ public class TenancyChangesUO extends DW_Object {
     HashSet<String> validPostcodes;
     //HashMap<String, HashSet<String>> validPostcodes;
 
-    static String sUnderOccupancyGroupTables = "UnderOccupancyGroupTables";
+    String sUnderOccupancyGroupTables = "UnderOccupancyGroupTables";
     String defaultPostcode = "AAN NAA";
     String sU = "U";
     String sUnderOccupancy = "UnderOccupancy";
@@ -107,7 +108,7 @@ public class TenancyChangesUO extends DW_Object {
     String s0Dot0 = "0.0"; // zeros
     String s0Dot00 = "0.00"; // zeros
 
-    String sTT_ = sTT + tDW_Strings.sUnderscore;
+    String sTT_;
     String sBR = "BedroomRequirement";
     String sNB = "NumberOfBedrooms";
     String sNDUO = "NonDependents(UO)";
@@ -1167,6 +1168,8 @@ public class TenancyChangesUO extends DW_Object {
     }
 
     private void initString() {
+        sTT_ = sTT + tDW_Strings.sUnderscore;
+    
         sTravellers = "a_Travellers"; // Letter_ added for ordering purposes.
         sTTNot1Or4AndUnderOccupying = "b_TTNot1Or4AndUnderOccupying";
 
@@ -1718,11 +1721,20 @@ public class TenancyChangesUO extends DW_Object {
         return decimalise(Integer.toString(i));
     }
 
+    /**
+     * 
+     * @param DW_UO_Data
+     * @param SHBEFilenames
+     * @param include
+     * @param aPT A Payment Type.
+     * @param includePreUnderOccupancyValues
+     * @return 
+     */
     public Object[] getTable(
-            Object[] underOccupiedData,
+            DW_UO_Data DW_UO_Data,
             String[] SHBEFilenames,
             ArrayList<Integer> include,
-            String paymentType,
+            String aPT,
             boolean includePreUnderOccupancyValues
     ) {
         Object[] result;
@@ -1734,10 +1746,10 @@ public class TenancyChangesUO extends DW_Object {
         TreeMap<String, String> tableValues;
         tableValues = new TreeMap<String, String>();
 
-        TreeMap<String, DW_UnderOccupiedReport_Set> councilUnderOccupiedSets = null;
-        TreeMap<String, DW_UnderOccupiedReport_Set> RSLUnderOccupiedSets = null;
-        councilUnderOccupiedSets = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[0];
-        RSLUnderOccupiedSets = (TreeMap<String, DW_UnderOccupiedReport_Set>) underOccupiedData[1];
+        TreeMap<String, DW_UO_Set> councilUnderOccupiedSets = null;
+        TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets = null;
+        councilUnderOccupiedSets = DW_UO_Data.getCouncil_Data();
+        RSLUnderOccupiedSets = DW_UO_Data.getRSL_Sets();
 
         TreeSet<String> tUOClaims;
         tUOClaims = new TreeSet<String>();
@@ -1895,8 +1907,8 @@ public class TenancyChangesUO extends DW_Object {
         String aYM3 = s;
         String year = s;
         String month = s;
-        DW_UnderOccupiedReport_Set councilUnderOccupiedSet1 = null;
-        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1 = null;
+        DW_UO_Set councilUnderOccupiedSet1 = null;
+        DW_UO_Set RSLUnderOccupiedSet1 = null;
         String aSHBEFilename = null;
 
         // % in arrears
@@ -1917,21 +1929,24 @@ public class TenancyChangesUO extends DW_Object {
         councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
         if (councilUnderOccupiedSet1 != null) {
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
-            aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, paymentType);
+            aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, aPT);
         }
 
         TreeMap<String, DW_SHBE_Record> aRecords;
         aRecords = aSHBEData.getRecords();
         DW_SHBE_Record aDW_SHBE_Record;
-        DW_UnderOccupiedReport_Set endCouncilUnderOccupiedSet;
+        DW_UO_Set endCouncilUnderOccupiedSet;
         endCouncilUnderOccupiedSet = councilUnderOccupiedSets.get(aYM3);
-        TreeMap<String, DW_UOReport_Record> endCouncilUnderOccupiedSetMap;
+        TreeMap<String, DW_UO_Record> endCouncilUnderOccupiedSetMap;
         endCouncilUnderOccupiedSetMap = endCouncilUnderOccupiedSet.getMap();
         int inArrearsCount = 0;
         int receivingDHPCount = 0;
         int inArrearsAndReceivingDHPCount = 0;
         String aCTBRef;
         DW_SHBE_D_Record aDRecord;
+        /*
+        * Iterate over records in tEndUOCTBRefs
+        */
         Iterator<String> tCTBRefsIte;
         tCTBRefsIte = tEndUOCTBRefs.iterator();
         while (tCTBRefsIte.hasNext()) {
@@ -1947,7 +1962,7 @@ public class TenancyChangesUO extends DW_Object {
                     receivingDHPCount++;
                 }
                 if (endCouncilUnderOccupiedSetMap.containsKey(aCTBRef)) {
-                    DW_UOReport_Record UORec;
+                    DW_UO_Record UORec;
                     UORec = endCouncilUnderOccupiedSetMap.get(aCTBRef);
                     double arrears;
                     arrears = UORec.getTotalRentArrears();
@@ -1985,7 +2000,7 @@ public class TenancyChangesUO extends DW_Object {
                     receivingDHPCount++;
                 }
                 if (endCouncilUnderOccupiedSetMap.containsKey(aCTBRef)) {
-                    DW_UOReport_Record UORec;
+                    DW_UO_Record UORec;
                     UORec = endCouncilUnderOccupiedSetMap.get(aCTBRef);
                     double arrears;
                     arrears = UORec.getTotalRentArrears();
@@ -2863,7 +2878,7 @@ public class TenancyChangesUO extends DW_Object {
             councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
             if (councilUnderOccupiedSet1 != null) {
                 RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
-                aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, paymentType);
+                aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, aPT);
                 initFirst = true;
             }
             header += aYM3;
@@ -3190,7 +3205,7 @@ public class TenancyChangesUO extends DW_Object {
             aYM3 = tDW_SHBE_Handler.getYM3(aSHBEFilename);
             year = tDW_SHBE_Handler.getYear(aSHBEFilename);
             month = tDW_SHBE_Handler.getMonthNumber(aSHBEFilename);
-            aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, paymentType);
+            aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, aPT);
             aRecords = aSHBEData.getRecords();
             councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(aYM3);
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(aYM3);
@@ -4179,8 +4194,8 @@ public class TenancyChangesUO extends DW_Object {
             TreeMap<String, DW_SHBE_Record> bRecords,
             TreeMap<String, DW_SHBE_Record> cRecords,
             TreeMap<String, String> tableValues,
-            DW_UnderOccupiedReport_Set councilUnderOccupiedSet1,
-            DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1,
+            DW_UO_Set councilUnderOccupiedSet1,
+            DW_UO_Set RSLUnderOccupiedSet1,
             HashSet<ID> tIDSetCouncilUniqueClaimantsEffected,
             HashSet<ID> tIDSetCouncilUniquePartnersEffected,
             HashMap<String, Integer> tCouncilMaxNumberOfDependentsInClaimWhenUO,
@@ -4926,7 +4941,7 @@ public class TenancyChangesUO extends DW_Object {
                             month,
                             aDW_SHBE_Record,
                             aDW_SHBE_D_Record);
-                    DW_UOReport_Record rec = councilUnderOccupiedSet1.getMap().get(aCTBRef);
+                    DW_UO_Record rec = councilUnderOccupiedSet1.getMap().get(aCTBRef);
                     int bedrooms = rec.getBedroomsInProperty();
                     int householdSizeSHBE;
                     householdSizeSHBE = tDW_SHBE_Handler.getHouseholdSizeint(aDW_SHBE_D_Record);
@@ -4935,7 +4950,7 @@ public class TenancyChangesUO extends DW_Object {
                         result[3] = true;
                     }
                     int householdSizeUO;
-                    householdSizeUO = DW_UnderOccupiedReport_Handler.getHouseholdSizeExcludingPartners(rec);
+                    householdSizeUO = DW_UO_Handler.getHouseholdSizeExcludingPartners(rec);
                     if (householdSizeUO >= bedrooms) {
                         result[4] = true;
                     }
@@ -4954,7 +4969,7 @@ public class TenancyChangesUO extends DW_Object {
                             month,
                             aDW_SHBE_Record,
                             aDW_SHBE_D_Record);
-                    DW_UOReport_Record rec = RSLUnderOccupiedSet1.getMap().get(aCTBRef);
+                    DW_UO_Record rec = RSLUnderOccupiedSet1.getMap().get(aCTBRef);
                     int bedrooms = rec.getBedroomsInProperty();
                     //long householdSize = tDW_SHBE_Handler.getHouseholdSize(aDW_SHBE_D_Record);
                     int householdSizeSHBE;
@@ -4964,7 +4979,7 @@ public class TenancyChangesUO extends DW_Object {
                         result[3] = true;
                     }
                     int householdSizeUO;
-                    householdSizeUO = DW_UnderOccupiedReport_Handler.getHouseholdSizeExcludingPartners(rec);
+                    householdSizeUO = DW_UO_Handler.getHouseholdSizeExcludingPartners(rec);
                     if (householdSizeUO >= bedrooms) {
                         result[4] = true;
                     }
@@ -5422,7 +5437,7 @@ public class TenancyChangesUO extends DW_Object {
         tableValues.put(key, aS);
 
         // UO
-        DW_UOReport_Record aDW_UOReport_Record;
+        DW_UO_Record aDW_UOReport_Record;
 
         if (councilUnderOccupiedSet1.getMap()
                 .keySet().contains(aCTBRef)
@@ -5670,7 +5685,7 @@ public class TenancyChangesUO extends DW_Object {
 
         if (councilUnderOccupiedSet1.getMap()
                 .keySet().contains(aCTBRef)) {
-            DW_UOReport_Record UORec;
+            DW_UO_Record UORec;
             UORec = councilUnderOccupiedSet1.getMap().get(aCTBRef);
             if (UORec == null) {
                 aS += tDW_Strings.sCommaSpace;
@@ -6020,9 +6035,22 @@ public class TenancyChangesUO extends DW_Object {
         return result;
     }
 
+    /**
+     * This returns the CTBRefs of the UnderOccupying claims in the first 
+     * include period.
+     * 
+     * @TODO For overall computational efficiency, this should probably only be 
+     * calculated once for each period and stored in a file then re-read from 
+     * file when needed.
+     * @param councilUnderOccupiedSets
+     * @param RSLUnderOccupiedSets
+     * @param SHBEFilenames
+     * @param include
+     * @return 
+     */
     public HashSet<String>[] getStartUOCTBRefs(
-            TreeMap<String, DW_UnderOccupiedReport_Set> councilUnderOccupiedSets,
-            TreeMap<String, DW_UnderOccupiedReport_Set> RSLUnderOccupiedSets,
+            TreeMap<String, DW_UO_Set> councilUnderOccupiedSets,
+            TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets,
             String[] SHBEFilenames,
             ArrayList<Integer> include
     ) {
@@ -6031,8 +6059,8 @@ public class TenancyChangesUO extends DW_Object {
         result[0] = new HashSet<String>();
         result[1] = new HashSet<String>();
         String yM31 = s;
-        DW_UnderOccupiedReport_Set councilUnderOccupiedSet1 = null;
-        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1 = null;
+        DW_UO_Set councilUnderOccupiedSet1 = null;
+        DW_UO_Set RSLUnderOccupiedSet1 = null;
         String filename1 = null;
         Iterator<Integer> includeIte;
         includeIte = include.iterator();
@@ -6050,9 +6078,22 @@ public class TenancyChangesUO extends DW_Object {
         return result;
     }
 
+    /**
+     * This returns the CTBRefs of the UnderOccupying claims in the last 
+     * include period.
+     * 
+     * @TODO For overall computational efficiency, this should probably only be 
+     * calculated once for each period and stored in a file then re-read from 
+     * file when needed.
+     * @param councilUnderOccupiedSets
+     * @param RSLUnderOccupiedSets
+     * @param SHBEFilenames
+     * @param include
+     * @return 
+     */
     public HashSet<String>[] getEndUOCTBRefs(
-            TreeMap<String, DW_UnderOccupiedReport_Set> councilUnderOccupiedSets,
-            TreeMap<String, DW_UnderOccupiedReport_Set> RSLUnderOccupiedSets,
+            TreeMap<String, DW_UO_Set> councilUnderOccupiedSets,
+            TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets,
             String[] SHBEFilenames,
             ArrayList<Integer> include
     ) {
@@ -6061,8 +6102,8 @@ public class TenancyChangesUO extends DW_Object {
         result[0] = new HashSet<String>();
         result[1] = new HashSet<String>();
         String yM31 = s;
-        DW_UnderOccupiedReport_Set councilUnderOccupiedSet1 = null;
-        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1 = null;
+        DW_UO_Set councilUnderOccupiedSet1 = null;
+        DW_UO_Set RSLUnderOccupiedSet1 = null;
         String filename1 = null;
         Iterator<Integer> includeIte;
         includeIte = include.iterator();
@@ -6084,8 +6125,8 @@ public class TenancyChangesUO extends DW_Object {
     }
 
     public HashSet<String>[] getUOCTBRefs(
-            TreeMap<String, DW_UnderOccupiedReport_Set> councilUnderOccupiedSets,
-            TreeMap<String, DW_UnderOccupiedReport_Set> RSLUnderOccupiedSets,
+            TreeMap<String, DW_UO_Set> councilUnderOccupiedSets,
+            TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets,
             String[] SHBEFilenames,
             ArrayList<Integer> include
     ) {
@@ -6094,8 +6135,8 @@ public class TenancyChangesUO extends DW_Object {
         result[0] = new HashSet<String>();
         result[1] = new HashSet<String>();
         String yM31 = s;
-        DW_UnderOccupiedReport_Set councilUnderOccupiedSet1 = null;
-        DW_UnderOccupiedReport_Set RSLUnderOccupiedSet1 = null;
+        DW_UO_Set councilUnderOccupiedSet1 = null;
+        DW_UO_Set RSLUnderOccupiedSet1 = null;
         String filename1 = null;
         Iterator<Integer> includeIte;
         includeIte = include.iterator();

@@ -18,11 +18,13 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied;
 
+import java.io.Serializable;
+
 /**
  *
  * @author geoagdt
  */
-public class DW_UOReport_Record {
+public class DW_UO_Record implements Serializable {
 
     /**
      * 0 RecordID
@@ -86,7 +88,7 @@ public class DW_UOReport_Record {
      * @param type
      * @throws Exception
      */
-    public DW_UOReport_Record(
+    public DW_UO_Record(
             long RecordID,
             String line,
             //String type
@@ -427,7 +429,7 @@ public class DW_UOReport_Record {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DW_UOReport_Record other = (DW_UOReport_Record) obj;
+        final DW_UO_Record other = (DW_UO_Record) obj;
         if ((this.RecordType == null) ? (other.RecordType != null) : !this.RecordType.equals(other.RecordType)) {
             return false;
         }

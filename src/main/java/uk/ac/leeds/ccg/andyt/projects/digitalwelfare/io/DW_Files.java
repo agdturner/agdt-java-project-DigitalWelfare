@@ -232,7 +232,7 @@ public class DW_Files extends DW_Object {
     
     public File getDigitalWelfareDir() {
         if (dir == null) {
-            dir = new File(DW_Environment.sDigitalWelfareDir);
+            dir = new File(env.sDigitalWelfareDir);
         }
         return dir;
     }
