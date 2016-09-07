@@ -105,11 +105,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * For convenience tDW_UO_Handler = env.getDW_UO_Handler().
      */
     protected DW_UO_Handler tDW_UO_Handler;
-    
+
     /**
-     * For convenience tDW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler().
+     * For convenience tDW_SHBE_TenancyType_Handler =
+     * env.getDW_SHBE_TenancyType_Handler().
      */
-    protected  DW_SHBE_TenancyType_Handler tDW_SHBE_TenancyType_Handler;
+    protected DW_SHBE_TenancyType_Handler tDW_SHBE_TenancyType_Handler;
 
     public DW_DataProcessor_LCC(DW_Environment env) {
         super(env);
@@ -127,6 +128,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //        ArrayList<Object[]> SHBEData;
 //        SHBEData = tDW_SHBE_Handler.getSHBEData();
 
+        /**
+         * DW_UO_Data
+         */
         DW_UO_Data DW_UO_Data;
         System.out.println("<DW_UO_Data = env.getDW_UO_Data();>");
         DW_UO_Data = env.getDW_UO_Data();
@@ -135,9 +139,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //        DW_SHBE_Handler DW_SHBE_Handler;
 //        DW_SHBE_Handler = new DW_SHBE_Handler(env);
         HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup;
-       System.out.println("<tPostcodeToPostcodeIDLookup = tDW_SHBE_Handler.getPostcodeToPostcodeIDLookup()>");
-         tPostcodeToPostcodeIDLookup = tDW_SHBE_Handler.getPostcodeToPostcodeIDLookup();
-       System.out.println("</tPostcodeToPostcodeIDLookup = tDW_SHBE_Handler.getPostcodeToPostcodeIDLookup()>");
+        System.out.println("<tPostcodeToPostcodeIDLookup = tDW_SHBE_Handler.getPostcodeToPostcodeIDLookup()>");
+        tPostcodeToPostcodeIDLookup = tDW_SHBE_Handler.getPostcodeToPostcodeIDLookup();
+        System.out.println("</tPostcodeToPostcodeIDLookup = tDW_SHBE_Handler.getPostcodeToPostcodeIDLookup()>");
 //        reportUnderOccupancyTotals(DW_UO_Data);
 //        // Data generalisation and output
 //        processSHBEReportData(
@@ -192,7 +196,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 
         HashMap<Boolean, ArrayList<String>> tenancyTypes;
         tenancyTypes = new HashMap<Boolean, ArrayList<String>>();
-        
+
         boolean doUO;
         doUO = true;
         tenancyTypes.put(doUO, tDW_SHBE_TenancyType_Handler.getTenancyTypeAll(doUO));
@@ -223,9 +227,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //        loadData = true;
 
         Generic_UKPostcode_Handler postcodeHandler;
-         System.out.println("<postcodeHandler = new Generic_UKPostcode_Handler();>");      
+        System.out.println("<postcodeHandler = new Generic_UKPostcode_Handler();>");
         postcodeHandler = new Generic_UKPostcode_Handler();
-         System.out.println("</postcodeHandler = new Generic_UKPostcode_Handler();>");
+        System.out.println("</postcodeHandler = new Generic_UKPostcode_Handler();>");
 
         ArrayList<Boolean> bArray;
         bArray = new ArrayList<Boolean>();
@@ -941,54 +945,74 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 
         // Aggregate
         if (doAggregation) {
-            System.out.println("<doAggregation>");
-            DW_Postcode_Handler tDW_Postcode_Handler;
-            tDW_Postcode_Handler = env.getDW_Postcode_Handler();
-            tPTIte = paymentTypes.iterator();
-            while (tPTIte.hasNext()) {
-                String paymentType;
-                paymentType = tPTIte.next();
-                System.out.println("<" + paymentType + ">");
-                //DW_SHBE_Handler.DW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
-                TreeMap<String, TreeMap<String, String>> lookupsFromPostcodeToLevelCode; // Work needed to load the appropriate look up for the appropriate years and months of postcode!
-                lookupsFromPostcodeToLevelCode = getLookupsFromPostcodeToLevelCode(levels);
-                //Generic_UKPostcode_Handler.isValidPostcodeForm(String postcode)
-                iteB = bArray.iterator();
-                while (iteB.hasNext()) {
-                    boolean doUnderOccupied;
-                    doUnderOccupied = iteB.next();
-                    boolean doCouncil;
-                        boolean doRSL;
-                        if (doUnderOccupied) {
-                        if (true) {
+            aggregate(paymentTypes, levels, bArray, DW_UO_Data, SHBEFilenames,
+                    claimantTypes, types, distances, distanceTypes, 
+                    tenancyTypes, tenancyTypeGroups, tenancyTypesGrouped, 
+                    regulatedGroups, unregulatedGroups, 
+                    includes, tDW_PersonIDtoDW_IDLookup);
+        }
+    }
+
+    /**
+     * For aggregating data spatially.
+     * @param paymentTypes
+     * @param levels
+     * @param bArray
+     * @param DW_UO_Data
+     * @param SHBEFilenames
+     * @param claimantTypes
+     * @param types
+     * @param distances
+     * @param distanceTypes
+     * @param tenancyTypes
+     * @param tenancyTypeGroups
+     * @param tenancyTypesGrouped
+     * @param regulatedGroups
+     * @param unregulatedGroups
+     * @param includes
+     * @param tDW_PersonIDtoDW_IDLookup 
+     */
+    protected void aggregate(
+            ArrayList<String> paymentTypes,
+            ArrayList<String> levels,
+            ArrayList<Boolean> bArray,
+            DW_UO_Data DW_UO_Data,
+            String[] SHBEFilenames,
+            ArrayList<String> claimantTypes,
+            ArrayList<String> types,
+            ArrayList<Double> distances,
+            ArrayList<String> distanceTypes,
+            HashMap<Boolean, ArrayList<String>> tenancyTypes,
+            HashMap<Boolean, TreeMap<String, ArrayList<String>>> tenancyTypeGroups,
+            HashMap<Boolean, ArrayList<String>> tenancyTypesGrouped,
+            HashMap<Boolean, ArrayList<Integer>> regulatedGroups,
+            HashMap<Boolean, ArrayList<Integer>> unregulatedGroups,
+            TreeMap<String, ArrayList<Integer>> includes,
+            HashMap<DW_PersonID, DW_ID> tDW_PersonIDtoDW_IDLookup) {
+        System.out.println("<doAggregation>");
+        Iterator<Boolean> iteB;
+        Iterator<String> tPTIte;
+        tPTIte = paymentTypes.iterator();
+        while (tPTIte.hasNext()) {
+            String paymentType;
+            paymentType = tPTIte.next();
+            System.out.println("<" + paymentType + ">");
+            //DW_SHBE_Handler.DW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
+            TreeMap<String, TreeMap<String, String>> lookupsFromPostcodeToLevelCode; // Work needed to load the appropriate look up for the appropriate years and months of postcode!
+            lookupsFromPostcodeToLevelCode = getLookupsFromPostcodeToLevelCode(levels);
+            //Generic_UKPostcode_Handler.isValidPostcodeForm(String postcode)
+            iteB = bArray.iterator();
+            while (iteB.hasNext()) {
+                boolean doUnderOccupied;
+                doUnderOccupied = iteB.next();
+                boolean doCouncil;
+                boolean doRSL;
+                if (doUnderOccupied) {
+                    if (true) {
 //                        if (false) {
-                            doCouncil = true;
-                            doRSL = true;
-                            System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
-                            aggregateClaimants(
-                                    doUnderOccupied,
-                                    doCouncil,
-                                    doRSL,
-                                    DW_UO_Data,
-                                    lookupsFromPostcodeToLevelCode,
-                                    SHBEFilenames,
-                                    paymentType,
-                                    claimantTypes,
-                                    tenancyTypeGroups.get(doUnderOccupied),
-                                    tenancyTypesGrouped.get(doUnderOccupied),
-                                    regulatedGroups.get(doUnderOccupied),
-                                    unregulatedGroups.get(doUnderOccupied),
-                                    includes,
-                                    levels,
-                                    types,
-                                    distanceTypes,
-                                    distances,
-                                    tDW_PersonIDtoDW_IDLookup);
-                            System.out.println("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
-                        }
                         doCouncil = true;
-                            doRSL = false;
-                            System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
+                        doRSL = true;
+                        System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
                         aggregateClaimants(
                                 doUnderOccupied,
                                 doCouncil,
@@ -1008,59 +1032,82 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                                 distanceTypes,
                                 distances,
                                 tDW_PersonIDtoDW_IDLookup);
-                            System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
-                        doCouncil = false;
-                            doRSL = true;
-                            System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
-aggregateClaimants(
-                                doUnderOccupied,
-                                doCouncil,
-                                doRSL,
+                        System.out.println("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
+                    }
+                    doCouncil = true;
+                    doRSL = false;
+                    System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
+                    aggregateClaimants(
+                            doUnderOccupied,
+                            doCouncil,
+                            doRSL,
                             DW_UO_Data,
-                                lookupsFromPostcodeToLevelCode,
-                                SHBEFilenames,
-                                paymentType,
-                                claimantTypes,
-                                tenancyTypeGroups.get(doUnderOccupied),
-                                tenancyTypesGrouped.get(doUnderOccupied),
-                                regulatedGroups.get(doUnderOccupied),
-                                unregulatedGroups.get(doUnderOccupied),
-                                includes,
-                                levels,
-                                types,
-                                distanceTypes,
-                                distances,
-                                tDW_PersonIDtoDW_IDLookup);
-                        System.out.println("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
-                        } else {
-                        doCouncil = false;
-                            doRSL = false;
-                         System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
-                        aggregateClaimants(doUnderOccupied,
-                                false,
-                                false,
-                                DW_UO_Data,
-                                lookupsFromPostcodeToLevelCode,
-                                SHBEFilenames,
-                                paymentType,
-                                claimantTypes,
-                                tenancyTypeGroups.get(doUnderOccupied),
-                                tenancyTypesGrouped.get(doUnderOccupied),
-                                regulatedGroups.get(doUnderOccupied),
-                                unregulatedGroups.get(doUnderOccupied),
-                                includes,
-                                levels,
-                                types,
-                                distanceTypes,
-                                distances,
-                                tDW_PersonIDtoDW_IDLookup);
-                        System.out.println("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
-                        }
+                            lookupsFromPostcodeToLevelCode,
+                            SHBEFilenames,
+                            paymentType,
+                            claimantTypes,
+                            tenancyTypeGroups.get(doUnderOccupied),
+                            tenancyTypesGrouped.get(doUnderOccupied),
+                            regulatedGroups.get(doUnderOccupied),
+                            unregulatedGroups.get(doUnderOccupied),
+                            includes,
+                            levels,
+                            types,
+                            distanceTypes,
+                            distances,
+                            tDW_PersonIDtoDW_IDLookup);
+                    System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
+                    doCouncil = false;
+                    doRSL = true;
+                    System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
+                    aggregateClaimants(
+                            doUnderOccupied,
+                            doCouncil,
+                            doRSL,
+                            DW_UO_Data,
+                            lookupsFromPostcodeToLevelCode,
+                            SHBEFilenames,
+                            paymentType,
+                            claimantTypes,
+                            tenancyTypeGroups.get(doUnderOccupied),
+                            tenancyTypesGrouped.get(doUnderOccupied),
+                            regulatedGroups.get(doUnderOccupied),
+                            unregulatedGroups.get(doUnderOccupied),
+                            includes,
+                            levels,
+                            types,
+                            distanceTypes,
+                            distances,
+                            tDW_PersonIDtoDW_IDLookup);
+                    System.out.println("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
+                } else {
+                    doCouncil = false;
+                    doRSL = false;
+                    System.out.println("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
+                    aggregateClaimants(doUnderOccupied,
+                            false,
+                            false,
+                            DW_UO_Data,
+                            lookupsFromPostcodeToLevelCode,
+                            SHBEFilenames,
+                            paymentType,
+                            claimantTypes,
+                            tenancyTypeGroups.get(doUnderOccupied),
+                            tenancyTypesGrouped.get(doUnderOccupied),
+                            regulatedGroups.get(doUnderOccupied),
+                            unregulatedGroups.get(doUnderOccupied),
+                            includes,
+                            levels,
+                            types,
+                            distanceTypes,
+                            distances,
+                            tDW_PersonIDtoDW_IDLookup);
+                    System.out.println("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>");
                 }
-                System.out.println("</" + paymentType + ">");
             }
-            System.out.println("</doAggregation>");
+            System.out.println("</" + paymentType + ">");
         }
+        System.out.println("</doAggregation>");
     }
 
     /**
@@ -6459,14 +6506,14 @@ aggregateClaimants(
                                 }
                             }
                         } else {
-                            tenancyType0 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                            tenancyType0 = tDW_SHBE_TenancyType_Handler.sMinus999;
                             if (underOccupied0 != null) {
                                 tenancyType0 += sU;
                             }
                         }
                     }
                 } else {
-                    tenancyType0 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                    tenancyType0 = tDW_SHBE_TenancyType_Handler.sMinus999;
                     if (underOccupied0 != null) {
                         tenancyType0 += sU;
                     }
@@ -6860,20 +6907,20 @@ aggregateClaimants(
                                     }
                                 }
                             } else {
-                                tenancyType0 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                                tenancyType0 = tDW_SHBE_TenancyType_Handler.sMinus999;
                                 if (doUnderOccupiedData) {
                                     tenancyType0 += sU;
                                 }
                             }
                         }
                     } else {
-                        tenancyType0 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                        tenancyType0 = tDW_SHBE_TenancyType_Handler.sMinus999;
                         if (doUnderOccupiedData) {
                             tenancyType0 += sU;
                         }
                     }
                 } else {
-                    tenancyType0 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                    tenancyType0 = tDW_SHBE_TenancyType_Handler.sMinus999;
                     if (doUnderOccupiedData) {
                         tenancyType0 += sU;
                     }
@@ -7105,7 +7152,7 @@ aggregateClaimants(
                     String tenancyType0 = Integer.toString(tenancyType0Integer);
                     Integer tenancyType1Integer = -999;
                     String tenancyType1;
-                    tenancyType1 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                    tenancyType1 = tDW_SHBE_TenancyType_Handler.sMinus999;
                     String postcode0;
                     postcode0 = tIDByPostcode0.get(tID);
                     boolean isValidPostcode0 = false;
@@ -7396,7 +7443,7 @@ aggregateClaimants(
                     String tenancyType0;
                     tenancyType0 = getTenancyTypeGroup(regulatedGroups, unregulatedGroups, tenancyType0Integer);
                     String tenancyType1;
-                    tenancyType1 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                    tenancyType1 = tDW_SHBE_TenancyType_Handler.sMinus999;
                     String postcode0;
                     postcode0 = tIDByPostcode0.get(tID);
                     boolean isValidPostcode0 = false;
@@ -7701,7 +7748,7 @@ aggregateClaimants(
                             unregulatedGroups,
                             tenancyType0Integer);
                     String tenancyType1;
-                    tenancyType1 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                    tenancyType1 = tDW_SHBE_TenancyType_Handler.sMinus999;
                     String postcode0;
                     postcode0 = tIDByPostcode0.get(tID);
                     boolean isValidPostcode0;
@@ -7827,7 +7874,7 @@ aggregateClaimants(
             Integer tenancyType) {
         String result;
         if (tenancyType == -999) {
-            result =  tDW_SHBE_TenancyType_Handler.sMinus999;
+            result = tDW_SHBE_TenancyType_Handler.sMinus999;
         } else {
             result = tDW_Strings.sGroupedNo;
             if (regulatedGroups.contains(tenancyType)) {
@@ -7900,7 +7947,7 @@ aggregateClaimants(
                     tID);
             String tenancyType0;
             if (tenancyType0Integer == null) {
-                tenancyType0 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                tenancyType0 = tDW_SHBE_TenancyType_Handler.sMinus999;
             } else {
                 tenancyType0 = getTenancyTypeGroup(
                         regulatedGroups,
@@ -7942,7 +7989,7 @@ aggregateClaimants(
                     tID);
             String tenancyType0;
             if (tenancyType0Integer == null) {
-                tenancyType0 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                tenancyType0 = tDW_SHBE_TenancyType_Handler.sMinus999;
             } else {
                 tenancyType0 = getTenancyTypeGroup(
                         regulatedGroups,
@@ -7950,7 +7997,7 @@ aggregateClaimants(
                         tenancyType0Integer);
             }
             String tenancyType1;
-            tenancyType1 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+            tenancyType1 = tDW_SHBE_TenancyType_Handler.sMinus999;
             if (hasPreviousTenureChange) {
                 if (!set.contains(tID)) {
                     if (tenancyTypeTranistionMatrix.containsKey(tenancyType1)) {
@@ -8061,7 +8108,7 @@ aggregateClaimants(
                                     unregulatedGroups,
                                     tenancyType0);
                         } else {
-                            tenancyType0 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                            tenancyType0 = tDW_SHBE_TenancyType_Handler.sMinus999;
                         }
                     } else {
                         if (tenancyType0Integer == -999) {
@@ -8088,7 +8135,7 @@ aggregateClaimants(
                                 tenancyType0);
                     }
                 } else {
-                    tenancyType0 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                    tenancyType0 = tDW_SHBE_TenancyType_Handler.sMinus999;
                 }
                 if (!tenancyType0.equalsIgnoreCase(tenancyType1)) {
                     String tenancyTypeChange;
@@ -8161,7 +8208,7 @@ aggregateClaimants(
                             unregulatedGroups,
                             tenancyType0Integer);
                     String tenancyType1;
-                    tenancyType1 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                    tenancyType1 = tDW_SHBE_TenancyType_Handler.sMinus999;
                     if (!tenancyType0.equalsIgnoreCase(tenancyType1)) { // Always the case!
                         String tenancyTypeChange;
                         if (doUnderOccupiedData) {
@@ -8320,7 +8367,7 @@ aggregateClaimants(
                             line += "," + count.toString();
                         }
                     }
-                    tenancyType1 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                    tenancyType1 = tDW_SHBE_TenancyType_Handler.sMinus999;
                     Integer nullCount = tenancyTypeCounts.get(tenancyType1);
                     if (nullCount == null) {
                         line += ",0";
@@ -8332,7 +8379,7 @@ aggregateClaimants(
             }
             TreeMap<String, Integer> tenancyTypeCounts;
             tenancyTypeCounts = tenancyTypeMatrix.get(tDW_SHBE_TenancyType_Handler.sMinus999);
-            line =  tDW_SHBE_TenancyType_Handler.sMinus999;
+            line = tDW_SHBE_TenancyType_Handler.sMinus999;
             if (tenancyTypeCounts == null) {
                 for (String tenancyType : tenancyTypes) {
                     line += ",0";
@@ -8352,7 +8399,7 @@ aggregateClaimants(
                         line += "," + count.toString();
                     }
                 }
-                tenancyType1 =  tDW_SHBE_TenancyType_Handler.sMinus999;
+                tenancyType1 = tDW_SHBE_TenancyType_Handler.sMinus999;
                 Integer nullCount = tenancyTypeCounts.get(tenancyType1);
                 if (nullCount == null) {
                     line += ",0";
