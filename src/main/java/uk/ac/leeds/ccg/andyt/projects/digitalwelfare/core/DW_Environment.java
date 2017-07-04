@@ -139,6 +139,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             result = new DW_SHBE_CollectionHandler(
                     this,
                     paymentType);
+            result.nextID = 0L;
             tDW_SHBE_CollectionHandlers.put(paymentType, result);
         }
         return result;

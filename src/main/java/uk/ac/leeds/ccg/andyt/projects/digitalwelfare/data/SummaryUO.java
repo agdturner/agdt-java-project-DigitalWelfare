@@ -740,8 +740,7 @@ public class SummaryUO extends Summary {
         init(nTT, nEG, nPSI);
     }
 
-    @Override
-    protected void init(int nTT, int nEG, int nPSI) {
+    private void init(int nTT, int nEG, int nPSI) {
         initSingleTimeStrings(nTT, nEG, nPSI);
         initCompare3TimesStrings(nTT, nEG);
         // Council
@@ -1061,7 +1060,7 @@ public class SummaryUO extends Summary {
     }
 
     public HashSet<ID_TenancyType> getID_TenancyTypeSet(
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records,
             DW_UO_Set councilUnderOccupiedSet,
             DW_UO_Set RSLUnderOccupiedSet,
             HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup) {
@@ -1120,7 +1119,7 @@ public class SummaryUO extends Summary {
     }
 
     public HashSet<ID_PostcodeID> getID_PostcodeIDSet(
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records,
             DW_UO_Set councilUnderOccupiedSet,
             DW_UO_Set RSLUnderOccupiedSet,
             HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
@@ -1180,7 +1179,7 @@ public class SummaryUO extends Summary {
     }
 
     public HashSet<ID_TenancyType_PostcodeID> getID_TenancyType_PostcodeIDSet(
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records,
             DW_UO_Set councilUnderOccupiedSet,
             DW_UO_Set RSLUnderOccupiedSet,
             HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
@@ -4086,7 +4085,7 @@ public class SummaryUO extends Summary {
             HashSet<ID_TenancyType> tClaimantIDTT1,
             TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
             HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTTs1,
-            TreeMap<DW_ID, DW_SHBE_Record> Records,
+            HashMap<DW_ID, DW_SHBE_Record> Records,
             DW_UO_Set councilUnderOccupiedSet,
             DW_UO_Set RSLUnderOccupiedSet
     ) {
@@ -4672,9 +4671,9 @@ public class SummaryUO extends Summary {
                 DW_PersonIDToIDLookup,
                 PostcodeToPostcodeIDLookup);
 
-        TreeMap<DW_ID, DW_SHBE_Record> tDRecords1;
+        HashMap<DW_ID, DW_SHBE_Record> tDRecords1;
         tDRecords1 = tSHBEData1.getRecords();
-        TreeMap<DW_ID, DW_SHBE_Record> tDRecords0;
+        HashMap<DW_ID, DW_SHBE_Record> tDRecords0;
         tDRecords0 = tSHBEData0.getRecords();
 
         TreeMap<DW_ID, DW_UO_Record> councilUnderOccupiedSet0Map;
@@ -4754,7 +4753,7 @@ public class SummaryUO extends Summary {
 
     protected void addToSetsForComparisons(
             String yM3,
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records,
             DW_UO_Set councilUnderOccupiedSet,
             DW_UO_Set RSLUnderOccupiedSet,
             TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
@@ -4828,7 +4827,7 @@ public class SummaryUO extends Summary {
 ////        }
 //        System.arraycopy(TotalCount_TTClaimant1, 0, TotalCount_TTClaimant0, 0, nTT);
 
-        TreeMap<DW_ID, DW_SHBE_Record> tDRecords;
+        HashMap<DW_ID, DW_SHBE_Record> tDRecords;
         tDRecords = tSHBEData.getRecords();
         String key;
         key = tDW_SHBE_Handler.getYearMonthNumber(filename);
@@ -4926,8 +4925,8 @@ public class SummaryUO extends Summary {
     public void doCouncilCompare2TimesLoopOverSet(
             TreeMap<DW_ID, DW_UO_Record> map0,
             TreeMap<DW_ID, DW_UO_Record> map1,
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records0,
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records1,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records0,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records1,
             String yM30v,
             String yM31v) {
         Iterator<DW_ID> ite;
@@ -4992,8 +4991,8 @@ public class SummaryUO extends Summary {
 
     private void doCouncilCompare2TimesCountsAsNecessary(
             DW_ID ClaimID,
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records0,
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records1,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records0,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records1,
             String yM30v,
             String yM31v) {
         DW_SHBE_Record Record0;
@@ -5023,8 +5022,8 @@ public class SummaryUO extends Summary {
     public void doRSLCompare2TimesLoopOverSet(
             TreeMap<DW_ID, DW_UO_Record> map0,
             TreeMap<DW_ID, DW_UO_Record> map1,
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records0,
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records1,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records0,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records1,
             String yM30v,
             String yM31v) {
         Iterator<DW_ID> ite;
@@ -5089,8 +5088,8 @@ public class SummaryUO extends Summary {
 
     private void doRSLCompare2TimesCountsAsNecessary(
             DW_ID ClaimID,
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records0,
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records1,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records0,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records1,
             String yM30v,
             String yM31v) {
         DW_SHBE_Record Record0;
@@ -5123,7 +5122,7 @@ public class SummaryUO extends Summary {
      */
     public int doCouncilSingleTimeLoopOverSet(
             TreeMap<DW_ID, DW_UO_Record> map,
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records,
             String yM30v) {
         int linkedRecords;
         linkedRecords = 0;
@@ -5183,7 +5182,7 @@ public class SummaryUO extends Summary {
      */
     public int doRSLSingleTimeLoopOverSet(
             TreeMap<DW_ID, DW_UO_Record> map,
-            TreeMap<DW_ID, DW_SHBE_Record> D_Records,
+            HashMap<DW_ID, DW_SHBE_Record> D_Records,
             String yM30v) {
         int linkedRecords;
         linkedRecords = 0;

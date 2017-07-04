@@ -799,7 +799,7 @@ public class Summary extends DW_Object {
         init(nTT, nEG, nPSI);
     }
 
-    protected void init(int nTT, int nEG, int nPSI) {
+    private void init(int nTT, int nEG, int nPSI) {
         initSingleTimeStrings(nTT, nEG, nPSI);
         initCompare3TimesStrings(nTT, nEG);
         TotalCount_DisabilityPremiumAwardByTT = new int[nTT];
@@ -5169,22 +5169,20 @@ public class Summary extends DW_Object {
         tClaimantIDTTs = new TreeMap<String, HashSet<ID_TenancyType>>();
         TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs;
         tClaimantIDPostcodeTTs = new TreeMap<String, HashSet<ID_TenancyType_PostcodeID>>();
-        TreeMap<DW_ID, DW_SHBE_Record> tDRecords0;
-        tDRecords0 = tSHBEData0.getRecords();
+        HashMap<DW_ID, DW_SHBE_Record> DRecords0;
+        DRecords0 = tSHBEData0.getRecords();
         HashSet<DW_PersonID> tClaimantIDs0;
         tClaimantIDs0 = tSHBEData0.getClaimantIDs();
         tClaimantIDs.put(yM30, tClaimantIDs0);
         HashSet<DW_PersonID> AllIDs0;
         AllIDs0 = tSHBEData0.getAllIDs();
         AllIDs.put(yM30, AllIDs0);
-        HashMap<DW_ID, String> tIDByPostcode0;
-        tIDByPostcode0 = tSHBEData0.getClaimantIDToPostcodeLookup();
-        //tIDByPostcode0 = loadIDByPostcode(loadData, filename, i);
-        HashMap<DW_ID, Integer> tIDByTT0;
-        tIDByTT0 = tSHBEData0.getClaimantIDToTenancyTypeLookup();
-        //tIDByTT0 = loadIDByTT(loadData, filename, i);
-        HashMap<String, DW_ID> CTBRefToIDLookup0;
-        CTBRefToIDLookup0 = tSHBEData0.getCTBRefToClaimantIDLookup();
+//        HashMap<DW_ID, String> ClaimantIDToPostcodeLookup0;
+//        ClaimantIDToPostcodeLookup0 = tSHBEData0.getClaimantIDToPostcodeLookup();
+//        HashMap<DW_ID, Integer> ClaimIDToTenanceTypeLookup0;
+//        ClaimIDToTenanceTypeLookup0 = tSHBEData0.getClaimantIDToTenancyTypeLookup();
+        HashMap<DW_ID, DW_ID> ClaimIDToClaimantIDLookup0;
+        ClaimIDToClaimantIDLookup0 = tSHBEData0.getClaimIDToClaimantIDLookup();
         //tCTBRefID0 = loadCTBRefByID(loadData, filename, i);        
         HashMap<String, Integer> tLoadSummary;
         tLoadSummary = tSHBEData0.getLoadSummary();
@@ -5200,13 +5198,13 @@ public class Summary extends DW_Object {
         tClaimantIDPostcodeTTs.put(yM30, tClaimantIDPostcodeTTs0);
         // All
         initCounts(nTT, nEG, nPSI);
-        Iterator<String> ite;
-        ite = CTBRefToIDLookup0.keySet().iterator();
+        Iterator<DW_ID> ite;
+        ite = ClaimIDToClaimantIDLookup0.keySet().iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_SHBE_D_Record D_Record;
-            D_Record = tDRecords0.get(CTBRef).getDRecord();
+            D_Record = DRecords0.get(ClaimID).getDRecord();
             doSingleTimeCount(
                     D_Record,
                     yM30v);
@@ -5241,7 +5239,7 @@ public class Summary extends DW_Object {
             DW_SHBE_Collection tSHBEData1;
             tSHBEData1 = new DW_SHBE_Collection(env,
                     filename1, paymentType);
-            TreeMap<DW_ID, DW_SHBE_Record> tDRecords1;
+            HashMap<DW_ID, DW_SHBE_Record> tDRecords1;
             tDRecords1 = tSHBEData1.getRecords();
             HashSet<DW_PersonID> tClaimantIDs1;
             tClaimantIDs1 = tSHBEData1.getClaimantIDs();
@@ -5250,21 +5248,21 @@ public class Summary extends DW_Object {
             HashSet<DW_PersonID> AllIDs1;
             AllIDs1 = tSHBEData1.getAllIDs();
             AllIDs.put(yM31, AllIDs1);
-            HashMap<DW_ID, String> tIDByPostcode1;
-            tIDByPostcode1 = tSHBEData1.getClaimantIDToPostcodeLookup();
-            HashMap<DW_ID, Integer> tIDByTT1;
-            tIDByTT1 = tSHBEData1.getClaimantIDToTenancyTypeLookup();
-            HashMap<String, DW_ID> CTBRefToIDLookup1;
-            CTBRefToIDLookup1 = tSHBEData1.getCTBRefToClaimantIDLookup();
-            HashSet<ID_PostcodeID> tClaimantIDPostcodes1;
-            tClaimantIDPostcodes1 = tSHBEData1.getClaimantIDAndPostcodeSet();
-            tClaimantIDPostcodes.put(yM31, tClaimantIDPostcodes1);
-            HashSet<ID_TenancyType> tClaimantIDTT1;
-            tClaimantIDTT1 = tSHBEData1.getClaimantIDAndTenancyTypeSet();
-            tClaimantIDTTs.put(yM31, tClaimantIDTT1);
-            HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTTs1;
-            tClaimantIDPostcodeTTs1 = tSHBEData1.getClaimantIDAndPostcodeAndTenancyTypeSet();
-            tClaimantIDPostcodeTTs.put(yM31, tClaimantIDPostcodeTTs1);
+//            HashMap<DW_ID, String> ClaimantIDToPostcodeLookup1;
+//            ClaimantIDToPostcodeLookup1 = tSHBEData1.getClaimantIDToPostcodeLookup();
+//            HashMap<DW_ID, Integer> ClaimIDToTenanceTypeLookup1;
+//            ClaimIDToTenanceTypeLookup1 = tSHBEData1.getClaimantIDToTenancyTypeLookup();
+            HashMap<DW_ID, DW_ID> ClaimIDToClaimantIDLookup1;
+            ClaimIDToClaimantIDLookup1 = tSHBEData1.getClaimIDToClaimantIDLookup();
+            HashSet<ID_PostcodeID> ClaimantIDAndPostcodeSet1;
+            ClaimantIDAndPostcodeSet1 = tSHBEData1.getClaimantIDAndPostcodeSet();
+            tClaimantIDPostcodes.put(yM31, ClaimantIDAndPostcodeSet1);
+            HashSet<ID_TenancyType> ClaimantIDAndTenancyTypeSet1;
+            ClaimantIDAndTenancyTypeSet1 = tSHBEData1.getClaimantIDAndTenancyTypeSet();
+            tClaimantIDTTs.put(yM31, ClaimantIDAndTenancyTypeSet1);
+            HashSet<ID_TenancyType_PostcodeID> ClaimantIDAndPostcodeAndTenancyTypeSet1;
+            ClaimantIDAndPostcodeAndTenancyTypeSet1 = tSHBEData1.getClaimantIDAndPostcodeAndTenancyTypeSet();
+            tClaimantIDPostcodeTTs.put(yM31, ClaimantIDAndPostcodeAndTenancyTypeSet1);
 
             key = tDW_SHBE_Handler.getYearMonthNumber(filename1);
             summary = result.get(key);
@@ -5288,19 +5286,19 @@ public class Summary extends DW_Object {
             initCounts(nTT, nEG, nPSI);
 
             // Loop over CTBRefToIDLookup0
-            ite = CTBRefToIDLookup0.keySet().iterator();
+            ite = ClaimIDToClaimantIDLookup0.keySet().iterator();
             while (ite.hasNext()) {
-                String CTBRef;
-                CTBRef = ite.next();
+                DW_ID ClaimID;
+                ClaimID = ite.next();
                 DW_SHBE_Record Record0;
-                Record0 = tDRecords0.get(CTBRef);
+                Record0 = DRecords0.get(ClaimID);
                 DW_SHBE_D_Record D_Record0;
                 D_Record0 = null;
                 if (Record0 != null) {
                     D_Record0 = Record0.getDRecord();
                 }
                 DW_SHBE_Record Record1;
-                Record1 = tDRecords1.get(CTBRef);
+                Record1 = tDRecords1.get(ClaimID);
                 if (Record1 == null) {
                     doCompare2TimesCounts(
                             D_Record0,
@@ -5311,19 +5309,19 @@ public class Summary extends DW_Object {
             }
 
             // Loop over CTBRefToIDLookup1
-            ite = CTBRefToIDLookup1.keySet().iterator();
+            ite = ClaimIDToClaimantIDLookup1.keySet().iterator();
             while (ite.hasNext()) {
-                String CTBRef;
-                CTBRef = ite.next();
+                DW_ID ClaimID;
+                ClaimID = ite.next();
                 DW_SHBE_Record Record0;
-                Record0 = tDRecords0.get(CTBRef);
+                Record0 = DRecords0.get(ClaimID);
                 DW_SHBE_D_Record D_Record0;
                 D_Record0 = null;
                 if (Record0 != null) {
                     D_Record0 = Record0.getDRecord();
                 }
                 DW_SHBE_D_Record D_Record1;
-                D_Record1 = tDRecords1.get(CTBRef).getDRecord();
+                D_Record1 = tDRecords1.get(ClaimID).getDRecord();
                 doCompare2TimesCounts(
                         D_Record0,
                         D_Record1,
@@ -5343,18 +5341,19 @@ public class Summary extends DW_Object {
                     include,
                     yM31,
                     tClaimantIDPostcodes,
-                    tClaimantIDPostcodes1,
+                    ClaimantIDAndPostcodeSet1,
                     tClaimantIDTTs,
-                    tClaimantIDTT1,
+                    ClaimantIDAndTenancyTypeSet1,
                     tClaimantIDPostcodeTTs,
-                    tClaimantIDPostcodeTTs1);
+                    ClaimantIDAndPostcodeAndTenancyTypeSet1);
             filename00 = filename0;
             filename0 = filename1;
-            //tSHBEData0 = tSHBEData1;
-            tDRecords0 = tDRecords1;
-            tIDByPostcode0 = tIDByPostcode1;
-            tIDByTT0 = tIDByTT1;
-            CTBRefToIDLookup0 = CTBRefToIDLookup1;
+            //SHBEData0 = SHBEData1;
+            DRecords0 = tDRecords1;
+//            ClaimantIDToPostcodeLookup0 = ClaimantIDToPostcodeLookup1;
+//            ClaimIDToTenanceTypeLookup0 = ClaimIDToTenanceTypeLookup1;
+            ClaimIDToClaimantIDLookup0 = ClaimIDToClaimantIDLookup1;
+            
             //yM30 = yM31;
             yM30v = yM31v;
             AllCount0 = null;

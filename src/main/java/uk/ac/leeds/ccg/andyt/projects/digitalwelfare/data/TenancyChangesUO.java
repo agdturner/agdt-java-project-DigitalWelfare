@@ -1270,7 +1270,7 @@ public class TenancyChangesUO extends DW_Object {
         int j;
         String bS;
         boolean b;
-        TreeMap<DW_ID, DW_SHBE_Record> records;
+        HashMap<DW_ID, DW_SHBE_Record> records;
         String year;
         String month;
         DW_SHBE_Record record;
@@ -1948,7 +1948,7 @@ public class TenancyChangesUO extends DW_Object {
             aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, aPT);
         }
 
-        TreeMap<DW_ID, DW_SHBE_Record> aRecords;
+        HashMap<DW_ID, DW_SHBE_Record> aRecords;
         aRecords = aSHBEData.getRecords();
         DW_SHBE_Record DW_SHBE_Record;
         DW_UO_Set EndCouncilUOSet;
@@ -2903,9 +2903,9 @@ public class TenancyChangesUO extends DW_Object {
         }
         //TreeMap<String, DW_SHBE_Record> aRecords;
         aRecords = aSHBEData.getRecords();
-        TreeMap<DW_ID, DW_SHBE_Record> bRecords;
+       HashMap<DW_ID, DW_SHBE_Record> bRecords;
         bRecords = null;
-        TreeMap<DW_ID, DW_SHBE_Record> cRecords;
+       HashMap<DW_ID, DW_SHBE_Record> cRecords;
         cRecords = null;
 
         //DW_SHBE_Record aDW_SHBE_Record;
@@ -4221,8 +4221,8 @@ public class TenancyChangesUO extends DW_Object {
             String month,
             String aYM3,
             DW_SHBE_Record DW_SHBE_Record,
-            TreeMap<DW_ID, DW_SHBE_Record> bRecords,
-            TreeMap<DW_ID, DW_SHBE_Record> cRecords,
+            HashMap<DW_ID, DW_SHBE_Record> bRecords,
+            HashMap<DW_ID, DW_SHBE_Record> cRecords,
             TreeMap<String, String> tableValues,
             DW_UO_Set CouncilUnderOccupiedSet1,
             DW_UO_Set RSLUnderOccupiedSet1,

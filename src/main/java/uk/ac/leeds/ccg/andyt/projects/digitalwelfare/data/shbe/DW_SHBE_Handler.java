@@ -146,8 +146,8 @@ public class DW_SHBE_Handler extends DW_Object {
             System.out.println("----------------------");
             System.out.println("Payment Type " + paymentType);
             System.out.println("----------------------");
-            DW_SHBE_CollectionHandler tDW_SHBE_CollectionHandler;
-            tDW_SHBE_CollectionHandler = env.getDW_SHBE_CollectionHandler(paymentType);
+            DW_SHBE_CollectionHandler DW_SHBE_CollectionHandler;
+            DW_SHBE_CollectionHandler = env.getDW_SHBE_CollectionHandler(paymentType);
             for (String aSHBEFilename : tSHBEFilenames) {
                 File collectionDir;
                 collectionDir = new File(
@@ -160,7 +160,8 @@ public class DW_SHBE_Handler extends DW_Object {
                 DW_SHBE_Collection SHBEData;
                 SHBEData = new DW_SHBE_Collection(
                         env,
-                        tDW_SHBE_CollectionHandler.nextID,
+                        DW_SHBE_CollectionHandler,
+                        DW_SHBE_CollectionHandler.nextID,
                         dir,
                         aSHBEFilename,
                         paymentType);
@@ -300,8 +301,8 @@ public class DW_SHBE_Handler extends DW_Object {
                 System.out.println("----------------------");
                 System.out.println("Payment Type " + paymentType);
                 System.out.println("----------------------");
-                DW_SHBE_CollectionHandler tDW_SHBE_CollectionHandler;
-                tDW_SHBE_CollectionHandler = env.getDW_SHBE_CollectionHandler(paymentType);
+                DW_SHBE_CollectionHandler DW_SHBE_CollectionHandler;
+                DW_SHBE_CollectionHandler = env.getDW_SHBE_CollectionHandler(paymentType);
                 Iterator<String> ite;
                 ite = newFilesToRead.iterator();
                 while (ite.hasNext()) {
@@ -313,9 +314,11 @@ public class DW_SHBE_Handler extends DW_Object {
                     DW_SHBE_Collection SHBEData;
                     SHBEData = new DW_SHBE_Collection(
                             env,
-                            tDW_SHBE_CollectionHandler.nextID,
+                            DW_SHBE_CollectionHandler,
+                            DW_SHBE_CollectionHandler.nextID,
                             dir,
-                            SHBEFilename, paymentType);
+                            SHBEFilename,
+                            paymentType);
                 }
             }
             Generic_StaticIO.writeObject(CTBRefToClaimIDLookup, CTBRefToClaimIDLookupFile);
@@ -676,7 +679,7 @@ public class DW_SHBE_Handler extends DW_Object {
             }
         }
         result = new HashMap<String, BigDecimal>();
-        TreeMap<DW_ID, DW_SHBE_Record> recs;
+        HashMap<DW_ID, DW_SHBE_Record> recs;
         recs = SHBE_Collection.getRecords();
         int nTT = getNumberOfTenancyTypes();
         BigDecimal tBD;
@@ -3241,6 +3244,7 @@ public class DW_SHBE_Handler extends DW_Object {
         DW_SHBE_Collection result;
         result = new DW_SHBE_Collection(
                 env,
+                handler,
                 handler.nextID,
                 directory,
                 filename,

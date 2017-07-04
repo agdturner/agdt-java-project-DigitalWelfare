@@ -82,20 +82,20 @@ public class DW_MainProcessor extends DW_AbstractProcessor {
         runPostcode_Handler = true;
         runPostcode_Handler = false;
         runSHBE_Handler = true;
-        runSHBE_Handler = false;
+//        runSHBE_Handler = false;
         runUnderOccupancy_Handler = true;
         runUnderOccupancy_Handler = false;
         runDataProcessor_LCC = true;
-//        runDataProcessor_LCC = false;
+        runDataProcessor_LCC = false;
 
         /**
          * Format Postcode_Handling data.
          */
         if (runPostcode_Handler) {
             System.out.println("<runPostcode_Handler>");
-            DW_Postcode_Handler aDW_Postcode_Handler;
-            aDW_Postcode_Handler = new DW_Postcode_Handler(env);
-            aDW_Postcode_Handler.run();
+            DW_Postcode_Handler DW_Postcode_Handler;
+            DW_Postcode_Handler = new DW_Postcode_Handler(env);
+            DW_Postcode_Handler.run();
             System.out.println("</runPostcode_Handler>");
         }
 
@@ -104,17 +104,17 @@ public class DW_MainProcessor extends DW_AbstractProcessor {
          */
         if (runSHBE_Handler) {
             System.out.println("<runSHBE_Handler>");
-            DW_SHBE_Handler aDW_SHBE_Handler;
-            aDW_SHBE_Handler = new DW_SHBE_Handler(env);
+            DW_SHBE_Handler DW_SHBE_Handler;
+            DW_SHBE_Handler = new DW_SHBE_Handler(env);
             // <Reformat all data from source>
-//            aDW_SHBE_Handler.run();  
+            DW_SHBE_Handler.run();  
             // </Reformat all data from source>
             // <Count and report unique National Insurance Numbers and unique person IDs so far encountered.>
             //aDW_SHBE_Handler.runCount();
             // </Count and report unique National Insurance Numbers and unique person IDs so far encountered.>
             // <Format data not already formattede>
             // As this assigns IDs assumption being that the new data is subsequent to the existing data.
-            aDW_SHBE_Handler.runNew();
+            //aDW_SHBE_Handler.runNew();
             // </Format data not already formattede>
             System.out.println("</runSHBE_Handler>");
         }
@@ -133,9 +133,9 @@ public class DW_MainProcessor extends DW_AbstractProcessor {
 
         if (runDataProcessor_LCC) {
             System.out.println("<runDataProcessor_LCC>");
-            DW_DataProcessor_LCC aDW_DataProcessor_LCC;
-            aDW_DataProcessor_LCC = new DW_DataProcessor_LCC(env);
-            aDW_DataProcessor_LCC.run();
+            DW_DataProcessor_LCC DW_DataProcessor_LCC;
+            DW_DataProcessor_LCC = new DW_DataProcessor_LCC(env);
+            DW_DataProcessor_LCC.run();
             System.out.println("</runDataProcessor_LCC>");
         }
 

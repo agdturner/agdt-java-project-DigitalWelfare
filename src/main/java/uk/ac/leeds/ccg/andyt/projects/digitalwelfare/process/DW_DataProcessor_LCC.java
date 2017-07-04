@@ -1562,10 +1562,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             String yM30;
             yM30 = DW_SHBE_Handler.getYM3(filename);
 
-            HashMap<Integer, HashMap<DW_ID, String>> tIDByCTBRefs;
-            tIDByCTBRefs = new HashMap<Integer, HashMap<DW_ID, String>>();
-            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs;
-            tCTBRefByIDs = new HashMap<Integer, HashMap<String, DW_ID>>();
+            HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimantIDToClaimIDLookups;
+            ClaimantIDToClaimIDLookups = new HashMap<Integer, HashMap<DW_ID, DW_ID>>();
+            HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimIDToClaimantIDLookups;
+            ClaimIDToClaimantIDLookups = new HashMap<Integer, HashMap<DW_ID, DW_ID>>();
 
             DW_UO_Set UO_Set0 = null;
             DW_UO_Set CouncilUOSet0 = null;
@@ -1578,20 +1578,20 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     filename,
                     paymentType);
 
-            HashMap<DW_ID, String> tIDByCTBRef0;
-            HashMap<String, DW_ID> tCTBRefByID0;
-            tIDByCTBRef0 = loadIDByCTBRef(
+            HashMap<DW_ID, DW_ID> ClaimantIDToClaimIDLookup0;
+            ClaimantIDToClaimIDLookup0 = loadClaimantIDToClaimIDLookup(
                     loadData,
                     filename,
                     paymentType,
                     i,
-                    tIDByCTBRefs);
-            tCTBRefByID0 = loadCTBRefByID(
+                    ClaimantIDToClaimIDLookups);
+            HashMap<DW_ID, DW_ID> ClaimIDToClaimantIDLookup0;
+            ClaimIDToClaimantIDLookup0 = DW_DataProcessor_LCC.this.loadClaimIDToClaimantIDLookup(
                     loadData,
                     filename,
                     paymentType,
                     i,
-                    tCTBRefByIDs);
+                    ClaimIDToClaimantIDLookups);
 
             // ClaimIDByTenancyTypeLookup0
             HashMap<Integer, HashMap<DW_ID, Integer>> ClaimIDByTenancyTypeLookups;
@@ -2041,14 +2041,14 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //            tIDByCTBRefs = new HashMap<Integer, HashMap<DW_ID, String>>();
 //            HashMap<String, DW_ID> tCTBRefByID0 = null;
 //            HashMap<String, DW_ID> tCTBRefByID1 = null;
-//            tCTBRefByID0 = loadCTBRefByID(
+//            tCTBRefByID0 = loadClaimIDToClaimantIDLookup(
 //                    loadData,
 //                    filename,
 //                    paymentType,
 //                    i,
 //                    tCTBRefByIDs);
 //            HashMap<DW_ID, String> tIDByCTBRef0 = null;
-//            tIDByCTBRef0 = loadIDByCTBRef(
+//            tIDByCTBRef0 = loadClaimantIDToClaimIDLookup(
 //                    loadData,
 //                    filename,
 //                    paymentType,
@@ -2080,10 +2080,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //                        tUnderOccupancies);
 //            }
 
-            HashMap<Integer, HashMap<DW_ID, String>> tIDByCTBRefs;
-            tIDByCTBRefs = new HashMap<Integer, HashMap<DW_ID, String>>();
-            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs;
-            tCTBRefByIDs = new HashMap<Integer, HashMap<String, DW_ID>>();
+            HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimantIDToClaimIDLookup;
+            ClaimantIDToClaimIDLookup = new HashMap<Integer, HashMap<DW_ID, DW_ID>>();
+            HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimIDToClaimanyIDLookup;
+            ClaimIDToClaimanyIDLookup = new HashMap<Integer, HashMap<DW_ID, DW_ID>>();
 
             DW_UO_Set underOccupiedSet0 = null;
             DW_UO_Set underOccupiedSetCouncil0;
@@ -2096,20 +2096,20 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     filename,
                     paymentType);
 
-            HashMap<DW_ID, String> tIDByCTBRef0;
-            HashMap<String, DW_ID> tCTBRefByID0;
-            tIDByCTBRef0 = loadIDByCTBRef(
+            HashMap<DW_ID, DW_ID> ClaimantIDToClaimIDLookup0;
+            ClaimantIDToClaimIDLookup0 = loadClaimantIDToClaimIDLookup(
                     loadData,
                     filename,
                     paymentType,
                     i,
-                    tIDByCTBRefs);
-            tCTBRefByID0 = loadCTBRefByID(
+                    ClaimantIDToClaimIDLookup);
+            HashMap<DW_ID, DW_ID> ClaimIDToClaimantIDLookup;
+            ClaimIDToClaimantIDLookup = loadClaimIDToClaimantIDLookup(
                     loadData,
                     filename,
                     paymentType,
                     i,
-                    tCTBRefByIDs);
+                    ClaimIDToClaimanyIDLookup);
 
             // ClaimIDByTenancyTypeLookup0
             HashMap<Integer, HashMap<DW_ID, Integer>> ClaimIDByTenancyTypeLookups;
@@ -2191,20 +2191,20 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     String yM31 = DW_SHBE_Handler.getYM3(filename);
                     // underOccupiedSet1
                     DW_UO_Set underOccupiedSet1 = null;
-                    HashMap<DW_ID, String> tIDByCTBRef1;
-                    tIDByCTBRef1 = loadIDByCTBRef(
+                    HashMap<DW_ID, DW_ID> ClaimantIDToClaimIDLookup1;
+                    ClaimantIDToClaimIDLookup1 = loadClaimantIDToClaimIDLookup(
                             loadData,
                             filename,
                             paymentType,
                             i,
-                            tIDByCTBRefs);
-                    HashMap<String, DW_ID> tCTBRefByID1;
-                    tCTBRefByID1 = loadCTBRefByID(
+                            ClaimantIDToClaimIDLookup);
+                    HashMap<DW_ID, DW_ID> ClaimIDToClaimantIDLookup1;
+                    ClaimIDToClaimantIDLookup1 = loadClaimIDToClaimantIDLookup(
                             loadData,
                             filename,
                             paymentType,
                             i,
-                            tCTBRefByIDs);
+                            ClaimIDToClaimanyIDLookup);
                     if (doUnderOccupied) {
                         String key;
                         key = DW_SHBE_Handler.getYM3(filename);
@@ -2288,10 +2288,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                                 postcodeChange,
                                 checkPreviousPostcode,
                                 underOccupiedSet0,
-                                tIDByCTBRef0,
+                                ClaimantIDToClaimIDLookup0,
                                 underOccupiedSet1,
-                                tIDByCTBRef1,
-                                tCTBRefByIDs,
+                                ClaimantIDToClaimIDLookup1,
+                                ClaimIDToClaimanyIDLookup,
                                 doUnderOccupied,
                                 ClaimIDs_UOInApril2013);
                         writeTenancyTypeTransitionMatrix(
@@ -2306,8 +2306,8 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     yM30 = yM31;
                     ClaimIDByTenancyTypeLookup0 = ClaimIDByTenancyTypeLookup1;
                     tIDByPostcode0 = tIDByPostcode1;
-                    tIDByCTBRef0 = tIDByCTBRef1;
-                    tCTBRefByID0 = tCTBRefByID1;
+                    ClaimantIDToClaimIDLookup0 = ClaimantIDToClaimIDLookup1;
+                    ClaimIDToClaimantIDLookup = ClaimIDToClaimantIDLookup1;
                     tUnderOccupiedIDs0 = tUnderOccupiedIDs1;
                     underOccupiedSet0 = underOccupiedSet1;
                 }
@@ -2513,8 +2513,8 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             includeIte = include.iterator();
             int i;
             i = includeIte.next();
-            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs;
-            tCTBRefByIDs = new HashMap<Integer, HashMap<String, DW_ID>>();
+            HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimIDToClaimantIDLookups;
+            ClaimIDToClaimantIDLookups = new HashMap<Integer, HashMap<DW_ID, DW_ID>>();
             // Load first data
             String filename;
             filename = SHBEFilenames[i];
@@ -2522,16 +2522,16 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             yM30 = DW_SHBE_Handler.getYM3(filename);
             // underOccupiedSet0
             DW_UO_Set underOccupiedSet0 = null;
-            HashMap<Integer, HashMap<DW_ID, String>> tIDByCTBRefs;
-            HashMap<String, DW_ID> tCTBRefByID0 = null;
-            HashMap<String, DW_ID> tCTBRefByID1;
-            tCTBRefByID0 = loadCTBRefByID(
+            HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimantIDToClaimIDLookups;
+            HashMap<DW_ID, DW_ID> ClaimIDToClaimantIDLookup0 = null;
+            HashMap<DW_ID, DW_ID> ClaimIDToClaimantIDLookup1;
+            ClaimIDToClaimantIDLookup0 = loadClaimIDToClaimantIDLookup(
                     loadData,
                     filename,
                     paymentType,
                     i,
-                    tCTBRefByIDs);
-            HashMap<DW_ID, String> tIDByCTBRef0;
+                    ClaimIDToClaimantIDLookups);
+            HashMap<DW_ID, DW_ID> ClaimantIDToClaimIDLookup0;
             // ClaimIDByTenancyTypeLookup0
             HashMap<Integer, HashMap<DW_ID, Integer>> ClaimIDByTenancyTypeLookups;
             ClaimIDByTenancyTypeLookups = new HashMap<Integer, HashMap<DW_ID, Integer>>();
@@ -2542,25 +2542,25 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     paymentType,
                     i,
                     ClaimIDByTenancyTypeLookups);
-            HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes;
-            tIDByPostcodes = new HashMap<Integer, HashMap<DW_ID, String>>();
-            HashMap<DW_ID, String> tIDByPostcode0;
-            tIDByPostcode0 = loadIDByPostcode(
+            HashMap<Integer, HashMap<DW_ID, String>> ClaimantIDToPostcodeLookups;
+            ClaimantIDToPostcodeLookups = new HashMap<Integer, HashMap<DW_ID, String>>();
+            HashMap<DW_ID, String> ClaimantIDToPostcodeLookup0;
+            ClaimantIDToPostcodeLookup0 = loadIDByPostcode(
                     loadData,
                     filename,
                     paymentType,
                     i,
-                    tIDByPostcodes);
+                    ClaimantIDToPostcodeLookups);
             HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies = null;
             HashSet<DW_ID> tUnderOccupiedIDs0 = null;
             HashSet<DW_ID> tUnderOccupiedIDs1 = null;
-            tIDByCTBRefs = new HashMap<Integer, HashMap<DW_ID, String>>();
-            tIDByCTBRef0 = loadIDByCTBRef(
+            ClaimantIDToClaimIDLookups = new HashMap<Integer, HashMap<DW_ID, DW_ID>>();
+            ClaimantIDToClaimIDLookup0 = loadClaimantIDToClaimIDLookup(
                     loadData,
                     filename,
                     paymentType,
                     i,
-                    tIDByCTBRefs);
+                    ClaimantIDToClaimIDLookups);
             if (doUnderOccupied) {
                 tUnderOccupancies = new HashMap<Integer, HashSet<DW_ID>>();
                 underOccupiedSet0 = underOccupiedSets.get(yM30);
@@ -2590,7 +2590,6 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 String yM31 = DW_SHBE_Handler.getYM3(filename);
                 // underOccupiedSet1
                 DW_UO_Set underOccupiedSet1 = null;
-                HashMap<DW_ID, String> tIDByCTBRef1;
                 // ClaimIDByTenancyTypeLookup1
                 HashMap<DW_ID, Integer> ClaimIDByTenancyTypeLookup1;
                 ClaimIDByTenancyTypeLookup1 = loadIDByTenancyType(
@@ -2599,26 +2598,27 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                         paymentType,
                         i,
                         ClaimIDByTenancyTypeLookups);
-                tCTBRefByID1 = loadCTBRefByID(
+                ClaimIDToClaimantIDLookup1 = loadClaimIDToClaimantIDLookup(
                         loadData,
                         filename,
                         paymentType,
                         i,
-                        tCTBRefByIDs);
+                        ClaimIDToClaimantIDLookups);
                 // tIDByPostcode1
-                HashMap<DW_ID, String> tIDByPostcode1;
-                tIDByPostcode1 = loadIDByPostcode(
+                HashMap<DW_ID, String> ClaimantIDToPostcodeLookup1;
+                ClaimantIDToPostcodeLookup1 = loadIDByPostcode(
                         loadData,
                         filename,
                         paymentType,
                         i,
-                        tIDByPostcodes);
-                tIDByCTBRef1 = loadIDByCTBRef(
+                        ClaimantIDToPostcodeLookups);
+                HashMap<DW_ID, DW_ID> ClaimantIDToClaimIDLookup1;
+                ClaimantIDToClaimIDLookup1 = loadClaimantIDToClaimIDLookup(
                         loadData,
                         filename,
                         paymentType,
                         i,
-                        tIDByCTBRefs);
+                        ClaimantIDToClaimIDLookups);
                 if (doUnderOccupied) {
                     underOccupiedSet1 = underOccupiedSets.get(yM31);
                     if (underOccupiedSet1 == null) {
@@ -2648,9 +2648,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                             checkPreviousTenure,
                             i,
                             include,
-                            tIDByPostcode0,
-                            tIDByPostcode1,
-                            tIDByPostcodes,
+                            ClaimantIDToPostcodeLookup0,
+                            ClaimantIDToPostcodeLookup1,
+                            ClaimantIDToPostcodeLookups,
                             postcodeChange,
                             checkPreviousPostcode,
                             underOccupiedSet0,
@@ -2682,16 +2682,16 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                                 checkPreviousTenure,
                                 i,
                                 include,
-                                tIDByPostcode0,
-                                tIDByPostcode1,
-                                tIDByPostcodes,
+                                ClaimantIDToPostcodeLookup0,
+                                ClaimantIDToPostcodeLookup1,
+                                ClaimantIDToPostcodeLookups,
                                 postcodeChange,
                                 checkPreviousPostcode,
                                 underOccupiedSet0,
-                                tIDByCTBRef0,
+                                ClaimantIDToClaimIDLookup0,
                                 underOccupiedSet1,
-                                tIDByCTBRef1,
-                                tCTBRefByIDs,
+                                ClaimantIDToClaimIDLookup1,
+                                ClaimIDToClaimantIDLookups,
                                 doUnderOccupied,
                                 ClaimIDs);
                         writeTenancyTypeTransitionMatrix(
@@ -2706,9 +2706,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 }
                 yM30 = yM31;
                 ClaimIDByTenancyTypeLookup0 = ClaimIDByTenancyTypeLookup1;
-                tIDByPostcode0 = tIDByPostcode1;
-                tIDByCTBRef0 = tIDByCTBRef1;
-                tCTBRefByID0 = tCTBRefByID1;
+                ClaimantIDToPostcodeLookup0 = ClaimantIDToPostcodeLookup1;
+                ClaimantIDToClaimIDLookup1 = ClaimantIDToClaimIDLookup1;
+                ClaimIDToClaimantIDLookup0 = ClaimIDToClaimantIDLookup1;
                 tUnderOccupiedIDs0 = tUnderOccupiedIDs1;
                 underOccupiedSet0 = underOccupiedSet1;
             }
@@ -2826,7 +2826,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         }
     }
 
-//    protected HashMap<String, DW_ID> loadCTBRefByID(
+//    protected HashMap<String, DW_ID> loadClaimIDToClaimantIDLookup(
 //            boolean loadData,
 //            String filename,
 //            String paymentType,
@@ -2836,13 +2836,13 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //        if (tCTBRefByIDs.containsKey(key)) {
 //            return tCTBRefByIDs.get(key);
 //        }
-//        result = loadCTBRefByID(loadData, filename, paymentType, key);
+//        result = loadClaimIDToClaimantIDLookup(loadData, filename, paymentType, key);
 //        tCTBRefByIDs.put(key, result);
 //        //System.out.println("...done.");
 //        return result;
 //    }
 //
-//    protected HashMap<String, DW_ID> loadCTBRefByID(
+//    protected HashMap<String, DW_ID> loadClaimIDToClaimantIDLookup(
 //            boolean loadData,
 //            String filename,
 //            String paymentType,
@@ -2869,7 +2869,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * @param filename
      * @param paymentType
      * @param key
-     * @param tIDByCTBRefs
+     * @param ClaimantIDToCLaimIDLookup
      * @return {@code if (tIDByCTBRefs.containsKey(key)) {
      * return tIDByCTBRefs.get(key);
      * }} otherwise (if loadData == true then the SHBEData is loaded and the
@@ -2877,27 +2877,27 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * the ID to CTB ref lookup is loaded from the file it is specifically
      * stored in, then put in tIDByCTBRefs and returned).
      */
-    protected HashMap<DW_ID, String> loadIDByCTBRef(
+    protected HashMap<DW_ID, DW_ID> loadClaimantIDToClaimIDLookup(
             boolean loadData,
             String filename,
             String paymentType,
             Integer key,
-            HashMap<Integer, HashMap<DW_ID, String>> tIDByCTBRefs) {
-        HashMap<DW_ID, String> result;
-        if (tIDByCTBRefs.containsKey(key)) {
-            return tIDByCTBRefs.get(key);
+            HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimantIDToCLaimIDLookup) {
+        HashMap<DW_ID, DW_ID> result;
+        if (ClaimantIDToCLaimIDLookup.containsKey(key)) {
+            return ClaimantIDToCLaimIDLookup.get(key);
         }
-        result = loadIDByCTBRef(loadData, filename, paymentType, key);
-        tIDByCTBRefs.put(key, result);
+        result = loadClaimantIDToClaimIDLookup(loadData, filename, paymentType, key);
+        ClaimantIDToCLaimIDLookup.put(key, result);
         return result;
     }
 
-    protected HashMap<DW_ID, String> loadIDByCTBRef(
+    protected HashMap<DW_ID, DW_ID> loadClaimantIDToClaimIDLookup(
             boolean loadData,
             String filename,
             String paymentType,
             Integer key) {
-        HashMap<DW_ID, String> result;
+        HashMap<DW_ID, DW_ID> result;
         if (loadData) {
             //System.out.print("Loading " + filename + " ...");
             DW_SHBE_Collection aSHBEData;
@@ -2905,41 +2905,41 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     env,
                     filename,
                     paymentType);
-            result = (HashMap<DW_ID, String>) aSHBEData.getClaimantIDToCTBRefLookup();
+            result = (HashMap<DW_ID, DW_ID>) aSHBEData.getClaimantIDToClaimIDLookup();
         } else {
             File f;
             f = DW_SHBE_Handler.getClaimantIDToCTBRefLookupFile(paymentType, filename);
             //System.out.print("Loading " + f + " ...");
-            result = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(f);
+            result = (HashMap<DW_ID, DW_ID>) Generic_StaticIO.readObject(f);
         }
         //System.out.println("...done.");
         return result;
     }
 
-    protected HashMap<String, DW_ID> loadCTBRefByID(
+    protected HashMap<DW_ID, DW_ID> loadClaimIDToClaimantIDLookup(
             boolean loadData,
             String filename,
             String paymentType,
             Integer key,
-            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs) {
-        HashMap<String, DW_ID> result;
+            HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimIDToClaimantIDLookups) {
+        HashMap<DW_ID, DW_ID> result;
         result = null;
-        if (tCTBRefByIDs.containsKey(key)) {
-            result = tCTBRefByIDs.get(key);
+        if (ClaimIDToClaimantIDLookups.containsKey(key)) {
+            result = ClaimIDToClaimantIDLookups.get(key);
         }
         if (result == null) {
-            result = loadCTBRefByID(loadData, filename, paymentType, key);
-            tCTBRefByIDs.put(key, result);
+            result = loadClaimIDToClaimantIDLookup(loadData, filename, paymentType, key);
+            ClaimIDToClaimantIDLookups.put(key, result);
         }
         return result;
     }
 
-    protected HashMap<String, DW_ID> loadCTBRefByID(
+    protected HashMap<DW_ID, DW_ID> loadClaimIDToClaimantIDLookup(
             boolean loadData,
             String filename,
             String paymentType,
             Integer key) {
-        HashMap<String, DW_ID> result;
+        HashMap<DW_ID, DW_ID> result;
         if (loadData) {
             //System.out.print("Loading " + filename + " ...");
             DW_SHBE_Collection aSHBEData;
@@ -2947,13 +2947,13 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     env,
                     filename,
                     paymentType);
-            result = (HashMap<String, DW_ID>) aSHBEData.getCTBRefToClaimantIDLookup();
+            result = (HashMap<DW_ID, DW_ID>) aSHBEData.getClaimIDToClaimantIDLookup();
         } else {
             File f;
             //f = DW_SHBE_Handler.getClaimantIDToCTBRefLookupFile(paymentType, filename);
             f = DW_SHBE_Handler.getCTBRefToClaimantIDLookupFile(paymentType, filename);
             //System.out.print("Loading " + f + " ...");
-            result = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(f);
+            result = (HashMap<DW_ID, DW_ID>) Generic_StaticIO.readObject(f);
         }
         //System.out.println("...done.");
         return result;
@@ -3594,7 +3594,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             yM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
             String yM30v;
             yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-            TreeMap<DW_ID, DW_SHBE_Record> records0;
+            HashMap<DW_ID, DW_SHBE_Record> records0;
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>> claimantTypeTenureLevelTypeAreaCounts;
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>>> claimantTypeTenureLevelTypeTenureCounts;
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, File>>>> claimantTypeTenureLevelTypeDirs;
@@ -3895,7 +3895,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     tIDIndexes.add(tID_HashSet);
                 }
                 //records0 = (TreeMap<String, DW_SHBE_Record>) SHBEData0[0];
-                TreeMap<DW_ID, DW_SHBE_Record> records1;
+                HashMap<DW_ID, DW_SHBE_Record> records1;
                 records1 = SHBEData1.getRecords();
                 /* Initialise A:
                  * output directories;
@@ -6792,9 +6792,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             File dirOut,
             ArrayList<Integer> regulatedGroups,
             ArrayList<Integer> unregulatedGroups,
-            HashMap<DW_ID, Integer> ClaimIDByTenancyTypeLookup0,
-            HashMap<DW_ID, Integer> ClaimIDByTenancyTypeLookup1,
-            HashMap<Integer, HashMap<DW_ID, Integer>> ClaimIDByTenancyTypeLookups,
+            HashMap<DW_ID, Integer> ClaimIDToTenancyTypeLookup0,
+            HashMap<DW_ID, Integer> ClaimIDToTenancyTypeLookup1,
+            HashMap<Integer, HashMap<DW_ID, Integer>> ClaimIDToTenancyTypeLookups,
             HashSet<DW_ID> tUnderOccupancy0,
             HashSet<DW_ID> tUnderOccupancy1,
             HashMap<Integer, HashSet<DW_ID>> tUnderOccupancies,
@@ -6804,16 +6804,16 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             boolean checkPreviousTenure,
             int i,
             ArrayList<Integer> include,
-            HashMap<DW_ID, String> tIDByPostcode0,
-            HashMap<DW_ID, String> tIDByPostcode1,
-            HashMap<Integer, HashMap<DW_ID, String>> tIDByPostcodes,
+            HashMap<DW_ID, String> ClaimIDToPostcodeLookup0,
+            HashMap<DW_ID, String> ClaimIDToPostcodeLookup1,
+            HashMap<Integer, HashMap<DW_ID, String>> ClaimIDToPostcodeLookups,
             boolean postcodeChange,
             boolean checkPreviousPostcode,
             DW_UO_Set underOccupiedSet0,
-            HashMap<DW_ID, String> tIDByCTBRef0,
+            HashMap<DW_ID, DW_ID> ClaimantIDToClaimIDLookup0,
             DW_UO_Set underOccupiedSet1,
-            HashMap<DW_ID, String> tIDByCTBRef1,
-            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs,
+            HashMap<DW_ID, DW_ID> ClaimantIDToClaimIDLookup1,
+            HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimantIDToClaimIDLookups,
             boolean doUnderOccupiedData,
             HashSet<DW_ID> ClaimIDs_UOInApril2013) {
         TreeMap<String, TreeMap<String, Integer>> result;
@@ -6832,7 +6832,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         }
         Iterator<DW_ID> ite;
         // Go through current claimants
-        ite = ClaimIDByTenancyTypeLookup1.keySet().iterator();
+        ite = ClaimIDToTenancyTypeLookup1.keySet().iterator();
         while (ite.hasNext()) {
             DW_ID ClaimID;
             ClaimID = ite.next();
@@ -6862,10 +6862,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 String tenancyType0;
                 String postcode0 = null;
                 boolean isValidPostcode0 = false;
-                if (ClaimIDByTenancyTypeLookup0 != null) {
-                    tenancyType0Integer = ClaimIDByTenancyTypeLookup0.get(ClaimID);
+                if (ClaimIDToTenancyTypeLookup0 != null) {
+                    tenancyType0Integer = ClaimIDToTenancyTypeLookup0.get(ClaimID);
                     boolean isValidPostcodeFormPostcode0 = false;
-                    postcode0 = tIDByPostcode0.get(ClaimID);
+                    postcode0 = ClaimIDToPostcodeLookup0.get(ClaimID);
                     if (postcode0 != null) {
                         isValidPostcode0 = tDW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
                         isValidPostcodeFormPostcode0 = Generic_UKPostcode_Handler.isValidPostcodeForm(postcode0);
@@ -6875,7 +6875,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                             Object[] previousTenure;
                             previousTenure = getPreviousTenure(
                                     ClaimID,
-                                    ClaimIDByTenancyTypeLookups,
+                                    ClaimIDToTenancyTypeLookups,
                                     tUnderOccupancies,
                                     i,
                                     include);
@@ -6886,7 +6886,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                                 if (indexOfLastKnownTenureOrNot != null) {
 //                                       System.out.println("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
                                     if (!isValidPostcodeFormPostcode0 && checkPreviousPostcode) {
-                                        postcode0 = tIDByPostcodes.get(indexOfLastKnownTenureOrNot).get(ClaimID);
+                                        postcode0 = ClaimIDToPostcodeLookups.get(indexOfLastKnownTenureOrNot).get(ClaimID);
                                         if (postcode0 != null) {
                                             isValidPostcode0 = tDW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
 //                                            isValidPostcodeFormPostcode0 = Generic_UKPostcode_Handler.isValidPostcodeForm(postcode0);
@@ -6904,10 +6904,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     tenancyType0 = sMinus999;
                 }
                 tenancyType0 = getTenancyTypeGroup(regulatedGroups, unregulatedGroups, tenancyType0);
-                Integer tenancyType1Integer = ClaimIDByTenancyTypeLookup1.get(ClaimID);
+                Integer tenancyType1Integer = ClaimIDToTenancyTypeLookup1.get(ClaimID);
                 String tenancyType1 = getTenancyTypeGroup(regulatedGroups, unregulatedGroups, tenancyType1Integer);
                 String postcode1;
-                postcode1 = tIDByPostcode1.get(ClaimID);
+                postcode1 = ClaimIDToPostcodeLookup1.get(ClaimID);
                 boolean isValidPostcode1 = false;
                 if (postcode1 != null) {
                     isValidPostcode1 = tDW_Postcode_Handler.isValidPostcode(yM31v, postcode1);
@@ -6987,11 +6987,11 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         // Go through all those previously and record for all those that are not
         // in the current data. Also record for all those that were under 
         // occupying but are now not (and vice vesa) and have changed postcode.
-        ite = ClaimIDByTenancyTypeLookup0.keySet().iterator();
+        ite = ClaimIDToTenancyTypeLookup0.keySet().iterator();
         while (ite.hasNext()) {
             DW_ID ClaimID;
             ClaimID = ite.next();
-            if (!ClaimIDByTenancyTypeLookup1.containsKey(ClaimID)) {
+            if (!ClaimIDToTenancyTypeLookup1.containsKey(ClaimID)) {
                 boolean doMainLoop = true;
                 DW_UO_Record underOccupied0 = null;
                 DW_UO_Record underOccupied1 = null;
@@ -7005,13 +7005,13 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     }
                 }
                 if (doMainLoop) {
-                    Integer tenancyType0Integer = ClaimIDByTenancyTypeLookup0.get(ClaimID);
+                    Integer tenancyType0Integer = ClaimIDToTenancyTypeLookup0.get(ClaimID);
                     String tenancyType0;
                     tenancyType0 = getTenancyTypeGroup(regulatedGroups, unregulatedGroups, tenancyType0Integer);
                     String tenancyType1;
                     tenancyType1 = DW_SHBE_TenancyType_Handler.sMinus999;
                     String postcode0;
-                    postcode0 = tIDByPostcode0.get(ClaimID);
+                    postcode0 = ClaimIDToPostcodeLookup0.get(ClaimID);
                     boolean isValidPostcode0 = false;
                     if (postcode0 != null) {
                         isValidPostcode0 = tDW_Postcode_Handler.isValidPostcode(yM30v, postcode0);
@@ -7094,9 +7094,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
      * @param postcodeChange
      * @param checkPreviousPostcode
      * @param underOccupiedSet0
-     * @param tIDByCTBRef0
+     * @param ClaimantIDToClaimIDLookup0
      * @param underOccupiedSet1
-     * @param tIDByCTBRef1
+     * @param ClaimantIDToClaimIDLookup1
      * @param doUnderOccupiedData
      * @param tCTBRefByIDs
      * @param ClaimIDs_UOInApril2013
@@ -7126,10 +7126,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             boolean postcodeChange,
             boolean checkPreviousPostcode,
             DW_UO_Set underOccupiedSet0,
-            HashMap<DW_ID, String> tIDByCTBRef0,
+            HashMap<DW_ID, DW_ID> ClaimantIDToClaimIDLookup0,
             DW_UO_Set underOccupiedSet1,
-            HashMap<DW_ID, String> tIDByCTBRef1,
-            HashMap<Integer, HashMap<String, DW_ID>> tCTBRefByIDs,
+            HashMap<DW_ID, DW_ID> ClaimantIDToClaimIDLookup1,
+            HashMap<Integer, HashMap<DW_ID, DW_ID>> tCTBRefByIDs,
             boolean doUnderOccupiedData,
             HashSet<DW_ID> ClaimIDs_UOInApril2013) {
         TreeMap<String, TreeMap<String, Integer>> result;
@@ -8090,7 +8090,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             String month = DW_SHBE_Handler.getMonth(SHBEFilename);
             TreeMap<Integer, Integer> ymAllResult = new TreeMap<Integer, Integer>();
             TreeMap<Integer, Integer> ymHBResult = new TreeMap<Integer, Integer>();
-            TreeMap<DW_ID, DW_SHBE_Record> records;
+            HashMap<DW_ID, DW_SHBE_Record> records;
             records = SHBEData.getRecords();
             Iterator<DW_ID> ite = records.keySet().iterator();
             while (ite.hasNext()) {
@@ -8206,7 +8206,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 env,
                 SHBEFilenames[startIndex],
                 paymentType);
-        TreeMap<DW_ID, DW_SHBE_Record> recordsStart;
+        HashMap<DW_ID, DW_SHBE_Record> recordsStart;
         recordsStart = SHBEDataStart.getRecords();
         // End
         DW_SHBE_Collection SHBEDataEnd;
@@ -8214,7 +8214,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 env,
                 SHBEFilenames[endIndex],
                 paymentType);
-        TreeMap<DW_ID, DW_SHBE_Record> recordsEnd;
+        HashMap<DW_ID, DW_SHBE_Record> recordsEnd;
         recordsEnd = SHBEDataEnd.getRecords();
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
@@ -8405,14 +8405,14 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 env,
                 SHBEFilenames[startIndex],
                 paymentType);
-        TreeMap<DW_ID, DW_SHBE_Record> RecordsStart;
+        HashMap<DW_ID, DW_SHBE_Record> RecordsStart;
         RecordsStart = SHBEDataStart.getRecords();
         DW_SHBE_Collection SHBEDataEnd;
         SHBEDataEnd = new DW_SHBE_Collection(
                 env,
                 SHBEFilenames[endIndex],
                 paymentType);
-        TreeMap<DW_ID, DW_SHBE_Record> RecordsEnd;
+        HashMap<DW_ID, DW_SHBE_Record> RecordsEnd;
         RecordsEnd = SHBEDataEnd.getRecords();
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<Integer, Integer> destinationCounts;
@@ -9667,12 +9667,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 env,
                 SHBEFilenames[startIndex],
                 paymentType);
-        TreeMap<DW_ID, DW_SHBE_Record> DRecordsStart = SHBEDataStart.getRecords();
+        HashMap<DW_ID, DW_SHBE_Record> DRecordsStart = SHBEDataStart.getRecords();
         DW_SHBE_Collection SHBEDataEnd = new DW_SHBE_Collection(
                 env,
                 SHBEFilenames[endIndex],
                 paymentType);
-        TreeMap<DW_ID, DW_SHBE_Record> DRecordsEnd = SHBEDataEnd.getRecords();
+        HashMap<DW_ID, DW_SHBE_Record> DRecordsEnd = SHBEDataEnd.getRecords();
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<String, Integer> destinationCounts;
@@ -9866,12 +9866,12 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                 env,
                 SHBEFilenames[startIndex],
                 paymentType);
-        TreeMap<DW_ID, DW_SHBE_Record> DRecordsStart = SHBEDataStart.getRecords();
+       HashMap<DW_ID, DW_SHBE_Record> DRecordsStart = SHBEDataStart.getRecords();
         DW_SHBE_Collection SHBEDataEnd = new DW_SHBE_Collection(
                 env,
                 SHBEFilenames[endIndex],
                 paymentType);
-        TreeMap<DW_ID, DW_SHBE_Record> DRecordsEnd = SHBEDataEnd.getRecords();
+       HashMap<DW_ID, DW_SHBE_Record> DRecordsEnd = SHBEDataEnd.getRecords();
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<String, Integer> destinationCounts;
@@ -10229,7 +10229,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         for (int month = 0; month < SHBEFilenames.length - 1; month++) {
             int underOccupancyMonth = month;
             String monthString = DW_SHBE_Handler.getMonth(SHBEFilenames[month]);
-            TreeMap<DW_ID, DW_SHBE_Record> DRecords = SHBEDataMonth1.getRecords();
+            HashMap<DW_ID, DW_SHBE_Record> DRecords = SHBEDataMonth1.getRecords();
             // Iterate over records and join these with SHBE records to get postcodes
             TreeMap<String, Integer> postcodeClaims = new TreeMap<String, Integer>();
             result.put(monthString, postcodeClaims);
@@ -10363,7 +10363,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     env,
                     SHBEFilenames[month],
                     paymentType);
-            TreeMap<DW_ID, DW_SHBE_Record> recs = SHBEData.getRecords();
+            HashMap<DW_ID, DW_SHBE_Record> recs = SHBEData.getRecords();
             //TreeMap<String, DW_SHBE_Record> SRecordsWithoutDRecords = (TreeMap<String, DW_SHBE_Record>) SHBEData[1];
             Iterator<DW_ID> ite = recs.keySet().iterator();
             String postcode;
@@ -10616,7 +10616,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         Iterator<Integer> includeIte;
         int i;
         DW_SHBE_Collection aSHBECollection;
-        TreeMap<DW_ID, DW_SHBE_Record> records0;
+        HashMap<DW_ID, DW_SHBE_Record> records0;
         DW_ID ClaimID;
         DW_SHBE_D_Record DRecord0;
         String postcode0;
