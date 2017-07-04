@@ -51,6 +51,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_H
 public abstract class DW_DensityMapsAbstract extends DW_Maps {
 
     protected Grids_Environment ge;
+    
+    protected DW_Postcode_Handler DW_Postcode_Handler;
+    
     protected ESRIAsciiGridExporter eage;
     protected ImageExporter ie;
     protected Grid2DSquareCellProcessorGWS gp;

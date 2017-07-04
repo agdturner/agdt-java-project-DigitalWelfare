@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
 /**
@@ -36,18 +37,18 @@ public class DW_UO_Data extends DW_Object implements Serializable {
      * The store of all UnderOccupancy RSL Sets. Keys are yM3s, values
      * are the respective sets.
      */
-    private TreeMap<String, DW_UO_Set> RSLSets;
+    private final TreeMap<String, DW_UO_Set> RSLSets;
 
     /**
      * The store of all UnderOccupancy Council Sets. Keys are yM3s,
      * values are the respective sets.
      */
-    private TreeMap<String, DW_UO_Set> CouncilSets;
+    private final TreeMap<String, DW_UO_Set> CouncilSets;
 
     /**
-     * Store of Sets of CTBRefs. Keys are yM3s, values are the respective sets.
+     * Store of Sets of ClaimIDs. Keys are yM3s, values are the respective sets.
      */
-    private TreeMap<String, HashSet<String>> CTBRefs;
+    private TreeMap<String, HashSet<DW_ID>> ClaimIDs;
 
     public DW_UO_Data(
             DW_Environment env,
@@ -56,7 +57,7 @@ public class DW_UO_Data extends DW_Object implements Serializable {
         this.env = env;
         this.RSLSets = tRSLData;
         this.CouncilSets = tCouncilData;
-        initCTBRefs();
+        initClaimIDs();
     }
 
     /**
@@ -74,27 +75,27 @@ public class DW_UO_Data extends DW_Object implements Serializable {
     }
 
     /**
-     * @return the CTBRefs
+     * @return the ClaimIDs
      */
-    public TreeMap<String, HashSet<String>> getCTBRefs() {
-        return CTBRefs;
+    public TreeMap<String, HashSet<DW_ID>> getClaimIDs() {
+        return ClaimIDs;
     }
 
     /**
-     * Initialises CTBRefs.
+     * Initialises ClaimIDs.
      */
-    private void initCTBRefs() {
-        CTBRefs = new TreeMap<String, HashSet<String>>();
+    private void initClaimIDs() {
+        ClaimIDs = new TreeMap<String, HashSet<DW_ID>>();
         String yM3;
         Iterator<String> ite;
         ite = CouncilSets.keySet().iterator();
         while (ite.hasNext()) {
             yM3 = ite.next();
-            HashSet<String> tCTBRefsForYM3;
-            tCTBRefsForYM3 = new HashSet<String>();
-            tCTBRefsForYM3.addAll(CouncilSets.get(yM3).getMap().keySet());
-            tCTBRefsForYM3.addAll(RSLSets.get(yM3).getMap().keySet());
-            CTBRefs.put(yM3, tCTBRefsForYM3);
+            HashSet<DW_ID> ClaimIDsForYM3;
+            ClaimIDsForYM3 = new HashSet<DW_ID>();
+            ClaimIDsForYM3.addAll(CouncilSets.get(yM3).getMap().keySet());
+            ClaimIDsForYM3.addAll(RSLSets.get(yM3).getMap().keySet());
+            ClaimIDs.put(yM3, ClaimIDsForYM3);
         }
     }
 

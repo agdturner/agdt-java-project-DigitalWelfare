@@ -1061,24 +1061,24 @@ public class SummaryUO extends Summary {
     }
 
     public HashSet<ID_TenancyType> getID_TenancyTypeSet(
-            TreeMap<String, DW_SHBE_Record> D_Records,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records,
             DW_UO_Set councilUnderOccupiedSet,
             DW_UO_Set RSLUnderOccupiedSet,
             HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup) {
         HashSet<ID_TenancyType> result;
         result = new HashSet<ID_TenancyType>();
-        TreeMap<String, DW_UO_Record> RSLMap;
+        TreeMap<DW_ID, DW_UO_Record> RSLMap;
         RSLMap = RSLUnderOccupiedSet.getMap();
-        TreeMap<String, DW_UO_Record> councilMap;
+        TreeMap<DW_ID, DW_UO_Record> councilMap;
         councilMap = councilUnderOccupiedSet.getMap();
-        Iterator<String> ite;
+        Iterator<DW_ID> ite;
         ite = councilMap.keySet().iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
-            if (D_Records.containsKey(CTBRef)) {
+            DW_ID ClaimID;
+            ClaimID = ite.next();
+            if (D_Records.containsKey(ClaimID)) {
                 DW_SHBE_D_Record D_Record;
-                D_Record = D_Records.get(CTBRef).getDRecord();
+                D_Record = D_Records.get(ClaimID).getDRecord();
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
                 DW_ID ID;
@@ -1096,11 +1096,11 @@ public class SummaryUO extends Summary {
         }
         ite = RSLMap.keySet().iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
-            if (D_Records.containsKey(CTBRef)) {
+            DW_ID ClaimID;
+            ClaimID = ite.next();
+            if (D_Records.containsKey(ClaimID)) {
                 DW_SHBE_D_Record D_Record;
-                D_Record = D_Records.get(CTBRef).getDRecord();
+                D_Record = D_Records.get(ClaimID).getDRecord();
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
                 DW_ID ID;
@@ -1120,25 +1120,25 @@ public class SummaryUO extends Summary {
     }
 
     public HashSet<ID_PostcodeID> getID_PostcodeIDSet(
-            TreeMap<String, DW_SHBE_Record> D_Records,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records,
             DW_UO_Set councilUnderOccupiedSet,
             DW_UO_Set RSLUnderOccupiedSet,
             HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
             HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
         HashSet<ID_PostcodeID> result;
         result = new HashSet<ID_PostcodeID>();
-        TreeMap<String, DW_UO_Record> RSLMap;
+        TreeMap<DW_ID, DW_UO_Record> RSLMap;
         RSLMap = RSLUnderOccupiedSet.getMap();
-        TreeMap<String, DW_UO_Record> councilMap;
+        TreeMap<DW_ID, DW_UO_Record> councilMap;
         councilMap = councilUnderOccupiedSet.getMap();
-        Iterator<String> ite;
+        Iterator<DW_ID> ite;
         ite = councilMap.keySet().iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_SHBE_D_Record D_Record;
-            if (D_Records.containsKey(CTBRef)) {
-                D_Record = D_Records.get(CTBRef).getDRecord();
+            if (D_Records.containsKey(ClaimID)) {
+                D_Record = D_Records.get(ClaimID).getDRecord();
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
                 DW_ID ID;
@@ -1156,11 +1156,11 @@ public class SummaryUO extends Summary {
         }
         ite = RSLMap.keySet().iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_SHBE_D_Record D_Record;
-            if (D_Records.containsKey(CTBRef)) {
-                D_Record = D_Records.get(CTBRef).getDRecord();
+            if (D_Records.containsKey(ClaimID)) {
+                D_Record = D_Records.get(ClaimID).getDRecord();
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
                 DW_ID ID;
@@ -1180,25 +1180,25 @@ public class SummaryUO extends Summary {
     }
 
     public HashSet<ID_TenancyType_PostcodeID> getID_TenancyType_PostcodeIDSet(
-            TreeMap<String, DW_SHBE_Record> D_Records,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records,
             DW_UO_Set councilUnderOccupiedSet,
             DW_UO_Set RSLUnderOccupiedSet,
             HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
             HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
         HashSet<ID_TenancyType_PostcodeID> result;
         result = new HashSet<ID_TenancyType_PostcodeID>();
-        TreeMap<String, DW_UO_Record> RSLMap;
+        TreeMap<DW_ID, DW_UO_Record> RSLMap;
         RSLMap = RSLUnderOccupiedSet.getMap();
-        TreeMap<String, DW_UO_Record> councilMap;
+        TreeMap<DW_ID, DW_UO_Record> councilMap;
         councilMap = councilUnderOccupiedSet.getMap();
-        Iterator<String> ite;
+        Iterator<DW_ID> ite;
         ite = councilMap.keySet().iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
-            if (D_Records.containsKey(CTBRef)) {
+            DW_ID ClaimID;
+            ClaimID = ite.next();
+            if (D_Records.containsKey(ClaimID)) {
                 DW_SHBE_D_Record D_Record;
-                D_Record = D_Records.get(CTBRef).getDRecord();
+                D_Record = D_Records.get(ClaimID).getDRecord();
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
                 DW_ID ID;
@@ -1220,11 +1220,11 @@ public class SummaryUO extends Summary {
         }
         ite = RSLMap.keySet().iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
-            if (D_Records.containsKey(CTBRef)) {
+            DW_ID ClaimID;
+            ClaimID = ite.next();
+            if (D_Records.containsKey(ClaimID)) {
                 DW_SHBE_D_Record D_Record;
-                D_Record = D_Records.get(CTBRef).getDRecord();
+                D_Record = D_Records.get(ClaimID).getDRecord();
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
                 DW_ID ID;
@@ -1508,7 +1508,7 @@ public class SummaryUO extends Summary {
                 sRSLTotalCount_PrivateDeregulatedTTsToTT4,
                 Integer.toString(RSLTotalCount_PrivateDeregulatedTTsToTT4));
         // Social
-        d = RSLTotalCount_TTClaimant0[1] + RSLTotalCount_TTClaimant0[4];
+        //d = RSLTotalCount_TTClaimant0[1] + RSLTotalCount_TTClaimant0[4];
         d = RSLTotalCount_TTClaimant0[1];
         summary.put(
                 sRSLTotalCount_TT1ToTT4,
@@ -3574,14 +3574,14 @@ public class SummaryUO extends Summary {
         HouseholdSize = tDW_SHBE_Handler.getHouseholdSize(D_Record);
         // Entitlements
         WeeklyHousingBenefitEntitlement = D_Record.getWeeklyHousingBenefitEntitlement();
-        WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
-        // Eligible Amounts
-        WeeklyEligibleRentAmount = D_Record.getWeeklyEligibleRentAmount();
-        WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
-        ContractualRentAmount = D_Record.getContractualRentAmount();
-        // Additional Payments
-        WeeklyAdditionalDiscretionaryPayment = D_Record.getWeeklyAdditionalDiscretionaryPayment();
-        WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = D_Record.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
+//        WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
+//        // Eligible Amounts
+//        WeeklyEligibleRentAmount = D_Record.getWeeklyEligibleRentAmount();
+//        WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
+//        ContractualRentAmount = D_Record.getContractualRentAmount();
+//        // Additional Payments
+//        WeeklyAdditionalDiscretionaryPayment = D_Record.getWeeklyAdditionalDiscretionaryPayment();
+//        WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = D_Record.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
         // HBClaim only counts
         if (tDW_SHBE_Handler.isHBClaim(D_Record)) {
             CouncilTotalCount_PSI[PSI]++;
@@ -3732,14 +3732,14 @@ public class SummaryUO extends Summary {
         HouseholdSize = tDW_SHBE_Handler.getHouseholdSize(D_Record);
         // Entitlements
         WeeklyHousingBenefitEntitlement = D_Record.getWeeklyHousingBenefitEntitlement();
-        WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
-        // Eligible Amounts
-        WeeklyEligibleRentAmount = D_Record.getWeeklyEligibleRentAmount();
-        WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
-        ContractualRentAmount = D_Record.getContractualRentAmount();
-        // Additional Payments
-        WeeklyAdditionalDiscretionaryPayment = D_Record.getWeeklyAdditionalDiscretionaryPayment();
-        WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = D_Record.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
+//        WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
+//        // Eligible Amounts
+//        WeeklyEligibleRentAmount = D_Record.getWeeklyEligibleRentAmount();
+//        WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
+//        ContractualRentAmount = D_Record.getContractualRentAmount();
+//        // Additional Payments
+//        WeeklyAdditionalDiscretionaryPayment = D_Record.getWeeklyAdditionalDiscretionaryPayment();
+//        WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = D_Record.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
         // HBClaim only counts
         if (tDW_SHBE_Handler.isHBClaim(D_Record)) {
             RSLTotalCount_PSI[PSI]++;
@@ -4045,6 +4045,7 @@ public class SummaryUO extends Summary {
     /**
      *
      * @param tEG The Ethnic Group
+     * @param tTT
      * @param tP The Postcode
      * @param yM3v They yM3 for postcode lookup validity
      */
@@ -4085,7 +4086,7 @@ public class SummaryUO extends Summary {
             HashSet<ID_TenancyType> tClaimantIDTT1,
             TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs,
             HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTTs1,
-            TreeMap<String, DW_SHBE_Record> Records,
+            TreeMap<DW_ID, DW_SHBE_Record> Records,
             DW_UO_Set councilUnderOccupiedSet,
             DW_UO_Set RSLUnderOccupiedSet
     ) {
@@ -4257,7 +4258,8 @@ public class SummaryUO extends Summary {
         includeIte = include.iterator();
         boolean initFirst = false;
         String yM31 = "";
-        String yM31v = "";
+        String yM31v;
+        //yM31v = "";
         DW_UO_Set councilUnderOccupiedSet1 = null;
         DW_UO_Set RSLUnderOccupiedSet1 = null;
         String filename1 = null;
@@ -4312,7 +4314,7 @@ public class SummaryUO extends Summary {
         TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs;
         tClaimantIDPostcodeTTs = new TreeMap<String, HashSet<ID_TenancyType_PostcodeID>>();
 
-        yM31v = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+        yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
 
         // Summarise first data
         doPartSummarySingleTime(
@@ -4356,7 +4358,7 @@ public class SummaryUO extends Summary {
 
             filename1 = SHBEFilenames[i];
             yM31 = tDW_SHBE_Handler.getYM3(filename1);
-            yM31v = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+            yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
             councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
             System.out.println("Load " + filename1);
@@ -4409,7 +4411,7 @@ public class SummaryUO extends Summary {
 
                 filename1 = SHBEFilenames[i];
                 yM31 = tDW_SHBE_Handler.getYM3(filename1);
-                yM31v = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+                yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                 councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
                 RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
                 System.out.println("Load " + filename1);
@@ -4670,18 +4672,18 @@ public class SummaryUO extends Summary {
                 DW_PersonIDToIDLookup,
                 PostcodeToPostcodeIDLookup);
 
-        TreeMap<String, DW_SHBE_Record> tDRecords1;
+        TreeMap<DW_ID, DW_SHBE_Record> tDRecords1;
         tDRecords1 = tSHBEData1.getRecords();
-        TreeMap<String, DW_SHBE_Record> tDRecords0;
+        TreeMap<DW_ID, DW_SHBE_Record> tDRecords0;
         tDRecords0 = tSHBEData0.getRecords();
 
-        TreeMap<String, DW_UO_Record> councilUnderOccupiedSet0Map;
+        TreeMap<DW_ID, DW_UO_Record> councilUnderOccupiedSet0Map;
         councilUnderOccupiedSet0Map = councilUnderOccupiedSet0.getMap();
-        TreeMap<String, DW_UO_Record> RSLUnderOccupiedSet0Map;
+        TreeMap<DW_ID, DW_UO_Record> RSLUnderOccupiedSet0Map;
         RSLUnderOccupiedSet0Map = RSLUnderOccupiedSet0.getMap();
-        TreeMap<String, DW_UO_Record> councilUnderOccupiedSet1Map;
+        TreeMap<DW_ID, DW_UO_Record> councilUnderOccupiedSet1Map;
         councilUnderOccupiedSet1Map = councilUnderOccupiedSet1.getMap();
-        TreeMap<String, DW_UO_Record> RSLUnderOccupiedSet1Map;
+        TreeMap<DW_ID, DW_UO_Record> RSLUnderOccupiedSet1Map;
         RSLUnderOccupiedSet1Map = RSLUnderOccupiedSet1.getMap();
 
         Iterator<String> ite;
@@ -4752,7 +4754,7 @@ public class SummaryUO extends Summary {
 
     protected void addToSetsForComparisons(
             String yM3,
-            TreeMap<String, DW_SHBE_Record> D_Records,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records,
             DW_UO_Set councilUnderOccupiedSet,
             DW_UO_Set RSLUnderOccupiedSet,
             TreeMap<String, HashSet<ID_PostcodeID>> tClaimantIDPostcodes,
@@ -4765,7 +4767,7 @@ public class SummaryUO extends Summary {
         HashSet<ID_TenancyType> tClaimantIDTTs0;
         HashSet<ID_TenancyType_PostcodeID> tClaimantIDPostcodeTTs0;
         if (tClaimantIDPostcodes.containsKey(yM3)) {
-            tClaimantIDPostcodes0 = tClaimantIDPostcodes.get(yM3);
+//            tClaimantIDPostcodes0 = tClaimantIDPostcodes.get(yM3);
         } else {
             tClaimantIDPostcodes0 = getID_PostcodeIDSet(
                     D_Records, councilUnderOccupiedSet, RSLUnderOccupiedSet,
@@ -4773,7 +4775,7 @@ public class SummaryUO extends Summary {
             tClaimantIDPostcodes.put(yM3, tClaimantIDPostcodes0);
         }
         if (tClaimantIDTTs.containsKey(yM3)) {
-            tClaimantIDTTs0 = tClaimantIDTTs.get(yM3);
+//            tClaimantIDTTs0 = tClaimantIDTTs.get(yM3);
         } else {
             tClaimantIDTTs0 = getID_TenancyTypeSet(
                     D_Records, councilUnderOccupiedSet, RSLUnderOccupiedSet,
@@ -4781,7 +4783,7 @@ public class SummaryUO extends Summary {
             tClaimantIDTTs.put(yM3, tClaimantIDTTs0);
         }
         if (tClaimantIDPostcodeTTs.containsKey(yM3)) {
-            tClaimantIDPostcodeTTs0 = tClaimantIDPostcodeTTs.get(yM3);
+//            tClaimantIDPostcodeTTs0 = tClaimantIDPostcodeTTs.get(yM3);
         } else {
             tClaimantIDPostcodeTTs0 = getID_TenancyType_PostcodeIDSet(
                     D_Records, councilUnderOccupiedSet, RSLUnderOccupiedSet,
@@ -4826,7 +4828,7 @@ public class SummaryUO extends Summary {
 ////        }
 //        System.arraycopy(TotalCount_TTClaimant1, 0, TotalCount_TTClaimant0, 0, nTT);
 
-        TreeMap<String, DW_SHBE_Record> tDRecords;
+        TreeMap<DW_ID, DW_SHBE_Record> tDRecords;
         tDRecords = tSHBEData.getRecords();
         String key;
         key = tDW_SHBE_Handler.getYearMonthNumber(filename);
@@ -4849,9 +4851,9 @@ public class SummaryUO extends Summary {
                 tDW_PersonIDToIDLookup,
                 tPostcodeToPostcodeIDLookup);
 
-        TreeMap<String, DW_UO_Record> underOccupiedSetMapCouncil;
+        TreeMap<DW_ID, DW_UO_Record> underOccupiedSetMapCouncil;
         underOccupiedSetMapCouncil = underOccupiedSetCouncil.getMap();
-        TreeMap<String, DW_UO_Record> underOccupiedSetMapRSL;
+        TreeMap<DW_ID, DW_UO_Record> underOccupiedSetMapRSL;
         underOccupiedSetMapRSL = underOccupiedSetRSL.getMap();
         // Loop over underoccupancy data
         // Loop over Council
@@ -4922,22 +4924,22 @@ public class SummaryUO extends Summary {
     }
 
     public void doCouncilCompare2TimesLoopOverSet(
-            TreeMap<String, DW_UO_Record> map0,
-            TreeMap<String, DW_UO_Record> map1,
-            TreeMap<String, DW_SHBE_Record> D_Records0,
-            TreeMap<String, DW_SHBE_Record> D_Records1,
+            TreeMap<DW_ID, DW_UO_Record> map0,
+            TreeMap<DW_ID, DW_UO_Record> map1,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records0,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records1,
             String yM30v,
             String yM31v) {
-        Iterator<String> ite;
+        Iterator<DW_ID> ite;
         // Go through all those in D_Records0 and do non single time counts for 
         // those in current.
         ite = D_Records0.keySet().iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
-            if (map1.containsKey(CTBRef)) {
+            DW_ID ClaimID;
+            ClaimID = ite.next();
+            if (map1.containsKey(ClaimID)) {
                 doCouncilCompare2TimesCountsAsNecessary(
-                        CTBRef,
+                        ClaimID,
                         D_Records0,
                         D_Records1,
                         yM30v,
@@ -4947,17 +4949,17 @@ public class SummaryUO extends Summary {
         // Go through all those in current UO data.      
         ite = map1.keySet().iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_UO_Record UORec;
-            UORec = map1.get(CTBRef);
+            UORec = map1.get(ClaimID);
             // Rent Arrears Summary
             doSingleTimeRentArrearsCount(UORec);
 //            String CTBRef;
 //            CTBRef = UORec.getClaimReferenceNumber();
-            if (!map0.keySet().contains(CTBRef)) {
+            if (!map0.keySet().contains(ClaimID)) {
             doCouncilCompare2TimesCountsAsNecessary(
-                    CTBRef,
+                    ClaimID,
                     D_Records0,
                     D_Records1,
                     yM30v,
@@ -4965,22 +4967,22 @@ public class SummaryUO extends Summary {
             }
         }
         // Go through all those that were in the UO data, but have come out.
-        HashSet<String> claimsOutOfUO;
-        claimsOutOfUO = new HashSet<String>();
+        HashSet<DW_ID> claimsOutOfUO;
+        claimsOutOfUO = new HashSet<DW_ID>();
         claimsOutOfUO.addAll(map0.keySet());
         claimsOutOfUO.removeAll(map1.keySet());
         ite = claimsOutOfUO.iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_UO_Record UORec;
-            UORec = map0.get(CTBRef);
+            UORec = map0.get(ClaimID);
             // Rent Arrears Summary
             doSingleTimeRentArrearsCount(UORec);
 //            String CTBRef;
 //            CTBRef = UORec.getClaimReferenceNumber();
             doCouncilCompare2TimesCountsAsNecessary(
-                    CTBRef,
+                    ClaimID,
                     D_Records0,
                     D_Records1,
                     yM30v,
@@ -4989,22 +4991,22 @@ public class SummaryUO extends Summary {
     }
 
     private void doCouncilCompare2TimesCountsAsNecessary(
-            String CTBRef,
-            TreeMap<String, DW_SHBE_Record> D_Records0,
-            TreeMap<String, DW_SHBE_Record> D_Records1,
+            DW_ID ClaimID,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records0,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records1,
             String yM30v,
             String yM31v) {
         DW_SHBE_Record Record0;
-        Record0 = D_Records0.get(CTBRef);
+        Record0 = D_Records0.get(ClaimID);
         DW_SHBE_Record Record1;
-        Record1 = D_Records1.get(CTBRef);
+        Record1 = D_Records1.get(ClaimID);
         DW_SHBE_D_Record D_Record0;
         D_Record0 = null;
         if (Record0 != null) {
             D_Record0 = Record0.getDRecord();
         }
         DW_SHBE_D_Record D_Record1;
-        D_Record1 = null;
+//        D_Record1 = null;
         if (Record1 != null) {
             D_Record1 = Record1.getDRecord();
             //if (D_Record0 == null) {
@@ -5019,22 +5021,22 @@ public class SummaryUO extends Summary {
     }
 
     public void doRSLCompare2TimesLoopOverSet(
-            TreeMap<String, DW_UO_Record> map0,
-            TreeMap<String, DW_UO_Record> map1,
-            TreeMap<String, DW_SHBE_Record> D_Records0,
-            TreeMap<String, DW_SHBE_Record> D_Records1,
+            TreeMap<DW_ID, DW_UO_Record> map0,
+            TreeMap<DW_ID, DW_UO_Record> map1,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records0,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records1,
             String yM30v,
             String yM31v) {
-        Iterator<String> ite;
+        Iterator<DW_ID> ite;
         // Go through all those in D_Records0 and do non single time counts for 
         // all those that are in map1
         ite = D_Records0.keySet().iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
-            if (map1.containsKey(CTBRef)) {
+            DW_ID ClaimID;
+            ClaimID = ite.next();
+            if (map1.containsKey(ClaimID)) {
                 doRSLCompare2TimesCountsAsNecessary(
-                        CTBRef,
+                        ClaimID,
                         D_Records0,
                         D_Records1,
                         yM30v,
@@ -5044,17 +5046,17 @@ public class SummaryUO extends Summary {
         // Go through all those in current UO data.
         ite = map1.keySet().iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_UO_Record UORec;
-            UORec = map1.get(CTBRef);
+            UORec = map1.get(ClaimID);
             // Rent Arrears Summary
             doSingleTimeRentArrearsCount(UORec);
 //            String CTBRef;
 //            CTBRef = UORec.getClaimReferenceNumber();
-            if (!map0.keySet().contains(CTBRef)) {
+            if (!map0.keySet().contains(ClaimID)) {
                 doRSLCompare2TimesCountsAsNecessary(
-                        CTBRef,
+                        ClaimID,
                         D_Records0,
                         D_Records1,
                         yM30v,
@@ -5062,22 +5064,22 @@ public class SummaryUO extends Summary {
             }
         }
         // Go through all those that were in the UO data, but have come out.
-        HashSet<String> claimsOutOfUO;
-        claimsOutOfUO = new HashSet<String>();
+        HashSet<DW_ID> claimsOutOfUO;
+        claimsOutOfUO = new HashSet<DW_ID>();
         claimsOutOfUO.addAll(map0.keySet());
         claimsOutOfUO.removeAll(map1.keySet());
         ite = claimsOutOfUO.iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_UO_Record UORec;
-            UORec = map0.get(CTBRef);
+            UORec = map0.get(ClaimID);
             // Rent Arrears Summary
             doSingleTimeRentArrearsCount(UORec);
 //            String CTBRef;
 //            CTBRef = UORec.getClaimReferenceNumber();
             doRSLCompare2TimesCountsAsNecessary(
-                    CTBRef,
+                    ClaimID,
                     D_Records0,
                     D_Records1,
                     yM30v,
@@ -5086,15 +5088,15 @@ public class SummaryUO extends Summary {
     }
 
     private void doRSLCompare2TimesCountsAsNecessary(
-            String CTBRef,
-            TreeMap<String, DW_SHBE_Record> D_Records0,
-            TreeMap<String, DW_SHBE_Record> D_Records1,
+            DW_ID ClaimID,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records0,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records1,
             String yM30v,
             String yM31v) {
         DW_SHBE_Record Record0;
-        Record0 = D_Records0.get(CTBRef);
+        Record0 = D_Records0.get(ClaimID);
         DW_SHBE_Record Record1;
-        Record1 = D_Records1.get(CTBRef);
+        Record1 = D_Records1.get(ClaimID);
         DW_SHBE_D_Record D_Record0;
         D_Record0 = null;
         if (Record0 != null) {
@@ -5120,22 +5122,22 @@ public class SummaryUO extends Summary {
      * @return
      */
     public int doCouncilSingleTimeLoopOverSet(
-            TreeMap<String, DW_UO_Record> map,
-            TreeMap<String, DW_SHBE_Record> D_Records,
+            TreeMap<DW_ID, DW_UO_Record> map,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records,
             String yM30v) {
         int linkedRecords;
         linkedRecords = 0;
-        Iterator<String> ite;
+        Iterator<DW_ID> ite;
         ite = map.keySet().iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_UO_Record UORec;
-            UORec = map.get(CTBRef);
+            UORec = map.get(ClaimID);
             // Rent Arrears Summary
             doSingleTimeRentArrearsCount(UORec);
             DW_SHBE_Record Record;
-            Record = D_Records.get(CTBRef);
+            Record = D_Records.get(ClaimID);
             if (Record == null) {
                 //tDRecordsCTBRefDW_SHBE_RecordNullCount++;
                 int count = 1;
@@ -5180,22 +5182,22 @@ public class SummaryUO extends Summary {
      * @return
      */
     public int doRSLSingleTimeLoopOverSet(
-            TreeMap<String, DW_UO_Record> map,
-            TreeMap<String, DW_SHBE_Record> D_Records,
+            TreeMap<DW_ID, DW_UO_Record> map,
+            TreeMap<DW_ID, DW_SHBE_Record> D_Records,
             String yM30v) {
         int linkedRecords;
         linkedRecords = 0;
-        Iterator<String> ite;
+        Iterator<DW_ID> ite;
         ite = map.keySet().iterator();
         while (ite.hasNext()) {
-            String CTBRef;
-            CTBRef = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_UO_Record UORec;
-            UORec = map.get(CTBRef);
+            UORec = map.get(ClaimID);
             // Rent Arrears Summary
             doSingleTimeRentArrearsCount(UORec);
             DW_SHBE_Record Record;
-            Record = D_Records.get(CTBRef);
+            Record = D_Records.get(ClaimID);
             if (Record == null) {
                 //tDRecordsCTBRefDW_SHBE_RecordNullCount++;
                 int count = 1;
@@ -5500,7 +5502,7 @@ public class SummaryUO extends Summary {
             String PostCodeLookupDate00 = null;
             String PostCodeLookupFile00Name = null;
             if (filename00 != null) {
-                PostCodeLookupDate00 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+                PostCodeLookupDate00 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                         tDW_SHBE_Handler.getYM3(filename00));
                 PostCodeLookupFile00Name = ONSPDFiles.get(PostCodeLookupDate00).getName();
             }
@@ -5508,7 +5510,7 @@ public class SummaryUO extends Summary {
             String PostCodeLookupDate0 = null;
             String PostCodeLookupFile0Name = null;
             if (filename0 != null) {
-                PostCodeLookupDate0 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+                PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                         tDW_SHBE_Handler.getYM3(filename0));
                 PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
             }
@@ -5516,7 +5518,7 @@ public class SummaryUO extends Summary {
             String PostCodeLookupDate1 = null;
             String PostCodeLookupFile1Name = null;
             if (filename1 != null) {
-                PostCodeLookupDate1 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+                PostCodeLookupDate1 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                         tDW_SHBE_Handler.getYM3(filename1));
                 PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
             }
@@ -5950,7 +5952,7 @@ public class SummaryUO extends Summary {
         String PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename0 != null) {
-            PostCodeLookupDate0 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+            PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                     tDW_SHBE_Handler.getYM3(filename0));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }
@@ -5958,7 +5960,7 @@ public class SummaryUO extends Summary {
         String PostCodeLookupDate1 = null;
         String PostCodeLookupFile1Name = null;
         if (filename1 != null) {
-            PostCodeLookupDate1 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+            PostCodeLookupDate1 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                     tDW_SHBE_Handler.getYM3(filename1));
             PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
         }

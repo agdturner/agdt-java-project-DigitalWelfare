@@ -35,7 +35,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Da
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_AbstractProcessor;
 
 /**
  * This class is for an instance of the environment for the Digital Welfare
@@ -55,32 +54,34 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     /**
      * For storing an instance of DW_Strings for accessing Strings.
      */
-    private DW_Strings tDW_Strings;
+    private DW_Strings DW_Strings;
 
     /**
      * For returning an instance of DW_Strings for convenience.
+     * @return 
      */
     public DW_Strings getDW_Strings() {
-        if (tDW_Strings == null) {
-            tDW_Strings = new DW_Strings();
+        if (DW_Strings == null) {
+            DW_Strings = new DW_Strings();
         }
-        return tDW_Strings;
+        return DW_Strings;
     }
 
     /**
      * For storing an instance of DW_Files for accessing filenames and Files
      * therein.
      */
-    private DW_Files tDW_Files;
+    private DW_Files DW_Files;
 
     /**
      * For returning an instance of DW_Files for convenience.
+     * @return 
      */
     public DW_Files getDW_Files() {
-        if (tDW_Files == null) {
-            tDW_Files = new DW_Files(this);
+        if (DW_Files == null) {
+            DW_Files = new DW_Files(this);
         }
-        return tDW_Files;
+        return DW_Files;
     }
 
     /**
@@ -90,6 +91,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     /**
      * For returning an instance of Grids_Environment for convenience.
+     * @return 
      */
     public Grids_Environment getGrids_Environment() {
         if (tGrids_Environment == null) {
@@ -129,7 +131,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         } else {
             File dir;
             dir = new File(
-                    tDW_Files.getSwapSHBEDir(),
+                    DW_Files.getSwapSHBEDir(),
                     paymentType);
             if (!dir.exists()) {
                 dir.mkdirs();
@@ -149,8 +151,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     private DW_UO_Handler tDW_UO_Handler;
 
     /**
-     * For returning an instance of DW_UO_Handler for
- convenience.
+     * For returning an instance of DW_UO_Handler for convenience.
+     * @return 
      */
     public DW_UO_Handler getDW_UO_Handler() {
         if (tDW_UO_Handler == null) {
@@ -166,7 +168,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     /**
      * For returning an instance of DW_UO_Handler for convenience.
-     * @param reload
      * @return 
      */
     public DW_UO_Data getDW_UO_Data() {
@@ -174,7 +175,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             tDW_UO_Handler = getDW_UO_Handler();
             File f;
             f = new File(
-                    tDW_Files.getGeneratedUnderOccupiedDir(),
+                    DW_Files.getGeneratedUnderOccupiedDir(),
                     "DW_UO_Data.thisFile");
             if (f.exists()) {
                 tDW_UO_Data = (DW_UO_Data) Generic_StaticIO.readObject(f);
@@ -203,7 +204,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     /**
      * For storing an instance of DW_Postcode_Handler for convenience.
      */
-    private DW_Postcode_Handler tDW_Postcode_Handler;
+    private DW_Postcode_Handler DW_Postcode_Handler;
 
     /**
      * For returning an instance of DW_Postcode_Handler for convenience.
@@ -211,16 +212,16 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     public DW_Postcode_Handler getDW_Postcode_Handler() {
-        if (tDW_Postcode_Handler == null) {
-            tDW_Postcode_Handler = new DW_Postcode_Handler(this);
+        if (DW_Postcode_Handler == null) {
+            DW_Postcode_Handler = new DW_Postcode_Handler(this);
         }
-        return tDW_Postcode_Handler;
+        return DW_Postcode_Handler;
     }
 
     /**
      * For storing an instance of DW_SHBE_Handler for convenience.
      */
-    private static DW_SHBE_Handler tDW_SHBE_Handler;
+    private static DW_SHBE_Handler DW_SHBE_Handler;
 
     /**
      * For returning an instance of DW_SHBE_Handler for convenience.
@@ -228,16 +229,16 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     public DW_SHBE_Handler getDW_SHBE_Handler() {
-        if (tDW_SHBE_Handler == null) {
-            tDW_SHBE_Handler = new DW_SHBE_Handler(this);
+        if (DW_SHBE_Handler == null) {
+            DW_SHBE_Handler = new DW_SHBE_Handler(this);
         }
-        return tDW_SHBE_Handler;
+        return DW_SHBE_Handler;
     }
 
     /**
      * For storing an instance of DW_SHBE_TenancyType_Handler for convenience.
      */
-    private static DW_SHBE_TenancyType_Handler tDW_SHBE_TenancyType_Handler;
+    private static DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
 
     /**
      * For returning an instance of DW_SHBE_TenancyType_Handler for convenience.
@@ -245,10 +246,10 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     public DW_SHBE_TenancyType_Handler getDW_SHBE_TenancyType_Handler() {
-        if (tDW_SHBE_TenancyType_Handler == null) {
-            tDW_SHBE_TenancyType_Handler = new DW_SHBE_TenancyType_Handler(this);
+        if (DW_SHBE_TenancyType_Handler == null) {
+            DW_SHBE_TenancyType_Handler = new DW_SHBE_TenancyType_Handler(this);
         }
-        return tDW_SHBE_TenancyType_Handler;
+        return DW_SHBE_TenancyType_Handler;
     }
 
     
@@ -259,8 +260,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     private void init_DW_Environment(String sDigitalWelfareDir) {
         this.sDigitalWelfareDir = sDigitalWelfareDir;
-        this.tDW_Files = new DW_Files(this);
-        this.tDW_Strings = new DW_Strings();
+        this.DW_Files = new DW_Files(this);
+        this.DW_Strings = new DW_Strings();
     }
 
     @Override

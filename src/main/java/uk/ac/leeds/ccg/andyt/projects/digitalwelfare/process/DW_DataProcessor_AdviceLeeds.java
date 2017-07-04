@@ -235,7 +235,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_AbstractProcessor {
                 tLookupFromPostcodeToCensusCode);
         File generatedAdviceLeedsDir;
         generatedAdviceLeedsDir = new File(
-                tDW_Files.getGeneratedAdviceLeedsDir(),
+                DW_Files.getGeneratedAdviceLeedsDir(),
                 "Combined");
         generatedAdviceLeedsDir = new File(
                 generatedAdviceLeedsDir,
@@ -432,7 +432,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_AbstractProcessor {
 
         String censusFilename = "Data_AGE_ECOACT_UNIT.csv";
         File attributeDir = new File(
-                tDW_Files.getInputCensus2011Dir("LSOA"),
+                DW_Files.getInputCensus2011Dir("LSOA"),
                 "AttributeData/Leeds");
         File censusDir = new File(
                 attributeDir,
@@ -606,7 +606,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_AbstractProcessor {
 
         File generatedAdviceLeedsDir;
         generatedAdviceLeedsDir = new File(
-                tDW_Files.getGeneratedAdviceLeedsDir(),
+                DW_Files.getGeneratedAdviceLeedsDir(),
                 ChapeltownCAB_String);
 
         // Write out some tables here to map. All this code should move. Instead 
@@ -973,7 +973,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_AbstractProcessor {
 
         File outputAdviceLeedsTablesDir;
         outputAdviceLeedsTablesDir = new File(
-                tDW_Files.getOutputAdviceLeedsTablesDir(),
+                DW_Files.getOutputAdviceLeedsTablesDir(),
                 LeedsCAB_String);
 
         // Generalise by LSOA Deprivation Class
@@ -994,7 +994,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_AbstractProcessor {
 
         File generatedAdviceLeedsDir;
         generatedAdviceLeedsDir = new File(
-                tDW_Files.getGeneratedAdviceLeedsDir(),
+                DW_Files.getGeneratedAdviceLeedsDir(),
                 LeedsCAB_String);
         generatedAdviceLeedsDir = new File(
                 generatedAdviceLeedsDir,
@@ -1890,7 +1890,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_AbstractProcessor {
             Object IDType,
             DW_Data_CAB2_Handler tCAB_DataRecord2_Handler) {
         File dir = new File(
-                tDW_Files.getGeneratedAdviceLeedsDir(),
+                DW_Files.getGeneratedAdviceLeedsDir(),
                 "LeedsCAB");
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> result;
         result = tCAB_DataRecord2_Handler.loadInputData(
@@ -1931,7 +1931,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_AbstractProcessor {
 //                tDW_Files.getGeneratedAdviceLeedsDir(),
 //                "LCC - Welfare Rights Unit");
         File dir = new File(
-                tDW_Files.getInputAdviceLeedsDir(),
+                DW_Files.getInputAdviceLeedsDir(),
                 "LCC_WRU");
         result = handler.loadInputData(
                 dir, filename, IDType);
@@ -2006,7 +2006,7 @@ public class DW_DataProcessor_AdviceLeeds extends DW_AbstractProcessor {
             DW_Data_CAB0_Handler tCAB_DataRecord0_Handler,
             Object IDType) {
         File dir = new File(
-                tDW_Files.getGeneratedAdviceLeedsDir(),
+                DW_Files.getGeneratedAdviceLeedsDir(),
                 "ChapeltownCAB");
         //TreeMap<EnquiryClientBureauOutletID, DW_Data_CAB2_Record> result;
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> result;

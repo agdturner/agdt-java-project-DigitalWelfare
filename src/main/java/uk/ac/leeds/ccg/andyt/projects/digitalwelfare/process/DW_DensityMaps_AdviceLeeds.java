@@ -43,14 +43,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_LC
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
-//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_AbstractProcessor.getLookupFromPostcodeToLevelCode;
 
 /**
  *
@@ -432,7 +429,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
         // Grid generalisation paramters
 
         if (deprivationRecords != null) {
-            TreeMap<Integer, Integer> deprivationClasses = null;
+            TreeMap<Integer, Integer> deprivationClasses;
             deprivationClasses = Deprivation_DataHandler.getDeprivationClasses(
                     deprivationRecords);
             Iterator<Integer> ite = deprivationClasses.keySet().iterator();
@@ -803,7 +800,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
         return result;
     }
 
-    public static ArrayList<String> getLCC_WRUDataPostcodes(
+    public ArrayList<String> getLCC_WRUDataPostcodes(
             Object IDType) {
         ArrayList<String> result;
         result = new ArrayList<String>();
@@ -825,7 +822,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
         return result;
     }
 
-    public static ArrayList<String> getChapeltownCABDataPostcodes(
+    public ArrayList<String> getChapeltownCABDataPostcodes(
             Object IDType) {
         ArrayList<String> result;
         result = new ArrayList<String>();

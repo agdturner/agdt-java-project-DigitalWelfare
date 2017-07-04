@@ -39,6 +39,7 @@ import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorGWS;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Collection;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_CollectionHandler;
@@ -8430,8 +8431,6 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
             dirOut1 = new File(dirOut, "LADOverlaid");
             foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
         }
-        Grids_Environment ge;
-        ge = new Grids_Environment();
         Grid2DSquareCellDoubleFactory f;
         f = new Grid2DSquareCellDoubleFactory(ge, handleOutOfMemoryErrors);
         f.set_Dimensions(dimensions);
@@ -8439,7 +8438,7 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         Grid2DSquareCellProcessorGWS p;
         p = new Grid2DSquareCellProcessorGWS(ge);
 
-        Grid2DSquareCellDouble numerator = null;
+        Grid2DSquareCellDouble numerator;
         Grid2DSquareCellDouble denominator1;
         Grid2DSquareCellDouble denominator2;
         Grid2DSquareCellDouble rate;
@@ -9415,39 +9414,24 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
         TreeMap<String, AGDT_Point> lookup;
         lookup = lookups.get("Unit").get(tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 
-        TreeMap<String, DW_SHBE_Record> records;
+        TreeMap<DW_ID, DW_SHBE_Record> records;
         records = SHBEData.getRecords();
 
         boolean nonZero = false;
 
         // Iterator over records
-        Iterator<String> recordsIte;
+        Iterator<DW_ID> recordsIte;
         recordsIte = records.keySet().iterator();
         while (recordsIte.hasNext()) {
-            String claimID = recordsIte.next();
-            DW_SHBE_D_Record DRecord = records.get(claimID).getDRecord();
+            DW_ID ClaimID;
+            ClaimID = recordsIte.next();
+            DW_SHBE_D_Record DRecord = records.get(ClaimID).getDRecord();
             String postcode = DRecord.getClaimantsPostcode();
 
             int TT = DRecord.getTenancyType();
             String sTT = Integer.toString(TT);
             if (TTs.contains(sTT)) {
-
-                String councilTaxBenefitClaimReferenceNumber;
-                councilTaxBenefitClaimReferenceNumber = DRecord.getCouncilTaxBenefitClaimReferenceNumber();
-//            Integer tenancyType1Integer = DRecord.getTenancyType();
-//            String tenancyType1 = tenancyType1Integer.toString();
-//            tenancyTypeIte = tenancyTypeGroups.keySet().iterator();
-//            while (tenancyTypeIte.hasNext()) {
-//                String tenancyType;
-//                tenancyType = tenancyTypeIte.next();
-//                ArrayList<String> tenancyTypes;
-//                tenancyTypes = tenancyTypeGroups.get(tenancyType);
-//                if (tenancyTypes.contains(tenancyType1)) {
-
-//        Iterator<String> ite;
-//        ite = tIDByPostcode0.keySet().iterator();
-//        while (ite.hasNext()) {
-                boolean doMainLoop = true;
+ boolean doMainLoop = true;
                 // Check for UnderOccupied
                 if (doUnderOccupied) {
                     // UnderOccupancy
@@ -9455,15 +9439,13 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                         doMainLoop = false;
                         DW_UO_Record underOccupied0 = null;
                         if (underOccupiedSetCouncil != null) {
-                            underOccupied0 = underOccupiedSetCouncil.getMap().get(
-                                    councilTaxBenefitClaimReferenceNumber);
+                            underOccupied0 = underOccupiedSetCouncil.getMap().get(ClaimID);
                         }
                         if (underOccupied0 != null) {
                             doMainLoop = true;
                         }
                         if (underOccupiedSetRSL != null) {
-                            underOccupied0 = underOccupiedSetRSL.getMap().get(
-                                    councilTaxBenefitClaimReferenceNumber);
+                            underOccupied0 = underOccupiedSetRSL.getMap().get(ClaimID);
                         }
                         if (underOccupied0 != null) {
                             doMainLoop = true;
@@ -9472,15 +9454,13 @@ public class DW_DensityMaps_LCC extends DW_DensityMapsAbstract {
                     if (doCouncil) {
                         DW_UO_Record underOccupied0 = null;
                         if (underOccupiedSetCouncil != null) {
-                            underOccupied0 = underOccupiedSetCouncil.getMap().get(
-                                    councilTaxBenefitClaimReferenceNumber);
+                            underOccupied0 = underOccupiedSetCouncil.getMap().get(ClaimID);
                         }
                         doMainLoop = underOccupied0 != null;
                     } else if (doRSL) {
                         DW_UO_Record underOccupied0 = null;
                         if (underOccupiedSetRSL != null) {
-                            underOccupied0 = underOccupiedSetRSL.getMap().get(
-                                    councilTaxBenefitClaimReferenceNumber);
+                            underOccupied0 = underOccupiedSetRSL.getMap().get(ClaimID);
                         }
                         doMainLoop = underOccupied0 != null;
                     }

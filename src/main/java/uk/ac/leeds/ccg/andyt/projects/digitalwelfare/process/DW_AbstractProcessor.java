@@ -37,16 +37,16 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
  */
 public abstract class DW_AbstractProcessor extends DW_Object {
 
-    protected DW_Files tDW_Files;
-    protected DW_Strings tDW_Strings;
-    protected DW_Postcode_Handler tDW_Postcode_Handler;
+    protected DW_Files DW_Files;
+    protected DW_Strings DW_Strings;
+    protected DW_Postcode_Handler DW_Postcode_Handler;
             
 
     public DW_AbstractProcessor(DW_Environment env) {
         this.env = env;
-        this.tDW_Files = env.getDW_Files();
-        this.tDW_Strings = env.getDW_Strings();
-        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
+        this.DW_Files = env.getDW_Files();
+        this.DW_Strings = env.getDW_Strings();
+        this.DW_Postcode_Handler = env.getDW_Postcode_Handler();
     }
 
     /**
@@ -444,7 +444,7 @@ public abstract class DW_AbstractProcessor extends DW_Object {
         DW_Postcode_Handler tDW_Postcode_Handler;
         tDW_Postcode_Handler = env.getDW_Postcode_Handler();
         result = tDW_Postcode_Handler.postcodeToPoints(DW_AbstractProcessor.getOutletsAndPostcodes(),
-                DW_Postcode_Handler.getDefaultYM3());
+                tDW_Postcode_Handler.getDefaultYM3());
         return result;
     }
 
@@ -520,7 +520,7 @@ public abstract class DW_AbstractProcessor extends DW_Object {
         DW_Postcode_Handler tDW_Postcode_Handler;
         tDW_Postcode_Handler = env.getDW_Postcode_Handler();
         result = tDW_Postcode_Handler.postcodeToPoints(DW_AbstractProcessor.getAdviceLeedsNamesAndPostcodes(),
-                DW_Postcode_Handler.getDefaultYM3());
+                tDW_Postcode_Handler.getDefaultYM3());
         return result;
     }
 

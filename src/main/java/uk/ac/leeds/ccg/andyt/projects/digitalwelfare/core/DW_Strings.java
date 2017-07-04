@@ -234,6 +234,11 @@ public class DW_Strings {
      */
     public final String sU = "U";
     
+    /**
+     * Short code for WithOrWithoutPostcodeChange.
+     */
+    public final String sWithOrWithoutPostcodeChange = "MPC"; // Maybe Postcode Changed 
+    
 //    /**
 //     * Short code for UnderOccupied.
 //     */

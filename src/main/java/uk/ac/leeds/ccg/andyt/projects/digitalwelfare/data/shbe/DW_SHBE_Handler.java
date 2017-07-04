@@ -45,12 +45,19 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_SHBE_Handler extends DW_Object {
 
-    protected DW_Strings tDW_Strings;
+    // For convenience
+    protected DW_Files DW_Files;
+    protected DW_Strings DW_Strings;
+
     protected HashSet<String> RecordTypes;
 
     public final String sDefaultNINO = "XX999999XX";
 
     HashMap<String, DW_ID> NINOToDW_IDLookup;
+
+    HashMap<String, DW_ID> CTBRefToClaimIDLookup;
+    HashMap<DW_ID, String> ClaimIDToCTBRefLookup;
+
     HashMap<DW_ID, String> DW_IDToNINOLookup;
     HashMap<String, DW_ID> DOBToDW_IDLookup;
     HashMap<DW_ID, String> DW_IDToDOBLookup;
@@ -61,7 +68,8 @@ public class DW_SHBE_Handler extends DW_Object {
 
     public DW_SHBE_Handler(DW_Environment env) {
         this.env = env;
-        this.tDW_Strings = env.getDW_Strings();
+        this.DW_Files = env.getDW_Files();
+        this.DW_Strings = env.getDW_Strings();
 //        NINOToDW_IDLookup = new HashMap<String, DW_ID>();
 //        DW_IDToNINOLookup = new HashMap<DW_ID, String>();
 //        DOBToDW_IDLookup = new HashMap<String, DW_ID>();
@@ -78,11 +86,21 @@ public class DW_SHBE_Handler extends DW_Object {
         tSHBEFilenames = getSHBEFilenamesAll();
         File dir;
         dir = env.getDW_Files().getInputSHBEDir();
+        // Initialise lookups
+        // CTBRef to ClaimID and ClaimID to CTBRef
+        File CTBRefToClaimIDLookupFile;
+        File ClaimIDToCTBRefLookupFile;
+        CTBRefToClaimIDLookupFile = getCTBRefToClaimIDLookupFile();
+        ClaimIDToCTBRefLookupFile = getClaimIDToCTBRefLookupFile();
+//        CTBRefToClaimIDLookup = getCTBRefToClaimIDLookup(CTBRefToClaimIDLookupFile);
+        CTBRefToClaimIDLookup = new HashMap<String, DW_ID>();
+//        ClaimIDToCTBRefLookup = getClaimIDToCTBRefLookup(ClaimIDToCTBRefLookupFile);
+        ClaimIDToCTBRefLookup = new HashMap<DW_ID, String>();
         // NINO
         File NINOToDW_IDLookupFile;
         File DW_IDToNINOLookupFile;
-        NINOToDW_IDLookupFile = getNINOToDW_IDLookupFile();
-        DW_IDToNINOLookupFile = getDW_IDToNINOLookupFile();
+        NINOToDW_IDLookupFile = getNINOToNINOIDLookupFile();
+        DW_IDToNINOLookupFile = getNINOIDToNINOLookupFile();
 //        NINOToDW_IDLookup = getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
         NINOToDW_IDLookup = new HashMap<String, DW_ID>();
 //        DW_IDToNINOLookup = getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
@@ -90,8 +108,8 @@ public class DW_SHBE_Handler extends DW_Object {
         // DOB
         File DOBToDW_IDLookupFile;
         File DW_IDToDOBLookupFile;
-        DOBToDW_IDLookupFile = getDOBToDW_IDLookupFile();
-        DW_IDToDOBLookupFile = getDW_IDToDOBLookupFile();
+        DOBToDW_IDLookupFile = getDOBToDOBIDLookupFile();
+        DW_IDToDOBLookupFile = getDOBIDToDOBLookupFile();
 //        DOBToDW_IDLookup = getDOBToDW_IDLookup(DOBToDW_IDLookupFile);
         DOBToDW_IDLookup = new HashMap<String, DW_ID>();
 //        DW_IDToDOBLookup = getDW_IDToDOBLookup(DW_IDToDOBLookupFile);
@@ -110,8 +128,8 @@ public class DW_SHBE_Handler extends DW_Object {
         // Person
         File tDW_PersonIDToDW_IDLookupFile;
         File tDW_IDToDW_PersonIDLookupFile;
-        tDW_PersonIDToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile();
-        tDW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
+        tDW_PersonIDToDW_IDLookupFile = getPersonIDToPersonIDIDLookupFile();
+        tDW_IDToDW_PersonIDLookupFile = getPersonIDIDToDW_PersonIDLookupFile();
 //        DW_PersonIDToDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(
 //                DW_PersonIDToDW_IDLookupFile);
         DW_PersonIDToDW_IDLookup = new HashMap<DW_PersonID, DW_ID>();
@@ -120,7 +138,7 @@ public class DW_SHBE_Handler extends DW_Object {
         DW_IDToDW_PersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
         // Loop
         ArrayList<String> paymentTypes;
-        paymentTypes = tDW_Strings.getPaymentTypes();
+        paymentTypes = DW_Strings.getPaymentTypes();
         Iterator<String> ite = paymentTypes.iterator();
         while (ite.hasNext()) {
             String paymentType;
@@ -131,10 +149,13 @@ public class DW_SHBE_Handler extends DW_Object {
             DW_SHBE_CollectionHandler tDW_SHBE_CollectionHandler;
             tDW_SHBE_CollectionHandler = env.getDW_SHBE_CollectionHandler(paymentType);
             for (String aSHBEFilename : tSHBEFilenames) {
-                File collectionDir = new File(
+                File collectionDir;
+                collectionDir = new File(
                         env.getDW_Files().getSwapSHBEDir(),
                         paymentType);
-                collectionDir = new File(collectionDir, aSHBEFilename);
+                collectionDir = new File(
+                        collectionDir, 
+                        aSHBEFilename);
 
                 DW_SHBE_Collection SHBEData;
                 SHBEData = new DW_SHBE_Collection(
@@ -145,6 +166,8 @@ public class DW_SHBE_Handler extends DW_Object {
                         paymentType);
             }
         }
+        Generic_StaticIO.writeObject(CTBRefToClaimIDLookup, CTBRefToClaimIDLookupFile);
+        Generic_StaticIO.writeObject(ClaimIDToCTBRefLookup, ClaimIDToCTBRefLookupFile);
         Generic_StaticIO.writeObject(NINOToDW_IDLookup, NINOToDW_IDLookupFile);
         Generic_StaticIO.writeObject(DW_IDToNINOLookup, DW_IDToNINOLookupFile);
         Generic_StaticIO.writeObject(DOBToDW_IDLookup, DOBToDW_IDLookupFile);
@@ -161,9 +184,9 @@ public class DW_SHBE_Handler extends DW_Object {
         // NINO
         File NINOToDW_IDLookupFile;
         File DW_IDToNINOLookupFile;
-        NINOToDW_IDLookupFile = getNINOToDW_IDLookupFile();
-        DW_IDToNINOLookupFile = getDW_IDToNINOLookupFile();
-        NINOToDW_IDLookup = getNINOToDW_IDLookup(NINOToDW_IDLookupFile);
+        NINOToDW_IDLookupFile = getNINOToNINOIDLookupFile();
+        DW_IDToNINOLookupFile = getNINOIDToNINOLookupFile();
+        NINOToDW_IDLookup = DW_SHBE_Handler.this.getNINOToNINOIDLookup(NINOToDW_IDLookupFile);
         DW_IDToNINOLookup = getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
         System.out.println("NINOToDW_IDLookup.size() " + NINOToDW_IDLookup.size());
 //        // Postcode
@@ -178,16 +201,20 @@ public class DW_SHBE_Handler extends DW_Object {
         // Person
         File DW_PersonIDToDW_IDLookupFile;
         File DW_IDToDW_PersonIDLookupFile;
-        DW_PersonIDToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile();
-        DW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
+        DW_PersonIDToDW_IDLookupFile = getPersonIDToPersonIDIDLookupFile();
+        DW_IDToDW_PersonIDLookupFile = getPersonIDIDToDW_PersonIDLookupFile();
         DW_PersonIDToDW_IDLookup = getDW_PersonIDToDW_IDLookup(
                 DW_PersonIDToDW_IDLookupFile);
         DW_IDToDW_PersonIDLookup = getDW_IDToDW_PersonIDLookup(
                 DW_IDToDW_PersonIDLookupFile);
         System.out.println("DW_PersonIDToDW_IDLookup.size() " + DW_PersonIDToDW_IDLookup.size());
-
     }
 
+    /**
+     * For running when new files for more recent data have been added. This 
+     * will pick up from where we last run and go from there. If adding data 
+     * from an earlier time period use run() above instead as. 
+     */
     public void runNew() {
 //        ArrayList<String> paymentTypes;
 //        paymentTypes = getPaymentTypes();
@@ -203,7 +230,7 @@ public class DW_SHBE_Handler extends DW_Object {
         // Get the location of the DRecords file for AllPT assuming here that 
         String paymentType;
         //paymentType = "Suspended";
-        paymentType = tDW_Strings.sPaymentTypeAll;
+        paymentType = DW_Strings.sPaymentTypeAll;
         ArrayList<String> newFilesToRead;
         newFilesToRead = new ArrayList<String>();
         for (String SHBEFilename : SHBEFilenames) {
@@ -217,39 +244,56 @@ public class DW_SHBE_Handler extends DW_Object {
             File dir;
             dir = env.getDW_Files().getInputSHBEDir();
             // Load existing lookups
+            // CTBRef to ClaimID and ClaimID to CTBRef
+            File CTBRefToClaimIDLookupFile;
+        File ClaimIDToCTBRefLookupFile;
+        CTBRefToClaimIDLookupFile = getCTBRefToClaimIDLookupFile();
+        ClaimIDToCTBRefLookupFile = getClaimIDToCTBRefLookupFile();
+        CTBRefToClaimIDLookup = getCTBRefToClaimIDLookup(CTBRefToClaimIDLookupFile);
+        CTBRefToClaimIDLookup = new HashMap<String, DW_ID>();
+        ClaimIDToCTBRefLookup = getClaimIDToCTBRefLookup(ClaimIDToCTBRefLookupFile);
+        ClaimIDToCTBRefLookup = new HashMap<DW_ID, String>();
             // NINO
             File NINOToDW_IDLookupFile;
             File DW_IDToNINOLookupFile;
-            NINOToDW_IDLookupFile = getNINOToDW_IDLookupFile();
-            DW_IDToNINOLookupFile = getDW_IDToNINOLookupFile();
-            NINOToDW_IDLookup = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(NINOToDW_IDLookupFile);
-            DW_IDToNINOLookup = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(DW_IDToNINOLookupFile);
+            NINOToDW_IDLookupFile = getNINOToNINOIDLookupFile();
+            DW_IDToNINOLookupFile = getNINOIDToNINOLookupFile();
+            NINOToDW_IDLookup = DW_SHBE_Handler.this.getNINOToNINOIDLookup(NINOToDW_IDLookupFile);
+//            NINOToDW_IDLookup = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(NINOToDW_IDLookupFile);
+            DW_IDToNINOLookup = getDW_IDToNINOLookup(DW_IDToNINOLookupFile);
+//            DW_IDToNINOLookup = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(DW_IDToNINOLookupFile);
             // DOB
             File DOBToDW_IDLookupFile;
             File DW_IDToDOBLookupFile;
-            DOBToDW_IDLookupFile = getDOBToDW_IDLookupFile();
-            DW_IDToDOBLookupFile = getDW_IDToDOBLookupFile();
-            DOBToDW_IDLookup = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(DOBToDW_IDLookupFile);
-            DW_IDToDOBLookup = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(DW_IDToDOBLookupFile);
+            DOBToDW_IDLookupFile = getDOBToDOBIDLookupFile();
+            DW_IDToDOBLookupFile = getDOBIDToDOBLookupFile();
+            DOBToDW_IDLookup = getDOBToDW_IDLookup(DOBToDW_IDLookupFile);
+//            DOBToDW_IDLookup = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(DOBToDW_IDLookupFile);
+            DW_IDToDOBLookup = getDW_IDToDOBLookup(DW_IDToDOBLookupFile);
+//            DW_IDToDOBLookup = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(DW_IDToDOBLookupFile);
             // Person
             File DW_PersonIDToDW_IDLookupFile;
             File DW_IDToDW_PersonIDLookupFile;
-            DW_PersonIDToDW_IDLookupFile = getDW_PersonIDToDW_IDLookupFile();
-            DW_IDToDW_PersonIDLookupFile = getDW_IDToDW_PersonIDLookupFile();
-            DW_PersonIDToDW_IDLookup = (HashMap<DW_PersonID, DW_ID>) Generic_StaticIO.readObject(DW_PersonIDToDW_IDLookupFile);
-            DW_IDToDW_PersonIDLookup = (HashMap<DW_ID, DW_PersonID>) Generic_StaticIO.readObject(DW_IDToDW_PersonIDLookupFile);
+            DW_PersonIDToDW_IDLookupFile = getPersonIDToPersonIDIDLookupFile();
+            DW_IDToDW_PersonIDLookupFile = getPersonIDIDToDW_PersonIDLookupFile();
+            DW_PersonIDToDW_IDLookup = getDW_PersonIDToDW_IDLookup(DW_PersonIDToDW_IDLookupFile);
+//            DW_PersonIDToDW_IDLookup = (HashMap<DW_PersonID, DW_ID>) Generic_StaticIO.readObject(DW_PersonIDToDW_IDLookupFile);
+            DW_IDToDW_PersonIDLookup = getDW_IDToDW_PersonIDLookup(DW_IDToDW_PersonIDLookupFile);
+//            DW_IDToDW_PersonIDLookup = (HashMap<DW_ID, DW_PersonID>) Generic_StaticIO.readObject(DW_IDToDW_PersonIDLookupFile);
             // Postcode
             File PostcodeToPostcodeIDLookupFile;
             File PostcodeIDToPostcodeLookupFile;
             PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
             PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
-            PostcodeToPostcodeIDLookup = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(PostcodeToPostcodeIDLookupFile);
-            PostcodeIDToPostcodeLookup = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(PostcodeIDToPostcodeLookupFile);
+            PostcodeToPostcodeIDLookup = getPostcodeToPostcodeIDLookup(PostcodeToPostcodeIDLookupFile);
+//            PostcodeToPostcodeIDLookup = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(PostcodeToPostcodeIDLookupFile);
+            PostcodeIDToPostcodeLookup = getPostcodeIDToPostcodeLookup(PostcodeIDToPostcodeLookupFile);
+//            PostcodeIDToPostcodeLookup = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(PostcodeIDToPostcodeLookupFile);
             DW_Files tDW_Files;
             tDW_Files = env.getDW_Files();
             // Loop
             ArrayList<String> paymentTypes;
-            paymentTypes = tDW_Strings.getPaymentTypes();
+            paymentTypes = DW_Strings.getPaymentTypes();
             Iterator<String> itePT = paymentTypes.iterator();
             while (itePT.hasNext()) {
                 paymentType = itePT.next();
@@ -274,7 +318,9 @@ public class DW_SHBE_Handler extends DW_Object {
                             SHBEFilename, paymentType);
                 }
             }
-            Generic_StaticIO.writeObject(NINOToDW_IDLookup, NINOToDW_IDLookupFile);
+            Generic_StaticIO.writeObject(CTBRefToClaimIDLookup, CTBRefToClaimIDLookupFile);
+        Generic_StaticIO.writeObject(ClaimIDToCTBRefLookup, ClaimIDToCTBRefLookupFile);
+        Generic_StaticIO.writeObject(NINOToDW_IDLookup, NINOToDW_IDLookupFile);
             Generic_StaticIO.writeObject(DW_IDToNINOLookup, DW_IDToNINOLookupFile);
             Generic_StaticIO.writeObject(DOBToDW_IDLookup, DOBToDW_IDLookupFile);
             Generic_StaticIO.writeObject(DW_IDToDOBLookup, DW_IDToDOBLookupFile);
@@ -311,18 +357,18 @@ public class DW_SHBE_Handler extends DW_Object {
 //    }
     public String getClaimantType(DW_SHBE_D_Record D_Record) {
         if (isHBClaim(D_Record)) {
-            return tDW_Strings.sHB;
+            return DW_Strings.sHB;
         }
         //if (isCTBOnlyClaim(D_Record)) {
-        return tDW_Strings.sCTB;
+        return DW_Strings.sCTB;
         //}
     }
 
     public ArrayList<String> getClaimantTypes() {
         ArrayList<String> result;
         result = new ArrayList<String>();
-        result.add(tDW_Strings.sHB);
-        result.add(tDW_Strings.sCTB);
+        result.add(DW_Strings.sHB);
+        result.add(DW_Strings.sCTB);
         return result;
     }
 
@@ -330,11 +376,11 @@ public class DW_SHBE_Handler extends DW_Object {
     public String getClaimantType(String HBClaimRefNo) {
         String result;
         if (HBClaimRefNo == null) {
-            result = tDW_Strings.sCTB;
+            result = DW_Strings.sCTB;
         } else if (HBClaimRefNo.isEmpty()) {
-            result = tDW_Strings.sCTB;
+            result = DW_Strings.sCTB;
         } else {
-            result = tDW_Strings.sHB;
+            result = DW_Strings.sHB;
         }
         return result;
     }
@@ -630,7 +676,7 @@ public class DW_SHBE_Handler extends DW_Object {
             }
         }
         result = new HashMap<String, BigDecimal>();
-        TreeMap<String, DW_SHBE_Record> recs;
+        TreeMap<DW_ID, DW_SHBE_Record> recs;
         recs = SHBE_Collection.getRecords();
         int nTT = getNumberOfTenancyTypes();
         BigDecimal tBD;
@@ -714,15 +760,17 @@ public class DW_SHBE_Handler extends DW_Object {
             CTBTotalCount_ByTTWeeklyEligibleRentAmountNonZero[i] = 0;
             CTBTotalCount_ByTTWeeklyEligibleRentAmountZero[i] = 0;
         }
-        Iterator<String> ite;
+        Iterator<DW_ID> ite;
         if (doUnderOccupancy) {
             if (underOccupiedReportSetCouncil != null) {
-                TreeMap<String, DW_UO_Record> map;
+                TreeMap<DW_ID, DW_UO_Record> map;
                 map = underOccupiedReportSetCouncil.getMap();
                 ite = map.keySet().iterator();
                 while (ite.hasNext()) {
-                    String CTBRef;
+                    DW_ID CTBRef;
                     CTBRef = ite.next();
+//                    String CTBRef;
+//                    CTBRef = ite.next();
                     DW_SHBE_Record rec;
                     rec = recs.get(CTBRef);
                     if (rec != null) {
@@ -798,14 +846,14 @@ public class DW_SHBE_Handler extends DW_Object {
                 }
             }
             if (underOccupiedReportSetRSL != null) {
-                TreeMap<String, DW_UO_Record> map;
+                TreeMap<DW_ID, DW_UO_Record> map;
                 map = underOccupiedReportSetRSL.getMap();
                 ite = map.keySet().iterator();
                 while (ite.hasNext()) {
-                    String CTBRef;
-                    CTBRef = ite.next();
+                    DW_ID ClaimRef;
+                    ClaimRef = ite.next();
                     DW_SHBE_Record rec;
-                    rec = recs.get(CTBRef);
+                    rec = recs.get(ClaimRef);
                     if (rec != null) {
                         DW_SHBE_D_Record aDRecord;
                         aDRecord = rec.getDRecord();
@@ -881,10 +929,10 @@ public class DW_SHBE_Handler extends DW_Object {
         } else {
             ite = recs.keySet().iterator();
             while (ite.hasNext()) {
-                String CTBRef;
-                CTBRef = ite.next();
+                DW_ID ClaimID;
+                ClaimID = ite.next();
                 DW_SHBE_Record rec;
-                rec = recs.get(CTBRef);
+                rec = recs.get(ClaimID);
                 DW_SHBE_D_Record aDRecord;
                 aDRecord = rec.getDRecord();
                 int TT;
@@ -2191,11 +2239,16 @@ public class DW_SHBE_Handler extends DW_Object {
 
         int startMonth = 0;
         int startYear = 0;
-        int yearInt0 = 0;
-        int month0Int = 0;
-        String month0 = "";
-        String m30 = "";
-        String yM30 = "";
+        int yearInt0;
+        int month0Int;
+        String month0;
+        String m30;
+        String yM30;
+//        yearInt0 = 0;
+//        month0Int = 0;
+//        month0 = "";
+//        m30 = "";
+        yM30 = "";
 
         boolean first = true;
         Iterator<Integer> ite;
@@ -2242,10 +2295,10 @@ public class DW_SHBE_Handler extends DW_Object {
                         timeSinceStart);
 
                 //System.out.println(fileLabel);
-                yearInt0 = yearInt;
-                month0 = month;
-                m30 = m3;
-                month0Int = monthInt;
+//                yearInt0 = yearInt;
+//                month0 = month;
+//                m30 = m3;
+//                month0Int = monthInt;
                 yM30 = yM31;
             }
         }
@@ -2452,7 +2505,31 @@ public class DW_SHBE_Handler extends DW_Object {
         return result;
     }
 
-    public HashMap<String, DW_ID> getNINOToDW_IDLookup(
+    public HashMap<String, DW_ID> getCTBRefToClaimIDLookup(
+            File f) {
+        if (CTBRefToClaimIDLookup == null) {
+            CTBRefToClaimIDLookup = getStringToDW_IDLookup(f);
+        }
+        return CTBRefToClaimIDLookup;
+    }
+
+    public HashMap<DW_ID, String> getClaimIDToCTBRefLookup() {
+        return getClaimIDToCTBRefLookup(getClaimIDToCTBRefLookupFile());
+    }
+    
+    public HashMap<DW_ID, String> getClaimIDToCTBRefLookup(
+            File f) {
+        if (ClaimIDToCTBRefLookup == null) {
+            ClaimIDToCTBRefLookup = getDW_IDToStringLookup(f);
+        }
+        return ClaimIDToCTBRefLookup;
+    }
+    
+    public HashMap<String, DW_ID> getCTBRefToClaimIDLookup() {
+        return getCTBRefToClaimIDLookup(getCTBRefToClaimIDLookupFile());
+    }
+
+    public HashMap<String, DW_ID> getNINOToNINOIDLookup(
             File f) {
         if (NINOToDW_IDLookup == null) {
             NINOToDW_IDLookup = getStringToDW_IDLookup(f);
@@ -2460,8 +2537,8 @@ public class DW_SHBE_Handler extends DW_Object {
         return NINOToDW_IDLookup;
     }
 
-    public HashMap<String, DW_ID> getNINOToDW_IDLookup() {
-        return getNINOToDW_IDLookup(getNINOToDW_IDLookupFile());
+    public HashMap<String, DW_ID> getNINOToNINOIDLookup() {
+        return DW_SHBE_Handler.this.getNINOToNINOIDLookup(getNINOToNINOIDLookupFile());
     }
 
     public HashMap<String, DW_ID> getDOBToDW_IDLookup(
@@ -2472,8 +2549,8 @@ public class DW_SHBE_Handler extends DW_Object {
         return DOBToDW_IDLookup;
     }
 
-    public HashMap<String, DW_ID> getDOBToDW_IDLookup() {
-        return getDOBToDW_IDLookup(getDOBToDW_IDLookupFile());
+    public HashMap<String, DW_ID> getDOBToDOBIDLookup() {
+        return getDOBToDW_IDLookup(getDOBToDOBIDLookupFile());
     }
 
     public HashMap<DW_ID, String> getDW_IDToNINOLookup(
@@ -2484,8 +2561,8 @@ public class DW_SHBE_Handler extends DW_Object {
         return DW_IDToNINOLookup;
     }
 
-    public HashMap<DW_ID, String> getDW_IDToNINOLookup() {
-        return getDW_IDToNINOLookup(getDW_IDToNINOLookupFile());
+    public HashMap<DW_ID, String> getNINOIDToNINOLookup() {
+        return getDW_IDToNINOLookup(getNINOIDToNINOLookupFile());
     }
 
     public HashMap<DW_ID, String> getDW_IDToDOBLookup(
@@ -2496,8 +2573,8 @@ public class DW_SHBE_Handler extends DW_Object {
         return DW_IDToDOBLookup;
     }
 
-    public HashMap<DW_ID, String> getDW_IDToDOBLookup() {
-        return getDW_IDToDOBLookup(getDW_IDToDOBLookupFile());
+    public HashMap<DW_ID, String> getDOBIDToDOBLookup() {
+        return getDW_IDToDOBLookup(getDOBIDToDOBLookupFile());
     }
 
     public HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup(
@@ -2539,7 +2616,7 @@ public class DW_SHBE_Handler extends DW_Object {
     }
 
     public HashMap<DW_PersonID, DW_ID> getDW_PersonIDToDW_IDLookup() {
-        return getDW_PersonIDToDW_IDLookup(getDW_PersonIDToDW_IDLookupFile());
+        return getDW_PersonIDToDW_IDLookup(getPersonIDToPersonIDIDLookupFile());
     }
 
     public HashMap<DW_ID, DW_PersonID> getDW_IDToDW_PersonIDLookup(
@@ -2555,12 +2632,12 @@ public class DW_SHBE_Handler extends DW_Object {
     }
 
     public HashMap<DW_ID, DW_PersonID> getDW_IDToDW_PersonIDLookup() {
-        return getDW_IDToDW_PersonIDLookup(getDW_IDToDW_PersonIDLookupFile());
+        return getDW_IDToDW_PersonIDLookup(getPersonIDIDToDW_PersonIDLookupFile());
     }
 
     public File getPostcodeToPostcodeIDLookupFile() {
         File result;
-        String filename = "PostcodeToPostcodeID_HashMap_String__DW_ID.thisFile";
+        String filename = "PostcodeToPostcodeID_HashMap_String__DW_ID" + DW_Files.getsDotdat();
         result = new File(
                 env.getDW_Files().getGeneratedSHBEDir(),
                 filename);
@@ -2569,52 +2646,70 @@ public class DW_SHBE_Handler extends DW_Object {
 
     public File getPostcodeIDToPostcodeLookupFile() {
         File result;
-        String filename = "PostcodeIDToPostcode_HashMap_DW_ID__String.thisFile";
+        String filename = "PostcodeIDToPostcode_HashMap_DW_ID__String" + DW_Files.getsDotdat();
         result = new File(
                 env.getDW_Files().getGeneratedSHBEDir(),
                 filename);
         return result;
     }
 
-    public File getNINOToDW_IDLookupFile() {
+    public File getCTBRefToClaimIDLookupFile() {
         File result;
-        String filename = "NINOToID_HashMap_String__DW_ID.thisFile";
+        String filename = "CTBRefToClaimID_HashMap_String__DW_ID" + DW_Files.getsDotdat();
+        result = new File(
+                env.getDW_Files().getGeneratedLCCDir(),
+                filename);
+        return result;
+    }
+
+    public File getClaimIDToCTBRefLookupFile() {
+        File result;
+        String filename = "ClaimIDToCTBRef_HashMap_String__DW_ID" + DW_Files.getsDotdat();
+        result = new File(
+                env.getDW_Files().getGeneratedLCCDir(),
+                filename);
+        return result;
+    }
+
+    public File getNINOToNINOIDLookupFile() {
+        File result;
+        String filename = "NINOToNINOID_HashMap_String__DW_ID" + DW_Files.getsDotdat();
         result = new File(
                 env.getDW_Files().getGeneratedSHBEDir(),
                 filename);
         return result;
     }
 
-    public File getDOBToDW_IDLookupFile() {
+    public File getDOBToDOBIDLookupFile() {
         File result;
-        String filename = "DOBToID_HashMap_String__DW_ID.thisFile";
+        String filename = "DOBToDOBID_HashMap_String__DW_ID" + DW_Files.getsDotdat();
         result = new File(
                 env.getDW_Files().getGeneratedSHBEDir(),
                 filename);
         return result;
     }
 
-    public File getDW_IDToNINOLookupFile() {
+    public File getNINOIDToNINOLookupFile() {
         File result;
-        String filename = "IDToNINO_HashMap_DW_ID__String.thisFile";
+        String filename = "NINOIDToNINO_HashMap_DW_ID__String" + DW_Files.getsDotdat();
         result = new File(
                 env.getDW_Files().getGeneratedSHBEDir(),
                 filename);
         return result;
     }
 
-    public File getDW_IDToDOBLookupFile() {
+    public File getDOBIDToDOBLookupFile() {
         File result;
-        String filename = "IDToDOB_HashMap_DW_ID__String.thisFile";
+        String filename = "DOBIDToDOB_HashMap_DW_ID__String" + DW_Files.getsDotdat();
         result = new File(
                 env.getDW_Files().getGeneratedSHBEDir(),
                 filename);
         return result;
     }
 
-    public File getDW_PersonIDToDW_IDLookupFile() {
+    public File getPersonIDToPersonIDIDLookupFile() {
         File result;
-        String filename = "PersonIDToID_HashMap_DW_PersonID__DW_ID.thisFile";
+        String filename = "PersonIDToPersonIDID_HashMap_DW_PersonID__DW_ID" + DW_Files.getsDotdat();
         result = new File(
                 env.getDW_Files().getGeneratedSHBEDir(),
                 filename);
@@ -2625,40 +2720,15 @@ public class DW_SHBE_Handler extends DW_Object {
      *
      * @return
      */
-    public File getDW_IDToDW_PersonIDLookupFile() {
+    public File getPersonIDIDToDW_PersonIDLookupFile() {
         File result;
-        String filename = "IDToPersonID_HashMap_DW_ID__DW_PersonID.thisFile";
+        String filename = "PersonIDIDToPersonID_HashMap_DW_ID__DW_PersonID" + DW_Files.getsDotdat();
         result = new File(
                 env.getDW_Files().getGeneratedSHBEDir(),
                 filename);
         return result;
     }
 
-//    /**
-//     * 
-//     * @param paymentType
-//     * @return 
-//     */
-//    public File getDW_PersonIDToDW_IDLookupFile(String paymentType) {
-//        File result;
-//        String filename = "DW_PersonIDToDW_ID_HashMap_DW_PersonID__DW_ID.thisFile";
-//        result = new File(
-//                DW_Files.getGeneratedSHBEDir(paymentType),
-//                filename);
-//        return result;
-//    }
-//    /**
-//     * @param paymentType
-//     * @return 
-//     */
-//    public File getDW_IDToDW_PersonIDLookupFile(String paymentType) {
-//        File result;
-//        String filename = "DW_IDToDW_PersonID_HashMap_DW_ID__DW_PersonID.thisFile";
-//        result = new File(
-//                DW_Files.getGeneratedSHBEDir(paymentType),
-//                filename);
-//        return result;
-//    }
     /**
      * @param paymentType
      * @param filename
@@ -2668,7 +2738,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "DRecords_TreeMap_String__DW_SHBE_Record.thisFile";
+        String partFilename = "DRecords_TreeMap_String__DW_SHBE_Record" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2682,7 +2752,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "SRecordsWithoutDRecords_TreeMap_String__DW_SHBE_S_Record.thisFile";
+        String partFilename = "SRecordsWithoutDRecords_TreeMap_String__DW_SHBE_S_Record" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2692,11 +2762,11 @@ public class DW_SHBE_Handler extends DW_Object {
      * @param filename
      * @return
      */
-    public File getSRecordIDToCTBRefFile(
+    public File getSRecordIDToClaimIDFile(
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "SRecordIDToCTBRef_HashMap_DW_ID__String.thisFile";
+        String partFilename = "SRecordIDToClaimID_HashMap_DW_ID__DW_ID" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2710,7 +2780,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDs_HashSet_DW_PersonID.thisFile";
+        String partFilename = "ClaimantIDs_HashSet_DW_PersonID" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2724,7 +2794,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "PartnerIDs_HashSet_DW_PersonID.thisFile";
+        String partFilename = "PartnerIDs_HashSet_DW_PersonID" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2738,7 +2808,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "DependentIDs_HashSet_DW_PersonID.thisFile";
+        String partFilename = "DependentIDs_HashSet_DW_PersonID" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2752,7 +2822,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "NonDependentIDs_HashSet_DW_PersonID.thisFile";
+        String partFilename = "NonDependentIDs_HashSet_DW_PersonID" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2766,7 +2836,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "AllHouseholdIDs_HashSet_DW_PersonID.thisFile";
+        String partFilename = "AllHouseholdIDs_HashSet_DW_PersonID" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2780,7 +2850,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "PairedClaimantIDs_HashSet_DW_PersonID.thisFile";
+        String partFilename = "PairedClaimantIDs_HashSet_DW_PersonID" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2794,7 +2864,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDToRecordIDLookup_HashMap_DW_ID__Long.thisFile";
+        String partFilename = "ClaimantIDToRecordIDLookup_HashMap_DW_ID__Long" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2808,7 +2878,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDToPostcodeLookup_HashMap_DW_ID__String.thisFile";
+        String partFilename = "ClaimantIDToPostcodeLookup_HashMap_DW_ID__String" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2822,7 +2892,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDToTenancyTypeLookup_HashMap_DW_ID__Integer.thisFile";
+        String partFilename = "ClaimantIDToTenancyTypeLookup_HashMap_DW_ID__Integer" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2836,8 +2906,20 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "CTBRefToClaimantIDLookup_HashMap_String__DW_ID.thisFile";
+        String partFilename = "CTBRefToClaimantIDLookup_HashMap_String__DW_ID" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
+        return result;
+    }
+
+    /**
+     * @param filename
+     * @return
+     */
+    public File getCTBRefToClaimantIDLookupFile(
+            String filename) {
+        File result;
+        String partFilename = "CTBRefToClaimantIDLookup_HashMap_String__DW_ID" + DW_Files.getsDotdat();
+        result = getFile(DW_Strings.sA, filename, partFilename);
         return result;
     }
 
@@ -2850,9 +2932,24 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDToCTBRefLookup_HashMap_DW_ID__String.thisFile";
+        String partFilename = "ClaimantIDToCTBRefLookup_HashMap_DW_ID__String" + DW_Files.getsDotdat();
         result = getFile(
                 paymentType,
+                filename,
+                partFilename);
+        return result;
+    }
+
+    /**
+     * @param filename
+     * @return
+     */
+    public File getClaimantIDToCTBRefLookupFile(
+            String filename) {
+        File result;
+        String partFilename = "ClaimantIDToCTBRefLookup_HashMap_DW_ID__String" + DW_Files.getsDotdat();
+        result = getFile(
+                DW_Strings.sA,
                 filename,
                 partFilename);
         return result;
@@ -2867,7 +2964,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "LoadSummary_HashMap_String__Integer.thisFile";
+        String partFilename = "LoadSummary_HashMap_String__Integer" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2881,7 +2978,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDPostcode_HashSet_ID_Postcode.thisFile";
+        String partFilename = "ClaimantIDPostcode_HashSet_ID_Postcode" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2895,7 +2992,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDTenancyType_HashSet_ID_TenancyType.thisFile";
+        String partFilename = "ClaimantIDTenancyType_HashSet_ID_TenancyType" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2909,7 +3006,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "ClaimantIDTenancyTypePostcodeID_HashSet_ID_TenancyType_PostcodeID.thisFile";
+        String partFilename = "ClaimantIDTenancyTypePostcodeID_HashSet_ID_TenancyType_PostcodeID" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2923,7 +3020,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String paymentType,
             String filename) {
         File result;
-        String partFilename = "RecordIDsNotLoaded_TreeSet_Long.thisFile";
+        String partFilename = "RecordIDsNotLoaded_TreeSet_Long" + DW_Files.getsDotdat();
         result = getFile(paymentType, filename, partFilename);
         return result;
     }
@@ -2948,15 +3045,15 @@ public class DW_SHBE_Handler extends DW_Object {
         if (doUnderOccupancy) {
             if (doCouncil) {
                 if (doRSL) {
-                    partFilename = "IncomeAndRentSummaryUOAll_HashMap_String__BigDecimal.thisFile";
+                    partFilename = "IncomeAndRentSummaryUOAll_HashMap_String__BigDecimal" + DW_Files.getsDotdat();
                 } else {
-                    partFilename = "IncomeAndRentSummaryUOCouncil_HashMap_String__BigDecimal.thisFile";
+                    partFilename = "IncomeAndRentSummaryUOCouncil_HashMap_String__BigDecimal" + DW_Files.getsDotdat();
                 }
             } else {
-                partFilename = "IncomeAndRentSummaryUORSL_HashMap_String__BigDecimal.thisFile";
+                partFilename = "IncomeAndRentSummaryUORSL_HashMap_String__BigDecimal" + DW_Files.getsDotdat();
             }
         } else {
-            partFilename = "IncomeAndRentSummary_HashMap_String__BigDecimal.thisFile";
+            partFilename = "IncomeAndRentSummary_HashMap_String__BigDecimal" + DW_Files.getsDotdat();
         }
         result = getFile(paymentType, filename, partFilename);
         return result;
@@ -3043,10 +3140,10 @@ public class DW_SHBE_Handler extends DW_Object {
         tSHBEFilenames = getSHBEFilenamesAll();
         String omitKey;
         ArrayList<Integer> omitAll;
-        omitKey = tDW_Strings.sIncludeAll;
+        omitKey = DW_Strings.sIncludeAll;
         omitAll = new ArrayList<Integer>();
         result.put(omitKey, omitAll);
-        omitKey = tDW_Strings.sIncludeYearly;
+        omitKey = DW_Strings.sIncludeYearly;
         ArrayList<Integer> omitYearly;
         omitYearly = new ArrayList<Integer>();
         omitYearly.add(1);
@@ -3069,7 +3166,7 @@ public class DW_SHBE_Handler extends DW_Object {
             }
         }
         result.put(omitKey, omitYearly);
-        omitKey = tDW_Strings.sInclude6Monthly;
+        omitKey = DW_Strings.sInclude6Monthly;
         ArrayList<Integer> omit6Monthly;
         omit6Monthly = new ArrayList<Integer>();
         omit6Monthly.add(6);
@@ -3086,7 +3183,7 @@ public class DW_SHBE_Handler extends DW_Object {
             }
         }
         result.put(omitKey, omit6Monthly);
-        omitKey = tDW_Strings.sInclude3Monthly;
+        omitKey = DW_Strings.sInclude3Monthly;
         ArrayList<Integer> omit3Monthly;
         omit3Monthly = new ArrayList<Integer>();
         for (int i = 0; i < 7; i++) {
@@ -3101,14 +3198,14 @@ public class DW_SHBE_Handler extends DW_Object {
             }
         }
         result.put(omitKey, omit3Monthly);
-        omitKey = tDW_Strings.sIncludeMonthly;
+        omitKey = DW_Strings.sIncludeMonthly;
         ArrayList<Integer> omitMonthly;
         omitMonthly = new ArrayList<Integer>();
         for (int i = 0; i < 14; i++) {
             omitMonthly.add(i);
         }
         result.put(omitKey, omitMonthly);
-        omitKey = tDW_Strings.sIncludeMonthlySinceApril2013;
+        omitKey = DW_Strings.sIncludeMonthlySinceApril2013;
         ArrayList<Integer> omitMonthlyUO;
         omitMonthlyUO = new ArrayList<Integer>();
         for (int i = 0; i < 17; i++) {
@@ -3121,9 +3218,9 @@ public class DW_SHBE_Handler extends DW_Object {
     public DW_PersonID getClaimantDW_PersonID(DW_SHBE_D_Record D_Record) {
         DW_PersonID result;
         DW_ID NINO_ID;
-        NINO_ID = getNINOToDW_IDLookup().get(D_Record.getClaimantsNationalInsuranceNumber());
+        NINO_ID = getNINOToNINOIDLookup().get(D_Record.getClaimantsNationalInsuranceNumber());
         DW_ID DOB_ID;
-        DOB_ID = getDOBToDW_IDLookup().get(D_Record.getClaimantsDateOfBirth());
+        DOB_ID = getDOBToDOBIDLookup().get(D_Record.getClaimantsDateOfBirth());
         result = new DW_PersonID(NINO_ID, DOB_ID);
         return result;
     }
@@ -3162,14 +3259,17 @@ public class DW_SHBE_Handler extends DW_Object {
             DW_SHBE_D_Record D_Record) {
         String result;
         String[] syM3;
-        syM3 = yM3.split(tDW_Strings.sUnderscore);
+        syM3 = yM3.split(DW_Strings.sUnderscore);
         result = getClaimantsAge(syM3[0], syM3[1], D_Record);
         return result;
     }
 
     /**
      *
+     * @param year
+     * @param month
      * @param D_Record
+     * @return 
      */
     public String getClaimantsAge(
             String year,
@@ -3183,7 +3283,10 @@ public class DW_SHBE_Handler extends DW_Object {
 
     /**
      *
+     * @param year
+     * @param month
      * @param D_Record
+     * @return 
      */
     public String getPartnersAge(
             String year,
@@ -3214,7 +3317,7 @@ public class DW_SHBE_Handler extends DW_Object {
                 Integer.valueOf(sDoB[2]));
         Generic_Time tNow;
         tNow = new Generic_Time(
-                Integer.valueOf(0),
+                0,//Integer.valueOf(0),
                 Integer.valueOf(month),
                 Integer.valueOf(year));
         result = Integer.toString(Generic_Time.getAgeInYears(tNow, tDoB));
@@ -3234,14 +3337,10 @@ public class DW_SHBE_Handler extends DW_Object {
         int DisabledChildPremiumAwarded = D_Record.getDisabledChildPremiumAwarded();
         int EnhancedDisabilityPremiumAwarded = D_Record.getEnhancedDisabilityPremiumAwarded();
         // General Household Disability Flag
-        if (DisabilityPremiumAwarded == 1
+        return DisabilityPremiumAwarded == 1
                 || SevereDisabilityPremiumAwarded == 1
                 || DisabledChildPremiumAwarded == 1
-                || EnhancedDisabilityPremiumAwarded == 1) {
-            return true;
-        } else {
-            return false;
-        }
+                || EnhancedDisabilityPremiumAwarded == 1;
     }
 
     public int getEthnicityGroup(DW_SHBE_D_Record D_Record) {

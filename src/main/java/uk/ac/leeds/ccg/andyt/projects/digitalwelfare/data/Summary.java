@@ -58,7 +58,8 @@ public class Summary extends DW_Object {
     public DW_SHBE_CollectionHandler collectionHandler;
     protected DW_SHBE_Handler tDW_SHBE_Handler;
     protected DW_Strings tDW_Strings;
-    protected DW_Postcode_Handler tDW_Postcode_Handler;
+    protected DW_Postcode_Handler DW_Postcode_Handler;
+    protected Generic_UKPostcode_Handler Generic_UKPostcode_Handler;
     protected DW_SHBE_TenancyType_Handler tDW_SHBE_TenancyType_Handler;
     
     
@@ -782,7 +783,8 @@ public class Summary extends DW_Object {
         this.collectionHandler = null;
         this.tDW_SHBE_Handler = env.getDW_SHBE_Handler();
         this.tDW_Strings = env.getDW_Strings();
-        this.tDW_Postcode_Handler = env.getDW_Postcode_Handler();
+        this.DW_Postcode_Handler = env.getDW_Postcode_Handler();
+        this.Generic_UKPostcode_Handler = DW_Postcode_Handler.getGeneric_UKPostcode_Handler();
         this.tDW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
     }
 
@@ -3407,7 +3409,8 @@ public class Summary extends DW_Object {
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardByTT[i]));
+//            t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardByTT[i]));
+//            t = TotalCount_SevereDisabilityPremiumAwardByTT[i];
             if (d > 0) {
                 percentage = (TotalCount_SevereDisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
@@ -3417,7 +3420,8 @@ public class Summary extends DW_Object {
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardByTT[i]));
+//            t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardByTT[i]));
+//            t = TotalCount_DisabledChildPremiumAwardByTT[i];
             if (d > 0) {
                 percentage = (TotalCount_DisabledChildPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
@@ -3427,7 +3431,8 @@ public class Summary extends DW_Object {
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+//            t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+//            t = TotalCount_EnhancedDisabilityPremiumAwardByTT[i];
             if (d > 0) {
                 percentage = (TotalCount_EnhancedDisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
@@ -3459,7 +3464,8 @@ public class Summary extends DW_Object {
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardByTT[i]));
+//            t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardByTT[i]));
+//            t = TotalCount_SevereDisabilityPremiumAwardByTT[i];
             if (d > 0) {
                 percentage = (TotalCount_SevereDisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
@@ -3469,7 +3475,8 @@ public class Summary extends DW_Object {
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardByTT[i]));
+//            t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardByTT[i]));
+//            t = TotalCount_DisabledChildPremiumAwardByTT[i];
             if (d > 0) {
                 percentage = (TotalCount_DisabledChildPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
@@ -3479,7 +3486,8 @@ public class Summary extends DW_Object {
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
             }
-            t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+//            t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardByTT[i]));
+//            t = TotalCount_EnhancedDisabilityPremiumAwardByTT[i];
             if (d > 0) {
                 percentage = (TotalCount_EnhancedDisabilityPremiumAwardByTT[i] * 100.0d) / d;
                 summary.put(
@@ -4957,6 +4965,7 @@ public class Summary extends DW_Object {
     /**
      *
      * @param tEG The Ethnic Group
+     * @param tTT
      * @param tP The Postcode
      * @param yM3v They yM3 for postcode lookup validity
      */
@@ -4965,16 +4974,14 @@ public class Summary extends DW_Object {
             int tTT,
             String tP,
             String yM3v) {
-        DW_Postcode_Handler tDW_Postcode_Handler;
-        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
         HBCount1++;
         HBEthnicGroupCount[tEG]++;
         AllTotalCount_EthnicGroupClaimantByTT[tEG][tTT]++;
         if (tP != null) {
             boolean isValidPostcodeFormat;
-            isValidPostcodeFormat = Generic_UKPostcode_Handler.isValidPostcodeForm(tP);
+            isValidPostcodeFormat = DW_Postcode_Handler.getGeneric_UKPostcode_Handler().isValidPostcodeForm(tP);
             boolean isValidPostcode;
-            isValidPostcode = tDW_Postcode_Handler.isValidPostcode(yM3v, tP);
+            isValidPostcode = DW_Postcode_Handler.isValidPostcode(yM3v, tP);
             if (isValidPostcodeFormat) {
                 HBTotalCount_PostcodeValidFormat++;
             }
@@ -5147,7 +5154,7 @@ public class Summary extends DW_Object {
         // These could be returned to save time recreating them for other includes.
         // This would involve feeding them in to the method too per se.
         String yM30v;
-        yM30v = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
         String key;
         key = tDW_SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
         HashMap<String, String> summary;
@@ -5162,7 +5169,7 @@ public class Summary extends DW_Object {
         tClaimantIDTTs = new TreeMap<String, HashSet<ID_TenancyType>>();
         TreeMap<String, HashSet<ID_TenancyType_PostcodeID>> tClaimantIDPostcodeTTs;
         tClaimantIDPostcodeTTs = new TreeMap<String, HashSet<ID_TenancyType_PostcodeID>>();
-        TreeMap<String, DW_SHBE_Record> tDRecords0;
+        TreeMap<DW_ID, DW_SHBE_Record> tDRecords0;
         tDRecords0 = tSHBEData0.getRecords();
         HashSet<DW_PersonID> tClaimantIDs0;
         tClaimantIDs0 = tSHBEData0.getClaimantIDs();
@@ -5228,13 +5235,13 @@ public class Summary extends DW_Object {
             String yM31;
             yM31 = tDW_SHBE_Handler.getYM3(filename1);
             String yM31v;
-            yM31v = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+            yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
             // Load next data
             System.out.println("Load " + filename1);
             DW_SHBE_Collection tSHBEData1;
             tSHBEData1 = new DW_SHBE_Collection(env,
                     filename1, paymentType);
-            TreeMap<String, DW_SHBE_Record> tDRecords1;
+            TreeMap<DW_ID, DW_SHBE_Record> tDRecords1;
             tDRecords1 = tSHBEData1.getRecords();
             HashSet<DW_PersonID> tClaimantIDs1;
             tClaimantIDs1 = tSHBEData1.getClaimantIDs();
@@ -5343,12 +5350,12 @@ public class Summary extends DW_Object {
                     tClaimantIDPostcodeTTs1);
             filename00 = filename0;
             filename0 = filename1;
-            tSHBEData0 = tSHBEData1;
+            //tSHBEData0 = tSHBEData1;
             tDRecords0 = tDRecords1;
             tIDByPostcode0 = tIDByPostcode1;
             tIDByTT0 = tIDByTT1;
             CTBRefToIDLookup0 = CTBRefToIDLookup1;
-            yM30 = yM31;
+            //yM30 = yM31;
             yM30v = yM31v;
             AllCount0 = null;
             HBCount0 = null;
@@ -5729,7 +5736,7 @@ public class Summary extends DW_Object {
             String PostCodeLookupDate00 = null;
             String PostCodeLookupFile00Name = null;
             if (filename00 != null) {
-                PostCodeLookupDate00 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+                PostCodeLookupDate00 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                         tDW_SHBE_Handler.getYM3(filename00));
                 PostCodeLookupFile00Name = ONSPDFiles.get(PostCodeLookupDate00).getName();
             }
@@ -5737,7 +5744,7 @@ public class Summary extends DW_Object {
             String PostCodeLookupDate0 = null;
             String PostCodeLookupFile0Name = null;
             if (filename0 != null) {
-                PostCodeLookupDate0 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+                PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                         tDW_SHBE_Handler.getYM3(filename0));
                 PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
             }
@@ -5745,7 +5752,7 @@ public class Summary extends DW_Object {
             String PostCodeLookupDate1 = null;
             String PostCodeLookupFile1Name = null;
             if (filename1 != null) {
-                PostCodeLookupDate1 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+                PostCodeLookupDate1 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                         tDW_SHBE_Handler.getYM3(filename1));
                 PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
             }
@@ -6213,7 +6220,7 @@ public class Summary extends DW_Object {
         String PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename0 != null) {
-            PostCodeLookupDate0 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+            PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                     tDW_SHBE_Handler.getYM3(filename0));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }
@@ -6221,7 +6228,7 @@ public class Summary extends DW_Object {
         String PostCodeLookupDate1 = null;
         String PostCodeLookupFile1Name = null;
         if (filename1 != null) {
-            PostCodeLookupDate1 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+            PostCodeLookupDate1 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                     tDW_SHBE_Handler.getYM3(filename1));
             PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
         }
@@ -6640,7 +6647,7 @@ public class Summary extends DW_Object {
         String PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename != null) {
-            PostCodeLookupDate0 = tDW_Postcode_Handler.getNearestYM3ForONSPDLookup(
+            PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
                     tDW_SHBE_Handler.getYM3(filename));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }

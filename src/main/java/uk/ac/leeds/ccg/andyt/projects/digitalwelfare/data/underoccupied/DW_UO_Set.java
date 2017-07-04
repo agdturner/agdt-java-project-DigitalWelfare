@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
@@ -35,10 +36,11 @@ public class DW_UO_Set implements Serializable {
      * aUnderOccupiedReport_Record.getClaimReferenceNumber(),
      * aUnderOccupiedReport_Record
      */
-    protected TreeMap<String, DW_UO_Record> map;
+    //protected TreeMap<String, DW_UO_Record> map;
+    protected TreeMap<DW_ID, DW_UO_Record> map;
 
     public DW_UO_Set(){
-        map = new TreeMap<String, DW_UO_Record>();
+        map = new TreeMap<DW_ID, DW_UO_Record>();
     }
     
     /**
@@ -91,15 +93,23 @@ public class DW_UO_Set implements Serializable {
 //        councilRecords = new TreeMap[numberOfUnderOccupiedReportFiles];
 //        result[0] = councilRecords;
 //        RSLRecords = new TreeMap[numberOfUnderOccupiedReportFiles];
-    public TreeMap<String, DW_UO_Record> getMap() {
+    public TreeMap<DW_ID, DW_UO_Record> getMap() {
         return map;
     }
+    
+//    /**
+//     * Returns a list of CTBRefs {@code return map.keySet();}.
+//     * @return 
+//     */
+//    public Set<String> getCTBRefs(){
+//        return map.keySet();
+//    }
     
     /**
      * Returns a list of CTBRefs {@code return map.keySet();}.
      * @return 
      */
-    public Set<String> getCTBRefs(){
+    public Set<DW_ID> getClaimIDs(){
         return map.keySet();
     }
 }

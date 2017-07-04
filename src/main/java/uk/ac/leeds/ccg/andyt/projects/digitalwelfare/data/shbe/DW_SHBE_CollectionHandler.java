@@ -12,9 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.log.DW_Log;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  * Each Collection is assigned an CollectionManager which manages File IO. Each
@@ -30,9 +30,10 @@ public class DW_SHBE_CollectionHandler extends DW_Object
     protected String type;
     
     /**
-     * For storing DRecordID indexed by CouncilTaxReferenceNumber
+     * For storing DRecordID indexed by ClaimID which is derived from the 
+     * Council Tax Reference.
      */
-    public HashMap<String, Long> lookup;
+    public HashMap<DW_ID, Long> lookup;
 
     /**
      * Directory.
@@ -77,7 +78,7 @@ public class DW_SHBE_CollectionHandler extends DW_Object
         _MaximumNumberOfObjectsPerDirectory = 100;
         _MaximumNumberPerCollection = 1000;
         collections = new HashMap<Long, DW_SHBE_Collection>();
-        lookup = new HashMap<String, Long>();
+        lookup = new HashMap<DW_ID, Long>();
     }
 
     public void add(DW_SHBE_Collection col) {
@@ -216,15 +217,15 @@ public class DW_SHBE_CollectionHandler extends DW_Object
         DW_SHBE_Collection result;
         result = collections.get(ID);
         if (result == null) {
-            File dir;
-            dir = Generic_StaticIO.getObjectDirectory(
+            File directory;
+            directory = Generic_StaticIO.getObjectDirectory(
                     env.getDW_Files().getSwapSHBEDir(),
                     ID,
                     ID,
                     _MaximumNumberPerCollection);
             File f;
             f = new File(
-                    dir,
+                    directory,
                     "DW_SHBE_Collection.thisFile");
             Object o;
             o = Generic_StaticIO.readObject(f);
@@ -379,10 +380,10 @@ public class DW_SHBE_CollectionHandler extends DW_Object
         return true;
     }
 
-    public DW_SHBE_Record getRecord(String councilTaxClaimNumber) {
+    public DW_SHBE_Record getRecord(DW_ID ClaimID) {
         DW_SHBE_Record result;
         Long DRecordID;
-        DRecordID = lookup.get(councilTaxClaimNumber);
+        DRecordID = lookup.get(ClaimID);
         if (DRecordID == null) {
             int debug = 1;
             return null;

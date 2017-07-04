@@ -22,20 +22,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StreamTokenizer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
-import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_AbstractProcessor;
 
 /**
  * A class for adding coordinate data and area codes for UK postcodes.
@@ -43,6 +39,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_AbstractProcesso
  */
 public class DW_Postcode_Handler extends DW_Object implements Serializable {
 
+    protected Generic_UKPostcode_Handler Generic_UKPostcode_Handler;
+    
     public static String TYPE_UNIT = "Unit";
     public static String TYPE_SECTOR = "Sector";
     public static String TYPE_DISTRICT = "District";
@@ -281,7 +279,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
     }
 
     /**
-     * @param unformattedUnitPostcode
+     * @param postcode
      * @return A format of the unformattedUnitPostcode for ONSPD lookups For
      * example this will return "LS11OJS" for an unformattedUnitPostcode = "LS11
      * 0JS"
@@ -518,6 +516,8 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
      *
      * @param level "OA", "LSOA", "MSOA"
      * @param year
+     * @param tONSPD_NOV_2013DataFile
+     * @param outFile
      * @return
      */
     public TreeMap<String, String> getPostcodeUnitCensusCodeLookup(
@@ -527,7 +527,6 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
             File outFile) {
         // Read NPD into a lookup
         TreeMap<String, String> lookup;
-        lookup = null;
         lookup = readONSPDIntoTreeMapPostcodeString(tONSPD_NOV_2013DataFile, level, year);
         Generic_StaticIO.writeObject(lookup, outFile);
 //        //lookup = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(outFile);
@@ -539,7 +538,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
      * @param postcode
      * @return
      */
-    public static String getPostcodeLevel(String postcode) {
+    public String getPostcodeLevel(String postcode) {
         if (postcode == null) {
             return null;
         }
@@ -1806,4 +1805,10 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         return result;
     }
 
+    public Generic_UKPostcode_Handler getGeneric_UKPostcode_Handler(){
+        if (Generic_UKPostcode_Handler == null) {
+            Generic_UKPostcode_Handler = new Generic_UKPostcode_Handler();
+        }
+        return Generic_UKPostcode_Handler;
+    }
 }

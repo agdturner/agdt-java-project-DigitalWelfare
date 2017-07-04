@@ -138,6 +138,12 @@ public class DW_Files extends DW_Object {
      */
     public final String sTables = "Tables";
 
+    protected final String sDotdat = ".dat";
+
+    public String getsDotdat() {
+        return sDotdat;
+    }
+    
     /**
      * For storing the main directory location where the project files are
      * stored. This is initialised from DW_Environment.sDigitalWelfareDir.

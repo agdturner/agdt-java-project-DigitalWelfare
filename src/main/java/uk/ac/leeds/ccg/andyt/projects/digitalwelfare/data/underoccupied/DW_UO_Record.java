@@ -19,12 +19,17 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_UO_Record implements Serializable {
+public class DW_UO_Record extends DW_Object implements Serializable {
 
     /**
      * 0 RecordID
@@ -38,6 +43,10 @@ public class DW_UO_Record implements Serializable {
      * @param ClaimReferenceNumber
      */
     private String ClaimReferenceNumber;
+    /**
+     * @param ClaimID
+     */
+    private DW_ID ClaimID;
     /**
      * @param BedroomRequirement
      */
@@ -83,16 +92,28 @@ public class DW_UO_Record implements Serializable {
      * For RSL type we expect rectangular data with 9 or 10 columns. If there
      * are 9 columns we assume that
      *
+     * @param env
      * @param RecordID
      * @param line
+     * @param fieldNames
      * @param type
      * @throws Exception
      */
     public DW_UO_Record(
+            DW_Environment env,
             long RecordID,
             String line,
             //String type
             String[] fieldNames) throws Exception {
+        this.env = env;
+
+        // Get CTBRef to ClaimRef and ClaimRef to CTBRef lookups.
+        DW_SHBE_Handler DW_SHBE_Handler;
+        DW_SHBE_Handler = env.getDW_SHBE_Handler();
+        HashMap<DW_ID, String> ClaimIDToCTBRefLookup;
+        ClaimIDToCTBRefLookup = DW_SHBE_Handler.getClaimIDToCTBRefLookup();
+        HashMap<String, DW_ID> CTBRefToClaimIDLookup;
+        CTBRefToClaimIDLookup = DW_SHBE_Handler.getCTBRefToClaimIDLookup();
         this.RecordID = RecordID;
         String[] fields = line.split(",");
         if (fields.length != fieldNames.length) {
@@ -117,6 +138,10 @@ public class DW_UO_Record implements Serializable {
                     } else {
                         this.RecordType = "";
                     }
+                    ClaimID = DW_SHBE_Handler.getIDAddIfNeeded(
+                            ClaimReferenceNumber,
+                            CTBRefToClaimIDLookup,
+                            ClaimIDToCTBRefLookup);
                 } else {
                     if (fieldNames[i].equalsIgnoreCase("room_requirem")
                             || fieldNames[i].equalsIgnoreCase("bedroom_requirement")) {
@@ -218,18 +243,19 @@ public class DW_UO_Record implements Serializable {
     @Override
     public String toString() {
         return "RecordID " + getRecordID()
-                + ",RecordType " + getRecordType()
-                + ",ClaimReferenceNumber " + getClaimReferenceNumber()
-                + ",BedroomRequirement " + getBedroomRequirement()
-                + ",BedroomsInProperty " + getBedroomsInProperty()
-                + ",MaleChildrenUnder10 " + getMaleChildrenUnder10()
-                + ",FemaleChildrenUnder10 " + getFemaleChildrenUnder10()
-                + ",MaleChildren10to16 " + getMaleChildren10to16()
-                + ",FemaleChildren10to16 " + getFemaleChildren10to16()
-                + ",ChildrenOver16 " + getChildrenOver16()
-                + ",TotalDependentChildren " + getTotalDependentChildren()
-                + ",NonDependents " + getNonDependents()
-                + ",TotalRentArrears " + getTotalRentArrears();
+                + ", ClaimID " + getClaimID()
+                + ", RecordType " + getRecordType()
+                + ", ClaimReferenceNumber " + getClaimReferenceNumber()
+                + ", BedroomRequirement " + getBedroomRequirement()
+                + ", BedroomsInProperty " + getBedroomsInProperty()
+                + ", MaleChildrenUnder10 " + getMaleChildrenUnder10()
+                + ", FemaleChildrenUnder10 " + getFemaleChildrenUnder10()
+                + ", MaleChildren10to16 " + getMaleChildren10to16()
+                + ", FemaleChildren10to16 " + getFemaleChildren10to16()
+                + ", ChildrenOver16 " + getChildrenOver16()
+                + ", TotalDependentChildren " + getTotalDependentChildren()
+                + ", NonDependents " + getNonDependents()
+                + ", TotalRentArrears " + getTotalRentArrears();
     }
 
     /**
@@ -268,10 +294,10 @@ public class DW_UO_Record implements Serializable {
     }
 
     /**
-     * @param ClaimReferenceNumber the ClaimReferenceNumber to set
+     * @return the ClaimID
      */
-    public void setClaimReferenceNumber(String ClaimReferenceNumber) {
-        this.ClaimReferenceNumber = ClaimReferenceNumber;
+    public DW_ID getClaimID() {
+        return ClaimID;
     }
 
     /**
@@ -417,7 +443,7 @@ public class DW_UO_Record implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 83 * hash + (this.ClaimReferenceNumber != null ? this.ClaimReferenceNumber.hashCode() : 0);
+        hash = 83 * hash + (this.ClaimID != null ? this.ClaimID.hashCode() : 0);
         return hash;
     }
 
@@ -433,7 +459,7 @@ public class DW_UO_Record implements Serializable {
         if ((this.RecordType == null) ? (other.RecordType != null) : !this.RecordType.equals(other.RecordType)) {
             return false;
         }
-        if ((this.ClaimReferenceNumber == null) ? (other.ClaimReferenceNumber != null) : !this.ClaimReferenceNumber.equals(other.ClaimReferenceNumber)) {
+        if ((this.ClaimID == null) ? (other.ClaimID != null) : !this.ClaimID.equals(other.ClaimID)) {
             return false;
         }
         if (this.BedroomRequirement.compareTo(other.BedroomRequirement) != 0) {

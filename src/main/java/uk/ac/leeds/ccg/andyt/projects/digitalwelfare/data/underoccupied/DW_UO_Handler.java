@@ -30,6 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -43,20 +44,16 @@ public class DW_UO_Handler extends DW_Object {
     private HashSet<String> RecordTypes;
 
     /**
-     * For convenience this is a reference to env.tDW_Files.
+     * For convenience.
      */
-    protected DW_Files tDW_Files;
-    
-    /**
-     * For convenience this is a reference to env.tDW_Strings.
-     */
-    protected DW_Strings tDW_Strings;
+    protected DW_Files DW_Files;
+    protected DW_Strings DW_Strings;
     
 
     public DW_UO_Handler(DW_Environment env) {
         this.env = env;
-        this.tDW_Files = env.getDW_Files();
-        this.tDW_Strings = env.getDW_Strings();
+        this.DW_Files = env.getDW_Files();
+        this.DW_Strings = env.getDW_Strings();
     }
 
     public HashSet<String> getRecordTypes() {
@@ -68,7 +65,7 @@ public class DW_UO_Handler extends DW_Object {
      * @param filename
      * @return
      */
-    public TreeMap<String, DW_UO_Record> loadInputData(
+    public TreeMap<DW_ID, DW_UO_Record> loadInputData(
             File directory,
             String filename) {
 //        String type;
@@ -77,8 +74,8 @@ public class DW_UO_Handler extends DW_Object {
 //        } else {
 //            type = "Council";
 //        }
-        TreeMap<String, DW_UO_Record> result;
-        result = new TreeMap<String, DW_UO_Record>();
+        TreeMap<DW_ID, DW_UO_Record> result;
+        result = new TreeMap<DW_ID, DW_UO_Record>();
         File inputFile = new File(
                 directory,
                 filename);
@@ -89,13 +86,13 @@ public class DW_UO_Handler extends DW_Object {
             Generic_StaticIO.setStreamTokenizerSyntax5(st);
             st.wordChars('`', '`');
             st.wordChars('*', '*');
-            String line = "";
+            String line;
             //int duplicateEntriesCount = 0;
             int replacementEntriesCount = 0;
             long RecordID = 0;
             // Read firstline and check format
             int tokenType;
-            tokenType = st.nextToken();
+            st.nextToken();
             line = st.sval;
             String[] fieldnames = line.split(",");
 //            // Skip the first line
@@ -113,10 +110,10 @@ public class DW_UO_Handler extends DW_Object {
                         try {
                             DW_UO_Record aUnderOccupiedReport_Record;
                             aUnderOccupiedReport_Record = new DW_UO_Record(
-                                    RecordID, line, fieldnames);
+                                    env, RecordID, line, fieldnames);
                             //RecordID, line, type);
                             Object o = result.put(
-                                    aUnderOccupiedReport_Record.getClaimReferenceNumber(),
+                                    aUnderOccupiedReport_Record.getClaimID(),
                                     aUnderOccupiedReport_Record);
                             if (o != null) {
                                 DW_UO_Record existingUnderOccupiedReport_Record;
@@ -150,6 +147,7 @@ public class DW_UO_Handler extends DW_Object {
     /**
      * Loads the Under-Occupied report data for Leeds.
      *
+     * @param reload
      * @return Object[] result where: result[0] = councilSets
      * {@code TreeMap<String, DW_UO_Set>}; result[1] = RSLSets
      * {@code TreeMap<String, DW_UO_Set>}
@@ -174,12 +172,12 @@ public class DW_UO_Handler extends DW_Object {
         Iterator<String> ite;
         ite = councilFilenames.keySet().iterator();
         while (ite.hasNext()) {
-            type = tDW_Strings.sRSL;
+            type = DW_Strings.sRSL;
             String year_Month = ite.next();
             String filename = councilFilenames.get(year_Month);
             DW_UO_Set set;
             set = new DW_UO_Set(
-                    tDW_Files,
+                    DW_Files,
                     this,
                     type,
                     filename,
@@ -189,12 +187,12 @@ public class DW_UO_Handler extends DW_Object {
         }
         ite = RSLFilenames.keySet().iterator();
         while (ite.hasNext()) {
-            type = tDW_Strings.sCouncil;
+            type = DW_Strings.sCouncil;
             String year_Month = ite.next();
             String filename = RSLFilenames.get(year_Month);
             DW_UO_Set set;
             set = new DW_UO_Set(
-                    tDW_Files,
+                    DW_Files,
                     this,
                     type,
                     filename,
@@ -214,7 +212,7 @@ public class DW_UO_Handler extends DW_Object {
     public int getNumberOfInputFiles() {
         int result;
         File dirIn;
-        dirIn = tDW_Files.getInputUnderOccupiedDir();
+        dirIn = DW_Files.getInputUnderOccupiedDir();
         File[] files;
         files = dirIn.listFiles();
         TreeSet<String> set;
@@ -420,14 +418,15 @@ public class DW_UO_Handler extends DW_Object {
     }
 
     /**
-     * Returns a HashSet<String> of the CTBRefs of those UnderOccupying at the 
+     * Returns ClaimIDs of those Claims deemed to be under occupying at the 
      * start of April2013.
      * @param DW_UO_Data
      * @return 
      */
-    public HashSet<String> getUnderOccupiedStartApril2013CTBRefs(
+    public HashSet<DW_ID> getUOStartApril2013ClaimIDs(
         DW_UO_Data DW_UO_Data) {
-        return DW_UO_Data.getCTBRefs().get("2013_Mar");
+        return DW_UO_Data.getClaimIDs().get("2013_Mar");
+//        return DW_UO_Data.getClaimIDs().get("2013_Apr");
     }
 
     public static int getHouseholdSizeExcludingPartners(DW_UO_Record rec) {
