@@ -181,20 +181,20 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             File f;
             f = new File(
                     DW_Files.getGeneratedUnderOccupiedDir(),
-                    "DW_UO_Data.thisFile");
+                    "DW_UO_Data" + DW_Files.getsDotdat());
             if (f.exists()) {
                 DW_UO_Data = (DW_UO_Data) Generic_StaticIO.readObject(f);
                 // For debugging/testing load
-                TreeMap<String, DW_UO_Set> tCouncilSets;
-                tCouncilSets = DW_UO_Data.getCouncilSets();
-                TreeMap<String, DW_UO_Set> tRSLSets;
-                tRSLSets = DW_UO_Data.getRSLSets();
-                int totalSets;
-                totalSets = tCouncilSets.size() + tRSLSets.size();
-                System.out.println("totalSets loaded " + totalSets);
-                int numberOfInputFiles;
-                numberOfInputFiles = DW_UO_Handler.getNumberOfInputFiles();
-                System.out.println("numberOfInputFiles " + numberOfInputFiles);
+                TreeMap<String, DW_UO_Set> CouncilSets;
+                CouncilSets = DW_UO_Data.getCouncilSets();
+                TreeMap<String, DW_UO_Set> RSLSets;
+                RSLSets = DW_UO_Data.getRSLSets();
+                int TotalSets;
+                TotalSets = CouncilSets.size() + RSLSets.size();
+                System.out.println("TotalSets loaded " + TotalSets);
+                int NumberOfInputFiles;
+                NumberOfInputFiles = DW_UO_Handler.getNumberOfInputFiles();
+                System.out.println("NumberOfInputFiles " + NumberOfInputFiles);
                 //if ()
             } else {
                 boolean reload;

@@ -1919,13 +1919,13 @@ public class TenancyChangesUO extends DW_Object {
             result[4] = PreUnderOccupancyValues;
         }
 
-        DW_SHBE_Collection aSHBEData = null;
+        DW_SHBE_Collection SHBEData = null;
         String aYM3;
         String year;
         String month;
         DW_UO_Set CouncilUOSet1;
         DW_UO_Set RSLUOSet1 = null;
-        String aSHBEFilename;
+        String SHBEFilename;
 
         // % in arrears
         // % getting DHP
@@ -1938,18 +1938,18 @@ public class TenancyChangesUO extends DW_Object {
         while (iteX.hasNext()) {
             j = iteX.next();
         }
-        aSHBEFilename = SHBEFilenames[j];
-        aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
-        year = DW_SHBE_Handler.getYear(aSHBEFilename);
-        month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
+        SHBEFilename = SHBEFilenames[j];
+        aYM3 = DW_SHBE_Handler.getYM3(SHBEFilename);
+        year = DW_SHBE_Handler.getYear(SHBEFilename);
+        month = DW_SHBE_Handler.getMonthNumber(SHBEFilename);
         CouncilUOSet1 = CouncilUOSets.get(aYM3);
         if (CouncilUOSet1 != null) {
             RSLUOSet1 = RSLUOSets.get(aYM3);
-            aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, aPT);
+            SHBEData = new DW_SHBE_Collection(env, SHBEFilename, aPT);
         }
 
-        HashMap<DW_ID, DW_SHBE_Record> aRecords;
-        aRecords = aSHBEData.getRecords();
+        HashMap<DW_ID, DW_SHBE_Record> Records;
+        Records = SHBEData.getRecords();
         DW_SHBE_Record DW_SHBE_Record;
         DW_UO_Set EndCouncilUOSet;
         EndCouncilUOSet = CouncilUOSets.get(aYM3);
@@ -1967,7 +1967,7 @@ public class TenancyChangesUO extends DW_Object {
         ClaimIDsIte = EndUOClaimIDs.iterator();
         while (ClaimIDsIte.hasNext()) {
             ClaimID = ClaimIDsIte.next();
-            DW_SHBE_Record = aRecords.get(ClaimID);
+            DW_SHBE_Record = Records.get(ClaimID);
             if (DW_SHBE_Record == null) {
                 System.out.println(ClaimID + " not in " + aYM3);
             } else {
@@ -2005,7 +2005,7 @@ public class TenancyChangesUO extends DW_Object {
         ClaimIDsIte = EndUOThatWereAlsoStartUO.iterator();
         while (ClaimIDsIte.hasNext()) {
             ClaimID = ClaimIDsIte.next();
-            DW_SHBE_Record = aRecords.get(ClaimID);
+            DW_SHBE_Record = Records.get(ClaimID);
             if (DW_SHBE_Record == null) {
                 System.out.println(ClaimID + " not in " + aYM3);
             } else {
@@ -2889,20 +2889,20 @@ public class TenancyChangesUO extends DW_Object {
         // Load first data
         while (!initFirst) {
             i = includeIte.next();
-            aSHBEFilename = SHBEFilenames[i];
-            aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
-            year = DW_SHBE_Handler.getYear(aSHBEFilename);
-            month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
+            SHBEFilename = SHBEFilenames[i];
+            aYM3 = DW_SHBE_Handler.getYM3(SHBEFilename);
+            year = DW_SHBE_Handler.getYear(SHBEFilename);
+            month = DW_SHBE_Handler.getMonthNumber(SHBEFilename);
             CouncilUOSet1 = CouncilUOSets.get(aYM3);
             if (CouncilUOSet1 != null) {
                 RSLUOSet1 = RSLUOSets.get(aYM3);
-                aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, aPT);
+                SHBEData = new DW_SHBE_Collection(env, SHBEFilename, aPT);
                 initFirst = true;
             }
             header += aYM3;
         }
         //TreeMap<String, DW_SHBE_Record> aRecords;
-        aRecords = aSHBEData.getRecords();
+        Records = SHBEData.getRecords();
        HashMap<DW_ID, DW_SHBE_Record> bRecords;
         bRecords = null;
        HashMap<DW_ID, DW_SHBE_Record> cRecords;
@@ -2932,7 +2932,7 @@ public class TenancyChangesUO extends DW_Object {
         ClaimIDsIte = ClaimIDs.iterator();
         while (ClaimIDsIte.hasNext()) {
             ClaimID = ClaimIDsIte.next();
-            DW_SHBE_Record = aRecords.get(ClaimID);
+            DW_SHBE_Record = Records.get(ClaimID);
             processResult = process(
                     NINOToNINOIDLookup,
                     DOBToDOBIDLookup,
@@ -3221,20 +3221,20 @@ public class TenancyChangesUO extends DW_Object {
             totalHouseholdSizeExcludingPartnersRSLUO = 0;
             i = includeIte.next();
             cRecords = bRecords;
-            bRecords = aRecords;
-            aSHBEFilename = SHBEFilenames[i];
-            aYM3 = DW_SHBE_Handler.getYM3(aSHBEFilename);
-            year = DW_SHBE_Handler.getYear(aSHBEFilename);
-            month = DW_SHBE_Handler.getMonthNumber(aSHBEFilename);
-            aSHBEData = new DW_SHBE_Collection(env, aSHBEFilename, aPT);
-            aRecords = aSHBEData.getRecords();
+            bRecords = Records;
+            SHBEFilename = SHBEFilenames[i];
+            aYM3 = DW_SHBE_Handler.getYM3(SHBEFilename);
+            year = DW_SHBE_Handler.getYear(SHBEFilename);
+            month = DW_SHBE_Handler.getMonthNumber(SHBEFilename);
+            SHBEData = new DW_SHBE_Collection(env, SHBEFilename, aPT);
+            Records = SHBEData.getRecords();
             CouncilUOSet1 = CouncilUOSets.get(aYM3);
             RSLUOSet1 = RSLUOSets.get(aYM3);
             header += DW_Strings.sCommaSpace + aYM3;
             ClaimIDsIte = ClaimIDs.iterator();
             while (ClaimIDsIte.hasNext()) {
                 ClaimID = ClaimIDsIte.next();
-                DW_SHBE_Record = aRecords.get(ClaimID);
+                DW_SHBE_Record = Records.get(ClaimID);
                 processResult = process(
                         NINOToNINOIDLookup,
                         DOBToDOBIDLookup,
@@ -3657,7 +3657,7 @@ public class TenancyChangesUO extends DW_Object {
         ite = AlwaysUOTT1FromStartClaimIDs.iterator();
         while (ite.hasNext()) {
             ClaimID = ite.next();
-            DW_SHBE_Record rec = aRecords.get(ClaimID);
+            DW_SHBE_Record rec = Records.get(ClaimID);
             if (rec != null) {
                 totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(rec);
                 d += 1.0d;
@@ -3677,7 +3677,7 @@ public class TenancyChangesUO extends DW_Object {
         ite = ClaimIDs_AlwaysUOTT4FromStart.iterator();
         while (ite.hasNext()) {
             ClaimID = ite.next();
-            DW_SHBE_Record rec = aRecords.get(ClaimID);
+            DW_SHBE_Record rec = Records.get(ClaimID);
             if (rec != null) {
                 totalHouseholdSize += DW_SHBE_Handler.getHouseholdSize(rec);
                 d += 1.0d;

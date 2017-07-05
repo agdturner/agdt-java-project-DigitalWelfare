@@ -36,6 +36,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  *
@@ -192,7 +193,7 @@ public class DW_SHBE_Collection extends DW_Object implements Serializable {
         }
         result = new File(
                 dir,
-                this.getClass().getName() + getID() + ".thisFile");
+                this.getClass().getName() + getID() + env.getDW_Files().getsDotdat());
         return result;
     }
 

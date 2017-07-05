@@ -118,7 +118,8 @@ public class DW_MainProcessor extends DW_AbstractProcessor {
          */
         if (runPostcode) {
             System.out.println("<Postcode prerocessing>");
-            DW_Postcode_Handler = new DW_Postcode_Handler(env);
+            DW_Postcode_Handler = env.getDW_Postcode_Handler();
+//            DW_Postcode_Handler = new DW_Postcode_Handler(env);
             DW_Postcode_Handler.run();
             System.out.println("</Postcode prerocessing>");
         }

@@ -403,7 +403,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         this.env = env;
     }
 
-    public static String getDefaultLookupFilename() {
+    public String getDefaultLookupFilename() {
         String selection = "LS";
         selection += "BD";
         selection += "HG";
@@ -414,7 +414,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         selection += "BL";
         selection += "HX";
         selection += "HD";
-        return "PostcodeLookUp_" + selection + "_TreeMap_String_Point.thisFile";
+        return "PostcodeLookUp_" + selection + "_TreeMap_String_Point" + env.getDW_Files().getsDotdat();
     }
 
     public static void main(String[] args) {

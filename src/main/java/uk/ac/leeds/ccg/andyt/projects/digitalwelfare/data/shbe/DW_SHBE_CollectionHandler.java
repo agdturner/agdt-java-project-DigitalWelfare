@@ -15,6 +15,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.log.DW_Log;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  * Each Collection is assigned an CollectionManager which manages File IO. Each
@@ -226,7 +227,7 @@ public class DW_SHBE_CollectionHandler extends DW_Object
             File f;
             f = new File(
                     directory,
-                    "DW_SHBE_Collection.thisFile");
+                    "DW_SHBE_Collection" + env.getDW_Files().getsDotdat());
             Object o;
             o = Generic_StaticIO.readObject(f);
             result = (DW_SHBE_Collection) o;

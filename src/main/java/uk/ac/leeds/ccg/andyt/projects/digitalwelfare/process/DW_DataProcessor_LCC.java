@@ -130,16 +130,16 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
          * DW_UO_Data
          */
         DW_UO_Data DW_UO_Data;
-        System.out.println("<DW_UO_Data = env.getDW_UO_Data();>");
+        System.out.println("<Load DW_UO_Data>");
         DW_UO_Data = env.getDW_UO_Data();
-        System.out.println("</DW_UO_Data = env.getDW_UO_Data();>");
+        System.out.println("</Load DW_UO_Data>");
 
 //        DW_SHBE_Handler DW_SHBE_Handler;
 //        DW_SHBE_Handler = new DW_SHBE_Handler(env);
-        HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup;
-        System.out.println("<tPostcodeToPostcodeIDLookup = tDW_SHBE_Handler.getPostcodeToPostcodeIDLookup()>");
-        tPostcodeToPostcodeIDLookup = DW_SHBE_Handler.getPostcodeToPostcodeIDLookup();
-        System.out.println("</tPostcodeToPostcodeIDLookup = tDW_SHBE_Handler.getPostcodeToPostcodeIDLookup()>");
+        HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
+        System.out.println("<Load PostcodeToPostcodeIDLookup>");
+        PostcodeToPostcodeIDLookup = DW_SHBE_Handler.getPostcodeToPostcodeIDLookup();
+        System.out.println("</Load PostcodeToPostcodeIDLookup>");
 //        reportUnderOccupancyTotals(DW_UO_Data);
 //        // Data generalisation and output
 //        processSHBEReportData(
@@ -224,9 +224,9 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         loadData = false;
 //        loadData = true;
 
-        System.out.println("<postcodeHandler = new Generic_UKPostcode_Handler();>");
+        System.out.println("<Initialise Generic_UKPostcode_Handler>");
         Generic_UKPostcode_Handler = new Generic_UKPostcode_Handler();
-        System.out.println("</postcodeHandler = new Generic_UKPostcode_Handler();>");
+        System.out.println("</Initialise Generic_UKPostcode_Handler>");
 
         ArrayList<Boolean> bArray;
         bArray = new ArrayList<Boolean>();
@@ -236,8 +236,8 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 
         HashMap<DW_PersonID, DW_ID> PersonIDToPersonIDIDLookup;
         PersonIDToPersonIDIDLookup = DW_SHBE_Handler.getPersonIDToPersonIDIDLookup();
-        ArrayList<String> paymentTypes;
-        Iterator<String> tPTIte;
+        ArrayList<String> PaymentTypes;
+        Iterator<String> PTIte;
 
         boolean doGrouped;
         boolean doTenancyChangesUO;
@@ -254,13 +254,13 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         doGrouped = true;
         doGrouped = false;
         doTenancyChangesUO = true;
-        doTenancyChangesUO = false;
+//        doTenancyChangesUO = false;
         doSummaryTables = true;
-        doSummaryTables = false;
+//        doSummaryTables = false;
         doSummaryTablesAllOnly = true;
-        doSummaryTablesAllOnly = false;
+//        doSummaryTablesAllOnly = false;
         doSummaryTablesUOOnly = true;
-        doSummaryTablesUOOnly = false;
+//        doSummaryTablesUOOnly = false;
 
         doTenancyTransitions = true;
         doTenancyTransitions = false;
@@ -272,7 +272,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         doTenancyAndPostcodeChanges = false;
 
         doAggregation = true;
-//        doAggregation = false;
+        doAggregation = false;
 
         doHBGeneralAggregateStatistics = true;
         doHBGeneralAggregateStatistics = false;
@@ -290,7 +290,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //            includes.remove(tDW_SHBE_Handler.sInclude3Monthly);
 //            includes.remove(tDW_SHBE_Handler.sIncludeMonthlySinceApril2013);
 //            includes.remove(tDW_SHBE_Handler.sIncludeMonthly);
-            paymentTypes = DW_Strings.getPaymentTypes();
+            PaymentTypes = DW_Strings.getPaymentTypes();
 //            paymentTypes.remove(sPaymentTypeAll);
 //            paymentTypes.remove(sPaymentTypeIn);
 //            paymentTypes.remove(sPaymentTypeSuspended);
@@ -299,15 +299,15 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             doUnderOccupancy = true;
             String name;
             name = sTenancyChange;
-            tPTIte = paymentTypes.iterator();
-            while (tPTIte.hasNext()) {
-                String aPT;
-                aPT = tPTIte.next();
-                System.out.println("<" + aPT + ">");
+            PTIte = PaymentTypes.iterator();
+            while (PTIte.hasNext()) {
+                String PT;
+                PT = PTIte.next();
+                System.out.println("<" + PT + ">");
                 TenancyChangesUO tTenancyChangesUO = new TenancyChangesUO(
                         env,
-                        aPT,
-                        tPostcodeToPostcodeIDLookup,
+                        PT,
+                        PostcodeToPostcodeIDLookup,
                         handleOutOfMemoryError);
                 Iterator<String> includesIte;
                 includesIte = includes.keySet().iterator();
@@ -341,11 +341,11 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                                 DW_UO_Data,
                                 SHBEFilenames,
                                 include,
-                                aPT,
+                                PT,
                                 includePreUnderOccupancyValues);
                         tTenancyChangesUO.writeTenancyChangeTables(
                                 table,
-                                aPT,
+                                PT,
                                 includeKey,
                                 doUnderOccupancy,
                                 includePreUnderOccupancyValues,
@@ -359,7 +359,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     System.out.println("</" + includeKey + ">");
 //                    System.exit(0);
                 }
-                System.out.println("</" + aPT + ">");
+                System.out.println("</" + PT + ">");
             }
             System.out.println("</doTenancyChangesUO>");
         }
@@ -373,7 +373,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //        includes.remove(tDW_SHBE_Handler.sInclude3Monthly);
 //        includes.remove(tDW_SHBE_Handler.sIncludeMonthlySinceApril2013);
 //        includes.remove(tDW_SHBE_Handler.sIncludeMonthly);
-        paymentTypes = DW_Strings.getPaymentTypes();
+        PaymentTypes = DW_Strings.getPaymentTypes();
 //        paymentTypes.remove(sPaymentTypeAll);
 //        paymentTypes.remove(sPaymentTypeIn);
 //        paymentTypes.remove(sPaymentTypeSuspended);
@@ -382,10 +382,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         forceNewSummaries = true;
         // Runtime approximately 2 hours.
         if (doSummaryTables) {
-            tPTIte = paymentTypes.iterator();
-            while (tPTIte.hasNext()) {
+            PTIte = PaymentTypes.iterator();
+            while (PTIte.hasNext()) {
                 String paymentType;
-                paymentType = tPTIte.next();
+                paymentType = PTIte.next();
                 //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getPersonIDToPersonIDIDLookup();
                 int nTT;
                 nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
@@ -445,7 +445,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                             nPSI,
                             DW_UO_Data,
                             PersonIDToPersonIDIDLookup,
-                            tPostcodeToPostcodeIDLookup,
+                            PostcodeToPostcodeIDLookup,
                             handleOutOfMemoryError);
                     doUnderOccupancy = true;
                     tSummaryUO.writeSummaryTables(
@@ -466,7 +466,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //        includes.remove(tDW_SHBE_Handler.sInclude3Monthly);
 //        includes.remove(tDW_SHBE_Handler.sIncludeMonthlySinceApril2013);
 //        includes.remove(tDW_SHBE_Handler.sIncludeMonthly);
-        paymentTypes = DW_Strings.getPaymentTypes();
+        PaymentTypes = DW_Strings.getPaymentTypes();
 //        paymentTypes.remove(sPaymentTypeAll);
 //        paymentTypes.remove(sPaymentTypeIn);
 //        paymentTypes.remove(sPaymentTypeSuspended);
@@ -475,10 +475,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         forceNewSummaries = true;
         // Runtime approximately 2 hours.
         if (doSummaryTablesAllOnly) {
-            tPTIte = paymentTypes.iterator();
-            while (tPTIte.hasNext()) {
+            PTIte = PaymentTypes.iterator();
+            while (PTIte.hasNext()) {
                 String paymentType;
-                paymentType = tPTIte.next();
+                paymentType = PTIte.next();
                 //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getPersonIDToPersonIDIDLookup();
                 int nTT;
                 nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
@@ -534,15 +534,15 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //            includes.remove(tDW_SHBE_Handler.sInclude3Monthly);
 //            includes.remove(tDW_SHBE_Handler.sIncludeMonthlySinceApril2013);
 //            includes.remove(tDW_SHBE_Handler.sIncludeMonthly);
-            paymentTypes = DW_Strings.getPaymentTypes();
+            PaymentTypes = DW_Strings.getPaymentTypes();
 //            paymentTypes.remove(sPaymentTypeAll);
 //            paymentTypes.remove(sPaymentTypeIn);
 //            paymentTypes.remove(sPaymentTypeSuspended);
 //            paymentTypes.remove(sPaymentTypeOther);
-            tPTIte = paymentTypes.iterator();
-            while (tPTIte.hasNext()) {
+            PTIte = PaymentTypes.iterator();
+            while (PTIte.hasNext()) {
                 String paymentType;
-                paymentType = tPTIte.next();
+                paymentType = PTIte.next();
                 //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getPersonIDToPersonIDIDLookup();
                 int nTT;
                 nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
@@ -579,7 +579,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                             nPSI,
                             DW_UO_Data,
                             PersonIDToPersonIDIDLookup,
-                            tPostcodeToPostcodeIDLookup,
+                            PostcodeToPostcodeIDLookup,
                             handleOutOfMemoryError);
                     doUnderOccupancy = true;
                     tSummaryUO.writeSummaryTables(
@@ -614,10 +614,10 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 //            tCTBRefs0 = DW_UO_Handler.getUnderOccupiedCTBRefs(); // AHH!!!
 //            tCTBRefs0.removeAll(DW_UO_Handler.getUnderOccupiedInApril2013CTBRefs());
 
-            tPTIte = paymentTypes.iterator();
-            while (tPTIte.hasNext()) {
+            PTIte = PaymentTypes.iterator();
+            while (PTIte.hasNext()) {
                 String paymentType;
-                paymentType = tPTIte.next();
+                paymentType = PTIte.next();
                 //NINOtoIDLookup = DW_SHBE_Handler.getPersonIDToPersonIDIDLookup(paymentType);
                 // Postcode Changes (same tenancy)
                 if (doPostcodeChanges) {
@@ -933,7 +933,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             outputHBGeneralAggregateStatistics(
                     lookupsFromPostcodeToLevelCode,
                     SHBEFilenames,
-                    paymentTypes,
+                    PaymentTypes,
                     includes,
                     levels,
                     PersonIDToPersonIDIDLookup);
@@ -941,7 +941,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
 
         // Aggregate
         if (doAggregation) {
-            aggregate(paymentTypes, levels, bArray, DW_UO_Data, SHBEFilenames,
+            aggregate(PaymentTypes, levels, bArray, DW_UO_Data, SHBEFilenames,
                     claimantTypes, types, distances, distanceTypes,
                     tenancyTypes, tenancyTypeGroups, tenancyTypesGrouped,
                     regulatedGroups, unregulatedGroups,
@@ -10322,26 +10322,6 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         return result;
     }
 
-//    /**
-//     * @return TreeMap<String, String[]> result where:--------------------------
-//     * Keys are postcodes and values are:---------------------------------------
-//     * values[0] = rec.getOa01();-----------------------------------------------
-//     * values[1] = rec.getMsoa01();---------------------------------------------
-//     * values[2] = rec.getOa11();-----------------------------------------------
-//     * values[3] = rec.getMsoa11();---------------------------------------------
-//     */
-//    private TreeMap<String, String[]> initLookupFromPostcodeToCensusCodes() {
-//        File inputDirectory = new File("/scratch01/Work/Projects/NewEnclosures/ONSPD/Data/");
-//        String inputFilename = inputFilename = "ONSPD_AUG_2013_UK_O.csv";
-//        File inFile = new File(inputDirectory, inputFilename);
-//        File outputDirectory = new File("/scratch02/DigitalWelfare/ONSPD/processed");
-//        String outputFilename = "PostcodeLookUp_TreeMap_String_Strings.thisFile";
-//        File outFile = new File(outputDirectory, outputFilename);
-//        //new DW_Postcode_Handler(inFile, outFile).getPostcodeUnitPointLookup();
-//        //new DW_Postcode_Handler(inFile, outFile).run1();
-//        TreeMap<String, String[]> result = new DW_Postcode_Handler(inFile, outFile).getPostcodeUnitCensusCodesLookup();
-//        return result;
-//    }
     /**
      * Returns data about the number of claims per postcode.
      *

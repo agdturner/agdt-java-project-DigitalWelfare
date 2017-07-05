@@ -1163,7 +1163,7 @@ public class DW_LineMaps_AdviceLeeds extends DW_Maps {
         File generatedCensus2011LUTsDir = tDW_Files.getGeneratedCensus2011LUTsDir();
         File tLSOAToCentroidLookupTableFile = new File(
                 generatedCensus2011LUTsDir,
-                level + "ToCentroidLookupTable_TreeMap.thisFile");
+                level + "ToCentroidLookupTable_TreeMap" + env.getDW_Files().getsDotdat());
         if (tLSOAToCentroidLookupTableFile.exists()) {
             result = (TreeMap<String, Point>) Generic_StaticIO.readObject(
                     tLSOAToCentroidLookupTableFile);

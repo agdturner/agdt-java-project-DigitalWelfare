@@ -255,44 +255,7 @@ public abstract class DW_AbstractProcessor extends DW_Object {
     }
 
     /**
-     * @param level
-     * @return TreeMap<String, String[]> result where:--------------------------
-     * Keys are postcodes; values are for level "MSOA" are:---------------------
-     * values[0] = rec.getOa01();-----------------------------------------------
-     * values[1] = rec.getMsoa01();---------------------------------------------
-     * values[2] = rec.getOa11();-----------------------------------------------
-     * values[3] = rec.getMsoa11();---------------------------------------------
-     * values are for level "LSOA" are:-----------------------------------------
-     * values[0] = rec.getOa01();-----------------------------------------------
-     * values[1] = rec.getLsoa01();---------------------------------------------
-     * values[2] = rec.getOa11();-----------------------------------------------
-     * values[3] = rec.getLsoa11();---------------------------------------------
-     */
-//    @Deprecated
-//    public static TreeMap<String, String[]> getLookupFromPostcodeToCensusCodes(
-//            String level) {
-//        TreeMap<String, String[]> result;
-//        File outputDirectory = DW_Files.getGeneratedONSPDDir();
-//        String outputFilename = "fail";
-//        if (level.equalsIgnoreCase("MSOA")) {
-//            outputFilename = "PostcodeLookUp_TreeMap_String_Strings.thisFile";
-//        }
-//        if (level.equalsIgnoreCase("LSOA")) {
-//            outputFilename = "PostcodeToLSOALookUp_TreeMap_String_Strings.thisFile";
-//        }
-//        if (level.equalsIgnoreCase("OA")) {
-//            outputFilename = "PostcodeToLSOALookUp_TreeMap_String_Strings.thisFile";
-//        }
-//        File outFile = new File(outputDirectory, outputFilename);
-//        if (!outFile.exists()) {
-//            result = initLookupFromPostcodeToCensusCodes(level);
-//        } else {
-//            Object o = Generic_StaticIO.readObject(outFile);
-//            result = (TreeMap<String, String[]>) o;
-//        }
-//        return result;
-//    }
-    /**
+     * @param env
      * @param level If level is "OA" returns OutputArea codes. If level is
      * "LSOA" returns Lower-layer Super Output Area codes. If level is "MSOA"
      * returns Middle-layer Super Output Area codes.
@@ -310,7 +273,7 @@ public abstract class DW_AbstractProcessor extends DW_Object {
         tDW_Files = env.getDW_Files();
         String outputFilename;
         outputFilename = "PostcodeTo" + level + year
-                + "LookUp_TreeMap_String_Strings.thisFile";
+                + "LookUp_TreeMap_String_Strings" + env.getDW_Files().getsDotdat();
         File outFile = new File(
                 tDW_Files.getGeneratedONSPDDir(),
                 outputFilename);
@@ -334,43 +297,6 @@ public abstract class DW_AbstractProcessor extends DW_Object {
         return result;
     }
 
-//    /**
-//     * @return TreeMap<String, String[]> result where:--------------------------
-//     * Keys are postcodes; values are for level "MSOA" are:---------------------
-//     * values[0] = rec.getOa01();-----------------------------------------------
-//     * values[1] = rec.getMsoa01();---------------------------------------------
-//     * values[2] = rec.getOa11();-----------------------------------------------
-//     * values[3] = rec.getMsoa11();---------------------------------------------
-//     * values are for level "LSOA" are:-----------------------------------------
-//     * values[0] = rec.getOa01();-----------------------------------------------
-//     * values[1] = rec.getLsoa01();---------------------------------------------
-//     * values[2] = rec.getOa11();-----------------------------------------------
-//     * values[3] = rec.getLsoa11();---------------------------------------------
-//     */
-//    private static TreeMap<String, String[]> initLookupFromPostcodeToCensusCodes(String level) {
-//        TreeMap<String, String[]> result = null;
-//        File inputDirectory = new File("/scratch01/Work/Projects/NewEnclosures/ONSPD/Data/");
-//        String inputFilename = inputFilename = "ONSPD_AUG_2013_UK_O.csv";
-//        File inFile = new File(inputDirectory, inputFilename);
-//        File outputDirectory = new File("/scratch02/DigitalWelfare/ONSPD/processed");
-//        String outputFilename;
-//        File outFile;
-//        if (level.equalsIgnoreCase("MSOA")) {
-//            outputFilename = "PostcodeLookUp_TreeMap_String_Strings.thisFile";
-//            outFile = new File(outputDirectory, outputFilename);
-//            //new DW_Postcode_Handler(inFile, outFile).getPostcodeUnitPointLookup();
-//            //new DW_Postcode_Handler(inFile, outFile).run1();
-//            result = new DW_Postcode_Handler(inFile, outFile).getPostcodeUnitCensusCodesLookup();
-//        }
-//        if (level.equalsIgnoreCase("LSOA")) {
-//            outputFilename = "PostcodeToLSOALookUp_TreeMap_String_Strings.thisFile";
-//            outFile = new File(outputDirectory, outputFilename);
-//            //new DW_Postcode_Handler(inFile, outFile).getPostcodeUnitPointLookup();
-//            //new DW_Postcode_Handler(inFile, outFile).run1();
-//            result = new DW_Postcode_Handler(inFile, outFile).run4();
-//        }
-//        return result;
-//    }
     /**
      * @return TreeMap<String, String> result where:----------------------------
      * Keys are postcodes; values are census codes:-----------------------------

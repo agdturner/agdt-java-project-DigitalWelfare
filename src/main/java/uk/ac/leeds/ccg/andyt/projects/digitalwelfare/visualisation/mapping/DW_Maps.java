@@ -108,16 +108,16 @@ public abstract class DW_Maps extends AGDT_Maps {
         levels.add("Unit");
         //levels.add("Sector");
         //levels.add("Area");
-        DW_Postcode_Handler tDW_Postcode_Handler;
-        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
+        DW_Postcode_Handler DW_Postcode_Handler;
+        DW_Postcode_Handler = env.getDW_Postcode_Handler();
         TreeMap<String, File> ONSPDFiles;
-        ONSPDFiles = tDW_Postcode_Handler.getONSPDFiles();
+        ONSPDFiles = DW_Postcode_Handler.getONSPDFiles();
         Iterator<String> ite2;
         ite2 = levels.iterator();
         while (ite2.hasNext()) {
             String level = ite2.next();
             TreeMap<String, TreeMap<String, AGDT_Point>> tONSPDlookup;
-            tONSPDlookup = tDW_Postcode_Handler.getPostcodeUnitPointLookups(
+            tONSPDlookup = DW_Postcode_Handler.getPostcodeUnitPointLookups(
                     true,
                     ONSPDFiles,
                     DW_Postcode_Handler.getDefaultLookupFilename());

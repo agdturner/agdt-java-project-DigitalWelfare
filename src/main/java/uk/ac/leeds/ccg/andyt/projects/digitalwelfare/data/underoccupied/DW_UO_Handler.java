@@ -236,10 +236,10 @@ public class DW_UO_Handler extends DW_Object {
         }
         Iterator<String> ite;
         ite = set.iterator();
-        while (ite.hasNext()) {
-            System.out.println(ite.next());
-        }
-        System.out.println("set.size() " + set.size());
+//        while (ite.hasNext()) {
+//            System.out.println(ite.next());
+//        }
+//        System.out.println("set.size() " + set.size());
         result = files.length;
         return result;
     }
@@ -348,7 +348,17 @@ public class DW_UO_Handler extends DW_Object {
                     RSLEndFilename2,
                     CouncilFilenames,
                     RSLFilenames,
-                    4); // This number needs increasing as there are more datasets....
+                    12);
+            yearAll = "2017 18";
+            putFilenames(
+                    yearAll,
+                    underOccupiedReportForUniversityString,
+                    councilEndFilename,
+                    RSLEndFilename2,
+                    CouncilFilenames,
+                    RSLFilenames,
+                    1);
+            // This number needs increasing as there are more datasets....
         }
         return inputFilenames;
     }

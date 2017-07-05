@@ -525,7 +525,7 @@ public class DW_BarChart extends Generic_BarChart {
                         "AreaCodes.csv");
                 fout = new File(
                         dir,
-                        "AreaCodes_HashSetString.thisFile");
+                        "AreaCodes_HashSetString" + env.getDW_Files().getsDotdat());
             } else {
                 dir = new File(
                         tDW_Files.getInputCensus2011AttributeDataDir(level),
@@ -542,7 +542,7 @@ public class DW_BarChart extends Generic_BarChart {
                 dir.mkdirs();
                 fout = new File(
                         dir,
-                        "AreaCodes_HashSetString.thisFile");
+                        "AreaCodes_HashSetString" + env.getDW_Files().getsDotdat());
             }
             HashSet<String> areaCodesForLevel;
             if (fout.exists()) {
