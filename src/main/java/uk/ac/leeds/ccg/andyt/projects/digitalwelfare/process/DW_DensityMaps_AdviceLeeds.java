@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleChunkArrayFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
@@ -133,7 +133,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
                 "processor");
         processorDir.mkdirs();
         ge = new Grids_Environment();
-        eage = new ESRIAsciiGridExporter();
+        eage = new ESRIAsciiGridExporter(ge);
         ie = new ImageExporter(ge);
         gp = new Grid2DSquareCellProcessorGWS(ge);
         gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
@@ -653,7 +653,7 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
 //                    }
                 // RegionUnivariateStatistics
 
-                List<AbstractGrid2DSquareCell> gws;
+                List<Grids_AbstractGrid2DSquareCell> gws;
                 gws = gp.regionUnivariateStatistics(
                         g,
                         stats,
@@ -661,11 +661,11 @@ public class DW_DensityMaps_AdviceLeeds extends DW_DensityMapsAbstract {
                         weightIntersect,
                         weightFactor,
                         gf);
-                Iterator<AbstractGrid2DSquareCell> itegws;
+                Iterator<Grids_AbstractGrid2DSquareCell> itegws;
                 itegws = gws.iterator();
                 // Skip over the normaliser part of the result
                 itegws.next();
-                AbstractGrid2DSquareCell gwsgrid = itegws.next();
+                Grids_AbstractGrid2DSquareCell gwsgrid = itegws.next();
                 String outputName;
                 outputName = nameOfGrid + "GWS_" + cellDistanceForGeneralisation;// + "_" + i;
 //                        imageFile = new File(

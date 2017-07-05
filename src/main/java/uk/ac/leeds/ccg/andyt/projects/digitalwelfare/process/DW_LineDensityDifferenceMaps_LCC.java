@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
-import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleChunkArrayFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
@@ -148,7 +148,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
                 "processor");
         processorDir.mkdirs();
         ge = new Grids_Environment();
-        eage = new ESRIAsciiGridExporter();
+        eage = new ESRIAsciiGridExporter(ge);
         ie = new ImageExporter(ge);
         gp = new Grid2DSquareCellProcessorGWS(ge);
         gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
@@ -665,7 +665,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 //                        System.out.println(gws[gwsi]);
 //                    }
             // RegionUnivariateStatistics
-            List<AbstractGrid2DSquareCell> gws;
+            List<Grids_AbstractGrid2DSquareCell> gws;
             gws = gp.regionUnivariateStatistics(
                     ga,
                     stats,
@@ -674,11 +674,11 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
                     weightFactor,
                     gf);
 
-            Iterator<AbstractGrid2DSquareCell> itegws;
+            Iterator<Grids_AbstractGrid2DSquareCell> itegws;
             itegws = gws.iterator();
             // Skip over the normaliser part of the result
             itegws.next();
-            AbstractGrid2DSquareCell gwsgrid = itegws.next();
+            Grids_AbstractGrid2DSquareCell gwsgrid = itegws.next();
 
             System.out.println(gwsgrid);
 

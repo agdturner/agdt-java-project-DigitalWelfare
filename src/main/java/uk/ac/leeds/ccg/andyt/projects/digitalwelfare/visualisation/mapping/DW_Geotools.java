@@ -51,7 +51,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
-import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendItem;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendLayer;
@@ -99,7 +99,7 @@ public class DW_Geotools extends AGDT_Geotools {
             AGDT_StyleParameters styleParameters,
             int index,
             String outname,
-            AbstractGrid2DSquareCell g,
+            Grids_AbstractGrid2DSquareCell g,
             GridCoverage2D gc,
             ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0,
             AGDT_Shapefile foregroundDW_Shapefile1,
@@ -135,8 +135,7 @@ public class DW_Geotools extends AGDT_Geotools {
         File outputImageFile = DW_Maps.getOutputImageFile(
                 outputFile, DW_Maps.png_String);
 
-        AGDT_Geotools.writeImageFile(
-                g._Grids_Environment, // For handling OutOfMemoryErrors
+        AGDT_Geotools.writeImageFile(g.env, // For handling OutOfMemoryErrors
                 mc,
                 newImageWidth,
                 newImageHeight,
@@ -187,7 +186,7 @@ public class DW_Geotools extends AGDT_Geotools {
     private static Object[] createMapContent(
             double normalisation,
             String name,
-            AbstractGrid2DSquareCell g,
+            Grids_AbstractGrid2DSquareCell g,
             GridCoverage2D gc,
             ArrayList<AGDT_Shapefile> foregroundShapefiles,
             AGDT_Shapefile foregroundDW_Shapefile1,
@@ -1522,7 +1521,7 @@ public class DW_Geotools extends AGDT_Geotools {
                     outputImageFile,
                     outputType);
         } catch (OutOfMemoryError oome) {
-            if (ge._HandleOutOfMemoryError_boolean) {
+            if (ge.HandleOutOfMemoryError_boolean) {
                 ge.clear_MemoryReserve();
                 ge.swapToFile_Grid2DSquareCellChunk(true);
                 ge.init_MemoryReserve(true);

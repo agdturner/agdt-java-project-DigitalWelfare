@@ -27,7 +27,7 @@ import java.util.TreeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.gce.arcgrid.ArcGridReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCellDoubleChunkFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
@@ -164,7 +164,7 @@ public abstract class DW_DensityMapsAbstract extends DW_Maps {
 
     public void outputGridToImageUsingGeoToolsAndSetCommonStyle(
             double normalisation,
-            AbstractGrid2DSquareCell g,
+            Grids_AbstractGrid2DSquareCell g,
             File asciigridFile,
             File dir,
             String nameOfGrid,

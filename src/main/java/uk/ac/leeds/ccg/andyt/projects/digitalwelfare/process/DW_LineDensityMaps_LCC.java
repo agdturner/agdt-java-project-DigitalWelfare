@@ -35,7 +35,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
-import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleChunkArrayFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
@@ -141,7 +141,7 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
                 "processor");
         processorDir.mkdirs();
         ge = new Grids_Environment();
-        eage = new ESRIAsciiGridExporter();
+        eage = new ESRIAsciiGridExporter(ge);
         ie = new ImageExporter(ge);
         gp = new Grid2DSquareCellProcessorGWS(ge);
         gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
@@ -639,7 +639,7 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
 //                        System.out.println(gws[gwsi]);
 //                    }
                 // RegionUnivariateStatistics
-                List<AbstractGrid2DSquareCell> gws;
+                List<Grids_AbstractGrid2DSquareCell> gws;
                 gws = gp.regionUnivariateStatistics(
                         g,
                         stats,
@@ -647,13 +647,13 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
                         weightIntersect,
                         weightFactor,
                         gf);
-                Iterator<AbstractGrid2DSquareCell> itegws;
+                Iterator<Grids_AbstractGrid2DSquareCell> itegws;
                 itegws = gws.iterator();
                 // Set normaliser part of the result to null to save space
-                AbstractGrid2DSquareCell normaliser = itegws.next();
+                Grids_AbstractGrid2DSquareCell normaliser = itegws.next();
                 normaliser = null;
                 // Write out grid
-                AbstractGrid2DSquareCell gwsgrid = itegws.next();
+                Grids_AbstractGrid2DSquareCell gwsgrid = itegws.next();
                 String outputName2;
                 outputName2 = outputName + "GWS_" + cellDistanceForGeneralisation;// + "_" + i;
 //                        imageFile = new File(

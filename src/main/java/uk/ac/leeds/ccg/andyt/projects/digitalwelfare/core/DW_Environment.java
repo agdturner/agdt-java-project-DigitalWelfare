@@ -58,7 +58,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     /**
      * For returning an instance of DW_Strings for convenience.
-     * @return 
+     *
+     * @return
      */
     public DW_Strings getDW_Strings() {
         if (DW_Strings == null) {
@@ -75,7 +76,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     /**
      * For returning an instance of DW_Files for convenience.
-     * @return 
+     *
+     * @return
      */
     public DW_Files getDW_Files() {
         if (DW_Files == null) {
@@ -91,7 +93,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     /**
      * For returning an instance of Grids_Environment for convenience.
-     * @return 
+     *
+     * @return
      */
     public Grids_Environment getGrids_Environment() {
         if (Grids_Environment == null) {
@@ -146,60 +149,61 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     }
 
     /**
-     * For storing an instance of DW_UO_Handler for
- convenience.
+     * For storing an instance of DW_UO_Handler for convenience.
      */
-    private DW_UO_Handler tDW_UO_Handler;
+    protected DW_UO_Handler DW_UO_Handler;
 
     /**
      * For returning an instance of DW_UO_Handler for convenience.
-     * @return 
+     *
+     * @return
      */
     public DW_UO_Handler getDW_UO_Handler() {
-        if (tDW_UO_Handler == null) {
-            tDW_UO_Handler = new DW_UO_Handler(this);
+        if (DW_UO_Handler == null) {
+            DW_UO_Handler = new DW_UO_Handler(this);
         }
-        return tDW_UO_Handler;
+        return DW_UO_Handler;
     }
 
     /**
      * For storing an instance of DW_UO_Data.
      */
-    protected DW_UO_Data tDW_UO_Data;
+    protected DW_UO_Data DW_UO_Data;
 
     /**
      * For returning an instance of DW_UO_Handler for convenience.
-     * @return 
+     *
+     * @return
      */
     public DW_UO_Data getDW_UO_Data() {
-        if (tDW_UO_Data == null) {
-            tDW_UO_Handler = getDW_UO_Handler();
+        if (DW_UO_Data == null) {
+            DW_UO_Handler = getDW_UO_Handler();
             File f;
             f = new File(
                     DW_Files.getGeneratedUnderOccupiedDir(),
                     "DW_UO_Data.thisFile");
             if (f.exists()) {
-                tDW_UO_Data = (DW_UO_Data) Generic_StaticIO.readObject(f);
+                DW_UO_Data = (DW_UO_Data) Generic_StaticIO.readObject(f);
                 // For debugging/testing load
                 TreeMap<String, DW_UO_Set> tCouncilSets;
-                tCouncilSets = tDW_UO_Data.getCouncilSets();
+                tCouncilSets = DW_UO_Data.getCouncilSets();
                 TreeMap<String, DW_UO_Set> tRSLSets;
-                tRSLSets = tDW_UO_Data.getRSLSets();
+                tRSLSets = DW_UO_Data.getRSLSets();
                 int totalSets;
                 totalSets = tCouncilSets.size() + tRSLSets.size();
                 System.out.println("totalSets loaded " + totalSets);
                 int numberOfInputFiles;
-                numberOfInputFiles = tDW_UO_Handler.getNumberOfInputFiles();
+                numberOfInputFiles = DW_UO_Handler.getNumberOfInputFiles();
                 System.out.println("numberOfInputFiles " + numberOfInputFiles);
                 //if ()
             } else {
                 boolean reload;
                 reload = false;
-                tDW_UO_Data = tDW_UO_Handler.loadUnderOccupiedReportData(reload);
-                Generic_StaticIO.writeObject(tDW_UO_Data, f);
+                DW_UO_Data = DW_UO_Handler.loadUnderOccupiedReportData(reload);
+                Generic_StaticIO.writeObject(DW_UO_Data, f);
             }
         }
-        return tDW_UO_Data;
+        return DW_UO_Data;
     }
 
     /**
@@ -222,7 +226,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     /**
      * For storing an instance of DW_SHBE_Handler for convenience.
      */
-    private static DW_SHBE_Handler DW_SHBE_Handler;
+    private DW_SHBE_Handler DW_SHBE_Handler;
 
     /**
      * For returning an instance of DW_SHBE_Handler for convenience.
@@ -239,7 +243,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     /**
      * For storing an instance of DW_SHBE_TenancyType_Handler for convenience.
      */
-    private static DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
+    private DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
 
     /**
      * For returning an instance of DW_SHBE_TenancyType_Handler for convenience.
@@ -253,8 +257,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         return DW_SHBE_TenancyType_Handler;
     }
 
-    
-            
     public DW_Environment(String sDigitalWelfareDir) {
         init_DW_Environment(sDigitalWelfareDir);
     }

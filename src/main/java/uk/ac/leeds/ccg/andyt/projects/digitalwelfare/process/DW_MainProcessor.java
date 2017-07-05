@@ -100,15 +100,15 @@ public class DW_MainProcessor extends DW_AbstractProcessor {
         runPostcode = true;
         runPostcode = false;
         runSHBE = true;
-//        runSHBE = false;
+        runSHBE = false;
         runSHBE_FormatAll = true;
-//        runSHBE_FormatAll = false;
+        runSHBE_FormatAll = false;
         runSHBE_CountUnique = true;
         runSHBE_CountUnique = false;
         runSHBE_FormatNew = true;
         runSHBE_FormatNew = false;
         runUO = true;
-        runUO = false;
+//        runUO = false;
         runDataProcessor_LCC = true;
         runDataProcessor_LCC = false;
 
@@ -159,10 +159,9 @@ public class DW_MainProcessor extends DW_AbstractProcessor {
          */
         if (runUO) {
             System.out.println("<runUnderOccupancy_Handler>");
-            boolean reload;
-            reload = false;
-            DW_UO_Data DW_UO_Data;
-            DW_UO_Data = env.getDW_UO_Data();
+//            DW_UO_Data DW_UO_Data;
+//            DW_UO_Data = env.getDW_UO_Data();
+            env.getDW_UO_Data();
             System.out.println("</runUnderOccupancy_Handler>");
         }
 

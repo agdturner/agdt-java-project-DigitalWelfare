@@ -248,8 +248,7 @@ public class DW_SHBE_CollectionHandler extends DW_Object
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
                 swapToFile_Collection();
-                env.init_MemoryReserve(
-                        DW_Environment.HandleOutOfMemoryErrorFalse);
+                env.init_MemoryReserve(false);
                 return getCollection(
                         ID,
                         handleOutOfMemoryError);
