@@ -22,6 +22,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting.DW_Report;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_BarChart;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_LineGraph;
@@ -159,9 +160,13 @@ public class DW_MainProcessor extends DW_AbstractProcessor {
          */
         if (runUO) {
             System.out.println("<runUnderOccupancy_Handler>");
-//            DW_UO_Data DW_UO_Data;
-//            DW_UO_Data = env.getDW_UO_Data();
-            env.getDW_UO_Data();
+            boolean reload;
+            reload = true;
+            DW_UO_Handler DW_UO_Handler;
+            DW_UO_Handler = new DW_UO_Handler(env);
+            DW_UO_Data DW_UO_Data;
+            DW_UO_Data = DW_UO_Handler.loadUnderOccupiedReportData(reload);
+            //env.getDW_UO_Data();
             System.out.println("</runUnderOccupancy_Handler>");
         }
 

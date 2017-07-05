@@ -20,27 +20,33 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_UO_Set implements Serializable {
+public class DW_UO_Set extends DW_Object implements Serializable {
 
     /**
      * aUnderOccupiedReport_Record.getClaimReferenceNumber(),
      * aUnderOccupiedReport_Record
      */
     //protected TreeMap<String, DW_UO_Record> map;
-    protected TreeMap<DW_ID, DW_UO_Record> map;
+    protected HashMap<DW_ID, DW_UO_Record> map;
 
-    public DW_UO_Set(){
-        map = new TreeMap<DW_ID, DW_UO_Record>();
+    protected DW_UO_Set(){}
+
+    public DW_UO_Set(DW_Environment env){
+        this.env = env;
+        map = new HashMap<DW_ID, DW_UO_Record>();
     }
     
     /**
@@ -50,7 +56,7 @@ public class DW_UO_Set implements Serializable {
      * is reloaded from source and saved where the generated file is saved. The
      * result is returned.
      *
-     * @param tDW_Files
+     * @param DW_Files
      * @param tDW_UnderOccupiedReport_Handler
      * @param type Indicates type, e.g. RSL, Council.
      * @param filename
@@ -58,16 +64,16 @@ public class DW_UO_Set implements Serializable {
      * @param reload
      */
     public DW_UO_Set(
-            DW_Files tDW_Files,
+            DW_Files DW_Files,
             DW_UO_Handler tDW_UnderOccupiedReport_Handler,
             String type,
             String filename,
             String yM3,
             boolean reload) {
         File dirIn;
-        dirIn = tDW_Files.getInputUnderOccupiedDir();
+        dirIn = DW_Files.getInputUnderOccupiedDir();
         File dirOut;
-        dirOut = new File(tDW_Files.getGeneratedUnderOccupiedDir(),
+        dirOut = new File(DW_Files.getGeneratedUnderOccupiedDir(),
                 type);
         dirOut = new File(dirOut,
                 yM3);
@@ -77,7 +83,7 @@ public class DW_UO_Set implements Serializable {
         File fOut;
         fOut = new File(
                 dirOut,
-                "DW_UnderOccupiedReport_Set.thisFile");
+                "DW_UnderOccupiedReport_Set" + DW_Files.getsDotdat());
         if (fOut.exists()) {
             DW_UO_Set loadDummy;
             loadDummy = (DW_UO_Set) Generic_StaticIO.readObject(fOut);
@@ -93,7 +99,7 @@ public class DW_UO_Set implements Serializable {
 //        councilRecords = new TreeMap[numberOfUnderOccupiedReportFiles];
 //        result[0] = councilRecords;
 //        RSLRecords = new TreeMap[numberOfUnderOccupiedReportFiles];
-    public TreeMap<DW_ID, DW_UO_Record> getMap() {
+    public HashMap<DW_ID, DW_UO_Record> getMap() {
         return map;
     }
     

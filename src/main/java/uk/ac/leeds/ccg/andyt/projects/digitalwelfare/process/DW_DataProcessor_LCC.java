@@ -234,8 +234,8 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         bArray.add(false);
         Iterator<Boolean> iteB;
 
-        HashMap<DW_PersonID, DW_ID> tDW_PersonIDtoDW_IDLookup;
-        tDW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getPersonIDToPersonIDIDLookup();
+        HashMap<DW_PersonID, DW_ID> PersonIDToPersonIDIDLookup;
+        PersonIDToPersonIDIDLookup = DW_SHBE_Handler.getPersonIDToPersonIDIDLookup();
         ArrayList<String> paymentTypes;
         Iterator<String> tPTIte;
 
@@ -444,7 +444,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                             nEG,
                             nPSI,
                             DW_UO_Data,
-                            tDW_PersonIDtoDW_IDLookup,
+                            PersonIDToPersonIDIDLookup,
                             tPostcodeToPostcodeIDLookup,
                             handleOutOfMemoryError);
                     doUnderOccupancy = true;
@@ -578,7 +578,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                             nEG,
                             nPSI,
                             DW_UO_Data,
-                            tDW_PersonIDtoDW_IDLookup,
+                            PersonIDToPersonIDIDLookup,
                             tPostcodeToPostcodeIDLookup,
                             handleOutOfMemoryError);
                     doUnderOccupancy = true;
@@ -936,7 +936,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     paymentTypes,
                     includes,
                     levels,
-                    tDW_PersonIDtoDW_IDLookup);
+                    PersonIDToPersonIDIDLookup);
         }
 
         // Aggregate
@@ -945,7 +945,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
                     claimantTypes, types, distances, distanceTypes,
                     tenancyTypes, tenancyTypeGroups, tenancyTypesGrouped,
                     regulatedGroups, unregulatedGroups,
-                    includes, tDW_PersonIDtoDW_IDLookup);
+                    includes, PersonIDToPersonIDIDLookup);
         }
     }
 
@@ -1438,7 +1438,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             yM3 = ite.next();
             set = result.get(yM3);
             if (set == null) {
-                set = new DW_UO_Set();
+                set = new DW_UO_Set(env);
                 result.put(yM3, set);
             }
             tCouncilSet = tCouncilPart.get(yM3);
@@ -1449,7 +1449,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             yM3 = ite.next();
             set = result.get(yM3);
             if (set == null) {
-                set = new DW_UO_Set();
+                set = new DW_UO_Set(env);
                 result.put(yM3, set);
             }
             tRSLSet = tRSLPart.get(yM3);
@@ -2979,7 +2979,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         }
         HashSet<DW_ID> result;
         result = new HashSet<DW_ID>();
-        TreeMap<DW_ID, DW_UO_Record> map;
+        HashMap<DW_ID, DW_UO_Record> map;
         map = underOccupiedSet.getMap();
         Iterator<DW_ID> ite;
         ite = map.keySet().iterator();
@@ -8607,7 +8607,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             BigDecimal totalRentArrears_BigDecimal = BigDecimal.ZERO;
             TreeMap<String, BigDecimal> postcodeTotalArrears = new TreeMap<String, BigDecimal>();
             TreeMap<String, Integer> postcodeClaims = new TreeMap<String, Integer>();
-            TreeMap<DW_ID, DW_UO_Record> map = set.getMap();
+            HashMap<DW_ID, DW_UO_Record> map = set.getMap();
             Iterator<DW_ID> ite;
             ite = map.keySet().iterator();
             DW_ID ClaimID;
@@ -10095,7 +10095,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             DW_UO_Set underOccupiedReportSet2) {
 //            DW_UO_Set aUnderOccupiedReport_Set,
 //            String[] tSHBEfilenames) {
-        TreeMap<DW_ID, DW_UO_Record> recs;
+        HashMap<DW_ID, DW_UO_Record> recs;
         recs = underOccupiedReportSet.getMap();
 //        Object[] SHBEDataMonth1 = getSHBEData(tSHBEfilenames[0]);
 //        for (int month = 0; month < tSHBEfilenames.length - 1; month++) {

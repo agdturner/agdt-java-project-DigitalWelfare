@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
@@ -1061,17 +1062,17 @@ public class SummaryUO extends Summary {
 
     public HashSet<ID_TenancyType> getID_TenancyTypeSet(
             HashMap<DW_ID, DW_SHBE_Record> D_Records,
-            DW_UO_Set councilUnderOccupiedSet,
+            DW_UO_Set CouncilUnderOccupiedSet,
             DW_UO_Set RSLUnderOccupiedSet,
             HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup) {
         HashSet<ID_TenancyType> result;
         result = new HashSet<ID_TenancyType>();
-        TreeMap<DW_ID, DW_UO_Record> RSLMap;
+        HashMap<DW_ID, DW_UO_Record> RSLMap;
         RSLMap = RSLUnderOccupiedSet.getMap();
-        TreeMap<DW_ID, DW_UO_Record> councilMap;
-        councilMap = councilUnderOccupiedSet.getMap();
+        HashMap<DW_ID, DW_UO_Record> CouncilMap;
+        CouncilMap = CouncilUnderOccupiedSet.getMap();
         Iterator<DW_ID> ite;
-        ite = councilMap.keySet().iterator();
+        ite = CouncilMap.keySet().iterator();
         while (ite.hasNext()) {
             DW_ID ClaimID;
             ClaimID = ite.next();
@@ -1120,18 +1121,18 @@ public class SummaryUO extends Summary {
 
     public HashSet<ID_PostcodeID> getID_PostcodeIDSet(
             HashMap<DW_ID, DW_SHBE_Record> D_Records,
-            DW_UO_Set councilUnderOccupiedSet,
+            DW_UO_Set CouncilUnderOccupiedSet,
             DW_UO_Set RSLUnderOccupiedSet,
-            HashMap<DW_PersonID, DW_ID> DW_PersonIDToIDLookup,
+            HashMap<DW_PersonID, DW_ID> PersonIDToPersonIDIDLookup,
             HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
         HashSet<ID_PostcodeID> result;
         result = new HashSet<ID_PostcodeID>();
-        TreeMap<DW_ID, DW_UO_Record> RSLMap;
+        HashMap<DW_ID, DW_UO_Record> RSLMap;
         RSLMap = RSLUnderOccupiedSet.getMap();
-        TreeMap<DW_ID, DW_UO_Record> councilMap;
-        councilMap = councilUnderOccupiedSet.getMap();
+       HashMap<DW_ID, DW_UO_Record> CouncilMap;
+        CouncilMap = CouncilUnderOccupiedSet.getMap();
         Iterator<DW_ID> ite;
-        ite = councilMap.keySet().iterator();
+        ite = CouncilMap.keySet().iterator();
         while (ite.hasNext()) {
             DW_ID ClaimID;
             ClaimID = ite.next();
@@ -1141,7 +1142,7 @@ public class SummaryUO extends Summary {
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
                 DW_ID ID;
-                ID = DW_PersonIDToIDLookup.get(DW_PersonID);
+                ID = PersonIDToPersonIDIDLookup.get(DW_PersonID);
                 DW_ID PostcodeID;
                 PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
                 ID_PostcodeID ID_PostcodeID;
@@ -1163,7 +1164,7 @@ public class SummaryUO extends Summary {
                 DW_PersonID DW_PersonID;
                 DW_PersonID = tDW_SHBE_Handler.getClaimantDW_PersonID(D_Record);
                 DW_ID ID;
-                ID = DW_PersonIDToIDLookup.get(DW_PersonID);
+                ID = PersonIDToPersonIDIDLookup.get(DW_PersonID);
                 DW_ID PostcodeID;
                 PostcodeID = PostcodeToPostcodeIDLookup.get(D_Record.getClaimantsPostcode());
                 ID_PostcodeID ID_PostcodeID;
@@ -1186,9 +1187,9 @@ public class SummaryUO extends Summary {
             HashMap<String, DW_ID> PostcodeToPostcodeIDLookup) {
         HashSet<ID_TenancyType_PostcodeID> result;
         result = new HashSet<ID_TenancyType_PostcodeID>();
-        TreeMap<DW_ID, DW_UO_Record> RSLMap;
+        HashMap<DW_ID, DW_UO_Record> RSLMap;
         RSLMap = RSLUnderOccupiedSet.getMap();
-        TreeMap<DW_ID, DW_UO_Record> councilMap;
+        HashMap<DW_ID, DW_UO_Record> councilMap;
         councilMap = councilUnderOccupiedSet.getMap();
         Iterator<DW_ID> ite;
         ite = councilMap.keySet().iterator();
@@ -4676,13 +4677,13 @@ public class SummaryUO extends Summary {
         HashMap<DW_ID, DW_SHBE_Record> tDRecords0;
         tDRecords0 = tSHBEData0.getRecords();
 
-        TreeMap<DW_ID, DW_UO_Record> councilUnderOccupiedSet0Map;
+        HashMap<DW_ID, DW_UO_Record> councilUnderOccupiedSet0Map;
         councilUnderOccupiedSet0Map = councilUnderOccupiedSet0.getMap();
-        TreeMap<DW_ID, DW_UO_Record> RSLUnderOccupiedSet0Map;
+        HashMap<DW_ID, DW_UO_Record> RSLUnderOccupiedSet0Map;
         RSLUnderOccupiedSet0Map = RSLUnderOccupiedSet0.getMap();
-        TreeMap<DW_ID, DW_UO_Record> councilUnderOccupiedSet1Map;
+        HashMap<DW_ID, DW_UO_Record> councilUnderOccupiedSet1Map;
         councilUnderOccupiedSet1Map = councilUnderOccupiedSet1.getMap();
-        TreeMap<DW_ID, DW_UO_Record> RSLUnderOccupiedSet1Map;
+        HashMap<DW_ID, DW_UO_Record> RSLUnderOccupiedSet1Map;
         RSLUnderOccupiedSet1Map = RSLUnderOccupiedSet1.getMap();
 
         Iterator<String> ite;
@@ -4850,9 +4851,9 @@ public class SummaryUO extends Summary {
                 tDW_PersonIDToIDLookup,
                 tPostcodeToPostcodeIDLookup);
 
-        TreeMap<DW_ID, DW_UO_Record> underOccupiedSetMapCouncil;
+        HashMap<DW_ID, DW_UO_Record> underOccupiedSetMapCouncil;
         underOccupiedSetMapCouncil = underOccupiedSetCouncil.getMap();
-        TreeMap<DW_ID, DW_UO_Record> underOccupiedSetMapRSL;
+        HashMap<DW_ID, DW_UO_Record> underOccupiedSetMapRSL;
         underOccupiedSetMapRSL = underOccupiedSetRSL.getMap();
         // Loop over underoccupancy data
         // Loop over Council
@@ -4923,8 +4924,8 @@ public class SummaryUO extends Summary {
     }
 
     public void doCouncilCompare2TimesLoopOverSet(
-            TreeMap<DW_ID, DW_UO_Record> map0,
-            TreeMap<DW_ID, DW_UO_Record> map1,
+            HashMap<DW_ID, DW_UO_Record> map0,
+            HashMap<DW_ID, DW_UO_Record> map1,
             HashMap<DW_ID, DW_SHBE_Record> D_Records0,
             HashMap<DW_ID, DW_SHBE_Record> D_Records1,
             String yM30v,
@@ -5020,8 +5021,8 @@ public class SummaryUO extends Summary {
     }
 
     public void doRSLCompare2TimesLoopOverSet(
-            TreeMap<DW_ID, DW_UO_Record> map0,
-            TreeMap<DW_ID, DW_UO_Record> map1,
+            HashMap<DW_ID, DW_UO_Record> map0,
+            HashMap<DW_ID, DW_UO_Record> map1,
             HashMap<DW_ID, DW_SHBE_Record> D_Records0,
             HashMap<DW_ID, DW_SHBE_Record> D_Records1,
             String yM30v,
@@ -5121,7 +5122,7 @@ public class SummaryUO extends Summary {
      * @return
      */
     public int doCouncilSingleTimeLoopOverSet(
-            TreeMap<DW_ID, DW_UO_Record> map,
+            HashMap<DW_ID, DW_UO_Record> map,
             HashMap<DW_ID, DW_SHBE_Record> D_Records,
             String yM30v) {
         int linkedRecords;
@@ -5181,7 +5182,7 @@ public class SummaryUO extends Summary {
      * @return
      */
     public int doRSLSingleTimeLoopOverSet(
-            TreeMap<DW_ID, DW_UO_Record> map,
+            HashMap<DW_ID, DW_UO_Record> map,
             HashMap<DW_ID, DW_SHBE_Record> D_Records,
             String yM30v) {
         int linkedRecords;

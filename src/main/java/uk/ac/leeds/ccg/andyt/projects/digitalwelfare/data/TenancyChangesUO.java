@@ -1953,7 +1953,7 @@ public class TenancyChangesUO extends DW_Object {
         DW_SHBE_Record DW_SHBE_Record;
         DW_UO_Set EndCouncilUOSet;
         EndCouncilUOSet = CouncilUOSets.get(aYM3);
-        TreeMap<DW_ID, DW_UO_Record> EndCouncilUOSetMap;
+        HashMap<DW_ID, DW_UO_Record> EndCouncilUOSetMap;
         EndCouncilUOSetMap = EndCouncilUOSet.getMap();
         int inArrearsCount = 0;
         int receivingDHPCount = 0;

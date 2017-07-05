@@ -731,7 +731,7 @@ public class DW_SHBE_Handler extends DW_Object {
         Iterator<DW_ID> ite;
         if (doUnderOccupancy) {
             if (underOccupiedReportSetCouncil != null) {
-                TreeMap<DW_ID, DW_UO_Record> map;
+                HashMap<DW_ID, DW_UO_Record> map;
                 map = underOccupiedReportSetCouncil.getMap();
                 ite = map.keySet().iterator();
                 while (ite.hasNext()) {
@@ -814,7 +814,7 @@ public class DW_SHBE_Handler extends DW_Object {
                 }
             }
             if (underOccupiedReportSetRSL != null) {
-                TreeMap<DW_ID, DW_UO_Record> map;
+                HashMap<DW_ID, DW_UO_Record> map;
                 map = underOccupiedReportSetRSL.getMap();
                 ite = map.keySet().iterator();
                 while (ite.hasNext()) {
