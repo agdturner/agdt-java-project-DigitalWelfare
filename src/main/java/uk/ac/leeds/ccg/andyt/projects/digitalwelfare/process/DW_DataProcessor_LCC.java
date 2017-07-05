@@ -235,7 +235,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
         Iterator<Boolean> iteB;
 
         HashMap<DW_PersonID, DW_ID> tDW_PersonIDtoDW_IDLookup;
-        tDW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
+        tDW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getPersonIDToPersonIDIDLookup();
         ArrayList<String> paymentTypes;
         Iterator<String> tPTIte;
 
@@ -386,7 +386,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             while (tPTIte.hasNext()) {
                 String paymentType;
                 paymentType = tPTIte.next();
-                //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
+                //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getPersonIDToPersonIDIDLookup();
                 int nTT;
                 nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
                 int nEG;
@@ -479,7 +479,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             while (tPTIte.hasNext()) {
                 String paymentType;
                 paymentType = tPTIte.next();
-                //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
+                //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getPersonIDToPersonIDIDLookup();
                 int nTT;
                 nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
                 int nEG;
@@ -543,7 +543,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             while (tPTIte.hasNext()) {
                 String paymentType;
                 paymentType = tPTIte.next();
-                //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
+                //DW_PersonIDtoDW_IDLookup = tDW_SHBE_Handler.getPersonIDToPersonIDIDLookup();
                 int nTT;
                 nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
                 int nEG;
@@ -618,7 +618,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             while (tPTIte.hasNext()) {
                 String paymentType;
                 paymentType = tPTIte.next();
-                //NINOtoIDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup(paymentType);
+                //NINOtoIDLookup = DW_SHBE_Handler.getPersonIDToPersonIDIDLookup(paymentType);
                 // Postcode Changes (same tenancy)
                 if (doPostcodeChanges) {
                     iteB = bArray.iterator();
@@ -994,7 +994,7 @@ public class DW_DataProcessor_LCC extends DW_AbstractProcessor {
             String paymentType;
             paymentType = tPTIte.next();
             System.out.println("<" + paymentType + ">");
-            //DW_SHBE_Handler.DW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getDW_PersonIDToDW_IDLookup();
+            //DW_SHBE_Handler.DW_PersonIDtoDW_IDLookup = DW_SHBE_Handler.getPersonIDToPersonIDIDLookup();
             TreeMap<String, TreeMap<String, String>> lookupsFromPostcodeToLevelCode; // Work needed to load the appropriate look up for the appropriate years and months of postcode!
             lookupsFromPostcodeToLevelCode = getLookupsFromPostcodeToLevelCode(levels);
             //Generic_UKPostcode_Handler.isValidPostcodeForm(String postcode)

@@ -87,23 +87,23 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     /**
      * For storing an instance of Grids_Environment
      */
-    private transient Grids_Environment tGrids_Environment;
+    private transient Grids_Environment Grids_Environment;
 
     /**
      * For returning an instance of Grids_Environment for convenience.
      * @return 
      */
     public Grids_Environment getGrids_Environment() {
-        if (tGrids_Environment == null) {
-            tGrids_Environment = new Grids_Environment();
+        if (Grids_Environment == null) {
+            Grids_Environment = new Grids_Environment();
         }
-        return tGrids_Environment;
+        return Grids_Environment;
     }
 
     /**
      * For storing an instance of HashMap<String, DW_SHBE_CollectionHandler>.
      */
-    private HashMap<String, DW_SHBE_CollectionHandler> tDW_SHBE_CollectionHandlers;
+    private HashMap<String, DW_SHBE_CollectionHandler> DW_SHBE_CollectionHandlers;
 
     /**
      * For returning an instance of DW_SHBE_CollectionHandler for convenience.
@@ -111,10 +111,10 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     public HashMap<String, DW_SHBE_CollectionHandler> getDW_SHBE_CollectionHandlers() {
-        if (tDW_SHBE_CollectionHandlers == null) {
-            tDW_SHBE_CollectionHandlers = new HashMap<String, DW_SHBE_CollectionHandler>();
+        if (DW_SHBE_CollectionHandlers == null) {
+            DW_SHBE_CollectionHandlers = new HashMap<String, DW_SHBE_CollectionHandler>();
         }
-        return tDW_SHBE_CollectionHandlers;
+        return DW_SHBE_CollectionHandlers;
     }
 
     /**
@@ -125,9 +125,9 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      */
     public DW_SHBE_CollectionHandler getDW_SHBE_CollectionHandler(String paymentType) {
         DW_SHBE_CollectionHandler result;
-        tDW_SHBE_CollectionHandlers = getDW_SHBE_CollectionHandlers();
-        if (tDW_SHBE_CollectionHandlers.containsKey(paymentType)) {
-            result = tDW_SHBE_CollectionHandlers.get(paymentType);
+        DW_SHBE_CollectionHandlers = getDW_SHBE_CollectionHandlers();
+        if (DW_SHBE_CollectionHandlers.containsKey(paymentType)) {
+            result = DW_SHBE_CollectionHandlers.get(paymentType);
         } else {
             File dir;
             dir = new File(
@@ -140,7 +140,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                     this,
                     paymentType);
             result.nextID = 0L;
-            tDW_SHBE_CollectionHandlers.put(paymentType, result);
+            DW_SHBE_CollectionHandlers.put(paymentType, result);
         }
         return result;
     }

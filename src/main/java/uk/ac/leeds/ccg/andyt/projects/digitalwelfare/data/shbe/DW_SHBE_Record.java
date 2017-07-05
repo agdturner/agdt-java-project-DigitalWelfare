@@ -71,6 +71,7 @@ public class DW_SHBE_Record implements Serializable {
             DW_SHBE_D_Record aDRecord) {
         this.RecordID = RecordID;
         this.DRecord = aDRecord;
+        this.CouncilTaxBenefitClaimReferenceNumber = aDRecord.getCouncilTaxBenefitClaimReferenceNumber();
     }
     
     /**

@@ -48,7 +48,8 @@ public class DW_MainProcessor extends DW_AbstractProcessor {
                         + "Aborting.");
                 System.exit(0);
             } else {
-                DW_Environment env = new DW_Environment(args[0]);
+                DW_Environment env;
+                env = new DW_Environment(args[0]);
                 new DW_MainProcessor(env).run();
             }
         } catch (Exception e) {
@@ -71,58 +72,92 @@ public class DW_MainProcessor extends DW_AbstractProcessor {
     /**
      * This is the main run method for the Digital welfare project.
      *
-     * @param args
      * @throws Exception
      */
     public void run() throws Exception {
-        boolean runPostcode_Handler; // switch for running Postcode_Handler code.
-        boolean runSHBE_Handler; // switch for running SHBE_Handler code.
-        boolean runUnderOccupancy_Handler;
-        boolean runDataProcessor_LCC; // switch for running DataProcessor_LCC code.
-        runPostcode_Handler = true;
-        runPostcode_Handler = false;
-        runSHBE_Handler = true;
-//        runSHBE_Handler = false;
-        runUnderOccupancy_Handler = true;
-        runUnderOccupancy_Handler = false;
+        /**
+         * Switch for running Postcode Data preprocessing code.
+         */
+        boolean runPostcode;
+        /**
+         * Switches for running SHBE Data preprocessing code.
+         */
+        boolean runSHBE;
+        boolean runSHBE_FormatAll;
+        boolean runSHBE_CountUnique;
+        boolean runSHBE_FormatNew;
+        /**
+         * Switch for running Under Occupancy Data preprocessing code.
+         */
+        boolean runUO;
+        /**
+         * Switch for running LCC processing code.
+         */
+        boolean runDataProcessor_LCC;
+        /**
+         * Set switches.
+         */
+        runPostcode = true;
+        runPostcode = false;
+        runSHBE = true;
+//        runSHBE = false;
+        runSHBE_FormatAll = true;
+//        runSHBE_FormatAll = false;
+        runSHBE_CountUnique = true;
+        runSHBE_CountUnique = false;
+        runSHBE_FormatNew = true;
+        runSHBE_FormatNew = false;
+        runUO = true;
+        runUO = false;
         runDataProcessor_LCC = true;
         runDataProcessor_LCC = false;
 
         /**
-         * Format Postcode_Handling data.
+         * Postcode preprocessing.
          */
-        if (runPostcode_Handler) {
-            System.out.println("<runPostcode_Handler>");
-            DW_Postcode_Handler DW_Postcode_Handler;
+        if (runPostcode) {
+            System.out.println("<Postcode prerocessing>");
             DW_Postcode_Handler = new DW_Postcode_Handler(env);
             DW_Postcode_Handler.run();
-            System.out.println("</runPostcode_Handler>");
+            System.out.println("</Postcode prerocessing>");
         }
 
         /**
-         * Format SHBE data.
+         * SHBE preprocessing.
          */
-        if (runSHBE_Handler) {
-            System.out.println("<runSHBE_Handler>");
+        if (runSHBE) {
+            System.out.println("<SHBE preprocessing>");
             DW_SHBE_Handler DW_SHBE_Handler;
-            DW_SHBE_Handler = new DW_SHBE_Handler(env);
-            // <Reformat all data from source>
-            DW_SHBE_Handler.run();  
-            // </Reformat all data from source>
-            // <Count and report unique National Insurance Numbers and unique person IDs so far encountered.>
-            //aDW_SHBE_Handler.runCount();
-            // </Count and report unique National Insurance Numbers and unique person IDs so far encountered.>
-            // <Format data not already formattede>
-            // As this assigns IDs assumption being that the new data is subsequent to the existing data.
-            //aDW_SHBE_Handler.runNew();
-            // </Format data not already formattede>
-            System.out.println("</runSHBE_Handler>");
+            DW_SHBE_Handler = env.getDW_SHBE_Handler();
+            /**
+             * Reformat all SHBE data from source.
+             */
+            if (runSHBE_FormatAll) {
+                DW_SHBE_Handler.run();
+            }
+            /**
+             * Count and report unique National Insurance Numbers and unique
+             * person IDs so far encountered.
+             */
+            if (runSHBE_CountUnique) {
+                DW_SHBE_Handler.runCount();
+            }
+            /**
+             * Format data not already formatted. This assigns IDs with the
+             * assumption being that the new data is for a subsequent period
+             * than the existing data. If the data is not subsequent, then it is
+             * probably best to reformat all SHBE data from source.
+             */
+            if (runSHBE_FormatNew) {
+                 DW_SHBE_Handler.runNew();
+            }
+            System.out.println("</SHBE preprocessing>");
         }
 
         /**
          * Format UnderOccupancy data.
          */
-        if (runUnderOccupancy_Handler) {
+        if (runUO) {
             System.out.println("<runUnderOccupancy_Handler>");
             boolean reload;
             reload = false;
