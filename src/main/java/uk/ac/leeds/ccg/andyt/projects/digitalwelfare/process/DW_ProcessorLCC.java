@@ -76,19 +76,21 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                         + "Aborting.");
                 System.exit(0);
             } else {
-                DW_Environment env = new DW_Environment(new Integer(args[0]),args[1]);
+                DW_Environment env = new DW_Environment(
+                        new Integer(args[0]),
+                        args[1]);
                 new DW_ProcessorLCC(env).run();
             }
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
 //            StackTraceElement[] stes = e.getStackTrace();
 //            for (StackTraceElement ste : stes) {
 //                System.err.println(ste.toString());
 //            }
         } catch (Error e) {
             System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
 //            StackTraceElement[] stes = e.getStackTrace();
 //            for (StackTraceElement ste : stes) {
 //                System.err.println(ste.toString());
@@ -513,6 +515,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
      * DW_Files.getOutputSHBELogsDir().
      * @param range The number of directories or files in the archive where the
      * logs are stored.
+     * @return 
      */
     protected File initLogs(
             int DEBUG_Level,
@@ -551,6 +554,11 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             Logger.getLogger(DW_ProcessorLCC.class.getName()).log(Level.SEVERE, null, ex);
         }
         env.setPrintWriterErr(PrintWriterE);
+        
+        env.log("DEBUG_Level = " + env.DEBUG_Level);
+        env.log("env.DEBUG_Level_FINEST = " + env.DEBUG_Level_FINEST);
+        env.log("env.DEBUG_Level_FINE = " + env.DEBUG_Level_FINE);
+        env.log("env.DEBUG_Level_NORMAL = " + env.DEBUG_Level_NORMAL);
         env.log("<" + processName + ">");
         return dir;
     }
@@ -661,7 +669,8 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 
     /**
      * @param levels A set of levels expected values include OA, LSOA, MSOA,
-     * PostcodeUnit, PostcodeSector, PostcodeDistrict
+     * PostcodeUnit, PostcodeSector, PostcodeDistrict. 
+     * @param YM3
      * @return A set of look ups from postcodes to each level input in levels.
      */
     public TreeMap<String, TreeMap<String, String>> getLookupsFromPostcodeToLevelCode(

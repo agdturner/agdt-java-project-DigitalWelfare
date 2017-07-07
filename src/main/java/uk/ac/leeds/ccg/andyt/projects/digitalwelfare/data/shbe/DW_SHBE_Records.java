@@ -26,7 +26,6 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1319,6 +1318,8 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * @param env
      * @param inputFilename
      * @param inputDirectory
+     * @param LatestYM3ForONSPDFormat
+     * @param logDir
      */
     public DW_SHBE_Records(
             DW_Environment env,
@@ -1760,7 +1761,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                             if (!isMappablePostcode) {
                                                 isMappablePostcodeLastestYM3 = DW_Postcode_Handler.isMappablePostcode(LatestYM3ForONSPDFormat, record.ClaimPostcodeF);
                                                 if (isMappablePostcodeLastestYM3) {
-                                                    System.out.println("Postcode " + Postcode + " is not in the " + NearestYM3ForONSPDLookup + " ONSPD, but is in the " + LatestYM3ForONSPDFormat + " ONSPD!");
+                                                    env.logO(env.DEBUG_Level_FINEST, 
+                                                                "Postcode " + Postcode + " is not in the " + NearestYM3ForONSPDLookup + " ONSPD, "
+                                                                        + "but is in the " + LatestYM3ForONSPDFormat + " ONSPD!");
                                                     isMappablePostcode = isMappablePostcodeLastestYM3;
                                                 }
                                             }

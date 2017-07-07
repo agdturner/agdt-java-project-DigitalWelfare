@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
@@ -71,11 +70,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * therein.
      */
     private DW_Files DW_Files;
-
-    /**
-     * For storing an instance of PaymentTypes.
-     */
-    private ArrayList<String> PaymentTypes;
     
     /**
      * For storing an instance of Grids_Environment
@@ -139,7 +133,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         this.DEBUG_Level = DEBUG_Level;
             this.DW_Files = new DW_Files(this);
         this.DW_Strings = new DW_Strings();
-        PaymentTypes = DW_Strings.getPaymentTypes();
     }
     
     private void init(int DEBUG_Level, String sDigitalWelfareDir) {
