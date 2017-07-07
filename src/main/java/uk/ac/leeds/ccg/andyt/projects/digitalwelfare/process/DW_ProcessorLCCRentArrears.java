@@ -440,12 +440,12 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //                DW_SHBE_Records = DW_SHBE_Data.getDW_SHBE_Records(YM3);
 //                HashMap<DW_ID, DW_SHBE_Record> Records;
 //                Records = DW_SHBE_Records.getRecords(env._HandleOutOfMemoryError_boolean);
-//                if (Records.keySet().contains(ClaimRefID)) {
+//                if (Records.keySet().contains(ClaimID)) {
 //                    SHBECountPriorToApril2013++;
 //                    SHBECount++;
 //                }
 //            }
-                //if (ClaimRefID.getID() == 137367) {
+                //if (ClaimID.getID() == 137367) {
                 //    int debug = 1;
                 ClaimRef = ClaimRefIDToClaimRefLookup.get(ClaimRefID);
                 DW_Claim = ClaimData.get(ClaimRefID);
@@ -489,7 +489,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                         }
                         IndexOfLastSHBE = i;
 //                } else {
-//                    System.out.println("" + ClaimRefID + " not in SHBE " + DW_SHBE_Handler.getYM3(SHBEFilenames[i]));
+//                    System.out.println("" + ClaimID + " not in SHBE " + DW_SHBE_Handler.getYM3(SHBEFilenames[i]));
                     }
                     if (Suspended != null) {
                         if (Suspended) {

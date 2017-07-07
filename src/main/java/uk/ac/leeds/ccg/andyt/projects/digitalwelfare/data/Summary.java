@@ -5243,18 +5243,18 @@ public class Summary extends DW_Object {
         String YM31;
         DW_SHBE_Records DW_SHBE_Records0;
         DW_SHBE_Records DW_SHBE_Records1;
-        HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateInPayment0;
-        HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateSuspended0;
-        HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateOther0;
-        HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment0;
-        HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended0;
-        HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateOther0;
-        HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1;
-        HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1;
-        HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateOther1;
-        HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1;
-        HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1;
-        HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateOther1;
+        HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0;
+        HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0;
+        HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateOther0;
+        HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0;
+        HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0;
+        HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther0;
+        HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1;
+        HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1;
+        HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateOther1;
+        HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1;
+        HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1;
+        HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther1;
 
         // Initialise result
         result = new TreeMap<String, HashMap<String, String>>();
@@ -5276,23 +5276,17 @@ public class Summary extends DW_Object {
 
         DW_SHBE_Records1 = DW_SHBE_Data.getDW_SHBE_Records(YM31);
 
-        ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsWithStatusOfHBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsWithStatusOfCTBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsWithStatusOfHBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsWithStatusOfCTBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(env._HandleOutOfMemoryError_boolean);
 
         // Summarise first data
         doPartSummarySingleTime(
                 DW_SHBE_Records1,
                 DW_SHBE_Records1.getRecords(handleOutOfMemoryError),
-                //                ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1,
-                //                ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1,
-                //                ClaimRefIDsWithStatusOfHBAtExtractDateOther1,
-                //                ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1,
-                //                ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1,
-                //                ClaimRefIDsWithStatusOfCTBAtExtractDateOther1,
                 YM31,
                 filename1,
                 forceNewSummaries,
@@ -5305,12 +5299,12 @@ public class Summary extends DW_Object {
 
         filename0 = filename1;
         DW_SHBE_Records0 = DW_SHBE_Records1;
-        ClaimRefIDsWithStatusOfHBAtExtractDateInPayment0 = ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1;
-        ClaimRefIDsWithStatusOfHBAtExtractDateSuspended0 = ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1;
-        ClaimRefIDsWithStatusOfHBAtExtractDateOther0 = ClaimRefIDsWithStatusOfHBAtExtractDateOther1;
-        ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment0 = ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1;
-        ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended0 = ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1;
-        ClaimRefIDsWithStatusOfCTBAtExtractDateOther0 = ClaimRefIDsWithStatusOfCTBAtExtractDateOther1;
+        ClaimIDsWithStatusOfHBAtExtractDateInPayment0 = ClaimIDsWithStatusOfHBAtExtractDateInPayment1;
+        ClaimIDsWithStatusOfHBAtExtractDateSuspended0 = ClaimIDsWithStatusOfHBAtExtractDateSuspended1;
+        ClaimIDsWithStatusOfHBAtExtractDateOther0 = ClaimIDsWithStatusOfHBAtExtractDateOther1;
+        ClaimIDsWithStatusOfCTBAtExtractDateInPayment0 = ClaimIDsWithStatusOfCTBAtExtractDateInPayment1;
+        ClaimIDsWithStatusOfCTBAtExtractDateSuspended0 = ClaimIDsWithStatusOfCTBAtExtractDateSuspended1;
+        ClaimIDsWithStatusOfCTBAtExtractDateOther0 = ClaimIDsWithStatusOfCTBAtExtractDateOther1;
         YM30 = YM31;
         incrementCounts(nTT);
         initCounts(nTT, nEG, nPSI);
@@ -5323,30 +5317,30 @@ public class Summary extends DW_Object {
             // Load next data
             env.log("Load " + YM31);
             DW_SHBE_Records1 = DW_SHBE_Data.getDW_SHBE_Records(YM31);
-            ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean);
-            ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean);
-            ClaimRefIDsWithStatusOfHBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(env._HandleOutOfMemoryError_boolean);
-            ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean);
-            ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean);
-            ClaimRefIDsWithStatusOfCTBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(env._HandleOutOfMemoryError_boolean);
+            ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean);
+            ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean);
+            ClaimIDsWithStatusOfHBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(env._HandleOutOfMemoryError_boolean);
+            ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean);
+            ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean);
+            ClaimIDsWithStatusOfCTBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(env._HandleOutOfMemoryError_boolean);
             // doPartSummaryCompare2Times
             doPartSummaryCompare2Times(
                     DW_SHBE_Records0,
-                    ClaimRefIDsWithStatusOfHBAtExtractDateInPayment0,
-                    ClaimRefIDsWithStatusOfHBAtExtractDateSuspended0,
-                    ClaimRefIDsWithStatusOfHBAtExtractDateOther0,
-                    ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment0,
-                    ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended0,
-                    ClaimRefIDsWithStatusOfCTBAtExtractDateOther0,
+                    ClaimIDsWithStatusOfHBAtExtractDateInPayment0,
+                    ClaimIDsWithStatusOfHBAtExtractDateSuspended0,
+                    ClaimIDsWithStatusOfHBAtExtractDateOther0,
+                    ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
+                    ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
+                    ClaimIDsWithStatusOfCTBAtExtractDateOther0,
                     YM30,
                     filename0,
                     DW_SHBE_Records1,
-                    ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1,
-                    ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1,
-                    ClaimRefIDsWithStatusOfHBAtExtractDateOther1,
-                    ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1,
-                    ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1,
-                    ClaimRefIDsWithStatusOfCTBAtExtractDateOther1,
+                    ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
+                    ClaimIDsWithStatusOfHBAtExtractDateSuspended1,
+                    ClaimIDsWithStatusOfHBAtExtractDateOther1,
+                    ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
+                    ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
+                    ClaimIDsWithStatusOfCTBAtExtractDateOther1,
                     YM31,
                     filename1,
                     forceNewSummaries,
@@ -5360,12 +5354,12 @@ public class Summary extends DW_Object {
             if (includeIte.hasNext()) {
                 filename0 = filename1;
                 DW_SHBE_Records0 = DW_SHBE_Records1;
-                ClaimRefIDsWithStatusOfHBAtExtractDateInPayment0 = ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1;
-                ClaimRefIDsWithStatusOfHBAtExtractDateSuspended0 = ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1;
-                ClaimRefIDsWithStatusOfHBAtExtractDateOther0 = ClaimRefIDsWithStatusOfHBAtExtractDateOther1;
-                ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment0 = ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1;
-                ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended0 = ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1;
-                ClaimRefIDsWithStatusOfCTBAtExtractDateOther0 = ClaimRefIDsWithStatusOfCTBAtExtractDateOther1;
+                ClaimIDsWithStatusOfHBAtExtractDateInPayment0 = ClaimIDsWithStatusOfHBAtExtractDateInPayment1;
+                ClaimIDsWithStatusOfHBAtExtractDateSuspended0 = ClaimIDsWithStatusOfHBAtExtractDateSuspended1;
+                ClaimIDsWithStatusOfHBAtExtractDateOther0 = ClaimIDsWithStatusOfHBAtExtractDateOther1;
+                ClaimIDsWithStatusOfCTBAtExtractDateInPayment0 = ClaimIDsWithStatusOfCTBAtExtractDateInPayment1;
+                ClaimIDsWithStatusOfCTBAtExtractDateSuspended0 = ClaimIDsWithStatusOfCTBAtExtractDateSuspended1;
+                ClaimIDsWithStatusOfCTBAtExtractDateOther0 = ClaimIDsWithStatusOfCTBAtExtractDateOther1;
                 YM30 = YM31;
                 incrementCounts(nTT);
                 initCounts(nTT, nEG, nPSI);
@@ -5408,7 +5402,7 @@ public class Summary extends DW_Object {
         HashMap<String, String> summary;
         HashMap<String, Number> LoadSummary;
         HashMap<String, BigDecimal> IncomeAndRentSummary;
-        HashSet<DW_ID> ClaimRefIDsOfNewSHBEClaims;
+        HashSet<DW_ID> ClaimIDsOfNewSHBEClaims;
 
         // Initialise variables
         key = DW_SHBE_Handler.getYearMonthNumber(filename);
@@ -5426,17 +5420,17 @@ public class Summary extends DW_Object {
                 false,
                 false,
                 forceNewSummaries);
-        ClaimRefIDsOfNewSHBEClaims = DW_SHBE_Records.getClaimRefIDsOfNewSHBEClaims(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsOfNewSHBEClaims = DW_SHBE_Records.getClaimIDsOfNewSHBEClaims(env._HandleOutOfMemoryError_boolean);
         // Add load summary to summary
         addToSummary(summary, LoadSummary);
 
         /**
          * Add things not quite added right from load summary
          */
-        HashSet<DW_ID> ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
-        ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = DW_SHBE_Records.getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(env._HandleOutOfMemoryError_boolean);
+        HashSet<DW_ID> ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
+        ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = DW_SHBE_Records.getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(env._HandleOutOfMemoryError_boolean);
         summary.put(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
-                Integer.toString(ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.size()));
+                Integer.toString(ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.size()));
         HashSet<DW_PersonID> set;
         // Add unique Partners
         set = DW_SHBE_Handler.getUniquePersonIDs0(
@@ -5479,7 +5473,7 @@ public class Summary extends DW_Object {
         summary.put(DW_Strings.sCountOfNonDependentsInMultipleClaimsInAMonth,
                 "" + DW_SHBE_Records.getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup(env._HandleOutOfMemoryError_boolean).size());
 
-        addToSummary(summary, ClaimRefIDsOfNewSHBEClaims, Records);
+        addToSummary(summary, ClaimIDsOfNewSHBEClaims, Records);
         // doSingleTimeLoopOverSet
         doSingleTimeLoopOverSet(Records);
 //        AllCount1 = HBCount1 + CTBCount1;

@@ -27,9 +27,9 @@ import java.util.HashMap;
 public class DW_Claim extends DW_Object {
     
     /**
-     * The ClaimRefID of the claim.
+     * The ClaimID of the claim.
      */
-    DW_ID ClaimRefID;
+    DW_ID ClaimID;
     
     /**
      * Keys are SHBE indexes, values are (at the index time):
@@ -103,8 +103,8 @@ public class DW_Claim extends DW_Object {
      */    
     public HashMap<Integer, String> PostcodeFs;
     
-    public DW_Claim(DW_ID ClaimRefID){
-        this.ClaimRefID = ClaimRefID;
+    public DW_Claim(DW_ID ClaimID){
+        this.ClaimID = ClaimID;
         InSHBE = new HashMap<Integer, Boolean>();
         Suspended = new HashMap<Integer, Boolean>();
         InUO = new HashMap<Integer, Boolean>();

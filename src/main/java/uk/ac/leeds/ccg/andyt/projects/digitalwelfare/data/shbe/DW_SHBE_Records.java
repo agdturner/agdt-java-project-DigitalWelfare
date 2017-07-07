@@ -577,7 +577,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashSet<DW_ID> getClaimRefIDsOfNewSHBEClaims(boolean handleOutOfMemoryError) {
+    public final HashSet<DW_ID> getClaimIDsOfNewSHBEClaims(boolean handleOutOfMemoryError) {
         try {
             return getClaimRefIDsOfNewSHBEClaims();
         } catch (OutOfMemoryError e) {
@@ -587,7 +587,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDsOfNewSHBEClaims(handleOutOfMemoryError);
+                return getClaimIDsOfNewSHBEClaims(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -663,7 +663,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashSet<DW_ID> getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(boolean handleOutOfMemoryError) {
+    public final HashSet<DW_ID> getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(boolean handleOutOfMemoryError) {
         try {
             return getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore();
         } catch (OutOfMemoryError e) {
@@ -673,7 +673,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(handleOutOfMemoryError);
+                return getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -1275,7 +1275,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         env.logO("NearestYM3ForONSPDLookup " + NearestYM3ForONSPDLookup, true);
         DW_Strings = env.getDW_Strings();
         Records = getRecords(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsOfNewSHBEClaims = getClaimRefIDsOfNewSHBEClaims(env._HandleOutOfMemoryError_boolean);
+        ClaimRefIDsOfNewSHBEClaims = getClaimIDsOfNewSHBEClaims(env._HandleOutOfMemoryError_boolean);
         ClaimantPersonIDs = getClaimantPersonIDs(env._HandleOutOfMemoryError_boolean);
         PartnerPersonIDs = getPartnerPersonIDs(env._HandleOutOfMemoryError_boolean);
         NonDependentPersonIDs = getNonDependentPersonIDs(env._HandleOutOfMemoryError_boolean);
@@ -1472,12 +1472,12 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         AllClaimantPersonIDs = DW_SHBE_Data.getClaimantPersonIDs();
         AllPartnerPersonIDs = DW_SHBE_Data.getPartnerPersonIDs();
         AllNonDependentIDs = DW_SHBE_Data.getNonDependentPersonIDs();
-        PersonIDToClaimRefIDsLookup = DW_SHBE_Data.getPersonIDToClaimRefIDsLookup();
+        PersonIDToClaimRefIDsLookup = DW_SHBE_Data.getPersonIDToClaimIDLookup();
         PostcodeToPostcodeIDLookup = DW_SHBE_Data.getPostcodeToPostcodeIDLookup();
         PostcodeIDToPostcodeLookup = DW_SHBE_Data.getPostcodeIDToPostcodeLookup();
         PostcodeIDToPointLookup = DW_SHBE_Data.getPostcodeIDToPointLookup(YM3);
-        ClaimRefToClaimRefIDLookup = DW_SHBE_Data.getClaimRefToClaimRefIDLookup();
-        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimRefIDToClaimRefLookup();
+        ClaimRefToClaimRefIDLookup = DW_SHBE_Data.getClaimRefToClaimIDLookup();
+        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
         // Initialise statistics
         int CountOfNewMappableClaimantPostcodes = 0;
         int CountOfMappableClaimantPostcodes = 0;
@@ -2600,7 +2600,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                             ClaimantsNINO = DW_Strings.sDefaultNINO;
                             env.logE("ClaimantsNINO is empty for "
                                     + "ClaimRefID " + ClaimRefID + " ClaimRef "
-                                    + env.getDW_SHBE_Data().getClaimRefIDToClaimRefLookup().get(ClaimRefID)
+                                    + env.getDW_SHBE_Data().getClaimIDToClaimRefLookup().get(ClaimRefID)
                                     + " Setting as default NINO " + ClaimantsNINO);
                         }
                         int i;
@@ -2635,7 +2635,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                             "NINO " + NINO + " is not unique for " + ClaimantsNINO
                                             + " and ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim does not contain "
                                             + "ClaimRefID " + ClaimRefID + " for ClaimRef "
-                                            + env.getDW_SHBE_Data().getClaimRefIDToClaimRefLookup().get(ClaimRefID));
+                                            + env.getDW_SHBE_Data().getClaimIDToClaimRefLookup().get(ClaimRefID));
                                 }
                             } else {
                                 set = true;

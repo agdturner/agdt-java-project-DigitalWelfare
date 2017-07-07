@@ -1260,8 +1260,8 @@ public class TenancyChangesUO extends DW_Object {
         this.DW_SHBE_Handler = env.getDW_SHBE_Handler();
         this.DW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
         //this.PostcodeToPostcodeIDLookup = tPostcodeToPostcodeIDLookup;
-        this.ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimRefIDToClaimRefLookup();
-        this.ClaimRefToClaimRefIDLookup = DW_SHBE_Data.getClaimRefToClaimRefIDLookup();
+        this.ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
+        this.ClaimRefToClaimRefIDLookup = DW_SHBE_Data.getClaimRefToClaimIDLookup();
         initString();
     }
 
@@ -1273,13 +1273,13 @@ public class TenancyChangesUO extends DW_Object {
         TreeMap<String, String> result;
         result = new TreeMap<String, String>();
         // Init result
-        DW_ID ClaimRefID;
+        DW_ID ClaimID;
         String ClaimRef;
         Iterator<DW_ID> ite;
         ite = ClaimRefIDs.iterator();
         while (ite.hasNext()) {
-            ClaimRefID = ite.next();
-            ClaimRef = ClaimRefIDToClaimRefLookup.get(ClaimRefID);
+            ClaimID = ite.next();
+            ClaimRef = ClaimRefIDToClaimRefLookup.get(ClaimID);
             result.put(ClaimRef + DW_Strings.sUnderscore + sTT, s);
             result.put(ClaimRef + DW_Strings.sUnderscore + sUnderOccupancy, s);
             result.put(ClaimRef + DW_Strings.sUnderscore + sP, s);
@@ -1339,9 +1339,9 @@ public class TenancyChangesUO extends DW_Object {
             records = DW_SHBE_Records.getRecords(env._HandleOutOfMemoryError_boolean);
             ite = ClaimRefIDs.iterator();
             while (ite.hasNext()) {
-                ClaimRefID = ite.next();
-                ClaimRef = ClaimRefIDToClaimRefLookup.get(ClaimRefID);
-                record = records.get(ClaimRefID);
+                ClaimID = ite.next();
+                ClaimRef = ClaimRefIDToClaimRefLookup.get(ClaimID);
+                record = records.get(ClaimID);
                 if (record != null) {
                     dRecord = record.getDRecord();
                     // Tenancy Type
@@ -1917,7 +1917,7 @@ public class TenancyChangesUO extends DW_Object {
 //    String sTotalAggregateHouseholdSize_UOClaimsRSL = "TotalAggregateHouseholdSize_UOClaimsRSL";
 //    String sTotalAverageHouseholdSize_UOClaimsRSL = "TotalAverageHouseholdSize_UOClaimsRSL";
         HashSet<DW_ID>[] AllClaimRefIDs;
-        AllClaimRefIDs = getUOClaimRefIDs(
+        AllClaimRefIDs = getUOClaimIDs(
                 CouncilUOSets,
                 RSLUOSets,
                 SHBEFilenames,
@@ -1932,7 +1932,7 @@ public class TenancyChangesUO extends DW_Object {
         ClaimRefIDs.addAll(RSLClaimRefIDs);
 
         HashSet<DW_ID>[] StartUOClaimRefIDsX;
-        StartUOClaimRefIDsX = getStartUOClaimRefs(
+        StartUOClaimRefIDsX = getStartUOClaimIDs(
                 CouncilUOSets,
                 RSLUOSets,
                 SHBEFilenames,
@@ -1943,7 +1943,7 @@ public class TenancyChangesUO extends DW_Object {
         StartUOClaimRefIDs.addAll(StartUOClaimRefIDsX[1]);
 
         HashSet<DW_ID>[] EndUOClaimRefIDsX;
-        EndUOClaimRefIDsX = getEndUOClaimRefs(
+        EndUOClaimRefIDsX = getEndUOClaimIDs(
                 CouncilUOSets,
                 RSLUOSets,
                 SHBEFilenames,
@@ -4499,15 +4499,23 @@ public class TenancyChangesUO extends DW_Object {
      * @param ClaimRef
      * @param year0
      * @param month0
+     * @param YM30
+     * @param year1
+     * @param month1
      * @param YM31
      * @param Record1
      * @param Records0
-     * @param cRecords
      * @param TableValues
+     * @param CouncilUOSet0
+     * @param RSLUOSet0
      * @param CouncilUOSet1
-     * @param RSLUnderOccupiedSet1
+     * @param RSLUOSet1
+     * @param arrears
+     * @param arrearsCounts
      * @param CouncilUniqueIndividualsEffected
+     * @param arrearsDiffs
      * @param CouncilUniqueClaimantsEffectedPersonIDs
+     * @param arrearsDiffCounts
      * @param CouncilUniquePartnersEffectedPersonIDs
      * @param CouncilUniqueDependentChildrenUnder10EffectedPersonIDs
      * @param CouncilUniqueDependentChildrenOver10EffectedPersonIDs
@@ -6446,103 +6454,103 @@ public class TenancyChangesUO extends DW_Object {
     }
 
     private void doX(
-            DW_ID ClaimRefID,
+            DW_ID ClaimID,
             //int HBDP1,
             int TT1,
             boolean UO00,
             boolean UO0,
             boolean UO1,
             int Status0,
-            HashSet<DW_ID> UO_To_LeftSHBE_NotReturnedClaimRefIDs,
-            HashSet<DW_ID> UOTT1_To_LeftSHBE_NotReturnedClaimRefIDs,
-            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsUOTT1ClaimRefIDs,
-            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT1ClaimRefIDs,
-            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimRefIDs,
-            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsUOTT4ClaimRefIDs,
-            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT4ClaimRefIDs,
-            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimRefIDs,
-            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT8ClaimRefIDs,
-            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT9ClaimRefIDs,
-            HashSet<DW_ID> UOTT4_To_LeftSHBE_NotReturnedClaimRefIDs,
-            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsUOTT1ClaimRefIDs,
-            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT1ClaimRefIDs,
-            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimRefIDs,
-            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsUOTT4ClaimRefIDs,
-            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT4ClaimRefIDs,
-            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimRefIDs,
-            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT8ClaimRefIDs,
-            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT9ClaimRefIDs
+            HashSet<DW_ID> UO_To_LeftSHBE_NotReturnedClaimIDs,
+            HashSet<DW_ID> UOTT1_To_LeftSHBE_NotReturnedClaimIDs,
+            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs,
+            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT1ClaimIDs,
+            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs,
+            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs,
+            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT4ClaimIDs,
+            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs,
+            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT8ClaimIDs,
+            HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT9ClaimIDs,
+            HashSet<DW_ID> UOTT4_To_LeftSHBE_NotReturnedClaimIDs,
+            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs,
+            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT1ClaimIDs,
+            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs,
+            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs,
+            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT4ClaimIDs,
+            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs,
+            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT8ClaimIDs,
+            HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT9ClaimIDs
     //            ,
-    //            HashSet<DW_ID> UOTT1_To_UOTT4ClaimRefIDs,
-    //            HashSet<DW_ID> UOTT1_To_TT4ClaimRefIDs,
-    //            HashSet<DW_ID> TT1_To_UOTT4ClaimRefIDs,
-    //            HashSet<DW_ID> UOTT4_To_UOTT1ClaimRefIDs,
-    //            HashSet<DW_ID> UOTT4_To_TT1ClaimRefIDs,
-    //            HashSet<DW_ID> TT4_To_UOTT1ClaimRefIDs,
-    //            HashSet<DW_ID> TT1_To_UOTT1GettingDHPClaimRefIDs,
-    //            HashSet<DW_ID> TT1_To_UOTT4GettingDHPClaimRefIDs,
-    //            HashSet<DW_ID> TT4_To_UOTT1GettingDHPClaimRefIDs,
-    //            HashSet<DW_ID> TT4_To_UOTT4GettingDHPClaimRefIDs
+    //            HashSet<DW_ID> UOTT1_To_UOTT4ClaimIDs,
+    //            HashSet<DW_ID> UOTT1_To_TT4ClaimIDs,
+    //            HashSet<DW_ID> TT1_To_UOTT4ClaimIDs,
+    //            HashSet<DW_ID> UOTT4_To_UOTT1ClaimIDs,
+    //            HashSet<DW_ID> UOTT4_To_TT1ClaimIDs,
+    //            HashSet<DW_ID> TT4_To_UOTT1ClaimIDs,
+    //            HashSet<DW_ID> TT1_To_UOTT1GettingDHPClaimIDs,
+    //            HashSet<DW_ID> TT1_To_UOTT4GettingDHPClaimIDs,
+    //            HashSet<DW_ID> TT4_To_UOTT1GettingDHPClaimIDs,
+    //            HashSet<DW_ID> TT4_To_UOTT4GettingDHPClaimIDs
     ) {
-        if (UOTT1_To_LeftSHBE_NotReturnedClaimRefIDs.contains(ClaimRefID)) {
-            UO_To_LeftSHBE_NotReturnedClaimRefIDs.remove(ClaimRefID);
-            UOTT1_To_LeftSHBE_NotReturnedClaimRefIDs.remove(ClaimRefID);
+        if (UOTT1_To_LeftSHBE_NotReturnedClaimIDs.contains(ClaimID)) {
+            UO_To_LeftSHBE_NotReturnedClaimIDs.remove(ClaimID);
+            UOTT1_To_LeftSHBE_NotReturnedClaimIDs.remove(ClaimID);
             if (TT1 == 1) {
                 if (UO1) {
-                    UOTT1_To_LeftSHBE_ReturnedAsUOTT1ClaimRefIDs.add(ClaimRefID);
+                    UOTT1_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs.add(ClaimID);
                 } else if (Status0 != 1 && UO00) { // Not sure this covers everything! TT0 might be -999?
-                    UOTT1_To_LeftSHBE_ReturnedAsUOTT1ClaimRefIDs.add(ClaimRefID);
+                    UOTT1_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs.add(ClaimID);
                 } else {
-                    UOTT1_To_LeftSHBE_ReturnedAsTT1ClaimRefIDs.add(ClaimRefID);
+                    UOTT1_To_LeftSHBE_ReturnedAsTT1ClaimIDs.add(ClaimID);
                 }
             } else if (TT1 == 3 || TT1 == 6) {
 //                if (UO1) {
-//                   UOTT1_To_LeftSHBE_ReturnedAsUOTT3OrTT6ClaimRefIDs.add(ClaimRefID);
+//                   UOTT1_To_LeftSHBE_ReturnedAsUOTT3OrTT6ClaimIDs.add(ClaimID);
 //                } else {
-//                   UOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimRefIDs.add(ClaimRefID);
+//                   UOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs.add(ClaimID);
 //                }                
-                UOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimRefIDs.add(ClaimRefID);
+                UOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs.add(ClaimID);
             } else if (TT1 == 4) {
                 if (UO1) {
-                    UOTT1_To_LeftSHBE_ReturnedAsUOTT4ClaimRefIDs.add(ClaimRefID);
+                    UOTT1_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs.add(ClaimID);
                 } else {
-                    UOTT1_To_LeftSHBE_ReturnedAsTT4ClaimRefIDs.add(ClaimRefID);
+                    UOTT1_To_LeftSHBE_ReturnedAsTT4ClaimIDs.add(ClaimID);
                 }
             } else if (TT1 == 5 || TT1 == 7) {
-                UOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimRefIDs.add(ClaimRefID);
+                UOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs.add(ClaimID);
             } else if (TT1 == 8) {
-                UOTT1_To_LeftSHBE_ReturnedAsTT8ClaimRefIDs.add(ClaimRefID);
+                UOTT1_To_LeftSHBE_ReturnedAsTT8ClaimIDs.add(ClaimID);
             } else if (TT1 == 9) {
-                UOTT1_To_LeftSHBE_ReturnedAsTT9ClaimRefIDs.add(ClaimRefID);
+                UOTT1_To_LeftSHBE_ReturnedAsTT9ClaimIDs.add(ClaimID);
             }
-        } else if (UOTT4_To_LeftSHBE_NotReturnedClaimRefIDs.contains(ClaimRefID)) {
-            UO_To_LeftSHBE_NotReturnedClaimRefIDs.remove(ClaimRefID);
-            UOTT4_To_LeftSHBE_NotReturnedClaimRefIDs.remove(ClaimRefID);
+        } else if (UOTT4_To_LeftSHBE_NotReturnedClaimIDs.contains(ClaimID)) {
+            UO_To_LeftSHBE_NotReturnedClaimIDs.remove(ClaimID);
+            UOTT4_To_LeftSHBE_NotReturnedClaimIDs.remove(ClaimID);
             if (TT1 == 1) {
                 if (UO1) {
-                    UOTT4_To_LeftSHBE_ReturnedAsUOTT1ClaimRefIDs.add(ClaimRefID);
+                    UOTT4_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs.add(ClaimID);
                 } else {
-                    UOTT4_To_LeftSHBE_ReturnedAsTT1ClaimRefIDs.add(ClaimRefID);
+                    UOTT4_To_LeftSHBE_ReturnedAsTT1ClaimIDs.add(ClaimID);
                 }
             } else if (TT1 == 3 || TT1 == 6) {
 //                if (UO1) {
-//                   UOTT4_To_LeftSHBE_ReturnedAsUOTT3OrTT6ClaimRefIDs.add(ClaimRefID);
+//                   UOTT4_To_LeftSHBE_ReturnedAsUOTT3OrTT6ClaimIDs.add(ClaimID);
 //                } else {
-//                   UOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimRefIDs.add(ClaimRefID);
+//                   UOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs.add(ClaimID);
 //                }                
-                UOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimRefIDs.add(ClaimRefID);
+                UOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs.add(ClaimID);
             } else if (TT1 == 4) {
                 if (UO1) {
-                    UOTT4_To_LeftSHBE_ReturnedAsUOTT4ClaimRefIDs.add(ClaimRefID);
+                    UOTT4_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs.add(ClaimID);
                 } else {
-                    UOTT4_To_LeftSHBE_ReturnedAsTT4ClaimRefIDs.add(ClaimRefID);
+                    UOTT4_To_LeftSHBE_ReturnedAsTT4ClaimIDs.add(ClaimID);
                 }
             } else if (TT1 == 5 || TT1 == 7) {
-                UOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimRefIDs.add(ClaimRefID);
+                UOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs.add(ClaimID);
             } else if (TT1 == 8) {
-                UOTT4_To_LeftSHBE_ReturnedAsTT8ClaimRefIDs.add(ClaimRefID);
+                UOTT4_To_LeftSHBE_ReturnedAsTT8ClaimIDs.add(ClaimID);
             } else if (TT1 == 9) {
-                UOTT4_To_LeftSHBE_ReturnedAsTT9ClaimRefIDs.add(ClaimRefID);
+                UOTT4_To_LeftSHBE_ReturnedAsTT9ClaimIDs.add(ClaimID);
             }
         }
     }
@@ -6720,7 +6728,7 @@ public class TenancyChangesUO extends DW_Object {
     }
 
     /**
-     * This returns the ClaimRefs of the UnderOccupying claims in the first
+     * This returns the Claims of the UnderOccupying claims in the first
      * include period.
      *
      * @TODO For overall computational efficiency, this should probably only be
@@ -6732,7 +6740,7 @@ public class TenancyChangesUO extends DW_Object {
      * @param include
      * @return
      */
-    public HashSet<DW_ID>[] getStartUOClaimRefs(
+    public HashSet<DW_ID>[] getStartUOClaimIDs(
             TreeMap<String, DW_UO_Set> councilUnderOccupiedSets,
             TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets,
             String[] SHBEFilenames,
@@ -6763,7 +6771,7 @@ public class TenancyChangesUO extends DW_Object {
     }
 
     /**
-     * This returns the ClaimRefs of the UnderOccupying claims in the last
+     * This returns the Claims of the UnderOccupying claims in the last
      * include period.
      *
      * @TODO For overall computational efficiency, this should probably only be
@@ -6775,7 +6783,7 @@ public class TenancyChangesUO extends DW_Object {
      * @param include
      * @return
      */
-    public HashSet<DW_ID>[] getEndUOClaimRefs(
+    public HashSet<DW_ID>[] getEndUOClaimIDs(
             TreeMap<String, DW_UO_Set> CouncilUnderOccupiedSets,
             TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets,
             String[] SHBEFilenames,
@@ -6808,7 +6816,7 @@ public class TenancyChangesUO extends DW_Object {
         return result;
     }
 
-    public HashSet<DW_ID>[] getUOClaimRefIDs(
+    public HashSet<DW_ID>[] getUOClaimIDs(
             TreeMap<String, DW_UO_Set> CouncilUnderOccupiedSets,
             TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets,
             String[] SHBEFilenames,

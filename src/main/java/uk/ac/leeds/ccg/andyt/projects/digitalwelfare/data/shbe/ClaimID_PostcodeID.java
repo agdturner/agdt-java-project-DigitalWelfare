@@ -20,46 +20,46 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
 import java.io.Serializable;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 
 /**
  *
  * @author geoagdt
  */
-public class ClaimRefID_TenancyType_PostcodeID implements Serializable {
+public class ClaimID_PostcodeID implements Serializable {
 
-    private final ClaimRefID_TenancyType ID_TenancyType;
-    private final DW_ID PostcodeID;
+    private DW_ID ClaimID;
+    private DW_ID PostcodeID;
 
-    public ClaimRefID_TenancyType_PostcodeID(
-            ClaimRefID_TenancyType ID_TenancyType,
+    public ClaimID_PostcodeID() {
+    }
+
+    public ClaimID_PostcodeID(
+            DW_ID ClaimRefID,
             DW_ID PostcodeID
     ) {
-        this.ID_TenancyType = ID_TenancyType;
+        this.ClaimID = ClaimRefID;
         this.PostcodeID = PostcodeID;
     }
 
     /**
-     * @return the TenancyType
+     * @return the Postcode
      */
-    public int getTenancyType() {
-        return ID_TenancyType.getTenancyType(); // For convenience
+    public DW_ID getClaimID() {
+        return ClaimID;
     }
 
     /**
-     * @return the TenancyType.ID
-     */
-    public DW_ID getID() {
-        return ID_TenancyType.getClaimRefID(); // For convenience
-    }
-
-    /**
-     * @return the PostcodeID
+     * @return the Postcode
      */
     public DW_ID getPostcodeID() {
         return PostcodeID;
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -68,16 +68,14 @@ public class ClaimRefID_TenancyType_PostcodeID implements Serializable {
         if (obj == null) {
             return false;
         }
-        if (obj instanceof ClaimRefID_TenancyType_PostcodeID) {
-            ClaimRefID_TenancyType_PostcodeID o;
-            o = (ClaimRefID_TenancyType_PostcodeID) obj;
-            //if (this.hashCode() == o.hashCode()) {
+        if (obj instanceof ClaimID_PostcodeID) {
+            ClaimID_PostcodeID o;
+            o = (ClaimID_PostcodeID) obj;
+            if (this.ClaimID.equals(o.ClaimID)) {
                 if (PostcodeID.equals(o.PostcodeID)) {
-                    if (ID_TenancyType.equals(o.ID_TenancyType)) {
-                        return true;
-                    }
+                    return true;
                 }
-            //}
+            }
         }
         return false;
     }
@@ -85,9 +83,9 @@ public class ClaimRefID_TenancyType_PostcodeID implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 97 * hash + (this.ID_TenancyType != null ? this.ID_TenancyType.hashCode() : 0);
-        hash = 97 * hash + (this.PostcodeID != null ? this.PostcodeID.hashCode() : 0);
+        hash = 67 * hash + (this.ClaimID != null ? this.ClaimID.hashCode() : 0);
+        hash = 67 * hash + (this.PostcodeID != null ? this.PostcodeID.hashCode() : 0);
         return hash;
     }
-
+   
 }

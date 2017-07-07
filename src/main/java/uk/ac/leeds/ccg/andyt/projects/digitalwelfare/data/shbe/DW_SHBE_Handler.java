@@ -116,11 +116,11 @@ public class DW_SHBE_Handler extends DW_Object {
 
     public void writeLookups() {
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getClaimRefIDToClaimRefLookup(),
-                DW_SHBE_Data.getClaimRefIDToClaimRefLookupFile());
+                DW_SHBE_Data.getClaimIDToClaimRefLookup(),
+                DW_SHBE_Data.getClaimIDToClaimRefLookupFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getClaimRefToClaimRefIDLookup(),
-                DW_SHBE_Data.getClaimRefToClaimRefIDLookupFile());
+                DW_SHBE_Data.getClaimRefToClaimIDLookup(),
+                DW_SHBE_Data.getClaimRefToClaimIDLookupFile());
         Generic_StaticIO.writeObject(
                 DW_SHBE_Data.getNINOToNINOIDLookup(),
                 DW_SHBE_Data.getNINOToNINOIDLookupFile());
@@ -152,8 +152,8 @@ public class DW_SHBE_Handler extends DW_Object {
                 DW_SHBE_Data.getNonDependentPersonIDs(),
                 DW_SHBE_Data.getNonDependentPersonIDsFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getPersonIDToClaimRefIDsLookup(),
-                DW_SHBE_Data.getPersonIDToClaimRefIDsLookupFile());
+                DW_SHBE_Data.getPersonIDToClaimIDLookup(),
+                DW_SHBE_Data.getPersonIDToClaimIDLookupFile());
     }
 
     /**
@@ -232,7 +232,7 @@ public class DW_SHBE_Handler extends DW_Object {
         HashMap<String, HashMap<DW_ID, AGDT_Point>> PostcodeIDPointLookups;
         PostcodeIDPointLookups = DW_SHBE_Data.getPostcodeIDToPointLookups();
         HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup;
-        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimRefIDToClaimRefLookup();
+        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
 
         // Prepare for output
         PrintWriter pw = null;
@@ -485,7 +485,7 @@ public class DW_SHBE_Handler extends DW_Object {
         HashMap<String, HashMap<DW_ID, AGDT_Point>> PostcodeIDPointLookups;
         PostcodeIDPointLookups = DW_SHBE_Data.getPostcodeIDToPointLookups();
         HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup;
-        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimRefIDToClaimRefLookup();
+        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
 
         // Prepare for output
         PrintWriter pw = null;

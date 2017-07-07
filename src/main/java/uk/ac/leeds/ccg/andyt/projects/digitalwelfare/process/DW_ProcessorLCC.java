@@ -61,7 +61,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         DW_SHBE_Handler = env.getDW_SHBE_Handler();
         DW_UO_Data = env.getDW_UO_Data();
         SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
-        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimRefIDToClaimRefLookup();
+        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
     }
 
     /**

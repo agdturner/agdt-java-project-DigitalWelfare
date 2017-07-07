@@ -59,8 +59,8 @@ public class DW_UO_Handler extends DW_Object {
         super(env);
         this.DW_Files = env.getDW_Files();
         this.DW_Strings = env.getDW_Strings();
-        ClaimRefIDToClaimRefLookup = env.getDW_SHBE_Data().getClaimRefIDToClaimRefLookup();
-        ClaimRefToClaimRefIDLookup = env.getDW_SHBE_Data().getClaimRefToClaimRefIDLookup();
+        ClaimRefIDToClaimRefLookup = env.getDW_SHBE_Data().getClaimIDToClaimRefLookup();
+        ClaimRefToClaimRefIDLookup = env.getDW_SHBE_Data().getClaimRefToClaimIDLookup();
     }
 
     public HashSet<String> getRecordTypes() {

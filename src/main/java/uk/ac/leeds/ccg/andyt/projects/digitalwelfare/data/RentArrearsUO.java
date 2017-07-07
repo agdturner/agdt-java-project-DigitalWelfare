@@ -53,8 +53,6 @@ public final class RentArrearsUO extends DW_Object {
     public transient DW_Strings DW_Strings;
     public transient DW_Files DW_Files;
     public transient DW_UO_Data DW_UO_Data;
-    //HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup;
-    //HashMap<String, DW_ID> ClaimRefToClaimRefIDLookup;
 
     public HashMap<DW_ID, DW_Claim> ClaimData;
 
@@ -87,15 +85,15 @@ public final class RentArrearsUO extends DW_Object {
         env.logO("<" + methodName + ">", true);
         // Declare and fill ClaimData with empty DW_Claims
         ClaimData = new HashMap<DW_ID, DW_Claim>();
-        HashSet<DW_ID> AllCouncilUOClaimRefIDs;
-        AllCouncilUOClaimRefIDs = DW_UO_Data.getClaimIDsInCouncilUO();
-        env.logO("AllCouncilUOClaimRefIDs.size() " + AllCouncilUOClaimRefIDs.size(), true);
-        DW_ID ClaimRefID;
+        HashSet<DW_ID> AllCouncilUOClaimIDs;
+        AllCouncilUOClaimIDs = DW_UO_Data.getClaimIDsInCouncilUO();
+        env.logO("AllCouncilUOClaimIDs.size() " + AllCouncilUOClaimIDs.size(), true);
+        DW_ID ClaimID;
         Iterator<DW_ID> ite;
-        ite = AllCouncilUOClaimRefIDs.iterator();
+        ite = AllCouncilUOClaimIDs.iterator();
         while (ite.hasNext()) {
-            ClaimRefID = ite.next();
-            ClaimData.put(ClaimRefID, new DW_Claim(ClaimRefID));
+            ClaimID = ite.next();
+            ClaimData.put(ClaimID, new DW_Claim(ClaimID));
         }
         // Loop through and add data to ClaimData
         // Declare variables
@@ -138,12 +136,12 @@ public final class RentArrearsUO extends DW_Object {
             if (CouncilUOSet == null) {
                 DW_SHBE_Records = DW_SHBE_Data.getDW_SHBE_Records(YM3);
                 Records = DW_SHBE_Records.getRecords(env._HandleOutOfMemoryError_boolean);
-                ite = AllCouncilUOClaimRefIDs.iterator();
+                ite = AllCouncilUOClaimIDs.iterator();
                 while (ite.hasNext()) {
-                    ClaimRefID = ite.next();
-                    DW_Claim = ClaimData.get(ClaimRefID);
-                    if (Records.containsKey(ClaimRefID)) {
-                        DW_SHBE_Record = Records.get(ClaimRefID);
+                    ClaimID = ite.next();
+                    DW_Claim = ClaimData.get(ClaimID);
+                    if (Records.containsKey(ClaimID)) {
+                        DW_SHBE_Record = Records.get(ClaimID);
                         DRecord = DW_SHBE_Record.getDRecord();
                         DHP = DRecord.getWeeklyAdditionalDiscretionaryPayment();
                         DW_Claim.DHP.put(i, DHP);
@@ -165,12 +163,12 @@ public final class RentArrearsUO extends DW_Object {
                 DW_SHBE_Records = DW_SHBE_Data.getDW_SHBE_Records(YM3);
                 Records = DW_SHBE_Records.getRecords(env._HandleOutOfMemoryError_boolean);
 
-                ite = AllCouncilUOClaimRefIDs.iterator();
+                ite = AllCouncilUOClaimIDs.iterator();
                 while (ite.hasNext()) {
-                    ClaimRefID = ite.next();
-                    DW_Claim = ClaimData.get(ClaimRefID);
-                    if (Records.containsKey(ClaimRefID)) {
-                        DW_SHBE_Record = Records.get(ClaimRefID);
+                    ClaimID = ite.next();
+                    DW_Claim = ClaimData.get(ClaimID);
+                    if (Records.containsKey(ClaimID)) {
+                        DW_SHBE_Record = Records.get(ClaimID);
                         DRecord = DW_SHBE_Record.getDRecord();
                         DHP = DRecord.getWeeklyAdditionalDiscretionaryPayment();
                         DW_Claim.DHP.put(i, DHP);
@@ -179,9 +177,9 @@ public final class RentArrearsUO extends DW_Object {
                         } else {
                             DW_Claim.Suspended.put(i, true);
                         }
-                        if (CouncilUOMap.keySet().contains(ClaimRefID)) {
+                        if (CouncilUOMap.keySet().contains(ClaimID)) {
                             DW_Claim.InUO.put(i, true);
-                            DW_UO_Record = CouncilUOMap.get(ClaimRefID);
+                            DW_UO_Record = CouncilUOMap.get(ClaimID);
                             RentArrears = DW_UO_Record.getTotalRentArrears();
                             DW_Claim.RentArrears.put(i, RentArrears);
                             BedroomRequirement = DW_UO_Record.getBedroomRequirement();
@@ -207,9 +205,11 @@ public final class RentArrearsUO extends DW_Object {
                         PostcodeF = DW_SHBE_Record.getClaimPostcodeF();
                         DW_Claim.PostcodeFs.put(i, PostcodeF);
                     } else {
-                        if (CouncilUOSet.getClaimIDs().contains(ClaimRefID)) {
+                        if (CouncilUOSet.getClaimIDs().contains(ClaimID)) {
                             DW_Claim.InUO.put(i, true);
-                            System.out.println("ClaimRefID " + ClaimRefID + " Odd case where UO data exists, but claim in SHBE does not.");
+                            env.logO(env.DEBUG_Level_FINE,
+                                    "ClaimID " + ClaimID + 
+                                            " Odd case where UO data exists, but claim in SHBE does not.");
                         } else {
                             DW_Claim.InUO.put(i, false);
                         }

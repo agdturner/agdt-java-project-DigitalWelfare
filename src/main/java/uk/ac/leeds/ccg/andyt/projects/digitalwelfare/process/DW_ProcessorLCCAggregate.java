@@ -103,7 +103,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         DW_UO_Handler = env.getDW_UO_Handler();
         DW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
         DW_SHBE_Data = env.getDW_SHBE_Data();
-        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimRefIDToClaimRefLookup();
+        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
         DW_UO_Data = env.getDW_UO_Data();
     }
 
@@ -2517,7 +2517,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 String CTBRef1;
                                 CTBRef1 = DRecord1.getCouncilTaxBenefitClaimReferenceNumber();
                                 DW_ID ClaimRefID1;
-                                ClaimRefID1 = DW_SHBE_Data.getClaimRefToClaimRefIDLookup().get(CTBRef1);
+                                ClaimRefID1 = DW_SHBE_Data.getClaimRefToClaimIDLookup().get(CTBRef1);
                                 DW_ID claimantDW_ID1;
                                 claimantDW_ID1 = null;//DW_PersonIDtoDW_IDLookup.get(claimantDW_PersonID1);
                                 String claimantType;

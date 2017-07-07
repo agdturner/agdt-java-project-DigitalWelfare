@@ -19,7 +19,6 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,7 +35,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  *
  * @author geoagdt
  */
-public class DW_CorrectedPostcodes extends DW_Object { //implements Serializable {
+public class DW_CorrectedPostcodes extends DW_Object {
 
     protected transient DW_Postcode_Handler DW_Postcode_Handler;
     protected transient DW_Files DW_Files;

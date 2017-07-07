@@ -44,12 +44,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Se
  */
 public class SummaryUO extends Summary {
 
-    /**
-     * For convenience
-     */
-    //HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup;
-    //HashMap<String, DW_ID> ClaimRefToClaimRefIDLookup;
-
     protected final String sAllUO = "AllUO";
     protected final String sCouncil = "Council";
     protected final String sRSL = "RSL";
@@ -605,8 +599,6 @@ public class SummaryUO extends Summary {
             int nPSI,
             boolean handleOutOfMemoryError) {
         super(env, nTT, nEG, nPSI, handleOutOfMemoryError);
-//        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimRefIDToClaimRefLookup();
-//        ClaimRefToClaimRefIDLookup = DW_SHBE_Data.getClaimRefToClaimRefIDLookup();
         init(nTT, nEG, nPSI);
     }
 
@@ -2346,18 +2338,18 @@ public class SummaryUO extends Summary {
      * Tax Support claims in the other. For claims in at least one UO data, Rent
      * Arrears are used.
      *
-     * @param ClaimRefID The ClaimRefID of the claim to be processed.
-     * @param DW_UO_Set0CouncilMap Keys are ClaimRefIDs values are Council
+     * @param ClaimID The ClaimID of the claim to be processed.
+     * @param DW_UO_Set0CouncilMap Keys are ClaimIDs values are Council
      * DW_UO_Record for the former time period.
-     * @param DW_UO_Set1CouncilMap Keys are ClaimRefIDs values are Council
+     * @param DW_UO_Set1CouncilMap Keys are ClaimIDs values are Council
      * DW_UO_Record for the latter time period.
-     * @param Records0 Keys are ClaimRefIDs values are DW_SHBE_Record for the
+     * @param Records0 Keys are ClaimIDs values are DW_SHBE_Record for the
      * former time period.
-     * @param Records1 Keys are ClaimRefIDs values are DW_SHBE_Record for the
+     * @param Records1 Keys are ClaimIDs values are DW_SHBE_Record for the
      * latter time period.
      */
     protected void doCouncilCompare2TimesCounts(
-            DW_ID ClaimRefID,
+            DW_ID ClaimID,
             HashSet<DW_ID> Group,
             HashMap<DW_ID, DW_SHBE_Record> Records0,
             HashMap<DW_ID, DW_UO_Record> DW_UO_Set0CouncilMap,
@@ -2374,8 +2366,8 @@ public class SummaryUO extends Summary {
         DW_SHBE_D_Record DRecord1;
         DW_UO_Record DW_UO_Record0;
         DW_UO_Record DW_UO_Record1;
-        Record0 = Records0.get(ClaimRefID);
-        Record1 = Records1.get(ClaimRefID);
+        Record0 = Records0.get(ClaimID);
+        Record1 = Records1.get(ClaimID);
         DRecord0 = null;
         if (Record0 != null) {
             DRecord0 = Record0.getDRecord();
@@ -2384,8 +2376,8 @@ public class SummaryUO extends Summary {
         if (Record1 != null) {
             DRecord1 = Record1.getDRecord();
         }
-        DW_UO_Record0 = DW_UO_Set0CouncilMap.get(ClaimRefID);
-        DW_UO_Record1 = DW_UO_Set1CouncilMap.get(ClaimRefID);
+        DW_UO_Record0 = DW_UO_Set0CouncilMap.get(ClaimID);
+        DW_UO_Record1 = DW_UO_Set1CouncilMap.get(ClaimID);
         // Call super.
         super.doCompare2TimesCounts(Record0, DRecord0, Record1, DRecord1);
         /**
@@ -2431,7 +2423,7 @@ public class SummaryUO extends Summary {
                         // Case when Record1 == null and isHBClaim0.
                         doCouncilCompare2TimesHBCount(
                                 
-                                ClaimRefID,
+                                ClaimID,
                                 Group,
                                 
                                 RentArrears0,
@@ -2448,7 +2440,7 @@ public class SummaryUO extends Summary {
                         // Case when Record1 == null and Record0 == null.
                         doCouncilCompare2TimesHBCount(
                                 
-                                ClaimRefID,
+                                ClaimID,
                                 Group,
                                 
                                 RentArrears0,
@@ -2466,7 +2458,7 @@ public class SummaryUO extends Summary {
                     // Case when Record1 != null and Record0 == null.
                     doCouncilCompare2TimesHBCount(
                             
-                                ClaimRefID,
+                                ClaimID,
                                 Group,
                                 
                                 RentArrears0,
@@ -2483,7 +2475,7 @@ public class SummaryUO extends Summary {
                     // Case when Record1 != null and isHBClaim0.
                     doCouncilCompare2TimesHBCount(
                             
-                                ClaimRefID,
+                                ClaimID,
                                 Group,
                                 
                                 RentArrears0,
@@ -3088,7 +3080,7 @@ public class SummaryUO extends Summary {
 
     protected void doCouncilCompare2TimesHBCount(
             
-            DW_ID ClaimRefID,
+            DW_ID ClaimID,
             HashSet<DW_ID> Group,
             
             Double Arrears0,
@@ -3114,7 +3106,7 @@ public class SummaryUO extends Summary {
         if (Arrears0 != null && Arrears1 != null) {
             SumArrearsDiffInBoth += (Arrears1 - Arrears0);
             TotalCount_CouncilInBoth++;
-            if (Group.contains(ClaimRefID)) {
+            if (Group.contains(ClaimID)) {
                 SumArrearsDiffInBothG0 += (Arrears1 - Arrears0);
                 TotalCount_CouncilInBothG0 ++;
             } else {
@@ -3462,17 +3454,17 @@ public class SummaryUO extends Summary {
         map = CouncilUOSet1.getMap();
         Iterator<DW_ID> ite;
         ite = map.keySet().iterator();
-        DW_ID ClaimRefID;
+        DW_ID ClaimID;
         DW_UO_Record DW_UO_Record;
         Double tra;
         while (ite.hasNext()) {
-            ClaimRefID = ite.next();
-            DW_UO_Record = map.get(ClaimRefID);
+            ClaimID = ite.next();
+            DW_UO_Record = map.get(ClaimID);
             tra = DW_UO_Record.getTotalRentArrears();
             if (tra != null) {
                 if (tra < 50) {
                     //System.out.println(tra);
-                    Group.add(ClaimRefID);
+                    Group.add(ClaimID);
                 }
             }
         }
@@ -3803,13 +3795,13 @@ public class SummaryUO extends Summary {
      * latterly but not formerly Under Occupied; 3) Goes through all those
      * formerly but not latterly Under Occupied.
      *
-     * @param DW_UO_Set0CouncilMap Keys are ClaimRefIDs values are Council
+     * @param DW_UO_Set0CouncilMap Keys are ClaimIDs values are Council
      * DW_UO_Record for the former time period.
-     * @param DW_UO_Set1CouncilMap Keys are ClaimRefIDs values are Council
+     * @param DW_UO_Set1CouncilMap Keys are ClaimIDs values are Council
      * DW_UO_Record for the latter time period.
-     * @param Records0 Keys are ClaimRefIDs values are DW_SHBE_Record for the
+     * @param Records0 Keys are ClaimIDs values are DW_SHBE_Record for the
      * former time period.
-     * @param Records1 Keys are ClaimRefIDs values are DW_SHBE_Record for the
+     * @param Records1 Keys are ClaimIDs values are DW_SHBE_Record for the
      * latter time period.
      */
     public void doCouncilCompare2TimesLoopOverSet(
@@ -3824,11 +3816,11 @@ public class SummaryUO extends Summary {
         // Go through all those currently and previously UO.
         ite = DW_UO_Set1CouncilMap.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimRefID;
-            ClaimRefID = ite.next();
-            if (DW_UO_Set0CouncilMap.containsKey(ClaimRefID)) {
+            DW_ID ClaimID;
+            ClaimID = ite.next();
+            if (DW_UO_Set0CouncilMap.containsKey(ClaimID)) {
                 doCouncilCompare2TimesCounts(
-                        ClaimRefID,
+                        ClaimID,
                         
                         Group,
                                 
@@ -3841,15 +3833,15 @@ public class SummaryUO extends Summary {
         // Go through all those currently UO but that were not previously UO.      
         ite = DW_UO_Set1CouncilMap.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimRefID;
-            ClaimRefID = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_UO_Record UORec;
-            UORec = DW_UO_Set1CouncilMap.get(ClaimRefID);
+            UORec = DW_UO_Set1CouncilMap.get(ClaimID);
             // Rent Arrears Summary
             doSingleTimeRentArrearsCount(UORec);
-            if (!DW_UO_Set0CouncilMap.keySet().contains(ClaimRefID)) {
+            if (!DW_UO_Set0CouncilMap.keySet().contains(ClaimID)) {
                 doCouncilCompare2TimesCounts(
-                        ClaimRefID,
+                        ClaimID,
                         
                         Group,
                         
@@ -3862,18 +3854,16 @@ public class SummaryUO extends Summary {
         // Go through all those that were UO but are not currently UO.
         ite = DW_UO_Set0CouncilMap.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimRefID;
-            ClaimRefID = ite.next();
-            if (!DW_UO_Set1CouncilMap.containsKey(ClaimRefID)) {
+            DW_ID ClaimID;
+            ClaimID = ite.next();
+            if (!DW_UO_Set1CouncilMap.containsKey(ClaimID)) {
 //                DW_UO_Record UORec;
-//                UORec = DW_UO_Set0CouncilMap.get(ClaimRefID);
+//                UORec = DW_UO_Set0CouncilMap.get(ClaimID);
 //                // Rent Arrears Summary
 //                doSingleTimeRentArrearsCount(UORec);
                 doCouncilCompare2TimesCounts(
-                        ClaimRefID,
-                        
+                        ClaimID,
                         Group,
-                        
                         Records0,
                         DW_UO_Set0CouncilMap,
                         Records1,
@@ -3891,11 +3881,11 @@ public class SummaryUO extends Summary {
         // Go through all those currently and previously UO.
         ite = map1.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimRefID;
-            ClaimRefID = ite.next();
-            if (map0.containsKey(ClaimRefID)) {
+            DW_ID ClaimID;
+            ClaimID = ite.next();
+            if (map0.containsKey(ClaimID)) {
                 doRSLCompare2TimesCountsAsNecessary(
-                        ClaimRefID,
+                        ClaimID,
                         Records0,
                         Records1);
             }
@@ -3903,15 +3893,15 @@ public class SummaryUO extends Summary {
         // Go through all those currently UO but that were not previously UO.      
         ite = map1.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimRefID;
-            ClaimRefID = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_UO_Record UORec;
-            UORec = map1.get(ClaimRefID);
+            UORec = map1.get(ClaimID);
             // Rent Arrears Summary
             doSingleTimeRentArrearsCount(UORec);
-            if (!map0.keySet().contains(ClaimRefID)) {
+            if (!map0.keySet().contains(ClaimID)) {
                 doRSLCompare2TimesCountsAsNecessary(
-                        ClaimRefID,
+                        ClaimID,
                         Records0,
                         Records1);
             }
@@ -3919,15 +3909,15 @@ public class SummaryUO extends Summary {
         // Go through all those that were UO but are not currently UO.
         ite = map0.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimRefID;
-            ClaimRefID = ite.next();
-            if (!map1.containsKey(ClaimRefID)) {
+            DW_ID ClaimID;
+            ClaimID = ite.next();
+            if (!map1.containsKey(ClaimID)) {
 //                DW_UO_Record UORec;
-//                UORec = map0.get(ClaimRefID);
+//                UORec = map0.get(ClaimID);
 //                // Rent Arrears Summary
 //                doSingleTimeRentArrearsCount(UORec);
                 doRSLCompare2TimesCountsAsNecessary(
-                        ClaimRefID,
+                        ClaimID,
                         Records0,
                         Records1);
             }
@@ -3935,13 +3925,13 @@ public class SummaryUO extends Summary {
     }
 
     private void doRSLCompare2TimesCountsAsNecessary(
-            DW_ID ClaimRefID,
+            DW_ID ClaimID,
             HashMap<DW_ID, DW_SHBE_Record> Records0,
             HashMap<DW_ID, DW_SHBE_Record> Records1) {
         DW_SHBE_Record Record0;
-        Record0 = Records0.get(ClaimRefID);
+        Record0 = Records0.get(ClaimID);
         DW_SHBE_Record Record1;
-        Record1 = Records1.get(ClaimRefID);
+        Record1 = Records1.get(ClaimID);
         DW_SHBE_D_Record D_Record0;
         D_Record0 = null;
         if (Record0 != null) {
@@ -3972,14 +3962,14 @@ public class SummaryUO extends Summary {
         Iterator<DW_ID> ite;
         ite = map.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimRefID;
-            ClaimRefID = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_UO_Record DW_UO_Record;
-            DW_UO_Record = map.get(ClaimRefID);
+            DW_UO_Record = map.get(ClaimID);
             // Rent Arrears Summary
             doSingleTimeRentArrearsCount(DW_UO_Record);
             DW_SHBE_Record Record;
-            Record = Records.get(ClaimRefID);
+            Record = Records.get(ClaimID);
             if (Record != null) {
                 DW_SHBE_D_Record D_Record;
                 D_Record = Record.getDRecord();
@@ -4006,14 +3996,14 @@ public class SummaryUO extends Summary {
         Iterator<DW_ID> ite;
         ite = map.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimRefID;
-            ClaimRefID = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_UO_Record UORec;
-            UORec = map.get(ClaimRefID);
+            UORec = map.get(ClaimID);
             // Rent Arrears Summary
             doSingleTimeRentArrearsCount(UORec);
             DW_SHBE_Record Record;
-            Record = D_Records.get(ClaimRefID);
+            Record = D_Records.get(ClaimID);
             if (Record != null) {
                 DW_SHBE_D_Record D_Record;
                 D_Record = Record.getDRecord();

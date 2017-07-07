@@ -58,14 +58,14 @@ public class DW_SHBE_Data extends DW_Object {
     private File DataFile;
 
     /**
-     * ClaimRef to ClaimRef DW_ID Lookup.
+     * ClaimRef to ClaimID Lookup.
      */
-    private HashMap<String, DW_ID> ClaimRefToClaimRefIDLookup;
+    private HashMap<String, DW_ID> ClaimRefToClaimIDLookup;
 
     /**
-     * ClaimRef DW_ID to ClaimRef Lookup.
+     * ClaimID to ClaimRef Lookup.
      */
-    private HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup;
+    private HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
 
     private DW_CorrectedPostcodes CorrectedPostcodes;
     
@@ -126,7 +126,7 @@ public class DW_SHBE_Data extends DW_Object {
     private HashMap<String, HashMap<DW_ID, AGDT_Point>> PostcodeIDToPointLookups;
 
     /**
-     * ClaimRefToClaimRefIDLookup File.
+     * ClaimRefToClaimIDLookup File.
      */
     private File ClaimRefToClaimRefIDLookupFile;
 
@@ -257,16 +257,16 @@ public class DW_SHBE_Data extends DW_Object {
     }
 
     /**
-     * If ClaimRefToClaimRefIDLookup is null initialise it.
+     * If ClaimRefToClaimIDLookup is null initialise it.
      *
      * @param f
-     * @return ClaimRefToClaimRefIDLookup
+     * @return ClaimRefToClaimIDLookup
      */
     public HashMap<String, DW_ID> getClaimRefToClaimRefIDLookup(File f) {
-        if (ClaimRefToClaimRefIDLookup == null) {
-            ClaimRefToClaimRefIDLookup = getStringToIDLookup(f);
+        if (ClaimRefToClaimIDLookup == null) {
+            ClaimRefToClaimIDLookup = getStringToIDLookup(f);
         }
-        return ClaimRefToClaimRefIDLookup;
+        return ClaimRefToClaimIDLookup;
     }
 
     /**
@@ -291,37 +291,37 @@ public class DW_SHBE_Data extends DW_Object {
     }
 
     /**
-     * If ClaimRefIDToClaimRefLookup is null initialise it.
+     * If ClaimIDToClaimRefLookup is null initialise it.
      *
      * @param f
-     * @return ClaimRefIDToClaimRefLookup
+     * @return ClaimIDToClaimRefLookup
      */
     public HashMap<DW_ID, String> getClaimRefIDToClaimRefLookup(File f) {
-        if (ClaimRefIDToClaimRefLookup == null) {
-            ClaimRefIDToClaimRefLookup = DW_Collections.getHashMap_DW_ID__String(f);
+        if (ClaimIDToClaimRefLookup == null) {
+            ClaimIDToClaimRefLookup = DW_Collections.getHashMap_DW_ID__String(f);
         }
-        return ClaimRefIDToClaimRefLookup;
+        return ClaimIDToClaimRefLookup;
     }
 
     /**
-     * {@code ClaimRefToClaimRefIDLookupFile = getClaimRefToClaimRefIDLookupFile();
-     * return getClaimRefToClaimRefIDLookup(ClaimRefToClaimRefIDLookupFile);}
+     * {@code ClaimRefToClaimRefIDLookupFile = getClaimRefToClaimIDLookupFile();
+ return getClaimRefToClaimRefIDLookup(ClaimRefToClaimRefIDLookupFile);}
      *
      * @return
      */
-    public HashMap<String, DW_ID> getClaimRefToClaimRefIDLookup() {
-        ClaimRefToClaimRefIDLookupFile = getClaimRefToClaimRefIDLookupFile();
+    public HashMap<String, DW_ID> getClaimRefToClaimIDLookup() {
+        ClaimRefToClaimRefIDLookupFile = getClaimRefToClaimIDLookupFile();
         return getClaimRefToClaimRefIDLookup(ClaimRefToClaimRefIDLookupFile);
     }
 
     /**
-     * {@code ClaimRefToClaimRefIDLookupFile = getClaimRefToClaimRefIDLookupFile();
-     * return getClaimRefToClaimRefIDLookup(ClaimRefToClaimRefIDLookupFile);}
+     * {@code ClaimRefToClaimRefIDLookupFile = getClaimRefToClaimIDLookupFile();
+ return getClaimRefToClaimRefIDLookup(ClaimRefToClaimRefIDLookupFile);}
      *
      * @return
      */
-    public HashMap<DW_ID, String> getClaimRefIDToClaimRefLookup() {
-        ClaimRefIDToClaimRefLookupFile = getClaimRefIDToClaimRefLookupFile();
+    public HashMap<DW_ID, String> getClaimIDToClaimRefLookup() {
+        ClaimRefIDToClaimRefLookupFile = getClaimIDToClaimRefLookupFile();
         return getClaimRefIDToClaimRefLookup(ClaimRefIDToClaimRefLookupFile);
     }
 
@@ -529,16 +529,17 @@ public class DW_SHBE_Data extends DW_Object {
     
     /**
      * All DW_PersonID to ClaimRefIDs Lookup
+     * @return 
      */
-    public HashMap<DW_PersonID, HashSet<DW_ID>> getPersonIDToClaimRefIDsLookup() {
-        PersonIDToClaimRefIDsLookupFile = getPersonIDToClaimRefIDsLookupFile();
+    public HashMap<DW_PersonID, HashSet<DW_ID>> getPersonIDToClaimIDLookup() {
+        PersonIDToClaimRefIDsLookupFile = getPersonIDToClaimIDLookupFile();
         return getPersonIDToClaimRefIDsLookup(PersonIDToClaimRefIDsLookupFile);
     }
 
     /**
      * All DW_PersonID to ClaimRefIDs Lookup
      */
-    HashMap<DW_PersonID, HashSet<DW_ID>> AllPersonIDToClaimRefsLookup;
+    HashMap<DW_PersonID, HashSet<DW_ID>> PersonIDToClaimIDLookup;
 
     /**
      * {@code if (PostcodeToPostcodeIDLookup == null) {
@@ -663,7 +664,7 @@ public class DW_SHBE_Data extends DW_Object {
      *
      * @return
      */
-    public final File getClaimRefToClaimRefIDLookupFile() {
+    public final File getClaimRefToClaimIDLookupFile() {
         if (ClaimRefToClaimRefIDLookupFile == null) {
             String filename = "ClaimRefToClaimRefID_HashMap_String__DW_ID"
                     + DW_Strings.sBinaryFileExtension;
@@ -686,7 +687,7 @@ public class DW_SHBE_Data extends DW_Object {
      *
      * @return
      */
-    public final File getClaimRefIDToClaimRefLookupFile() {
+    public final File getClaimIDToClaimRefLookupFile() {
         if (ClaimRefIDToClaimRefLookupFile == null) {
             String filename = "ClaimRefIDToClaimRef_HashMap_DW_ID__String"
                     + DW_Strings.sBinaryFileExtension;
@@ -902,7 +903,7 @@ public class DW_SHBE_Data extends DW_Object {
         return NonDependentPersonIDsFile;
     }
     
-    public final File getPersonIDToClaimRefIDsLookupFile() {
+    public final File getPersonIDToClaimIDLookupFile() {
         if (PersonIDToClaimRefIDsLookupFile == null) {
             String filename = "PersonIDToClaimRefIDsLookup_HashMap_DW_PersonID__HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension;
