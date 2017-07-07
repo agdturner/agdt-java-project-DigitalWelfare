@@ -31,7 +31,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_CorrectedPostcodes;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.utlis.DW_Collections;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_Collections;
 
 /**
  *

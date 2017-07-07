@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.utlis;
+package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util;
 
 import java.io.File;
 import java.util.Collection;
