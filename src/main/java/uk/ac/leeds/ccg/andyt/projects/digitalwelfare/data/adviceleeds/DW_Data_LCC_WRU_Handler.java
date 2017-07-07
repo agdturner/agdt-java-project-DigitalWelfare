@@ -27,6 +27,7 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 public class DW_Data_LCC_WRU_Handler extends DW_Object {
@@ -34,8 +35,12 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
     public DW_Data_LCC_WRU_Handler() {
     }
 
+    public DW_Data_LCC_WRU_Handler(DW_Environment env) {
+        super(env);
+    }
+
     public static void main(String[] args) {
-        new DW_Data_LCC_WRU_Handler().run();
+        new DW_Data_LCC_WRU_Handler(null).run();
     }
 
     public void run() {
@@ -107,7 +112,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
                         line = st.sval;
                         try {
                             DW_Data_LCC_WRU_Record rec;
-                            rec = new DW_Data_LCC_WRU_Record(RecordID, line, this);
+                            rec = new DW_Data_LCC_WRU_Record(env, RecordID, line, this);
                             //String enquiryReferenceNumber = record.getEnquiryReferenceNumber();
                             //1-102J,20-Sep-1936,Not Stated,Refused,LS6 1LS,2-464768375,2-7SFJ2M,Welfare Rights,Home Visit (MacMillan),05-Dec-2011,Blue Badge,-,75,77.11
                             String client_ref;

@@ -20,6 +20,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
 /**
@@ -34,6 +35,10 @@ public abstract class DW_HTMLPage extends DW_Object {
     protected FileOutputStream masterFOS;
 
     public DW_HTMLPage() {
+    }
+
+    public DW_HTMLPage(DW_Environment env) {
+        super(env);
     }
 
     public void writeStartOfBody(
@@ -136,7 +141,7 @@ public abstract class DW_HTMLPage extends DW_Object {
         result = "<a href=\"" + dir + type + ".html\">" + type + "</a>";
         return result;
     }
-    
+
     /**
      * @param id The id for the link.
      * @param name The name for the link.
@@ -148,6 +153,6 @@ public abstract class DW_HTMLPage extends DW_Object {
         String result;
         result = "<a href=\"#" + id + "\">" + name + "</a>";
         return result;
-    }               
+    }
 
 }

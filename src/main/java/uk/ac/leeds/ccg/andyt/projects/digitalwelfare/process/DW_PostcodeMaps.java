@@ -36,7 +36,6 @@ import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.getPointSimpleFeatureType;
@@ -89,7 +88,7 @@ public class DW_PostcodeMaps extends DW_Maps {
     public void run() {
         showMapsInJMapPane = true;//false;//true;//false;
         imageWidth = 1000;
-        mapDirectory = tDW_Files.getGeneratedPostcodeDir();
+        mapDirectory = DW_Files.getGeneratedPostcodeDir();
 
         ShapefileDataStoreFactory sdsf = getShapefileDataStoreFactory();
 
@@ -137,6 +136,7 @@ public class DW_PostcodeMaps extends DW_Maps {
                 aLeedsPostcodeSectorPointShapefile,
                 "LS");
 
+        String level;
         // OA
         level = "OA";
         targetPropertyName = "CODE";
@@ -279,7 +279,7 @@ public class DW_PostcodeMaps extends DW_Maps {
                 + yllcorner + "_" + cellsize + "_" + ".shp";
         File dir;
         dir = new File(
-                tDW_Files.getGeneratedDir(),
+                DW_Files.getGeneratedDir(),
                 "LineGrids");
         dir.mkdirs();
         File shapefile = createPolyGridShapefileIfItDoesNotExist(
@@ -306,7 +306,7 @@ public class DW_PostcodeMaps extends DW_Maps {
                 + yllcorner + "_" + cellsize + "_" + ".shp";
         File dir;
         dir = new File(
-                tDW_Files.getGeneratedDir(),
+                DW_Files.getGeneratedDir(),
                 "LineGrids");
         dir.mkdirs();
         File shapefile = createLineGridShapefileIfItDoesNotExist(
@@ -329,7 +329,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         ArrayList<DW_Shapefile> result;
         result = new ArrayList<DW_Shapefile>();
         File dir;
-        dir = tDW_Files.getGeneratedPostcodeDir();
+        dir = DW_Files.getGeneratedPostcodeDir();
         ArrayList<String> postCodeLevels;
         postCodeLevels = new ArrayList<String>();
         postCodeLevels.add("Unit");

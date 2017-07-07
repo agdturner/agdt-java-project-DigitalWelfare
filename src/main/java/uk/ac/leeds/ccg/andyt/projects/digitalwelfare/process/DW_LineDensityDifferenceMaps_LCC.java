@@ -18,41 +18,37 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
-import java.awt.Color;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleChunkArrayFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.GridStatistics0;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
-import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorGWS;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeChanges;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getYM3s;
-//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.initONSPDLookups;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getYM3s;
+////import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.initONSPDLookups;
 import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeChanges;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeChanges;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeChanges;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeChanges;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeChanges;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeChanges;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
 
 /**
  *
@@ -61,6 +57,7 @@ import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_
 public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 
     protected Vector_Environment ve;
+    protected DW_LineMapsLCC DW_LineMaps_LCC;
 
     private static final String targetPropertyNameLSOA = "LSOA11CD";
     private DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
@@ -70,6 +67,8 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 
     public DW_LineDensityDifferenceMaps_LCC(DW_Environment env) {
         super(env);
+        DW_LineMaps_LCC = new DW_LineMapsLCC(env);
+        ve = new Vector_Environment();
     }
 
     //DW_StyleParameters styleParameters;
@@ -97,219 +96,219 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
     }
 
     public void run() {
-        ve = new Vector_Environment();
-        // If showMapsInJMapPane is true, the maps are presented in individual 
-        // JMapPanes
-        showMapsInJMapPane = false;
-        //showMapsInJMapPane = true;
-        //outputESRIAsciigrids = false;
-        imageWidth = 1000;
-        initONSPDLookups(env);
-        // Initialise styleParameters
-        /*
-         * YlOrRd,PRGn,PuOr,RdGy,Spectral,Grays,PuBuGn,RdPu,BuPu,YlOrBr,Greens,
-         * BuGn,Accents,GnBu,PuRd,Purples,RdYlGn,Paired,Blues,RdBu,Oranges,
-         * RdYlBu,PuBu,OrRd,Set3,Set2,Set1,Reds,PiYG,Dark2,YlGn,BrBG,YlGnBu,
-         * Pastel2,Pastel1
-         */
-//        ColorBrewer brewer = ColorBrewer.instance();
-//        //String[] paletteNames = brewer.getPaletteNames(0, nClasses);
-//        String[] paletteNames = brewer.getPaletteNames();
-//        for (int i = 0; i < paletteNames.length; i++) {
-//            System.out.println(paletteNames[i]);
-//        }
-        styleParameters = new AGDT_StyleParameters();
-        styleParameters.setnClasses(5);
-        styleParameters.setPaletteName("Reds");
-        styleParameters.setPaletteName2("Blues");
-        styleParameters.setAddWhiteForZero(true);
-//        styleParameters.setForegroundStyleTitle0("Foreground Style 0");
-//        styleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
-//        styleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
-        styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
-                Color.GREEN,
-                Color.WHITE));
-        styleParameters.setForegroundStyleTitle1("Foreground Style 1");
-
-        mapDirectory = new File(
-                tDW_Files.getOutputAdviceLeedsMapsDir(),
-                "density");
-        imageWidth = 1000;
-
-//        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefiles();
-        init();
-
-        /*Grid Parameters
-         *_____________________________________________________________________
-         */
-        handleOutOfMemoryErrors = true;
-        File processorDir = new File(
-                mapDirectory,
-                "processor");
-        processorDir.mkdirs();
-        ge = new Grids_Environment();
-        eage = new ESRIAsciiGridExporter(ge);
-        ie = new ImageExporter(ge);
-        gp = new Grid2DSquareCellProcessorGWS(ge);
-        gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
-        gcf = new Grid2DSquareCellDoubleChunkArrayFactory();
-        chunkNRows = 300;//250; //64
-        chunkNCols = 350;//300; //64
-        gf = new Grid2DSquareCellDoubleFactory(
-                processorDir,
-                chunkNRows,
-                chunkNCols,
-                gcf,
-                -9999d,
-                ge,
-                handleOutOfMemoryErrors);
-//        // Jenks runs
-//        styleParameters.setClassificationFunctionName("Jenks");
-//        commonStyling = true;
-//        individualStyling = true;
-//        runAll(IDType);
-//        // Quantile runs
-//        styleParameters.setClassificationFunctionName("Quantile");
+//        // If showMapsInJMapPane is true, the maps are presented in individual 
+//        // JMapPanes
+//        showMapsInJMapPane = false;
+//        //showMapsInJMapPane = true;
+//        //outputESRIAsciigrids = false;
+//        imageWidth = 1000;
+//        initONSPDLookups();
+//        // Initialise styleParameters
+//        /*
+//         * YlOrRd,PRGn,PuOr,RdGy,Spectral,Grays,PuBuGn,RdPu,BuPu,YlOrBr,Greens,
+//         * BuGn,Accents,GnBu,PuRd,Purples,RdYlGn,Paired,Blues,RdBu,Oranges,
+//         * RdYlBu,PuBu,OrRd,Set3,Set2,Set1,Reds,PiYG,Dark2,YlGn,BrBG,YlGnBu,
+//         * Pastel2,Pastel1
+//         */
+////        ColorBrewer brewer = ColorBrewer.instance();
+////        //String[] paletteNames = brewer.getPaletteNames(0, nClasses);
+////        String[] paletteNames = brewer.getPaletteNames();
+////        for (int i = 0; i < paletteNames.length; i++) {
+////            System.out.println(paletteNames[i]);
+////        }
+//        styleParameters = new AGDT_StyleParameters();
+//        styleParameters.setnClasses(5);
+//        styleParameters.setPaletteName("Reds");
+//        styleParameters.setPaletteName2("Blues");
+//        styleParameters.setAddWhiteForZero(true);
+////        styleParameters.setForegroundStyleTitle0("Foreground Style 0");
+////        styleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
+////        styleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
+//        styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
+//                Color.GREEN,
+//                Color.WHITE));
+//        styleParameters.setForegroundStyleTitle1("Foreground Style 1");
+//
+//        mapDirectory = new File(
+//                DW_Files.getOutputAdviceLeedsMapsDir(),
+//                "density");
+//        imageWidth = 1000;
+//
+////        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefiles();
+//        init();
+//
+//        /*Grid Parameters
+//         *_____________________________________________________________________
+//         */
+//        handleOutOfMemoryErrors = true;
+//        File processorDir = new File(
+//                mapDirectory,
+//                "processor");
+//        processorDir.mkdirs();
+//        ge = new Grids_Environment();
+//        eage = new ESRIAsciiGridExporter();
+//        ie = new ImageExporter(ge);
+//        gp = new Grid2DSquareCellProcessorGWS(ge);
+//        gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
+//        gcf = new Grid2DSquareCellDoubleChunkArrayFactory();
+//        chunkNRows = 300;//250; //64
+//        chunkNCols = 350;//300; //64
+//        gf = new Grid2DSquareCellDoubleFactory(
+//                processorDir,
+//                chunkNRows,
+//                chunkNCols,
+//                gcf,
+//                -9999d,
+//                ge,
+//                handleOutOfMemoryErrors);
+////        // Jenks runs
+////        styleParameters.setClassificationFunctionName("Jenks");
+////        commonStyling = true;
+////        individualStyling = true;
+////        runAll(IDType);
+////        // Quantile runs
+////        styleParameters.setClassificationFunctionName("Quantile");
+////        styleParameters.setStylesNull();
+////        commonStyling = true;
+////        individualStyling = true;
+////        runAll(tDW_ID_ClientTypes);
+//        // Equal Interval runs
+//        styleParameters.setClassificationFunctionName("EqualInterval");
 //        styleParameters.setStylesNull();
-//        commonStyling = true;
+////        commonStyling = true;
 //        individualStyling = true;
-//        runAll(tDW_ID_ClientTypes);
-        // Equal Interval runs
-        styleParameters.setClassificationFunctionName("EqualInterval");
-        styleParameters.setStylesNull();
-//        commonStyling = true;
-        individualStyling = true;
-
-        //int resolutionMultiplier = 4;
-        cellsize = 50;
-        maxCellDistanceForGeneralisation = 4; //8;
-        runAll();
-//        for (maxCellDistanceForGeneralisation = 4; maxCellDistanceForGeneralisation <= 32; maxCellDistanceForGeneralisation *= 2) {
-//            cellsize = (1600 / maxCellDistanceForGeneralisation) / resolutionMultiplier;
-//            runAll(resolutionMultiplier);
-//        }
+//
+//        //int resolutionMultiplier = 4;
+//        cellsize = 50;
+//        maxCellDistanceForGeneralisation = 4; //8;
+//        runAll();
+////        for (maxCellDistanceForGeneralisation = 4; maxCellDistanceForGeneralisation <= 32; maxCellDistanceForGeneralisation *= 2) {
+////            cellsize = (1600 / maxCellDistanceForGeneralisation) / resolutionMultiplier;
+////            runAll(resolutionMultiplier);
+////        }
     }
 
     //public void runAll(int resolutionMultiplier) {
     public void runAll() {
-        TreeMap<String, ArrayList<Integer>> includes;
-        includes = env.getDW_SHBE_Handler().getIncludes();
-        includes.remove("All");
-//        includes.remove("Yearly");
-//        includes.remove("6Monthly");
-//        includes.remove("3Monthly");
-//        includes.remove("MonthlyUO");
-//        includes.remove("Monthly");
-
-        HashMap<Boolean, ArrayList<ArrayList<String>>> allTenancyTypeChanges;
-        allTenancyTypeChanges = getAllTenancyTypeChanges();
-
-        HashMap<Boolean, ArrayList<ArrayList<String>>> allTenancyTypeChangesGrouped;
-        allTenancyTypeChangesGrouped = DW_LineMaps_LCC.getAllTenancyTypeChangesGrouped();
-
-        Iterator<String> includesIte;
-        includesIte = includes.keySet().iterator();
-        while (includesIte.hasNext()) {
-            String includeName;
-            includeName = includesIte.next();
-            ArrayList<Integer> include;
-            include = includes.get(includeName);
-
-            TreeMap<String, ArrayList<String>> yearMonths;
-            yearMonths = getYM3s(env, include);
-
-            ArrayList<Boolean> b;
-            b = new ArrayList<Boolean>();
-            b.add(true);
-            b.add(false);
-
-            boolean scaleToFirst;
-
-            Iterator<Boolean> iteb;
-            iteb = b.iterator();
-            while (iteb.hasNext()) {
-                boolean doUnderOccupancyData;
-                doUnderOccupancyData = iteb.next();
-                if (doUnderOccupancyData) {
-                    Iterator<Boolean> iteb2;
-                    iteb2 = b.iterator();
-                    while (iteb2.hasNext()) {
-                        boolean doCouncil;
-                        doCouncil = iteb2.next();
-                        if (commonStyling) {
-                            scaleToFirst = true;
-                            postcodeMaps(
-                                    //resolutionMultiplier,
-                                    yearMonths,
-                                    includeName,
-                                    include,
-                                    allTenancyTypeChanges.get(doUnderOccupancyData),
-                                    doUnderOccupancyData,
-                                    doCouncil,
-                                    scaleToFirst);
-                        }
-                        if (individualStyling) {
-                            scaleToFirst = false;
-                            postcodeMaps(
-                                    //resolutionMultiplier,
-                                    yearMonths,
-                                    includeName,
-                                    include,
-                                    allTenancyTypeChanges.get(doUnderOccupancyData),
-                                    doUnderOccupancyData,
-                                    doCouncil,
-                                    scaleToFirst);
-                        }
-                    }
-                } else {
-                    if (commonStyling) {
-                        scaleToFirst = true;
-                        postcodeMaps(
-                                //resolutionMultiplier,
-                                yearMonths,
-                                includeName,
-                                include,
-                                allTenancyTypeChanges.get(doUnderOccupancyData),
-                                doUnderOccupancyData,
-                                false,
-                                scaleToFirst);
-                    }
-                    if (individualStyling) {
-                        scaleToFirst = false;
-                        postcodeMaps(
-                                //resolutionMultiplier,
-                                yearMonths,
-                                includeName,
-                                include,
-                                allTenancyTypeChanges.get(doUnderOccupancyData),
-                                doUnderOccupancyData,
-                                false,
-                                scaleToFirst);
-                    }
-                }
-            }
-        }
-        // Tidy up
-        if (!showMapsInJMapPane) {
-//            Iterator<AGDT_Shapefile> ite1;
-//            ite1 = midgrounds.iterator();
-//            while (ite1.hasNext()) {
-//                AGDT_Shapefile s = ite1.next();
-//                s.dispose();
+//        TreeMap<String, ArrayList<Integer>> includes;
+//        includes = env.getDW_SHBE_Handler().getIncludes();
+//        includes.remove("All");
+////        includes.remove("Yearly");
+////        includes.remove("6Monthly");
+////        includes.remove("3Monthly");
+////        includes.remove("MonthlyUO");
+////        includes.remove("Monthly");
+//
+//        HashMap<Boolean, ArrayList<ArrayList<String>>> allTenancyTypeChanges;
+//        allTenancyTypeChanges = DW_LineMaps_LCC.getAllTenancyTypeChanges();
+//
+//        HashMap<Boolean, ArrayList<ArrayList<String>>> allTenancyTypeChangesGrouped;
+//        allTenancyTypeChangesGrouped = DW_LineMaps_LCC.getAllTenancyTypeChangesGrouped();
+//
+//        Iterator<String> includesIte;
+//        includesIte = includes.keySet().iterator();
+//        while (includesIte.hasNext()) {
+//            String includeName;
+//            includeName = includesIte.next();
+//            ArrayList<Integer> include;
+//            include = includes.get(includeName);
+//
+//            TreeMap<String, ArrayList<String>> yearMonths;
+//            yearMonths = DW_LineMaps_LCC.getYM3s(include);
+//
+//            ArrayList<Boolean> b;
+//            b = new ArrayList<Boolean>();
+//            b.add(true);
+//            b.add(false);
+//
+//            boolean scaleToFirst;
+//
+//            Iterator<Boolean> iteb;
+//            iteb = b.iterator();
+//            while (iteb.hasNext()) {
+//                boolean doUnderOccupancyData;
+//                doUnderOccupancyData = iteb.next();
+//                if (doUnderOccupancyData) {
+//                    Iterator<Boolean> iteb2;
+//                    iteb2 = b.iterator();
+//                    while (iteb2.hasNext()) {
+//                        boolean doCouncil;
+//                        doCouncil = iteb2.next();
+//                        if (commonStyling) {
+//                            scaleToFirst = true;
+//                            postcodeMaps(
+//                                    //resolutionMultiplier,
+//                                    yearMonths,
+//                                    includeName,
+//                                    include,
+//                                    allTenancyTypeChanges.get(doUnderOccupancyData),
+//                                    doUnderOccupancyData,
+//                                    doCouncil,
+//                                    scaleToFirst);
+//                        }
+//                        if (individualStyling) {
+//                            scaleToFirst = false;
+//                            postcodeMaps(
+//                                    //resolutionMultiplier,
+//                                    yearMonths,
+//                                    includeName,
+//                                    include,
+//                                    allTenancyTypeChanges.get(doUnderOccupancyData),
+//                                    doUnderOccupancyData,
+//                                    doCouncil,
+//                                    scaleToFirst);
+//                        }
+//                    }
+//                } else {
+//                    if (commonStyling) {
+//                        scaleToFirst = true;
+//                        postcodeMaps(
+//                                //resolutionMultiplier,
+//                                yearMonths,
+//                                includeName,
+//                                include,
+//                                allTenancyTypeChanges.get(doUnderOccupancyData),
+//                                doUnderOccupancyData,
+//                                false,
+//                                scaleToFirst);
+//                    }
+//                    if (individualStyling) {
+//                        scaleToFirst = false;
+//                        postcodeMaps(
+//                                //resolutionMultiplier,
+//                                yearMonths,
+//                                includeName,
+//                                include,
+//                                allTenancyTypeChanges.get(doUnderOccupancyData),
+//                                doUnderOccupancyData,
+//                                false,
+//                                scaleToFirst);
+//                    }
+//                }
 //            }
-            Iterator<AGDT_Shapefile> ite;
-            ite = foregrounds.iterator();
-            while (ite.hasNext()) {
-                ite.next().dispose();
-//                tLSOACodesAndLeedsLSOAShapefile.dispose();
-//            tMSOACodesAndLeedsMSOAShapefile.dispose();
-            }
-        }
+//        }
+//        // Tidy up
+//        if (!showMapsInJMapPane) {
+////            Iterator<AGDT_Shapefile> ite1;
+////            ite1 = midgrounds.iterator();
+////            while (ite1.hasNext()) {
+////                AGDT_Shapefile s = ite1.next();
+////                s.dispose();
+////            }
+//            Iterator<AGDT_Shapefile> ite;
+//            ite = foregrounds.iterator();
+//            while (ite.hasNext()) {
+//                ite.next().dispose();
+////                tLSOACodesAndLeedsLSOAShapefile.dispose();
+////            tMSOACodesAndLeedsMSOAShapefile.dispose();
+//            }
+//        }
     }
 
     private void init() {
         //initStyleParameters();
-        mapDirectory = tDW_Files.getOutputSHBELineMapsDir();
+//        DW_Maps.setMapDirectory(DW_Files.getOutputSHBELineMapsDir());
+        
         foregrounds = new ArrayList<AGDT_Shapefile>();
         //midgrounds = new ArrayList<AGDT_Shapefile>();
 //        backgrounds = new ArrayList<AGDT_Shapefile>();
@@ -318,7 +317,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
                 env,
                 "LSOA", 
                 targetPropertyNameLSOA, 
-                getShapefileDataStoreFactory());
+                DW_Maps.getShapefileDataStoreFactory());
         foregrounds.add(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
     }
@@ -432,7 +431,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 //                ArrayList<String> tenancyTypeChanges;
 //                tenancyTypeChanges = allTenancyTypeChangesIte.next();
 //                String namea;
-//                namea = DW_LineMaps_LCC.getName(tenancyTypeChanges);
+//                namea = DW_LineMapsLCC.getName(tenancyTypeChanges);
 //                String nameb;
 //                nameb = getReverseName(namea);
 //                doDensity(
@@ -561,8 +560,8 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
         // Set grid dimensions    
 //            int multiplier;
 //            multiplier = (int) (400 / cellsize);
-        backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
-        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+//        DW_Maps.setBackgroundDW_Shapefile(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
+//        DW_Maps.setForegroundDW_Shapefile1(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
         nrows = 554;//70 * multiplier * resolutionMultiplier; //139 * multiplier; //277 * multiplier;
         ncols = 680;//85 * multiplier * resolutionMultiplier; //170 * multiplier; //340 * multiplier;
         xllcorner = 413000;
@@ -611,7 +610,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
         System.out.println("ga " + ga.toString(handleOutOfMemoryErrors));
         Grid2DSquareCellDouble gb = (Grid2DSquareCellDouble) gf.create(gridb);
         System.out.println("gb " + gb.toString(handleOutOfMemoryErrors));
-        gp.set_Directory(dirOut2, doDebug, handleOutOfMemoryErrors);
+        gp.set_Directory(dirOut2, DW_Maps.doDebug, handleOutOfMemoryErrors);
         gp.addToGrid(ga, gb, -1.0d, handleOutOfMemoryErrors);
         System.out.println("ga-gb " + ga.toString(handleOutOfMemoryErrors));
         // output grid
@@ -636,7 +635,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
                 index,
                 scaleToFirst);
         if (!scaleToFirst) {
-            styleParameters.setStyle(name, null, index);
+            DW_Maps.getStyleParameters().setStyle(name, null, index);
         }
 
         // Generalise the grid
@@ -706,7 +705,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
                     index,
                     scaleToFirst);
             if (!scaleToFirst) {
-                styleParameters.setStyle(name, null, index);
+                DW_Maps.getStyleParameters().setStyle(name, null, index);
             }
         }
     }

@@ -18,6 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+
 /**
  *
  * @author geoagdt
@@ -44,6 +46,10 @@ public class DW_SHBE_P_Record extends DW_SHBE_RecordAbstract {
      * 254 263 DateOfOutcomeOfAppealApplication
      */
     private String DateOfOutcomeOfAppealApplication;
+
+    public DW_SHBE_P_Record(DW_Environment env) {
+        super(env);
+    }
 
     @Override
     public String toString() {

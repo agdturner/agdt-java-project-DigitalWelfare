@@ -18,14 +18,17 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+
 /**
  *
  * @author geoagdt
  */
 public class DW_SHBE_G_Record extends DW_SHBE_RecordAbstract {
     
-    public DW_SHBE_G_Record(long RecordID) {}
-            
+    public DW_SHBE_G_Record(DW_Environment env) {
+        super(env);
+    }
     /**
      * 265 274 SoftwareProvider
      */

@@ -10,12 +10,10 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.data.generated.DW_Table;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMaps_LCC;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMaps_LCC.getFilenames;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_LineGraph;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMapsLCC;
+import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMapsLCC.getFilenames;
 
 public class DW_Report extends DW_HTMLPage {
 
@@ -36,7 +34,7 @@ public class DW_Report extends DW_HTMLPage {
     protected String date;
 
     public DW_Report(DW_Environment env) {
-        this.env = env;
+        super(env);
     }
 
     public static void main(String[] args) {
@@ -140,7 +138,7 @@ public class DW_Report extends DW_HTMLPage {
                     writeEndOfMaster();
                     boolean writeDefinitions = true;
                     if (writeDefinitions) {
-                        new DW_Types().run();
+                        new DW_Types(env).run();
                     }
                 }
             } else {
@@ -164,7 +162,7 @@ public class DW_Report extends DW_HTMLPage {
                 writeEndOfMaster();
                 boolean writeDefinitions = true;
                 if (writeDefinitions) {
-                    new DW_Types().run();
+                    new DW_Types(env).run();
                 }
             }
         }
@@ -179,7 +177,7 @@ public class DW_Report extends DW_HTMLPage {
             File dirOut = new File(
                     tDW_Files.getOutputDir(),
                     baseReportDir);
-            dirOut = tDW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
+            dirOut = tDW_Files.getUODir(dirOut, doUnderOccupied, doCouncil);
             dirOut.mkdirs();
             String pageTitle = "Results";
             File f;
@@ -196,7 +194,7 @@ public class DW_Report extends DW_HTMLPage {
                     masterFOS);
         } catch (IOException e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
 
@@ -241,7 +239,7 @@ public class DW_Report extends DW_HTMLPage {
             writeLine("</ul></div>", masterFOS);
         } catch (IOException e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
 
@@ -251,7 +249,7 @@ public class DW_Report extends DW_HTMLPage {
             masterFOS.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
 
@@ -266,7 +264,7 @@ public class DW_Report extends DW_HTMLPage {
         dirOut = new File(
                 dirOut,
                 levelsString);
-        dirOut = tDW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
+        dirOut = tDW_Files.getUODir(dirOut, doUnderOccupied, doCouncil);
         String[] tFilenames;
         tFilenames = getFilenames();
         Iterator<String> claimantTypesIte;
@@ -321,7 +319,7 @@ public class DW_Report extends DW_HTMLPage {
                     componentFOS.close();
                 } catch (IOException e) {
                     System.err.println(e.getMessage());
-                    e.printStackTrace();
+                    e.printStackTrace(System.err);
                 }
             }
         }
@@ -420,9 +418,9 @@ public class DW_Report extends DW_HTMLPage {
                 for (int i = 0; i < tFilenames.length; i++) {
                     if (include.contains(i)) {
                         String year;
-                        year = DW_ChoroplethMaps_LCC.getFilenameYear(tFilenames[i]);
+                        year = DW_ChoroplethMapsLCC.getFilenameYear(tFilenames[i]);
                         String month;
-                        month = DW_ChoroplethMaps_LCC.getFilenameMonth(tFilenames[i]);
+                        month = DW_ChoroplethMapsLCC.getFilenameMonth(tFilenames[i]);
                         String yearMonth;
                         yearMonth = year + " " + month;
                         String idn;
@@ -512,7 +510,7 @@ public class DW_Report extends DW_HTMLPage {
             }
         } catch (IOException e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
 
@@ -541,7 +539,7 @@ public class DW_Report extends DW_HTMLPage {
         filepath += "all/" //all is a relic from when dealing with LSOAs within different deprivation classes
                 + name + "/";
         imageSource = relativeFilePath + "LCC/SHBE/Maps/Choropleth/"
-                + level + "/" + filepath + name + ".png";;
+                + level + "/" + filepath + name + ".png";
         writeLine("<img src=\"" + imageSource + "\" alt=\"[" + imageSource + "]\" />", componentFOS);
         writeLine("", componentFOS);
         writeLine("", componentFOS);
@@ -711,9 +709,9 @@ public class DW_Report extends DW_HTMLPage {
             for (int i = 0; i < tFilenames.length; i++) {
                 if (include.contains(i)) {
                     String year;
-                    year = DW_ChoroplethMaps_LCC.getFilenameYear(tFilenames[i]);
+                    year = DW_ChoroplethMapsLCC.getFilenameYear(tFilenames[i]);
                     String month;
-                    month = DW_ChoroplethMaps_LCC.getFilenameMonth(tFilenames[i]);
+                    month = DW_ChoroplethMapsLCC.getFilenameMonth(tFilenames[i]);
                     typesIte = types.iterator();
                     String yearMonth;
                     yearMonth = year + " " + month;

@@ -18,6 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+
 /**
  *
  * @author geoagdt
@@ -74,20 +76,23 @@ public class DW_Data_CAB1_Record extends DW_Data_Postcode_Record {
      * @param RecordID
      */
     public DW_Data_CAB1_Record(
-            long RecordID) {
-        setRecordID(RecordID);
+            DW_Environment env) {
+        super(env);
     }
 
     /**
+     * @param env
      * @param RecordID
      * @param line
      * @param handler
      * @throws java.lang.Exception
      */
     public DW_Data_CAB1_Record(
+            DW_Environment env,
             long RecordID,
             String line,
             DW_Data_CAB1_Handler handler) throws Exception {
+        super(env);
         setRecordID(RecordID);
         String[] fields = line.split(",");
         if (fields.length != 36) {

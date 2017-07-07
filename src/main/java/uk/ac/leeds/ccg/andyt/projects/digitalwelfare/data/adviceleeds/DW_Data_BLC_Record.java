@@ -18,6 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_StaticIO;
 
 /**
@@ -76,30 +77,36 @@ public class DW_Data_BLC_Record extends DW_Data_Postcode_Record {
     private String TypeOfAdvice;
     private String AgreeableToEvaluation;
 
-    public DW_Data_BLC_Record() {
+    public DW_Data_BLC_Record(DW_Environment env) {
+        super(env);
     }
 
     /**
      * Creates a null record in case this is needed
      *
+     * @param env
      * @param RecordID
      */
     public DW_Data_BLC_Record(
+            DW_Environment env,
             long RecordID) {
+        super(env);
         setRecordID(RecordID);
     }
 
     /**
+     * @param env
      * @param RecordID
      * @param line
      * @param handler
      * @throws java.lang.Exception
      */
     public DW_Data_BLC_Record(
+            DW_Environment env,
             long RecordID,
             String line,
             DW_Data_BLC_Handler handler) throws Exception {
-        setRecordID(RecordID);
+        this(env, RecordID);
         String[] fields;
         fields = DW_StaticIO.splitWithQuotesThenCommas(line);
         int fieldCount = fields.length;

@@ -37,7 +37,8 @@ import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.charts.Generic_BarChart;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.data.generated.DW_Table;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
@@ -48,6 +49,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 public class DW_BarChart extends Generic_BarChart {
 
     transient DW_Environment env;
+    DW_Strings DW_Strings;
     private int dataWidth;
     private int dataHeight;
     private String xAxisLabel;
@@ -66,6 +68,7 @@ public class DW_BarChart extends Generic_BarChart {
 
     public DW_BarChart(DW_Environment env){
         this.env = env;
+        this.DW_Strings = env.getDW_Strings();
     }
     
     /**
@@ -218,7 +221,7 @@ public class DW_BarChart extends Generic_BarChart {
         dirOut = new File(
                 tDW_Files.getOutputSHBEPlotsDir(),
                 "BarCharts");
-        dirOut = tDW_Files.getUOFile(dirOut, doUnderOccupied, doCouncil);
+        dirOut = tDW_Files.getUODir(dirOut, doUnderOccupied, doCouncil);
         Iterator<String> levelsIte;
         Iterator<String> claimantTypesIte;
         Iterator<String> tenureTypesIte;
@@ -525,7 +528,7 @@ public class DW_BarChart extends Generic_BarChart {
                         "AreaCodes.csv");
                 fout = new File(
                         dir,
-                        "AreaCodes_HashSetString" + env.getDW_Files().getsDotdat());
+                        "AreaCodes_HashSetString" + DW_Strings.sBinaryFileExtension);
             } else {
                 dir = new File(
                         tDW_Files.getInputCensus2011AttributeDataDir(level),
@@ -542,7 +545,7 @@ public class DW_BarChart extends Generic_BarChart {
                 dir.mkdirs();
                 fout = new File(
                         dir,
-                        "AreaCodes_HashSetString" + env.getDW_Files().getsDotdat());
+                        "AreaCodes_HashSetString" + DW_Strings.sBinaryFileExtension);
             }
             HashSet<String> areaCodesForLevel;
             if (fout.exists()) {

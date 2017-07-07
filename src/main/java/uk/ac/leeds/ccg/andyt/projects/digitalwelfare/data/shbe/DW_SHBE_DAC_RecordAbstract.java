@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
 import java.io.Serializable;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 
 /**
@@ -44,7 +45,8 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      */
     private int PassportedStandardIndicator;
     /**
-     * 28 33 StatusOfHBClaimAtExtractDate
+     * 28 33 StatusOfHBClaimAtExtractDate 0 = Other; 1 = InPayment; 2 =
+     * Suspended.
      */
     private int StatusOfHBClaimAtExtractDate;
     /**
@@ -60,9 +62,8 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      */
     private String DateMostRecentCTBClaimWasReceived;
     /**
-     * 57 62 LHARegulationsApplied
-     * Blank - LHA flag set to 'No'
-     * 1 - LHA flag set to 'Yes'
+     * 57 62 LHARegulationsApplied Blank - LHA flag set to 'No' 1 - LHA flag set
+     * to 'Yes'
      * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!!!
      * In the SHBE Extracts for Leeds this is generally set as "No" or "Yes"
      * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!!!
@@ -145,23 +146,13 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      */
     private int TotalCTBPaymentsCreditsSinceLastExtract;
     /**
-     * 238 247 ClaimantsEthnicGroup
-     * 1 White: British
-     * 2 White: Irish
-     * 3 White: Any Other
-     * 4 Mixed: White and Black Caribbean
-     * 5 Mixed: White and Black African
-     * 6 Mixed: White and Asian
-     * 7 Mixed: Any Other
-     * 8 Asian or Asian British: Indian
-     * 9 Asian or Asian British: Pakistani
-     * 10 Asian or Asian British: Bangladeshi
-     * 11 Asian or Asian British: Any Other
-     * 12 Black or Black British: Caribbean
-     * 13 Black or Black British: African
-     * 14 Black or Black British: Any Other
-     * 15 Chinese
-     * 99 Any Other
+     * 238 247 ClaimantsEthnicGroup 1 White: British 2 White: Irish 3 White: Any
+     * Other 4 Mixed: White and Black Caribbean 5 Mixed: White and Black African
+     * 6 Mixed: White and Asian 7 Mixed: Any Other 8 Asian or Asian British:
+     * Indian 9 Asian or Asian British: Pakistani 10 Asian or Asian British:
+     * Bangladeshi 11 Asian or Asian British: Any Other 12 Black or Black
+     * British: Caribbean 13 Black or Black British: African 14 Black or Black
+     * British: Any Other 15 Chinese 99 Any Other
      */
     private int ClaimantsEthnicGroup;
     /**
@@ -188,6 +179,22 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentCTBClaim
      */
     private String DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentCTBClaim;
+
+    public DW_SHBE_DAC_RecordAbstract(DW_Environment env) {
+        super(env);
+    }
+
+    public String toStringBrief() {
+        return super.toString()
+                + ",ClaimantsDateOfBirth " + ClaimantsDateOfBirth
+                + ",TenancyType " + TenancyType
+                + ",ClaimantsPostcode " + ClaimantsPostcode
+                + ",PassportedStandardIndicator " + PassportedStandardIndicator
+                + ",StatusOfHBClaimAtExtractDate " + StatusOfHBClaimAtExtractDate
+                + ",StatusOfCTBClaimAtExtractDate " + StatusOfCTBClaimAtExtractDate
+                + ",ClaimantsGender " + ClaimantsGender
+                + ",ClaimantsEthnicGroup " + ClaimantsEthnicGroup;
+    }
 
     @Override
     public String toString() {
@@ -237,7 +244,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     /**
      * @param ClaimantsDateOfBirth the ClaimantsDateOfBirth to set
      */
-    protected void setClaimantsDateOfBirth(String ClaimantsDateOfBirth) {
+    protected final void setClaimantsDateOfBirth(String ClaimantsDateOfBirth) {
         this.ClaimantsDateOfBirth = ClaimantsDateOfBirth;
     }
 
@@ -251,7 +258,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     /**
      * @param TenancyType the TenancyType to set
      */
-    protected void setTenancyType(int TenancyType) {
+    protected final void setTenancyType(int TenancyType) {
         this.TenancyType = TenancyType;
     }
 
@@ -260,7 +267,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param fields
      * @throws Exception
      */
-    protected void setTenancyType(
+    protected final void setTenancyType(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -300,10 +307,10 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     /**
      * @param ClaimantsPostcode the ClaimantsPostcode to set
      */
-    protected void setClaimantsPostcode(String ClaimantsPostcode) {
-        this.ClaimantsPostcode = DW_Postcode_Handler.formatPostcode(ClaimantsPostcode);
+    protected final void setClaimantsPostcode(String ClaimantsPostcode) {
+        this.ClaimantsPostcode = ClaimantsPostcode;
     }
-
+    
     /**
      * @return the PassportedStandardIndicator
      */
@@ -314,11 +321,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     /**
      * @param PassportedStandardIndicator the PassportedStandardIndicator to set
      */
-    protected void setPassportedStandardIndicator(int PassportedStandardIndicator) {
+    protected final void setPassportedStandardIndicator(int PassportedStandardIndicator) {
         this.PassportedStandardIndicator = PassportedStandardIndicator;
     }
 
-    protected void setPassportedStandardIndicator(
+    protected final void setPassportedStandardIndicator(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -349,7 +356,8 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     }
 
     /**
-     * @return the StatusOfHBClaimAtExtractDate
+     * @return the StatusOfHBClaimAtExtractDate: 0 = Other; 1 = InPayment; 2 =
+     * Suspended.
      */
     public int getStatusOfHBClaimAtExtractDate() {
         return StatusOfHBClaimAtExtractDate;
@@ -359,11 +367,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param StatusOfHBClaimAtExtractDate the StatusOfHBClaimAtExtractDate to
      * set
      */
-    protected void setStatusOfHBClaimAtExtractDate(int StatusOfHBClaimAtExtractDate) {
+    protected final void setStatusOfHBClaimAtExtractDate(int StatusOfHBClaimAtExtractDate) {
         this.StatusOfHBClaimAtExtractDate = StatusOfHBClaimAtExtractDate;
     }
 
-    protected void setStatusOfHBClaimAtExtractDate(
+    protected final void setStatusOfHBClaimAtExtractDate(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -400,11 +408,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param StatusOfCTBClaimAtExtractDate the StatusOfCTBClaimAtExtractDate to
      * set
      */
-    protected void setStatusOfCTBClaimAtExtractDate(int StatusOfCTBClaimAtExtractDate) {
+    protected final void setStatusOfCTBClaimAtExtractDate(int StatusOfCTBClaimAtExtractDate) {
         this.StatusOfCTBClaimAtExtractDate = StatusOfCTBClaimAtExtractDate;
     }
 
-    protected void setStatusOfCTBClaimAtExtractDate(
+    protected final void setStatusOfCTBClaimAtExtractDate(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -441,7 +449,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param DateMostRecentHBClaimWasReceived the
      * DateMostRecentHBClaimWasReceived to set
      */
-    protected void setDateMostRecentHBClaimWasReceived(String DateMostRecentHBClaimWasReceived) {
+    protected final void setDateMostRecentHBClaimWasReceived(String DateMostRecentHBClaimWasReceived) {
         this.DateMostRecentHBClaimWasReceived = DateMostRecentHBClaimWasReceived;
     }
 
@@ -456,7 +464,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param DateMostRecentCTBClaimWasReceived the
      * DateMostRecentCTBClaimWasReceived to set
      */
-    protected void setDateMostRecentCTBClaimWasReceived(String DateMostRecentCTBClaimWasReceived) {
+    protected final void setDateMostRecentCTBClaimWasReceived(String DateMostRecentCTBClaimWasReceived) {
         this.DateMostRecentCTBClaimWasReceived = DateMostRecentCTBClaimWasReceived;
     }
 
@@ -470,7 +478,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     /**
      * @param LHARegulationsApplied the LHARegulationsApplied to set
      */
-    protected void setLHARegulationsApplied(String LHARegulationsApplied) {
+    protected final void setLHARegulationsApplied(String LHARegulationsApplied) {
         this.LHARegulationsApplied = LHARegulationsApplied;
     }
 
@@ -485,7 +493,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param PartnersNationalInsuranceNumber the
      * PartnersNationalInsuranceNumber to set
      */
-    protected void setPartnersNationalInsuranceNumber(String PartnersNationalInsuranceNumber) {
+    protected final void setPartnersNationalInsuranceNumber(String PartnersNationalInsuranceNumber) {
         this.PartnersNationalInsuranceNumber = PartnersNationalInsuranceNumber;
     }
 
@@ -499,7 +507,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     /**
      * @param ClaimantsGender the ClaimantsGender to set
      */
-    protected void setClaimantsGender(String ClaimantsGender) {
+    protected final void setClaimantsGender(String ClaimantsGender) {
         this.ClaimantsGender = ClaimantsGender;
     }
 
@@ -513,7 +521,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     /**
      * @param PartnersDateOfBirth the PartnersDateOfBirth to set
      */
-    protected void setPartnersDateOfBirth(String PartnersDateOfBirth) {
+    protected final void setPartnersDateOfBirth(String PartnersDateOfBirth) {
         this.PartnersDateOfBirth = PartnersDateOfBirth;
     }
 
@@ -528,7 +536,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param DateHBClaimClosedWithdrawnDecidedUnsuccessfulDefective the
      * DateHBClaimClosedWithdrawnDecidedUnsuccessfulDefective to set
      */
-    protected void setDateHBClaimClosedWithdrawnDecidedUnsuccessfulDefective(String DateHBClaimClosedWithdrawnDecidedUnsuccessfulDefective) {
+    protected final void setDateHBClaimClosedWithdrawnDecidedUnsuccessfulDefective(String DateHBClaimClosedWithdrawnDecidedUnsuccessfulDefective) {
         this.DateHBClaimClosedWithdrawnDecidedUnsuccessfulDefective = DateHBClaimClosedWithdrawnDecidedUnsuccessfulDefective;
     }
 
@@ -543,7 +551,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param DateCTBClaimClosedWithdrawnDecidedUnsuccessfulDefective the
      * DateCTBClaimClosedWithdrawnDecidedUnsuccessfulDefective to set
      */
-    protected void setDateCTBClaimClosedWithdrawnDecidedUnsuccessfulDefective(String DateCTBClaimClosedWithdrawnDecidedUnsuccessfulDefective) {
+    protected final void setDateCTBClaimClosedWithdrawnDecidedUnsuccessfulDefective(String DateCTBClaimClosedWithdrawnDecidedUnsuccessfulDefective) {
         this.DateCTBClaimClosedWithdrawnDecidedUnsuccessfulDefective = DateCTBClaimClosedWithdrawnDecidedUnsuccessfulDefective;
     }
 
@@ -560,11 +568,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * the ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective to
      * set
      */
-    protected void setReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective(int ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective) {
+    protected final void setReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective(int ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective) {
         this.ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = ReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective;
     }
 
-    protected void setReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective(
+    protected final void setReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -603,11 +611,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * the ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective to
      * set
      */
-    protected void setReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective(int ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective) {
+    protected final void setReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective(int ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective) {
         this.ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective = ReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective;
     }
 
-    protected void setReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective(
+    protected final void setReasonsThatCTBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -643,7 +651,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     /**
      * @param HBClaimTreatAsDateMade the HBClaimTreatAsDateMade to set
      */
-    protected void setHBClaimTreatAsDateMade(String HBClaimTreatAsDateMade) {
+    protected final void setHBClaimTreatAsDateMade(String HBClaimTreatAsDateMade) {
         this.HBClaimTreatAsDateMade = HBClaimTreatAsDateMade;
     }
 
@@ -658,11 +666,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param SourceOfTheMostRecentHBClaim the SourceOfTheMostRecentHBClaim to
      * set
      */
-    protected void setSourceOfTheMostRecentHBClaim(int SourceOfTheMostRecentHBClaim) {
+    protected final void setSourceOfTheMostRecentHBClaim(int SourceOfTheMostRecentHBClaim) {
         this.SourceOfTheMostRecentHBClaim = SourceOfTheMostRecentHBClaim;
     }
 
-    protected void setSourceOfTheMostRecentHBClaim(
+    protected final void setSourceOfTheMostRecentHBClaim(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -697,11 +705,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim the
      * DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim to set
      */
-    protected void setDidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim(int DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim) {
+    protected final void setDidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim(int DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim) {
         this.DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim = DidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim;
     }
 
-    protected void setDidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim(
+    protected final void setDidVerificationIdentifyAnyIncorrectInformationOnTheHBClaim(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -738,7 +746,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param DateOfFirstHBPaymentRentAllowanceOnly the
      * DateOfFirstHBPaymentRentAllowanceOnly to set
      */
-    protected void setDateOfFirstHBPaymentRentAllowanceOnly(String DateOfFirstHBPaymentRentAllowanceOnly) {
+    protected final void setDateOfFirstHBPaymentRentAllowanceOnly(String DateOfFirstHBPaymentRentAllowanceOnly) {
         this.DateOfFirstHBPaymentRentAllowanceOnly = DateOfFirstHBPaymentRentAllowanceOnly;
     }
 
@@ -753,11 +761,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly the
      * WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly to set
      */
-    protected void setWasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly(int WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly) {
+    protected final void setWasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly(int WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly) {
         this.WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly = WasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly;
     }
 
-    protected void setWasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly(
+    protected final void setWasTheFirstPaymentAPaymentOnAccountRentAllowanceOnly(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -793,7 +801,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     /**
      * @param CTBClaimTreatAsMadeDate the CTBClaimTreatAsMadeDate to set
      */
-    protected void setCTBClaimTreatAsMadeDate(String CTBClaimTreatAsMadeDate) {
+    protected final void setCTBClaimTreatAsMadeDate(String CTBClaimTreatAsMadeDate) {
         this.CTBClaimTreatAsMadeDate = CTBClaimTreatAsMadeDate;
     }
 
@@ -808,11 +816,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param SourceOfTheMostRecentCTBClaim the SourceOfTheMostRecentCTBClaim to
      * set
      */
-    protected void setSourceOfTheMostRecentCTBClaim(int SourceOfTheMostRecentCTBClaim) {
+    protected final void setSourceOfTheMostRecentCTBClaim(int SourceOfTheMostRecentCTBClaim) {
         this.SourceOfTheMostRecentCTBClaim = SourceOfTheMostRecentCTBClaim;
     }
 
-    protected void setSourceOfTheMostRecentCTBClaim(
+    protected final void setSourceOfTheMostRecentCTBClaim(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -846,11 +854,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim the
      * DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim to set
      */
-    protected void setDidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim(int DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim) {
+    protected final void setDidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim(int DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim) {
         this.DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim = DidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim;
     }
 
-    protected void setDidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim(
+    protected final void setDidVerificationIdentifyAnyIncorrectInformationOnTheCTBClaim(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -887,11 +895,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param IsThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly the
      * IsThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly to set
      */
-    protected void setIsThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly(int IsThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly) {
+    protected final void setIsThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly(int IsThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly) {
         this.IsThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly = IsThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly;
     }
 
-    protected void setIsThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly(
+    protected final void setIsThisCaseSubjectToNonHRAThresholdAndCapsNonHRACasesOnly(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -928,11 +936,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation the
      * IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation to set
      */
-    protected void setIfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation(int IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation) {
+    protected final void setIfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation(int IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation) {
         this.IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation = IfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation;
     }
 
-    protected void setIfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation(
+    protected final void setIfSubjectToTheNonHRAThresholdAndCapsStateTypeOfAccommodation(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -969,7 +977,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param TotalHBPaymentsCreditsSinceLastExtract the
      * TotalHBPaymentsCreditsSinceLastExtract to set
      */
-    protected void setTotalHBPaymentsCreditsSinceLastExtract(int TotalHBPaymentsCreditsSinceLastExtract) {
+    protected final void setTotalHBPaymentsCreditsSinceLastExtract(int TotalHBPaymentsCreditsSinceLastExtract) {
         this.TotalHBPaymentsCreditsSinceLastExtract = TotalHBPaymentsCreditsSinceLastExtract;
     }
 
@@ -984,7 +992,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @param TotalCTBPaymentsCreditsSinceLastExtract the
      * TotalCTBPaymentsCreditsSinceLastExtract to set
      */
-    protected void setTotalCTBPaymentsCreditsSinceLastExtract(int TotalCTBPaymentsCreditsSinceLastExtract) {
+    protected final void setTotalCTBPaymentsCreditsSinceLastExtract(int TotalCTBPaymentsCreditsSinceLastExtract) {
         this.TotalCTBPaymentsCreditsSinceLastExtract = TotalCTBPaymentsCreditsSinceLastExtract;
     }
 
@@ -1001,11 +1009,11 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     /**
      * @param ClaimantsEthnicGroup the ClaimantsEthnicGroup to set
      */
-    protected void setClaimantsEthnicGroup(int ClaimantsEthnicGroup) {
+    protected final void setClaimantsEthnicGroup(int ClaimantsEthnicGroup) {
         this.ClaimantsEthnicGroup = ClaimantsEthnicGroup;
     }
 
-    protected void setClaimantsEthnicGroup(
+    protected final void setClaimantsEthnicGroup(
             int n,
             String[] fields) throws Exception {
         if (fields[n].trim().isEmpty()) {
@@ -1046,7 +1054,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentHBClaim
      * to set
      */
-    protected void setDateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentHBClaim(String DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentHBClaim) {
+    protected final void setDateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentHBClaim(String DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentHBClaim) {
         this.DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentHBClaim = DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentHBClaim;
     }
 
@@ -1054,7 +1062,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * @return the
      * DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim
      */
-    public String getDateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim() {
+    public final String getDateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim() {
         return DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim;
     }
 
@@ -1065,7 +1073,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim
      * to set
      */
-    protected void setDateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim(String DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim) {
+    protected final void setDateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim(String DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim) {
         this.DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim = DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentHBClaim;
     }
 
@@ -1079,7 +1087,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
     /**
      * @param DateCouncilTaxPayable the DateCouncilTaxPayable to set
      */
-    protected void setDateCouncilTaxPayable(String DateCouncilTaxPayable) {
+    protected final void setDateCouncilTaxPayable(String DateCouncilTaxPayable) {
         this.DateCouncilTaxPayable = DateCouncilTaxPayable;
     }
 
@@ -1098,7 +1106,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentCTBClaim
      * to set
      */
-    protected void setDateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentCTBClaim(String DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentCTBClaim) {
+    protected final void setDateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentCTBClaim(String DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentCTBClaim) {
         this.DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentCTBClaim = DateThatAllInformationWasRecievedFromTheClaimantToEnableADecisionOnTheMostRecentCTBClaim;
     }
 
@@ -1117,7 +1125,7 @@ public abstract class DW_SHBE_DAC_RecordAbstract extends DW_SHBE_RecordAbstract 
      * DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentCTBClaim
      * to set
      */
-    protected void setDateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentCTBClaim(String DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentCTBClaim) {
+    protected final void setDateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentCTBClaim(String DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentCTBClaim) {
         this.DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentCTBClaim = DateThatAllInformationWasRecievedFromThirdPartiesToEnableADecisionOnTheMostRecentCTBClaim;
     }
 

@@ -38,22 +38,27 @@ import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorGWS;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
+import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Maps;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  *
  * @author geoagdt
  */
-public abstract class DW_DensityMapsAbstract extends DW_Maps {
-
-    protected Grids_Environment ge;
+public abstract class DW_DensityMapsAbstract  extends DW_Object {
     
+// For Convenience
+    protected DW_Maps DW_Maps;
+    protected DW_Files DW_Files;
+    protected DW_Strings DW_Strings;
     protected DW_Postcode_Handler DW_Postcode_Handler;
     
+    protected Grids_Environment ge;
     protected ESRIAsciiGridExporter eage;
     protected ImageExporter ie;
     protected Grid2DSquareCellProcessorGWS gp;
@@ -76,6 +81,10 @@ public abstract class DW_DensityMapsAbstract extends DW_Maps {
 
     public DW_DensityMapsAbstract(DW_Environment env) {
         super(env);
+        DW_Maps = env.getDW_Maps();
+        DW_Strings = env.getDW_Strings();
+        DW_Files = env.getDW_Files();
+        DW_Postcode_Handler = env.getDW_Postcode_Handler();
     }
     
     // Add from postcodes
@@ -87,7 +96,7 @@ public abstract class DW_DensityMapsAbstract extends DW_Maps {
             Integer deprivationClass,
             String yM3) {
         String nearestYM3ForONSPDLookup;
-        nearestYM3ForONSPDLookup = env.getDW_Postcode_Handler().getNearestYM3ForONSPDLookup(yM3);
+        nearestYM3ForONSPDLookup = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM3);
         int countNonMatchingPostcodes = 0;
         Iterator<String> itep = postcodes.iterator();
         while (itep.hasNext()) {
@@ -99,7 +108,7 @@ public abstract class DW_DensityMapsAbstract extends DW_Maps {
                     String postcodeLevel;
                     postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(postcode);
                     AGDT_Point aPoint;
-                    aPoint = getONSPDlookups(env).get(postcodeLevel).get(nearestYM3ForONSPDLookup).get(postcode);
+                    aPoint = DW_Postcode_Handler.getPointFromPostcode(nearestYM3ForONSPDLookup, postcodeLevel, postcode);
                     if (aPoint != null) {
                         int x = aPoint.getX();
                         int y = aPoint.getY();
@@ -121,7 +130,7 @@ public abstract class DW_DensityMapsAbstract extends DW_Maps {
                             String postcodeLevel;
                             postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(postcode);
                             AGDT_Point aPoint;
-                            aPoint = getONSPDlookups(env).get(postcodeLevel).get(nearestYM3ForONSPDLookup).get(postcode);
+                            aPoint = DW_Postcode_Handler.getPointFromPostcode(nearestYM3ForONSPDLookup, postcodeLevel, postcode);
                             if (aPoint != null) {
                                 int x = aPoint.getX();
                                 int y = aPoint.getY();
@@ -176,12 +185,12 @@ public abstract class DW_DensityMapsAbstract extends DW_Maps {
         // 1.
         // Reading the coverage through a file
         ArcGridReader agr;
-        agr = getArcGridReader(asciigridFile);
+        agr = AGDT_Maps.getArcGridReader(asciigridFile);
 //        // 2.
 //        AbstractGridFormat format = GridFormatFinder.findFormat(asciigridFile);
 //        GridCoverage2DReader reader = format.getReader(asciigridFile);
         GridCoverage2D gc;
-        gc = getGridCoverage2D(agr);
+        gc = AGDT_Maps.getGridCoverage2D(agr);
 
         String outname = nameOfGrid + "GeoToolsOutput";
         //showMapsInJMapPane = true;
@@ -190,7 +199,7 @@ public abstract class DW_DensityMapsAbstract extends DW_Maps {
 //                normalisation, g, gc, "Quantile", ff, 9, "Reds", true);
         //Style style = createGreyscaleStyle(gc, null, sf, ff);
         ReferencedEnvelope re;
-        re = backgroundDW_Shapefile.getFeatureLayer().getBounds();
+        re = DW_Maps.getCommunityAreasDW_Shapefile().getFeatureLayer().getBounds();
         double minX = re.getMinX();
         double maxX = re.getMaxX();
         double minY = re.getMinY();
@@ -200,20 +209,21 @@ public abstract class DW_DensityMapsAbstract extends DW_Maps {
         System.out.println("minY " + minY);
         System.out.println("maxY " + maxY);
 
-        DW_Geotools.outputToImageUsingGeoToolsAndSetCommonStyle(
-                normalisation,
-                styleParameters,
-                styleIndex,
-                outname,
-                g,
-                gc,
-                foregroundDW_Shapefile0,
-                foregroundDW_Shapefile1,
-                backgroundDW_Shapefile,
-                dir,
-                imageWidth,
-                showMapsInJMapPane,
-                scaleToFirst);
+//        DW_Geotools.outputToImageUsingGeoToolsAndSetCommonStyle(
+//                normalisation,
+//                DW_Maps.getStyleParameters(),
+//                styleIndex,
+//                outname,
+//                g,
+//                gc,
+//                
+//                getForegroundDW_Shapefile0(),
+//                DW_Maps.getForegroundDW_Shapefile1(),
+//                DW_Maps.getBackgroundDW_Shapefile(),
+//                dir,
+//                DW_Maps.getImageWidth(),
+//                DW_Maps.isShowMapsInJMapPane(),
+//                scaleToFirst);
 //        try {
 //            reader.dispose();
 //        } catch (IOException ex) {

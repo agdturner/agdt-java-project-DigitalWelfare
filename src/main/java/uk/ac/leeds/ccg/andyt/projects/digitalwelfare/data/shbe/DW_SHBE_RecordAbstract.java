@@ -19,12 +19,14 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
 import java.io.Serializable;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
 /**
  *
  * @author geoagdt
  */
-public abstract class DW_SHBE_RecordAbstract implements Serializable {
+public abstract class DW_SHBE_RecordAbstract extends DW_Object implements Serializable {
 
     /**
      * 0 RecordID
@@ -47,7 +49,14 @@ public abstract class DW_SHBE_RecordAbstract implements Serializable {
      * 3 4 ClaimantsNationalInsuranceNumber
      */
     private String ClaimantsNationalInsuranceNumber;
-    
+
+    public DW_SHBE_RecordAbstract() {
+    }
+
+    public DW_SHBE_RecordAbstract(DW_Environment env) {
+        super(env);
+    }
+
     @Override
     public String toString() {
         return "RecordID " + RecordID
@@ -67,7 +76,7 @@ public abstract class DW_SHBE_RecordAbstract implements Serializable {
     /**
      * @param RecordID the RecordID to set
      */
-    protected void setRecordID(long RecordID) {
+    protected final void setRecordID(long RecordID) {
         this.RecordID = RecordID;
     }
 
@@ -81,7 +90,7 @@ public abstract class DW_SHBE_RecordAbstract implements Serializable {
     /**
      * @param RecordType the RecordType to set
      */
-    protected void setRecordType(String RecordType) {
+    protected final void setRecordType(String RecordType) {
         this.RecordType = RecordType;
     }
 
@@ -96,7 +105,7 @@ public abstract class DW_SHBE_RecordAbstract implements Serializable {
      * @param HousingBenefitClaimReferenceNumber the
      * HousingBenefitClaimReferenceNumber to set
      */
-    protected void setHousingBenefitClaimReferenceNumber(String HousingBenefitClaimReferenceNumber) {
+    protected final void setHousingBenefitClaimReferenceNumber(String HousingBenefitClaimReferenceNumber) {
         this.HousingBenefitClaimReferenceNumber = HousingBenefitClaimReferenceNumber;
     }
 
@@ -111,7 +120,7 @@ public abstract class DW_SHBE_RecordAbstract implements Serializable {
      * @param CouncilTaxBenefitClaimReferenceNumber the
      * CouncilTaxBenefitClaimReferenceNumber to set
      */
-    protected void setCouncilTaxBenefitClaimReferenceNumber(String CouncilTaxBenefitClaimReferenceNumber) {
+    protected final void setCouncilTaxBenefitClaimReferenceNumber(String CouncilTaxBenefitClaimReferenceNumber) {
         this.CouncilTaxBenefitClaimReferenceNumber = CouncilTaxBenefitClaimReferenceNumber;
     }
 
@@ -126,7 +135,28 @@ public abstract class DW_SHBE_RecordAbstract implements Serializable {
      * @param ClaimantsNationalInsuranceNumber the
      * ClaimantsNationalInsuranceNumber to set
      */
-    protected void setClaimantsNationalInsuranceNumber(String ClaimantsNationalInsuranceNumber) {
+    protected final void setClaimantsNationalInsuranceNumber(String ClaimantsNationalInsuranceNumber) {
         this.ClaimantsNationalInsuranceNumber = ClaimantsNationalInsuranceNumber;
+    }
+
+    /**
+     * {@code
+     * String ClaimRef;
+     * ClaimRef = getClaimantsNationalInsuranceNumber();
+     * if (ClaimRef == null) {
+     * ClaimRef = getHousingBenefitClaimReferenceNumber();
+     * }
+     * return ClaimRef;
+     * }
+     *
+     * @return
+     */
+    public String getClaimRef() {
+        String ClaimRef;
+        ClaimRef = getCouncilTaxBenefitClaimReferenceNumber();
+        if (ClaimRef == null) {
+            ClaimRef = getHousingBenefitClaimReferenceNumber();
+        }
+        return ClaimRef;
     }
 }

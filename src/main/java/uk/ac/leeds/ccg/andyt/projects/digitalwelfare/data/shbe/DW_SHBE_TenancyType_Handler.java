@@ -69,10 +69,13 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
     public final String sNoTenancy = "No Tenancy";
     public final String sUnknown = "Unknown";
 
-    public DW_SHBE_TenancyType_Handler(DW_Environment env) {
-        this.env = env;
+    public DW_SHBE_TenancyType_Handler() {
     }
-    
+
+    public DW_SHBE_TenancyType_Handler(DW_Environment env) {
+        super(env);
+    }
+
     public String getTenancyTypeName(String tenancyType) {
         String result;
         if (tenancyType.startsWith(s1)) {

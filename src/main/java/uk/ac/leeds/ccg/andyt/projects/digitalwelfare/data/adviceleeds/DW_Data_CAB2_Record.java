@@ -18,6 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_StaticIO;
 
 /**
@@ -52,14 +53,8 @@ public class DW_Data_CAB2_Record extends DW_Data_Postcode_Record {
     private String total_contacts_current_bureau;
     private String total_non_client_contacts_current_bureau;
 
-    /**
-     * Creates a null record in case this is needed
-     *
-     * @param RecordID
-     */
-    public DW_Data_CAB2_Record(
-            long RecordID) {
-        setRecordID(RecordID);
+    public DW_Data_CAB2_Record(DW_Environment env) {
+       super(env);
     }
 
     /**
@@ -69,9 +64,11 @@ public class DW_Data_CAB2_Record extends DW_Data_Postcode_Record {
      * @throws java.lang.Exception
      */
     public DW_Data_CAB2_Record(
+            DW_Environment env,
             long RecordID,
             String line,
             DW_Data_CAB2_Handler handler) throws Exception {
+        super(env);
         setRecordID(RecordID);
         
         //if (RecordID ==2925) {

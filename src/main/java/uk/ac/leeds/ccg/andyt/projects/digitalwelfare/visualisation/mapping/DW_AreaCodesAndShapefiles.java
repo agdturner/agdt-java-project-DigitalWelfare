@@ -18,9 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,21 +33,20 @@ import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.agdtcensus.AGDT_Census;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.getCensusBoundaryShapefile;
 
 /**
  *
  * @author geoagdt
  */
 public class DW_AreaCodesAndShapefiles extends DW_Object {
+
+    protected DW_Maps DW_Maps;
 
     private final TreeSet<String> _LeedsAreaCodes;
     private final TreeSet<String> _LeedsAndNeighbouringLADAreaCodes;
@@ -64,8 +61,20 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
     private final DW_Shapefile _LeedsAndNeighbouringLADDW_Shapefile;
     private final DW_Shapefile _LeedsAndNearNeighbouringLADDW_Shapefile;
 
+    public DW_AreaCodesAndShapefiles() {
+        _LeedsAreaCodes = null;
+        _LeedsAndNeighbouringLADAreaCodes = null;
+        _LeedsAndNearNeighbouringLADAreaCodes = null;
+        _LevelDW_Shapefile = null;
+        _LeedsLevelDW_Shapefile = null;
+        _LeedsLADDW_Shapefile = null;
+        _LeedsAndNeighbouringLADDW_Shapefile = null;
+        _LeedsAndNearNeighbouringLADDW_Shapefile = null;
+    }
+
     /**
      *
+     * @param env
      * @param level
      * @param targetPropertyName
      * @param sdsf
@@ -75,7 +84,8 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             String level,
             String targetPropertyName,
             ShapefileDataStoreFactory sdsf) {
-        this.env = env;
+        super(env);
+        this.DW_Maps = env.getDW_Maps();
         String tLeedsString = "Leeds";
         String tLeedsAndNeighbouringLADsString;
         tLeedsAndNeighbouringLADsString = "LeedsAndNeighbouringLADs";
@@ -133,7 +143,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
                 || level.equalsIgnoreCase("LSOA")
                 || level.equalsIgnoreCase("MSOA")) {
             // Read Census Boundary Data of level
-            File levelShapefile = DW_Maps.getAreaBoundaryShapefile(env, level);
+            File levelShapefile = DW_Maps.getAreaBoundaryShapefile(level);
             _LevelDW_Shapefile = new DW_Shapefile(levelShapefile);
 
             // Read area level Census Codes
@@ -163,9 +173,8 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
              * backgroundShapefile
              */
             File leedsLevelShapefile;
-           leedsLevelShapefile = DW_Maps.getCensusBoundaryShapefile(
-                    env,
-                   tLeedsString,
+            leedsLevelShapefile = DW_Maps.getCensusBoundaryShapefile(
+                    tLeedsString,
                     level);
             _LeedsLevelDW_Shapefile = new DW_Shapefile(leedsLevelShapefile);
             if (!leedsLevelShapefile.exists()) {
@@ -177,7 +186,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
                         leedsLevelShapefile);
             }
         } else {
-            File levelShapefile = DW_Maps.getAreaBoundaryShapefile(env, level);
+            File levelShapefile = DW_Maps.getAreaBoundaryShapefile(level);
             if (levelShapefile == null) {
                 int debug = 1;
             }
@@ -319,7 +328,6 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
         String levelLAD = "LAD";
         // Read LAD Census Boundary Data
         File tLADShapefile = DW_Maps.getAreaBoundaryShapefile(
-                env,
                 levelLAD);
         DW_Shapefile tLAD_DW_Shapefile;
         tLAD_DW_Shapefile = new DW_Shapefile(tLADShapefile);
@@ -341,8 +349,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
         SimpleFeatureType tLAD_SFT = tLAD_DW_Shapefile.getSimpleFeatureType();
         // Select tLADCensusCodes from LAD Census Boundary Data
         File tLADShapefile = DW_Maps.getCensusBoundaryShapefile(
-                env,
-                    name,
+                name,
                 "LAD");
         result = new DW_Shapefile(tLADShapefile);
         if (!tLADShapefile.exists()) {

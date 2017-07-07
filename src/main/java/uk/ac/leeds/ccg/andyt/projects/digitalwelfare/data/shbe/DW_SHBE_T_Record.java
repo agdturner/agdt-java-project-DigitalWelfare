@@ -18,6 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+
 /**
  *
  * @author geoagdt
@@ -131,6 +133,10 @@ public class DW_SHBE_T_Record extends DW_SHBE_RecordAbstract {
      * 238 335 OverpaymentReasonOther
      */
     private String OverpaymentReasonOther;
+
+    public DW_SHBE_T_Record(DW_Environment env) {
+        super(env);
+    }
     
     @Override
     public String toString() {

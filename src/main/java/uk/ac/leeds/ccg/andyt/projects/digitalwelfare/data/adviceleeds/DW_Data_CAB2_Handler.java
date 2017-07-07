@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
  * For handling data from CASE.
@@ -36,6 +36,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 public class DW_Data_CAB2_Handler extends DW_Object {
 
     public DW_Data_CAB2_Handler() {
+    }
+
+    public DW_Data_CAB2_Handler(DW_Environment env) {
+        super(env);
     }
 
     /**
@@ -57,12 +61,12 @@ public class DW_Data_CAB2_Handler extends DW_Object {
                 directory,
                 filename);
         try {
-        BufferedReader br;
-        br = Generic_StaticIO.getBufferedReader(inputFile);
-        StreamTokenizer st;
-        st = getStreamTokenizerSyntax(br);
-        String line = "";
-        long RecordID = 0;
+            BufferedReader br;
+            br = Generic_StaticIO.getBufferedReader(inputFile);
+            StreamTokenizer st;
+            st = getStreamTokenizerSyntax(br);
+            String line = "";
+            long RecordID = 0;
             // Skip the header
             int headerLines = 2;
             for (int i = 0; i < headerLines; i++) {
@@ -83,7 +87,7 @@ public class DW_Data_CAB2_Handler extends DW_Object {
                     case StreamTokenizer.TT_WORD:
                         line = st.sval;
                         try {
-                            DW_Data_CAB2_Record record = new DW_Data_CAB2_Record(RecordID, line, this);
+                            DW_Data_CAB2_Record record = new DW_Data_CAB2_Record(env, RecordID, line, this);
                             String client_ref = record.getClient_ref();
                             String enquiry_ref = record.getEnquiry_ref();
                             //String bureau = record.getBureau();
@@ -91,13 +95,11 @@ public class DW_Data_CAB2_Handler extends DW_Object {
                             DW_ID_ClientID id;
                             if (IDType instanceof DW_ID_ClientOutletEnquiryID) {
                                 id = new DW_ID_ClientOutletEnquiryID(client_ref, outlet, enquiry_ref);
+                            } else if (IDType instanceof DW_ID_ClientOutletID) {
+                                id = new DW_ID_ClientOutletID(client_ref, outlet);
                             } else {
-                                if (IDType instanceof DW_ID_ClientOutletID) {
-                                    id = new DW_ID_ClientOutletID(client_ref, outlet);
-                                } else {
-                                    // IDType instance of DW_ID_ClientID
-                                    id = new DW_ID_ClientID(client_ref);
-                                }
+                                // IDType instance of DW_ID_ClientID
+                                id = new DW_ID_ClientID(client_ref);
                             }
                             if (result.containsKey(id)) {
                                 System.out.println("Additional record for " + id);

@@ -19,252 +19,282 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_SHBE_Record implements Serializable {
+public class DW_SHBE_Record extends DW_Object implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
-     * 0 RecordID
+     * DW_Strings for convenience. Set from env.getDW_Strings()
      */
-    protected long RecordID;
-    
-    private String CouncilTaxBenefitClaimReferenceNumber;
-    
+    protected transient DW_Strings DW_Strings;
+
+    /**
+     * StatusOfHBClaimAtExtractDate 0 is OtherPaymentType 1 is InPayment 2 is
+     * Suspended
+     */
+    private int StatusOfHBClaimAtExtractDate;
+
+    /**
+     * The Year_Month of the records. This is for retrieving the Year_Month
+     * DW_SHBE_Records which this is part of.
+     */
+    protected String YM3;
+
+    /**
+     * The ClaimRef DW_ID.
+     */
+    protected DW_ID ClaimRefID;
+
+    /**
+     * A convenient lookup for knowing if ClaimPostcodeF is a valid format for a
+     * UK postcode.
+     */
+    protected boolean ClaimPostcodeFValidPostcodeFormat;
+
+    /**
+     * A convenient lookup for knowing if ClaimPostcodeF is mappable.
+     */
+    protected boolean ClaimPostcodeFMappable;
+
+    /**
+     * For storing a ONSPD format version of ClaimPostcodeF1.
+     */
+    protected String ClaimPostcodeF;
+
+    /**
+     * For storing if the Claimant Postcode has been modified by removing non
+     * A-Z, a-z, 0-9 characters and replacing "O" with "0" or removing "0"
+     * altogether.
+     */
+    protected boolean ClaimPostcodeFAutoModified;
+
+    /**
+     * For storing if the ClaimPostcodeF was subsequently (since the extract)
+     * checked and modified.
+     */
+    protected boolean ClaimPostcodeFManModified;
+
+    /**
+     * For storing if the ClaimPostcodeF has been updated from the future. For 
+     * the time being, this is only allowed for Claimant Postcodes that were 
+     * originally blank or that had invalid formats.
+     */
+    protected boolean ClaimPostcodeFUpdatedFromTheFuture;
+
+    /**
+     * The Postcode DW_ID.
+     */
+    protected DW_ID PostcodeID;
+
     /**
      * DRecord
      */
     protected DW_SHBE_D_Record DRecord;
 
     /**
-     * DRecord
-     */
-    private DW_SHBE_D_Record pairedDRecord;
-    
-    /**
      * SRecords associated with a DRecord
      */
-    protected HashSet<DW_SHBE_S_Record> SRecords;
-    
+    protected ArrayList<DW_SHBE_S_Record> SRecords;
+
     /**
-     * Creates a null record in case this is needed
      *
-     * @param RecordID
+     * @param env
+     * @param YM3 The Year_Month of this.
+     * @param ClaimRefID The ClaimRef DW_ID for this.
      */
-    public DW_SHBE_Record(
-            long RecordID) {
-        this.RecordID = RecordID;
+    public DW_SHBE_Record(DW_Environment env, String YM3, DW_ID ClaimRefID) {
+        super(env);
+        DW_Strings = env.getDW_Strings();
+        this.YM3 = YM3;
+        this.ClaimRefID = ClaimRefID;
     }
 
     /**
-     * Creates a null record in case this is needed
+     * Creates a DW_SHBE_Record.
      *
-     * @param RecordID
-     * @param aDRecord
+     * @param env
+     * @param YM3 The Year_Month of this.
+     * @param ClaimRefID The ClaimRef DW_ID for this.
+     * @param DRecord
      */
     public DW_SHBE_Record(
-            long RecordID,
-            DW_SHBE_D_Record aDRecord) {
-        this.RecordID = RecordID;
-        this.DRecord = aDRecord;
-        this.CouncilTaxBenefitClaimReferenceNumber = aDRecord.getCouncilTaxBenefitClaimReferenceNumber();
+            DW_Environment env,
+            String YM3,
+            DW_ID ClaimRefID,
+            DW_SHBE_D_Record DRecord) {
+        super(env);
+        this.DW_Strings = env.getDW_Strings();
+        this.YM3 = YM3;
+        this.ClaimRefID = ClaimRefID;
+        this.DRecord = DRecord;
     }
-    
+
     /**
-     * @param RecordID
-     * @param type ------------------------------------------------------------
-     * The type is worked out by reading the first line of the data. type1 has:
-     * LandlordPostcode and SubRecordDateOfBirth for S Record; and,
-     * LandlordPostcode for D Record.
-     * type0-------------------------------------------------------------------
-     * 1,2,3,4,8,9, 11,12,13,14,15,16,17,18,19, 20,21,22,23,24,25,26,27,28,29,
-     * 30,31,32,33,34,35,36,37,38,39, 40,41,42,43,44,45,46,47,48,49,
-     * 50,51,52,53,54,55,56,57,58,59, 60,61,62,63,64,65,66,67,68,69,
-     * 70,71,72,73,74,75,76,77,78,79, 80,81,82,83,84,85,86,87,88,89,
-     * 90,91,92,93,94,95,96,97,98,99, 100,101,102,103,104,105,106,107,108,109,
-     * 110,111,112,113,114,115,116,117,118,119, 120,121,122,123,124,125,126,
-     * 130,131,132,133,134,135,136,137,138,139,
-     * 140,141,142,143,144,145,146,147,148,149,
-     * 150,151,152,153,154,155,156,157,158,159,
-     * 160,161,162,163,164,165,166,167,168,169,
-     * 170,171,172,173,174,175,176,177,178,179,
-     * 180,181,182,183,184,185,186,187,188,189,
-     * 190,191,192,193,194,195,196,197,198,199,
-     * 200,201,202,203,204,205,206,207,208,209,
-     * 210,211,213,214,215,216,217,218,219,
-     * 220,221,222,223,224,225,226,227,228,229,
-     * 230,231,232,233,234,235,236,237,238,239,
-     * 240,241,242,243,244,245,246,247,248,249,
-     * 250,251,252,253,254,255,256,257,258,259,
-     * 260,261,262,263,264,265,266,267,268,269,
-     * 270,271,272,273,274,275,276,277,278,284,285,286,287,
-     * 290,291,292,293,294,295,296,297,298,299, 308,309,
-     * 310,311,316,317,318,319, 320,321,322,323,324,325,326,327,328,329,
-     * 330,331,332,333,334,335,336,337,338,339, 340,341
-     * type1-------------------------------------------------------------------
-     * 1,2,3,4,8,9, 11,12,13,14,15,16,17,18,19, 20,21,22,23,24,25,26,27,28,29,
-     * 30,31,32,33,34,35,36,37,38,39, 40,41,42,43,44,45,46,47,48,49,
-     * 50,51,52,53,54,55,56,57,58,59, 60,61,62,63,64,65,66,67,68,69,
-     * 70,71,72,73,74,75,76,77,78,79, 80,81,82,83,84,85,86,87,88,89,
-     * 90,91,92,93,94,95,96,97,98,99, 100,101,102,103,104,105,106,107,108,109,
-     * 110,111,112,113,114,115,116,117,118,119, 120,121,122,123,124,125,126,
-     * 130,131,132,133,134,135,136,137,138,139,
-     * 140,141,142,143,144,145,146,147,148,149,
-     * 150,151,152,153,154,155,156,157,158,159,
-     * 160,161,162,163,164,165,166,167,168,169,
-     * 170,171,172,173,174,175,176,177,178,179,
-     * 180,181,182,183,184,185,186,187,188,189,
-     * 190,191,192,193,194,195,196,197,198,199,
-     * 200,201,202,203,204,205,206,207,208,209,
-     * 210,211,213,214,215,216,217,218,219,
-     * 220,221,222,223,224,225,226,227,228,229,
-     * 230,231,232,233,234,235,236,237,238,239,
-     * 240,241,242,243,244,245,246,247,248,249,
-     * 250,251,252,253,254,255,256,257,258,259,
-     * 260,261,262,263,264,265,266,267,268,269,
-     * 270,271,272,273,274,275,276,277,278,284,285,286,287,
-     * 290,291,292,293,294,295,296,297,298,299, 307,308,309,
-     * 310,311,315,316,317,318,319, 320,321,322,323,324,325,326,327,328,329,
-     * 330,331,332,333,334,335,336,337,338,339, 340,341
-     * @param line
-     * @throws java.lang.Exception
+     * Call this method to initialise fields declared transient after having
+     * read this back as a Serialized Object.
+     *
+     * @param env
      */
-    public DW_SHBE_Record(
-            long RecordID,
-            int type,
-            String line) throws Exception {
-        this.RecordID = RecordID;
-        if (line.startsWith("S")) {
-            //System.out.println("S Record");
-            getSRecords().add(generateSRecord(
-                    type,
-                    RecordID,
-                    line));
-        }
-        if (line.startsWith("D"))  {
-            //System.out.println("D Record");
-            setDRecord(generateDRecord(
-                    type,
-                    RecordID,
-                    line));
-        }
+    public void init(DW_Environment env) {
+        this.env = env;
+        this.DW_Strings = env.getDW_Strings();
     }
-    
-    @Override
-    public String toString() {
+
+    /**
+     * Returns a Brief String description of this.
+     *
+     * @return
+     */
+    public String toStringBrief() {
         String result;
-        result = "D_Record: " + DRecord.toString();
-        long NumberOfS_Records;
-        NumberOfS_Records = SRecords.size();
-        result += " Number of SRecords = " + NumberOfS_Records;
-        if (NumberOfS_Records > 0) {
-         result += ": ";   
+        result = "YM3 " + YM3;
+        result += DW_Strings.sNewLine;
+        if (DRecord != null) {
+            result += "DRecord: " + DRecord.toStringBrief();
+            result += DW_Strings.sNewLine;
         }
-        Iterator<DW_SHBE_S_Record> ite;
-        ite = SRecords.iterator();
-        while (ite.hasNext()) {
-            DW_SHBE_S_Record S_Record;
-            S_Record = ite.next();
-            result += " S_Record: " + S_Record.toString();
+        SRecords = getSRecords();
+        if (SRecords != null) {
+            long NumberOfS_Records;
+            NumberOfS_Records = SRecords.size();
+            result += " Number of SRecords = " + NumberOfS_Records;
+            result += DW_Strings.sNewLine;
+            if (NumberOfS_Records > 0) {
+                result += ": ";
+            }
+            Iterator<DW_SHBE_S_Record> ite;
+            ite = SRecords.iterator();
+            while (ite.hasNext()) {
+                DW_SHBE_S_Record rec;
+                rec = ite.next();
+                result += " SRecord: " + rec.toString();
+                result += DW_Strings.sNewLine;
+            }
         }
         return result;
     }
 
-    private DW_SHBE_S_Record generateSRecord(
-            int type,
-            long RecordID,
-            String line) throws Exception {
-        return new DW_SHBE_S_Record(RecordID, type, line);
-    }
-    
-    private DW_SHBE_D_Record generateDRecord(
-            int type,
-            long RecordID,
-            String line) throws Exception {
-        return new DW_SHBE_D_Record(RecordID, type, line);
+    @Override
+    public String toString() {
+        String result;
+        result = "ClaimRefDW_ID " + ClaimRefID
+                + DW_Strings.sNewLine
+                + "StatusOfHBClaimAtExtractDate " + StatusOfHBClaimAtExtractDate
+                + DW_Strings.sNewLine
+                + "YM3 " + YM3
+                + DW_Strings.sNewLine;
+        if (DRecord != null) {
+            result += "DRecord: " + DRecord.toString()
+                    + DW_Strings.sNewLine;
+        }
+        SRecords = getSRecords();
+        if (SRecords != null) {
+            long NumberOfS_Records;
+            NumberOfS_Records = SRecords.size();
+            result += " Number of SRecords = " + NumberOfS_Records
+                    + DW_Strings.sNewLine;
+            if (NumberOfS_Records > 0) {
+                result += ": ";
+            }
+            Iterator<DW_SHBE_S_Record> ite;
+            ite = SRecords.iterator();
+            while (ite.hasNext()) {
+                DW_SHBE_S_Record rec;
+                rec = ite.next();
+                result += " SRecord: " + rec.toString()
+                        + DW_Strings.sNewLine;
+            }
+        }
+        return result;
     }
 
     /**
-     * @return the RecordID
+     * @return ClaimRefDW_ID
      */
-    public long getRecordID() {
-        return RecordID;
+    public DW_ID getClaimRefID() {
+        return ClaimRefID;
     }
 
     /**
-     * @param RecordID the RecordID to set
+     * @return a copy of StatusOfHBClaimAtExtractDate.
      */
-    public void setRecordID(long RecordID) {
-        this.RecordID = RecordID;
+    public int getStatusOfHBClaimAtExtractDate() {
+        return StatusOfHBClaimAtExtractDate;
     }
 
     /**
-     * 
-     * @return 
+     * @param StatusOfHBClaimAtExtractDate the StatusOfHBClaimAtExtractDate to
+     * set
+     */
+    protected final void getStatusOfHBClaimAtExtractDate(int StatusOfHBClaimAtExtractDate) {
+        this.StatusOfHBClaimAtExtractDate = StatusOfHBClaimAtExtractDate;
+    }
+
+    /**
+     * @return PaymentType
+     */
+    public String getPaymentType() {
+        return env.getDW_Strings().getPaymentTypes().get(StatusOfHBClaimAtExtractDate + 1);
+    }
+
+    /**
+     *
+     * @return
      */
     public DW_SHBE_D_Record getDRecord() {
         return DRecord;
     }
 
     /**
-     * 
-     * @param DRecord 
+     * @return the SRecords initialising if needs be.
      */
-    private void setDRecord(DW_SHBE_D_Record DRecord) {
-        this.DRecord = DRecord;
-    }
-
-    /**
-     * @return the CouncilTaxBenefitClaimReferenceNumber
-     */
-    public String getCouncilTaxBenefitClaimReferenceNumber() {
-        return CouncilTaxBenefitClaimReferenceNumber;
-    }
-
-    /**
-     * @param CouncilTaxBenefitClaimReferenceNumber the
-     * CouncilTaxBenefitClaimReferenceNumber to set
-     */
-    public void setCouncilTaxBenefitClaimReferenceNumber(String CouncilTaxBenefitClaimReferenceNumber) {
-        this.CouncilTaxBenefitClaimReferenceNumber = CouncilTaxBenefitClaimReferenceNumber;
-    }
-    
-    /**
-     * @return the SRecords
-     */
-    public final HashSet<DW_SHBE_S_Record> getSRecords() {
-        if (SRecords == null) {
-            SRecords = new HashSet<DW_SHBE_S_Record>();
-        }
+    public final ArrayList<DW_SHBE_S_Record> getSRecords() {
         return SRecords;
     }
 
     /**
      * @param SRecords the SRecords to set
      */
-    public void setSRecords(HashSet<DW_SHBE_S_Record> SRecords) {
+    public void setSRecords(ArrayList<DW_SHBE_S_Record> SRecords) {
         this.SRecords = SRecords;
     }
 
     /**
-     * @return the pairedDRecord
+     * @return the ClaimPostcodeF
      */
-    public DW_SHBE_D_Record getPairedDRecord() {
-        return pairedDRecord;
+    public String getClaimPostcodeF() {
+        return ClaimPostcodeF;
     }
 
     /**
-     * @param pairedDRecord the pairedDRecord to set
+     * @return ClaimPostcodeFValidPostcodeFormat
      */
-    public void setPairedDRecord(DW_SHBE_D_Record pairedDRecord) {
-        this.pairedDRecord = pairedDRecord;
+    public boolean isClaimPostcodeFValidFormat() {
+        return ClaimPostcodeFValidPostcodeFormat;
     }
 
-    public boolean isPairedRecord() {
-        return pairedDRecord != null;
+    /**
+     * @return ClaimPostcodeFMappable
+     */
+    public boolean isClaimPostcodeFMappable() {
+        return ClaimPostcodeFMappable;
+    }
+
+    /**
+     * @return the PostcodeID
+     */
+    public DW_ID getPostcodeID() {
+        return PostcodeID;
     }
 }

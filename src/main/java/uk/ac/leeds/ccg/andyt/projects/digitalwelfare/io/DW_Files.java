@@ -27,22 +27,23 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 
 /**
- * A basic convenience class that does not need a reference to the main 
+ * A basic convenience class that does not need a reference to the main
  * DW_Environment.
+ *
  * @author geoagdt
  */
 public class DW_Files extends DW_Object {
 
     /**
-     * Provided for convenience. This is a reference to env.tDW_Strings.
+     * Provided for convenience. This is a reference to env.DW_Strings.
      */
-    protected DW_Strings tDW_Strings;
-    
+    protected DW_Strings DW_Strings;
+
     /**
      * Short code for 2011.
      */
     public final String s2011 = "2011";
-    
+
     /**
      * Short code for AdviceLeeds.
      */
@@ -67,7 +68,7 @@ public class DW_Files extends DW_Object {
      * Short code for Choropleth.
      */
     public final String sChoropleth = "Choropleth";
-    
+
     /**
      * Short code for CodePoint.
      */
@@ -87,7 +88,7 @@ public class DW_Files extends DW_Object {
      * Short code for Look Up Tables.
      */
     public final String sLUTs = "LUTs";
-    
+
     /**
      * Short code for LeedsCityCouncil.
      */
@@ -117,17 +118,22 @@ public class DW_Files extends DW_Object {
      * Short code for PostcodeChanged.
      */
     public final String sPostcode = "Postcode";
-    
+
     /**
      * Short code for SHBE.
      */
     public final String sSHBE = "SHBE";
 
     /**
+     * Short code for SHBE.
+     */
+    public final String sLogs = "Logs";
+
+    /**
      * Short code for Swap.
      */
     public final String sSwap = "Swap";
-    
+
     /**
      * Short code for UnderOccupied.
      */
@@ -138,12 +144,6 @@ public class DW_Files extends DW_Object {
      */
     public final String sTables = "Tables";
 
-    protected final String sDotdat = ".dat";
-
-    public String getsDotdat() {
-        return sDotdat;
-    }
-    
     /**
      * For storing the main directory location where the project files are
      * stored. This is initialised from DW_Environment.sDigitalWelfareDir.
@@ -160,23 +160,23 @@ public class DW_Files extends DW_Object {
      * <code>inputDir</code>.
      */
     private File inputAdviceLeedsDir;
-    
+
     /**
      * For storing the input Census data directory inside the main input data
      * directory.
      */
     private File inputCensusDir;
-    
+
     /**
      * For storing the 2011 Census directory inside the Census data directory.
      */
     private File inputCensus2011Dir;
-    
+
     /**
      * For storing the Postcode directory inside the main input data directory.
      */
     private File inputPostcodeDir;
-    
+
     /**
      * For storing the CodePoint directory inside the main input data directory.
      */
@@ -209,6 +209,7 @@ public class DW_Files extends DW_Object {
     private File outputCensus2011Dir;
     private File outputLCCDir;
     private File outputSHBEDir;
+    private File outputSHBELogsDir;
     private File outputSHBEMapsDir;
     private File outputSHBETablesDir;
     private File outputSHBEPlotsDir;
@@ -222,20 +223,19 @@ public class DW_Files extends DW_Object {
      * Short code for Density.
      */
     public final String sDensity = "Density";
-    
 
-    /**
-     * Create a new instance.
-     */
-    public DW_Files(DW_Environment env){
-        this.env = env;
+    public DW_Files() {
+    }
+
+    public DW_Files(DW_Environment env) {
+        super(env);
         if (env != null) {
-            this.tDW_Strings = env.getDW_Strings();
+            this.DW_Strings = env.getDW_Strings();
         } else {
-            this.tDW_Strings = new DW_Strings();
+            this.DW_Strings = new DW_Strings();
         }
     }
-    
+
     public File getDigitalWelfareDir() {
         if (dir == null) {
             dir = new File(env.sDigitalWelfareDir);
@@ -334,6 +334,214 @@ public class DW_Files extends DW_Object {
                     sONSPD);
         }
         return inputONSPDDir;
+    }
+
+    public File getInputONSPDFile(File dir, String namePrefix, String year, String month, String nameAdd) {
+        File f;
+        File d;
+        d = new File(
+                dir,
+                "ONSPD" + "_" + month + "_" + year);
+        d = new File(
+                d,
+                "Data");
+        f = new File(
+                d,
+                namePrefix + "_" + month + "_" + year + nameAdd + ".csv");
+        return f;
+    }
+
+    public File getInputONSPDFile(String YM3) {
+        return getInputONSPDFiles().get(YM3);
+    }
+
+    TreeMap<String, File> InputONSPDFiles;
+
+    /**
+     * 2008_FEB 2008_MAY 2008_AUG 2008_NOV 2009_FEB 2009_MAY 2009_AUG 2009_NOV
+     * 2010_FEB 2010_MAY 2010_AUG 2010_NOV 2011_MAY 2011_AUG 2011_NOV 2012_FEB
+     * 2012_MAY 2012_AUG 2012_NOV 2013_FEB 2013_MAY 2013_AUG 2013_NOV 2014_FEB
+     * 2014_MAY 2014_AUG 2014_NOV 2015_FEB 2015_MAY 2015_AUG
+     *
+     * @return
+     */
+    public TreeMap<String, File> getInputONSPDFiles() {
+        if (InputONSPDFiles == null) {
+            InputONSPDFiles = new TreeMap<String, File>();
+            File d;
+            d = getInputONSPDDir();
+            File f;
+            String namePrefix;
+            String year;
+            String month;
+            String nameAdd;
+            namePrefix = "NSPDF";
+            // 2008
+            year = "2008";
+            nameAdd = "_UK_1M";
+            // FEB
+            month = "FEB";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // MAY
+            month = "MAY";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // AUG
+            month = "AUG";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // NOV
+            month = "NOV";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // 2009
+            year = "2009";
+            // FEB
+            month = "FEB";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // MAY
+            nameAdd = "_UK_1M_FP";
+            month = "MAY";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // AUG
+            month = "AUG";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // NOV
+            month = "NOV";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // 2010
+            year = "2010";
+            // FEB
+            month = "FEB";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // MAY
+            month = "MAY";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // AUG
+            month = "AUG";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // NOV
+            month = "NOV";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // 2011
+            year = "2011";
+            nameAdd = "_O";
+            // MAY
+            namePrefix = "ONSPD";
+            month = "MAY";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // AUG
+            nameAdd = "_UK_O";
+            month = "AUG";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // NOV
+            month = "NOV";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // 2012
+            year = "2012";
+            // FEB
+            month = "FEB";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // MAY
+            month = "MAY";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // AUG
+            month = "AUG";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // NOV
+            month = "NOV";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // 2013
+            year = "2013";
+            // FEB
+            month = "FEB";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // MAY
+            month = "MAY";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // AUG
+            month = "AUG";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // NOV
+            nameAdd = "_UK";
+            month = "NOV";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // 2014
+            year = "2014";
+            // FEB
+            month = "FEB";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // MAY
+            month = "MAY";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // AUG
+            month = "AUG";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // NOV
+            month = "NOV";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // 2015
+            year = "2015";
+            // FEB
+            month = "FEB";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // MAY
+            month = "MAY";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // AUG
+            month = "AUG";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // NOV
+            month = "NOV";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // 2016
+            year = "2016";
+            // FEB
+            month = "FEB";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // MAY
+            month = "MAY";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // AUG
+            month = "AUG";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+            // NOV
+            month = "NOV";
+            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+            InputONSPDFiles.put(year + "_" + month, f);
+        }
+        return InputONSPDFiles;
     }
 
     public File getInputLCCDir() {
@@ -520,36 +728,43 @@ public class DW_Files extends DW_Object {
         result = new File(
                 getGeneratedSHBEDir(),
                 level);
-        result = getUOFile(
+        result = getUODir(
                 result,
                 doUnderOccupied,
                 doCouncil);
         return result;
     }
 
-    public File getUOFile(
-            File f,
+    /**
+     *
+     * @param dir
+     * @param doUnderOccupied
+     * @param doCouncil
+     * @return
+     */
+    public File getUODir(
+            File dir,
             boolean doUnderOccupied,
             boolean doCouncil) {
         File result;
         if (doUnderOccupied) {
             result = new File(
-                    f,
-                    tDW_Strings.sU);
+                    dir,
+                    DW_Strings.sU);
             //UnderOccupiedString);
             if (doCouncil) {
                 result = new File(
                         result,
-                        tDW_Strings.sCouncil);
+                        DW_Strings.sCouncil);
             } else {
                 result = new File(
                         result,
-                        tDW_Strings.sRSL);
+                        DW_Strings.sRSL);
             }
         } else {
             result = new File(
-                    f,
-                    tDW_Strings.sA);
+                    dir,
+                    DW_Strings.sA);
         }
         return result;
     }
@@ -563,87 +778,87 @@ public class DW_Files extends DW_Object {
         if (doUnderOccupied) {
             result = new File(
                     f,
-                    tDW_Strings.sU);
+                    DW_Strings.sU);
             //UnderOccupiedString);
             if (doCouncil & doRSL) {
                 result = new File(
                         result,
-                        tDW_Strings.sB);
+                        DW_Strings.sB);
             } else if (doCouncil) {
                 result = new File(
                         result,
-                        tDW_Strings.sCouncil);
+                        DW_Strings.sCouncil);
             } else {
                 result = new File(
                         result,
-                        tDW_Strings.sRSL);
+                        DW_Strings.sRSL);
             }
         } else {
             result = new File(
                     f,
-                    tDW_Strings.sA);
+                    DW_Strings.sA);
         }
         return result;
     }
 
-    public ArrayList<File> getGeneratedSHBELevelDirsArrayList(
+    public ArrayList<File> getOutputSHBELevelDirsArrayList(
             ArrayList<String> levels,
             boolean doUnderOccupied,
             boolean doCouncil) {
         ArrayList<File> result;
         result = new ArrayList<File>();
-        File tGeneratedSHBEDir;
-        tGeneratedSHBEDir = getGeneratedSHBEDir();
+        File dir;
+        dir = getOutputSHBEDir();
         Iterator<String> ite;
         ite = levels.iterator();
         while (ite.hasNext()) {
             String level = ite.next();
             File d = new File(
-                    tGeneratedSHBEDir,
+                    dir,
                     level);
-            d = getUOFile(d, doUnderOccupied, doCouncil);
+            d = getUODir(d, doUnderOccupied, doCouncil);
             result.add(d);
         }
         return result;
     }
 
-    public TreeMap<String, File> getGeneratedSHBELevelDirsTreeMap(
+    public TreeMap<String, File> getOutputSHBELevelDirsTreeMap(
             ArrayList<String> levels,
             boolean doUnderOccupied,
             boolean doCouncil) {
         TreeMap<String, File> result;
         result = new TreeMap<String, File>();
-        File tGeneratedSHBEDir;
-        tGeneratedSHBEDir = getGeneratedSHBEDir();
+        File dir;
+        dir = getOutputSHBEDir();
         Iterator<String> ite;
         ite = levels.iterator();
         while (ite.hasNext()) {
             String level = ite.next();
             File d;
             d = new File(
-                    tGeneratedSHBEDir,
+                    dir,
                     level);
-            d = getUOFile(d, doUnderOccupied, doCouncil);
+            d = getUODir(d, doUnderOccupied, doCouncil);
             result.put(level, d);
         }
         return result;
     }
 
-    public TreeMap<String, File> getGeneratedSHBELevelDirsTreeMap(
+    public TreeMap<String, File> getOutputSHBELevelDirsTreeMap(
             ArrayList<String> levels,
             boolean doUnderOccupied,
             boolean doCouncil,
             boolean doRSL) {
         TreeMap<String, File> result;
         result = new TreeMap<String, File>();
-        File tGeneratedSHBEDir;
-        tGeneratedSHBEDir = getGeneratedSHBEDir();
+        File dir;
+        dir = getOutputSHBEDir();
         Iterator<String> ite;
         ite = levels.iterator();
         while (ite.hasNext()) {
             String level = ite.next();
             File d = new File(
-                    tGeneratedSHBEDir,
+                    dir,
                     level);
             d = getUOFile(d, doUnderOccupied, doCouncil, doRSL);
             result.put(level, d);
@@ -750,6 +965,16 @@ public class DW_Files extends DW_Object {
         return outputSHBEDir;
     }
 
+    public File getOutputSHBELogsDir() {
+        if (outputSHBELogsDir == null) {
+            outputSHBELogsDir = new File(
+                getOutputSHBEDir(),
+                sLogs);
+            outputSHBELogsDir.mkdirs();
+        }
+        return outputSHBELogsDir;
+    }
+        
     public File getOutputSHBEMapsDir() {
         if (outputSHBEMapsDir == null) {
             outputSHBEMapsDir = new File(
@@ -771,28 +996,24 @@ public class DW_Files extends DW_Object {
 
     public File getOutputSHBETablesTenancyTypeTransitionDir(
             String type,
-            String paymentType,
             boolean checkPreviousTenancyType) {
         File result = new File(
                 getOutputSHBETablesDir(),
-                tDW_Strings.sTenancy);
-        result = new File(
-                result,
-                paymentType);
+                DW_Strings.sTenancy);
         result = new File(
                 result,
                 type);
         result = new File(
                 result,
-                tDW_Strings.sTenancyTypeTransition);
+                DW_Strings.sTenancyTypeTransition);
         if (checkPreviousTenancyType) {
             result = new File(
                     result,
-                    tDW_Strings.sCheckedPreviousTenancyType);
+                    DW_Strings.sCheckedPreviousTenancyType);
         } else {
             result = new File(
                     result,
-                    tDW_Strings.sCheckedPreviousTenancyTypeNo);
+                    DW_Strings.sCheckedPreviousTenancyTypeNo);
         }
         return result;
     }
@@ -813,7 +1034,7 @@ public class DW_Files extends DW_Object {
             boolean checkPreviousTenancyType) {
         File result = new File(
                 getOutputSHBEPlotsDir(),
-                tDW_Strings.sTenancy);
+                DW_Strings.sTenancy);
         result = new File(
                 result,
                 paymentType);
@@ -822,15 +1043,15 @@ public class DW_Files extends DW_Object {
                 type);
         result = new File(
                 result,
-                tDW_Strings.sTenancyTypeTransitionLineGraphs);
+                DW_Strings.sTenancyTypeTransitionLineGraphs);
         if (checkPreviousTenancyType) {
             result = new File(
                     result,
-                    tDW_Strings.sCheckedPreviousTenancyType);
+                    DW_Strings.sCheckedPreviousTenancyType);
         } else {
             result = new File(
                     result,
-                    tDW_Strings.sCheckedPreviousTenancyTypeNo);
+                    DW_Strings.sCheckedPreviousTenancyTypeNo);
         }
         return result;
     }
@@ -864,32 +1085,50 @@ public class DW_Files extends DW_Object {
     }
 
     /**
-     * 
+     *
      * @param name
-     * @param paymentType
      * @param includeKey
      * @param doUnderOccupancy
-     * @return 
+     * @return
      */
-    public File getTableDir(
+    public File getOutputSHBETableDir(
             String name,
-            String paymentType,
             String includeKey,
+            boolean doUnderOccupancy) {
+        File result;
+        result = DW_Files.this.getOutputSHBETableDir(name, doUnderOccupancy);
+        result = new File(result, includeKey);
+        if (!result.exists()) {
+            result.mkdirs();
+        }
+        return result;
+    }
+
+    /**
+     *
+     * @param name
+     * @param doUnderOccupancy
+     * @return
+     */
+    public File getOutputSHBETableDir(
+            String name,
             boolean doUnderOccupancy) {
         File result;
         result = new File(
                 getOutputSHBETablesDir(),
                 name);
         if (doUnderOccupancy) {
-            result = new File(result, tDW_Strings.sU);
+            result = new File(result, DW_Strings.sU);
         } else {
-            result = new File(result, tDW_Strings.sA);
+            result = new File(result, DW_Strings.sA);
         }
-        result = new File(result, paymentType);
-        result = new File(result, includeKey);
         if (!result.exists()) {
             result.mkdirs();
         }
         return result;
+    }
+    
+    public String getDefaultBinaryFileExtension(){
+        return DW_Strings.sBinaryFileExtension;
     }
 }

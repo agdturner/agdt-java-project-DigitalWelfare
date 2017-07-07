@@ -18,14 +18,19 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+
 /**
  *
  * @author geoagdt
  */
-public class DW_Data_Postcode_Record extends DW_Data_Abstract_Record {
+public class DW_Data_Postcode_Record extends DW_Data_AbstractRecord {
     
     private String Postcode;
 
+    public DW_Data_Postcode_Record(DW_Environment env) {
+        super(env);
+    }
     /**
      * @return the Postcode
      */

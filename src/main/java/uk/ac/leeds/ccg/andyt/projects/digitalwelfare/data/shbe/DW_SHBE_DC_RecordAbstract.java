@@ -18,6 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+
 /**
  *
  * @author geoagdt
@@ -89,6 +91,15 @@ public class DW_SHBE_DC_RecordAbstract extends DW_SHBE_DAC_RecordAbstract {
      */
     private int TotalAmountOfBackdatedCTBAwarded;
 
+    public DW_SHBE_DC_RecordAbstract(DW_Environment env) {
+        super(env);
+    }
+
+    @Override
+    public String toStringBrief() {
+        return super.toStringBrief();
+    }
+    
     @Override
     public String toString() {
         return super.toString()

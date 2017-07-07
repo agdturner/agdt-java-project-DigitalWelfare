@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
 import java.io.Serializable;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
  *
@@ -67,6 +68,10 @@ public class DW_SHBE_R_Record extends DW_SHBE_RecordAbstract implements Serializ
      * IfResolutionOfHBMSReferralDoesNotResultInAFinancialAdjustmentPleaseIndicateTheReasonWhy
      */
     private String IfResolutionOfHBMSReferralDoesNotResultInAFinancialAdjustmentPleaseIndicateTheReasonWhy;
+
+    public DW_SHBE_R_Record(DW_Environment env) {
+        super(env);
+    }
 
     @Override
     public String toString() {

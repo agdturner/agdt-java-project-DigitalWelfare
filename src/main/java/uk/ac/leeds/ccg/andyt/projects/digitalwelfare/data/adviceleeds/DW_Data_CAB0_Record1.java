@@ -18,6 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_StaticIO;
 
 /**
@@ -29,26 +30,23 @@ public class DW_Data_CAB0_Record1 extends DW_Data_CAB0_Record {
     private String Last_Updated_By;
     private String Last_Updated;
 
-    /**
-     * Creates a null record in case this is needed
-     *
-     * @param RecordID
-     */
-    public DW_Data_CAB0_Record1(
-            long RecordID) {
-        setRecordID(RecordID);
+    public DW_Data_CAB0_Record1(DW_Environment env) {
+        super(env);
     }
-
+    
     /**
+     * @param env
      * @param RecordID
      * @param line
      * @param handler
      * @throws java.lang.Exception
      */
     public DW_Data_CAB0_Record1(
+            DW_Environment env,
             long RecordID,
             String line,
             DW_Data_CAB0_Handler handler) throws Exception {
+        super(env);
         setRecordID(RecordID);
         String[] fields;
         fields = DW_StaticIO.splitWithQuotesThenCommas(line);

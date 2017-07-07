@@ -27,6 +27,7 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
@@ -37,6 +38,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 public class DW_Data_CAB0_Handler extends DW_Object {
 
     public DW_Data_CAB0_Handler() {
+    }
+
+    public DW_Data_CAB0_Handler(DW_Environment env) {
+        super(env);
     }
 
     public TreeMap loadInputData(File dir, String filename, Object IDType) {
@@ -92,9 +97,9 @@ public class DW_Data_CAB0_Handler extends DW_Object {
                         try {
                             DW_Data_CAB0_Record rec;
                             if (type == 0) {
-                                rec = new DW_Data_CAB0_Record(RecordID, line, this);
+                                rec = new DW_Data_CAB0_Record(env, RecordID, line, this);
                             } else {
-                                rec = new DW_Data_CAB0_Record1(RecordID, line, this);
+                                rec = new DW_Data_CAB0_Record1(env, RecordID, line, this);
                             }
                             String client_ref;
                             client_ref = rec.getClient_Ref();

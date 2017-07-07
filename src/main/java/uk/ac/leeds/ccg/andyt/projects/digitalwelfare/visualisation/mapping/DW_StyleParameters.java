@@ -21,7 +21,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping;
 import java.util.ArrayList;
 import org.geotools.styling.Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendItem;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+//import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParametersAbstract;
 
 /**

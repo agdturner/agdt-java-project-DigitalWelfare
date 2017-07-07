@@ -29,16 +29,16 @@ public class DW_PersonID implements Serializable {
 
     private DW_ID NINO_ID;
     private DW_ID DOB_ID;
-    
+
     public DW_PersonID() {
     }
 
     public DW_PersonID(
-            DW_ID NINO_ID,
-            DW_ID DOB_ID
+            DW_ID tNINO_ID,
+            DW_ID tDOB_ID
     ) {
-        this.NINO_ID = NINO_ID;
-        this.DOB_ID = DOB_ID;
+        this.NINO_ID = tNINO_ID;
+        this.DOB_ID = tDOB_ID;
     }
 
     /**
@@ -47,7 +47,7 @@ public class DW_PersonID implements Serializable {
     public DW_ID getNINO_ID() {
         return NINO_ID;
     }
-    
+
     /**
      * @return the tDOB_ID
      */
@@ -66,9 +66,11 @@ public class DW_PersonID implements Serializable {
         if (obj instanceof DW_PersonID) {
             DW_PersonID o;
             o = (DW_PersonID) obj;
-            if (NINO_ID.equals(o.getNINO_ID())) {
-                if (DOB_ID.equals(o.getDOB_ID())) {
-                    return true;
+            if (this.hashCode() == o.hashCode()) {
+                if (NINO_ID.equals(o.getNINO_ID())) {
+                    if (DOB_ID.equals(o.getDOB_ID())) {
+                        return true;
+                    }
                 }
             }
         }
@@ -77,11 +79,10 @@ public class DW_PersonID implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 59 * hash + (this.NINO_ID != null ? this.NINO_ID.hashCode() : 0);
-        hash = 59 * hash + (this.DOB_ID != null ? this.DOB_ID.hashCode() : 0);
+        int hash = 7;
+        hash = 67 * hash + (this.NINO_ID != null ? this.NINO_ID.hashCode() : 0);
+        hash = 67 * hash + (this.DOB_ID != null ? this.DOB_ID.hashCode() : 0);
         return hash;
     }
 
-    
 }

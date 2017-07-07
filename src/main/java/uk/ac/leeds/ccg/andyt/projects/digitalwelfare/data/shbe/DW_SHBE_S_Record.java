@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
 import java.io.Serializable;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
  *
@@ -61,18 +62,15 @@ public class DW_SHBE_S_Record extends DW_SHBE_RecordAbstract implements Serializ
      * In type1 but not type0 288 315 SubRecordDateOfBirth
      */
     private String SubRecordDateOfBirth;
+    
+    private DW_PersonID DW_PersonID;
 
-    /**
-     * Creates a null record in case this is needed
-     *
-     * @param RecordID
-     */
-    public DW_SHBE_S_Record(
-            long RecordID) {
-        this.RecordID = RecordID;
+    public DW_SHBE_S_Record(DW_Environment env) {
+       super(env);
     }
-
+    
     /**
+     * @param env
      * @param RecordID
      * @param type {@code The type is worked out by reading the first line of
      * the data. type1 has: LandlordPostcode 307 and SubRecordDateOfBirth 315.
@@ -130,10 +128,12 @@ public class DW_SHBE_S_Record extends DW_SHBE_RecordAbstract implements Serializ
      * @throws java.lang.Exception
      */
     public DW_SHBE_S_Record(
+            DW_Environment env,
             long RecordID,
             int type,
             String line
     ) throws Exception {
+       super(env);
         this.RecordID = RecordID;
         String[] fields = line.split(",");
         int n;
@@ -287,6 +287,8 @@ public class DW_SHBE_S_Record extends DW_SHBE_RecordAbstract implements Serializ
 
     /**
      * @return the SubRecordType
+     * 1 = Dependent
+     * 2 = NonDependent
      */
     public int getSubRecordType() {
         return SubRecordType;

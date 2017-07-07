@@ -135,7 +135,8 @@ public class DW_Geotools extends AGDT_Geotools {
         File outputImageFile = DW_Maps.getOutputImageFile(
                 outputFile, DW_Maps.png_String);
 
-        AGDT_Geotools.writeImageFile(g.env, // For handling OutOfMemoryErrors
+        AGDT_Geotools.writeImageFile(
+                g.env, // For handling OutOfMemoryErrors
                 mc,
                 newImageWidth,
                 newImageHeight,
@@ -253,7 +254,7 @@ public class DW_Geotools extends AGDT_Geotools {
 
         // Add foreground0
         // ---------------
-        addForeground0(
+        addToMapContent(
                 mc,
                 styleParameters,
                 foregroundShapefiles);
@@ -339,23 +340,27 @@ public class DW_Geotools extends AGDT_Geotools {
         return result;
     }
 
-    // Add foreground0
-    // ---------------
-    private static void addForeground0(
-            MapContent result,
-            AGDT_StyleParameters styleParameters,
-            ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0) {
-        if (foregroundDW_Shapefile0 != null) {
+    /**
+     * 
+     * @param mc The MapContent to be added to.
+     * @param sp The style parameters for the style of the layer to be added.
+     * @param shapefiles The shapefiles for creating the layers. 
+     */
+    private static void addToMapContent(
+            MapContent mc,
+            AGDT_StyleParameters sp,
+            ArrayList<AGDT_Shapefile> shapefiles) {
+        if (shapefiles != null) {
             Iterator<AGDT_Shapefile> ite;
-            ite = foregroundDW_Shapefile0.iterator();
-            int indexx = 0;
+            ite = shapefiles.iterator();
+            int i = 0;
             while (ite.hasNext()) {
                 AGDT_Shapefile sf = ite.next();
-                FeatureLayer foregroundFeatureLayer0;
-                foregroundFeatureLayer0 = sf.getFeatureLayer(
-                        styleParameters.getForegroundStyle0().get(indexx));
-                result.addLayer(foregroundFeatureLayer0);
-                indexx++;
+                FeatureLayer fl;
+                fl = sf.getFeatureLayer(
+                        sp.getForegroundStyle0().get(i));
+                mc.addLayer(fl);
+                i++;
             }
         }
     }
@@ -377,6 +382,7 @@ public class DW_Geotools extends AGDT_Geotools {
      * @param styleParameters styleParameters[0] may be null, but if it is not
      * null then (Style) styleParameters[0] is used to render features.
      * @param styleIndex
+     * @param max
      * @param showMapsInJMapPane
      */
     public static void outputToImage(
@@ -487,17 +493,15 @@ public class DW_Geotools extends AGDT_Geotools {
      * styleParameters.
      *
      * @param outname
-     * @param outputShapefile
-     * @param foregroundDW_Shapefile0
-     * @param foregroundDW_Shapefile1
-     * @param backgroundDW_Shapefile
+     * @param foregrounds
+     * @param midgrounds
+     * @param backgrounds
      * @param attributeName
      * @param outputDir
      * @param png_String
      * @param imageWidth
      * @param styleParameters styleParameters[0] may be null, but if it is not
      * null then (Style) styleParameters[0] is used to render features.
-     * @param styleIndex
      * @param showMapsInJMapPane
      */
     public static void outputToImage(
@@ -538,8 +542,10 @@ public class DW_Geotools extends AGDT_Geotools {
      *
      * @param mc
      * @param outname
-     * @param outputShapefile
+     * @param foregrounds
+     * @param midgrounds
      * @param outputDir
+     * @param backgrounds
      * @param imageWidth
      * @param showMapsInJMapPane
      */
@@ -668,7 +674,7 @@ public class DW_Geotools extends AGDT_Geotools {
      *
      * @param mc
      * @param outname
-     * @param outputShapefile
+     * @param midgrounds
      * @param outputDir
      * @param imageWidth
      * @param showMapsInJMapPane
@@ -741,6 +747,7 @@ public class DW_Geotools extends AGDT_Geotools {
      * @param styleParameters styleParameters[0] may be null, but if it is not
      * null then (Style) styleParameters[0] is used to render features.
      * @param styleIndex
+     * @param max
      * @return
      */
     protected static MapContent createMapContent(
@@ -801,7 +808,7 @@ public class DW_Geotools extends AGDT_Geotools {
         // Add foreground0
         // ---------------
         if (styleParameters.isDoForeground()) {
-            addForeground0(result, styleParameters, foregroundDW_Shapefile0);
+            addToMapContent(result, styleParameters, foregroundDW_Shapefile0);
         }
 
         // Add foreground1
@@ -832,98 +839,98 @@ public class DW_Geotools extends AGDT_Geotools {
         return result;
     }
 
-    protected static MapContent createMapContent(
-            //File file,
-            //File file,
-            ArrayList<AGDT_Shapefile> midgrounds,
-            String title,
-            String attributeName,
-            ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0,
-            AGDT_Shapefile foregroundDW_Shapefile1,
-            AGDT_Shapefile backgroundDW_Shapefile,
-            int imageWidth,
-            AGDT_StyleParameters styleParameters,
-            int styleIndex,
-            double max) {
-        MapContent result;
-        result = new MapContent();
-        // Unbox styleParameters
-        Style style;
-        style = styleParameters.getStyle(attributeName, styleIndex);
-        ArrayList<AGDT_LegendItem> legendItems;
-        legendItems = styleParameters.getLegendItems(styleIndex);
-
-        if (styleParameters.isDrawBoundaries()) {
-            FeatureLayer backgroundFeatureLayer;
-            backgroundFeatureLayer = backgroundDW_Shapefile.getFeatureLayer(
-                    styleParameters.getBackgroundStyle());
-            result.addLayer(backgroundFeatureLayer);
-        }
-
-        // Add output to mc
-        // ----------------
-        Iterator<AGDT_Shapefile> ite;
-        ite = midgrounds.iterator();
-        while (ite.hasNext()) {
-            FeatureSource fs;
-            fs = ite.next().getFeatureSource();
-            Layer layer;
-            // If input style is null then create a basic Style to render the 
-            // features
-            Object[] styleAndLegendItems;
-            if (style == null) {
-                styleAndLegendItems = getStyleAndLegendItems(
-                        fs,
-                        attributeName,
-                        styleParameters);
-                style = (Style) styleAndLegendItems[0];
-                styleParameters.setStyle(attributeName, style, styleIndex);
-                legendItems = (ArrayList<AGDT_LegendItem>) styleAndLegendItems[1];
-                styleParameters.setLegendItems(legendItems, styleIndex);
-            }
-
-            // set max for the last legend item
-            styleParameters.setMaxForTheLastLegendItem(max, styleIndex);
-
-            // Add the features and the associated Style object to mc as a new 
-            // Layer
-            layer = new FeatureLayer(fs, style);
-            result.addLayer(layer);
-        }
-
-        // Add foreground0
-        // ---------------
-        if (styleParameters.isDoForeground()) {
-            addForeground0(result, styleParameters, foregroundDW_Shapefile0);
-        }
-
-        // Add foreground1
-        // ---------------
-        if (foregroundDW_Shapefile1 != null) {
-            FeatureLayer foregroundFeatureLayer1;
-            foregroundFeatureLayer1 = foregroundDW_Shapefile1.getFeatureLayer(
-                    styleParameters.getForegroundStyle1());
-            result.addLayer(foregroundFeatureLayer1);
-        }
-
-        int imageHeight = getMapContentImageHeight(result, imageWidth);
-
-        // Add a legend
-        // ------------
-        if (legendItems != null) {
-            boolean addLegendToTheSide = true;
-            AGDT_LegendLayer ll = new AGDT_LegendLayer(
-                    styleParameters,
-                    "Legend",
-                    legendItems,
-                    result,
-                    imageWidth,
-                    imageHeight,
-                    addLegendToTheSide);
-            result.addLayer(ll);
-        }
-        return result;
-    }
+//    protected static MapContent createMapContent(
+//            //File file,
+//            //File file,
+//            ArrayList<AGDT_Shapefile> midgrounds,
+//            String title,
+//            String attributeName,
+//            ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0,
+//            AGDT_Shapefile foregroundDW_Shapefile1,
+//            AGDT_Shapefile backgroundDW_Shapefile,
+//            int imageWidth,
+//            AGDT_StyleParameters styleParameters,
+//            int styleIndex,
+//            double max) {
+//        MapContent result;
+//        result = new MapContent();
+//        // Unbox styleParameters
+//        Style style;
+//        style = styleParameters.getStyle(attributeName, styleIndex);
+//        ArrayList<AGDT_LegendItem> legendItems;
+//        legendItems = styleParameters.getLegendItems(styleIndex);
+//
+//        if (styleParameters.isDrawBoundaries()) {
+//            FeatureLayer backgroundFeatureLayer;
+//            backgroundFeatureLayer = backgroundDW_Shapefile.getFeatureLayer(
+//                    styleParameters.getBackgroundStyle());
+//            result.addLayer(backgroundFeatureLayer);
+//        }
+//
+//        // Add output to mc
+//        // ----------------
+//        Iterator<AGDT_Shapefile> ite;
+//        ite = midgrounds.iterator();
+//        while (ite.hasNext()) {
+//            FeatureSource fs;
+//            fs = ite.next().getFeatureSource();
+//            Layer layer;
+//            // If input style is null then create a basic Style to render the 
+//            // features
+//            Object[] styleAndLegendItems;
+//            if (style == null) {
+//                styleAndLegendItems = getStyleAndLegendItems(
+//                        fs,
+//                        attributeName,
+//                        styleParameters);
+//                style = (Style) styleAndLegendItems[0];
+//                styleParameters.setStyle(attributeName, style, styleIndex);
+//                legendItems = (ArrayList<AGDT_LegendItem>) styleAndLegendItems[1];
+//                styleParameters.setLegendItems(legendItems, styleIndex);
+//            }
+//
+//            // set max for the last legend item
+//            styleParameters.setMaxForTheLastLegendItem(max, styleIndex);
+//
+//            // Add the features and the associated Style object to mc as a new 
+//            // Layer
+//            layer = new FeatureLayer(fs, style);
+//            result.addLayer(layer);
+//        }
+//
+//        // Add foreground0
+//        // ---------------
+//        if (styleParameters.isDoForeground()) {
+//            addToMapContent(result, styleParameters, foregroundDW_Shapefile0);
+//        }
+//
+//        // Add foreground1
+//        // ---------------
+//        if (foregroundDW_Shapefile1 != null) {
+//            FeatureLayer foregroundFeatureLayer1;
+//            foregroundFeatureLayer1 = foregroundDW_Shapefile1.getFeatureLayer(
+//                    styleParameters.getForegroundStyle1());
+//            result.addLayer(foregroundFeatureLayer1);
+//        }
+//
+//        int imageHeight = getMapContentImageHeight(result, imageWidth);
+//
+//        // Add a legend
+//        // ------------
+//        if (legendItems != null) {
+//            boolean addLegendToTheSide = true;
+//            AGDT_LegendLayer ll = new AGDT_LegendLayer(
+//                    styleParameters,
+//                    "Legend",
+//                    legendItems,
+//                    result,
+//                    imageWidth,
+//                    imageHeight,
+//                    addLegendToTheSide);
+//            result.addLayer(ll);
+//        }
+//        return result;
+//    }
 
     protected static MapContent createMapContent(
             String legendMessage,
@@ -1065,22 +1072,16 @@ public class DW_Geotools extends AGDT_Geotools {
      * styleParameters if syleParameters[0] == null changing it to the Style as
      * produced from the rest of the styleParameters.
      *
-     * @param outputDW_Shapefile
-     * @param title
-     * @param attributeName
-     * @param foregroundDW_Shapefile0
-     * @param foregroundDW_Shapefile1
-     * @param backgroundDW_Shapefile
+     * @param midgrounds
+     * @param foregrounds
+     * @param backgrounds
      * @param imageWidth
      * @param styleParameters styleParameters[0] may be null, but if it is not
      * null then (Style) styleParameters[0] is used to render features.
-     * @param styleIndex
      * @return
      */
     protected static MapContent createMapContent(
             ArrayList<AGDT_Shapefile> midgrounds,
-            //            String title,
-            //            String attributeName,
             ArrayList<AGDT_Shapefile> foregrounds,
             ArrayList<AGDT_Shapefile> backgrounds,
             int imageWidth,
@@ -1521,7 +1522,7 @@ public class DW_Geotools extends AGDT_Geotools {
                     outputImageFile,
                     outputType);
         } catch (OutOfMemoryError oome) {
-            if (ge.HandleOutOfMemoryError_boolean) {
+            if (ge._HandleOutOfMemoryError_boolean) {
                 ge.clear_MemoryReserve();
                 ge.swapToFile_Grid2DSquareCellChunk(true);
                 ge.init_MemoryReserve(true);

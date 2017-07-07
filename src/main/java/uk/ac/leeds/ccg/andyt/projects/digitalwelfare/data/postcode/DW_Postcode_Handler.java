@@ -30,27 +30,59 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 
 /**
  * A class for adding coordinate data and area codes for UK postcodes.
  * https://geoportal.statistics.gov.uk/Docs/PostCodes/ONSPD_AUG_2013_csv.zip
  */
-public class DW_Postcode_Handler extends DW_Object implements Serializable {
+public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements Serializable {
 
-    protected Generic_UKPostcode_Handler Generic_UKPostcode_Handler;
+    protected transient DW_Environment env;
+    protected transient DW_Files DW_Files;
+    protected transient DW_Strings DW_Strings;
+    protected DW_Maps DW_Maps;
+    public final String TYPE_UNIT = "Unit";
+    public final String TYPE_SECTOR = "Sector";
+    public final String TYPE_DISTRICT = "District";
+    public final String TYPE_AREA = "Area";
+
+    public double getDistanceBetweenPostcodes(
+            String yM30v,
+            String yM31v,
+            DW_ID PostcodeID0,
+            DW_ID PostcodeID1) {
+        double result = 0.0d;
+        AGDT_Point aPoint;
+        aPoint = env.getDW_SHBE_Data().getPostcodeIDToPointLookup(yM30v).get(PostcodeID0);
+        AGDT_Point bPoint;
+        bPoint = env.getDW_SHBE_Data().getPostcodeIDToPointLookup(yM31v).get(PostcodeID1);
+        if (aPoint != null && bPoint != null) {
+            result = aPoint.getDistance(bPoint);
+        } else if (env.DEBUG_Level == env.DEBUG_Level_FINEST) {
+            System.out.println("<Issue calculating distance between PostcodeID0 " + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + "/>");
+            if (aPoint == null) {
+                System.out.println("No point look up for PostcodeID0 " + PostcodeID0 + " in " + yM30v);
+                aPoint = env.getDW_SHBE_Data().getPostcodeIDToPointLookup(yM31v).get(PostcodeID0);
+                if (aPoint != null) {
+                    System.out.println("However there is a look up for PostcodeID0 " + PostcodeID0 + " in " + yM31v + "! Maybe use this instead?");
+                }
+            }
+            if (bPoint == null) {
+                System.out.println("No point look up for PostcodeID1 " + PostcodeID1 + " in " + yM31v);
+                bPoint = env.getDW_SHBE_Data().getPostcodeIDToPointLookup(yM30v).get(PostcodeID1);
+                if (bPoint != null) {
+                    System.out.println("However there is a look up for PostcodeID1 " + PostcodeID1 + " in " + yM30v + "! Maybe use this instead?");
+                }
+            }
+            System.out.println("</Issue calculating distance between PostcodeID0 " + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + ">");
+        }
+        return result;
+    }
     
-    public static String TYPE_UNIT = "Unit";
-    public static String TYPE_SECTOR = "Sector";
-    public static String TYPE_DISTRICT = "District";
-    public static String TYPE_AREA = "Area";
-
-    /**
-     * A name for exception and error handling
-     */
-    private static final String className = "PostcodeGeocoder";
-
     public double getDistanceBetweenPostcodes(
             String yM30v,
             String yM31v,
@@ -69,17 +101,30 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
                 postcode1);
         if (aPoint != null && bPoint != null) {
             result = aPoint.getDistance(bPoint);
-        } else {
+        } else if (env.DEBUG_Level == env.DEBUG_Level_FINEST) {
             System.out.println("<Issue calculating distance between postcodes: " + postcode0 + " and " + postcode1 + "/>");
-//            System.out.println("<Issue calculating distance between postcodes: " + aPostcode + " and " + bPostcode + ">");
-//            if (aPoint == null) {
-//                System.out.println("No point look up for " + aPostcode);
-//            }
-//            if (bPoint == null) {
-//                System.out.println("No point look up for " + bPostcode);                
-//            }
-//            System.out.println("</Issue calculating distance between postcodes: " + aPostcode + " and " + bPostcode + ">");
-//            int debug = 1;
+            if (aPoint == null) {
+                System.out.println("No point look up for " + postcode0 + " in " + yM30v);
+                aPoint = getPointFromPostcode(
+                        yM31v,
+                        TYPE_UNIT,
+                        postcode0);
+                if (aPoint != null) {
+                    System.out.println("However there is a look up for " + postcode0 + " in " + yM31v + "! Maybe use this instead?");
+                }
+            }
+            if (bPoint == null) {
+                System.out.println("No point look up for " + postcode1 + " in " + yM31v);
+                bPoint = getPointFromPostcode(
+                        yM30v,
+                        TYPE_UNIT,
+                        postcode1);
+                if (bPoint != null) {
+                    System.out.println("However there is a look up for " + postcode1 + " in " + yM30v + "! Maybe use this instead?");
+                }
+
+            }
+            System.out.println("</Issue calculating distance between postcodes: " + postcode0 + " and " + postcode1 + ">");
         }
         return result;
     }
@@ -92,241 +137,282 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
      * @return
      */
     public AGDT_Point getPointFromPostcode(
-            String yM3v,
+            String nearestYM3ForONSPDLookup,
             String level,
             String postcode) {
         AGDT_Point result;
         String formattedPostcode;
-        formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
-        result = DW_Maps.getONSPDlookups(env).get(level).get(getNearestYM3ForONSPDLookup(yM3v)).get(formattedPostcode);
+        formattedPostcode = formatPostcode(postcode);
+        result = DW_Maps.getONSPDlookups(env).get(level).get(nearestYM3ForONSPDLookup).get(formattedPostcode);
         return result;
     }
 
-    public String getNearestYM3ForONSPDLookup(String yM3) {
-        /* 2008_FEB
-         * 2008_MAY
-         * 2008_AUG
-         * 2008_NOV
-         * 2009_FEB
-         * 2009_MAY
-         * 2009_AUG
-         * 2009_NOV
-         * 2010_FEB
-         * 2010_MAY
-         * 2010_AUG
-         * 2010_NOV
-         * 2011_MAY
-         * 2011_AUG
-         * 2011_NOV
-         * 2012_FEB
-         * 2012_MAY
-         * 2012_AUG
-         * 2012_NOV
-         * 2013_FEB
-         * 2013_MAY
-         * 2013_AUG
-         * 2013_NOV
-         * 2014_FEB
-         * 2014_MAY
-         * 2014_AUG
-         * 2014_NOV
-         * 2015_FEB
-         * 2015_MAY
-         * 2015_AUG
-         * 2015_NOV
-         * 2016_FEB
-         * 2016_MAY
-         */
+    /**
+     *
+     * @param NearestYM3ForONSPDLookup
+     * @param level Expects either "Unit", "Sector" or "Area"
+     * @param PostcodeF
+     * @return
+     */
+    public AGDT_Point getPointFromPostcodeNew(
+            String NearestYM3ForONSPDLookup,
+            String level,
+            String PostcodeF) {
+        AGDT_Point result;
+        TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> ONSPDlookups;
+        ONSPDlookups = DW_Maps.getONSPDlookups(env);
+        TreeMap<String, TreeMap<String, AGDT_Point>> ONSPDlookupsLevel;
+        ONSPDlookupsLevel = ONSPDlookups.get(level);
+        TreeMap<String, AGDT_Point> ONSPDlookupsLevelForNearestYM3ForONSPDLookup;
+        ONSPDlookupsLevelForNearestYM3ForONSPDLookup = ONSPDlookupsLevel.get(NearestYM3ForONSPDLookup);
+        result = ONSPDlookupsLevelForNearestYM3ForONSPDLookup.get(PostcodeF);
+        return result;
+    }
+
+    /**
+     * 2008_FEB
+     * 2008_MAY
+     * 2008_AUG
+     * 2008_NOV
+     * 2009_FEB
+     * 2009_MAY
+     * 2009_AUG
+     * 2009_NOV
+     * 2010_FEB
+     * 2010_MAY
+     * 2010_AUG
+     * 2010_NOV
+     * 
+     * 2011_MAY
+     * 2011_AUG
+     * 2011_NOV
+     * 2012_FEB
+     * 2012_MAY
+     * 2012_AUG
+     * 2012_NOV
+     * 2013_FEB
+     * 2013_MAY
+     * 2013_AUG
+     * 2013_NOV
+     * 2014_FEB
+     * 2014_MAY
+     * 2014_AUG
+     * 2014_NOV
+     * 2015_FEB
+     * 2015_MAY
+     * 2015_AUG
+     * 2015_NOV
+     * 2016_FEB
+     * 2016_MAY
+     * 2016_AUG
+     * 2016_NOV
+     * @param YM3
+     * @return
+     */
+    public static String getNearestYM3ForONSPDLookup(String YM3) {
+        String defaultLatest = "2016_NOV";
         String[] split;
-        split = yM3.split("_");
+        split = YM3.split("_");
         String year = split[0];
         int yearint = Integer.valueOf(year);
         String month = split[1];
-        if (yearint < 2008) {
-            return "2008_FEB";
-        }
         if (yearint > 2016) {
-            return "2016_MAY";
-        }
-        if (yearint == 2011) {
+           return defaultLatest;
+        } else if (yearint < 2008) {
+            return "2008_FEB";
+        } else if (yearint == 2011) {
+            // There was no realease in Feb!
             if (month.equalsIgnoreCase("JAN")
-                    || month.equalsIgnoreCase("FEB")) {
-                return "2011_MAY";
-            } else if (month.equalsIgnoreCase("MAR")
+                    || month.equalsIgnoreCase("FEB")
+                    ||month.equalsIgnoreCase("MAR")
                     || month.equalsIgnoreCase("APR")
-                    || month.equalsIgnoreCase("MAY")) {
+                    || month.equalsIgnoreCase("MAY")){
                 return "2011_MAY";
-            } else if (month.equalsIgnoreCase("JUN")
+            } else if (
+                    month.equalsIgnoreCase("JUN")
                     || month.equalsIgnoreCase("JUL")
-                    || month.equalsIgnoreCase("AUG")) {
+                    || month.equalsIgnoreCase("AUG")){
                 return "2011_AUG";
-            } else if (month.equalsIgnoreCase("SEP")
+            } else if (
+                    month.equalsIgnoreCase("SEP")
                     || month.equalsIgnoreCase("OCT")
-                    || month.equalsIgnoreCase("NOV")) {
+                    || month.equalsIgnoreCase("NOV")){
                 return "2011_NOV";
-            } else if (month.equalsIgnoreCase("DEC")) {
-                return "2012_FEB";
             } else {
-                return null;
+                return "2011_FEB";
             }
         } else {
-            // Special Cases
-            if (yearint == 2010 && month.equalsIgnoreCase("DEC")) {
-                return "2011_MAY";
-            }
-            if (yearint == 2016) {
-                if (month.equalsIgnoreCase("JAN")
-                        || month.equalsIgnoreCase("FEB")) {
-                    return year + "_FEB";
-//                } else if (month.equalsIgnoreCase("MAR")
-//                        || month.equalsIgnoreCase("APR")
-//                        || month.equalsIgnoreCase("MAY")) {
-//                    return year + "_MAY";
-                } else {
-                    return year + "_MAY";
-// In due course it will be possible to add more ONSPD data in                    
-//                    if (month.equalsIgnoreCase("JUN")
-//                            || month.equalsIgnoreCase("JUL")
-//                            || month.equalsIgnoreCase("AUG")) {
-//                        return year + "_AUG";
-//                    } else {
-//                        if (month.equalsIgnoreCase("SEP")
-//                                || month.equalsIgnoreCase("OCT")
-//                                || month.equalsIgnoreCase("NOV")) {
-//                            return year + "_NOV";
-//                        } else {
-//                            if (month.equalsIgnoreCase("DEC")) {
-//                                return Integer.toString(yearint + 1) + "_FEB";
-//                            } else {
-//                                return null;
-//                            }
-//                        }
-//                    }
-                }
-            } else if (month.equalsIgnoreCase("JAN")
+            if (month.equalsIgnoreCase("JAN")
                     || month.equalsIgnoreCase("FEB")) {
-                return year + "_FEB";
-            } else if (month.equalsIgnoreCase("MAR")
+                return "" + yearint + "_FEB";
+            } else if (
+                    month.equalsIgnoreCase("MAR")
                     || month.equalsIgnoreCase("APR")
-                    || month.equalsIgnoreCase("MAY")) {
-                return year + "_MAY";
-            } else if (month.equalsIgnoreCase("JUN")
+                    || month.equalsIgnoreCase("MAY")){
+                return "" + yearint + "_MAY";
+            } else if (
+                    month.equalsIgnoreCase("JUN")
                     || month.equalsIgnoreCase("JUL")
-                    || month.equalsIgnoreCase("AUG")) {
-                return year + "_AUG";
-            } else if (month.equalsIgnoreCase("SEP")
+                    || month.equalsIgnoreCase("AUG")){
+                return "" + yearint + "_AUG";
+            } else if (
+                    month.equalsIgnoreCase("SEP")
                     || month.equalsIgnoreCase("OCT")
-                    || month.equalsIgnoreCase("NOV")) {
-                return year + "_NOV";
-            } else if (month.equalsIgnoreCase("DEC")) {
-                return Integer.toString(yearint + 1) + "_FEB";
+                    || month.equalsIgnoreCase("NOV")){
+                return "" + yearint + "_NOV";
             } else {
-                return null;
+                if (yearint == 2010) {
+                    return "2011_MAY";
+                } else {
+                    if (yearint == 2016) {
+                        return defaultLatest;
+                    } else {
+                        return "" + (yearint + 1) + "_FEB";
+                    }
+                }
             }
         }
+                
+//        } else if (yearint == 2012) {
+//            if (month.equalsIgnoreCase("JAN")
+//                    || month.equalsIgnoreCase("FEB")
+//                    || month.equalsIgnoreCase("MAR")
+//                    || month.equalsIgnoreCase("APR")
+//                    || month.equalsIgnoreCase("MAY")
+//                    || month.equalsIgnoreCase("JUN")
+//                    || month.equalsIgnoreCase("JUL")) {
+//                return "2011_MAY";
+//            } else if (month.equalsIgnoreCase("AUG")
+//                    || month.equalsIgnoreCase("SEP")
+//                    || month.equalsIgnoreCase("OCT")) {
+//                return "2012_AUG";
+//            } else {
+//                return "2012_NOV";
+//            }
+//        } else if (yearint == 2013) {
+//            if (month.equalsIgnoreCase("JAN")
+//                    || month.equalsIgnoreCase("FEB")) {
+//                return "2012_NOV";
+//            } else if (month.equalsIgnoreCase("MAR")
+//                    || month.equalsIgnoreCase("APR")) {
+//                return "2013_FEB";
+//            } else if (month.equalsIgnoreCase("MAY")
+//                    || month.equalsIgnoreCase("JUN")) {
+//                return "2013_MAY";
+//            } else {
+//                return "2013_AUG";
+//            }
+//        } else if (yearint == 2014) {
+//            if (month.equalsIgnoreCase("NOV")
+//                    || month.equalsIgnoreCase("DEC")) {
+//                return "2014_NOV";
+//            } else {
+//                return "2013_AUG";
+//            }
+//        } else if (yearint == 2015) {
+//            if (month.equalsIgnoreCase("JAN")
+//                    || month.equalsIgnoreCase("FEB")
+//                    || month.equalsIgnoreCase("MAR")
+//                    || month.equalsIgnoreCase("APR")) {
+//                return "2014_NOV";
+//            } else if (month.equalsIgnoreCase("MAY")
+//                    || month.equalsIgnoreCase("JUN")
+//                    || month.equalsIgnoreCase("JUL")) {
+//                return "2015_MAY";
+//            } else {
+//                return "2015_AUG";
+//            }
+//        } else if (yearint == 2016) {
+//            if (month.equalsIgnoreCase("JAN")
+//                    || month.equalsIgnoreCase("FEB")) {
+//                return "2015_AUG";
+//            } else {
+//                
+//                return latest;
+//            }
+//        }
+//        return null;
     }
-
-    public static String getDefaultYM3() {
+    
+    public String getDefaultYM3() {
         return "2013_AUG";
     }
 
+    /**
+     * Return postcodef with a space added between the first and second parts if
+     * it is long enough.
+     * @param postcodef
+     * @return 
+     */
+    public String getPostcodePrintFormat(String postcodef) {
+        int length;
+                length = postcodef.length();
+                if (length < 5) {
+            return postcodef;
+        } else {
+                String firstPartPostcode;
+                firstPartPostcode = postcodef.substring(0, length - 3);
+                String secondPartPostcode;
+                secondPartPostcode = postcodef.substring(length - 3, length);
+                return firstPartPostcode + " " + secondPartPostcode;
+            }
+    }
+    
     /**
      * @see also
      * @param unformattedUnitPostcode
      * @return A better format of the unformattedUnitPostcode
      */
-    public static String formatPostcode(String unformattedUnitPostcode) {
-        String result;
-        String postcodeNoSpaces;
+    public String formatPostcode(String unformattedUnitPostcode) {
         if (unformattedUnitPostcode == null) {
-            result = "";
+            return "";
         } else {
-            postcodeNoSpaces = unformattedUnitPostcode.trim().replaceAll(" ", "");
-            postcodeNoSpaces = postcodeNoSpaces.replaceAll("'", "");
-            postcodeNoSpaces = postcodeNoSpaces.replaceAll("\\.", "");
-            if (postcodeNoSpaces.length() < 5) {
-                //System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " too few characters to format.");
-                result = postcodeNoSpaces;
-            } else {
-                int length;
-                length = postcodeNoSpaces.length();
-                String firstPartPostcode;
-                firstPartPostcode = postcodeNoSpaces.substring(0, length - 3);
-                String secondPartPostcode;
-                secondPartPostcode = postcodeNoSpaces.substring(length - 3, length);
-                result = firstPartPostcode + " " + secondPartPostcode;
-            }
+            return unformattedUnitPostcode.replaceAll("[^A-Za-z0-9]", "");
         }
-//        String[] postcodeSplit = unformattedUnitPostcode.split(" ");
-//        if (postcodeSplit.length > 3) {
-//            System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " cannot be formatted into a unit postcode");
+//        String result;
+//        String postcodeNoSpaces;
+//        if (unformattedUnitPostcode == null) {
+//            result = "";
 //        } else {
-//            if (postcodeSplit.length == 3) {
-//                result = postcodeSplit[0] + postcodeSplit[1] + " " + postcodeSplit[2];
-//                if (postcodeSplit[2].length() != 3) {
-//                    System.out.println("Unusual length of second part of postcode " + unformattedUnitPostcode);
-//                }
+//            // Replace anything that is not Roman A-Z or a-z or 0-9 with nothing.
+//            postcodeNoSpaces = unformattedUnitPostcode.replaceAll("[^A-Za-z0-9]", "");
+////            postcodeNoSpaces = unformattedUnitPostcode.replaceAll(" ", "");
+////            postcodeNoSpaces = postcodeNoSpaces.replaceAll("'", "");
+////            postcodeNoSpaces = postcodeNoSpaces.replaceAll("\\.", "");
+////            postcodeNoSpaces = postcodeNoSpaces.replaceAll("-", "");
+////            postcodeNoSpaces = postcodeNoSpaces.replaceAll("_", "");
+//            if (postcodeNoSpaces.length() < 5) {
+//                //System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " too few characters to format.");
+//                result = postcodeNoSpaces;
 //            } else {
-//                if (postcodeSplit.length == 2) {
-//                    result = postcodeSplit[0] + " " + postcodeSplit[1];
-//                    if (postcodeSplit[1].length() > 4) {
-//                        System.out.println("Unusual length of first part of postcode " + unformattedUnitPostcode);
-//                    }
-//                }
+//                int length;
+//                length = postcodeNoSpaces.length();
+//                String firstPartPostcode;
+//                firstPartPostcode = postcodeNoSpaces.substring(0, length - 3);
+//                String secondPartPostcode;
+//                secondPartPostcode = postcodeNoSpaces.substring(length - 3, length);
+//                result = firstPartPostcode + " " + secondPartPostcode;
 //            }
 //        }
-        return result;
-    }
-
-    /**
-     * @param postcode
-     * @return A format of the unformattedUnitPostcode for ONSPD lookups For
-     * example this will return "LS11OJS" for an unformattedUnitPostcode = "LS11
-     * 0JS"
-     */
-    public static String formatPostcodeForONSPDLookup(String postcode) {
-        String result;
-        result = postcode;
-        if (postcode.length() == 8) {
-            result = postcode.replaceAll(" ", "");
-        }
-        if (postcode.length() == 6) {
-            result = postcode.substring(0, 2) + " " + postcode.substring(3, 6);
-        }
-//        if (unformattedUnitPostcode != null) {
-//            String result = unformattedUnitPostcode.trim();
-//            String[] postcodeSplit = result.split(" ");
-//            if (postcodeSplit.length > 3) {
-//                // unformattedUnitPostcode is not a valid postcode!
-//                System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " cannot be formatted into a unit postcode");
-//                return null;
-//            } else {
-//                if (postcodeSplit.length == 3) {
-//                    result = postcodeSplit[0] + postcodeSplit[1] + " " + postcodeSplit[2];
-//                    if (postcodeSplit[2].length() != 3) {
-//                        // unformattedUnitPostcode is not a valid postcode!
-//                        System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " not formatted into a unit postcode");
-//                        return null;
-//                    }
-//                } else {
-//                    if (postcodeSplit.length == 2) {
-//                        result = postcodeSplit[0] + " " + postcodeSplit[1];
-//                        if (postcodeSplit[1].length() != 3) {
-//                            // unformattedUnitPostcode is not a valid postcode!
-//                            System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " not formatted into a unit postcode");
-//                            return null;
-//                        }
-//                    }
-//                }
-//            }
-//            if (result.length() == 8) {
-//                result = result.replaceAll(" ", "");
-//            }
-//            result = Generic_StaticString.getUpperCase(result);
-//            return result;
-//        }
-//        return null;
-        return result;
+////        String[] postcodeSplit = unformattedUnitPostcode.split(" ");
+////        if (postcodeSplit.length > 3) {
+////            System.out.println("unformattedUnitPostcode " + unformattedUnitPostcode + " cannot be formatted into a unit postcode");
+////        } else {
+////            if (postcodeSplit.length == 3) {
+////                result = postcodeSplit[0] + postcodeSplit[1] + " " + postcodeSplit[2];
+////                if (postcodeSplit[2].length() != 3) {
+////                    System.out.println("Unusual length of second part of postcode " + unformattedUnitPostcode);
+////                }
+////            } else {
+////                if (postcodeSplit.length == 2) {
+////                    result = postcodeSplit[0] + " " + postcodeSplit[1];
+////                    if (postcodeSplit[1].length() > 4) {
+////                        System.out.println("Unusual length of first part of postcode " + unformattedUnitPostcode);
+////                    }
+////                }
+////            }
+////        }
+//        return result;
     }
 
     /**
@@ -366,7 +452,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
      * @param unitPostcode
      * @return
      */
-    public static String getPostcodeDistrict(String unitPostcode) {
+    public String getPostcodeDistrict(String unitPostcode) {
         String result = "";
         String p;
         p = unitPostcode.trim();
@@ -375,32 +461,39 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
             return result;
         } else {
             String[] pp = p.split(" ");
-            if (pp.length == 2) {
-                result = pp[0];
-                return result;
-            } else if (pp.length == 1) {
-                int length = p.length();
-                result = p.substring(0, length - 2);
-                result = result.trim();
-                if (result.length() < 3) {
-                    return "";
-                }
-                return result;
-            } else {
-                //throw new Exception("Postcode format exception 2 in getPostcodeSector(" + unitPostcode + " )");
-                // Put the first and second parts together.
-                result += pp[0];
-                result += pp[1];
-                if (result.length() < 3) {
-                    return "";
-                }
-                return result;
+            switch (pp.length) {
+                case 2:
+                    result = pp[0];
+                    return result;
+                case 1:
+                    int length = p.length();
+                    result = p.substring(0, length - 2);
+                    result = result.trim();
+                    if (result.length() < 3) {
+                        return "";
+                    }
+                    return result;
+                default:
+                    //throw new Exception("Postcode format exception 2 in getPostcodeSector(" + unitPostcode + " )");
+                    // Put the first and second parts together.
+                    result += pp[0];
+                    result += pp[1];
+                    if (result.length() < 3) {
+                        return "";
+                    }
+                    return result;
             }
         }
     }
 
+    public DW_Postcode_Handler() {
+    }
+
     public DW_Postcode_Handler(DW_Environment env) {
         this.env = env;
+        this.DW_Strings = env.getDW_Strings();
+        this.DW_Files = env.getDW_Files();
+        this.DW_Maps = env.getDW_Maps();
     }
 
     public String getDefaultLookupFilename() {
@@ -414,11 +507,13 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         selection += "BL";
         selection += "HX";
         selection += "HD";
-        return "PostcodeLookUp_" + selection + "_TreeMap_String_Point" + env.getDW_Files().getsDotdat();
+        return "PostcodeLookUp_" + selection 
+                //+ "_" + YM3
+                + "_TreeMap_String_Point" + DW_Strings.sBinaryFileExtension;
     }
 
     public static void main(String[] args) {
-        new DW_Postcode_Handler(null).run();
+        new DW_Postcode_Handler().run();
         //new DW_Postcode_Handler(inputFile, processedFile).run1();
         //new DW_Postcode_Handler(inputFile, processedFile).getPostcodeUnitCensusCodesLookup();
         //new DW_Postcode_Handler(inputFile, processedFile).run3();
@@ -433,62 +528,31 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         Iterator<String> ite;
         ite = ONSPDFiles.keySet().iterator();
         while (ite.hasNext()) {
-            String yM3;
-            yM3 = ite.next();
+            String YM3;
+            YM3 = ite.next();
             File outDir = new File(
                     env.getDW_Files().getGeneratedONSPDDir(),
-                    yM3);
+                    YM3);
             File outFile = new File(
                     outDir,
                     processedFilename);
             TreeMap<String, AGDT_Point> postcodeUnitPointLookup;
             if (outFile.exists()) {
-                System.out.println("Load " + outFile);
+                env.logO("Load " + outFile, true);
                 postcodeUnitPointLookup = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(outFile);
             } else {
                 File f;
-                f = ONSPDFiles.get(yM3);
-                System.out.println("Format " + f);
+                f = ONSPDFiles.get(YM3);
+                env.logO("Format " + f, true);
                 postcodeUnitPointLookup = initPostcodeUnitPointLookup(
                         f,
                         ignorePointsAtOrigin);
                 outDir.mkdirs();
                 Generic_StaticIO.writeObject(postcodeUnitPointLookup, outFile);
             }
-            result.put(yM3, postcodeUnitPointLookup);
-//            // Test some postcodes
-//            String postcode;
-//            postcode = "LS7 2EU";
-//            printTest0(
-//                    postcodeUnitPointLookup,
-//                    postcode);
-//            postcode = "LS2 9JT";
-//            printTest0(
-//                    postcodeUnitPointLookup,
-//                    postcode);
+            result.put(YM3, postcodeUnitPointLookup);
         }
         return result;
-    }
-
-    public TreeMap<String, ONSPDRecord_Aug_2013_UK_0> getPostcodeUnitONSPDRecordLookup() {
-        // Read NPD into a lookup
-        TreeMap<String, ONSPDRecord_Aug_2013_UK_0> lookup;
-        lookup = null;
-//        lookup = readONSPDIntoTreeMapPostcodeONSPDRecord(
-//                inputFile);
-//        // Test some postcodes
-//        String postcode;
-//        postcode = "LS7 2EU";
-//        printTest1(
-//                lookup,
-//                postcode);
-//        postcode = "LS2 9JT";
-//        printTest1(
-//                lookup,
-//                postcode);
-//        Generic_StaticIO.writeObject(lookup, outputFile);
-//        //lookup = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(lookupFile);
-        return lookup;
     }
 
     public TreeMap<String, String[]> getPostcodeUnitCensusCodesLookup() {
@@ -515,19 +579,20 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
     /**
      *
      * @param level "OA", "LSOA", "MSOA"
-     * @param year
-     * @param tONSPD_NOV_2013DataFile
+     * @param YM3NearestFormat
+     * @param infile
      * @param outFile
      * @return
      */
     public TreeMap<String, String> getPostcodeUnitCensusCodeLookup(
+            File infile,
+            File outFile,
             String level,
-            int year,
-            File tONSPD_NOV_2013DataFile,
-            File outFile) {
+            String YM3NearestFormat
+    ) {
         // Read NPD into a lookup
         TreeMap<String, String> lookup;
-        lookup = readONSPDIntoTreeMapPostcodeString(tONSPD_NOV_2013DataFile, level, year);
+        lookup = readONSPDIntoTreeMapPostcodeString(infile, level, YM3NearestFormat);
         Generic_StaticIO.writeObject(lookup, outFile);
 //        //lookup = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(outFile);
         return lookup;
@@ -554,7 +619,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         pa = p.split(" ");
         if (pa.length == 1) {
             String pType;
-            pType = Generic_UKPostcode_Handler.getFirstPartPostcodeType(p);
+            pType = getFirstPartPostcodeType(p);
             if (!pType.isEmpty()) {
                 return TYPE_AREA;
             } else {
@@ -587,18 +652,25 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         return null;
     }
 
-    public void run() {
+    public void run(File logDir) {
+//        String Postcodef;
+//        Postcodef = "LS29JT";
+//        String PostcodePrintFormat;
+//        PostcodePrintFormat = getPostcodePrintFormat(Postcodef);
+//        System.out.println("PostcodePrintFormat " + PostcodePrintFormat);
+                
+          
         String processedFilename = getDefaultLookupFilename();
         boolean ignorePointsAtOrigin = true;
-        TreeMap<String, File> ONSPDFiles;
-        ONSPDFiles = getONSPDFiles();
+        TreeMap<String, File> InputONSPDFiles;
+        InputONSPDFiles = DW_Files.getInputONSPDFiles();
         TreeMap<String, TreeMap<String, AGDT_Point>> postcodeUnitPointLookups;
         postcodeUnitPointLookups = getPostcodeUnitPointLookups(
                 ignorePointsAtOrigin,
-                ONSPDFiles,
+                InputONSPDFiles,
                 processedFilename);
     }
-
+    
     public void run3() {
         // Read NPD OutputArea code mapping
         // There are two OA codes and this is a lookup from one to another.
@@ -616,7 +688,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
                 numerals_HashSet);
 //        File oaCodeLookUpFile = new File(
 //                directory,
-//                "oaCodeLookUp_HashmapStringString.thisFile");
+//                "oaCodeLookUp_HashmapStringString" + DW_Strings.sBinaryFileExtension);
 //        Generic_StaticIO.writeObject(oaCodeLookUp, oaCodeLookUpFile);
 //        Generic_StaticIO.writeObject(oaCodeLookUp, outputFile);
         //oaCodeLookUp = (HashMap<String, String>) Generic_StaticIO.readObject(lookupFile);
@@ -700,43 +772,16 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         return result;
     }
 
-    public static TreeMap<String, AGDT_Point> getStringToDW_PointLookup(File file) {
+    public TreeMap<String, AGDT_Point> getStringToDW_PointLookup(File file) {
         return (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(file);
     }
 
-    public static TreeMap<String, String[]> getStringToStringArrayLookup(File file) {
+    public TreeMap<String, String[]> getStringToStringArrayLookup(File file) {
         return (TreeMap<String, String[]>) Generic_StaticIO.readObject(file);
     }
 
-    public static HashMap<String, String> getStringToStringLookup(File file) {
+    public HashMap<String, String> getStringToStringLookup(File file) {
         return (HashMap<String, String>) Generic_StaticIO.readObject(file);
-    }
-
-    public static void printTest0(
-            TreeMap<String, AGDT_Point> lookup,
-            String postcode) {
-        AGDT_Point p = lookup.get(postcode);
-        if (p != null) {
-            int lon = p.getX();
-            int lat = p.getY();
-            System.out.println(postcode + ", " + lon + ", " + lat);
-        } else {
-            System.out.println(postcode + ", no point!");
-        }
-    }
-
-    public static void printTest1(
-            TreeMap<String, ONSPDRecord_Aug_2013_UK_0> lookup,
-            String postcode) {
-        ONSPDRecord_Aug_2013_UK_0 rec = lookup.get(postcode);
-        System.out.println(postcode + ", " + rec);
-    }
-
-    public static void printTest2(
-            TreeMap<String, String[]> lookup,
-            String postcode) {
-        String[] values = lookup.get(postcode);
-        System.out.println(postcode + ", " + values[0] + ", " + values[1] + ", " + values[2] + ", " + values[3]);
     }
 
     /**
@@ -915,7 +960,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         return result;
     }
 
-//    public static String formatPostcodeForMapping(String postcode) {
+//    public String formatPostcodeForMapping(String postcode) {
 //        String[] split = postcode.split(" ");
 //        if (split.length == 2) {
 //            return postcode;
@@ -927,7 +972,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
 //        secondPartPostcode = postcode.substring(length - 3);
 //        return firstPartPostcode + " " + secondPartPostcode;        
 //    }
-    public static String formatPostcodeForMapping(String postcode) {
+    public String formatPostcodeForMapping(String postcode) {
         String[] split = postcode.split(" ");
         if (split.length == 2) {
             if (split[0].length() == 3) {
@@ -941,46 +986,31 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         return postcode;
     }
 
-    public boolean isValidPostcode(
-            String yM3,
-            String postcode) {
-        if (postcode == null) {
+    /**
+     * 
+     * @param NearestYM3ForONSPDLookup
+     * @param PostcodeF
+     * @return True iff Postcode is a valid Postcode.
+     */
+    public boolean isMappablePostcode(
+            String NearestYM3ForONSPDLookup,
+            String PostcodeF) {
+        if (PostcodeF == null) {
             return false;
         }
-        if (postcode.length() > 5) {
-            boolean isValidPostcodeForm;
-            isValidPostcodeForm = Generic_UKPostcode_Handler.isValidPostcodeForm(
-                    postcode);
-            if (isValidPostcodeForm) {
-                String formattedPostcode;
-                formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
-//                if (formattedPostcode == null) {
-//                    return false;
-//                } else {
+        if (PostcodeF.length() > 5) {
                 boolean isMappablePostcode;
-//                isMappablePostcode = DW_Maps.getONSPDlookups().get(getNearestYM3ForONSPDLookup(yM3)).get(TYPE_UNIT).containsKey(formattedPostcode);
                 TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> ONSPDLookups;
                 ONSPDLookups = DW_Maps.getONSPDlookups(env);
-                TreeMap<String, TreeMap<String, AGDT_Point>> unitPostcodeONSPDLookups;
-                unitPostcodeONSPDLookups = ONSPDLookups.get(TYPE_UNIT);
-                TreeMap<String, AGDT_Point> yM3UnitPostcodeONSPDLookupsONS;
-                yM3UnitPostcodeONSPDLookupsONS = unitPostcodeONSPDLookups.get(yM3);
-                if (yM3UnitPostcodeONSPDLookupsONS == null) {
-                    System.err.println("yM3UnitPostcodeONSPDLookupsONS == null for yM3 " + yM3);
+                TreeMap<String, TreeMap<String, AGDT_Point>> ONSPDLookupUnitPostcode;
+                ONSPDLookupUnitPostcode = ONSPDLookups.get(TYPE_UNIT);
+                TreeMap<String, AGDT_Point> ONSPDLookupUnitPostcodeNearestYM3;
+                ONSPDLookupUnitPostcodeNearestYM3 = ONSPDLookupUnitPostcode.get(NearestYM3ForONSPDLookup);
+                if (ONSPDLookupUnitPostcodeNearestYM3 == null) {
+                    System.err.println("yM3UnitPostcodeONSPDLookupsONS == null for NearestYM3ForONSPDLookup " + NearestYM3ForONSPDLookup);
                 }
-                isMappablePostcode = yM3UnitPostcodeONSPDLookupsONS.containsKey(formattedPostcode);
-                //isMappablePostcode = DW_Maps.getONSPDlookups().get(TYPE_UNIT).get(yM3).containsKey(formattedPostcode);
-                if (isMappablePostcode) {
-                    return true;
-                } else {
-//                        System.out.println("Postcode " + postcode + " format "
-//                                + "valid, but not mappable with the ONSPDLookup used.");
-                    return false;
-                }
-//                }
-            } else {
-                return false;
-            }
+                isMappablePostcode = ONSPDLookupUnitPostcodeNearestYM3.containsKey(PostcodeF);
+                return isMappablePostcode;
         }
         return false;
     }
@@ -990,9 +1020,8 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
      *
      * @param unitPostcode
      * @return
-     * @throws java.lang.Exception
      */
-    public static String getPostcodeSector(String unitPostcode) {
+    public String getPostcodeSector(String unitPostcode) {
         if (unitPostcode == null) {
             return null;
         }
@@ -1004,33 +1033,34 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
             return result;
         } else {
             String[] pp = p.split(" ");
-            if (pp.length == 2) {
-                result = pp[0] + " " + pp[1].substring(0, 1);
-                return result;
-            } else if (pp.length == 1) {
-                int length = p.length();
-                result = p.substring(0, length - 2);
-                result = result.trim();
-                if (result.length() < 5) {
-                    return "";
-                }
-                return result;
-            } else {
-                //throw new Exception("Postcode format exception 2 in getPostcodeSector(" + unitPostcode + " )");
-                // Put the first and second parts together and add the first part of the third
-                result += pp[0];
-                result += pp[1] + " ";
-                result += pp[2].substring(0, 1);
-                if (result.length() < 5) {
-                    return "";
-                }
-                return result;
+            switch (pp.length) {
+                case 2:
+                    result = pp[0] + " " + pp[1].substring(0, 1);
+                    return result;
+                case 1:
+                    int length = p.length();
+                    result = p.substring(0, length - 2);
+                    result = result.trim();
+                    if (result.length() < 5) {
+                        return "";
+                    }
+                    return result;
+                default:
+                    //throw new Exception("Postcode format exception 2 in getPostcodeSector(" + unitPostcode + " )");
+                    // Put the first and second parts together and add the first part of the third
+                    result += pp[0];
+                    result += pp[1] + " ";
+                    result += pp[2].substring(0, 1);
+                    if (result.length() < 5) {
+                        return "";
+                    }
+                    return result;
             }
         }
         //return result;
     }
 
-    public static String getPostcodeArea(String ONSPDPostcodeUnit) {
+    public String getPostcodeArea(String ONSPDPostcodeUnit) {
         String result;
         int length = ONSPDPostcodeUnit.length();
         result = ONSPDPostcodeUnit.substring(0, length - 3);
@@ -1042,7 +1072,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         return result;
     }
 
-    public static TreeMap<String, AGDT_Point> initPostcodeUnitPointLookup(
+    public TreeMap<String, AGDT_Point> initPostcodeUnitPointLookup(
             File file,
             boolean ignorePointsAtOrigin) {
         TreeMap<String, AGDT_Point> result = new TreeMap<String, AGDT_Point>();
@@ -1066,7 +1096,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
                         int northing = rec.getOsnrth1m();
                         AGDT_Point point;
                         point = new AGDT_Point(easting, northing);
-                        String postcode = rec.getPcd();
+                        String PostcodeF = rec.getPostcodeF();
                         if (ignorePointsAtOrigin) {
                             // Test for orgin point (postcodes ending ZZ are usually at origin, but some others are too.)
 //                            if (!(easting == 0 && northing == 0)) {
@@ -1076,30 +1106,30 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
 //                            }
                             if (easting < 1 || northing < 1) {
                                 int debug = 1;
-                            } else if (postcode.startsWith("LS")
-                                    || postcode.startsWith("BD")
-                                    || postcode.startsWith("HG")
-                                    || postcode.startsWith("CR")
-                                    || postcode.startsWith("W")
-                                    || postcode.startsWith("NP")
-                                    || postcode.startsWith("BL")
-                                    || postcode.startsWith("HX")
-                                    || postcode.startsWith("HD")) {
-                                result.put(rec.getPcd(), point);
+                            } else if (PostcodeF.startsWith("LS")
+                                    || PostcodeF.startsWith("BD")
+                                    || PostcodeF.startsWith("HG")
+                                    || PostcodeF.startsWith("CR")
+                                    || PostcodeF.startsWith("W")
+                                    || PostcodeF.startsWith("NP")
+                                    || PostcodeF.startsWith("BL")
+                                    || PostcodeF.startsWith("HX")
+                                    || PostcodeF.startsWith("HD")) {
+                                result.put(PostcodeF, point);
                             }
 //                            if (postcode.endsWith("ZZ")) {
 //                                int debug = 1;
 //                            }
-                        } else if (postcode.startsWith("LS")
-                                || postcode.startsWith("BD")
-                                || postcode.startsWith("HG")
-                                || postcode.startsWith("CR")
-                                || postcode.startsWith("W")
-                                || postcode.startsWith("NP")
-                                || postcode.startsWith("BL")
-                                || postcode.startsWith("HX")
-                                || postcode.startsWith("HD")) {
-                            result.put(rec.getPcd(), point);
+                        } else if (PostcodeF.startsWith("LS")
+                                || PostcodeF.startsWith("BD")
+                                || PostcodeF.startsWith("HG")
+                                || PostcodeF.startsWith("CR")
+                                || PostcodeF.startsWith("W")
+                                || PostcodeF.startsWith("NP")
+                                || PostcodeF.startsWith("BL")
+                                || PostcodeF.startsWith("HX")
+                                || PostcodeF.startsWith("HD")) {
+                            result.put(PostcodeF, point);
                         }
                         lineCounter++;
                         if (lineCounter % 100000 == 0) {
@@ -1121,109 +1151,109 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         return result;
     }
 
-    public TreeMap<String, ONSPDRecord_Aug_2013_UK_0> readONSPDIntoTreeMapPostcodeONSPDRecord(
-            File file) {
-        TreeMap<String, ONSPDRecord_Aug_2013_UK_0> result = new TreeMap<String, ONSPDRecord_Aug_2013_UK_0>();
-        try {
-            int lineCounter = 0;
-            int recordCounter = 0;
-            BufferedReader br;
-            br = Generic_StaticIO.getBufferedReader(file);
-            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
-            String line = "";
-            //Skip the first line
-            int tokenType;
-            Generic_StaticIO.skipline(aStreamTokenizer);
-            tokenType = aStreamTokenizer.nextToken();
-            while (tokenType != StreamTokenizer.TT_EOF) {
-                switch (tokenType) {
-                    case StreamTokenizer.TT_EOL:
-                        ONSPDRecord_Aug_2013_UK_0 rec = new ONSPDRecord_Aug_2013_UK_0(line);
-                        result.put(rec.getPcd(), rec);
-                        lineCounter++;
-                        if (lineCounter % 100000 == 0) {
-                            System.out.println("Read " + lineCounter + " lines out of 2550320");
-                        }
-                        break;
-                    case StreamTokenizer.TT_WORD:
-                        line = aStreamTokenizer.sval;
-                        break;
-                }
-                tokenType = aStreamTokenizer.nextToken();
-            }
-            br.close();
-        } catch (IOException aIOException) {
-            System.err.println(aIOException.getMessage() + " in "
-                    + this.getClass().getName()
-                    + ".readONSPD(File)");
-            System.exit(2);
-        }
-        return result;
-    }
+//    public TreeMap<String, DW_ONSPDRecord_2013_08Aug> readONSPDIntoTreeMapPostcodeONSPDRecord(
+//            File file) {
+//        TreeMap<String, DW_ONSPDRecord_2013_08Aug> result = new TreeMap<String, DW_ONSPDRecord_2013_08Aug>();
+//        try {
+//            int lineCounter = 0;
+//            int recordCounter = 0;
+//            BufferedReader br;
+//            br = Generic_StaticIO.getBufferedReader(file);
+//            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
+//            String line = "";
+//            //Skip the first line
+//            int tokenType;
+//            Generic_StaticIO.skipline(aStreamTokenizer);
+//            tokenType = aStreamTokenizer.nextToken();
+//            while (tokenType != StreamTokenizer.TT_EOF) {
+//                switch (tokenType) {
+//                    case StreamTokenizer.TT_EOL:
+//                        DW_ONSPDRecord_2013_08Aug rec = new DW_ONSPDRecord_2013_08Aug(line);
+//                        result.put(rec.getPcd(), rec);
+//                        lineCounter++;
+//                        if (lineCounter % 100000 == 0) {
+//                            System.out.println("Read " + lineCounter + " lines out of 2550320");
+//                        }
+//                        break;
+//                    case StreamTokenizer.TT_WORD:
+//                        line = aStreamTokenizer.sval;
+//                        break;
+//                }
+//                tokenType = aStreamTokenizer.nextToken();
+//            }
+//            br.close();
+//        } catch (IOException aIOException) {
+//            System.err.println(aIOException.getMessage() + " in "
+//                    + this.getClass().getName()
+//                    + ".readONSPD(File)");
+//            System.exit(2);
+//        }
+//        return result;
+//    }
+
+//    /**
+//     * MSOA
+//     *
+//     * @param file
+//     * @return
+//     */
+//    public TreeMap<String, String[]> readONSPDIntoTreeMapPostcodeStrings(
+//            File file) {
+//        TreeMap<String, String[]> result = new TreeMap<String, String[]>();
+//        try {
+//            int lineCounter = 0;
+//            int recordCounter = 0;
+//            BufferedReader br;
+//            br = Generic_StaticIO.getBufferedReader(file);
+//            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
+//            String line = "";
+//            //Skip the first line
+//            int tokenType;
+//            Generic_StaticIO.skipline(aStreamTokenizer);
+//            tokenType = aStreamTokenizer.nextToken();
+//            while (tokenType != StreamTokenizer.TT_EOF) {
+//                switch (tokenType) {
+//                    case StreamTokenizer.TT_EOL:
+//                        DW_ONSPDRecord_2013_08Aug rec = new DW_ONSPDRecord_2013_08Aug(line);
+//                        String[] values = new String[4];
+//                        values[0] = rec.getOa01();
+//                        values[1] = rec.getMsoa01();
+//                        values[2] = rec.getOa11();
+//                        values[3] = rec.getMsoa11();
+//                        result.put(rec.getPcd(), values);
+//                        lineCounter++;
+//                        if (lineCounter % 100000 == 0) {
+//                            System.out.println("Read " + lineCounter + " lines out of 2550320");
+//                        }
+//                        break;
+//                    case StreamTokenizer.TT_WORD:
+//                        line = aStreamTokenizer.sval;
+//                        break;
+//                }
+//                tokenType = aStreamTokenizer.nextToken();
+//            }
+//            br.close();
+//        } catch (IOException aIOException) {
+//            System.err.println(aIOException.getMessage() + " in "
+//                    + this.getClass().getName()
+//                    + ".readONSPD(File)");
+//            System.exit(2);
+//        }
+//        return result;
+//    }
 
     /**
-     * MSOA
-     *
-     * @param file
-     * @return
-     */
-    public TreeMap<String, String[]> readONSPDIntoTreeMapPostcodeStrings(
-            File file) {
-        TreeMap<String, String[]> result = new TreeMap<String, String[]>();
-        try {
-            int lineCounter = 0;
-            int recordCounter = 0;
-            BufferedReader br;
-            br = Generic_StaticIO.getBufferedReader(file);
-            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
-            String line = "";
-            //Skip the first line
-            int tokenType;
-            Generic_StaticIO.skipline(aStreamTokenizer);
-            tokenType = aStreamTokenizer.nextToken();
-            while (tokenType != StreamTokenizer.TT_EOF) {
-                switch (tokenType) {
-                    case StreamTokenizer.TT_EOL:
-                        ONSPDRecord_Aug_2013_UK_0 rec = new ONSPDRecord_Aug_2013_UK_0(line);
-                        String[] values = new String[4];
-                        values[0] = rec.getOa01();
-                        values[1] = rec.getMsoa01();
-                        values[2] = rec.getOa11();
-                        values[3] = rec.getMsoa11();
-                        result.put(rec.getPcd(), values);
-                        lineCounter++;
-                        if (lineCounter % 100000 == 0) {
-                            System.out.println("Read " + lineCounter + " lines out of 2550320");
-                        }
-                        break;
-                    case StreamTokenizer.TT_WORD:
-                        line = aStreamTokenizer.sval;
-                        break;
-                }
-                tokenType = aStreamTokenizer.nextToken();
-            }
-            br.close();
-        } catch (IOException aIOException) {
-            System.err.println(aIOException.getMessage() + " in "
-                    + this.getClass().getName()
-                    + ".readONSPD(File)");
-            System.exit(2);
-        }
-        return result;
-    }
-
-    /**
-     * MSOA
-     *
      * @param file
      * @param level
-     * @param year
+     * @param YM3NearestFormat
      * @return
      */
     public TreeMap<String, String> readONSPDIntoTreeMapPostcodeString(
             File file,
             String level,
-            int year) {
+            String YM3NearestFormat) {
+        int year;
+        year = 2001;
         TreeMap<String, String> result = new TreeMap<String, String>();
         try {
             int lineCounter = 0;
@@ -1239,7 +1269,20 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
-                        ONSPDRecord_Aug_2013_UK_0 rec = new ONSPDRecord_Aug_2013_UK_0(line);
+                        DW_AbstractONSPDRecord1 rec;
+                        rec = null;
+                        //DW_ONSPDRecord_2013_08Aug rec = new DW_ONSPDRecord_2013_08Aug(line);
+                        if (YM3NearestFormat.equalsIgnoreCase("2016_Feb")) {
+                            rec = new DW_ONSPDRecord_2016_02Feb(line);
+                        } else if (YM3NearestFormat.equalsIgnoreCase("2015_Aug")) {
+                            rec = new DW_ONSPDRecord_2015_08Aug(line);
+                        } else if (YM3NearestFormat.equalsIgnoreCase("2015_May")) {
+                            rec = new DW_ONSPDRecord_2015_05May(line);
+                        } else if (YM3NearestFormat.equalsIgnoreCase("2014_Nov")) {
+                            rec = new DW_ONSPDRecord_2014_11Nov(line);
+                        } else {
+                            rec = new DW_ONSPDRecord_2013_08Aug(line);
+                        }
                         String value = "";
                         if (level.equalsIgnoreCase("OA")) {
                             if (year == 2001) {
@@ -1271,6 +1314,9 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
                         }
                         if (level.equalsIgnoreCase("PostcodeDistrict")) {
                             value = getPostcodeDistrict(postcode);
+                        }
+                        if (level.equalsIgnoreCase(DW_Strings.sParliamentaryWardConstituency)) {
+                            value = rec.getOsward();
                         }
                         result.put(rec.getPcd(), value);
                         lineCounter++;
@@ -1317,7 +1363,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
-                        ONSPDRecord_Aug_2013_UK_0 rec = new ONSPDRecord_Aug_2013_UK_0(line);
+                        DW_ONSPDRecord_2013_08Aug rec = new DW_ONSPDRecord_2013_08Aug(line);
                         String[] values = new String[4];
                         values[0] = rec.getOa01();
                         values[1] = rec.getLsoa01();
@@ -1345,7 +1391,7 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         return result;
     }
 
-    private static StreamTokenizer getStreamTokeniser(BufferedReader br) {
+    private StreamTokenizer getStreamTokeniser(BufferedReader br) {
         StreamTokenizer result;
         result = new StreamTokenizer(br);
         result.resetSyntax();
@@ -1385,430 +1431,6 @@ public class DW_Postcode_Handler extends DW_Object implements Serializable {
         return result;
     }
 
-    /**
-     * 2008_FEB 2008_MAY 2008_AUG 2008_NOV 2009_FEB 2009_MAY 2009_AUG 2009_NOV
-     * 2010_FEB 2010_MAY 2010_AUG 2010_NOV 2011_MAY 2011_AUG 2011_NOV 2012_FEB
-     * 2012_MAY 2012_AUG 2012_NOV 2013_FEB 2013_MAY 2013_AUG 2013_NOV 2014_FEB
-     * 2014_MAY 2014_AUG 2014_NOV 2015_FEB 2015_MAY 2015_AUG
-     *
-     * @return
-     */
-    public TreeMap<String, File> getONSPDFiles() {
-        TreeMap<String, File> result;
-        result = new TreeMap<String, File>();
-        File dir;
-        File f;
-        // 2008
-        // FEB
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_FEB_2008");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "NSPDF_FEB_2008_UK_1M.csv");
-        result.put("2008_FEB", f);
-        // MAY
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_MAY_2008");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "NSPDF_MAY_2008_UK_1M.csv");
-        result.put("2008_MAY", f);
-        // AUG
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_AUG_2008");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "NSPDF_AUG_2008_UK_1M.csv");
-        result.put("2008_AUG", f);
-        // NOV
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_NOV_2008");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "NSPDF_NOV_2008_UK_1M.csv");
-        result.put("2008_NOV", f);
+    
 
-        // 2009
-        // FEB
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_FEB_2009");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "NSPDF_FEB_2009_UK_1M.csv");
-        result.put("2009_FEB", f);
-        // MAY
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_MAY_2009");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "NSPDF_MAY_2009_UK_1M_FP.csv");
-        result.put("2009_MAY", f);
-        // AUG
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_AUG_2009");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "NSPDF_AUG_2009_UK_1M_FP.csv");
-        result.put("2009_AUG", f);
-        // NOV
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_NOV_2009");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "NSPDF_NOV_2009_UK_1M_FP.csv");
-        result.put("2009_NOV", f);
-
-        // 2010
-        // FEB
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_FEB_2010");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "NSPDF_FEB_2010_UK_1M_FP.csv");
-        result.put("2010_FEB", f);
-        // MAY
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_MAY_2010");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "NSPDF_MAY_2010_UK_1M_FP.csv");
-        result.put("2010_MAY", f);
-        // AUG
-        // "AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","00","QA","MJ","0","385386","0801193","1","SN9","S00","179"," "," ","X","0","","11","","","","","99ZZ0099","ZZ0099","9","1","1","0","0","SN9","QA","SN9","","","","99ZZ00",""," ","","99","Z99999999","","Z99999999","9"," ","Z","","99ZZ99Z9","","X98"
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_AUG_2010");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "NSPDF_AUG_2010_UK_1M_FP.csv");
-        result.put("2010_AUG", f);
-        // NOV
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_NOV_2010");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "NSPDF_NOV_2010_UK_1M_FP.csv");
-        result.put("2010_NOV", f);
-
-        // 2011
-        // MAY
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_MAY_2011");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_MAY_2011_O.csv");
-        result.put("2011_MAY", f);
-        // AUG
-        // "AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","S99999999","S12000033","S13002484","0","385386","0801193","1","S08000006","S99999999","S92000003","S99999999","0","S14000002","S15000001","S09000001","S22000001","S03000012","UKM5001031","99ZZ0099","ZZ0099","9","SN9","QA","SN9","72UB43","72UB43","","99ZZ00","S00001364","7","01C30","S99999999","S99999999","S01000011","S99999999","9","6","Z","S02000007","99ZZ99Z9","3C2","X98"
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_AUG_2011");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_AUG_2011_UK_O.csv");
-        result.put("2011_AUG", f);
-        // NOV
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_NOV_2011");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_NOV_2011_UK_O.csv");
-        result.put("2011_NOV", f);
-
-        // 2012
-        // FEB
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_FEB_2012");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_FEB_2012_UK_O.csv");
-        result.put("2012_FEB", f);
-        // MAY
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_MAY_2012");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_MAY_2012_UK_O.csv");
-        result.put("2012_MAY", f);
-        // AUG
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_AUG_2012");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_AUG_2012_UK_O.csv");
-        result.put("2012_AUG", f);
-        // NOV
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_NOV_2012");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_NOV_2012_UK_O.csv");
-        result.put("2012_NOV", f);
-
-        // 2013
-        // FEB
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_FEB_2013");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_FEB_2013_UK_O.csv");
-        result.put("2013_FEB", f);
-        // MAY
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_MAY_2013");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_MAY_2013_UK_O.csv");
-        result.put("2013_MAY", f);
-        // AUG
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_AUG_2013");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_AUG_2013_UK_O.csv");
-        result.put("2013_AUG", f);
-        // NOV
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_NOV_2013");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_NOV_2013_UK.csv");
-        result.put("2013_NOV", f);
-
-        // 2014
-        // FEB
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_FEB_2014");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_FEB_2014_UK.csv");
-        result.put("2014_FEB", f);
-        // MAY
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_MAY_2014");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_MAY_2014_UK.csv");
-        result.put("2014_MAY", f);
-        // AUG
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_AUG_2014");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_AUG_2014_UK.csv");
-        result.put("2014_AUG", f);
-
-        // NOV
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_NOV_2014");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_NOV_2014_UK.csv");
-        result.put("2014_NOV", f);
-
-        // 2015
-        // FEB     
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_FEB_2015");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_FEB_2015_UK.csv");
-        result.put("2015_FEB", f);
-        // MAY
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_MAY_2015");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_MAY_2015_UK.csv");
-        result.put("2015_MAY", f);
-        // AUG
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_AUG_2015");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_AUG_2015_UK.csv");
-        result.put("2015_AUG", f);
-        // NOV
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_NOV_2015");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_NOV_2015_UK.csv");
-        result.put("2015_NOV", f);
-        // 2016
-        // FEB     
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_FEB_2016");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_FEB_2016_UK.csv");
-        result.put("2016_FEB", f);
-        // MAY
-        dir = new File(
-                env.getDW_Files().getInputONSPDDir(),
-                "ONSPD_MAY_2016");
-        dir = new File(
-                dir,
-                "Data");
-        f = new File(
-                dir,
-                "ONSPD_MAY_2016_UK.csv");
-        result.put("2016_MAY", f);
-//        // AUG
-//        dir = new File(
-//                DW_Files.getInputONSPDDir(),
-//                "ONSPD_AUG_2016");
-//        dir = new File(
-//                dir,
-//                "Data");
-//        f = new File(
-//                dir,
-//                "ONSPD_AUG_2016_UK.csv");
-//        result.put("2016_AUG", f);
-//        // NOV
-//        dir = new File(
-//                DW_Files.getInputONSPDDir(),
-//                "ONSPD_NOV_2016");
-//        dir = new File(
-//                dir,
-//                "Data");
-//        f = new File(
-//                dir,
-//                "ONSPD_NOV_2016_UK.csv");
-//        result.put("2016_AUG", f);
-        return result;
-    }
-
-    public Generic_UKPostcode_Handler getGeneric_UKPostcode_Handler(){
-        if (Generic_UKPostcode_Handler == null) {
-            Generic_UKPostcode_Handler = new Generic_UKPostcode_Handler();
-        }
-        return Generic_UKPostcode_Handler;
-    }
 }

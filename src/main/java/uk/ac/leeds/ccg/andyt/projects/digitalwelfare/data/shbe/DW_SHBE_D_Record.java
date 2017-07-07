@@ -18,7 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
  *
@@ -29,15 +29,19 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
     /**
      * Creates a null record in case this is needed
      *
+     * @param env
      * @param RecordID
      */
     public DW_SHBE_D_Record(
+            DW_Environment env,
             long RecordID) {
+        super(env);
         this.RecordID = RecordID;
     }
 
     /**
      * 
+     * @param env
      * @param RecordID
      * @param type It is not necessary to pass this in, as we only add Landlords
      * postcode if the record is long enough. But it might be useful to have 
@@ -46,11 +50,11 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
      * @throws Exception 
      */
     public DW_SHBE_D_Record(
+            DW_Environment env,
             long RecordID,
             int type,
-            String line
-    ) throws Exception {
-        this.RecordID = RecordID;
+            String line) throws Exception {
+        this(env, RecordID);
         String[] fields = line.split(",");
         //int exceptionalType = 0;
         int n = 0;
@@ -117,7 +121,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
         }
         n++;
         if (n < fields.length) {
-            setClaimantsPostcode(DW_Postcode_Handler.formatPostcode(fields[n]));
+            setClaimantsPostcode(fields[n]);
         } else {
             return;
         }
@@ -2680,7 +2684,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
         n++;
         if (n < fields.length) {
             // This is only in type 1 records.
-            setLandlordPostcode(DW_Postcode_Handler.formatPostcode(fields[n]));
+            setLandlordPostcode(env.getDW_Postcode_Handler().formatPostcode(fields[n]));
         }
     }
 
@@ -3359,6 +3363,15 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
      */
     private String LandlordPostcode;
 
+    @Override
+    public String toStringBrief() {
+        return super.toStringBrief()
+                + ",NumberOfChildDependents " + NumberOfChildDependents
+                + ",NumberOfNonDependents " + NumberOfNonDependents
+                + ",PartnerFlag " + PartnerFlag
+                + ",TotalNumberOfRooms " + TotalNumberOfRooms;
+    }
+    
     @Override
     public String toString() {
         return super.toString()
@@ -6480,7 +6493,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
      * @param LandlordPostcode the LandlordPostcode to set
      */
     protected final void setLandlordPostcode(String LandlordPostcode) {
-        this.LandlordPostcode = DW_Postcode_Handler.formatPostcode(LandlordPostcode);
+        this.LandlordPostcode = env.getDW_Postcode_Handler().formatPostcode(LandlordPostcode);
     }
 
 }

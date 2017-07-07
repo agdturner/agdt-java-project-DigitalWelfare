@@ -8,6 +8,7 @@ import java.util.Iterator;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 public class DW_Types extends DW_HTMLPage {
@@ -15,11 +16,12 @@ public class DW_Types extends DW_HTMLPage {
     protected String projectName;
     protected String mainDirectoryName;
 
-    public DW_Types() {
+    public DW_Types(DW_Environment env) {
+        super(env);
     }
 
     public static void main(String[] args) {
-        new DW_Types().run();
+        new DW_Types(null).run();
     }
 
     public void run() {

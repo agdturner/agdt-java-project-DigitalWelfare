@@ -18,6 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+
 /**
  *
  * @author geoagdt
@@ -53,8 +55,10 @@ public class DW_SHBE_E_Record extends DW_SHBE_RecordAbstract {
      */
     private String WhatWasTheCauseOfTheOverPayment;
 
-    public DW_SHBE_E_Record() {
+    public DW_SHBE_E_Record(DW_Environment env) {
+        super(env);
     }
+            
     
     @Override
     public String toString() {

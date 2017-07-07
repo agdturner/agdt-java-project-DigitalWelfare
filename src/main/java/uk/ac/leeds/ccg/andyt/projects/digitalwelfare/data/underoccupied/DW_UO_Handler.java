@@ -25,8 +25,8 @@ import java.io.StreamTokenizer;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
@@ -42,18 +42,25 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_UO_Handler extends DW_Object {
 
+    /**
+     * For convenience this is a reference to env.DW_Files.
+     */
+    protected DW_Strings DW_Strings;
+    protected DW_Files DW_Files;
+    HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup;
+    HashMap<String, DW_ID> ClaimRefToClaimRefIDLookup;
+
     private HashSet<String> RecordTypes;
 
-    /**
-     * For convenience.
-     */
-    protected DW_Files DW_Files;
-    protected DW_Strings DW_Strings;
+    public DW_UO_Handler() {
+    }
 
     public DW_UO_Handler(DW_Environment env) {
-        this.env = env;
+        super(env);
         this.DW_Files = env.getDW_Files();
         this.DW_Strings = env.getDW_Strings();
+        ClaimRefIDToClaimRefLookup = env.getDW_SHBE_Data().getClaimRefIDToClaimRefLookup();
+        ClaimRefToClaimRefIDLookup = env.getDW_SHBE_Data().getClaimRefToClaimRefIDLookup();
     }
 
     public HashSet<String> getRecordTypes() {
@@ -80,20 +87,19 @@ public class DW_UO_Handler extends DW_Object {
                 directory,
                 filename);
         try {
-            BufferedReader br;
-            br = Generic_StaticIO.getBufferedReader(inputFile);
-            StreamTokenizer st;
-            st = new StreamTokenizer(br);
+            BufferedReader br = Generic_StaticIO.getBufferedReader(inputFile);
+            StreamTokenizer st
+                    = new StreamTokenizer(br);
             Generic_StaticIO.setStreamTokenizerSyntax5(st);
             st.wordChars('`', '`');
             st.wordChars('*', '*');
-            String line;
+            String line = "";
             //int duplicateEntriesCount = 0;
             int replacementEntriesCount = 0;
             long RecordID = 0;
             // Read firstline and check format
             int tokenType;
-            st.nextToken();
+            tokenType = st.nextToken();
             line = st.sval;
             String[] fieldnames = line.split(",");
 //            // Skip the first line
@@ -109,19 +115,28 @@ public class DW_UO_Handler extends DW_Object {
                     case StreamTokenizer.TT_WORD:
                         line = st.sval;
                         try {
-                            DW_UO_Record aUnderOccupiedReport_Record;
-                            aUnderOccupiedReport_Record = new DW_UO_Record(
-                                    env, RecordID, line, fieldnames);
+                            DW_UO_Record DW_UO_Record;
+                            DW_UO_Record = new DW_UO_Record(
+                                    RecordID, line, fieldnames);
                             //RecordID, line, type);
+                            String ClaimRef;
+                            ClaimRef = DW_UO_Record.getClaimRef();
+                            DW_ID ClaimRefID;
+                            ClaimRefID = ClaimRefToClaimRefIDLookup.get(ClaimRef);
+                            if (ClaimRefID == null) {
+                                ClaimRefID = new DW_ID(ClaimRefToClaimRefIDLookup.size());
+                                ClaimRefToClaimRefIDLookup.put(ClaimRef, ClaimRefID);
+                                ClaimRefIDToClaimRefLookup.put(ClaimRefID, ClaimRef);
+                            }
                             Object o = result.put(
-                                    aUnderOccupiedReport_Record.getClaimID(),
-                                    aUnderOccupiedReport_Record);
+                                    ClaimRefID,
+                                    DW_UO_Record);
                             if (o != null) {
                                 DW_UO_Record existingUnderOccupiedReport_Record;
                                 existingUnderOccupiedReport_Record = (DW_UO_Record) o;
-                                if (!existingUnderOccupiedReport_Record.equals(aUnderOccupiedReport_Record)) {
+                                if (!existingUnderOccupiedReport_Record.equals(DW_UO_Record)) {
                                     System.out.println("existingUnderOccupiedReport_DataRecord " + existingUnderOccupiedReport_Record);
-                                    System.out.println("replacementUnderOccupiedReport_DataRecord " + aUnderOccupiedReport_Record);
+                                    System.out.println("replacementUnderOccupiedReport_DataRecord " + DW_UO_Record);
                                     System.out.println("RecordID " + RecordID);
                                     replacementEntriesCount++;
                                 }
@@ -149,71 +164,61 @@ public class DW_UO_Handler extends DW_Object {
      * Loads the Under-Occupied report data for Leeds.
      *
      * @param reload
-     * @return Object[] result where: result[0] = councilSets
-     * {@code TreeMap<String, DW_UO_Set>}; result[1] = RSLSets
-     * {@code TreeMap<String, DW_UO_Set>}
+     * @return 
      */
     public DW_UO_Data loadUnderOccupiedReportData(boolean reload) {
+        String methodName;
+        methodName = "loadUnderOccupiedReportData(boolean)";
+        env.logO("<" + methodName + ">", true);
         DW_UO_Data result;
         TreeMap<String, DW_UO_Set> CouncilSets;
         CouncilSets = new TreeMap<String, DW_UO_Set>();
         TreeMap<String, DW_UO_Set> RSLSets;
         RSLSets = new TreeMap<String, DW_UO_Set>();
-        // @ToDo
-        // If reload:
-        //   Reload all files.
-        // Else:
-        //   Look where the generated data should be stored.
-        //   Look where the input data are.
-        //   Are there new files to load? If so, load them 
-        //   from source. If not, then load and return the 
-        //   cached object.
+
+        // Look where the generated data should be stored.
+        // Look where the input data are.
+        // Are there new files to load? If so, load them from source. If not, 
+        // then load and return the cached object.
         String type;
         Object[] filenames = getInputFilenames();
-        TreeMap<String, String> CouncilFilenames;
-        CouncilFilenames = (TreeMap<String, String>) filenames[0];
+        TreeMap<String, String> councilFilenames;
+        councilFilenames = (TreeMap<String, String>) filenames[0];
         TreeMap<String, String> RSLFilenames;
         RSLFilenames = (TreeMap<String, String>) filenames[1];
+        String year_Month;
+        String filename;
         Iterator<String> ite;
-        ite = CouncilFilenames.keySet().iterator();
+        ite = councilFilenames.keySet().iterator();
+        type = DW_Strings.sCouncil;
         while (ite.hasNext()) {
-            type = DW_Strings.sRSL;
-            String year_Month = ite.next();
-            String filename = CouncilFilenames.get(year_Month);
-            System.out.println("<Load " + filename + ">");
+            year_Month = ite.next();
+            filename = councilFilenames.get(year_Month);
             DW_UO_Set set;
             set = new DW_UO_Set(
-                    DW_Files,
-                    this,
+                    env,
                     type,
                     filename,
                     year_Month,
                     reload);
             CouncilSets.put(year_Month, set);
-            System.out.println("</Load " + filename + ">");
         }
         ite = RSLFilenames.keySet().iterator();
+        type = DW_Strings.sRSL;
         while (ite.hasNext()) {
-            type = DW_Strings.sCouncil;
-            String year_Month = ite.next();
-            String filename = RSLFilenames.get(year_Month);
-            System.out.println("<Load " + filename + ">");
+            year_Month = ite.next();
+            filename = RSLFilenames.get(year_Month);
             DW_UO_Set set;
             set = new DW_UO_Set(
-                    DW_Files,
-                    this,
+                    env,
                     type,
                     filename,
                     year_Month,
                     reload);
             RSLSets.put(year_Month, set);
-            System.out.println("</Load " + filename + ">");
         }
         result = new DW_UO_Data(env, RSLSets, CouncilSets);
-        File f;
-        f = new File(DW_Files.getGeneratedUnderOccupiedDir(),
-                "DW_UO_Data" + DW_Files.getsDotdat());
-        Generic_StaticIO.writeObject(result, f);
+        env.logO("</" + methodName + ">", true);
         return result;
     }
 
@@ -228,18 +233,6 @@ public class DW_UO_Handler extends DW_Object {
         dirIn = DW_Files.getInputUnderOccupiedDir();
         File[] files;
         files = dirIn.listFiles();
-        TreeSet<String> set;
-        set = new TreeSet<String>();
-        for (File file : files) {
-            //System.out.println(file);
-            set.add(file.toString());
-        }
-        Iterator<String> ite;
-        ite = set.iterator();
-//        while (ite.hasNext()) {
-//            System.out.println(ite.next());
-//        }
-//        System.out.println("set.size() " + set.size());
         result = files.length;
         return result;
     }
@@ -251,10 +244,8 @@ public class DW_UO_Handler extends DW_Object {
      */
     public int getNumberOfGeneratedFiles() {
         int result;
-        DW_Files tDW_Files;
-        tDW_Files = env.getDW_Files();
         File dirIn;
-        dirIn = tDW_Files.getGeneratedUnderOccupiedDir();
+        dirIn = DW_Files.getGeneratedUnderOccupiedDir();
         result = dirIn.listFiles().length;
         return result;
     }
@@ -270,7 +261,7 @@ public class DW_UO_Handler extends DW_Object {
     private Object[] inputFilenames;
 
     /**
-     *
+     * This needs modifying as more datasets are added currently....
      * @return
      */
     public Object[] getInputFilenames() {
@@ -357,8 +348,7 @@ public class DW_UO_Handler extends DW_Object {
                     RSLEndFilename2,
                     CouncilFilenames,
                     RSLFilenames,
-                    1);
-            // This number needs increasing as there are more datasets....
+                    1);// This number needs increasing as there are more datasets....
         }
         return inputFilenames;
     }
@@ -441,26 +431,37 @@ public class DW_UO_Handler extends DW_Object {
     }
 
     /**
-     * Returns ClaimIDs of those Claims deemed to be under occupying at the
+     * Returns a Set<DW_ID> of the CTBRefIDs of those UnderOccupying at the
      * start of April2013.
      *
      * @param DW_UO_Data
      * @return
      */
-    public HashSet<DW_ID> getUOStartApril2013ClaimIDs(
+    public Set<DW_ID> getUOStartApril2013ClaimRefIDs(
             DW_UO_Data DW_UO_Data) {
-        return DW_UO_Data.getClaimIDs().get("2013_Mar");
-//        return DW_UO_Data.getClaimIDs().get("2013_Apr");
+        return DW_UO_Data.getClaimIDsInUO().get("2013_Mar");
+    }
+    
+    /**
+     * This returns a Set of all ClaimRefIDs of all Claims that have at some 
+     * time been classed as Council Under Occupying.
+     * @return 
+     */
+    public Set<DW_ID> getAllCouncilUOClaimRefIDs(
+            DW_UO_Data DW_UO_Data) {
+        return DW_UO_Data.getClaimIDsInCouncilUO();
     }
 
     public static int getHouseholdSizeExcludingPartners(DW_UO_Record rec) {
         int result;
         result
-                = //rec.getTotalDependentChildren()
-                rec.getChildrenOver16()
-                + rec.getFemaleChildren10to16() + rec.getFemaleChildrenUnder10()
-                + rec.getMaleChildren10to16() + rec.getMaleChildrenUnder10()
+                = 1 + rec.getTotalDependentChildren()
+                //rec.getChildrenOver16()
+                //+ rec.getFemaleChildren10to16() + rec.getFemaleChildrenUnder10()
+                //+ rec.getMaleChildren10to16() + rec.getMaleChildrenUnder10()
                 + rec.getNonDependents();
         return result;
     }
+    
+    
 }

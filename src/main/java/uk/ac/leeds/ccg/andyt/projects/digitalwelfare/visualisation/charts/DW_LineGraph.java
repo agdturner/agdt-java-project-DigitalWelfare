@@ -40,7 +40,7 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.charts.Generic_LineGraph;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.data.generated.DW_Table;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -96,10 +96,12 @@ public class DW_LineGraph extends Generic_LineGraph {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new DW_LineGraph(null).run(args);
+        new DW_LineGraph(null).start();
     }
 
-    public void run(String[] args) {
+    @Override
+    public void run() {
+        env.log("<run>");
         Generic_Visualisation.getHeadlessEnvironment();
         setDataWidth(1300);
         setDataHeight(500);
@@ -131,10 +133,10 @@ public class DW_LineGraph extends Generic_LineGraph {
         includes = tDW_SHBE_Handler.getIncludes();
         includes.remove("All");
 //        includes.remove("Yearly");
-//        includes.remove("6Monthly");
-//        includes.remove("3Monthly");
-//        includes.remove("MonthlyUO");
-//        includes.remove("Monthly");
+        includes.remove("6Monthly");
+        includes.remove("3Monthly");
+        includes.remove("MonthlyUO");
+        includes.remove("Monthly");
 
         ArrayList<Boolean> b;
         b = new ArrayList<Boolean>();
@@ -235,7 +237,6 @@ public class DW_LineGraph extends Generic_LineGraph {
             File dirIn;
             dirIn = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
                     "All",
-                    paymentType,
                     checkPreviousTenure);
             File dirOut;
             dirOut = DW_Files.getOutputSHBEPlotsTenancyTypeTransitionDir(
@@ -1025,6 +1026,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         Generic_Execution.shutdownExecutorService(
                 executorService, futures,
                 this);
+        env.log("</run>");
     }
 
     private void doSumat(
@@ -1236,8 +1238,6 @@ public class DW_LineGraph extends Generic_LineGraph {
     }
 
     /**
-     *
-     * @param tDW_Files
      * @param doUnderOccupancy
      * @param do999
      * @param sameTenancyType
@@ -1853,8 +1853,6 @@ public class DW_LineGraph extends Generic_LineGraph {
     }
 
     /**
-     *
-     * @param tDW_Files
      * @param doUnderOccupancy
      * @param do999
      * @param sameTenancyType

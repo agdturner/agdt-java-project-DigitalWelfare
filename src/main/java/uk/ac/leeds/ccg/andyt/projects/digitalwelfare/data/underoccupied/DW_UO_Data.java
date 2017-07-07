@@ -21,6 +21,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
@@ -34,68 +35,128 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 public class DW_UO_Data extends DW_Object implements Serializable {
 
     /**
-     * The store of all UnderOccupancy RSL Sets. Keys are yM3s, values
-     * are the respective sets.
+     * For storing all DW_UO_Sets for RSL. Keys are YM3, values are the
+     * respective sets.
      */
-    private final TreeMap<String, DW_UO_Set> RSLSets;
+    private TreeMap<String, DW_UO_Set> RSLUOSets;
 
     /**
-     * The store of all UnderOccupancy Council Sets. Keys are yM3s,
-     * values are the respective sets.
+     * For storing all DW_UO_Sets for Council. Keys are YM3, values are the
+     * respective sets.
      */
-    private final TreeMap<String, DW_UO_Set> CouncilSets;
+    private TreeMap<String, DW_UO_Set> CouncilUOSets;
 
     /**
-     * Store of Sets of ClaimIDs. Keys are yM3s, values are the respective sets.
+     * For storing sets of ClaimRefIDsInUO. Keys are YM3, values are the
+     * respective ClaimRefIDsInUO for claims classed as Under Occupying.
      */
-    private TreeMap<String, HashSet<DW_ID>> ClaimIDs;
+    private TreeMap<String, Set<DW_ID>> ClaimIDsInUO;
+
+    /**
+     * For storing ClaimRefIDs of claims that were classed as Under Occupying
+     * Council claims at some time.
+     */
+    private HashSet<DW_ID> ClaimIDsInCouncilUO;
+
+    /**
+     * For storing ClaimRefIDs of Council claims that were expected in March
+     * 2013 to be UnderOccupying in April 2013.
+     */
+    private HashSet<DW_ID> ClaimIDsInCouncilBaseline;
+
+    /**
+     * For storing ClaimRefIDs of RSL claims that were expected in March 2013 to
+     * be UnderOccupying in April 2013.
+     */
+    private HashSet<DW_ID> ClaimIDsInRSLBaseline;
+
+    public DW_UO_Data() {
+    }
+
+    public DW_UO_Data(
+            DW_Environment env) {
+        super(env);
+    }
 
     public DW_UO_Data(
             DW_Environment env,
-            TreeMap<String, DW_UO_Set> tRSLData,
-            TreeMap<String, DW_UO_Set> tCouncilData) {
-        this.env = env;
-        this.RSLSets = tRSLData;
-        this.CouncilSets = tCouncilData;
-        initClaimIDs();
+            TreeMap<String, DW_UO_Set> RSLUOSets,
+            TreeMap<String, DW_UO_Set> CouncilUOSets) {
+        super(env);
+        this.RSLUOSets = RSLUOSets;
+        this.CouncilUOSets = CouncilUOSets;
+        initClaimRefIDs();
     }
 
     /**
      * @return the RSL_Sets
      */
-    public TreeMap<String, DW_UO_Set> getRSLSets() {
-        return RSLSets;
+    public TreeMap<String, DW_UO_Set> getRSLUOSets() {
+        return RSLUOSets;
     }
 
     /**
      * @return the tCouncil_Data
      */
-    public TreeMap<String, DW_UO_Set> getCouncilSets() {
-        return CouncilSets;
+    public TreeMap<String, DW_UO_Set> getCouncilUOSets() {
+        return CouncilUOSets;
     }
 
     /**
-     * @return the ClaimIDs
+     * @return the ClaimIDsInUO
      */
-    public TreeMap<String, HashSet<DW_ID>> getClaimIDs() {
-        return ClaimIDs;
+    public TreeMap<String, Set<DW_ID>> getClaimIDsInUO() {
+        return ClaimIDsInUO;
     }
 
     /**
-     * Initialises ClaimIDs.
+     * Initialises ClaimRefIDsInUO.
      */
-    private void initClaimIDs() {
-        ClaimIDs = new TreeMap<String, HashSet<DW_ID>>();
-        String yM3;
+    private void initClaimRefIDs() {
+        ClaimIDsInUO = new TreeMap<String, Set<DW_ID>>();
+        ClaimIDsInCouncilBaseline = new HashSet<DW_ID>();
+        ClaimIDsInRSLBaseline = new HashSet<DW_ID>();
+        String YM3;
         Iterator<String> ite;
-        ite = CouncilSets.keySet().iterator();
+        ite = CouncilUOSets.keySet().iterator();
         while (ite.hasNext()) {
-            yM3 = ite.next();
-            HashSet<DW_ID> ClaimIDsForYM3;
-            ClaimIDsForYM3 = new HashSet<DW_ID>();
-            ClaimIDsForYM3.addAll(CouncilSets.get(yM3).getMap().keySet());
-            ClaimIDsForYM3.addAll(RSLSets.get(yM3).getMap().keySet());
-            ClaimIDs.put(yM3, ClaimIDsForYM3);
+            YM3 = ite.next();
+            if (YM3.equalsIgnoreCase("2013_Mar")) {
+                ClaimIDsInCouncilBaseline.addAll(CouncilUOSets.get(YM3).getClaimIDs());
+                ClaimIDsInRSLBaseline.addAll(RSLUOSets.get(YM3).getClaimIDs());
+            } else {
+                HashSet<DW_ID> ClaimRefIDsForYM3;
+                ClaimRefIDsForYM3 = new HashSet<DW_ID>();
+                ClaimRefIDsForYM3.addAll(CouncilUOSets.get(YM3).getClaimIDs());
+                ClaimRefIDsForYM3.addAll(RSLUOSets.get(YM3).getClaimIDs());
+                ClaimIDsInUO.put(YM3, ClaimRefIDsForYM3);
+            }
+        }
+    }
+
+    /**
+     * @return AllCouncilClaimRefIDs initialising it first if it is null.
+     */
+    public HashSet<DW_ID> getClaimIDsInCouncilUO() {
+        if (ClaimIDsInCouncilUO == null) {
+            initAllCouncilUOClaimRefIDs();
+        }
+        return ClaimIDsInCouncilUO;
+    }
+
+    /**
+     * Initialises AllCouncilClaimRefIDs.
+     */
+    private void initAllCouncilUOClaimRefIDs() {
+        ClaimIDsInCouncilUO = new HashSet<DW_ID>();
+        String YM3;
+        Iterator<String> ite;
+        ite = CouncilUOSets.keySet().iterator();
+        while (ite.hasNext()) {
+            YM3 = ite.next();
+            if (!YM3.equalsIgnoreCase("2013_Mar")) {
+                ClaimIDsInCouncilUO.addAll(CouncilUOSets.get(YM3).getClaimIDs());
+            }
         }
     }
 
