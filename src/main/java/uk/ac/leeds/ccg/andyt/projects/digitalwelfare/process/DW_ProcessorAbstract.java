@@ -28,8 +28,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_H
 public abstract class DW_ProcessorAbstract extends DW_Object {
 
     protected transient DW_Postcode_Handler DW_Postcode_Handler; 
-    protected DW_Files DW_Files;
-    protected DW_Strings DW_Strings;
+    protected transient DW_Files DW_Files;
+    protected transient DW_Strings DW_Strings;
     
     public DW_ProcessorAbstract() {
     }

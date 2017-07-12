@@ -46,11 +46,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_Lin
 public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 
     // For convenience
-    protected DW_SHBE_Data DW_SHBE_Data;
-    protected DW_SHBE_Handler DW_SHBE_Handler;
-    protected DW_UO_Data DW_UO_Data;
-    protected String[] SHBEFilenames;
-    protected HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
+    protected transient DW_SHBE_Data DW_SHBE_Data;
+    protected transient DW_SHBE_Handler DW_SHBE_Handler;
+    protected transient DW_UO_Data DW_UO_Data;
+    protected transient String[] SHBEFilenames;
+    protected transient HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
 
     protected DW_ProcessorLCC() {
     }
@@ -81,6 +81,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                         args[1]);
                 DW_ProcessorLCC DW_ProcessorLCC;
                 DW_ProcessorLCC = new DW_ProcessorLCC();
+                DW_ProcessorLCC.env = env;
+                DW_ProcessorLCC.DW_Files = env.getDW_Files();
+                DW_ProcessorLCC.DW_Strings = env.getDW_Strings();
                 DW_ProcessorLCC.run();
                 /**
                  * Not done this way as this would first load UnderOccupancy
