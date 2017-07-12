@@ -120,16 +120,16 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
          */
 //        loadAllONSPDFromSource = true;
 //        loadNewONSPDFromSource = true;
-//        loadAllSHBEFromSource = true;
+        loadAllSHBEFromSource = true;
 //        loadNewSHBEFromSource = true;
 //        loadSHBE = true;
 //        runPostcodeCheckLatest = true;
 //        runPostcodeCheck = true;
         loadUnderOccupancyFromSource = true;
 //        loadUnderOccupancy = true;
-//        runLCCSummary = true;
-//        runRentArrears = true; newRentArrearsData = true;
-//        runLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+        runLCCSummary = true;
+        runRentArrears = true; newRentArrearsData = true;
+        runLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
 //         runLCCHBGeneralAggregateStatistics = true;
 //        runLCCTTAndPT = true;
 //        doChoroplethMapping = true;
