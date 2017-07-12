@@ -52,7 +52,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
     protected String[] SHBEFilenames;
     protected HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
 
-    public DW_ProcessorLCC() {
+    protected DW_ProcessorLCC() {
     }
 
     public DW_ProcessorLCC(DW_Environment env) {
@@ -79,7 +79,16 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 DW_Environment env = new DW_Environment(
                         new Integer(args[0]),
                         args[1]);
-                new DW_ProcessorLCC(env).run();
+                DW_ProcessorLCC DW_ProcessorLCC;
+                DW_ProcessorLCC = new DW_ProcessorLCC();
+                DW_ProcessorLCC.run();
+                /**
+                 * Not done this way as this would first load UnderOccupancy
+                 * data. This is to be avaoided as we want to load first the
+                 * SHBE and then load the UO data.
+                 */
+                // new DW_ProcessorLCC(env).run();
+                
             }
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
@@ -111,12 +120,12 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
          */
 //        loadAllONSPDFromSource = true;
 //        loadNewONSPDFromSource = true;
-        loadAllSHBEFromSource = true;
+//        loadAllSHBEFromSource = true;
 //        loadNewSHBEFromSource = true;
 //        loadSHBE = true;
 //        runPostcodeCheckLatest = true;
 //        runPostcodeCheck = true;
-//        loadUnderOccupancyFromSource = true;
+        loadUnderOccupancyFromSource = true;
 //        loadUnderOccupancy = true;
 //        runLCCSummary = true;
 //        runRentArrears = true; newRentArrearsData = true;
@@ -354,7 +363,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Close logs
             closeLogs(processName);
         }
-        
+
         if (runLCCHBGeneralAggregateStatistics) {
             // Set up logging
             processName = "runLCCHBGeneralAggregateStatistics";
@@ -515,7 +524,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
      * DW_Files.getOutputSHBELogsDir().
      * @param range The number of directories or files in the archive where the
      * logs are stored.
-     * @return 
+     * @return
      */
     protected File initLogs(
             int DEBUG_Level,
@@ -554,7 +563,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             Logger.getLogger(DW_ProcessorLCC.class.getName()).log(Level.SEVERE, null, ex);
         }
         env.setPrintWriterErr(PrintWriterE);
-        
+
         env.log("DEBUG_Level = " + env.DEBUG_Level);
         env.log("env.DEBUG_Level_FINEST = " + env.DEBUG_Level_FINEST);
         env.log("env.DEBUG_Level_FINE = " + env.DEBUG_Level_FINE);
@@ -629,7 +638,8 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
      * Switch for running LCC Summary processing algorithms.
      */
     boolean runLCCSummary = false;
-    boolean runRentArrears = false; boolean newRentArrearsData = false;
+    boolean runRentArrears = false;
+    boolean newRentArrearsData = false;
     boolean runLCCTenancyChangesUO = false;
     boolean runLCCHBGeneralAggregateStatistics = false;
     /**
@@ -669,7 +679,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 
     /**
      * @param levels A set of levels expected values include OA, LSOA, MSOA,
-     * PostcodeUnit, PostcodeSector, PostcodeDistrict. 
+     * PostcodeUnit, PostcodeSector, PostcodeDistrict.
      * @param YM3
      * @return A set of look ups from postcodes to each level input in levels.
      */

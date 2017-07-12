@@ -34,6 +34,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
@@ -47,8 +48,9 @@ public class DW_UO_Handler extends DW_Object {
      */
     protected DW_Strings DW_Strings;
     protected DW_Files DW_Files;
-    HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
-    HashMap<String, DW_ID> ClaimRefToClaimIDLookup;
+    private DW_SHBE_Data DW_SHBE_Data;
+    private HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
+    private HashMap<String, DW_ID> ClaimRefToClaimIDLookup;
 
     private HashSet<String> RecordTypes;
 
@@ -59,8 +61,9 @@ public class DW_UO_Handler extends DW_Object {
         super(env);
         this.DW_Files = env.getDW_Files();
         this.DW_Strings = env.getDW_Strings();
-        ClaimIDToClaimRefLookup = env.getDW_SHBE_Data().getClaimIDToClaimRefLookup();
-        ClaimRefToClaimIDLookup = env.getDW_SHBE_Data().getClaimRefToClaimIDLookup();
+        DW_SHBE_Data = env.getDW_SHBE_Data();
+        ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
+        ClaimRefToClaimIDLookup = DW_SHBE_Data.getClaimRefToClaimIDLookup();
     }
 
     public HashSet<String> getRecordTypes() {
@@ -86,6 +89,8 @@ public class DW_UO_Handler extends DW_Object {
         File inputFile = new File(
                 directory,
                 filename);
+        boolean addedNewClaimIDs;
+        addedNewClaimIDs = false;
         try {
             BufferedReader br = Generic_StaticIO.getBufferedReader(inputFile);
             StreamTokenizer st
@@ -127,6 +132,7 @@ public class DW_UO_Handler extends DW_Object {
                                 ClaimID = new DW_ID(ClaimRefToClaimIDLookup.size());
                                 ClaimRefToClaimIDLookup.put(ClaimRef, ClaimID);
                                 ClaimIDToClaimRefLookup.put(ClaimID, ClaimRef);
+                                addedNewClaimIDs = true;
                             }
                             Object o = result.put(
                                     ClaimID,
@@ -154,6 +160,14 @@ public class DW_UO_Handler extends DW_Object {
             }
             //System.out.println("replacementEntriesCount " + replacementEntriesCount);
             br.close();
+            if (addedNewClaimIDs) {
+                Generic_StaticIO.writeObject(
+                        ClaimIDToClaimRefLookup,
+                        DW_SHBE_Data.getClaimIDToClaimRefLookupFile());
+                Generic_StaticIO.writeObject(
+                        ClaimRefToClaimIDLookup,
+                        DW_SHBE_Data.getClaimRefToClaimIDLookupFile());
+            }
         } catch (IOException ex) {
             Logger.getLogger(DW_UO_Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -163,12 +177,12 @@ public class DW_UO_Handler extends DW_Object {
     /**
      * Loads the Under-Occupied report data for Leeds.
      *
-     * @param reload
-     * @return 
+     * @param reload If reload is true then the data is reloaded from source.
+     * @return
      */
     public DW_UO_Data loadUnderOccupiedReportData(boolean reload) {
         String methodName;
-        methodName = "loadUnderOccupiedReportData(boolean)";
+        methodName = "loadUnderOccupiedReportData()";
         env.logO("<" + methodName + ">", true);
         DW_UO_Data result;
         TreeMap<String, DW_UO_Set> CouncilSets;
@@ -182,18 +196,18 @@ public class DW_UO_Handler extends DW_Object {
         // then load and return the cached object.
         String type;
         Object[] filenames = getInputFilenames();
-        TreeMap<String, String> councilFilenames;
-        councilFilenames = (TreeMap<String, String>) filenames[0];
+        TreeMap<String, String> CouncilFilenames;
+        CouncilFilenames = (TreeMap<String, String>) filenames[0];
         TreeMap<String, String> RSLFilenames;
         RSLFilenames = (TreeMap<String, String>) filenames[1];
         String year_Month;
         String filename;
         Iterator<String> ite;
-        ite = councilFilenames.keySet().iterator();
+        ite = CouncilFilenames.keySet().iterator();
         type = DW_Strings.sCouncil;
         while (ite.hasNext()) {
             year_Month = ite.next();
-            filename = councilFilenames.get(year_Month);
+            filename = CouncilFilenames.get(year_Month);
             DW_UO_Set set;
             set = new DW_UO_Set(
                     env,
@@ -253,7 +267,7 @@ public class DW_UO_Handler extends DW_Object {
     /**
      * Do we really want to store these?
      *
-     * @return Object[] result where: null null     {@code 
+     * @return Object[] result where: null null null null     {@code 
      * result[0] TreeMap<String, String> councilFilenames (year_Month, filename)
      * result[1] TreeMap<String, String> RSLFilenames (year_Month, filename)
      * }
@@ -262,6 +276,7 @@ public class DW_UO_Handler extends DW_Object {
 
     /**
      * This needs modifying as more datasets are added currently....
+     *
      * @return
      */
     public Object[] getInputFilenames() {
@@ -431,8 +446,8 @@ public class DW_UO_Handler extends DW_Object {
     }
 
     /**
-     * Returns a Set<DW_ID> of the ClaimIDs of those UnderOccupying at the
-     * start of April2013.
+     * Returns a Set<DW_ID> of the ClaimIDs of those UnderOccupying at the start
+     * of April2013.
      *
      * @param DW_UO_Data
      * @return
@@ -441,12 +456,13 @@ public class DW_UO_Handler extends DW_Object {
             DW_UO_Data DW_UO_Data) {
         return DW_UO_Data.getClaimIDsInUO().get("2013_Mar");
     }
-    
+
     /**
-     * This returns a Set of all ClaimIDs of all Claims that have at some 
-     * time been classed as Council Under Occupying.
+     * This returns a Set of all ClaimIDs of all Claims that have at some time
+     * been classed as Council Under Occupying.
+     *
      * @param DW_UO_Data
-     * @return 
+     * @return
      */
     public Set<DW_ID> getAllCouncilUOClaimIDs(
             DW_UO_Data DW_UO_Data) {
@@ -463,6 +479,5 @@ public class DW_UO_Handler extends DW_Object {
                 + rec.getNonDependents();
         return result;
     }
-    
-    
+
 }

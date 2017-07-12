@@ -70,7 +70,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
      * @param type Indicates type, e.g. RSL, Council.
      * @param filename
      * @param YM3
-     * @param reload
+     * @param reload If true this forces a reload of the data.
      */
     public DW_UO_Set(
             DW_Environment env,
@@ -98,7 +98,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
         fOut = new File(
                 dirOut,
                 DW_Strings.sDW_UO_Set + DW_Strings.sBinaryFileExtension);
-        if (fOut.exists()) {
+        if (fOut.exists() || !reload) {
             DW_UO_Set loadDummy;
             loadDummy = (DW_UO_Set) Generic_StaticIO.readObject(fOut);
             map = loadDummy.map;
