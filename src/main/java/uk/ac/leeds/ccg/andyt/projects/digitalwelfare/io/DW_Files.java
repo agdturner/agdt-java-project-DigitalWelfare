@@ -336,12 +336,17 @@ public class DW_Files extends DW_Object {
         return inputONSPDDir;
     }
 
-    public File getInputONSPDFile(File dir, String namePrefix, String year, String month, String nameAdd) {
+    public File getInputONSPDFile(File dir, String namePrefix, int year, String month, String nameAdd) {
         File f;
         File d;
         d = new File(
                 dir,
                 "ONSPD" + "_" + month + "_" + year);
+        if (year > 2016) {
+        d = new File(
+                dir,
+                "ONSPD" + "_" + month + "_" + year + nameAdd);
+        }
         d = new File(
                 d,
                 "Data");
@@ -372,174 +377,51 @@ public class DW_Files extends DW_Object {
             d = getInputONSPDDir();
             File f;
             String namePrefix;
-            String year;
             String month;
             String nameAdd;
-            namePrefix = "NSPDF";
-            // 2008
-            year = "2008";
-            nameAdd = "_UK_1M";
-            // FEB
-            month = "FEB";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // MAY
-            month = "MAY";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // AUG
-            month = "AUG";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // NOV
-            month = "NOV";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // 2009
-            year = "2009";
-            // FEB
-            month = "FEB";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // MAY
-            nameAdd = "_UK_1M_FP";
-            month = "MAY";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // AUG
-            month = "AUG";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // NOV
-            month = "NOV";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // 2010
-            year = "2010";
-            // FEB
-            month = "FEB";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // MAY
-            month = "MAY";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // AUG
-            month = "AUG";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // NOV
-            month = "NOV";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // 2011
-            year = "2011";
-            nameAdd = "_O";
-            // MAY
-            namePrefix = "ONSPD";
-            month = "MAY";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // AUG
-            nameAdd = "_UK_O";
-            month = "AUG";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // NOV
-            month = "NOV";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // 2012
-            year = "2012";
-            // FEB
-            month = "FEB";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // MAY
-            month = "MAY";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // AUG
-            month = "AUG";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // NOV
-            month = "NOV";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // 2013
-            year = "2013";
-            // FEB
-            month = "FEB";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // MAY
-            month = "MAY";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // AUG
-            month = "AUG";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // NOV
-            nameAdd = "_UK";
-            month = "NOV";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // 2014
-            year = "2014";
-            // FEB
-            month = "FEB";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // MAY
-            month = "MAY";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // AUG
-            month = "AUG";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // NOV
-            month = "NOV";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // 2015
-            year = "2015";
-            // FEB
-            month = "FEB";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // MAY
-            month = "MAY";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // AUG
-            month = "AUG";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // NOV
-            month = "NOV";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // 2016
-            year = "2016";
-            // FEB
-            month = "FEB";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // MAY
-            month = "MAY";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // AUG
-            month = "AUG";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
-            // NOV
-            month = "NOV";
-            f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-            InputONSPDFiles.put(year + "_" + month, f);
+            for (int year = 2008; year < 2018; year++) {
+                if (year < 2011) {
+                    namePrefix = "NSPDF";
+                    nameAdd = "_UK_1M";
+                } else {
+                    namePrefix = "ONSPD";
+                    nameAdd = "_O";
+                    if (year > 2013) {
+                        nameAdd = "_UK";                        
+                    }
+                }
+                // FEB
+                if (year != 2011) {
+                    month = "FEB";
+                    f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+                    InputONSPDFiles.put(year + "_" + month, f);
+                }
+                // MAY
+                month = "MAY";
+                if (year == 2009) {
+                    nameAdd = "_UK_1M_FP";
+                } else if (year == 2011) {
+                    namePrefix = "ONSPD";
+                }
+                f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+                InputONSPDFiles.put(year + "_" + month, f);
+                if (year != 2017) {
+                    // AUG
+                    month = "AUG";
+                    if (year == 2011) {
+                        nameAdd = "_UK_O";
+                    }
+                    f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+                    InputONSPDFiles.put(year + "_" + month, f);
+                    // NOV
+                    month = "NOV";
+                    if (year == 2013) {
+                        nameAdd = "_UK";
+                    }
+                    f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+                    InputONSPDFiles.put(year + "_" + month, f);
+                }
+            }
         }
         return InputONSPDFiles;
     }
@@ -968,13 +850,13 @@ public class DW_Files extends DW_Object {
     public File getOutputSHBELogsDir() {
         if (outputSHBELogsDir == null) {
             outputSHBELogsDir = new File(
-                getOutputSHBEDir(),
-                sLogs);
+                    getOutputSHBEDir(),
+                    sLogs);
             outputSHBELogsDir.mkdirs();
         }
         return outputSHBELogsDir;
     }
-        
+
     public File getOutputSHBEMapsDir() {
         if (outputSHBEMapsDir == null) {
             outputSHBEMapsDir = new File(
@@ -1127,8 +1009,8 @@ public class DW_Files extends DW_Object {
         }
         return result;
     }
-    
-    public String getDefaultBinaryFileExtension(){
+
+    public String getDefaultBinaryFileExtension() {
         return DW_Strings.sBinaryFileExtension;
     }
 }

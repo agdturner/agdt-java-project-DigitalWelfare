@@ -5434,19 +5434,19 @@ public class Summary extends DW_Object {
         HashSet<DW_PersonID> set;
         // Add unique Partners
         set = DW_SHBE_Handler.getUniquePersonIDs0(
-                DW_SHBE_Records.getClaimRefIDToPartnerPersonIDLookup(env._HandleOutOfMemoryError_boolean));
+                DW_SHBE_Records.getClaimIDToPartnerPersonIDLookup(env._HandleOutOfMemoryError_boolean));
         summary.put(
                 DW_Strings.sCountOfUniquePartners,
                 "" + set.size());
         // Add unique Dependents
         set = DW_SHBE_Handler.getUniquePersonIDs(
-                DW_SHBE_Records.getClaimRefIDToDependentPersonIDsLookup(env._HandleOutOfMemoryError_boolean));
+                DW_SHBE_Records.getClaimIDToDependentPersonIDsLookup(env._HandleOutOfMemoryError_boolean));
         summary.put(
                 DW_Strings.sCountOfUniqueDependents,
                 "" + set.size());
         // Add unique NonDependents
         set = DW_SHBE_Handler.getUniquePersonIDs(
-                DW_SHBE_Records.getClaimRefIDToNonDependentPersonIDsLookup(env._HandleOutOfMemoryError_boolean));
+                DW_SHBE_Records.getClaimIDToNonDependentPersonIDsLookup(env._HandleOutOfMemoryError_boolean));
         summary.put(
                 DW_Strings.sCountOfUniqueNonDependents,
                 "" + set.size());
@@ -5459,19 +5459,19 @@ public class Summary extends DW_Object {
          * NonDependentsInMultipleClaimsInAMonth
          */
         summary.put(DW_Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
-                "" + DW_SHBE_Records.getClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(env._HandleOutOfMemoryError_boolean).size());
+                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(env._HandleOutOfMemoryError_boolean).size());
         summary.put(DW_Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
-                "" + DW_SHBE_Records.getClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(env._HandleOutOfMemoryError_boolean).size());
+                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(env._HandleOutOfMemoryError_boolean).size());
         summary.put(DW_Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
-                "" + DW_SHBE_Records.getClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(env._HandleOutOfMemoryError_boolean).size());
+                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(env._HandleOutOfMemoryError_boolean).size());
         summary.put(DW_Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim,
-                "" + DW_SHBE_Records.getClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(env._HandleOutOfMemoryError_boolean).size());
+                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(env._HandleOutOfMemoryError_boolean).size());
         summary.put(DW_Strings.sCountOfClaimantsInMultipleClaimsInAMonth,
-                "" + DW_SHBE_Records.getClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup(env._HandleOutOfMemoryError_boolean).size());
+                "" + DW_SHBE_Records.getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env._HandleOutOfMemoryError_boolean).size());
         summary.put(DW_Strings.sCountOfPartnersInMultipleClaimsInAMonth,
-                "" + DW_SHBE_Records.getPartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup(env._HandleOutOfMemoryError_boolean).size());
+                "" + DW_SHBE_Records.getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env._HandleOutOfMemoryError_boolean).size());
         summary.put(DW_Strings.sCountOfNonDependentsInMultipleClaimsInAMonth,
-                "" + DW_SHBE_Records.getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup(env._HandleOutOfMemoryError_boolean).size());
+                "" + DW_SHBE_Records.getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env._HandleOutOfMemoryError_boolean).size());
 
         addToSummary(summary, ClaimIDsOfNewSHBEClaims, Records);
         // doSingleTimeLoopOverSet
@@ -5486,21 +5486,21 @@ public class Summary extends DW_Object {
 
     protected void doPartSummaryCompare2Times(
             DW_SHBE_Records DW_SHBE_Records0,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateInPayment0,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateSuspended0,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateOther0,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment0,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended0,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateOther0,
+            HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0,
+            HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0,
+            HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateOther0,
+            HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
+            HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
+            HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther0,
             String YM30,
             String filename0,
             DW_SHBE_Records DW_SHBE_Records1,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateOther1,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateOther1,
+            HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
+            HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1,
+            HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateOther1,
+            HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
+            HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
+            HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther1,
             String YM31,
             String filename1,
             boolean forceNewSummaries,
@@ -5527,19 +5527,19 @@ public class Summary extends DW_Object {
 
         doCompare2TimesLoopOverSet(
                 DW_SHBE_Records0,
-                ClaimRefIDsWithStatusOfHBAtExtractDateInPayment0,
-                ClaimRefIDsWithStatusOfHBAtExtractDateSuspended0,
-                ClaimRefIDsWithStatusOfHBAtExtractDateOther0,
-                ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment0,
-                ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended0,
-                ClaimRefIDsWithStatusOfCTBAtExtractDateOther0,
+                ClaimIDsWithStatusOfHBAtExtractDateInPayment0,
+                ClaimIDsWithStatusOfHBAtExtractDateSuspended0,
+                ClaimIDsWithStatusOfHBAtExtractDateOther0,
+                ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
+                ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
+                ClaimIDsWithStatusOfCTBAtExtractDateOther0,
                 DW_SHBE_Records1,
-                ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1,
-                ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1,
-                ClaimRefIDsWithStatusOfHBAtExtractDateOther1,
-                ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1,
-                ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1,
-                ClaimRefIDsWithStatusOfCTBAtExtractDateOther1);
+                ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
+                ClaimIDsWithStatusOfHBAtExtractDateSuspended1,
+                ClaimIDsWithStatusOfHBAtExtractDateOther1,
+                ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
+                ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
+                ClaimIDsWithStatusOfCTBAtExtractDateOther1);
 
         String key;
         key = DW_SHBE_Handler.getYearMonthNumber(filename1);
@@ -5602,37 +5602,37 @@ public class Summary extends DW_Object {
     /**
      *
      * @param DW_SHBE_Records0
-     * @param ClaimRefIDsWithStatusOfHBAtExtractDateInPayment0
-     * @param ClaimRefIDsWithStatusOfHBAtExtractDateSuspended0
-     * @param ClaimRefIDsWithStatusOfHBAtExtractDateOther0
-     * @param ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment0
-     * @param ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended0
-     * @param ClaimRefIDsWithStatusOfCTBAtExtractDateOther0
+     * @param ClaimIDsWithStatusOfHBAtExtractDateInPayment0
+     * @param ClaimIDsWithStatusOfHBAtExtractDateSuspended0
+     * @param ClaimIDsWithStatusOfHBAtExtractDateOther0
+     * @param ClaimIDsWithStatusOfCTBAtExtractDateInPayment0
+     * @param ClaimIDsWithStatusOfCTBAtExtractDateSuspended0
+     * @param ClaimIDsWithStatusOfCTBAtExtractDateOther0
      * @param DW_SHBE_Records1
-     * @param ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1
-     * @param ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1
-     * @param ClaimRefIDsWithStatusOfHBAtExtractDateOther1
-     * @param ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1
-     * @param ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1
-     * @param ClaimRefIDsWithStatusOfCTBAtExtractDateOther1
+     * @param ClaimIDsWithStatusOfHBAtExtractDateInPayment1
+     * @param ClaimIDsWithStatusOfHBAtExtractDateSuspended1
+     * @param ClaimIDsWithStatusOfHBAtExtractDateOther1
+     * @param ClaimIDsWithStatusOfCTBAtExtractDateInPayment1
+     * @param ClaimIDsWithStatusOfCTBAtExtractDateSuspended1
+     * @param ClaimIDsWithStatusOfCTBAtExtractDateOther1
      */
     public void doCompare2TimesLoopOverSet(
             DW_SHBE_Records DW_SHBE_Records0,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateInPayment0,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateSuspended0,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateOther0,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment0,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended0,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateOther0,
+            HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0,
+            HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0,
+            HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateOther0,
+            HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
+            HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
+            HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther0,
             DW_SHBE_Records DW_SHBE_Records1,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateOther1,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1,
-            HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateOther1) {
+            HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
+            HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1,
+            HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateOther1,
+            HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
+            HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
+            HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther1) {
         Iterator<DW_ID> ite;
-        DW_ID ClaimRefID;
+        DW_ID ClaimID;
         DW_SHBE_Record Record0;
         DW_SHBE_D_Record D_Record0;
         DW_SHBE_Record Record1;
@@ -5643,44 +5643,44 @@ public class Summary extends DW_Object {
         // Go through previous records
         ite = Records0.keySet().iterator();
         while (ite.hasNext()) {
-            ClaimRefID = ite.next();
+            ClaimID = ite.next();
             // HB
-            if (ClaimRefIDsWithStatusOfHBAtExtractDateInPayment0.contains(ClaimRefID)) {
-                if (ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1.contains(ClaimRefID)) {
+            if (ClaimIDsWithStatusOfHBAtExtractDateInPayment0.contains(ClaimID)) {
+                if (ClaimIDsWithStatusOfHBAtExtractDateInPayment1.contains(ClaimID)) {
                     TotalCount_HB_PTIToPTI++;
                     TotalCount_HB_NotSuspendedToNotSuspended++;
-                } else if (ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1.contains(ClaimRefID)) {
+                } else if (ClaimIDsWithStatusOfHBAtExtractDateSuspended1.contains(ClaimID)) {
                     TotalCount_HB_PTIToPTS++;
                     TotalCount_HB_NotSuspendedToSuspended++;
-                } else if (ClaimRefIDsWithStatusOfHBAtExtractDateOther1.contains(ClaimRefID)) {
+                } else if (ClaimIDsWithStatusOfHBAtExtractDateOther1.contains(ClaimID)) {
                     TotalCount_HB_PTIToPTO++;
                     TotalCount_HB_NotSuspendedToNotSuspended++;
                 } else {
                     TotalCount_HB_PTIToNull++;
                     TotalCount_HB_NotSuspendedToNull++;
                 }
-            } else if (ClaimRefIDsWithStatusOfHBAtExtractDateSuspended0.contains(ClaimRefID)) {
-                if (ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1.contains(ClaimRefID)) {
+            } else if (ClaimIDsWithStatusOfHBAtExtractDateSuspended0.contains(ClaimID)) {
+                if (ClaimIDsWithStatusOfHBAtExtractDateInPayment1.contains(ClaimID)) {
                     TotalCount_HB_PTSToPTI++;
                     TotalCount_HB_SuspendedToNotSuspended++;
-                } else if (ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1.contains(ClaimRefID)) {
+                } else if (ClaimIDsWithStatusOfHBAtExtractDateSuspended1.contains(ClaimID)) {
                     TotalCount_HB_PTSToPTS++;
                     TotalCount_HB_SuspendedToSuspended++;
-                } else if (ClaimRefIDsWithStatusOfHBAtExtractDateOther1.contains(ClaimRefID)) {
+                } else if (ClaimIDsWithStatusOfHBAtExtractDateOther1.contains(ClaimID)) {
                     TotalCount_HB_PTSToPTO++;
                     TotalCount_HB_SuspendedToNotSuspended++;
                 } else {
                     TotalCount_HB_PTSToNull++;
                     TotalCount_HB_SuspendedToNull++;
                 }
-            } else if (ClaimRefIDsWithStatusOfHBAtExtractDateOther0.contains(ClaimRefID)) {
-                if (ClaimRefIDsWithStatusOfHBAtExtractDateInPayment1.contains(ClaimRefID)) {
+            } else if (ClaimIDsWithStatusOfHBAtExtractDateOther0.contains(ClaimID)) {
+                if (ClaimIDsWithStatusOfHBAtExtractDateInPayment1.contains(ClaimID)) {
                     TotalCount_HB_PTOToPTI++;
                     TotalCount_HB_NotSuspendedToNotSuspended++;
-                } else if (ClaimRefIDsWithStatusOfHBAtExtractDateSuspended1.contains(ClaimRefID)) {
+                } else if (ClaimIDsWithStatusOfHBAtExtractDateSuspended1.contains(ClaimID)) {
                     TotalCount_HB_PTOToPTS++;
                     TotalCount_HB_NotSuspendedToSuspended++;
-                } else if (ClaimRefIDsWithStatusOfHBAtExtractDateOther1.contains(ClaimRefID)) {
+                } else if (ClaimIDsWithStatusOfHBAtExtractDateOther1.contains(ClaimID)) {
                     TotalCount_HB_PTOToPTO++;
                     TotalCount_HB_NotSuspendedToNotSuspended++;
                 } else {
@@ -5689,42 +5689,42 @@ public class Summary extends DW_Object {
                 }
             }
             // CTB
-            if (ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment0.contains(ClaimRefID)) {
-                if (ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1.contains(ClaimRefID)) {
+            if (ClaimIDsWithStatusOfCTBAtExtractDateInPayment0.contains(ClaimID)) {
+                if (ClaimIDsWithStatusOfCTBAtExtractDateInPayment1.contains(ClaimID)) {
                     TotalCount_CTB_PTIToPTI++;
                     TotalCount_CTB_NotSuspendedToNotSuspended++;
-                } else if (ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1.contains(ClaimRefID)) {
+                } else if (ClaimIDsWithStatusOfCTBAtExtractDateSuspended1.contains(ClaimID)) {
                     TotalCount_CTB_PTIToPTS++;
                     TotalCount_CTB_NotSuspendedToSuspended++;
-                } else if (ClaimRefIDsWithStatusOfCTBAtExtractDateOther1.contains(ClaimRefID)) {
+                } else if (ClaimIDsWithStatusOfCTBAtExtractDateOther1.contains(ClaimID)) {
                     TotalCount_CTB_PTIToPTO++;
                     TotalCount_CTB_NotSuspendedToNotSuspended++;
                 } else {
                     TotalCount_CTB_PTIToNull++;
                     TotalCount_CTB_NotSuspendedToNull++;
                 }
-            } else if (ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended0.contains(ClaimRefID)) {
-                if (ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1.contains(ClaimRefID)) {
+            } else if (ClaimIDsWithStatusOfCTBAtExtractDateSuspended0.contains(ClaimID)) {
+                if (ClaimIDsWithStatusOfCTBAtExtractDateInPayment1.contains(ClaimID)) {
                     TotalCount_CTB_PTSToPTI++;
                     TotalCount_CTB_SuspendedToNotSuspended++;
-                } else if (ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1.contains(ClaimRefID)) {
+                } else if (ClaimIDsWithStatusOfCTBAtExtractDateSuspended1.contains(ClaimID)) {
                     TotalCount_CTB_PTSToPTS++;
                     TotalCount_CTB_SuspendedToSuspended++;
-                } else if (ClaimRefIDsWithStatusOfCTBAtExtractDateOther1.contains(ClaimRefID)) {
+                } else if (ClaimIDsWithStatusOfCTBAtExtractDateOther1.contains(ClaimID)) {
                     TotalCount_CTB_PTSToPTO++;
                     TotalCount_CTB_SuspendedToNotSuspended++;
                 } else {
                     TotalCount_CTB_PTSToNull++;
                     TotalCount_CTB_SuspendedToNull++;
                 }
-            } else if (ClaimRefIDsWithStatusOfCTBAtExtractDateOther0.contains(ClaimRefID)) {
-                if (ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment1.contains(ClaimRefID)) {
+            } else if (ClaimIDsWithStatusOfCTBAtExtractDateOther0.contains(ClaimID)) {
+                if (ClaimIDsWithStatusOfCTBAtExtractDateInPayment1.contains(ClaimID)) {
                     TotalCount_CTB_PTOToPTI++;
                     TotalCount_CTB_NotSuspendedToNotSuspended++;
-                } else if (ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended1.contains(ClaimRefID)) {
+                } else if (ClaimIDsWithStatusOfCTBAtExtractDateSuspended1.contains(ClaimID)) {
                     TotalCount_CTB_PTOToPTS++;
                     TotalCount_CTB_NotSuspendedToSuspended++;
-                } else if (ClaimRefIDsWithStatusOfCTBAtExtractDateOther1.contains(ClaimRefID)) {
+                } else if (ClaimIDsWithStatusOfCTBAtExtractDateOther1.contains(ClaimID)) {
                     TotalCount_CTB_PTOToPTO++;
                     TotalCount_CTB_NotSuspendedToNotSuspended++;
                 } else {
@@ -5738,28 +5738,28 @@ public class Summary extends DW_Object {
         // Go through current records
         ite = Records1.keySet().iterator();
         while (ite.hasNext()) {
-            ClaimRefID = ite.next();
-            Record1 = Records1.get(ClaimRefID);
+            ClaimID = ite.next();
+            Record1 = Records1.get(ClaimID);
             D_Record1 = Record1.getDRecord();
             // HB
-            if (ClaimRefIDsWithStatusOfHBAtExtractDateInPayment0.contains(ClaimRefID)) {
-                Record0 = Records0.get(ClaimRefID);
+            if (ClaimIDsWithStatusOfHBAtExtractDateInPayment0.contains(ClaimID)) {
+                Record0 = Records0.get(ClaimID);
                 D_Record0 = Record0.getDRecord();
                 doCompare2TimesCounts(
                         Record0,
                         D_Record0,
                         Record1,
                         D_Record1);
-            } else if (ClaimRefIDsWithStatusOfHBAtExtractDateSuspended0.contains(ClaimRefID)) {
-                Record0 = Records0.get(ClaimRefID);
+            } else if (ClaimIDsWithStatusOfHBAtExtractDateSuspended0.contains(ClaimID)) {
+                Record0 = Records0.get(ClaimID);
                 D_Record0 = Record0.getDRecord();
                 doCompare2TimesCounts(
                         Record0,
                         D_Record0,
                         Record1,
                         D_Record1);
-            } else if (ClaimRefIDsWithStatusOfHBAtExtractDateOther0.contains(ClaimRefID)) {
-                Record0 = Records0.get(ClaimRefID);
+            } else if (ClaimIDsWithStatusOfHBAtExtractDateOther0.contains(ClaimID)) {
+                Record0 = Records0.get(ClaimID);
                 D_Record0 = Record0.getDRecord();
                 doCompare2TimesCounts(
                         Record0,
@@ -5774,24 +5774,24 @@ public class Summary extends DW_Object {
                         D_Record1);
             }
             // CTB
-            if (ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment0.contains(ClaimRefID)) {
-                Record0 = Records0.get(ClaimRefID);
+            if (ClaimIDsWithStatusOfCTBAtExtractDateInPayment0.contains(ClaimID)) {
+                Record0 = Records0.get(ClaimID);
                 D_Record0 = Record0.getDRecord();
                 doCompare2TimesCounts(
                         Record0,
                         D_Record0,
                         Record1,
                         D_Record1);
-            } else if (ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended0.contains(ClaimRefID)) {
-                Record0 = Records0.get(ClaimRefID);
+            } else if (ClaimIDsWithStatusOfCTBAtExtractDateSuspended0.contains(ClaimID)) {
+                Record0 = Records0.get(ClaimID);
                 D_Record0 = Record0.getDRecord();
                 doCompare2TimesCounts(
                         Record0,
                         D_Record0,
                         Record1,
                         D_Record1);
-            } else if (ClaimRefIDsWithStatusOfCTBAtExtractDateOther0.contains(ClaimRefID)) {
-                Record0 = Records0.get(ClaimRefID);
+            } else if (ClaimIDsWithStatusOfCTBAtExtractDateOther0.contains(ClaimID)) {
+                Record0 = Records0.get(ClaimID);
                 D_Record0 = Record0.getDRecord();
                 doCompare2TimesCounts(
                         Record0,
@@ -5813,7 +5813,7 @@ public class Summary extends DW_Object {
             HashMap<DW_ID, DW_SHBE_Record> Records0,
             HashMap<DW_ID, DW_SHBE_Record> Records1) {
         Iterator<DW_ID> ite;
-        DW_ID ClaimRefID;
+        DW_ID ClaimID;
         DW_SHBE_Record Record0;
         DW_SHBE_D_Record D_Record0;
         DW_SHBE_Record Record1;
@@ -5822,13 +5822,13 @@ public class Summary extends DW_Object {
          */
         ite = Records0.keySet().iterator();
         while (ite.hasNext()) {
-            ClaimRefID = ite.next();
-            Record0 = Records0.get(ClaimRefID);
+            ClaimID = ite.next();
+            Record0 = Records0.get(ClaimID);
             D_Record0 = null;
             if (Record0 != null) {
                 D_Record0 = Record0.getDRecord();
             }
-            Record1 = Records1.get(ClaimRefID);
+            Record1 = Records1.get(ClaimID);
             //DW_SHBE_D_Record D_Record1;
             //D_Record1 = null;
             /**
@@ -5849,13 +5849,13 @@ public class Summary extends DW_Object {
          */
         ite = Records1.keySet().iterator();
         while (ite.hasNext()) {
-            ClaimRefID = ite.next();
-            Record0 = Records0.get(ClaimRefID);
+            ClaimID = ite.next();
+            Record0 = Records0.get(ClaimID);
             D_Record0 = null;
             if (Record0 != null) {
                 D_Record0 = Record0.getDRecord();
             }
-            Record1 = Records1.get(ClaimRefID);
+            Record1 = Records1.get(ClaimID);
             DW_SHBE_D_Record D_Record1;
             D_Record1 = Record1.getDRecord();
             doCompare2TimesCounts(
@@ -5875,10 +5875,10 @@ public class Summary extends DW_Object {
         Iterator<DW_ID> ite;
         ite = Records.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimRefID;
-            ClaimRefID = ite.next();
+            DW_ID ClaimID;
+            ClaimID = ite.next();
             DW_SHBE_Record Record;
-            Record = Records.get(ClaimRefID);
+            Record = Records.get(ClaimID);
             DW_SHBE_D_Record D_Record;
             D_Record = Record.getDRecord();
             doSingleTimeCount(Record, D_Record);
@@ -5911,16 +5911,16 @@ public class Summary extends DW_Object {
      * Adds to summary counts by PSI for new claims.
      *
      * @param summary
-     * @param ClaimRefIDsOfNewSHBEClaims
+     * @param ClaimIDsOfNewSHBEClaims
      * @param Records
      */
     public void addToSummary(
             HashMap<String, String> summary,
-            HashSet<DW_ID> ClaimRefIDsOfNewSHBEClaims,
+            HashSet<DW_ID> ClaimIDsOfNewSHBEClaims,
             HashMap<DW_ID, DW_SHBE_Record> Records) {
         Iterator<DW_ID> ite;
-        ite = ClaimRefIDsOfNewSHBEClaims.iterator();
-        DW_ID ClaimRefID;
+        ite = ClaimIDsOfNewSHBEClaims.iterator();
+        DW_ID ClaimID;
         DW_SHBE_Record DW_SHBE_Record;
         int PSI;
         int nPSI;
@@ -5928,8 +5928,8 @@ public class Summary extends DW_Object {
         int[] counts;
         counts = new int[nPSI];
         while (ite.hasNext()) {
-            ClaimRefID = ite.next();
-            DW_SHBE_Record = Records.get(ClaimRefID);
+            ClaimID = ite.next();
+            DW_SHBE_Record = Records.get(ClaimID);
             PSI = DW_SHBE_Record.getDRecord().getPassportedStandardIndicator();
             counts[PSI] += 1;
         }

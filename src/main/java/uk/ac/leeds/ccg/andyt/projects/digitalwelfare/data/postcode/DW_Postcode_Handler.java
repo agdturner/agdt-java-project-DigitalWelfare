@@ -210,13 +210,17 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
      * @return
      */
     public static String getNearestYM3ForONSPDLookup(String YM3) {
-        String defaultLatest = "2016_NOV";
+        String defaultLatest = "2017_MAY";//"2016_NOV";
         String[] split;
         split = YM3.split("_");
         String year = split[0];
         int yearint = Integer.valueOf(year);
         String month = split[1];
         if (yearint > 2016) {
+           if (month.equalsIgnoreCase("JAN")
+                    || month.equalsIgnoreCase("FEB")) {
+                return "" + yearint + "_FEB";
+           }
            return defaultLatest;
         } else if (yearint < 2008) {
             return "2008_FEB";
@@ -653,14 +657,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
     }
 
     public void run(File logDir) {
-//        String Postcodef;
-//        Postcodef = "LS29JT";
-//        String PostcodePrintFormat;
-//        PostcodePrintFormat = getPostcodePrintFormat(Postcodef);
-//        System.out.println("PostcodePrintFormat " + PostcodePrintFormat);
-                
-          
-        String processedFilename = getDefaultLookupFilename();
+       String processedFilename = getDefaultLookupFilename();
         boolean ignorePointsAtOrigin = true;
         TreeMap<String, File> InputONSPDFiles;
         InputONSPDFiles = DW_Files.getInputONSPDFiles();

@@ -54,7 +54,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
     /**
      * The ClaimRef DW_ID.
      */
-    protected DW_ID ClaimRefID;
+    protected DW_ID ClaimID;
 
     /**
      * A convenient lookup for knowing if ClaimPostcodeF is a valid format for a
@@ -111,13 +111,13 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
      *
      * @param env
      * @param YM3 The Year_Month of this.
-     * @param ClaimRefID The ClaimRef DW_ID for this.
+     * @param ClaimID The ClaimRef DW_ID for this.
      */
-    public DW_SHBE_Record(DW_Environment env, String YM3, DW_ID ClaimRefID) {
+    public DW_SHBE_Record(DW_Environment env, String YM3, DW_ID ClaimID) {
         super(env);
         DW_Strings = env.getDW_Strings();
         this.YM3 = YM3;
-        this.ClaimRefID = ClaimRefID;
+        this.ClaimID = ClaimID;
     }
 
     /**
@@ -125,18 +125,18 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
      *
      * @param env
      * @param YM3 The Year_Month of this.
-     * @param ClaimRefID The ClaimRef DW_ID for this.
+     * @param ClaimID The ClaimRef DW_ID for this.
      * @param DRecord
      */
     public DW_SHBE_Record(
             DW_Environment env,
             String YM3,
-            DW_ID ClaimRefID,
+            DW_ID ClaimID,
             DW_SHBE_D_Record DRecord) {
         super(env);
         this.DW_Strings = env.getDW_Strings();
         this.YM3 = YM3;
-        this.ClaimRefID = ClaimRefID;
+        this.ClaimID = ClaimID;
         this.DRecord = DRecord;
     }
 
@@ -188,7 +188,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
     @Override
     public String toString() {
         String result;
-        result = "ClaimRefDW_ID " + ClaimRefID
+        result = "ClaimRefDW_ID " + ClaimID
                 + DW_Strings.sNewLine
                 + "StatusOfHBClaimAtExtractDate " + StatusOfHBClaimAtExtractDate
                 + DW_Strings.sNewLine
@@ -222,8 +222,8 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
     /**
      * @return ClaimRefDW_ID
      */
-    public DW_ID getClaimRefID() {
-        return ClaimRefID;
+    public DW_ID getClaimID() {
+        return ClaimID;
     }
 
     /**

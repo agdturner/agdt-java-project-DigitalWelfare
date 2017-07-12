@@ -67,7 +67,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * Keys are ClaimRefIDs, values are DW_SHBE_Record.
+     * Keys are ClaimIDs, values are DW_SHBE_Record.
      */
     private HashMap<DW_ID, DW_SHBE_Record> Records;
 
@@ -87,47 +87,45 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     HashSet<DW_PersonID> NonDependentPersonIDs;
 
     /**
-     * A store for ClaimRefIDs for Cottingley Springs Caravan Park where there
-     * are two claims for a claimant, one for a pitch and the other for the rent
-     * of a caravan.
+     * A store for ClaimIDs for Cottingley Springs Caravan Park where there are
+     * two claims for a claimant, one for a pitch and the other for the rent of
+     * a caravan.
      */
-    private HashSet<DW_ID> CottingleySpringsCaravanParkPairedClaimRefIDs;
+    private HashSet<DW_ID> CottingleySpringsCaravanParkPairedClaimIDs;
 
     /**
-     * A store for ClaimRefIDs where: StatusOfHBClaimAtExtractDate = 1 (In
+     * A store for ClaimIDs where: StatusOfHBClaimAtExtractDate = 1 (In
      * Payment).
      */
-    private HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateInPayment;
+    private HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment;
 
     /**
-     * A store for ClaimRefIDs where: StatusOfHBClaimAtExtractDate = 2
-     * (Suspended).
+     * A store for ClaimIDs where: StatusOfHBClaimAtExtractDate = 2 (Suspended).
      */
-    private HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateSuspended;
+    private HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateSuspended;
 
     /**
-     * A store for ClaimRefIDs where: StatusOfHBClaimAtExtractDate = 0
-     * (Suspended).
+     * A store for ClaimIDs where: StatusOfHBClaimAtExtractDate = 0 (Suspended).
      */
-    private HashSet<DW_ID> ClaimRefIDsWithStatusOfHBAtExtractDateOther;
+    private HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateOther;
 
     /**
-     * A store for ClaimRefIDs where: StatusOfCTBClaimAtExtractDate = 1 (In
+     * A store for ClaimIDs where: StatusOfCTBClaimAtExtractDate = 1 (In
      * Payment).
      */
-    private HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment;
+    private HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment;
 
     /**
-     * A store for ClaimRefIDs where: StatusOfCTBClaimAtExtractDate = 2
+     * A store for ClaimIDs where: StatusOfCTBClaimAtExtractDate = 2
      * (Suspended).
      */
-    private HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended;
+    private HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended;
 
     /**
-     * A store for ClaimRefIDs where: StatusOfCTBClaimAtExtractDate = 0
+     * A store for ClaimIDs where: StatusOfCTBClaimAtExtractDate = 0
      * (Suspended).
      */
-    private HashSet<DW_ID> ClaimRefIDsWithStatusOfCTBAtExtractDateOther;
+    private HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther;
 
     /**
      * SRecordsWithoutDRecords indexed by ClaimRef DW_ID. Once the SHBE data is
@@ -137,10 +135,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     private HashMap<DW_ID, ArrayList<DW_SHBE_S_Record>> SRecordsWithoutDRecords;
 
     /**
-     * For storing the ClaimRef DW_ID of Records that have SRecords along with
-     * the count of those SRecordsWithoutDRecords.
+     * For storing the ClaimIDs of Records that have SRecords along with the
+     * count of those SRecordsWithoutDRecords.
      */
-    private HashMap<DW_ID, Integer> ClaimRefIDAndCountOfRecordsWithSRecords;
+    private HashMap<DW_ID, Integer> ClaimIDAndCountOfRecordsWithSRecords;
 
     /**
      * For storing the Year_Month of this. This is an identifier for these data.
@@ -175,31 +173,32 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     private File RecordsFile;
 
     /**
-     * File for storing ClaimRefIDsOfNewSHBEClaims.
+     * File for storing ClaimIDs of new SHBE claims.
      */
-    private File ClaimRefIDsOfNewSHBEClaimsFile;
+    private File ClaimIDsOfNewSHBEClaimsFile;
 
     /**
-     * File for storing
-     * ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore.
+     * File for storing ClaimIDs of new SHBE claims where Claimant was a
+     * Claimant before.
      */
-    private File ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile;
+    private File ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile;
 
     /**
-     * File for storing ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.
+     * File for storing ClaimIDs of new SHBE claims where Claimant was a Partner
+     * before.
      */
-    private File ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile;
+    private File ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile;
 
     /**
-     * File for storing
-     * ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore.
+     * File for storing ClaimIDs of new SHBE claims where Claimant was a
+     * NonDependent before.
      */
-    private File ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile;
+    private File ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile;
 
     /**
-     * File for storing ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew.
+     * File for storing ClaimIDs of new SHBE claims where Claimant is new.
      */
-    private File ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNewFile;
+    private File ClaimIDsOfNewSHBEClaimsWhereClaimantIsNewFile;
 
     /**
      * ClaimantPersonIDs File.
@@ -217,39 +216,39 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     private File NonDependentPersonIDsFile;
 
     /**
-     * File for storing CottingleySpringsCaravanParkPairedClaimRefIDs.
+     * File for storing Cottingley Springs Caravan Park paired ClaimIDs.
      */
-    private File CottingleySpringsCaravanParkPairedClaimRefIDsFile;
+    private File CottingleySpringsCaravanParkPairedClaimIDsFile;
 
     /**
-     * File for storing ClaimRefIDsWithStatusOfHBAtExtractDateInPayment.
+     * File for storing ClaimIDs with status of HB at extract date InPayment.
      */
-    private File ClaimRefIDsWithStatusOfHBAtExtractDateInPaymentFile;
+    private File ClaimIDsWithStatusOfHBAtExtractDateInPaymentFile;
 
     /**
-     * File for storing ClaimRefIDsWithStatusOfHBAtExtractDateSuspended.
+     * File for storing ClaimIDs with status of HB at extract date Suspended.
      */
-    private File ClaimRefIDsWithStatusOfHBAtExtractDateSuspendedFile;
+    private File ClaimIDsWithStatusOfHBAtExtractDateSuspendedFile;
 
     /**
-     * File for storing ClaimRefIDsWithStatusOfHBAtExtractDateOther.
+     * File for storing ClaimIDs with status of HB at extract date Other.
      */
-    private File ClaimRefIDsWithStatusOfHBAtExtractDateOtherFile;
+    private File ClaimIDsWithStatusOfHBAtExtractDateOtherFile;
 
     /**
-     * File for storing ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment.
+     * File for storing ClaimIDs with status of CTB at extract date InPayment.
      */
-    private File ClaimRefIDsWithStatusOfCTBAtExtractDateInPaymentFile;
+    private File ClaimIDsWithStatusOfCTBAtExtractDateInPaymentFile;
 
     /**
-     * File for storing ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended.
+     * File for storing ClaimIDs with status of CTB at extract date Suspended.
      */
-    private File ClaimRefIDsWithStatusOfCTBAtExtractDateSuspendedFile;
+    private File ClaimIDsWithStatusOfCTBAtExtractDateSuspendedFile;
 
     /**
-     * File for storing ClaimRefIDsWithStatusOfCTBAtExtractDateOther.
+     * File for storing ClaimIDs with status of CTB at extract date Other.
      */
-    private File ClaimRefIDsWithStatusOfCTBAtExtractDateOtherFile;
+    private File ClaimIDsWithStatusOfCTBAtExtractDateOtherFile;
 
     /**
      * File for storing SRecordsWithoutDRecords.
@@ -257,137 +256,137 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     private File SRecordsWithoutDRecordsFile;
 
     /**
-     * File for storing ClaimRefIDAndCountOfRecordsWithSRecordsFile.
+     * File for storing ClaimIDs and count of records with SRecords.
      */
-    private File ClaimRefIDAndCountOfRecordsWithSRecordsFile;
+    private File ClaimIDAndCountOfRecordsWithSRecordsFile;
 
     /**
-     * For storing the ClaimRefID of Records without a mappable Claimant
-     * Postcode.
+     * For storing the ClaimID of Records without a mappable Claimant Postcode.
      */
-    private HashSet<DW_ID> ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode;
+    private HashSet<DW_ID> ClaimIDsOfClaimsWithoutAMappableClaimantPostcode;
 
     /**
-     * File for storing ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode.
+     * File for storing ClaimIDs of claims without a mappable claimant postcode.
      */
-    private File ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcodeFile;
+    private File ClaimIDsOfClaimsWithoutAMappableClaimantPostcodeFile;
 
     /**
-     * ClaimRef DW_IDs mapped to DW_PersonID of Claimants.
+     * ClaimIDs mapped to PersonIDs of Claimants.
      */
-    private HashMap<DW_ID, DW_PersonID> ClaimRefIDToClaimantPersonIDLookup;
+    private HashMap<DW_ID, DW_PersonID> ClaimIDToClaimantPersonIDLookup;
 
     /**
-     * ClaimRef DW_IDs mapped to DW_PersonID of Partners. If there is no main
-     * Partner for the claim then there is no mapping.
+     * ClaimIDs mapped to PersonIDs of Partners. If there is no main Partner for
+     * the claim then there is no mapping.
      */
-    private HashMap<DW_ID, DW_PersonID> ClaimRefIDToPartnerPersonIDLookup;
+    private HashMap<DW_ID, DW_PersonID> ClaimIDToPartnerPersonIDLookup;
 
     /**
-     * ClaimRef DW_IDs mapped to {@code HashSet<DW_PersonID>} of Dependents. If
-     * there are no main Dependents for the claim then there is no mapping.
+     * ClaimIDs mapped to {@code HashSet<DW_PersonID>} of Dependents. If there
+     * are no Dependents for the claim then there is no mapping.
      */
-    private HashMap<DW_ID, HashSet<DW_PersonID>> ClaimRefIDToDependentPersonIDsLookup;
+    private HashMap<DW_ID, HashSet<DW_PersonID>> ClaimIDToDependentPersonIDsLookup;
 
     /**
-     * ClaimRef DW_IDs mapped to {@code HashSet<DW_PersonID>} of Dependents. If
-     * there are no main Dependents for the claim then there is no mapping.
+     * ClaimIDs mapped to {@code HashSet<DW_PersonID>} of NonDependents. If
+     * there are no NonDependents for the claim then there is no mapping.
      */
-    private HashMap<DW_ID, HashSet<DW_PersonID>> ClaimRefIDToNonDependentPersonIDsLookup;
+    private HashMap<DW_ID, HashSet<DW_PersonID>> ClaimIDToNonDependentPersonIDsLookup;
 
     /**
-     * Claim DW_IDs of Claims with Claimants that are Claimants in another
-     * claim.
+     * ClaimIDs of Claims with Claimants that are Claimants in another claim.
      */
-    private HashSet<DW_ID> ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim;
+    private HashSet<DW_ID> ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim;
 
     /**
-     * Claim DW_IDs of Claims with Claimants that are Partners in another claim.
+     * ClaimIDs of Claims with Claimants that are Partners in another claim.
      */
-    private HashSet<DW_ID> ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim;
+    private HashSet<DW_ID> ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim;
 
     /**
-     * Claim DW_IDs of Claims with Partners that are Claimants in another claim.
+     * ClaimIDs of Claims with Partners that are Claimants in another claim.
      */
-    private HashSet<DW_ID> ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim;
+    private HashSet<DW_ID> ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim;
 
     /**
-     * Claim DW_IDs of Claims with Partners that are Partners in multiple
-     * claims.
+     * ClaimIDs of Claims with Partners that are Partners in multiple claims.
      */
-    private HashSet<DW_ID> ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim;
+    private HashSet<DW_ID> ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim;
 
     /**
-     * ClaimRef DW_IDs of Claims with NonDependents that are Claimants or
-     * Partners in another claim.
+     * ClaimIDs of Claims with NonDependents that are Claimants or Partners in
+     * another claim.
      */
-    private HashSet<DW_ID> ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim;
+    private HashSet<DW_ID> ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim;
 
     /**
      * DW_PersonIDs of Claimants that are in multiple claims in a month mapped
-     * to a set of ClaimRef DW_IDs of those claims.
+     * to a set of ClaimIDs of those claims.
      */
-    private HashMap<DW_PersonID, HashSet<DW_ID>> ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup;
+    private HashMap<DW_PersonID, HashSet<DW_ID>> ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup;
 
     /**
      * DW_PersonIDs of Partners that are in multiple claims in a month mapped to
-     * a set of ClaimRef DW_IDs of those claims.
+     * a set of ClaimIDs of those claims.
      */
-    private HashMap<DW_PersonID, HashSet<DW_ID>> PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup;
+    private HashMap<DW_PersonID, HashSet<DW_ID>> PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup;
 
     /**
      * DW_PersonIDs of NonDependents that are in multiple claims in a month
-     * mapped to a set of ClaimRef DW_IDs of those claims.
+     * mapped to a set of ClaimIDs of those claims.
      */
-    private HashMap<DW_PersonID, HashSet<DW_ID>> NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup;
+    private HashMap<DW_PersonID, HashSet<DW_ID>> NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup;
 
     /**
-     * ClaimRef DW_IDs mapped to Postcode DW_IDs.
+     * ClaimIDs mapped to Postcode DW_IDs.
      */
-    private HashMap<DW_ID, DW_ID> ClaimRefIDToPostcodeIDLookup;
+    private HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup;
 
     /**
-     * ClaimRef DW_IDs of the claims that have had PostcodeF updated from the
-     * future. This is only done if the postcode was previously of an invalid
+     * ClaimIDs of the claims that have had PostcodeF updated from the future.
+     * This is only to be stored if the postcode was previously of an invalid
      * format.
      */
-    private HashSet<DW_ID> ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture;
+    private HashSet<DW_ID> ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture;
 
     /**
-     * ClaimRef DW_IDs. This is only used when reading the data to check that
-     * ClaimRefIDs are unique.
+     * ClaimIDs. This is only used when reading the data to check that ClaimIDs
+     * are unique.
      */
-    private HashSet<DW_ID> ClaimRefIDs;
+    private HashSet<DW_ID> ClaimIDs;
 
     /**
-     * ClaimRef DW_IDs Of New SHBE Claims.
+     * For storing ClaimIDs of new SHBE claims.
      */
-    private HashSet<DW_ID> ClaimRefIDsOfNewSHBEClaims;
+    private HashSet<DW_ID> ClaimIDsOfNewSHBEClaims;
 
     /**
-     * ClaimRefIDs Of New SHBE Claims Where Claimant Was Claimant Before.
+     * For storing ClaimIDs of new SHBE claims where Claimant was a Claimant
+     * before.
      */
-    private HashSet<DW_ID> ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore;
+    private HashSet<DW_ID> ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore;
 
     /**
-     * ClaimRefIDs Of New SHBE Claims Where Claimant Was Partner Before
+     * For storing ClaimIDs of new SHBE claims where Claimant was a Partner
+     * before.
      */
-    private HashSet<DW_ID> ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
+    private HashSet<DW_ID> ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
 
     /**
-     * ClaimRefIDs Of New SHBE Claims Where Claimant Was NonDependent Before
+     * For storing ClaimIDs of new SHBE claims where Claimant was a NonDependent
+     * before.
      */
-    private HashSet<DW_ID> ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore;
+    private HashSet<DW_ID> ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore;
 
     /**
-     * ClaimRefIDs Of New SHBE Claims Where Claimant Is New
+     * For storing ClaimIDs of new SHBE claims where Claimant is new.
      */
-    private HashSet<DW_ID> ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew;
+    private HashSet<DW_ID> ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew;
 
     /**
-     * ClaimRef DW_IDs mapped to TenancyType.
+     * ClaimIDs mapped to TenancyType.
      */
-    private HashMap<DW_ID, Integer> ClaimRefIDToTenancyTypeLookup;
+    private HashMap<DW_ID, Integer> ClaimIDToTenancyTypeLookup;
 
     /**
      * LoadSummary
@@ -400,104 +399,104 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     private ArrayList<Long> RecordIDsNotLoaded;
 
     /**
-     * Store of ClaimRefIDs of all Claims where Claimant National Insurance
+     * For storing ClaimIDs of all Claims where Claimant National Insurance
      * Number is invalid.
      */
-    private HashSet<DW_ID> ClaimRefIDsOfInvalidClaimantNINOClaims;
+    private HashSet<DW_ID> ClaimIDsOfInvalidClaimantNINOClaims;
 
     /**
-     * Claimant Postcodes that are not (currently) mappable (indexed by
-     * ClaimRefID).
+     * // * For storing ClaimID mapped to Claim Postcodes that are not
+     * (currently) mappable.
      */
     private HashMap<DW_ID, String> ClaimantPostcodesUnmappable;
 
     /**
-     * Claimant Postcodes that have been automatically modified to make them
-     * mappable (indexed by ClaimRefID).
+     * For storing ClaimID mapped to Claim Postcodes that have been
+     * automatically modified to make them mappable.
      */
     private HashMap<DW_ID, String[]> ClaimantPostcodesModified;
 
     /**
-     * Claimant Postcodes Checked by local authority to be mappable, but not
-     * found in the subsequent ONSPD or the latest (indexed by ClaimRefID).
+     * For storing ClaimID mapped to Claimant Postcodes Checked by local
+     * authority to be mappable, but not found in the subsequent or the latest
+     * ONSPD.
      */
     private HashMap<DW_ID, String> ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes;
 
     /**
-     * PartnerDW_IDs File.
+     * ClaimIDToClaimantPersonIDLookupFile File.
      */
-    private File ClaimRefIDToClaimantPersonIDLookupFile;
+    private File ClaimIDToClaimantPersonIDLookupFile;
 
     /**
-     * ClaimRefIDToPartnerPersonIDLookup File.
+     * ClaimIDToPartnerPersonIDLookup File.
      */
-    private File ClaimRefIDToPartnerPersonIDLookupFile;
+    private File ClaimIDToPartnerPersonIDLookupFile;
 
     /**
-     * DependentClaimRefIDs File.
+     * ClaimIDToDependentPersonIDsLookupFile File.
      */
-    private File ClaimRefIDToDependentPersonIDsLookupFile;
+    private File ClaimIDToDependentPersonIDsLookupFile;
 
     /**
-     * NonDependentClaimRefIDs File.
+     * ClaimIDToNonDependentPersonIDsLookupFile File.
      */
-    private File ClaimRefIDToNonDependentPersonIDsLookupFile;
+    private File ClaimIDToNonDependentPersonIDsLookupFile;
 
     /**
-     * ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim File.
+     * ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile File.
      */
-    private File ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile;
+    private File ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile;
 
     /**
-     * ClaimRefIDOfClaimsWithClaimantsThatArePartnersInAnotherClaim File.
+     * ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile File.
      */
-    private File ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile;
+    private File ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile;
 
     /**
-     * ClaimRefIDOfClaimsWithPartnersThatAreClaimantsInAnotherClaim File.
+     * ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile File.
      */
-    private File ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile;
+    private File ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile;
 
     /**
-     * ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim File.
+     * ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile File.
      */
-    private File ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile;
+    private File ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile;
 
     /**
-     * ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim
-     * File.
+     * ClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile File.
      */
-    private File ClaimRefIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile;
+    private File ClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile;
 
     /**
-     * ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup File.
+     * ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile File.
      */
-    private File ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile;
+    private File ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile;
 
     /**
-     * PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup File.
+     * PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile File.
      */
-    private File PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile;
+    private File PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile;
 
     /**
-     * NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup File.
+     * NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile File.
      */
-    private File NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile;
+    private File NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile;
 
     /**
-     * ClaimRefIDToPostcodeLookup File.
+     * ClaimIDToPostcodeIDLookupFile File.
      */
-    private File ClaimRefIDToPostcodeIDLookupFile;
+    private File ClaimIDToPostcodeIDLookupFile;
 
     /**
-     * ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture File.
+     * ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile File.
      */
-    private File ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile;
+    private File ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile;
 
     /**
-     * ClaimRefIDToTenancyTypeLookup File.
+     * ClaimIDToTenancyTypeLookupFile File.
      */
-    private File ClaimRefIDToTenancyTypeLookupFile;
+    private File ClaimIDToTenancyTypeLookupFile;
 
     /**
      * LoadSummary File.
@@ -510,22 +509,22 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     private File RecordIDsNotLoadedFile;
 
     /**
-     * ClaimRefsOfInvalidClaimantNINOClaims File.
+     * ClaimIDsOfInvalidClaimantNINOClaimsFile File.
      */
-    private File ClaimRefIDsOfInvalidClaimantNINOClaimsFile;
+    private File ClaimIDsOfInvalidClaimantNINOClaimsFile;
 
     /**
-     * UnmappableClaimantPostcodes File.
+     * ClaimantPostcodesUnmappableFile File.
      */
     private File ClaimantPostcodesUnmappableFile;
 
     /**
-     * ModifiedPostcodes File
+     * ClaimantPostcodesModifiedFile File.
      */
     private File ClaimantPostcodesModifiedFile;
 
     /**
-     * ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes File
+     * ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodesFile File.
      */
     private File ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodesFile;
 
@@ -571,15 +570,14 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * If not initialised, initialises ClaimRefIDsOfNewSHBEClaims then returns
-     * it.
+     * If not initialised, initialises ClaimIDsOfNewSHBEClaims then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
     public final HashSet<DW_ID> getClaimIDsOfNewSHBEClaims(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsOfNewSHBEClaims();
+            return getClaimIDsOfNewSHBEClaims();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -595,34 +593,33 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * If not initialised, initialises ClaimRefIDsOfNewSHBEClaims then returns
-     * it.
+     * If not initialised, initialises ClaimIDsOfNewSHBEClaims then returns it.
      *
      * @return
      */
-    protected HashSet<DW_ID> getClaimRefIDsOfNewSHBEClaims() {
-        if (ClaimRefIDsOfNewSHBEClaims == null) {
+    protected HashSet<DW_ID> getClaimIDsOfNewSHBEClaims() {
+        if (ClaimIDsOfNewSHBEClaims == null) {
             File f;
-            f = getClaimRefIDsOfNewSHBEClaimsFile();
+            f = getClaimIDsOfNewSHBEClaimsFile();
             if (f.exists()) {
-                ClaimRefIDsOfNewSHBEClaims = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimIDsOfNewSHBEClaims = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsOfNewSHBEClaims = new HashSet<DW_ID>();
+                ClaimIDsOfNewSHBEClaims = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDsOfNewSHBEClaims;
+        return ClaimIDsOfNewSHBEClaims;
     }
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore then returns it.
+     * ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashSet<DW_ID> getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore(boolean handleOutOfMemoryError) {
+    public final HashSet<DW_ID> getClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore();
+            return getClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -630,7 +627,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore(handleOutOfMemoryError);
+                return getClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -639,33 +636,33 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore then returns it.
+     * ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore then returns it.
      *
      * @return
      */
-    protected HashSet<DW_ID> getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore() {
-        if (ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore == null) {
+    protected HashSet<DW_ID> getClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore() {
+        if (ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore == null) {
             File f;
-            f = getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile();
+            f = getClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile();
             if (f.exists()) {
-                ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore = new HashSet<DW_ID>();
+                ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore;
+        return ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore;
     }
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore then returns it.
+     * ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
     public final HashSet<DW_ID> getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore();
+            return getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -682,34 +679,34 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore then returns it.
+     * ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore then returns it.
      *
      * @return
      */
-    protected HashSet<DW_ID> getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore() {
-        if (ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore == null) {
+    protected HashSet<DW_ID> getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore() {
+        if (ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore == null) {
             File f;
-            f = getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile();
+            f = getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile();
             if (f.exists()) {
-                ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = new HashSet<DW_ID>();
+                ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
+        return ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
     }
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore then returns
+     * ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore then returns
      * it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashSet<DW_ID> getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore(boolean handleOutOfMemoryError) {
+    public final HashSet<DW_ID> getClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore();
+            return getClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -717,7 +714,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore(handleOutOfMemoryError);
+                return getClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -726,34 +723,34 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore then returns
+     * ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore then returns
      * it.
      *
      * @return
      */
-    protected HashSet<DW_ID> getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore() {
-        if (ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore == null) {
+    protected HashSet<DW_ID> getClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore() {
+        if (ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore == null) {
             File f;
-            f = getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile();
+            f = getClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile();
             if (f.exists()) {
-                ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore = new HashSet<DW_ID>();
+                ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore;
+        return ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore;
     }
 
     /**
-     * If not initialised, initialises
-     * ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew then returns it.
+     * If not initialised, initialises ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew
+     * then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashSet<DW_ID> getClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew(boolean handleOutOfMemoryError) {
+    public final HashSet<DW_ID> getClaimIDsOfNewSHBEClaimsWhereClaimantIsNew(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew();
+            return getClaimIDsOfNewSHBEClaimsWhereClaimantIsNew();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -761,7 +758,50 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew(handleOutOfMemoryError);
+                return getClaimIDsOfNewSHBEClaimsWhereClaimantIsNew(handleOutOfMemoryError);
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    /**
+     * If not initialised, initialises ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew
+     * then returns it.
+     *
+     * @return
+     */
+    protected HashSet<DW_ID> getClaimIDsOfNewSHBEClaimsWhereClaimantIsNew() {
+        if (ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew == null) {
+            File f;
+            f = getClaimIDsOfNewSHBEClaimsWhereClaimantIsNewFile();
+            if (f.exists()) {
+                ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+            } else {
+                ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew = new HashSet<DW_ID>();
+            }
+        }
+        return ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew;
+    }
+
+    /**
+     * If not initialised, initialises
+     * CottingleySpringsCaravanParkPairedClaimIDs then returns it.
+     *
+     * @param handleOutOfMemoryError
+     * @return
+     */
+    public final HashSet<DW_ID> getCottingleySpringsCaravanParkPairedClaimIDs(boolean handleOutOfMemoryError) {
+        try {
+            return getCottingleySpringsCaravanParkPairedClaimIDs();
+        } catch (OutOfMemoryError e) {
+            if (handleOutOfMemoryError) {
+                env.clear_MemoryReserve();
+                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                    throw e;
+                }
+                env.init_MemoryReserve(handleOutOfMemoryError);
+                return getCottingleySpringsCaravanParkPairedClaimIDs(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -770,76 +810,33 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew then returns it.
+     * CottingleySpringsCaravanParkPairedClaimIDs then returns it.
      *
      * @return
      */
-    protected HashSet<DW_ID> getClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew() {
-        if (ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew == null) {
+    protected HashSet<DW_ID> getCottingleySpringsCaravanParkPairedClaimIDs() {
+        if (CottingleySpringsCaravanParkPairedClaimIDs == null) {
             File f;
-            f = getClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNewFile();
+            f = getCottingleySpringsCaravanParkPairedClaimIDsFile();
             if (f.exists()) {
-                ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                CottingleySpringsCaravanParkPairedClaimIDs = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew = new HashSet<DW_ID>();
+                CottingleySpringsCaravanParkPairedClaimIDs = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew;
+        return CottingleySpringsCaravanParkPairedClaimIDs;
     }
 
     /**
      * If not initialised, initialises
-     * CottingleySpringsCaravanParkPairedClaimRefIDs then returns it.
-     *
-     * @param handleOutOfMemoryError
-     * @return
-     */
-    public final HashSet<DW_ID> getCottingleySpringsCaravanParkPairedClaimRefIDs(boolean handleOutOfMemoryError) {
-        try {
-            return getCottingleySpringsCaravanParkPairedClaimRefIDs();
-        } catch (OutOfMemoryError e) {
-            if (handleOutOfMemoryError) {
-                env.clear_MemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
-                    throw e;
-                }
-                env.init_MemoryReserve(handleOutOfMemoryError);
-                return getCottingleySpringsCaravanParkPairedClaimRefIDs(handleOutOfMemoryError);
-            } else {
-                throw e;
-            }
-        }
-    }
-
-    /**
-     * If not initialised, initialises
-     * CottingleySpringsCaravanParkPairedClaimRefIDs then returns it.
-     *
-     * @return
-     */
-    protected HashSet<DW_ID> getCottingleySpringsCaravanParkPairedClaimRefIDs() {
-        if (CottingleySpringsCaravanParkPairedClaimRefIDs == null) {
-            File f;
-            f = getCottingleySpringsCaravanParkPairedClaimRefIDsFile();
-            if (f.exists()) {
-                CottingleySpringsCaravanParkPairedClaimRefIDs = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
-            } else {
-                CottingleySpringsCaravanParkPairedClaimRefIDs = new HashSet<DW_ID>();
-            }
-        }
-        return CottingleySpringsCaravanParkPairedClaimRefIDs;
-    }
-
-    /**
-     * If not initialised, initialises
-     * ClaimRefIDsWithStatusOfHBAtExtractDateInPayment then returns it.
+     * ClaimIDsWithStatusOfHBAtExtractDateInPayment then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
     public final HashSet<DW_ID> getClaimIDsWithStatusOfHBAtExtractDateInPayment(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsWithStatusOfHBAtExtractDateInPayment();
+            return getClaimIDsWithStatusOfHBAtExtractDateInPayment();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -856,33 +853,33 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsWithStatusOfHBAtExtractDateInPayment then returns it.
+     * ClaimIDsWithStatusOfHBAtExtractDateInPayment then returns it.
      *
      * @return
      */
-    protected HashSet<DW_ID> getClaimRefIDsWithStatusOfHBAtExtractDateInPayment() {
-        if (ClaimRefIDsWithStatusOfHBAtExtractDateInPayment == null) {
+    protected HashSet<DW_ID> getClaimIDsWithStatusOfHBAtExtractDateInPayment() {
+        if (ClaimIDsWithStatusOfHBAtExtractDateInPayment == null) {
             File f;
-            f = getClaimRefIDsWithStatusOfHBAtExtractDateInPaymentFile();
+            f = getClaimIDsWithStatusOfHBAtExtractDateInPaymentFile();
             if (f.exists()) {
-                ClaimRefIDsWithStatusOfHBAtExtractDateInPayment = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimIDsWithStatusOfHBAtExtractDateInPayment = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsWithStatusOfHBAtExtractDateInPayment = new HashSet<DW_ID>();
+                ClaimIDsWithStatusOfHBAtExtractDateInPayment = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDsWithStatusOfHBAtExtractDateInPayment;
+        return ClaimIDsWithStatusOfHBAtExtractDateInPayment;
     }
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsWithStatusOfHBAtExtractDateSuspended then returns it.
+     * ClaimIDsWithStatusOfHBAtExtractDateSuspended then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
     public final HashSet<DW_ID> getClaimIDsWithStatusOfHBAtExtractDateSuspended(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsWithStatusOfHBAtExtractDateSuspended();
+            return getClaimIDsWithStatusOfHBAtExtractDateSuspended();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -899,33 +896,33 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsWithStatusOfHBAtExtractDateSuspended then returns it.
+     * ClaimIDsWithStatusOfHBAtExtractDateSuspended then returns it.
      *
      * @return
      */
-    protected HashSet<DW_ID> getClaimRefIDsWithStatusOfHBAtExtractDateSuspended() {
-        if (ClaimRefIDsWithStatusOfHBAtExtractDateSuspended == null) {
+    protected HashSet<DW_ID> getClaimIDsWithStatusOfHBAtExtractDateSuspended() {
+        if (ClaimIDsWithStatusOfHBAtExtractDateSuspended == null) {
             File f;
-            f = getClaimRefIDsWithStatusOfHBAtExtractDateSuspendedFile();
+            f = getClaimIDsWithStatusOfHBAtExtractDateSuspendedFile();
             if (f.exists()) {
-                ClaimRefIDsWithStatusOfHBAtExtractDateSuspended = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimIDsWithStatusOfHBAtExtractDateSuspended = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsWithStatusOfHBAtExtractDateSuspended = new HashSet<DW_ID>();
+                ClaimIDsWithStatusOfHBAtExtractDateSuspended = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDsWithStatusOfHBAtExtractDateSuspended;
+        return ClaimIDsWithStatusOfHBAtExtractDateSuspended;
     }
 
     /**
-     * If not initialised, initialises
-     * ClaimRefIDsWithStatusOfHBAtExtractDateOther then returns it.
+     * If not initialised, initialises ClaimIDsWithStatusOfHBAtExtractDateOther
+     * then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
     public final HashSet<DW_ID> getClaimIDsWithStatusOfHBAtExtractDateOther(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsWithStatusOfHBAtExtractDateOther();
+            return getClaimIDsWithStatusOfHBAtExtractDateOther();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -941,34 +938,34 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * If not initialised, initialises
-     * ClaimRefIDsWithStatusOfHBAtExtractDateOther then returns it.
+     * If not initialised, initialises ClaimIDsWithStatusOfHBAtExtractDateOther
+     * then returns it.
      *
      * @return
      */
-    protected HashSet<DW_ID> getClaimRefIDsWithStatusOfHBAtExtractDateOther() {
-        if (ClaimRefIDsWithStatusOfHBAtExtractDateOther == null) {
+    protected HashSet<DW_ID> getClaimIDsWithStatusOfHBAtExtractDateOther() {
+        if (ClaimIDsWithStatusOfHBAtExtractDateOther == null) {
             File f;
-            f = getClaimRefIDsWithStatusOfHBAtExtractDateOtherFile();
+            f = getClaimIDsWithStatusOfHBAtExtractDateOtherFile();
             if (f.exists()) {
-                ClaimRefIDsWithStatusOfHBAtExtractDateOther = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimIDsWithStatusOfHBAtExtractDateOther = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsWithStatusOfHBAtExtractDateOther = new HashSet<DW_ID>();
+                ClaimIDsWithStatusOfHBAtExtractDateOther = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDsWithStatusOfHBAtExtractDateOther;
+        return ClaimIDsWithStatusOfHBAtExtractDateOther;
     }
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment then returns it.
+     * ClaimIDsWithStatusOfCTBAtExtractDateInPayment then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
     public final HashSet<DW_ID> getClaimIDsWithStatusOfCTBAtExtractDateInPayment(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsWithStatusOfCTBAtExtractDateInPayment();
+            return getClaimIDsWithStatusOfCTBAtExtractDateInPayment();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -985,33 +982,33 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment then returns it.
+     * ClaimIDsWithStatusOfCTBAtExtractDateInPayment then returns it.
      *
      * @return
      */
-    protected HashSet<DW_ID> getClaimRefIDsWithStatusOfCTBAtExtractDateInPayment() {
-        if (ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment == null) {
+    protected HashSet<DW_ID> getClaimIDsWithStatusOfCTBAtExtractDateInPayment() {
+        if (ClaimIDsWithStatusOfCTBAtExtractDateInPayment == null) {
             File f;
-            f = getClaimRefIDsWithStatusOfCTBAtExtractDateInPaymentFile();
+            f = getClaimIDsWithStatusOfCTBAtExtractDateInPaymentFile();
             if (f.exists()) {
-                ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimIDsWithStatusOfCTBAtExtractDateInPayment = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment = new HashSet<DW_ID>();
+                ClaimIDsWithStatusOfCTBAtExtractDateInPayment = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment;
+        return ClaimIDsWithStatusOfCTBAtExtractDateInPayment;
     }
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended then returns it.
+     * ClaimIDsWithStatusOfCTBAtExtractDateSuspended then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
     public final HashSet<DW_ID> getClaimIDsWithStatusOfCTBAtExtractDateSuspended(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsWithStatusOfCTBAtExtractDateSuspended();
+            return getClaimIDsWithStatusOfCTBAtExtractDateSuspended();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -1028,33 +1025,33 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended then returns it.
+     * ClaimIDsWithStatusOfCTBAtExtractDateSuspended then returns it.
      *
      * @return
      */
-    protected HashSet<DW_ID> getClaimRefIDsWithStatusOfCTBAtExtractDateSuspended() {
-        if (ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended == null) {
+    protected HashSet<DW_ID> getClaimIDsWithStatusOfCTBAtExtractDateSuspended() {
+        if (ClaimIDsWithStatusOfCTBAtExtractDateSuspended == null) {
             File f;
-            f = getClaimRefIDsWithStatusOfCTBAtExtractDateSuspendedFile();
+            f = getClaimIDsWithStatusOfCTBAtExtractDateSuspendedFile();
             if (f.exists()) {
-                ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimIDsWithStatusOfCTBAtExtractDateSuspended = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended = new HashSet<DW_ID>();
+                ClaimIDsWithStatusOfCTBAtExtractDateSuspended = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended;
+        return ClaimIDsWithStatusOfCTBAtExtractDateSuspended;
     }
 
     /**
-     * If not initialised, initialises
-     * ClaimRefIDsWithStatusOfCTBAtExtractDateOther then returns it.
+     * If not initialised, initialises ClaimIDsWithStatusOfCTBAtExtractDateOther
+     * then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
     public final HashSet<DW_ID> getClaimIDsWithStatusOfCTBAtExtractDateOther(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsWithStatusOfCTBAtExtractDateOther();
+            return getClaimIDsWithStatusOfCTBAtExtractDateOther();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -1070,22 +1067,22 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * If not initialised, initialises
-     * ClaimRefIDsWithStatusOfCTBAtExtractDateOther then returns it.
+     * If not initialised, initialises ClaimIDsWithStatusOfCTBAtExtractDateOther
+     * then returns it.
      *
      * @return
      */
-    protected HashSet<DW_ID> getClaimRefIDsWithStatusOfCTBAtExtractDateOther() {
-        if (ClaimRefIDsWithStatusOfCTBAtExtractDateOther == null) {
+    protected HashSet<DW_ID> getClaimIDsWithStatusOfCTBAtExtractDateOther() {
+        if (ClaimIDsWithStatusOfCTBAtExtractDateOther == null) {
             File f;
-            f = getClaimRefIDsWithStatusOfCTBAtExtractDateOtherFile();
+            f = getClaimIDsWithStatusOfCTBAtExtractDateOtherFile();
             if (f.exists()) {
-                ClaimRefIDsWithStatusOfCTBAtExtractDateOther = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimIDsWithStatusOfCTBAtExtractDateOther = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsWithStatusOfCTBAtExtractDateOther = new HashSet<DW_ID>();
+                ClaimIDsWithStatusOfCTBAtExtractDateOther = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDsWithStatusOfCTBAtExtractDateOther;
+        return ClaimIDsWithStatusOfCTBAtExtractDateOther;
     }
 
     /**
@@ -1128,15 +1125,15 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * If not initialised, initialises ClaimRefIDAndCountOfRecordsWithSRecords
-     * then returns it.
+     * If not initialised, initialises ClaimIDAndCountOfRecordsWithSRecords then
+     * returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashMap<DW_ID, Integer> getClaimRefIDAndCountOfRecordsWithSRecords(boolean handleOutOfMemoryError) {
+    public final HashMap<DW_ID, Integer> getClaimIDAndCountOfRecordsWithSRecords(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDAndCountOfRecordsWithSRecords();
+            return getClaimIDAndCountOfRecordsWithSRecords();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -1144,7 +1141,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDAndCountOfRecordsWithSRecords(handleOutOfMemoryError);
+                return getClaimIDAndCountOfRecordsWithSRecords(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -1153,14 +1150,14 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode then returns it.
+     * ClaimIDsOfClaimsWithoutAMappableClaimantPostcode then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashSet<DW_ID> getClaimRefIDsOfClaimsWithoutAValidClaimantPostcode(boolean handleOutOfMemoryError) {
+    public final HashSet<DW_ID> getClaimIDsOfClaimsWithoutAValidClaimantPostcode(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode();
+            return getClaimIDsOfClaimsWithoutAMappableClaimantPostcode();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -1168,7 +1165,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDsOfClaimsWithoutAValidClaimantPostcode(handleOutOfMemoryError);
+                return getClaimIDsOfClaimsWithoutAValidClaimantPostcode(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -1176,35 +1173,35 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return the ClaimRefIDAndCountOfRecordsWithSRecords
+     * @return the ClaimIDAndCountOfRecordsWithSRecords
      */
-    protected HashMap<DW_ID, Integer> getClaimRefIDAndCountOfRecordsWithSRecords() {
-        if (ClaimRefIDAndCountOfRecordsWithSRecords == null) {
+    protected HashMap<DW_ID, Integer> getClaimIDAndCountOfRecordsWithSRecords() {
+        if (ClaimIDAndCountOfRecordsWithSRecords == null) {
             File f;
-            f = getClaimRefIDAndCountOfRecordsWithSRecordsFile();
+            f = getClaimIDAndCountOfRecordsWithSRecordsFile();
             if (f.exists()) {
-                ClaimRefIDAndCountOfRecordsWithSRecords = (HashMap<DW_ID, Integer>) Generic_StaticIO.readObject(f);
+                ClaimIDAndCountOfRecordsWithSRecords = (HashMap<DW_ID, Integer>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDAndCountOfRecordsWithSRecords = new HashMap<DW_ID, Integer>();
+                ClaimIDAndCountOfRecordsWithSRecords = new HashMap<DW_ID, Integer>();
             }
         }
-        return ClaimRefIDAndCountOfRecordsWithSRecords;
+        return ClaimIDAndCountOfRecordsWithSRecords;
     }
 
     /**
-     * @return the ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode
+     * @return the ClaimIDsOfClaimsWithoutAMappableClaimantPostcode
      */
-    protected HashSet<DW_ID> getClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode() {
-        if (ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode == null) {
+    protected HashSet<DW_ID> getClaimIDsOfClaimsWithoutAMappableClaimantPostcode() {
+        if (ClaimIDsOfClaimsWithoutAMappableClaimantPostcode == null) {
             File f;
-            f = getClaimRefIDsOfClaimsWithoutAMappableClaimantPostcodeFile();
+            f = getClaimIDsOfClaimsWithoutAMappableClaimantPostcodeFile();
             if (f.exists()) {
-                ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimIDsOfClaimsWithoutAMappableClaimantPostcode = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode = new HashSet<DW_ID>();
+                ClaimIDsOfClaimsWithoutAMappableClaimantPostcode = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode;
+        return ClaimIDsOfClaimsWithoutAMappableClaimantPostcode;
     }
 
     /**
@@ -1275,41 +1272,41 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         env.logO("NearestYM3ForONSPDLookup " + NearestYM3ForONSPDLookup, true);
         DW_Strings = env.getDW_Strings();
         Records = getRecords(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsOfNewSHBEClaims = getClaimIDsOfNewSHBEClaims(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsOfNewSHBEClaims = getClaimIDsOfNewSHBEClaims(env._HandleOutOfMemoryError_boolean);
         ClaimantPersonIDs = getClaimantPersonIDs(env._HandleOutOfMemoryError_boolean);
         PartnerPersonIDs = getPartnerPersonIDs(env._HandleOutOfMemoryError_boolean);
         NonDependentPersonIDs = getNonDependentPersonIDs(env._HandleOutOfMemoryError_boolean);
-        CottingleySpringsCaravanParkPairedClaimRefIDs = getCottingleySpringsCaravanParkPairedClaimRefIDs(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsWithStatusOfHBAtExtractDateInPayment = getClaimIDsWithStatusOfHBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsWithStatusOfHBAtExtractDateSuspended = getClaimIDsWithStatusOfHBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsWithStatusOfHBAtExtractDateOther = getClaimIDsWithStatusOfHBAtExtractDateOther(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment = getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended = getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsWithStatusOfCTBAtExtractDateOther = getClaimIDsWithStatusOfCTBAtExtractDateOther(env._HandleOutOfMemoryError_boolean);
+        CottingleySpringsCaravanParkPairedClaimIDs = getCottingleySpringsCaravanParkPairedClaimIDs(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsWithStatusOfHBAtExtractDateInPayment = getClaimIDsWithStatusOfHBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsWithStatusOfHBAtExtractDateSuspended = getClaimIDsWithStatusOfHBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsWithStatusOfHBAtExtractDateOther = getClaimIDsWithStatusOfHBAtExtractDateOther(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsWithStatusOfCTBAtExtractDateInPayment = getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsWithStatusOfCTBAtExtractDateSuspended = getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsWithStatusOfCTBAtExtractDateOther = getClaimIDsWithStatusOfCTBAtExtractDateOther(env._HandleOutOfMemoryError_boolean);
         SRecordsWithoutDRecords = getSRecordsWithoutDRecords(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDAndCountOfRecordsWithSRecords = getClaimRefIDAndCountOfRecordsWithSRecords(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode = getClaimRefIDsOfClaimsWithoutAValidClaimantPostcode(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDToClaimantPersonIDLookup = getClaimRefIDToClaimantPersonIDLookup(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDToPartnerPersonIDLookup = getClaimRefIDToPartnerPersonIDLookup(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDToDependentPersonIDsLookup = getClaimRefIDToDependentPersonIDsLookup(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDToNonDependentPersonIDsLookup = getClaimRefIDToNonDependentPersonIDsLookup(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim = getClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim = getClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim = getClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim = getClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim = getClaimRefIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaim(env._HandleOutOfMemoryError_boolean);
-        ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup = getClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup(env._HandleOutOfMemoryError_boolean);
-        PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup = getPartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup(env._HandleOutOfMemoryError_boolean);
-        NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup = getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDToPostcodeIDLookup = getClaimRefIDToPostcodeIDLookup(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDToTenancyTypeLookup = getClaimRefIDToTenancyTypeLookup(env._HandleOutOfMemoryError_boolean);
+        ClaimIDAndCountOfRecordsWithSRecords = getClaimIDAndCountOfRecordsWithSRecords(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsOfClaimsWithoutAMappableClaimantPostcode = getClaimIDsOfClaimsWithoutAValidClaimantPostcode(env._HandleOutOfMemoryError_boolean);
+        ClaimIDToClaimantPersonIDLookup = getClaimIDToClaimantPersonIDLookup(env._HandleOutOfMemoryError_boolean);
+        ClaimIDToPartnerPersonIDLookup = getClaimIDToPartnerPersonIDLookup(env._HandleOutOfMemoryError_boolean);
+        ClaimIDToDependentPersonIDsLookup = getClaimIDToDependentPersonIDsLookup(env._HandleOutOfMemoryError_boolean);
+        ClaimIDToNonDependentPersonIDsLookup = getClaimIDToNonDependentPersonIDsLookup(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim = getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim = getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim = getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim = getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim = getClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaim(env._HandleOutOfMemoryError_boolean);
+        ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env._HandleOutOfMemoryError_boolean);
+        PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env._HandleOutOfMemoryError_boolean);
+        NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env._HandleOutOfMemoryError_boolean);
+        ClaimIDToPostcodeIDLookup = getClaimIDToPostcodeIDLookup(env._HandleOutOfMemoryError_boolean);
+        ClaimIDToTenancyTypeLookup = getClaimIDToTenancyTypeLookup(env._HandleOutOfMemoryError_boolean);
         LoadSummary = getLoadSummary(env._HandleOutOfMemoryError_boolean);
         RecordIDsNotLoaded = getRecordIDsNotLoaded(env._HandleOutOfMemoryError_boolean);
-        ClaimRefIDsOfInvalidClaimantNINOClaims = getClaimRefIDsOfInvalidClaimantNINOClaims(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsOfInvalidClaimantNINOClaims = getClaimIDsOfInvalidClaimantNINOClaims(env._HandleOutOfMemoryError_boolean);
         ClaimantPostcodesUnmappable = getClaimantPostcodesUnmappable(env._HandleOutOfMemoryError_boolean);
         ClaimantPostcodesModified = getClaimantPostcodesModified(env._HandleOutOfMemoryError_boolean);
         ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes = getClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes(env._HandleOutOfMemoryError_boolean);
-    ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture = getClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture(env._HandleOutOfMemoryError_boolean);
+        ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture = getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture(env._HandleOutOfMemoryError_boolean);
     }
 
     /**
@@ -1326,7 +1323,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             File inputDirectory,
             String inputFilename,
             String LatestYM3ForONSPDFormat,
-           File logDir
+            File logDir
     ) {
         super(env);
         DW_SHBE_Handler DW_SHBE_Handler;
@@ -1340,46 +1337,46 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         NearestYM3ForONSPDLookup = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
         DW_Strings = env.getDW_Strings();
         Records = new HashMap<DW_ID, DW_SHBE_Record>();
-        ClaimRefIDs = new HashSet<DW_ID>();
-        ClaimRefIDsOfNewSHBEClaims = new HashSet<DW_ID>();
-        ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore = new HashSet<DW_ID>();
-        ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = new HashSet<DW_ID>();
-        ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore = new HashSet<DW_ID>();
-        ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew = new HashSet<DW_ID>();
+        ClaimIDs = new HashSet<DW_ID>();
+        ClaimIDsOfNewSHBEClaims = new HashSet<DW_ID>();
+        ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore = new HashSet<DW_ID>();
+        ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = new HashSet<DW_ID>();
+        ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore = new HashSet<DW_ID>();
+        ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew = new HashSet<DW_ID>();
         ClaimantPersonIDs = new HashSet<DW_PersonID>();
         PartnerPersonIDs = new HashSet<DW_PersonID>();
         NonDependentPersonIDs = new HashSet<DW_PersonID>();
-        CottingleySpringsCaravanParkPairedClaimRefIDs = new HashSet<DW_ID>();
-        ClaimRefIDsWithStatusOfHBAtExtractDateInPayment = new HashSet<DW_ID>();
-        ClaimRefIDsWithStatusOfHBAtExtractDateSuspended = new HashSet<DW_ID>();
-        ClaimRefIDsWithStatusOfHBAtExtractDateOther = new HashSet<DW_ID>();
-        ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment = new HashSet<DW_ID>();
-        ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended = new HashSet<DW_ID>();
-        ClaimRefIDsWithStatusOfCTBAtExtractDateOther = new HashSet<DW_ID>();
+        CottingleySpringsCaravanParkPairedClaimIDs = new HashSet<DW_ID>();
+        ClaimIDsWithStatusOfHBAtExtractDateInPayment = new HashSet<DW_ID>();
+        ClaimIDsWithStatusOfHBAtExtractDateSuspended = new HashSet<DW_ID>();
+        ClaimIDsWithStatusOfHBAtExtractDateOther = new HashSet<DW_ID>();
+        ClaimIDsWithStatusOfCTBAtExtractDateInPayment = new HashSet<DW_ID>();
+        ClaimIDsWithStatusOfCTBAtExtractDateSuspended = new HashSet<DW_ID>();
+        ClaimIDsWithStatusOfCTBAtExtractDateOther = new HashSet<DW_ID>();
         SRecordsWithoutDRecords = new HashMap<DW_ID, ArrayList<DW_SHBE_S_Record>>();
-        ClaimRefIDAndCountOfRecordsWithSRecords = new HashMap<DW_ID, Integer>();
-        ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode = new HashSet<DW_ID>();
-        ClaimRefIDToClaimantPersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
-        ClaimRefIDToPartnerPersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
-        ClaimRefIDToDependentPersonIDsLookup = new HashMap<DW_ID, HashSet<DW_PersonID>>();
-        ClaimRefIDToNonDependentPersonIDsLookup = new HashMap<DW_ID, HashSet<DW_PersonID>>();
-        ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim = new HashSet<DW_ID>();
-        ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim = new HashSet<DW_ID>();
-        ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim = new HashSet<DW_ID>();
-        ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim = new HashSet<DW_ID>();
-        ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim = new HashSet<DW_ID>();
-        ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
-        PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
-        NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
-        ClaimRefIDToPostcodeIDLookup = new HashMap<DW_ID, DW_ID>();
-        ClaimRefIDToTenancyTypeLookup = new HashMap<DW_ID, Integer>();
+        ClaimIDAndCountOfRecordsWithSRecords = new HashMap<DW_ID, Integer>();
+        ClaimIDsOfClaimsWithoutAMappableClaimantPostcode = new HashSet<DW_ID>();
+        ClaimIDToClaimantPersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
+        ClaimIDToPartnerPersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
+        ClaimIDToDependentPersonIDsLookup = new HashMap<DW_ID, HashSet<DW_PersonID>>();
+        ClaimIDToNonDependentPersonIDsLookup = new HashMap<DW_ID, HashSet<DW_PersonID>>();
+        ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim = new HashSet<DW_ID>();
+        ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim = new HashSet<DW_ID>();
+        ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim = new HashSet<DW_ID>();
+        ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim = new HashSet<DW_ID>();
+        ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim = new HashSet<DW_ID>();
+        ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
+        PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
+        NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
+        ClaimIDToPostcodeIDLookup = new HashMap<DW_ID, DW_ID>();
+        ClaimIDToTenancyTypeLookup = new HashMap<DW_ID, Integer>();
         LoadSummary = new HashMap<String, Number>();
         RecordIDsNotLoaded = new ArrayList<Long>();
-        ClaimRefIDsOfInvalidClaimantNINOClaims = new HashSet<DW_ID>();
+        ClaimIDsOfInvalidClaimantNINOClaims = new HashSet<DW_ID>();
         ClaimantPostcodesUnmappable = new HashMap<DW_ID, String>();
         ClaimantPostcodesModified = new HashMap<DW_ID, String[]>();
         ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes = new HashMap<DW_ID, String>();
-        ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture = new HashSet<DW_ID>();
+        ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture = new HashSet<DW_ID>();
         env.log("----------------------");
         env.log("Load " + YM3);
         env.log("----------------------");
@@ -1428,13 +1425,13 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
          */
         HashMap<DW_ID, AGDT_Point> PostcodeIDToPointLookup;
         /**
-         * Mapping of ClaimRef String to ClaimRef DW_ID.
+         * Mapping of ClaimRef String to Claim DW_ID.
          */
-        HashMap<String, DW_ID> ClaimRefToClaimRefIDLookup;
+        HashMap<String, DW_ID> ClaimRefToClaimIDLookup;
         /**
-         * ClaimRef DW_ID mapped to ClaimRef String.
+         * Mapping of Claim DW_ID to ClaimRef String.
          */
-        HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup;
+        HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
 
         /**
          * DW_PersonID of All Claimants
@@ -1452,9 +1449,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         HashSet<DW_PersonID> AllNonDependentIDs;
 
         /**
-         * All DW_PersonID to ClaimRefIDs Lookup
+         * All DW_PersonID to ClaimIDs Lookup
          */
-        HashMap<DW_PersonID, HashSet<DW_ID>> PersonIDToClaimRefIDsLookup;
+        HashMap<DW_PersonID, HashSet<DW_ID>> PersonIDToClaimIDsLookup;
 
         /**
          * Initialise mappings from DW_SHBE_Data.
@@ -1472,12 +1469,12 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         AllClaimantPersonIDs = DW_SHBE_Data.getClaimantPersonIDs();
         AllPartnerPersonIDs = DW_SHBE_Data.getPartnerPersonIDs();
         AllNonDependentIDs = DW_SHBE_Data.getNonDependentPersonIDs();
-        PersonIDToClaimRefIDsLookup = DW_SHBE_Data.getPersonIDToClaimIDLookup();
+        PersonIDToClaimIDsLookup = DW_SHBE_Data.getPersonIDToClaimIDLookup();
         PostcodeToPostcodeIDLookup = DW_SHBE_Data.getPostcodeToPostcodeIDLookup();
         PostcodeIDToPostcodeLookup = DW_SHBE_Data.getPostcodeIDToPostcodeLookup();
         PostcodeIDToPointLookup = DW_SHBE_Data.getPostcodeIDToPointLookup(YM3);
-        ClaimRefToClaimRefIDLookup = DW_SHBE_Data.getClaimRefToClaimIDLookup();
-        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
+        ClaimRefToClaimIDLookup = DW_SHBE_Data.getClaimRefToClaimIDLookup();
+        ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
         // Initialise statistics
         int CountOfNewMappableClaimantPostcodes = 0;
         int CountOfMappableClaimantPostcodes = 0;
@@ -1515,7 +1512,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             DW_SHBE_D_Record DRecord;
             int TenancyType;
             boolean doLoop;
-            DW_ID ClaimRefID;
+            DW_ID ClaimID;
             DW_SHBE_Record record;
             int StatusOfHBClaimAtExtractDate;
             int StatusOfCTBClaimAtExtractDate;
@@ -1525,7 +1522,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             DW_PersonID ClaimantPersonID;
             boolean addToNew;
             Object key;
-            DW_ID otherClaimRefID = null;
+            DW_ID otherClaimID = null;
             String otherClaimRef;
             DW_SHBE_Record otherRecord;
             /**
@@ -1565,15 +1562,15 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                     RecordIDsNotLoaded.add(RecordID);
                                     SRecordNotLoadedCount++;
                                 } else {
-                                    ClaimRefID = DW_SHBE_Handler.getIDAddIfNeeded(
+                                    ClaimID = DW_SHBE_Handler.getIDAddIfNeeded(
                                             ClaimRef,
-                                            ClaimRefToClaimRefIDLookup,
-                                            ClaimRefIDToClaimRefLookup);
+                                            ClaimRefToClaimIDLookup,
+                                            ClaimIDToClaimRefLookup);
                                     ArrayList<DW_SHBE_S_Record> recs;
-                                    recs = SRecordsWithoutDRecords.get(ClaimRefID);
+                                    recs = SRecordsWithoutDRecords.get(ClaimID);
                                     if (recs == null) {
                                         recs = new ArrayList<DW_SHBE_S_Record>();
-                                        SRecordsWithoutDRecords.put(ClaimRefID, recs);
+                                        SRecordsWithoutDRecords.put(ClaimID, recs);
                                     }
                                     recs.add(SRecord);
                                 }
@@ -1617,12 +1614,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                         RecordIDsNotLoaded.add(RecordID);
                                     } else {
                                         doLoop = false;
-                                        ClaimRefID = DW_SHBE_Handler.getIDAddIfNeeded(
-                                                ClaimRef,
-                                                ClaimRefToClaimRefIDLookup,
-                                                ClaimRefIDToClaimRefLookup,
-                                                ClaimRefIDs,
-                                                ClaimRefIDsOfNewSHBEClaims);
+                                        ClaimID = DW_SHBE_Handler.getIDAddIfNeeded(ClaimRef,
+                                                ClaimRefToClaimIDLookup,
+                                                ClaimIDToClaimRefLookup,
+                                                ClaimIDs,
+                                                ClaimIDsOfNewSHBEClaims);
                                         if (DW_SHBE_Handler.isHBClaim(DRecord)) {
                                             if (DRecord.getCouncilTaxBenefitClaimReferenceNumber() != null) {
                                                 totalCouncilTaxAndHousingBenefitClaims++;
@@ -1637,11 +1633,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                          * Get or initialise DW_SHBE_Record
                                          * record
                                          */
-                                        record = Records.get(ClaimRefID);
+                                        record = Records.get(ClaimID);
                                         if (record == null) {
                                             record = new DW_SHBE_Record(
-                                                    env, YM3, ClaimRefID, DRecord);
-                                            Records.put(ClaimRefID, record);
+                                                    env, YM3, ClaimID, DRecord);
+                                            Records.put(ClaimID, record);
                                             doLoop = true;
                                         } else {
                                             env.logE("Two records have the same ClaimRef "
@@ -1658,15 +1654,15 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                          */
                                         switch (StatusOfHBClaimAtExtractDate) {
                                             case 0: {
-                                                ClaimRefIDsWithStatusOfHBAtExtractDateOther.add(ClaimRefID);
+                                                ClaimIDsWithStatusOfHBAtExtractDateOther.add(ClaimID);
                                                 break;
                                             }
                                             case 1: {
-                                                ClaimRefIDsWithStatusOfHBAtExtractDateInPayment.add(ClaimRefID);
+                                                ClaimIDsWithStatusOfHBAtExtractDateInPayment.add(ClaimID);
                                                 break;
                                             }
                                             case 2: {
-                                                ClaimRefIDsWithStatusOfHBAtExtractDateSuspended.add(ClaimRefID);
+                                                ClaimIDsWithStatusOfHBAtExtractDateSuspended.add(ClaimID);
                                                 break;
                                             }
                                             default:
@@ -1684,15 +1680,15 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                          */
                                         switch (StatusOfCTBClaimAtExtractDate) {
                                             case 0: {
-                                                ClaimRefIDsWithStatusOfCTBAtExtractDateOther.add(ClaimRefID);
+                                                ClaimIDsWithStatusOfCTBAtExtractDateOther.add(ClaimID);
                                                 break;
                                             }
                                             case 1: {
-                                                ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment.add(ClaimRefID);
+                                                ClaimIDsWithStatusOfCTBAtExtractDateInPayment.add(ClaimID);
                                                 break;
                                             }
                                             case 2: {
-                                                ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended.add(ClaimRefID);
+                                                ClaimIDsWithStatusOfCTBAtExtractDateSuspended.add(ClaimID);
                                                 break;
                                             }
                                             default:
@@ -1761,9 +1757,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                             if (!isMappablePostcode) {
                                                 isMappablePostcodeLastestYM3 = DW_Postcode_Handler.isMappablePostcode(LatestYM3ForONSPDFormat, record.ClaimPostcodeF);
                                                 if (isMappablePostcodeLastestYM3) {
-                                                    env.logO(env.DEBUG_Level_FINEST, 
-                                                                "Postcode " + Postcode + " is not in the " + NearestYM3ForONSPDLookup + " ONSPD, "
-                                                                        + "but is in the " + LatestYM3ForONSPDFormat + " ONSPD!");
+                                                    env.logO(env.DEBUG_Level_FINEST,
+                                                            "Postcode " + Postcode + " is not in the " + NearestYM3ForONSPDLookup + " ONSPD, "
+                                                            + "but is in the " + LatestYM3ForONSPDFormat + " ONSPD!");
                                                     isMappablePostcode = isMappablePostcodeLastestYM3;
                                                 }
                                             }
@@ -1778,7 +1774,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                         p = new String[2];
                                                         p[0] = Postcode;
                                                         p[1] = claimPostcodeFNoSpaces.substring(0, l - 3) + " " + claimPostcodeFNoSpaces.substring(l - 3);
-                                                        ClaimantPostcodesModified.put(ClaimRefID, p);
+                                                        ClaimantPostcodesModified.put(ClaimID, p);
                                                     }
                                                 }
                                             }
@@ -1790,9 +1786,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                 // Add the point to the lookup
                                                 AGDT_Point AGDT_Point;
                                                 AGDT_Point = DW_Postcode_Handler.getPointFromPostcodeNew(
-                                                            NearestYM3ForONSPDLookup,
-                                                            DW_Strings.sUnit,
-                                                            record.ClaimPostcodeF);
+                                                        NearestYM3ForONSPDLookup,
+                                                        DW_Strings.sUnit,
+                                                        record.ClaimPostcodeF);
                                                 PostcodeIDToPointLookup.put(record.PostcodeID, AGDT_Point);
                                             } else if (isMappablePostcode) {
                                                 CountOfMappableClaimantPostcodes++;
@@ -1824,18 +1820,18 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                     CountOfValidFormatClaimantPostcodes++;
                                                 }
                                                 record.ClaimPostcodeFMappable = false;
-                                                ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode.add(ClaimRefID);
+                                                ClaimIDsOfClaimsWithoutAMappableClaimantPostcode.add(ClaimID);
                                                 boolean PostcodeCheckedAsMappable = false;
                                                 PostcodeCheckedAsMappable = PostcodesCheckedAsMappable.contains(record.ClaimPostcodeF);
                                                 if (PostcodeCheckedAsMappable) {
-                                                    ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes.put(ClaimRefID, Postcode);
+                                                    ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes.put(ClaimID, Postcode);
                                                 } else {
                                                     // Store unmappable claimant postcode.
-                                                    ClaimantPostcodesUnmappable.put(ClaimRefID, Postcode);
+                                                    ClaimantPostcodesUnmappable.put(ClaimID, Postcode);
                                                 }
                                             }
-                                            ClaimRefIDToPostcodeIDLookup.put(ClaimRefID, record.PostcodeID);
-                                            ClaimRefIDToTenancyTypeLookup.put(ClaimRefID, TenancyType);
+                                            ClaimIDToPostcodeIDLookup.put(ClaimID, record.PostcodeID);
+                                            ClaimIDToTenancyTypeLookup.put(ClaimID, TenancyType);
                                             totalIncome = DW_SHBE_Handler.getClaimantsAndPartnersIncomeTotal(DRecord);
                                             grandTotalIncome += totalIncome;
                                             if (totalIncome > 0) {
@@ -1853,7 +1849,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                         ClaimantNINO = DRecord.getClaimantsNationalInsuranceNumber();
                                         if (ClaimantNINO.trim().equalsIgnoreCase("")
                                                 || ClaimantNINO.trim().startsWith("XX999")) {
-                                            ClaimRefIDsOfInvalidClaimantNINOClaims.add(ClaimRefID);
+                                            ClaimIDsOfInvalidClaimantNINOClaims.add(ClaimID);
                                         }
                                         ClaimantDOB = DRecord.getClaimantsDateOfBirth();
                                         ClaimantPersonID = DW_SHBE_Handler.getPersonID(
@@ -1870,31 +1866,31 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                          * NonDependent or if the Person is
                                          * "new".
                                          */
-                                        if (ClaimRefIDsOfNewSHBEClaims.contains(ClaimRefID)) {
+                                        if (ClaimIDsOfNewSHBEClaims.contains(ClaimID)) {
                                             addToNew = true;
                                             if (AllClaimantPersonIDs.contains(ClaimantPersonID)) {
-                                                ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore.add(ClaimRefID);
+                                                ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore.add(ClaimID);
                                                 addToNew = false;
                                             }
                                             if (AllPartnerPersonIDs.contains(ClaimantPersonID)) {
-                                                ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.add(ClaimRefID);
+                                                ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.add(ClaimID);
                                                 addToNew = false;
                                             }
                                             if (AllNonDependentIDs.contains(ClaimantPersonID)) {
-                                                ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore.add(ClaimRefID);
+                                                ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore.add(ClaimID);
                                                 addToNew = false;
                                             }
                                             if (addToNew) {
-                                                ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew.add(ClaimRefID);
+                                                ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew.add(ClaimID);
                                             }
                                         }
                                         /**
                                          * If ClaimantDW_PersonID is already in
-                                         * ClaimRefIDToClaimantPersonIDLookup.
+                                         * ClaimIDToClaimantPersonIDLookup.
                                          * then ClaimantDW_PersonID has multiple
                                          * claims in a month.
                                          */
-                                        if (ClaimRefIDToClaimantPersonIDLookup.containsValue(ClaimantPersonID)) {
+                                        if (ClaimIDToClaimantPersonIDLookup.containsValue(ClaimantPersonID)) {
                                             /**
                                              * This claimant is in multiple
                                              * claims in this SHBE data. This
@@ -1911,13 +1907,12 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                              * age and ethnicity which could be
                                              * used to help differentiate.
                                              */
-                                            key = Generic_Collections.getKeyFromValue(
-                                                    ClaimRefIDToClaimantPersonIDLookup,
+                                            key = Generic_Collections.getKeyFromValue(ClaimIDToClaimantPersonIDLookup,
                                                     ClaimantPersonID);
                                             Postcode = DRecord.getClaimantsPostcode();
                                             if (key != null) {
-                                                otherClaimRefID = (DW_ID) key;
-                                                otherClaimRef = ClaimRefIDToClaimRefLookup.get(otherClaimRefID);
+                                                otherClaimID = (DW_ID) key;
+                                                otherClaimRef = ClaimIDToClaimRefLookup.get(otherClaimID);
                                                 // Treat those paired records for Cottingley Springs Caravan Park differently
                                                 if (Postcode.equalsIgnoreCase(DW_Strings.CottingleySpringsCaravanParkPostcode)) {
 //                                                    env.logO("Cottingley Springs Caravan Park "
@@ -1925,8 +1920,8 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 //                                                            + " ClaimRef " + ClaimRef + " paired with " + otherClaimRef
 //                                                            + " one claim is for the pitch, the other is for rent of "
 //                                                            + "a mobile home. ");
-                                                    CottingleySpringsCaravanParkPairedClaimRefIDs.add(ClaimRefID);
-                                                    CottingleySpringsCaravanParkPairedClaimRefIDs.add(otherClaimRefID);
+                                                    CottingleySpringsCaravanParkPairedClaimIDs.add(ClaimID);
+                                                    CottingleySpringsCaravanParkPairedClaimIDs.add(otherClaimID);
                                                 } else {
 //                                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //                                                    env.logO(
@@ -1937,7 +1932,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 //                                                            + "previous claim is still on the system for some reason.");
 //                                                    env.logO("Current ClaimRef " + ClaimRef);
 //                                                    env.logO("Other ClaimRef " + otherClaimRef);
-                                                    otherRecord = Records.get(otherClaimRefID);
+                                                    otherRecord = Records.get(otherClaimID);
                                                     if (otherRecord == null) {
                                                         env.logE("Unexpected error xx: This should not happen. "
                                                                 + this.getClass().getName()
@@ -1951,17 +1946,17 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                          * Add to
                                                          * ClaimantsWithMultipleClaimsInAMonth.
                                                          */
-                                                        ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim.add(ClaimRefID);
-                                                        ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim.add(otherRecord.getClaimRefID());
+                                                        ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim.add(ClaimID);
+                                                        ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim.add(otherRecord.getClaimID());
                                                         HashSet<DW_ID> set;
-                                                        if (ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.containsKey(ClaimantPersonID)) {
-                                                            set = ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.get(ClaimantPersonID);
+                                                        if (ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.containsKey(ClaimantPersonID)) {
+                                                            set = ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(ClaimantPersonID);
                                                         } else {
                                                             set = new HashSet<DW_ID>();
-                                                            ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.put(ClaimantPersonID, set);
+                                                            ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(ClaimantPersonID, set);
                                                         }
-                                                        set.add(ClaimRefID);
-                                                        set.add(otherClaimRefID);
+                                                        set.add(ClaimID);
+                                                        set.add(otherClaimID);
                                                     }
 //                                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                                 }
@@ -1969,43 +1964,42 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                         }
                                         /**
                                          * If ClaimantPersonID is in
-                                         * ClaimRefIDToPartnerPersonIDLookup,
+                                         * ClaimIDToPartnerPersonIDLookup,
                                          * then claimant is a partner in another
                                          * claim. Add to
-                                         * ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim
+                                         * ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim
                                          * and
-                                         * ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim.
+                                         * ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim.
                                          */
-                                        if (ClaimRefIDToPartnerPersonIDLookup.containsValue(ClaimantPersonID)) {
+                                        if (ClaimIDToPartnerPersonIDLookup.containsValue(ClaimantPersonID)) {
                                             /**
                                              * Ignore if this is a
-                                             * CottingleySpringsCaravanParkPairedClaimRefIDs.
+                                             * CottingleySpringsCaravanParkPairedClaimIDs.
                                              * It may be that there are partners
                                              * shared in these claims, but such
                                              * a thing is ignored for now.
                                              */
-                                            if (!CottingleySpringsCaravanParkPairedClaimRefIDs.contains(ClaimRefID)) {
+                                            if (!CottingleySpringsCaravanParkPairedClaimIDs.contains(ClaimID)) {
                                                 /**
                                                  * If Claimant is a Partner in
                                                  * another claim add to
-                                                 * ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim
+                                                 * ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim
                                                  * and
-                                                 * ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim.
+                                                 * ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim.
                                                  */
-                                                key = Generic_Collections.getKeyFromValue(
-                                                        ClaimRefIDToPartnerPersonIDLookup,
+                                                key = Generic_Collections.getKeyFromValue(ClaimIDToPartnerPersonIDLookup,
                                                         ClaimantPersonID);
                                                 if (key != null) {
-                                                    otherClaimRefID = (DW_ID) key;
+                                                    otherClaimID = (DW_ID) key;
                                                     HashSet<DW_ID> set;
-                                                    ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim.add(otherClaimRefID);
+                                                    ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim.add(otherClaimID);
                                                 }
-                                                ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim.add(ClaimRefID);
+                                                ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim.add(ClaimID);
 //                                                env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //                                                env.logO("Claimant with NINO " + ClaimantNINO
 //                                                        + " DOB " + ClaimantDOB
 //                                                        + " in ClaimRef " + ClaimRef
-//                                                        + " is a Partner in " + ClaimRefIDToClaimRefLookup.get(otherClaimRefID));
+//                                                        + " is a Partner in " + ClaimIDToClaimRefLookup.get(otherClaimID));
 //                                                env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                             }
                                         }
@@ -2025,100 +2019,98 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                             /**
                                              * If Partner is a Partner in
                                              * another claim add to
-                                             * ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim
+                                             * ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim
                                              * and
-                                             * PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.
+                                             * PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.
                                              */
-                                            if (ClaimRefIDToPartnerPersonIDLookup.containsValue(PartnerPersonID)) {
+                                            if (ClaimIDToPartnerPersonIDLookup.containsValue(PartnerPersonID)) {
                                                 /*
-                                             * Ignore if this is a CottingleySpringsCaravanParkPairedClaimRefIDs.
+                                             * Ignore if this is a CottingleySpringsCaravanParkPairedClaimIDs.
                                              * It may be that there are partners shared in these claims, but such
                                              * a thing is ignored for now.
                                                  */
-                                                if (!CottingleySpringsCaravanParkPairedClaimRefIDs.contains(ClaimRefID)) {
-                                                    key = Generic_Collections.getKeyFromValue(
-                                                            ClaimRefIDToPartnerPersonIDLookup,
+                                                if (!CottingleySpringsCaravanParkPairedClaimIDs.contains(ClaimID)) {
+                                                    key = Generic_Collections.getKeyFromValue(ClaimIDToPartnerPersonIDLookup,
                                                             PartnerPersonID);
                                                     if (key != null) {
-                                                        otherClaimRefID = (DW_ID) key;
+                                                        otherClaimID = (DW_ID) key;
                                                         HashSet<DW_ID> set;
-                                                        if (PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.containsKey(PartnerPersonID)) {
-                                                            set = PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.get(PartnerPersonID);
+                                                        if (PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.containsKey(PartnerPersonID)) {
+                                                            set = PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(PartnerPersonID);
                                                         } else {
                                                             set = new HashSet<DW_ID>();
-                                                            PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.put(PartnerPersonID, set);
+                                                            PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(PartnerPersonID, set);
                                                         }
-                                                        set.add(ClaimRefID);
-                                                        set.add(otherClaimRefID);
-                                                        ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim.add(otherClaimRefID);
+                                                        set.add(ClaimID);
+                                                        set.add(otherClaimID);
+                                                        ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim.add(otherClaimID);
                                                     }
-                                                    ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim.add(ClaimRefID);
+                                                    ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim.add(ClaimID);
 //                                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //                                                    env.logO("Partner with NINO " + NINOIDToNINOLookup.get(PartnerPersonID.getNINO_ID())
 //                                                            + " DOB " + DOBIDToDOBLookup.get(PartnerPersonID.getDOB_ID())
 //                                                            + " in ClaimRef " + ClaimRef
-//                                                            + " is a Partner in " + ClaimRefIDToClaimRefLookup.get(otherClaimRefID));
+//                                                            + " is a Partner in " + ClaimIDToClaimRefLookup.get(otherClaimID));
 //                                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                                 }
                                             }
                                             /**
                                              * If Partner is a Claimant in
                                              * another claim add to
-                                             * ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim
+                                             * ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim
                                              * and
-                                             * ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim.
+                                             * ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim.
                                              */
-                                            if (ClaimRefIDToClaimantPersonIDLookup.containsValue(PartnerPersonID)) {
+                                            if (ClaimIDToClaimantPersonIDLookup.containsValue(PartnerPersonID)) {
                                                 /**
                                                  * Ignore if this is a
-                                                 * CottingleySpringsCaravanParkPairedClaimRefIDs.
+                                                 * CottingleySpringsCaravanParkPairedClaimIDs.
                                                  * It may be that there are
                                                  * partners shared in these
                                                  * claims, but such a thing is
                                                  * ignored for now.
                                                  */
-                                                if (!CottingleySpringsCaravanParkPairedClaimRefIDs.contains(ClaimRefID)) {
-                                                    key = Generic_Collections.getKeyFromValue(
-                                                            ClaimRefIDToClaimantPersonIDLookup,
+                                                if (!CottingleySpringsCaravanParkPairedClaimIDs.contains(ClaimID)) {
+                                                    key = Generic_Collections.getKeyFromValue(ClaimIDToClaimantPersonIDLookup,
                                                             PartnerPersonID);
                                                     if (key != null) {
-                                                        otherClaimRefID = (DW_ID) key;
+                                                        otherClaimID = (DW_ID) key;
 
                                                         HashSet<DW_ID> set;
-                                                        if (PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.containsKey(PartnerPersonID)) {
-                                                            set = PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.get(PartnerPersonID);
+                                                        if (PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.containsKey(PartnerPersonID)) {
+                                                            set = PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(PartnerPersonID);
                                                         } else {
                                                             set = new HashSet<DW_ID>();
-                                                            PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.put(PartnerPersonID, set);
+                                                            PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(PartnerPersonID, set);
                                                         }
-                                                        set.add(ClaimRefID);
-                                                        set.add(otherClaimRefID);
-                                                        if (ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.containsKey(PartnerPersonID)) {
-                                                            set = ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.get(PartnerPersonID);
+                                                        set.add(ClaimID);
+                                                        set.add(otherClaimID);
+                                                        if (ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.containsKey(PartnerPersonID)) {
+                                                            set = ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(PartnerPersonID);
                                                         } else {
                                                             set = new HashSet<DW_ID>();
-                                                            ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.put(PartnerPersonID, set);
+                                                            ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(PartnerPersonID, set);
                                                         }
-                                                        set.add(ClaimRefID);
-                                                        set.add(otherClaimRefID);
-                                                        ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim.add(otherClaimRefID);
+                                                        set.add(ClaimID);
+                                                        set.add(otherClaimID);
+                                                        ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim.add(otherClaimID);
                                                     }
-                                                    ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim.add(ClaimRefID);
+                                                    ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim.add(ClaimID);
 //                                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //                                                    env.logO("Partner with NINO " + NINOIDToNINOLookup.get(PartnerPersonID.getNINO_ID())
 //                                                            + " DOB " + DOBIDToDOBLookup.get(PartnerPersonID.getDOB_ID())
 //                                                            + " in ClaimRef " + ClaimRef
-//                                                            + " is a Claimant in " + ClaimRefIDToClaimRefLookup.get(otherClaimRefID));
+//                                                            + " is a Claimant in " + ClaimIDToClaimRefLookup.get(otherClaimID));
 //                                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                                 }
-                                                ClaimRefIDToPartnerPersonIDLookup.put(ClaimRefID, PartnerPersonID);
+                                                ClaimIDToPartnerPersonIDLookup.put(ClaimID, PartnerPersonID);
                                             }
                                         }
                                         /**
                                          * Add to
-                                         * ClaimRefIDToClaimantPersonIDLookup.
+                                         * ClaimIDToClaimantPersonIDLookup.
                                          */
-                                        ClaimRefIDToClaimantPersonIDLookup.put(ClaimRefID, ClaimantPersonID);
+                                        ClaimIDToClaimantPersonIDLookup.put(ClaimID, ClaimantPersonID);
 
                                         /**
                                          * Add to AllClaimantPersonIDs and
@@ -2127,17 +2119,17 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                         AllClaimantPersonIDs.add(ClaimantPersonID);
                                         ClaimantPersonIDs.add(ClaimantPersonID);
                                         addToPersonIDToClaimRefsLookup(
-                                                ClaimRefID,
+                                                ClaimID,
                                                 ClaimantPersonID,
-                                                PersonIDToClaimRefIDsLookup);
+                                                PersonIDToClaimIDsLookup);
                                         if (PartnerPersonID != null) {
                                             AllPartnerPersonIDs.add(PartnerPersonID);
                                             PartnerPersonIDs.add(PartnerPersonID);
-                                            ClaimRefIDToPartnerPersonIDLookup.put(ClaimRefID, PartnerPersonID);
+                                            ClaimIDToPartnerPersonIDLookup.put(ClaimID, PartnerPersonID);
                                             addToPersonIDToClaimRefsLookup(
-                                                    ClaimRefID,
+                                                    ClaimID,
                                                     PartnerPersonID,
-                                                    PersonIDToClaimRefIDsLookup);
+                                                    PersonIDToClaimIDsLookup);
                                         }
                                     }
                                 }
@@ -2178,8 +2170,8 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                         DOBToDOBIDLookup,
                         DOBIDToDOBLookup,
                         AllNonDependentIDs,
-                        PersonIDToClaimRefIDsLookup,
-                        ClaimRefIDToClaimRefLookup);
+                        PersonIDToClaimIDsLookup,
+                        ClaimIDToClaimRefLookup);
             }
             env.log("</Add SRecords>");
 
@@ -2190,21 +2182,16 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             /**
              * Statistics on New SHBE Claims
              */
-            addLoadSummaryCount(
-                    DW_Strings.sCountOfNewSHBEClaims,
-                    ClaimRefIDsOfNewSHBEClaims.size());
-            addLoadSummaryCount(
-                    DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore,
-                    ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore.size());
-            addLoadSummaryCount(
-                    DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
-                    ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.size());
-            addLoadSummaryCount(
-                    DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore,
-                    ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore.size());
-            addLoadSummaryCount(
-                    DW_Strings.sCountOfNewSHBEClaimsWhereClaimantIsNew,
-                    ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew.size());
+            addLoadSummaryCount(DW_Strings.sCountOfNewSHBEClaims,
+                    ClaimIDsOfNewSHBEClaims.size());
+            addLoadSummaryCount(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore,
+                    ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore.size());
+            addLoadSummaryCount(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
+                    ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.size());
+            addLoadSummaryCount(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore,
+                    ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore.size());
+            addLoadSummaryCount(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantIsNew,
+                    ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew.size());
             /**
              * Statistics on Postcodes
              */
@@ -2259,7 +2246,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
              * Claimants
              */
             set = new HashSet<DW_PersonID>();
-            set.addAll(ClaimRefIDToClaimantPersonIDLookup.values());
+            set.addAll(ClaimIDToClaimantPersonIDLookup.values());
             allSet.addAll(set);
             addLoadSummaryCount(
                     DW_Strings.sCountOfUniqueClaimants,
@@ -2267,10 +2254,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             /**
              * Partners
              */
-            addLoadSummaryCount(
-                    DW_Strings.sCountOfClaimsWithPartners,
-                    ClaimRefIDToPartnerPersonIDLookup.size());
-            set = DW_SHBE_Handler.getUniquePersonIDs0(ClaimRefIDToPartnerPersonIDLookup);
+            addLoadSummaryCount(DW_Strings.sCountOfClaimsWithPartners,
+                    ClaimIDToPartnerPersonIDLookup.size());
+            set = DW_SHBE_Handler.getUniquePersonIDs0(ClaimIDToPartnerPersonIDLookup);
             allSet.addAll(set);
             addLoadSummaryCount(
                     DW_Strings.sCountOfUniquePartners,
@@ -2279,12 +2265,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
              * Dependents
              */
             int nDependents;
-            nDependents = DW_Collections.getCountHashMap_DW_ID__HashSet_DW_PersonID(
-                    ClaimRefIDToDependentPersonIDsLookup);
+            nDependents = DW_Collections.getCountHashMap_DW_ID__HashSet_DW_PersonID(ClaimIDToDependentPersonIDsLookup);
             addLoadSummaryCount(
                     DW_Strings.sCountOfDependentsInAllClaims,
                     nDependents);
-            set = DW_SHBE_Handler.getUniquePersonIDs(ClaimRefIDToDependentPersonIDsLookup);
+            set = DW_SHBE_Handler.getUniquePersonIDs(ClaimIDToDependentPersonIDsLookup);
             allSet.addAll(set);
             int CountOfUniqueDependents = set.size();
             addLoadSummaryCount(
@@ -2294,12 +2279,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
              * NonDependents
              */
             int nNonDependents;
-            nNonDependents = DW_Collections.getCountHashMap_DW_ID__HashSet_DW_PersonID(
-                    ClaimRefIDToNonDependentPersonIDsLookup);
+            nNonDependents = DW_Collections.getCountHashMap_DW_ID__HashSet_DW_PersonID(ClaimIDToNonDependentPersonIDsLookup);
             addLoadSummaryCount(
                     DW_Strings.sCountOfNonDependentsInAllClaims,
                     nNonDependents);
-            set = DW_SHBE_Handler.getUniquePersonIDs(ClaimRefIDToNonDependentPersonIDsLookup);
+            set = DW_SHBE_Handler.getUniquePersonIDs(ClaimIDToNonDependentPersonIDsLookup);
             allSet.addAll(set);
             int CountOfUniqueNonDependents = set.size();
             addLoadSummaryCount(
@@ -2321,19 +2305,19 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
              * NonDependentsInMultipleClaimsInAMonth
              */
             addLoadSummaryCount(DW_Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
-                    ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim.size());
+                    ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim.size());
             addLoadSummaryCount(DW_Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
-                    ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim.size());
+                    ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim.size());
             addLoadSummaryCount(DW_Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
-                    ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim.size());
+                    ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim.size());
             addLoadSummaryCount(DW_Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim,
-                    ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim.size());
+                    ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim.size());
             addLoadSummaryCount(DW_Strings.sCountOfClaimantsInMultipleClaimsInAMonth,
-                    ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.size());
+                    ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.size());
             addLoadSummaryCount(DW_Strings.sCountOfPartnersInMultipleClaimsInAMonth,
-                    PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.size());
+                    PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.size());
             addLoadSummaryCount(DW_Strings.sCountOfNonDependentsInMultipleClaimsInAMonth,
-                    NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.size());
+                    NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.size());
             addLoadSummaryCount(DW_Strings.sLineCount,
                     lineCount);
             addLoadSummaryCount(DW_Strings.sTotalIncome,
@@ -2354,104 +2338,100 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
              * Write out data.
              */
             Generic_StaticIO.writeObject(Records, getRecordsFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfNewSHBEClaims,
-                    getClaimRefIDsOfNewSHBEClaimsFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore,
-                    getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
-                    getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore,
-                    getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew,
-                    getClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNewFile());
+            Generic_StaticIO.writeObject(ClaimIDsOfNewSHBEClaims,
+                    getClaimIDsOfNewSHBEClaimsFile());
+            Generic_StaticIO.writeObject(ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore,
+                    getClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile());
+            Generic_StaticIO.writeObject(ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
+                    getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile());
+            Generic_StaticIO.writeObject(ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore,
+                    getClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile());
+            Generic_StaticIO.writeObject(ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew,
+                    getClaimIDsOfNewSHBEClaimsWhereClaimantIsNewFile());
             Generic_StaticIO.writeObject(ClaimantPersonIDs, getClaimantPersonIDsFile());
             Generic_StaticIO.writeObject(PartnerPersonIDs, getPartnerPersonIDsFile());
             Generic_StaticIO.writeObject(NonDependentPersonIDs, getNonDependentPersonIDsFile());
-            Generic_StaticIO.writeObject(CottingleySpringsCaravanParkPairedClaimRefIDs,
-                    getCottingleySpringsCaravanParkPairedClaimRefIDsFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsWithStatusOfHBAtExtractDateInPayment,
-                    getClaimRefIDsWithStatusOfHBAtExtractDateInPaymentFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsWithStatusOfHBAtExtractDateSuspended,
-                    getClaimRefIDsWithStatusOfHBAtExtractDateSuspendedFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsWithStatusOfHBAtExtractDateOther,
-                    getClaimRefIDsWithStatusOfHBAtExtractDateOtherFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsWithStatusOfCTBAtExtractDateInPayment,
-                    getClaimRefIDsWithStatusOfCTBAtExtractDateInPaymentFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsWithStatusOfCTBAtExtractDateSuspended,
-                    getClaimRefIDsWithStatusOfCTBAtExtractDateSuspendedFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsWithStatusOfCTBAtExtractDateOther,
-                    getClaimRefIDsWithStatusOfCTBAtExtractDateOtherFile());
+            Generic_StaticIO.writeObject(CottingleySpringsCaravanParkPairedClaimIDs,
+                    getCottingleySpringsCaravanParkPairedClaimIDsFile());
+            Generic_StaticIO.writeObject(ClaimIDsWithStatusOfHBAtExtractDateInPayment,
+                    getClaimIDsWithStatusOfHBAtExtractDateInPaymentFile());
+            Generic_StaticIO.writeObject(ClaimIDsWithStatusOfHBAtExtractDateSuspended,
+                    getClaimIDsWithStatusOfHBAtExtractDateSuspendedFile());
+            Generic_StaticIO.writeObject(ClaimIDsWithStatusOfHBAtExtractDateOther,
+                    getClaimIDsWithStatusOfHBAtExtractDateOtherFile());
+            Generic_StaticIO.writeObject(ClaimIDsWithStatusOfCTBAtExtractDateInPayment,
+                    getClaimIDsWithStatusOfCTBAtExtractDateInPaymentFile());
+            Generic_StaticIO.writeObject(ClaimIDsWithStatusOfCTBAtExtractDateSuspended,
+                    getClaimIDsWithStatusOfCTBAtExtractDateSuspendedFile());
+            Generic_StaticIO.writeObject(ClaimIDsWithStatusOfCTBAtExtractDateOther,
+                    getClaimIDsWithStatusOfCTBAtExtractDateOtherFile());
             Generic_StaticIO.writeObject(SRecordsWithoutDRecords, getSRecordsWithoutDRecordsFile());
-            Generic_StaticIO.writeObject(ClaimRefIDAndCountOfRecordsWithSRecords,
-                    getClaimRefIDAndCountOfRecordsWithSRecordsFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode,
-                    getClaimRefIDsOfClaimsWithoutAMappableClaimantPostcodeFile());
-            Generic_StaticIO.writeObject(ClaimRefIDToClaimantPersonIDLookup,
-                    getClaimRefIDToClaimantPersonIDLookupFile());
-            Generic_StaticIO.writeObject(ClaimRefIDToPartnerPersonIDLookup,
-                    getClaimRefIDToPartnerPersonIDLookupFile());
-            Generic_StaticIO.writeObject(ClaimRefIDToNonDependentPersonIDsLookup,
-                    getClaimRefIDToNonDependentPersonIDsLookupFile());
-            Generic_StaticIO.writeObject(ClaimRefIDToDependentPersonIDsLookup,
-                    getClaimRefIDToDependentPersonIDsLookupFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
-                    getClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
-                    getClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
-                    getClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim,
-                    getClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim,
-                    getClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile());
-            Generic_StaticIO.writeObject(ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup,
-                    getClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile());
-            Generic_StaticIO.writeObject(PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup,
-                    getPartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile());
-            Generic_StaticIO.writeObject(NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup,
-                    getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile());
-            Generic_StaticIO.writeObject(ClaimRefIDToPostcodeIDLookup, getClaimRefIDToPostcodeIDLookupFile());
-            Generic_StaticIO.writeObject(ClaimRefIDToTenancyTypeLookup, getClaimRefIDToTenancyTypeLookupFile());
+            Generic_StaticIO.writeObject(ClaimIDAndCountOfRecordsWithSRecords,
+                    getClaimIDAndCountOfRecordsWithSRecordsFile());
+            Generic_StaticIO.writeObject(ClaimIDsOfClaimsWithoutAMappableClaimantPostcode,
+                    getClaimIDsOfClaimsWithoutAMappableClaimantPostcodeFile());
+            Generic_StaticIO.writeObject(ClaimIDToClaimantPersonIDLookup,
+                    getClaimIDToClaimantPersonIDLookupFile());
+            Generic_StaticIO.writeObject(ClaimIDToPartnerPersonIDLookup,
+                    getClaimIDToPartnerPersonIDLookupFile());
+            Generic_StaticIO.writeObject(ClaimIDToNonDependentPersonIDsLookup,
+                    getClaimIDToNonDependentPersonIDsLookupFile());
+            Generic_StaticIO.writeObject(ClaimIDToDependentPersonIDsLookup,
+                    getClaimIDToDependentPersonIDsLookupFile());
+            Generic_StaticIO.writeObject(ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
+                    getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile());
+            Generic_StaticIO.writeObject(ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
+                    getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile());
+            Generic_StaticIO.writeObject(ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
+                    getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile());
+            Generic_StaticIO.writeObject(ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim,
+                    getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile());
+            Generic_StaticIO.writeObject(ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim,
+                    getClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile());
+            Generic_StaticIO.writeObject(ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup,
+                    getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile());
+            Generic_StaticIO.writeObject(PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup,
+                    getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile());
+            Generic_StaticIO.writeObject(NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup,
+                    getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile());
+            Generic_StaticIO.writeObject(ClaimIDToPostcodeIDLookup, getClaimIDToPostcodeIDLookupFile());
+            Generic_StaticIO.writeObject(ClaimIDToTenancyTypeLookup, getClaimIDToTenancyTypeLookupFile());
             Generic_StaticIO.writeObject(LoadSummary, getLoadSummaryFile());
             Generic_StaticIO.writeObject(RecordIDsNotLoaded, getRecordIDsNotLoadedFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfInvalidClaimantNINOClaims, getClaimRefIDsOfInvalidClaimantNINOClaimsFile());
+            Generic_StaticIO.writeObject(ClaimIDsOfInvalidClaimantNINOClaims, getClaimIDsOfInvalidClaimantNINOClaimsFile());
             Generic_StaticIO.writeObject(ClaimantPostcodesUnmappable, getClaimantPostcodesUnmappableFile());
             Generic_StaticIO.writeObject(ClaimantPostcodesModified, getClaimantPostcodesModifiedFile());
             Generic_StaticIO.writeObject(ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes, getClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodesFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture, getClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile());
-            
+            Generic_StaticIO.writeObject(ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture, getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile());
+
             // Write out other outputs
             // Write out ClaimRefs of ClaimantsInMultipleClaimsInAMonth
-
             String YMN;
             YMN = DW_SHBE_Handler.getYearMonthNumber(inputFilename);
-            writeOut(
-                    ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup,
+            writeOut(ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup,
                     logDir,
                     "ClaimantsInMultipleClaimsInAMonth",
                     YMN,
-                    ClaimRefIDToClaimRefLookup,
+                    ClaimIDToClaimRefLookup,
                     NINOIDToNINOLookup,
                     DOBIDToDOBLookup);
             // Write out ClaimRefs of PartnersInMultipleClaimsInAMonth
-            writeOut(
-                    PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup,
+            writeOut(PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup,
                     logDir,
                     "PartnersInMultipleClaimsInAMonth",
                     YMN,
-                    ClaimRefIDToClaimRefLookup,
+                    ClaimIDToClaimRefLookup,
                     NINOIDToNINOLookup,
                     DOBIDToDOBLookup);
             // Write out ClaimRefs of PartnersInMultipleClaimsInAMonth
-            writeOut(
-                    NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup,
+            writeOut(NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup,
                     logDir,
                     "NonDependentsInMultipleClaimsInAMonth",
                     YMN,
-                    ClaimRefIDToClaimRefLookup,
+                    ClaimIDToClaimRefLookup,
                     NINOIDToNINOLookup,
                     DOBIDToDOBLookup);
-            // Write out ClaimRefs of ClaimRefIDOfInvalidClaimantNINOClaims
+            // Write out ClaimRefs of ClaimIDOfInvalidClaimantNINOClaims
             String name = "ClaimRefsOfInvalidClaimantNINOClaims";
             File dir;
             dir = new File(
@@ -2470,10 +2450,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             }
             pw.println("ClaimRefs");
             Iterator<DW_ID> ite2;
-            ite2 = ClaimRefIDsOfInvalidClaimantNINOClaims.iterator();
+            ite2 = ClaimIDsOfInvalidClaimantNINOClaims.iterator();
             while (ite2.hasNext()) {
                 DW_ID = ite2.next();
-                pw.println(ClaimRefIDToClaimRefLookup.get(DW_ID));
+                pw.println(ClaimIDToClaimRefLookup.get(DW_ID));
             }
             pw.close();
             env.log("----------------------");
@@ -2486,11 +2466,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     private void writeOut(
-            HashMap<DW_PersonID, HashSet<DW_ID>> InMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup,
+            HashMap<DW_PersonID, HashSet<DW_ID>> InMultipleClaimsInAMonthPersonIDToClaimIDsLookup,
             File logDir,
             String name,
             String YMN,
-            HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup,
+            HashMap<DW_ID, String> ClaimIDToClaimRefLookup,
             HashMap<DW_ID, String> NINOIDToNINOLookup,
             HashMap<DW_ID, String> DOBIDToDOBLookup) {
         File dir;
@@ -2517,19 +2497,19 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             Logger.getLogger(DW_SHBE_Records.class.getName()).log(Level.SEVERE, null, ex);
         }
         pw.println("NINO,DOB,ClaimRefs");
-        ite2 = InMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.keySet().iterator();
+        ite2 = InMultipleClaimsInAMonthPersonIDToClaimIDsLookup.keySet().iterator();
         while (ite2.hasNext()) {
             PersonID = ite2.next();
             NINO = NINOIDToNINOLookup.get(PersonID.getNINO_ID());
             DOB = DOBIDToDOBLookup.get(PersonID.getDOB_ID());
             if (!NINO.trim().equalsIgnoreCase("")) {
                 if (!NINO.trim().startsWith("XX999")) {
-                    ClaimRefs = InMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.get(PersonID);
+                    ClaimRefs = InMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(PersonID);
                     ite3 = ClaimRefs.iterator();
                     s = NINO + "," + DOB;
                     while (ite3.hasNext()) {
                         DW_ID = ite3.next();
-                        s += "," + ClaimRefIDToClaimRefLookup.get(DW_ID);
+                        s += "," + ClaimIDToClaimRefLookup.get(DW_ID);
                     }
                     pw.println(s);
                 }
@@ -2559,7 +2539,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * @param DOBIDToDOBLookup
      * @param AllNonDependentPersonIDs
      * @param PersonIDToClaimRefsLookup
-     * @param ClaimRefIDToClaimRefLookup
+     * @param ClaimIDToClaimRefLookup
      */
     public final void initSRecords(
             DW_SHBE_Handler DW_SHBE_Handler,
@@ -2570,15 +2550,15 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             HashMap<DW_ID, String> DOBIDToDOBLookup,
             HashSet<DW_PersonID> AllNonDependentPersonIDs,
             HashMap<DW_PersonID, HashSet<DW_ID>> PersonIDToClaimRefsLookup,
-            HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup
+            HashMap<DW_ID, String> ClaimIDToClaimRefLookup
     ) {
         ArrayList<DW_SHBE_S_Record> SRecordsForClaim;
-        DW_ID ClaimRefID;
-        ClaimRefID = DW_SHBE_Record.ClaimRefID;
+        DW_ID ClaimID;
+        ClaimID = DW_SHBE_Record.ClaimID;
         Iterator<DW_SHBE_S_Record> ite;
         DW_SHBE_S_Record SRecord;
         String ClaimantsNINO;
-        SRecordsForClaim = getSRecordsWithoutDRecords().get(ClaimRefID);
+        SRecordsForClaim = getSRecordsWithoutDRecords().get(ClaimID);
         if (SRecordsForClaim != null) {
             // Declare variables
             DW_PersonID DW_PersonID;
@@ -2586,7 +2566,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             String DOB;
             int SubRecordType;
             Object key;
-            DW_ID otherClaimRefID;
+            DW_ID otherClaimID;
             ite = SRecordsForClaim.iterator();
             while (ite.hasNext()) {
                 SRecord = ite.next();
@@ -2599,8 +2579,8 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                         if (ClaimantsNINO.trim().isEmpty()) {
                             ClaimantsNINO = DW_Strings.sDefaultNINO;
                             env.logE("ClaimantsNINO is empty for "
-                                    + "ClaimRefID " + ClaimRefID + " ClaimRef "
-                                    + env.getDW_SHBE_Data().getClaimIDToClaimRefLookup().get(ClaimRefID)
+                                    + "ClaimID " + ClaimID + " ClaimRef "
+                                    + env.getDW_SHBE_Data().getClaimIDToClaimRefLookup().get(ClaimID)
                                     + " Setting as default NINO " + ClaimantsNINO);
                         }
                         int i;
@@ -2628,14 +2608,14 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                  * If the claimant has more than one claim, this
                                  * is fine. Otherwise we have to do something.
                                  */
-                                if (ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim.contains(ClaimRefID)) {
+                                if (ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim.contains(ClaimID)) {
                                     set = true;
                                 } else {
                                     env.logO(env.DEBUG_Level_FINEST,
                                             "NINO " + NINO + " is not unique for " + ClaimantsNINO
-                                            + " and ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim does not contain "
-                                            + "ClaimRefID " + ClaimRefID + " for ClaimRef "
-                                            + env.getDW_SHBE_Data().getClaimIDToClaimRefLookup().get(ClaimRefID));
+                                            + " and ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim does not contain "
+                                            + "ClaimID " + ClaimID + " for ClaimRef "
+                                            + env.getDW_SHBE_Data().getClaimIDToClaimRefLookup().get(ClaimID));
                                 }
                             } else {
                                 set = true;
@@ -2660,17 +2640,17 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                 DOBToDOBIDLookup,
                                 DOBIDToDOBLookup);
                         /**
-                         * Add to ClaimRefIDToDependentPersonIDsLookup.
+                         * Add to ClaimIDToDependentPersonIDsLookup.
                          */
                         HashSet<DW_PersonID> s;
-                        s = ClaimRefIDToDependentPersonIDsLookup.get(ClaimRefID);
+                        s = ClaimIDToDependentPersonIDsLookup.get(ClaimID);
                         if (s == null) {
                             s = new HashSet<DW_PersonID>();
-                            ClaimRefIDToDependentPersonIDsLookup.put(ClaimRefID, s);
+                            ClaimIDToDependentPersonIDsLookup.put(ClaimID, s);
                         }
                         s.add(DW_PersonID);
                         addToPersonIDToClaimRefsLookup(
-                                ClaimRefID,
+                                ClaimID,
                                 DW_PersonID,
                                 PersonIDToClaimRefsLookup);
                         break;
@@ -2684,60 +2664,60 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                 DOBIDToDOBLookup);
                         /**
                          * Ignore if this is a
-                         * CottingleySpringsCaravanParkPairedClaimRefIDs. It may
+                         * CottingleySpringsCaravanParkPairedClaimIDs. It may
                          * be that there are partners shared in these claims,
                          * but such a thing is ignored for now.
                          */
-                        if (!CottingleySpringsCaravanParkPairedClaimRefIDs.contains(ClaimRefID)) {
+                        if (!CottingleySpringsCaravanParkPairedClaimIDs.contains(ClaimID)) {
                             /**
                              * If NonDependent is a NonDependent in another
                              * claim add to
-                             * NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.
+                             * NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.
                              */
-                            key = DW_Collections.getKeyOfSetValue(ClaimRefIDToNonDependentPersonIDsLookup, DW_PersonID);
+                            key = DW_Collections.getKeyOfSetValue(ClaimIDToNonDependentPersonIDsLookup, DW_PersonID);
                             if (key != null) {
-                                otherClaimRefID = (DW_ID) key;
+                                otherClaimID = (DW_ID) key;
                                 HashSet<DW_ID> set;
-                                set = NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.get(DW_PersonID);
+                                set = NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(DW_PersonID);
                                 if (set == null) {
                                     set = new HashSet<DW_ID>();
-                                    NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.put(DW_PersonID, set);
+                                    NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(DW_PersonID, set);
                                 }
-                                set.add(ClaimRefID);
-                                set.add(otherClaimRefID);
-                                ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(ClaimRefID);
-                                ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(otherClaimRefID);
+                                set.add(ClaimID);
+                                set.add(otherClaimID);
+                                ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(ClaimID);
+                                ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(otherClaimID);
 //                                if (!(NINO.trim().equalsIgnoreCase("") || NINO.startsWith("XX999"))) {
 //                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //                                    env.logO("NonDependent with NINO " + NINO + " DOB " + DOB
-//                                            + " is in ClaimRef " + ClaimRefIDToClaimRefLookup.get(ClaimRefID)
-//                                            + " and " + ClaimRefIDToClaimRefLookup.get(otherClaimRefID));
+//                                            + " is in ClaimRef " + ClaimIDToClaimRefLookup.get(ClaimID)
+//                                            + " and " + ClaimIDToClaimRefLookup.get(otherClaimID));
 //                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //                                }
                             }
                             /**
                              * If NonDependent is a Claimant in another claim
                              * add to
-                             * NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.
+                             * NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.
                              */
-                            if (ClaimRefIDToClaimantPersonIDLookup.containsValue(DW_PersonID)) {
+                            if (ClaimIDToClaimantPersonIDLookup.containsValue(DW_PersonID)) {
                                 if (key != null) {
-                                    otherClaimRefID = (DW_ID) key;
+                                    otherClaimID = (DW_ID) key;
                                     HashSet<DW_ID> set;
-                                    set = NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.get(DW_PersonID);
+                                    set = NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(DW_PersonID);
                                     if (set == null) {
                                         set = new HashSet<DW_ID>();
-                                        NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.put(DW_PersonID, set);
+                                        NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(DW_PersonID, set);
                                     }
-                                    set.add(ClaimRefID);
-                                    set.add(otherClaimRefID);
-                                    ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(ClaimRefID);
-                                    ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(otherClaimRefID);
+                                    set.add(ClaimID);
+                                    set.add(otherClaimID);
+                                    ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(ClaimID);
+                                    ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(otherClaimID);
 //                                    if (!(NINO.trim().equalsIgnoreCase("") || NINO.startsWith("XX999"))) {
 //                                        env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //                                        env.logO("NonDependent with NINO " + NINO + " DOB " + DOB
-//                                                + " in ClaimRef " + ClaimRefIDToClaimRefLookup.get(ClaimRefID)
-//                                                + " is a Claimant in " + ClaimRefIDToClaimRefLookup.get(otherClaimRefID));
+//                                                + " in ClaimRef " + ClaimIDToClaimRefLookup.get(ClaimID)
+//                                                + " is a Claimant in " + ClaimIDToClaimRefLookup.get(otherClaimID));
 //                                        env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //                                    }
                                 }
@@ -2745,42 +2725,42 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                             /**
                              * If NonDependent is a Partner in another claim add
                              * to
-                             * NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup;
+                             * NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup;
                              */
-                            if (ClaimRefIDToPartnerPersonIDLookup.containsValue(DW_PersonID)) {
+                            if (ClaimIDToPartnerPersonIDLookup.containsValue(DW_PersonID)) {
                                 if (key != null) {
-                                    otherClaimRefID = (DW_ID) key;
+                                    otherClaimID = (DW_ID) key;
                                     HashSet<DW_ID> set;
-                                    set = NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.get(DW_PersonID);
+                                    set = NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(DW_PersonID);
                                     if (set == null) {
                                         set = new HashSet<DW_ID>();
-                                        NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup.put(DW_PersonID, set);
+                                        NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(DW_PersonID, set);
                                     }
-                                    set.add(ClaimRefID);
-                                    set.add(otherClaimRefID);
-                                    ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(ClaimRefID);
-                                    ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(otherClaimRefID);
+                                    set.add(ClaimID);
+                                    set.add(otherClaimID);
+                                    ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(ClaimID);
+                                    ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(otherClaimID);
 //                                    if (!(NINO.trim().equalsIgnoreCase("") || NINO.startsWith("XX999"))) {
 //                                        env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //                                        env.logO("NonDependent with NINO " + NINO + " DOB " + DOB
-//                                                + " in ClaimRef " + ClaimRefIDToClaimRefLookup.get(ClaimRefID)
-//                                                + " is a Partner in " + ClaimRefIDToClaimRefLookup.get(otherClaimRefID));
+//                                                + " in ClaimRef " + ClaimIDToClaimRefLookup.get(ClaimID)
+//                                                + " is a Partner in " + ClaimIDToClaimRefLookup.get(otherClaimID));
 //                                        env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //                                    }
                                 }
                             }
                         }
                         //HashSet<DW_PersonID> s;
-                        s = ClaimRefIDToNonDependentPersonIDsLookup.get(ClaimRefID);
+                        s = ClaimIDToNonDependentPersonIDsLookup.get(ClaimID);
                         if (s == null) {
                             s = new HashSet<DW_PersonID>();
-                            ClaimRefIDToNonDependentPersonIDsLookup.put(ClaimRefID, s);
+                            ClaimIDToNonDependentPersonIDsLookup.put(ClaimID, s);
                         }
                         s.add(DW_PersonID);
                         NonDependentPersonIDs.add(DW_PersonID);
                         AllNonDependentPersonIDs.add(DW_PersonID);
                         addToPersonIDToClaimRefsLookup(
-                                ClaimRefID,
+                                ClaimID,
                                 DW_PersonID,
                                 PersonIDToClaimRefsLookup);
                         break;
@@ -2790,20 +2770,20 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                 }
             }
             DW_SHBE_Record.SRecords = SRecordsForClaim;
-            ClaimRefIDAndCountOfRecordsWithSRecords.put(ClaimRefID, SRecordsForClaim.size());
+            ClaimIDAndCountOfRecordsWithSRecords.put(ClaimID, SRecordsForClaim.size());
         }
         /**
          * Remove all assigned SRecords from SRecordsWithoutDRecords.
          */
         Iterator<DW_ID> iteID;
-        iteID = ClaimRefIDAndCountOfRecordsWithSRecords.keySet().iterator();
+        iteID = ClaimIDAndCountOfRecordsWithSRecords.keySet().iterator();
         while (iteID.hasNext()) {
             SRecordsWithoutDRecords.remove(iteID.next());
         }
     }
 
     private void addToPersonIDToClaimRefsLookup(
-            DW_ID ClaimRefID,
+            DW_ID ClaimID,
             DW_PersonID DW_PersonID,
             HashMap<DW_PersonID, HashSet<DW_ID>> PersonIDToClaimRefsLookup) {
         HashSet<DW_ID> s;
@@ -2813,7 +2793,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             s = new HashSet<DW_ID>();
             PersonIDToClaimRefsLookup.put(DW_PersonID, s);
         }
-        s.add(ClaimRefID);
+        s.add(ClaimID);
     }
 
     /**
@@ -2916,15 +2896,15 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * If not initialised, initialises ClaimRefIDToClaimantPersonIDLookup then
+     * If not initialised, initialises ClaimIDToClaimantPersonIDLookup then
      * returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashMap<DW_ID, DW_PersonID> getClaimRefIDToClaimantPersonIDLookup(boolean handleOutOfMemoryError) {
+    public final HashMap<DW_ID, DW_PersonID> getClaimIDToClaimantPersonIDLookup(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDToClaimantPersonIDLookup();
+            return getClaimIDToClaimantPersonIDLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -2932,7 +2912,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDToClaimantPersonIDLookup(handleOutOfMemoryError);
+                return getClaimIDToClaimantPersonIDLookup(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -2940,33 +2920,34 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * If not initialised, initialises ClaimantClaimRefIDs then returns it.
+     * If not initialised, initialises ClaimIDToClaimantPersonIDLookup then
+     * returns it.
      *
      * @return
      */
-    protected HashMap<DW_ID, DW_PersonID> getClaimRefIDToClaimantPersonIDLookup() {
-        if (ClaimRefIDToClaimantPersonIDLookup == null) {
+    protected HashMap<DW_ID, DW_PersonID> getClaimIDToClaimantPersonIDLookup() {
+        if (ClaimIDToClaimantPersonIDLookup == null) {
             File f;
-            f = getClaimRefIDToClaimantPersonIDLookupFile();
+            f = getClaimIDToClaimantPersonIDLookupFile();
             if (f.exists()) {
-                ClaimRefIDToClaimantPersonIDLookup = (HashMap<DW_ID, DW_PersonID>) Generic_StaticIO.readObject(f);
+                ClaimIDToClaimantPersonIDLookup = (HashMap<DW_ID, DW_PersonID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDToClaimantPersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
+                ClaimIDToClaimantPersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
             }
         }
-        return ClaimRefIDToClaimantPersonIDLookup;
+        return ClaimIDToClaimantPersonIDLookup;
     }
 
     /**
-     * If not initialised, initialises ClaimRefIDToPartnerPersonIDLookup then
+     * If not initialised, initialises ClaimIDToPartnerPersonIDLookup then
      * returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashMap<DW_ID, DW_PersonID> getClaimRefIDToPartnerPersonIDLookup(boolean handleOutOfMemoryError) {
+    public final HashMap<DW_ID, DW_PersonID> getClaimIDToPartnerPersonIDLookup(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDToPartnerPersonIDLookup();
+            return getClaimIDToPartnerPersonIDLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -2974,7 +2955,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDToPartnerPersonIDLookup(handleOutOfMemoryError);
+                return getClaimIDToPartnerPersonIDLookup(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -2982,33 +2963,34 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * If not initialised, initialises PartnerClaimRefIDs then returns it.
+     * If not initialised, initialises ClaimIDToPartnerPersonIDLookup then
+     * returns it.
      *
      * @return
      */
-    protected HashMap<DW_ID, DW_PersonID> getClaimRefIDToPartnerPersonIDLookup() {
-        if (ClaimRefIDToPartnerPersonIDLookup == null) {
+    protected HashMap<DW_ID, DW_PersonID> getClaimIDToPartnerPersonIDLookup() {
+        if (ClaimIDToPartnerPersonIDLookup == null) {
             File f;
-            f = getClaimRefIDToPartnerPersonIDLookupFile();
+            f = getClaimIDToPartnerPersonIDLookupFile();
             if (f.exists()) {
-                ClaimRefIDToPartnerPersonIDLookup = (HashMap<DW_ID, DW_PersonID>) Generic_StaticIO.readObject(f);
+                ClaimIDToPartnerPersonIDLookup = (HashMap<DW_ID, DW_PersonID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDToPartnerPersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
+                ClaimIDToPartnerPersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
             }
         }
-        return ClaimRefIDToPartnerPersonIDLookup;
+        return ClaimIDToPartnerPersonIDLookup;
     }
 
     /**
-     * If not initialised, initialises ClaimRefIDToDependentPersonIDsLookup then
+     * If not initialised, initialises ClaimIDToDependentPersonIDsLookup then
      * returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashMap<DW_ID, HashSet<DW_PersonID>> getClaimRefIDToDependentPersonIDsLookup(boolean handleOutOfMemoryError) {
+    public final HashMap<DW_ID, HashSet<DW_PersonID>> getClaimIDToDependentPersonIDsLookup(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDToDependentPersonIDsLookup();
+            return getClaimIDToDependentPersonIDsLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -3016,7 +2998,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDToDependentPersonIDsLookup(handleOutOfMemoryError);
+                return getClaimIDToDependentPersonIDsLookup(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -3024,34 +3006,258 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * If not initialised, initialises ClaimRefIDToDependentPersonIDsLookup then
+     * If not initialised, initialises ClaimIDToDependentPersonIDsLookup then
      * returns it.
      *
      * @return
      */
-    protected HashMap<DW_ID, HashSet<DW_PersonID>> getClaimRefIDToDependentPersonIDsLookup() {
-        if (ClaimRefIDToDependentPersonIDsLookup == null) {
+    protected HashMap<DW_ID, HashSet<DW_PersonID>> getClaimIDToDependentPersonIDsLookup() {
+        if (ClaimIDToDependentPersonIDsLookup == null) {
             File f;
-            f = getClaimRefIDToDependentPersonIDsLookupFile();
+            f = getClaimIDToDependentPersonIDsLookupFile();
             if (f.exists()) {
-                ClaimRefIDToDependentPersonIDsLookup = (HashMap<DW_ID, HashSet<DW_PersonID>>) Generic_StaticIO.readObject(f);
+                ClaimIDToDependentPersonIDsLookup = (HashMap<DW_ID, HashSet<DW_PersonID>>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDToDependentPersonIDsLookup = new HashMap<DW_ID, HashSet<DW_PersonID>>();
+                ClaimIDToDependentPersonIDsLookup = new HashMap<DW_ID, HashSet<DW_PersonID>>();
             }
         }
-        return ClaimRefIDToDependentPersonIDsLookup;
+        return ClaimIDToDependentPersonIDsLookup;
     }
 
     /**
-     * If not initialised, initialises ClaimRefIDToNonDependentPersonIDsLookup
+     * If not initialised, initialises ClaimIDToNonDependentPersonIDsLookup then
+     * returns it.
+     *
+     * @param handleOutOfMemoryError
+     * @return
+     */
+    public final HashMap<DW_ID, HashSet<DW_PersonID>> getClaimIDToNonDependentPersonIDsLookup(boolean handleOutOfMemoryError) {
+        try {
+            return getClaimIDToNonDependentPersonIDsLookup();
+        } catch (OutOfMemoryError e) {
+            if (handleOutOfMemoryError) {
+                env.clear_MemoryReserve();
+                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                    throw e;
+                }
+                env.init_MemoryReserve(handleOutOfMemoryError);
+                return getClaimIDToNonDependentPersonIDsLookup(handleOutOfMemoryError);
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    /**
+     * If not initialised, initialises ClaimIDToNonDependentPersonIDsLookup then
+     * returns it.
+     *
+     * @return
+     */
+    protected HashMap<DW_ID, HashSet<DW_PersonID>> getClaimIDToNonDependentPersonIDsLookup() {
+        if (ClaimIDToNonDependentPersonIDsLookup == null) {
+            File f;
+            f = getClaimIDToNonDependentPersonIDsLookupFile();
+            if (f.exists()) {
+                ClaimIDToNonDependentPersonIDsLookup = (HashMap<DW_ID, HashSet<DW_PersonID>>) Generic_StaticIO.readObject(f);
+            } else {
+                ClaimIDToNonDependentPersonIDsLookup = new HashMap<DW_ID, HashSet<DW_PersonID>>();
+            }
+        }
+        return ClaimIDToNonDependentPersonIDsLookup;
+    }
+
+    /**
+     * If not initialised, initialises
+     * ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim then returns
+     * it.
+     *
+     * @param handleOutOfMemoryError
+     * @return
+     */
+    public final HashSet<DW_ID> getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(boolean handleOutOfMemoryError) {
+        try {
+            return getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim();
+        } catch (OutOfMemoryError e) {
+            if (handleOutOfMemoryError) {
+                env.clear_MemoryReserve();
+                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                    throw e;
+                }
+                env.init_MemoryReserve(handleOutOfMemoryError);
+                return getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(handleOutOfMemoryError);
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    /**
+     * If not initialised, initialises
+     * ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim then returns
+     * it.
+     *
+     * @return
+     */
+    protected HashSet<DW_ID> getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim() {
+        if (ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim == null) {
+            File f;
+            f = getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile();
+            if (f.exists()) {
+                ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+            } else {
+                ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim = new HashSet<DW_ID>();
+            }
+        }
+        return ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim;
+    }
+
+    /**
+     * If not initialised, initialises
+     * ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim then returns
+     * it.
+     *
+     * @param handleOutOfMemoryError
+     * @return
+     */
+    public final HashSet<DW_ID> getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(boolean handleOutOfMemoryError) {
+        try {
+            return getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim();
+        } catch (OutOfMemoryError e) {
+            if (handleOutOfMemoryError) {
+                env.clear_MemoryReserve();
+                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                    throw e;
+                }
+                env.init_MemoryReserve(handleOutOfMemoryError);
+                return getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(handleOutOfMemoryError);
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    /**
+     * If not initialised, initialises
+     * ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim then returns
+     * it.
+     *
+     * @return
+     */
+    protected HashSet<DW_ID> getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim() {
+        if (ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim == null) {
+            File f;
+            f = getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile();
+            if (f.exists()) {
+                ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+            } else {
+                ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim = new HashSet<DW_ID>();
+            }
+        }
+        return ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim;
+    }
+
+    /**
+     * If not initialised, initialises
+     * ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim then returns
+     * it.
+     *
+     * @param handleOutOfMemoryError
+     * @return
+     */
+    public final HashSet<DW_ID> getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(boolean handleOutOfMemoryError) {
+        try {
+            return getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim();
+        } catch (OutOfMemoryError e) {
+            if (handleOutOfMemoryError) {
+                env.clear_MemoryReserve();
+                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                    throw e;
+                }
+                env.init_MemoryReserve(handleOutOfMemoryError);
+                return getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(handleOutOfMemoryError);
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    /**
+     * If not initialised, initialises
+     * ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim then returns
+     * it.
+     *
+     * @return
+     */
+    protected HashSet<DW_ID> getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim() {
+        if (ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim == null) {
+            File f;
+            f = getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile();
+            if (f.exists()) {
+                ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+            } else {
+                ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim = new HashSet<DW_ID>();
+            }
+        }
+        return ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim;
+    }
+
+    /**
+     * If not initialised, initialises
+     * ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim then returns
+     * it.
+     *
+     * @param handleOutOfMemoryError
+     * @return
+     */
+    public final HashSet<DW_ID> getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(boolean handleOutOfMemoryError) {
+        try {
+            return getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim();
+        } catch (OutOfMemoryError e) {
+            if (handleOutOfMemoryError) {
+                env.clear_MemoryReserve();
+                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                    throw e;
+                }
+                env.init_MemoryReserve(handleOutOfMemoryError);
+                return getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(handleOutOfMemoryError);
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    /**
+     * If not initialised, initialises
+     * ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim then returns
+     * it.
+     *
+     * @return
+     */
+    protected HashSet<DW_ID> getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim() {
+        if (ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim == null) {
+            File f;
+            f = getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile();
+            if (f.exists()) {
+                ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+            } else {
+                ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim = new HashSet<DW_ID>();
+            }
+        }
+        return ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim;
+    }
+
+    /**
+     * If not initialised, initialises
+     * ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim
      * then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashMap<DW_ID, HashSet<DW_PersonID>> getClaimRefIDToNonDependentPersonIDsLookup(boolean handleOutOfMemoryError) {
+    public final HashSet<DW_ID> getClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaim(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDToNonDependentPersonIDsLookup();
+            return getClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -3059,7 +3265,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDToNonDependentPersonIDsLookup(handleOutOfMemoryError);
+                return getClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaim(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -3067,215 +3273,36 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * If not initialised, initialises ClaimRefIDToNonDependentPersonIDsLookup
+     * If not initialised, initialises
+     * ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim
      * then returns it.
      *
      * @return
      */
-    protected HashMap<DW_ID, HashSet<DW_PersonID>> getClaimRefIDToNonDependentPersonIDsLookup() {
-        if (ClaimRefIDToNonDependentPersonIDsLookup == null) {
+    protected HashSet<DW_ID> getClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim() {
+        if (ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim == null) {
             File f;
-            f = getClaimRefIDToNonDependentPersonIDsLookupFile();
+            f = getClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile();
             if (f.exists()) {
-                ClaimRefIDToNonDependentPersonIDsLookup = (HashMap<DW_ID, HashSet<DW_PersonID>>) Generic_StaticIO.readObject(f);
+                ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDToNonDependentPersonIDsLookup = new HashMap<DW_ID, HashSet<DW_PersonID>>();
+                ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDToNonDependentPersonIDsLookup;
+        return ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim;
     }
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim then
-     * returns it.
-     *
-     * @param handleOutOfMemoryError
-     * @return
-     */
-    public final HashSet<DW_ID> getClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(boolean handleOutOfMemoryError) {
-        try {
-            return getClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim();
-        } catch (OutOfMemoryError e) {
-            if (handleOutOfMemoryError) {
-                env.clear_MemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
-                    throw e;
-                }
-                env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(handleOutOfMemoryError);
-            } else {
-                throw e;
-            }
-        }
-    }
-
-    /**
-     * If not initialised, initialises
-     * ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim then
-     * returns it.
-     *
-     * @return
-     */
-    protected HashSet<DW_ID> getClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim() {
-        if (ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim == null) {
-            File f;
-            f = getClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile();
-            if (f.exists()) {
-                ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
-            } else {
-                ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim = new HashSet<DW_ID>();
-            }
-        }
-        return ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim;
-    }
-
-    /**
-     * If not initialised, initialises
-     * ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim then
-     * returns it.
-     *
-     * @param handleOutOfMemoryError
-     * @return
-     */
-    public final HashSet<DW_ID> getClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(boolean handleOutOfMemoryError) {
-        try {
-            return getClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim();
-        } catch (OutOfMemoryError e) {
-            if (handleOutOfMemoryError) {
-                env.clear_MemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
-                    throw e;
-                }
-                env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(handleOutOfMemoryError);
-            } else {
-                throw e;
-            }
-        }
-    }
-
-    /**
-     * If not initialised, initialises
-     * ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim then
-     * returns it.
-     *
-     * @return
-     */
-    protected HashSet<DW_ID> getClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim() {
-        if (ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim == null) {
-            File f;
-            f = getClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile();
-            if (f.exists()) {
-                ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
-            } else {
-                ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim = new HashSet<DW_ID>();
-            }
-        }
-        return ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim;
-    }
-
-    /**
-     * If not initialised, initialises
-     * ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim then
-     * returns it.
-     *
-     * @param handleOutOfMemoryError
-     * @return
-     */
-    public final HashSet<DW_ID> getClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(boolean handleOutOfMemoryError) {
-        try {
-            return getClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim();
-        } catch (OutOfMemoryError e) {
-            if (handleOutOfMemoryError) {
-                env.clear_MemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
-                    throw e;
-                }
-                env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(handleOutOfMemoryError);
-            } else {
-                throw e;
-            }
-        }
-    }
-
-    /**
-     * If not initialised, initialises
-     * ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim then
-     * returns it.
-     *
-     * @return
-     */
-    protected HashSet<DW_ID> getClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim() {
-        if (ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim == null) {
-            File f;
-            f = getClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile();
-            if (f.exists()) {
-                ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
-            } else {
-                ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim = new HashSet<DW_ID>();
-            }
-        }
-        return ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim;
-    }
-
-    /**
-     * If not initialised, initialises
-     * ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim then returns
-     * it.
-     *
-     * @param handleOutOfMemoryError
-     * @return
-     */
-    public final HashSet<DW_ID> getClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(boolean handleOutOfMemoryError) {
-        try {
-            return getClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim();
-        } catch (OutOfMemoryError e) {
-            if (handleOutOfMemoryError) {
-                env.clear_MemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
-                    throw e;
-                }
-                env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(handleOutOfMemoryError);
-            } else {
-                throw e;
-            }
-        }
-    }
-
-    /**
-     * If not initialised, initialises
-     * ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim then returns
-     * it.
-     *
-     * @return
-     */
-    protected HashSet<DW_ID> getClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim() {
-        if (ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim == null) {
-            File f;
-            f = getClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile();
-            if (f.exists()) {
-                ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
-            } else {
-                ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim = new HashSet<DW_ID>();
-            }
-        }
-        return ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim;
-    }
-
-    /**
-     * If not initialised, initialises
-     * ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim
+     * ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim
      * then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashSet<DW_ID> getClaimRefIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaim(boolean handleOutOfMemoryError) {
+    public final HashMap<DW_PersonID, HashSet<DW_ID>> getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim();
+            return getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -3283,7 +3310,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaim(handleOutOfMemoryError);
+                return getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -3292,35 +3319,34 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim
-     * then returns it.
+     * ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup then returns
+     * it.
      *
      * @return
      */
-    protected HashSet<DW_ID> getClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim() {
-        if (ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim == null) {
+    protected HashMap<DW_PersonID, HashSet<DW_ID>> getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup() {
+        if (ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup == null) {
             File f;
-            f = getClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile();
+            f = getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile();
             if (f.exists()) {
-                ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = (HashMap<DW_PersonID, HashSet<DW_ID>>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim = new HashSet<DW_ID>();
+                ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
             }
         }
-        return ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim;
+        return ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup;
     }
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim
-     * then returns it.
+     * PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup then returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashMap<DW_PersonID, HashSet<DW_ID>> getClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup(boolean handleOutOfMemoryError) {
+    public final HashMap<DW_PersonID, HashSet<DW_ID>> getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(boolean handleOutOfMemoryError) {
         try {
-            return getClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup();
+            return getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -3328,7 +3354,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup(handleOutOfMemoryError);
+                return getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -3337,80 +3363,34 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 
     /**
      * If not initialised, initialises
-     * ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup then returns
-     * it.
+     * PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup then returns it.
      *
      * @return
      */
-    protected HashMap<DW_PersonID, HashSet<DW_ID>> getClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup() {
-        if (ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup == null) {
+    protected HashMap<DW_PersonID, HashSet<DW_ID>> getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup() {
+        if (PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup == null) {
             File f;
-            f = getClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile();
+            f = getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile();
             if (f.exists()) {
-                ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup = (HashMap<DW_PersonID, HashSet<DW_ID>>) Generic_StaticIO.readObject(f);
+                PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = (HashMap<DW_PersonID, HashSet<DW_ID>>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
+                PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
             }
         }
-        return ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup;
+        return PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup;
     }
 
     /**
      * If not initialised, initialises
-     * PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup then returns
-     * it.
-     *
-     * @param handleOutOfMemoryError
-     * @return
-     */
-    public final HashMap<DW_PersonID, HashSet<DW_ID>> getPartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup(boolean handleOutOfMemoryError) {
-        try {
-            return getPartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup();
-        } catch (OutOfMemoryError e) {
-            if (handleOutOfMemoryError) {
-                env.clear_MemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
-                    throw e;
-                }
-                env.init_MemoryReserve(handleOutOfMemoryError);
-                return getPartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup(handleOutOfMemoryError);
-            } else {
-                throw e;
-            }
-        }
-    }
-
-    /**
-     * If not initialised, initialises
-     * PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup then returns
-     * it.
-     *
-     * @return
-     */
-    protected HashMap<DW_PersonID, HashSet<DW_ID>> getPartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup() {
-        if (PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup == null) {
-            File f;
-            f = getPartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile();
-            if (f.exists()) {
-                PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup = (HashMap<DW_PersonID, HashSet<DW_ID>>) Generic_StaticIO.readObject(f);
-            } else {
-                PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
-            }
-        }
-        return PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup;
-    }
-
-    /**
-     * If not initialised, initialises
-     * NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup then
+     * NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup then
      * returns it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashMap<DW_PersonID, HashSet<DW_ID>> getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup(boolean handleOutOfMemoryError) {
+    public final HashMap<DW_PersonID, HashSet<DW_ID>> getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(boolean handleOutOfMemoryError) {
         try {
-            return getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup();
+            return getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -3418,7 +3398,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup(handleOutOfMemoryError);
+                return getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -3427,34 +3407,34 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
 
     /**
      * If not initialised, initialises
-     * NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup then
+     * NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup then
      * returns it.
      *
      * @return
      */
-    protected HashMap<DW_PersonID, HashSet<DW_ID>> getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup() {
-        if (NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup == null) {
+    protected HashMap<DW_PersonID, HashSet<DW_ID>> getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup() {
+        if (NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup == null) {
             File f;
-            f = getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile();
+            f = getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile();
             if (f.exists()) {
-                NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup = (HashMap<DW_PersonID, HashSet<DW_ID>>) Generic_StaticIO.readObject(f);
+                NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = (HashMap<DW_PersonID, HashSet<DW_ID>>) Generic_StaticIO.readObject(f);
             } else {
-                NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
+                NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
             }
         }
-        return NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup;
+        return NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup;
     }
 
     /**
-     * If not initialised, initialises ClaimRefIDToPostcodeLookup then returns
+     * If not initialised, initialises ClaimIDToPostcodeLookup then returns
      * it.
      *
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashMap<DW_ID, DW_ID> getClaimRefIDToPostcodeIDLookup(boolean handleOutOfMemoryError) {
+    public final HashMap<DW_ID, DW_ID> getClaimIDToPostcodeIDLookup(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDToPostcodeIDLookup();
+            return getClaimIDToPostcodeIDLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -3462,7 +3442,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDToPostcodeIDLookup(handleOutOfMemoryError);
+                return getClaimIDToPostcodeIDLookup(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -3470,32 +3450,74 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return the ClaimRefIDToPostcodeLookup
+     * @return the ClaimIDToPostcodeLookup
      */
-    protected HashMap<DW_ID, DW_ID> getClaimRefIDToPostcodeIDLookup() {
-        if (ClaimRefIDToPostcodeIDLookup == null) {
+    protected HashMap<DW_ID, DW_ID> getClaimIDToPostcodeIDLookup() {
+        if (ClaimIDToPostcodeIDLookup == null) {
             File f;
-            f = getClaimRefIDToPostcodeIDLookupFile();
+            f = getClaimIDToPostcodeIDLookupFile();
             if (f.exists()) {
-                ClaimRefIDToPostcodeIDLookup = (HashMap<DW_ID, DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimIDToPostcodeIDLookup = (HashMap<DW_ID, DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDToPostcodeIDLookup = new HashMap<DW_ID, DW_ID>();
+                ClaimIDToPostcodeIDLookup = new HashMap<DW_ID, DW_ID>();
             }
         }
-        return ClaimRefIDToPostcodeIDLookup;
+        return ClaimIDToPostcodeIDLookup;
     }
 
     /**
      * If not initialised, initialises
-     * ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture then returns
+     * ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture then returns it.
+     *
+     * @param handleOutOfMemoryError
+     * @return ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture
+     */
+    public final HashSet<DW_ID> getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture(boolean handleOutOfMemoryError) {
+        try {
+            return getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture();
+        } catch (OutOfMemoryError e) {
+            if (handleOutOfMemoryError) {
+                env.clear_MemoryReserve();
+                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                    throw e;
+                }
+                env.init_MemoryReserve(handleOutOfMemoryError);
+                return getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture(handleOutOfMemoryError);
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    /**
+     * If not initialised, initialises
+     * ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture then returns it.
+     *
+     * @return ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture
+     */
+    protected HashSet<DW_ID> getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture() {
+        if (ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture == null) {
+            File f;
+            f = getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile();
+            if (f.exists()) {
+                ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+            } else {
+                ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture = new HashSet<DW_ID>();
+            }
+        }
+        return ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture;
+    }
+
+    /**
+     * If not initialised, initialises ClaimIDToTenancyTypeLookup then returns
      * it.
      *
      * @param handleOutOfMemoryError
-     * @return
+     * @return ClaimIDToTenancyTypeLookup
      */
-    public final HashSet<DW_ID> getClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture(boolean handleOutOfMemoryError) {
+    public final HashMap<DW_ID, Integer> getClaimIDToTenancyTypeLookup(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture();
+            return getClaimIDToTenancyTypeLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -3503,7 +3525,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture(handleOutOfMemoryError);
+                return getClaimIDToTenancyTypeLookup(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -3511,69 +3533,29 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return the ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture
-     */
-    protected HashSet<DW_ID> getClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture() {
-        if (ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture == null) {
-            File f;
-            f = getClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile();
-            if (f.exists()) {
-                ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
-            } else {
-                ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture = new HashSet<DW_ID>();
-            }
-        }
-        return ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture;
-    }
-
-    /**
-     * If not initialised, initialises ClaimRefIDToTenancyTypeLookup then
-     * returns it.
+     * If not initialised, initialises ClaimIDToTenancyTypeLookup then returns
+     * it.
      *
-     * @param handleOutOfMemoryError
-     * @return
+     * @return ClaimIDToTenancyTypeLookup
      */
-    public final HashMap<DW_ID, Integer> getClaimRefIDToTenancyTypeLookup(boolean handleOutOfMemoryError) {
-        try {
-            return getClaimRefIDToTenancyTypeLookup();
-        } catch (OutOfMemoryError e) {
-            if (handleOutOfMemoryError) {
-                env.clear_MemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
-                    throw e;
-                }
-                env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDToTenancyTypeLookup(handleOutOfMemoryError);
-            } else {
-                throw e;
-            }
-        }
-    }
-
-    /**
-     * If not initialised, initialises ClaimRefIDToTenancyTypeLookup then
-     * returns it.
-     *
-     * @return
-     */
-    protected HashMap<DW_ID, Integer> getClaimRefIDToTenancyTypeLookup() {
-        if (ClaimRefIDToTenancyTypeLookup == null) {
+    protected HashMap<DW_ID, Integer> getClaimIDToTenancyTypeLookup() {
+        if (ClaimIDToTenancyTypeLookup == null) {
             File f;
-            f = getClaimRefIDToTenancyTypeLookupFile();
+            f = getClaimIDToTenancyTypeLookupFile();
             if (f.exists()) {
-                ClaimRefIDToTenancyTypeLookup = (HashMap<DW_ID, Integer>) Generic_StaticIO.readObject(f);
+                ClaimIDToTenancyTypeLookup = (HashMap<DW_ID, Integer>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDToTenancyTypeLookup = new HashMap<DW_ID, Integer>();
+                ClaimIDToTenancyTypeLookup = new HashMap<DW_ID, Integer>();
             }
         }
-        return ClaimRefIDToTenancyTypeLookup;
+        return ClaimIDToTenancyTypeLookup;
     }
 
     /**
      * If not initialised, initialises LoadSummary then returns it.
      *
      * @param handleOutOfMemoryError
-     * @return
+     * @return LoadSummary
      */
     public final HashMap<String, Number> getLoadSummary(boolean handleOutOfMemoryError) {
         try {
@@ -3595,7 +3577,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     /**
      * If not initialised, initialises LoadSummary then returns it.
      *
-     * @return
+     * @return LoadSummary
      */
     protected HashMap<String, Number> getLoadSummary() {
         if (LoadSummary == null) {
@@ -3614,7 +3596,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * If not initialised, initialises RecordIDsNotLoaded then returns it.
      *
      * @param handleOutOfMemoryError
-     * @return
+     * @return RecordIDsNotLoaded
      */
     public final ArrayList<Long> getRecordIDsNotLoaded(boolean handleOutOfMemoryError) {
         try {
@@ -3634,7 +3616,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return the RecordIDsNotLoaded
+     * If not initialised, initialises RecordIDsNotLoaded then returns it.
+     *
+     * @return RecordIDsNotLoaded
      */
     protected ArrayList<Long> getRecordIDsNotLoaded() {
         if (RecordIDsNotLoaded == null) {
@@ -3654,11 +3638,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * returns it.
      *
      * @param handleOutOfMemoryError
-     * @return
+     * @return ClaimIDsOfInvalidClaimantNINOClaims
      */
-    public final HashSet<DW_ID> getClaimRefIDsOfInvalidClaimantNINOClaims(boolean handleOutOfMemoryError) {
+    public final HashSet<DW_ID> getClaimIDsOfInvalidClaimantNINOClaims(boolean handleOutOfMemoryError) {
         try {
-            return getClaimRefIDsOfInvalidClaimantNINOClaims();
+            return getClaimIDsOfInvalidClaimantNINOClaims();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 env.clear_MemoryReserve();
@@ -3666,7 +3650,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getClaimRefIDsOfInvalidClaimantNINOClaims(handleOutOfMemoryError);
+                return getClaimIDsOfInvalidClaimantNINOClaims(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -3674,19 +3658,22 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return the ClaimRefsOfInvalidClaimantNINOClaims
+     * If not initialised, initialises ClaimRefsOfInvalidClaimantNINOClaims then
+     * returns it.
+     *
+     * @return ClaimIDsOfInvalidClaimantNINOClaims
      */
-    protected HashSet<DW_ID> getClaimRefIDsOfInvalidClaimantNINOClaims() {
-        if (ClaimRefIDsOfInvalidClaimantNINOClaims == null) {
+    protected HashSet<DW_ID> getClaimIDsOfInvalidClaimantNINOClaims() {
+        if (ClaimIDsOfInvalidClaimantNINOClaims == null) {
             File f;
-            f = getClaimRefIDsOfInvalidClaimantNINOClaimsFile();
+            f = getClaimIDsOfInvalidClaimantNINOClaimsFile();
             if (f.exists()) {
-                ClaimRefIDsOfInvalidClaimantNINOClaims = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+                ClaimIDsOfInvalidClaimantNINOClaims = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
             } else {
-                ClaimRefIDsOfInvalidClaimantNINOClaims = new HashSet<DW_ID>();
+                ClaimIDsOfInvalidClaimantNINOClaims = new HashSet<DW_ID>();
             }
         }
-        return ClaimRefIDsOfInvalidClaimantNINOClaims;
+        return ClaimIDsOfInvalidClaimantNINOClaims;
     }
 
     /**
@@ -3694,7 +3681,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * it.
      *
      * @param handleOutOfMemoryError
-     * @return
+     * @return ClaimantPostcodesUnmappable
      */
     public final HashMap<DW_ID, String> getClaimantPostcodesUnmappable(boolean handleOutOfMemoryError) {
         try {
@@ -3714,7 +3701,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return the ClaimantPostcodesUnmappable
+     * If not initialised, initialises ClaimantPostcodesUnmappable then returns
+     * it.
+     *
+     * @return ClaimantPostcodesUnmappable
      */
     protected HashMap<DW_ID, String> getClaimantPostcodesUnmappable() {
         if (ClaimantPostcodesUnmappable == null) {
@@ -3734,7 +3724,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * it.
      *
      * @param handleOutOfMemoryError
-     * @return
+     * @return ClaimantPostcodesModified
      */
     public final HashMap<DW_ID, String[]> getClaimantPostcodesModified(boolean handleOutOfMemoryError) {
         try {
@@ -3754,7 +3744,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return the ClaimantPostcodesModified
+     * If not initialised, initialises ClaimantPostcodesModified then returns
+     * it.
+     *
+     * @return ClaimantPostcodesModified
      */
     protected HashMap<DW_ID, String[]> getClaimantPostcodesModified() {
         if (ClaimantPostcodesModified == null) {
@@ -3794,7 +3787,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return the ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes
+     * If not initialised, initialises
+     * ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes then returns it.
+     *
+     * @return ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes
      */
     protected HashMap<DW_ID, String> getClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes() {
         if (ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes == null) {
@@ -3836,78 +3832,78 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return ClaimRefIDsOfNewSHBEClaimsFile initialising if it is not already
+     * @return ClaimIDsOfNewSHBEClaimsFile initialising if it is not already
      * initialised.
      */
-    protected final File getClaimRefIDsOfNewSHBEClaimsFile() {
-        if (ClaimRefIDsOfNewSHBEClaimsFile == null) {
-            ClaimRefIDsOfNewSHBEClaimsFile = getFile(
-                    "ClaimRefIDsOfNewSHBEClaims"
+    protected final File getClaimIDsOfNewSHBEClaimsFile() {
+        if (ClaimIDsOfNewSHBEClaimsFile == null) {
+            ClaimIDsOfNewSHBEClaimsFile = getFile(
+                    "ClaimIDsOfNewSHBEClaims"
                     + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsOfNewSHBEClaimsFile;
+        return ClaimIDsOfNewSHBEClaimsFile;
     }
 
     /**
-     * @return ClaimRefIDsOfNewSHBEClaimsFile initialising if it is not already
+     * @return ClaimIDsOfNewSHBEClaimsFile initialising if it is not already
      * initialised.
      */
-    protected final File getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile() {
-        if (ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile == null) {
-            ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile = getFile(
-                    "ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore"
+    protected final File getClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile() {
+        if (ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile == null) {
+            ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile = getFile(
+                    "ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore"
                     + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile;
+        return ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile;
     }
 
     /**
-     * @return ClaimRefIDsOfNewSHBEClaimsFile initialising if it is not already
+     * @return ClaimIDsOfNewSHBEClaimsFile initialising if it is not already
      * initialised.
      */
-    protected final File getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile() {
-        if (ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile == null) {
-            ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile = getFile(
-                    "ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore"
+    protected final File getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile() {
+        if (ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile == null) {
+            ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile = getFile(
+                    "ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore"
                     + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile;
+        return ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile;
     }
 
     /**
-     * @return ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile
+     * @return ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile
      * initialising if it is not already initialised.
      */
-    protected final File getClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile() {
-        if (ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile == null) {
-            ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile = getFile(
-                    "ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore"
+    protected final File getClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile() {
+        if (ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile == null) {
+            ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile = getFile(
+                    "ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore"
                     + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile;
+        return ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile;
     }
 
     /**
-     * @return ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNewFile initialising if
-     * it is not already initialised.
+     * @return ClaimIDsOfNewSHBEClaimsWhereClaimantIsNewFile initialising if it
+     * is not already initialised.
      */
-    protected final File getClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNewFile() {
-        if (ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNewFile == null) {
-            ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNewFile = getFile(
-                    "ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNew"
+    protected final File getClaimIDsOfNewSHBEClaimsWhereClaimantIsNewFile() {
+        if (ClaimIDsOfNewSHBEClaimsWhereClaimantIsNewFile == null) {
+            ClaimIDsOfNewSHBEClaimsWhereClaimantIsNewFile = getFile(
+                    "ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew"
                     + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsOfNewSHBEClaimsWhereClaimantIsNewFile;
+        return ClaimIDsOfNewSHBEClaimsWhereClaimantIsNewFile;
     }
 
     public final File getClaimantPersonIDsFile() {
@@ -4055,108 +4051,108 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return CottingleySpringsCaravanParkPairedClaimRefIDsFile initialising if
-     * it is not already initialised.
+     * @return CottingleySpringsCaravanParkPairedClaimIDsFile initialising if it
+     * is not already initialised.
      */
-    protected final File getCottingleySpringsCaravanParkPairedClaimRefIDsFile() {
-        if (CottingleySpringsCaravanParkPairedClaimRefIDsFile == null) {
-            CottingleySpringsCaravanParkPairedClaimRefIDsFile = getFile(
-                    DW_Strings.sCottingleySpringsCaravanPark + "PairedClaimRefIDs"
+    protected final File getCottingleySpringsCaravanParkPairedClaimIDsFile() {
+        if (CottingleySpringsCaravanParkPairedClaimIDsFile == null) {
+            CottingleySpringsCaravanParkPairedClaimIDsFile = getFile(
+                    DW_Strings.sCottingleySpringsCaravanPark + "PairedClaimIDs"
                     + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return CottingleySpringsCaravanParkPairedClaimRefIDsFile;
+        return CottingleySpringsCaravanParkPairedClaimIDsFile;
     }
 
     /**
-     * @return ClaimRefIDsWithStatusOfHBAtExtractDateInPaymentFile initialising
-     * if it is not already initialised.
+     * @return ClaimIDsWithStatusOfHBAtExtractDateInPaymentFile initialising if
+     * it is not already initialised.
      */
-    protected final File getClaimRefIDsWithStatusOfHBAtExtractDateInPaymentFile() {
-        if (ClaimRefIDsWithStatusOfHBAtExtractDateInPaymentFile == null) {
-            ClaimRefIDsWithStatusOfHBAtExtractDateInPaymentFile = getFile(
+    protected final File getClaimIDsWithStatusOfHBAtExtractDateInPaymentFile() {
+        if (ClaimIDsWithStatusOfHBAtExtractDateInPaymentFile == null) {
+            ClaimIDsWithStatusOfHBAtExtractDateInPaymentFile = getFile(
                     DW_Strings.sHB + DW_Strings.sPaymentTypeIn
                     + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsWithStatusOfHBAtExtractDateInPaymentFile;
+        return ClaimIDsWithStatusOfHBAtExtractDateInPaymentFile;
     }
 
     /**
-     * @return ClaimRefIDsWithStatusOfHBAtExtractDateSuspendedFile initialising
-     * if it is not already initialised.
+     * @return ClaimIDsWithStatusOfHBAtExtractDateSuspendedFile initialising if
+     * it is not already initialised.
      */
-    protected final File getClaimRefIDsWithStatusOfHBAtExtractDateSuspendedFile() {
-        if (ClaimRefIDsWithStatusOfHBAtExtractDateSuspendedFile == null) {
-            ClaimRefIDsWithStatusOfHBAtExtractDateSuspendedFile = getFile(
+    protected final File getClaimIDsWithStatusOfHBAtExtractDateSuspendedFile() {
+        if (ClaimIDsWithStatusOfHBAtExtractDateSuspendedFile == null) {
+            ClaimIDsWithStatusOfHBAtExtractDateSuspendedFile = getFile(
                     DW_Strings.sHB + DW_Strings.sPaymentTypeSuspended
                     + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsWithStatusOfHBAtExtractDateSuspendedFile;
+        return ClaimIDsWithStatusOfHBAtExtractDateSuspendedFile;
     }
 
     /**
-     * @return ClaimRefIDsWithStatusOfHBAtExtractDateOtherFile initialising if
-     * it is not already initialised.
+     * @return ClaimIDsWithStatusOfHBAtExtractDateOtherFile initialising if it
+     * is not already initialised.
      */
-    protected final File getClaimRefIDsWithStatusOfHBAtExtractDateOtherFile() {
-        if (ClaimRefIDsWithStatusOfHBAtExtractDateOtherFile == null) {
-            ClaimRefIDsWithStatusOfHBAtExtractDateOtherFile = getFile(
+    protected final File getClaimIDsWithStatusOfHBAtExtractDateOtherFile() {
+        if (ClaimIDsWithStatusOfHBAtExtractDateOtherFile == null) {
+            ClaimIDsWithStatusOfHBAtExtractDateOtherFile = getFile(
                     DW_Strings.sHB + DW_Strings.sPaymentTypeOther
                     + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsWithStatusOfHBAtExtractDateOtherFile;
+        return ClaimIDsWithStatusOfHBAtExtractDateOtherFile;
     }
 
     /**
-     * @return ClaimRefIDsWithStatusOfCTBAtExtractDateInPaymentFile initialising
-     * if it is not already initialised.
+     * @return ClaimIDsWithStatusOfCTBAtExtractDateInPaymentFile initialising if
+     * it is not already initialised.
      */
-    protected final File getClaimRefIDsWithStatusOfCTBAtExtractDateInPaymentFile() {
-        if (ClaimRefIDsWithStatusOfCTBAtExtractDateInPaymentFile == null) {
-            ClaimRefIDsWithStatusOfCTBAtExtractDateInPaymentFile = getFile(
+    protected final File getClaimIDsWithStatusOfCTBAtExtractDateInPaymentFile() {
+        if (ClaimIDsWithStatusOfCTBAtExtractDateInPaymentFile == null) {
+            ClaimIDsWithStatusOfCTBAtExtractDateInPaymentFile = getFile(
                     DW_Strings.sCTB + DW_Strings.sPaymentTypeIn
                     + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsWithStatusOfCTBAtExtractDateInPaymentFile;
+        return ClaimIDsWithStatusOfCTBAtExtractDateInPaymentFile;
     }
 
     /**
-     * @return ClaimRefIDsWithStatusOfCTBAtExtractDateSuspendedFile initialising
-     * if it is not already initialised.
+     * @return ClaimIDsWithStatusOfCTBAtExtractDateSuspendedFile initialising if
+     * it is not already initialised.
      */
-    protected final File getClaimRefIDsWithStatusOfCTBAtExtractDateSuspendedFile() {
-        if (ClaimRefIDsWithStatusOfCTBAtExtractDateSuspendedFile == null) {
-            ClaimRefIDsWithStatusOfCTBAtExtractDateSuspendedFile = getFile(
+    protected final File getClaimIDsWithStatusOfCTBAtExtractDateSuspendedFile() {
+        if (ClaimIDsWithStatusOfCTBAtExtractDateSuspendedFile == null) {
+            ClaimIDsWithStatusOfCTBAtExtractDateSuspendedFile = getFile(
                     DW_Strings.sCTB + DW_Strings.sPaymentTypeSuspended
                     + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsWithStatusOfCTBAtExtractDateSuspendedFile;
+        return ClaimIDsWithStatusOfCTBAtExtractDateSuspendedFile;
     }
 
     /**
-     * @return ClaimRefIDsWithStatusOfCTBAtExtractDateOtherFile initialising if
-     * it is not already initialised.
+     * @return ClaimIDsWithStatusOfCTBAtExtractDateOtherFile initialising if it
+     * is not already initialised.
      */
-    protected final File getClaimRefIDsWithStatusOfCTBAtExtractDateOtherFile() {
-        if (ClaimRefIDsWithStatusOfCTBAtExtractDateOtherFile == null) {
-            ClaimRefIDsWithStatusOfCTBAtExtractDateOtherFile = getFile(
+    protected final File getClaimIDsWithStatusOfCTBAtExtractDateOtherFile() {
+        if (ClaimIDsWithStatusOfCTBAtExtractDateOtherFile == null) {
+            ClaimIDsWithStatusOfCTBAtExtractDateOtherFile = getFile(
                     DW_Strings.sCTB + DW_Strings.sPaymentTypeOther
                     + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsWithStatusOfCTBAtExtractDateOtherFile;
+        return ClaimIDsWithStatusOfCTBAtExtractDateOtherFile;
     }
 
     /**
@@ -4174,238 +4170,246 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return ClaimRefIDAndCountOfRecordsWithSRecordsFile initialising if it is
+     * @return ClaimIDAndCountOfRecordsWithSRecordsFile initialising if it is
      * not already initialised.
      */
-    protected final File getClaimRefIDAndCountOfRecordsWithSRecordsFile() {
-        if (ClaimRefIDAndCountOfRecordsWithSRecordsFile == null) {
-            ClaimRefIDAndCountOfRecordsWithSRecordsFile = getFile(
-                    "ClaimRefIDAndCountOfRecordsWithSRecordsFile" + DW_Strings.sUnderscore
+    protected final File getClaimIDAndCountOfRecordsWithSRecordsFile() {
+        if (ClaimIDAndCountOfRecordsWithSRecordsFile == null) {
+            ClaimIDAndCountOfRecordsWithSRecordsFile = getFile(
+                    "ClaimIDAndCountOfRecordsWithSRecordsFile" + DW_Strings.sUnderscore
                     + "HashMap_DW_ID__Integer"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDAndCountOfRecordsWithSRecordsFile;
+        return ClaimIDAndCountOfRecordsWithSRecordsFile;
     }
 
     /**
-     * @return ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcodeFile
-     * initialising if it is not already initialised.
+     * @return ClaimIDsOfClaimsWithoutAMappableClaimantPostcodeFile initialising
+     * if it is not already initialised.
      */
-    protected final File getClaimRefIDsOfClaimsWithoutAMappableClaimantPostcodeFile() {
-        if (ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcodeFile == null) {
-            ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcodeFile = getFile(
-                    "ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcode" + DW_Strings.sUnderscore
+    protected final File getClaimIDsOfClaimsWithoutAMappableClaimantPostcodeFile() {
+        if (ClaimIDsOfClaimsWithoutAMappableClaimantPostcodeFile == null) {
+            ClaimIDsOfClaimsWithoutAMappableClaimantPostcodeFile = getFile(
+                    "ClaimIDsOfClaimsWithoutAMappableClaimantPostcode" + DW_Strings.sUnderscore
                     + "HashMap_DW_ID__Integer"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsOfClaimsWithoutAMappableClaimantPostcodeFile;
+        return ClaimIDsOfClaimsWithoutAMappableClaimantPostcodeFile;
     }
 
     /**
-     * @return the ClaimantClaimRefIDsFile
+     * @return ClaimIDToClaimantPersonIDLookupFile initialising if it is not
+     * already initialised.
      */
-    public final File getClaimRefIDToClaimantPersonIDLookupFile() {
-        if (ClaimRefIDToClaimantPersonIDLookupFile == null) {
-            ClaimRefIDToClaimantPersonIDLookupFile = getFile(
-                    "ClaimRefIDToClaimantPersonIDLookup" + DW_Strings.sUnderscore
+    public final File getClaimIDToClaimantPersonIDLookupFile() {
+        if (ClaimIDToClaimantPersonIDLookupFile == null) {
+            ClaimIDToClaimantPersonIDLookupFile = getFile(
+                    "ClaimIDToClaimantPersonIDLookup" + DW_Strings.sUnderscore
                     + "HashMap_DW_ID_DW_PersonID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDToClaimantPersonIDLookupFile;
+        return ClaimIDToClaimantPersonIDLookupFile;
     }
 
     /**
-     * @return the ClaimRefIDToPartnerPersonIDLookupFile
+     * @return ClaimIDToPartnerPersonIDLookupFile initialising if it is not
+     * already initialised.
      */
-    public final File getClaimRefIDToPartnerPersonIDLookupFile() {
-        if (ClaimRefIDToPartnerPersonIDLookupFile == null) {
-            ClaimRefIDToPartnerPersonIDLookupFile = getFile(
-                    "ClaimRefIDToPartnerPersonIDLookup" + DW_Strings.sUnderscore
+    public final File getClaimIDToPartnerPersonIDLookupFile() {
+        if (ClaimIDToPartnerPersonIDLookupFile == null) {
+            ClaimIDToPartnerPersonIDLookupFile = getFile(
+                    "ClaimIDToPartnerPersonIDLookup" + DW_Strings.sUnderscore
                     + "HashMap_DW_ID__DW_PersonID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDToPartnerPersonIDLookupFile;
+        return ClaimIDToPartnerPersonIDLookupFile;
     }
 
     /**
-     * @return the ClaimRefIDToDependentPersonIDsLookupFile
+     * @return ClaimIDToDependentPersonIDsLookupFile initialising if it is not
+     * already initialised.
      */
-    public final File getClaimRefIDToDependentPersonIDsLookupFile() {
-        if (ClaimRefIDToDependentPersonIDsLookupFile == null) {
-            ClaimRefIDToDependentPersonIDsLookupFile = getFile(
-                    "ClaimRefIDToDependentPersonIDsLookupFile" + DW_Strings.sUnderscore
+    public final File getClaimIDToDependentPersonIDsLookupFile() {
+        if (ClaimIDToDependentPersonIDsLookupFile == null) {
+            ClaimIDToDependentPersonIDsLookupFile = getFile(
+                    "ClaimIDToDependentPersonIDsLookupFile" + DW_Strings.sUnderscore
                     + "HashMap_DW_ID__HashSet<DW_PersonID>"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDToDependentPersonIDsLookupFile;
+        return ClaimIDToDependentPersonIDsLookupFile;
     }
 
     /**
-     * @return the NonDependentClaimRefIDsFile
+     * @return ClaimIDToNonDependentPersonIDsLookupFile initialising if it is
+     * not already initialised.
      */
-    public final File getClaimRefIDToNonDependentPersonIDsLookupFile() {
-        if (ClaimRefIDToNonDependentPersonIDsLookupFile == null) {
-            ClaimRefIDToNonDependentPersonIDsLookupFile = getFile(
-                    "ClaimRefIDToNonDependentPersonIDsLookupFile" + DW_Strings.sUnderscore
+    public final File getClaimIDToNonDependentPersonIDsLookupFile() {
+        if (ClaimIDToNonDependentPersonIDsLookupFile == null) {
+            ClaimIDToNonDependentPersonIDsLookupFile = getFile(
+                    "ClaimIDToNonDependentPersonIDsLookupFile" + DW_Strings.sUnderscore
                     + "HashMap_DW_ID__HashSet_DW_PersonID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDToNonDependentPersonIDsLookupFile;
+        return ClaimIDToNonDependentPersonIDsLookupFile;
     }
 
     /**
-     * @return the
-     * ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile
+     * @return ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile
+     * initialising if it is not already initialised.
      */
-    public final File getClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile() {
-        if (ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile == null) {
-            ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile = getFile(
-                    "ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim" + DW_Strings.sUnderscore
+    public final File getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile() {
+        if (ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile == null) {
+            ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile = getFile(
+                    "ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim" + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile;
+        return ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile;
     }
 
     /**
-     * @return the
-     * ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile
+     * @return ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile
+     * initialising if it is not already initialised.
      */
-    public final File getClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile() {
-        if (ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile == null) {
-            ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile = getFile(
-                    "ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim" + DW_Strings.sUnderscore
+    public final File getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile() {
+        if (ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile == null) {
+            ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile = getFile(
+                    "ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim" + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile;
+        return ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile;
     }
 
     /**
-     * @return the
-     * ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile
+     * @return ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile
+     * initialising if it is not already initialised.
      */
-    public final File getClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile() {
-        if (ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile == null) {
-            ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile = getFile(
-                    "ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile" + DW_Strings.sUnderscore
+    public final File getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile() {
+        if (ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile == null) {
+            ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile = getFile(
+                    "ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile" + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile;
+        return ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile;
     }
 
     /**
-     * @return the
-     * ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile
+     * @return ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile
+     * initialising if it is not already initialised.
      */
-    public final File getClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile() {
-        if (ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile == null) {
-            ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile = getFile(
-                    "ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim" + DW_Strings.sUnderscore
+    public final File getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile() {
+        if (ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile == null) {
+            ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile = getFile(
+                    "ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim" + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile;
+        return ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile;
     }
 
     /**
-     * @return the
-     * ClaimRefIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile
+     * @return
+     * ClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile
+     * initialising if it is not already initialised.
      */
-    public final File getClaimRefIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile() {
-        if (ClaimRefIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile == null) {
-            ClaimRefIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile = getFile(
-                    "ClaimRefIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaim" + DW_Strings.sUnderscore
+    public final File getClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile() {
+        if (ClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile == null) {
+            ClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile = getFile(
+                    "ClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaim" + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile;
+        return ClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile;
     }
 
     /**
-     * @return the
-     * ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile
+     * @return ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile
+     * initialising if it is not already initialised.
      */
-    public final File getClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile() {
-        if (ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile == null) {
-            ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile = getFile(
-                    "ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookup" + DW_Strings.sUnderscore
+    public final File getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile() {
+        if (ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile == null) {
+            ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile = getFile(
+                    "ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup" + DW_Strings.sUnderscore
                     + "HashMap_DW_PersonID__HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimantsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile;
+        return ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile;
     }
 
     /**
-     * @return the
-     * PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile
+     * @return PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile
+     * initialising if it is not already initialised.
      */
-    public final File getPartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile() {
-        if (PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile == null) {
-            PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile = getFile(
-                    "PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile" + DW_Strings.sUnderscore
+    public final File getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile() {
+        if (PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile == null) {
+            PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile = getFile(
+                    "PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile" + DW_Strings.sUnderscore
                     + "HashMap_DW_PersonID__HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return PartnersInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile;
+        return PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile;
     }
 
     /**
-     * @return the
-     * NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile
+     * @return NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile
+     * initialising if it is not already initialised.
      */
-    public final File getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile() {
-        if (NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile == null) {
-            NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile = getFile(
-                    "NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile" + DW_Strings.sUnderscore
+    public final File getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile() {
+        if (NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile == null) {
+            NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile = getFile(
+                    "NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile" + DW_Strings.sUnderscore
                     + "HashMap_DW_PersonID__HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return NonDependentsInMultipleClaimsInAMonthPersonIDToClaimRefIDsLookupFile;
+        return NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile;
     }
 
     /**
-     * @return the ClaimRefIDToPostcodeLookupFile
+     * @return ClaimIDToPostcodeIDLookupFile initialising if it is not already
+     * initialised.
      */
-    public final File getClaimRefIDToPostcodeIDLookupFile() {
-        if (ClaimRefIDToPostcodeIDLookupFile == null) {
-            ClaimRefIDToPostcodeIDLookupFile = getFile(
-                    "ClaimRefIDToPostcodeIDLookup" + DW_Strings.sUnderscore
+    public final File getClaimIDToPostcodeIDLookupFile() {
+        if (ClaimIDToPostcodeIDLookupFile == null) {
+            ClaimIDToPostcodeIDLookupFile = getFile(
+                    "ClaimIDToPostcodeIDLookup" + DW_Strings.sUnderscore
                     + "HashMap_DW_ID__DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDToPostcodeIDLookupFile;
+        return ClaimIDToPostcodeIDLookupFile;
     }
 
     /**
-     * @return the ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile
+     * @return ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile
+     * initialising if it is not already initialised.
      */
-    public final File getClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile() {
-        if (ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile == null) {
-            ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile = getFile(
-                    "ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture" + DW_Strings.sUnderscore
+    public final File getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile() {
+        if (ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile == null) {
+            ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile = getFile(
+                    "ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture" + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile;
+        return ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile;
     }
 
     /**
-     * @return the ClaimRefIDToTenancyTypeLookupFile
+     * @return ClaimIDToTenancyTypeLookupFile initialising if it is not already
+     * initialised.
      */
-    public final File getClaimRefIDToTenancyTypeLookupFile() {
-        if (ClaimRefIDToTenancyTypeLookupFile == null) {
-            ClaimRefIDToTenancyTypeLookupFile = getFile(
-                    "ClaimRefIDToTenancyTypeLookup" + DW_Strings.sUnderscore
+    public final File getClaimIDToTenancyTypeLookupFile() {
+        if (ClaimIDToTenancyTypeLookupFile == null) {
+            ClaimIDToTenancyTypeLookupFile = getFile(
+                    "ClaimIDToTenancyTypeLookup" + DW_Strings.sUnderscore
                     + "HashMap_DW_ID__Integer"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDToTenancyTypeLookupFile;
+        return ClaimIDToTenancyTypeLookupFile;
     }
 
     /**
-     * @return the LoadSummaryFile
+     * @return LoadSummaryFile initialising if it is not already initialised.
      */
     public final File getLoadSummaryFile() {
         if (LoadSummaryFile == null) {
@@ -4418,7 +4422,8 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return the RecordIDsNotLoadedFile
+     * @return RecordIDsNotLoadedFile initialising if it is not already
+     * initialised.
      */
     public final File getRecordIDsNotLoadedFile() {
         if (RecordIDsNotLoadedFile == null) {
@@ -4431,20 +4436,22 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return the ClaimRefsOfInvalidClaimantNINOClaimsFile
+     * @return ClaimIDsOfInvalidClaimantNINOClaimsFile initialising if it is not
+     * already initialised.
      */
-    public final File getClaimRefIDsOfInvalidClaimantNINOClaimsFile() {
-        if (ClaimRefIDsOfInvalidClaimantNINOClaimsFile == null) {
-            ClaimRefIDsOfInvalidClaimantNINOClaimsFile = getFile(
-                    "ClaimRefIDsOfInvalidClaimantNINOClaimsFile" + DW_Strings.sUnderscore
+    public final File getClaimIDsOfInvalidClaimantNINOClaimsFile() {
+        if (ClaimIDsOfInvalidClaimantNINOClaimsFile == null) {
+            ClaimIDsOfInvalidClaimantNINOClaimsFile = getFile(
+                    "ClaimIDsOfInvalidClaimantNINOClaimsFile" + DW_Strings.sUnderscore
                     + "HashSet_DW_ID"
                     + DW_Strings.sBinaryFileExtension);
         }
-        return ClaimRefIDsOfInvalidClaimantNINOClaimsFile;
+        return ClaimIDsOfInvalidClaimantNINOClaimsFile;
     }
 
     /**
-     * @return the ClaimantPostcodesUnmappableFile
+     * @return ClaimantPostcodesUnmappableFile initialising if it is not already
+     * initialised.
      */
     public final File getClaimantPostcodesUnmappableFile() {
         if (ClaimantPostcodesUnmappableFile == null) {
@@ -4457,7 +4464,8 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return the ClaimantPostcodesModifiedFile
+     * @return ClaimantPostcodesModifiedFile initialising if it is not already
+     * initialised.
      */
     public final File getClaimantPostcodesModifiedFile() {
         if (ClaimantPostcodesModifiedFile == null) {
@@ -4470,7 +4478,8 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     }
 
     /**
-     * @return the ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodesFile
+     * @return ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodesFile
+     * initialising if it is not already initialised.
      */
     public final File getClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodesFile() {
         if (ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodesFile == null) {

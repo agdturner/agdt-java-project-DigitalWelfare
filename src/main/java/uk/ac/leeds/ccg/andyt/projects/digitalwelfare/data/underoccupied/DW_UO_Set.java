@@ -43,7 +43,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
     transient DW_UO_Handler DW_UO_Handler;
 
     /**
-     * DW_UO_Records indexed by ClaimRefID
+     * DW_UO_Records indexed by ClaimID
      */
     protected HashMap<DW_ID, DW_UO_Record> map;
 

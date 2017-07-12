@@ -34,10 +34,10 @@ public class ClaimID_PostcodeID implements Serializable {
     }
 
     public ClaimID_PostcodeID(
-            DW_ID ClaimRefID,
+            DW_ID ClaimID,
             DW_ID PostcodeID
     ) {
-        this.ClaimID = ClaimRefID;
+        this.ClaimID = ClaimID;
         this.PostcodeID = PostcodeID;
     }
 

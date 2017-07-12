@@ -47,25 +47,25 @@ public class DW_UO_Data extends DW_Object implements Serializable {
     private TreeMap<String, DW_UO_Set> CouncilUOSets;
 
     /**
-     * For storing sets of ClaimRefIDsInUO. Keys are YM3, values are the
-     * respective ClaimRefIDsInUO for claims classed as Under Occupying.
+     * For storing sets of ClaimIDsInUO. Keys are YM3, values are the
+     * respective ClaimIDsInUO for claims classed as Under Occupying.
      */
     private TreeMap<String, Set<DW_ID>> ClaimIDsInUO;
 
     /**
-     * For storing ClaimRefIDs of claims that were classed as Under Occupying
+     * For storing ClaimIDs of claims that were classed as Under Occupying
      * Council claims at some time.
      */
     private HashSet<DW_ID> ClaimIDsInCouncilUO;
 
     /**
-     * For storing ClaimRefIDs of Council claims that were expected in March
+     * For storing ClaimIDs of Council claims that were expected in March
      * 2013 to be UnderOccupying in April 2013.
      */
     private HashSet<DW_ID> ClaimIDsInCouncilBaseline;
 
     /**
-     * For storing ClaimRefIDs of RSL claims that were expected in March 2013 to
+     * For storing ClaimIDs of RSL claims that were expected in March 2013 to
      * be UnderOccupying in April 2013.
      */
     private HashSet<DW_ID> ClaimIDsInRSLBaseline;
@@ -85,7 +85,7 @@ public class DW_UO_Data extends DW_Object implements Serializable {
         super(env);
         this.RSLUOSets = RSLUOSets;
         this.CouncilUOSets = CouncilUOSets;
-        initClaimRefIDs();
+        initClaimIDs();
     }
 
     /**
@@ -110,9 +110,9 @@ public class DW_UO_Data extends DW_Object implements Serializable {
     }
 
     /**
-     * Initialises ClaimRefIDsInUO.
+     * Initialises ClaimIDsInUO.
      */
-    private void initClaimRefIDs() {
+    private void initClaimIDs() {
         ClaimIDsInUO = new TreeMap<String, Set<DW_ID>>();
         ClaimIDsInCouncilBaseline = new HashSet<DW_ID>();
         ClaimIDsInRSLBaseline = new HashSet<DW_ID>();
@@ -125,29 +125,29 @@ public class DW_UO_Data extends DW_Object implements Serializable {
                 ClaimIDsInCouncilBaseline.addAll(CouncilUOSets.get(YM3).getClaimIDs());
                 ClaimIDsInRSLBaseline.addAll(RSLUOSets.get(YM3).getClaimIDs());
             } else {
-                HashSet<DW_ID> ClaimRefIDsForYM3;
-                ClaimRefIDsForYM3 = new HashSet<DW_ID>();
-                ClaimRefIDsForYM3.addAll(CouncilUOSets.get(YM3).getClaimIDs());
-                ClaimRefIDsForYM3.addAll(RSLUOSets.get(YM3).getClaimIDs());
-                ClaimIDsInUO.put(YM3, ClaimRefIDsForYM3);
+                HashSet<DW_ID> ClaimIDsForYM3;
+                ClaimIDsForYM3 = new HashSet<DW_ID>();
+                ClaimIDsForYM3.addAll(CouncilUOSets.get(YM3).getClaimIDs());
+                ClaimIDsForYM3.addAll(RSLUOSets.get(YM3).getClaimIDs());
+                ClaimIDsInUO.put(YM3, ClaimIDsForYM3);
             }
         }
     }
 
     /**
-     * @return AllCouncilClaimRefIDs initialising it first if it is null.
+     * @return ClaimIDsInCouncilUO initialising it first if it is null.
      */
     public HashSet<DW_ID> getClaimIDsInCouncilUO() {
         if (ClaimIDsInCouncilUO == null) {
-            initAllCouncilUOClaimRefIDs();
+            initAllCouncilUOClaimIDs();
         }
         return ClaimIDsInCouncilUO;
     }
 
     /**
-     * Initialises AllCouncilClaimRefIDs.
+     * Initialises ClaimIDsInCouncilUO.
      */
-    private void initAllCouncilUOClaimRefIDs() {
+    private void initAllCouncilUOClaimIDs() {
         ClaimIDsInCouncilUO = new HashSet<DW_ID>();
         String YM3;
         Iterator<String> ite;

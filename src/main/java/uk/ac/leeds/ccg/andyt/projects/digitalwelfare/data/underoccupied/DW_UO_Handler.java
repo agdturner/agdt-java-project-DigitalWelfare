@@ -47,8 +47,8 @@ public class DW_UO_Handler extends DW_Object {
      */
     protected DW_Strings DW_Strings;
     protected DW_Files DW_Files;
-    HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup;
-    HashMap<String, DW_ID> ClaimRefToClaimRefIDLookup;
+    HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
+    HashMap<String, DW_ID> ClaimRefToClaimIDLookup;
 
     private HashSet<String> RecordTypes;
 
@@ -59,8 +59,8 @@ public class DW_UO_Handler extends DW_Object {
         super(env);
         this.DW_Files = env.getDW_Files();
         this.DW_Strings = env.getDW_Strings();
-        ClaimRefIDToClaimRefLookup = env.getDW_SHBE_Data().getClaimIDToClaimRefLookup();
-        ClaimRefToClaimRefIDLookup = env.getDW_SHBE_Data().getClaimRefToClaimIDLookup();
+        ClaimIDToClaimRefLookup = env.getDW_SHBE_Data().getClaimIDToClaimRefLookup();
+        ClaimRefToClaimIDLookup = env.getDW_SHBE_Data().getClaimRefToClaimIDLookup();
     }
 
     public HashSet<String> getRecordTypes() {
@@ -121,15 +121,15 @@ public class DW_UO_Handler extends DW_Object {
                             //RecordID, line, type);
                             String ClaimRef;
                             ClaimRef = DW_UO_Record.getClaimRef();
-                            DW_ID ClaimRefID;
-                            ClaimRefID = ClaimRefToClaimRefIDLookup.get(ClaimRef);
-                            if (ClaimRefID == null) {
-                                ClaimRefID = new DW_ID(ClaimRefToClaimRefIDLookup.size());
-                                ClaimRefToClaimRefIDLookup.put(ClaimRef, ClaimRefID);
-                                ClaimRefIDToClaimRefLookup.put(ClaimRefID, ClaimRef);
+                            DW_ID ClaimID;
+                            ClaimID = ClaimRefToClaimIDLookup.get(ClaimRef);
+                            if (ClaimID == null) {
+                                ClaimID = new DW_ID(ClaimRefToClaimIDLookup.size());
+                                ClaimRefToClaimIDLookup.put(ClaimRef, ClaimID);
+                                ClaimIDToClaimRefLookup.put(ClaimID, ClaimRef);
                             }
                             Object o = result.put(
-                                    ClaimRefID,
+                                    ClaimID,
                                     DW_UO_Record);
                             if (o != null) {
                                 DW_UO_Record existingUnderOccupiedReport_Record;
@@ -431,23 +431,24 @@ public class DW_UO_Handler extends DW_Object {
     }
 
     /**
-     * Returns a Set<DW_ID> of the CTBRefIDs of those UnderOccupying at the
+     * Returns a Set<DW_ID> of the ClaimIDs of those UnderOccupying at the
      * start of April2013.
      *
      * @param DW_UO_Data
      * @return
      */
-    public Set<DW_ID> getUOStartApril2013ClaimRefIDs(
+    public Set<DW_ID> getUOStartApril2013ClaimIDs(
             DW_UO_Data DW_UO_Data) {
         return DW_UO_Data.getClaimIDsInUO().get("2013_Mar");
     }
     
     /**
-     * This returns a Set of all ClaimRefIDs of all Claims that have at some 
+     * This returns a Set of all ClaimIDs of all Claims that have at some 
      * time been classed as Council Under Occupying.
+     * @param DW_UO_Data
      * @return 
      */
-    public Set<DW_ID> getAllCouncilUOClaimRefIDs(
+    public Set<DW_ID> getAllCouncilUOClaimIDs(
             DW_UO_Data DW_UO_Data) {
         return DW_UO_Data.getClaimIDsInCouncilUO();
     }

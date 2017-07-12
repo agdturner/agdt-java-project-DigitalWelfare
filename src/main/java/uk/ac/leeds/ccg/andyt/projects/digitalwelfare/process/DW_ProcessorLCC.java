@@ -50,7 +50,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
     protected DW_SHBE_Handler DW_SHBE_Handler;
     protected DW_UO_Data DW_UO_Data;
     protected String[] SHBEFilenames;
-    protected HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup;
+    protected HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
 
     public DW_ProcessorLCC() {
     }
@@ -61,7 +61,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         DW_SHBE_Handler = env.getDW_SHBE_Handler();
         DW_UO_Data = env.getDW_UO_Data();
         SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
-        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
+        ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
     }
 
     /**
@@ -116,7 +116,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 //        loadSHBE = true;
 //        runPostcodeCheckLatest = true;
 //        runPostcodeCheck = true;
-        loadUnderOccupancyFromSource = true;
+//        loadUnderOccupancyFromSource = true;
 //        loadUnderOccupancy = true;
 //        runLCCSummary = true;
 //        runRentArrears = true; newRentArrearsData = true;
@@ -149,9 +149,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (loadAllONSPDFromSource || loadNewONSPDFromSource) {
             // Set up logging
             if (loadAllONSPDFromSource) {
-                processName = "loadAllONSPDFromSource";
+                processName = "LoadAllONSPDFromSource";
             } else {
-                processName = "loadNewONSPDFromSource";
+                processName = "LoadNewONSPDFromSource";
             }
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
@@ -160,7 +160,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Process
             DW_Postcode_Handler = new DW_Postcode_Handler(env);
             env.setDW_Postcode_Handler(DW_Postcode_Handler);
-            DW_Postcode_Handler.run();
+            DW_Postcode_Handler.run(logDir);
             // Close logs
             closeLogs(processName);
         }

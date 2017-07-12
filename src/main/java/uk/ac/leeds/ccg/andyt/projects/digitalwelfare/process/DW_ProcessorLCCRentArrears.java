@@ -146,7 +146,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         DHPTotal = 0;
         DHPCount = 0;
 
-        DW_ID ClaimRefID;
+        DW_ID ClaimID;
         String ClaimRef;
         DW_Claim DW_Claim;
         Iterator<Integer> ite;
@@ -306,7 +306,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         if (doClaims) {
 
             env.logO("Iterate over each claim first then each time period.", true);
-            line = "Number, ClaimRefID, ClaimRef, "
+            line = "Number, ClaimID, ClaimRef, "
                     + "FirstSeenSHBEDate, LastSeenSHBEDate, "
                     + "SHBECount, "
                     + "SHBECountPriorToApril2013, SHBECountSinceApril2013, "
@@ -432,7 +432,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                 RADNegativeNoDHPCount = 0;
                 RADNegativeNoDHP = 0;
 
-                ClaimRefID = ite2.next();
+                ClaimID = ite2.next();
 
 //            for (int j = 0; j < 17; j++) {
 //                YM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[j]);
@@ -447,8 +447,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //            }
                 //if (ClaimID.getID() == 137367) {
                 //    int debug = 1;
-                ClaimRef = ClaimRefIDToClaimRefLookup.get(ClaimRefID);
-                DW_Claim = ClaimData.get(ClaimRefID);
+                ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
+                DW_Claim = ClaimData.get(ClaimID);
 
                 ite = include.iterator();
                 // Iterate over each time period
@@ -615,7 +615,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                 }
                 counter++;
                 line = "" + counter
-                        + ", " + ClaimRefID
+                        + ", " + ClaimID
                         + ", " + ClaimRef;
                 // SHBE
                 if (IndexOfFirstSHBE != null) {
@@ -819,7 +819,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     if (Records == null) {
                         env.logE("AllSHBE.get(YM3).getRecords(true) is null!");
                     }
-                    Record = Records.get(ClaimRefID);
+                    Record = Records.get(ClaimID);
                     if (Record != null) {
                         DRecord = Record.getDRecord();
                         if (DW_SHBE_Handler.getDisability(DRecord)) {
@@ -974,8 +974,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                 // Iterate over each claim
                 ite2 = ClaimData.keySet().iterator();
                 while (ite2.hasNext()) {
-                    ClaimRefID = ite2.next();
-                    DW_Claim = ClaimData.get(ClaimRefID);
+                    ClaimID = ite2.next();
+                    DW_Claim = ClaimData.get(ClaimID);
                     if (DW_Claim.BT.containsKey(i)) {
                         BT = DW_Claim.BT.get(i) * 4 / 100.0d; //Get into pounds from pence
                         BTTotal += BT;

@@ -231,8 +231,8 @@ public class DW_SHBE_Handler extends DW_Object {
         PostcodeToPostcodeIDLookup = DW_SHBE_Data.getPostcodeToPostcodeIDLookup();
         HashMap<String, HashMap<DW_ID, AGDT_Point>> PostcodeIDPointLookups;
         PostcodeIDPointLookups = DW_SHBE_Data.getPostcodeIDToPointLookups();
-        HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup;
-        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
+        HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
+        ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
 
         // Prepare for output
         PrintWriter pw = null;
@@ -270,7 +270,7 @@ public class DW_SHBE_Handler extends DW_Object {
         ite = ClaimantPostcodesUnmappable.keySet().iterator();
         while (ite.hasNext()) {
             DW_ID = ite.next();
-            ClaimRef = ClaimRefIDToClaimRefLookup.get(DW_ID);
+            ClaimRef = ClaimIDToClaimRefLookup.get(DW_ID);
             UniqueUnmappablePostcodes.add(ClaimRef + "," + ClaimantPostcodesUnmappable.get(DW_ID));
         }
 
@@ -280,7 +280,7 @@ public class DW_SHBE_Handler extends DW_Object {
         writeOutModifiedPostcodes(
                 UniqueModifiedPostcodes,
                 logDir, YMN, DW_SHBE_Records1,
-                ClaimRefIDToClaimRefLookup,
+                ClaimIDToClaimRefLookup,
                 handleOutOfMemoryError);
         // </writeOutModifiedPostcodes>
 
@@ -314,8 +314,8 @@ public class DW_SHBE_Handler extends DW_Object {
         String postcodef1;
 
         HashMap<DW_ID, AGDT_Point> PostcodeIDToPointLookup0;
-        HashMap<DW_ID, DW_ID> ClaimRefIDToPostcodeIDLookup0 = null;
-        HashSet<DW_ID> ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = null;
+        HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup0 = null;
+        HashSet<DW_ID> ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = null;
         boolean modifiedAnyRecs = false;
 
         File FutureModifiedPostcodesFile;
@@ -346,7 +346,7 @@ public class DW_SHBE_Handler extends DW_Object {
         writeOutModifiedPostcodes(
                 UniqueModifiedPostcodes,
                 logDir, YMN, DW_SHBE_Records0,
-                ClaimRefIDToClaimRefLookup,
+                ClaimIDToClaimRefLookup,
                 handleOutOfMemoryError);
         // </writeOutModifiedPostcodes>
         PostcodeIDToPointLookup0 = PostcodeIDPointLookups.get(NearestYM3ForONSPDLookupYM30);
@@ -358,7 +358,7 @@ public class DW_SHBE_Handler extends DW_Object {
         while (ite.hasNext()) {
             DW_ID = ite.next();
             unmappablePostcodef0 = ClaimantPostcodesUnmappable0.get(DW_ID);
-            ClaimRef = ClaimRefIDToClaimRefLookup.get(DW_ID);
+            ClaimRef = ClaimIDToClaimRefLookup.get(DW_ID);
             System.out.println(ClaimRef);
             rec1 = recs1.get(DW_ID);
             rec0 = recs0.get(DW_ID);
@@ -374,14 +374,14 @@ public class DW_SHBE_Handler extends DW_Object {
                         rec0.ClaimPostcodeF = postcodef1;
                         rec0.ClaimPostcodeFMappable = true;
                         rec0.ClaimPostcodeFValidPostcodeFormat = true;
-                        if (ClaimRefIDToPostcodeIDLookup0 == null) {
-                            ClaimRefIDToPostcodeIDLookup0 = DW_SHBE_Records0.getClaimRefIDToPostcodeIDLookup();
+                        if (ClaimIDToPostcodeIDLookup0 == null) {
+                            ClaimIDToPostcodeIDLookup0 = DW_SHBE_Records0.getClaimIDToPostcodeIDLookup();
                         }
-                        ClaimRefIDToPostcodeIDLookup0.put(DW_ID, PostcodeToPostcodeIDLookup.get(postcodef1));
-                        if (ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 == null) {
-                            ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = DW_SHBE_Records0.getClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture();
+                        ClaimIDToPostcodeIDLookup0.put(DW_ID, PostcodeToPostcodeIDLookup.get(postcodef1));
+                        if (ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 == null) {
+                            ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = DW_SHBE_Records0.getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture();
                         }
-                        ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0.add(DW_ID);
+                        ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0.add(DW_ID);
                         AGDT_Point p;
                         p = PostcodeIDToPointLookup1.get(DW_ID);
                         PostcodeIDToPointLookup0.put(DW_ID, p);
@@ -419,15 +419,15 @@ public class DW_SHBE_Handler extends DW_Object {
         if (modifiedRecs == true) {
             // Write out recs0
             Generic_StaticIO.writeObject(ClaimantPostcodesUnmappable0, DW_SHBE_Records0.getClaimantPostcodesUnmappableFile());
-            Generic_StaticIO.writeObject(ClaimRefIDToPostcodeIDLookup0, DW_SHBE_Records0.getClaimRefIDToPostcodeIDLookupFile());
+            Generic_StaticIO.writeObject(ClaimIDToPostcodeIDLookup0, DW_SHBE_Records0.getClaimIDToPostcodeIDLookupFile());
             Generic_StaticIO.writeObject(recs0, DW_SHBE_Records0.getRecordsFile());
-            Generic_StaticIO.writeObject(ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0, DW_SHBE_Records0.getClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile());
+            Generic_StaticIO.writeObject(ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0, DW_SHBE_Records0.getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile());
         }
 
         // Prepare for next iteration
         recs1 = recs0;
-        ClaimRefIDToPostcodeIDLookup0 = null;
-        ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = null;
+        ClaimIDToPostcodeIDLookup0 = null;
+        ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = null;
         pw.close();
         //}
         pw2.close();
@@ -484,8 +484,8 @@ public class DW_SHBE_Handler extends DW_Object {
         PostcodeToPostcodeIDLookup = DW_SHBE_Data.getPostcodeToPostcodeIDLookup();
         HashMap<String, HashMap<DW_ID, AGDT_Point>> PostcodeIDPointLookups;
         PostcodeIDPointLookups = DW_SHBE_Data.getPostcodeIDToPointLookups();
-        HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup;
-        ClaimRefIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
+        HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
+        ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
 
         // Prepare for output
         PrintWriter pw = null;
@@ -523,7 +523,7 @@ public class DW_SHBE_Handler extends DW_Object {
         ite = ClaimantPostcodesUnmappable.keySet().iterator();
         while (ite.hasNext()) {
             DW_ID = ite.next();
-            ClaimRef = ClaimRefIDToClaimRefLookup.get(DW_ID);
+            ClaimRef = ClaimIDToClaimRefLookup.get(DW_ID);
             UniqueUnmappablePostcodes.add(ClaimRef + "," + ClaimantPostcodesUnmappable.get(DW_ID));
         }
 
@@ -533,7 +533,7 @@ public class DW_SHBE_Handler extends DW_Object {
         writeOutModifiedPostcodes(
                 UniqueModifiedPostcodes,
                 logDir, YMN, DW_SHBE_Records1,
-                ClaimRefIDToClaimRefLookup,
+                ClaimIDToClaimRefLookup,
                 handleOutOfMemoryError);
         // </writeOutModifiedPostcodes>
 
@@ -567,8 +567,8 @@ public class DW_SHBE_Handler extends DW_Object {
         String postcodef1;
 
         HashMap<DW_ID, AGDT_Point> PostcodeIDToPointLookup0;
-        HashMap<DW_ID, DW_ID> ClaimRefIDToPostcodeIDLookup0 = null;
-        HashSet<DW_ID> ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = null;
+        HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup0 = null;
+        HashSet<DW_ID> ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = null;
         boolean modifiedAnyRecs = false;
 
         File FutureModifiedPostcodesFile;
@@ -598,7 +598,7 @@ public class DW_SHBE_Handler extends DW_Object {
             writeOutModifiedPostcodes(
                     UniqueModifiedPostcodes,
                     logDir, YMN, DW_SHBE_Records0,
-                    ClaimRefIDToClaimRefLookup,
+                    ClaimIDToClaimRefLookup,
                     handleOutOfMemoryError);
             // </writeOutModifiedPostcodes>
             PostcodeIDToPointLookup0 = PostcodeIDPointLookups.get(NearestYM3ForONSPDLookupYM30);
@@ -610,7 +610,7 @@ public class DW_SHBE_Handler extends DW_Object {
             while (ite.hasNext()) {
                 DW_ID = ite.next();
                 unmappablePostcodef0 = ClaimantPostcodesUnmappable0.get(DW_ID);
-                ClaimRef = ClaimRefIDToClaimRefLookup.get(DW_ID);
+                ClaimRef = ClaimIDToClaimRefLookup.get(DW_ID);
                 System.out.println(ClaimRef);
                 rec1 = recs1.get(DW_ID);
                 rec0 = recs0.get(DW_ID);
@@ -626,14 +626,14 @@ public class DW_SHBE_Handler extends DW_Object {
                             rec0.ClaimPostcodeF = postcodef1;
                             rec0.ClaimPostcodeFMappable = true;
                             rec0.ClaimPostcodeFValidPostcodeFormat = true;
-                            if (ClaimRefIDToPostcodeIDLookup0 == null) {
-                                ClaimRefIDToPostcodeIDLookup0 = DW_SHBE_Records0.getClaimRefIDToPostcodeIDLookup();
+                            if (ClaimIDToPostcodeIDLookup0 == null) {
+                                ClaimIDToPostcodeIDLookup0 = DW_SHBE_Records0.getClaimIDToPostcodeIDLookup();
                             }
-                            ClaimRefIDToPostcodeIDLookup0.put(DW_ID, PostcodeToPostcodeIDLookup.get(postcodef1));
-                            if (ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 == null) {
-                                ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = DW_SHBE_Records0.getClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture();
+                            ClaimIDToPostcodeIDLookup0.put(DW_ID, PostcodeToPostcodeIDLookup.get(postcodef1));
+                            if (ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 == null) {
+                                ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = DW_SHBE_Records0.getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture();
                             }
-                            ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0.add(DW_ID);
+                            ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0.add(DW_ID);
                             AGDT_Point p;
                             p = PostcodeIDToPointLookup1.get(DW_ID);
                             PostcodeIDToPointLookup0.put(DW_ID, p);
@@ -671,15 +671,15 @@ public class DW_SHBE_Handler extends DW_Object {
             if (modifiedRecs == true) {
                 // Write out recs0
                 Generic_StaticIO.writeObject(ClaimantPostcodesUnmappable0, DW_SHBE_Records0.getClaimantPostcodesUnmappableFile());
-                Generic_StaticIO.writeObject(ClaimRefIDToPostcodeIDLookup0, DW_SHBE_Records0.getClaimRefIDToPostcodeIDLookupFile());
+                Generic_StaticIO.writeObject(ClaimIDToPostcodeIDLookup0, DW_SHBE_Records0.getClaimIDToPostcodeIDLookupFile());
                 Generic_StaticIO.writeObject(recs0, DW_SHBE_Records0.getRecordsFile());
-                Generic_StaticIO.writeObject(ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0, DW_SHBE_Records0.getClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile());
+                Generic_StaticIO.writeObject(ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0, DW_SHBE_Records0.getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile());
             }
 
             // Prepare for next iteration
             recs1 = recs0;
-            ClaimRefIDToPostcodeIDLookup0 = null;
-            ClaimRefIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = null;
+            ClaimIDToPostcodeIDLookup0 = null;
+            ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = null;
             pw.close();
         }
         pw2.close();
@@ -731,16 +731,17 @@ public class DW_SHBE_Handler extends DW_Object {
      * removing an additional "0" in the first part of the postcode for example
      * where "LS06" should be "LS6".
      *
+     * @param UniqueModifiedPostcodes
      * @param dir
      * @param YMN
      * @param DW_SHBE_Records
-     * @param ClaimRefIDToClaimRefLookup
+     * @param ClaimIDToClaimRefLookup
      * @param handleOutOfMemoryError
      */
     protected void writeOutModifiedPostcodes(
             HashSet<String> UniqueModifiedPostcodes,
             File dir, String YMN, DW_SHBE_Records DW_SHBE_Records,
-            HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup,
+            HashMap<DW_ID, String> ClaimIDToClaimRefLookup,
             boolean handleOutOfMemoryError) {
         File ModifiedPostcodesFile;
         int ref;
@@ -765,7 +766,7 @@ public class DW_SHBE_Handler extends DW_Object {
         while (ite.hasNext()) {
             DW_ID = ite.next();
             postcodes = ClaimantPostcodesModified.get(DW_ID);
-            ClaimRef = ClaimRefIDToClaimRefLookup.get(DW_ID);
+            ClaimRef = ClaimIDToClaimRefLookup.get(DW_ID);
             pw.println("" + ref + "," + ClaimRef + "," + postcodes[0] + "," + postcodes[1] + ",");
             UniqueModifiedPostcodes.add(ClaimRef + "," + postcodes[0] + "," + postcodes[1] + ",");
             ref++;
@@ -779,15 +780,15 @@ public class DW_SHBE_Handler extends DW_Object {
      * @param PT
      * @return
      */
-    public HashSet<DW_ID> getClaimRefIDsWithStatusOfHBAtExtractDate(
+    public HashSet<DW_ID> getClaimIDsWithStatusOfHBAtExtractDate(
             DW_SHBE_Records DW_SHBE_Records,
             String PT) {
         if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeIn)) {
-            return DW_SHBE_Records.getClaimRefIDsWithStatusOfHBAtExtractDateInPayment();
+            return DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment();
         } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeSuspended)) {
-            return DW_SHBE_Records.getClaimRefIDsWithStatusOfHBAtExtractDateSuspended();
+            return DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended();
         } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeOther)) {
-            return DW_SHBE_Records.getClaimRefIDsWithStatusOfHBAtExtractDateOther();
+            return DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther();
         }
         return null;
     }
@@ -798,15 +799,15 @@ public class DW_SHBE_Handler extends DW_Object {
      * @param PT
      * @return
      */
-    public HashSet<DW_ID> getClaimRefIDsWithStatusOfCTBAtExtractDate(
+    public HashSet<DW_ID> getClaimIDsWithStatusOfCTBAtExtractDate(
             DW_SHBE_Records DW_SHBE_Records,
             String PT) {
         if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeIn)) {
-            return DW_SHBE_Records.getClaimRefIDsWithStatusOfCTBAtExtractDateInPayment();
+            return DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateInPayment();
         } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeSuspended)) {
-            return DW_SHBE_Records.getClaimRefIDsWithStatusOfCTBAtExtractDateSuspended();
+            return DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended();
         } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeOther)) {
-            return DW_SHBE_Records.getClaimRefIDsWithStatusOfCTBAtExtractDateOther();
+            return DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther();
         }
         return null;
     }
@@ -1005,32 +1006,32 @@ public class DW_SHBE_Handler extends DW_Object {
      * Only called when loading SHBE from source.
      *
      * @param ClaimRef
-     * @param ClaimRefToClaimRefIDLookup
-     * @param ClaimRefIDToClaimRefLookup
-     * @param ClaimRefIDs
-     * @param ClaimRefIDsOfNewSHBEClaims
+     * @param ClaimRefToClaimIDLookup
+     * @param ClaimIDToClaimRefLookup
+     * @param ClaimIDs
+     * @param ClaimIDsOfNewSHBEClaims
      * @return
      * @throws java.lang.Exception
      */
     public DW_ID getIDAddIfNeeded(
             String ClaimRef,
-            HashMap<String, DW_ID> ClaimRefToClaimRefIDLookup,
-            HashMap<DW_ID, String> ClaimRefIDToClaimRefLookup,
-            HashSet<DW_ID> ClaimRefIDs,
-            HashSet<DW_ID> ClaimRefIDsOfNewSHBEClaims
+            HashMap<String, DW_ID> ClaimRefToClaimIDLookup,
+            HashMap<DW_ID, String> ClaimIDToClaimRefLookup,
+            HashSet<DW_ID> ClaimIDs,
+            HashSet<DW_ID> ClaimIDsOfNewSHBEClaims
     ) throws Exception {
         DW_ID result;
-        if (ClaimRefToClaimRefIDLookup.containsKey(ClaimRef)) {
-            result = ClaimRefToClaimRefIDLookup.get(ClaimRef);
+        if (ClaimRefToClaimIDLookup.containsKey(ClaimRef)) {
+            result = ClaimRefToClaimIDLookup.get(ClaimRef);
         } else {
-            result = new DW_ID(ClaimRefIDToClaimRefLookup.size());
-            ClaimRefIDToClaimRefLookup.put(result, ClaimRef);
-            ClaimRefToClaimRefIDLookup.put(ClaimRef, result);
-            if (ClaimRefIDs.contains(result)) {
+            result = new DW_ID(ClaimIDToClaimRefLookup.size());
+            ClaimIDToClaimRefLookup.put(result, ClaimRef);
+            ClaimRefToClaimIDLookup.put(ClaimRef, result);
+            if (ClaimIDs.contains(result)) {
                 throw new Exception("DRecord already read for ClaimRef " + ClaimRef);
             }
-            ClaimRefIDsOfNewSHBEClaims.add(result);
-            ClaimRefIDs.add(result);
+            ClaimIDsOfNewSHBEClaims.add(result);
+            ClaimIDs.add(result);
         }
         return result;
     }
@@ -1132,13 +1133,13 @@ public class DW_SHBE_Handler extends DW_Object {
         int[] TotalCount_TTWeeklyEligibleRentAmountZero = null;
         Iterator<DW_ID> ite;
         HashMap<DW_ID, DW_UO_Record> map;
-        DW_ID ClaimRefID;
+        DW_ID ClaimID;
         int TT;
         BigDecimal income;
 
         while (HB_CTBIte.hasNext()) {
             HBOrCTB = HB_CTBIte.next();
-            HashSet<DW_ID> ClaimRefIDs;
+            HashSet<DW_ID> ClaimIDs;
 
             // Initialise
             TotalCount_IncomeNonZero = 0;
@@ -1165,19 +1166,19 @@ public class DW_SHBE_Handler extends DW_Object {
             while (PTsIte.hasNext()) {
                 PT = PTsIte.next();
                 if (HBOrCTB.equalsIgnoreCase(DW_Strings.sHB)) {
-                    ClaimRefIDs = getClaimRefIDsWithStatusOfHBAtExtractDate(DW_SHBE_Records, PT);
+                    ClaimIDs = getClaimIDsWithStatusOfHBAtExtractDate(DW_SHBE_Records, PT);
                 } else {
-                    ClaimRefIDs = getClaimRefIDsWithStatusOfCTBAtExtractDate(DW_SHBE_Records, PT);
+                    ClaimIDs = getClaimIDsWithStatusOfCTBAtExtractDate(DW_SHBE_Records, PT);
                 }
                 if (doUnderOccupancy) {
                     if (UOReportSetCouncil != null) {
                         map = UOReportSetCouncil.getMap();
                         ite = map.keySet().iterator();
                         while (ite.hasNext()) {
-                            ClaimRefID = ite.next();
-                            if (ClaimRefIDs.contains(ClaimRefID)) {
+                            ClaimID = ite.next();
+                            if (ClaimIDs.contains(ClaimID)) {
                                 DW_SHBE_Record rec;
-                                rec = recs.get(ClaimRefID);
+                                rec = recs.get(ClaimID);
                                 if (rec != null) {
                                     DW_SHBE_D_Record aDRecord;
                                     aDRecord = rec.getDRecord();
@@ -1236,10 +1237,10 @@ public class DW_SHBE_Handler extends DW_Object {
                         map = UOReportSetRSL.getMap();
                         ite = map.keySet().iterator();
                         while (ite.hasNext()) {
-                            ClaimRefID = ite.next();
-                            if (ClaimRefIDs.contains(ClaimRefID)) {
+                            ClaimID = ite.next();
+                            if (ClaimIDs.contains(ClaimID)) {
                                 DW_SHBE_Record rec;
-                                rec = recs.get(ClaimRefID);
+                                rec = recs.get(ClaimID);
                                 if (rec != null) {
                                     DW_SHBE_D_Record aDRecord;
                                     aDRecord = rec.getDRecord();
@@ -1297,12 +1298,12 @@ public class DW_SHBE_Handler extends DW_Object {
                         }
                     }
                 } else {
-                    Iterator<DW_ID> ClaimRefIDsIte;
-                    ClaimRefIDsIte = ClaimRefIDs.iterator();
-                    while (ClaimRefIDsIte.hasNext()) {
-                        ClaimRefID = ClaimRefIDsIte.next();
+                    Iterator<DW_ID> ClaimIDsIte;
+                    ClaimIDsIte = ClaimIDs.iterator();
+                    while (ClaimIDsIte.hasNext()) {
+                        ClaimID = ClaimIDsIte.next();
                         DW_SHBE_Record rec;
-                        rec = recs.get(ClaimRefID);
+                        rec = recs.get(ClaimID);
                         DW_SHBE_D_Record aDRecord;
                         aDRecord = rec.getDRecord();
                         TT = aDRecord.getTenancyType();
@@ -3432,12 +3433,12 @@ public class DW_SHBE_Handler extends DW_Object {
     }
 
     public HashSet<DW_PersonID> getUniquePersonIDs(
-            HashMap<DW_ID, HashSet<DW_PersonID>> ClaimRefIDToPersonIDsLookup) {
+            HashMap<DW_ID, HashSet<DW_PersonID>> ClaimIDToPersonIDsLookup) {
         HashSet<DW_PersonID> result;
         Collection<HashSet<DW_PersonID>> c;
         Iterator<HashSet<DW_PersonID>> ite2;
         result = new HashSet<DW_PersonID>();
-        c = ClaimRefIDToPersonIDsLookup.values();
+        c = ClaimIDToPersonIDsLookup.values();
         ite2 = c.iterator();
         while (ite2.hasNext()) {
             result.addAll(ite2.next());
@@ -3446,10 +3447,10 @@ public class DW_SHBE_Handler extends DW_Object {
     }
 
     public HashSet<DW_PersonID> getUniquePersonIDs0(
-            HashMap<DW_ID, DW_PersonID> ClaimRefIDToPersonIDLookup) {
+            HashMap<DW_ID, DW_PersonID> ClaimIDToPersonIDLookup) {
         HashSet<DW_PersonID> result;
         result = new HashSet<DW_PersonID>();
-        result.addAll(ClaimRefIDToPersonIDLookup.values());
+        result.addAll(ClaimIDToPersonIDLookup.values());
         return result;
     }
 }
