@@ -27,10 +27,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_H
 
 public abstract class DW_ProcessorAbstract extends DW_Object {
 
-    protected transient DW_Postcode_Handler DW_Postcode_Handler; 
+    protected transient DW_Postcode_Handler DW_Postcode_Handler;
     protected transient DW_Files DW_Files;
     protected transient DW_Strings DW_Strings;
-    
+
     public DW_ProcessorAbstract() {
     }
 
@@ -48,7 +48,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         result.add(false);
         return result;
     }
-        
+
     /**
      * Initialises a PrintWriter for pushing output to.
      *
@@ -80,7 +80,8 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
     }
 
     /**
-     * @TODO Adapt to use the ONSPD for a particular time for the postcode look up returned.
+     * @TODO Adapt to use the ONSPD for a particular time for the postcode look
+     * up returned.
      * @param env
      * @param level If level is "OA" returns OutputArea codes. If level is
      * "LSOA" returns Lower-layer Super Output Area codes. If level is "MSOA"
@@ -119,15 +120,14 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
 //        }
 //        return result;
 //    }
-
     /**
-     * @TODO Adapt to use the ONSPD for a particular time for the postcode look up returned.
+     * @param YM3
+     * @TODO Adapt to use the ONSPD for a particular time for the postcode look
+     * up returned.
      * @param env
      * @param level If level is "OA" returns OutputArea codes. If level is
      * "LSOA" returns Lower-layer Super Output Area codes. If level is "MSOA"
      * returns Middle-layer Super Output Area codes.
-     * @param year If year = 2011 returns 2011 census code. If year = 2001
-     * returns 2001 census code.
      * @return TreeMap<String, String> result where:--------------------------
      * Keys are postcodes; values are census area codes.
      */
@@ -139,36 +139,50 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         YM3Nearest = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
         String[] YM3NearestSplit;
         YM3NearestSplit = YM3Nearest.split("_");
-        int year = Integer.valueOf(YM3NearestSplit[0]);
-        String month = YM3NearestSplit[1];
         TreeMap<String, String> result;
         String outputFilename;
-        outputFilename = "PostcodeTo" + level + "_" + YM3Nearest
-                + "_LookUp_TreeMap_String_Strings" + DW_Strings.sBinaryFileExtension;
         File dir;
-        dir = new File(
-                DW_Files.getGeneratedONSPDDir(),
-                YM3Nearest);
+        HashSet CensusAreaAggregations;
+        CensusAreaAggregations = DW_Strings.getCensusAreaAggregations();
+        if (CensusAreaAggregations.contains(level)) {
+            int year = Integer.valueOf(YM3NearestSplit[0]);
+            String yearString;
+            if (year < 2011) {
+                yearString = "2001";
+            } else {
+                yearString = "2011";
+            }
+            outputFilename = "PostcodeTo" + level + "_" + yearString
+                    + "_LookUp_TreeMap_String_Strings" + DW_Strings.sBinaryFileExtension;
+            dir = new File(
+                    DW_Files.getGeneratedONSPDDir(),
+                    yearString);
+        } else {
+            //String month = YM3NearestSplit[1];
+            outputFilename = "PostcodeTo" + level + "_" + YM3Nearest
+                    + "_LookUp_TreeMap_String_Strings" + DW_Strings.sBinaryFileExtension;
+            dir = new File(
+                    DW_Files.getGeneratedONSPDDir(),
+                    YM3Nearest);
+        }
         File outfile = new File(
                 dir,
                 outputFilename);
         if (!outfile.exists()) {
             dir.mkdirs();
-            String YM3NearestFormat;
-            YM3NearestFormat = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
             File infile = DW_Files.getInputONSPDFile(YM3Nearest);
             result = initLookupFromPostcodeToCensusCodes(
                     infile,
                     outfile,
                     level,
-                    YM3NearestFormat);
+                    YM3Nearest);
         } else {
             Object o = Generic_StaticIO.readObject(outfile);
             result = (TreeMap<String, String>) o;
         }
         return result;
     }
-    
+
     /**
      * Keys are postcodes; values are census codes:-----------------------------
      */
@@ -227,7 +241,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         }
         return postcodeDistrict;
     }
-    
+
     /**
      * For storing the expected postcodes for analysis
      */

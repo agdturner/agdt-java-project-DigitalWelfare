@@ -398,8 +398,8 @@ public class DW_Files extends DW_Object {
                 }
                 // MAY
                 month = "MAY";
-                if (year == 2009) {
-                    nameAdd = "_UK_1M_FP";
+                if (year == 2009 || year == 2010) {
+                    nameAdd += "_FP";
                 } else if (year == 2011) {
                     namePrefix = "ONSPD";
                 }

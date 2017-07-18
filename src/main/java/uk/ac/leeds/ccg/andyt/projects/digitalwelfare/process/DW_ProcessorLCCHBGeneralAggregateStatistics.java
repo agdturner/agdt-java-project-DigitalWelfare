@@ -130,7 +130,8 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
 //        levels.add("PostcodeUnit");
 //        levels.add("PostcodeSector");
 //        levels.add("PostcodeDistrict");
-        levels.add(DW_Strings.sParliamentaryWardConstituency);
+        levels.add(DW_Strings.sParliamentaryConstituency);
+        levels.add(DW_Strings.sStatisticalWard);
         includes = DW_SHBE_Handler.getIncludes();
 //            includes.remove(DW_Strings.sIncludeAll);
 //            includes.remove(DW_Strings.sIncludeYearly);

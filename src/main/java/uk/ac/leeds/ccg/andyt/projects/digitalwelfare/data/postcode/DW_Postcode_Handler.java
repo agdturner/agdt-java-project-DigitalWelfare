@@ -1249,8 +1249,15 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             File file,
             String level,
             String YM3NearestFormat) {
-        int year;
-        year = 2001;
+        String[] YM3NearestSplit;
+        YM3NearestSplit = YM3NearestFormat.split(DW_Strings.sUnderscore);
+                int year = Integer.valueOf(YM3NearestSplit[0]);
+            String yearString;
+            if (year < 2011) {
+                yearString = "2001";
+            } else {
+                yearString = "2011";
+            }
         TreeMap<String, String> result = new TreeMap<String, String>();
         try {
             int lineCounter = 0;
@@ -1282,38 +1289,41 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
                         }
                         String value = "";
                         if (level.equalsIgnoreCase("OA")) {
-                            if (year == 2001) {
+                            if (year < 2011) {
                                 value = rec.getOa01();
-                            } else if (year == 2011) {
+                            } else {
                                 value = rec.getOa11();
                             }
                         }
                         if (level.equalsIgnoreCase("LSOA")) {
-                            if (year == 2001) {
+                            if (year < 2011) {
                                 value = rec.getLsoa01();
-                            } else if (year == 2011) {
+                            } else {
                                 value = rec.getLsoa11();
                             }
                         }
                         if (level.equalsIgnoreCase("MSOA")) {
-                            if (year == 2001) {
+                            if (year < 2011) {
                                 value = rec.getMsoa01();
-                            } else if (year == 2011) {
+                            } else {
                                 value = rec.getMsoa11();
                             }
                         }
                         String postcode = rec.getPcd();
-                        if (level.equalsIgnoreCase("PostcodeUnit")) {
+                        if (level.equalsIgnoreCase(DW_Strings.sPostcodeUnit)) {
                             value = postcode;
                         }
-                        if (level.equalsIgnoreCase("PostcodeSector")) {
+                        if (level.equalsIgnoreCase(DW_Strings.sPostcodeSector)) {
                             value = getPostcodeSector(postcode);
                         }
-                        if (level.equalsIgnoreCase("PostcodeDistrict")) {
+                        if (level.equalsIgnoreCase(DW_Strings.sPostcodeDistrict)) {
                             value = getPostcodeDistrict(postcode);
                         }
-                        if (level.equalsIgnoreCase(DW_Strings.sParliamentaryWardConstituency)) {
-                            value = rec.getOsward();
+                        if (level.equalsIgnoreCase(DW_Strings.sParliamentaryConstituency)) {
+                            value = rec.getPcon();
+                        }
+                        if (level.equalsIgnoreCase(DW_Strings.sStatisticalWard)) {
+                            value = rec.getStatsward();
                         }
                         result.put(rec.getPcd(), value);
                         lineCounter++;

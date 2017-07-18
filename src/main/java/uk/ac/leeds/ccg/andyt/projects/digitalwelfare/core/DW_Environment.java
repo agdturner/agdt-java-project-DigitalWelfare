@@ -362,7 +362,9 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         if (PrintWriterOut != null) {
             PrintWriterOut.println(s);
         }
-        //System.out.println(s);
+        if (println) {
+            System.out.println(s);
+        }
     }
 
     /**

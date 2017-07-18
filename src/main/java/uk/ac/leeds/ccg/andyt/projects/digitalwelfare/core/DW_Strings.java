@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * A class for holding all Strings used in the DigitalWelfare project. It is
@@ -150,12 +151,12 @@ public class DW_Strings {
      * Short code for sInclude2MonthlySinceApril2013Offset0.
      */
     public final String sInclude2MonthlySinceApril2013Offset1 = "I2MU1";
-    
+
     /**
      * Short code for sIncludeStartEndSinceApril2013.
      */
     public final String sIncludeStartEndSinceApril2013 = "ISEU";
-    
+
     /**
      * Short code for Include6Monthly.
      */
@@ -170,7 +171,7 @@ public class DW_Strings {
      * Short code for IncludeApril2013May2013.
      */
     public final String sIncludeApril2013May2013 = "IncludeApril2013May2013";
-    
+
     /**
      * Short code for IncludeYearly.
      */
@@ -280,6 +281,11 @@ public class DW_Strings {
     public final String sData = "Data";
 
     /**
+     * For storing sOA, sLSOA, sMSOA, sStatisticalWard.
+     */
+    protected HashSet<String> CensusAreaAggregations;
+    
+    /**
      * "OA" - Abbreviation of Output Area.
      */
     public final String sOA = "OA";
@@ -290,11 +296,35 @@ public class DW_Strings {
     public final String sLSOA = "LSOA";
 
     /**
-     * "Ward" - Abbreviation of Parliamentary Ward Constituency.
+     * "MSOA" - Abbreviation of Middle-layer Super Output Area.
      */
-    public final String sParliamentaryWardConstituency = "Ward";
+    public final String sMSOA = "MSOA";
 
-    
+    /**
+     * StatisticalWard
+     */
+    public final String sStatisticalWard = "StatisticalWard";
+
+    /**
+     * Parliamentary Constituency.
+     */
+    public final String sParliamentaryConstituency = "ParliamentaryConstituency";
+
+    /**
+     * PostcodeUnit
+     */
+    public final String sPostcodeUnit = "PostcodeUnit";
+
+    /**
+     * PostcodeSector
+     */
+    public final String sPostcodeSector = "PostcodeSector";
+
+    /**
+     * PostcodeDistrict
+     */
+    public final String sPostcodeDistrict = "PostcodeDistrict";
+
     public final String sCountOfNewSHBEClaimsPSI = "CountOfNewSHBEClaimsPSI";
 
     public final String sTotal_Income = "Total_Income";
@@ -611,7 +641,7 @@ public class DW_Strings {
      * "CountIndividuals".
      */
     public final String sCountOfIndividuals = "CountOfIndividuals";
-    
+
     /**
      * "Records".
      */
@@ -634,6 +664,22 @@ public class DW_Strings {
      *
      * @return
      */
+    public HashSet<String> getCensusAreaAggregations() {
+        if (CensusAreaAggregations == null) {
+            CensusAreaAggregations = new HashSet<String>();
+            CensusAreaAggregations.add(sOA);
+            CensusAreaAggregations.add(sLSOA);
+            CensusAreaAggregations.add(sMSOA);
+            CensusAreaAggregations.add(sStatisticalWard);
+        }
+        return CensusAreaAggregations;
+    }
+
+    /**
+     * For getting an {@code ArrayList<String>} of PaymentTypes.
+     *
+     * @return
+     */
     public ArrayList<String> getPaymentTypes() {
         ArrayList<String> result;
         result = new ArrayList<String>();
@@ -645,11 +691,11 @@ public class DW_Strings {
     }
 
     public ArrayList<String> getHB_CTB() {
-         ArrayList<String> result;
+        ArrayList<String> result;
         result = new ArrayList<String>();
         result.add(sHB);
         result.add(sCTB);
         return result;
     }
-    
+
 }

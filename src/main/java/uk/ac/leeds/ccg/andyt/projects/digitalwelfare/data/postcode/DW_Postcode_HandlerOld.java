@@ -1306,17 +1306,20 @@ public class DW_Postcode_HandlerOld extends Generic_UKPostcode_Handler implement
                             }
                         }
                         String postcode = rec.getPcd();
-                        if (level.equalsIgnoreCase("PostcodeUnit")) {
+                        if (level.equalsIgnoreCase(DW_Strings.sPostcodeUnit)) {
                             value = postcode;
                         }
-                        if (level.equalsIgnoreCase("PostcodeSector")) {
+                        if (level.equalsIgnoreCase(DW_Strings.sPostcodeSector)) {
                             value = getPostcodeSector(postcode);
                         }
-                        if (level.equalsIgnoreCase("PostcodeDistrict")) {
+                        if (level.equalsIgnoreCase(DW_Strings.sPostcodeDistrict)) {
                             value = getPostcodeDistrict(postcode);
                         }
-                        if (level.equalsIgnoreCase(DW_Strings.sParliamentaryWardConstituency)) {
-                            value = rec.getOsward();
+                        if (level.equalsIgnoreCase(DW_Strings.sParliamentaryConstituency)) {
+                            value = rec.getPcon();
+                        }
+                        if (level.equalsIgnoreCase(DW_Strings.sStatisticalWard)) {
+                            value = rec.getStatsward();
                         }
                         result.put(rec.getPcd(), value);
                         lineCounter++;
