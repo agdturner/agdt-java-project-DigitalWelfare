@@ -131,7 +131,7 @@ public class DW_Postcode_HandlerOld extends Generic_UKPostcode_Handler implement
 
     /**
      *
-     * @param yM3v
+     * @param nearestYM3ForONSPDLookup
      * @param level Expects either "Unit", "Sector" or "Area"
      * @param postcode
      * @return
@@ -1172,7 +1172,7 @@ public class DW_Postcode_HandlerOld extends Generic_UKPostcode_Handler implement
 //                        result.put(rec.getPcd(), rec);
 //                        lineCounter++;
 //                        if (lineCounter % 100000 == 0) {
-//                            System.out.println("Read " + lineCounter + " lines out of 2550320");
+//                            System.out.println("Read " + lineCounter + " lines out of something like 2560000");
 //                        }
 //                        break;
 //                    case StreamTokenizer.TT_WORD:
@@ -1223,7 +1223,7 @@ public class DW_Postcode_HandlerOld extends Generic_UKPostcode_Handler implement
 //                        result.put(rec.getPcd(), values);
 //                        lineCounter++;
 //                        if (lineCounter % 100000 == 0) {
-//                            System.out.println("Read " + lineCounter + " lines out of 2550320");
+//                            System.out.println("Read " + lineCounter + " lines out of something like 2560000");
 //                        }
 //                        break;
 //                    case StreamTokenizer.TT_WORD:
@@ -1324,7 +1324,7 @@ public class DW_Postcode_HandlerOld extends Generic_UKPostcode_Handler implement
                         result.put(rec.getPcd(), value);
                         lineCounter++;
                         if (lineCounter % 100000 == 0) {
-                            System.out.println("Read " + lineCounter + " lines out of 2550320");
+                            System.out.println("Read " + lineCounter + " lines out of something like 2560000");
                         }
                         break;
                     case StreamTokenizer.TT_WORD:
@@ -1375,7 +1375,7 @@ public class DW_Postcode_HandlerOld extends Generic_UKPostcode_Handler implement
                         result.put(rec.getPcd(), values);
                         lineCounter++;
                         if (lineCounter % 100000 == 0) {
-                            System.out.println("Read " + lineCounter + " lines out of 2550320");
+                            System.out.println("Read " + lineCounter + " lines out of something like 2560000");
                         }
                         break;
                     case StreamTokenizer.TT_WORD:

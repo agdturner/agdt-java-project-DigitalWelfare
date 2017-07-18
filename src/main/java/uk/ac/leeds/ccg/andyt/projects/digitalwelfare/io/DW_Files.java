@@ -339,13 +339,14 @@ public class DW_Files extends DW_Object {
     public File getInputONSPDFile(File dir, String namePrefix, int year, String month, String nameAdd) {
         File f;
         File d;
-        d = new File(
-                dir,
-                "ONSPD" + "_" + month + "_" + year);
         if (year > 2016) {
-        d = new File(
-                dir,
-                "ONSPD" + "_" + month + "_" + year + nameAdd);
+            d = new File(
+                    dir,
+                    "ONSPD" + "_" + month + "_" + year + nameAdd);
+        } else {
+            d = new File(
+                    dir,
+                    "ONSPD" + "_" + month + "_" + year);
         }
         d = new File(
                 d,
@@ -386,11 +387,15 @@ public class DW_Files extends DW_Object {
                 } else {
                     namePrefix = "ONSPD";
                     nameAdd = "_O";
+                    if (year >= 2011 && year <= 2013) {
+                        // It is horrible but true that the following is "_UK_O" not "_UK_0"!
+                        nameAdd = "_UK_O"; 
+                    }
                     if (year > 2013) {
-                        nameAdd = "_UK";                        
+                        nameAdd = "_UK";
                     }
                 }
-                // FEB
+                // FEB ONSPD_FEB_2012/Data/ONSPD_FEB_2012_UK_0.csv
                 if (year != 2011) {
                     month = "FEB";
                     f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
@@ -400,17 +405,12 @@ public class DW_Files extends DW_Object {
                 month = "MAY";
                 if (year == 2009 || year == 2010) {
                     nameAdd += "_FP";
-                } else if (year == 2011) {
-                    namePrefix = "ONSPD";
                 }
                 f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
                 InputONSPDFiles.put(year + "_" + month, f);
                 if (year != 2017) {
                     // AUG
                     month = "AUG";
-                    if (year == 2011) {
-                        nameAdd = "_UK_O";
-                    }
                     f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
                     InputONSPDFiles.put(year + "_" + month, f);
                     // NOV

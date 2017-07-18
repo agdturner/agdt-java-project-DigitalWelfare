@@ -29,6 +29,7 @@ import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -82,7 +83,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         }
         return result;
     }
-    
+
     public double getDistanceBetweenPostcodes(
             String yM30v,
             String yM31v,
@@ -170,42 +171,13 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
     }
 
     /**
-     * 2008_FEB
-     * 2008_MAY
-     * 2008_AUG
-     * 2008_NOV
-     * 2009_FEB
-     * 2009_MAY
-     * 2009_AUG
-     * 2009_NOV
-     * 2010_FEB
-     * 2010_MAY
-     * 2010_AUG
-     * 2010_NOV
-     * 
-     * 2011_MAY
-     * 2011_AUG
-     * 2011_NOV
-     * 2012_FEB
-     * 2012_MAY
-     * 2012_AUG
-     * 2012_NOV
-     * 2013_FEB
-     * 2013_MAY
-     * 2013_AUG
-     * 2013_NOV
-     * 2014_FEB
-     * 2014_MAY
-     * 2014_AUG
-     * 2014_NOV
-     * 2015_FEB
-     * 2015_MAY
-     * 2015_AUG
-     * 2015_NOV
-     * 2016_FEB
-     * 2016_MAY
-     * 2016_AUG
-     * 2016_NOV
+     * 2008_FEB 2008_MAY 2008_AUG 2008_NOV 2009_FEB 2009_MAY 2009_AUG 2009_NOV
+     * 2010_FEB 2010_MAY 2010_AUG 2010_NOV
+     *
+     * 2011_MAY 2011_AUG 2011_NOV 2012_FEB 2012_MAY 2012_AUG 2012_NOV 2013_FEB
+     * 2013_MAY 2013_AUG 2013_NOV 2014_FEB 2014_MAY 2014_AUG 2014_NOV 2015_FEB
+     * 2015_MAY 2015_AUG 2015_NOV 2016_FEB 2016_MAY 2016_AUG 2016_NOV
+     *
      * @param YM3
      * @return
      */
@@ -217,30 +189,28 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         int yearint = Integer.valueOf(year);
         String month = split[1];
         if (yearint > 2016) {
-           if (month.equalsIgnoreCase("JAN")
+            if (month.equalsIgnoreCase("JAN")
                     || month.equalsIgnoreCase("FEB")) {
                 return "" + yearint + "_FEB";
-           }
-           return defaultLatest;
+            }
+            return defaultLatest;
         } else if (yearint < 2008) {
             return "2008_FEB";
         } else if (yearint == 2011) {
             // There was no realease in Feb!
             if (month.equalsIgnoreCase("JAN")
                     || month.equalsIgnoreCase("FEB")
-                    ||month.equalsIgnoreCase("MAR")
+                    || month.equalsIgnoreCase("MAR")
                     || month.equalsIgnoreCase("APR")
-                    || month.equalsIgnoreCase("MAY")){
+                    || month.equalsIgnoreCase("MAY")) {
                 return "2011_MAY";
-            } else if (
-                    month.equalsIgnoreCase("JUN")
+            } else if (month.equalsIgnoreCase("JUN")
                     || month.equalsIgnoreCase("JUL")
-                    || month.equalsIgnoreCase("AUG")){
+                    || month.equalsIgnoreCase("AUG")) {
                 return "2011_AUG";
-            } else if (
-                    month.equalsIgnoreCase("SEP")
+            } else if (month.equalsIgnoreCase("SEP")
                     || month.equalsIgnoreCase("OCT")
-                    || month.equalsIgnoreCase("NOV")){
+                    || month.equalsIgnoreCase("NOV")) {
                 return "2011_NOV";
             } else {
                 return "2011_FEB";
@@ -249,20 +219,17 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             if (month.equalsIgnoreCase("JAN")
                     || month.equalsIgnoreCase("FEB")) {
                 return "" + yearint + "_FEB";
-            } else if (
-                    month.equalsIgnoreCase("MAR")
+            } else if (month.equalsIgnoreCase("MAR")
                     || month.equalsIgnoreCase("APR")
-                    || month.equalsIgnoreCase("MAY")){
+                    || month.equalsIgnoreCase("MAY")) {
                 return "" + yearint + "_MAY";
-            } else if (
-                    month.equalsIgnoreCase("JUN")
+            } else if (month.equalsIgnoreCase("JUN")
                     || month.equalsIgnoreCase("JUL")
-                    || month.equalsIgnoreCase("AUG")){
+                    || month.equalsIgnoreCase("AUG")) {
                 return "" + yearint + "_AUG";
-            } else if (
-                    month.equalsIgnoreCase("SEP")
+            } else if (month.equalsIgnoreCase("SEP")
                     || month.equalsIgnoreCase("OCT")
-                    || month.equalsIgnoreCase("NOV")){
+                    || month.equalsIgnoreCase("NOV")) {
                 return "" + yearint + "_NOV";
             } else {
                 if (yearint == 2010) {
@@ -276,68 +243,8 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
                 }
             }
         }
-                
-//        } else if (yearint == 2012) {
-//            if (month.equalsIgnoreCase("JAN")
-//                    || month.equalsIgnoreCase("FEB")
-//                    || month.equalsIgnoreCase("MAR")
-//                    || month.equalsIgnoreCase("APR")
-//                    || month.equalsIgnoreCase("MAY")
-//                    || month.equalsIgnoreCase("JUN")
-//                    || month.equalsIgnoreCase("JUL")) {
-//                return "2011_MAY";
-//            } else if (month.equalsIgnoreCase("AUG")
-//                    || month.equalsIgnoreCase("SEP")
-//                    || month.equalsIgnoreCase("OCT")) {
-//                return "2012_AUG";
-//            } else {
-//                return "2012_NOV";
-//            }
-//        } else if (yearint == 2013) {
-//            if (month.equalsIgnoreCase("JAN")
-//                    || month.equalsIgnoreCase("FEB")) {
-//                return "2012_NOV";
-//            } else if (month.equalsIgnoreCase("MAR")
-//                    || month.equalsIgnoreCase("APR")) {
-//                return "2013_FEB";
-//            } else if (month.equalsIgnoreCase("MAY")
-//                    || month.equalsIgnoreCase("JUN")) {
-//                return "2013_MAY";
-//            } else {
-//                return "2013_AUG";
-//            }
-//        } else if (yearint == 2014) {
-//            if (month.equalsIgnoreCase("NOV")
-//                    || month.equalsIgnoreCase("DEC")) {
-//                return "2014_NOV";
-//            } else {
-//                return "2013_AUG";
-//            }
-//        } else if (yearint == 2015) {
-//            if (month.equalsIgnoreCase("JAN")
-//                    || month.equalsIgnoreCase("FEB")
-//                    || month.equalsIgnoreCase("MAR")
-//                    || month.equalsIgnoreCase("APR")) {
-//                return "2014_NOV";
-//            } else if (month.equalsIgnoreCase("MAY")
-//                    || month.equalsIgnoreCase("JUN")
-//                    || month.equalsIgnoreCase("JUL")) {
-//                return "2015_MAY";
-//            } else {
-//                return "2015_AUG";
-//            }
-//        } else if (yearint == 2016) {
-//            if (month.equalsIgnoreCase("JAN")
-//                    || month.equalsIgnoreCase("FEB")) {
-//                return "2015_AUG";
-//            } else {
-//                
-//                return latest;
-//            }
-//        }
-//        return null;
     }
-    
+
     public String getDefaultYM3() {
         return "2013_AUG";
     }
@@ -345,23 +252,24 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
     /**
      * Return postcodef with a space added between the first and second parts if
      * it is long enough.
+     *
      * @param postcodef
-     * @return 
+     * @return
      */
     public String getPostcodePrintFormat(String postcodef) {
         int length;
-                length = postcodef.length();
-                if (length < 5) {
+        length = postcodef.length();
+        if (length < 5) {
             return postcodef;
         } else {
-                String firstPartPostcode;
-                firstPartPostcode = postcodef.substring(0, length - 3);
-                String secondPartPostcode;
-                secondPartPostcode = postcodef.substring(length - 3, length);
-                return firstPartPostcode + " " + secondPartPostcode;
-            }
+            String firstPartPostcode;
+            firstPartPostcode = postcodef.substring(0, length - 3);
+            String secondPartPostcode;
+            secondPartPostcode = postcodef.substring(length - 3, length);
+            return firstPartPostcode + " " + secondPartPostcode;
+        }
     }
-    
+
     /**
      * @see also
      * @param unformattedUnitPostcode
@@ -511,7 +419,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         selection += "BL";
         selection += "HX";
         selection += "HD";
-        return "PostcodeLookUp_" + selection 
+        return "PostcodeLookUp_" + selection
                 //+ "_" + YM3
                 + "_TreeMap_String_Point" + DW_Strings.sBinaryFileExtension;
     }
@@ -657,7 +565,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
     }
 
     public void run(File logDir) {
-       String processedFilename = getDefaultLookupFilename();
+        String processedFilename = getDefaultLookupFilename();
         boolean ignorePointsAtOrigin = true;
         TreeMap<String, File> InputONSPDFiles;
         InputONSPDFiles = DW_Files.getInputONSPDFiles();
@@ -667,7 +575,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
                 InputONSPDFiles,
                 processedFilename);
     }
-    
+
     public void run3() {
         // Read NPD OutputArea code mapping
         // There are two OA codes and this is a lookup from one to another.
@@ -984,7 +892,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
     }
 
     /**
-     * 
+     *
      * @param NearestYM3ForONSPDLookup
      * @param PostcodeF
      * @return True iff Postcode is a valid Postcode.
@@ -996,18 +904,18 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             return false;
         }
         if (PostcodeF.length() > 5) {
-                boolean isMappablePostcode;
-                TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> ONSPDLookups;
-                ONSPDLookups = DW_Maps.getONSPDlookups(env);
-                TreeMap<String, TreeMap<String, AGDT_Point>> ONSPDLookupUnitPostcode;
-                ONSPDLookupUnitPostcode = ONSPDLookups.get(TYPE_UNIT);
-                TreeMap<String, AGDT_Point> ONSPDLookupUnitPostcodeNearestYM3;
-                ONSPDLookupUnitPostcodeNearestYM3 = ONSPDLookupUnitPostcode.get(NearestYM3ForONSPDLookup);
-                if (ONSPDLookupUnitPostcodeNearestYM3 == null) {
-                    System.err.println("yM3UnitPostcodeONSPDLookupsONS == null for NearestYM3ForONSPDLookup " + NearestYM3ForONSPDLookup);
-                }
-                isMappablePostcode = ONSPDLookupUnitPostcodeNearestYM3.containsKey(PostcodeF);
-                return isMappablePostcode;
+            boolean isMappablePostcode;
+            TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> ONSPDLookups;
+            ONSPDLookups = DW_Maps.getONSPDlookups(env);
+            TreeMap<String, TreeMap<String, AGDT_Point>> ONSPDLookupUnitPostcode;
+            ONSPDLookupUnitPostcode = ONSPDLookups.get(TYPE_UNIT);
+            TreeMap<String, AGDT_Point> ONSPDLookupUnitPostcodeNearestYM3;
+            ONSPDLookupUnitPostcodeNearestYM3 = ONSPDLookupUnitPostcode.get(NearestYM3ForONSPDLookup);
+            if (ONSPDLookupUnitPostcodeNearestYM3 == null) {
+                System.err.println("yM3UnitPostcodeONSPDLookupsONS == null for NearestYM3ForONSPDLookup " + NearestYM3ForONSPDLookup);
+            }
+            isMappablePostcode = ONSPDLookupUnitPostcodeNearestYM3.containsKey(PostcodeF);
+            return isMappablePostcode;
         }
         return false;
     }
@@ -1169,7 +1077,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
 //                        result.put(rec.getPcd(), rec);
 //                        lineCounter++;
 //                        if (lineCounter % 100000 == 0) {
-//                            System.out.println("Read " + lineCounter + " lines out of 2550320");
+//                            System.out.println("Read " + lineCounter + " lines out of something like 2560000");
 //                        }
 //                        break;
 //                    case StreamTokenizer.TT_WORD:
@@ -1187,7 +1095,6 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
 //        }
 //        return result;
 //    }
-
 //    /**
 //     * MSOA
 //     *
@@ -1220,7 +1127,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
 //                        result.put(rec.getPcd(), values);
 //                        lineCounter++;
 //                        if (lineCounter % 100000 == 0) {
-//                            System.out.println("Read " + lineCounter + " lines out of 2550320");
+//                            System.out.println("Read " + lineCounter + " lines out of something like 2560000");
 //                        }
 //                        break;
 //                    case StreamTokenizer.TT_WORD:
@@ -1238,7 +1145,6 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
 //        }
 //        return result;
 //    }
-
     /**
      * @param file
      * @param level
@@ -1251,13 +1157,8 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             String YM3NearestFormat) {
         String[] YM3NearestSplit;
         YM3NearestSplit = YM3NearestFormat.split(DW_Strings.sUnderscore);
-                int year = Integer.valueOf(YM3NearestSplit[0]);
-            String yearString;
-            if (year < 2011) {
-                yearString = "2001";
-            } else {
-                yearString = "2011";
-            }
+        int year = Integer.valueOf(YM3NearestSplit[0]);
+        int month = Integer.valueOf(Generic_Time.getMonthNumber(YM3NearestSplit[1]));
         TreeMap<String, String> result = new TreeMap<String, String>();
         try {
             int lineCounter = 0;
@@ -1289,21 +1190,21 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
                         }
                         String value = "";
                         if (level.equalsIgnoreCase("OA")) {
-                            if (year < 2011) {
+                            if (year < 2011 || (year == 2011 && month < 4)) {
                                 value = rec.getOa01();
                             } else {
                                 value = rec.getOa11();
                             }
                         }
                         if (level.equalsIgnoreCase("LSOA")) {
-                            if (year < 2011) {
+                            if (year < 2011 || (year == 2011 && month < 4)) {
                                 value = rec.getLsoa01();
                             } else {
                                 value = rec.getLsoa11();
                             }
                         }
                         if (level.equalsIgnoreCase("MSOA")) {
-                            if (year < 2011) {
+                            if (year < 2011 || (year == 2011 && month < 4)) {
                                 value = rec.getMsoa01();
                             } else {
                                 value = rec.getMsoa11();
@@ -1328,7 +1229,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
                         result.put(rec.getPcd(), value);
                         lineCounter++;
                         if (lineCounter % 100000 == 0) {
-                            System.out.println("Read " + lineCounter + " lines out of 2550320");
+                            System.out.println("Read " + lineCounter + " lines out of something like 2560000");
                         }
                         break;
                     case StreamTokenizer.TT_WORD:
@@ -1379,7 +1280,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
                         result.put(rec.getPcd(), values);
                         lineCounter++;
                         if (lineCounter % 100000 == 0) {
-                            System.out.println("Read " + lineCounter + " lines out of 2550320");
+                            System.out.println("Read " + lineCounter + " lines out of something like 2560000");
                         }
                         break;
                     case StreamTokenizer.TT_WORD:
@@ -1437,7 +1338,5 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         result.eolIsSignificant(true);
         return result;
     }
-
-    
 
 }

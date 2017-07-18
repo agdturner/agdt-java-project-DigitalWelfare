@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -146,8 +147,9 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         CensusAreaAggregations = DW_Strings.getCensusAreaAggregations();
         if (CensusAreaAggregations.contains(level)) {
             int year = Integer.valueOf(YM3NearestSplit[0]);
+            int month = Integer.valueOf(Generic_Time.getMonthNumber(YM3NearestSplit[1]));
             String yearString;
-            if (year < 2011) {
+            if (year < 2011 || (year == 2011 && month < 4)) {
                 yearString = "2001";
             } else {
                 yearString = "2011";
