@@ -215,9 +215,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             HashMap<Boolean, ArrayList<Integer>> unregulatedGroups,
             TreeMap<String, ArrayList<Integer>> includes) {
         env.logO("<doAggregation>", true);
+        int CensusYear = 2011;
         // Get Lookup
             TreeMap<String, TreeMap<String, String>> LookupsFromPostcodeToLevelCode;
-                LookupsFromPostcodeToLevelCode = getClaimPostcodeF_To_LevelCode_Maps(levels, YM3);
+                LookupsFromPostcodeToLevelCode = getClaimPostcodeF_To_LevelCode_Maps(levels, YM3, CensusYear);
             Iterator<Boolean> iteB;
         Iterator<String> tPTIte;
         tPTIte = PTs.iterator();
