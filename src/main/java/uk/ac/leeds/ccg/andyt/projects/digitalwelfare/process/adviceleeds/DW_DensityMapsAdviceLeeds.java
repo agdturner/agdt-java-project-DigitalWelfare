@@ -208,6 +208,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             String targetPropertyName = "LSOA11CD";
             String level;
             level = "LSOA";
+            int     CensusYear = 2011;
             //DW_MapsAdviceLeeds.setLevel(level);
             // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
             DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
@@ -219,6 +220,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             tLookupFromPostcodeToCensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
                     env,                
                     level,
+                    CensusYear,
                     YM3);
             
             TreeMap<String, Deprivation_DataRecord> deprivationRecords;

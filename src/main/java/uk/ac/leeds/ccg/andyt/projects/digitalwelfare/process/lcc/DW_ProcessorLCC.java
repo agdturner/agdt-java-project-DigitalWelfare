@@ -607,11 +607,13 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
      * @param levels A set of levels expected values include OA, LSOA, MSOA,
      * PostcodeUnit, PostcodeSector, PostcodeDistrict.
      * @param YM3
+     * @param CensusYear This has to be 2001 or 2011 or the levels might not include census levels.
      * @return A set of look ups from postcodes to each level input in levels.
      */
     public TreeMap<String, TreeMap<String, String>> getClaimPostcodeF_To_LevelCode_Maps(
             ArrayList<String> levels,
-            String YM3) {
+            String YM3,
+            int CensusYear) {
         TreeMap<String, TreeMap<String, String>> result;
         result = new TreeMap<String, TreeMap<String, String>>();
         Iterator<String> ite = levels.iterator();
@@ -619,7 +621,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             String level = ite.next();
             //            Iterate over YM3
             TreeMap<String, String> ClaimPostcodeF_To_LevelCode_Map;
-            ClaimPostcodeF_To_LevelCode_Map = getClaimPostcodeF_To_LevelCode_Map(env, level, YM3);
+            ClaimPostcodeF_To_LevelCode_Map = getClaimPostcodeF_To_LevelCode_Map(env, level, CensusYear, YM3);
             result.put(level, ClaimPostcodeF_To_LevelCode_Map);
         }
         return result;

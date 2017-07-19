@@ -15,7 +15,7 @@ public class DW_ONSPDRecord_2008_02Feb extends DW_AbstractONSPDRecord2 {
     protected String oacode;
     protected String oaind;
     protected String casward;
-                
+
     // 2008_FEB  8 pcd,pcd2,pcds,dointr,doterm,{Join these for Ward Code OODAFA oscty,oslaua,osward}, 
     //          12 usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,GENIND,pafind,gor,streg,pcon,eer,
     //           7 teclec,ttwa,pct,nuts,{1991 Enumeration District: psed,cened},edind,
@@ -37,10 +37,40 @@ public class DW_ONSPDRecord_2008_02Feb extends DW_AbstractONSPDRecord2 {
     // 2008_AUG pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,GENIND,pafind,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,ADDRCT,DPCT,MOCT,SMLBUSCT,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oacode,oaind,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
     // 2011_MAY pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,pafind,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oacode,oaind,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
     // 2012_AUG pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,GENIND,PAFIND,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,ADDRCT,DPCT,MOCT,SMLBUSCT,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,OACODE,OAIND,oa01,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
-    
+    //
+    /*
+     * NSPDF_FEB_2008_UK_1M.csv 
+     * "AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","00","QA","MJ","0","385386","0801193","1","SN9","S00","179"," "," ","X","0","","11","","","","","99ZZ0099","ZZ0099","9","1","1","0","0","","QA","","","","","99ZZ00",""," ","","99","Z99999999","","Z99999999","9"," ","Z","","99ZZ99Z9","","X98"
+     */
+ /* NSPDF_NOV_2010_UK_1M_FP.csv
+     * "AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","00","QA","MJ","0","385386","0801193","1","SN9","S00","179"," "," ","X","0","","11","","","","","99ZZ0099","ZZ0099","9","1","1","0","0","SN9","QA","SN9","","","","99ZZ00",""," ","","99","Z99999999","","Z99999999","9"," ","Z","","99ZZ99Z9","","X98"
+     */
+ /*
+     * 2008_FEB 
+     * pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,
+     * "AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","00","QA","MJ","0","385386","0801193",
+     * osgrdind,oshlthau,hro,ctry,GENIND,pafind,
+     * "1","SN9","S00","179"," "," ",
+     * gor,streg,pcon,eer,teclec,ttwa,pct,nuts,
+     * "X","0","","11","","","","",
+     * psed,cened,edind,ADDRCT,DPCT,MOCT,SMLBUSCT,oshaprev,
+     * "99ZZ0099","ZZ0099","9","1","1","0","0","",
+     * lea,oldha,wardc91,wardo91,ward98,
+     * "QA","","","","",
+     * statsward,oacode,oaind,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
+     * "99ZZ00",""," ","","99","Z99999999","","Z99999999","9"," ","Z","","99ZZ99Z9","","X98"
+     */
+    /**
+     * @param env
+     * @param line
+     */
     public DW_ONSPDRecord_2008_02Feb(DW_Environment env, String line) {
         this.env = env;
         String[] fields = line.split("\",\"");
+        /**
+         * 2008_FEB
+         * pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,
+         */
         pcd = fields[0].substring(1);
         PostcodeF = env.getDW_Postcode_Handler().formatPostcode(pcd);
         pcd2 = fields[1];
@@ -69,12 +99,18 @@ public class DW_ONSPDRecord_2008_02Feb extends DW_AbstractONSPDRecord2 {
         } else {
             osnrth1m = Integer.valueOf(fields[10]);
         }
+        /*
+         * osgrdind,oshlthau,hro,ctry,GENIND,pafind,
+         */
         osgrdind = Integer.valueOf(fields[11]);
         oshlthau = fields[12];
         hro = fields[13];
         ctry = fields[14];
         genind = fields[15];
         pafind = fields[16];
+        /*
+         * gor,streg,pcon,eer,teclec,ttwa,pct,nuts,
+         */
         gor = fields[17];
         streg = fields[18];
         pcon = fields[19];
@@ -83,6 +119,9 @@ public class DW_ONSPDRecord_2008_02Feb extends DW_AbstractONSPDRecord2 {
         ttwa = fields[22];
         pct = fields[23];
         nuts = fields[24];
+        /*
+         * psed,cened,edind,ADDRCT,DPCT,MOCT,SMLBUSCT,oshaprev,
+         */
         psed = fields[25];
         cened = fields[26];
         edind = fields[27];
@@ -91,11 +130,17 @@ public class DW_ONSPDRecord_2008_02Feb extends DW_AbstractONSPDRecord2 {
         moct = fields[30];
         smlbusct = fields[31];
         oshaprev = fields[32];
+        /*
+         * lea,oldha,wardc91,wardo91,ward98,
+         */
         lea = fields[33];
         oldha = fields[34];
         wardc91 = fields[35];
         wardo91 = fields[36];
         ward98 = fields[37];
+        /*
+         * statsward,oacode,oaind,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
+         */
         statsward = fields[38];
         oacode = fields[39];
         oaind = fields[40];

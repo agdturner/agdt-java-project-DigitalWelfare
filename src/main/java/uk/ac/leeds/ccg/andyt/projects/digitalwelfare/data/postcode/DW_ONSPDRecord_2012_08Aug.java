@@ -10,12 +10,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
  *
  * @author geoagdt
  */
-public class DW_ONSPDRecord_2012_08Aug extends DW_AbstractONSPDRecord2 {
+public class DW_ONSPDRecord_2012_08Aug extends DW_ONSPDRecord_2011_05May {
 
-    protected String oacode;
-    protected String oaind;
     protected String oa01;
-    protected String casward;
                 
     // 2008_FEB  8 pcd,pcd2,pcds,dointr,doterm,{Join these for Ward Code OODAFA oscty,oslaua,osward}, 
     //          12 usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,GENIND,pafind,gor,streg,pcon,eer,
@@ -115,15 +112,4 @@ public class DW_ONSPDRecord_2012_08Aug extends DW_AbstractONSPDRecord2 {
         oldpct = fields[53];
     }
 
-    public String getOacode() {
-        return oacode;
-    }
-
-    public String getOaind() {
-        return oaind;
-    }
-
-    public String getCasward() {
-        return casward;
-    }
 }

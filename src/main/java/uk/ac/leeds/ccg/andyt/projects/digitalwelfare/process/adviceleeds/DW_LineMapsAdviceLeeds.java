@@ -71,10 +71,10 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
 
     private final String targetPropertyNameMSOA = "MSOA11CD";
     private final String targetPropertyNameLSOA = "LSOA11CD";
-    private TreeMap<String, String> tLookupFromPostcodeToLSOACensusCodes;
-    private TreeMap<String, String> tLookupFromPostcodeToMSOACensusCodes;
+    private TreeMap<String, String> LookupFromPostcodeToLSOACensusCodes;
+    private TreeMap<String, String> LookupFromPostcodeToMSOACensusCodes;
     private DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
-    private DW_AreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
+    private DW_AreaCodesAndShapefiles MSOACodesAndLeedsMSOAShapefile;
     private TreeMap<String, Point> aLSOAToCentroidLookupTable;
     private TreeMap<String, Point> aMSOAToCentroidLookupTable;
     private TreeMap<String, String> tCABOutletPostcodes;
@@ -138,7 +138,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         // Tidy up
         if (!showMapsInJMapPane) {
             tLSOACodesAndLeedsLSOAShapefile.dispose();
-            tMSOACodesAndLeedsMSOAShapefile.dispose();
+            MSOACodesAndLeedsMSOAShapefile.dispose();
         }
     }
 
@@ -192,7 +192,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
 
     private void initMSOACodesAndLeedsMSOAShapefile(
             String targetPropertyNameMSOA) {
-        tMSOACodesAndLeedsMSOAShapefile = new DW_AreaCodesAndShapefiles(
+        MSOACodesAndLeedsMSOAShapefile = new DW_AreaCodesAndShapefiles(
                 env,
                 "MSOA",
                 targetPropertyNameMSOA,
@@ -222,19 +222,21 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     public void postcodeToLSOAToMSOAToOutletMaps(
             String outname,
             Object IDType) throws Exception {
-        backgroundDW_Shapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
-        foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
-        //int year_int = 2011;
+        BackgroundDW_Shapefile = MSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
+        ForegroundDW_Shapefile1 = MSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
+        int CensusYear = 2011;
         String YM3 = "2011_May";
         // init postcode to LSOA lookup
-        tLookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
+        LookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
                 env,
                 "LSOA",
+                CensusYear,
                 YM3);
         // init postcode to MSOA lookup
-        tLookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
+        LookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
                 env,
                 "MSOA",
+                CensusYear,
                 YM3);
         // Other variables for selecting and output
         File spiderMapDirectory = new File(
@@ -369,8 +371,8 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
 //                    destinationx = a_DW_Point.getX();
 //                    destinationy = a_DW_Point.getY();
                     String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
-                    String aLSOACode = tLookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
-                    String aMSOACode = tLookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
+                    String aLSOACode = LookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
+                    String aMSOACode = LookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
                     if (aLSOACode.equalsIgnoreCase("") || aMSOACode.equalsIgnoreCase("")) {
                         System.out.println("LSOACode, " + aLSOACode + ", postcode " + formattedPostcode);
                         System.out.println("MSOACode, " + aMSOACode + ", postcode " + formattedPostcode);
@@ -511,8 +513,8 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
 //                    destinationx = a_DW_Point.getX();
 //                    destinationy = a_DW_Point.getY();
                     String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
-                    String aLSOACode = tLookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
-                    String aMSOACode = tLookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
+                    String aLSOACode = LookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
+                    String aMSOACode = LookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
                     if (aLSOACode.equalsIgnoreCase("") || aMSOACode.equalsIgnoreCase("")) {
                         System.out.println("LSOACode, " + aLSOACode + ", postcode " + formattedPostcode);
                         System.out.println("MSOACode, " + aMSOACode + ", postcode " + formattedPostcode);
@@ -625,12 +627,11 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
 //            FeatureLayer backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
 //                backgroundShapefile,
 //                backgroundStyle);
-            DW_Geotools.outputToImage(
-                    tCABOutlet,
+            DW_Geotools.outputToImage(tCABOutlet,
                     outputShapefile,
                     foregroundDW_Shapefile0,
-                    foregroundDW_Shapefile1,
-                    backgroundDW_Shapefile,
+                    ForegroundDW_Shapefile1,
+                    BackgroundDW_Shapefile,
                     "",
                     spiderMapDirectory,
                     png_String,
@@ -643,25 +644,27 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         }
         // Tidy up
         tLSOACodesAndLeedsLSOAShapefile.dispose();
-        tMSOACodesAndLeedsMSOAShapefile.dispose();
+        MSOACodesAndLeedsMSOAShapefile.dispose();
     }
 
     public void postcodeToLSOAToOutletMaps(
             String outname,
             Object IDType) throws Exception {
-        backgroundDW_Shapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
-        foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
-        //int year_int = 2011;
+        BackgroundDW_Shapefile = MSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
+        ForegroundDW_Shapefile1 = MSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
+        int CensusYear = 2011;
         String YM3 = "2011_May";
         // Get postcode to LSOA lookup
-        tLookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
+        LookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
                 env,
                 "LSOA",
+                CensusYear,
                 YM3);
         // Get postcode to LSOA lookup
-        tLookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
+        LookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
                 env,
                 "MSOA",
+                CensusYear,
                 YM3);
         // Other variables for selecting and output
         File spiderMapDirectory = new File(
@@ -748,8 +751,8 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     AGDT_Point outletPoint = null;
                     outletPoint = tCABOutletPoints.get(tCABOutletString);
                     String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
-                    String aLSOACode = tLookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
-                    String aMSOACode = tLookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
+                    String aLSOACode = LookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
+                    String aMSOACode = LookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
                     if (aLSOACode.equalsIgnoreCase("") || aMSOACode.equalsIgnoreCase("")) {
                         System.out.println("LSOACode, " + aLSOACode + ", postcode " + formattedPostcode);
                         System.out.println("MSOACode, " + aMSOACode + ", postcode " + formattedPostcode);
@@ -836,8 +839,8 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     AGDT_Point outletPoint = null;
                     outletPoint = tCABOutletPoints.get(tCABOutletString);
                     String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
-                    String aLSOACode = tLookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
-                    String aMSOACode = tLookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
+                    String aLSOACode = LookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
+                    String aMSOACode = LookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
                     if (aLSOACode.equalsIgnoreCase("") || aMSOACode.equalsIgnoreCase("")) {
                         System.out.println("LSOACode, " + aLSOACode + ", postcode " + formattedPostcode);
                         System.out.println("MSOACode, " + aMSOACode + ", postcode " + formattedPostcode);
@@ -902,12 +905,11 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     aLineSFT,
                     tsfc,
                     getShapefileDataStoreFactory());
-            DW_Geotools.outputToImage(
-                    tCABOutlet,
+            DW_Geotools.outputToImage(tCABOutlet,
                     outputShapefile,
                     foregroundDW_Shapefile0,
-                    foregroundDW_Shapefile1,
-                    backgroundDW_Shapefile,
+                    ForegroundDW_Shapefile1,
+                    BackgroundDW_Shapefile,
                     "",
                     spiderMapDirectory,
                     png_String,
@@ -922,8 +924,8 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     public void postcodeToOutletMaps(
             String outname,
             Object IDType) throws Exception {
-        backgroundDW_Shapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
-        foregroundDW_Shapefile1 = tMSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
+        BackgroundDW_Shapefile = MSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
+        ForegroundDW_Shapefile1 = MSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
         // Other variables for selecting and output
         File spiderMapDirectory = new File(
                 mapDirectory,
@@ -1126,12 +1128,11 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
 //            FeatureLayer backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
 //                backgroundShapefile,
 //                backgroundStyle);
-            DW_Geotools.outputToImage(
-                    tCABOutlet,
+            DW_Geotools.outputToImage(tCABOutlet,
                     outputShapeFile,
                     foregroundDW_Shapefile0,
-                    foregroundDW_Shapefile1,
-                    backgroundDW_Shapefile,
+                    ForegroundDW_Shapefile1,
+                    BackgroundDW_Shapefile,
                     "",
                     spiderMapDirectory,
                     png_String,
@@ -1169,7 +1170,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
             if (level.equals("LSOA")) {
                 fc = tLSOACodesAndLeedsLSOAShapefile.getLevelFC();
             } else {
-                fc = tMSOACodesAndLeedsMSOAShapefile.getLevelFC();
+                fc = MSOACodesAndLeedsMSOAShapefile.getLevelFC();
             }
             FeatureIterator featureIterator;
             featureIterator = fc.features();

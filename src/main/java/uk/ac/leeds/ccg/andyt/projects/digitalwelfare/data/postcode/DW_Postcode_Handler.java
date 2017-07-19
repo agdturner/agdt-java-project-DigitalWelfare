@@ -493,6 +493,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
      * @param level "OA", "LSOA", "MSOA"
      * @param YM3NearestFormat
      * @param infile
+     * @param CensusYear Has to be either 2001 or 2011.
      * @param outFile
      * @return
      */
@@ -500,11 +501,12 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             File infile,
             File outFile,
             String level,
+            int CensusYear,
             String YM3NearestFormat
     ) {
         // Read NPD into a lookup
         TreeMap<String, String> lookup;
-        lookup = readONSPDIntoTreeMapPostcodeString(infile, level, YM3NearestFormat);
+        lookup = readONSPDIntoTreeMapPostcodeString(infile, level, CensusYear, YM3NearestFormat);
         Generic_StaticIO.writeObject(lookup, outFile);
 //        //lookup = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(outFile);
         return lookup;
@@ -1154,6 +1156,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
     public TreeMap<String, String> readONSPDIntoTreeMapPostcodeString(
             File file,
             String level,
+            int censusYear,
             String YM3NearestFormat) {
         String[] YM3NearestSplit;
         YM3NearestSplit = YM3NearestFormat.split(DW_Strings.sUnderscore);
@@ -1174,40 +1177,91 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
-                        DW_AbstractONSPDRecord1 rec;
+                        DW_AbstractONSPDRecord rec;
                         rec = null;
-                        //DW_ONSPDRecord_2013_08Aug rec = new DW_ONSPDRecord_2013_08Aug(line);
-                        if (YM3NearestFormat.equalsIgnoreCase("2016_Feb")) {
-                            rec = new DW_ONSPDRecord_2016_02Feb(env, line);
-                        } else if (YM3NearestFormat.equalsIgnoreCase("2015_Aug")) {
-                            rec = new DW_ONSPDRecord_2015_08Aug(env, line);
-                        } else if (YM3NearestFormat.equalsIgnoreCase("2015_May")) {
-                            rec = new DW_ONSPDRecord_2015_05May(env, line);
-                        } else if (YM3NearestFormat.equalsIgnoreCase("2014_Nov")) {
-                            rec = new DW_ONSPDRecord_2014_11Nov(env, line);
-                        } else {
+                        if (year < 2011 || (year == 2011 && month < 4)) {
+                            rec = new DW_ONSPDRecord_2008_02Feb(env, line);
+                        } else if (year < 2012 || (year == 2012 && month < 8)) {
+                            rec = new DW_ONSPDRecord_2011_05May(env, line);
+                        } else if (year == 2012 && month < 11) {
+                             rec = new DW_ONSPDRecord_2012_08Aug(env, line);
+                        } else if (year < 2013 || (year == 2013 && month < 2)) {
+                             rec = new DW_ONSPDRecord_2012_11Nov(env, line);
+                        } else if (year == 2013 && month < 5) {
+                            rec = new DW_ONSPDRecord_2013_02Feb(env, line);
+                        } else if (year == 2013 && month < 8) {
+                            rec = new DW_ONSPDRecord_2013_05May(env, line);
+                        } else if (year < 2014 || (year == 2014 && month < 11)) {
                             rec = new DW_ONSPDRecord_2013_08Aug(env, line);
+                        } else if (year < 2015 || (year == 2015 && month < 5)) {
+                            rec = new DW_ONSPDRecord_2014_11Nov(env, line);
+                        } else if (year == 2015 && month < 8) {
+                            rec = new DW_ONSPDRecord_2015_05May(env, line);
+                        } else if (year < 2016 ||( year == 2016 && month < 2)) {
+                            rec = new DW_ONSPDRecord_2015_08Aug(env, line);
+                        } else {
+                            rec = new DW_ONSPDRecord_2016_02Feb(env, line);
                         }
+//                        if (YM3NearestFormat.equalsIgnoreCase("2016_Feb")) {
+//                            rec = new DW_ONSPDRecord_2016_02Feb(env, line);
+//                        } else if (YM3NearestFormat.equalsIgnoreCase("2015_Aug")) {
+//                            rec = new DW_ONSPDRecord_2015_08Aug(env, line);
+//                        } else if (YM3NearestFormat.equalsIgnoreCase("2015_May")) {
+//                            rec = new DW_ONSPDRecord_2015_05May(env, line);
+//                        } else if (YM3NearestFormat.equalsIgnoreCase("2014_Nov")) {
+//                            rec = new DW_ONSPDRecord_2014_11Nov(env, line);
+//                        } else {
+//                            rec = new DW_ONSPDRecord_2013_08Aug(env, line);
+//                        }
                         String value = "";
-                        if (level.equalsIgnoreCase("OA")) {
-                            if (year < 2011 || (year == 2011 && month < 4)) {
-                                value = rec.getOa01();
-                            } else {
-                                value = rec.getOa11();
+                        if (level.equalsIgnoreCase(DW_Strings.sOA)) {
+                            if (censusYear == 2001) {
+                                if (rec instanceof DW_AbstractONSPDRecord1) {
+                                    value = ((DW_AbstractONSPDRecord1) rec).getOa01();
+                                } else {
+                                    value = null;
+                                }
+                            }
+                            if (censusYear == 2011) {
+                                if (rec instanceof DW_AbstractONSPDRecord1) {
+                                    value = ((DW_AbstractONSPDRecord1) rec).getOa11();
+                                } else if (rec instanceof DW_ONSPDRecord_2011_05May) {
+                                    value = ((DW_ONSPDRecord_2011_05May) rec).getOacode();
+                                } else {
+                                    value = null;
+                                }
                             }
                         }
-                        if (level.equalsIgnoreCase("LSOA")) {
-                            if (year < 2011 || (year == 2011 && month < 4)) {
-                                value = rec.getLsoa01();
-                            } else {
-                                value = rec.getLsoa11();
+                        if (level.equalsIgnoreCase(DW_Strings.sLSOA)) {
+                            if (censusYear == 2001) {
+                                if (rec instanceof DW_AbstractONSPDRecord1) {
+                                    value = ((DW_AbstractONSPDRecord1) rec).getLsoa01();
+                                } else {
+                                    value = null;
+                                }
+                            }
+                            if (censusYear == 2011) {
+                                if (rec instanceof DW_AbstractONSPDRecord1) {
+                                    value = ((DW_AbstractONSPDRecord1) rec).getLsoa11();
+                                } else if (rec instanceof DW_ONSPDRecord_2011_05May) {
+                                    value = null;
+                                }
                             }
                         }
-                        if (level.equalsIgnoreCase("MSOA")) {
-                            if (year < 2011 || (year == 2011 && month < 4)) {
-                                value = rec.getMsoa01();
-                            } else {
-                                value = rec.getMsoa11();
+                        if (level.equalsIgnoreCase(DW_Strings.sMSOA)) {
+                            if (censusYear == 2001) {
+                                if (rec instanceof DW_AbstractONSPDRecord1) {
+                                    value = ((DW_AbstractONSPDRecord1) rec).getMsoa01();
+                                } else {
+                                    value = null;
+                                }
+                            }
+                            if (censusYear == 2011) {
+                                if (rec instanceof DW_AbstractONSPDRecord1) {
+                                    value = ((DW_AbstractONSPDRecord1) rec).getMsoa11();
+                                } else if (rec instanceof DW_ONSPDRecord_2011_05May) {
+                                    value = null;
+                                }
                             }
                         }
                         String postcode = rec.getPcd();

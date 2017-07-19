@@ -16,6 +16,7 @@ public class DW_ONSPDRecord_2011_05May extends DW_AbstractONSPDRecord2 {
     protected String oaind;
     protected String casward;
                 
+    protected DW_ONSPDRecord_2011_05May(){}
     // 2008_FEB  8 pcd,pcd2,pcds,dointr,doterm,{Join these for Ward Code OODAFA oscty,oslaua,osward}, 
     //          12 usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,GENIND,pafind,gor,streg,pcon,eer,
     //           7 teclec,ttwa,pct,nuts,{1991 Enumeration District: psed,cened},edind,

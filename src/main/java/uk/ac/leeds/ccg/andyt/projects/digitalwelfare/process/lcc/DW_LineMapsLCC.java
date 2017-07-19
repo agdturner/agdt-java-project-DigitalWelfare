@@ -1370,7 +1370,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         //midgrounds = new ArrayList<AGDT_Shapefile>();
         //backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
-//        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+//        ForegroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
     }
 
     private void initStyleParameters() {

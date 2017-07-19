@@ -144,6 +144,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
     public void runLevel() {
         String YM3;
         YM3 = "2011_May";
+        int CensusYear = 2011;
        // Get deprivation data
         TreeMap<String, Deprivation_DataRecord> tDeprivationData;
         tDeprivationData = getDeprivation_Data();
@@ -152,6 +153,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         tLookupFromPostcodeToLSOACensusCode = getClaimPostcodeF_To_LevelCode_Map(
                 env,
                 "LSOA", 
+                CensusYear,
                 YM3);
         // Get postcode to level lookup
         TreeMap<String, String> tLookupFromPostcodeToCensusCode;
@@ -164,6 +166,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             tLookupFromPostcodeToCensusCode = getClaimPostcodeF_To_LevelCode_Map(
                     env,
                     level, 
+                    CensusYear,
                     YM3);
         }
         TreeMap<Integer, Integer> deprivationClasses;

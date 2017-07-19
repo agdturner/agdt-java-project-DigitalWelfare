@@ -122,6 +122,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         PrintWriter outPW;
         String PT;
 
+        int CensusYear = 2011;
         // Initialisiation
         levels = new ArrayList<String>();
 //        levels.add(DW_Strings.sOA);
@@ -163,7 +164,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                 YM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                 env.logO("Generalising " + YM3, true);
                 // Get Lookup
-                ClaimPostcodeF_To_LevelCode_Maps = getClaimPostcodeF_To_LevelCode_Maps(levels, YM3);
+                ClaimPostcodeF_To_LevelCode_Maps = getClaimPostcodeF_To_LevelCode_Maps(levels, YM3, CensusYear);
                 // Load first data
                 DW_SHBE_Records = DW_SHBE_Data.getDW_SHBE_Records(YM3);
                 ClaimIDToDW_SHBE_RecordMap = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(true);

@@ -135,6 +135,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
     public TreeMap<String, String> getClaimPostcodeF_To_LevelCode_Map(
             DW_Environment env,
             String level,
+            int CensusYear,
             String YM3) {
         String YM3Nearest;
         YM3Nearest = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
@@ -177,6 +178,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
                     infile,
                     outfile,
                     level,
+                    CensusYear,
                     YM3Nearest);
         } else {
             Object o = Generic_StaticIO.readObject(outfile);
@@ -192,12 +194,14 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
             File infile,
             File outFile,
             String level,
+            int CensusYear, // must be 2001 or 2011.
             String YM3NearestFormat) {
         TreeMap<String, String> result;
         result = DW_Postcode_Handler.getPostcodeUnitCensusCodeLookup(
                 infile,
                 outFile,
                 level,
+                CensusYear,
                 YM3NearestFormat);
         return result;
     }

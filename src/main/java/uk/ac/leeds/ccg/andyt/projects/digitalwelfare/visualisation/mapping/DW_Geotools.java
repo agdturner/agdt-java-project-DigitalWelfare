@@ -846,8 +846,8 @@ public class DW_Geotools extends AGDT_Geotools {
 //            String title,
 //            String attributeName,
 //            ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0,
-//            AGDT_Shapefile foregroundDW_Shapefile1,
-//            AGDT_Shapefile backgroundDW_Shapefile,
+//            AGDT_Shapefile ForegroundDW_Shapefile1,
+//            AGDT_Shapefile BackgroundDW_Shapefile,
 //            int imageWidth,
 //            AGDT_StyleParameters styleParameters,
 //            int styleIndex,
@@ -862,7 +862,7 @@ public class DW_Geotools extends AGDT_Geotools {
 //
 //        if (styleParameters.isDrawBoundaries()) {
 //            FeatureLayer backgroundFeatureLayer;
-//            backgroundFeatureLayer = backgroundDW_Shapefile.getFeatureLayer(
+//            backgroundFeatureLayer = BackgroundDW_Shapefile.getFeatureLayer(
 //                    styleParameters.getBackgroundStyle());
 //            result.addLayer(backgroundFeatureLayer);
 //        }
@@ -906,9 +906,9 @@ public class DW_Geotools extends AGDT_Geotools {
 //
 //        // Add foreground1
 //        // ---------------
-//        if (foregroundDW_Shapefile1 != null) {
+//        if (ForegroundDW_Shapefile1 != null) {
 //            FeatureLayer foregroundFeatureLayer1;
-//            foregroundFeatureLayer1 = foregroundDW_Shapefile1.getFeatureLayer(
+//            foregroundFeatureLayer1 = ForegroundDW_Shapefile1.getFeatureLayer(
 //                    styleParameters.getForegroundStyle1());
 //            result.addLayer(foregroundFeatureLayer1);
 //        }
@@ -964,7 +964,7 @@ public class DW_Geotools extends AGDT_Geotools {
 
 //        if (styleParameters.isDrawBoundaries()) {
 //            FeatureLayer backgroundFeatureLayer;
-//            backgroundFeatureLayer = backgroundDW_Shapefile.getFeatureLayer(
+//            backgroundFeatureLayer = BackgroundDW_Shapefile.getFeatureLayer(
 //                    styleParameters.getBackgroundStyle());
 //            result.addLayer(backgroundFeatureLayer);
 //        }
@@ -1042,9 +1042,9 @@ public class DW_Geotools extends AGDT_Geotools {
         //}
 //        // Add foreground1
 //        // ---------------
-//        if (foregroundDW_Shapefile1 != null) {
+//        if (ForegroundDW_Shapefile1 != null) {
 //            FeatureLayer foregroundFeatureLayer1;
-//            foregroundFeatureLayer1 = foregroundDW_Shapefile1.getFeatureLayer(
+//            foregroundFeatureLayer1 = ForegroundDW_Shapefile1.getFeatureLayer(
 //                    styleParameters.getForegroundStyle1());
 //            result.addLayer(foregroundFeatureLayer1);
 //        }
