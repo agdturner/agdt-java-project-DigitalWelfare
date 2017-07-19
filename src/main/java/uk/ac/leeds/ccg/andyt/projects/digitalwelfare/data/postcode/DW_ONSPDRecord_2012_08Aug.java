@@ -4,6 +4,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+
 /**
  *
  * @author geoagdt
@@ -37,10 +39,11 @@ public class DW_ONSPDRecord_2012_08Aug extends DW_AbstractONSPDRecord2 {
     // 2011_MAY pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,pafind,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oacode,oaind,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
     // 2012_AUG pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,GENIND,PAFIND,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,ADDRCT,DPCT,MOCT,SMLBUSCT,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,OACODE,OAIND,oa01,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
     
-    public DW_ONSPDRecord_2012_08Aug(String line) {
+    public DW_ONSPDRecord_2012_08Aug(DW_Environment env, String line) {
+        this.env = env;
         String[] fields = line.split("\",\"");
         pcd = fields[0].substring(1);
-        PostcodeF = pcd.replaceAll(" ", "");
+        PostcodeF = env.getDW_Postcode_Handler().formatPostcode(pcd);
         pcd2 = fields[1];
         pcds = fields[2];
         if (fields[3].isEmpty()) {

@@ -683,7 +683,7 @@ public class DW_Strings {
     public ArrayList<String> getPaymentTypes() {
         ArrayList<String> result;
         result = new ArrayList<String>();
-        //result.add(sPaymentTypeAll);
+        result.add(sPaymentTypeAll);
         result.add(sPaymentTypeIn);
         result.add(sPaymentTypeSuspended);
         result.add(sPaymentTypeOther);

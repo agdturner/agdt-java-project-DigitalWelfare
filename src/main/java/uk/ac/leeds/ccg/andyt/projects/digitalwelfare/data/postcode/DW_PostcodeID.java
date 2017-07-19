@@ -10,12 +10,12 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 /**
  * @author geoagdt
  */
-public class PostcodeID {
+public class DW_PostcodeID {
 
     protected final DW_ID ID;
     protected final AGDT_Point p;
 
-    public PostcodeID(
+    public DW_PostcodeID(
             DW_ID ID,
             AGDT_Point p) {
         this.ID = ID;
@@ -42,9 +42,9 @@ public class PostcodeID {
         if (obj == null) {
             return false;
         }
-        if (obj instanceof PostcodeID) {
-            PostcodeID o;
-            o = (PostcodeID) obj;
+        if (obj instanceof DW_PostcodeID) {
+            DW_PostcodeID o;
+            o = (DW_PostcodeID) obj;
             if (ID.equals(o.ID)) {
                 if (this.p == o.p) {
                     return true;

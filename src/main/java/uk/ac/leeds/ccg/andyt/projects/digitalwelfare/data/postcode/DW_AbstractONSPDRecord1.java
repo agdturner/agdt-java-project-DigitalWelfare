@@ -4,6 +4,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+
 /**
  *
  * @author geoagdt
@@ -21,6 +23,8 @@ public abstract class DW_AbstractONSPDRecord1 extends DW_AbstractONSPDRecord {
     protected String lsoa11;
     protected String msoa11;
     
+    protected DW_AbstractONSPDRecord1() {}
+
     // 2012_NOV pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oa01,casward,park,lsoa01,msoa01,ur01ind,oac01,oldpct,oa11,lsoa11,msoa11
     // 2013_FEB pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oa01,casward,park,lsoa01,msoa01,ur01ind,oac01,oldpct,oa11,lsoa11,msoa11,parish,wz11
     // 2013_MAY pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oa01,casward,park,lsoa01,msoa01,ur01ind,oac01,oldpct,oa11,lsoa11,msoa11,parish,wz11,ccg
@@ -106,8 +110,8 @@ E05001441       00DAHT  Temple Newsam
 E05001442       00DAHU  Weetwood
 E05001443       00DAHW  Wetherby
      */
-    public DW_AbstractONSPDRecord1() {
-        super();
+    public DW_AbstractONSPDRecord1(DW_Environment env) {
+        super(env);
         oa01 = "";
         casward = "";
         park = "";

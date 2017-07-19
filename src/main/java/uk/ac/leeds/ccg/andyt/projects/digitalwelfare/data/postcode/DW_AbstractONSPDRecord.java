@@ -4,11 +4,14 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+
 /**
  *
  * @author geoagdt
  */
-public abstract class DW_AbstractONSPDRecord {
+public abstract class DW_AbstractONSPDRecord extends DW_Object {
 
     protected String PostcodeF;
     protected String pcd;
@@ -46,6 +49,7 @@ public abstract class DW_AbstractONSPDRecord {
     protected String statsward;
     protected String park;
 
+    protected DW_AbstractONSPDRecord() {}
     // 2008_FEB  8 pcd,pcd2,pcds,dointr,doterm,{Join these for Ward Code OODAFA oscty,oslaua,osward}, 
     //          12 usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,GENIND,pafind,gor,streg,pcon,eer,
     //           7 teclec,ttwa,pct,nuts,{1991 Enumeration District: psed,cened},edind,
@@ -170,7 +174,8 @@ E05001441       00DAHT  Temple Newsam
 E05001442       00DAHU  Weetwood
 E05001443       00DAHW  Wetherby
      */
-    public DW_AbstractONSPDRecord() {
+    public DW_AbstractONSPDRecord(DW_Environment env) {
+        this.env = env;
         PostcodeF = "";
         pcd = "";
         pcd2 = "";

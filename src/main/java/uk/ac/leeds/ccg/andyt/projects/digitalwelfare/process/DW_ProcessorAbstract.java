@@ -138,35 +138,35 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
             String YM3) {
         String YM3Nearest;
         YM3Nearest = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
-        String[] YM3NearestSplit;
-        YM3NearestSplit = YM3Nearest.split("_");
         TreeMap<String, String> result;
         String outputFilename;
         File dir;
-        HashSet CensusAreaAggregations;
-        CensusAreaAggregations = DW_Strings.getCensusAreaAggregations();
-        if (CensusAreaAggregations.contains(level)) {
-            int year = Integer.valueOf(YM3NearestSplit[0]);
-            int month = Integer.valueOf(Generic_Time.getMonthNumber(YM3NearestSplit[1]));
-            String yearString;
-            if (year < 2011 || (year == 2011 && month < 4)) {
-                yearString = "2001";
-            } else {
-                yearString = "2011";
-            }
-            outputFilename = "PostcodeTo" + level + "_" + yearString
-                    + "_LookUp_TreeMap_String_Strings" + DW_Strings.sBinaryFileExtension;
-            dir = new File(
-                    DW_Files.getGeneratedONSPDDir(),
-                    yearString);
-        } else {
+//        String[] YM3NearestSplit;
+//        YM3NearestSplit = YM3Nearest.split("_");
+//        HashSet CensusAreaAggregations;
+//        CensusAreaAggregations = DW_Strings.getCensusAreaAggregations();
+//        if (CensusAreaAggregations.contains(level)) {
+//            int year = Integer.valueOf(YM3NearestSplit[0]);
+//            int month = Integer.valueOf(Generic_Time.getMonthNumber(YM3NearestSplit[1]));
+//            String yearString;
+//            if (year < 2011 || (year == 2011 && month < 4)) {
+//                yearString = "2001";
+//            } else {
+//                yearString = "2011";
+//            }
+//            outputFilename = "PostcodeTo" + level + "_" + yearString
+//                    + "_LookUp_TreeMap_String_Strings" + DW_Strings.sBinaryFileExtension;
+//            dir = new File(
+//                    DW_Files.getGeneratedONSPDDir(),
+//                    yearString);
+//        } else {
             //String month = YM3NearestSplit[1];
             outputFilename = "PostcodeTo" + level + "_" + YM3Nearest
                     + "_LookUp_TreeMap_String_Strings" + DW_Strings.sBinaryFileExtension;
             dir = new File(
                     DW_Files.getGeneratedONSPDDir(),
                     YM3Nearest);
-        }
+//        }
         File outfile = new File(
                 dir,
                 outputFilename);

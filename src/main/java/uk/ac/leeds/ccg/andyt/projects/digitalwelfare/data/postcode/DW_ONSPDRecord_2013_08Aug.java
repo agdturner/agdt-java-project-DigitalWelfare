@@ -4,6 +4,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+
 /**
  *
  * @author geoagdt
@@ -18,8 +20,8 @@ public class DW_ONSPDRecord_2013_08Aug extends DW_ONSPDRecord_2013_05May {
     
     protected final String ccg;
     
-    public DW_ONSPDRecord_2013_08Aug(String line) {
-        super(line);
+    public DW_ONSPDRecord_2013_08Aug(DW_Environment env, String line) {
+        super(env, line);
         String[] fields = line.split("\",\"");
         ccg = fields[fields.length - 1];
     }

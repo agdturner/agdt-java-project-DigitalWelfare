@@ -4,6 +4,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+
 /**
  *
  * @author geoagdt
@@ -22,8 +24,8 @@ public class DW_ONSPDRecord_2015_05May extends DW_ONSPDRecord_2014_11Nov {
     // 2016_FEB pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oa01,casward,park,lsoa01,msoa01,ur01ind,oac01,oldpct,oa11,lsoa11,msoa11,parish,wz11,ccg,bua11,buasd11,ru11ind,oac11,lat,long,lep1,lep2,pfa,imd
     
 
-    public DW_ONSPDRecord_2015_05May(String line) {
-        super(line);
+    public DW_ONSPDRecord_2015_05May(DW_Environment env, String line) {
+        super(env, line);
         String[] fields = line.split("\",\"");
         lat = fields[fields.length - 2];
         lon = fields[fields.length - 1];
