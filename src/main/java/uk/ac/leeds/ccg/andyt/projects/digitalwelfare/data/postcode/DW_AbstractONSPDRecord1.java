@@ -13,7 +13,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 public abstract class DW_AbstractONSPDRecord1 extends DW_AbstractONSPDRecord {
 
     protected String oa01;
-    protected String casward;
     protected String lsoa01;
     protected String msoa01;
     protected String ur01ind;
@@ -127,10 +126,6 @@ E05001443       00DAHW  Wetherby
 
     public String getOa01() {
         return oa01;
-    }
-
-    public String getCasward() {
-        return casward;
     }
 
     public String getLsoa01() {

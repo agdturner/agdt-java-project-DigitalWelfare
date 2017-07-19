@@ -14,51 +14,13 @@ public class DW_ONSPDRecord_2008_02Feb extends DW_AbstractONSPDRecord2 {
 
     protected String oacode;
     protected String oaind;
-    protected String casward;
 
-    // 2008_FEB  8 pcd,pcd2,pcds,dointr,doterm,{Join these for Ward Code OODAFA oscty,oslaua,osward}, 
-    //          12 usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,GENIND,pafind,gor,streg,pcon,eer,
-    //           7 teclec,ttwa,pct,nuts,{1991 Enumeration District: psed,cened},edind,
-    //           4 ADDRCT,DPCT,MOCT,SMLBUSCT,
-    //           3 oshaprev,lea,oldha,
-    //           1 1991 Census and electoral ward code: wardc91,
-    //           1 wardo91,
-    //           1 1998 Census and electoral ward code: ward98,
-    //           1 2005 statistical Ward: statsward,
-    //           1 2001 Output Area Code: oacode,
-    //           1 oaind,
-    //           1 2001 CAS Ward: casward,
-    //           1 park,
-    //           1 2001 Lower Layer Super Output Area: soa1,
-    //           1 dzone1,
-    //           1 2001 Middle Layer Super Output Area: soa2,
-    //           3 urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
-    // 2008_FEB pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,GENIND,pafind,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,ADDRCT,DPCT,MOCT,SMLBUSCT,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oacode,oaind,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
-    // 2008_AUG pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,GENIND,pafind,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,ADDRCT,DPCT,MOCT,SMLBUSCT,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oacode,oaind,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
-    // 2011_MAY pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,pafind,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oacode,oaind,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
-    // 2012_AUG pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,GENIND,PAFIND,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,ADDRCT,DPCT,MOCT,SMLBUSCT,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,OACODE,OAIND,oa01,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
-    //
+    protected DW_ONSPDRecord_2008_02Feb(){}
+    
     /*
      * NSPDF_FEB_2008_UK_1M.csv 
-     * "AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","00","QA","MJ","0","385386","0801193","1","SN9","S00","179"," "," ","X","0","","11","","","","","99ZZ0099","ZZ0099","9","1","1","0","0","","QA","","","","","99ZZ00",""," ","","99","Z99999999","","Z99999999","9"," ","Z","","99ZZ99Z9","","X98"
-     */
- /* NSPDF_NOV_2010_UK_1M_FP.csv
-     * "AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","00","QA","MJ","0","385386","0801193","1","SN9","S00","179"," "," ","X","0","","11","","","","","99ZZ0099","ZZ0099","9","1","1","0","0","SN9","QA","SN9","","","","99ZZ00",""," ","","99","Z99999999","","Z99999999","9"," ","Z","","99ZZ99Z9","","X98"
-     */
- /*
-     * 2008_FEB 
-     * pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,
-     * "AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","00","QA","MJ","0","385386","0801193",
-     * osgrdind,oshlthau,hro,ctry,GENIND,pafind,
-     * "1","SN9","S00","179"," "," ",
-     * gor,streg,pcon,eer,teclec,ttwa,pct,nuts,
-     * "X","0","","11","","","","",
-     * psed,cened,edind,ADDRCT,DPCT,MOCT,SMLBUSCT,oshaprev,
-     * "99ZZ0099","ZZ0099","9","1","1","0","0","",
-     * lea,oldha,wardc91,wardo91,ward98,
-     * "QA","","","","",
-     * statsward,oacode,oaind,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
-     * "99ZZ00",""," ","","99","Z99999999","","Z99999999","9"," ","Z","","99ZZ99Z9","","X98"
+     * pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,GENIND,pafind,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,ADDRCT,DPCT,MOCT,SMLBUSCT,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oacode,oaind,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
+     * "AB1 0AB","AB1  0AB","AB1 0AB","198001","199606","00","QA","MJ","0","385177","0801314","1","SN9","S00","179"," "," ","X","0","802","11","S08","248","012","UKM1001","99ZZ0099","ZZ0099","9","2","3","2","1","SN9","QA","SN9","72UB43","72UB43","00QA36","99ZZ00","60QA001270","7","01C31","99","Z99999999","S01000011","Z99999999","9","6","Z","S02000007","99ZZ99Z9","4B3","X98"
      */
     /**
      * @param env
@@ -67,106 +29,81 @@ public class DW_ONSPDRecord_2008_02Feb extends DW_AbstractONSPDRecord2 {
     public DW_ONSPDRecord_2008_02Feb(DW_Environment env, String line) {
         this.env = env;
         String[] fields = line.split("\",\"");
-        /**
-         * 2008_FEB
+        /*
+         * 2008_FEB 11
          * pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,
+         * "AB1 0AB","AB1 0AB","AB1 0AB","198001","199606","00","QA","MJ","0","385177","0801314",
          */
-        pcd = fields[0].substring(1);
-        PostcodeF = env.getDW_Postcode_Handler().formatPostcode(pcd);
-        pcd2 = fields[1];
-        pcds = fields[2];
-        if (fields[3].isEmpty()) {
-            dointr = -1;
-        } else {
-            dointr = Integer.valueOf(fields[3]);
-        }
-        if (fields[4].isEmpty()) {
-            doterm = -1;
-        } else {
-            doterm = Integer.valueOf(fields[4]);
-        }
-        oscty = fields[5];
-        oslaua = fields[6];
-        osward = fields[7];
-        usertype = fields[8];
-        if (fields[9].isEmpty()) {
-            oseast1m = -1;
-        } else {
-            oseast1m = Integer.valueOf(fields[9]);
-        }
-        if (fields[10].isEmpty()) {
-            osnrth1m = -1;
-        } else {
-            osnrth1m = Integer.valueOf(fields[10]);
-        }
+        int n;
+        n = initPart1(fields);
+        n = initPart2(n, fields);
+        /* GENIND,pafind,gor,streg,
+         * " "," ","X","0",
+         */
+        genind = fields[n];
+        n++;
+        pafind = fields[n];
+        n++;
+        gor = fields[n];
+        n++;
+        streg = fields[n];
+        n++;
+        n = initPart3(n, fields);
         /*
-         * osgrdind,oshlthau,hro,ctry,GENIND,pafind,
+         * ADDRCT,DPCT,MOCT,SMLBUSCT,
+         * "3","2","1","SN9",
          */
-        osgrdind = Integer.valueOf(fields[11]);
-        oshlthau = fields[12];
-        hro = fields[13];
-        ctry = fields[14];
-        genind = fields[15];
-        pafind = fields[16];
-        /*
-         * gor,streg,pcon,eer,teclec,ttwa,pct,nuts,
-         */
-        gor = fields[17];
-        streg = fields[18];
-        pcon = fields[19];
-        eer = fields[20];
-        teclec = fields[21];
-        ttwa = fields[22];
-        pct = fields[23];
-        nuts = fields[24];
-        /*
-         * psed,cened,edind,ADDRCT,DPCT,MOCT,SMLBUSCT,oshaprev,
-         */
-        psed = fields[25];
-        cened = fields[26];
-        edind = fields[27];
-        addrct = fields[28];
-        dpct = fields[29];
-        moct = fields[30];
-        smlbusct = fields[31];
-        oshaprev = fields[32];
-        /*
-         * lea,oldha,wardc91,wardo91,ward98,
-         */
-        lea = fields[33];
-        oldha = fields[34];
-        wardc91 = fields[35];
-        wardo91 = fields[36];
-        ward98 = fields[37];
-        /*
-         * statsward,oacode,oaind,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
-         */
-        statsward = fields[38];
-        oacode = fields[39];
-        oaind = fields[40];
-        casward = fields[41];
-        park = fields[42];
-        soa1 = fields[43];
-        dzone1 = fields[44];
-        soa2 = fields[45];
-        urindew = fields[46];
-        urindsc = fields[47];
-        urindni = fields[48];
-        dzone2 = fields[49];
-        soa1ni = fields[50];
-        oac = fields[51];
-        oldpct = fields[52];
+        addrct = fields[n];
+        n++;
+        dpct = fields[n];
+        n++;
+        moct = fields[n];
+        n++;
+        smlbusct = fields[n];
+        n++;
+        n = initPart4(n, fields);
+        n = initPart5(n, fields);
+        n = initPart6(n, fields);
+        n = initPart7(n, fields);
     }
-
+    
+    protected final int initPart5(int n, String[] fields) {
+        oacode = fields[n];
+        n++;
+        oaind = fields[n];
+        n++;
+        return n;
+    }
+        
+    protected final int initPart7(int n, String[] fields) {
+        soa1 = fields[n];
+        n++;
+        dzone1 = fields[n];
+        n++;
+        soa2 = fields[n];
+        n++;
+        urindew = fields[n];
+        n++;
+        urindsc = fields[n];
+        n++;
+        urindni = fields[n];
+        n++;
+        dzone2 = fields[n];
+        n++;
+        soa1ni = fields[n];
+        n++;
+        oac = fields[n];
+        n++;
+        oldpct = fields[n];
+        n++;
+        return n;
+    }
+    
     public String getOacode() {
         return oacode;
     }
 
     public String getOaind() {
         return oaind;
-    }
-
-    public String getCasward() {
-        return casward;
     }
 }

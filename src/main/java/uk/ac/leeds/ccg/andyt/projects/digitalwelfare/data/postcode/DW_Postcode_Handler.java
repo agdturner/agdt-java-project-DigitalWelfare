@@ -1150,6 +1150,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
     /**
      * @param file
      * @param level
+     * @param censusYear Either 2001 or 2011 or ignored if level is not a census level.
      * @param YM3NearestFormat
      * @return
      */
@@ -1162,6 +1163,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         YM3NearestSplit = YM3NearestFormat.split(DW_Strings.sUnderscore);
         int year = Integer.valueOf(YM3NearestSplit[0]);
         int month = Integer.valueOf(Generic_Time.getMonthNumber(YM3NearestSplit[1]));
+        env.log("year " + year + " month " + month);
         TreeMap<String, String> result = new TreeMap<String, String>();
         try {
             int lineCounter = 0;
@@ -1184,9 +1186,10 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
                         } else if (year < 2012 || (year == 2012 && month < 8)) {
                             rec = new DW_ONSPDRecord_2011_05May(env, line);
                         } else if (year == 2012 && month < 11) {
-                             rec = new DW_ONSPDRecord_2012_08Aug(env, line);
+                            rec = new DW_ONSPDRecord_2011_05May(env, line);
+                            //rec = new DW_ONSPDRecord_2012_08Nov(env, line);
                         } else if (year < 2013 || (year == 2013 && month < 2)) {
-                             rec = new DW_ONSPDRecord_2012_11Nov(env, line);
+                            rec = new DW_ONSPDRecord_2012_11Nov(env, line);
                         } else if (year == 2013 && month < 5) {
                             rec = new DW_ONSPDRecord_2013_02Feb(env, line);
                         } else if (year == 2013 && month < 8) {
