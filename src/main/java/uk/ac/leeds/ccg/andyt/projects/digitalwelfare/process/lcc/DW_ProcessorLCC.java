@@ -16,18 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
+package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
@@ -35,6 +30,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Records;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstract;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting.DW_Report;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_BarChart;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_LineGraph;
@@ -514,79 +510,6 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
     }
 
     /**
-     * Initialises env logging PrintWriters and returns the directory in which
-     * logs are written. The directory is in an archive structure where the
-     * number of directories or files in the archive (which is a growing
-     * structure) is range.
-     *
-     * @param DEBUG_Level The debugging level - used to control how much is
-     * written to the logs about the process. The following DEBUG_Levels are
-     * defined: DEBUG_Level_FINEST = 0, DEBUG_Level_FINE = 1, DEBUG_Level_NORMAL
-     * = 2.
-     * @param processName The name of the process used for the directory inside
-     * DW_Files.getOutputSHBELogsDir().
-     * @param range The number of directories or files in the archive where the
-     * logs are stored.
-     * @return
-     */
-    protected File initLogs(
-            int DEBUG_Level,
-            String processName,
-            int range) {
-        env.DEBUG_Level = DEBUG_Level;
-        File dir;
-        dir = new File(
-                DW_Files.getOutputSHBELogsDir(),
-                processName);
-        if (dir.isDirectory()) {
-            dir = Generic_StaticIO.addToArchive(dir, 100);
-        } else {
-            dir = Generic_StaticIO.initialiseArchive(dir, 100);
-        }
-        dir.mkdirs();
-        File fO;
-        fO = new File(dir,
-                "Out.txt");
-        PrintWriter PrintWriterO;
-        PrintWriterO = null;
-        try {
-            PrintWriterO = new PrintWriter(fO);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DW_ProcessorLCC.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        env.setPrintWriterOut(PrintWriterO);
-        File fE;
-        fE = new File(dir,
-                "Err.txt");
-        PrintWriter PrintWriterE;
-        PrintWriterE = null;
-        try {
-            PrintWriterE = new PrintWriter(fE);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DW_ProcessorLCC.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        env.setPrintWriterErr(PrintWriterE);
-
-        env.log("DEBUG_Level = " + env.DEBUG_Level);
-        env.log("env.DEBUG_Level_FINEST = " + env.DEBUG_Level_FINEST);
-        env.log("env.DEBUG_Level_FINE = " + env.DEBUG_Level_FINE);
-        env.log("env.DEBUG_Level_NORMAL = " + env.DEBUG_Level_NORMAL);
-        env.log("<" + processName + ">");
-        return dir;
-    }
-
-    /**
-     * Closes env logging PrintWriters.
-     *
-     * @param processName
-     */
-    protected void closeLogs(String processName) {
-        env.log("</" + processName + ">");
-        env.getPrintWriterOut().close();
-        env.getPrintWriterErr().close();
-    }
-
-    /**
      * Switch for loading All ONSPD Data From Source.
      */
     boolean loadAllONSPDFromSource = false;
@@ -686,7 +609,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
      * @param YM3
      * @return A set of look ups from postcodes to each level input in levels.
      */
-    public TreeMap<String, TreeMap<String, String>> getLookupsFromPostcodeToLevelCode(
+    public TreeMap<String, TreeMap<String, String>> getClaimPostcodeF_To_LevelCode_Maps(
             ArrayList<String> levels,
             String YM3) {
         TreeMap<String, TreeMap<String, String>> result;
@@ -695,9 +618,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         while (ite.hasNext()) {
             String level = ite.next();
             //            Iterate over YM3
-            TreeMap<String, String> LookupFromPostcodeToLevelCode;
-            LookupFromPostcodeToLevelCode = getLookupFromPostcodeToLevelCode(env, level, YM3);
-            result.put(level, LookupFromPostcodeToLevelCode);
+            TreeMap<String, String> ClaimPostcodeF_To_LevelCode_Map;
+            ClaimPostcodeF_To_LevelCode_Map = getClaimPostcodeF_To_LevelCode_Map(env, level, YM3);
+            result.put(level, ClaimPostcodeF_To_LevelCode_Map);
         }
         return result;
     }

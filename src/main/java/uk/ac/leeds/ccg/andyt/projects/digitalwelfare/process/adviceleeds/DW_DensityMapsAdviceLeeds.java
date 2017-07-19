@@ -16,8 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
+package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds.DW_DataProcessorAdviceLeeds;
 import java.awt.Color;
 import java.io.File;
 import java.math.BigDecimal;
@@ -48,6 +49,7 @@ import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_MapsAdviceLeeds;
 
 /**
@@ -214,7 +216,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
                 level, 
                     targetPropertyName,
                     DW_MapsAdviceLeeds.getShapefileDataStoreFactory());
-            tLookupFromPostcodeToCensusCodes = DW_ProcessorAdviceLeeds.getLookupFromPostcodeToLevelCode(
+            tLookupFromPostcodeToCensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
                     env,                
                     level,
                     YM3);

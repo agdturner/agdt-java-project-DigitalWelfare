@@ -386,16 +386,14 @@ public class DW_Files extends DW_Object {
                     nameAdd = "_UK_1M";
                 } else {
                     namePrefix = "ONSPD";
-                    nameAdd = "_O";
+                    // It is odd but te case that the following are "O" not "0"!
                     if (year >= 2011 && year <= 2013) {
-                        // It is horrible but true that the following is "_UK_O" not "_UK_0"!
-                        nameAdd = "_UK_O"; 
-                    }
-                    if (year > 2013) {
+                        nameAdd = "_UK_O";
+                    } else {
                         nameAdd = "_UK";
                     }
                 }
-                // FEB ONSPD_FEB_2012/Data/ONSPD_FEB_2012_UK_0.csv
+                // FEB
                 if (year != 2011) {
                     month = "FEB";
                     f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
@@ -406,9 +404,15 @@ public class DW_Files extends DW_Object {
                 if (year == 2009 || year == 2010) {
                     nameAdd += "_FP";
                 }
+                if (year == 2011) {
+                    nameAdd = "_O";
+                }
                 f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
                 InputONSPDFiles.put(year + "_" + month, f);
                 if (year != 2017) {
+                    if (year == 2011) {
+                        nameAdd = "_UK_O";
+                    }
                     // AUG
                     month = "AUG";
                     f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);

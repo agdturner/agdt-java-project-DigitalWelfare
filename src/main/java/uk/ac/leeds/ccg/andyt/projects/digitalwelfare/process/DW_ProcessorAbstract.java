@@ -92,7 +92,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
      * @return TreeMap<String, String> result where:--------------------------
      * Keys are postcodes; values are census area codes.
      */
-//    public TreeMap<String, String> getLookupFromPostcodeToLevelCode(
+//    public TreeMap<String, String> getClaimPostcodeF_To_LevelCode_Map(
 //            DW_Environment env,
 //            String level,
 //            int year) {
@@ -132,7 +132,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
      * @return TreeMap<String, String> result where:--------------------------
      * Keys are postcodes; values are census area codes.
      */
-    public TreeMap<String, String> getLookupFromPostcodeToLevelCode(
+    public TreeMap<String, String> getClaimPostcodeF_To_LevelCode_Map(
             DW_Environment env,
             String level,
             String YM3) {
@@ -330,6 +330,74 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         System.out.println("msumIMDScore " + sumIMDScore);
         System.out.println("meanIMDScore " + meanIMDScore);
         return tDeprivationData;
+    }
+
+    /**
+     * Initialises env logging PrintWriters and returns the directory in which
+     * logs are written. The directory is in an archive structure where the
+     * number of directories or files in the archive (which is a growing
+     * structure) is range.
+     *
+     * @param DEBUG_Level The debugging level - used to control how much is
+     * written to the logs about the process. The following DEBUG_Levels are
+     * defined: DEBUG_Level_FINEST = 0, DEBUG_Level_FINE = 1, DEBUG_Level_NORMAL
+     * = 2.
+     * @param processName The name of the process used for the directory inside
+     * DW_Files.getOutputSHBELogsDir().
+     * @param range The number of directories or files in the archive where the
+     * logs are stored.
+     * @return
+     */
+    protected File initLogs(int DEBUG_Level, String processName, int range) {
+        env.DEBUG_Level = DEBUG_Level;
+        File dir;
+        dir = new File(DW_Files.getOutputSHBELogsDir(), processName);
+        if (dir.isDirectory()) {
+            dir = Generic_StaticIO.addToArchive(dir, 100);
+        } else {
+            dir = Generic_StaticIO.initialiseArchive(dir, 100);
+        }
+        dir.mkdirs();
+        File fO;
+        fO = new File(dir, "Out.txt");
+        PrintWriter PrintWriterO;
+        PrintWriterO = null;
+        try {
+            PrintWriterO = new PrintWriter(fO);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DW_Processor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        env.setPrintWriterOut(PrintWriterO);
+        File fE;
+        fE = new File(dir, "Err.txt");
+        PrintWriter PrintWriterE;
+        PrintWriterE = null;
+        try {
+            PrintWriterE = new PrintWriter(fE);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DW_Processor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        env.setPrintWriterErr(PrintWriterE);
+        env.log("<" + processName + ">");
+        env.log("Log Directory " + dir.toString());
+        env.log("Log Output file " + fO.toString());
+        env.log("Log Error file " + fE.toString());
+        env.log("DEBUG_Level = " + env.DEBUG_Level);
+        env.log("env.DEBUG_Level_FINEST = " + env.DEBUG_Level_FINEST);
+        env.log("env.DEBUG_Level_FINE = " + env.DEBUG_Level_FINE);
+        env.log("env.DEBUG_Level_NORMAL = " + env.DEBUG_Level_NORMAL);
+        return dir;
+    }
+
+    /**
+     * Closes env logging PrintWriters.
+     *
+     * @param processName
+     */
+    protected void closeLogs(String processName) {
+        env.log("</" + processName + ">");
+        env.getPrintWriterOut().close();
+        env.getPrintWriterErr().close();
     }
 
 }

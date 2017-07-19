@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
+package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -98,22 +98,22 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         TreeMap<String, ArrayList<Integer>> includes;
         ArrayList<String> PTs;
         Iterator<String> PTsIte;
-        TreeMap<String, TreeMap<String, String>> LookupsFromPostcodeToLevelCode;
+        TreeMap<String, TreeMap<String, String>> ClaimPostcodeF_To_LevelCode_Maps;
         String includeName;
         ArrayList<Integer> include;
         Iterator<Integer> includeIte;
         int i;
         DW_SHBE_Records DW_SHBE_Records;
-        HashMap<DW_ID, DW_SHBE_Record> records0;
+        HashMap<DW_ID, DW_SHBE_Record> ClaimIDToDW_SHBE_RecordMap;
         DW_ID DW_ID;
-        DW_SHBE_D_Record DRecord0;
-        String postcode0;
+        DW_SHBE_D_Record DRecord;
+        String ClaimPostcodeF;
         int numberOfChildDependents;
         int householdSize;
         Iterator<String> levelsIte;
         String level;
-        TreeMap<String, String> tLookupFromPostcodeToLevelCode;
-        String areaCode;
+        TreeMap<String, String> ClaimPostcodeF_To_LevelCodeMap;
+        String AreaCode;
         File outDir;
         File outDir1;
         File outDir2;
@@ -148,6 +148,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         outDir = new File(
                 DW_Files.getOutputSHBETablesDir(),
                 "HBGeneralAggregateStatistics");
+        env.log("Output Directory " + outDir.toString());
         PTsIte = PTs.iterator();
         while (PTsIte.hasNext()) {
             PT = PTsIte.next();
@@ -162,11 +163,11 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                 YM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                 env.logO("Generalising " + YM3, true);
                 // Get Lookup
-                LookupsFromPostcodeToLevelCode = getLookupsFromPostcodeToLevelCode(levels, YM3);
+                ClaimPostcodeF_To_LevelCode_Maps = getClaimPostcodeF_To_LevelCode_Maps(levels, YM3);
                 // Load first data
                 DW_SHBE_Records = DW_SHBE_Data.getDW_SHBE_Records(YM3);
-                records0 = DW_SHBE_Records.getRecords(true);
-                DW_SHBE_Records = env.getDW_SHBE_Data().getData().get(YM3);
+                ClaimIDToDW_SHBE_RecordMap = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(true);
+                //DW_SHBE_Records = env.getDW_SHBE_Data().getData().get(YM3);
                 //records0 = DW_SHBE_Records.getDataPTI(env._HandleOutOfMemoryError_boolean);
                 TreeMap<String, TreeMap<String, int[]>> result;
                 result = new TreeMap<String, TreeMap<String, int[]>>();
@@ -174,16 +175,18 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                 int[] resultValues;
 
                 // Iterate over records
-                Iterator<DW_ID> DW_IDIte = records0.keySet().iterator();
+                Iterator<DW_ID> DW_IDIte = ClaimIDToDW_SHBE_RecordMap.keySet().iterator();
                 while (DW_IDIte.hasNext()) {
                     DW_ID = DW_IDIte.next();
-                    DRecord0 = records0.get(DW_ID).getDRecord();
-                    numberOfChildDependents = DRecord0.getNumberOfChildDependents();
-                    householdSize = DW_SHBE_Handler.getHouseholdSizeint(DRecord0);
-                    postcode0 = DRecord0.getClaimantsPostcode();
+                    DW_SHBE_Record DW_SHBE_Record;
+                    DW_SHBE_Record = ClaimIDToDW_SHBE_RecordMap.get(DW_ID);
+                    DRecord = DW_SHBE_Record.getDRecord();
+                    numberOfChildDependents = DRecord.getNumberOfChildDependents();
+                    householdSize = DW_SHBE_Handler.getHouseholdSizeint(DRecord);
+                    ClaimPostcodeF = DW_SHBE_Record.getClaimPostcodeF();
                     //councilTaxBenefitClaimReferenceNumber0 = DRecord0.getCouncilTaxBenefitClaimReferenceNumber();
                     //claimantType = DW_SHBE_Handler.getClaimantType(DRecord0);
-                    if (postcode0 != null) {
+                    if (ClaimPostcodeF != null) {
                         levelsIte = levels.iterator();
                         while (levelsIte.hasNext()) {
                             level = levelsIte.next();
@@ -193,13 +196,13 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                                 result0 = new TreeMap<String, int[]>();
                                 result.put(level, result0);
                             }
-                            tLookupFromPostcodeToLevelCode = LookupsFromPostcodeToLevelCode.get(level);
-                            areaCode = getAreaCode(
+                            ClaimPostcodeF_To_LevelCodeMap = ClaimPostcodeF_To_LevelCode_Maps.get(level);
+                            AreaCode = getAreaCode(
                                     level,
-                                    postcode0,
-                                    tLookupFromPostcodeToLevelCode);
-                            if (result0.containsKey(areaCode)) {
-                                resultValues = result0.get(areaCode);
+                                    ClaimPostcodeF,
+                                    ClaimPostcodeF_To_LevelCodeMap);
+                            if (result0.containsKey(AreaCode)) {
+                                resultValues = result0.get(AreaCode);
                                 resultValues[0] += 1;
                                 resultValues[1] += numberOfChildDependents;
                                 resultValues[2] += householdSize;
@@ -208,7 +211,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                                 resultValues[0] = 1;
                                 resultValues[1] = numberOfChildDependents;
                                 resultValues[2] = householdSize;
-                                result0.put(areaCode, resultValues);
+                                result0.put(AreaCode, resultValues);
                             }
                         }
                     }
@@ -232,11 +235,11 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                     Iterator<String> ite2;
                     ite2 = result0.keySet().iterator();
                     while (ite2.hasNext()) {
-                        areaCode = ite2.next();
-                        if (!areaCode.isEmpty()) {
-                            resultValues = result0.get(areaCode);
+                        AreaCode = ite2.next();
+                        if (!AreaCode.isEmpty()) {
+                            resultValues = result0.get(AreaCode);
                             outPW.println(
-                                    areaCode
+                                    AreaCode
                                     + ", " + resultValues[0]
                                     + ", " + resultValues[1]
                                     + ", " + resultValues[2]);
@@ -255,45 +258,47 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
      *
      * @param level
      * @param postcode
-     * @param tLookupFromPostcodeToCensusCode
+     * @param LookupFromPostcodeToCensusCode
      * @return The area code for level from tLookupFromPostcodeToCensusCode for
      * postcode. This may return "" or null.
      */
     public String getAreaCode(
             String level,
             String postcode,
-            TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
-        DW_Postcode_Handler DW_Postcode_Handler;
-        DW_Postcode_Handler = env.getDW_Postcode_Handler();
+            TreeMap<String, String> LookupFromPostcodeToCensusCode) {
         String result = "";
         // Special Case
         if (postcode.trim().isEmpty()) {
             return result;
         }
-        if (level.equalsIgnoreCase("OA")
-                || level.equalsIgnoreCase("LSOA")
-                || level.equalsIgnoreCase("MSOA")) {
+        if (level.equalsIgnoreCase(DW_Strings.sOA)
+                || level.equalsIgnoreCase(DW_Strings.sLSOA)
+                || level.equalsIgnoreCase(DW_Strings.sMSOA)
+                || level.equalsIgnoreCase(DW_Strings.sStatisticalWard)
+                || level.equalsIgnoreCase(DW_Strings.sParliamentaryConstituency)) {
             String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
-            result = tLookupFromPostcodeToCensusCode.get(
+            result = LookupFromPostcodeToCensusCode.get(
                     formattedPostcode);
             if (result == null) {
                 result = "";
             }
-        } else if (level.equalsIgnoreCase("PostcodeUnit")
-                || level.equalsIgnoreCase("PostcodeSector")
-                || level.equalsIgnoreCase("PostcodeDistrict")) {
-            if (level.equalsIgnoreCase("PostcodeUnit")) {
+        } else if (level.equalsIgnoreCase(DW_Strings.sPostcodeUnit)
+                || level.equalsIgnoreCase(DW_Strings.sPostcodeSector)
+                || level.equalsIgnoreCase(DW_Strings.sPostcodeDistrict)) {
+            if (level.equalsIgnoreCase(DW_Strings.sPostcodeUnit)) {
                 result = postcode;
             }
-            if (level.equalsIgnoreCase("PostcodeSector")) {
+            if (level.equalsIgnoreCase(DW_Strings.sPostcodeSector)) {
                 result = DW_Postcode_Handler.getPostcodeSector(postcode);
             }
-            if (level.equalsIgnoreCase("PostcodeDistrict")) {
+            if (level.equalsIgnoreCase(DW_Strings.sPostcodeDistrict)) {
                 result = DW_Postcode_Handler.getPostcodeDistrict(postcode);
             }
         } else {
             // Unrecognised level
-            int debug = 1;
+            env.log("Unrecognised level in "
+                    + this.getClass().getName()
+                    + ".getAreaCode(String,String,TreeMap<String, String>)");
         }
         return result;
     }

@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
+package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
 import java.awt.Color;
 import java.io.File;
@@ -51,6 +51,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyTy
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_MapsLCC;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeGroups;
@@ -1233,7 +1234,7 @@ DW_Shapefile foregroundDW_Shapefile1;
         lookup = lookups.get("Unit").get(DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 
         HashMap<DW_ID, DW_SHBE_Record> records;
-        records = SHBEData.getRecords(env._HandleOutOfMemoryError_boolean);
+        records = SHBEData.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
         
         boolean nonZero = false;
 

@@ -1211,6 +1211,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
                             }
                         }
                         String postcode = rec.getPcd();
+                        //String PostcodeF = rec.getPostcodeF();
                         if (level.equalsIgnoreCase(DW_Strings.sPostcodeUnit)) {
                             value = postcode;
                         }
@@ -1226,7 +1227,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
                         if (level.equalsIgnoreCase(DW_Strings.sStatisticalWard)) {
                             value = rec.getStatsward();
                         }
-                        result.put(rec.getPcd(), value);
+                        result.put(rec.getPostcodeF(), value);
                         lineCounter++;
                         if (lineCounter % 100000 == 0) {
                             System.out.println("Read " + lineCounter + " lines out of something like 2560000");

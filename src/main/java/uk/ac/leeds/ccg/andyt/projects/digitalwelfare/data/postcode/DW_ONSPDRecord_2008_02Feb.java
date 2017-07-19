@@ -39,6 +39,7 @@ public class DW_ONSPDRecord_2008_02Feb extends DW_AbstractONSPDRecord2 {
     public DW_ONSPDRecord_2008_02Feb(String line) {
         String[] fields = line.split("\",\"");
         pcd = fields[0].substring(1);
+        PostcodeF = pcd.replaceAll(" ", "");
         pcd2 = fields[1];
         pcds = fields[2];
         if (fields[3].isEmpty()) {

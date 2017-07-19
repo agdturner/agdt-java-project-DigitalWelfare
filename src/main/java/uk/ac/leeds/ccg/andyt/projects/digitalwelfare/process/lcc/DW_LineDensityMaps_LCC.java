@@ -16,8 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
+package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc.DW_LineMapsLCC;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import java.awt.Color;
@@ -49,6 +50,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getYM3s;
 import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 import uk.ac.leeds.ccg.andyt.vector.geometry.Vector_LineSegment2D;

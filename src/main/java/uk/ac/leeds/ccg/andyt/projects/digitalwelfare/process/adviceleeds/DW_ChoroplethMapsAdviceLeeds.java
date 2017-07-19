@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
+package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds;
 
 import java.awt.Color;
 import java.io.File;
@@ -37,6 +37,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ar
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMapsAbstract;
 
 /**
  *

@@ -12,8 +12,8 @@ import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMapsLCC;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMapsLCC.getFilenames;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc.DW_ChoroplethMapsLCC;
+import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc.DW_ChoroplethMapsLCC.getFilenames;
 
 public class DW_Report extends DW_HTMLPage {
 

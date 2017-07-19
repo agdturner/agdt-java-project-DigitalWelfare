@@ -30,7 +30,7 @@ import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAdviceLeeds;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds.DW_ProcessorAdviceLeeds;
 
 /**
  *

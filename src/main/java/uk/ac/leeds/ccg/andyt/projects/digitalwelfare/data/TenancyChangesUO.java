@@ -1336,7 +1336,7 @@ public class TenancyChangesUO extends DW_Object {
             month = DW_SHBE_Handler.getMonthNumber(SHBEFilenames[i]);
             yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
             DW_SHBE_Records = env.getDW_SHBE_Data().getDW_SHBE_Records(yM3);
-            records = DW_SHBE_Records.getRecords(env._HandleOutOfMemoryError_boolean);
+            records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
             ite = ClaimIDs.iterator();
             while (ite.hasNext()) {
                 ClaimID = ite.next();
@@ -2022,7 +2022,7 @@ public class TenancyChangesUO extends DW_Object {
             DW_SHBE_Records1 = DW_SHBE_Data.getDW_SHBE_Records(YM31);
         }
         HashMap<DW_ID, DW_SHBE_Record> Records1;
-        Records1 = DW_SHBE_Records1.getRecords(env._HandleOutOfMemoryError_boolean);
+        Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
         DW_SHBE_Record Record1;
         CouncilUOSet1 = CouncilUOSets.get(YM31);
         HashMap<DW_ID, DW_UO_Record> CouncilUOSetMap1;
@@ -3074,7 +3074,7 @@ public class TenancyChangesUO extends DW_Object {
             header += YM31;
         }
         //TreeMap<String, DW_SHBE_Record> aRecords;
-        Records1 = DW_SHBE_Records1.getRecords(env._HandleOutOfMemoryError_boolean);
+        Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
         HashMap<DW_ID, DW_SHBE_Record> Records0;
         Records0 = null;
 //        HashMap<DW_ID, DW_SHBE_Record> cRecords;
@@ -3447,7 +3447,7 @@ public class TenancyChangesUO extends DW_Object {
             month1 = DW_SHBE_Handler.getMonthNumber(SHBEFilename1);
             DW_SHBE_Records1 = env.getDW_SHBE_Data().getDW_SHBE_Records(YM31);
             //cRecords = Records0;
-            Records1 = DW_SHBE_Records1.getRecords(env._HandleOutOfMemoryError_boolean);
+            Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             RSLUOSet1 = RSLUOSets.get(YM31);
             header += DW_Strings.sCommaSpace + YM31;

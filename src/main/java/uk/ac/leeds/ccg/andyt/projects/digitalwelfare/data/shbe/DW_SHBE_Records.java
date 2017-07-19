@@ -534,7 +534,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashMap<DW_ID, DW_SHBE_Record> getRecords(boolean handleOutOfMemoryError) {
+    public final HashMap<DW_ID, DW_SHBE_Record> getClaimIDToDW_SHBE_RecordMap(boolean handleOutOfMemoryError) {
         try {
             return getRecords();
         } catch (OutOfMemoryError e) {
@@ -544,7 +544,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     throw e;
                 }
                 env.init_MemoryReserve(handleOutOfMemoryError);
-                return getRecords(handleOutOfMemoryError);
+                return getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
             } else {
                 throw e;
             }
@@ -1271,7 +1271,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         env.logO("YM3 " + YM3, true);
         env.logO("NearestYM3ForONSPDLookup " + NearestYM3ForONSPDLookup, true);
         DW_Strings = env.getDW_Strings();
-        Records = getRecords(env._HandleOutOfMemoryError_boolean);
+        Records = getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
         ClaimIDsOfNewSHBEClaims = getClaimIDsOfNewSHBEClaims(env._HandleOutOfMemoryError_boolean);
         ClaimantPersonIDs = getClaimantPersonIDs(env._HandleOutOfMemoryError_boolean);
         PartnerPersonIDs = getPartnerPersonIDs(env._HandleOutOfMemoryError_boolean);

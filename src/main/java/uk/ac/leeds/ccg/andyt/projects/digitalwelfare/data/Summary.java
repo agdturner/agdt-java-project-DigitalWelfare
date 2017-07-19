@@ -5286,7 +5286,7 @@ public class Summary extends DW_Object {
         // Summarise first data
         doPartSummarySingleTime(
                 DW_SHBE_Records1,
-                DW_SHBE_Records1.getRecords(handleOutOfMemoryError),
+                DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError),
                 YM31,
                 filename1,
                 forceNewSummaries,
@@ -5514,7 +5514,7 @@ public class Summary extends DW_Object {
 
         doPartSummarySingleTime(
                 DW_SHBE_Records1,
-                DW_SHBE_Records1.getRecords(env._HandleOutOfMemoryError_boolean),
+                DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean),
                 YM31,
                 filename1,
                 forceNewSummaries,
@@ -5639,7 +5639,7 @@ public class Summary extends DW_Object {
         DW_SHBE_D_Record D_Record1;
 
         HashMap<DW_ID, DW_SHBE_Record> Records0;
-        Records0 = DW_SHBE_Records0.getRecords(env._HandleOutOfMemoryError_boolean);
+        Records0 = DW_SHBE_Records0.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
         // Go through previous records
         ite = Records0.keySet().iterator();
         while (ite.hasNext()) {
@@ -5734,7 +5734,7 @@ public class Summary extends DW_Object {
             }
         }
         HashMap<DW_ID, DW_SHBE_Record> Records1;
-        Records1 = DW_SHBE_Records1.getRecords(env._HandleOutOfMemoryError_boolean);
+        Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
         // Go through current records
         ite = Records1.keySet().iterator();
         while (ite.hasNext()) {

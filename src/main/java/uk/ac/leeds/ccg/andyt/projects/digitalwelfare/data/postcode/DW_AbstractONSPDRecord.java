@@ -10,6 +10,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode;
  */
 public abstract class DW_AbstractONSPDRecord {
 
+    protected String PostcodeF;
     protected String pcd;
     protected String pcd2;
     protected String pcds;
@@ -74,7 +75,6 @@ public abstract class DW_AbstractONSPDRecord {
     // 2015_MAY pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oa01,casward,park,lsoa01,msoa01,ur01ind,oac01,oldpct,oa11,lsoa11,msoa11,parish,wz11,ccg,bua11,buasd11,ru11ind,oac11,lat,long
     // 2015_AUG pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oa01,casward,park,lsoa01,msoa01,ur01ind,oac01,oldpct,oa11,lsoa11,msoa11,parish,wz11,ccg,bua11,buasd11,ru11ind,oac11,lat,long,lep1,lep2
     // 2016_FEB pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oa01,casward,park,lsoa01,msoa01,ur01ind,oac01,oldpct,oa11,lsoa11,msoa11,parish,wz11,ccg,bua11,buasd11,ru11ind,oac11,lat,long,lep1,lep2,pfa,imd
-    
     // 2008_FEB "AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","00","QA","MJ","0","385386","0801193","1","SN9","S00","179"," "," ","X","0","","11","","","","","99ZZ0099","ZZ0099","9","1","1","0","0","","QA","","","","","99ZZ00",""," ","","99","Z99999999","","Z99999999","9"," ","Z","","99ZZ99Z9","","X98"
     // 2008_MAY "AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","00","QA","MJ","0","385386","0801193","1","SN9","S00","179"," "," ","X","0","","11","","","","","99ZZ0099","ZZ0099","9","1","1","0","0","","QA","","","","","99ZZ00",""," ","","99","Z99999999","","Z99999999","9"," ","Z","","99ZZ99Z9","","X98"
     // 2008_AUG "AB1 0AA","AB1  0AA","AB1 0AA","198001","199606","00","QA","MJ","0","385386","0801193","1","SN9","S00","179"," "," ","X","0","","11","","","","","99ZZ0099","ZZ0099","9","1","1","0","0","SN9","QA","SN9","","","","99ZZ00",""," ","","99","Z99999999","","Z99999999","9"," ","Z","","99ZZ99Z9","","X98"
@@ -171,6 +171,7 @@ E05001442       00DAHU  Weetwood
 E05001443       00DAHW  Wetherby
      */
     public DW_AbstractONSPDRecord() {
+        PostcodeF = "";
         pcd = "";
         pcd2 = "";
         pcds = "";
@@ -228,6 +229,10 @@ E05001443       00DAHW  Wetherby
 //        lep2 = "";
 //        pfa = "";
 //        imd = "";
+    }
+
+    public String getPostcodeF() {
+        return PostcodeF;
     }
 
     public String getPcd() {

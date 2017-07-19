@@ -255,7 +255,7 @@ public class DW_SHBE_Handler extends DW_Object {
                 env,
                 YM31);
         HashMap<DW_ID, DW_SHBE_Record> recs1;
-        recs1 = DW_SHBE_Records1.getRecords(handleOutOfMemoryError);
+        recs1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
         DW_SHBE_Record rec1;
         HashMap<DW_ID, AGDT_Point> PostcodeIDToPointLookup1;
         PostcodeIDToPointLookup1 = PostcodeIDPointLookups.get(NearestYM3ForONSPDLookupYM31);
@@ -341,7 +341,7 @@ public class DW_SHBE_Handler extends DW_Object {
         DW_SHBE_Records0 = new DW_SHBE_Records(
                 env,
                 YM30);
-        recs0 = DW_SHBE_Records0.getRecords(handleOutOfMemoryError);
+        recs0 = DW_SHBE_Records0.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
         // <writeOutModifiedPostcodes>
         writeOutModifiedPostcodes(
                 UniqueModifiedPostcodes,
@@ -508,7 +508,7 @@ public class DW_SHBE_Handler extends DW_Object {
                 env,
                 YM31);
         HashMap<DW_ID, DW_SHBE_Record> recs1;
-        recs1 = DW_SHBE_Records1.getRecords(handleOutOfMemoryError);
+        recs1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
         DW_SHBE_Record rec1;
         HashMap<DW_ID, AGDT_Point> PostcodeIDToPointLookup1;
         PostcodeIDToPointLookup1 = PostcodeIDPointLookups.get(NearestYM3ForONSPDLookupYM31);
@@ -593,7 +593,7 @@ public class DW_SHBE_Handler extends DW_Object {
             DW_SHBE_Records0 = new DW_SHBE_Records(
                     env,
                     YM30);
-            recs0 = DW_SHBE_Records0.getRecords(handleOutOfMemoryError);
+            recs0 = DW_SHBE_Records0.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
             // <writeOutModifiedPostcodes>
             writeOutModifiedPostcodes(
                     UniqueModifiedPostcodes,

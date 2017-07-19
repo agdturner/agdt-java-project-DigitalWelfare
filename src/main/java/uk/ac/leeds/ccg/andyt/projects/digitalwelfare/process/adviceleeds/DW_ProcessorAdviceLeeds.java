@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
+package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds;
 
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
@@ -28,6 +28,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstract;
 
 /**
  * This is the main class for the Digital Welfare Project. For more details of

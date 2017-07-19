@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
+package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -149,7 +149,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         tDeprivationData = getDeprivation_Data();
         // Get postcode to LSOA lookup
         TreeMap<String, String> tLookupFromPostcodeToLSOACensusCode;
-        tLookupFromPostcodeToLSOACensusCode = getLookupFromPostcodeToLevelCode(
+        tLookupFromPostcodeToLSOACensusCode = getClaimPostcodeF_To_LevelCode_Map(
                 env,
                 "LSOA", 
                 YM3);
@@ -161,7 +161,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                 || level.equalsIgnoreCase("LSOA")) {
             tLookupFromPostcodeToCensusCode = tLookupFromPostcodeToLSOACensusCode;
         } else {
-            tLookupFromPostcodeToCensusCode = getLookupFromPostcodeToLevelCode(
+            tLookupFromPostcodeToCensusCode = getClaimPostcodeF_To_LevelCode_Map(
                     env,
                     level, 
                     YM3);
@@ -667,7 +667,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //
 //        String level = "MSOA";
 //        TreeMap<String, String> tLookupFromPostcodeToCensusCodes;
-//        tLookupFromPostcodeToCensusCodes = getLookupFromPostcodeToLevelCode(level, 2011);
+//        tLookupFromPostcodeToCensusCodes = getClaimPostcodeF_To_LevelCode_Map(level, 2011);
 //        
 //        TreeMap<String, CAB_DataRecord1> tQ11314LeedsCABData;
 //        tQ11314LeedsCABData = tCAB_DataRecord1_Handler.loadInputData_EnquiryClientOutletID(

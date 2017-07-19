@@ -16,8 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
+package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds;
 
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds.DW_DataProcessorAdviceLeeds;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -226,12 +227,12 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         //int year_int = 2011;
         String YM3 = "2011_May";
         // init postcode to LSOA lookup
-        tLookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getLookupFromPostcodeToLevelCode(
+        tLookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
                 env,
                 "LSOA",
                 YM3);
         // init postcode to MSOA lookup
-        tLookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getLookupFromPostcodeToLevelCode(
+        tLookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
                 env,
                 "MSOA",
                 YM3);
@@ -653,12 +654,12 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         //int year_int = 2011;
         String YM3 = "2011_May";
         // Get postcode to LSOA lookup
-        tLookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getLookupFromPostcodeToLevelCode(
+        tLookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
                 env,
                 "LSOA",
                 YM3);
         // Get postcode to LSOA lookup
-        tLookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getLookupFromPostcodeToLevelCode(
+        tLookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
                 env,
                 "MSOA",
                 YM3);
