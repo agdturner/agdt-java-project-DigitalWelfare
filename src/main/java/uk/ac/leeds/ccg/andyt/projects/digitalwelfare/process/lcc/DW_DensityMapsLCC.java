@@ -30,13 +30,13 @@ import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleChunkArrayFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.GridStatistics0;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDoubleChunkArrayFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDoubleFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_GridStatistics0;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
+import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
+import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorGWS;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
@@ -138,14 +138,14 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 "processor");
         processorDir.mkdirs();
         ge = new Grids_Environment();
-        eage = new ESRIAsciiGridExporter(ge);
-        ie = new ImageExporter(ge);
+        eage = new Grids_ESRIAsciiGridExporter(ge);
+        ie = new Grids_ImageExporter(ge);
         gp = new Grid2DSquareCellProcessorGWS(ge);
         gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
-        gcf = new Grid2DSquareCellDoubleChunkArrayFactory();
+        gcf = new Grids_Grid2DSquareCellDoubleChunkArrayFactory();
         chunkNRows = 300;//250; //64
         chunkNCols = 350;//300; //64
-        gf = new Grid2DSquareCellDoubleFactory(
+        gf = new Grids_Grid2DSquareCellDoubleFactory(
                 processorDir,
                 chunkNRows,
                 chunkNCols,
@@ -256,18 +256,18 @@ DW_Shapefile foregroundDW_Shapefile1;
             dirOut1 = new File(dirOut, "LADOverlaid");
             foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
         }
-        Grid2DSquareCellDoubleFactory f;
-        f = new Grid2DSquareCellDoubleFactory(ge, handleOutOfMemoryErrors);
+        Grids_Grid2DSquareCellDoubleFactory f;
+        f = new Grids_Grid2DSquareCellDoubleFactory(ge, handleOutOfMemoryErrors);
         f.set_Dimensions(dimensions);
-        f.set_GridStatistics(new GridStatistics0());
+        f.set_GridStatistics(new Grids_GridStatistics0());
         Grid2DSquareCellProcessorGWS p;
         p = new Grid2DSquareCellProcessorGWS(ge);
 
-        Grid2DSquareCellDouble numerator = null;
-        Grid2DSquareCellDouble denominator1;
-        Grid2DSquareCellDouble denominator2;
-        Grid2DSquareCellDouble rate;
-        rate = (Grid2DSquareCellDouble) f.create(nrows, ncols);
+        Grids_Grid2DSquareCellDouble numerator = null;
+        Grids_Grid2DSquareCellDouble denominator1;
+        Grids_Grid2DSquareCellDouble denominator2;
+        Grids_Grid2DSquareCellDouble rate;
+        rate = (Grids_Grid2DSquareCellDouble) f.create(nrows, ncols);
 
         int index;
         index = 0;
@@ -285,7 +285,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                     dirIn,
                     "2013_AprMinus2015_Oct.asc");
             if (numeratorFile.exists()) {
-                numerator = (Grid2DSquareCellDouble) f.create(numeratorFile);
+                numerator = (Grids_Grid2DSquareCellDouble) f.create(numeratorFile);
                 System.out.println(numerator.toString(handleOutOfMemoryErrors));
             } else {
                 int debug = 1;
@@ -293,12 +293,12 @@ DW_Shapefile foregroundDW_Shapefile1;
             denominatorFile = new File(
                     dirIn,
                     "2013_Apr/Density2013_Apr_554_ncols_680_cellsize_50.0.asc");
-            denominator1 = (Grid2DSquareCellDouble) f.create(denominatorFile);
+            denominator1 = (Grids_Grid2DSquareCellDouble) f.create(denominatorFile);
             System.out.println(denominator1.toString(handleOutOfMemoryErrors));
             denominatorFile = new File(
                     dirIn,
                     "2015_Oct/Density2015_Oct_554_ncols_680_cellsize_50.0.asc");
-            denominator2 = (Grid2DSquareCellDouble) f.create(denominatorFile);
+            denominator2 = (Grids_Grid2DSquareCellDouble) f.create(denominatorFile);
             System.out.println(denominator2.toString(handleOutOfMemoryErrors));
             //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
             //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
@@ -357,8 +357,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                 eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
 
                 boolean scaleToFirst = false;
-                outputGrid(
-                        (Grid2DSquareCellDouble) gwsgrid,
+                outputGrid((Grids_Grid2DSquareCellDouble) gwsgrid,
                         dirOut1,
                         outputName2,
                         "name" + index,
@@ -416,11 +415,11 @@ DW_Shapefile foregroundDW_Shapefile1;
                 numeratorFile = new File(
                         dirIn,
                         year + "_" + month + "/Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
-                numerator = (Grid2DSquareCellDouble) f.create(numeratorFile);
+                numerator = (Grids_Grid2DSquareCellDouble) f.create(numeratorFile);
                 denominatorFile = new File(
                         dirIn2,
                         year + "_" + month + "/Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
-                denominator2 = (Grid2DSquareCellDouble) f.create(denominatorFile);
+                denominator2 = (Grids_Grid2DSquareCellDouble) f.create(denominatorFile);
                 System.out.println(denominator2.toString(handleOutOfMemoryErrors));
                 //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
                 //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
@@ -477,8 +476,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                     eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
 
                     boolean scaleToFirst = false;
-                    outputGrid(
-                            (Grid2DSquareCellDouble) gwsgrid,
+                    outputGrid((Grids_Grid2DSquareCellDouble) gwsgrid,
                             dirOut2,
                             outputName2,
                             "name" + index,
@@ -508,11 +506,11 @@ DW_Shapefile foregroundDW_Shapefile1;
                 numeratorFile = new File(
                         dirOut2,
                         year0 + "_" + month0 + "UO_Over_All_" + type + "_Rate.asc");
-                numerator = (Grid2DSquareCellDouble) f.create(numeratorFile);
+                numerator = (Grids_Grid2DSquareCellDouble) f.create(numeratorFile);
                 denominatorFile = new File(
                         dirOut2,
                         year + "_" + month + "UO_Over_All_" + type + "_Rate.asc");
-                denominator2 = (Grid2DSquareCellDouble) f.create(denominatorFile);
+                denominator2 = (Grids_Grid2DSquareCellDouble) f.create(denominatorFile);
                 System.out.println(denominator2.toString(handleOutOfMemoryErrors));
                 //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
                 //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
@@ -564,8 +562,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                     eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
 
                     boolean scaleToFirst = false;
-                    outputGrid(
-                            (Grid2DSquareCellDouble) gwsgrid,
+                    outputGrid((Grids_Grid2DSquareCellDouble) gwsgrid,
                             dirOut2,
                             outputName2,
                             "name" + index,
@@ -578,11 +575,11 @@ DW_Shapefile foregroundDW_Shapefile1;
             numeratorFile = new File(
                     dirOut2,
                     year00 + "_" + month00 + "UO_Over_All_" + type + "_Rate.asc");
-            numerator = (Grid2DSquareCellDouble) f.create(numeratorFile);
+            numerator = (Grids_Grid2DSquareCellDouble) f.create(numeratorFile);
             denominatorFile = new File(
                     dirOut2,
                     year0 + "_" + month0 + "UO_Over_All_" + type + "_Rate.asc");
-            denominator2 = (Grid2DSquareCellDouble) f.create(denominatorFile);
+            denominator2 = (Grids_Grid2DSquareCellDouble) f.create(denominatorFile);
             System.out.println(denominator2.toString(handleOutOfMemoryErrors));
             //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
             //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
@@ -634,8 +631,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                 eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
 
                 boolean scaleToFirst = false;
-                outputGrid(
-                        (Grid2DSquareCellDouble) gwsgrid,
+                outputGrid((Grids_Grid2DSquareCellDouble) gwsgrid,
                         dirOut2,
                         outputName2,
                         "name" + index,
@@ -910,7 +906,7 @@ DW_Shapefile foregroundDW_Shapefile1;
 //                                dirOut2 = new File(
 //                                        dirOut2,
 //                                        name);
-//                                Grid2DSquareCellDouble g0 = doDensity(
+//                                Grids_Grid2DSquareCellDouble g0 = doDensity(
 //                                        TTs,
 //                                        dirOut2,
 //                                        yM0,
@@ -940,7 +936,7 @@ DW_Shapefile foregroundDW_Shapefile1;
 //                            dirOut2 = new File(
 //                                    dirOut2,
 //                                    name);
-//                            Grid2DSquareCellDouble g0 = doDensity(
+//                            Grids_Grid2DSquareCellDouble g0 = doDensity(
 //                                    TTs,
 //                                    dirOut2,
 //                                    yM0,
@@ -1098,7 +1094,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                 File dirOut3 = new File(
                         dirOut2,
                         tenancyTypeGroupName);
-                Grid2DSquareCellDouble g0 = doDensity(
+                Grids_Grid2DSquareCellDouble g0 = doDensity(
                         TTs,
                         dirOut3,
                         yM30,
@@ -1116,7 +1112,7 @@ DW_Shapefile foregroundDW_Shapefile1;
 //                        yM30,
 //                        "Name" + yM30,
 //                        scaleToFirst);
-                Grid2DSquareCellDouble g00 = g0;
+                Grids_Grid2DSquareCellDouble g00 = g0;
                 boolean hasNext = false;
                 while (ite.hasNext()) {
                     hasNext = true;
@@ -1140,7 +1136,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                     if (doRSL) {
                         underOccupiedSetRSL1 = underOccupiedSetsRSL.get(yM31);
                     }
-                    Grid2DSquareCellDouble g1 = doDensity(
+                    Grids_Grid2DSquareCellDouble g1 = doDensity(
                             TTs,
                             dirOut3,
                             yM31,
@@ -1172,7 +1168,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                     recs0 = SHBEData1;
                 }
                 if (hasNext) {
-                    Grid2DSquareCellDouble g1 = doDensity(
+                    Grids_Grid2DSquareCellDouble g1 = doDensity(
                             TTs,
                             dirOut3,
                             yM30,
@@ -1197,7 +1193,7 @@ DW_Shapefile foregroundDW_Shapefile1;
         }
     }
 
-    protected Grid2DSquareCellDouble doDensity(
+    protected Grids_Grid2DSquareCellDouble doDensity(
             ArrayList<String> TTs,
             File dirOut,
             String yM3,
@@ -1226,7 +1222,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                 dirOut2,
                 "Grid_" + outputName);
         grid.mkdirs();
-        Grid2DSquareCellDouble g0 = initiliseGrid(grid);
+        Grids_Grid2DSquareCellDouble g0 = initiliseGrid(grid);
 
         TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> lookups;
         lookups = DW_MapsLCC.getONSPDlookups(env);
@@ -1330,8 +1326,8 @@ DW_Shapefile foregroundDW_Shapefile1;
 
             // output grid
             gp.set_Directory(dirOut2, false, handleOutOfMemoryErrors);
-//            ImageExporter ie;
-//            ie = new ImageExporter(ge);
+//            Grids_ImageExporter ie;
+//            ie = new Grids_ImageExporter(ge);
 //            File fout = new File(
 //                    dirOut2,
 //                    name + ".PNG");
@@ -1366,7 +1362,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                 double weightIntersect = 1.0d;
                 double weightFactor = 2.0d;
 //                    // GeometricDensity
-//                    Grid2DSquareCellDouble[] gws;
+//                    Grids_Grid2DSquareCellDouble[] gws;
 //                    gws = gp.geometricDensity(g, distance, gf);
 //                    for (int gwsi = 0; gwsi < gws.length; gwsi++) {
 //                        imageFile = new File(
@@ -1427,7 +1423,7 @@ DW_Shapefile foregroundDW_Shapefile1;
     }
 
     protected void outputGrid(
-            Grid2DSquareCellDouble g1,
+            Grids_Grid2DSquareCellDouble g1,
             File dirOut,
             String outputName,
             String name,
@@ -1442,8 +1438,8 @@ DW_Shapefile foregroundDW_Shapefile1;
 
         System.out.println("g1 " + g1.toString(handleOutOfMemoryErrors));
         // output grid
-//            ImageExporter ie;
-//            ie = new ImageExporter(ge);
+//            Grids_ImageExporter ie;
+//            ie = new Grids_ImageExporter(ge);
 //            File fout = new File(
 //                    dirOut2,
 //                    name + ".PNG");
@@ -1478,7 +1474,7 @@ DW_Shapefile foregroundDW_Shapefile1;
             double weightIntersect = 1.0d;
             double weightFactor = 2.0d;
 //                    // GeometricDensity
-//                    Grid2DSquareCellDouble[] gws;
+//                    Grids_Grid2DSquareCellDouble[] gws;
 //                    gws = gp.geometricDensity(g, distance, gf);
 //                    for (int gwsi = 0; gwsi < gws.length; gwsi++) {
 //                        imageFile = new File(

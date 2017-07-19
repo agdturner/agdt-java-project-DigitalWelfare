@@ -33,8 +33,8 @@ import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.map.MapContent;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDoubleFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
@@ -195,9 +195,9 @@ public class DW_PostcodeMaps extends DW_Maps {
                 nrows, ncols, xllcorner, yllcorner, cellsize);
 
         String outname = "outname";
-        Grid2DSquareCellDoubleFactory gf;
-        gf = new Grid2DSquareCellDoubleFactory(new Grids_Environment(),true);
-        Grid2DSquareCellDouble grid;
+        Grids_Grid2DSquareCellDoubleFactory gf;
+        gf = new Grids_Grid2DSquareCellDoubleFactory(new Grids_Environment(),true);
+        Grids_Grid2DSquareCellDouble grid;
         grid = toGrid(
                 polyGrid,
                 nrows,
@@ -230,7 +230,7 @@ public class DW_PostcodeMaps extends DW_Maps {
 
     }
     
-    public Grid2DSquareCellDouble toGrid(
+    public Grids_Grid2DSquareCellDouble toGrid(
             DW_Shapefile polyGrid,
             long nrows,
             long ncols,
@@ -238,8 +238,8 @@ public class DW_PostcodeMaps extends DW_Maps {
             double yllcorner,
             double cellsize,
             DW_Shapefile postcodeUnitPoly_DW_Shapefile,
-            Grid2DSquareCellDoubleFactory f) {
-        Grid2DSquareCellDouble result;
+            Grids_Grid2DSquareCellDoubleFactory f) {
+        Grids_Grid2DSquareCellDouble result;
         BigDecimal[] dimensions;
         dimensions = new BigDecimal[5];
         dimensions[0] = new BigDecimal(cellsize);
@@ -247,7 +247,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         dimensions[2] = new BigDecimal(yllcorner);
         dimensions[3] = new BigDecimal(xllcorner + cellsize * ncols);
         dimensions[4] = new BigDecimal(yllcorner + cellsize * nrows);
-        result = (Grid2DSquareCellDouble) f.create(nrows, ncols, dimensions);
+        result = (Grids_Grid2DSquareCellDouble) f.create(nrows, ncols, dimensions);
         
         FeatureCollection cells;
         cells = polyGrid.getFeatureCollection();

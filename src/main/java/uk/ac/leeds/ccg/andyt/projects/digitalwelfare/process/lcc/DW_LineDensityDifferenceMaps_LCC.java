@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.GridStatistics0;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_GridStatistics0;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
@@ -148,14 +148,14 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 //                "processor");
 //        processorDir.mkdirs();
 //        ge = new Grids_Environment();
-//        eage = new ESRIAsciiGridExporter();
+//        eage = new Grids_ESRIAsciiGridExporter();
 //        ie = new ImageExporter(ge);
 //        gp = new Grid2DSquareCellProcessorGWS(ge);
 //        gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
 //        gcf = new Grid2DSquareCellDoubleChunkArrayFactory();
 //        chunkNRows = 300;//250; //64
 //        chunkNCols = 350;//300; //64
-//        gf = new Grid2DSquareCellDoubleFactory(
+//        gf = new Grids_Grid2DSquareCellDoubleFactory(
 //                processorDir,
 //                chunkNRows,
 //                chunkNCols,
@@ -607,10 +607,10 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
                     + "difference is all shown in grida File " + grida);
             return;
         }
-        gf.set_GridStatistics(new GridStatistics0());
-        Grid2DSquareCellDouble ga = (Grid2DSquareCellDouble) gf.create(grida);
+        gf.set_GridStatistics(new Grids_GridStatistics0());
+        Grids_Grid2DSquareCellDouble ga = (Grids_Grid2DSquareCellDouble) gf.create(grida);
         System.out.println("ga " + ga.toString(handleOutOfMemoryErrors));
-        Grid2DSquareCellDouble gb = (Grid2DSquareCellDouble) gf.create(gridb);
+        Grids_Grid2DSquareCellDouble gb = (Grids_Grid2DSquareCellDouble) gf.create(gridb);
         System.out.println("gb " + gb.toString(handleOutOfMemoryErrors));
         gp.set_Directory(dirOut2, DW_Maps.doDebug, handleOutOfMemoryErrors);
         gp.addToGrid(ga, gb, -1.0d, handleOutOfMemoryErrors);
@@ -652,7 +652,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
             double weightIntersect = 1.0d;
             double weightFactor = 2.0d;
 //                    // GeometricDensity
-//                    Grid2DSquareCellDouble[] gws;
+//                    Grids_Grid2DSquareCellDouble[] gws;
 //                    gws = gp.geometricDensity(g, distance, gf);
 //                    for (int gwsi = 0; gwsi < gws.length; gwsi++) {
 //                        imageFile = new File(

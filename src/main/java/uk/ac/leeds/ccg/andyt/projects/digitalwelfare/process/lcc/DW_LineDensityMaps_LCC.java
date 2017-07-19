@@ -37,12 +37,12 @@ import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleChunkArrayFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDoubleChunkArrayFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDoubleFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
+import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
+import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorGWS;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -129,14 +129,14 @@ protected DW_LineMapsLCC DW_LineMaps_LCC;
 //                "processor");
 //        processorDir.mkdirs();
 //        ge = new Grids_Environment();
-//        eage = new ESRIAsciiGridExporter();
-//        ie = new ImageExporter(ge);
+//        eage = new Grids_ESRIAsciiGridExporter();
+//        ie = new Grids_ImageExporter(ge);
 //        gp = new Grid2DSquareCellProcessorGWS(ge);
 //        gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
-//        gcf = new Grid2DSquareCellDoubleChunkArrayFactory();
+//        gcf = new Grids_Grid2DSquareCellDoubleChunkArrayFactory();
 //        chunkNRows = 300;//250; //64
 //        chunkNCols = 350;//300; //64
-//        gf = new Grid2DSquareCellDoubleFactory(
+//        gf = new Grids_Grid2DSquareCellDoubleFactory(
 //                processorDir,
 //                chunkNRows,
 //                chunkNCols,
@@ -529,7 +529,7 @@ protected DW_LineMapsLCC DW_LineMaps_LCC;
 //                    dirOut2,
 //                    "Grid_" + outputName);
 //            grid.mkdirs();
-//            Grid2DSquareCellDouble g = initiliseGrid(grid);
+//            Grids_Grid2DSquareCellDouble g = initiliseGrid(grid);
 //
 //            // Open Shapefile reader
 //            AGDT_Shapefile shapefile;
@@ -578,8 +578,8 @@ protected DW_LineMapsLCC DW_LineMaps_LCC;
 //            int index;
 //            // output grid
 //            gp.set_Directory(dirOut2, doDebug, handleOutOfMemoryErrors);
-////            ImageExporter ie;
-////            ie = new ImageExporter(ge);
+////            Grids_ImageExporter ie;
+////            ie = new Grids_ImageExporter(ge);
 ////            File fout = new File(
 ////                    dirOut2,
 ////                    name + ".PNG");
@@ -613,7 +613,7 @@ protected DW_LineMapsLCC DW_LineMaps_LCC;
 //                double weightIntersect = 1.0d;
 //                double weightFactor = 2.0d;
 ////                    // GeometricDensity
-////                    Grid2DSquareCellDouble[] gws;
+////                    Grids_Grid2DSquareCellDouble[] gws;
 ////                    gws = gp.geometricDensity(g, distance, gf);
 ////                    for (int gwsi = 0; gwsi < gws.length; gwsi++) {
 ////                        imageFile = new File(

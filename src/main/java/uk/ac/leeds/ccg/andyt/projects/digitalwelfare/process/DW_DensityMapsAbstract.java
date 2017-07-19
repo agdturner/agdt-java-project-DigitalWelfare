@@ -28,13 +28,13 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.gce.arcgrid.ArcGridReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.AbstractGrid2DSquareCellDoubleChunkFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.Grid2DSquareCellDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.GridStatistics0;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCellDoubleChunkFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDoubleFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_GridStatistics0;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ESRIAsciiGridExporter;
-import uk.ac.leeds.ccg.andyt.grids.exchange.ImageExporter;
+import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
+import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorGWS;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
@@ -59,11 +59,11 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
     protected DW_Postcode_Handler DW_Postcode_Handler;
     
     protected Grids_Environment ge;
-    protected ESRIAsciiGridExporter eage;
-    protected ImageExporter ie;
+    protected Grids_ESRIAsciiGridExporter eage;
+    protected Grids_ImageExporter ie;
     protected Grid2DSquareCellProcessorGWS gp;
-    protected Grid2DSquareCellDoubleFactory gf;
-    protected AbstractGrid2DSquareCellDoubleChunkFactory gcf;
+    protected Grids_Grid2DSquareCellDoubleFactory gf;
+    protected Grids_AbstractGrid2DSquareCellDoubleChunkFactory gcf;
     protected long nrows;
     protected long ncols;
     protected int chunkNRows;
@@ -89,7 +89,7 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
     
     // Add from postcodes
     protected int addFromPostcodes(
-            Grid2DSquareCellDouble g,
+            Grids_Grid2DSquareCellDouble g,
             ArrayList<String> postcodes,
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
             TreeMap<Integer, Integer> deprivationClasses,
@@ -152,9 +152,8 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
      * @param dir
      * @return
      */
-    public Grid2DSquareCellDouble initiliseGrid(File dir) {
-        Grid2DSquareCellDouble result = (Grid2DSquareCellDouble) gf.create(
-                new GridStatistics0(),
+    public Grids_Grid2DSquareCellDouble initiliseGrid(File dir) {
+        Grids_Grid2DSquareCellDouble result = (Grids_Grid2DSquareCellDouble) gf.create(new Grids_GridStatistics0(),
                 dir,
                 gcf,
                 nrows,
