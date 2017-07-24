@@ -386,7 +386,7 @@ public class DW_Files extends DW_Object {
                     nameAdd = "_UK_1M";
                 } else {
                     namePrefix = "ONSPD";
-                    // It is odd but te case that the following are "O" not "0"!
+                    // It is odd but the case that the following are "O" not "0"!
                     if (year >= 2011 && year <= 2013) {
                         nameAdd = "_UK_O";
                     } else {
@@ -396,7 +396,12 @@ public class DW_Files extends DW_Object {
                 // FEB
                 if (year != 2011) {
                     month = "FEB";
-                    f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
+                    String nameAdd0;
+                    nameAdd0 = nameAdd;
+                    if (year == 2010) {
+                        nameAdd0 += "_FP";
+                    }
+                    f = getInputONSPDFile(d, namePrefix, year, month, nameAdd0);
                     InputONSPDFiles.put(year + "_" + month, f);
                 }
                 // MAY
@@ -929,7 +934,7 @@ public class DW_Files extends DW_Object {
                 type);
         result = new File(
                 result,
-                DW_Strings.sTenancyTypeTransitionLineGraphs);
+                DW_Strings.sTenancyTypeTransitionLineGraph);
         if (checkPreviousTenancyType) {
             result = new File(
                     result,

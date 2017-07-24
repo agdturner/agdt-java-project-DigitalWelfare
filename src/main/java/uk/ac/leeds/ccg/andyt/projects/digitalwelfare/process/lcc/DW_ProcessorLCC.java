@@ -83,7 +83,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 DW_ProcessorLCC.run();
                 /**
                  * Not done this way as this would first load UnderOccupancy
-                 * data. This is to be avaoided as we want to load first the
+                 * data. This is to be avoided as we want to load first the
                  * SHBE and then load the UO data.
                  */
                 // new DW_ProcessorLCC(env).run();
@@ -126,15 +126,15 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 //        runPostcodeCheck = true;
 //        loadUnderOccupancyFromSource = true;
 //        loadUnderOccupancy = true;
-//        runLCCSummary = true;
-//        runRentArrears = true; newRentArrearsData = true;
-//        runLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
-         runLCCHBGeneralAggregateStatistics = true;
-//        runLCCTTAndPT = true;
+        runLCCSummary = true;
+        runRentArrears = true; newRentArrearsData = true;
+        runLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+        runLCCHBGeneralAggregateStatistics = true;
+        runLCCTTAndPT = true;
 //        doChoroplethMapping = true;
 //        doLineMaps = true;
 //        doReports = true;
-//        doLineGraphs = true;
+        doLineGraphs = true;
 //        doDensityMaps = true;
 //        doLineDensityMaps = true;
         // range is the number of directories or files in any archives.
@@ -470,7 +470,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             DW_LineGraph aDW_LineGraph;
             aDW_LineGraph = new DW_LineGraph(env);
             //aDW_LineGraph.start();
-            aDW_LineGraph.run();
+            aDW_LineGraph.run(logDir);
             // Close logs
             closeLogs(processName);
         }

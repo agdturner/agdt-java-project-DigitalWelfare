@@ -68,6 +68,8 @@ public class TenancyChangesUO extends DW_Object {
 
     HashSet<String> validPostcodes;
 
+    String sAggregateStatistics = "AggregateStatistics";
+//    String sUnderOccupancyGroupTables = "UOGT";
     String sUnderOccupancyGroupTables = "UnderOccupancyGroupTables";
     String defaultPostcode = "AAN NAA";
     String sU = "U";
@@ -101,6 +103,7 @@ public class TenancyChangesUO extends DW_Object {
     String sDisabledChild = "DisabledChild";
     String sPDeath = "PartnerDeath";
     String sHBDP = "HBDiscretionaryPayment";
+    String sIncludesPreUnderOccupancyValues = "IncludesPreUnderOccupancyValues";
     //String sCTBDP = "CTBDiscretionaryPayment";
     String sA = "Arrears";
     String s = "";
@@ -7568,13 +7571,13 @@ public class TenancyChangesUO extends DW_Object {
             GroupName = iteG.next();
             name2 = GroupName;
             if (includePreUnderOccupancyValues) {
-                name2 += DW_Strings.sUnderscore + "IncludesPreUnderOccupancyValues";
+                name2 += DW_Strings.sUnderscore + sIncludesPreUnderOccupancyValues;
             }
             pw = getPrintWriter(name2, dirName);
-            pwAggregateStatistics = getPrintWriter(name2 + "AggregateStatistics", dirName);
+            pwAggregateStatistics = getPrintWriter(name2 + sAggregateStatistics, dirName);
             name2 += DW_Strings.sUnderscore + "WithDuplicates";
             pw2 = getPrintWriter(name2, dirName);
-            pwAggregateStatistics2 = getPrintWriter(name2 + "AggregateStatistics", dirName);
+            pwAggregateStatistics2 = getPrintWriter(name2 + sAggregateStatistics, dirName);
             // Write header
             GroupNameDescription = GroupNameDescriptions.get(GroupName);
             pw.println(GroupNameDescription);

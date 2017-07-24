@@ -66,6 +66,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 
     //String sAllClaimants = "Al";
     String sAllClaimants = "All";
+    String sNewEntrant = "NewEntrant";
     //String sOnFlow = "OF";
     String sOnFlow = "OnFlow";
     //String sReturnFlow = "RF";
@@ -103,7 +104,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         ArrayList<String> types;
         types = new ArrayList<String>();
         types.add(sAllClaimants); // Count of all claimants
-//        types.add("NewEntrant"); // New entrants will include people already from Leeds. Will this also include people new to Leeds? - Probably...
+        types.add(sNewEntrant); // New entrants will include people already from Leeds. Will this also include people new to Leeds? - Probably...
         types.add(sOnFlow); // These are people not claiming the previous month and that have not claimed before.
         types.add(sReturnFlow); // These are people not claiming the previous month but that have claimed before.
         types.add(sStable); // The popoulation of claimants who's postcode location is the same as in the previous month.
@@ -1714,11 +1715,11 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         if (reportTenancyTransitionBreaks) {
             dirOut2 = new File(
                     dirOut2,
-                    "IncludingTenancyTransitionBreaks");
+                    DW_Strings.sIncludingTenancyTransitionBreaks);
         } else {
             dirOut2 = new File(
                     dirOut2,
-                    "NotIncludingTenancyTransitionBreaks");
+                    DW_Strings.sIncludingTenancyTransitionBreaksNo);
         }
         dirOut2.mkdirs();
         File f;

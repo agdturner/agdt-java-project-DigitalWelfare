@@ -126,13 +126,13 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         // Initialisiation
         levels = new ArrayList<String>();
 //        levels.add(DW_Strings.sOA);
-//        levels.add(DW_Strings.sLSOA);
-//        levels.add("MSOA");
+        levels.add(DW_Strings.sLSOA);
+        levels.add("MSOA");
 //        levels.add("PostcodeUnit");
 //        levels.add("PostcodeSector");
 //        levels.add("PostcodeDistrict");
-        levels.add(DW_Strings.sParliamentaryConstituency);
-        levels.add(DW_Strings.sStatisticalWard);
+//        levels.add(DW_Strings.sParliamentaryConstituency);
+//        levels.add(DW_Strings.sStatisticalWard);
         includes = DW_SHBE_Handler.getIncludes();
 //            includes.remove(DW_Strings.sIncludeAll);
 //            includes.remove(DW_Strings.sIncludeYearly);
@@ -148,7 +148,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         PTsIte = PTs.iterator();
         outDir = new File(
                 DW_Files.getOutputSHBETablesDir(),
-                "HBGeneralAggregateStatistics");
+                DW_Strings.sHBGeneralAggregateStatistics);
         env.log("Output Directory " + outDir.toString());
         PTsIte = PTs.iterator();
         while (PTsIte.hasNext()) {

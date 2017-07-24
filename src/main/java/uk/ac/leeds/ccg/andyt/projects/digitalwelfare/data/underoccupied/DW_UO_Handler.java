@@ -363,7 +363,7 @@ public class DW_UO_Handler extends DW_Object {
                     RSLEndFilename2,
                     CouncilFilenames,
                     RSLFilenames,
-                    1);// This number needs increasing as there are more datasets....
+                    3);// This number needs increasing as there are more datasets....
         }
         return inputFilenames;
     }

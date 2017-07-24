@@ -1908,11 +1908,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (reportTenancyTransitionBreaks) {
             dirOut2 = new File(
                     dirOut2,
-                    "IncludingTenancyTransitionBreaks");
+                    DW_Strings.sIncludingTenancyTransitionBreaks);
         } else {
             dirOut2 = new File(
                     dirOut2,
-                    "NotIncludingTenancyTransitionBreaks");
+                    DW_Strings.sIncludingTenancyTransitionBreaksNo);
         }
         dirOut2.mkdirs();
         File f;

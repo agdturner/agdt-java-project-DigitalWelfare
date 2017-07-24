@@ -136,7 +136,33 @@ public class DW_Strings {
      * Short code for Housing Benefit.
      */
     public final String sHB = "HB";
+    
+    /**
+     * Short code for Include999.
+     */
+    public final String sInclude999 = "Include999";
 
+    /**
+     * Short code for Exclude999.
+     */
+    public final String sExclude999 = "Exclude999";
+
+    /**
+     * Short code for HBGeneralAggregateStatistics.
+     */
+    public final String sHBGeneralAggregateStatistics = "HBGeneralAggregateStatistics";
+    
+    /**
+     * Short code for IncludeSameTenancy.
+     */
+    public final String sIncludeSameTenancy = "IncludeSameTenancy";
+
+    /**
+     * Short code for NotIncludeSameTenancy.
+     */
+    public final String sNotIncludeSameTenancy = "NotIncludeSameTenancy";
+
+    
     /**
      * Short code for IncludeMonthlySinceApril2013.
      */
@@ -157,6 +183,16 @@ public class DW_Strings {
      */
     public final String sIncludeStartEndSinceApril2013 = "ISEU";
 
+    /**
+     * Short code for sIncludingTenancyTransitionBreaks.
+     */
+    public final String sIncludingTenancyTransitionBreaks = "ITTBY";
+
+    /**
+     * Short code for sIncludingTenancyTransitionBreaksNo.
+     */
+    public final String sIncludingTenancyTransitionBreaksNo = "ITTBN";
+    
     /**
      * Short code for Include6Monthly.
      */
@@ -265,10 +301,10 @@ public class DW_Strings {
     //public final String sTenancyTypeTransition = "TenancyTypeTransition";
 
     /**
-     * Short code for TenancyTypeTransitionLineGraphs.
+     * Short code for TenancyTypeTransitionLineGraph.
      */
-    public final String sTenancyTypeTransitionLineGraphs = sTenancyTypeTransition + "LG";
-    //public final String sTenancyTypeTransitionLineGraphs = "TenancyTypeTransitionLineGraphs";
+    public final String sTenancyTypeTransitionLineGraph = sTenancyTypeTransition + "LG";
+    //public final String sTenancyTypeTransitionLineGraph = "TenancyTypeTransitionLineGraph";
 
     /**
      * Short code for UnderOccupied.

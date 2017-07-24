@@ -400,10 +400,10 @@ public class DW_SHBE_Handler extends DW_Object {
 //                        } else {
 //                            postcodef1 = rec1.getClaimPostcodeF();
 //                        }
-                        postcode1 = rec1.getDRecord().getClaimantsPostcode();
-                        UniqueUnmappablePostcodes.add(ClaimRef + "," + postcode1 + ",,");
-                        pw2.println("" + ref2 + "," + YM31 + "," + ClaimRef + "," + postcode1 + ",,");
-                        ref2++;
+                    postcode1 = rec1.getDRecord().getClaimantsPostcode();
+                    UniqueUnmappablePostcodes.add(ClaimRef + "," + postcode1 + ",,");
+                    pw2.println("" + ref2 + "," + YM31 + "," + ClaimRef + "," + postcode1 + ",,");
+                    ref2++;
 //                        System.out.println("postcodef1 " + postcodef1 + " is not mappable.");
 //                        UniqueUnmappablePostcodes.add(ClaimRef + "," + postcode0 + ",,");
 //                        pw2.println("" + ref2 + "," + YM30 + "," + ClaimRef + "," + postcode0 + ",,");
@@ -783,14 +783,20 @@ public class DW_SHBE_Handler extends DW_Object {
     public HashSet<DW_ID> getClaimIDsWithStatusOfHBAtExtractDate(
             DW_SHBE_Records DW_SHBE_Records,
             String PT) {
-        if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeIn)) {
-            return DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment();
+        HashSet<DW_ID> result;
+        result = null;
+        if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeAll)) {
+            result = DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment();
+            result.addAll(DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended());
+            result.addAll(DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther());
+        } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeIn)) {
+            result = DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment();
         } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeSuspended)) {
-            return DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended();
+            result = DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended();
         } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeOther)) {
-            return DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther();
+            result = DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther();
         }
-        return null;
+        return result;
     }
 
     /**
@@ -802,14 +808,20 @@ public class DW_SHBE_Handler extends DW_Object {
     public HashSet<DW_ID> getClaimIDsWithStatusOfCTBAtExtractDate(
             DW_SHBE_Records DW_SHBE_Records,
             String PT) {
-        if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeIn)) {
-            return DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateInPayment();
+         HashSet<DW_ID> result;
+        result = null;
+        if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeAll)) {
+            result = DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateInPayment();
+            result.addAll(DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended());
+            result.addAll(DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther());
+        } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeIn)) {
+            result = DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateInPayment();
         } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeSuspended)) {
-            return DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended();
+            result = DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended();
         } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeOther)) {
-            return DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther();
+            result = DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther();
         }
-        return null;
+        return result;
     }
 
     public String getClaimantType(DW_SHBE_D_Record D_Record) {
@@ -1170,6 +1182,12 @@ public class DW_SHBE_Handler extends DW_Object {
                 } else {
                     ClaimIDs = getClaimIDsWithStatusOfCTBAtExtractDate(DW_SHBE_Records, PT);
                 }
+//                Debugging code
+//                if (ClaimIDs == null) {
+//                    System.out.println(DW_Strings.sHB);
+//                    System.out.println(PT);
+//                }
+//                
                 if (doUnderOccupancy) {
                     if (UOReportSetCouncil != null) {
                         map = UOReportSetCouncil.getMap();
@@ -1208,27 +1226,27 @@ public class DW_SHBE_Handler extends DW_Object {
                                             }
                                         }
                                     } else // CTB
-                                     if (isCTBOnlyClaim(TT)) {
-                                            TotalIncome = TotalIncome.add(income);
-                                            TotalIncomeTT[TT] = TotalIncomeTT[TT].add(income);
-                                            if (income.compareTo(BigDecimal.ZERO) == 1) {
-                                                TotalCount_IncomeNonZero++;
-                                                TotalCount_IncomeTTNonZero[TT]++;
-                                            } else {
-                                                TotalCount_IncomeZero++;
-                                                TotalCount_IncomeTTZero[TT]++;
-                                            }
-                                            tBD = BigDecimal.valueOf(aDRecord.getWeeklyEligibleRentAmount());
-                                            TotalWeeklyEligibleRentAmount = TotalWeeklyEligibleRentAmount.add(tBD);
-                                            TotalTTWeeklyEligibleRentAmount[TT] = TotalTTWeeklyEligibleRentAmount[TT].add(tBD);
-                                            if (tBD.compareTo(BigDecimal.ZERO) == 1) {
-                                                TotalCount_WeeklyEligibleRentAmountNonZero++;
-                                                TotalCount_TTWeeklyEligibleRentAmountNonZero[TT]++;
-                                            } else {
-                                                TotalCount_WeeklyEligibleRentAmountZero++;
-                                                TotalCount_TTWeeklyEligibleRentAmountZero[TT]++;
-                                            }
+                                    if (isCTBOnlyClaim(TT)) {
+                                        TotalIncome = TotalIncome.add(income);
+                                        TotalIncomeTT[TT] = TotalIncomeTT[TT].add(income);
+                                        if (income.compareTo(BigDecimal.ZERO) == 1) {
+                                            TotalCount_IncomeNonZero++;
+                                            TotalCount_IncomeTTNonZero[TT]++;
+                                        } else {
+                                            TotalCount_IncomeZero++;
+                                            TotalCount_IncomeTTZero[TT]++;
                                         }
+                                        tBD = BigDecimal.valueOf(aDRecord.getWeeklyEligibleRentAmount());
+                                        TotalWeeklyEligibleRentAmount = TotalWeeklyEligibleRentAmount.add(tBD);
+                                        TotalTTWeeklyEligibleRentAmount[TT] = TotalTTWeeklyEligibleRentAmount[TT].add(tBD);
+                                        if (tBD.compareTo(BigDecimal.ZERO) == 1) {
+                                            TotalCount_WeeklyEligibleRentAmountNonZero++;
+                                            TotalCount_TTWeeklyEligibleRentAmountNonZero[TT]++;
+                                        } else {
+                                            TotalCount_WeeklyEligibleRentAmountZero++;
+                                            TotalCount_TTWeeklyEligibleRentAmountZero[TT]++;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -2432,6 +2450,80 @@ public class DW_SHBE_Handler extends DW_Object {
         return result;
     }
 
+    /**
+     *
+     * @param SHBEFilenames
+     * @param include
+     * @return * {@code
+     * Object[] result;
+     * result = new Object[2];
+     * TreeMap<BigDecimal, String> valueLabel;
+     * valueLabel = new TreeMap<BigDecimal, String>();
+     * TreeMap<String, BigDecimal> fileLabelValue;
+     * fileLabelValue = new TreeMap<String, BigDecimal>();
+     * result[0] = valueLabel;
+     * result[1] = fileLabelValue;
+     * }
+     */
+    public Object[] getTreeMapDateLabelSHBEFilenamesSingle(
+            String[] SHBEFilenames,
+            ArrayList<Integer> include) {
+        Object[] result;
+        result = new Object[2];
+        TreeMap<BigDecimal, String> valueLabel;
+        valueLabel = new TreeMap<BigDecimal, String>();
+        TreeMap<String, BigDecimal> fileLabelValue;
+        fileLabelValue = new TreeMap<String, BigDecimal>();
+        result[0] = valueLabel;
+        result[1] = fileLabelValue;
+
+        ArrayList<String> month3Letters;
+        month3Letters = Generic_Time.getMonths3Letters();
+
+        int startMonth = 0;
+        int startYear = 0;
+
+        boolean first = true;
+        Iterator<Integer> ite;
+        ite = include.iterator();
+        String YM3;
+        int yearInt;
+        String month;
+        int monthInt;
+        String m3;
+        while (ite.hasNext()) {
+            int i = ite.next();
+            if (first) {
+                YM3 = getYM3(SHBEFilenames[i]);
+                int yearInt0 = Integer.valueOf(getYear(SHBEFilenames[i]));
+                String m30 = getMonth3(SHBEFilenames[i]);
+                int month0Int = month3Letters.indexOf(m30) + 1;
+                startMonth = month0Int;
+                startYear = yearInt0;
+                first = false;
+            } else {
+                YM3 = getYM3(SHBEFilenames[i]);
+                month = getMonth(SHBEFilenames[i]);
+                yearInt = Integer.valueOf(getYear(SHBEFilenames[i]));
+                m3 = month.substring(0, 3);
+                monthInt = month3Letters.indexOf(m3) + 1;
+                BigDecimal timeSinceStart;
+                timeSinceStart = BigDecimal.valueOf(
+                        Generic_Time.getMonthDiff(
+                                startYear, yearInt, startMonth, monthInt));
+                String label;
+                label = YM3;
+                valueLabel.put(
+                        timeSinceStart,
+                        label);
+                fileLabelValue.put(
+                        label,
+                        timeSinceStart);
+            }
+        }
+        return result;
+    }
+
 //    /**
 //     *
 //     * @param tSHBEFilenames
@@ -2901,7 +2993,7 @@ public class DW_SHBE_Handler extends DW_Object {
     }
 
     /**
-     * @return a list with the indexes of all SHBE files to omit when 
+     * @return a list with the indexes of all SHBE files to omit when
      * considering only those in the period from April 2013.
      */
     public ArrayList<Integer> getOmitMonthlyUO() {
@@ -2915,8 +3007,9 @@ public class DW_SHBE_Handler extends DW_Object {
 
     /**
      * @param n The number of SHBE Files.
-     * @return a list with the indexes of all SHBE files to omit when 
-     * considering only those in the period from April 2013 every other month offset by 1 month.
+     * @return a list with the indexes of all SHBE files to omit when
+     * considering only those in the period from April 2013 every other month
+     * offset by 1 month.
      */
     public ArrayList<Integer> getOmit2MonthlyUO1(int n) {
         ArrayList<Integer> r;
@@ -2924,16 +3017,17 @@ public class DW_SHBE_Handler extends DW_Object {
         for (int i = 0; i < 17; i++) {
             r.add(i);
         }
-        for (int i = 17; i < n; i+=2) {
+        for (int i = 17; i < n; i += 2) {
             r.add(i);
         }
         return r;
     }
-    
+
     /**
      * @param n The number of SHBE Files.
-     * @return a list with the indexes of all SHBE files to omit when 
-     * considering only those in the period from April 2013 every other month offset by 1 month.
+     * @return a list with the indexes of all SHBE files to omit when
+     * considering only those in the period from April 2013 every other month
+     * offset by 1 month.
      */
     public ArrayList<Integer> getOmit2StartEndSinceApril2013(int n) {
         ArrayList<Integer> r;
@@ -2947,13 +3041,12 @@ public class DW_SHBE_Handler extends DW_Object {
         r.add(n - 1);
         return r;
     }
-    
-    
-    
+
     /**
      * @param n The number of SHBE Files.
-     * @return a list with the indexes of all SHBE files to omit when 
-     * considering only those in the period from April 2013 every other month offset by 1 month.
+     * @return a list with the indexes of all SHBE files to omit when
+     * considering only those in the period from April 2013 every other month
+     * offset by 1 month.
      */
     public ArrayList<Integer> getOmit2April2013May2013(int n) {
         ArrayList<Integer> r;
@@ -2966,11 +3059,12 @@ public class DW_SHBE_Handler extends DW_Object {
         }
         return r;
     }
-    
+
     /**
      * @param n The number of SHBE Files.
-     * @return a list with the indexes of all SHBE files to omit when 
-     * considering only those in the period from April 2013 every other month offset by 0 months.
+     * @return a list with the indexes of all SHBE files to omit when
+     * considering only those in the period from April 2013 every other month
+     * offset by 0 months.
      */
     public ArrayList<Integer> getOmit2MonthlyUO0(int n) {
         ArrayList<Integer> r;
@@ -2978,7 +3072,7 @@ public class DW_SHBE_Handler extends DW_Object {
         for (int i = 0; i < 17; i++) {
             r.add(i);
         }
-        for (int i = 18; i < n; i+=2) {
+        for (int i = 18; i < n; i += 2) {
             r.add(i);
         }
         return r;
@@ -3062,7 +3156,7 @@ public class DW_SHBE_Handler extends DW_Object {
         ArrayList<Integer> omit2April2013May2013;
         omit2April2013May2013 = getOmit2April2013May2013(n);
         result.put(omitKey, omit2April2013May2013);
-        
+
         return result;
     }
 
