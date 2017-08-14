@@ -57,10 +57,8 @@ public class DW_Report extends DW_HTMLPage {
         mainDirectoryName = "Report";
         reportName = "Report1";
 
-        claimantTypes = new ArrayList<String>();
-        claimantTypes.add("HB");
-        claimantTypes.add("CTB");
-
+        claimantTypes = env.getDW_Strings().getHB_CTB();
+        
         tenureTypeGroups = new ArrayList<String>();
         tenureTypeGroups.add("all");
         tenureTypeGroups.add("regulated");

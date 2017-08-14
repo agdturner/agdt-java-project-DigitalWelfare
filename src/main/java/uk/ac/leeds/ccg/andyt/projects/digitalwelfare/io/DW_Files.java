@@ -886,26 +886,15 @@ public class DW_Files extends DW_Object {
     }
 
     public File getOutputSHBETablesTenancyTypeTransitionDir(
-            String type,
+            //String type,
             boolean checkPreviousTenancyType) {
-        File result = new File(
-                getOutputSHBETablesDir(),
-                DW_Strings.sTenancy);
-        result = new File(
-                result,
-                type);
-        result = new File(
-                result,
-                DW_Strings.sTenancyTypeTransition);
-        if (checkPreviousTenancyType) {
-            result = new File(
-                    result,
-                    DW_Strings.sCheckedPreviousTenancyType);
-        } else {
-            result = new File(
-                    result,
-                    DW_Strings.sCheckedPreviousTenancyTypeNo);
-        }
+        File result;
+        result = getOutputDir(
+            getOutputSHBETablesDir(),
+            DW_Strings.sTenancy,
+            //type,
+            DW_Strings.sTenancyTypeTransition,
+            checkPreviousTenancyType);
         return result;
     }
 
@@ -920,21 +909,30 @@ public class DW_Files extends DW_Object {
     }
 
     public File getOutputSHBEPlotsTenancyTypeTransitionDir(
-            String type,
-            String paymentType,
+            //String type,
             boolean checkPreviousTenancyType) {
-        File result = new File(
-                getOutputSHBEPlotsDir(),
-                DW_Strings.sTenancy);
+        File result;
+        result = getOutputDir(
+            getOutputSHBEPlotsDir(),
+            DW_Strings.sTenancy,
+            //type,
+            DW_Strings.sTenancyTypeTransitionLineGraph,
+            checkPreviousTenancyType);
+        return result;
+    }
+    
+    public File getOutputDir(
+            File baseDir,
+            String dir1,
+            String dir2,
+            boolean checkPreviousTenancyType) {
+        File result;
         result = new File(
-                result,
-                paymentType);
+            baseDir,
+            dir1);
         result = new File(
-                result,
-                type);
-        result = new File(
-                result,
-                DW_Strings.sTenancyTypeTransitionLineGraph);
+            result,
+            dir2);
         if (checkPreviousTenancyType) {
             result = new File(
                     result,

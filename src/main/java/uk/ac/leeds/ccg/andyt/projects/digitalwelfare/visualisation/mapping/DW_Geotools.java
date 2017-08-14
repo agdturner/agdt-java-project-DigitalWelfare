@@ -228,7 +228,7 @@ public class DW_Geotools extends AGDT_Geotools {
                         styleParameters.getClassificationFunctionName(),
                         styleParameters.getnClasses(),
                         styleParameters.getPaletteName(),
-                        styleParameters.isAddWhiteForZero());
+                        styleParameters.isAddWhiteForZero()); 
             } else {
                 styleAndLegendItems = DW_Style.getStyleAndLegendItems(
                         normalisation,

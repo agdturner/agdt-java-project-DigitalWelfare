@@ -136,7 +136,7 @@ public class DW_Strings {
      * Short code for Housing Benefit.
      */
     public final String sHB = "HB";
-    
+
     /**
      * Short code for Include999.
      */
@@ -151,7 +151,7 @@ public class DW_Strings {
      * Short code for HBGeneralAggregateStatistics.
      */
     public final String sHBGeneralAggregateStatistics = "HBGeneralAggregateStatistics";
-    
+
     /**
      * Short code for IncludeSameTenancy.
      */
@@ -162,7 +162,6 @@ public class DW_Strings {
      */
     public final String sNotIncludeSameTenancy = "NotIncludeSameTenancy";
 
-    
     /**
      * Short code for IncludeMonthlySinceApril2013.
      */
@@ -192,7 +191,7 @@ public class DW_Strings {
      * Short code for sIncludingTenancyTransitionBreaksNo.
      */
     public final String sIncludingTenancyTransitionBreaksNo = "ITTBN";
-    
+
     /**
      * Short code for Include6Monthly.
      */
@@ -320,7 +319,7 @@ public class DW_Strings {
      * For storing sOA, sLSOA, sMSOA, sStatisticalWard.
      */
     protected HashSet<String> CensusAreaAggregations;
-    
+
     /**
      * "OA" - Abbreviation of Output Area.
      */
@@ -466,7 +465,7 @@ public class DW_Strings {
     /**
      * Short code for Maybe Postcode Changed.
      */
-    public final String sWithOrWithoutPostcodeChange = "MPC";
+    public final String sWithOrWithoutPostcodeChange = "MPC"; // Maybe postcode changed
 
     /**
      * "CountOfCTBAndHBClaims".
@@ -687,6 +686,83 @@ public class DW_Strings {
      * "Unit".
      */
     public final String sUnit = "Unit";
+
+    /**
+     * "ReturnFlow".
+     */
+    public final String sReturnFlow = "ReturnFlow";
+    
+    /**
+     * "AAN_NAA".
+     */
+    public final String sAAN_NAA = "AAN_NAA";
+    
+    /**
+     * UnderOccupied in April 2013
+     */
+    public final String sUOInApril2013 = "UInApr13";
+    
+    /**
+     * All
+     */
+    public final String sAllClaimants = "All";
+    
+    /**
+     * OutDistanceChurn
+     */
+    public final String sOutDistanceChurn = "OutDistanceChurn";
+    
+    /**
+     * AllOutChurn
+     */
+    public final String sAllOutChurn = "AllOutChurn";
+    
+    /**
+     * Unknown
+     */
+    public final String sUnknown = "Unknown";
+    
+    /**
+     * WithinDistanceChurn
+     */
+    public final String sWithinDistanceChurn = "WithinDistanceChurn";
+    
+    /**
+     * InDistanceChurn
+     */
+    public final String sInDistanceChurn = "InDistanceChurn";
+    
+    /**
+     * AllInChurn
+     */
+    public final String sAllInChurn = "AllInChurn";
+    
+    /**
+     * -999
+     */
+    public final String sMinus999 = "-999";
+    
+    /**
+     * Stable
+     */
+    public final String sStable = "Stable";
+    
+    /**
+     * null
+     */
+    public final String snull = "null";
+    
+    /**
+     * OnFlow
+     */
+    public final String sOnFlow = "OnFlow";
+    
+    /**
+     * NewEntrant
+     */
+    public final String sNewEntrant = "NewEntrant";
+    
+    
 
 //    /**
 //     * Short code for UnderOccupied.

@@ -83,11 +83,11 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 DW_ProcessorLCC.run();
                 /**
                  * Not done this way as this would first load UnderOccupancy
-                 * data. This is to be avoided as we want to load first the
-                 * SHBE and then load the UO data.
+                 * data. This is to be avoided as we want to load first the SHBE
+                 * and then load the UO data.
                  */
                 // new DW_ProcessorLCC(env).run();
-                
+
             }
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
@@ -117,26 +117,77 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
          * in that some parts have to have been run before others will produce 
          * results as expected.
          */
-//        loadAllONSPDFromSource = true;
-//        loadNewONSPDFromSource = true;
-//        loadAllSHBEFromSource = true;
-//        loadNewSHBEFromSource = true;
-//        loadSHBE = true;
-//        runPostcodeCheckLatest = true;
-//        runPostcodeCheck = true;
-//        loadUnderOccupancyFromSource = true;
-//        loadUnderOccupancy = true;
-        runLCCSummary = true;
-        runRentArrears = true; newRentArrearsData = true;
-        runLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
-        runLCCHBGeneralAggregateStatistics = true;
-        runLCCTTAndPT = true;
-//        doChoroplethMapping = true;
-//        doLineMaps = true;
-//        doReports = true;
-        doLineGraphs = true;
-//        doDensityMaps = true;
-//        doLineDensityMaps = true;
+        RunAllFromScratch = false;
+        RunAllFromUpdate = false;
+        if (!RunAllFromScratch) {
+            if (!RunAllFromUpdate) {
+                // Choose which bits to run
+//                LoadAllONSPDFromSource = true;
+//                LoadNewONSPDFromSource = true;
+//                LoadAllSHBEFromSource = true;
+//                LoadNewSHBEFromSource = true;
+//                LoadSHBE = true;
+//                PostcodeCheckLatest = true;
+//                PostcodeCheck = true;
+//                LoadUnderOccupancyFromSource = true;
+//                LoadUnderOccupancy = true;
+//                LCCSummary = true;
+//                RentArrears = true;
+//                RentArrearsNewData = true;
+//                LCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+//                LCCHBGeneralAggregateStatistics = true;
+                LCCTTAndPT = true;
+                if (LCCTTAndPT) {
+                    LCCTTAndPTGrouped = true;
+                    LCCTTAndPTPostcodeChanges = true;
+                    LCCTTAndPTAnyTenancyChanges = true;
+                    LCCTTAndPTTenancyChanges = true;
+                    LCCTTAndPTTenancyAndPostcodeChanges = true;
+                }
+//                ChoroplethMapping = true;
+//                LineMaps = true;
+//                Reports = true;
+                LineGraphs = true;
+                if (LineGraphs) {
+                    LineGraphTenancyTypeTransitions = true;
+                    //LineGraphAggregateData = true;
+                }
+//                DensityMaps = true;
+//                LineDensityMaps = true;
+            } else {
+                //loadNewONSPDFromSource = true;
+                LoadNewSHBEFromSource = true;
+                LoadUnderOccupancyFromSource = true;
+                LCCSummary = true;
+                RentArrears = true;
+                RentArrearsNewData = true;
+                LCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+                LCCHBGeneralAggregateStatistics = true; // Could do with a new method that only runs the aggregated data that has not already been produced.
+                LCCTTAndPT = true;
+                ChoroplethMapping = true;
+                LineMaps = true;
+                Reports = true;
+                LineGraphs = true;
+                DensityMaps = true;
+                LineDensityMaps = true;
+            }
+        } else {
+            LoadAllONSPDFromSource = true;
+            LoadAllSHBEFromSource = true;
+            LoadUnderOccupancyFromSource = true;
+            LCCSummary = true;
+            RentArrears = true;
+            RentArrearsNewData = true;
+            LCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+            LCCHBGeneralAggregateStatistics = true;
+            LCCTTAndPT = true;
+            ChoroplethMapping = true;
+            LineMaps = true;
+            Reports = true;
+            LineGraphs = true;
+            DensityMaps = true;
+            LineDensityMaps = true;
+        }
         // range is the number of directories or files in any archives.
         int range;
         range = 100;
@@ -154,9 +205,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
          * has been loaded as the maps generated when it is loaded should be
          * sufficient.
          */
-        if (loadAllONSPDFromSource || loadNewONSPDFromSource) {
+        if (LoadAllONSPDFromSource || LoadNewONSPDFromSource) {
             // Set up logging
-            if (loadAllONSPDFromSource) {
+            if (LoadAllONSPDFromSource) {
                 processName = "LoadAllONSPDFromSource";
             } else {
                 processName = "LoadNewONSPDFromSource";
@@ -176,9 +227,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         /**
          * Format All SHBE data. This checks and formats postcodes.
          */
-        if (loadAllSHBEFromSource) {
+        if (LoadAllSHBEFromSource) {
             // Set up logging
-            processName = "loadAllSHBEFromSource";
+            processName = "LoadAllSHBEFromSource";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
@@ -194,9 +245,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         /**
          * Format New SHBE data. This checks and formats postcodes.
          */
-        if (loadNewSHBEFromSource) {
+        if (LoadNewSHBEFromSource) {
             // Set up logging
-            processName = "loadNewSHBEFromSource";
+            processName = "LoadNewSHBEFromSource";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
@@ -212,9 +263,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         /**
          * Check SHBE postcodes.
          */
-        if (runPostcodeCheck) {
+        if (PostcodeCheck) {
             // Set up logging
-            processName = "runPostcodeCheck";
+            processName = "PostcodeCheck";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
@@ -230,9 +281,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         /**
          * Check SHBE postcodes.
          */
-        if (runPostcodeCheckLatest) {
+        if (PostcodeCheckLatest) {
             // Set up logging
-            processName = "runPostcodeCheckLatest";
+            processName = "PostcodeCheckLatest";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
@@ -250,9 +301,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
          * is for checking the data loads. It could be used as a basis for
          * testing the speed of loading and for memory requirements.
          */
-        if (loadSHBE) {
+        if (LoadSHBE) {
             // Set up logging
-            processName = "loadSHBE";
+            processName = "LoadSHBE";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
@@ -303,9 +354,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         /**
          * Load UnderOccupancy data from source.
          */
-        if (loadUnderOccupancyFromSource) {
+        if (LoadUnderOccupancyFromSource) {
             // Set up logging
-            processName = "loadUnderOccupancyFromSource";
+            processName = "LoadUnderOccupancyFromSource";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
@@ -318,9 +369,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (loadUnderOccupancy) {
+        if (LoadUnderOccupancy) {
             // Set up logging
-            processName = "loadUnderOccupancy";
+            processName = "LoadUnderOccupancy";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
@@ -333,9 +384,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (runLCCSummary) {
+        if (LCCSummary) {
             // Set up logging
-            processName = "runLCCSummary";
+            processName = "LCCSummary";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
@@ -348,9 +399,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (runRentArrears) {
+        if (RentArrears) {
             // Set up logging
-            processName = "runRentArrears";
+            processName = "RentArrears";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
@@ -358,14 +409,14 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Process
             DW_ProcessorLCCRentArrears p;
             p = new DW_ProcessorLCCRentArrears(env);
-            p.run(newRentArrearsData);
+            p.run(RentArrearsNewData);
             // Close logs
             closeLogs(processName);
         }
 
-        if (runLCCHBGeneralAggregateStatistics) {
+        if (LCCHBGeneralAggregateStatistics) {
             // Set up logging
-            processName = "runLCCHBGeneralAggregateStatistics";
+            processName = "LCCHBGeneralAggregateStatistics";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
@@ -378,9 +429,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (runLCCTenancyChangesUO) {
-            // Set up loggingprocess = "doTenancyChangesUO";
-            processName = "runLCCTenancyChangesUO";
+        if (LCCTenancyChangesUO) {
+            // Set up logging
+            processName = "LCCTenancyChangesUO";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
@@ -393,9 +444,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (runLCCTTAndPT) {
+        if (LCCTTAndPT) {
             // Set up logging
-            processName = "runLCCTTAndPT";
+            processName = "LCCTTAndPT";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
@@ -403,107 +454,140 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Process
             DW_ProcessorLCCTTAndPT p;
             p = new DW_ProcessorLCCTTAndPT(env);
+            ArrayList<Boolean> b;
+            b = getArrayListBoolean();
+            Iterator<Boolean> iteb0;
+            Iterator<Boolean> iteb1;
+            Iterator<Boolean> iteb2;
+            Iterator<Boolean> iteb3;
+            Iterator<Boolean> iteb4;
+            iteb0 = b.iterator();
+            while (iteb0.hasNext()) {
+                LCCTTAndPTGrouped = iteb0.next();
+                iteb1 = b.iterator();
+                while (iteb1.hasNext()) {
+                    LCCTTAndPTPostcodeChanges = iteb1.next();
+                    iteb2 = b.iterator();
+                    while (iteb2.hasNext()) {
+                        LCCTTAndPTAnyTenancyChanges = iteb2.next();
+                        iteb3 = b.iterator();
+                        while (iteb3.hasNext()) {
+                            LCCTTAndPTTenancyChanges = iteb3.next();
+                            iteb4 = b.iterator();
+                            while (iteb4.hasNext()) {
+                                LCCTTAndPTTenancyAndPostcodeChanges = iteb4.next();
+                                p.run(
+                                        LCCTTAndPTGrouped,
+                                        LCCTTAndPTPostcodeChanges,
+                                        LCCTTAndPTAnyTenancyChanges,
+                                        LCCTTAndPTTenancyChanges,
+                                        LCCTTAndPTTenancyAndPostcodeChanges);
+                            }
+                        }
+                    }
+                }
+            }
+            // Close logs
+            closeLogs(processName);
+        }
+
+        if (ChoroplethMapping) {
+            // Set up logging
+            processName = "ChoroplethMapping";
+            File logDir = initLogs(
+                    env.DEBUG_Level_FINE,
+                    processName,
+                    range);
+            // Process
+            DW_ChoroplethMapsLCC p;
+            p = new DW_ChoroplethMapsLCC(env);
             p.run();
             // Close logs
             closeLogs(processName);
         }
 
-        if (doChoroplethMapping) {
+        if (LineMaps) {
             // Set up logging
-            processName = "doChoroplethMapping";
+            processName = "LineMaps";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
-            DW_ChoroplethMapsLCC aDW_ChoroplethMaps_LCC;
-            aDW_ChoroplethMaps_LCC = new DW_ChoroplethMapsLCC(env);
-            aDW_ChoroplethMaps_LCC.run();
-            // Close logs
-            closeLogs(processName);
-        }
-
-        if (doLineMaps) {
-            // Set up logging
-            processName = "doLineMaps";
-            File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
-                    processName,
-                    range);
-            // Process
-            DW_LineMapsLCC aDW_LineMaps_LCC;
-            aDW_LineMaps_LCC = new DW_LineMapsLCC(env);
-            aDW_LineMaps_LCC.run();
+            DW_LineMapsLCC p;
+            p = new DW_LineMapsLCC(env);
+            p.run();
             boolean underOccupancy;
             underOccupancy = true;
-            aDW_LineMaps_LCC.run2(underOccupancy, true);
-            aDW_LineMaps_LCC.run2(underOccupancy, false);
-            aDW_LineMaps_LCC.run2(false, false);
-            aDW_LineMaps_LCC.run();
+            p.run2(underOccupancy, true);
+            p.run2(underOccupancy, false);
+            p.run2(false, false);
+            p.run();
             // Close logs
             closeLogs(processName);
         }
 
-        if (doReports) {
+        if (Reports) {
             // Set up logging
-            processName = "doReports";
+            processName = "Reports";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
-            DW_Report aDW_Report;
-            aDW_Report = new DW_Report(env);
-            aDW_Report.run();
+            DW_Report p;
+            p = new DW_Report(env);
+            p.run();
             // Close logs
             closeLogs(processName);
         }
 
-        if (doLineGraphs) {
+        if (LineGraphs) {
             // Set up logging
-            processName = "doLineGraphs";
+            processName = "LineGraphs";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
-            DW_LineGraph aDW_LineGraph;
-            aDW_LineGraph = new DW_LineGraph(env);
+            DW_LineGraph p;
+            p = new DW_LineGraph(env);
             //aDW_LineGraph.start();
-            aDW_LineGraph.run(logDir);
+            p.run(LineGraphTenancyTypeTransitions,
+                    LineGraphAggregateData);
             // Close logs
             closeLogs(processName);
         }
 
-        if (doDensityMaps) {
+        if (DensityMaps) {
             // Set up logging
-            processName = "doDensityMaps";
+            processName = "DensityMaps";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
-            DW_DensityMapsLCC aDW_DensityMaps_LCC;
-            aDW_DensityMaps_LCC = new DW_DensityMapsLCC(env);
-            aDW_DensityMaps_LCC.run();
+            DW_DensityMapsLCC p;
+            p = new DW_DensityMapsLCC(env);
+            p.run();
             // Close logs
             closeLogs(processName);
         }
 
-        if (doLineDensityMaps) {
+        if (LineDensityMaps) {
             // Set up logging
-            processName = "doLineDensityMaps";
+            processName = "LineDensityMaps";
             File logDir = initLogs(
                     env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
-            DW_LineDensityMaps_LCC aDW_LineDensityMaps_LCC;
-            aDW_LineDensityMaps_LCC = new DW_LineDensityMaps_LCC(env);
-            aDW_LineDensityMaps_LCC.run();
-            DW_LineDensityDifferenceMaps_LCC aDW_LineDensityDifferenceMaps_LCC;
-            aDW_LineDensityDifferenceMaps_LCC = new DW_LineDensityDifferenceMaps_LCC(env);
-            aDW_LineDensityDifferenceMaps_LCC.run();
+            DW_LineDensityMaps_LCC p;
+            p = new DW_LineDensityMaps_LCC(env);
+            p.run();
+            DW_LineDensityDifferenceMaps_LCC p2;
+            p2 = new DW_LineDensityDifferenceMaps_LCC(env);
+            p2.run();
             // Close logs
             closeLogs(processName);
         }
@@ -512,102 +596,142 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
     /**
      * Switch for loading All ONSPD Data From Source.
      */
-    boolean loadAllONSPDFromSource = false;
+    boolean LoadAllONSPDFromSource = false;
 
     /**
      * Switch for loading New ONSPD Data From Source.
      */
-    boolean loadNewONSPDFromSource = false;
+    boolean LoadNewONSPDFromSource = false;
 
     /**
      * Switch for loading SHBE Data From Source.
      */
-    boolean loadAllSHBEFromSource = false;
+    boolean LoadAllSHBEFromSource = false;
 
     /**
      * Switch for reformatting all the SHBE data.
      */
-    boolean reformatAll = false;
+    boolean ReformatAll = false;
 
     /**
      * Switch for printing stats of reformatted SHBE data.
      */
-    boolean stat = false;
+    boolean Stat = false;
 
     /**
      * Switch for reformatting new SHBE data that might have been added to the
      * input collection.
      */
-    boolean loadNewSHBEFromSource = false;
+    boolean LoadNewSHBEFromSource = false;
 
     /**
      * Switch for loading SHBE Data.
      */
-    boolean loadSHBE = false;
+    boolean LoadSHBE = false;
 
     /**
      * Switch for SHBE postcode check run.
      */
-    boolean runPostcodeCheck = false;
-    boolean runPostcodeCheckLatest = false;
+    boolean PostcodeCheck = false;
+    boolean PostcodeCheckLatest = false;
     /**
      * Switch for loading Under Occupancy Data From Source.
      */
-    boolean loadUnderOccupancyFromSource = false;
+    boolean LoadUnderOccupancyFromSource = false;
 
     /**
      * Switch for loading Under Occupancy Data From Source.
      */
-    boolean loadUnderOccupancy = false;
+    boolean LoadUnderOccupancy = false;
 
     /**
      * Switch for running LCC Summary processing algorithms.
      */
-    boolean runLCCSummary = false;
-    boolean runRentArrears = false;
-    boolean newRentArrearsData = false;
-    boolean runLCCTenancyChangesUO = false;
-    boolean runLCCHBGeneralAggregateStatistics = false;
+    boolean LCCSummary = false;
+
+    /**
+     * Switch for running Rent Arrears processing algorithms.
+     */
+    boolean RentArrears = false;
+    boolean RentArrearsNewData = false;
+
+    /**
+     * Switch for running LCCTenancyChangesUO.
+     */
+    boolean LCCTenancyChangesUO = false;
+
+    /**
+     * Switch for running LCCHBGeneralAggregateStatistics.
+     */
+    boolean LCCHBGeneralAggregateStatistics = false;
+
     /**
      * Switch for running LCC Data processing algorithms.
      */
-    boolean runLCCTTAndPT = false;
+    boolean LCCTTAndPT = false;
+
+    boolean LCCTTAndPTGrouped;
+    boolean LCCTTAndPTPostcodeChanges;
+    boolean LCCTTAndPTAnyTenancyChanges;
+    boolean LCCTTAndPTTenancyChanges;
+    boolean LCCTTAndPTTenancyAndPostcodeChanges;
 
     /**
      * Switch for running Choropleth Mapping code.
      */
-    boolean doChoroplethMapping = false;
+    boolean ChoroplethMapping = false;
 
     /**
      * Switch for running Line Mapping code.
      */
-    boolean doLineMaps = false;
+    boolean LineMaps = false;
 
     /**
      * Switch for running report generation code.
      */
-    boolean doReports = false;
+    boolean Reports = false;
 
     /**
      * Switch for generating Line Graphs.
      */
-    boolean doLineGraphs = false;
+    boolean LineGraphs = false;
+
+    /**
+     * Switch for generating Tenancy Type Transition Line Graphs.
+     */
+    boolean LineGraphTenancyTypeTransitions = true;
+
+    /**
+     * Switch for generating Tenancy Type Transition Line Graphs.
+     */
+    boolean LineGraphAggregateData = true;
 
     /**
      * Switch for generating Density Maps.
      */
-    boolean doDensityMaps = false;
+    boolean DensityMaps = false;
 
     /**
      * Switch for generating Line Density Maps.
      */
-    boolean doLineDensityMaps = false;
+    boolean LineDensityMaps = false;
+
+    /**
+     * Switch for generating everything from scratch.
+     */
+    boolean RunAllFromScratch = false;
+
+    /**
+     * Switch for generating new output given more data.
+     */
+    boolean RunAllFromUpdate = false;
 
     /**
      * @param levels A set of levels expected values include OA, LSOA, MSOA,
      * PostcodeUnit, PostcodeSector, PostcodeDistrict.
      * @param YM3
-     * @param CensusYear This has to be 2001 or 2011 or the levels might not include census levels.
+     * @param CensusYear This has to be 2001 or 2011 or the levels might not
+     * include census levels.
      * @return A set of look ups from postcodes to each level input in levels.
      */
     public TreeMap<String, TreeMap<String, String>> getClaimPostcodeF_To_LevelCode_Maps(
@@ -623,6 +747,83 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             TreeMap<String, String> ClaimPostcodeF_To_LevelCode_Map;
             ClaimPostcodeF_To_LevelCode_Map = getClaimPostcodeF_To_LevelCode_Map(env, level, CensusYear, YM3);
             result.put(level, ClaimPostcodeF_To_LevelCode_Map);
+        }
+        return result;
+    }
+
+    /**
+     * For the postcode input, this returns the area code for the level input
+     * using tLookupFromPostcodeToCensusCode.
+     *
+     * @param level
+     * @param postcode
+     * @param LookupFromPostcodeToCensusCode
+     * @return The area code for level from tLookupFromPostcodeToCensusCode for
+     * postcode. This may return "" or null.
+     */
+    public String getAreaCode(String level, String postcode, TreeMap<String, String> LookupFromPostcodeToCensusCode) {
+        String result = "";
+        // Special Case
+        if (postcode.trim().isEmpty()) {
+            return result;
+        }
+        if (level.equalsIgnoreCase(DW_Strings.sOA) || level.equalsIgnoreCase(DW_Strings.sLSOA) || level.equalsIgnoreCase(DW_Strings.sMSOA) || level.equalsIgnoreCase(DW_Strings.sStatisticalWard) || level.equalsIgnoreCase(DW_Strings.sParliamentaryConstituency)) {
+            String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
+            result = LookupFromPostcodeToCensusCode.get(formattedPostcode);
+            if (result == null) {
+                result = "";
+            }
+        } else if (level.equalsIgnoreCase(DW_Strings.sPostcodeUnit) || level.equalsIgnoreCase(DW_Strings.sPostcodeSector) || level.equalsIgnoreCase(DW_Strings.sPostcodeDistrict)) {
+            if (level.equalsIgnoreCase(DW_Strings.sPostcodeUnit)) {
+                result = postcode;
+            }
+            if (level.equalsIgnoreCase(DW_Strings.sPostcodeSector)) {
+                result = DW_Postcode_Handler.getPostcodeSector(postcode);
+            }
+            if (level.equalsIgnoreCase(DW_Strings.sPostcodeDistrict)) {
+                result = DW_Postcode_Handler.getPostcodeDistrict(postcode);
+            }
+        } else {
+            // Unrecognised level
+            env.log("Unrecognised level in " + this.getClass().getName() + ".getAreaCode(String,String,TreeMap<String, String>)");
+        }
+        return result;
+    }
+
+    /**
+     * For the postcode input, this returns the area code for the level input
+     * using tLookupFromPostcodeToCensusCode.
+     *
+     * @param level
+     * @param ClaimPostcodeF1
+     * @param LookupFromPostcodeToCensusCode
+     * @return The area code for level from tLookupFromPostcodeToCensusCode for
+     * postcode. This may return "" or null.
+     */
+    public String getAreaCode(String level, TreeMap<String, String> LookupFromPostcodeToCensusCode, String ClaimPostcodeF1) {
+        String result = "";
+        // Special Case
+        if (ClaimPostcodeF1.trim().isEmpty()) {
+            return result;
+        }
+        if (level.equalsIgnoreCase("OA") || level.equalsIgnoreCase("LSOA") || level.equalsIgnoreCase("MSOA")) {
+            result = LookupFromPostcodeToCensusCode.get(ClaimPostcodeF1);
+            if (result == null) {
+                result = "";
+            }
+        } else if (level.equalsIgnoreCase("PostcodeUnit") || level.equalsIgnoreCase("PostcodeSector") || level.equalsIgnoreCase("PostcodeDistrict")) {
+            if (level.equalsIgnoreCase("PostcodeUnit")) {
+                result = ClaimPostcodeF1;
+            }
+            if (level.equalsIgnoreCase("PostcodeSector")) {
+                result = DW_Postcode_Handler.getPostcodeSector(ClaimPostcodeF1);
+            }
+            if (level.equalsIgnoreCase("PostcodeDistrict")) {
+                result = DW_Postcode_Handler.getPostcodeDistrict(ClaimPostcodeF1);
+            }
+        } else {
+            // Unrecognised level
+            int debug = 1;
         }
         return result;
     }
