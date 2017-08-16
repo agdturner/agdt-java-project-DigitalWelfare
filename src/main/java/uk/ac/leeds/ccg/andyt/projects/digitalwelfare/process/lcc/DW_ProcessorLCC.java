@@ -138,11 +138,11 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 //                LCCHBGeneralAggregateStatistics = true;
                 LCCTTAndPT = true;
                 if (LCCTTAndPT) {
-                    LCCTTAndPTGrouped = true;
-                    LCCTTAndPTPostcodeChanges = true;
-                    LCCTTAndPTAnyTenancyChanges = true;
-                    LCCTTAndPTTenancyChanges = true;
-                    LCCTTAndPTTenancyAndPostcodeChanges = true;
+                    LCCTTAndPT_DoGrouped = true;
+                    LCCTTAndPT_DoPostcodeChanges = true;
+                    LCCTTAndPT_DoAnyTenancyChanges = true;
+                    LCCTTAndPT_DoTenancyChanges = true;
+                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
                 }
 //                ChoroplethMapping = true;
 //                LineMaps = true;
@@ -454,6 +454,17 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Process
             DW_ProcessorLCCTTAndPT p;
             p = new DW_ProcessorLCCTTAndPT(env);
+////            
+////            // <DEBUG skip to a particular output creation>
+//            p.run(
+//                    true,
+//                    false,
+//                    true,
+//                    false,
+//                    true);
+//            System.exit(0);
+////            // </DEBUG skip to a particular output creation>
+////
             ArrayList<Boolean> b;
             b = getArrayListBoolean();
             Iterator<Boolean> iteb0;
@@ -461,28 +472,25 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             Iterator<Boolean> iteb2;
             Iterator<Boolean> iteb3;
             Iterator<Boolean> iteb4;
-            iteb0 = b.iterator();
-            while (iteb0.hasNext()) {
-                LCCTTAndPTGrouped = iteb0.next();
-                iteb1 = b.iterator();
-                while (iteb1.hasNext()) {
-                    LCCTTAndPTPostcodeChanges = iteb1.next();
-                    iteb2 = b.iterator();
-                    while (iteb2.hasNext()) {
-                        LCCTTAndPTAnyTenancyChanges = iteb2.next();
-                        iteb3 = b.iterator();
-                        while (iteb3.hasNext()) {
-                            LCCTTAndPTTenancyChanges = iteb3.next();
-                            iteb4 = b.iterator();
-                            while (iteb4.hasNext()) {
-                                LCCTTAndPTTenancyAndPostcodeChanges = iteb4.next();
-                                p.run(
-                                        LCCTTAndPTGrouped,
-                                        LCCTTAndPTPostcodeChanges,
-                                        LCCTTAndPTAnyTenancyChanges,
-                                        LCCTTAndPTTenancyChanges,
-                                        LCCTTAndPTTenancyAndPostcodeChanges);
-                            }
+            LCCTTAndPT_DoGrouped = true;
+            //LCCTTAndPT_DoGrouped = false;
+            iteb1 = b.iterator();
+            while (iteb1.hasNext()) {
+                LCCTTAndPT_DoPostcodeChanges = iteb1.next();
+                iteb2 = b.iterator();
+                while (iteb2.hasNext()) {
+                    LCCTTAndPT_DoAnyTenancyChanges = iteb2.next();
+                    iteb3 = b.iterator();
+                    while (iteb3.hasNext()) {
+                        LCCTTAndPT_DoTenancyChanges = iteb3.next();
+                        iteb4 = b.iterator();
+                        while (iteb4.hasNext()) {
+                            LCCTTAndPT_DoTenancyAndPostcodeChanges = iteb4.next();
+                            p.run(LCCTTAndPT_DoGrouped,
+                                    LCCTTAndPT_DoPostcodeChanges,
+                                    LCCTTAndPT_DoAnyTenancyChanges,
+                                    LCCTTAndPT_DoTenancyChanges,
+                                    LCCTTAndPT_DoTenancyAndPostcodeChanges);
                         }
                     }
                 }
@@ -670,11 +678,11 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
      */
     boolean LCCTTAndPT = false;
 
-    boolean LCCTTAndPTGrouped;
-    boolean LCCTTAndPTPostcodeChanges;
-    boolean LCCTTAndPTAnyTenancyChanges;
-    boolean LCCTTAndPTTenancyChanges;
-    boolean LCCTTAndPTTenancyAndPostcodeChanges;
+    boolean LCCTTAndPT_DoGrouped;
+    boolean LCCTTAndPT_DoPostcodeChanges;
+    boolean LCCTTAndPT_DoAnyTenancyChanges;
+    boolean LCCTTAndPT_DoTenancyChanges;
+    boolean LCCTTAndPT_DoTenancyAndPostcodeChanges;
 
     /**
      * Switch for running Choropleth Mapping code.

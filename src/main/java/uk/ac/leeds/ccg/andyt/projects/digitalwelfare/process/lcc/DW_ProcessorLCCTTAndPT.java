@@ -143,7 +143,11 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         iteB3 = b.iterator();
         while (iteB3.hasNext()) {
             DoUnderOccupiedData = iteB3.next();
-//        DoUnderOccupiedData = false;
+
+//            // <Debug to skip to a particular output creation>
+//            DoUnderOccupiedData = false;
+//            // </Debug to skip to a particular output creation>
+
             env.logO("<DoUnderOccupiedData " + DoUnderOccupiedData + ">", true);
             if (DoUnderOccupiedData) {
                 TreeMap<String, DW_UO_Set> CouncilUOSets;
@@ -480,8 +484,8 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
      * @param CouncilUOSets
      * @param RSLUOSets
      * @param ClaimIDs
-     * @param DoGrouped It used to be that this was a flag to optionally do the
-     * grouped calculations, but now it is an either or!
+     * @param DoGrouped This is optional. If DoGrouped is true then grouped
+     * tenancy type results are written out too.
      */
     public void doTTTs(
             String[] SHBEFilenames,
@@ -531,16 +535,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         dirOut2,
                         DW_Strings.sAll);
             }
-            if (DoGrouped) {
-                dirOut2 = new File(
-                        dirOut2,
-                        DW_Strings.sGrouped);
-            } else {
-                dirOut2 = new File(
-                        dirOut2,
-                        DW_Strings.sGroupedNo);
-            }
             dirOut2.mkdirs();
+            // dirOut3 will be for the grouped or ungrouped results.
+            File dirOut3;
             env.logO("dirOut " + dirOut2, true);
             ArrayList<Integer> include;
             include = includes.get(includeKey);
@@ -682,61 +679,68 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 TreeMap<String, Integer> transitions;
                 int max;
                 Iterator<DW_ID> TTCIte;
-                if (!DoGrouped) {
-                    // Ungrouped
-                    transitions = new TreeMap<String, Integer>();
-                    max = 0;
-                    TTCIte = TTCs.keySet().iterator();
-                    while (TTCIte.hasNext()) {
-                        DW_ID ClaimID;
-                        ClaimID = TTCIte.next();
-                        ArrayList<String> transition;
-                        transition = TTCs.get(ClaimID);
-                        max = Math.max(max, transition.size());
-                        String out;
-                        out = "";
-                        Iterator<String> transitionIte;
-                        transitionIte = transition.iterator();
-                        boolean doneFirst = false;
-                        while (transitionIte.hasNext()) {
-                            String t;
-                            t = transitionIte.next();
-                            String[] splitT;
-                            splitT = t.split(":");
-                            if (reportTenancyTransitionBreaks) {
-                                if (!doneFirst) {
-                                    out += splitT[0];
-                                    doneFirst = true;
-                                } else {
-                                    out += ", " + splitT[0];
-                                }
-                            } else if (!doneFirst) {
-                                if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
-                                    out += splitT[0];
-                                    doneFirst = true;
-                                }
-                            } else if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
+
+                // Ungrouped
+                dirOut3 = new File(
+                        dirOut2,
+                        DW_Strings.sGroupedNo);
+                dirOut3.mkdirs();
+                transitions = new TreeMap<String, Integer>();
+                max = 0;
+                TTCIte = TTCs.keySet().iterator();
+                while (TTCIte.hasNext()) {
+                    DW_ID ClaimID;
+                    ClaimID = TTCIte.next();
+                    ArrayList<String> transition;
+                    transition = TTCs.get(ClaimID);
+                    max = Math.max(max, transition.size());
+                    String out;
+                    out = "";
+                    Iterator<String> transitionIte;
+                    transitionIte = transition.iterator();
+                    boolean doneFirst = false;
+                    while (transitionIte.hasNext()) {
+                        String t;
+                        t = transitionIte.next();
+                        String[] splitT;
+                        splitT = t.split(":");
+                        if (reportTenancyTransitionBreaks) {
+                            if (!doneFirst) {
+                                out += splitT[0];
+                                doneFirst = true;
+                            } else {
                                 out += ", " + splitT[0];
                             }
-                        }
-                        if (!out.isEmpty()) {
-                            if (transitions.containsKey(out)) {
-                                Generic_Collections.addToTreeMapStringInteger(
-                                        transitions, out, 1);
-                            } else {
-                                transitions.put(out, 1);
+                        } else if (!doneFirst) {
+                            if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
+                                out += splitT[0];
+                                doneFirst = true;
                             }
+                        } else if (!splitT[0].contains(DW_SHBE_TenancyType_Handler.sMinus999)) {
+                            out += ", " + splitT[0];
                         }
                     }
-                    env.logO("line 597 " + includeKey + " maximum number of transitions "
-                            + max + " out of a possible " + (include.size() - 1), true);
-                    writeTransitionFrequencies(
-                            transitions,
+                    if (!out.isEmpty()) {
+                        if (transitions.containsKey(out)) {
+                            Generic_Collections.addToTreeMapStringInteger(
+                                    transitions, out, 1);
+                        } else {
+                            transitions.put(out, 1);
+                        }
+                    }
+                }
+                env.logO("line 597 " + includeKey + " maximum number of transitions "
+                        + max + " out of a possible " + (include.size() - 1), true);
+                writeTransitionFrequencies(
+                        transitions,
+                        dirOut3,
+                        "Frequencies.csv",
+                        reportTenancyTransitionBreaks);
+                if (DoGrouped) {
+                    dirOut3 = new File(
                             dirOut2,
-                            "Frequencies.csv",
-                            reportTenancyTransitionBreaks);
-                } else {
-                    // DoGrouped
+                            DW_Strings.sGrouped);
+                    dirOut3.mkdirs();
                     transitions = new TreeMap<String, Integer>();
                     max = 0;
                     TTCIte = GTTCs.keySet().iterator();
@@ -785,7 +789,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                             + max + " out of a possible " + (include.size() - 1), true);
                     writeTransitionFrequencies(
                             transitions,
-                            dirOut2,
+                            dirOut3,
                             "FrequenciesGrouped.csv",
                             reportTenancyTransitionBreaks);
                 }
@@ -808,7 +812,8 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
      * @param DW_UO_SetsCouncil
      * @param DW_UO_SetsRSL
      * @param UOInApril2013
-     * @param DoGrouped
+     * @param DoGrouped This is optional if true then grouped tenancy type
+     * results are written out too.
      */
     public void doTTAndPostcodeChangesU(
             String[] SHBEFilenames,
@@ -863,16 +868,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         dirOut2,
                         DW_Strings.sAll);
             }
-            if (DoGrouped) {
-                dirOut2 = new File(
-                        dirOut2,
-                        DW_Strings.sGrouped);
-            } else {
-                dirOut2 = new File(
-                        dirOut2,
-                        DW_Strings.sGroupedNo);
-            }
             dirOut2.mkdirs();
+            // dirOut3 is for grouped or non-grouped results;
+            File dirOut3;
             env.logO("dirOut " + dirOut2, true);
             ArrayList<Integer> include;
             include = includes.get(includeKey);
@@ -1024,6 +1022,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 int max;
                 Iterator<DW_ID> TTCsITe;
                 // Ungrouped
+                dirOut3 = new File(
+                        dirOut2,
+                        DW_Strings.sGroupedNo);
+                dirOut3.mkdirs();
                 transitions = new TreeMap<String, Integer>();
                 max = 0;
                 TTCsITe = TTCs.keySet().iterator();
@@ -1072,11 +1074,15 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         + max + " out of a possible " + (include.size() - 1), true);
                 writeTransitionFrequencies(
                         transitions,
-                        dirOut2,
+                        dirOut3,
                         "Frequencies.csv",
                         reportTenancyTransitionBreaks);
                 // Grouped
                 if (DoGrouped) {
+                    dirOut3 = new File(
+                            dirOut2,
+                            DW_Strings.sGrouped);
+                    dirOut3.mkdirs();
                     transitions = new TreeMap<String, Integer>();
                     max = 0;
                     TTCsITe = GTTCs.keySet().iterator();
@@ -1144,7 +1150,8 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
      * @param reportTenancyTransitionBreaks
      * @param postcodeChange
      * @param checkPreviousPostcode
-     * @param DoGrouped
+     * @param DoGrouped This is optional. If DoGRouped == true then grouped
+     * tenancy type results are written out too.
      */
     public void doTTAndPostcodeChanges(
             String[] SHBEFilenames,
@@ -1186,16 +1193,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             dirOut2 = new File(
                     dirOut,
                     includeKey);
-            if (DoGrouped) {
-                dirOut2 = new File(
-                        dirOut2,
-                        DW_Strings.sGrouped);
-            } else {
-                dirOut2 = new File(
-                        dirOut2,
-                        DW_Strings.sGroupedNo);
-            }
             dirOut2.mkdirs();
+            // dirOut3 is for grouped or ungrouped results
+            File dirOut3;
             env.logO("dirOut " + dirOut2, true);
             ArrayList<Integer> include;
             include = includes.get(includeKey);
@@ -1297,24 +1297,28 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             int max;
             Iterator<DW_ID> TTCsITe;
             // Ungrouped
+            dirOut3 = new File(
+                    dirOut2,
+                    DW_Strings.sGroupedNo);
+            dirOut3.mkdirs();
             transitions = new TreeMap<String, Integer>();
             max = 0;
             TTCsITe = TTCs.keySet().iterator();
+            DW_ID ClaimID;
+            ArrayList<String> transition;
+            String out;
+            Iterator<String> transitionIte;
+            String t;
+            String[] splitT;
             while (TTCsITe.hasNext()) {
-                DW_ID ClaimID;
                 ClaimID = TTCsITe.next();
-                ArrayList<String> transition;
                 transition = TTCs.get(ClaimID);
                 max = Math.max(max, transition.size());
-                String out;
                 out = "";
-                Iterator<String> transitionIte;
                 transitionIte = transition.iterator();
                 boolean doneFirst = false;
                 while (transitionIte.hasNext()) {
-                    String t;
                     t = transitionIte.next();
-                    String[] splitT;
                     splitT = t.split(":");
                     if (reportTenancyTransitionBreaks) {
                         if (!doneFirst) {
@@ -1341,33 +1345,39 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     }
                 }
             }
-            env.logO("line 927 " + includeKey + " maximum number of transitions "
-                    + max + " out of a possible " + (include.size() - 1), true);
+            if (max > (include.size() - 1)) {
+                env.logO("Warning: " +
+                        this.getClass().getName() + ".doTTAndPostcodeChanges("
+                        + "String[],ArrayList<String>,"
+                        + "TreeMap<String, ArrayList<Integer>>,boolean,"
+                        + "boolean,boolean,boolean) line 1348 ", true);
+            }
+            env.logO(includeKey
+                    + " maximum number of transitions " + max
+                    + " out of a possible " + (include.size() - 1), true);
             writeTransitionFrequencies(
                     transitions,
-                    dirOut2,
+                    dirOut3,
                     "Frequencies.csv",
                     reportTenancyTransitionBreaks);
             // Grouped
             if (DoGrouped) {
+                dirOut3 = new File(
+                        dirOut2,
+                        DW_Strings.sGrouped);
+                dirOut3.mkdirs();
                 transitions = new TreeMap<String, Integer>();
                 max = 0;
                 TTCsITe = GTTCs.keySet().iterator();
                 while (TTCsITe.hasNext()) {
-                    DW_ID ClaimID;
                     ClaimID = TTCsITe.next();
-                    ArrayList<String> transition;
                     transition = GTTCs.get(ClaimID);
                     max = Math.max(max, transition.size());
-                    String out;
                     out = "";
-                    Iterator<String> transitionsIte;
-                    transitionsIte = transition.iterator();
+                    transitionIte = transition.iterator();
                     boolean doneFirst = false;
-                    while (transitionsIte.hasNext()) {
-                        String t;
-                        t = transitionsIte.next();
-                        String[] splitT;
+                    while (transitionIte.hasNext()) {
+                        t = transitionIte.next();
                         splitT = t.split(":");
                         if (reportTenancyTransitionBreaks) {
                             if (!doneFirst) {
@@ -1394,11 +1404,18 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         }
                     }
                 }
-                env.logO("line 980 " + includeKey + " maximum number of transitions "
+                if (max > (include.size() - 1)) {
+                    env.logO("Warning: " +
+                        this.getClass().getName() + ".doTTAndPostcodeChanges("
+                        + "String[],ArrayList<String>,"
+                        + "TreeMap<String, ArrayList<Integer>>,boolean,"
+                        + "boolean,boolean,boolean) line 1407 ", true);
+                }
+                env.logO(includeKey + " maximum number of transitions "
                         + max + " out of a possible " + (include.size() - 1), true);
                 writeTransitionFrequencies(
                         transitions,
-                        dirOut2,
+                        dirOut3,
                         "FrequenciesGrouped.csv",
                         reportTenancyTransitionBreaks);
             }
@@ -1419,7 +1436,8 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
      * @param DoUnderOccupiedData
      * @param DW_UO_SetsAll
      * @param ClaimIDs
-     * @param DoGrouped
+     * @param DoGrouped This is optional. If true then frequencies for grouped
+     * tenancies are also written out.
      */
     public void doPostcodeChanges(
             String[] SHBEFilenames,
@@ -1471,16 +1489,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         dirOut2,
                         DW_Strings.sAll);
             }
-            if (DoGrouped) {
-                dirOut2 = new File(
-                        dirOut2,
-                        DW_Strings.sGrouped);
-            } else {
-                dirOut2 = new File(
-                        dirOut2,
-                        DW_Strings.sGroupedNo);
-            }
             dirOut2.mkdirs();
+            // dirOut3 is for the grouped or nongrouped outputs.
+            File dirOut3;
             //env.logO("dirOut " + dirOut2);
             ArrayList<Integer> include;
             include = includes.get(includeKey);
@@ -1565,7 +1576,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 if ((UOClaimIDSet0 == null || UOClaimIDSet1 == null) && DoUnderOccupiedData) {
                     env.logO("Not calculating or writing out postcodeTransitionCounts", true);
                 } else {
-                    postcodeTransitionCounts = getPTCountsNoTTTU(
+                    postcodeTransitionCounts = getPTCountsNoTTT(
                             dirOut2,
                             DoUnderOccupiedData,
                             ClaimIDToTTLookup0,
@@ -1606,6 +1617,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             int max;
             Iterator<DW_ID> TTCIte;
             // Ungrouped
+            dirOut3 = new File(
+                    dirOut2,
+                    DW_Strings.sGroupedNo);
+            dirOut3.mkdirs();
             transitions = new TreeMap<String, Integer>();
             max = 0;
             TTCIte = TTCs.keySet().iterator();
@@ -1654,11 +1669,15 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     + max + " out of a possible " + (include.size() - 1), true);
             writeTransitionFrequencies(
                     transitions,
-                    dirOut2,
+                    dirOut3,
                     "Frequencies.txt",
                     reportTenancyTransitionBreaks);
             // Grouped
             if (DoGrouped) {
+                dirOut3 = new File(
+                        dirOut2,
+                        DW_Strings.sGrouped);
+                dirOut3.mkdirs();
                 transitions = new TreeMap<String, Integer>();
                 max = 0;
                 TTCIte = GTTCs.keySet().iterator();
@@ -1707,7 +1726,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         + max + " out of a possible " + (include.size() - 1), true);
                 writeTransitionFrequencies(
                         transitions,
-                        dirOut2,
+                        dirOut3,
                         "FrequenciesGrouped.txt",
                         reportTenancyTransitionBreaks);
             }
@@ -2686,7 +2705,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         Postcode = PostcodeIDToPostcodeLookup.get(PostcodeID);
                     }
                     result[2] = Postcode;
-                    return result;
+                    //return result;
                 } else if (TT == -999) {
                     //result[1] = include.indexOf(previousIndex);
                     result[1] = previousIndex;
@@ -3792,14 +3811,22 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         while (ite.hasNext()) {
             DW_ID ClaimID;
             ClaimID = ite.next();
-            boolean doMainLoop = true;
-            // UnderOccupancy
+            // Initialise TTOInteger, TTO and postcode0
             Integer TT0Integer = DW_SHBE_TenancyType_Handler.iMinus999;
             String TT0 = DW_SHBE_TenancyType_Handler.sMinus999;
             DW_ID postcode0 = null;
-            if (ClaimIDToTTLookup1 != null) {
-                TT0Integer = ClaimIDToTTLookup1.get(ClaimID);
+            /**
+             * If we have a non null previous Tenancy type lookup then
+             * reinitialise TT0Integer and postcode0.
+             */
+            if (ClaimIDToTTLookup0 != null) {
+                TT0Integer = ClaimIDToTTLookup0.get(ClaimID);
                 postcode0 = ClaimIDToPostcodeIDLookup0.get(ClaimID);
+                /**
+                 * If TT0Integer is null then if we are checking previous
+                 * tenancy types then try to look this up and if then also
+                 * checking previous postcode then try to look this up too.
+                 */
                 if (TT0Integer == null) {
                     if (checkPreviousTenure) {
                         Object[] previousTTAndP;
@@ -3819,9 +3846,14 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                 postcode0 = ClaimIDToPostcodeIDLookups.get(indexOfLastKnownTenureOrNot).get(ClaimID);
                             }
                         }
+                        if (TT0 == null) {
+                            TT0 = DW_SHBE_TenancyType_Handler.sMinus999;
+                        }
                     } else {
                         TT0 = DW_SHBE_TenancyType_Handler.sMinus999;
                     }
+                } else {
+                    TT0 = Integer.toString(TT0Integer);
                 }
             } else {
                 TT0 = DW_SHBE_TenancyType_Handler.sMinus999;
@@ -3832,29 +3864,69 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             postcode1 = ClaimIDToPostcodeIDLookup1.get(ClaimID);
             boolean doCount;
             if (postcodeChange) {
-                doCount = !postcode0.equals(postcode1);
+                if (postcode0 == null) {
+                    if (postcode1 != null) {
+                        doCount = true;
+                    } else {
+                        doCount = false;
+                    }
+                } else {
+                    if (postcode1 != null) {
+                        doCount = !postcode0.equals(postcode1);
+                    } else {
+                        doCount = true;
+                    }
+                }
             } else {
-                doCount = postcode0.equals(postcode1);
+                if (postcode0 == null) {
+                    if (postcode1 == null) {
+                        doCount = true;
+                    } else {
+                        doCount = false;
+                    }
+                } else {
+                    if (postcode1 == null) {
+                        doCount = true;
+                    } else {
+                        doCount = postcode0.equals(postcode1);
+                    }
+                }
             }
             if (doCount) {
-                if (TT0Integer.compareTo(TT1Integer) != 0) {
+                boolean doloop;
+                if (TT1Integer == null) {
+                    if (TT0Integer == null) {
+                        doloop = false;
+                    } else {
+                        doloop = true;
+                    }
+                } else {
+                    if (TT0Integer == null) {
+                        doloop = true;
+                    } else {
+                        doloop = TT0Integer.compareTo(TT1Integer) != 0;
+                    }
+                }
+                if (doloop) {
                     String[] TTTDetails;
+//                    TTTDetails = getTTTDetails(
+//                            false,
+//                            null,
+//                            null,
+//                            TT0Integer,
+//                            TT1Integer);
                     TTTDetails = getTTTDetails(
-                            false,
-                            null,
-                            null,
-                            TT0Integer,
-                            TT1Integer);
-//                        TTTDetails = getTTTDetails(
-//                                TT0,
-//                                TT1);
+                            TT0,
+                            TT1);
                     TT0 = TTTDetails[1];
                     TT1 = TTTDetails[2];
-                    recordTTTs(
-                            ClaimID,
-                            TTTs,
-                            YM31,
-                            TTTDetails[0]);
+                    if (!TT0.equalsIgnoreCase(TT1)) {
+                        recordTTTs(
+                                ClaimID,
+                                TTTs,
+                                YM31,
+                                TTTDetails[0]);
+                    }
                     if (postcodeChange) {
                         String[] postcodeChangeResult;
                         postcodeChangeResult = getPTName(
@@ -3866,17 +3938,17 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                 postcode1);
                         postcodeChanges.add(postcodeChangeResult);
                     }
-                }
-                if (result.containsKey(TT1)) {
-                    TreeMap<String, Integer> TTCount;
-                    TTCount = result.get(TT1);
-                    Generic_Collections.addToTreeMapStringInteger(
-                            TTCount, TT0, 1);
-                } else {
-                    TreeMap<String, Integer> TTCount;
-                    TTCount = new TreeMap<String, Integer>();
-                    TTCount.put(TT0, 1);
-                    result.put(TT1, TTCount);
+                    if (result.containsKey(TT1)) {
+                        TreeMap<String, Integer> TTCount;
+                        TTCount = result.get(TT1);
+                        Generic_Collections.addToTreeMapStringInteger(
+                                TTCount, TT0, 1);
+                    } else {
+                        TreeMap<String, Integer> TTCount;
+                        TTCount = new TreeMap<String, Integer>();
+                        TTCount.put(TT0, 1);
+                        result.put(TT1, TTCount);
+                    }
                 }
             }
 //                } else if (isValidPostcode1) {
@@ -3895,54 +3967,54 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         }
         // Go through previous for those records not in current
         ite = ClaimIDToTTLookup1.keySet().iterator();
+        DW_ID ClaimID;
         while (ite.hasNext()) {
-            DW_ID ClaimID;
             ClaimID = ite.next();
-            boolean doMainLoop = true;
-            // UnderOccupancy
-            DW_UO_Record underOccupied0 = null;
-            DW_UO_Record underOccupied1 = null;
-            Integer TT0Integer = ClaimIDToTTLookup1.get(ClaimID);
-            String TT0 = Integer.toString(TT0Integer);
-            Integer TT1Integer = -999;
-            String TT1;
-            TT1 = DW_SHBE_TenancyType_Handler.sMinus999;
-            DW_ID postcode0;
-            postcode0 = ClaimIDToPostcodeIDLookup0.get(ClaimID);
-            //if (!TT0.equalsIgnoreCase(TT1)) { // Always the case
-            String[] TTTDetails;
-            //                    TTTDetails = getTenancyTypeChangeDetails(
+            if (!ClaimIDToTTLookup0.containsKey(ClaimID)) {
+                Integer TT0Integer = ClaimIDToTTLookup1.get(ClaimID);
+                String TT0 = Integer.toString(TT0Integer);
+                //Integer TT1Integer = -999;
+                String TT1;
+                TT1 = DW_SHBE_TenancyType_Handler.sMinus999;
+                //DW_ID postcode0;
+                //postcode0 = ClaimIDToPostcodeIDLookup0.get(ClaimID);
+                //if (!TT0.equalsIgnoreCase(TT1)) { // Always the case
+                String[] TTTDetails;
+//                    TTTDetails = getTenancyTypeChangeDetails(
 //                            doUnderOccupiedData,
 //                            underOccupied0,
 //                            underOccupied1,
 //                            TT0Integer,
 //                            TT1Integer);
-            TTTDetails = getTTTDetails(
-                    TT0,
-                    TT1);
-            TT0 = TTTDetails[1];
-            TT1 = TTTDetails[2];
-            recordTTTs(
-                    ClaimID,
-                    TTTs,
-                    YM31,
-                    TTTDetails[0]);
-            //}
-            if (result.containsKey(TT1)) {
-                TreeMap<String, Integer> TTCount;
-                TTCount = result.get(TT1);
-                Generic_Collections.addToTreeMapStringInteger(
-                        TTCount, TT0, 1);
-            } else {
-                TreeMap<String, Integer> TTCount;
-                TTCount = new TreeMap<String, Integer>();
-                TTCount.put(TT0, 1);
-                result.put(TT1, TTCount);
+                TTTDetails = getTTTDetails(
+                        TT0,
+                        TT1);
+                TT0 = TTTDetails[1];
+                TT1 = TTTDetails[2];
+                // For the time being exclude TT transitions as there may not have been one, but here is where we would record the TT to -999.
+//                recordTTTs(
+//                        ClaimID,
+//                        TTTs,
+//                        YM31,
+//                        TTTDetails[0]);
+                //}
+                if (result.containsKey(TT1)) {
+                    TreeMap<String, Integer> TTCount;
+                    TTCount = result.get(TT1);
+                    Generic_Collections.addToTreeMapStringInteger(
+                            TTCount, TT0, 1);
+                } else {
+                    TreeMap<String, Integer> TTCount;
+                    TTCount = new TreeMap<String, Integer>();
+                    TTCount.put(TT0, 1);
+                    result.put(TT1, TTCount);
+                }
             }
         }
         if (postcodeChange) {
             if (!postcodeChanges.isEmpty()) {
-                writePostcodeChanges(dirOut,
+                writePostcodeChanges(
+                        dirOut,
                         postcodeChanges,
                         YM30,
                         YM31,
@@ -4072,13 +4144,13 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
      * @param ClaimIDToPostcodeIDLookups
      * @param postcodeChange
      * @param checkPreviousPostcode
-     * @param underOccupiedSet0
-     * @param underOccupiedSet1
-     * @param tCTBRefs
+     * @param UOSet0
+     * @param UOSet1
+     * @param ClaimIDs
      * @return A count of changes in matrix form (only entries for the same
      * Tenancy Types and for -999 are in the matrix).
      */
-    public TreeMap<String, TreeMap<String, Integer>> getPTCountsNoTTTU(
+    public TreeMap<String, TreeMap<String, Integer>> getPTCountsNoTTT(
             File dirOut,
             boolean DoUnderOccupancy,
             HashMap<DW_ID, Integer> ClaimIDToTTLookup0,
@@ -4098,9 +4170,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimIDToPostcodeIDLookups,
             boolean postcodeChange,
             boolean checkPreviousPostcode,
-            DW_UO_Set underOccupiedSet0,
-            DW_UO_Set underOccupiedSet1,
-            Set<DW_ID> tCTBRefs
+            DW_UO_Set UOSet0,
+            DW_UO_Set UOSet1,
+            Set<DW_ID> ClaimIDs
     ) {
         TreeMap<String, TreeMap<String, Integer>> result;
         result = new TreeMap<String, TreeMap<String, Integer>>();
@@ -4119,18 +4191,18 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             DW_UO_Record underOccupied0 = null;
             DW_UO_Record underOccupied1 = null;
             if (DoUnderOccupancy) {
-                if (underOccupiedSet0 != null) {
-                    if (tCTBRefs == null) {
-                        underOccupied0 = underOccupiedSet0.getMap().get(ClaimID);
-                    } else if (tCTBRefs.contains(ClaimID)) {
-                        underOccupied0 = underOccupiedSet0.getMap().get(ClaimID);
+                if (UOSet0 != null) {
+                    if (ClaimIDs == null) {
+                        underOccupied0 = UOSet0.getMap().get(ClaimID);
+                    } else if (ClaimIDs.contains(ClaimID)) {
+                        underOccupied0 = UOSet0.getMap().get(ClaimID);
                     }
                 }
-                if (underOccupiedSet1 != null) {
-                    if (tCTBRefs == null) {
-                        underOccupied1 = underOccupiedSet1.getMap().get(ClaimID);
-                    } else if (tCTBRefs.contains(ClaimID)) {
-                        underOccupied1 = underOccupiedSet1.getMap().get(ClaimID);
+                if (UOSet1 != null) {
+                    if (ClaimIDs == null) {
+                        underOccupied1 = UOSet1.getMap().get(ClaimID);
+                    } else if (ClaimIDs.contains(ClaimID)) {
+                        underOccupied1 = UOSet1.getMap().get(ClaimID);
                     }
                 }
             }
@@ -4265,8 +4337,8 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             if (!ClaimIDToTTLookup1.containsKey(ClaimID)) {
                 DW_UO_Record underOccupied0 = null;
                 //DW_UnderOccupiedReport_Record underOccupied1 = null;
-                if (underOccupiedSet0 != null) {
-                    underOccupied0 = underOccupiedSet0.getMap().get(ClaimID);
+                if (UOSet0 != null) {
+                    underOccupied0 = UOSet0.getMap().get(ClaimID);
                 }
                 doMainLoop = underOccupied0 != null;
                 if (doMainLoop) {
@@ -4320,408 +4392,407 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         return result;
     }
 
-    /**
-     * Gets Postcode Transition Counts where there is no TenancyType Transition.
-     *
-     * @param dirOut
-     * @param ClaimIDToTTLookup0
-     * @param ClaimIDToTTLookup1
-     * @param ClaimIDToTTLookups
-     * @param tUnderOccupancyIDs0
-     * @param tUnderOccupancyIDs1
-     * @param TTTs
-     * @param YM30
-     * @param tUnderOccupancies
-     * @param YM31
-     * @param checkPreviousTenure
-     * @param i
-     * @param include
-     * @param ClaimIDToPostcodeIDLookup0
-     * @param ClaimIDToPostcodeIDLookup1
-     * @param ClaimIDToPostcodeIDLookups
-     * @param postcodeChange
-     * @param checkPreviousPostcode
-     * @param underOccupiedSet0
-     * @param underOccupiedSet1
-     * @param doUnderOccupiedData
-     * @param tCTBRefs
-     * @return A count of changes in matrix form (only entries for the same
-     * Tenancy Types and for -999 are in the matrix).
-     */
-    public TreeMap<String, TreeMap<String, Integer>> getPTCountsNoTTT(
-            File dirOut,
-            HashMap<DW_ID, Integer> ClaimIDToTTLookup0,
-            HashMap<DW_ID, Integer> ClaimIDToTTLookup1,
-            HashMap<Integer, HashMap<DW_ID, Integer>> ClaimIDToTTLookups,
-            Set<DW_ID> tUnderOccupancyIDs0,
-            Set<DW_ID> tUnderOccupancyIDs1,
-            HashMap<Integer, Set<DW_ID>> tUnderOccupancies,
-            HashMap<DW_ID, ArrayList<String>> TTTs,
-            String YM30,
-            String YM31,
-            boolean checkPreviousTenure,
-            int i,
-            ArrayList<Integer> include,
-            HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup0,
-            HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup1,
-            HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimIDToPostcodeIDLookups,
-            boolean postcodeChange,
-            boolean checkPreviousPostcode,
-            DW_UO_Set underOccupiedSet0,
-            DW_UO_Set underOccupiedSet1,
-            boolean doUnderOccupiedData,
-            Set<DW_ID> tCTBRefs
-    ) {
-        TreeMap<String, TreeMap<String, Integer>> result;
-        result = new TreeMap<String, TreeMap<String, Integer>>();
-        ArrayList<String[]> postcodeChanges = null;
-        if (postcodeChange) {
-            postcodeChanges = new ArrayList<String[]>();
-        }
-        Iterator<DW_ID> ite;
-        // Go through current claimants
-        ite = ClaimIDToTTLookup1.keySet().iterator();
-        while (ite.hasNext()) {
-            DW_ID ClaimID;
-            ClaimID = ite.next();
-            boolean doMainLoop = true;
-            // UnderOccupancy
-            DW_UO_Record underOccupied0 = null;
-            DW_UO_Record underOccupied1 = null;
-            if (doUnderOccupiedData) {
-                if (underOccupiedSet0 != null) {
-                    if (tCTBRefs == null) {
-                        underOccupied0 = underOccupiedSet0.getMap().get(ClaimID);
-                    } else if (tCTBRefs.contains(ClaimID)) {
-                        underOccupied0 = underOccupiedSet0.getMap().get(ClaimID);
-                    }
-                }
-                if (underOccupiedSet1 != null) {
-                    if (tCTBRefs == null) {
-                        underOccupied1 = underOccupiedSet1.getMap().get(ClaimID);
-                    } else if (tCTBRefs.contains(ClaimID)) {
-                        underOccupied1 = underOccupiedSet1.getMap().get(ClaimID);
-                    }
-                }
-                doMainLoop = underOccupied0 != null || underOccupied1 != null;
-            }
-            if (doMainLoop) {
-                Integer TT0Integer = -999;
-                String TT0;
-                DW_ID postcode0 = null;
-                if (ClaimIDToTTLookup1 != null) {
-                    TT0Integer = ClaimIDToTTLookup1.get(ClaimID);
-                    if (TT0Integer != null) {
-                        TT0 = Integer.toString(TT0Integer);
-                        boolean isValidPostcodeFormPostcode0 = false;
-                        postcode0 = ClaimIDToPostcodeIDLookup0.get(ClaimID);
-                        if (TT0 == null) {
-                            if (checkPreviousTenure) {
-                                Object[] previousTenure;
-                                previousTenure = getPreviousTT(
-                                        ClaimID,
-                                        ClaimIDToTTLookups,
-                                        tUnderOccupancies,
-                                        i,
-                                        include);
-                                TT0 = (String) previousTenure[0];
-                                if (checkPreviousPostcode) {
-                                    Integer indexOfLastKnownTenureOrNot;
-                                    indexOfLastKnownTenureOrNot = (Integer) previousTenure[1];
-                                    if (indexOfLastKnownTenureOrNot != null) {
-//                                       env.logO("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
-                                        if (!isValidPostcodeFormPostcode0 && checkPreviousPostcode) {
-                                            postcode0 = ClaimIDToPostcodeIDLookups.get(indexOfLastKnownTenureOrNot).get(ClaimID);
-                                        }
-                                    }
-                                }
-                            } else {
-                                TT0 = DW_SHBE_TenancyType_Handler.sMinus999;
-                                if (doUnderOccupiedData) {
-                                    TT0 += sU;
-                                }
-                            }
-                        }
-                    } else {
-                        TT0 = DW_SHBE_TenancyType_Handler.sMinus999;
-                        if (doUnderOccupiedData) {
-                            TT0 += sU;
-                        }
-                    }
-                } else {
-                    TT0 = DW_SHBE_TenancyType_Handler.sMinus999;
-                    if (doUnderOccupiedData) {
-                        TT0 += sU;
-                    }
-                }
-                Integer TT1Integer = ClaimIDToTTLookup1.get(ClaimID);
-                String TT1 = Integer.toString(TT1Integer);
-                DW_ID postcode1;
-                postcode1 = ClaimIDToPostcodeIDLookup1.get(ClaimID);
-                boolean doCount;
-                if (postcodeChange) {
-                    if (postcode0 == null) {
-                        doCount = postcode1 != null;
-                    } else {
-                        doCount = !postcode0.equals(postcode1);
-                    }
-                } else if (postcode0 == null) {
-                    doCount = postcode1 == null;
-                } else {
-                    doCount = postcode0.equals(postcode1);
-                }
-                if (doCount) {
-                    String TTChange;
-                    if (doUnderOccupiedData) {
-                        String[] ttc = DW_ProcessorLCCTTAndPT.this.getTTTName(
-                                TT0Integer,
-                                underOccupied0 != null,
-                                TT1Integer,
-                                underOccupied1 != null);
-                        TTChange = ttc[0];
-                        TT0 = ttc[1];
-
-//                            if (!TT0.endsWith(sU)) {
-//                                int debug = 1;
-//                            }
-                        TT1 = ttc[2];
-                        if (TT0.equalsIgnoreCase(TT1)) {
-//                            if (!TT0.equalsIgnoreCase(TT1)) {
-//                                recordTTTs(
-//                                        tID,
-//                                        TTTs,
-//                                        YM31,
-//                                        TTChange);
-//                            }
-                            if (postcodeChange) {
-                                String[] postcodeChangeResult;
-                                postcodeChangeResult = getPTName(
-                                        ClaimID,
-                                        YM30,
-                                        YM31,
-                                        TTChange,
-                                        postcode0,
-                                        postcode1);
-                                postcodeChanges.add(postcodeChangeResult);
-                            }
-                            if (result.containsKey(TT1)) {
-                                TreeMap<String, Integer> TTCount;
-                                TTCount = result.get(TT1);
-                                Generic_Collections.addToTreeMapStringInteger(
-                                        TTCount, TT0, 1);
-                            } else {
-                                TreeMap<String, Integer> TTCount;
-                                TTCount = new TreeMap<String, Integer>();
-                                TTCount.put(TT0, 1);
-                                result.put(TT1, TTCount);
-                            }
-                        }
-                    } else if (TT0Integer.compareTo(TT1Integer) == 0
-                            || TT0.equalsIgnoreCase(DW_SHBE_TenancyType_Handler.sMinus999)) { // Major diff
-                        TTChange = getTTTName(
-                                TT0Integer,
-                                TT1Integer);
-                        if (postcodeChange) {
-                            String[] postcodeChangeResult;
-                            postcodeChangeResult = getPTName(
-                                    ClaimID,
-                                    YM30,
-                                    YM31,
-                                    TTChange,
-                                    postcode0,
-                                    postcode1);
-                            postcodeChanges.add(postcodeChangeResult);
-                        }
-                        if (result.containsKey(TT1)) {
-                            TreeMap<String, Integer> TTCount;
-                            TTCount = result.get(TT1);
-                            Generic_Collections.addToTreeMapStringInteger(
-                                    TTCount, TT0, 1);
-                        } else {
-                            TreeMap<String, Integer> TTCount;
-                            TTCount = new TreeMap<String, Integer>();
-                            TTCount.put(TT0, 1);
-                            result.put(TT1, TTCount);
-                        }
-                    }
-                }
-//                } else if (isValidPostcode1) {
-//                    if (result.containsKey(TT1)) {
-//                        TreeMap<String, Integer> TTCount;
-//                        TTCount = result.get(TT1);
-//                        Generic_Collections.addToTreeMapStringInteger(
-//                                TTCount, TT0, 1);
-//                    } else {
-//                        TreeMap<String, Integer> TTCount;
-//                        TTCount = new TreeMap<String, Integer>();
-//                        TTCount.put(TT0, 1);
-//                        result.put(TT1, TTCount);
+//    /**
+//     * Gets Postcode Transition Counts where there is no TenancyType Transition.
+//     *
+//     * @param dirOut
+//     * @param ClaimIDToTTLookup0
+//     * @param ClaimIDToTTLookup1
+//     * @param ClaimIDToTTLookups
+//     * @param tUnderOccupancyIDs0
+//     * @param tUnderOccupancyIDs1
+//     * @param TTTs
+//     * @param YM30
+//     * @param tUnderOccupancies
+//     * @param YM31
+//     * @param checkPreviousTenure
+//     * @param i
+//     * @param include
+//     * @param ClaimIDToPostcodeIDLookup0
+//     * @param ClaimIDToPostcodeIDLookup1
+//     * @param ClaimIDToPostcodeIDLookups
+//     * @param postcodeChange
+//     * @param checkPreviousPostcode
+//     * @param underOccupiedSet0
+//     * @param underOccupiedSet1
+//     * @param doUnderOccupiedData
+//     * @param tCTBRefs
+//     * @return A count of changes in matrix form (only entries for the same
+//     * Tenancy Types and for -999 are in the matrix).
+//     */
+//    public TreeMap<String, TreeMap<String, Integer>> getPTCountsNoTTT(
+//            File dirOut,
+//            HashMap<DW_ID, Integer> ClaimIDToTTLookup0,
+//            HashMap<DW_ID, Integer> ClaimIDToTTLookup1,
+//            HashMap<Integer, HashMap<DW_ID, Integer>> ClaimIDToTTLookups,
+//            Set<DW_ID> tUnderOccupancyIDs0,
+//            Set<DW_ID> tUnderOccupancyIDs1,
+//            HashMap<Integer, Set<DW_ID>> tUnderOccupancies,
+//            HashMap<DW_ID, ArrayList<String>> TTTs,
+//            String YM30,
+//            String YM31,
+//            boolean checkPreviousTenure,
+//            int i,
+//            ArrayList<Integer> include,
+//            HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup0,
+//            HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup1,
+//            HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimIDToPostcodeIDLookups,
+//            boolean postcodeChange,
+//            boolean checkPreviousPostcode,
+//            DW_UO_Set underOccupiedSet0,
+//            DW_UO_Set underOccupiedSet1,
+//            boolean doUnderOccupiedData,
+//            Set<DW_ID> tCTBRefs
+//    ) {
+//        TreeMap<String, TreeMap<String, Integer>> result;
+//        result = new TreeMap<String, TreeMap<String, Integer>>();
+//        ArrayList<String[]> postcodeChanges = null;
+//        if (postcodeChange) {
+//            postcodeChanges = new ArrayList<String[]>();
+//        }
+//        Iterator<DW_ID> ite;
+//        // Go through current claimants
+//        ite = ClaimIDToTTLookup1.keySet().iterator();
+//        while (ite.hasNext()) {
+//            DW_ID ClaimID;
+//            ClaimID = ite.next();
+//            boolean doMainLoop = true;
+//            // UnderOccupancy
+//            DW_UO_Record underOccupied0 = null;
+//            DW_UO_Record underOccupied1 = null;
+//            if (doUnderOccupiedData) {
+//                if (underOccupiedSet0 != null) {
+//                    if (tCTBRefs == null) {
+//                        underOccupied0 = underOccupiedSet0.getMap().get(ClaimID);
+//                    } else if (tCTBRefs.contains(ClaimID)) {
+//                        underOccupied0 = underOccupiedSet0.getMap().get(ClaimID);
 //                    }
 //                }
-            }
-        }
-        // Go through all those previously and record for all those that are not
-        // in the current data. Also record for all those that were under 
-        // occupying, but are now not and have changed postcode.
-        ite = ClaimIDToTTLookup0.keySet().iterator();
-        while (ite.hasNext()) {
-            DW_ID ClaimID;
-            ClaimID = ite.next();
-            boolean doMainLoop = true;
-            if (!ClaimIDToTTLookup1.containsKey(ClaimID)) {
-// This was double counting!
-//                    if (!set.contains(tID)) {
-//                        // UnderOccupancy
-//                        DW_UO_Record underOccupied0 = null;
-//                        DW_UO_Record underOccupied1 = null;
-//                        if (doUnderOccupiedData) {
-//                            if (underOccupiedSet0 != null) {
-//                                if (tIDByCTBRef0 != null) {
-//                                    if (CTBRef != null) {
-//                                        underOccupied0 = underOccupiedSet0.getMap().get(CTBRef);
+//                if (underOccupiedSet1 != null) {
+//                    if (tCTBRefs == null) {
+//                        underOccupied1 = underOccupiedSet1.getMap().get(ClaimID);
+//                    } else if (tCTBRefs.contains(ClaimID)) {
+//                        underOccupied1 = underOccupiedSet1.getMap().get(ClaimID);
+//                    }
+//                }
+//                doMainLoop = underOccupied0 != null || underOccupied1 != null;
+//            }
+//            if (doMainLoop) {
+//                Integer TT0Integer = -999;
+//                String TT0;
+//                DW_ID postcode0 = null;
+//                if (ClaimIDToTTLookup1 != null) {
+//                    TT0Integer = ClaimIDToTTLookup1.get(ClaimID);
+//                    if (TT0Integer != null) {
+//                        TT0 = Integer.toString(TT0Integer);
+//                        boolean isValidPostcodeFormPostcode0 = false;
+//                        postcode0 = ClaimIDToPostcodeIDLookup0.get(ClaimID);
+//                        if (TT0 == null) {
+//                            if (checkPreviousTenure) {
+//                                Object[] previousTenure;
+//                                previousTenure = getPreviousTT(
+//                                        ClaimID,
+//                                        ClaimIDToTTLookups,
+//                                        tUnderOccupancies,
+//                                        i,
+//                                        include);
+//                                TT0 = (String) previousTenure[0];
+//                                if (checkPreviousPostcode) {
+//                                    Integer indexOfLastKnownTenureOrNot;
+//                                    indexOfLastKnownTenureOrNot = (Integer) previousTenure[1];
+//                                    if (indexOfLastKnownTenureOrNot != null) {
+////                                       env.logO("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
+//                                        if (!isValidPostcodeFormPostcode0 && checkPreviousPostcode) {
+//                                            postcode0 = ClaimIDToPostcodeIDLookups.get(indexOfLastKnownTenureOrNot).get(ClaimID);
+//                                        }
 //                                    }
+//                                }
+//                            } else {
+//                                TT0 = DW_SHBE_TenancyType_Handler.sMinus999;
+//                                if (doUnderOccupiedData) {
+//                                    TT0 += sU;
 //                                }
 //                            }
-//                            doMainLoop = underOccupied0 != null;
 //                        }
-//                        if (doMainLoop) {
-//                            String TT0 = ClaimIDToTTLookup1.get(
-//                                    tID);
-//                            String TT1;
-//                            TT1 = ClaimIDToTTLookup1.get(tID);
-//                            if (TT0.equalsIgnoreCase(TT1)) {
-//                                String postcode0;
-//                                postcode0 = ClaimIDToPostcodeIDLookup0.get(tID);
-//                                boolean isValidPostcode0 = false;
-//                                if (postcode0 != null) {
-//                                    isValidPostcode0 = DW_Postcode_Handler.isValidPostcode(postcode0);
-//                                }
-//                                String postcode1;
-//                                postcode1 = ClaimIDToPostcodeIDLookup1.get(tID);
-//                                boolean isValidPostcode1 = false;
-//                                if (postcode1 != null) {
-//                                    isValidPostcode1 = DW_Postcode_Handler.isValidPostcode(postcode1);
-//                                }
-//                                if (isValidPostcode0 && isValidPostcode1) {
-//                                    boolean doCount = false;
-//                                    if (postcodeChange) {
-//                                        doCount = !postcode0.equalsIgnoreCase(postcode1);
-//                                    } else {
-//                                        doCount = postcode0.equalsIgnoreCase(postcode1);
-//                                    }
-//                                    if (doCount) {
-//                                        String TTChange;
-//                                        if (doUnderOccupiedData) {
-//                                            String[] ttc = getTTTName(
-//                                                    TT0,
-//                                                    underOccupied0 != null,
-//                                                    TT1,
-//                                                    underOccupied1 != null);
-//                                            TTChange = ttc[0];
-//                                            TT0 = ttc[1];
-//                                            TT1 = ttc[2];
-//                                            if (!TT0.equalsIgnoreCase(TT1)) {
-//                                                recordTTTs(
-//                                                        tID,
-//                                                        TTTs,
-//                                                        year,
-//                                                        month,
-//                                                        TTChange);
-//                                            }
-//                                        } else {
-//                                            TTChange = getTTTName(
-//                                                    TT0,
-//                                                    TT1);
-//                                        }
-//                                        if (postcodeChange) {
-//                                            String[] postcodeChangeResult;
+//                    } else {
+//                        TT0 = DW_SHBE_TenancyType_Handler.sMinus999;
+//                        if (doUnderOccupiedData) {
+//                            TT0 += sU;
+//                        }
+//                    }
+//                } else {
+//                    TT0 = DW_SHBE_TenancyType_Handler.sMinus999;
+//                    if (doUnderOccupiedData) {
+//                        TT0 += sU;
+//                    }
+//                }
+//                Integer TT1Integer = ClaimIDToTTLookup1.get(ClaimID);
+//                String TT1 = Integer.toString(TT1Integer);
+//                DW_ID postcode1;
+//                postcode1 = ClaimIDToPostcodeIDLookup1.get(ClaimID);
+//                boolean doCount;
+//                if (postcodeChange) {
+//                    if (postcode0 == null) {
+//                        doCount = postcode1 != null;
+//                    } else {
+//                        doCount = !postcode0.equals(postcode1);
+//                    }
+//                } else if (postcode0 == null) {
+//                    doCount = postcode1 == null;
+//                } else {
+//                    doCount = postcode0.equals(postcode1);
+//                }
+//                if (doCount) {
+//                    String TTChange;
+//                    if (doUnderOccupiedData) {
+//                        String[] ttc = DW_ProcessorLCCTTAndPT.this.getTTTName(
+//                                TT0Integer,
+//                                underOccupied0 != null,
+//                                TT1Integer,
+//                                underOccupied1 != null);
+//                        TTChange = ttc[0];
+//                        TT0 = ttc[1];
+//
+////                            if (!TT0.endsWith(sU)) {
+////                                int debug = 1;
+////                            }
+//                        TT1 = ttc[2];
+//                        if (TT0.equalsIgnoreCase(TT1)) {
+////                            if (!TT0.equalsIgnoreCase(TT1)) {
+////                                recordTTTs(
+////                                        tID,
+////                                        TTTs,
+////                                        YM31,
+////                                        TTChange);
+////                            }
+//                            if (postcodeChange) {
+//                                String[] postcodeChangeResult;
 //                                postcodeChangeResult = getPTName(
-//                                        tID,
-//                                        YM30, 
-//                                        YM31, 
+//                                        ClaimID,
+//                                        YM30,
+//                                        YM31,
 //                                        TTChange,
 //                                        postcode0,
 //                                        postcode1);
-//                                LCCTTAndPTPostcodeChanges.add(postcodeChangeResult);
-//                                        }
-//                                        if (result.containsKey(TT1)) {
-//                                            TreeMap<String, Integer> TTCount;
-//                                            TTCount = result.get(TT1);
-//                                            Generic_Collections.addToTreeMapStringInteger(
-//                                                    TTCount, TT0, 1);
-//                                        } else {
-//                                            TreeMap<String, Integer> TTCount;
-//                                            TTCount = new TreeMap<String, Integer>();
-//                                            TTCount.put(TT0, 1);
-//                                            result.put(TT1, TTCount);
-//                                        }
-//                                    }
-//                                }
+//                                postcodeChanges.add(postcodeChangeResult);
+//                            }
+//                            if (result.containsKey(TT1)) {
+//                                TreeMap<String, Integer> TTCount;
+//                                TTCount = result.get(TT1);
+//                                Generic_Collections.addToTreeMapStringInteger(
+//                                        TTCount, TT0, 1);
+//                            } else {
+//                                TreeMap<String, Integer> TTCount;
+//                                TTCount = new TreeMap<String, Integer>();
+//                                TTCount.put(TT0, 1);
+//                                result.put(TT1, TTCount);
 //                            }
 //                        }
+//                    } else if (TT0Integer.compareTo(TT1Integer) == 0
+//                            || TT0.equalsIgnoreCase(DW_SHBE_TenancyType_Handler.sMinus999)) { // Major diff
+//                        TTChange = getTTTName(
+//                                TT0Integer,
+//                                TT1Integer);
+//                        if (postcodeChange) {
+//                            String[] postcodeChangeResult;
+//                            postcodeChangeResult = getPTName(
+//                                    ClaimID,
+//                                    YM30,
+//                                    YM31,
+//                                    TTChange,
+//                                    postcode0,
+//                                    postcode1);
+//                            postcodeChanges.add(postcodeChangeResult);
+//                        }
+//                        if (result.containsKey(TT1)) {
+//                            TreeMap<String, Integer> TTCount;
+//                            TTCount = result.get(TT1);
+//                            Generic_Collections.addToTreeMapStringInteger(
+//                                    TTCount, TT0, 1);
+//                        } else {
+//                            TreeMap<String, Integer> TTCount;
+//                            TTCount = new TreeMap<String, Integer>();
+//                            TTCount.put(TT0, 1);
+//                            result.put(TT1, TTCount);
+//                        }
+//                    }
+//                }
+////                } else if (isValidPostcode1) {
+////                    if (result.containsKey(TT1)) {
+////                        TreeMap<String, Integer> TTCount;
+////                        TTCount = result.get(TT1);
+////                        Generic_Collections.addToTreeMapStringInteger(
+////                                TTCount, TT0, 1);
+////                    } else {
+////                        TreeMap<String, Integer> TTCount;
+////                        TTCount = new TreeMap<String, Integer>();
+////                        TTCount.put(TT0, 1);
+////                        result.put(TT1, TTCount);
+////                    }
+////                }
+//            }
+//        }
+//        // Go through all those previously and record for all those that are not
+//        // in the current data. Also record for all those that were under 
+//        // occupying, but are now not and have changed postcode.
+//        ite = ClaimIDToTTLookup0.keySet().iterator();
+//        while (ite.hasNext()) {
+//            DW_ID ClaimID;
+//            ClaimID = ite.next();
+//            boolean doMainLoop = true;
+//            if (!ClaimIDToTTLookup1.containsKey(ClaimID)) {
+//// This was double counting!
+////                    if (!set.contains(tID)) {
+////                        // UnderOccupancy
+////                        DW_UO_Record underOccupied0 = null;
+////                        DW_UO_Record underOccupied1 = null;
+////                        if (doUnderOccupiedData) {
+////                            if (underOccupiedSet0 != null) {
+////                                if (tIDByCTBRef0 != null) {
+////                                    if (CTBRef != null) {
+////                                        underOccupied0 = underOccupiedSet0.getMap().get(CTBRef);
+////                                    }
+////                                }
+////                            }
+////                            doMainLoop = underOccupied0 != null;
+////                        }
+////                        if (doMainLoop) {
+////                            String TT0 = ClaimIDToTTLookup1.get(
+////                                    tID);
+////                            String TT1;
+////                            TT1 = ClaimIDToTTLookup1.get(tID);
+////                            if (TT0.equalsIgnoreCase(TT1)) {
+////                                String postcode0;
+////                                postcode0 = ClaimIDToPostcodeIDLookup0.get(tID);
+////                                boolean isValidPostcode0 = false;
+////                                if (postcode0 != null) {
+////                                    isValidPostcode0 = DW_Postcode_Handler.isValidPostcode(postcode0);
+////                                }
+////                                String postcode1;
+////                                postcode1 = ClaimIDToPostcodeIDLookup1.get(tID);
+////                                boolean isValidPostcode1 = false;
+////                                if (postcode1 != null) {
+////                                    isValidPostcode1 = DW_Postcode_Handler.isValidPostcode(postcode1);
+////                                }
+////                                if (isValidPostcode0 && isValidPostcode1) {
+////                                    boolean doCount = false;
+////                                    if (postcodeChange) {
+////                                        doCount = !postcode0.equalsIgnoreCase(postcode1);
+////                                    } else {
+////                                        doCount = postcode0.equalsIgnoreCase(postcode1);
+////                                    }
+////                                    if (doCount) {
+////                                        String TTChange;
+////                                        if (doUnderOccupiedData) {
+////                                            String[] ttc = getTTTName(
+////                                                    TT0,
+////                                                    underOccupied0 != null,
+////                                                    TT1,
+////                                                    underOccupied1 != null);
+////                                            TTChange = ttc[0];
+////                                            TT0 = ttc[1];
+////                                            TT1 = ttc[2];
+////                                            if (!TT0.equalsIgnoreCase(TT1)) {
+////                                                recordTTTs(
+////                                                        tID,
+////                                                        TTTs,
+////                                                        year,
+////                                                        month,
+////                                                        TTChange);
+////                                            }
+////                                        } else {
+////                                            TTChange = getTTTName(
+////                                                    TT0,
+////                                                    TT1);
+////                                        }
+////                                        if (postcodeChange) {
+////                                            String[] postcodeChangeResult;
+////                                postcodeChangeResult = getPTName(
+////                                        tID,
+////                                        YM30, 
+////                                        YM31, 
+////                                        TTChange,
+////                                        postcode0,
+////                                        postcode1);
+////                                LCCTTAndPT_DoPostcodeChanges.add(postcodeChangeResult);
+////                                        }
+////                                        if (result.containsKey(TT1)) {
+////                                            TreeMap<String, Integer> TTCount;
+////                                            TTCount = result.get(TT1);
+////                                            Generic_Collections.addToTreeMapStringInteger(
+////                                                    TTCount, TT0, 1);
+////                                        } else {
+////                                            TreeMap<String, Integer> TTCount;
+////                                            TTCount = new TreeMap<String, Integer>();
+////                                            TTCount.put(TT0, 1);
+////                                            result.put(TT1, TTCount);
+////                                        }
+////                                    }
+////                                }
+////                            }
+////                        }
+////                    } else {
+//                // UnderOccupancy
+//                DW_UO_Record underOccupied0 = null;
+//                //DW_UnderOccupiedReport_Record underOccupied1 = null;
+//                if (doUnderOccupiedData) {
+//                    if (underOccupiedSet0 != null) {
+//                        underOccupied0 = underOccupiedSet0.getMap().get(ClaimID);
+//                    }
+//                    doMainLoop = underOccupied0 != null;
+//                }
+//                if (doMainLoop) {
+//                    Integer TT0 = ClaimIDToTTLookup0.get(ClaimID);
+//                    String sTT0 = Integer.toString(TT0);
+//                    Integer TT1 = -999;
+//                    String sTT1;
+//                    sTT1 = DW_SHBE_TenancyType_Handler.sMinus999;
+//                    String TTT;
+//                    if (doUnderOccupiedData) {
+//                        String[] ttc = DW_ProcessorLCCTTAndPT.this.getTTTName(
+//                                TT0,
+//                                underOccupied0 != null,
+//                                TT1,
+//                                false);
+//                        TTT = ttc[0];
+//                        sTT0 = ttc[1];
+//                        sTT1 = ttc[2];
+//                        if (sTT0.equalsIgnoreCase(sTT1)) {
+//                            recordTTTs(
+//                                    ClaimID,
+//                                    TTTs,
+//                                    YM31,
+//                                    TTT);
+//                        }
+//                    }
+//                    if (result.containsKey(sTT1)) {
+//                        TreeMap<String, Integer> TTCount;
+//                        TTCount = result.get(sTT1);
+//                        Generic_Collections.addToTreeMapStringInteger(
+//                                TTCount, sTT0, 1);
 //                    } else {
-                // UnderOccupancy
-                DW_UO_Record underOccupied0 = null;
-                //DW_UnderOccupiedReport_Record underOccupied1 = null;
-                if (doUnderOccupiedData) {
-                    if (underOccupiedSet0 != null) {
-                        underOccupied0 = underOccupiedSet0.getMap().get(ClaimID);
-                    }
-                    doMainLoop = underOccupied0 != null;
-                }
-                if (doMainLoop) {
-                    Integer TT0 = ClaimIDToTTLookup0.get(ClaimID);
-                    String sTT0 = Integer.toString(TT0);
-                    Integer TT1 = -999;
-                    String sTT1;
-                    sTT1 = DW_SHBE_TenancyType_Handler.sMinus999;
-                    String TTT;
-                    if (doUnderOccupiedData) {
-                        String[] ttc = DW_ProcessorLCCTTAndPT.this.getTTTName(
-                                TT0,
-                                underOccupied0 != null,
-                                TT1,
-                                false);
-                        TTT = ttc[0];
-                        sTT0 = ttc[1];
-                        sTT1 = ttc[2];
-                        if (sTT0.equalsIgnoreCase(sTT1)) {
-                            recordTTTs(
-                                    ClaimID,
-                                    TTTs,
-                                    YM31,
-                                    TTT);
-                        }
-                    }
-                    if (result.containsKey(sTT1)) {
-                        TreeMap<String, Integer> TTCount;
-                        TTCount = result.get(sTT1);
-                        Generic_Collections.addToTreeMapStringInteger(
-                                TTCount, sTT0, 1);
-                    } else {
-                        TreeMap<String, Integer> TTCount;
-                        TTCount = new TreeMap<String, Integer>();
-                        TTCount.put(sTT0, 1);
-                        result.put(sTT1, TTCount);
-                    }
-                }
-            }
-        }
-        if (postcodeChange) {
-            if (!postcodeChanges.isEmpty()) {
-                writePostcodeChanges(dirOut,
-                        postcodeChanges,
-                        YM30,
-                        YM31,
-                        checkPreviousPostcode);
-            }
-        }
-        if (result.isEmpty()) {
-            return null;
-        }
-        return result;
-    }
-
+//                        TreeMap<String, Integer> TTCount;
+//                        TTCount = new TreeMap<String, Integer>();
+//                        TTCount.put(sTT0, 1);
+//                        result.put(sTT1, TTCount);
+//                    }
+//                }
+//            }
+//        }
+//        if (postcodeChange) {
+//            if (!postcodeChanges.isEmpty()) {
+//                writePostcodeChanges(dirOut,
+//                        postcodeChanges,
+//                        YM30,
+//                        YM31,
+//                        checkPreviousPostcode);
+//            }
+//        }
+//        if (result.isEmpty()) {
+//            return null;
+//        }
+//        return result;
+//    }
     public TreeMap<String, TreeMap<String, Integer>> getPostcodeTransitionCountsNoTenancyTypeChangeGrouped(
             File dirOut,
             ArrayList<Integer> regulatedGroups,
@@ -5379,6 +5450,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 name
                 + "_Start_" + YM30
                 + "_End_" + YM31 + ".csv");
+        env.logO("Write " + f.toString(), true);
         PrintWriter pw;
         try {
             pw = new PrintWriter(f);
