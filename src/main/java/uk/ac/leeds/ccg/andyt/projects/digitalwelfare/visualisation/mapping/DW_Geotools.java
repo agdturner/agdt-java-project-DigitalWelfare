@@ -135,8 +135,7 @@ public class DW_Geotools extends AGDT_Geotools {
         File outputImageFile = DW_Maps.getOutputImageFile(
                 outputFile, DW_Maps.png_String);
 
-        AGDT_Geotools.writeImageFile(
-                g.env, // For handling OutOfMemoryErrors
+        AGDT_Geotools.writeImageFile(g.ge, // For handling OutOfMemoryErrors
                 mc,
                 newImageWidth,
                 newImageHeight,
