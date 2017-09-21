@@ -31,6 +31,8 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
     protected transient DW_Files DW_Files;
     protected transient DW_Strings DW_Strings;
 
+    private transient ArrayList<Boolean> b;
+
     public DW_ProcessorAbstract() {
     }
 
@@ -42,11 +44,12 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
     }
 
     public ArrayList<Boolean> getArrayListBoolean() {
-        ArrayList<Boolean> result;
-        result = new ArrayList<Boolean>();
-        result.add(true);
-        result.add(false);
-        return result;
+        if (b == null) {
+            b = new ArrayList<Boolean>();
+            b.add(true);
+            b.add(false);
+        }
+        return b;
     }
 
     /**
@@ -160,12 +163,12 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
 //                    DW_Files.getGeneratedONSPDDir(),
 //                    yearString);
 //        } else {
-            //String month = YM3NearestSplit[1];
-            outputFilename = "PostcodeTo" + level + "_" + YM3Nearest
-                    + "_LookUp_TreeMap_String_Strings" + DW_Strings.sBinaryFileExtension;
-            dir = new File(
-                    DW_Files.getGeneratedONSPDDir(),
-                    YM3Nearest);
+        //String month = YM3NearestSplit[1];
+        outputFilename = "PostcodeTo" + level + "_" + YM3Nearest
+                + "_LookUp_TreeMap_String_Strings" + DW_Strings.sBinaryFileExtension;
+        dir = new File(
+                DW_Files.getGeneratedONSPDDir(),
+                YM3Nearest);
 //        }
         File outfile = new File(
                 dir,

@@ -99,8 +99,6 @@ public class DW_LineGraph extends Generic_LineGraph {
         new DW_LineGraph(null).start();
     }
 
-    boolean doGraphTenancyTypeTransitions;
-    boolean doGraphAggregateData;
     HashSet<Future> futures;
     String format;
     ArrayList<Boolean> b;
@@ -108,7 +106,14 @@ public class DW_LineGraph extends Generic_LineGraph {
     TreeMap<String, ArrayList<Integer>> includes;
     ArrayList<String> PTs;
 
-    public void run(File dir) {
+    /**
+     *
+     * @param doGraphTenancyTypeTransitions
+     * @param doGraphAggregateData
+     */
+    public void run(
+            boolean doGraphTenancyTypeTransitions,
+            boolean doGraphAggregateData) {
         env.log("<run>");
         Generic_Visualisation.getHeadlessEnvironment();
         setDataWidth(1300);
@@ -130,9 +135,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         executorService = Executors.newSingleThreadExecutor();
         SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
 //        ArrayList<String> claimantTypes;
-//        claimantTypes = new ArrayList<String>();
-//        claimantTypes.add("HB");
-//        claimantTypes.add("CTB");
+//        claimantTypes = DW_Strings.getHB_CTB();
 
         includes = DW_SHBE_Handler.getIncludes();
         includes.remove(DW_Strings.sIncludeAll);
@@ -166,14 +169,10 @@ public class DW_LineGraph extends Generic_LineGraph {
         b.add(true);
         b.add(false);
 
-        doGraphTenancyTypeTransitions = true;
-        doGraphTenancyTypeTransitions = false;
         if (doGraphTenancyTypeTransitions) {
             graphTenancyTypeTransitions();
         }
 
-        doGraphAggregateData = true;
-//        doGraphAggregateData = false;
         if (doGraphAggregateData) {
             graphAggregateData();
         }
@@ -234,94 +233,145 @@ public class DW_LineGraph extends Generic_LineGraph {
                             includeName);
                     dirOut1.mkdirs();
                     File fout;
-                    fout = new File(
-                            dirOut1,
-                            "SHBECount.PNG");
-                    TreeMap<String, TreeMap<String, BigDecimal>> data0;
-                    data0 = new TreeMap<String, TreeMap<String, BigDecimal>>();
-                    Iterator<Integer> includeIte;
-                    includeIte = include.iterator();
-                    while (includeIte.hasNext()) {
-                        int i = includeIte.next();
-                        String YM3;
-                        YM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
-                        File f = new File(
-                                dirIn1,
-                                YM3 + ".csv");
-                        // readCSV
-                        ArrayList<String> lines;
-                        lines = DW_Table.readCSV(f);
-                        Iterator<String> ite;
-                        ite = lines.iterator();
-                        String line;
-                        String[] fields;
-                        String header;
-                        header = ite.next();
-                        String[] headerFields;
-                        headerFields = header.split(DW_Strings.sCommaSpace);
-                        /*
-                         * AreaCode, NumberOfHBClaims, NumberOfChildDependentsInHBClaimingHouseholds, TotalPopulationInHBClaimingHouseholds
-                         * 00DAGL, 974, 228, 1486
-                         */
-                        while (ite.hasNext()) {
-                            line = ite.next();
-                            //System.out.println(line);
-                            fields = line.split(DW_Strings.sCommaSpace);
-                            TreeMap<String, BigDecimal> dateValue;
-                            dateValue = data0.get(fields[0]);
-                            if (dateValue == null) {
-                                dateValue = new TreeMap<String, BigDecimal>();
-                                data0.put(fields[0], dateValue);
-                            }
-                            dateValue.put(YM3, new BigDecimal(fields[1]));
+                    for (int stat = 1; stat <= 8; stat++) {
+                        String filename;
+                        String yAxisLabel;
+                        String title;
+                        switch (stat) {
+                            case 1:
+                                filename = "NumberOfHBClaims.PNG";
+                                yAxisLabel = "Number Of Housing Benefit Claims";
+                                title = yAxisLabel + " Over Time";
+                                break;
+                            case 2:
+                                filename = "NumberOfChildDependentsInHBClaimingHouseholds.PNG";
+                                yAxisLabel = "Number Of Child Dependents In HB Claiming Households";
+                                title = yAxisLabel + " Over Time";
+                                break;
+                            case 3:
+                                filename = "TotalPopulationInHBClaimingHouseholds.PNG";
+                                yAxisLabel = "Total Population In HB Claiming Households";
+                                title = yAxisLabel + " Over Time";
+                                break;
+                            case 4:
+                                filename = "NumberOfUOHouseholdsRequiring1Room.PNG";
+                                yAxisLabel = "Number Of UO Households Requiring 1 Room";
+                                title = yAxisLabel + " Over Time";
+                                break;
+                            case 5:
+                                filename = "NumberOfUOHouseholdsRequiring2Rooms.PNG";
+                                yAxisLabel = "Number Of UO Households Requiring 2 Rooms";
+                                title = yAxisLabel + " Over Time";
+                                break;
+                            case 6:
+                                filename = "NumberOfUOHouseholdsRequiring3Rooms.PNG";
+                                yAxisLabel = "Number Of UO Households Requiring 3 Rooms";
+                                title = yAxisLabel + " Over Time";
+                                break;
+                            case 7:
+                                filename = "NumberOfUOHouseholdsRequiring4Rooms.PNG";
+                                yAxisLabel = "Number Of UO Households Requiring 4 Rooms";
+                                title = yAxisLabel + " Over Time";
+                                break;
+                            default:
+                                filename = "NumberOfUOHouseholdsRequiring5OrMoreRooms.PNG";
+                                yAxisLabel = "Number Of UO Households Requiring 5 Or More Rooms";
+                                title = yAxisLabel + " Over Time";
+                                break;
                         }
-                    }
-                    setyAxisLabel("SHBE Count");
-                    String title;
-                    title = "Number of SHBE Claims Over Time";
-                    DW_LineGraph chart = new DW_LineGraph(
-                            env,
-                            executorService,
-                            fout,
-                            format,
-                            title,
-                            getDataWidth(),
-                            getDataHeight(),
-                            getxAxisLabel(),
-                            getyAxisLabel(),
-                            getyMax(),
-                            getyPin(),
-                            getyIncrement(),
-                            getNumberOfYAxisTicks(),
-                            getDecimalPlacePrecisionForCalculations(),
-                            getDecimalPlacePrecisionForDisplay(),
-                            getRoundingMode());
-                    //
-                    Object[] treeMapDateLabelSHBEFilename;
-                    treeMapDateLabelSHBEFilename = DW_SHBE_Handler.getTreeMapDateLabelSHBEFilenamesSingle(
-                            SHBEFilenames,
-                            include);
-                    TreeMap<BigDecimal, String> xAxisLabels;
-                    xAxisLabels = (TreeMap<BigDecimal, String>) treeMapDateLabelSHBEFilename[0];
-                    TreeMap<String, BigDecimal> fileLabelValue;
-                    fileLabelValue = (TreeMap<String, BigDecimal>) treeMapDateLabelSHBEFilename[1];
-                    Object[] data;
-                    data = getData(
-                            data0,
-                            xAxisLabels,
-                            fileLabelValue);
+                        fout = new File(
+                                dirOut1,
+                                filename);
+                        TreeMap<String, TreeMap<String, BigDecimal>> data0;
+                        data0 = new TreeMap<String, TreeMap<String, BigDecimal>>();
+                        Iterator<Integer> includeIte;
+                        includeIte = include.iterator();
+                        while (includeIte.hasNext()) {
+                            int i = includeIte.next();
+                            String YM3;
+                            YM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                            File f = new File(
+                                    dirIn1,
+                                    YM3 + ".csv");
+                            // readCSV
+                            ArrayList<String> lines;
+                            lines = DW_Table.readCSV(f);
+                            Iterator<String> ite;
+                            ite = lines.iterator();
+                            String line;
+                            String[] fields;
+                            String header;
+                            header = ite.next();
+                            String[] headerFields;
+                            headerFields = header.split(DW_Strings.sCommaSpace);
+                            /*
+                             * AreaCode, NumberOfHBClaims, 
+                             * NumberOfChildDependentsInHBClaimingHouseholds, 
+                             * TotalPopulationInHBClaimingHouseholds,
+                             * NumberOfUOHouseholdsRequiring1Room,
+                             * NumberOfUOHouseholdsRequiring2Rooms,
+                             * NumberOfUOHouseholdsRequiring3Rooms,
+                             * NumberOfUOHouseholdsRequiring4Rooms,
+                             * NumberOfUOHouseholdsRequiring5OrMoreRooms
+                             */
+                            while (ite.hasNext()) {
+                                line = ite.next();
+                                //System.out.println(line);
+                                fields = line.split(DW_Strings.sCommaSpace);
+                                TreeMap<String, BigDecimal> dateValue;
+                                dateValue = data0.get(fields[0]);
+                                if (dateValue == null) {
+                                    dateValue = new TreeMap<String, BigDecimal>();
+                                    data0.put(fields[0], dateValue);
+                                }
+                                dateValue.put(YM3, new BigDecimal(fields[stat]));
+                            }
+                        }
+                        setyAxisLabel(yAxisLabel);
+                        DW_LineGraph chart = new DW_LineGraph(
+                                env,
+                                executorService,
+                                fout,
+                                format,
+                                title,
+                                getDataWidth(),
+                                getDataHeight(),
+                                getxAxisLabel(),
+                                getyAxisLabel(),
+                                getyMax(),
+                                getyPin(),
+                                getyIncrement(),
+                                getNumberOfYAxisTicks(),
+                                getDecimalPlacePrecisionForCalculations(),
+                                getDecimalPlacePrecisionForDisplay(),
+                                getRoundingMode());
+                        //
+                        Object[] TreeMapDateLabelSHBEFilename;
+                        TreeMapDateLabelSHBEFilename = DW_SHBE_Handler.getTreeMapDateLabelSHBEFilenamesSingle(
+                                SHBEFilenames,
+                                include);
+                        TreeMap<BigDecimal, String> xAxisLabels;
+                        xAxisLabels = (TreeMap<BigDecimal, String>) TreeMapDateLabelSHBEFilename[0];
+                        TreeMap<String, BigDecimal> fileLabelValue;
+                        fileLabelValue = (TreeMap<String, BigDecimal>) TreeMapDateLabelSHBEFilename[1];
+                        Object[] data;
+                        data = getData(
+                                data0,
+                                xAxisLabels,
+                                fileLabelValue);
 //                    HashSet<String> selection = allSelections.get(selections);
 //                    data = getData(
 //                            bigMatrix,
 //                            selection,
 //                            xAxisLabels);
-                    if (data != null) {
-                        chart.setData(data);
-                        chart.run();
-                        future = chart.future;
-                        futures.add(future);
-                    } else {
-                        futures.add(chart.future);
+                        if (data != null) {
+                            chart.setData(data);
+                            chart.run();
+                            future = chart.future;
+                            futures.add(future);
+                        } else {
+                            futures.add(chart.future);
+                        }
                     }
                 }
             }
@@ -382,37 +432,30 @@ public class DW_LineGraph extends Generic_LineGraph {
             allSelectionsGrouped.put(do999, asssg);
         }
 
-        Iterator<String> PTsIte;
-        PTsIte = PTs.iterator();
-        while (PTsIte.hasNext()) {
-            String PT;
-            PT = PTsIte.next();
-
-            boolean checkPreviousTenure;
+        boolean CheckPreviousTenancyType;
+////            checkPreviousTenure = false;
 //            checkPreviousTenure = false;
-            checkPreviousTenure = false;
+        iteB = b.iterator();
+        while (iteB.hasNext()) {
+            CheckPreviousTenancyType = iteB.next();
+            env.log("CheckPreviousTenancyType " + CheckPreviousTenancyType);
 
-//        iteB = b.iterator();
-//        while (iteB.hasNext()) {
-//            checkPreviousTenure = iteB.next();
-//            env.log("CheckPreviousTenure " + checkPreviousTenure);
             File dirIn;
             dirIn = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
-                    DW_Strings.sAll,
-                    checkPreviousTenure);
+                    //DW_Strings.sPaymentTypeAll,
+                    CheckPreviousTenancyType);
             File dirOut;
             dirOut = DW_Files.getOutputSHBEPlotsTenancyTypeTransitionDir(
-                    DW_Strings.sAll,
-                    PT,
-                    checkPreviousTenure);
+                    //DW_Strings.sAll,
+                    CheckPreviousTenancyType);
 
             boolean tenancyOnly;
 //            tenancyOnly = false; // Switch for testing.
-
             Iterator<Boolean> iteB1;
             iteB1 = b.iterator();
             while (iteB1.hasNext()) {
                 tenancyOnly = iteB1.next();
+
                 if (tenancyOnly) {
                     File dirIn2 = new File(
                             dirIn,
@@ -441,10 +484,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                             if (doAll) {
                                 dirIn4 = new File(
                                         dirIn3,
-                                        DW_Strings.sA);
+                                        DW_Strings.sB);
                                 dirOut4 = new File(
                                         dirOut3,
-                                        DW_Strings.sA);
+                                        DW_Strings.sB);
                                 Iterator<Boolean> iteB4;
                                 iteB4 = b.iterator();
                                 while (iteB4.hasNext()) {
@@ -681,10 +724,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                         } else {
                             File dirIn3 = new File(
                                     dirIn2,
-                                    DW_Strings.sAll);
+                                    DW_Strings.sB); // DW_Strings.sAll
                             File dirOut3 = new File(
                                     dirOut2,
-                                    DW_Strings.sAll);
+                                    DW_Strings.sB);
                             Iterator<Boolean> iteB3;
                             iteB3 = b.iterator();
                             while (iteB3.hasNext()) {
@@ -1268,6 +1311,9 @@ public class DW_LineGraph extends Generic_LineGraph {
                         if (grouped) {
                             dirIn3 = new File(
                                     dirIn2,
+                                    DW_Strings.sAll);
+                            dirIn3 = new File(
+                                    dirIn3,
                                     DW_Strings.sGrouped);
                             File f;
                             f = new File(
@@ -1291,6 +1337,9 @@ public class DW_LineGraph extends Generic_LineGraph {
                         } else {
                             dirIn3 = new File(
                                     dirIn2,
+                                    DW_Strings.sAll);
+                            dirIn3 = new File(
+                                    dirIn3,
                                     DW_Strings.sGroupedNo);
                             File f;
                             f = new File(
@@ -1386,12 +1435,24 @@ public class DW_LineGraph extends Generic_LineGraph {
                             selection,
                             xAxisLabels);
                     if (data != null) {
-                        chart.setData(data);
-                        chart.run();
-                        Future future = chart.future;
-                        futures.add(future);
+                        BigDecimal newMinY;
+                        newMinY = (BigDecimal) data[1];
+                        BigDecimal newMaxY;
+                        newMaxY = (BigDecimal) data[2];
+                        if (newMaxY.compareTo(new BigDecimal(Double.MIN_VALUE)) != 1) {
+                            if (newMinY.compareTo(newMaxY) == 0) {
+                                env.log("All values are " + newMinY + " so no graph is produced.");
+                            } else {
+                                chart.setData(data);
+                                //chart.run();
+                                future = chart.future;
+                                futures.add(future);
+                            }
+                        } else {
+                            env.log("No values, so no graph is produced.");
+                        }
                     } else {
-                        futures.add(chart.future);
+                        //futures.add(chart.future);
                     }
                 }
             }

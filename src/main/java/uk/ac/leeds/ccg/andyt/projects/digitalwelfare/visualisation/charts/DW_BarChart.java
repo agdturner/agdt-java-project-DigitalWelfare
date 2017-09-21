@@ -108,9 +108,7 @@ public class DW_BarChart extends Generic_BarChart {
         String[] SHBEFilenames;
         SHBEFilenames = env.getDW_SHBE_Handler().getSHBEFilenamesAll();
         ArrayList<String> claimantTypes;
-        claimantTypes = new ArrayList<String>();
-        claimantTypes.add("HB");
-        claimantTypes.add("CTB");
+        claimantTypes = DW_Strings.getHB_CTB();
         ArrayList<String> levels;
         levels = new ArrayList<String>();
         levels.add("OA");

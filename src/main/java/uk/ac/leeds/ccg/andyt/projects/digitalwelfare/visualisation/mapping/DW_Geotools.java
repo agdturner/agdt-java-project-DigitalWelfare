@@ -135,7 +135,8 @@ public class DW_Geotools extends AGDT_Geotools {
         File outputImageFile = DW_Maps.getOutputImageFile(
                 outputFile, DW_Maps.png_String);
 
-        AGDT_Geotools.writeImageFile(g.ge, // For handling OutOfMemoryErrors
+        AGDT_Geotools.writeImageFile(
+                g.ge, // For handling OutOfMemoryErrors
                 mc,
                 newImageWidth,
                 newImageHeight,
@@ -227,7 +228,7 @@ public class DW_Geotools extends AGDT_Geotools {
                         styleParameters.getClassificationFunctionName(),
                         styleParameters.getnClasses(),
                         styleParameters.getPaletteName(),
-                        styleParameters.isAddWhiteForZero());
+                        styleParameters.isAddWhiteForZero()); 
             } else {
                 styleAndLegendItems = DW_Style.getStyleAndLegendItems(
                         normalisation,

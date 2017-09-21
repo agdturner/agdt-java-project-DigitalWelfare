@@ -149,10 +149,7 @@ public class DW_ChoroplethMapsLCC extends DW_ChoroplethMapsAbstract {
 //        levels = new ArrayList<String>();
 //        targetPropertyNames = new HashMap<String, String>();
 //
-//        ArrayList<String> claimantTypes;
-//        claimantTypes = new ArrayList<String>();
-//        claimantTypes.add("HB");
-//        claimantTypes.add("CTB");
+//        claimantTypes = DW_Strings.getHB_CTB();
 //
 //        ArrayList<String> types;
 //        types = new ArrayList<String>();
