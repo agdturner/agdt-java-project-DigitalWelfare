@@ -147,7 +147,6 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 //            // <Debug to skip to a particular output creation>
 //            DoUnderOccupiedData = false;
 //            // </Debug to skip to a particular output creation>
-
             env.logO("<DoUnderOccupiedData " + DoUnderOccupiedData + ">", true);
             if (DoUnderOccupiedData) {
                 TreeMap<String, DW_UO_Set> CouncilUOSets;
@@ -499,6 +498,11 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             TreeMap<String, DW_UO_Set> RSLUOSets,
             Set<DW_ID> ClaimIDs,
             boolean DoGrouped) {
+        String methodName;
+        methodName = "doTTTs(String[],ArrayList<String>,"
+                + "TreeMap<String, ArrayList<Integer>>,boolean,boolean,boolean,"
+                + "TreeMap<String, DW_UO_Set>,TreeMap<String, DW_UO_Set>,"
+                + "TreeMap<String, DW_UO_Set>, Set<DW_ID>,boolean)";
         HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimIDToPostcodeIDLookups;
         ClaimIDToPostcodeIDLookups = new HashMap<Integer, HashMap<DW_ID, DW_ID>>();
         HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup;
@@ -679,7 +683,6 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 TreeMap<String, Integer> transitions;
                 int max;
                 Iterator<DW_ID> TTCIte;
-
                 // Ungrouped
                 dirOut3 = new File(
                         dirOut2,
@@ -729,7 +732,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         }
                     }
                 }
-                env.logO("line 597 " + includeKey + " maximum number of transitions "
+                if (max > (include.size() - 1)) {
+                    env.logO("Warning: " + this.getClass().getName() + "." + methodName + " line 737 ", true);
+                }
+                env.logO(includeKey + " maximum number of transitions "
                         + max + " out of a possible " + (include.size() - 1), true);
                 writeTransitionFrequencies(
                         transitions,
@@ -785,7 +791,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                             }
                         }
                     }
-                    env.logO("line 650 " + includeKey + " maximum number of transitions "
+                    if (max > (include.size() - 1)) {
+                        env.logO("Warning: " + this.getClass().getName() + "." + methodName + " line 796 ", true);
+                    }
+                    env.logO(includeKey + " maximum number of transitions "
                             + max + " out of a possible " + (include.size() - 1), true);
                     writeTransitionFrequencies(
                             transitions,
@@ -828,6 +837,12 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             TreeMap<String, DW_UO_Set> DW_UO_SetsRSL,
             Set<DW_ID> UOInApril2013,
             boolean DoGrouped) {
+        String methodName;
+        methodName = "doTTAndPostcodeChangesU(String[],ArrayList<String>,"
+                + "TreeMap<String, ArrayList<Integer>>,boolean,boolean,boolean,"
+                + "boolean,TreeMap<String, DW_UO_Set>,"
+                + "TreeMap<String, DW_UO_Set>,TreeMap<String, DW_UO_Set>,"
+                + "Set<DW_ID>,boolean)";
         File dirOut;
         dirOut = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
                 //DW_Strings.sPaymentTypeAll,
@@ -1070,7 +1085,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         }
                     }
                 }
-                env.logO("line 927 " + includeKey + " maximum number of transitions "
+                if (max > (include.size() - 1)) {
+                    env.logO("Warning: " + this.getClass().getName() + "." + methodName + " line 1090 ", true);
+                }
+                env.logO(includeKey + " maximum number of transitions "
                         + max + " out of a possible " + (include.size() - 1), true);
                 writeTransitionFrequencies(
                         transitions,
@@ -1127,7 +1145,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                             }
                         }
                     }
-                    env.logO("line 980 " + includeKey + " maximum number of transitions "
+                    if (max > (include.size() - 1)) {
+                        env.logO("Warning: " + this.getClass().getName() + "." + methodName + " line 1150 ", true);
+                    }
+                    env.logO(includeKey + " maximum number of transitions "
                             + max + " out of a possible " + (include.size() - 1), true);
                     writeTransitionFrequencies(
                             transitions,
@@ -1162,6 +1183,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             boolean postcodeChange,
             boolean checkPreviousPostcode,
             boolean DoGrouped) {
+        String methodName;
+        methodName = "doTTAndPostcodeChanges(String[],ArrayList<String>,"
+                + "TreeMap<String, ArrayList<Integer>>,boolean,"
+                + "boolean,boolean,boolean,boolean)";
         File dirOut;
         dirOut = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
                 //DW_Strings.sPaymentTypeAll,
@@ -1346,11 +1371,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 }
             }
             if (max > (include.size() - 1)) {
-                env.logO("Warning: " +
-                        this.getClass().getName() + ".doTTAndPostcodeChanges("
-                        + "String[],ArrayList<String>,"
-                        + "TreeMap<String, ArrayList<Integer>>,boolean,"
-                        + "boolean,boolean,boolean) line 1348 ", true);
+                env.logO("Warning: " + this.getClass().getName() + "." + methodName + " line 1375 ", true);
             }
             env.logO(includeKey
                     + " maximum number of transitions " + max
@@ -1405,11 +1426,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     }
                 }
                 if (max > (include.size() - 1)) {
-                    env.logO("Warning: " +
-                        this.getClass().getName() + ".doTTAndPostcodeChanges("
-                        + "String[],ArrayList<String>,"
-                        + "TreeMap<String, ArrayList<Integer>>,boolean,"
-                        + "boolean,boolean,boolean) line 1407 ", true);
+                    env.logO("Warning: " + this.getClass().getName() + "." + methodName + " line 1430 ", true);
                 }
                 env.logO(includeKey + " maximum number of transitions "
                         + max + " out of a possible " + (include.size() - 1), true);
@@ -1454,6 +1471,11 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             TreeMap<String, DW_UO_Set> DW_UO_SetsAll,
             Set<DW_ID> ClaimIDs,
             boolean DoGrouped) {
+        String methodName;
+        methodName = "doPostcodeChanges(String[],ArrayList<String>,"
+                + "TreeMap<String, ArrayList<Integer>>,boolean,"
+                + "boolean,boolean,boolean,boolean,boolean,"
+                + "TreeMap<String, DW_UO_Set>,Set<DW_ID>,boolean)";
         File dirOut;
         dirOut = new File(
                 DW_Files.getOutputSHBETablesDir(),
@@ -1665,7 +1687,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     }
                 }
             }
-            env.logO("line 1222 " + includeKey + " maximum number of transitions "
+            if (max > (include.size() - 1)) {
+                env.logO("Warning: " + this.getClass().getName() + "." + methodName + " line 1692 ", true);
+            }
+            env.logO(includeKey + " maximum number of transitions "
                     + max + " out of a possible " + (include.size() - 1), true);
             writeTransitionFrequencies(
                     transitions,
@@ -1722,7 +1747,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         }
                     }
                 }
-                env.logO("line 1275 " + includeKey + " maximum number of transitions "
+                if (max > (include.size() - 1)) {
+                env.logO("Warning: " + this.getClass().getName() + "." + methodName + " line 1752 ", true);
+            }
+            env.logO(includeKey + " maximum number of transitions "
                         + max + " out of a possible " + (include.size() - 1), true);
                 writeTransitionFrequencies(
                         transitions,

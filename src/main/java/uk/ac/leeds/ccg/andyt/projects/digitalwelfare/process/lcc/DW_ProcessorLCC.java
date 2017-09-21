@@ -135,15 +135,15 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 //                RentArrears = true;
 //                RentArrearsNewData = true;
 //                LCCTenancyChangesUO = true; //Under-Occupancy Group Tables
-//                LCCHBGeneralAggregateStatistics = true;
-                LCCTTAndPT = true;
-                if (LCCTTAndPT) {
-                    LCCTTAndPT_DoGrouped = true;
-                    LCCTTAndPT_DoPostcodeChanges = true;
-                    LCCTTAndPT_DoAnyTenancyChanges = true;
-                    LCCTTAndPT_DoTenancyChanges = true;
-                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
-                }
+                LCCHBGeneralAggregateStatistics = true;
+//                LCCTTAndPT = true;
+//                if (LCCTTAndPT) {
+//                    LCCTTAndPT_DoGrouped = true;
+//                    LCCTTAndPT_DoPostcodeChanges = true;
+//                    LCCTTAndPT_DoAnyTenancyChanges = true;
+//                    LCCTTAndPT_DoTenancyChanges = true;
+//                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
+//                }
 //                ChoroplethMapping = true;
 //                LineMaps = true;
 //                Reports = true;
