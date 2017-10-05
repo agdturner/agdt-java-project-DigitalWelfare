@@ -97,7 +97,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
         }
     }
 
-    public void run() {
+    public void run() throws Exception, Error {
 //        // If showMapsInJMapPane is true, the maps are presented in individual 
 //        // JMapPanes
 //        showMapsInJMapPane = false;
@@ -191,7 +191,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
     }
 
     //public void runAll(int resolutionMultiplier) {
-    public void runAll() {
+    public void runAll() throws Exception, Error {
 //        TreeMap<String, ArrayList<Integer>> includes;
 //        includes = env.getDW_SHBE_Handler().getIncludes();
 //        includes.remove("All");

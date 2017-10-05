@@ -51,6 +51,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -65,7 +66,7 @@ public class DW_Maps extends AGDT_Maps {
     
     //private TreeMap<String, AGDT_Point>[] ONSPDlookups;
     //private TreeMap<String, TreeMap<String, AGDT_Point>> ONSPDlookups;
-    private TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> ONSPDlookups;
+    private TreeMap<String, TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>> ONSPDlookups;
 
     /**
      * For storing level(s) (OA, LSOA, MSOA, PostcodeSector, PostcodeUnit, ...)
@@ -84,7 +85,7 @@ public class DW_Maps extends AGDT_Maps {
     }
 
     //public TreeMap<String, AGDT_Point>[] getONSPDlookups() {
-    public TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> getONSPDlookups(
+    public TreeMap<String, TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>> getONSPDlookups(
             DW_Environment env) {
         if (ONSPDlookups == null) {
             initONSPDLookups();
@@ -100,18 +101,18 @@ public class DW_Maps extends AGDT_Maps {
 
     public void initONSPDLookups() {
         initDW_Postcode_Handler();
-        ONSPDlookups = new TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>>();
+        ONSPDlookups = new TreeMap<String, TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>>();
         levels = new ArrayList<String>();
         levels.add("Unit");
         //levels.add("Sector");
         //levels.add("Area");
-        TreeMap<String, File> ONSPDFiles;
+        TreeMap<DW_YM3, File> ONSPDFiles;
         ONSPDFiles = DW_Files.getInputONSPDFiles();
         Iterator<String> ite2;
         ite2 = levels.iterator();
         while (ite2.hasNext()) {
             level = ite2.next();
-            TreeMap<String, TreeMap<String, AGDT_Point>> ONSPDlookup;
+            TreeMap<DW_YM3, TreeMap<String, AGDT_Point>> ONSPDlookup;
             ONSPDlookup = DW_Postcode_Handler.getPostcodeUnitPointLookups(
                     true,
                     ONSPDFiles,
@@ -864,7 +865,7 @@ public class DW_Maps extends AGDT_Maps {
         return styleParameters;
     }
 
-    public void setONSPDlookups(TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> ONSPDlookups) {
+    public void setONSPDlookups(TreeMap<String, TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>> ONSPDlookups) {
         this.ONSPDlookups = ONSPDlookups;
     }
 

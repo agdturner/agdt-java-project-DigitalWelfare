@@ -18,7 +18,6 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds.DW_DataProcessorAdviceLeeds;
 import java.awt.Color;
 import java.io.File;
 import java.math.BigDecimal;
@@ -50,6 +49,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_St
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_MapsAdviceLeeds;
 
 /**
@@ -90,16 +90,17 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
 
     /**
      *
+     * @throws java.lang.Exception
      */
-    public void run() {
+    public void run() throws Exception, Error {
         // If showMapsInJMapPane is true, the maps are presented in individual 
         // JMapPanes
         //showMapsInJMapPane = false;
 //        DW_Maps.setShowMapsInJMapPane(true);
 //        //outputESRIAsciigrids = false;
 //        DW_Maps.setImageWidth(1000);
-        String YM3;
-        YM3 = "2011_May";
+        DW_YM3 YM3;
+        YM3 = new DW_YM3(2011,5);
         DW_Maps.initONSPDLookups();
         // Initialise styleParameters
         /*
@@ -194,7 +195,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         }
     }
 
-    public void runAll(ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes, String YM3) {
+    public void runAll(ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes, DW_YM3 YM3) throws Exception, Error {
         boolean commonStyling = true;
         boolean individualStyling = true;
         
@@ -313,7 +314,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             int filter,
             boolean scaleToFirst,
             Object IDType,
-            boolean handleOutOfMemoryErrors) {
+            boolean handleOutOfMemoryErrors) throws Exception, Error {
 
         String style;
         if (scaleToFirst) {
@@ -562,7 +563,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         } else {
             process = true;
         }
-        String yM3;
+        DW_YM3 yM3;
         yM3 = DW_Postcode_Handler.getDefaultYM3();
         if (process) {
             // Initialise

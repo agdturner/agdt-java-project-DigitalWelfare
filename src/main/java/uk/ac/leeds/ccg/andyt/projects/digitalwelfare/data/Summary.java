@@ -43,6 +43,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  * A class for summarising SHBE data.
@@ -5239,8 +5240,8 @@ public class Summary extends DW_Object {
         String key;
         String filename0;
         String filename1;
-        String YM30;
-        String YM31;
+        DW_YM3 YM30;
+        DW_YM3 YM31;
         DW_SHBE_Records DW_SHBE_Records0;
         DW_SHBE_Records DW_SHBE_Records1;
         HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0;
@@ -5387,7 +5388,7 @@ public class Summary extends DW_Object {
     protected void doPartSummarySingleTime(
             DW_SHBE_Records DW_SHBE_Records,
             HashMap<DW_ID, DW_SHBE_Record> Records,
-            String YM3,
+            DW_YM3 YM3,
             String filename,
             boolean forceNewSummaries,
             ArrayList<String> HB_CTB,
@@ -5492,7 +5493,7 @@ public class Summary extends DW_Object {
             HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
             HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
             HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther0,
-            String YM30,
+            DW_YM3 YM30,
             String filename0,
             DW_SHBE_Records DW_SHBE_Records1,
             HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
@@ -5501,7 +5502,7 @@ public class Summary extends DW_Object {
             HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
             HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
             HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther1,
-            String YM31,
+            DW_YM3 YM31,
             String filename1,
             boolean forceNewSummaries,
             ArrayList<String> HB_CTB,
@@ -5556,11 +5557,11 @@ public class Summary extends DW_Object {
     protected void doPartSummaryCompare2Times(
             DW_SHBE_Records DW_SHBE_Records0,
             HashMap<DW_ID, DW_SHBE_Record> Records0,
-            String YM30,
+            DW_YM3 YM30,
             String filename0,
             DW_SHBE_Records DW_SHBE_Records1,
             HashMap<DW_ID, DW_SHBE_Record> Records1,
-            String YM31,
+            DW_YM3 YM31,
             String filename1,
             boolean forceNewSummaries,
             ArrayList<String> HB_CTB,
@@ -6073,7 +6074,7 @@ public class Summary extends DW_Object {
             int nTT,
             int nEG
     ) {
-        TreeMap<String, File> ONSPDFiles;
+        TreeMap<DW_YM3, File> ONSPDFiles;
         ONSPDFiles = DW_Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPaymentTypes";
@@ -6530,7 +6531,7 @@ public class Summary extends DW_Object {
             int nTT,
             int nEG
     ) {
-        TreeMap<String, File> ONSPDFiles;
+        TreeMap<DW_YM3, File> ONSPDFiles;
         ONSPDFiles = DW_Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesTT";
@@ -6587,7 +6588,7 @@ public class Summary extends DW_Object {
 
     public String getLineCompare2TimesGeneric(
             HashMap<String, String> summary,
-            TreeMap<String, File> ONSPDFiles) {
+            TreeMap<DW_YM3, File> ONSPDFiles) {
         String line = "";
         String filename0;
         filename0 = summary.get(sSHBEFilename0);
@@ -6621,14 +6622,14 @@ public class Summary extends DW_Object {
             line += "null, ";
             line += "null, ";
         }
-        String PostCodeLookupDate0 = null;
+        DW_YM3 PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename0 != null) {
             PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(DW_SHBE_Handler.getYM3(filename0));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }
         line += PostCodeLookupDate0 + sCommaSpace + PostCodeLookupFile0Name + sCommaSpace;
-        String PostCodeLookupDate1 = null;
+        DW_YM3 PostCodeLookupDate1 = null;
         String PostCodeLookupFile1Name = null;
         if (filename1 != null) {
             PostCodeLookupDate1 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(DW_SHBE_Handler.getYM3(filename1));
@@ -6660,7 +6661,7 @@ public class Summary extends DW_Object {
             int nTT,
             int nEG
     ) {
-        TreeMap<String, File> ONSPDFiles;
+        TreeMap<DW_YM3, File> ONSPDFiles;
         ONSPDFiles = DW_Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPostcode";
@@ -6707,7 +6708,7 @@ public class Summary extends DW_Object {
             int nEG,
             int nPSI
     ) {
-        TreeMap<String, File> ONSPDFiles;
+        TreeMap<DW_YM3, File> ONSPDFiles;
         ONSPDFiles = DW_Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
@@ -6872,7 +6873,7 @@ public class Summary extends DW_Object {
             int nEG,
             int nPSI
     ) {
-        TreeMap<String, File> ONSPDFiles;
+        TreeMap<DW_YM3, File> ONSPDFiles;
         ONSPDFiles = DW_Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeHouseholdSizes";
@@ -7185,9 +7186,9 @@ public class Summary extends DW_Object {
 
     protected String getPostcodeLookupDateAndFilenameLinePart(
             String filename,
-            TreeMap<String, File> ONSPDFiles) {
+            TreeMap<DW_YM3, File> ONSPDFiles) {
         String result;
-        String PostCodeLookupDate0 = null;
+        DW_YM3 PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename != null) {
             PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(DW_SHBE_Handler.getYM3(filename));

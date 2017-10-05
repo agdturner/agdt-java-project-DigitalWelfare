@@ -37,6 +37,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -2339,6 +2340,7 @@ public class SummaryUO extends Summary {
      * Arrears are used.
      *
      * @param ClaimID The ClaimID of the claim to be processed.
+     * @param Group
      * @param DW_UO_Set0CouncilMap Keys are ClaimIDs values are Council
      * DW_UO_Record for the former time period.
      * @param DW_UO_Set1CouncilMap Keys are ClaimIDs values are Council
@@ -3350,6 +3352,7 @@ public class SummaryUO extends Summary {
 
     /**
      *
+     * @param Group
      * @param SHBEFilenames
      * @param include
      * @param forceNewSummaries
@@ -3395,21 +3398,21 @@ public class SummaryUO extends Summary {
         String key;
         String filename0;
         String filename1 = "";
-        String YM30;
-        String YM31 = "";
+        DW_YM3 YM30 = null;
+        DW_YM3 YM31 = null;
         DW_SHBE_Records DW_SHBE_Records0;
         DW_SHBE_Records DW_SHBE_Records1 = null;
         HashMap<DW_ID, DW_SHBE_Record> Records0;
         HashMap<DW_ID, DW_SHBE_Record> Records1 = null;
-        TreeMap<String, DW_UO_Set> CouncilUOSets;
-        TreeMap<String, DW_UO_Set> RSLUOSets;
+        TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
+        TreeMap<DW_YM3, DW_UO_Set> RSLUOSets;
         DW_UO_Set CouncilUOSet0;
         DW_UO_Set RSLUOSet0;
         DW_UO_Set CouncilUOSet1 = null;
         DW_UO_Set RSLUOSet1 = null;
         Object[] filenames;
-        TreeMap<String, String> CouncilFilenames;
-        TreeMap<String, String> RSLFilenames;
+        TreeMap<DW_YM3, String> CouncilFilenames;
+        TreeMap<DW_YM3, String> RSLFilenames;
 
         // Initialise result
         result = new TreeMap<String, HashMap<String, String>>();
@@ -3425,8 +3428,8 @@ public class SummaryUO extends Summary {
         CouncilUOSets = DW_UO_Data.getCouncilUOSets();
         RSLUOSets = DW_UO_Data.getRSLUOSets();
         filenames = env.getDW_UO_Handler().getInputFilenames();
-        CouncilFilenames = (TreeMap<String, String>) filenames[0];
-        RSLFilenames = (TreeMap<String, String>) filenames[1];
+        CouncilFilenames = (TreeMap<DW_YM3, String>) filenames[0];
+        RSLFilenames = (TreeMap<DW_YM3, String>) filenames[1];
 
         // Load first data
         includeIte = include.iterator();
@@ -3577,6 +3580,7 @@ public class SummaryUO extends Summary {
     }
 
     /**
+     * @param Group
      * @param DW_SHBE_Records0
      * @param Records0
      * @param YM30
@@ -3605,13 +3609,13 @@ public class SummaryUO extends Summary {
             
             DW_SHBE_Records DW_SHBE_Records0,
             HashMap<DW_ID, DW_SHBE_Record> Records0,
-            String YM30,
+            DW_YM3 YM30,
             String filename0,
             DW_UO_Set CouncilUOSet0,
             DW_UO_Set RSLUOSet0,
             DW_SHBE_Records DW_SHBE_Records1,
             HashMap<DW_ID, DW_SHBE_Record> Records1,
-            String YM31,
+            DW_YM3 YM31,
             String filename1,
             DW_UO_Set CouncilUOSet1,
             DW_UO_Set RSLUOSet1,
@@ -3621,8 +3625,8 @@ public class SummaryUO extends Summary {
             int nTT,
             int nEG,
             int nPSI,
-            TreeMap<String, String> CouncilFilenames,
-            TreeMap<String, String> RSLFilenames,
+            TreeMap<DW_YM3, String> CouncilFilenames,
+            TreeMap<DW_YM3, String> RSLFilenames,
             TreeMap<String, HashMap<String, String>> summaries) {
 
         doPartSummarySingleTime(
@@ -3693,7 +3697,7 @@ public class SummaryUO extends Summary {
 
     protected void doPartSummarySingleTime(
             DW_SHBE_Records DW_SHBE_Records,
-            String YM3,
+            DW_YM3 YM3,
             String filename,
             boolean forceNewSummaries,
             ArrayList<String> HB_CTB,
@@ -3701,8 +3705,8 @@ public class SummaryUO extends Summary {
             int nTT,
             int nEG,
             int nPSI,
-            TreeMap<String, String> CouncilFilenames,
-            TreeMap<String, String> RSLFilenames,
+            TreeMap<DW_YM3, String> CouncilFilenames,
+            TreeMap<DW_YM3, String> RSLFilenames,
             DW_UO_Set CouncilUOSet,
             DW_UO_Set RSLUOSet,
             TreeMap<String, HashMap<String, String>> summaries
@@ -3795,6 +3799,7 @@ public class SummaryUO extends Summary {
      * latterly but not formerly Under Occupied; 3) Goes through all those
      * formerly but not latterly Under Occupied.
      *
+     * @param Group
      * @param DW_UO_Set0CouncilMap Keys are ClaimIDs values are Council
      * DW_UO_Record for the former time period.
      * @param DW_UO_Set1CouncilMap Keys are ClaimIDs values are Council
@@ -4141,7 +4146,7 @@ public class SummaryUO extends Summary {
             int nTT,
             int nEG
     ) {
-        TreeMap<String, File> ONSPDFiles;
+        TreeMap<DW_YM3, File> ONSPDFiles;
         ONSPDFiles = DW_Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesRentArrears";
@@ -4472,7 +4477,7 @@ public class SummaryUO extends Summary {
             int nTT,
             int nEG
     ) {
-        TreeMap<String, File> ONSPDFiles;
+        TreeMap<DW_YM3, File> ONSPDFiles;
         ONSPDFiles = DW_Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesTT";
@@ -4550,7 +4555,7 @@ public class SummaryUO extends Summary {
     @Override
     public String getLineCompare2TimesGeneric(
             HashMap<String, String> summary,
-            TreeMap<String, File> ONSPDFiles) {
+            TreeMap<DW_YM3, File> ONSPDFiles) {
         String line = "";
         String filename0;
         filename0 = summary.get(sSHBEFilename0);
@@ -4584,7 +4589,7 @@ public class SummaryUO extends Summary {
             line += "null, ";
             line += "null, ";
         }
-        String PostCodeLookupDate0 = null;
+        DW_YM3 PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename0 != null) {
             PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
@@ -4592,7 +4597,7 @@ public class SummaryUO extends Summary {
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }
         line += PostCodeLookupDate0 + ", " + PostCodeLookupFile0Name + ", ";
-        String PostCodeLookupDate1 = null;
+        DW_YM3 PostCodeLookupDate1 = null;
         String PostCodeLookupFile1Name = null;
         if (filename1 != null) {
             PostCodeLookupDate1 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(
@@ -4646,7 +4651,7 @@ public class SummaryUO extends Summary {
             int nTT,
             int nEG
     ) {
-        TreeMap<String, File> ONSPDFiles;
+        TreeMap<DW_YM3, File> ONSPDFiles;
         ONSPDFiles = DW_Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPostcode";
@@ -4695,7 +4700,7 @@ public class SummaryUO extends Summary {
             int nEG,
             int nPSI
     ) {
-        TreeMap<String, File> ONSPDFiles;
+        TreeMap<DW_YM3, File> ONSPDFiles;
         ONSPDFiles = DW_Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
@@ -4792,7 +4797,7 @@ public class SummaryUO extends Summary {
             int nEG,
             int nPSI
     ) {
-        TreeMap<String, File> ONSPDFiles;
+        TreeMap<DW_YM3, File> ONSPDFiles;
         ONSPDFiles = DW_Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeHouseholdSizes";

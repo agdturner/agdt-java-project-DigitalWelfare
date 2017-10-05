@@ -32,6 +32,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_CorrectedPostcodes;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_Collections;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -50,7 +51,7 @@ public class DW_SHBE_Data extends DW_Object {
      * A reference to all the Data for this Payment Type. The keys are YM3 and
      * the values are the respective collection.
      */
-    protected HashMap<String, DW_SHBE_Records> Data;
+    protected HashMap<DW_YM3, DW_SHBE_Records> Data;
 
     /**
      * File for storing Data
@@ -123,7 +124,7 @@ public class DW_SHBE_Data extends DW_Object {
      * Postcode DW_ID to AGDT_Point Lookups. There is a different one for each
      * ONSPD File. The keys are Nearest YM3s for the respective ONSPD File.
      */
-    private HashMap<String, HashMap<DW_ID, AGDT_Point>> PostcodeIDToPointLookups;
+    private HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>> PostcodeIDToPointLookups;
 
     /**
      * ClaimRefToClaimIDLookup File.
@@ -216,12 +217,12 @@ public class DW_SHBE_Data extends DW_Object {
      * @param f
      * @return
      */
-    public HashMap<String, DW_SHBE_Records> getData(File f) {
+    public HashMap<DW_YM3, DW_SHBE_Records> getData(File f) {
         if (Data == null) {
             if (f.exists()) {
-                Data = (HashMap<String, DW_SHBE_Records>) Generic_StaticIO.readObject(f);
+                Data = (HashMap<DW_YM3, DW_SHBE_Records>) Generic_StaticIO.readObject(f);
             } else {
-                Data = new HashMap<String, DW_SHBE_Records>();
+                Data = new HashMap<DW_YM3, DW_SHBE_Records>();
             }
         }
         return Data;
@@ -235,7 +236,7 @@ public class DW_SHBE_Data extends DW_Object {
      *
      * @return
      */
-    public HashMap<String, DW_SHBE_Records> getData() {
+    public HashMap<DW_YM3, DW_SHBE_Records> getData() {
         DataFile = getDataFile();
         return getData(DataFile);
     }
@@ -597,13 +598,13 @@ public class DW_SHBE_Data extends DW_Object {
      * @param f
      * @return
      */
-    public final HashMap<String, HashMap<DW_ID, AGDT_Point>> getPostcodeIDToPointLookups(
+    public final HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>> getPostcodeIDToPointLookups(
             File f) {
         if (PostcodeIDToPointLookups == null) {
             if (f.exists()) {
-                PostcodeIDToPointLookups = (HashMap<String, HashMap<DW_ID, AGDT_Point>>) Generic_StaticIO.readObject(f);
+                PostcodeIDToPointLookups = (HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>>) Generic_StaticIO.readObject(f);
             } else {
-                PostcodeIDToPointLookups = new HashMap<String, HashMap<DW_ID, AGDT_Point>>();
+                PostcodeIDToPointLookups = new HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>>();
             }
         }
         return PostcodeIDToPointLookups;
@@ -626,7 +627,7 @@ public class DW_SHBE_Data extends DW_Object {
      *
      * @return
      */
-    public HashMap<String, HashMap<DW_ID, AGDT_Point>> getPostcodeIDToPointLookups() {
+    public HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>> getPostcodeIDToPointLookups() {
         PostcodeIDToPointLookupsFile = getPostcodeIDToPointLookupsFile();
         return getPostcodeIDToPointLookups(PostcodeIDToPointLookupsFile);
     }
@@ -638,8 +639,8 @@ public class DW_SHBE_Data extends DW_Object {
      * @param YM3
      * @return
      */
-    public HashMap<DW_ID, AGDT_Point> getPostcodeIDToPointLookup(String YM3) {
-        String NearestYM3ForONSPDLookup;
+    public HashMap<DW_ID, AGDT_Point> getPostcodeIDToPointLookup(DW_YM3 YM3) {
+        DW_YM3 NearestYM3ForONSPDLookup;
         NearestYM3ForONSPDLookup = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
         HashMap<DW_ID, AGDT_Point> PostcodeIDToPointLookup;
         PostcodeIDToPointLookups = DW_SHBE_Data.this.getPostcodeIDToPointLookups();
@@ -922,7 +923,7 @@ public class DW_SHBE_Data extends DW_Object {
      * @return
      */
     public DW_SHBE_Records getDW_SHBE_Records(
-            String YM3) {
+            DW_YM3 YM3) {
         DW_SHBE_Records DW_SHBE_Records;
         DW_SHBE_Records = getData().get(YM3);
         if (DW_SHBE_Records == null) {
@@ -944,10 +945,10 @@ public class DW_SHBE_Data extends DW_Object {
      * @param YM3
      * @return
      */
-    protected File getDir(String YM3) {
+    protected File getDir(DW_YM3 YM3) {
         return new File(
                 DW_Files.getGeneratedSHBEDir(),
-                YM3);
+                YM3.toString());
     }
 
     /**
@@ -966,7 +967,7 @@ public class DW_SHBE_Data extends DW_Object {
      * @param YM3
      * @return
      */
-    protected File getFile(String YM3) {
+    protected File getFile(DW_YM3 YM3) {
         File result;
         File dir;
         dir = getDir(YM3);
@@ -987,9 +988,9 @@ public class DW_SHBE_Data extends DW_Object {
      */
     public int clearAllCache() {
         int result = 0;
-        Iterator<String> ite;
+        Iterator<DW_YM3> ite;
         ite = Data.keySet().iterator();
-        String YM3;
+        DW_YM3 YM3;
         DW_SHBE_Records recs;
         while (ite.hasNext()) {
             YM3 = ite.next();
@@ -1010,15 +1011,15 @@ public class DW_SHBE_Data extends DW_Object {
      * cleared from fast access memory.
      * @return The number of DW_SHBE_Records cleared.
      */
-    public int clearAllCacheExcept(String YM3) {
+    public int clearAllCacheExcept(DW_YM3 YM3) {
         int result = 0;
-        Iterator<String> ite;
+        Iterator<DW_YM3> ite;
         ite = Data.keySet().iterator();
-        String aYM3;
+        DW_YM3 aYM3;
         DW_SHBE_Records recs;
         while (ite.hasNext()) {
             aYM3 = ite.next();
-            if (!aYM3.equalsIgnoreCase(YM3)) {
+            if (!aYM3.equals(YM3)) {
                 recs = Data.get(YM3);
                 if (recs != null) {
                     recs = null;
@@ -1035,9 +1036,9 @@ public class DW_SHBE_Data extends DW_Object {
      * @return true iff some DW_SHBE_Records were cleared and false otherwise.
      */
     public boolean clearSomeCache() {
-        Iterator<String> ite;
+        Iterator<DW_YM3> ite;
         ite = Data.keySet().iterator();
-        String YM3;
+        DW_YM3 YM3;
         DW_SHBE_Records recs;
         while (ite.hasNext()) {
             YM3 = ite.next();
@@ -1057,14 +1058,14 @@ public class DW_SHBE_Data extends DW_Object {
      * @param YM3
      * @return true iff some DW_SHBE_Records were cleared and false otherwise.
      */
-    public boolean clearSomeCacheExcept(String YM3) {
-        Iterator<String> ite;
+    public boolean clearSomeCacheExcept(DW_YM3 YM3) {
+        Iterator<DW_YM3> ite;
         ite = Data.keySet().iterator();
-        String aYM3;
+        DW_YM3 aYM3;
         DW_SHBE_Records recs;
         while (ite.hasNext()) {
             aYM3 = ite.next();
-            if (!YM3.equalsIgnoreCase(aYM3)) {
+            if (!YM3.equals(aYM3)) {
                 recs = Data.get(YM3);
                 if (recs != null) {
                     recs = null;
@@ -1083,7 +1084,7 @@ public class DW_SHBE_Data extends DW_Object {
      * @return true iff the data were cleared and false otherwise (when the data
      * is already cleared).
      */
-    public boolean clearCache(String YM3) {
+    public boolean clearCache(DW_YM3 YM3) {
         DW_SHBE_Records recs;
         recs = Data.get(YM3);
         if (recs != null) {

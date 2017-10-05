@@ -44,6 +44,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -282,13 +283,13 @@ public class DW_LineGraph extends Generic_LineGraph {
                         fout = new File(
                                 dirOut1,
                                 filename);
-                        TreeMap<String, TreeMap<String, BigDecimal>> data0;
-                        data0 = new TreeMap<String, TreeMap<String, BigDecimal>>();
+                        TreeMap<String, TreeMap<DW_YM3, BigDecimal>> data0;
+                        data0 = new TreeMap<String, TreeMap<DW_YM3, BigDecimal>>();
                         Iterator<Integer> includeIte;
                         includeIte = include.iterator();
                         while (includeIte.hasNext()) {
                             int i = includeIte.next();
-                            String YM3;
+                            DW_YM3 YM3;
                             YM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                             File f = new File(
                                     dirIn1,
@@ -318,10 +319,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                                 line = ite.next();
                                 //System.out.println(line);
                                 fields = line.split(DW_Strings.sCommaSpace);
-                                TreeMap<String, BigDecimal> dateValue;
+                                TreeMap<DW_YM3, BigDecimal> dateValue;
                                 dateValue = data0.get(fields[0]);
                                 if (dateValue == null) {
-                                    dateValue = new TreeMap<String, BigDecimal>();
+                                    dateValue = new TreeMap<DW_YM3, BigDecimal>();
                                     data0.put(fields[0], dateValue);
                                 }
                                 dateValue.put(YM3, new BigDecimal(fields[stat]));
@@ -1271,6 +1272,7 @@ public class DW_LineGraph extends Generic_LineGraph {
             boolean doneFirst;
             doneFirst = false;
 
+            DW_YM3 YM30 = null;
             String yM30 = "";
 
             Iterator<Integer> includeIte;
@@ -1281,29 +1283,28 @@ public class DW_LineGraph extends Generic_LineGraph {
                     if (include.contains(i - 1) && (i - 1) >= 0) {
                         String aSHBEFilename0;
                         aSHBEFilename0 = SHBEFilenames[i - 1];
-                        yM30 = DW_SHBE_Handler.getYM3(aSHBEFilename0);
+                        YM30 = DW_SHBE_Handler.getYM3(aSHBEFilename0);
+                        yM30 = YM30.toString();
                         doneFirst = true;
                     }
                 }
                 if (doneFirst) {
                     String aSHBEFilename1;
                     aSHBEFilename1 = SHBEFilenames[i];
+                    DW_YM3 YM31;
+                    YM31 = DW_SHBE_Handler.getYM3(aSHBEFilename1);
                     String yM31;
-                    yM31 = DW_SHBE_Handler.getYM3(aSHBEFilename1);
+                    yM31 = YM31.toString();
                     String filename;
-                    filename = DW_Strings.sTenancyTypeTransition + "_Start_" + yM30 + "_End_" + yM31 + ".csv";
+                    filename = DW_Strings.sTenancyTypeTransition + "_Start_" + YM30 + "_End_" + YM31 + ".csv";
                     if (include.contains(i)) {
                         File dirIn3;
                         double timeDiff;
-                        String[] split0;
-                        split0 = yM30.split("_");
-                        String[] split1;
-                        split1 = yM31.split("_");
                         timeDiff = Generic_Time.getMonthDiff(
-                                Integer.valueOf(split0[0]),
-                                Integer.valueOf(split1[0]),
-                                Generic_Time.getMonth(split0[1], month3Letters),
-                                Generic_Time.getMonth(split1[1], month3Letters));
+                                YM30.getYear(),
+                                YM31.getYear(),
+                                YM30.getMonth(),
+                                YM31.getMonth());
                         String label;
                         label = getLabel(yM30, yM31);
                         BigDecimal key;
@@ -1379,7 +1380,7 @@ public class DW_LineGraph extends Generic_LineGraph {
                                 System.out.println(f + " does not exist");
                             }
                         }
-                        yM30 = yM31;
+                        YM30 = YM31;
                     } else {
                         System.out.println("Omitted file " + filename);
                     }
@@ -2411,7 +2412,7 @@ public class DW_LineGraph extends Generic_LineGraph {
      * non-zero values
      */
     private Object[] getData(
-            TreeMap<String, TreeMap<String, BigDecimal>> data,
+            TreeMap<String, TreeMap<DW_YM3, BigDecimal>> data,
             TreeMap<BigDecimal, String> xAxisLabels,
             TreeMap<String, BigDecimal> fileLabelValue) {
         Object[] result;
@@ -2432,10 +2433,10 @@ public class DW_LineGraph extends Generic_LineGraph {
 
         // Initialise data, newMinX, newMaxX, newMinY, newMaxY
         Iterator<String> iteS;
-        Iterator<String> iteS2;
+        Iterator<DW_YM3> iteS2;
         iteS = data.keySet().iterator();
         String key;
-        TreeMap<String, BigDecimal> dataYX;
+        TreeMap<DW_YM3, BigDecimal> dataYX;
         while (iteS.hasNext()) {
             key = iteS.next(); // key is aggregate area code
             TreeMap<BigDecimal, BigDecimal> map;
@@ -2453,7 +2454,7 @@ public class DW_LineGraph extends Generic_LineGraph {
             }
             iteS2 = dataYX.keySet().iterator();
             while (iteS2.hasNext()) {
-                String YM3;
+                DW_YM3 YM3;
                 YM3 = iteS2.next();
 //                System.out.println("YM3 " + YM3);
                 BigDecimal x = fileLabelValue.get(YM3);

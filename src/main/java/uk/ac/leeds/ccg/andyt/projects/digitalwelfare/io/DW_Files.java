@@ -25,6 +25,7 @@ import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  * A basic convenience class that does not need a reference to the main
@@ -357,11 +358,11 @@ public class DW_Files extends DW_Object {
         return f;
     }
 
-    public File getInputONSPDFile(String YM3) {
+    public File getInputONSPDFile(DW_YM3 YM3) {
         return getInputONSPDFiles().get(YM3);
     }
 
-    TreeMap<String, File> InputONSPDFiles;
+    TreeMap<DW_YM3, File> InputONSPDFiles;
 
     /**
      * 2008_FEB 2008_MAY 2008_AUG 2008_NOV 2009_FEB 2009_MAY 2009_AUG 2009_NOV
@@ -371,14 +372,15 @@ public class DW_Files extends DW_Object {
      *
      * @return
      */
-    public TreeMap<String, File> getInputONSPDFiles() {
+    public TreeMap<DW_YM3, File> getInputONSPDFiles() {
         if (InputONSPDFiles == null) {
-            InputONSPDFiles = new TreeMap<String, File>();
+            InputONSPDFiles = new TreeMap<DW_YM3, File>();
             File d;
             d = getInputONSPDDir();
             File f;
             String namePrefix;
             String month;
+            int m;
             String nameAdd;
             for (int year = 2008; year < 2018; year++) {
                 if (year < 2011) {
@@ -396,16 +398,18 @@ public class DW_Files extends DW_Object {
                 // FEB
                 if (year != 2011) {
                     month = "FEB";
+                    m = 2;
                     String nameAdd0;
                     nameAdd0 = nameAdd;
                     if (year == 2010) {
                         nameAdd0 += "_FP";
                     }
                     f = getInputONSPDFile(d, namePrefix, year, month, nameAdd0);
-                    InputONSPDFiles.put(year + "_" + month, f);
+                    InputONSPDFiles.put(new DW_YM3(year, m), f);
                 }
                 // MAY
                 month = "MAY";
+                m = 5;
                 if (year == 2009 || year == 2010) {
                     nameAdd += "_FP";
                 }
@@ -413,22 +417,24 @@ public class DW_Files extends DW_Object {
                     nameAdd = "_O";
                 }
                 f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-                InputONSPDFiles.put(year + "_" + month, f);
+                InputONSPDFiles.put(new DW_YM3(year, m), f);
                 if (year != 2017) {
                     if (year == 2011) {
                         nameAdd = "_UK_O";
                     }
                     // AUG
                     month = "AUG";
+                    m = 8;
                     f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-                    InputONSPDFiles.put(year + "_" + month, f);
+                    InputONSPDFiles.put(new DW_YM3(year, m), f);
                     // NOV
                     month = "NOV";
+                    m = 11;
                     if (year == 2013) {
                         nameAdd = "_UK";
                     }
                     f = getInputONSPDFile(d, namePrefix, year, month, nameAdd);
-                    InputONSPDFiles.put(year + "_" + month, f);
+                    InputONSPDFiles.put(new DW_YM3(year, m), f);
                 }
             }
         }
@@ -698,14 +704,14 @@ public class DW_Files extends DW_Object {
             boolean doCouncil) {
         ArrayList<File> result;
         result = new ArrayList<File>();
-        File dir;
-        dir = getOutputSHBEDir();
+        File dir0;
+        dir0 = getOutputSHBEDir();
         Iterator<String> ite;
         ite = levels.iterator();
         while (ite.hasNext()) {
             String level = ite.next();
             File d = new File(
-                    dir,
+                    dir0,
                     level);
             d = getUODir(d, doUnderOccupied, doCouncil);
             result.add(d);
@@ -719,15 +725,15 @@ public class DW_Files extends DW_Object {
             boolean doCouncil) {
         TreeMap<String, File> result;
         result = new TreeMap<String, File>();
-        File dir;
-        dir = getOutputSHBEDir();
+        File dir0;
+        dir0 = getOutputSHBEDir();
         Iterator<String> ite;
         ite = levels.iterator();
         while (ite.hasNext()) {
             String level = ite.next();
             File d;
             d = new File(
-                    dir,
+                    dir0,
                     level);
             d = getUODir(d, doUnderOccupied, doCouncil);
             result.put(level, d);
@@ -742,14 +748,14 @@ public class DW_Files extends DW_Object {
             boolean doRSL) {
         TreeMap<String, File> result;
         result = new TreeMap<String, File>();
-        File dir;
-        dir = getOutputSHBEDir();
+        File dir0;
+        dir0 = getOutputSHBEDir();
         Iterator<String> ite;
         ite = levels.iterator();
         while (ite.hasNext()) {
             String level = ite.next();
             File d = new File(
-                    dir,
+                    dir0,
                     level);
             d = getUOFile(d, doUnderOccupied, doCouncil, doRSL);
             result.put(level, d);

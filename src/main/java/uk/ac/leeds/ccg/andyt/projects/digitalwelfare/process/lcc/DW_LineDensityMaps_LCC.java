@@ -78,7 +78,7 @@ protected DW_LineMapsLCC DW_LineMaps_LCC;
         DW_LineMaps_LCC = new DW_LineMapsLCC(env);
     }
     
-    public void run() {
+    public void run() throws Exception, Error {
 //        ve = new Vector_Environment();
 //        // If showMapsInJMapPane is true, the maps are presented in individual 
 //        // JMapPanes
@@ -172,7 +172,7 @@ protected DW_LineMapsLCC DW_LineMaps_LCC;
     }
 
     //public void runAll(int resolutionMultiplier) {
-    public void runAll() {
+    public void runAll() throws Exception, Error {
 //        TreeMap<String, ArrayList<Integer>> includes;
 //        includes = env.getDW_SHBE_Handler().getIncludes();
 //        includes.remove("All");

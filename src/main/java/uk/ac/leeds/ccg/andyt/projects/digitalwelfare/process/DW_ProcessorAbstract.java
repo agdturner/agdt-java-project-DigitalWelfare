@@ -24,6 +24,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 public abstract class DW_ProcessorAbstract extends DW_Object {
 
@@ -138,8 +139,8 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
             DW_Environment env,
             String level,
             int CensusYear,
-            String YM3) {
-        String YM3Nearest;
+            DW_YM3 YM3) {
+        DW_YM3 YM3Nearest;
         YM3Nearest = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
         TreeMap<String, String> result;
         String outputFilename;
@@ -166,9 +167,10 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         //String month = YM3NearestSplit[1];
         outputFilename = "PostcodeTo" + level + "_" + YM3Nearest
                 + "_LookUp_TreeMap_String_Strings" + DW_Strings.sBinaryFileExtension;
+                //+ "_LookUp_TreeMap_DW_YM3__Strings" + DW_Strings.sBinaryFileExtension;
         dir = new File(
                 DW_Files.getGeneratedONSPDDir(),
-                YM3Nearest);
+                YM3Nearest.toString());
 //        }
         File outfile = new File(
                 dir,
@@ -197,7 +199,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
             File outFile,
             String level,
             int CensusYear, // must be 2001 or 2011.
-            String YM3NearestFormat) {
+            DW_YM3 YM3NearestFormat) {
         TreeMap<String, String> result;
         result = DW_Postcode_Handler.getPostcodeUnitCensusCodeLookup(
                 infile,

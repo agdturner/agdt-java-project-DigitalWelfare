@@ -27,6 +27,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Records;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  * This is the main class for the Digital Welfare Project. For more details of
@@ -41,7 +42,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         super(env);
     }
 
-    public void run(boolean newData) {
+    public void run(boolean newData) throws Exception, Error {
 
         boolean doMonths;
         boolean doClaims;
@@ -79,7 +80,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
             Generic_StaticIO.writeObject(RentArrearsUO, f);
         }
 
-        HashMap<String, DW_SHBE_Records> AllSHBE;
+        HashMap<DW_YM3, DW_SHBE_Records> AllSHBE;
         AllSHBE = DW_SHBE_Data.getData();
 
         DecimalFormat df;
@@ -285,7 +286,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         AllRADNoDHPCount = 0;
         AllRADPositiveNoDHPCount = 0;
         AllRADNegativeNoDHPCount = 0;
-        String YM3;
+        DW_YM3 YM3;
         DW_SHBE_Records DW_SHBE_Records;
         DW_SHBE_Record Record;
         DW_SHBE_D_Record DRecord;
@@ -1041,7 +1042,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     }
                 }
                 counter++;
-                line = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                line = DW_SHBE_Handler.getYM3(SHBEFilenames[i]).toString();
                 line += ", " + df.format(BTTotal);
                 line += ", " + BTCount;
                 if (BTCount > 0) {

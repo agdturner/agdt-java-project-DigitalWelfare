@@ -32,6 +32,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Records;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstract;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting.DW_Report;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_BarChart;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_LineGraph;
 
@@ -111,82 +112,92 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
      *
      * @throws Exception
      */
-    public void run() throws Exception {
+    public void run() throws Exception, Error {
         /*
          * Set which parts of the code to run. There is a logical order to these
          * in that some parts have to have been run before others will produce 
-         * results as expected.
+         * results as expected/desired.
          */
         RunAllFromScratch = false;
         RunAllFromUpdate = false;
         if (!RunAllFromScratch) {
             if (!RunAllFromUpdate) {
                 // Choose which bits to run
-//                LoadAllONSPDFromSource = true;
-//                LoadNewONSPDFromSource = true;
-//                LoadAllSHBEFromSource = true;
-//                LoadNewSHBEFromSource = true;
-//                LoadSHBE = true;
-//                PostcodeCheckLatest = true;
-//                PostcodeCheck = true;
-//                LoadUnderOccupancyFromSource = true;
-//                LoadUnderOccupancy = true;
-//                LCCSummary = true;
-//                RentArrears = true;
-//                RentArrearsNewData = true;
-//                LCCTenancyChangesUO = true; //Under-Occupancy Group Tables
-                LCCHBGeneralAggregateStatistics = true;
-//                LCCTTAndPT = true;
-//                if (LCCTTAndPT) {
+                doLoadAllONSPDFromSource = true;
+//                doLoadNewONSPDFromSource = true;
+                doLoadAllSHBEFromSource = true;
+//                doLoadNewSHBEFromSource = true;
+//                doLoadSHBE = true;
+//                doPostcodeCheckLatest = true;
+//                doPostcodeCheck = true;
+                doLoadUnderOccupancyFromSource = true;
+//                doLoadUnderOccupancy = true;
+                doLCCSummary = true;
+                doRentArrears = true;
+//                doRentArrearsNewData = true;
+                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+                doLCCHBGeneralAggregateStatistics = true;
+//                doLCCTTAndPT = true;
+//                if (doLCCTTAndPT) {
+//                    doLCCTTAndPTAll = true;
+//                    /**
+//                     * If doLCCTTAndPTAll = false then choose bits otherwise run
+//                     * for all combinations.
+//                     */
+//                    doLCCTTAndPTAll = false;
 //                    LCCTTAndPT_DoGrouped = true;
 //                    LCCTTAndPT_DoPostcodeChanges = true;
+//                    LCCTTAndPT_DoPostcodeChanges = false;
 //                    LCCTTAndPT_DoAnyTenancyChanges = true;
+////                    LCCTTAndPT_DoAnyTenancyChanges = false;
 //                    LCCTTAndPT_DoTenancyChanges = true;
+////                    LCCTTAndPT_DoTenancyChanges = false;
 //                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
+////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = false;
 //                }
-//                ChoroplethMapping = true;
-//                LineMaps = true;
-//                Reports = true;
-                LineGraphs = true;
-                if (LineGraphs) {
-                    LineGraphTenancyTypeTransitions = true;
-                    //LineGraphAggregateData = true;
-                }
-//                DensityMaps = true;
-//                LineDensityMaps = true;
+//                doChoroplethMapping = true;
+//                doLineMaps = true;
+//                doReports = true;
+//                doLineGraphs = true;
+//                if (doLineGraphs) {
+//                    doLineGraphTenancyTypeTransitions = true;
+//                    //LineGraphAggregateData = true;
+//                }
+//                doDensityMaps = true;
+//                doLineDensityMaps = true;
             } else {
                 //loadNewONSPDFromSource = true;
-                LoadNewSHBEFromSource = true;
-                LoadUnderOccupancyFromSource = true;
-                LCCSummary = true;
-                RentArrears = true;
-                RentArrearsNewData = true;
-                LCCTenancyChangesUO = true; //Under-Occupancy Group Tables
-                LCCHBGeneralAggregateStatistics = true; // Could do with a new method that only runs the aggregated data that has not already been produced.
-                LCCTTAndPT = true;
-                ChoroplethMapping = true;
-                LineMaps = true;
-                Reports = true;
-                LineGraphs = true;
-                DensityMaps = true;
-                LineDensityMaps = true;
+                doLoadNewSHBEFromSource = true;
+                doLoadUnderOccupancyFromSource = true;
+                doLCCSummary = true;
+                doRentArrears = true;
+                doRentArrearsNewData = true;
+                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+                doLCCHBGeneralAggregateStatistics = true; // Could do with a new method that only runs the aggregated data that has not already been produced.
+                doLCCTTAndPT = true;
+                doChoroplethMapping = true;
+                doLineMaps = true;
+                doReports = true;
+                doLineGraphs = true;
+                doDensityMaps = true;
+                doLineDensityMaps = true;
             }
         } else {
-            LoadAllONSPDFromSource = true;
-            LoadAllSHBEFromSource = true;
-            LoadUnderOccupancyFromSource = true;
-            LCCSummary = true;
-            RentArrears = true;
-            RentArrearsNewData = true;
-            LCCTenancyChangesUO = true; //Under-Occupancy Group Tables
-            LCCHBGeneralAggregateStatistics = true;
-            LCCTTAndPT = true;
-            ChoroplethMapping = true;
-            LineMaps = true;
-            Reports = true;
-            LineGraphs = true;
-            DensityMaps = true;
-            LineDensityMaps = true;
+            doLoadAllONSPDFromSource = true;
+            doLoadAllSHBEFromSource = true;
+            doLoadUnderOccupancyFromSource = true;
+            doLCCSummary = true;
+            doRentArrears = true;
+            doRentArrearsNewData = true;
+            doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+            doLCCHBGeneralAggregateStatistics = true;
+            doLCCTTAndPT = true;
+            doChoroplethMapping = true;
+            doLineMaps = true;
+            doReports = true;
+            doLineGraphs = true;
+            doDensityMaps = true;
+            doLineDensityMaps = true;
         }
         // range is the number of directories or files in any archives.
         int range;
@@ -205,9 +216,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
          * has been loaded as the maps generated when it is loaded should be
          * sufficient.
          */
-        if (LoadAllONSPDFromSource || LoadNewONSPDFromSource) {
+        if (doLoadAllONSPDFromSource || doLoadNewONSPDFromSource) {
             // Set up logging
-            if (LoadAllONSPDFromSource) {
+            if (doLoadAllONSPDFromSource) {
                 processName = "LoadAllONSPDFromSource";
             } else {
                 processName = "LoadNewONSPDFromSource";
@@ -227,7 +238,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         /**
          * Format All SHBE data. This checks and formats postcodes.
          */
-        if (LoadAllSHBEFromSource) {
+        if (doLoadAllSHBEFromSource) {
             // Set up logging
             processName = "LoadAllSHBEFromSource";
             File logDir = initLogs(
@@ -245,7 +256,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         /**
          * Format New SHBE data. This checks and formats postcodes.
          */
-        if (LoadNewSHBEFromSource) {
+        if (doLoadNewSHBEFromSource) {
             // Set up logging
             processName = "LoadNewSHBEFromSource";
             File logDir = initLogs(
@@ -263,7 +274,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         /**
          * Check SHBE postcodes.
          */
-        if (PostcodeCheck) {
+        if (doPostcodeCheck) {
             // Set up logging
             processName = "PostcodeCheck";
             File logDir = initLogs(
@@ -281,7 +292,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         /**
          * Check SHBE postcodes.
          */
-        if (PostcodeCheckLatest) {
+        if (doPostcodeCheckLatest) {
             // Set up logging
             processName = "PostcodeCheckLatest";
             File logDir = initLogs(
@@ -301,7 +312,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
          * is for checking the data loads. It could be used as a basis for
          * testing the speed of loading and for memory requirements.
          */
-        if (LoadSHBE) {
+        if (doLoadSHBE) {
             // Set up logging
             processName = "LoadSHBE";
             File logDir = initLogs(
@@ -310,14 +321,14 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     range);
             // Process
             DW_SHBE_Data = env.getDW_SHBE_Data();
-            HashMap<String, DW_SHBE_Records> Data;
+            HashMap<DW_YM3, DW_SHBE_Records> Data;
             Data = DW_SHBE_Data.getData();
             DW_SHBE_Handler = new DW_SHBE_Handler(env);
             env.setDW_SHBE_Handler(DW_SHBE_Handler);
             SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
             File dir;
             dir = env.getDW_Files().getGeneratedSHBEDir();
-            String YM3;
+            DW_YM3 YM3;
             for (String SHBEFilename : SHBEFilenames) {
                 YM3 = DW_SHBE_Handler.getYM3(SHBEFilename);
                 try {
@@ -354,7 +365,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         /**
          * Load UnderOccupancy data from source.
          */
-        if (LoadUnderOccupancyFromSource) {
+        if (doLoadUnderOccupancyFromSource) {
             // Set up logging
             processName = "LoadUnderOccupancyFromSource";
             File logDir = initLogs(
@@ -369,7 +380,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (LoadUnderOccupancy) {
+        if (doLoadUnderOccupancy) {
             // Set up logging
             processName = "LoadUnderOccupancy";
             File logDir = initLogs(
@@ -384,7 +395,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (LCCSummary) {
+        if (doLCCSummary) {
             // Set up logging
             processName = "LCCSummary";
             File logDir = initLogs(
@@ -399,7 +410,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (RentArrears) {
+        if (doRentArrears) {
             // Set up logging
             processName = "RentArrears";
             File logDir = initLogs(
@@ -409,12 +420,12 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Process
             DW_ProcessorLCCRentArrears p;
             p = new DW_ProcessorLCCRentArrears(env);
-            p.run(RentArrearsNewData);
+            p.run(doRentArrearsNewData);
             // Close logs
             closeLogs(processName);
         }
 
-        if (LCCHBGeneralAggregateStatistics) {
+        if (doLCCHBGeneralAggregateStatistics) {
             // Set up logging
             processName = "LCCHBGeneralAggregateStatistics";
             File logDir = initLogs(
@@ -429,7 +440,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (LCCTenancyChangesUO) {
+        if (doLCCTenancyChangesUO) {
             // Set up logging
             processName = "LCCTenancyChangesUO";
             File logDir = initLogs(
@@ -444,7 +455,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (LCCTTAndPT) {
+        if (doLCCTTAndPT) {
             // Set up logging
             processName = "LCCTTAndPT";
             File logDir = initLogs(
@@ -465,41 +476,30 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 //            System.exit(0);
 ////            // </DEBUG skip to a particular output creation>
 ////
-            ArrayList<Boolean> b;
-            b = getArrayListBoolean();
-            Iterator<Boolean> iteb0;
-            Iterator<Boolean> iteb1;
-            Iterator<Boolean> iteb2;
-            Iterator<Boolean> iteb3;
-            Iterator<Boolean> iteb4;
-            LCCTTAndPT_DoGrouped = true;
-            //LCCTTAndPT_DoGrouped = false;
-            iteb1 = b.iterator();
-            while (iteb1.hasNext()) {
-                LCCTTAndPT_DoPostcodeChanges = iteb1.next();
-                iteb2 = b.iterator();
-                while (iteb2.hasNext()) {
-                    LCCTTAndPT_DoAnyTenancyChanges = iteb2.next();
-                    iteb3 = b.iterator();
-                    while (iteb3.hasNext()) {
-                        LCCTTAndPT_DoTenancyChanges = iteb3.next();
-                        iteb4 = b.iterator();
-                        while (iteb4.hasNext()) {
-                            LCCTTAndPT_DoTenancyAndPostcodeChanges = iteb4.next();
-                            p.run(LCCTTAndPT_DoGrouped,
-                                    LCCTTAndPT_DoPostcodeChanges,
-                                    LCCTTAndPT_DoAnyTenancyChanges,
-                                    LCCTTAndPT_DoTenancyChanges,
-                                    LCCTTAndPT_DoTenancyAndPostcodeChanges);
-                        }
-                    }
-                }
+            if (doLCCTTAndPTAll) {                
+                LCCTTAndPT_DoGrouped = true;
+                LCCTTAndPT_DoPostcodeChanges = true;
+                LCCTTAndPT_DoAnyTenancyChanges = true;
+                LCCTTAndPT_DoTenancyChanges = true;
+                LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
+                                p.run(LCCTTAndPT_DoGrouped,
+                                        LCCTTAndPT_DoPostcodeChanges,
+                                        LCCTTAndPT_DoAnyTenancyChanges,
+                                        LCCTTAndPT_DoTenancyChanges,
+                                        LCCTTAndPT_DoTenancyAndPostcodeChanges);
+            } else {
+                // For debugging
+                p.run(LCCTTAndPT_DoGrouped,
+                        LCCTTAndPT_DoPostcodeChanges,
+                        LCCTTAndPT_DoAnyTenancyChanges,
+                        LCCTTAndPT_DoTenancyChanges,
+                        LCCTTAndPT_DoTenancyAndPostcodeChanges);
             }
             // Close logs
             closeLogs(processName);
         }
 
-        if (ChoroplethMapping) {
+        if (doChoroplethMapping) {
             // Set up logging
             processName = "ChoroplethMapping";
             File logDir = initLogs(
@@ -514,7 +514,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (LineMaps) {
+        if (doLineMaps) {
             // Set up logging
             processName = "LineMaps";
             File logDir = initLogs(
@@ -535,7 +535,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (Reports) {
+        if (doReports) {
             // Set up logging
             processName = "Reports";
             File logDir = initLogs(
@@ -550,7 +550,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (LineGraphs) {
+        if (doLineGraphs) {
             // Set up logging
             processName = "LineGraphs";
             File logDir = initLogs(
@@ -561,13 +561,13 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             DW_LineGraph p;
             p = new DW_LineGraph(env);
             //aDW_LineGraph.start();
-            p.run(LineGraphTenancyTypeTransitions,
-                    LineGraphAggregateData);
+            p.run(doLineGraphTenancyTypeTransitions,
+                    doLineGraphAggregateData);
             // Close logs
             closeLogs(processName);
         }
 
-        if (DensityMaps) {
+        if (doDensityMaps) {
             // Set up logging
             processName = "DensityMaps";
             File logDir = initLogs(
@@ -582,7 +582,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             closeLogs(processName);
         }
 
-        if (LineDensityMaps) {
+        if (doLineDensityMaps) {
             // Set up logging
             processName = "LineDensityMaps";
             File logDir = initLogs(
@@ -604,80 +604,80 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
     /**
      * Switch for loading All ONSPD Data From Source.
      */
-    boolean LoadAllONSPDFromSource = false;
+    boolean doLoadAllONSPDFromSource = false;
 
     /**
      * Switch for loading New ONSPD Data From Source.
      */
-    boolean LoadNewONSPDFromSource = false;
+    boolean doLoadNewONSPDFromSource = false;
 
     /**
      * Switch for loading SHBE Data From Source.
      */
-    boolean LoadAllSHBEFromSource = false;
+    boolean doLoadAllSHBEFromSource = false;
 
     /**
      * Switch for reformatting all the SHBE data.
      */
-    boolean ReformatAll = false;
+    boolean doReformatAll = false;
 
     /**
      * Switch for printing stats of reformatted SHBE data.
      */
-    boolean Stat = false;
+    boolean doStat = false;
 
     /**
      * Switch for reformatting new SHBE data that might have been added to the
      * input collection.
      */
-    boolean LoadNewSHBEFromSource = false;
+    boolean doLoadNewSHBEFromSource = false;
 
     /**
      * Switch for loading SHBE Data.
      */
-    boolean LoadSHBE = false;
+    boolean doLoadSHBE = false;
 
     /**
      * Switch for SHBE postcode check run.
      */
-    boolean PostcodeCheck = false;
-    boolean PostcodeCheckLatest = false;
+    boolean doPostcodeCheck = false;
+    boolean doPostcodeCheckLatest = false;
     /**
      * Switch for loading Under Occupancy Data From Source.
      */
-    boolean LoadUnderOccupancyFromSource = false;
+    boolean doLoadUnderOccupancyFromSource = false;
 
     /**
      * Switch for loading Under Occupancy Data From Source.
      */
-    boolean LoadUnderOccupancy = false;
+    boolean doLoadUnderOccupancy = false;
 
     /**
      * Switch for running LCC Summary processing algorithms.
      */
-    boolean LCCSummary = false;
+    boolean doLCCSummary = false;
 
     /**
      * Switch for running Rent Arrears processing algorithms.
      */
-    boolean RentArrears = false;
-    boolean RentArrearsNewData = false;
+    boolean doRentArrears = false;
+    boolean doRentArrearsNewData = false;
 
     /**
-     * Switch for running LCCTenancyChangesUO.
+     * Switch for running doLCCTenancyChangesUO.
      */
-    boolean LCCTenancyChangesUO = false;
+    boolean doLCCTenancyChangesUO = false;
 
     /**
-     * Switch for running LCCHBGeneralAggregateStatistics.
+     * Switch for running doLCCHBGeneralAggregateStatistics.
      */
-    boolean LCCHBGeneralAggregateStatistics = false;
+    boolean doLCCHBGeneralAggregateStatistics = false;
 
     /**
      * Switch for running LCC Data processing algorithms.
      */
-    boolean LCCTTAndPT = false;
-
+    boolean doLCCTTAndPT = false;
+    boolean doLCCTTAndPTAll = false;
     boolean LCCTTAndPT_DoGrouped;
     boolean LCCTTAndPT_DoPostcodeChanges;
     boolean LCCTTAndPT_DoAnyTenancyChanges;
@@ -687,42 +687,42 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
     /**
      * Switch for running Choropleth Mapping code.
      */
-    boolean ChoroplethMapping = false;
+    boolean doChoroplethMapping = false;
 
     /**
      * Switch for running Line Mapping code.
      */
-    boolean LineMaps = false;
+    boolean doLineMaps = false;
 
     /**
      * Switch for running report generation code.
      */
-    boolean Reports = false;
+    boolean doReports = false;
 
     /**
      * Switch for generating Line Graphs.
      */
-    boolean LineGraphs = false;
+    boolean doLineGraphs = false;
 
     /**
      * Switch for generating Tenancy Type Transition Line Graphs.
      */
-    boolean LineGraphTenancyTypeTransitions = true;
+    boolean doLineGraphTenancyTypeTransitions = true;
 
     /**
      * Switch for generating Tenancy Type Transition Line Graphs.
      */
-    boolean LineGraphAggregateData = true;
+    boolean doLineGraphAggregateData = true;
 
     /**
      * Switch for generating Density Maps.
      */
-    boolean DensityMaps = false;
+    boolean doDensityMaps = false;
 
     /**
      * Switch for generating Line Density Maps.
      */
-    boolean LineDensityMaps = false;
+    boolean doLineDensityMaps = false;
 
     /**
      * Switch for generating everything from scratch.
@@ -744,7 +744,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
      */
     public TreeMap<String, TreeMap<String, String>> getClaimPostcodeF_To_LevelCode_Maps(
             ArrayList<String> levels,
-            String YM3,
+            DW_YM3 YM3,
             int CensusYear) {
         TreeMap<String, TreeMap<String, String>> result;
         result = new TreeMap<String, TreeMap<String, String>>();

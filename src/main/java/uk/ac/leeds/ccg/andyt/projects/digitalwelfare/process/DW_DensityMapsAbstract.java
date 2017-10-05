@@ -45,6 +45,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -94,8 +95,8 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
             TreeMap<String, Deprivation_DataRecord> deprivationRecords,
             TreeMap<Integer, Integer> deprivationClasses,
             Integer deprivationClass,
-            String yM3) {
-        String nearestYM3ForONSPDLookup;
+            DW_YM3 yM3) {
+        DW_YM3 nearestYM3ForONSPDLookup;
         nearestYM3ForONSPDLookup = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM3);
         int countNonMatchingPostcodes = 0;
         Iterator<String> itep = postcodes.iterator();

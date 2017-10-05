@@ -683,6 +683,21 @@ public class DW_Strings {
     public final String sRecords = "Records";
 
     /**
+     * "Records".
+     */
+    public final String sRegulated = "Regulated";
+
+    /**
+     * "Records".
+     */
+    public final String sUnregulated = "Unregulated";
+
+    /**
+     * "Records".
+     */
+    public final String sUngrouped = "Ungrouped";
+
+    /**
      * "Unit".
      */
     public final String sUnit = "Unit";

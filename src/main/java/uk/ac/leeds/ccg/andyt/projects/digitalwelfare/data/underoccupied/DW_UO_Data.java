@@ -26,6 +26,7 @@ import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  * Class for holds and referring to all the UnderOccupancy data.
@@ -38,19 +39,19 @@ public class DW_UO_Data extends DW_Object implements Serializable {
      * For storing all DW_UO_Sets for RSL. Keys are YM3, values are the
      * respective sets.
      */
-    private TreeMap<String, DW_UO_Set> RSLUOSets;
+    private TreeMap<DW_YM3, DW_UO_Set> RSLUOSets;
 
     /**
      * For storing all DW_UO_Sets for Council. Keys are YM3, values are the
      * respective sets.
      */
-    private TreeMap<String, DW_UO_Set> CouncilUOSets;
+    private TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
 
     /**
      * For storing sets of ClaimIDsInUO. Keys are YM3, values are the
      * respective ClaimIDsInUO for claims classed as Under Occupying.
      */
-    private TreeMap<String, Set<DW_ID>> ClaimIDsInUO;
+    private TreeMap<DW_YM3, Set<DW_ID>> ClaimIDsInUO;
 
     /**
      * For storing ClaimIDs of claims that were classed as Under Occupying
@@ -80,8 +81,8 @@ public class DW_UO_Data extends DW_Object implements Serializable {
 
     public DW_UO_Data(
             DW_Environment env,
-            TreeMap<String, DW_UO_Set> RSLUOSets,
-            TreeMap<String, DW_UO_Set> CouncilUOSets) {
+            TreeMap<DW_YM3, DW_UO_Set> RSLUOSets,
+            TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets) {
         super(env);
         this.RSLUOSets = RSLUOSets;
         this.CouncilUOSets = CouncilUOSets;
@@ -91,21 +92,21 @@ public class DW_UO_Data extends DW_Object implements Serializable {
     /**
      * @return the RSL_Sets
      */
-    public TreeMap<String, DW_UO_Set> getRSLUOSets() {
+    public TreeMap<DW_YM3, DW_UO_Set> getRSLUOSets() {
         return RSLUOSets;
     }
 
     /**
      * @return the tCouncil_Data
      */
-    public TreeMap<String, DW_UO_Set> getCouncilUOSets() {
+    public TreeMap<DW_YM3, DW_UO_Set> getCouncilUOSets() {
         return CouncilUOSets;
     }
 
     /**
      * @return the ClaimIDsInUO
      */
-    public TreeMap<String, Set<DW_ID>> getClaimIDsInUO() {
+    public TreeMap<DW_YM3, Set<DW_ID>> getClaimIDsInUO() {
         return ClaimIDsInUO;
     }
 
@@ -113,15 +114,17 @@ public class DW_UO_Data extends DW_Object implements Serializable {
      * Initialises ClaimIDsInUO.
      */
     private void initClaimIDs() {
-        ClaimIDsInUO = new TreeMap<String, Set<DW_ID>>();
+        ClaimIDsInUO = new TreeMap<DW_YM3, Set<DW_ID>>();
         ClaimIDsInCouncilBaseline = new HashSet<DW_ID>();
         ClaimIDsInRSLBaseline = new HashSet<DW_ID>();
-        String YM3;
-        Iterator<String> ite;
+        DW_YM3 YM3;
+        DW_YM3 baselineYM3;
+        baselineYM3 = getBaselineYM3();
+        Iterator<DW_YM3> ite;
         ite = CouncilUOSets.keySet().iterator();
         while (ite.hasNext()) {
             YM3 = ite.next();
-            if (YM3.equalsIgnoreCase("2013_Mar")) {
+            if (YM3.equals(baselineYM3)) {
                 ClaimIDsInCouncilBaseline.addAll(CouncilUOSets.get(YM3).getClaimIDs());
                 ClaimIDsInRSLBaseline.addAll(RSLUOSets.get(YM3).getClaimIDs());
             } else {
@@ -149,15 +152,24 @@ public class DW_UO_Data extends DW_Object implements Serializable {
      */
     private void initAllCouncilUOClaimIDs() {
         ClaimIDsInCouncilUO = new HashSet<DW_ID>();
-        String YM3;
-        Iterator<String> ite;
+        DW_YM3 YM3;
+        DW_YM3 baselineYM3 = getBaselineYM3();
+        Iterator<DW_YM3> ite;
         ite = CouncilUOSets.keySet().iterator();
         while (ite.hasNext()) {
             YM3 = ite.next();
-            if (!YM3.equalsIgnoreCase("2013_Mar")) {
+            if (!YM3.equals(baselineYM3)) {
                 ClaimIDsInCouncilUO.addAll(CouncilUOSets.get(YM3).getClaimIDs());
             }
         }
     }
 
+    DW_YM3  BaselineYM3;
+    
+    public DW_YM3 getBaselineYM3() {
+        if (BaselineYM3 == null) {
+            BaselineYM3 = new DW_YM3(2013, 3);
+        }
+        return BaselineYM3;
+    }
 }

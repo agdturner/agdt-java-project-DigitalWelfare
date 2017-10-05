@@ -37,6 +37,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_MapsAdviceLeeds;
 
 /**
@@ -45,15 +46,15 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ma
 public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 
     DW_MapsAdviceLeeds DW_MapsAdviceLeeds;
-    
+
     private DW_Data_CAB2_Handler tCAB_DataRecord2_Handler;
     private DW_Data_CAB1_Handler tCAB_DataRecord1_Handler;
     private DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
     private DW_Data_LCC_WRU_Handler tDW_Data_LCC_WRU_Handler;
     private final DW_Deprivation_DataHandler DW_Deprivation_DataHandler;
-    
+
     private final DW_Postcode_Handler DW_Postcode_Handler;
-    
+
     private String level;
     private ArrayList<String> levels;
     /**
@@ -79,12 +80,28 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        File tDW_Directory = new File("/scratch02/DigitalWelfare/");
-        new DW_DataProcessorAdviceLeeds(null, tDW_Directory).run();
+        try {
+            // TODO code application logic here
+            File tDW_Directory = new File("/scratch02/DigitalWelfare/");
+            new DW_DataProcessorAdviceLeeds(null, tDW_Directory).run();
+        } catch (Exception e) {
+            System.err.println(e.getLocalizedMessage());
+            e.printStackTrace(System.err);
+//            StackTraceElement[] stes = e.getStackTrace();
+//            for (StackTraceElement ste : stes) {
+//                System.err.println(ste.toString());
+//            }
+        } catch (Error e) {
+            System.err.println(e.getLocalizedMessage());
+            e.printStackTrace(System.err);
+//            StackTraceElement[] stes = e.getStackTrace();
+//            for (StackTraceElement ste : stes) {
+//                System.err.println(ste.toString());
+//            }
+        }
     }
 
-    public void run() {
+    public void run() throws Exception, Error {
         init_tCAB_DataRecord2_Handler();
         init_tCAB_DataRecord0_Handler();
         init_tDW_Data_LCC_WRU_Handler();
@@ -126,8 +143,9 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 
     /**
      * @param tDW_ID_ClientTypes
+     * @throws java.lang.Exception
      */
-    public void run(ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes) {
+    public void run(ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes) throws Exception, Error {
         Iterator<DW_ID_ClientID> ite;
         ite = tDW_ID_ClientTypes.iterator();
         while (ite.hasNext()) {
@@ -141,18 +159,18 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         }
     }
 
-    public void runLevel() {
-        String YM3;
-        YM3 = "2011_May";
+    public void runLevel() throws Exception, Error {
+        DW_YM3 YM3;
+        YM3 = new DW_YM3("2011_May");
         int CensusYear = 2011;
-       // Get deprivation data
+        // Get deprivation data
         TreeMap<String, Deprivation_DataRecord> tDeprivationData;
         tDeprivationData = getDeprivation_Data();
         // Get postcode to LSOA lookup
         TreeMap<String, String> tLookupFromPostcodeToLSOACensusCode;
         tLookupFromPostcodeToLSOACensusCode = getClaimPostcodeF_To_LevelCode_Map(
                 env,
-                "LSOA", 
+                "LSOA",
                 CensusYear,
                 YM3);
         // Get postcode to level lookup
@@ -165,7 +183,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         } else {
             tLookupFromPostcodeToCensusCode = getClaimPostcodeF_To_LevelCode_Map(
                     env,
-                    level, 
+                    level,
                     CensusYear,
                     YM3);
         }
@@ -1246,49 +1264,49 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
     }
 
     /**
-     * 
+     *
      * @param postcode
      * @param tLookupFromPostcodeToCensusCode
-     * @return 
+     * @return
      */
     private String getKey(
-            String yM3,
+            DW_YM3 yM3,
             String postcode,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         DW_Postcode_Handler tDW_Postcode_Handler;
         tDW_Postcode_Handler = env.getDW_Postcode_Handler();
         String key = "";
         if (level.equalsIgnoreCase("PostcodeDistrict")
-                    || level.equalsIgnoreCase("PostcodeSector")
-                    || level.equalsIgnoreCase("PostcodeUnit")) {
-                if (level.equalsIgnoreCase("PostcodeDistrict")) {
-                    if (tDW_Postcode_Handler.isMappablePostcode(yM3, postcode)) {
-                        key = DW_Postcode_Handler.getPostcodeDistrict(postcode);
+                || level.equalsIgnoreCase("PostcodeSector")
+                || level.equalsIgnoreCase("PostcodeUnit")) {
+            if (level.equalsIgnoreCase("PostcodeDistrict")) {
+                if (tDW_Postcode_Handler.isMappablePostcode(yM3, postcode)) {
+                    key = DW_Postcode_Handler.getPostcodeDistrict(postcode);
 //                    } else {
 //                        key = "";
-                    }
-                }
-                if (level.equalsIgnoreCase("PostcodeSector")) {
-                    if (tDW_Postcode_Handler.isMappablePostcode(yM3, postcode)) {
-                        key = DW_Postcode_Handler.getPostcodeSector(postcode);
-//                    } else {
-//                        key = "";
-                    }
-                }
-                if (level.equalsIgnoreCase("PostcodeUnit")) {
-                    if (tDW_Postcode_Handler.isMappablePostcode(yM3, postcode)) {
-                        key = DW_Postcode_Handler.formatPostcodeForMapping(postcode);
-//                    } else {
-//                        key = "";
-                    }
-                }
-            } else {
-                String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
-                key = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
-                if (key == null) {
-                    key = "";
                 }
             }
+            if (level.equalsIgnoreCase("PostcodeSector")) {
+                if (tDW_Postcode_Handler.isMappablePostcode(yM3, postcode)) {
+                    key = DW_Postcode_Handler.getPostcodeSector(postcode);
+//                    } else {
+//                        key = "";
+                }
+            }
+            if (level.equalsIgnoreCase("PostcodeUnit")) {
+                if (tDW_Postcode_Handler.isMappablePostcode(yM3, postcode)) {
+                    key = DW_Postcode_Handler.formatPostcodeForMapping(postcode);
+//                    } else {
+//                        key = "";
+                }
+            }
+        } else {
+            String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
+            key = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
+            if (key == null) {
+                key = "";
+            }
+        }
         return key;
     }
 
@@ -1312,7 +1330,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         TreeMap<String, Integer> allAdviceLeedsCounts;
         allAdviceLeedsCounts = new TreeMap<String, Integer>();
         result.put(outletAllLeedsCAB, allAdviceLeedsCounts);
-        String yM3;
+        DW_YM3 yM3;
         yM3 = DW_Postcode_Handler.getDefaultYM3();
         Iterator<Object> ite;
         ite = data.keySet().iterator();
@@ -1811,6 +1829,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
     /**
      * Load LeedsCABData.
      *
+     * @param env
      * @param filename
      * @param tCAB_DataRecord2_Handler
      * @param IDType

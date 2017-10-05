@@ -25,6 +25,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -49,7 +50,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
      * The Year_Month of the records. This is for retrieving the Year_Month
      * DW_SHBE_Records which this is part of.
      */
-    protected String YM3;
+    protected DW_YM3 YM3;
 
     /**
      * The ClaimRef DW_ID.
@@ -113,7 +114,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
      * @param YM3 The Year_Month of this.
      * @param ClaimID The ClaimRef DW_ID for this.
      */
-    public DW_SHBE_Record(DW_Environment env, String YM3, DW_ID ClaimID) {
+    public DW_SHBE_Record(DW_Environment env, DW_YM3 YM3, DW_ID ClaimID) {
         super(env);
         DW_Strings = env.getDW_Strings();
         this.YM3 = YM3;
@@ -130,7 +131,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
      */
     public DW_SHBE_Record(
             DW_Environment env,
-            String YM3,
+            DW_YM3 YM3,
             DW_ID ClaimID,
             DW_SHBE_D_Record DRecord) {
         super(env);

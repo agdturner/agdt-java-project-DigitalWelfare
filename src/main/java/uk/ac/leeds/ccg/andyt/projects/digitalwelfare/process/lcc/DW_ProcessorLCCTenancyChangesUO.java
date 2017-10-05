@@ -23,7 +23,7 @@ public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
     }
 
     @Override
-    public void run() {
+    public void run() throws Exception, Error {
         boolean handleOutOfMemoryError = false;
 
         // Declaration

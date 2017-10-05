@@ -35,6 +35,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Da
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 
 /**
@@ -299,7 +300,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @param YM3
      * @return True iff a collection is swapped.
      */
-    public boolean clearSomeSHBECacheExcept(String YM3) {
+    public boolean clearSomeSHBECacheExcept(DW_YM3 YM3) {
         return getDW_SHBE_Data().clearSomeCacheExcept(YM3);
     }
     
@@ -580,9 +581,9 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             } else if (f.exists()) {
                 DW_UO_Data = (DW_UO_Data) Generic_StaticIO.readObject(f, true);
                 // For debugging/testing load
-                TreeMap<String, DW_UO_Set> CouncilUOSets;
+                TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
                 CouncilUOSets = DW_UO_Data.getCouncilUOSets();
-                TreeMap<String, DW_UO_Set> RSLUOSets;
+                TreeMap<DW_YM3, DW_UO_Set> RSLUOSets;
                 RSLUOSets = DW_UO_Data.getRSLUOSets();
                 int n;
                 n = CouncilUOSets.size() + RSLUOSets.size();

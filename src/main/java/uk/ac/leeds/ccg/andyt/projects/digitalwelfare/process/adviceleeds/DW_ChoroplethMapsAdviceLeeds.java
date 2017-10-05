@@ -88,7 +88,7 @@ public class DW_ChoroplethMapsAdviceLeeds extends DW_ChoroplethMapsAbstract {
     /**
      *
      */
-    public void run() {
+    public void run() throws Exception, Error {
 //        showMapsInJMapPane = false;
 ////        showMapsInJMapPane = true;
 //        imageWidth = 1000;

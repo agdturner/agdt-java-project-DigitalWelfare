@@ -41,6 +41,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_CorrectedPostcodes;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_Collections;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -143,13 +144,13 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     /**
      * For storing the Year_Month of this. This is an identifier for these data.
      */
-    private String YM3;
+    private DW_YM3 YM3;
 
     /**
      * For storing the NearestYM3ForONSPDLookup of this. This is derived from
      * YM3.
      */
-    private String NearestYM3ForONSPDLookup;
+    private DW_YM3 NearestYM3ForONSPDLookup;
 
     /**
      * Holds a reference to the original input data file from which this was
@@ -1207,14 +1208,14 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     /**
      * @return YM3
      */
-    public String getYM3() {
+    public DW_YM3 getYM3() {
         return YM3;
     }
 
     /**
      * @return NearestYM3ForONSPDLookup
      */
-    public String getNearestYM3ForONSPDLookup() {
+    public DW_YM3 getNearestYM3ForONSPDLookup() {
         return NearestYM3ForONSPDLookup;
     }
 
@@ -1235,7 +1236,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected File getDir() {
         if (Dir == null) {
             Dir = new File(
-                    env.getDW_Files().getGeneratedSHBEDir(), getYM3());
+                    env.getDW_Files().getGeneratedSHBEDir(), getYM3().toString());
             Dir.mkdirs();
         }
         return Dir;
@@ -1263,7 +1264,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      */
     public DW_SHBE_Records(
             DW_Environment env,
-            String YM3
+            DW_YM3 YM3
     ) {
         super(env);
         this.YM3 = YM3;
@@ -1322,7 +1323,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             DW_Environment env,
             File inputDirectory,
             String inputFilename,
-            String LatestYM3ForONSPDFormat,
+            DW_YM3 LatestYM3ForONSPDFormat,
             File logDir
     ) {
         super(env);
@@ -1382,7 +1383,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         env.log("----------------------");
         env.log("NearestYM3ForONSPDLookup " + NearestYM3ForONSPDLookup);
         env.log("LatestYM3ForONSPDLookup " + LatestYM3ForONSPDFormat);
-        if (!LatestYM3ForONSPDFormat.equalsIgnoreCase(NearestYM3ForONSPDLookup)) {
+        if (!LatestYM3ForONSPDFormat.equals(NearestYM3ForONSPDLookup)) {
             env.log("The " + LatestYM3ForONSPDFormat + " ONSPD may be used "
                     + "if the Claimant Postcode does not have a lookup in the "
                     + NearestYM3ForONSPDLookup + " ONSPD.");

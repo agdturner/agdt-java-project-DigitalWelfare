@@ -28,6 +28,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -76,7 +77,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
             DW_Environment env,
             String type,
             String filename,
-            String YM3,
+            DW_YM3 YM3,
             boolean reload) {
         super(env);
         String methodName;
@@ -90,7 +91,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
         dirOut = new File(DW_Files.getGeneratedUnderOccupiedDir(),
                 type);
         dirOut = new File(dirOut,
-                YM3);
+                YM3.toString());
         if (!dirOut.exists()) {
             dirOut.mkdirs();
         }

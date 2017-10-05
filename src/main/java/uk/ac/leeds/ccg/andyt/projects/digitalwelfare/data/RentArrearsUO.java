@@ -37,6 +37,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Da
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -102,10 +103,10 @@ public final class RentArrearsUO extends DW_Object {
         ArrayList<Integer> include;
         Iterator<Integer> includeIte;
         String filename;
-        String YM3;
+        DW_YM3 YM3;
         DW_SHBE_Records DW_SHBE_Records;
         HashMap<DW_ID, DW_SHBE_Record> Records;
-        TreeMap<String, DW_UO_Set> CouncilUOSets;
+        TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
         DW_UO_Set CouncilUOSet;
         DW_SHBE_Record DW_SHBE_Record;
         DW_SHBE_D_Record DRecord;

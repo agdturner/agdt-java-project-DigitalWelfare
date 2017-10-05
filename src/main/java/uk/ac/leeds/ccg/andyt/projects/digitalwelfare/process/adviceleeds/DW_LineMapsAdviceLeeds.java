@@ -57,6 +57,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Sh
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -108,7 +109,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         }
     }
 
-    public void run() throws Exception {
+    public void run() throws Exception, Error {
         String outname;
         // If showMapsInJMapPane == true then resulting maps are displayed on 
         // screen in a JMapPane otherwise maps are only written to file.
@@ -225,7 +226,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         BackgroundDW_Shapefile = MSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
         ForegroundDW_Shapefile1 = MSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
         int CensusYear = 2011;
-        String YM3 = "2011_May";
+        DW_YM3 YM3 = new DW_YM3(2011,5);
         // init postcode to LSOA lookup
         LookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
                 env,
@@ -653,7 +654,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         BackgroundDW_Shapefile = MSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
         ForegroundDW_Shapefile1 = MSOACodesAndLeedsMSOAShapefile.getLeedsLADDW_Shapefile();
         int CensusYear = 2011;
-        String YM3 = "2011_May";
+        DW_YM3 YM3 = new DW_YM3(2011,5);
         // Get postcode to LSOA lookup
         LookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
                 env,

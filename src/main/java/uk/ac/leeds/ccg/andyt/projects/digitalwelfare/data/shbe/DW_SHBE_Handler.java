@@ -43,6 +43,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_H
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  * Class for handling DW_SHBE_Data.
@@ -81,14 +82,14 @@ public class DW_SHBE_Handler extends DW_Object {
     /**
      * For loading in all SHBE Data.
      *
-     * @param LogName
+     * @param logDir
      */
     public void run(File logDir) {
         String[] SHBEFilenames;
         SHBEFilenames = getSHBEFilenamesAll();
-        String LastYM3;
+        DW_YM3 LastYM3;
         LastYM3 = getYM3(SHBEFilenames[SHBEFilenames.length - 1]);
-        String NearestYM3ForONSPDFormatLookupLastYM3;
+        DW_YM3 NearestYM3ForONSPDFormatLookupLastYM3;
         NearestYM3ForONSPDFormatLookupLastYM3 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(LastYM3);
         File dir;
         dir = DW_Files.getInputSHBEDir();
@@ -172,23 +173,23 @@ public class DW_SHBE_Handler extends DW_Object {
         newFilesToRead = new ArrayList<String>();
         File[] FormattedSHBEFiles;
         FormattedSHBEFiles = DW_Files.getGeneratedSHBEDir().listFiles();
-        HashSet<String> FormattedYM3s;
-        FormattedYM3s = new HashSet<String>();
+        HashSet<DW_YM3> FormattedYM3s;
+        FormattedYM3s = new HashSet<DW_YM3>();
         for (File FormattedSHBEFile : FormattedSHBEFiles) {
             if (FormattedSHBEFile.isDirectory()) {
-                FormattedYM3s.add(FormattedSHBEFile.getName());
+                FormattedYM3s.add(new DW_YM3(FormattedSHBEFile.getName()));
             }
         }
-        String YM3;
+        DW_YM3 YM3;
         for (String SHBEFilename : SHBEFilenames) {
             YM3 = getYM3(SHBEFilename);
             if (!FormattedYM3s.contains(YM3)) {
                 newFilesToRead.add(SHBEFilename);
             }
         }
-        String LastYM3;
+        DW_YM3 LastYM3;
         LastYM3 = getYM3(SHBEFilenames[SHBEFilenames.length - 1]);
-        String NearestYM3ForONSPDFormatLookupLastYM3;
+        DW_YM3 NearestYM3ForONSPDFormatLookupLastYM3;
         NearestYM3ForONSPDFormatLookupLastYM3 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(LastYM3);
         if (newFilesToRead.size() > 0) {
             Iterator<String> ite;
@@ -229,7 +230,7 @@ public class DW_SHBE_Handler extends DW_Object {
         dir = DW_Files.getInputSHBEDir();
         HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
         PostcodeToPostcodeIDLookup = DW_SHBE_Data.getPostcodeToPostcodeIDLookup();
-        HashMap<String, HashMap<DW_ID, AGDT_Point>> PostcodeIDPointLookups;
+        HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>> PostcodeIDPointLookups;
         PostcodeIDPointLookups = DW_SHBE_Data.getPostcodeIDToPointLookups();
         HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
         ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
@@ -244,10 +245,10 @@ public class DW_SHBE_Handler extends DW_Object {
         String SHBEFilename1;
         SHBEFilename1 = SHBEFilenames[SHBEFilenames.length - 1];
         YMN = getYearMonthNumber(SHBEFilename1);
-        String YM31;
+        DW_YM3 YM31;
         YM31 = getYM3(SHBEFilename1);
         System.out.println("YM31 " + YM31);
-        String NearestYM3ForONSPDLookupYM31;
+        DW_YM3 NearestYM3ForONSPDLookupYM31;
         NearestYM3ForONSPDLookupYM31 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM31);
         System.out.println("NearestYM3ForONSPDLookupYM31 " + NearestYM3ForONSPDLookupYM31);
         DW_SHBE_Records DW_SHBE_Records1;
@@ -301,8 +302,8 @@ public class DW_SHBE_Handler extends DW_Object {
         pw2.println("Ref,Year_Month,ClaimRef,Recorded Postcode,Correct Postcode,Input To Academy (Y/N)");
         int ref2 = 1;
 
-        String YM30;
-        String NearestYM3ForONSPDLookupYM30;
+        DW_YM3 YM30;
+        DW_YM3 NearestYM3ForONSPDLookupYM30;
         HashMap<DW_ID, String> ClaimantPostcodesUnmappable0;
         DW_SHBE_Records DW_SHBE_Records0;
         HashMap<DW_ID, DW_SHBE_Record> recs0;
@@ -482,7 +483,7 @@ public class DW_SHBE_Handler extends DW_Object {
         dir = DW_Files.getInputSHBEDir();
         HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
         PostcodeToPostcodeIDLookup = DW_SHBE_Data.getPostcodeToPostcodeIDLookup();
-        HashMap<String, HashMap<DW_ID, AGDT_Point>> PostcodeIDPointLookups;
+        HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>> PostcodeIDPointLookups;
         PostcodeIDPointLookups = DW_SHBE_Data.getPostcodeIDToPointLookups();
         HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
         ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
@@ -497,10 +498,10 @@ public class DW_SHBE_Handler extends DW_Object {
         String SHBEFilename1;
         SHBEFilename1 = SHBEFilenames[SHBEFilenames.length - 1];
         YMN = getYearMonthNumber(SHBEFilename1);
-        String YM31;
+        DW_YM3 YM31;
         YM31 = getYM3(SHBEFilename1);
         System.out.println("YM31 " + YM31);
-        String NearestYM3ForONSPDLookupYM31;
+        DW_YM3 NearestYM3ForONSPDLookupYM31;
         NearestYM3ForONSPDLookupYM31 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM31);
         System.out.println("NearestYM3ForONSPDLookupYM31 " + NearestYM3ForONSPDLookupYM31);
         DW_SHBE_Records DW_SHBE_Records1;
@@ -554,8 +555,8 @@ public class DW_SHBE_Handler extends DW_Object {
         pw2.println("Ref,Year_Month,ClaimRef,Recorded Postcode,Correct Postcode,Input To Academy (Y/N)");
         int ref2 = 1;
 
-        String YM30;
-        String NearestYM3ForONSPDLookupYM30;
+        DW_YM3 YM30;
+        DW_YM3 NearestYM3ForONSPDLookupYM30;
         HashMap<DW_ID, String> ClaimantPostcodesUnmappable0;
         DW_SHBE_Records DW_SHBE_Records0;
         HashMap<DW_ID, DW_SHBE_Record> recs0;
@@ -944,18 +945,18 @@ public class DW_SHBE_Handler extends DW_Object {
         }
     }
 
-    HashMap<Integer, String> indexYM3s;
+    HashMap<Integer, DW_YM3> indexYM3s;
 
     /**
      *
      * @return
      */
-    public HashMap<Integer, String> getIndexYM3s() {
+    public HashMap<Integer, DW_YM3> getIndexYM3s() {
         if (indexYM3s == null) {
-            indexYM3s = new HashMap<Integer, String>();
+            indexYM3s = new HashMap<Integer, DW_YM3>();
             String[] filenames = getSHBEFilenamesAll();
             int i = 0;
-            String yM3;
+            DW_YM3 yM3;
             for (String filename : filenames) {
                 yM3 = getYM3(filename);
                 indexYM3s.put(i, yM3);
@@ -1097,7 +1098,7 @@ public class DW_SHBE_Handler extends DW_Object {
             DW_SHBE_Records DW_SHBE_Records,
             ArrayList<String> HB_CTB,
             ArrayList<String> PTs,
-            String YM30,
+            DW_YM3 YM30,
             DW_UO_Set UOReportSetCouncil,
             DW_UO_Set UOReportSetRSL,
             boolean doUnderOccupancy,
@@ -2333,12 +2334,12 @@ public class DW_SHBE_Handler extends DW_Object {
         return SHBEFilenamesAll;
     }
 
-    private ArrayList<String> YM3All;
+    private ArrayList<DW_YM3> YM3All;
 
-    public ArrayList<String> getYM3All() {
+    public ArrayList<DW_YM3> getYM3All() {
         if (YM3All == null) {
             SHBEFilenamesAll = getSHBEFilenamesAll();
-            YM3All = new ArrayList<String>();
+            YM3All = new ArrayList<DW_YM3>();
             SHBEFilenamesAll = getSHBEFilenamesAll();
             for (String SHBEFilename : SHBEFilenamesAll) {
                 YM3All.add(getYM3(SHBEFilename));
@@ -2393,7 +2394,7 @@ public class DW_SHBE_Handler extends DW_Object {
         int month0Int = 0;
         String month0 = "";
         String m30 = "";
-        String yM30 = "";
+        DW_YM3 yM30 = null;
 
         boolean first = true;
         Iterator<Integer> ite;
@@ -2410,7 +2411,7 @@ public class DW_SHBE_Handler extends DW_Object {
                 startYear = yearInt0;
                 first = false;
             } else {
-                String yM31;
+                DW_YM3 yM31;
                 yM31 = getYM3(tSHBEFilenames[i]);
                 int yearInt;
                 String month;
@@ -2429,7 +2430,7 @@ public class DW_SHBE_Handler extends DW_Object {
 //                        timeSinceStart,
 //                        yearInt0 + " " + m30 + " - " + yearInt + " " + m3);
                 String label;
-                label = yM30 + "-" + yM31;
+                label = yM30.toString() + "-" + yM31.toString();
                 valueLabel.put(
                         timeSinceStart,
                         label);
@@ -2486,7 +2487,7 @@ public class DW_SHBE_Handler extends DW_Object {
         boolean first = true;
         Iterator<Integer> ite;
         ite = include.iterator();
-        String YM3;
+        DW_YM3 YM3;
         int yearInt;
         String month;
         int monthInt;
@@ -2512,7 +2513,7 @@ public class DW_SHBE_Handler extends DW_Object {
                         Generic_Time.getMonthDiff(
                                 startYear, yearInt, startMonth, monthInt));
                 String label;
-                label = YM3;
+                label = YM3.toString();
                 valueLabel.put(
                         timeSinceStart,
                         label);
@@ -2605,17 +2606,17 @@ public class DW_SHBE_Handler extends DW_Object {
         return result;
     }
 
-    public String getYM3(String SHBEFilename) {
+    public DW_YM3 getYM3(String SHBEFilename) {
         return getYM3(SHBEFilename, "_");
     }
 
-    public String getYM3(String SHBEFilename, String separator) {
-        String result;
+    public DW_YM3 getYM3(String SHBEFilename, String separator) {
+        DW_YM3 result;
         String year;
         year = getYear(SHBEFilename);
         String m3;
         m3 = getMonth3(SHBEFilename);
-        result = year + separator + m3;
+        result = new DW_YM3(year + separator + m3);
         return result;
     }
 
@@ -2713,7 +2714,6 @@ public class DW_SHBE_Handler extends DW_Object {
     }
 
     /**
-     * @param PT
      * @param YM3
      * @param doUnderOccupancy
      * @param doCouncil
@@ -2722,7 +2722,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public File getIncomeAndRentSummaryFile(
             //String PT,
-            String YM3,
+            DW_YM3 YM3,
             boolean doUnderOccupancy,
             boolean doCouncil,
             boolean doRSL
@@ -2764,7 +2764,7 @@ public class DW_SHBE_Handler extends DW_Object {
         File dir;
         dir = new File(
                 DW_Files.getGeneratedSHBEDir(),
-                YM3);
+                YM3.toString());
         dir = DW_Files.getUODir(dir, doUnderOccupancy, doCouncil);
         dir.mkdirs();
         result = new File(
@@ -3405,6 +3405,7 @@ public class DW_SHBE_Handler extends DW_Object {
     /**
      *
      * @param S_Record
+     * @param index
      * @return
      */
     public DW_PersonID getDependentPersonID(DW_SHBE_S_Record S_Record, int index) {

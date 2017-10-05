@@ -23,12 +23,16 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 
 /**
  *
  * @author geoagdt
  */
 public class DW_SHBE_TenancyType_Handler extends DW_Object {
+
+    // For convenience
+    DW_Strings ds;
 
     public final int iMinus999 = -999;
     public final int zero = 0;
@@ -69,11 +73,12 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
     public final String sNoTenancy = "No Tenancy";
     public final String sUnknown = "Unknown";
 
-    public DW_SHBE_TenancyType_Handler() {
+    protected DW_SHBE_TenancyType_Handler() {
     }
 
     public DW_SHBE_TenancyType_Handler(DW_Environment env) {
         super(env);
+        ds = env.getDW_Strings();
     }
 
     public String getTenancyTypeName(String tenancyType) {
@@ -230,6 +235,19 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
         return result;
     }
 
+    /**
+     * @return Object[4] result where: result[0] HashMap<Boolean,
+     * TreeMap<String, ArrayList<String>>> = tenancyTypeGroups, the key is
+     * either UO or NotUO, the values have a key which is the name of a type
+     * e.g. "regulated" and the values are the set of all tenancy types in this
+     * group; result[1] HashMap<Boolean, ArrayList<String>> =
+     * tenancyTypesGrouped, the key is either UO or NotUO, the values are all
+     * the codes for the possible respective grouped tenancy types; result[2]
+     * HashMap<Boolean, ArrayList<String>> = regulatedGroups are like result[2],
+     * but only contains the regulated tenancy types; result[3] HashMap<Boolean,
+     * ArrayList<String>> = unregulatedGroups are like result[2], but only
+     * contains the unregulated tenancy types.
+     */
     public Object[] getTenancyTypeGroups() {
         Object[] result;
         result = new Object[4];
@@ -254,14 +272,14 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
         all = getTenancyTypeAll(underOccupied);
         ttgs.put(sall, all);
         regulated = getTenancyTypeRegulated(underOccupied);
-        ttgs.put("regulated", regulated);
+        ttgs.put(ds.sRegulated, regulated);
         unregulated = getTenancyTypeUnregulated();
-        ttgs.put("unregulated", unregulated);
+        ttgs.put(ds.sUnregulated, unregulated);
         tenancyTypeGroups.put(underOccupied, ttgs);
         ttg = new ArrayList<String>();
-        ttg.add("Regulated");
-        ttg.add("Unregulated");
-        ttg.add("Ungrouped");
+        ttg.add(ds.sRegulated);
+        ttg.add(ds.sUnregulated);
+        ttg.add(ds.sUngrouped);
         ttg.add(sMinus999);
         tenancyTypesGrouped.put(underOccupied, ttg);
         rg = getTenancyTypeRegulated(underOccupied);
@@ -273,18 +291,19 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
         all = getTenancyTypeAll(underOccupied);
         ttgs.put(sall, all);
         regulated = getTenancyTypeRegulated(underOccupied);
-        ttgs.put("regulated", regulated);
+        ttgs.put(ds.sRegulated, regulated);
         unregulated = getTenancyTypeUnregulated();
-        ttgs.put("unregulated", unregulated);
+        ttgs.put(ds.sUnregulated, unregulated);
         tenancyTypeGroups.put(underOccupied, ttgs);
         ttg = new ArrayList<String>();
-        ttg.add("Regulated");
-        ttg.add("RegulatedUO");
-        ttg.add("Unregulated");
-        ttg.add("UnregulatedUO");
-        ttg.add("Ungrouped");
-        ttg.add("UngroupedUO");
+        ttg.add(ds.sRegulated);
+        ttg.add(ds.sRegulated + ds.sU);
+        ttg.add(ds.sUnregulated);
+        ttg.add(ds.sUnregulated + ds.sU);
+        ttg.add(ds.sUngrouped);
+        ttg.add(ds.sUngrouped + ds.sU);
         ttg.add(sMinus999);
+        ttg.add(sMinus999 + ds.sU);
         tenancyTypesGrouped.put(underOccupied, ttg);
         rg = getTenancyTypeRegulated(underOccupied);
         regulatedGroups.put(underOccupied, rg);
@@ -294,6 +313,30 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
         result[1] = tenancyTypesGrouped;
         result[2] = regulatedGroups;
         result[3] = unregulatedGroups;
+        return result;
+    }
+    
+    public HashMap<String, String> getTenancyTypeGroupLookup() {
+        HashMap<String, String> result;
+        result = new HashMap<String, String>();
+        result.put(s1, ds.sRegulated);
+        result.put(s2, ds.sRegulated);
+        result.put(s3, ds.sUnregulated);
+        result.put(s4, ds.sRegulated);
+        result.put(s5, ds.sUngrouped);
+        result.put(s6, ds.sUnregulated);
+        result.put(s7, ds.sUngrouped);
+        result.put(s8, ds.sUngrouped);
+        result.put(s9, ds.sUngrouped);
+        result.put(s1 + ds.sU, ds.sRegulated + ds.sU);
+        result.put(s2 + ds.sU, ds.sRegulated + ds.sU);
+        result.put(s3 + ds.sU, ds.sUnregulated + ds.sU);
+        result.put(s4 + ds.sU, ds.sRegulated + ds.sU);
+        result.put(s5 + ds.sU, ds.sUngrouped + ds.sU);
+        result.put(s6 + ds.sU, ds.sUnregulated + ds.sU);
+        result.put(s7 + ds.sU, ds.sUngrouped + ds.sU);
+        result.put(s8 + ds.sU, ds.sUngrouped + ds.sU);
+        result.put(s9 + ds.sU, ds.sUngrouped + ds.sU);
         return result;
     }
 

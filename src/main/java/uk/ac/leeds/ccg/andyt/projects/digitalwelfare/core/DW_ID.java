@@ -21,36 +21,36 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core;
 import java.io.Serializable;
 
 /**
- * A simple class for representing identifiers using an long.
+ * A simple class for representing identifiers using a long.
  *
  * @author geoagdt
  */
-public class DW_ID implements Serializable {
+public class DW_ID implements Serializable, Comparable<Object> {
 
-    protected final int i;
+    protected final long l;
 
     public DW_ID(
             DW_ID ID
     ) {
-        this.i = ID.i;
+        this.l = ID.l;
     }
     
     public DW_ID(
-            int ID
+            long ID
     ) {
-        this.i = ID;
+        this.l = ID;
     }
 
     /**
      * @return the DW_ID
      */
-    public int getID() {
-        return i;
+    public long getID() {
+        return l;
     }
 
     @Override
     public String toString() {
-        return "" + i;
+        return "" + l;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class DW_ID implements Serializable {
             DW_ID o;
             o = (DW_ID) obj;
             if (this.hashCode() == o.hashCode()) {
-                return o.i == i;
+                return o.l == l;
             }
         }
         return false;
@@ -74,8 +74,23 @@ public class DW_ID implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 67 * hash + this.i;
+        hash = 73 * hash + (int) (this.l ^ (this.l >>> 32));
         return hash;
+    }
+    
+    public int compareTo(Object o) {
+        if (o instanceof DW_ID) {
+            DW_ID that;
+            that = (DW_ID) o;
+            if (this.l > that.l) {
+                return 1;
+            } else if (this.l < that.l) {
+                return -1;
+            }
+            return 0;
+        } else {
+            return -1;
+        }
     }
 
 }

@@ -29,7 +29,7 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
     }
 
     @Override
-    public void run() {
+    public void run() throws Exception, Error {
         
         HashSet<DW_ID> Group;
         Group = new HashSet<DW_ID>();

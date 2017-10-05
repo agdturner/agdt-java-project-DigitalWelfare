@@ -36,6 +36,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -185,10 +186,10 @@ public class DW_UO_Handler extends DW_Object {
         methodName = "loadUnderOccupiedReportData()";
         env.logO("<" + methodName + ">", true);
         DW_UO_Data result;
-        TreeMap<String, DW_UO_Set> CouncilSets;
-        CouncilSets = new TreeMap<String, DW_UO_Set>();
-        TreeMap<String, DW_UO_Set> RSLSets;
-        RSLSets = new TreeMap<String, DW_UO_Set>();
+        TreeMap<DW_YM3, DW_UO_Set> CouncilSets;
+        CouncilSets = new TreeMap<DW_YM3, DW_UO_Set>();
+        TreeMap<DW_YM3, DW_UO_Set> RSLSets;
+        RSLSets = new TreeMap<DW_YM3, DW_UO_Set>();
 
         // Look where the generated data should be stored.
         // Look where the input data are.
@@ -196,40 +197,46 @@ public class DW_UO_Handler extends DW_Object {
         // then load and return the cached object.
         String type;
         Object[] filenames = getInputFilenames();
-        TreeMap<String, String> CouncilFilenames;
-        CouncilFilenames = (TreeMap<String, String>) filenames[0];
-        TreeMap<String, String> RSLFilenames;
-        RSLFilenames = (TreeMap<String, String>) filenames[1];
-        String year_Month;
+        TreeMap<DW_YM3, String> CouncilFilenames;
+        CouncilFilenames = (TreeMap<DW_YM3, String>) filenames[0];
+        TreeMap<DW_YM3, String> RSLFilenames;
+        RSLFilenames = (TreeMap<DW_YM3, String>) filenames[1];
+        DW_YM3 YM3;
         String filename;
-        Iterator<String> ite;
+        Iterator<DW_YM3> ite;
         ite = CouncilFilenames.keySet().iterator();
         type = DW_Strings.sCouncil;
         while (ite.hasNext()) {
-            year_Month = ite.next();
-            filename = CouncilFilenames.get(year_Month);
+            YM3 = ite.next();
+            filename = CouncilFilenames.get(YM3);
+            
+            if (filename == null) {
+                int debug = 1;
+                filename = CouncilFilenames.get(YM3);
+            }
+            
             DW_UO_Set set;
             set = new DW_UO_Set(
                     env,
                     type,
                     filename,
-                    year_Month,
+                    YM3,
                     reload);
-            CouncilSets.put(year_Month, set);
+            CouncilSets.put(YM3, set);
         }
         ite = RSLFilenames.keySet().iterator();
         type = DW_Strings.sRSL;
         while (ite.hasNext()) {
-            year_Month = ite.next();
-            filename = RSLFilenames.get(year_Month);
+            YM3 = ite.next();
+            filename = RSLFilenames.get(YM3);
             DW_UO_Set set;
             set = new DW_UO_Set(
                     env,
                     type,
                     filename,
-                    year_Month,
+                    YM3,
                     reload);
-            RSLSets.put(year_Month, set);
+            RSLSets.put(YM3, set);
         }
         result = new DW_UO_Data(env, RSLSets, CouncilSets);
         env.logO("</" + methodName + ">", true);
@@ -282,10 +289,10 @@ public class DW_UO_Handler extends DW_Object {
     public Object[] getInputFilenames() {
         if (inputFilenames == null) {
             inputFilenames = new Object[2];
-            TreeMap<String, String> CouncilFilenames;
-            TreeMap<String, String> RSLFilenames;
-            CouncilFilenames = new TreeMap<String, String>();
-            RSLFilenames = new TreeMap<String, String>();
+            TreeMap<DW_YM3, String> CouncilFilenames;
+            TreeMap<DW_YM3, String> RSLFilenames;
+            CouncilFilenames = new TreeMap<DW_YM3, String>();
+            RSLFilenames = new TreeMap<DW_YM3, String>();
             inputFilenames[0] = CouncilFilenames;
             inputFilenames[1] = RSLFilenames;
 //            String[] list = DW_Files.getInputUnderOccupiedDir().list();
@@ -307,10 +314,10 @@ public class DW_UO_Handler extends DW_Object {
 //                i ++;
 //            }
             CouncilFilenames.put(
-                    "2013_Mar",
+                    new DW_YM3(2013,3),
                     "2013 14 Under Occupied Report For University Year Start Council Tenants.csv");
             RSLFilenames.put(
-                    "2013_Mar",
+                    new DW_YM3(2013,3),
                     "2013 14 Under Occupied Report For University Year Start RSLs.csv");
             String councilEndFilename = " Council Tenants.csv";
             String RSLEndFilename = " RSLs.csv";
@@ -327,6 +334,7 @@ public class DW_UO_Handler extends DW_Object {
                     RSLEndFilename,
                     CouncilFilenames,
                     RSLFilenames,
+                    1,
                     12);
             yearAll = "2014 15";
             putFilenames(
@@ -336,6 +344,7 @@ public class DW_UO_Handler extends DW_Object {
                     RSLEndFilename2,
                     CouncilFilenames,
                     RSLFilenames,
+                    1,
                     12);
             yearAll = "2015 16";
             putFilenames(
@@ -345,6 +354,7 @@ public class DW_UO_Handler extends DW_Object {
                     RSLEndFilename2,
                     CouncilFilenames,
                     RSLFilenames,
+                    1,
                     12);
             yearAll = "2016 17";
             putFilenames(
@@ -354,6 +364,7 @@ public class DW_UO_Handler extends DW_Object {
                     RSLEndFilename2,
                     CouncilFilenames,
                     RSLFilenames,
+                    1,
                     12);
             yearAll = "2017 18";
             putFilenames(
@@ -363,7 +374,8 @@ public class DW_UO_Handler extends DW_Object {
                     RSLEndFilename2,
                     CouncilFilenames,
                     RSLFilenames,
-                    3);// This number needs increasing as there are more datasets....
+                    1,
+                    5);// This number needs increasing as there are more datasets....
         }
         return inputFilenames;
     }
@@ -373,10 +385,11 @@ public class DW_UO_Handler extends DW_Object {
             String underOccupiedReportForUniversityString,
             String councilEndFilename,
             String RSLEndFilename2,
-            TreeMap<String, String> councilFilenames,
-            TreeMap<String, String> registeredSocialLandlordFilenames,
+            TreeMap<DW_YM3, String> CouncilFilenames,
+            TreeMap<DW_YM3, String> RSLFilenames,
+            int minMonth,
             int maxMonth) {
-        for (int i = 1; i <= maxMonth; i++) {
+        for (int i = minMonth; i <= maxMonth; i++) {
             String year = getYear(yearAll, i);
             String month = getMonth3(i);
             String year_Month = year + "_" + month;
@@ -385,11 +398,11 @@ public class DW_UO_Handler extends DW_Object {
 //            String filename;
 //            filename = s + councilEndFilename;
 //            env.getDW_Files().getInputUnderOccupiedDir();
-            councilFilenames.put(
-                    year_Month,
+            CouncilFilenames.put(
+                    new DW_YM3(year_Month),
                     s + councilEndFilename);
-            registeredSocialLandlordFilenames.put(
-                    year_Month,
+            RSLFilenames.put(
+                    new DW_YM3(year_Month),
                     s + RSLEndFilename2);
         }
     }
@@ -454,7 +467,7 @@ public class DW_UO_Handler extends DW_Object {
      */
     public Set<DW_ID> getUOStartApril2013ClaimIDs(
             DW_UO_Data DW_UO_Data) {
-        return DW_UO_Data.getClaimIDsInUO().get("2013_Mar");
+        return DW_UO_Data.getClaimIDsInUO().get(DW_UO_Data.getBaselineYM3());
     }
 
     /**

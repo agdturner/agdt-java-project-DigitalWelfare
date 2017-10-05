@@ -52,6 +52,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Da
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_MapsLCC;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeGroups;
@@ -80,7 +81,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         this.DW_SHBE_Data = env.getDW_SHBE_Data();
     }
 
-    public void run() {
+    public void run() throws Exception, Error {
         ve = new Vector_Environment();
         // If showMapsInJMapPane is true, the maps are presented in individual 
         // JMapPanes
@@ -643,7 +644,7 @@ DW_Shapefile foregroundDW_Shapefile1;
     }
 
     //public void runAll(int resolutionMultiplier) {
-    public void runAll() {
+    public void runAll() throws Exception, Error {
         boolean scaleToFirst = false;
         File dirOut;
         dirOut = new File(
@@ -970,7 +971,7 @@ DW_Shapefile foregroundDW_Shapefile1;
             boolean overlaycommunityAreas,
             String[] SHBEFilenames,
             DW_SHBE_Handler tDW_SHBE_Handler,
-            TreeMap<String, ArrayList<Integer>> includes) {
+            TreeMap<String, ArrayList<Integer>> includes) throws Exception, Error {
 //        // Declare iterators
 //        Iterator<String> claimantTypesIte;
 //        Iterator<String> tenancyTypeIte;
@@ -1020,8 +1021,8 @@ DW_Shapefile foregroundDW_Shapefile1;
 
         DW_UO_Set underOccupiedSetCouncil0 = null;
         DW_UO_Set underOccupiedSetRSL0 = null;
-        TreeMap<String, DW_UO_Set> underOccupiedSetsCouncil = null;
-        TreeMap<String, DW_UO_Set> underOccupiedSetsRSL = null;
+        TreeMap<DW_YM3, DW_UO_Set> underOccupiedSetsCouncil = null;
+        TreeMap<DW_YM3, DW_UO_Set> underOccupiedSetsRSL = null;
         if (doUnderOccupied) {
             if (doCouncil) {
                 underOccupiedSetsCouncil = DW_UO_Data.getCouncilUOSets();
@@ -1038,9 +1039,9 @@ DW_Shapefile foregroundDW_Shapefile1;
         Iterator<Integer> ite;
         int i;
         boolean initialised;
-        String yM30;
+        DW_YM3 yM30;
         DW_SHBE_Records recs0;
-        String yM300;
+        DW_YM3 yM300;
 
         Iterator<String> ites;
         ites = tenancyTypeGroups.keySet().iterator();
@@ -1125,7 +1126,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                     DW_SHBE_Records SHBEData1;
                     SHBEData1 = DW_SHBE_Data.getDW_SHBE_Records(yM30);
 
-                    String yM31;
+                    DW_YM3 yM31;
                     yM31 = tDW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                     // Init underOccupiedSets
                     DW_UO_Set underOccupiedSetCouncil1 = null;
@@ -1196,7 +1197,7 @@ DW_Shapefile foregroundDW_Shapefile1;
     protected Grids_Grid2DSquareCellDouble doDensity(
             ArrayList<String> TTs,
             File dirOut,
-            String yM3,
+            DW_YM3 yM3,
             DW_SHBE_Records SHBEData,
             DW_UO_Data DW_UO_Data,
             boolean doUnderOccupied,
@@ -1208,7 +1209,7 @@ DW_Shapefile foregroundDW_Shapefile1;
 
         File dirOut2 = new File(
                 dirOut,
-                yM3);
+                yM3.toString());
         
         DW_MapsLCC.getStyleParameters().setnClasses(9);
         DW_MapsLCC.getStyleParameters().setPaletteName2(null);
@@ -1224,7 +1225,7 @@ DW_Shapefile foregroundDW_Shapefile1;
         grid.mkdirs();
         Grids_Grid2DSquareCellDouble g0 = initiliseGrid(grid);
 
-        TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> lookups;
+        TreeMap<String, TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>> lookups;
         lookups = DW_MapsLCC.getONSPDlookups(env);
         TreeMap<String, AGDT_Point> lookup;
         lookup = lookups.get("Unit").get(DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));

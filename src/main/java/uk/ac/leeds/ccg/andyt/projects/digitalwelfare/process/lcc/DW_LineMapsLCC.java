@@ -43,6 +43,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Sh
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_StyleParameters;
 
 /**
@@ -588,20 +589,20 @@ public class DW_LineMapsLCC extends DW_Maps {
         return result;
     }
 
-    protected TreeMap<String, ArrayList<String>> getYM3s(
+    protected TreeMap<String, ArrayList<DW_YM3>> getYM3s(
             ArrayList<Integer> includes) {
-        TreeMap<String, ArrayList<String>> result;
-        result = new TreeMap<String, ArrayList<String>>();
+        TreeMap<String, ArrayList<DW_YM3>> result;
+        result = new TreeMap<String, ArrayList<DW_YM3>>();
         DW_SHBE_Handler tDW_SHBE_Handler;
         tDW_SHBE_Handler = env.getDW_SHBE_Handler();
         String[] tSHBEFilenamesAll;
         tSHBEFilenamesAll = tDW_SHBE_Handler.getSHBEFilenamesAll();
-        ArrayList<String> yMs;
+        ArrayList<DW_YM3> yMs;
         // All
         Iterator<Integer> includesIte;
         includesIte = includes.iterator();
-        yMs = new ArrayList<String>();
-        String yM3 = "";
+        yMs = new ArrayList<DW_YM3>();
+        DW_YM3 yM3 = null;
         boolean first = true;
         String name = "";
         int i;
@@ -609,7 +610,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             i = includesIte.next();
             yM3 = tDW_SHBE_Handler.getYM3(tSHBEFilenamesAll[i]);
             if (first) {
-                name = yM3;
+                name = yM3.toString();
                 first = false;
             }
             yMs.add(yM3);
@@ -620,11 +621,11 @@ public class DW_LineMapsLCC extends DW_Maps {
         // Individual
         includesIte = includes.iterator();
         i = includesIte.next();
-        String yM30 = tDW_SHBE_Handler.getYM3(tSHBEFilenamesAll[i]);
+        DW_YM3 yM30 = tDW_SHBE_Handler.getYM3(tSHBEFilenamesAll[i]);
         while (includesIte.hasNext()) {
             i = includesIte.next();
-            yMs = new ArrayList<String>();
-            String yM31;
+            yMs = new ArrayList<DW_YM3>();
+            DW_YM3 yM31;
             yM31 = tDW_SHBE_Handler.getYM3(tSHBEFilenamesAll[i]);
             yMs.add(yM30);
             yMs.add(yM31);
@@ -635,9 +636,9 @@ public class DW_LineMapsLCC extends DW_Maps {
         return result;
     }
 
-    public void run2(
+    public void run2 (
             boolean doUnderOccupancy,
-            boolean doCouncil) {
+            boolean doCouncil) throws Exception, Error {
         String filename;
         //filename = "PostcodeChanges_Start_2008April_End_2008October.csv";
         File dirIn = new File(
@@ -693,7 +694,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         //includes = DW_SHBE_Handler.getSHBEFilenameIndexesExcept34();
         includes = env.getDW_SHBE_Handler().getSHBEFilenameIndexes();
 
-        TreeMap<String, ArrayList<String>> yM3s;
+        TreeMap<String, ArrayList<DW_YM3>> yM3s;
         yM3s = getYM3s(includes);
 
         ArrayList<ArrayList<String>> allTenancyTypeChanges;
@@ -705,15 +706,15 @@ public class DW_LineMapsLCC extends DW_Maps {
             String name;
             name = yM3sIte.next();
             System.out.println(name);
-            ArrayList<String> yMs;
+            ArrayList<DW_YM3> yMs;
             yMs = yM3s.get(name);
             ArrayList<String> lines;
             lines = new ArrayList<String>();
-            Iterator<String> yMsIte;
+            Iterator<DW_YM3> yMsIte;
             yMsIte = yMs.iterator();
-            String yM0 = yMsIte.next();
+            DW_YM3 yM0 = yMsIte.next();
             while (yMsIte.hasNext()) {
-                String yM1;
+                DW_YM3 yM1;
                 yM1 = yMsIte.next();
                 filename = "PostcodeChanges_Start_" + yM0 + "_End_" + yM1 + ".csv";
                 File f;
@@ -766,7 +767,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         }
     }
 
-    public void run() throws Exception {
+    public void run() throws Exception, Error {
         // If showMapsInJMapPane == true then resulting maps are displayed on 
         // screen in a JMapPane otherwise maps are only written to file.
 //        showMapsInJMapPane = true;
@@ -839,7 +840,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                     ArrayList<Integer> include;
                     include = includes.get(includeName);
 
-                    TreeMap<String, ArrayList<String>> yM3s;
+                    TreeMap<String, ArrayList<DW_YM3>> yM3s;
                     yM3s = getYM3s(include);
                     // Postcode And Tenancy Type
                     if (true) {
@@ -1407,7 +1408,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 //                "LSOA", targetPropertyNameLSOA, getShapefileDataStoreFactory());
 //    }
     public void postcodeMaps(
-            TreeMap<String, ArrayList<String>> yearMonths,
+            TreeMap<String, ArrayList<DW_YM3>> yearMonths,
             String includeName,
             ArrayList<Integer> include,
             ArrayList<ArrayList<String>> allTenancyTypeChanges,
@@ -1508,17 +1509,17 @@ public class DW_LineMapsLCC extends DW_Maps {
             if (name.equalsIgnoreCase("2013_April_TO_2015_September")) {
 
                 System.out.println(name);
-                ArrayList<String> yMs;
+                ArrayList<DW_YM3> yMs;
                 yMs = yearMonths.get(name);
                 ArrayList<String> lines;
                 lines = new ArrayList<String>();
-                Iterator<String> yMsIte;
+                Iterator<DW_YM3> yMsIte;
                 yMsIte = yMs.iterator();
-                String yM30 = yMsIte.next();
-                String yM30Start = yM30;
-                String yM30End;
+                DW_YM3 yM30 = yMsIte.next();
+                DW_YM3 yM30Start = yM30;
+                DW_YM3 yM30End;
                 while (yMsIte.hasNext()) {
-                    String yM31;
+                    DW_YM3 yM31;
                     yM31 = yMsIte.next();
                     String filename;
                     filename = "PostcodeChanges_Start_" + yM30 + "_End_" + yM31 + ".csv";
@@ -1585,13 +1586,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                             String[] lineSplit;
                             lineSplit = line.split(",");
                             //String yM30;
-                            yM30 = lineSplit[1].trim();
-                            String yM31;
-                            yM31 = lineSplit[2].trim();
+                            yM30 = new DW_YM3(lineSplit[1].trim());
+                            DW_YM3 yM31;
+                            yM31 = new DW_YM3(lineSplit[2].trim());
                             String tenancyTypeChange;
-                            String yM30v;
+                            DW_YM3 yM30v;
                             yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-                            String yM31v;
+                            DW_YM3 yM31v;
                             yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                             tenancyTypeChange = lineSplit[3].trim();
                             if (tenancyTypeChanges.contains(tenancyTypeChange)) {
@@ -1720,7 +1721,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                             }
                         }
                         String dates;
-                        dates = getDatesString(yM30Start, yM30End);
+                        dates = getDatesString(yM30Start.toString(), yM30End.toString());
                         String legendMessage;
                         legendMessage = dates + " Count " + count;
                         System.out.println("line count = " + count);
@@ -1835,7 +1836,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     public void postcodeMaps(
             String paymentType,
-            TreeMap<String, ArrayList<String>> yearMonths,
+            TreeMap<String, ArrayList<DW_YM3>> yearMonths,
             String includeName,
             ArrayList<Integer> include,
             ArrayList<ArrayList<String>> allTenancyTypeChanges,
@@ -1992,17 +1993,17 @@ public class DW_LineMapsLCC extends DW_Maps {
             String name;
             name = yearMonthsIte.next();
             System.out.println(name);
-            ArrayList<String> yM3s;
+            ArrayList<DW_YM3> yM3s;
             yM3s = yearMonths.get(name);
             ArrayList<String> lines;
             lines = new ArrayList<String>();
-            Iterator<String> yMsIte;
+            Iterator<DW_YM3> yMsIte;
             yMsIte = yM3s.iterator();
-            String yM30 = yMsIte.next();
-            String yM30Start = yM30;
-            String yM30End;
+            DW_YM3 yM30 = yMsIte.next();
+            DW_YM3 yM30Start = yM30;
+            DW_YM3 yM30End;
             while (yMsIte.hasNext()) {
-                String yM31;
+                DW_YM3 yM31;
                 yM31 = yMsIte.next();
                 String filename = "PostcodeChanges_Start_" + yM30 + "_End_" + yM31 + ".csv";
                 File f;
@@ -2076,12 +2077,12 @@ public class DW_LineMapsLCC extends DW_Maps {
                         line = linesIte.next();
                         String[] lineSplit;
                         lineSplit = line.split(",");
-                        yM30 = lineSplit[1].trim();
-                        String yM31;
-                        yM31 = lineSplit[2].trim();
-                        String yM30v;
+                        yM30 = new DW_YM3(lineSplit[1].trim());
+                        DW_YM3 yM31;
+                        yM31 = new DW_YM3(lineSplit[2].trim());
+                        DW_YM3 yM30v;
                         yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-                        String yM31v;
+                        DW_YM3 yM31v;
                         yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
@@ -2219,7 +2220,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                         }
                     }
                     String dates;
-                    dates = getDatesString(yM30Start, yM30End);
+                    dates = getDatesString(yM30Start.toString(), yM30End.toString());
                     String legendMessage;
                     legendMessage = dates + " Count " + count;
                     System.out.println("line count = " + count);
@@ -2319,7 +2320,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     public void postcodeMaps(
             String paymentType,
-            TreeMap<String, ArrayList<String>> yearMonths,
+            TreeMap<String, ArrayList<DW_YM3>> yearMonths,
             String includeName,
             ArrayList<Integer> include,
             ArrayList<ArrayList<String>> allTenancyTypeChanges,
@@ -2526,17 +2527,17 @@ public class DW_LineMapsLCC extends DW_Maps {
             String name;
             name = yearMonthsIte.next();
             System.out.println(name);
-            ArrayList<String> yM3s;
+            ArrayList<DW_YM3> yM3s;
             yM3s = yearMonths.get(name);
             ArrayList<String> lines;
             lines = new ArrayList<String>();
-            Iterator<String> yMsIte;
+            Iterator<DW_YM3> yMsIte;
             yMsIte = yM3s.iterator();
-            String yM30 = yMsIte.next();
-            String yM30Start = yM30;
-            String yM30End;
+            DW_YM3 yM30 = yMsIte.next();
+            DW_YM3 yM30Start = yM30;
+            DW_YM3 yM30End;
             while (yMsIte.hasNext()) {
-                String yM31;
+                DW_YM3 yM31;
                 yM31 = yMsIte.next();
                 String filename = "PostcodeChanges_Start_" + yM30 + "_End_" + yM31 + ".csv";
                 File f;
@@ -2626,12 +2627,12 @@ public class DW_LineMapsLCC extends DW_Maps {
                         line = linesIte.next();
                         String[] lineSplit;
                         lineSplit = line.split(",");
-                        yM30 = lineSplit[1].trim();
-                        String yM31;
-                        yM31 = lineSplit[2].trim();
-                        String yM30v;
+                        yM30 = new DW_YM3(lineSplit[1].trim());
+                        DW_YM3 yM31;
+                        yM31 = new DW_YM3(lineSplit[2].trim());
+                        DW_YM3 yM30v;
                         yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-                        String yM31v;
+                        DW_YM3 yM31v;
                         yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
@@ -2761,7 +2762,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                         }
                     }
                     String dates;
-                    dates = getDatesString(yM30Start, yM30End);
+                    dates = getDatesString(yM30Start.toString(), yM30End.toString());
                     String legendMessage;
                     legendMessage = dates + " Count " + count;
                     System.out.println("line count = " + count);
@@ -2877,7 +2878,7 @@ public class DW_LineMapsLCC extends DW_Maps {
      */
     public void postcodeMaps(
             String paymentType,
-            TreeMap<String, ArrayList<String>> yearMonths,
+            TreeMap<String, ArrayList<DW_YM3>> yearMonths,
             String includeName,
             ArrayList<Integer> include,
             ArrayList<ArrayList<String>> allTenancyTypeGroups,
@@ -2972,17 +2973,17 @@ public class DW_LineMapsLCC extends DW_Maps {
             String name;
             name = yearMonthsIte.next();
             System.out.println(name);
-            ArrayList<String> yM3s;
+            ArrayList<DW_YM3> yM3s;
             yM3s = yearMonths.get(name);
             ArrayList<String> lines;
             lines = new ArrayList<String>();
-            Iterator<String> yMsIte;
+            Iterator<DW_YM3> yMsIte;
             yMsIte = yM3s.iterator();
-            String yM30 = yMsIte.next();
-            String yM30Start = yM30;
-            String yM30End;
+            DW_YM3 yM30 = yMsIte.next();
+            DW_YM3 yM30Start = yM30;
+            DW_YM3 yM30End;
             while (yMsIte.hasNext()) {
-                String yM31;
+                DW_YM3 yM31;
                 yM31 = yMsIte.next();
                 String filename = "PostcodeChanges_Start_" + yM30 + "_End_" + yM31 + ".csv";
                 File f;
@@ -3054,12 +3055,12 @@ public class DW_LineMapsLCC extends DW_Maps {
                         line = linesIte.next();
                         String[] lineSplit;
                         lineSplit = line.split(",");
-                        yM30 = lineSplit[1].trim();
-                        String yM31;
-                        yM31 = lineSplit[2].trim();
-                        String yM30v;
+                        yM30 = new DW_YM3(lineSplit[1].trim());
+                        DW_YM3 yM31;
+                        yM31 = new DW_YM3(lineSplit[2].trim());
+                        DW_YM3 yM30v;
                         yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-                        String yM31v;
+                        DW_YM3 yM31v;
                         yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
@@ -3189,7 +3190,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                         }
                     }
                     String dates;
-                    dates = getDatesString(yM30Start, yM30End);
+                    dates = getDatesString(yM30Start.toString(), yM30End.toString());
                     String legendMessage;
                     legendMessage = dates + " Count " + count;
                     System.out.println("line count = " + count);

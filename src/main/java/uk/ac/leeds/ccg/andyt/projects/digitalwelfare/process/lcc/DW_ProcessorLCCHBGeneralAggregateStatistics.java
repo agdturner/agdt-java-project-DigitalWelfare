@@ -21,6 +21,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  * This is the main class for the Digital Welfare Project. For more details of
@@ -55,7 +56,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
     }
 
     @Override
-    public void run() {
+    public void run() throws Exception, Error {
         // Declaration
         ArrayList<String> levels;
         TreeMap<String, ArrayList<Integer>> includes;
@@ -82,7 +83,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         File outDir1;
         File outDir2;
         File outFile;
-        String YM3;
+        DW_YM3 YM3;
         PrintWriter outPW;
         String PT;
 
@@ -113,10 +114,10 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                 DW_Files.getOutputSHBETablesDir(),
                 DW_Strings.sHBGeneralAggregateStatistics);
         // Load UOdata
-        TreeMap<String, DW_UO_Set> CouncilUOSets;
+        TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
         DW_UO_Set CouncilUOSet;
         HashMap<DW_ID, DW_UO_Record> CouncilUOMap = null;
-        TreeMap<String, DW_UO_Set> RSLUOSets;
+        TreeMap<DW_YM3, DW_UO_Set> RSLUOSets;
         DW_UO_Set RSLUOSet;
         HashMap<DW_ID, DW_UO_Record> RSLUOMap = null;
         CouncilUOSets = DW_UO_Data.getCouncilUOSets();

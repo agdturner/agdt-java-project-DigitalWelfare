@@ -28,6 +28,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyTy
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  * Class for aggregating data.
@@ -92,7 +93,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     }
 
     @Override
-    public void run() {
+    public void run() throws Exception, Error {
         SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
         // Declaration
         ArrayList<String> PTs;
@@ -184,7 +185,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         doHBGeneralAggregateStatistics = true;
 
         if (doAggregation) {
-            String YM3;
+            DW_YM3 YM3;
 //            for (int i = 0; i < SHBEFilenames.length; i++) {
 //                YM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
             for (String SHBEFilename : SHBEFilenames) {
@@ -233,7 +234,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
      * @param includes
      */
     protected void aggregate(
-            String YM3,
+            DW_YM3 YM3,
             ArrayList<String> PTs,
             ArrayList<String> levels,
             ArrayList<Boolean> bArray,
@@ -534,7 +535,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     }
 
     protected HashMap<DW_ID, Integer> loadClaimIDToTTLookup(
-            String YM3,
+            DW_YM3 YM3,
             Integer key,
             HashMap<Integer, HashMap<DW_ID, Integer>> ClaimIDToTTLookups) {
         HashMap<DW_ID, Integer> result;
@@ -560,7 +561,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     }
 
     protected HashMap<DW_ID, DW_ID> loadClaimIDToPostcodeIDLookup(
-            String YM3,
+            DW_YM3 YM3,
             Integer key,
             HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimIDToPostcodeIDLookups) {
         HashMap<DW_ID, DW_ID> result;
@@ -681,8 +682,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 doCouncil,
                 doRSL);
         // Init underOccupiedSets
-        TreeMap<String, DW_UO_Set> councilUnderOccupiedSets = null;
-        TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets = null;
+        TreeMap<DW_YM3, DW_UO_Set> councilUnderOccupiedSets = null;
+        TreeMap<DW_YM3, DW_UO_Set> RSLUnderOccupiedSets = null;
         if (doUnderOccupied) {
             if (doCouncil) {
                 councilUnderOccupiedSets = DW_UO_Data.getCouncilUOSets();
@@ -710,11 +711,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             int i;
             i = includeIte.next();
             // Load first data
-            String YM30;
+            DW_YM3 YM30;
             YM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
             DW_SHBE_Records recs0;
             recs0 = env.getDW_SHBE_Data().getDW_SHBE_Records(YM30);
-            String YM30v;
+            DW_YM3 YM30v;
             YM30v = recs0.getNearestYM3ForONSPDLookup();
             HashMap<DW_ID, DW_SHBE_Record> records0;
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>> claimantTypeTenureLevelTypeAreaCounts;
@@ -945,11 +946,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             }
 
             // Get Top 10 areas
-            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>> yearMonthClaimantTypeTenureLevelTypeCountAreas;
-            yearMonthClaimantTypeTenureLevelTypeCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>>();
+            TreeMap<DW_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>> yearMonthClaimantTypeTenureLevelTypeCountAreas;
+            yearMonthClaimantTypeTenureLevelTypeCountAreas = new TreeMap<DW_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>>();
 
-            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>> yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas;
-            yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>>();
+            TreeMap<DW_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>> yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas;
+            yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas = new TreeMap<DW_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>>();
 
             // Initialise tIDIndexes
             ArrayList<ArrayList<DW_ID>> tIDIndexes;
@@ -963,7 +964,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             while (includeIte.hasNext()) {
                 i = includeIte.next();
                 // Set Year and Month variables
-                String YM31 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                DW_YM3 YM31 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                 // Load next data
                 DW_SHBE_Records recs1;
                 recs1 = env.getDW_SHBE_Data().getDW_SHBE_Records(YM31);
@@ -971,7 +972,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 ClaimIDToPostcodeIDLookup1 = null;//recs1.getClaimDW_IDToPostcodeLookup();
                 HashMap<DW_ID, Integer> ClaimIDToTTLookup1;
                 ClaimIDToTTLookup1 = null;//recs1.getClaimantIDToTenancyTypeLookup();
-                String YM31v;
+                DW_YM3 YM31v;
                 YM31v = recs1.getNearestYM3ForONSPDLookup();
 //            String yearMonth = year + month;
 //            String lastMonth_yearMonth;
@@ -1605,7 +1606,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     protected TreeMap<Integer, TreeSet<String>> writeResults(
             TreeMap<String, Integer> areaCounts,
             TreeMap<Integer, TreeSet<String>> YM31CountAreas,
-            String YM31,
+            DW_YM3 YM31,
             TreeMap<Integer, Integer> TTCounts,
             String level,
             File dir) {
@@ -1636,7 +1637,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             TreeMap<Integer, Integer> TTCounts,
             String level,
             File dir,
-            String YM3) {
+            DW_YM3 YM3) {
         if (areaCounts.size() > 0) {
             int num = 5;
             TreeMap<Integer, TreeSet<String>> result;
@@ -1669,7 +1670,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             String YM30,
             int num,
             File dir,
-            String YM31) {
+            DW_YM3 YM31) {
         if (lastTimeCountAreas != null) {
             TreeMap<String, Integer> areaCounts;
             areaCounts = getAreaCounts(countAreas);
@@ -1771,7 +1772,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             String YM30,
             int num,
             File dir,
-            String YM31) {
+            DW_YM3 YM31) {
         if (diffsAreas.size() > 0) {
             PrintWriter pw;
             String type;
@@ -1907,7 +1908,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             TreeMap<Integer, TreeSet<String>> countAreas,
             int num,
             File dir,
-            String YM3) {
+            DW_YM3 YM3) {
         if (countAreas.size() > 0) {
             PrintWriter pw;
             pw = init_OutputTextFilePrintWriter(
@@ -1952,7 +1953,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             TreeMap<String, Integer> areaCounts,
             String level,
             File dir,
-            String YM3) {
+            DW_YM3 YM3) {
         if (areaCounts.size() > 0) {
             TreeMap<Integer, TreeSet<String>> result;
             result = new TreeMap<Integer, TreeSet<String>>();
@@ -1995,7 +1996,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     private void writeCountsByTenure(
             TreeMap<Integer, Integer> TTCounts,
             File dir,
-            String YM3) {
+            DW_YM3 YM3) {
         if (TTCounts.size() > 0) {
             PrintWriter pw;
             pw = init_OutputTextFilePrintWriter(

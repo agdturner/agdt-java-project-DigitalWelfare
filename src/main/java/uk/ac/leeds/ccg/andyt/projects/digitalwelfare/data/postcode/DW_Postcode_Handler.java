@@ -34,6 +34,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 
 /**
@@ -52,8 +53,8 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
     public final String TYPE_AREA = "Area";
 
     public double getDistanceBetweenPostcodes(
-            String yM30v,
-            String yM31v,
+            DW_YM3 yM30v,
+            DW_YM3 yM31v,
             DW_ID PostcodeID0,
             DW_ID PostcodeID1) {
         double result = 0.0d;
@@ -85,8 +86,8 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
     }
 
     public double getDistanceBetweenPostcodes(
-            String yM30v,
-            String yM31v,
+            DW_YM3 yM30v,
+            DW_YM3 yM31v,
             String postcode0,
             String postcode1) {
         double result = 0.0d;
@@ -138,7 +139,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
      * @return
      */
     public AGDT_Point getPointFromPostcode(
-            String nearestYM3ForONSPDLookup,
+            DW_YM3 nearestYM3ForONSPDLookup,
             String level,
             String postcode) {
         AGDT_Point result;
@@ -156,13 +157,13 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
      * @return
      */
     public AGDT_Point getPointFromPostcodeNew(
-            String NearestYM3ForONSPDLookup,
+            DW_YM3 NearestYM3ForONSPDLookup,
             String level,
             String PostcodeF) {
         AGDT_Point result;
-        TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> ONSPDlookups;
+        TreeMap<String, TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>> ONSPDlookups;
         ONSPDlookups = DW_Maps.getONSPDlookups(env);
-        TreeMap<String, TreeMap<String, AGDT_Point>> ONSPDlookupsLevel;
+        TreeMap<DW_YM3, TreeMap<String, AGDT_Point>> ONSPDlookupsLevel;
         ONSPDlookupsLevel = ONSPDlookups.get(level);
         TreeMap<String, AGDT_Point> ONSPDlookupsLevelForNearestYM3ForONSPDLookup;
         ONSPDlookupsLevelForNearestYM3ForONSPDLookup = ONSPDlookupsLevel.get(NearestYM3ForONSPDLookup);
@@ -181,74 +182,55 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
      * @param YM3
      * @return
      */
-    public static String getNearestYM3ForONSPDLookup(String YM3) {
-        String defaultLatest = "2017_MAY";//"2016_NOV";
-        String[] split;
-        split = YM3.split("_");
-        String year = split[0];
-        int yearint = Integer.valueOf(year);
-        String month = split[1];
-        if (yearint > 2016) {
-            if (month.equalsIgnoreCase("JAN")
-                    || month.equalsIgnoreCase("FEB")) {
-                return "" + yearint + "_FEB";
+    public static DW_YM3 getNearestYM3ForONSPDLookup(DW_YM3 YM3) {
+        DW_YM3 defaultLatest = new DW_YM3(2017, 5);
+        int year = YM3.getYear();
+        int month = YM3.getMonth();
+        if (year > 2016) {
+            if (month == 1 || month == 2) {
+                return new DW_YM3(year, 2);
             }
             return defaultLatest;
-        } else if (yearint < 2008) {
-            return "2008_FEB";
-        } else if (yearint == 2011) {
-            // There was no realease in Feb!
-            if (month.equalsIgnoreCase("JAN")
-                    || month.equalsIgnoreCase("FEB")
-                    || month.equalsIgnoreCase("MAR")
-                    || month.equalsIgnoreCase("APR")
-                    || month.equalsIgnoreCase("MAY")) {
-                return "2011_MAY";
-            } else if (month.equalsIgnoreCase("JUN")
-                    || month.equalsIgnoreCase("JUL")
-                    || month.equalsIgnoreCase("AUG")) {
-                return "2011_AUG";
-            } else if (month.equalsIgnoreCase("SEP")
-                    || month.equalsIgnoreCase("OCT")
-                    || month.equalsIgnoreCase("NOV")) {
-                return "2011_NOV";
+        } else if (year < 2008) {
+            return new DW_YM3(2017, 2);
+        } else if (year == 2011) {
+            // There was no realease in February!
+            if (month < 6) {
+                return new DW_YM3(2011, 5);
+            } else if (month < 9 ) {
+                return new DW_YM3(2011, 8);
+            } else if (month < 12) {
+                return new DW_YM3(2011, 11);
             } else {
-                return "2011_FEB";
+                return new DW_YM3(2012, 2);
             }
         } else {
-            if (month.equalsIgnoreCase("JAN")
-                    || month.equalsIgnoreCase("FEB")) {
-                return "" + yearint + "_FEB";
-            } else if (month.equalsIgnoreCase("MAR")
-                    || month.equalsIgnoreCase("APR")
-                    || month.equalsIgnoreCase("MAY")) {
-                return "" + yearint + "_MAY";
-            } else if (month.equalsIgnoreCase("JUN")
-                    || month.equalsIgnoreCase("JUL")
-                    || month.equalsIgnoreCase("AUG")) {
-                return "" + yearint + "_AUG";
-            } else if (month.equalsIgnoreCase("SEP")
-                    || month.equalsIgnoreCase("OCT")
-                    || month.equalsIgnoreCase("NOV")) {
-                return "" + yearint + "_NOV";
+            if (month < 3) {
+                return new DW_YM3(year, 2);
+            } else if (month < 6) {
+                return new DW_YM3(year, 5);
+            } else if (month < 9) {
+                return new DW_YM3(year, 8);
+            } else if (month < 12) {
+                return new DW_YM3(year, 11);
             } else {
-                if (yearint == 2010) {
-                    return "2011_MAY";
+                if (year == 2010) {
+                    return new DW_YM3(2011, 5);
                 } else {
-                    if (yearint == 2016) {
+                    if (year == 2016) {
                         return defaultLatest;
                     } else {
-                        return "" + (yearint + 1) + "_FEB";
+                        return new DW_YM3(year + 1, 2);
                     }
                 }
             }
         }
     }
 
-    public String getDefaultYM3() {
-        return "2013_AUG";
+    public DW_YM3 getDefaultYM3() {
+        return new DW_YM3(2013, 8);
     }
-
+    
     /**
      * Return postcodef with a space added between the first and second parts if
      * it is long enough.
@@ -337,7 +319,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
      */
     public TreeMap<String, AGDT_Point> postcodeToPoints(
             TreeMap<String, String> input,
-            String yM3v) {
+            DW_YM3 yM3v) {
         TreeMap<String, AGDT_Point> result;
         result = new TreeMap<String, AGDT_Point>();
         Iterator<String> ite_String = input.keySet().iterator();
@@ -431,20 +413,20 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         //new DW_Postcode_Handler(inputFile, processedFile).run3();
     }
 
-    public TreeMap<String, TreeMap<String, AGDT_Point>> getPostcodeUnitPointLookups(
+    public TreeMap<DW_YM3, TreeMap<String, AGDT_Point>> getPostcodeUnitPointLookups(
             boolean ignorePointsAtOrigin,
-            TreeMap<String, File> ONSPDFiles,
+            TreeMap<DW_YM3, File> ONSPDFiles,
             String processedFilename) {
-        TreeMap<String, TreeMap<String, AGDT_Point>> result;
-        result = new TreeMap<String, TreeMap<String, AGDT_Point>>();
-        Iterator<String> ite;
+        TreeMap<DW_YM3, TreeMap<String, AGDT_Point>> result;
+        result = new TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>();
+        Iterator<DW_YM3> ite;
         ite = ONSPDFiles.keySet().iterator();
         while (ite.hasNext()) {
-            String YM3;
+            DW_YM3 YM3;
             YM3 = ite.next();
             File outDir = new File(
                     env.getDW_Files().getGeneratedONSPDDir(),
-                    YM3);
+                    YM3.toString());
             File outFile = new File(
                     outDir,
                     processedFilename);
@@ -502,7 +484,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             File outFile,
             String level,
             int CensusYear,
-            String YM3NearestFormat
+            DW_YM3 YM3NearestFormat
     ) {
         // Read NPD into a lookup
         TreeMap<String, String> lookup;
@@ -569,9 +551,9 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
     public void run(File logDir) {
         String processedFilename = getDefaultLookupFilename();
         boolean ignorePointsAtOrigin = true;
-        TreeMap<String, File> InputONSPDFiles;
+        TreeMap<DW_YM3, File> InputONSPDFiles;
         InputONSPDFiles = DW_Files.getInputONSPDFiles();
-        TreeMap<String, TreeMap<String, AGDT_Point>> postcodeUnitPointLookups;
+        TreeMap<DW_YM3, TreeMap<String, AGDT_Point>> postcodeUnitPointLookups;
         postcodeUnitPointLookups = getPostcodeUnitPointLookups(
                 ignorePointsAtOrigin,
                 InputONSPDFiles,
@@ -900,16 +882,16 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
      * @return True iff Postcode is a valid Postcode.
      */
     public boolean isMappablePostcode(
-            String NearestYM3ForONSPDLookup,
+            DW_YM3 NearestYM3ForONSPDLookup,
             String PostcodeF) {
         if (PostcodeF == null) {
             return false;
         }
         if (PostcodeF.length() > 5) {
             boolean isMappablePostcode;
-            TreeMap<String, TreeMap<String, TreeMap<String, AGDT_Point>>> ONSPDLookups;
+            TreeMap<String, TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>> ONSPDLookups;
             ONSPDLookups = DW_Maps.getONSPDlookups(env);
-            TreeMap<String, TreeMap<String, AGDT_Point>> ONSPDLookupUnitPostcode;
+            TreeMap<DW_YM3, TreeMap<String, AGDT_Point>> ONSPDLookupUnitPostcode;
             ONSPDLookupUnitPostcode = ONSPDLookups.get(TYPE_UNIT);
             TreeMap<String, AGDT_Point> ONSPDLookupUnitPostcodeNearestYM3;
             ONSPDLookupUnitPostcodeNearestYM3 = ONSPDLookupUnitPostcode.get(NearestYM3ForONSPDLookup);
@@ -1158,11 +1140,9 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             File file,
             String level,
             int censusYear,
-            String YM3NearestFormat) {
-        String[] YM3NearestSplit;
-        YM3NearestSplit = YM3NearestFormat.split(DW_Strings.sUnderscore);
-        int year = Integer.valueOf(YM3NearestSplit[0]);
-        int month = Integer.valueOf(Generic_Time.getMonthNumber(YM3NearestSplit[1]));
+            DW_YM3 YM3NearestFormat) {
+        int year = YM3NearestFormat.getYear();
+        int month = YM3NearestFormat.getMonth();
         env.log("year " + year + " month " + month);
         TreeMap<String, String> result = new TreeMap<String, String>();
         try {

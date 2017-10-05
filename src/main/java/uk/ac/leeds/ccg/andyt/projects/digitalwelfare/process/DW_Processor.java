@@ -18,8 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc.*;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc.DW_ProcessorLCC;
 
 /**
  *
@@ -85,7 +85,7 @@ public class DW_Processor extends DW_ProcessorAbstract {
      *
      * @throws Exception
      */
-    public void run() throws Exception {
+    public void run() throws Exception, Error {
         /**
          * Run Advice Leeds processing
          */
@@ -93,9 +93,9 @@ public class DW_Processor extends DW_ProcessorAbstract {
         /**
          * Run LCC SHBE data processing
          */
-        DW_ProcessorLCC DW_ProcessorLCC;
-        DW_ProcessorLCC = new DW_ProcessorLCC(env);
-        DW_ProcessorLCC.run();
+        DW_ProcessorLCC p;
+        p = new DW_ProcessorLCC(env);
+        p.run();
         
     }
 

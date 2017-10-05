@@ -47,6 +47,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Re
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -1329,7 +1330,7 @@ public class TenancyChangesUO extends DW_Object {
         HashMap<DW_ID, DW_SHBE_Record> records;
         String year;
         String month;
-        String yM3;
+        DW_YM3 yM3;
         DW_SHBE_Record record;
         DW_SHBE_D_Record dRecord;
         tNotMonthlyUOIte = NotMonthlyUO.iterator();
@@ -1812,8 +1813,8 @@ public class TenancyChangesUO extends DW_Object {
         TreeMap<String, String> TableValues;
         TableValues = new TreeMap<String, String>();
 
-        TreeMap<String, DW_UO_Set> CouncilUOSets = null;
-        TreeMap<String, DW_UO_Set> RSLUOSets = null;
+        TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets = null;
+        TreeMap<DW_YM3, DW_UO_Set> RSLUOSets = null;
         CouncilUOSets = DW_UO_Data.getCouncilUOSets();
         RSLUOSets = DW_UO_Data.getRSLUOSets();
 
@@ -1992,11 +1993,11 @@ public class TenancyChangesUO extends DW_Object {
         }
 
         DW_SHBE_Records DW_SHBE_Records1 = null;
-        String YM3Start = null;
-        String YM30 = s;
+        DW_YM3 YM3Start = null;
+        DW_YM3 YM30 = null;
         String year0 = s;
         String month0 = s;
-        String YM31 = s;
+        DW_YM3 YM31 = null;
         String year1 = s;
         String month1 = s;
         DW_UO_Set CouncilUOSet0 = null;
@@ -3030,7 +3031,7 @@ public class TenancyChangesUO extends DW_Object {
         header = "ClaimRef, ";
         if (includePreUnderOccupancyValues) {
             Iterator<Integer> ite2;
-            String YM3;
+            DW_YM3 YM3;
             ite2 = NotMonthlyUO.iterator();
             while (ite2.hasNext()) {
                 i = ite2.next();
@@ -3046,14 +3047,14 @@ public class TenancyChangesUO extends DW_Object {
          * is Council tenant under occupying consecutively). The keys are YM3
          * and the differences are from the previous YM3.
          */
-        HashMap<String, Double> arrears;
-        HashMap<String, Double> arrearsCounts;
-        HashMap<String, Double> arrearsDiffs;
-        HashMap<String, Double> arrearsDiffCounts;
-        arrears = new HashMap<String, Double>();
-        arrearsCounts = new HashMap<String, Double>();
-        arrearsDiffs = new HashMap<String, Double>();
-        arrearsDiffCounts = new HashMap<String, Double>();
+        HashMap<DW_YM3, Double> arrears;
+        HashMap<DW_YM3, Double> arrearsCounts;
+        HashMap<DW_YM3, Double> arrearsDiffs;
+        HashMap<DW_YM3, Double> arrearsDiffCounts;
+        arrears = new HashMap<DW_YM3, Double>();
+        arrearsCounts = new HashMap<DW_YM3, Double>();
+        arrearsDiffs = new HashMap<DW_YM3, Double>();
+        arrearsDiffCounts = new HashMap<DW_YM3, Double>();
         arrearsDiffs.put(YM30, 0.0d);
         arrearsDiffCounts.put(YM30, 0.0d);
 
@@ -3985,8 +3986,8 @@ public class TenancyChangesUO extends DW_Object {
     protected void checkSetsAndAddToGeneralStatistics(
             TreeMap<String, BigDecimal> GeneralStatistics,
             HashSet<DW_ID> ClaimRefs,
-            String YM3Start,
-            String YM3End,
+            DW_YM3 YM3Start,
+            DW_YM3 YM3End,
             HashSet<DW_PersonID> UniqueIndividualsEffectedPersonIDs,
             HashSet<DW_PersonID> UniqueDependentsAgedUnder10EffectedPersonIDs,
             HashSet<DW_PersonID> UniqueDependentsAgedOver10EffectedPersonIDs,
@@ -4722,10 +4723,10 @@ public class TenancyChangesUO extends DW_Object {
             String ClaimRef,
             String year0,
             String month0,
-            String YM30,
+            DW_YM3 YM30,
             String year1,
             String month1,
-            String YM31,
+            DW_YM3 YM31,
             DW_SHBE_Record Record1,
             HashMap<DW_ID, DW_SHBE_Record> Records0,
             //HashMap<DW_ID, DW_SHBE_Record> cRecords,
@@ -4734,10 +4735,10 @@ public class TenancyChangesUO extends DW_Object {
             DW_UO_Set RSLUOSet0,
             DW_UO_Set CouncilUOSet1,
             DW_UO_Set RSLUOSet1,
-            HashMap<String, Double> arrears,
-            HashMap<String, Double> arrearsCounts,
-            HashMap<String, Double> arrearsDiffs,
-            HashMap<String, Double> arrearsDiffCounts,
+            HashMap<DW_YM3, Double> arrears,
+            HashMap<DW_YM3, Double> arrearsCounts,
+            HashMap<DW_YM3, Double> arrearsDiffs,
+            HashMap<DW_YM3, Double> arrearsDiffCounts,
             HashSet<DW_PersonID> CouncilUniqueIndividualsEffected,
             HashSet<DW_PersonID> CouncilUniqueClaimantsEffectedPersonIDs,
             HashSet<DW_PersonID> CouncilUniquePartnersEffectedPersonIDs,
@@ -6727,8 +6728,8 @@ public class TenancyChangesUO extends DW_Object {
      * @return
      */
     public HashSet<DW_ID>[] getStartUOClaimIDs(
-            TreeMap<String, DW_UO_Set> councilUnderOccupiedSets,
-            TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets,
+            TreeMap<DW_YM3, DW_UO_Set> councilUnderOccupiedSets,
+            TreeMap<DW_YM3, DW_UO_Set> RSLUnderOccupiedSets,
             String[] SHBEFilenames,
             ArrayList<Integer> include
     ) {
@@ -6736,7 +6737,7 @@ public class TenancyChangesUO extends DW_Object {
         result = new HashSet[2];
         result[0] = new HashSet<DW_ID>();
         result[1] = new HashSet<DW_ID>();
-        String yM31 = s;
+        DW_YM3 yM31 = null;
         DW_UO_Set councilUnderOccupiedSet1 = null;
         DW_UO_Set RSLUnderOccupiedSet1 = null;
         String filename1 = null;
@@ -6770,8 +6771,8 @@ public class TenancyChangesUO extends DW_Object {
      * @return
      */
     public HashSet<DW_ID>[] getEndUOClaimIDs(
-            TreeMap<String, DW_UO_Set> CouncilUnderOccupiedSets,
-            TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets,
+            TreeMap<DW_YM3, DW_UO_Set> CouncilUnderOccupiedSets,
+            TreeMap<DW_YM3, DW_UO_Set> RSLUnderOccupiedSets,
             String[] SHBEFilenames,
             ArrayList<Integer> include
     ) {
@@ -6779,7 +6780,7 @@ public class TenancyChangesUO extends DW_Object {
         result = new HashSet[2];
         result[0] = new HashSet<DW_ID>();
         result[1] = new HashSet<DW_ID>();
-        String yM31 = s;
+        DW_YM3 yM31 = null;
         DW_UO_Set councilUnderOccupiedSet1 = null;
         DW_UO_Set RSLUnderOccupiedSet1 = null;
         String filename1 = null;
@@ -6803,8 +6804,8 @@ public class TenancyChangesUO extends DW_Object {
     }
 
     public HashSet<DW_ID>[] getUOClaimIDs(
-            TreeMap<String, DW_UO_Set> CouncilUnderOccupiedSets,
-            TreeMap<String, DW_UO_Set> RSLUnderOccupiedSets,
+            TreeMap<DW_YM3, DW_UO_Set> CouncilUnderOccupiedSets,
+            TreeMap<DW_YM3, DW_UO_Set> RSLUnderOccupiedSets,
             String[] SHBEFilenames,
             ArrayList<Integer> include
     ) {
@@ -6812,7 +6813,7 @@ public class TenancyChangesUO extends DW_Object {
         result = new HashSet[2];
         result[0] = new HashSet<DW_ID>();
         result[1] = new HashSet<DW_ID>();
-        String yM31 = s;
+        DW_YM3 yM31 = null;
         DW_UO_Set CouncilUnderOccupiedSet1 = null;
         DW_UO_Set RSLUnderOccupiedSet1 = null;
         String filename1 = null;
@@ -8359,7 +8360,7 @@ public class TenancyChangesUO extends DW_Object {
             HashMap<DW_ID, Integer> MaxNumberOfDependentsInClaimWhenUO,
             String year,
             String month,
-            String YM3,
+            DW_YM3 YM3,
             ArrayList<DW_SHBE_S_Record> SRecords,
             DW_SHBE_D_Record D_Record,
             HashMap<DW_ID, DW_PersonID> ClaimIDToClaimantPersonIDLookup) {

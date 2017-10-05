@@ -71,7 +71,7 @@ public class DW_ChoroplethMapsLCC extends DW_ChoroplethMapsAbstract {
     /**
      *
      */
-    public void run() {
+    public void run() throws Exception, Error {
 //        DW_Maps.setShowMapsInJMapPane(false);
 ////        showMapsInJMapPane = true;
 //        //The size of the map images in pixels (this does not include the legends)
@@ -325,7 +325,7 @@ public class DW_ChoroplethMapsLCC extends DW_ChoroplethMapsAbstract {
             ArrayList<Double> distances,
             ArrayList<String> tenureTypeGroups,
             ArrayList<String> claimantTypes,
-            String[] tFilenames) {
+            String[] tFilenames) throws Exception, Error {
 //        styleParameters.setDrawBoundaries(drawBoundaries);
 //
 //        Iterator<String> claimantTypeIte;
@@ -746,7 +746,7 @@ public class DW_ChoroplethMapsLCC extends DW_ChoroplethMapsAbstract {
             boolean scaleToFirst,
             double max,
             String tenure,
-            String claimantType) {
+            String claimantType) throws Exception, Error {
 //        int filter = 0;
 //        String style;
 //        if (scaleToFirst) {

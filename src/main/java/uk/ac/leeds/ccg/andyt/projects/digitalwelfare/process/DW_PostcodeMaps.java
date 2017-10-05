@@ -42,6 +42,7 @@ import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mappin
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 
 /**
@@ -90,7 +91,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         imageWidth = 1000;
         mapDirectory = DW_Files.getGeneratedPostcodeDir();
 
-        ShapefileDataStoreFactory sdsf = getShapefileDataStoreFactory();
+        sdsf = getShapefileDataStoreFactory();
 
         // Boundaries
         // Postcode Sectors
@@ -101,7 +102,7 @@ public class DW_PostcodeMaps extends DW_Maps {
             env,
                 new ShapefileDataStoreFactory());
 
-        String yM3;
+        DW_YM3 yM3;
         yM3 = DW_Postcode_Handler.getDefaultYM3();
         
         String postcodeLevel;
@@ -322,10 +323,11 @@ public class DW_PostcodeMaps extends DW_Maps {
     }
 
     /**
+     * @param yM3
      * @return
      */
     public ArrayList<DW_Shapefile> getPostcodePointDW_Shapefiles(
-    String yM3) {
+    DW_YM3 yM3) {
         ArrayList<DW_Shapefile> result;
         result = new ArrayList<DW_Shapefile>();
         File dir;
@@ -355,14 +357,15 @@ public class DW_PostcodeMaps extends DW_Maps {
     }
 
     /**
-     * @param index
+     * @param yM3
+     * @param postcodeLevel
      * @param dir
      * @param shapefileFilename
      * @param target
      * @return
      */
     public File createPostcodePointShapefileIfItDoesNotExist(
-            String yM3,
+            DW_YM3 yM3,
             String postcodeLevel,
             File dir,
             String shapefileFilename,
@@ -382,7 +385,7 @@ public class DW_PostcodeMaps extends DW_Maps {
     }
 
     public TreeSetFeatureCollection getPostcodePointFeatureCollection(
-            String yM3,
+            DW_YM3 yM3,
             String postcodeLevel,
             SimpleFeatureType sft,
             String target) {
