@@ -59,7 +59,7 @@ public class DW_IDTest {
         DW_ID instance = null;
         instance = new DW_ID(100);
         int expResult = 100;
-        int result = instance.getID();
+        long result = instance.getID();
         assertEquals(expResult, result);
         DW_ID instance2 = null;
         instance2 = new DW_ID(instance);
