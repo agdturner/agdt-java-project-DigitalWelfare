@@ -123,38 +123,38 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (!RunAllFromScratch) {
             if (!RunAllFromUpdate) {
                 // Choose which bits to run
-                doLoadAllONSPDFromSource = true;
-//                doLoadNewONSPDFromSource = true;
-                doLoadAllSHBEFromSource = true;
-//                doLoadNewSHBEFromSource = true;
-//                doLoadSHBE = true;
-//                doPostcodeCheckLatest = true;
-//                doPostcodeCheck = true;
-                doLoadUnderOccupancyFromSource = true;
-//                doLoadUnderOccupancy = true;
-                doLCCSummary = true;
-                doRentArrears = true;
-//                doRentArrearsNewData = true;
-                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
-                doLCCHBGeneralAggregateStatistics = true;
-//                doLCCTTAndPT = true;
-//                if (doLCCTTAndPT) {
-//                    doLCCTTAndPTAll = true;
-//                    /**
-//                     * If doLCCTTAndPTAll = false then choose bits otherwise run
-//                     * for all combinations.
-//                     */
+//                doLoadAllONSPDFromSource = true;
+////                doLoadNewONSPDFromSource = true;
+//                doLoadAllSHBEFromSource = true;
+////                doLoadNewSHBEFromSource = true;
+////                doLoadSHBE = true;
+////                doPostcodeCheckLatest = true;
+////                doPostcodeCheck = true;
+//                doLoadUnderOccupancyFromSource = true;
+////                doLoadUnderOccupancy = true;
+//                doLCCSummary = true;
+//                doRentArrears = true;
+////                doRentArrearsNewData = true;
+//                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+//                doLCCHBGeneralAggregateStatistics = true;
+                doLCCTTAndPT = true;
+                if (doLCCTTAndPT) {
+                    doLCCTTAndPTAll = true;
+                    /**
+                     * If doLCCTTAndPTAll = false then choose bits otherwise run
+                     * for all combinations.
+                     */
 //                    doLCCTTAndPTAll = false;
 //                    LCCTTAndPT_DoGrouped = true;
 //                    LCCTTAndPT_DoPostcodeChanges = true;
-//                    LCCTTAndPT_DoPostcodeChanges = false;
+////                    LCCTTAndPT_DoPostcodeChanges = false;
 //                    LCCTTAndPT_DoAnyTenancyChanges = true;
 ////                    LCCTTAndPT_DoAnyTenancyChanges = false;
 //                    LCCTTAndPT_DoTenancyChanges = true;
 ////                    LCCTTAndPT_DoTenancyChanges = false;
 //                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
 ////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = false;
-//                }
+                }
 //                doChoroplethMapping = true;
 //                doLineMaps = true;
 //                doReports = true;

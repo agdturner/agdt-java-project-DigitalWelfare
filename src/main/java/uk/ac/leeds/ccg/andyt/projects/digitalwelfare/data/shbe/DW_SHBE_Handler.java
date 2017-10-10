@@ -2796,6 +2796,17 @@ public class DW_SHBE_Handler extends DW_Object {
     /**
      * Negation of getOmits()
      *
+     * sIncludeAll
+     * sIncludeYearly
+     * sInclude6Monthly
+     * sInclude3Monthly
+     * sIncludeMonthly
+     * sIncludeMonthlySinceApril2013
+     * sInclude2MonthlySinceApril2013Offset0
+     * sInclude2MonthlySinceApril2013Offset1
+     * sIncludeStartEndSinceApril2013
+     * sIncludeApril2013May2013
+     * 
      * @return
      */
     public TreeMap<String, ArrayList<Integer>> getIncludes() {
@@ -3105,6 +3116,17 @@ public class DW_SHBE_Handler extends DW_Object {
     /**
      * Negation of getIncludes(). This method will want modifying if data prior
      * to January 2013 is added.
+     * 
+     * sIncludeAll
+     * sIncludeYearly
+     * sInclude6Monthly
+     * sInclude3Monthly
+     * sIncludeMonthly
+     * sIncludeMonthlySinceApril2013
+     * sInclude2MonthlySinceApril2013Offset0
+     * sInclude2MonthlySinceApril2013Offset1
+     * sIncludeStartEndSinceApril2013
+     * sIncludeApril2013May2013
      *
      * @return
      */
@@ -3156,7 +3178,6 @@ public class DW_SHBE_Handler extends DW_Object {
         ArrayList<Integer> omit2April2013May2013;
         omit2April2013May2013 = getOmit2April2013May2013(n);
         result.put(omitKey, omit2April2013May2013);
-
         return result;
     }
 
