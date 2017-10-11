@@ -167,9 +167,9 @@ public class DW_UO_Data extends DW_Object implements Serializable {
     DW_YM3  BaselineYM3;
     
     public DW_YM3 getBaselineYM3() {
-        if (BaselineYM3 == null) {
-            BaselineYM3 = new DW_YM3(2013, 3);
-        }
+        //if (BaselineYM3 == null) {
+            BaselineYM3 = new DW_YM3(2013, 4);
+        //}
         return BaselineYM3;
     }
 }

@@ -264,7 +264,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                             UOApril2013ClaimIDsDummy,
                                             TTGLookup,
                                             DoGrouped,
-                                            GTTs.get(DoUnderOccupiedData));
+                                            GTTs);
                                     env.logO("</DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
                                 }
                                 env.logO("</DoTenancyChanges " + DoTenancyChanges + ">", true);
@@ -396,7 +396,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                         null,
                                         TTGLookup,
                                         DoGrouped,
-                                        GTTs.get(DoUnderOccupiedData));
+                                        GTTs);
                                 env.logO("</DoTenancyChanges " + DoTenancyChanges + ">", true);
                             }
                             if (DoTenancyAndPostcodeChanges) {
@@ -511,7 +511,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             Set<DW_ID> ClaimIDs,
             HashMap<String, String> TTGLookup,
             boolean DoGrouped,
-            ArrayList<String> GTTs) {
+            HashMap<Boolean, ArrayList<String>> GTTs) {
         String methodName;
         methodName = "doTTTs(String[],ArrayList<String>,"
                 + "TreeMap<String, ArrayList<Integer>>,boolean,boolean,boolean,"
@@ -713,12 +713,14 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                 dirOut2,
                                 this.DW_Strings.sGrouped);
                         dirOut3.mkdirs();
+                        ArrayList<String> GTT;
+                        GTT = GTTs.get(DoUnderOccupiedData);
                         writeTTTMatrix(
                                 GTTTM,
                                 YM30,
                                 YM31,
                                 dirOut3,
-                                GTTs,
+                                GTT,
                                 true);
                     }
                     Records0 = Records1;
@@ -5732,7 +5734,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     for (String T : Ts) {
                         line += ",0";
                     }
-                    line += ",0";
+                    //line += ",0";
                 } else {
                     String T1;
                     Iterator<String> ite2;
@@ -5776,7 +5778,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     for (String T : Ts) {
                         line += ",0";
                     }
-                    line += ",0";
+                    //line += ",0";
                 } else {
                     String T1;
                     Iterator<String> ite2;
@@ -5807,7 +5809,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     for (String T : Ts) {
                         line += ",0";
                     }
-                    line += ",0";
+                    //line += ",0";
                 } else {
                     String T1;
                     Iterator<String> ite2;
