@@ -232,7 +232,7 @@ public class DW_LineGraph extends Generic_LineGraph {
                     dirOut1 = new File(
                             dirOut1,
                             includeName);
-                    dirOut1.mkdirs();
+                    //dirOut1.mkdirs();
                     File fout;
                     for (int stat = 1; stat <= 8; stat++) {
                         String filename;
@@ -1480,6 +1480,7 @@ public class DW_LineGraph extends Generic_LineGraph {
                         }
                     }
                     YM30 = YM31;
+                    yM30 = YM30.toString();
                 } else {
                     System.out.println("Omitted file " + filename);
                 }
@@ -1503,7 +1504,7 @@ public class DW_LineGraph extends Generic_LineGraph {
             allSelectionsIte = allSelections.keySet().iterator();
             while (allSelectionsIte.hasNext()) {
                 String selections = allSelectionsIte.next();
-                dirOut2.mkdirs();
+                //dirOut2.mkdirs(); // only make if there is result.
                 File fout;
                 fout = new File(
                         dirOut2,
@@ -1540,9 +1541,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                     BigDecimal newMaxY;
                     newMaxY = (BigDecimal) data[2];
                     if (newMaxY.compareTo(new BigDecimal(Double.MIN_VALUE)) != 1) {
-                        if (newMinY.compareTo(newMaxY) == 0) {
-                            env.log("All values are " + newMinY + " so no graph is produced.");
+                        if (newMinY.compareTo(newMaxY) == 1) {
+                            env.log("newMinY.compareTo(newMaxY) == 1 so no graph is produced.");
                         } else {
+                            dirOut2.mkdirs();
                             chart.setData(data);
                             //chart.run();
                             future = chart.future;

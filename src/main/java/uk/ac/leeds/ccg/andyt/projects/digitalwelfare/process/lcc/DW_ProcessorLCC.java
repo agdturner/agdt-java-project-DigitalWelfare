@@ -139,7 +139,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 //                doLCCHBGeneralAggregateStatistics = true;
                 doLCCTTAndPT = true;
                 if (doLCCTTAndPT) {
-                    doLCCTTAndPTAll = true;
+                    doLCCTTAndPTAll = true; // Runtime 13:23:08.458s
                     /**
                      * If doLCCTTAndPTAll = false then choose bits otherwise run
                      * for all combinations.
@@ -158,11 +158,11 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 //                doChoroplethMapping = true;
 //                doLineMaps = true;
 //                doReports = true;
-//                doLineGraphs = true;
-//                if (doLineGraphs) {
-//                    doLineGraphTenancyTypeTransitions = true;
-//                    //LineGraphAggregateData = true;
-//                }
+                doLineGraphs = true;
+                if (doLineGraphs) {
+                    doLineGraphTenancyTypeTransitions = true;
+                    //LineGraphAggregateData = true;
+                }
 //                doDensityMaps = true;
 //                doLineDensityMaps = true;
             } else {
