@@ -37,7 +37,7 @@ import uk.ac.leeds.ccg.andyt.grids.core.Grids_GridStatistics0;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
-import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorGWS;
+import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Records;
@@ -141,7 +141,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         ge = new Grids_Environment();
         eage = new Grids_ESRIAsciiGridExporter(ge);
         ie = new Grids_ImageExporter(ge);
-        gp = new Grid2DSquareCellProcessorGWS(ge);
+        gp = new Grids_ProcessorGWS(ge);
         gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
         gcf = new Grids_Grid2DSquareCellDoubleChunkArrayFactory();
         chunkNRows = 300;//250; //64
@@ -261,8 +261,8 @@ DW_Shapefile foregroundDW_Shapefile1;
         f = new Grids_Grid2DSquareCellDoubleFactory(ge, handleOutOfMemoryErrors);
         f.set_Dimensions(dimensions);
         f.set_GridStatistics(new Grids_GridStatistics0());
-        Grid2DSquareCellProcessorGWS p;
-        p = new Grid2DSquareCellProcessorGWS(ge);
+        Grids_ProcessorGWS p;
+        p = new Grids_ProcessorGWS(ge);
 
         Grids_Grid2DSquareCellDouble numerator = null;
         Grids_Grid2DSquareCellDouble denominator1;

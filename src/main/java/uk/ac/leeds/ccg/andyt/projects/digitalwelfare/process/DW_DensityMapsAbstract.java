@@ -35,7 +35,7 @@ import uk.ac.leeds.ccg.andyt.grids.core.Grids_GridStatistics0;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
-import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorGWS;
+import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Maps;
@@ -62,7 +62,7 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
     protected Grids_Environment ge;
     protected Grids_ESRIAsciiGridExporter eage;
     protected Grids_ImageExporter ie;
-    protected Grid2DSquareCellProcessorGWS gp;
+    protected Grids_ProcessorGWS gp;
     protected Grids_Grid2DSquareCellDoubleFactory gf;
     protected Grids_AbstractGrid2DSquareCellDoubleChunkFactory gcf;
     protected long nrows;
