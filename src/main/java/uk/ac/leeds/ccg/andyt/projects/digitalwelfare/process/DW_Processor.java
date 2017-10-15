@@ -52,7 +52,7 @@ public class DW_Processor extends DW_ProcessorAbstract {
                 DW_Processor DW_ProcessorLCC;
                 DW_ProcessorLCC = new DW_Processor();
                 DW_ProcessorLCC.env = env;
-                DW_ProcessorLCC.DW_Files = env.getDW_Files();
+                DW_ProcessorLCC.df = env.getDW_Files();
                 DW_ProcessorLCC.DW_Strings = env.getDW_Strings();
                 DW_ProcessorLCC.run();
                 /**

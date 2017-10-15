@@ -776,6 +776,102 @@ public class DW_Strings {
      * NewEntrant
      */
     public final String sNewEntrant = "NewEntrant";
+    /**
+     * Short code for Input.
+     */
+    public final String sInput = "Input";
+    /**
+     * Short code for CodePoint.
+     */
+    public final String sCodePoint = "CodePoint";
+    /**
+     * Short code for ONS Postcode Directory
+     */
+    public final String sONSPD = "ONSPD";
+    /**
+     * Short code for sGrids.
+     */
+    public final String sGrids = "Grids";
+    /**
+     * Short code for SHBE.
+     */
+    public final String sLogs = "Logs";
+    /**
+     * Short code for Look Up Tables.
+     */
+    public final String sLUTs = "LUTs";
+    /**
+     * Short code for Line.
+     */
+    public final String sLine = "Line";
+    /**
+     * Short code for UnderOccupied.
+     */
+    public final String sUnderOccupied = "UnderOccupied";
+    /**
+     * Short code for Choropleth.
+     */
+    public final String sChoropleth = "Choropleth";
+    /**
+     * Short code for AttributeData.
+     */
+    public final String sAttributeData = "AttributeData";
+    /**
+     * Short code for Maps.
+     */
+    public final String sMaps = "Maps";
+    /**
+     * Short code for 2011.
+     */
+    public final String s2011 = "2011";
+    /**
+     * Short code for BoundaryData.
+     */
+    public final String sBoundaryData = "BoundaryData";
+    /**
+     * Short code for Swap.
+     */
+    public final String sSwap = "Swap";
+    /**
+     * Short code for Output.
+     */
+    public final String sOutput = "Output";
+    /**
+     * Short code for Generated.
+     */
+    public final String sGenerated = "Generated";
+    /**
+     * Short code for AdviceLeeds.
+     */
+    public final String sAdviceLeeds = "AdviceLeeds";
+    /**
+     * Short code for Tables.
+     */
+    public final String sTables = "Tables";
+    /**
+     * Short code for Density.
+     */
+    public final String sDensity = "Density";
+    /**
+     * Short code for LeedsCityCouncil.
+     */
+    public final String sLCC = "LCC";
+    /**
+     * Short code for Census.
+     */
+    public final String sCensus = "Census";
+    /**
+     * Short code for SHBE.
+     */
+    public final String sSHBE = "SHBE";
+    /**
+     * Short code for PostcodeChanged.
+     */
+    public final String sPostcode = "Postcode";
+    /**
+     * Short code for Plots.
+     */
+    public final String sPlots = "Plots";
     
     
 

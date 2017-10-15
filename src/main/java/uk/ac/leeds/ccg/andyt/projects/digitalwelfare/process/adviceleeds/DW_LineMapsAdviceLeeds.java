@@ -146,16 +146,16 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     private void init() {
         level = "MSOA";
         initStyleParameters();
-        mapDirectory = DW_Files.getOutputAdviceLeedsMapsDir();
+        mapDirectory = df.getOutputAdviceLeedsMapsDir();
         // init tLSOACodesAndLeedsLSOAShapefile
         initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         // init tMSOACodesAndLeedsMSOAShapefile
         initMSOACodesAndLeedsMSOAShapefile(targetPropertyNameMSOA);
         initONSPDLookups();
         initCABOutletPoints();
-        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(env);
-        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(env);
-        tLCC_WRU_DataRecord_Handler = new DW_Data_LCC_WRU_Handler(env);
+        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(de);
+        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(de);
+        tLCC_WRU_DataRecord_Handler = new DW_Data_LCC_WRU_Handler(de);
         aLSOAToCentroidLookupTable = getCentroidLookupTable(
                 "LSOA",
                 targetPropertyNameLSOA);
@@ -185,7 +185,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     private void initLSOACodesAndLeedsLSOAShapefile(
             String targetPropertyNameLSOA) {
         tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                env,
+                de,
                 "LSOA",
                 targetPropertyNameLSOA,
                 getShapefileDataStoreFactory());
@@ -194,7 +194,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     private void initMSOACodesAndLeedsMSOAShapefile(
             String targetPropertyNameMSOA) {
         MSOACodesAndLeedsMSOAShapefile = new DW_AreaCodesAndShapefiles(
-                env,
+                de,
                 "MSOA",
                 targetPropertyNameMSOA,
                 getShapefileDataStoreFactory());
@@ -228,14 +228,12 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         int CensusYear = 2011;
         DW_YM3 YM3 = new DW_YM3(2011,5);
         // init postcode to LSOA lookup
-        LookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
-                env,
+        LookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
                 "LSOA",
                 CensusYear,
                 YM3);
         // init postcode to MSOA lookup
-        LookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
-                env,
+        LookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
                 "MSOA",
                 CensusYear,
                 YM3);
@@ -251,8 +249,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(
-                env,
+        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(de,
                 filename,
                 aCAB_DataRecord2_Handler,
                 IDType);
@@ -656,14 +653,12 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         int CensusYear = 2011;
         DW_YM3 YM3 = new DW_YM3(2011,5);
         // Get postcode to LSOA lookup
-        LookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
-                env,
+        LookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
                 "LSOA",
                 CensusYear,
                 YM3);
         // Get postcode to LSOA lookup
-        LookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
-                env,
+        LookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
                 "MSOA",
                 CensusYear,
                 YM3);
@@ -679,8 +674,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(
-                env,
+        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(de,
                 filename,
                 aCAB_DataRecord2_Handler,
                 IDType);
@@ -938,8 +932,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(
-                env,
+        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(de,
                 filename,
                 aCAB_DataRecord2_Handler,
                 IDType);
@@ -1158,10 +1151,10 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
             String level,
             String targetPropertyName) {
         TreeMap<String, Point> result;
-        File generatedCensus2011LUTsDir = DW_Files.getGeneratedCensus2011LUTsDir();
+        File generatedCensus2011LUTsDir = df.getGeneratedCensus2011LUTsDir();
         File tLSOAToCentroidLookupTableFile = new File(
                 generatedCensus2011LUTsDir,
-                level + "ToCentroidLookupTable_TreeMap" + DW_Strings.sBinaryFileExtension);
+                level + "ToCentroidLookupTable_TreeMap" + ds.sBinaryFileExtension);
         if (tLSOAToCentroidLookupTableFile.exists()) {
             result = (TreeMap<String, Point>) Generic_StaticIO.readObject(
                     tLSOAToCentroidLookupTableFile);

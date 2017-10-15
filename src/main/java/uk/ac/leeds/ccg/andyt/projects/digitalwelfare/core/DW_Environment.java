@@ -56,7 +56,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     /**
      * For storing an instance of DW_Strings for accessing Strings.
      */
-    private DW_Strings DW_Strings;
+    private DW_Strings ds;
 
     /**
      * Logging levels.
@@ -70,12 +70,12 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * For storing an instance of DW_Files for accessing filenames and Files
      * therein.
      */
-    private DW_Files DW_Files;
+    private DW_Files df;
     
     /**
      * For storing an instance of Grids_Environment
      */
-    private transient Grids_Environment Grids_Environment;
+    private transient Grids_Environment ge;
     
 //    /**
 //     * For storing an instance of HashMap<String, DW_SHBE_CollectionHandler>.
@@ -132,8 +132,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     private void init(int DEBUG_Level) {
         this.DEBUG_Level = DEBUG_Level;
-            this.DW_Files = new DW_Files(this);
-        this.DW_Strings = new DW_Strings();
+            this.df = new DW_Files(this);
+        this.ds = new DW_Strings();
     }
     
     private void init(int DEBUG_Level, String sDigitalWelfareDir) {
@@ -427,10 +427,10 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     public DW_Strings getDW_Strings() {
-        if (DW_Strings == null) {
-            DW_Strings = new DW_Strings();
+        if (ds == null) {
+            ds = new DW_Strings();
         }
-        return DW_Strings;
+        return ds;
     }
 
     /**
@@ -439,10 +439,10 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     public DW_Files getDW_Files() {
-        if (DW_Files == null) {
-            DW_Files = new DW_Files(this);
+        if (df == null) {
+            df = new DW_Files(this);
         }
-        return DW_Files;
+        return df;
     }
 
     /**
@@ -451,10 +451,10 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     public Grids_Environment getGrids_Environment() {
-        if (Grids_Environment == null) {
-            Grids_Environment = new Grids_Environment();
+        if (ge == null) {
+            ge = new Grids_Environment(df.getGeneratedGridsDir());
         }
-        return Grids_Environment;
+        return ge;
     }
 
 //    /**
@@ -573,8 +573,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             DW_UO_Handler = getDW_UO_Handler();
             File f;
             f = new File(
-                    DW_Files.getGeneratedUnderOccupiedDir(),
-                    DW_Strings.sDW_UO_Data + DW_Strings.sBinaryFileExtension);
+                    df.getGeneratedUnderOccupiedDir(),
+                    ds.sDW_UO_Data + ds.sBinaryFileExtension);
             if (loadFromSource) {
                 DW_UO_Data = DW_UO_Handler.loadUnderOccupiedReportData(loadFromSource);
                 Generic_StaticIO.writeObject(DW_UO_Data, f);

@@ -27,11 +27,11 @@ import java.util.TreeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.gce.arcgrid.ArcGridReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCellDoubleChunkFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_GridStatistics0;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_AbstractGrid2DSquareCellDoubleChunkFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDoubleFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.statistics.Grids_GridStatistics0;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
@@ -55,7 +55,7 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
     
 // For Convenience
     protected DW_Maps DW_Maps;
-    protected DW_Files DW_Files;
+    protected DW_Files df;
     protected DW_Strings DW_Strings;
     protected DW_Postcode_Handler DW_Postcode_Handler;
     
@@ -84,7 +84,7 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
         super(env);
         DW_Maps = env.getDW_Maps();
         DW_Strings = env.getDW_Strings();
-        DW_Files = env.getDW_Files();
+        df = env.getDW_Files();
         DW_Postcode_Handler = env.getDW_Postcode_Handler();
     }
     

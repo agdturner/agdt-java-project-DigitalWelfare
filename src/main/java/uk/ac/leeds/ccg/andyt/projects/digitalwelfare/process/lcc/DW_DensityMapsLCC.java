@@ -29,11 +29,11 @@ import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDoubleChunkArrayFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_GridStatistics0;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_Grid2DSquareCellDoubleChunkArrayFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDoubleFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.statistics.Grids_GridStatistics0;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
@@ -76,9 +76,9 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
     protected ArrayList<AGDT_Shapefile> midgrounds;
     protected ArrayList<AGDT_Shapefile> foregrounds;
 
-    public DW_DensityMapsLCC(DW_Environment env) {
-        super(env);
-        this.DW_SHBE_Data = env.getDW_SHBE_Data();
+    public DW_DensityMapsLCC(DW_Environment de) {
+        super(de);
+        this.DW_SHBE_Data = de.getDW_SHBE_Data();
     }
 
     public void run() throws Exception, Error {
@@ -117,10 +117,10 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         AGDT_StyleParameters.setForegroundStyleTitle1("Foreground Style 1");
         DW_MapsLCC.setStyleParameters(AGDT_StyleParameters);
 
-        File mapDirectory;
-        mapDirectory = new File(
-                DW_Files.getOutputAdviceLeedsMapsDir(),
-                "density");
+        File generatedGridsDirectory;
+        generatedGridsDirectory = new File(
+                df.getGeneratedGridsDir(),
+                "Density");
 //        DW_MapsLCC.setMapDirectory(mapDirectory);
         
         int imageWidth;
@@ -130,24 +130,20 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefiles();
         init();
 
-        /*Grid Parameters
-         *_____________________________________________________________________
+        /**
+         * Grid Parameters
          */
         handleOutOfMemoryErrors = true;
-        File processorDir = new File(
-                mapDirectory,
-                "processor");
-        processorDir.mkdirs();
-        ge = new Grids_Environment();
+        ge = new Grids_Environment(generatedGridsDirectory);
         eage = new Grids_ESRIAsciiGridExporter(ge);
         ie = new Grids_ImageExporter(ge);
         gp = new Grids_ProcessorGWS(ge);
-        gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
+        gp.set_Directory(generatedGridsDirectory, false, handleOutOfMemoryErrors);
         gcf = new Grids_Grid2DSquareCellDoubleChunkArrayFactory();
         chunkNRows = 300;//250; //64
         chunkNCols = 350;//300; //64
         gf = new Grids_Grid2DSquareCellDoubleFactory(
-                processorDir,
+                generatedGridsDirectory,
                 chunkNRows,
                 chunkNCols,
                 gcf,
@@ -186,7 +182,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
     private void init() {
         //initStyleParameters();
         File mapDirectory;
-        mapDirectory = DW_Files.getOutputSHBELineMapsDir();
+        mapDirectory = df.getOutputSHBELineMapsDir();
 //        DW_MapsLCC.setMapDirectory(mapDirectory);
         foregrounds = new ArrayList<AGDT_Shapefile>();
         //midgrounds = new ArrayList<AGDT_Shapefile>();
@@ -205,7 +201,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
     public void runRateMaps() {
         File dirOut;
         dirOut = new File(
-                DW_Files.getOutputSHBEMapsDir(),
+                df.getOutputSHBEMapsDir(),
                 "Density");
 
         String[] SHBEFilenames;
@@ -648,7 +644,7 @@ DW_Shapefile foregroundDW_Shapefile1;
         boolean scaleToFirst = false;
         File dirOut;
         dirOut = new File(
-                DW_Files.getOutputSHBEMapsDir(),
+                df.getOutputSHBEMapsDir(),
                 "Density");
         DW_SHBE_Handler tDW_SHBE_Handler;
         tDW_SHBE_Handler = env.getDW_SHBE_Handler();
@@ -769,7 +765,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                             doRSL,
                             doCouncil,
                             scaleToFirst,
-                            DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            df.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
                             SHBEFilenames,
                             tDW_SHBE_Handler,
@@ -784,7 +780,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                             doRSL,
                             doCouncil,
                             scaleToFirst,
-                            DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            df.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
                             SHBEFilenames,
                             tDW_SHBE_Handler,
@@ -799,7 +795,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                             doRSL,
                             doCouncil,
                             scaleToFirst,
-                            DW_Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            df.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
                             SHBEFilenames,
                             tDW_SHBE_Handler,
@@ -1226,7 +1222,7 @@ DW_Shapefile foregroundDW_Shapefile1;
         Grids_Grid2DSquareCellDouble g0 = initiliseGrid(grid);
 
         TreeMap<String, TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>> lookups;
-        lookups = DW_MapsLCC.getONSPDlookups(env);
+        lookups = DW_MapsLCC.getONSPDlookups();
         TreeMap<String, AGDT_Point> lookup;
         lookup = lookups.get("Unit").get(DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 

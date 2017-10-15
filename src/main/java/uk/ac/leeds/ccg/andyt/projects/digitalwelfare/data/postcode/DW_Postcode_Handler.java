@@ -145,7 +145,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         AGDT_Point result;
         String formattedPostcode;
         formattedPostcode = formatPostcode(postcode);
-        result = DW_Maps.getONSPDlookups(env).get(level).get(nearestYM3ForONSPDLookup).get(formattedPostcode);
+        result = DW_Maps.getONSPDlookups().get(level).get(nearestYM3ForONSPDLookup).get(formattedPostcode);
         return result;
     }
 
@@ -162,7 +162,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             String PostcodeF) {
         AGDT_Point result;
         TreeMap<String, TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>> ONSPDlookups;
-        ONSPDlookups = DW_Maps.getONSPDlookups(env);
+        ONSPDlookups = DW_Maps.getONSPDlookups();
         TreeMap<DW_YM3, TreeMap<String, AGDT_Point>> ONSPDlookupsLevel;
         ONSPDlookupsLevel = ONSPDlookups.get(level);
         TreeMap<String, AGDT_Point> ONSPDlookupsLevelForNearestYM3ForONSPDLookup;
@@ -890,7 +890,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         if (PostcodeF.length() > 5) {
             boolean isMappablePostcode;
             TreeMap<String, TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>> ONSPDLookups;
-            ONSPDLookups = DW_Maps.getONSPDlookups(env);
+            ONSPDLookups = DW_Maps.getONSPDlookups();
             TreeMap<DW_YM3, TreeMap<String, AGDT_Point>> ONSPDLookupUnitPostcode;
             ONSPDLookupUnitPostcode = ONSPDLookups.get(TYPE_UNIT);
             TreeMap<String, AGDT_Point> ONSPDLookupUnitPostcodeNearestYM3;
