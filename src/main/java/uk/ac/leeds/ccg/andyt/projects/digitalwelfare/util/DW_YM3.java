@@ -42,6 +42,11 @@ public class DW_YM3 implements Comparable, Serializable {
         this.Month = Month;
     }
 
+    public DW_YM3(DW_YM3 YM3) {
+        this.Year = YM3.getYear();
+        this.Month = YM3.getMonth();
+    }
+
     @Override
     public String toString() {
         return "" + Integer.toString(getYear()) + "_" + Generic_Time.getMonth3Letters(getMonth());
@@ -87,7 +92,6 @@ public class DW_YM3 implements Comparable, Serializable {
                 } else {
                     return 0;
                 }
-                
             }
         }
         return -1;

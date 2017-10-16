@@ -5306,7 +5306,8 @@ public class Summary extends DW_Object {
         ClaimIDsWithStatusOfCTBAtExtractDateInPayment0 = ClaimIDsWithStatusOfCTBAtExtractDateInPayment1;
         ClaimIDsWithStatusOfCTBAtExtractDateSuspended0 = ClaimIDsWithStatusOfCTBAtExtractDateSuspended1;
         ClaimIDsWithStatusOfCTBAtExtractDateOther0 = ClaimIDsWithStatusOfCTBAtExtractDateOther1;
-        YM30 = YM31;
+        //YM30 = YM31;
+        YM30 = new DW_YM3(YM31);
         incrementCounts(nTT);
         initCounts(nTT, nEG, nPSI);
 
@@ -5361,7 +5362,8 @@ public class Summary extends DW_Object {
                 ClaimIDsWithStatusOfCTBAtExtractDateInPayment0 = ClaimIDsWithStatusOfCTBAtExtractDateInPayment1;
                 ClaimIDsWithStatusOfCTBAtExtractDateSuspended0 = ClaimIDsWithStatusOfCTBAtExtractDateSuspended1;
                 ClaimIDsWithStatusOfCTBAtExtractDateOther0 = ClaimIDsWithStatusOfCTBAtExtractDateOther1;
-                YM30 = YM31;
+                //YM30 = YM31;
+                YM30 = new DW_YM3(YM31);
                 incrementCounts(nTT);
                 initCounts(nTT, nEG, nPSI);
                 // Not used at present. incomeAndRentSummary0 = incomeAndRentSummary1;

@@ -1597,8 +1597,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 }
                 records0 = records1;
                 //ClaimIDToPostcodeIDLookup0 = ClaimIDToPostcodeIDLookup1;
-                YM30 = YM31;
-                YM30v = YM31v;
+                //YM30 = YM31;
+                YM30 = new DW_YM3(YM31);
+                //YM30v = YM31v;
+                YM30v = new DW_YM3(YM31v);
             }
         }
     }

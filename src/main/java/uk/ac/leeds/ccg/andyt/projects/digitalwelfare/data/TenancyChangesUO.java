@@ -3436,7 +3436,8 @@ public class TenancyChangesUO extends DW_Object {
             totalHouseholdSizeRSLUO = 0;
 
             //SHBEFilename0 = SHBEFilename1;
-            YM30 = YM31;
+            //YM30 = YM31;
+            YM30 = new DW_YM3(YM31);
             year0 = year1;
             month0 = month1;
             //DW_SHBE_Records0 = DW_SHBE_Records1;

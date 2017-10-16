@@ -3490,7 +3490,8 @@ public class SummaryUO extends Summary {
                 result);
 
         filename0 = filename1;
-        YM30 = YM31;
+        //YM30 = YM31;
+        YM30 = new DW_YM3(YM31);
         DW_SHBE_Records0 = DW_SHBE_Records1;
         Records0 = Records1;
         CouncilUOSet0 = CouncilUOSet1;
@@ -3537,7 +3538,8 @@ public class SummaryUO extends Summary {
             // Set up vars for next iteration
             if (includeIte.hasNext()) {
                 filename0 = filename1;
-                YM30 = YM31;
+                //YM30 = YM31;
+                YM30 = new DW_YM3(YM31);
                 DW_SHBE_Records0 = DW_SHBE_Records1;
                 CouncilUOSet0 = CouncilUOSet1;
                 RSLUOSet0 = RSLUOSet1;

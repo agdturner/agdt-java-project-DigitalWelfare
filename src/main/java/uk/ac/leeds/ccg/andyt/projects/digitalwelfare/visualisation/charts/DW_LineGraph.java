@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 //import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
@@ -39,10 +40,13 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 //import uk.ac.leeds.ccg.andyt.generic.visualisation.charts.Generic_BarChart;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.charts.Generic_LineGraph;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
@@ -53,10 +57,14 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 public class DW_LineGraph extends Generic_LineGraph {
 
     protected transient DW_Environment env;
+    
     protected DW_Files DW_Files;
     protected DW_Strings DW_Strings;
     protected DW_SHBE_Handler DW_SHBE_Handler;
+    protected DW_UO_Handler DW_UO_Handler;
+    protected DW_UO_Data DW_UO_Data;
 
+    
     HashMap<String, HashSet<String>> areaCodes;
 
     public DW_LineGraph(DW_Environment env) {
@@ -432,6 +440,9 @@ public class DW_LineGraph extends Generic_LineGraph {
             allSelections.put(do999, asss);
             allSelectionsGrouped.put(do999, asssg);
         }
+        
+        Set<DW_ID> UOApril2013ClaimIDs;
+                UOApril2013ClaimIDs = DW_UO_Handler.getUOStartApril2013ClaimIDs(DW_UO_Data);
 
         boolean CheckPreviousTenancyType;
 ////            checkPreviousTenure = false;
@@ -483,7 +494,7 @@ public class DW_LineGraph extends Generic_LineGraph {
                         File dirOut3 = new File(
                                 dirOut2,
                                 includeKey);
-
+//fdsafds
                         /**
                          * It is thought this should be a choice between doing
                          * All or doing only those that were UO in April 2013.
@@ -499,6 +510,15 @@ public class DW_LineGraph extends Generic_LineGraph {
                         while (iteB2.hasNext()) {
                             doUnderOccupancyData = iteB2.next();
                             if (doUnderOccupancyData) {
+                                
+//                                boolean DoUOOnlyOnThoseOriginallyUO;
+//                                env.logO("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
+//                                            Set<DW_ID> UOApril2013ClaimIDsDummy;
+//                                            if (DoUOOnlyOnThoseOriginallyUO) {
+//                                                UOApril2013ClaimIDsDummy = UOApril2013ClaimIDs;
+//                                            } else {
+//                                                UOApril2013ClaimIDsDummy = null;
+//                                            }
                                 File dirIn4 = new File(
                                         dirIn3,
                                         DW_Strings.sU);
@@ -852,7 +872,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                     dirOut2 = new File(
                             dirOut,
                             DW_Strings.sTenancyAndPostcodeChanges);
-
                     Iterator<String> includesIte;
                     includesIte = includes.keySet().iterator();
                     while (includesIte.hasNext()) {
@@ -860,7 +879,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                         includeKey = includesIte.next();
                         ArrayList<Integer> include;
                         include = includes.get(includeKey);
-
                         File dirIn3;
                         dirIn3 = new File(
                                 dirIn2,
@@ -869,7 +887,7 @@ public class DW_LineGraph extends Generic_LineGraph {
                         dirOut3 = new File(
                                 dirOut2,
                                 includeKey);
-                        
+                        //fdsaf
                         /**
                          * It is thought this should be a choice between doing
                          * All or doing only those that were UO in April 2013.
@@ -881,10 +899,8 @@ public class DW_LineGraph extends Generic_LineGraph {
                         dirOut3 = new File(
                                 dirOut2,
                                 DW_Strings.sAll);
-                        
                         boolean doUnderOccupancyData;
 //                    doUnderOccupancyData = false;
-
                         Iterator<Boolean> iteB2;
                         iteB2 = b.iterator();
                         while (iteB2.hasNext()) {
@@ -1050,7 +1066,6 @@ public class DW_LineGraph extends Generic_LineGraph {
                                             }
                                         }
                                     }
-
                                 }
 
                                 Iterator<Boolean> iteB3;
