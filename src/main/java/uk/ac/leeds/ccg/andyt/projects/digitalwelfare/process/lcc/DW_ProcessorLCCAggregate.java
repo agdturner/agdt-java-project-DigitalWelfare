@@ -676,7 +676,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             ArrayList<String> distanceTypes,
             ArrayList<Double> distances) {
         TreeMap<String, File> outputDirs;
-        outputDirs = DW_Files.getOutputSHBELevelDirsTreeMap(
+        outputDirs = df.getOutputSHBELevelDirsTreeMap(
                 levels,
                 doUnderOccupied,
                 doCouncil,

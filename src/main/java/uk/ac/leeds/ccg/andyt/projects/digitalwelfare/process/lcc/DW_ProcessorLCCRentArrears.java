@@ -52,8 +52,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 
         File f;
         f = new File(
-                DW_Files.getGeneratedLCCDir(),
-                "RentArrearsAll" + DW_Files.getDefaultBinaryFileExtension());
+                df.getGeneratedLCCDir(),
+                "RentArrearsAll" + df.getDefaultBinaryFileExtension());
         RentArrearsUO RentArrearsUO;
         if (newData) {
             RentArrearsUO = new RentArrearsUO(env);
@@ -162,7 +162,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         if (doClaims) {
             File f0;
             f0 = new File(
-                    DW_Files.getOutputLCCDir(),
+                    this.df.getOutputLCCDir(),
                     "RentArrearsClaimsAll.csv");
             try {
                 pw0 = new PrintWriter(f0);
@@ -171,7 +171,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
             }
             File f2;
             f2 = new File(
-                    DW_Files.getOutputLCCDir(),
+                    this.df.getOutputLCCDir(),
                     "RentArrearsSummary.csv");
             try {
                 pw2 = new PrintWriter(f2);
@@ -183,7 +183,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         if (doMonths) {
             File f1;
             f1 = new File(
-                    DW_Files.getOutputLCCDir(),
+                    this.df.getOutputLCCDir(),
                     "RentArrearsMonths.csv");
             try {
                 pw1 = new PrintWriter(f1);

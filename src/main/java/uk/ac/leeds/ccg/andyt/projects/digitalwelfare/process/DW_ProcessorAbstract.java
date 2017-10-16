@@ -29,7 +29,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 public abstract class DW_ProcessorAbstract extends DW_Object {
 
     protected transient DW_Postcode_Handler DW_Postcode_Handler;
-    protected transient DW_Files DW_Files;
+    protected transient DW_Files df;
     protected transient DW_Strings DW_Strings;
 
     private transient ArrayList<Boolean> b;
@@ -40,7 +40,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
     public DW_ProcessorAbstract(DW_Environment env) {
         super(env);
         this.DW_Postcode_Handler = env.getDW_Postcode_Handler();
-        this.DW_Files = env.getDW_Files();
+        this.df = env.getDW_Files();
         this.DW_Strings = env.getDW_Strings();
     }
 
@@ -169,7 +169,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
                 + "_LookUp_TreeMap_String_Strings" + DW_Strings.sBinaryFileExtension;
                 //+ "_LookUp_TreeMap_DW_YM3__Strings" + DW_Strings.sBinaryFileExtension;
         dir = new File(
-                DW_Files.getGeneratedONSPDDir(),
+                df.getGeneratedONSPDDir(),
                 YM3Nearest.toString());
 //        }
         File outfile = new File(
@@ -177,7 +177,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
                 outputFilename);
         if (!outfile.exists()) {
             dir.mkdirs();
-            File infile = DW_Files.getInputONSPDFile(YM3Nearest);
+            File infile = df.getInputONSPDFile(YM3Nearest);
             result = initLookupFromPostcodeToCensusCodes(
                     infile,
                     outfile,
@@ -359,7 +359,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
     protected File initLogs(int DEBUG_Level, String processName, int range) {
         env.DEBUG_Level = DEBUG_Level;
         File dir;
-        dir = new File(DW_Files.getOutputSHBELogsDir(), processName);
+        dir = new File(df.getOutputSHBELogsDir(), processName);
         if (dir.isDirectory()) {
             dir = Generic_StaticIO.addToArchive(dir, 100);
         } else {

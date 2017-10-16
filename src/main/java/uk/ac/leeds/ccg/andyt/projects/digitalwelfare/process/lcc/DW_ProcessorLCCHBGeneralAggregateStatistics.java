@@ -111,7 +111,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
 //            PTs.remove(DW_Strings.sPaymentTypeSuspended);
 //            PTs.remove(DW_Strings.sPaymentTypeOther);
         outDir = new File(
-                DW_Files.getOutputSHBETablesDir(),
+                df.getOutputSHBETablesDir(),
                 DW_Strings.sHBGeneralAggregateStatistics);
         // Load UOdata
         TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;

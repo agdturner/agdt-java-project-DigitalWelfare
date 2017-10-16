@@ -51,7 +51,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendItem;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendLayer;

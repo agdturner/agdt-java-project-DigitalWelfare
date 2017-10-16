@@ -26,14 +26,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDoubleChunkArrayFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Grid2DSquareCellDoubleFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDouble;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_Grid2DSquareCellDoubleChunkArrayFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDoubleFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
-import uk.ac.leeds.ccg.andyt.grids.process.Grid2DSquareCellProcessorGWS;
+import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
@@ -130,8 +130,8 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         
         File mapDirectory;
         mapDirectory = new File(
-                DW_Files.getOutputAdviceLeedsMapsDir(),
-                "density");
+                df.getOutputAdviceLeedsMapsDir(),
+                "Density");
 //        DW_MapsAdviceLeeds.setMapDirectory(mapDirectory);
 //        DW_MapsAdviceLeeds.setImageWidth(1000);
 //
@@ -145,10 +145,10 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
                 mapDirectory,
                 "processor");
         processorDir.mkdirs();
-        ge = new Grids_Environment();
+        ge = new Grids_Environment(processorDir);
         eage = new Grids_ESRIAsciiGridExporter(ge);
         ie = new Grids_ImageExporter(ge);
-        gp = new Grid2DSquareCellProcessorGWS(ge);
+        gp = new Grids_ProcessorGWS(ge);
         gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
         gcf = new Grids_Grid2DSquareCellDoubleChunkArrayFactory();
         chunkNRows = 300;//250; //64
@@ -740,7 +740,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             String formattedpostcode = DW_Postcode_Handler.formatPostcode(postcode);
             String postcodeLevel;
             postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(formattedpostcode);
-            AGDT_Point aPoint = DW_MapsAdviceLeeds.getONSPDlookups(env).get(postcodeLevel).get(DW_Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
+            AGDT_Point aPoint = DW_MapsAdviceLeeds.getONSPDlookups().get(postcodeLevel).get(DW_Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
             if (aPoint != null) {
                 if (result.containsKey(outlet)) {
                     result.get(outlet).add(aPoint);
@@ -811,7 +811,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             String formattedpostcode = DW_Postcode_Handler.formatPostcode(postcode);
             String postcodeLevel;
             postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(formattedpostcode);
-            AGDT_Point aPoint = DW_MapsAdviceLeeds.getONSPDlookups(env).get(postcodeLevel).get(DW_Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
+            AGDT_Point aPoint = DW_MapsAdviceLeeds.getONSPDlookups().get(postcodeLevel).get(DW_Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
             if (aPoint != null) {
                 result.add(aPoint);
             } else {

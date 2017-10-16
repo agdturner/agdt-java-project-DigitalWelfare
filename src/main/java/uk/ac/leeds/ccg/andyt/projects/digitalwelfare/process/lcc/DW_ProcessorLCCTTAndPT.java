@@ -565,7 +565,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         ClaimIDToPostcodeIDLookups = new HashMap<Integer, HashMap<DW_ID, DW_ID>>();
         HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup;
         File dirOut;
-        dirOut = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
+        dirOut = df.getOutputSHBETablesTenancyTypeTransitionDir(
                 //DW_Strings.sPaymentTypeAll,
                 checkPreviousTenure);
         dirOut = new File(
@@ -592,7 +592,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         DW_Strings.sAll);
             }
             if (DoUnderOccupiedData) {
-                dirOut2 = DW_Files.getUOFile(
+                dirOut2 = df.getUOFile(
                         dirOut2,
                         true,
                         true,
@@ -954,7 +954,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 + "TreeMap<String, DW_UO_Set>,TreeMap<String, DW_UO_Set>,"
                 + "Set<DW_ID>,boolean)";
         File dirOut;
-        dirOut = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
+        dirOut = df.getOutputSHBETablesTenancyTypeTransitionDir(
                 //DW_Strings.sPaymentTypeAll,
                 checkPreviousTenure);
         dirOut = new File(
@@ -982,7 +982,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         dirOut2,
                         DW_Strings.sAll);
             }
-            dirOut2 = DW_Files.getUOFile(
+            dirOut2 = df.getUOFile(
                     dirOut2,
                     true,
                     true,
@@ -1309,7 +1309,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 + "TreeMap<String, ArrayList<Integer>>,boolean,"
                 + "boolean,boolean,boolean,boolean)";
         File dirOut;
-        dirOut = DW_Files.getOutputSHBETablesTenancyTypeTransitionDir(
+        dirOut = df.getOutputSHBETablesTenancyTypeTransitionDir(
                 //DW_Strings.sPaymentTypeAll,
                 checkPreviousTenure);
         dirOut = new File(
@@ -1614,10 +1614,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 + "TreeMap<String, DW_UO_Set>,Set<DW_ID>,boolean)";
         File dirOut;
         dirOut = new File(
-                DW_Files.getOutputSHBETablesDir(),
+                df.getOutputSHBETablesDir(),
                 DW_Strings.sPostcodeChanges);
         if (DoUnderOccupiedData) {
-            dirOut = DW_Files.getUOFile(dirOut, true, true, true);
+            dirOut = df.getUOFile(dirOut, true, true, true);
         }
         if (postcodeChange) {
             dirOut = new File(
@@ -1648,7 +1648,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         DW_Strings.sAll);
             }
             if (DoUnderOccupiedData) {
-                dirOut2 = DW_Files.getUOFile(
+                dirOut2 = df.getUOFile(
                         dirOut2,
                         true,
                         true,

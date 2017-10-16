@@ -38,112 +38,8 @@ public class DW_Files extends DW_Object {
     /**
      * Provided for convenience. This is a reference to env.DW_Strings.
      */
-    protected DW_Strings DW_Strings;
+    protected DW_Strings ds;
 
-    /**
-     * Short code for 2011.
-     */
-    public final String s2011 = "2011";
-
-    /**
-     * Short code for AdviceLeeds.
-     */
-    public final String sAdviceLeeds = "AdviceLeeds";
-
-    /**
-     * Short code for AttributeData.
-     */
-    public final String sAttributeData = "AttributeData";
-
-    /**
-     * Short code for BoundaryData.
-     */
-    public final String sBoundaryData = "BoundaryData";
-
-    /**
-     * Short code for Census.
-     */
-    public final String sCensus = "Census";
-
-    /**
-     * Short code for Choropleth.
-     */
-    public final String sChoropleth = "Choropleth";
-
-    /**
-     * Short code for CodePoint.
-     */
-    public final String sCodePoint = "CodePoint";
-
-    /**
-     * Short code for Generated.
-     */
-    public final String sGenerated = "Generated";
-
-    /**
-     * Short code for Input.
-     */
-    public final String sInput = "Input";
-
-    /**
-     * Short code for Look Up Tables.
-     */
-    public final String sLUTs = "LUTs";
-
-    /**
-     * Short code for LeedsCityCouncil.
-     */
-    public final String sLCC = "LCC";
-
-    /**
-     * Short code for Maps.
-     */
-    public final String sMaps = "Maps";
-
-    /**
-     * Short code for ONS Postcode Directory
-     */
-    public final String sONSPD = "ONSPD";
-
-    /**
-     * Short code for Output.
-     */
-    public final String sOutput = "Output";
-
-    /**
-     * Short code for Plots.
-     */
-    public final String sPlots = "Plots";
-
-    /**
-     * Short code for PostcodeChanged.
-     */
-    public final String sPostcode = "Postcode";
-
-    /**
-     * Short code for SHBE.
-     */
-    public final String sSHBE = "SHBE";
-
-    /**
-     * Short code for SHBE.
-     */
-    public final String sLogs = "Logs";
-
-    /**
-     * Short code for Swap.
-     */
-    public final String sSwap = "Swap";
-
-    /**
-     * Short code for UnderOccupied.
-     */
-    public final String sUnderOccupied = "UnderOccupied";
-
-    /**
-     * Short code for Tables.
-     */
-    public final String sTables = "Tables";
 
     /**
      * For storing the main directory location where the project files are
@@ -196,6 +92,7 @@ public class DW_Files extends DW_Object {
     private File generatedCensusDir;
     private File generatedCensus2011Dir;
     private File generatedCensus2011LUTsDir;
+    private File generatedGridsDir;
     private File generatedPostcodeDir;
     private File generatedCodePointDir;
     private File generatedONSPDDir;
@@ -216,14 +113,6 @@ public class DW_Files extends DW_Object {
     private File outputSHBEPlotsDir;
     private File outputAdviceLeedsTablesDir;
     private File outputUnderOccupiedDir;
-    /**
-     * Short code for Line.
-     */
-    public final String sLine = "Line";
-    /**
-     * Short code for Density.
-     */
-    public final String sDensity = "Density";
 
     public DW_Files() {
     }
@@ -231,9 +120,9 @@ public class DW_Files extends DW_Object {
     public DW_Files(DW_Environment env) {
         super(env);
         if (env != null) {
-            this.DW_Strings = env.getDW_Strings();
+            this.ds = env.getDW_Strings();
         } else {
-            this.DW_Strings = new DW_Strings();
+            this.ds = new DW_Strings();
         }
     }
 
@@ -248,7 +137,7 @@ public class DW_Files extends DW_Object {
         if (inputDir == null) {
             inputDir = new File(
                     getDigitalWelfareDir(),
-                    sInput);
+                    ds.sInput);
         }
         return inputDir;
     }
@@ -257,7 +146,7 @@ public class DW_Files extends DW_Object {
         if (inputAdviceLeedsDir == null) {
             inputAdviceLeedsDir = new File(
                     getInputDir(),
-                    sAdviceLeeds);
+                    ds.sAdviceLeeds);
         }
         return inputAdviceLeedsDir;
     }
@@ -266,7 +155,7 @@ public class DW_Files extends DW_Object {
         if (inputCensusDir == null) {
             inputCensusDir = new File(
                     getInputDir(),
-                    sCensus);
+                    ds.sCensus);
         }
         return inputCensusDir;
     }
@@ -275,7 +164,7 @@ public class DW_Files extends DW_Object {
         if (inputCensus2011Dir == null) {
             inputCensus2011Dir = new File(
                     getInputCensusDir(),
-                    s2011);
+                    ds.s2011);
         }
         return inputCensus2011Dir;
     }
@@ -290,14 +179,14 @@ public class DW_Files extends DW_Object {
             String level) {
         return new File(
                 getInputCensus2011Dir(level),
-                sAttributeData);
+                ds.sAttributeData);
     }
 
     public File getInputCensus2011BoundaryDataDir(
             String level) {
         return new File(
                 getInputCensus2011Dir(level),
-                sBoundaryData);
+                ds.sBoundaryData);
     }
 
     public File getInputCodePointDir(
@@ -306,10 +195,10 @@ public class DW_Files extends DW_Object {
         if (inputCodePointDir == null) {
             inputCodePointDir = new File(
                     getInputPostcodeDir(),
-                    sBoundaryData);
+                    ds.sBoundaryData);
             inputCodePointDir = new File(
                     inputCodePointDir,
-                    sCodePoint);
+                    ds.sCodePoint);
             inputCodePointDir = new File(
                     inputCodePointDir,
                     year);//"2015");
@@ -323,7 +212,7 @@ public class DW_Files extends DW_Object {
     public File getInputPostcodeDir() {
         if (inputPostcodeDir == null) {
             inputPostcodeDir = new File(getInputDir(),
-                    sPostcode);
+                    ds.sPostcode);
         }
         return inputPostcodeDir;
     }
@@ -332,7 +221,7 @@ public class DW_Files extends DW_Object {
         if (inputONSPDDir == null) {
             inputONSPDDir = new File(
                     getInputPostcodeDir(),
-                    sONSPD);
+                    ds.sONSPD);
         }
         return inputONSPDDir;
     }
@@ -445,7 +334,7 @@ public class DW_Files extends DW_Object {
         if (inputLCCDir == null) {
             inputLCCDir = new File(
                     getInputDir(),
-                    sLCC);
+                    ds.sLCC);
         }
         return inputLCCDir;
     }
@@ -454,7 +343,7 @@ public class DW_Files extends DW_Object {
         if (inputSHBEDir == null) {
             inputSHBEDir = new File(
                     getInputLCCDir(),
-                    sSHBE);
+                    ds.sSHBE);
         }
         return inputSHBEDir;
     }
@@ -463,7 +352,7 @@ public class DW_Files extends DW_Object {
         if (inputUnderOccupiedDir == null) {
             inputUnderOccupiedDir = new File(
                     getInputLCCDir(),
-                    sUnderOccupied);
+                    ds.sUnderOccupied);
         }
         return inputUnderOccupiedDir;
     }
@@ -472,7 +361,7 @@ public class DW_Files extends DW_Object {
         if (swapDir == null) {
             swapDir = new File(
                     getDigitalWelfareDir(),
-                    sSwap);
+                    ds.sSwap);
             swapDir.mkdirs();
         }
         return swapDir;
@@ -482,7 +371,7 @@ public class DW_Files extends DW_Object {
         if (swapLCCDir == null) {
             swapLCCDir = new File(
                     getSwapDir(),
-                    sLCC);
+                    ds.sLCC);
             swapLCCDir.mkdirs();
         }
         return swapLCCDir;
@@ -492,7 +381,7 @@ public class DW_Files extends DW_Object {
         if (swapSHBEDir == null) {
             swapSHBEDir = new File(
                     getSwapLCCDir(),
-                    sSHBE);
+                    ds.sSHBE);
             swapSHBEDir.mkdirs();
         }
         return swapSHBEDir;
@@ -502,7 +391,7 @@ public class DW_Files extends DW_Object {
         if (generatedDir == null) {
             generatedDir = new File(
                     getDigitalWelfareDir(),
-                    sGenerated);
+                    ds.sGenerated);
             generatedDir.mkdirs();
         }
         return generatedDir;
@@ -512,17 +401,27 @@ public class DW_Files extends DW_Object {
         if (generatedAdviceLeedsDir == null) {
             generatedAdviceLeedsDir = new File(
                     getGeneratedDir(),
-                    sAdviceLeeds);
+                    ds.sAdviceLeeds);
             generatedAdviceLeedsDir.mkdirs();
         }
         return generatedAdviceLeedsDir;
+    }
+
+    public File getGeneratedGridsDir() {
+        if (generatedGridsDir == null) {
+            generatedGridsDir = new File(
+                    getGeneratedDir(),
+                    ds.sGrids);
+            generatedGridsDir.mkdirs();
+        }
+        return generatedGridsDir;
     }
 
     public File getGeneratedCensusDir() {
         if (generatedCensusDir == null) {
             generatedCensusDir = new File(
                     getGeneratedDir(),
-                    sCensus);
+                    ds.sCensus);
             generatedCensusDir.mkdirs();
         }
         return generatedCensusDir;
@@ -532,7 +431,7 @@ public class DW_Files extends DW_Object {
         if (generatedCensus2011Dir == null) {
             generatedCensus2011Dir = new File(
                     getGeneratedCensusDir(),
-                    s2011);
+                    ds.s2011);
             generatedCensus2011Dir.mkdirs();
         }
         return generatedCensus2011Dir;
@@ -548,7 +447,7 @@ public class DW_Files extends DW_Object {
         if (generatedCensus2011LUTsDir == null) {
             generatedCensus2011LUTsDir = new File(
                     getGeneratedCensus2011Dir(),
-                    sLUTs);
+                    ds.sLUTs);
             generatedCensus2011LUTsDir.mkdirs();
         }
         return generatedCensus2011LUTsDir;
@@ -558,7 +457,7 @@ public class DW_Files extends DW_Object {
         if (generatedPostcodeDir == null) {
             generatedPostcodeDir = new File(
                     getGeneratedDir(),
-                    sPostcode);
+                    ds.sPostcode);
             generatedPostcodeDir.mkdirs();
         }
         return generatedPostcodeDir;
@@ -568,10 +467,10 @@ public class DW_Files extends DW_Object {
         if (generatedCodePointDir == null) {
             generatedCodePointDir = new File(
                     getGeneratedPostcodeDir(),
-                    sBoundaryData);
+                    ds.sBoundaryData);
             generatedCodePointDir = new File(
                     generatedCodePointDir,
-                    sCodePoint);
+                    ds.sCodePoint);
             generatedCodePointDir.mkdirs();
         }
         return generatedCodePointDir;
@@ -581,7 +480,7 @@ public class DW_Files extends DW_Object {
         if (generatedONSPDDir == null) {
             generatedONSPDDir = new File(
                     getGeneratedPostcodeDir(),
-                    sONSPD);
+                    ds.sONSPD);
             generatedONSPDDir.mkdirs();
         }
         return generatedONSPDDir;
@@ -591,7 +490,7 @@ public class DW_Files extends DW_Object {
         if (generatedLCCDir == null) {
             generatedLCCDir = new File(
                     getGeneratedDir(),
-                    sLCC);
+                    ds.sLCC);
             generatedLCCDir.mkdirs();
         }
         return generatedLCCDir;
@@ -601,7 +500,7 @@ public class DW_Files extends DW_Object {
         if (generatedSHBEDir == null) {
             generatedSHBEDir = new File(
                     getGeneratedLCCDir(),
-                    sSHBE);
+                    ds.sSHBE);
             generatedSHBEDir.mkdirs();
         }
         return generatedSHBEDir;
@@ -647,21 +546,21 @@ public class DW_Files extends DW_Object {
         if (doUnderOccupied) {
             result = new File(
                     dir,
-                    DW_Strings.sU);
+                    ds.sU);
             //UnderOccupiedString);
             if (doCouncil) {
                 result = new File(
                         result,
-                        DW_Strings.sCouncil);
+                        ds.sCouncil);
             } else {
                 result = new File(
                         result,
-                        DW_Strings.sRSL);
+                        ds.sRSL);
             }
         } else {
             result = new File(
                     dir,
-                    DW_Strings.sA);
+                    ds.sA);
         }
         return result;
     }
@@ -675,25 +574,25 @@ public class DW_Files extends DW_Object {
         if (doUnderOccupied) {
             result = new File(
                     f,
-                    DW_Strings.sU);
+                    ds.sU);
             //UnderOccupiedString);
             if (doCouncil & doRSL) {
                 result = new File(
                         result,
-                        DW_Strings.sB);
+                        ds.sB);
             } else if (doCouncil) {
                 result = new File(
                         result,
-                        DW_Strings.sCouncil);
+                        ds.sCouncil);
             } else {
                 result = new File(
                         result,
-                        DW_Strings.sRSL);
+                        ds.sRSL);
             }
         } else {
             result = new File(
                     f,
-                    DW_Strings.sA);
+                    ds.sA);
         }
         return result;
     }
@@ -767,7 +666,7 @@ public class DW_Files extends DW_Object {
         if (generatedUnderOccupiedDir == null) {
             generatedUnderOccupiedDir = new File(
                     getGeneratedLCCDir(),
-                    sUnderOccupied);
+                    ds.sUnderOccupied);
             generatedUnderOccupiedDir.mkdirs();
         }
         return generatedUnderOccupiedDir;
@@ -777,7 +676,7 @@ public class DW_Files extends DW_Object {
         if (outputDir == null) {
             outputDir = new File(
                     getDigitalWelfareDir(),
-                    sOutput);
+                    ds.sOutput);
             outputDir.mkdirs();
         }
         return outputDir;
@@ -787,7 +686,7 @@ public class DW_Files extends DW_Object {
         if (outputAdviceLeedsDir == null) {
             outputAdviceLeedsDir = new File(
                     getOutputDir(),
-                    sAdviceLeeds);
+                    ds.sAdviceLeeds);
             outputAdviceLeedsDir.mkdirs();
         }
         return outputAdviceLeedsDir;
@@ -797,7 +696,7 @@ public class DW_Files extends DW_Object {
         if (outputAdviceLeedsMapsDir == null) {
             outputAdviceLeedsMapsDir = new File(
                     getOutputAdviceLeedsDir(),
-                    sMaps);
+                    ds.sMaps);
             outputAdviceLeedsMapsDir.mkdirs();
 
         }
@@ -807,7 +706,7 @@ public class DW_Files extends DW_Object {
     public File getOutputAdviceLeedsTablesDir() {
         if (outputAdviceLeedsTablesDir == null) {
             outputAdviceLeedsTablesDir = new File(
-                    getOutputAdviceLeedsDir(), sTables);
+                    getOutputAdviceLeedsDir(), ds.sTables);
             outputAdviceLeedsTablesDir.mkdirs();
         }
         return outputAdviceLeedsTablesDir;
@@ -817,7 +716,7 @@ public class DW_Files extends DW_Object {
         if (outputCensusDir == null) {
             outputCensusDir = new File(
                     getOutputDir(),
-                    sCensus);
+                    ds.sCensus);
             outputCensusDir.mkdirs();
         }
         return outputCensusDir;
@@ -827,7 +726,7 @@ public class DW_Files extends DW_Object {
         if (outputCensus2011Dir == null) {
             outputCensus2011Dir = new File(
                     getOutputCensusDir(),
-                    s2011);
+                    ds.s2011);
             outputCensus2011Dir.mkdirs();
         }
         return outputCensus2011Dir;
@@ -846,7 +745,7 @@ public class DW_Files extends DW_Object {
         if (outputLCCDir == null) {
             outputLCCDir = new File(
                     getOutputDir(),
-                    sLCC);
+                    ds.sLCC);
             outputLCCDir.mkdirs();
         }
         return outputLCCDir;
@@ -856,7 +755,7 @@ public class DW_Files extends DW_Object {
         if (outputSHBEDir == null) {
             outputSHBEDir = new File(
                     getOutputLCCDir(),
-                    sSHBE);
+                    ds.sSHBE);
             outputSHBEDir.mkdirs();
         }
         return outputSHBEDir;
@@ -866,7 +765,7 @@ public class DW_Files extends DW_Object {
         if (outputSHBELogsDir == null) {
             outputSHBELogsDir = new File(
                     getOutputSHBEDir(),
-                    sLogs);
+                    ds.sLogs);
             outputSHBELogsDir.mkdirs();
         }
         return outputSHBELogsDir;
@@ -876,7 +775,7 @@ public class DW_Files extends DW_Object {
         if (outputSHBEMapsDir == null) {
             outputSHBEMapsDir = new File(
                     getOutputSHBEDir(),
-                    sMaps);
+                    ds.sMaps);
             outputSHBEMapsDir.mkdirs();
         }
         return outputSHBEMapsDir;
@@ -885,7 +784,7 @@ public class DW_Files extends DW_Object {
     public File getOutputSHBETablesDir() {
         if (outputSHBETablesDir == null) {
             outputSHBETablesDir = new File(
-                    getOutputSHBEDir(), sTables);
+                    getOutputSHBEDir(), ds.sTables);
             outputSHBETablesDir.mkdirs();
         }
         return outputSHBETablesDir;
@@ -895,11 +794,10 @@ public class DW_Files extends DW_Object {
             //String type,
             boolean checkPreviousTenancyType) {
         File result;
-        result = getOutputDir(
-            getOutputSHBETablesDir(),
-            DW_Strings.sTenancy,
+        result = getOutputDir(getOutputSHBETablesDir(),
+            ds.sTenancy,
             //type,
-            DW_Strings.sTenancyTypeTransition,
+            ds.sTenancyTypeTransition,
             checkPreviousTenancyType);
         return result;
     }
@@ -908,7 +806,7 @@ public class DW_Files extends DW_Object {
         if (outputSHBEPlotsDir == null) {
             outputSHBEPlotsDir = new File(
                     getOutputSHBEDir(),
-                    sPlots);
+                    ds.sPlots);
             outputSHBEPlotsDir.mkdirs();
         }
         return outputSHBEPlotsDir;
@@ -918,11 +816,10 @@ public class DW_Files extends DW_Object {
             //String type,
             boolean checkPreviousTenancyType) {
         File result;
-        result = getOutputDir(
-            getOutputSHBEPlotsDir(),
-            DW_Strings.sTenancy,
+        result = getOutputDir(getOutputSHBEPlotsDir(),
+            ds.sTenancy,
             //type,
-            DW_Strings.sTenancyTypeTransitionLineGraph,
+            ds.sTenancyTypeTransitionLineGraph,
             checkPreviousTenancyType);
         return result;
     }
@@ -942,24 +839,24 @@ public class DW_Files extends DW_Object {
         if (checkPreviousTenancyType) {
             result = new File(
                     result,
-                    DW_Strings.sCheckedPreviousTenancyType);
+                    ds.sCheckedPreviousTenancyType);
         } else {
             result = new File(
                     result,
-                    DW_Strings.sCheckedPreviousTenancyTypeNo);
+                    ds.sCheckedPreviousTenancyTypeNo);
         }
         return result;
     }
 
     public File getOutputSHBELineMapsDir() {
         return new File(
-                getOutputSHBEMapsDir(), sLine);
+                getOutputSHBEMapsDir(), ds.sLine);
     }
 
     public File getOutputSHBEChoroplethDir() {
         return new File(
                 getOutputSHBEMapsDir(),
-                sChoropleth);
+                ds.sChoropleth);
     }
 
     public File getOutputSHBEChoroplethDir(
@@ -973,7 +870,7 @@ public class DW_Files extends DW_Object {
         if (outputUnderOccupiedDir == null) {
             outputUnderOccupiedDir = new File(
                     getOutputLCCDir(),
-                    sUnderOccupied);
+                    ds.sUnderOccupied);
             outputUnderOccupiedDir.mkdirs();
         }
         return outputUnderOccupiedDir;
@@ -1013,9 +910,9 @@ public class DW_Files extends DW_Object {
                 getOutputSHBETablesDir(),
                 name);
         if (doUnderOccupancy) {
-            result = new File(result, DW_Strings.sU);
+            result = new File(result, ds.sU);
         } else {
-            result = new File(result, DW_Strings.sA);
+            result = new File(result, ds.sA);
         }
         if (!result.exists()) {
             result.mkdirs();
@@ -1024,6 +921,6 @@ public class DW_Files extends DW_Object {
     }
 
     public String getDefaultBinaryFileExtension() {
-        return DW_Strings.sBinaryFileExtension;
+        return ds.sBinaryFileExtension;
     }
 }
