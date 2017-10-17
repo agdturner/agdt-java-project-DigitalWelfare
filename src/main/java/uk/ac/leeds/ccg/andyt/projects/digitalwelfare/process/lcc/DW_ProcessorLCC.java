@@ -123,20 +123,20 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (!RunAllFromScratch) {
             if (!RunAllFromUpdate) {
                 // Choose which bits to run
-//                doLoadAllONSPDFromSource = true;
-////                doLoadNewONSPDFromSource = true;
-//                doLoadAllSHBEFromSource = true;
-////                doLoadNewSHBEFromSource = true;
-////                doLoadSHBE = true;
-////                doPostcodeCheckLatest = true;
-////                doPostcodeCheck = true;
-//                doLoadUnderOccupancyFromSource = true;
-////                doLoadUnderOccupancy = true;
-//                doLCCSummary = true;
-//                doRentArrears = true;
-////                doRentArrearsNewData = true;
-//                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
-//                doLCCHBGeneralAggregateStatistics = true;
+                doLoadAllONSPDFromSource = true;
+//                doLoadNewONSPDFromSource = true;
+                doLoadAllSHBEFromSource = true;
+//                doLoadNewSHBEFromSource = true;
+//                doLoadSHBE = true;
+//                doPostcodeCheckLatest = true;
+//                doPostcodeCheck = true;
+                doLoadUnderOccupancyFromSource = true;
+//                doLoadUnderOccupancy = true;
+                doLCCSummary = true;
+                doRentArrears = true;
+//                doRentArrearsNewData = true;
+                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+                doLCCHBGeneralAggregateStatistics = true;
                 doLCCTTAndPT = true;
                 if (doLCCTTAndPT) {
                     doLCCTTAndPTAll = true; // Runtime 13:23:08.458s
@@ -158,11 +158,11 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 //                doChoroplethMapping = true;
 //                doLineMaps = true;
 //                doReports = true;
-                doLineGraphs = true;
-                if (doLineGraphs) {
-                    doLineGraphTenancyTypeTransitions = true;
-                    //LineGraphAggregateData = true;
-                }
+//                doLineGraphs = true;
+//                if (doLineGraphs) {
+//                    doLineGraphTenancyTypeTransitions = true;
+//                    //LineGraphAggregateData = true;
+//                }
 //                doDensityMaps = true;
 //                doLineDensityMaps = true;
             } else {
