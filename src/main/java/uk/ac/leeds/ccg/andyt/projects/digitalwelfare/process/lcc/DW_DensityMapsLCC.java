@@ -256,7 +256,7 @@ DW_Shapefile foregroundDW_Shapefile1;
         Grids_Grid2DSquareCellDoubleFactory f;
         f = new Grids_Grid2DSquareCellDoubleFactory(ge, handleOutOfMemoryErrors);
         f.set_Dimensions(dimensions);
-        f.set_GridStatistics(new Grids_GridStatistics0());
+        f.set_GridStatistics(new Grids_GridStatistics0(ge));
         Grids_ProcessorGWS p;
         p = new Grids_ProcessorGWS(ge);
 

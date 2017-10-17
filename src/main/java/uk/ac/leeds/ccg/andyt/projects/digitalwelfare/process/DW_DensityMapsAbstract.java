@@ -154,7 +154,7 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
      * @return
      */
     public Grids_Grid2DSquareCellDouble initiliseGrid(File dir) {
-        Grids_Grid2DSquareCellDouble result = (Grids_Grid2DSquareCellDouble) gf.create(new Grids_GridStatistics0(),
+        Grids_Grid2DSquareCellDouble result = (Grids_Grid2DSquareCellDouble) gf.create(new Grids_GridStatistics0(ge),
                 dir,
                 gcf,
                 nrows,

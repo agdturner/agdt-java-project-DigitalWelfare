@@ -607,7 +607,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
                     + "difference is all shown in grida File " + grida);
             return;
         }
-        gf.set_GridStatistics(new Grids_GridStatistics0());
+        gf.set_GridStatistics(new Grids_GridStatistics0(ge));
         Grids_Grid2DSquareCellDouble ga = (Grids_Grid2DSquareCellDouble) gf.create(grida);
         System.out.println("ga " + ga.toString(handleOutOfMemoryErrors));
         Grids_Grid2DSquareCellDouble gb = (Grids_Grid2DSquareCellDouble) gf.create(gridb);
