@@ -90,29 +90,29 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         int CensusYear = 2011;
         // Initialisiation
         levels = new ArrayList<String>();
-//        levels.add(DW_Strings.sOA);
-        levels.add(DW_Strings.sLSOA);
-        levels.add(DW_Strings.sMSOA);
+//        levels.add(ds.sOA);
+        levels.add(ds.sLSOA);
+        levels.add(ds.sMSOA);
 //        levels.add("PostcodeUnit");
 //        levels.add("PostcodeSector");
 //        levels.add("PostcodeDistrict");
-        levels.add(DW_Strings.sParliamentaryConstituency);
-        levels.add(DW_Strings.sStatisticalWard);
+        levels.add(ds.sParliamentaryConstituency);
+        levels.add(ds.sStatisticalWard);
         includes = DW_SHBE_Handler.getIncludes();
-//            includes.remove(DW_Strings.sIncludeAll);
-//            includes.remove(DW_Strings.sIncludeYearly);
-//            includes.remove(DW_Strings.sInclude6Monthly);
-//            includes.remove(DW_Strings.sInclude3Monthly);
-//            includes.remove(DW_Strings.sIncludeMonthlySinceApril2013);
-//            includes.remove(DW_Strings.sIncludeMonthly);
-        PTs = DW_Strings.getPaymentTypes();
-//            PTs.remove(DW_Strings.sPaymentTypeAll);
-//            PTs.remove(DW_Strings.sPaymentTypeIn);
-//            PTs.remove(DW_Strings.sPaymentTypeSuspended);
-//            PTs.remove(DW_Strings.sPaymentTypeOther);
+//            includes.remove(ds.sIncludeAll);
+//            includes.remove(ds.sIncludeYearly);
+//            includes.remove(ds.sInclude6Monthly);
+//            includes.remove(ds.sInclude3Monthly);
+//            includes.remove(ds.sIncludeMonthlySinceApril2013);
+//            includes.remove(ds.sIncludeMonthly);
+        PTs = ds.getPaymentTypes();
+//            PTs.remove(ds.sPaymentTypeAll);
+//            PTs.remove(ds.sPaymentTypeIn);
+//            PTs.remove(ds.sPaymentTypeSuspended);
+//            PTs.remove(ds.sPaymentTypeOther);
         outDir = new File(
                 df.getOutputSHBETablesDir(),
-                DW_Strings.sHBGeneralAggregateStatistics);
+                ds.sHBGeneralAggregateStatistics);
         // Load UOdata
         TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
         DW_UO_Set CouncilUOSet;
@@ -127,7 +127,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         PTsIte = PTs.iterator();
         while (PTsIte.hasNext()) {
             PT = PTsIte.next();
-            includeName = DW_Strings.sIncludeAll;
+            includeName = ds.sIncludeAll;
             outDir1 = new File(
                     outDir,
                     PT);

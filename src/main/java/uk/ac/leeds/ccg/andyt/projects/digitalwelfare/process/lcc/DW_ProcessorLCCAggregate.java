@@ -46,7 +46,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 //    /**
 //     * For convenience.
 //     */
-//    String sU = DW_Strings.sU;
+//    String sU = ds.sU;
 //
 //    //String sUOInApril2013 = "UOInApril2013";
 //    String sUOInApril2013 = "UInApr13";
@@ -109,16 +109,16 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         HashMap<Boolean, ArrayList<Integer>> regulatedGroups;
         HashMap<Boolean, ArrayList<Integer>> unregulatedGroups;
 
-        PTs = DW_Strings.getPaymentTypes();
-//            PTs.remove(DW_Strings.sPaymentTypeAll);
-//            PTs.remove(DW_Strings.sPaymentTypeIn);
-//            PTs.remove(DW_Strings.sPaymentTypeSuspended);
-//            PTs.remove(DW_Strings.sPaymentTypeOther);
+        PTs = ds.getPaymentTypes();
+//            PTs.remove(ds.sPaymentTypeAll);
+//            PTs.remove(ds.sPaymentTypeIn);
+//            PTs.remove(ds.sPaymentTypeSuspended);
+//            PTs.remove(ds.sPaymentTypeOther);
 
         levels = new ArrayList<String>();
-//        levels.add(DW_Strings.sOA);
-        levels.add(DW_Strings.sLSOA);
-        levels.add(DW_Strings.sMSOA);
+//        levels.add(ds.sOA);
+        levels.add(ds.sLSOA);
+        levels.add(ds.sMSOA);
 //        levels.add("PostcodeUnit");
 //        levels.add("PostcodeSector");
 //        levels.add("PostcodeDistrict");
@@ -127,37 +127,37 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 
         // Initialisiation
         // intialise levels
-        levels.add(DW_Strings.sParliamentaryConstituency);
-        levels.add(DW_Strings.sStatisticalWard);
+        levels.add(ds.sParliamentaryConstituency);
+        levels.add(ds.sStatisticalWard);
 
         // Initialise includes
         includes = DW_SHBE_Handler.getIncludes();
-//            includes.remove(DW_Strings.sIncludeAll);
-//            includes.remove(DW_Strings.sIncludeYearly);
-//            includes.remove(DW_Strings.sInclude6Monthly);
-//            includes.remove(DW_Strings.sInclude3Monthly);
-//            includes.remove(DW_Strings.sIncludeMonthlySinceApril2013);
-//            includes.remove(DW_Strings.sIncludeMonthly);
+//            includes.remove(ds.sIncludeAll);
+//            includes.remove(ds.sIncludeYearly);
+//            includes.remove(ds.sInclude6Monthly);
+//            includes.remove(ds.sInclude3Monthly);
+//            includes.remove(ds.sIncludeMonthlySinceApril2013);
+//            includes.remove(ds.sIncludeMonthly);
 
         // Initialise claimantTypes
-        claimantTypes = DW_Strings.getHB_CTB();
+        claimantTypes = ds.getHB_CTB();
 
         // Initialise types
         types = new ArrayList<String>();
-        types.add(DW_Strings.sAllClaimants); // Count of all claimants
+        types.add(ds.sAllClaimants); // Count of all claimants
 //        types.add("NewEntrant"); // New entrants will include people already from Leeds. Will this also include people new to Leeds? - Probably...
-        types.add(DW_Strings.sOnFlow); // These are people not claiming the previous month and that have not claimed before.
-        types.add(DW_Strings.sReturnFlow); // These are people not claiming the previous month but that have claimed before.
-        types.add(DW_Strings.sStable); // The popoulation of claimants who's postcode location is the same as in the previous month.
-        types.add(DW_Strings.sAllInChurn); // A count of all claimants that have moved to this area (including all people moving within the area).
-        types.add(DW_Strings.sAllOutChurn); // A count of all claimants that have moved that were living in this area (including all people moving within the area).
+        types.add(ds.sOnFlow); // These are people not claiming the previous month and that have not claimed before.
+        types.add(ds.sReturnFlow); // These are people not claiming the previous month but that have claimed before.
+        types.add(ds.sStable); // The popoulation of claimants who's postcode location is the same as in the previous month.
+        types.add(ds.sAllInChurn); // A count of all claimants that have moved to this area (including all people moving within the area).
+        types.add(ds.sAllOutChurn); // A count of all claimants that have moved that were living in this area (including all people moving within the area).
 
         // Initialise distanceTypes
         distanceTypes = new ArrayList<String>();
-        distanceTypes.add(DW_Strings.sInDistanceChurn); // A count of all claimants that have moved within this area.
+        distanceTypes.add(ds.sInDistanceChurn); // A count of all claimants that have moved within this area.
         // A useful indication of places where displaced people from Leeds are placed?
-        distanceTypes.add(DW_Strings.sWithinDistanceChurn); // A count of all claimants that have moved within this area.
-        distanceTypes.add(DW_Strings.sOutDistanceChurn); // A count of all claimants that have moved out from this area.
+        distanceTypes.add(ds.sWithinDistanceChurn); // A count of all claimants that have moved within this area.
+        distanceTypes.add(ds.sOutDistanceChurn); // A count of all claimants that have moved out from this area.
 
         // Initialise/Specifiy distances
         distances = new ArrayList<Double>();
@@ -618,11 +618,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (reportTenancyTransitionBreaks) {
             dirOut2 = new File(
                     dirOut2,
-                    DW_Strings.sIncludingTenancyTransitionBreaks);
+                    ds.sIncludingTenancyTransitionBreaks);
         } else {
             dirOut2 = new File(
                     dirOut2,
-                    DW_Strings.sIncludingTenancyTransitionBreaksNo);
+                    ds.sIncludingTenancyTransitionBreaksNo);
         }
         dirOut2.mkdirs();
         File f;
@@ -850,7 +850,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                         postcode0,
                                         tLookupFromPostcodeToLevelCode);
                                 String type;
-                                type = DW_Strings.sAllClaimants;
+                                type = ds.sAllClaimants;
                                 if (types.contains(type)) {
                                     boolean doMainLoop = true;
                                     // Check for UnderOccupied
@@ -1278,7 +1278,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                 ClaimPostcodeF);
                                         if (areaCode != null) {
                                             String type;
-                                            type = DW_Strings.sAllClaimants;
+                                            type = ds.sAllClaimants;
                                             Integer TTInt;
                                             TTInt = DRecord1.getTenancyType();
                                             if (types.contains(type)) {
@@ -1306,7 +1306,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                             include,
                                                             tIDIndexes);
                                                     if (!hasBeenSeenBefore) {
-                                                        type = DW_Strings.sOnFlow;
+                                                        type = ds.sOnFlow;
                                                         if (types.contains(type)) {
                                                             addToResult(
                                                                     claimantTypeTenureLevelTypeAreaCounts,
@@ -1320,7 +1320,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                         }
                                                     } else {
                                                         // If this claimantNINO has been seen before it is a ReturnFlow
-                                                        type = DW_Strings.sReturnFlow;
+                                                        type = ds.sReturnFlow;
                                                         if (types.contains(type)) {
                                                             addToResult(
                                                                     claimantTypeTenureLevelTypeAreaCounts,
@@ -1346,7 +1346,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                     PostcodeID0 = record0.getPostcodeID();
                                                     if (PostcodeID0 == null) {
                                                         // Unknown
-                                                        type = DW_Strings.sUnknown;
+                                                        type = ds.sUnknown;
                                                         if (types.contains(type)) {
                                                             addToResult(
                                                                     claimantTypeTenureLevelTypeAreaCounts,
@@ -1365,7 +1365,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                      * results.
                                                      */ if (PostcodeID0.equals(PostcodeID1)) {
                                                         // Stable
-                                                        type = DW_Strings.sStable;
+                                                        type = ds.sStable;
                                                         if (types.contains(type)) {
                                                             addToResult(
                                                                     claimantTypeTenureLevelTypeAreaCounts,
@@ -1379,7 +1379,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                         }
                                                     } else {
                                                         // AllInChurn
-                                                        type = DW_Strings.sAllInChurn;
+                                                        type = ds.sAllInChurn;
                                                         if (types.contains(type)) {
                                                             addToResult(
                                                                     claimantTypeTenureLevelTypeAreaCounts,
@@ -1392,7 +1392,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                                     TTInt);
                                                         }
                                                         // AllOutChurn
-                                                        type = DW_Strings.sAllOutChurn;
+                                                        type = ds.sAllOutChurn;
                                                         if (types.contains(type)) {
                                                             addToResult(
                                                                     claimantTypeTenureLevelTypeAreaCounts,
@@ -1416,7 +1416,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                             double distanceThreshold = ite3.next();
                                                             if (distance > distanceThreshold) {
                                                                 // InDistanceChurn
-                                                                type = DW_Strings.sInDistanceChurn;
+                                                                type = ds.sInDistanceChurn;
                                                                 if (distanceTypes.contains(type)) {
                                                                     addToResult(
                                                                             claimantTypeTenureLevelTypeDistanceAreaCounts,
@@ -1430,7 +1430,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                                             distanceThreshold);
                                                                 }
                                                                 // OutDistanceChurn
-                                                                type = DW_Strings.sOutDistanceChurn;
+                                                                type = ds.sOutDistanceChurn;
                                                                 if (distanceTypes.contains(type)) {
                                                                     addToResult(
                                                                             claimantTypeTenureLevelTypeDistanceAreaCounts,
@@ -1445,7 +1445,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                                 }
                                                             } else {
                                                                 // WithinDistanceChurn
-                                                                type = DW_Strings.sWithinDistanceChurn;
+                                                                type = ds.sWithinDistanceChurn;
                                                                 if (distanceTypes.contains(type)) {
                                                                     addToResult(
                                                                             claimantTypeTenureLevelTypeDistanceAreaCounts,
@@ -1471,7 +1471,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                     }
                                 } else {
                                     Generic_Collections.addToTreeMapStringInteger(
-                                            unexpectedCounts, DW_Strings.snull, 1);
+                                            unexpectedCounts, ds.snull, 1);
                                 }
                             }
                         }

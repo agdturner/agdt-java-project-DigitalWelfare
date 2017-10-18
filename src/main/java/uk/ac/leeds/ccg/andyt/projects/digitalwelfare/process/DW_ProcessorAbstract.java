@@ -30,7 +30,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
 
     protected transient DW_Postcode_Handler DW_Postcode_Handler;
     protected transient DW_Files df;
-    protected transient DW_Strings DW_Strings;
+    protected transient DW_Strings ds;
 
     private transient ArrayList<Boolean> b;
 
@@ -41,7 +41,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         super(env);
         this.DW_Postcode_Handler = env.getDW_Postcode_Handler();
         this.df = env.getDW_Files();
-        this.DW_Strings = env.getDW_Strings();
+        this.ds = env.getDW_Strings();
     }
 
     public ArrayList<Boolean> getArrayListBoolean() {
@@ -102,7 +102,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
 //        TreeMap<String, String> result;
 //        String outputFilename;
 //        outputFilename = "PostcodeTo" + level + year
-//                + "LookUp_TreeMap_String_Strings" + DW_Strings.sBinaryFileExtension;
+//                + "LookUp_TreeMap_String_Strings" + ds.sBinaryFileExtension;
 //        File outFile = new File(
 //                DW_Files.getGeneratedONSPDDir(),
 //                outputFilename);
@@ -148,7 +148,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
 //        String[] YM3NearestSplit;
 //        YM3NearestSplit = YM3Nearest.split("_");
 //        HashSet CensusAreaAggregations;
-//        CensusAreaAggregations = DW_Strings.getCensusAreaAggregations();
+//        CensusAreaAggregations = ds.getCensusAreaAggregations();
 //        if (CensusAreaAggregations.contains(level)) {
 //            int year = Integer.valueOf(YM3NearestSplit[0]);
 //            int month = Integer.valueOf(Generic_Time.getMonthNumber(YM3NearestSplit[1]));
@@ -159,15 +159,15 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
 //                yearString = "2011";
 //            }
 //            outputFilename = "PostcodeTo" + level + "_" + yearString
-//                    + "_LookUp_TreeMap_String_Strings" + DW_Strings.sBinaryFileExtension;
+//                    + "_LookUp_TreeMap_String_Strings" + ds.sBinaryFileExtension;
 //            dir = new File(
 //                    DW_Files.getGeneratedONSPDDir(),
 //                    yearString);
 //        } else {
         //String month = YM3NearestSplit[1];
         outputFilename = "PostcodeTo" + level + "_" + YM3Nearest
-                + "_LookUp_TreeMap_String_Strings" + DW_Strings.sBinaryFileExtension;
-                //+ "_LookUp_TreeMap_DW_YM3__Strings" + DW_Strings.sBinaryFileExtension;
+                + "_LookUp_TreeMap_String_Strings" + ds.sBinaryFileExtension;
+                //+ "_LookUp_TreeMap_DW_YM3__Strings" + ds.sBinaryFileExtension;
         dir = new File(
                 df.getGeneratedONSPDDir(),
                 YM3Nearest.toString());

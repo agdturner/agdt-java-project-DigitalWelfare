@@ -80,7 +80,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 DW_ProcessorLCC = new DW_ProcessorLCC();
                 DW_ProcessorLCC.env = env;
                 DW_ProcessorLCC.df = env.getDW_Files();
-                DW_ProcessorLCC.DW_Strings = env.getDW_Strings();
+                DW_ProcessorLCC.ds = env.getDW_Strings();
                 DW_ProcessorLCC.run();
                 /**
                  * Not done this way as this would first load UnderOccupancy
@@ -123,46 +123,46 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (!RunAllFromScratch) {
             if (!RunAllFromUpdate) {
                 // Choose which bits to run
-                doLoadAllONSPDFromSource = true;
-//                doLoadNewONSPDFromSource = true;
-                doLoadAllSHBEFromSource = true;
-//                doLoadNewSHBEFromSource = true;
-//                doLoadSHBE = true;
-//                doPostcodeCheckLatest = true;
-//                doPostcodeCheck = true;
-                doLoadUnderOccupancyFromSource = true;
-//                doLoadUnderOccupancy = true;
-                doLCCSummary = true;
-                doRentArrears = true;
-//                doRentArrearsNewData = true;
-                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
-                doLCCHBGeneralAggregateStatistics = true;
-                doLCCTTAndPT = true;
-                if (doLCCTTAndPT) {
-                    doLCCTTAndPTAll = true; // Runtime 13:23:08.458s
-                    /**
-                     * If doLCCTTAndPTAll = false then choose bits otherwise run
-                     * for all combinations.
-                     */
-//                    doLCCTTAndPTAll = false;
-//                    LCCTTAndPT_DoGrouped = true;
-//                    LCCTTAndPT_DoPostcodeChanges = true;
-////                    LCCTTAndPT_DoPostcodeChanges = false;
-//                    LCCTTAndPT_DoAnyTenancyChanges = true;
-////                    LCCTTAndPT_DoAnyTenancyChanges = false;
-//                    LCCTTAndPT_DoTenancyChanges = true;
-////                    LCCTTAndPT_DoTenancyChanges = false;
-//                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
-////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = false;
-                }
+//                doLoadAllONSPDFromSource = true;
+////                doLoadNewONSPDFromSource = true;
+//                doLoadAllSHBEFromSource = true;
+////                doLoadNewSHBEFromSource = true;
+////                doLoadSHBE = true;
+////                doPostcodeCheckLatest = true;
+////                doPostcodeCheck = true;
+//                doLoadUnderOccupancyFromSource = true;
+////                doLoadUnderOccupancy = true;
+//                doLCCSummary = true;
+//                doRentArrears = true;
+////                doRentArrearsNewData = true;
+//                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+//                doLCCHBGeneralAggregateStatistics = true;
+//                doLCCTTAndPT = true;
+//                if (doLCCTTAndPT) {
+//                    doLCCTTAndPTAll = true; // Runtime 13:23:08.458s
+//                    /**
+//                     * If doLCCTTAndPTAll = false then choose bits otherwise run
+//                     * for all combinations.
+//                     */
+////                    doLCCTTAndPTAll = false;
+////                    LCCTTAndPT_DoGrouped = true;
+////                    LCCTTAndPT_DoPostcodeChanges = true;
+//////                    LCCTTAndPT_DoPostcodeChanges = false;
+////                    LCCTTAndPT_DoAnyTenancyChanges = true;
+//////                    LCCTTAndPT_DoAnyTenancyChanges = false;
+////                    LCCTTAndPT_DoTenancyChanges = true;
+//////                    LCCTTAndPT_DoTenancyChanges = false;
+////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
+//////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = false;
+//                }
 //                doChoroplethMapping = true;
 //                doLineMaps = true;
 //                doReports = true;
-//                doLineGraphs = true;
-//                if (doLineGraphs) {
-//                    doLineGraphTenancyTypeTransitions = true;
-//                    //LineGraphAggregateData = true;
-//                }
+                doLineGraphs = true;
+                if (doLineGraphs) {
+                    doLineGraphTenancyTypeTransitions = true;
+                    //LineGraphAggregateData = true;
+                }
 //                doDensityMaps = true;
 //                doLineDensityMaps = true;
             } else {
@@ -775,20 +775,20 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (postcode.trim().isEmpty()) {
             return result;
         }
-        if (level.equalsIgnoreCase(DW_Strings.sOA) || level.equalsIgnoreCase(DW_Strings.sLSOA) || level.equalsIgnoreCase(DW_Strings.sMSOA) || level.equalsIgnoreCase(DW_Strings.sStatisticalWard) || level.equalsIgnoreCase(DW_Strings.sParliamentaryConstituency)) {
+        if (level.equalsIgnoreCase(ds.sOA) || level.equalsIgnoreCase(ds.sLSOA) || level.equalsIgnoreCase(ds.sMSOA) || level.equalsIgnoreCase(ds.sStatisticalWard) || level.equalsIgnoreCase(ds.sParliamentaryConstituency)) {
             String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
             result = LookupFromPostcodeToCensusCode.get(formattedPostcode);
             if (result == null) {
                 result = "";
             }
-        } else if (level.equalsIgnoreCase(DW_Strings.sPostcodeUnit) || level.equalsIgnoreCase(DW_Strings.sPostcodeSector) || level.equalsIgnoreCase(DW_Strings.sPostcodeDistrict)) {
-            if (level.equalsIgnoreCase(DW_Strings.sPostcodeUnit)) {
+        } else if (level.equalsIgnoreCase(ds.sPostcodeUnit) || level.equalsIgnoreCase(ds.sPostcodeSector) || level.equalsIgnoreCase(ds.sPostcodeDistrict)) {
+            if (level.equalsIgnoreCase(ds.sPostcodeUnit)) {
                 result = postcode;
             }
-            if (level.equalsIgnoreCase(DW_Strings.sPostcodeSector)) {
+            if (level.equalsIgnoreCase(ds.sPostcodeSector)) {
                 result = DW_Postcode_Handler.getPostcodeSector(postcode);
             }
-            if (level.equalsIgnoreCase(DW_Strings.sPostcodeDistrict)) {
+            if (level.equalsIgnoreCase(ds.sPostcodeDistrict)) {
                 result = DW_Postcode_Handler.getPostcodeDistrict(postcode);
             }
         } else {

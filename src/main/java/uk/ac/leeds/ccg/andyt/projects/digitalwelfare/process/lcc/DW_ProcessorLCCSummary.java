@@ -61,24 +61,24 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
 
         // Initialisation
         includes = DW_SHBE_Handler.getIncludes();
-//        includes.remove(DW_Strings.sIncludeAll);
-//        includes.remove(DW_Strings.sIncludeYearly);
-//        includes.remove(DW_Strings.sInclude6Monthly);
-//        includes.remove(DW_Strings.sInclude3Monthly);
-//        includes.remove(DW_Strings.sIncludeMonthlySinceApril2013);
-//        includes.remove(DW_Strings.sInclude2MonthlySinceApril2013Offset0);
-//        includes.remove(DW_Strings.sInclude2MonthlySinceApril2013Offset1);
-//        includes.remove(DW_Strings.sIncludeStartEndSinceApril2013);
-//        includes.remove(DW_Strings.sIncludeMonthly);
-        //includes.remove(DW_Strings.sIncludeApril2013May2013);
-        PTs = DW_Strings.getPaymentTypes();
-//        PTs.remove(DW_Strings.sPaymentTypeAll); // No longer a PT
-//        PTs.remove(DW_Strings.sPaymentTypeIn);
-//        PTs.remove(DW_Strings.sPaymentTypeSuspended);
-//        PTs.remove(DW_Strings.sPaymentTypeOther);
+//        includes.remove(ds.sIncludeAll);
+//        includes.remove(ds.sIncludeYearly);
+//        includes.remove(ds.sInclude6Monthly);
+//        includes.remove(ds.sInclude3Monthly);
+//        includes.remove(ds.sIncludeMonthlySinceApril2013);
+//        includes.remove(ds.sInclude2MonthlySinceApril2013Offset0);
+//        includes.remove(ds.sInclude2MonthlySinceApril2013Offset1);
+//        includes.remove(ds.sIncludeStartEndSinceApril2013);
+//        includes.remove(ds.sIncludeMonthly);
+        //includes.remove(ds.sIncludeApril2013May2013);
+        PTs = ds.getPaymentTypes();
+//        PTs.remove(ds.sPaymentTypeAll); // No longer a PT
+//        PTs.remove(ds.sPaymentTypeIn);
+//        PTs.remove(ds.sPaymentTypeSuspended);
+//        PTs.remove(ds.sPaymentTypeOther);
 
         ArrayList<String> HB_CTB;
-        HB_CTB = DW_Strings.getHB_CTB();
+        HB_CTB = ds.getHB_CTB();
         //forceNewSummaries = false;
         forceNewSummaries = true;
         nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();

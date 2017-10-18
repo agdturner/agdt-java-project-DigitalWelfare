@@ -2471,10 +2471,10 @@ public class DW_SHBE_Handler extends DW_Object {
             ArrayList<Integer> include) {
         Object[] result;
         result = new Object[2];
-        TreeMap<BigDecimal, String> valueLabel;
-        valueLabel = new TreeMap<BigDecimal, String>();
-        TreeMap<String, BigDecimal> fileLabelValue;
-        fileLabelValue = new TreeMap<String, BigDecimal>();
+        TreeMap<BigDecimal, DW_YM3> valueLabel;
+        valueLabel = new TreeMap<BigDecimal, DW_YM3>();
+        TreeMap<DW_YM3, BigDecimal> fileLabelValue;
+        fileLabelValue = new TreeMap<DW_YM3, BigDecimal>();
         result[0] = valueLabel;
         result[1] = fileLabelValue;
 
@@ -2512,13 +2512,11 @@ public class DW_SHBE_Handler extends DW_Object {
                 timeSinceStart = BigDecimal.valueOf(
                         Generic_Time.getMonthDiff(
                                 startYear, yearInt, startMonth, monthInt));
-                String label;
-                label = YM3.toString();
                 valueLabel.put(
                         timeSinceStart,
-                        label);
+                        YM3);
                 fileLabelValue.put(
-                        label,
+                        YM3,
                         timeSinceStart);
             }
         }
