@@ -47,6 +47,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ar
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
@@ -60,11 +61,12 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
 
     DW_MapsAdviceLeeds DW_MapsAdviceLeeds;
     DW_ProcessorAdviceLeeds DW_ProcessorAdviceLeeds;
-            
+
     public DW_DensityMapsAdviceLeeds(DW_Environment env) {
         super(env);
         DW_ProcessorAdviceLeeds = new DW_ProcessorAdviceLeeds(env);
     }
+
     /**
      * @param args the command line arguments
      */
@@ -100,7 +102,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
 //        //outputESRIAsciigrids = false;
 //        DW_Maps.setImageWidth(1000);
         DW_YM3 YM3;
-        YM3 = new DW_YM3(2011,5);
+        YM3 = new DW_YM3(2011, 5);
         DW_Maps.initONSPDLookups();
         // Initialise styleParameters
         /*
@@ -119,7 +121,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         styleParameters.setnClasses(9);
         styleParameters.setPaletteName("Reds");
         styleParameters.setAddWhiteForZero(true);
-        styleParameters.setForegroundStyleName(0,"Foreground Style 0");
+        styleParameters.setForegroundStyleName(0, "Foreground Style 0");
 //        styleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
         styleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
         styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
@@ -127,7 +129,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
                 Color.WHITE));
         styleParameters.setForegroundStyleTitle1("Foreground Style 1");
         DW_MapsAdviceLeeds.setStyleParameters(styleParameters);
-        
+
         File mapDirectory;
         mapDirectory = new File(
                 df.getOutputAdviceLeedsMapsDir(),
@@ -149,7 +151,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         eage = new Grids_ESRIAsciiGridExporter(ge);
         ie = new Grids_ImageExporter(ge);
         gp = new Grids_ProcessorGWS(ge);
-        gp.set_Directory(processorDir, false, handleOutOfMemoryErrors);
+        gp.setDirectory(processorDir, false, handleOutOfMemoryErrors);
         gcf = new Grids_Grid2DSquareCellDoubleChunkArrayFactory();
         chunkNRows = 300;//250; //64
         chunkNCols = 350;//300; //64
@@ -198,7 +200,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
     public void runAll(ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes, DW_YM3 YM3) throws Exception, Error {
         boolean commonStyling = true;
         boolean individualStyling = true;
-        
+
         Iterator<DW_ID_ClientID> ite;
         ite = tDW_ID_ClientTypes.iterator();
         while (ite.hasNext()) {
@@ -209,21 +211,21 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             String targetPropertyName = "LSOA11CD";
             String level;
             level = "LSOA";
-            int     CensusYear = 2011;
+            int CensusYear = 2011;
             //DW_MapsAdviceLeeds.setLevel(level);
             // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
             DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
             tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
                     env,
-                level, 
+                    level,
                     targetPropertyName,
                     DW_MapsAdviceLeeds.getShapefileDataStoreFactory());
             tLookupFromPostcodeToCensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
-                    env,                
+                    env,
                     level,
                     CensusYear,
                     YM3);
-            
+
             TreeMap<String, Deprivation_DataRecord> deprivationRecords;
 
             // Map CAB data
@@ -244,7 +246,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
              */
             for (int filter = 0; filter < 3; filter++) {
                 if (filter == 0) {
-                //if (filter == 0 || filter == 2) {
+                    //if (filter == 0 || filter == 2) {
                     //for (int filter = 2; filter < 3; filter++) {
                     //int filter = 0;
                     deprivationRecords = null;
@@ -440,12 +442,12 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         // Initialise grid paramters
         long xurcorner = xllcorner + (long) (nrows * cellsize);
         long yurcorner = yllcorner + (long) (ncols * cellsize);
-        dimensions = new BigDecimal[5];
-        dimensions[0] = new BigDecimal("" + cellsize); //cellsize
-        dimensions[1] = new BigDecimal("" + xllcorner); //xllcorner
-        dimensions[2] = new BigDecimal("" + yllcorner); //yllcorner
-        dimensions[3] = new BigDecimal("" + xurcorner); //xurcorner
-        dimensions[4] = new BigDecimal("" + yurcorner); //yurcorner
+        dimensions = new Grids_Dimensions(
+                new BigDecimal("" + xllcorner),
+                new BigDecimal("" + yllcorner),
+                new BigDecimal("" + xurcorner),
+                new BigDecimal("" + yurcorner),
+                new BigDecimal("" + cellsize));
         String nameOfGrid;
         nameOfGrid = "gridNrows" + Long.toString(nrows) + "Ncols" + Long.toString(ncols);
         // Grid generalisation paramters

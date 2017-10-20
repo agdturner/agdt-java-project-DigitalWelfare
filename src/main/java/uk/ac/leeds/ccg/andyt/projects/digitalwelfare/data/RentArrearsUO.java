@@ -136,7 +136,7 @@ public final class RentArrearsUO extends DW_Object {
             CouncilUOSet = CouncilUOSets.get(YM3);
             if (CouncilUOSet == null) {
                 DW_SHBE_Records = DW_SHBE_Data.getDW_SHBE_Records(YM3);
-                Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
+                Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
                 ite = AllCouncilUOClaimIDs.iterator();
                 while (ite.hasNext()) {
                     ClaimID = ite.next();
@@ -162,7 +162,7 @@ public final class RentArrearsUO extends DW_Object {
                 CouncilUOMap = CouncilUOSet.getMap();
 
                 DW_SHBE_Records = DW_SHBE_Data.getDW_SHBE_Records(YM3);
-                Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
+                Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
 
                 ite = AllCouncilUOClaimIDs.iterator();
                 while (ite.hasNext()) {

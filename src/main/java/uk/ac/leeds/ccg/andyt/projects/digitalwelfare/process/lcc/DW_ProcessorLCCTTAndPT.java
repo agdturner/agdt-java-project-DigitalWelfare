@@ -625,7 +625,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             DW_SHBE_Records DW_SHBE_Records0 = null;
             DW_SHBE_Records0 = DW_SHBE_Data.getDW_SHBE_Records(YM30);
             HashMap<DW_ID, DW_SHBE_Record> Records0;
-            Records0 = DW_SHBE_Records0.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
+            Records0 = DW_SHBE_Records0.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
             // ClaimIDToTTLookups
             HashMap<Integer, HashMap<DW_ID, Integer>> ClaimIDToTTLookups;
             ClaimIDToTTLookups = new HashMap<Integer, HashMap<DW_ID, Integer>>();
@@ -692,7 +692,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                             ClaimIDToPostcodeIDLookups);
                     ClaimIDToPostcodeIDLookups.put(i, ClaimIDToPostcodeIDLookup);
                     HashMap<DW_ID, DW_SHBE_Record> Records1;
-                    Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
+                    Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
                     // ClaimIDToTTLookup1
                     HashMap<DW_ID, Integer> ClaimIDToTTLookup1;
                     ClaimIDToTTLookup1 = loadClaimIDToTTLookup(
@@ -1928,7 +1928,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         DW_SHBE_Records DW_SHBE_Records;
         DW_SHBE_Records = DW_SHBE_Data.getDW_SHBE_Records(YM3);
         HashMap<DW_ID, DW_SHBE_Record> records;
-        records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
+        records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
         Iterator<DW_ID> ite;
         ite = records.keySet().iterator();
         DW_ID ClaimID;
@@ -1950,8 +1950,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
             return ClaimIDToPostcodeIDLookups.get(key);
         }
-        result = DW_SHBE_Data.getDW_SHBE_Records(YM3).getClaimIDToPostcodeIDLookup(
-                env._HandleOutOfMemoryError_boolean);
+        result = DW_SHBE_Data.getDW_SHBE_Records(YM3).getClaimIDToPostcodeIDLookup(env.HandleOutOfMemoryError);
         ClaimIDToPostcodeIDLookups.put(key, result);
         return result;
     }
@@ -6017,7 +6016,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         recs0 = DW_SHBE_Data.getDW_SHBE_Records(YM30);
 //        recs0 = env.getDW_SHBE_Data().getData().get(YM30);
         HashMap<DW_ID, DW_SHBE_Record> recordsStart;
-        recordsStart = recs0.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
+        recordsStart = recs0.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
         // End
         DW_YM3 YM31;
         YM31 = DW_SHBE_Handler.getYM3(SHBEFilenames[endIndex]);
@@ -6025,7 +6024,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         recs1 = DW_SHBE_Data.getDW_SHBE_Records(YM31);
 //        recs1 = env.getDW_SHBE_Data().getData().get(YM31);
         HashMap<DW_ID, DW_SHBE_Record> recordsEnd;
-        recordsEnd = recs1.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
+        recordsEnd = recs1.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
         //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<Integer, Integer> destinationCounts;
@@ -6216,14 +6215,14 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         recs0 = DW_SHBE_Data.getDW_SHBE_Records(YM30);
         //recs0 = env.getDW_SHBE_Data().getData().get(YM30);
         HashMap<DW_ID, DW_SHBE_Record> recordsStart;
-        recordsStart = recs0.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
+        recordsStart = recs0.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
         DW_YM3 YM31;
         YM31 = DW_SHBE_Handler.getYM3(SHBEFilenames[endIndex]);
         DW_SHBE_Records recs1;
         recs1 = DW_SHBE_Data.getDW_SHBE_Records(YM31);
         //recs1 = env.getDW_SHBE_Data().getData().get(YM31);
         HashMap<DW_ID, DW_SHBE_Record> recordsEnd;
-        recordsEnd = recs1.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
+        recordsEnd = recs1.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<Integer, Integer> destinationCounts;
         Iterator<DW_ID> ite;

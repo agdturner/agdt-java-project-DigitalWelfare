@@ -440,7 +440,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //                env.logO("YM3 " + YM3, true);
 //                DW_SHBE_Records = DW_SHBE_Data.getDW_SHBE_Records(YM3);
 //                HashMap<DW_ID, DW_SHBE_Record> Records;
-//                Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
+//                Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
 //                if (Records.keySet().contains(ClaimID)) {
 //                    SHBECountPriorToApril2013++;
 //                    SHBECount++;
@@ -816,7 +816,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                         env.logE("AllSHBE.get(YM3) is null!");
                     }
                     HashMap<DW_ID, DW_SHBE_Record> Records;
-                    Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
+                    Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
                     if (Records == null) {
                         env.logE("AllSHBE.get(YM3).getRecords(true) is null!");
                     }

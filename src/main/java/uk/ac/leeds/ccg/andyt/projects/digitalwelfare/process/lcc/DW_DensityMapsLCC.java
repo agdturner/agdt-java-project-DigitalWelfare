@@ -29,6 +29,7 @@ import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_Grid2DSquareCellDoubleChunkArrayFactory;
@@ -66,7 +67,7 @@ import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
     DW_MapsLCC DW_MapsLCC;
-    
+
     protected Vector_Environment ve;
     protected DW_SHBE_Data DW_SHBE_Data;
 
@@ -122,11 +123,11 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 df.getGeneratedGridsDir(),
                 "Density");
 //        DW_MapsLCC.setMapDirectory(mapDirectory);
-        
+
         int imageWidth;
         imageWidth = 2000;
 //        DW_MapsLCC.setImageWidth(imageWidth);
-        
+
 //        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefiles();
         init();
 
@@ -138,7 +139,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         eage = new Grids_ESRIAsciiGridExporter(ge);
         ie = new Grids_ImageExporter(ge);
         gp = new Grids_ProcessorGWS(ge);
-        gp.set_Directory(generatedGridsDirectory, false, handleOutOfMemoryErrors);
+        gp.setDirectory(generatedGridsDirectory, false, handleOutOfMemoryErrors);
         gcf = new Grids_Grid2DSquareCellDoubleChunkArrayFactory();
         chunkNRows = 300;//250; //64
         chunkNCols = 350;//300; //64
@@ -224,7 +225,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         //foregroundDW_Shapefile0.add(getCommunityAreasDW_Shapefile());
 //        foregroundDW_Shapefile1 = new DW_Shapefile(f);
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
-DW_Shapefile foregroundDW_Shapefile1;
+        DW_Shapefile foregroundDW_Shapefile1;
         foregroundDW_Shapefile1 = DW_MapsLCC.getCommunityAreasDW_Shapefile();
 //        DW_MapsLCC.setForegroundDW_Shapefile1(foregroundDW_Shapefile1);
 //        DW_Shapefile sf = getCommunityAreasDW_Shapefile();
@@ -234,12 +235,12 @@ DW_Shapefile foregroundDW_Shapefile1;
         ncols = 680;//85 * multiplier * resolutionMultiplier; //170 * multiplier; //340 * multiplier;
         xllcorner = 413000;
         yllcorner = 422500;
-        dimensions = new BigDecimal[5];
-        dimensions[0] = BigDecimal.valueOf(cellsize);
-        dimensions[1] = BigDecimal.valueOf(xllcorner);
-        dimensions[2] = BigDecimal.valueOf(yllcorner);
-        dimensions[3] = BigDecimal.valueOf(xllcorner + (cellsize * ncols));
-        dimensions[4] = BigDecimal.valueOf(yllcorner + (cellsize * nrows));
+        dimensions = new Grids_Dimensions(
+                BigDecimal.valueOf(xllcorner),
+                BigDecimal.valueOf(yllcorner),
+                BigDecimal.valueOf(xllcorner + (cellsize * ncols)),
+                BigDecimal.valueOf(yllcorner + (cellsize * nrows)),
+                BigDecimal.valueOf(cellsize));
         backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
 
         boolean overlaycommunityAreas;
@@ -255,8 +256,8 @@ DW_Shapefile foregroundDW_Shapefile1;
         }
         Grids_Grid2DSquareCellDoubleFactory f;
         f = new Grids_Grid2DSquareCellDoubleFactory(ge, handleOutOfMemoryErrors);
-        f.set_Dimensions(dimensions);
-        f.set_GridStatistics(new Grids_GridStatistics0(ge));
+        f.setDimensions(dimensions);
+        f.setGridStatistics(new Grids_GridStatistics0(ge));
         Grids_ProcessorGWS p;
         p = new Grids_ProcessorGWS(ge);
 
@@ -712,13 +713,12 @@ DW_Shapefile foregroundDW_Shapefile1;
         ncols = 680;//85 * multiplier * resolutionMultiplier; //170 * multiplier; //340 * multiplier;
         xllcorner = 413000;
         yllcorner = 422500;
-        dimensions = new BigDecimal[5];
-        dimensions[0] = BigDecimal.valueOf(cellsize);
-        dimensions[1] = BigDecimal.valueOf(xllcorner);
-        dimensions[2] = BigDecimal.valueOf(yllcorner);
-        dimensions[3] = BigDecimal.valueOf(xllcorner + (cellsize * ncols));
-        dimensions[4] = BigDecimal.valueOf(yllcorner + (cellsize * nrows));
-
+        dimensions = new Grids_Dimensions(
+                BigDecimal.valueOf(xllcorner),
+                BigDecimal.valueOf(yllcorner),
+                BigDecimal.valueOf(xllcorner + (cellsize * ncols)),
+                BigDecimal.valueOf(yllcorner + (cellsize * nrows)),
+                BigDecimal.valueOf(cellsize));
         ArrayList<Boolean> b;
         b = new ArrayList<Boolean>();
         b.add(true);
@@ -1006,15 +1006,12 @@ DW_Shapefile foregroundDW_Shapefile1;
         // maxYRounded - minYRounded = 27700
         // (maxYRounded - minYRounded) / cellsize = 554
         yllcorner = 422500;
-        dimensions = new BigDecimal[5];
-        dimensions[0] = BigDecimal.valueOf(cellsize);
-        dimensions[1] = BigDecimal.valueOf(xllcorner);
-        dimensions[2] = BigDecimal.valueOf(yllcorner);
-        dimensions[3] = BigDecimal.valueOf(xllcorner
-                + (cellsize * ncols));
-        dimensions[4] = BigDecimal.valueOf(yllcorner
-                + (cellsize * nrows));
-
+        dimensions = new Grids_Dimensions(
+                BigDecimal.valueOf(xllcorner),
+                BigDecimal.valueOf(yllcorner),
+                BigDecimal.valueOf(xllcorner + (cellsize * ncols)),
+                BigDecimal.valueOf(yllcorner + (cellsize * nrows)),
+                BigDecimal.valueOf(cellsize));
         DW_UO_Set underOccupiedSetCouncil0 = null;
         DW_UO_Set underOccupiedSetRSL0 = null;
         TreeMap<DW_YM3, DW_UO_Set> underOccupiedSetsCouncil = null;
@@ -1076,7 +1073,7 @@ DW_Shapefile foregroundDW_Shapefile1;
                         }
                     }
                 }
-                 recs0 = env.getDW_SHBE_Data().getDW_SHBE_Records(yM30);
+                recs0 = env.getDW_SHBE_Data().getDW_SHBE_Records(yM30);
 //            DW_SHBE_Records SHBEData00;
 //            SHBEData00 = SHBEData0;
                 yM300 = yM30;
@@ -1206,7 +1203,7 @@ DW_Shapefile foregroundDW_Shapefile1;
         File dirOut2 = new File(
                 dirOut,
                 yM3.toString());
-        
+
         DW_MapsLCC.getStyleParameters().setnClasses(9);
         DW_MapsLCC.getStyleParameters().setPaletteName2(null);
 
@@ -1227,8 +1224,8 @@ DW_Shapefile foregroundDW_Shapefile1;
         lookup = lookups.get("Unit").get(DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 
         HashMap<DW_ID, DW_SHBE_Record> records;
-        records = SHBEData.getClaimIDToDW_SHBE_RecordMap(env._HandleOutOfMemoryError_boolean);
-        
+        records = SHBEData.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
+
         boolean nonZero = false;
 
         // Iterator over records
@@ -1322,7 +1319,7 @@ DW_Shapefile foregroundDW_Shapefile1;
         if (nonZero) {
 
             // output grid
-            gp.set_Directory(dirOut2, false, handleOutOfMemoryErrors);
+            gp.setDirectory(dirOut2, false, handleOutOfMemoryErrors);
 //            Grids_ImageExporter ie;
 //            ie = new Grids_ImageExporter(ge);
 //            File fout = new File(

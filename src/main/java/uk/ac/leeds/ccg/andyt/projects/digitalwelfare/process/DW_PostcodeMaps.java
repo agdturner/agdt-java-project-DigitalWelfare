@@ -40,6 +40,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ar
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.getPointSimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
@@ -103,7 +104,7 @@ public class DW_PostcodeMaps extends DW_Maps {
 
         DW_YM3 yM3;
         yM3 = DW_Postcode_Handler.getDefaultYM3();
-        
+
         String postcodeLevel;
         // Postcode Unit Centroids
         postcodeLevel = "Unit";
@@ -196,7 +197,7 @@ public class DW_PostcodeMaps extends DW_Maps {
 
         String outname = "outname";
         Grids_Grid2DSquareCellDoubleFactory gf;
-        gf = new Grids_Grid2DSquareCellDoubleFactory(de.getGrids_Environment(),true);
+        gf = new Grids_Grid2DSquareCellDoubleFactory(de.getGrids_Environment(), true);
         Grids_Grid2DSquareCellDouble grid;
         grid = toGrid(
                 polyGrid,
@@ -229,7 +230,7 @@ public class DW_PostcodeMaps extends DW_Maps {
                 showMapsInJMapPane);
 
     }
-    
+
     public Grids_Grid2DSquareCellDouble toGrid(
             DW_Shapefile polyGrid,
             long nrows,
@@ -240,18 +241,18 @@ public class DW_PostcodeMaps extends DW_Maps {
             DW_Shapefile postcodeUnitPoly_DW_Shapefile,
             Grids_Grid2DSquareCellDoubleFactory f) {
         Grids_Grid2DSquareCellDouble result;
-        BigDecimal[] dimensions;
-        dimensions = new BigDecimal[5];
-        dimensions[0] = new BigDecimal(cellsize);
-        dimensions[1] = new BigDecimal(xllcorner);
-        dimensions[2] = new BigDecimal(yllcorner);
-        dimensions[3] = new BigDecimal(xllcorner + cellsize * ncols);
-        dimensions[4] = new BigDecimal(yllcorner + cellsize * nrows);
+        Grids_Dimensions dimensions;
+        dimensions = new Grids_Dimensions(
+                new BigDecimal(xllcorner),
+                new BigDecimal(yllcorner),
+                new BigDecimal(xllcorner + cellsize * ncols),
+                new BigDecimal(yllcorner + cellsize * nrows),
+                new BigDecimal(cellsize));
         result = (Grids_Grid2DSquareCellDouble) f.create(nrows, ncols, dimensions);
-        
+
         FeatureCollection cells;
         cells = polyGrid.getFeatureCollection();
-        
+
 //        IntersectUtils.intersection(null, null)
 //        JTS. ${geotools.version}
 //       JTS.unionintersects
@@ -326,7 +327,7 @@ public class DW_PostcodeMaps extends DW_Maps {
      * @return
      */
     public ArrayList<DW_Shapefile> getPostcodePointDW_Shapefiles(
-    DW_YM3 yM3) {
+            DW_YM3 yM3) {
         ArrayList<DW_Shapefile> result;
         result = new ArrayList<DW_Shapefile>();
         File dir;
@@ -345,11 +346,11 @@ public class DW_PostcodeMaps extends DW_Maps {
             sf_name = "LS_Postcodes" + postcodeLevel + "CentroidsPoint.shp";
             File sf_File;
             sf_File = createPostcodePointShapefileIfItDoesNotExist(
-                yM3,
+                    yM3,
                     postcodeLevel,
-                dir,
-                sf_name,
-                "LS");
+                    dir,
+                    sf_name,
+                    "LS");
             result.add(new DW_Shapefile(sf_File));
         }
         return result;

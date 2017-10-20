@@ -40,6 +40,7 @@ import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Maps;
 import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -70,7 +71,7 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
     protected int chunkNRows;
     protected int chunkNCols;
     protected double cellsize;
-    protected BigDecimal[] dimensions;
+    protected Grids_Dimensions dimensions;
     protected long xllcorner;
     protected long yllcorner;
     protected TreeMap<String, String> tLookupFromPostcodeToCensusCodes;
@@ -160,7 +161,6 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
                 nrows,
                 ncols,
                 dimensions,
-                ge,
                 handleOutOfMemoryErrors);
         //System.out.println("" + result.toString(handleOutOfMemoryErrors));
         for (int row = 0; row < nrows; row++) {

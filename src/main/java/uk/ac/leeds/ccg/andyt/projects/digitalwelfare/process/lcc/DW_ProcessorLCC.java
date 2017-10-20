@@ -336,26 +336,26 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     DW_SHBE_Records = new DW_SHBE_Records(
                             env,
                             YM3);
-                    env.tryToEnsureThereIsEnoughMemoryToContinue(env._HandleOutOfMemoryError_boolean);
+                    env.tryToEnsureThereIsEnoughMemoryToContinue(env.HandleOutOfMemoryError);
                     Data.put(YM3, DW_SHBE_Records);
                     env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean).size(), true);
+                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env.HandleOutOfMemoryError).size(), true);
                     env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean).size(), true);
+                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env.HandleOutOfMemoryError).size(), true);
                     env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther(env._HandleOutOfMemoryError_boolean).size(), true);
+                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther(env.HandleOutOfMemoryError).size(), true);
                     env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env._HandleOutOfMemoryError_boolean).size(), true);
+                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env.HandleOutOfMemoryError).size(), true);
                     env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env._HandleOutOfMemoryError_boolean).size(), true);
+                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env.HandleOutOfMemoryError).size(), true);
                     env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther(env._HandleOutOfMemoryError_boolean).size(), true);
+                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther(env.HandleOutOfMemoryError).size(), true);
                     DW_SHBE_Records.clearData();
                 } catch (OutOfMemoryError e) {
                     env.clear_MemoryReserve();
                     env.clearSomeSHBECacheExcept(YM3);
-                    env.init_MemoryReserve(env._HandleOutOfMemoryError_boolean);
-                    env.tryToEnsureThereIsEnoughMemoryToContinue(env._HandleOutOfMemoryError_boolean);
+                    env.init_MemoryReserve(env.HandleOutOfMemoryError);
+                    env.tryToEnsureThereIsEnoughMemoryToContinue(env.HandleOutOfMemoryError);
                 }
             }
             // Close logs
