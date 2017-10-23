@@ -20,12 +20,12 @@ public abstract class DW_OutOfMemoryErrorHandler
     public static long Memory_Threshold = 10000000;
 
     @Override
-    public boolean swapToFile_DataAny() {
+    public boolean swapDataAny() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean swapToFile_DataAny(boolean handleOutOfMemoryError) {
+    public boolean swapDataAny(boolean handleOutOfMemoryError) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

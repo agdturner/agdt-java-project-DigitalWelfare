@@ -352,9 +352,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                             + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther(env.HandleOutOfMemoryError).size(), true);
                     DW_SHBE_Records.clearData();
                 } catch (OutOfMemoryError e) {
-                    env.clear_MemoryReserve();
+                    env.clearMemoryReserve();
                     env.clearSomeSHBECacheExcept(YM3);
-                    env.init_MemoryReserve(env.HandleOutOfMemoryError);
+                    env.initMemoryReserve(env.HandleOutOfMemoryError);
                     env.tryToEnsureThereIsEnoughMemoryToContinue(env.HandleOutOfMemoryError);
                 }
             }

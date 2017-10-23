@@ -1523,9 +1523,9 @@ public class DW_Geotools extends AGDT_Geotools {
                     outputType);
         } catch (OutOfMemoryError oome) {
             if (ge.HandleOutOfMemoryError) {
-                ge.clear_MemoryReserve();
-                ge.swapToFile_Grid2DSquareCellChunk(true);
-                ge.init_MemoryReserve(true);
+                ge.clearMemoryReserve();
+                ge.swapChunk(true);
+                ge.initMemoryReserve(true);
                 writeImageFile(
                         ge,
                         mapContent,

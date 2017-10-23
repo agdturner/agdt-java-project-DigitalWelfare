@@ -142,17 +142,17 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     }
 
     @Override
-    public void init_MemoryReserve(
+    public void initMemoryReserve(
             boolean handleOutOfMemoryError) {
         try {
-            init_MemoryReserve();
+            initMemoryReserve();
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
-                if (!swapToFile_DataAny()) {
+                clearMemoryReserve();
+                if (!swapDataAny()) {
                     throw a_OutOfMemoryError;
                 }
-                init_MemoryReserve(handleOutOfMemoryError);
+                initMemoryReserve(handleOutOfMemoryError);
             } else {
                 throw a_OutOfMemoryError;
             }
@@ -189,10 +189,10 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             }
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
+                clearMemoryReserve();
                 boolean createdRoom = false;
                 while (!createdRoom) {
-                    if (!swapToFile_DataAny()) {
+                    if (!swapDataAny()) {
                         if (DEBUG_Level < DEBUG_Level_NORMAL) {
                             String message = "Warning! No data to swap or clear in "
                                     + this.getClass().getName()
@@ -202,7 +202,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                         throw a_OutOfMemoryError;
                     }
                     try {
-                        init_MemoryReserve(
+                        initMemoryReserve(
                                 HandleOutOfMemoryErrorFalse);
                         createdRoom = true;
                     } catch (OutOfMemoryError b_OutOfMemoryError) {
@@ -231,7 +231,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     @Override
     protected boolean tryToEnsureThereIsEnoughMemoryToContinue() {
         while (getTotalFreeMemory() < Memory_Threshold) {
-            if (!swapToFile_DataAny()) {
+            if (!swapDataAny()) {
                 return false;
             }
         }
@@ -239,18 +239,18 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     }
 
     @Override
-    public boolean swapToFile_DataAny(boolean handleOutOfMemoryError) {
+    public boolean swapDataAny(boolean handleOutOfMemoryError) {
         try {
-            boolean result = swapToFile_DataAny();
+            boolean result = swapDataAny();
             tryToEnsureThereIsEnoughMemoryToContinue(
                     HandleOutOfMemoryErrorFalse);
             return result;
         } catch (OutOfMemoryError a_OutOfMemoryError) {
             if (handleOutOfMemoryError) {
-                clear_MemoryReserve();
-                boolean result = swapToFile_DataAny(
+                clearMemoryReserve();
+                boolean result = swapDataAny(
                         HandleOutOfMemoryErrorFalse);
-                init_MemoryReserve(HandleOutOfMemoryErrorFalse);
+                initMemoryReserve(HandleOutOfMemoryErrorFalse);
                 return result;
             } else {
                 throw a_OutOfMemoryError;
@@ -264,7 +264,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     @Override
-    public boolean swapToFile_DataAny() {
+    public boolean swapDataAny() {
         boolean clearedSomeSHBECache;
         clearedSomeSHBECache = clearSomeSHBECache();
         if (clearedSomeSHBECache) {
