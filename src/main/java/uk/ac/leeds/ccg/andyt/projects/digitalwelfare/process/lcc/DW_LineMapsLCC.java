@@ -33,14 +33,13 @@ import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Style;
+import uk.ac.leeds.ccg.andyt.geotools.core.Geotools_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
@@ -52,16 +51,21 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_St
  */
 public class DW_LineMapsLCC extends DW_Maps {
 
-    private static final String targetPropertyNameLSOA = "LSOA11CD";
+    private final String targetPropertyNameLSOA = "LSOA11CD";
 //    private DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
 //    private DW_AreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
-    protected ArrayList<AGDT_Shapefile> midgrounds;
-    protected ArrayList<AGDT_Shapefile> foregrounds;
+    protected ArrayList<Geotools_Shapefile> midgrounds;
+    protected ArrayList<Geotools_Shapefile> foregrounds;
 
-    DW_StyleParameters styleParameters;
-
-    public DW_LineMapsLCC(DW_Environment env) {
-        super(env);
+    protected DW_StyleParameters styleParameters;
+    
+    protected Geotools_Style Style;
+    protected Geotools_Strings _Geotools_Strings;
+    
+    public DW_LineMapsLCC(DW_Environment de) {
+        super(de);
+        Style = Geotools.getStyle();
+        _Geotools_Strings = Geotools.getGeotools_Strings();
     }
 
     /**
@@ -594,7 +598,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         TreeMap<String, ArrayList<DW_YM3>> result;
         result = new TreeMap<String, ArrayList<DW_YM3>>();
         DW_SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = de.getDW_SHBE_Handler();
+        tDW_SHBE_Handler = de.getSHBE_Handler();
         String[] tSHBEFilenamesAll;
         tSHBEFilenamesAll = tDW_SHBE_Handler.getSHBEFilenamesAll();
         ArrayList<DW_YM3> yMs;
@@ -642,57 +646,57 @@ public class DW_LineMapsLCC extends DW_Maps {
         String filename;
         //filename = "PostcodeChanges_Start_2008April_End_2008October.csv";
         File dirIn = new File(
-                df.getOutputSHBETablesDir(),
-                ds.sTenancy);
+                Files.getOutputSHBETablesDir(),
+                Strings.sTenancy);
         dirIn = new File(
                 dirIn,
-                ds.sA);
+                Strings.sA);
         dirIn = new File(
                 dirIn,
-                ds.sTenancyTypeTransition);
+                Strings.sTenancyTypeTransition);
         dirIn = new File(
                 dirIn,
-                ds.sCheckedPreviousTenancyType);
+                Strings.sCheckedPreviousTenancyType);
         dirIn = new File(
                 dirIn,
-                ds.sTenancyAndPostcodeChanges);
+                Strings.sTenancyAndPostcodeChanges);
         if (doUnderOccupancy) {
             dirIn = new File(
                     dirIn,
-                    ds.sU);
+                    Strings.sU);
             if (doCouncil) {
                 dirIn = new File(
                         dirIn,
-                        ds.sCouncil);
+                        Strings.sCouncil);
             } else {
                 dirIn = new File(
                         dirIn,
-                        ds.sRSL);
+                        Strings.sRSL);
             }
         } else {
             dirIn = new File(
                     dirIn,
-                    ds.sA);
+                    Strings.sA);
         }
         dirIn = new File(
                 dirIn,
-                ds.sPostcodeChanged);
+                Strings.sPostcodeChanged);
         dirIn = new File(
                 dirIn,
-                ds.sA);
+                Strings.sA);
         dirIn = new File(
                 dirIn,
-                ds.sGroupedNo);
+                Strings.sGroupedNo);
         dirIn = new File(
                 dirIn,
-                ds.sPostcodeChanges);
+                Strings.sPostcodeChanges);
         dirIn = new File(
                 dirIn,
-                ds.sCheckedPreviousPostcode);
+                Strings.sCheckedPreviousPostcode);
 
         ArrayList<Integer> includes;
         //includes = DW_SHBE_Handler.getSHBEFilenameIndexesExcept34();
-        includes = de.getDW_SHBE_Handler().getSHBEFilenameIndexes();
+        includes = de.getSHBE_Handler().getSHBEFilenameIndexes();
 
         TreeMap<String, ArrayList<DW_YM3>> yM3s;
         yM3s = getYM3s(includes);
@@ -775,10 +779,10 @@ public class DW_LineMapsLCC extends DW_Maps {
         imageWidth = 2000;
 
         DW_SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = de.getDW_SHBE_Handler();
+        tDW_SHBE_Handler = de.getSHBE_Handler();
 
         ArrayList<String> paymentTypes;
-        paymentTypes = ds.getPaymentTypes();
+        paymentTypes = Strings.getPaymentTypes();
 //        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
 //        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
 //        paymentTypes.remove(DW_SHBE_Handler.sSuspended);
@@ -1337,10 +1341,10 @@ public class DW_LineMapsLCC extends DW_Maps {
 //            Iterator<AGDT_Shapefile> ite1;
 //            ite1 = midgrounds.iterator();
 //            while (ite1.hasNext()) {
-//                AGDT_Shapefile s = ite1.next();
+//                Geotools_Shapefile s = ite1.next();
 //                s.dispose();
 //            }
-            Iterator<AGDT_Shapefile> ite;
+            Iterator<Geotools_Shapefile> ite;
             ite = foregrounds.iterator();
             while (ite.hasNext()) {
                 ite.next().dispose();
@@ -1352,8 +1356,8 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     private void init(boolean doCommunityAreasOverlay) {
         initStyleParameters();
-        foregrounds = new ArrayList<AGDT_Shapefile>();
-        mapDirectory = df.getOutputSHBELineMapsDir();
+        foregrounds = new ArrayList<Geotools_Shapefile>();
+        mapDirectory = Files.getOutputSHBELineMapsDir();
         if (doCommunityAreasOverlay) {
             mapDirectory = new File(
                     mapDirectory,
@@ -1377,11 +1381,11 @@ public class DW_LineMapsLCC extends DW_Maps {
     private void initStyleParameters() {
         styleParameters = new DW_StyleParameters();
         styleParameters.setForegroundStyle(
-                DW_Style.createDefaultPolygonStyle(
+                de.getGeotools().getStyle().createDefaultPolygonStyle(
                         Color.BLACK, //Color.GREEN,
                         Color.WHITE), 0);
         styleParameters.setMidgroundStyle(
-                DW_Style.createDefaultLineStyle(Color.LIGHT_GRAY), 0);
+                Geotools.getStyle().createDefaultLineStyle(Color.LIGHT_GRAY), 0);
     }
 
     private void setStyleParameters(
@@ -1390,14 +1394,14 @@ public class DW_LineMapsLCC extends DW_Maps {
             Color destination) {
         if (type == 0) {
             styleParameters.setMidgroundStyle(
-                    DW_Style.createDefaultLineStyle(origin), 1);
+                    Geotools.getStyle().createDefaultLineStyle(origin), 1);
             styleParameters.setMidgroundStyle(
-                    DW_Style.createDefaultLineStyle(destination), 2);
+                    Style.createDefaultLineStyle(destination), 2);
         } else {
             styleParameters.setMidgroundStyle(
-                    DW_Style.createDefaultLineStyle(origin), 2);
+                    Style.createDefaultLineStyle(origin), 2);
             styleParameters.setMidgroundStyle(
-                    DW_Style.createDefaultLineStyle(destination), 1);
+                    Style.createDefaultLineStyle(destination), 1);
 
         }
     }
@@ -1422,81 +1426,81 @@ public class DW_LineMapsLCC extends DW_Maps {
         File dirOut;
         if (doTenancyTypeAndPostcodeChange) {
             dirIn = new File(
-                    df.getOutputSHBETablesDir(),
+                    Files.getOutputSHBETablesDir(),
                     "Tenancy");
             dirOut = new File(
                     mapDirectory,
-                    ds.sTenancyAndPostcodeChanges);
-            dirIn = df.getUODir(dirIn, doUnderOccupancyData, doCouncil);
-            dirOut = df.getUODir(dirOut, doUnderOccupancyData, doCouncil);
+                    Strings.sTenancyAndPostcodeChanges);
+            dirIn = Files.getUODir(dirIn, doUnderOccupancyData, doCouncil);
+            dirOut = Files.getUODir(dirOut, doUnderOccupancyData, doCouncil);
             dirIn = new File(
                     dirIn,
-                    ds.sTenancyTypeTransition);
+                    Strings.sTenancyTypeTransition);
             if (doCheckedPreviousTenure) {
                 dirIn = new File(
                         dirIn,
-                        ds.sCheckedPreviousTenancyType);
+                        Strings.sCheckedPreviousTenancyType);
                 dirOut = new File(
                         dirOut,
-                        ds.sCheckedPreviousTenancyType);
+                        Strings.sCheckedPreviousTenancyType);
             } else {
                 dirIn = new File(
                         dirIn,
-                        ds.sCheckedPreviousTenancyTypeNo);
+                        Strings.sCheckedPreviousTenancyTypeNo);
                 dirOut = new File(
                         dirOut,
-                        ds.sCheckedPreviousTenancyTypeNo);
+                        Strings.sCheckedPreviousTenancyTypeNo);
             }
             dirIn = new File(
                     dirIn,
-                    ds.sTenancyAndPostcodeChanges);
+                    Strings.sTenancyAndPostcodeChanges);
         } else {
             dirIn = new File(
                     mapDirectory,
-                    ds.sPostcodeChanges);
+                    Strings.sPostcodeChanges);
             dirOut = new File(
                     mapDirectory,
-                    ds.sPostcodeChanges);
-            dirIn = df.getUODir(dirIn, doUnderOccupancyData, doCouncil);
-            dirOut = df.getUODir(dirOut, doUnderOccupancyData, doCouncil);
+                    Strings.sPostcodeChanges);
+            dirIn = Files.getUODir(dirIn, doUnderOccupancyData, doCouncil);
+            dirOut = Files.getUODir(dirOut, doUnderOccupancyData, doCouncil);
             dirIn = new File(
                     dirIn,
-                    ds.sPostcodeChanged);
+                    Strings.sPostcodeChanged);
             dirIn = new File(
                     dirIn,
                     includeName);
             if (grouped) {
                 dirIn = new File(
                         dirIn,
-                        ds.sGrouped);
+                        Strings.sGrouped);
                 dirOut = new File(
                         dirOut,
-                        ds.sGrouped);
+                        Strings.sGrouped);
             } else {
                 dirIn = new File(
                         dirIn,
-                        ds.sGroupedNo);
+                        Strings.sGroupedNo);
                 dirOut = new File(
                         dirOut,
-                        ds.sGroupedNo);
+                        Strings.sGroupedNo);
             }
             dirIn = new File(
                     dirIn,
-                    ds.sPostcodeChanges);
+                    Strings.sPostcodeChanges);
             if (doCheckedPreviousPostcode) {
                 dirIn = new File(
                         dirIn,
-                        ds.sCheckedPreviousPostcode);
+                        Strings.sCheckedPreviousPostcode);
                 dirOut = new File(
                         dirOut,
-                        ds.sCheckedPreviousPostcode);
+                        Strings.sCheckedPreviousPostcode);
             } else {
                 dirIn = new File(
                         dirIn,
-                        ds.sCheckedPreviousPostcodeNo);
+                        Strings.sCheckedPreviousPostcodeNo);
                 dirOut = new File(
                         dirOut,
-                        ds.sCheckedPreviousPostcodeNo);
+                        Strings.sCheckedPreviousPostcodeNo);
             }
         }
         //dirOut.mkdirs(); // done later
@@ -1591,23 +1595,23 @@ public class DW_LineMapsLCC extends DW_Maps {
                             yM31 = new DW_YM3(lineSplit[2].trim());
                             String tenancyTypeChange;
                             DW_YM3 yM30v;
-                            yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+                            yM30v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
                             DW_YM3 yM31v;
-                            yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+                            yM31v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                             tenancyTypeChange = lineSplit[3].trim();
                             if (tenancyTypeChanges.contains(tenancyTypeChange)) {
                                 if (yMs.contains(yM31)) {
                                     String postcode0 = lineSplit[4].trim();
                                     String postcode1 = lineSplit[5].trim();
-                                    AGDT_Point origin;
-                                    origin = DW_Postcode_Handler.getPointFromPostcode(
+                                    Geotools_Point origin;
+                                    origin = Postcode_Handler.getPointFromPostcode(
                                             yM30v,
-                                            DW_Postcode_Handler.TYPE_UNIT,
+                                            Postcode_Handler.TYPE_UNIT,
                                             postcode0);
-                                    AGDT_Point destination;
-                                    destination = DW_Postcode_Handler.getPointFromPostcode(
+                                    Geotools_Point destination;
+                                    destination = Postcode_Handler.getPointFromPostcode(
                                             yM31v,
-                                            DW_Postcode_Handler.TYPE_UNIT,
+                                            Postcode_Handler.TYPE_UNIT,
                                             postcode1);
                                     TreeSetFeatureCollection tsfcS;
                                     tsfcS = tsfcSs.get(tenancyTypeChanges);
@@ -1736,7 +1740,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                         nameM = name + "M";
                         tsfc = tsfcMs.get(tenancyTypeChanges);
                         if (tsfc != null) {
-                            File f0 = AGDT_Geotools.getOutputShapefile(
+                            File f0 = Geotools.getOutputShapefile(
                                     dirOut3,
                                     nameM);
                             DW_Shapefile.transact(
@@ -1747,7 +1751,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                             String nameS;
                             nameS = name + "S";
                             tsfc = tsfcSs.get(tenancyTypeChanges);
-                            File f1 = AGDT_Geotools.getOutputShapefile(
+                            File f1 = Geotools.getOutputShapefile(
                                     dirOut3,
                                     nameS);
                             DW_Shapefile.transact(
@@ -1758,7 +1762,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                             String nameE;
                             nameE = name + "E";
                             tsfc = tsfcEs.get(tenancyTypeChanges);
-                            File f2 = AGDT_Geotools.getOutputShapefile(
+                            File f2 = Geotools.getOutputShapefile(
                                     dirOut3,
                                     nameE);
                             DW_Shapefile.transact(
@@ -1775,13 +1779,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                                 String name2;
                                 if (i == 0) {
                                     name2 = "DestinationOnTop";
-                                    midgrounds = new ArrayList<AGDT_Shapefile>();
+                                    midgrounds = new ArrayList<Geotools_Shapefile>();
                                     midgrounds.add(new DW_Shapefile(f0));
                                     midgrounds.add(new DW_Shapefile(f1));
                                     midgrounds.add(new DW_Shapefile(f2));
                                 } else {
                                     name2 = "OriginOnTop";
-                                    midgrounds = new ArrayList<AGDT_Shapefile>();
+                                    midgrounds = new ArrayList<Geotools_Shapefile>();
                                     midgrounds.add(new DW_Shapefile(f0));
                                     midgrounds.add(new DW_Shapefile(f2));
                                     midgrounds.add(new DW_Shapefile(f1));
@@ -1796,13 +1800,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                                         i,
                                         Color.RED,
                                         Color.BLUE);
-                                DW_Geotools.outputToImage(
+                                Geotools.outputToImage(
                                         legendMessage,
                                         name,
                                         midgrounds,
                                         foregrounds,
                                         dirOut4,
-                                        png_String,
+                                        _Geotools_Strings.png_String,
                                         imageWidth,
                                         styleParameters,
                                         0,
@@ -1853,50 +1857,50 @@ public class DW_LineMapsLCC extends DW_Maps {
         File dirOut;
         if (doTenancyTypeAndPostcodeChange) {
             dirIn = new File(
-                    df.getOutputSHBETablesDir(),
-                    ds.sTenancy);
+                    Files.getOutputSHBETablesDir(),
+                    Strings.sTenancy);
             dirIn = new File(
                     dirIn,
                     paymentType);
             dirIn = new File(
                     dirIn,
-                    ds.sA);
+                    Strings.sA);
             dirOut = new File(
                     mapDirectory,
                     paymentType);
             dirOut = new File(
                     dirOut,
-                    ds.sTenancyAndPostcodeChanges);
-            dirOut = df.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
+                    Strings.sTenancyAndPostcodeChanges);
+            dirOut = Files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
             dirIn = new File(
                     dirIn,
-                    ds.sTenancyTypeTransition);
+                    Strings.sTenancyTypeTransition);
             if (doCheckedPreviousTenure) {
                 dirIn = new File(
                         dirIn,
-                        ds.sCheckedPreviousTenancyType);
+                        Strings.sCheckedPreviousTenancyType);
                 dirOut = new File(
                         dirOut,
-                        ds.sCheckedPreviousTenancyType);
+                        Strings.sCheckedPreviousTenancyType);
             } else {
                 dirIn = new File(
                         dirIn,
-                        ds.sCheckedPreviousTenancyTypeNo);
+                        Strings.sCheckedPreviousTenancyTypeNo);
                 dirOut = new File(
                         dirOut,
-                        ds.sCheckedPreviousTenancyTypeNo);
+                        Strings.sCheckedPreviousTenancyTypeNo);
             }
             dirIn = new File(
                     dirIn,
-                    ds.sTenancyAndPostcodeChanges);
-            dirInCouncil = df.getUODir(dirIn, doUnderOccupancyData, true);
-            dirInRSL = df.getUODir(dirIn, doUnderOccupancyData, false);
+                    Strings.sTenancyAndPostcodeChanges);
+            dirInCouncil = Files.getUODir(dirIn, doUnderOccupancyData, true);
+            dirInRSL = Files.getUODir(dirIn, doUnderOccupancyData, false);
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sPostcodeChanged);
+                    Strings.sPostcodeChanged);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sPostcodeChanged);
+                    Strings.sPostcodeChanged);
             dirInCouncil = new File(
                     dirInCouncil,
                     includeName);
@@ -1905,23 +1909,23 @@ public class DW_LineMapsLCC extends DW_Maps {
                     includeName);
         } else {
             dirIn = new File(
-                    df.getOutputSHBETablesDir(),
-                    ds.sPostcodeChanges);
+                    Files.getOutputSHBETablesDir(),
+                    Strings.sPostcodeChanges);
             dirOut = new File(
                     mapDirectory,
                     paymentType);
             dirOut = new File(
                     dirOut,
-                    ds.sPostcodeChanges);
-            dirOut = df.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
-            dirInCouncil = df.getUODir(dirIn, doUnderOccupancyData, true);
-            dirInRSL = df.getUODir(dirIn, doUnderOccupancyData, false);
+                    Strings.sPostcodeChanges);
+            dirOut = Files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
+            dirInCouncil = Files.getUODir(dirIn, doUnderOccupancyData, true);
+            dirInRSL = Files.getUODir(dirIn, doUnderOccupancyData, false);
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sPostcodeChanged);
+                    Strings.sPostcodeChanged);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sPostcodeChanged);
+                    Strings.sPostcodeChanged);
             dirInCouncil = new File(
                     dirInCouncil,
                     includeName);
@@ -1942,50 +1946,50 @@ public class DW_LineMapsLCC extends DW_Maps {
         if (grouped) {
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sGrouped);
+                    Strings.sGrouped);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sGrouped);
+                    Strings.sGrouped);
             dirOut = new File(
                     dirOut,
-                    ds.sGrouped);
+                    Strings.sGrouped);
         } else {
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sGroupedNo);
+                    Strings.sGroupedNo);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sGroupedNo);
+                    Strings.sGroupedNo);
             dirOut = new File(
                     dirOut,
-                    ds.sGroupedNo);
+                    Strings.sGroupedNo);
         }
         dirInCouncil = new File(
                 dirInCouncil,
-                ds.sPostcodeChanges);
+                Strings.sPostcodeChanges);
         dirInRSL = new File(
                 dirInRSL,
-                ds.sPostcodeChanges);
+                Strings.sPostcodeChanges);
         if (doCheckedPreviousPostcode) {
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sCheckedPreviousPostcode);
+                    Strings.sCheckedPreviousPostcode);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sCheckedPreviousPostcode);
+                    Strings.sCheckedPreviousPostcode);
             dirOut = new File(
                     dirOut,
-                    ds.sCheckedPreviousPostcode);
+                    Strings.sCheckedPreviousPostcode);
         } else {
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sCheckedPreviousPostcodeNo);
+                    Strings.sCheckedPreviousPostcodeNo);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sCheckedPreviousPostcodeNo);
+                    Strings.sCheckedPreviousPostcodeNo);
             dirOut = new File(
                     dirOut,
-                    ds.sCheckedPreviousPostcodeNo);
+                    Strings.sCheckedPreviousPostcodeNo);
         }
         Iterator<String> yearMonthsIte;
         yearMonthsIte = yearMonths.keySet().iterator();
@@ -2081,9 +2085,9 @@ public class DW_LineMapsLCC extends DW_Maps {
                         DW_YM3 yM31;
                         yM31 = new DW_YM3(lineSplit[2].trim());
                         DW_YM3 yM30v;
-                        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+                        yM30v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
                         DW_YM3 yM31v;
-                        yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+                        yM31v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
 
@@ -2098,15 +2102,15 @@ public class DW_LineMapsLCC extends DW_Maps {
                             if (yM3s.contains(yM31)) {
                                 String postcode0 = lineSplit[4].trim();
                                 String postcode1 = lineSplit[5].trim();
-                                AGDT_Point origin;
-                                origin = DW_Postcode_Handler.getPointFromPostcode(
+                                Geotools_Point origin;
+                                origin = Postcode_Handler.getPointFromPostcode(
                                         yM30v,
-                                        DW_Postcode_Handler.TYPE_UNIT,
+                                        Postcode_Handler.TYPE_UNIT,
                                         postcode0);
-                                AGDT_Point destination;
-                                destination = DW_Postcode_Handler.getPointFromPostcode(
+                                Geotools_Point destination;
+                                destination = Postcode_Handler.getPointFromPostcode(
                                         yM31v,
-                                        DW_Postcode_Handler.TYPE_UNIT,
+                                        Postcode_Handler.TYPE_UNIT,
                                         postcode1);
                                 TreeSetFeatureCollection tsfcS;
                                 tsfcS = tsfcSs.get(tenancyTypeChanges);
@@ -2235,7 +2239,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                     nameM = name + "M";
                     tsfc = tsfcMs.get(tenancyTypeChanges);
                     if (tsfc != null) {
-                        File f0 = AGDT_Geotools.getOutputShapefile(
+                        File f0 = Geotools.getOutputShapefile(
                                 dirOut3,
                                 nameM);
                         DW_Shapefile.transact(
@@ -2246,7 +2250,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                         String nameS;
                         nameS = name + "S";
                         tsfc = tsfcSs.get(tenancyTypeChanges);
-                        File f1 = AGDT_Geotools.getOutputShapefile(
+                        File f1 = Geotools.getOutputShapefile(
                                 dirOut3,
                                 nameS);
                         DW_Shapefile.transact(
@@ -2257,7 +2261,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                         String nameE;
                         nameE = name + "E";
                         tsfc = tsfcEs.get(tenancyTypeChanges);
-                        File f2 = AGDT_Geotools.getOutputShapefile(
+                        File f2 = Geotools.getOutputShapefile(
                                 dirOut3,
                                 nameE);
                         DW_Shapefile.transact(
@@ -2274,13 +2278,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                             String name2;
                             if (i == 0) {
                                 name2 = "DestinationOnTop";
-                                midgrounds = new ArrayList<AGDT_Shapefile>();
+                                midgrounds = new ArrayList<Geotools_Shapefile>();
                                 midgrounds.add(new DW_Shapefile(f0));
                                 midgrounds.add(new DW_Shapefile(f1));
                                 midgrounds.add(new DW_Shapefile(f2));
                             } else {
                                 name2 = "OriginOnTop";
-                                midgrounds = new ArrayList<AGDT_Shapefile>();
+                                midgrounds = new ArrayList<Geotools_Shapefile>();
                                 midgrounds.add(new DW_Shapefile(f0));
                                 midgrounds.add(new DW_Shapefile(f2));
                                 midgrounds.add(new DW_Shapefile(f1));
@@ -2295,13 +2299,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                                     i,
                                     Color.RED,
                                     Color.BLUE);
-                            DW_Geotools.outputToImage(
+                            Geotools.outputToImage(
                                     legendMessage,
                                     name,
                                     midgrounds,
                                     foregrounds,
                                     dirOut4,
-                                    png_String,
+                                    _Geotools_Strings.png_String,
                                     imageWidth,
                                     styleParameters,
                                     0,
@@ -2338,50 +2342,50 @@ public class DW_LineMapsLCC extends DW_Maps {
         File dirOut;
         if (doTenancyTypeAndPostcodeChange) {
             dirIn = new File(
-                    df.getOutputSHBETablesDir(),
-                    ds.sTenancy);
+                    Files.getOutputSHBETablesDir(),
+                    Strings.sTenancy);
             dirIn = new File(
                     dirIn,
                     paymentType);
             dirIn = new File(
                     dirIn,
-                    ds.sA);
+                    Strings.sA);
             dirOut = new File(
                     mapDirectory,
                     paymentType);
             dirOut = new File(
                     dirOut,
-                    ds.sA + ds.sPostcodeChanges);
-            dirOut = df.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
+                    Strings.sA + Strings.sPostcodeChanges);
+            dirOut = Files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
             dirIn = new File(
                     dirIn,
-                    ds.sTenancyTypeTransition);
+                    Strings.sTenancyTypeTransition);
             if (doCheckedPreviousTenure) {
                 dirIn = new File(
                         dirIn,
-                        ds.sCheckedPreviousTenancyType);
+                        Strings.sCheckedPreviousTenancyType);
                 dirOut = new File(
                         dirOut,
-                        ds.sCheckedPreviousTenancyType);
+                        Strings.sCheckedPreviousTenancyType);
             } else {
                 dirIn = new File(
                         dirIn,
-                        ds.sCheckedPreviousTenancyTypeNo);
+                        Strings.sCheckedPreviousTenancyTypeNo);
                 dirOut = new File(
                         dirOut,
-                        ds.sCheckedPreviousTenancyTypeNo);
+                        Strings.sCheckedPreviousTenancyTypeNo);
             }
             dirIn = new File(
                     dirIn,
-                    ds.sTenancyAndPostcodeChanges);
-            dirInCouncil = df.getUODir(dirIn, doUnderOccupancyData, true);
-            dirInRSL = df.getUODir(dirIn, doUnderOccupancyData, false);
+                    Strings.sTenancyAndPostcodeChanges);
+            dirInCouncil = Files.getUODir(dirIn, doUnderOccupancyData, true);
+            dirInRSL = Files.getUODir(dirIn, doUnderOccupancyData, false);
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sPostcodeChanged);
+                    Strings.sPostcodeChanged);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sPostcodeChanged);
+                    Strings.sPostcodeChanged);
             dirInCouncil = new File(
                     dirInCouncil,
                     includeName);
@@ -2390,23 +2394,23 @@ public class DW_LineMapsLCC extends DW_Maps {
                     includeName);
         } else {
             dirIn = new File(
-                    df.getOutputSHBETablesDir(),
-                    ds.sPostcodeChanges);
+                    Files.getOutputSHBETablesDir(),
+                    Strings.sPostcodeChanges);
             dirOut = new File(
                     mapDirectory,
                     paymentType);
             dirOut = new File(
                     dirOut,
-                    ds.sPostcodeChanges);
-            dirOut = df.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
-            dirInCouncil = df.getUODir(dirIn, doUnderOccupancyData, true);
-            dirInRSL = df.getUODir(dirIn, doUnderOccupancyData, false);
+                    Strings.sPostcodeChanges);
+            dirOut = Files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
+            dirInCouncil = Files.getUODir(dirIn, doUnderOccupancyData, true);
+            dirInRSL = Files.getUODir(dirIn, doUnderOccupancyData, false);
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sPostcodeChanged);
+                    Strings.sPostcodeChanged);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sPostcodeChanged);
+                    Strings.sPostcodeChanged);
             dirInCouncil = new File(
                     dirInCouncil,
                     includeName);
@@ -2417,68 +2421,68 @@ public class DW_LineMapsLCC extends DW_Maps {
         if (grouped) {
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sGrouped);
+                    Strings.sGrouped);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sGrouped);
+                    Strings.sGrouped);
             dirOut = new File(
                     dirOut,
-                    ds.sGrouped);
+                    Strings.sGrouped);
         } else {
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sGroupedNo);
+                    Strings.sGroupedNo);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sGroupedNo);
+                    Strings.sGroupedNo);
             dirOut = new File(
                     dirOut,
-                    ds.sGroupedNo);
+                    Strings.sGroupedNo);
         }
         dirInCouncil = new File(
                 dirInCouncil,
-                ds.sPostcodeChanges);
+                Strings.sPostcodeChanges);
         dirInRSL = new File(
                 dirInRSL,
-                ds.sPostcodeChanges);
+                Strings.sPostcodeChanges);
         if (doCheckedPreviousPostcode) {
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sCheckedPreviousPostcode);
+                    Strings.sCheckedPreviousPostcode);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sCheckedPreviousPostcode);
+                    Strings.sCheckedPreviousPostcode);
             dirOut = new File(
                     dirOut,
-                    ds.sCheckedPreviousPostcode);
+                    Strings.sCheckedPreviousPostcode);
         } else {
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sCheckedPreviousPostcodeNo);
+                    Strings.sCheckedPreviousPostcodeNo);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sCheckedPreviousPostcodeNo);
+                    Strings.sCheckedPreviousPostcodeNo);
             dirOut = new File(
                     dirOut,
-                    ds.sCheckedPreviousPostcodeNo);
+                    Strings.sCheckedPreviousPostcodeNo);
         }
         File dirIn2;
         File dirInCouncil2;
         File dirInRSL2;
         dirIn2 = new File(
-                df.getOutputSHBETablesDir(),
-                ds.sPostcodeChanges);
+                Files.getOutputSHBETablesDir(),
+                Strings.sPostcodeChanges);
         dirIn2 = new File(
                 dirIn2,
                 paymentType);
-        dirInCouncil2 = df.getUODir(dirIn2, doUnderOccupancyData, true);
-        dirInRSL2 = df.getUODir(dirIn2, doUnderOccupancyData, false);
+        dirInCouncil2 = Files.getUODir(dirIn2, doUnderOccupancyData, true);
+        dirInRSL2 = Files.getUODir(dirIn2, doUnderOccupancyData, false);
         dirInCouncil2 = new File(
                 dirInCouncil2,
-                ds.sPostcodeChanged);
+                Strings.sPostcodeChanged);
         dirInRSL2 = new File(
                 dirInRSL2,
-                ds.sPostcodeChanged);
+                Strings.sPostcodeChanged);
         dirInCouncil2 = new File(
                 dirInCouncil2,
                 includeName);
@@ -2488,38 +2492,38 @@ public class DW_LineMapsLCC extends DW_Maps {
         if (grouped) {
             dirInCouncil2 = new File(
                     dirInCouncil2,
-                    ds.sGrouped);
+                    Strings.sGrouped);
             dirInRSL2 = new File(
                     dirInRSL2,
-                    ds.sGrouped);
+                    Strings.sGrouped);
         } else {
             dirInCouncil2 = new File(
                     dirInCouncil2,
-                    ds.sGroupedNo);
+                    Strings.sGroupedNo);
             dirInRSL2 = new File(
                     dirInRSL2,
-                    ds.sGroupedNo);
+                    Strings.sGroupedNo);
         }
         dirInCouncil2 = new File(
                 dirInCouncil2,
-                ds.sPostcodeChanges);
+                Strings.sPostcodeChanges);
         dirInRSL2 = new File(
                 dirInRSL2,
-                ds.sPostcodeChanges);
+                Strings.sPostcodeChanges);
         if (doCheckedPreviousPostcode) {
             dirInCouncil2 = new File(
                     dirInCouncil2,
-                    ds.sCheckedPreviousPostcode);
+                    Strings.sCheckedPreviousPostcode);
             dirInRSL2 = new File(
                     dirInRSL2,
-                    ds.sCheckedPreviousPostcode);
+                    Strings.sCheckedPreviousPostcode);
         } else {
             dirInCouncil2 = new File(
                     dirInCouncil2,
-                    ds.sCheckedPreviousPostcodeNo);
+                    Strings.sCheckedPreviousPostcodeNo);
             dirInRSL2 = new File(
                     dirInRSL2,
-                    ds.sCheckedPreviousPostcodeNo);
+                    Strings.sCheckedPreviousPostcodeNo);
         }
         Iterator<String> yearMonthsIte;
         yearMonthsIte = yearMonths.keySet().iterator();
@@ -2631,24 +2635,24 @@ public class DW_LineMapsLCC extends DW_Maps {
                         DW_YM3 yM31;
                         yM31 = new DW_YM3(lineSplit[2].trim());
                         DW_YM3 yM30v;
-                        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+                        yM30v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
                         DW_YM3 yM31v;
-                        yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+                        yM31v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
                         if (tenancyTypeChanges.contains(tenancyTypeChange)) {
                             if (yM3s.contains(yM31)) {
                                 String postcode0 = lineSplit[4].trim();
                                 String postcode1 = lineSplit[5].trim();
-                                AGDT_Point origin;
-                                origin = DW_Postcode_Handler.getPointFromPostcode(
+                                Geotools_Point origin;
+                                origin = Postcode_Handler.getPointFromPostcode(
                                         yM30v,
-                                        DW_Postcode_Handler.TYPE_UNIT,
+                                        Postcode_Handler.TYPE_UNIT,
                                         postcode0);
-                                AGDT_Point destination;
-                                destination = DW_Postcode_Handler.getPointFromPostcode(
+                                Geotools_Point destination;
+                                destination = Postcode_Handler.getPointFromPostcode(
                                         yM31v,
-                                        DW_Postcode_Handler.TYPE_UNIT,
+                                        Postcode_Handler.TYPE_UNIT,
                                         postcode1);
                                 TreeSetFeatureCollection tsfcS;
                                 tsfcS = tsfcSs.get(tenancyTypeChanges);
@@ -2777,7 +2781,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                     nameM = name + "M";
                     tsfc = tsfcMs.get(tenancyTypeChanges);
                     if (tsfc != null) {
-                        File f0 = AGDT_Geotools.getOutputShapefile(
+                        File f0 = Geotools.getOutputShapefile(
                                 dirOut3,
                                 nameM);
                         DW_Shapefile.transact(
@@ -2788,7 +2792,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                         String nameS;
                         nameS = name + "S";
                         tsfc = tsfcSs.get(tenancyTypeChanges);
-                        File f1 = AGDT_Geotools.getOutputShapefile(
+                        File f1 = Geotools.getOutputShapefile(
                                 dirOut3,
                                 nameS);
                         DW_Shapefile.transact(
@@ -2799,7 +2803,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                         String nameE;
                         nameE = name + "E";
                         tsfc = tsfcEs.get(tenancyTypeChanges);
-                        File f2 = AGDT_Geotools.getOutputShapefile(
+                        File f2 = Geotools.getOutputShapefile(
                                 dirOut3,
                                 nameE);
                         DW_Shapefile.transact(
@@ -2816,13 +2820,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                             String name2;
                             if (i == 0) {
                                 name2 = "DestinationOnTop";
-                                midgrounds = new ArrayList<AGDT_Shapefile>();
+                                midgrounds = new ArrayList<Geotools_Shapefile>();
                                 midgrounds.add(new DW_Shapefile(f0));
                                 midgrounds.add(new DW_Shapefile(f1));
                                 midgrounds.add(new DW_Shapefile(f2));
                             } else {
                                 name2 = "OriginOnTop";
-                                midgrounds = new ArrayList<AGDT_Shapefile>();
+                                midgrounds = new ArrayList<Geotools_Shapefile>();
                                 midgrounds.add(new DW_Shapefile(f0));
                                 midgrounds.add(new DW_Shapefile(f2));
                                 midgrounds.add(new DW_Shapefile(f1));
@@ -2837,13 +2841,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                                     i,
                                     Color.RED,
                                     Color.BLUE);
-                            DW_Geotools.outputToImage(
+                            Geotools.outputToImage(
                                     legendMessage,
                                     name,
                                     midgrounds,
                                     foregrounds,
                                     dirOut4,
-                                    png_String,
+                                    Geotools.getGeotools_Strings().png_String,
                                     imageWidth,
                                     styleParameters,
                                     0,
@@ -2892,8 +2896,8 @@ public class DW_LineMapsLCC extends DW_Maps {
         File dirInRSL;
         File dirOut;
         dirIn = new File(
-                df.getOutputSHBETablesDir(),
-                ds.sPostcodeChanges);
+                Files.getOutputSHBETablesDir(),
+                Strings.sPostcodeChanges);
         dirIn = new File(
                 dirIn,
                 paymentType);
@@ -2902,17 +2906,17 @@ public class DW_LineMapsLCC extends DW_Maps {
                 paymentType);
         dirOut = new File(
                 dirOut,
-                ds.sPostcodeChanges);
-        dirOut = df.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
+                Strings.sPostcodeChanges);
+        dirOut = Files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
         //dirIn = DW_Files.getUODir(dirIn, doUnderOccupancyData, doCouncil, doRSL);
-        dirInCouncil = df.getUODir(dirIn, doUnderOccupancyData, true);
-        dirInRSL = df.getUODir(dirIn, doUnderOccupancyData, false);
+        dirInCouncil = Files.getUODir(dirIn, doUnderOccupancyData, true);
+        dirInRSL = Files.getUODir(dirIn, doUnderOccupancyData, false);
         dirInCouncil = new File(
                 dirInCouncil,
-                ds.sPostcodeChanged);
+                Strings.sPostcodeChanged);
         dirInRSL = new File(
                 dirInRSL,
-                ds.sPostcodeChanged);
+                Strings.sPostcodeChanged);
         dirInCouncil = new File(
                 dirInCouncil,
                 includeName);
@@ -2922,50 +2926,50 @@ public class DW_LineMapsLCC extends DW_Maps {
         if (grouped) {
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sGrouped);
+                    Strings.sGrouped);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sGrouped);
+                    Strings.sGrouped);
             dirOut = new File(
                     dirOut,
-                    ds.sGrouped);
+                    Strings.sGrouped);
         } else {
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sGroupedNo);
+                    Strings.sGroupedNo);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sGroupedNo);
+                    Strings.sGroupedNo);
             dirOut = new File(
                     dirOut,
-                    ds.sGroupedNo);
+                    Strings.sGroupedNo);
         }
         dirInCouncil = new File(
                 dirInCouncil,
-                ds.sPostcodeChanges);
+                Strings.sPostcodeChanges);
         dirInRSL = new File(
                 dirInRSL,
-                ds.sPostcodeChanges);
+                Strings.sPostcodeChanges);
         if (doCheckedPreviousPostcode) {
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sCheckedPreviousPostcode);
+                    Strings.sCheckedPreviousPostcode);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sCheckedPreviousPostcode);
+                    Strings.sCheckedPreviousPostcode);
             dirOut = new File(
                     dirOut,
-                    ds.sCheckedPreviousPostcode);
+                    Strings.sCheckedPreviousPostcode);
         } else {
             dirInCouncil = new File(
                     dirInCouncil,
-                    ds.sCheckedPreviousPostcodeNo);
+                    Strings.sCheckedPreviousPostcodeNo);
             dirInRSL = new File(
                     dirInRSL,
-                    ds.sCheckedPreviousPostcodeNo);
+                    Strings.sCheckedPreviousPostcodeNo);
             dirOut = new File(
                     dirOut,
-                    ds.sCheckedPreviousPostcodeNo);
+                    Strings.sCheckedPreviousPostcodeNo);
         }
         Iterator<String> yearMonthsIte;
         yearMonthsIte = yearMonths.keySet().iterator();
@@ -3059,24 +3063,24 @@ public class DW_LineMapsLCC extends DW_Maps {
                         DW_YM3 yM31;
                         yM31 = new DW_YM3(lineSplit[2].trim());
                         DW_YM3 yM30v;
-                        yM30v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+                        yM30v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
                         DW_YM3 yM31v;
-                        yM31v = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+                        yM31v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
                         if (tenancyTypeChanges.contains(tenancyTypeChange)) {
                             if (yM3s.contains(yM31)) {
                                 String postcode0 = lineSplit[4].trim();
                                 String postcode1 = lineSplit[5].trim();
-                                AGDT_Point origin;
-                                origin = DW_Postcode_Handler.getPointFromPostcode(
+                                Geotools_Point origin;
+                                origin = Postcode_Handler.getPointFromPostcode(
                                         yM30v,
-                                        DW_Postcode_Handler.TYPE_UNIT,
+                                        Postcode_Handler.TYPE_UNIT,
                                         postcode0);
-                                AGDT_Point destination;
-                                destination = DW_Postcode_Handler.getPointFromPostcode(
+                                Geotools_Point destination;
+                                destination = Postcode_Handler.getPointFromPostcode(
                                         yM31v,
-                                        DW_Postcode_Handler.TYPE_UNIT,
+                                        Postcode_Handler.TYPE_UNIT,
                                         postcode1);
                                 TreeSetFeatureCollection tsfcS;
                                 tsfcS = tsfcSs.get(tenancyTypeChanges);
@@ -3205,7 +3209,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                     nameM = name + "M";
                     tsfc = tsfcMs.get(tenancyTypeChanges);
                     if (tsfc != null) {
-                        File f0 = AGDT_Geotools.getOutputShapefile(
+                        File f0 = Geotools.getOutputShapefile(
                                 dirOut3,
                                 nameM);
                         DW_Shapefile.transact(
@@ -3216,7 +3220,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                         String nameS;
                         nameS = name + "S";
                         tsfc = tsfcSs.get(tenancyTypeChanges);
-                        File f1 = AGDT_Geotools.getOutputShapefile(
+                        File f1 = Geotools.getOutputShapefile(
                                 dirOut3,
                                 nameS);
                         DW_Shapefile.transact(
@@ -3227,7 +3231,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                         String nameE;
                         nameE = name + "E";
                         tsfc = tsfcEs.get(tenancyTypeChanges);
-                        File f2 = AGDT_Geotools.getOutputShapefile(
+                        File f2 = Geotools.getOutputShapefile(
                                 dirOut3,
                                 nameE);
                         DW_Shapefile.transact(
@@ -3244,13 +3248,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                             String name2;
                             if (i == 0) {
                                 name2 = "DestinationOnTop";
-                                midgrounds = new ArrayList<AGDT_Shapefile>();
+                                midgrounds = new ArrayList<Geotools_Shapefile>();
                                 midgrounds.add(new DW_Shapefile(f0));
                                 midgrounds.add(new DW_Shapefile(f1));
                                 midgrounds.add(new DW_Shapefile(f2));
                             } else {
                                 name2 = "OriginOnTop";
-                                midgrounds = new ArrayList<AGDT_Shapefile>();
+                                midgrounds = new ArrayList<Geotools_Shapefile>();
                                 midgrounds.add(new DW_Shapefile(f0));
                                 midgrounds.add(new DW_Shapefile(f2));
                                 midgrounds.add(new DW_Shapefile(f1));
@@ -3265,13 +3269,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                                     i,
                                     Color.RED,
                                     Color.BLUE);
-                            DW_Geotools.outputToImage(
+                            Geotools.outputToImage(
                                     legendMessage,
                                     name,
                                     midgrounds,
                                     foregrounds,
                                     dirOut4,
-                                    png_String,
+                                    _Geotools_Strings.png_String,
                                     imageWidth,
                                     styleParameters,
                                     0,

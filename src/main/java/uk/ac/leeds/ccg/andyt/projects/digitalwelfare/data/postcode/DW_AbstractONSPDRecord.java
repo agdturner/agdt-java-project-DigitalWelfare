@@ -375,7 +375,7 @@ E05001443       00DAHW  Wetherby
         int n = 0;
         pcd = fields[n].substring(1);
         n++;
-        PostcodeF = env.getDW_Postcode_Handler().formatPostcode(pcd);
+        PostcodeF = env.getPostcode_Handler().formatPostcode(pcd);
         pcd2 = fields[n];
         n++;
         pcds = fields[n];

@@ -61,7 +61,7 @@ public class DW_Data_BLC_Handler extends DW_Data_AbstractRecord {
         TreeMap<String, DW_Data_BLC_Record> result;
         result = new TreeMap<String, DW_Data_BLC_Record>();
         File directory = new File(
-                env.getDW_Files().getInputAdviceLeedsDir(),
+                env.getFiles().getInputAdviceLeedsDir(),
                 "BurleyLodgeCentre");
         File inputFile = new File(
                 directory,

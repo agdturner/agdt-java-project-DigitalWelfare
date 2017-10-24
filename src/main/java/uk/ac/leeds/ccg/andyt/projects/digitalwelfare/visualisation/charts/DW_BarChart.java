@@ -68,7 +68,7 @@ public class DW_BarChart extends Generic_BarChart {
 
     public DW_BarChart(DW_Environment env){
         this.env = env;
-        this.DW_Strings = env.getDW_Strings();
+        this.DW_Strings = env.getStrings();
     }
     
     /**
@@ -106,7 +106,7 @@ public class DW_BarChart extends Generic_BarChart {
         executorService = Executors.newSingleThreadExecutor();
 
         String[] SHBEFilenames;
-        SHBEFilenames = env.getDW_SHBE_Handler().getSHBEFilenamesAll();
+        SHBEFilenames = env.getSHBE_Handler().getSHBEFilenamesAll();
         ArrayList<String> claimantTypes;
         claimantTypes = DW_Strings.getHB_CTB();
         ArrayList<String> levels;
@@ -214,7 +214,7 @@ public class DW_BarChart extends Generic_BarChart {
 
         String format = "PNG";
         DW_Files tDW_Files;
-        tDW_Files = env.getDW_Files();
+        tDW_Files = env.getFiles();
         File dirOut;
         dirOut = new File(
                 tDW_Files.getOutputSHBEPlotsDir(),
@@ -228,7 +228,7 @@ public class DW_BarChart extends Generic_BarChart {
         Iterator<Double> distancesIte;
 
         DW_SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = env.getDW_SHBE_Handler();
+        tDW_SHBE_Handler = env.getSHBE_Handler();
         
         for (int i = startIndex + 1; i < SHBEFilenames.length; i++) {
             String aSHBEFilename = SHBEFilenames[i];
@@ -505,7 +505,7 @@ public class DW_BarChart extends Generic_BarChart {
     public void initAreaCodes(ArrayList<String> levels) {
         areaCodes = new HashMap<String, HashSet<String>>();
         DW_Files tDW_Files;
-        tDW_Files = env.getDW_Files();
+        tDW_Files = env.getFiles();
         Iterator<String> ite;
         ite = levels.iterator();
         while (ite.hasNext()) {

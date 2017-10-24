@@ -60,7 +60,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
             String filename,
             Object IDType) {
         File directory = new File(
-                env.getDW_Files().getInputAdviceLeedsDir(),
+                env.getFiles().getInputAdviceLeedsDir(),
                 "LCC_WRU");
         return loadInputData(
                 directory,

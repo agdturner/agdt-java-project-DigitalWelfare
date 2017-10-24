@@ -47,11 +47,11 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
 
     public DW_ProcessorLCCHBGeneralAggregateStatistics(DW_Environment env) {
         super(env);
-        DW_UO_Handler = env.getDW_UO_Handler();
-        DW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
-        DW_SHBE_Data = env.getDW_SHBE_Data();
+        DW_UO_Handler = env.getUO_Handler();
+        DW_SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
+        DW_SHBE_Data = env.getSHBE_Data();
         ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
-        DW_UO_Data = env.getDW_UO_Data();
+        DW_UO_Data = env.getUO_Data();
         SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
     }
 

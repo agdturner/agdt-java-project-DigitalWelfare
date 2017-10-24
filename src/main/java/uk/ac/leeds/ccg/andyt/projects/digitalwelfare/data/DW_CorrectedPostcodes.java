@@ -51,9 +51,9 @@ public class DW_CorrectedPostcodes extends DW_Object {
 
     public DW_CorrectedPostcodes(DW_Environment env) {
         super(env);
-        DW_Postcode_Handler = env.getDW_Postcode_Handler();
-        DW_Files = env.getDW_Files();
-        DW_Strings = env.getDW_Strings();
+        DW_Postcode_Handler = env.getPostcode_Handler();
+        DW_Files = env.getFiles();
+        DW_Strings = env.getStrings();
     }
 
     public static void main(String[] args) {

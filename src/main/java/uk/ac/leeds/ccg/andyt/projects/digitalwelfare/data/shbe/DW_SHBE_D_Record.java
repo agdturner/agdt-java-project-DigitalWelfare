@@ -2684,7 +2684,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
         n++;
         if (n < fields.length) {
             // This is only in type 1 records.
-            setLandlordPostcode(env.getDW_Postcode_Handler().formatPostcode(fields[n]));
+            setLandlordPostcode(env.getPostcode_Handler().formatPostcode(fields[n]));
         }
     }
 
@@ -6493,7 +6493,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
      * @param LandlordPostcode the LandlordPostcode to set
      */
     protected final void setLandlordPostcode(String LandlordPostcode) {
-        this.LandlordPostcode = env.getDW_Postcode_Handler().formatPostcode(LandlordPostcode);
+        this.LandlordPostcode = env.getPostcode_Handler().formatPostcode(LandlordPostcode);
     }
 
 }

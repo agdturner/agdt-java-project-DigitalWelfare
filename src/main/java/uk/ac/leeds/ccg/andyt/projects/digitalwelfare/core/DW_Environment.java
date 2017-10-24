@@ -36,7 +36,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Ha
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
+import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 
 /**
  * This class is for an instance of the environment for the Digital Welfare
@@ -52,12 +54,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     public String sDigitalWelfareDir = "/scratch02/DigitalWelfare";
     //public String sDigitalWelfareDir = "C:/Users/geoagdt/projects/DigitalWelfare";
-
-    /**
-     * For storing an instance of DW_Strings for accessing Strings.
-     */
-    private DW_Strings ds;
-
+    
     /**
      * Logging levels.
      */
@@ -67,15 +64,30 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public final int DEBUG_Level_NORMAL = 2;
     
     /**
+     * For storing an instance of DW_Strings for accessing Strings.
+     */
+    private DW_Strings Strings;
+
+    /**
      * For storing an instance of DW_Files for accessing filenames and Files
      * therein.
      */
-    private DW_Files df;
+    private DW_Files Files;
     
     /**
      * For storing an instance of Grids_Environment
      */
-    private transient Grids_Environment ge;
+    protected transient Grids_Environment ge;
+    
+    /**
+     * For storing an instance of Vector_Environment
+     */
+    protected transient Vector_Environment ve;
+    
+    /**
+     * For storing an instance of DW_Geotools
+     */
+    protected transient DW_Geotools Geotools;
     
 //    /**
 //     * For storing an instance of HashMap<String, DW_SHBE_CollectionHandler>.
@@ -83,44 +95,44 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 //    private HashMap<String, DW_SHBE_CollectionHandler> DW_SHBE_CollectionHandlers;
 
     /**
-     * For storing an instance of DW_UO_Handler for convenience.
+     * For storing an instance of UO_Handler for convenience.
      */
-    protected DW_UO_Handler DW_UO_Handler;
+    protected DW_UO_Handler UO_Handler;
 
     /**
-     * For storing an instance of DW_UO_Data.
+     * For storing an instance of UO_Data.
      */
-    protected DW_UO_Data DW_UO_Data;
+    protected DW_UO_Data UO_Data;
 
     /**
      * For storing an instance of DW_Postcode_Handler for convenience.
      */
-    private DW_Postcode_Handler DW_Postcode_Handler;
+    private DW_Postcode_Handler Postcode_Handler;
 
     /**
-     * For storing an instance of DW_SHBE_Handler for convenience.
+     * For storing an instance of SHBE_Handler for convenience.
      */
-    private DW_SHBE_Handler DW_SHBE_Handler;
+    private DW_SHBE_Handler SHBE_Handler;
     
     /**
-     * For storing an instance of DW_SHBE_TenancyType_Handler for convenience.
+     * For storing an instance of SHBE_TenancyType_Handler for convenience.
      */
-    private DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
+    private DW_SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
     
     /**
      * For storing an instance of DW_Maps for convenience.
      */
-    private DW_Maps DW_Maps;
+    private DW_Maps Maps;
 
     /**
-     * For storing an instance of DW_Deprivation_DataHandler for convenience.
+     * For storing an instance of Deprivation_DataHandler for convenience.
      */
-    DW_Deprivation_DataHandler DW_Deprivation_DataHandler;
+    DW_Deprivation_DataHandler Deprivation_DataHandler;
 
     /**
      * For storing an instance of DW_SHBE_DataAll.
      */
-    private DW_SHBE_Data DW_SHBE_Data;
+    private DW_SHBE_Data SHBE_Data;
     
     public DW_Environment(int DEBUG_Level) {
         init(DEBUG_Level);
@@ -132,8 +144,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     private void init(int DEBUG_Level) {
         this.DEBUG_Level = DEBUG_Level;
-            this.df = new DW_Files(this);
-        this.ds = new DW_Strings();
+            this.Files = new DW_Files(this);
+        this.Strings = new DW_Strings();
     }
     
     private void init(int DEBUG_Level, String sDigitalWelfareDir) {
@@ -146,15 +158,15 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             boolean handleOutOfMemoryError) {
         try {
             initMemoryReserve();
-        } catch (OutOfMemoryError a_OutOfMemoryError) {
+        } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
                 if (!swapDataAny()) {
-                    throw a_OutOfMemoryError;
+                    throw e;
                 }
                 initMemoryReserve(handleOutOfMemoryError);
             } else {
-                throw a_OutOfMemoryError;
+                throw e;
             }
         }
     }
@@ -187,7 +199,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                 handleOutOfMemoryError = false;
                 throw new OutOfMemoryError();
             }
-        } catch (OutOfMemoryError a_OutOfMemoryError) {
+        } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
                 boolean createdRoom = false;
@@ -199,13 +211,13 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                                     + ".tryToEnsureThereIsEnoughMemoryToContinue(boolean)";
                             System.out.println(message);
                         }
-                        throw a_OutOfMemoryError;
+                        throw e;
                     }
                     try {
                         initMemoryReserve(
                                 HandleOutOfMemoryErrorFalse);
                         createdRoom = true;
-                    } catch (OutOfMemoryError b_OutOfMemoryError) {
+                    } catch (OutOfMemoryError e2) {
                         if (DEBUG_Level < DEBUG_Level_NORMAL) {
                             String message
                                     = "Struggling to ensure there is enough memory in "
@@ -218,7 +230,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                 return tryToEnsureThereIsEnoughMemoryToContinue(
                         handleOutOfMemoryError);
             } else {
-                throw a_OutOfMemoryError;
+                throw e;
             }
         }
     }
@@ -245,7 +257,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             tryToEnsureThereIsEnoughMemoryToContinue(
                     HandleOutOfMemoryErrorFalse);
             return result;
-        } catch (OutOfMemoryError a_OutOfMemoryError) {
+        } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
                 boolean result = swapDataAny(
@@ -253,7 +265,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                 initMemoryReserve(HandleOutOfMemoryErrorFalse);
                 return result;
             } else {
-                throw a_OutOfMemoryError;
+                throw e;
             }
         }
     }
@@ -282,7 +294,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return The number of sets of records cleared.
      */
     public int clearAllSHBECache() {
-        return DW_SHBE_Data.clearAllCache();
+        return SHBE_Data.clearAllCache();
     }
 
     /**
@@ -291,7 +303,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return True iff a collection is swapped.
      */
     public boolean clearSomeSHBECache() {
-        return getDW_SHBE_Data().clearSomeCache();
+        return getSHBE_Data().clearSomeCache();
     }
 
     /**
@@ -301,7 +313,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return True iff a collection is swapped.
      */
     public boolean clearSomeSHBECacheExcept(DW_YM3 YM3) {
-        return getDW_SHBE_Data().clearSomeCacheExcept(YM3);
+        return getSHBE_Data().clearSomeCacheExcept(YM3);
     }
     
     /**
@@ -426,11 +438,11 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      *
      * @return
      */
-    public DW_Strings getDW_Strings() {
-        if (ds == null) {
-            ds = new DW_Strings();
+    public DW_Strings getStrings() {
+        if (Strings == null) {
+            Strings = new DW_Strings();
         }
-        return ds;
+        return Strings;
     }
 
     /**
@@ -438,11 +450,11 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      *
      * @return
      */
-    public DW_Files getDW_Files() {
-        if (df == null) {
-            df = new DW_Files(this);
+    public DW_Files getFiles() {
+        if (Files == null) {
+            Files = new DW_Files(this);
         }
-        return df;
+        return Files;
     }
 
     /**
@@ -452,113 +464,89 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      */
     public Grids_Environment getGrids_Environment() {
         if (ge == null) {
-            ge = new Grids_Environment(df.getGeneratedGridsDir());
+            ge = new Grids_Environment(Files.getGeneratedGridsDir());
         }
         return ge;
     }
+            
+    public Vector_Environment getVector_Environment() {
+        if (ve == null) {
+            ve = new Vector_Environment();
+            //ve = new Vector_Environment(df.getGeneratedVectorDir());
+        }
+        return ve;
+    }
 
-//    /**
-//     * For returning an instance of DW_SHBE_CollectionHandler for convenience.
-//     *
-//     * @return
-//     */
-//    public HashMap<String, DW_SHBE_CollectionHandler> getDW_SHBE_CollectionHandlers() {
-//        if (DW_SHBE_CollectionHandlers == null) {
-//            DW_SHBE_CollectionHandlers = new HashMap<String, DW_SHBE_CollectionHandler>();
-//        }
-//        return DW_SHBE_CollectionHandlers;
-//    }
-//
-//    /**
-//     * For returning an instance of DW_SHBE_CollectionHandler for convenience.
-//     *
-//     * @param PT
-//     * @return
-//     */
-//    public DW_SHBE_CollectionHandler getDW_SHBE_CollectionHandler(String PT) {
-//        DW_SHBE_CollectionHandler result;
-//        DW_SHBE_CollectionHandlers = getDW_SHBE_CollectionHandlers();
-//        if (DW_SHBE_CollectionHandlers.containsKey(PT)) {
-//            result = DW_SHBE_CollectionHandlers.get(PT);
-//        } else {
-//            File dir;
-//            dir = new File(
-//                    DW_Files.getSwapSHBEDir(),
-//                    PT);
-//            if (!dir.exists()) {
-//                dir.mkdirs();
-//            }
-//            result = new DW_SHBE_CollectionHandler(
-//                    this,
-//                    PT);
-//            result.nextID = 0L;
-//            DW_SHBE_CollectionHandlers.put(PT, result);
-//        }
-//        return result;
-//    }
+    public DW_Geotools getGeotools() {
+        if (Geotools == null) {
+            Geotools = new DW_Geotools(this);
+            //Geotools = new DW_Geotools(df.getGeneratedGeotoolsDir());
+        }
+        return Geotools;
+    }
 
     /**
-     * For returning an instance of DW_UO_Handler for convenience.
+     * For returning an instance of UO_Handler for convenience.
      *
      * @return
      */
-    public DW_UO_Handler getDW_UO_Handler() {
-        if (DW_UO_Handler == null) {
-            DW_UO_Handler = new DW_UO_Handler(this);
+    public DW_UO_Handler getUO_Handler() {
+        if (UO_Handler == null) {
+            UO_Handler = new DW_UO_Handler(this);
         }
-        return DW_UO_Handler;
+        return UO_Handler;
     }
 
     /**
      * {@code this.DW_Postcode_Handler = DW_Postcode_Handler;}
      *
-     * @param DW_Postcode_Handler The DW_Postcode_Handler to set.
+     * @param Postcode_Handler The DW_Postcode_Handler to set.
      */
-    public void setDW_Postcode_Handler(DW_Postcode_Handler DW_Postcode_Handler) {
-        this.DW_Postcode_Handler = DW_Postcode_Handler;
+    public void setPostcode_Handler(DW_Postcode_Handler Postcode_Handler) {
+        this.Postcode_Handler = Postcode_Handler;
     }
 
     /**
-     * For returning an instance of DW_UO_Data for convenience.
+     * For returning an instance of UO_Data for convenience.
      *
      * @return
      */
-    public DW_UO_Data getDW_UO_Data() {
-        if (DW_UO_Data == null) {
+    public DW_UO_Data getUO_Data() {
+        if (UO_Data == null) {
             try {
-                DW_UO_Data = getDW_UO_Data(false);
+                UO_Data = getUO_Data(false);
             } catch (IOException e) {
                 try {
-                    DW_UO_Data = getDW_UO_Data(true);
+                    UO_Data = getUO_Data(true);
                 } catch (IOException e1) {
-                    System.err.print(e.getMessage());
+                    System.err.print(e1.getMessage());
                     e.printStackTrace(System.err);
                     System.exit(Generic_ErrorAndExceptionHandler.IOException);
                 } catch (ClassNotFoundException e1) {
-                    System.err.print(e.getMessage());
+                    System.err.print(e1.getMessage());
                     e.printStackTrace(System.err);
                     System.exit(Generic_ErrorAndExceptionHandler.ClassNotFoundException);
                 }
             } catch (ClassNotFoundException e) {
                 try {
-                    DW_UO_Data = getDW_UO_Data(true);
+                    UO_Data = getUO_Data(true);
                 } catch (IOException e1) {
-                    System.err.print(e.getMessage());
+                    System.err.print(e1.getMessage());
                     e.printStackTrace(System.err);
                     System.exit(Generic_ErrorAndExceptionHandler.IOException);
                 } catch (ClassNotFoundException e1) {
-                    System.err.print(e.getMessage());
+                    System.err.print(e1.getMessage());
                     e.printStackTrace(System.err);
                     System.exit(Generic_ErrorAndExceptionHandler.ClassNotFoundException);
                 }
             }
         }
-        return DW_UO_Data;
-        // return getDW_UO_Data(false);
+        return UO_Data;
+        // return getUO_Data(false);
     }
 
     /**
-     * For returning an instance of DW_UO_Data for convenience. If
+     * For returning an instance of UO_Data for convenience. If
      * loadFromSource is true then the data is reloaded from source. Otherwise
      * if the formatted version exists this is loaded. If the formatted version
      * does not exist, the data is loaded from source.
@@ -568,38 +556,38 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @throws java.io.IOException
      * @throws java.lang.ClassNotFoundException
      */
-    public DW_UO_Data getDW_UO_Data(boolean loadFromSource) throws IOException, ClassNotFoundException {
-        if (DW_UO_Data == null || loadFromSource) {
-            DW_UO_Handler = getDW_UO_Handler();
+    public DW_UO_Data getUO_Data(boolean loadFromSource) throws IOException, ClassNotFoundException {
+        if (UO_Data == null || loadFromSource) {
+            UO_Handler = getUO_Handler();
             File f;
             f = new File(
-                    df.getGeneratedUnderOccupiedDir(),
-                    ds.sDW_UO_Data + ds.sBinaryFileExtension);
+                    Files.getGeneratedUnderOccupiedDir(),
+                    Strings.sDW_UO_Data + Strings.sBinaryFileExtension);
             if (loadFromSource) {
-                DW_UO_Data = DW_UO_Handler.loadUnderOccupiedReportData(loadFromSource);
-                Generic_StaticIO.writeObject(DW_UO_Data, f);
+                UO_Data = UO_Handler.loadUnderOccupiedReportData(loadFromSource);
+                Generic_StaticIO.writeObject(UO_Data, f);
             } else if (f.exists()) {
-                DW_UO_Data = (DW_UO_Data) Generic_StaticIO.readObject(f, true);
+                UO_Data = (DW_UO_Data) Generic_StaticIO.readObject(f, true);
                 // For debugging/testing load
                 TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
-                CouncilUOSets = DW_UO_Data.getCouncilUOSets();
+                CouncilUOSets = UO_Data.getCouncilUOSets();
                 TreeMap<DW_YM3, DW_UO_Set> RSLUOSets;
-                RSLUOSets = DW_UO_Data.getRSLUOSets();
+                RSLUOSets = UO_Data.getRSLUOSets();
                 int n;
                 n = CouncilUOSets.size() + RSLUOSets.size();
                 //logO("Number of UnderOccupancy data sets loaded " + n);
                 int numberOfInputFiles;
-                numberOfInputFiles = DW_UO_Handler.getNumberOfInputFiles();
+                numberOfInputFiles = UO_Handler.getNumberOfInputFiles();
                 //logO("Number of Input Files " + numberOfInputFiles);
                 if (n != numberOfInputFiles) {
                     logE("Warning, there are some UnderOccupancy Data that have not been loaded.");
                 }
             } else {
-                DW_UO_Data = DW_UO_Handler.loadUnderOccupiedReportData(true);
-                Generic_StaticIO.writeObject(DW_UO_Data, f);
+                UO_Data = UO_Handler.loadUnderOccupiedReportData(true);
+                Generic_StaticIO.writeObject(UO_Data, f);
             }
         }
-        return DW_UO_Data;
+        return UO_Data;
     }
 
     /**
@@ -607,56 +595,56 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      *
      * @return
      */
-    public DW_Postcode_Handler getDW_Postcode_Handler() {
-        if (DW_Postcode_Handler == null) {
-            DW_Postcode_Handler = new DW_Postcode_Handler(this);
+    public DW_Postcode_Handler getPostcode_Handler() {
+        if (Postcode_Handler == null) {
+            Postcode_Handler = new DW_Postcode_Handler(this);
         }
-        return DW_Postcode_Handler;
+        return Postcode_Handler;
     }
 
     /**
-     * For returning an instance of DW_SHBE_Handler for convenience.
+     * For returning an instance of SHBE_Handler for convenience.
      *
      * @return
      */
-    public DW_SHBE_Handler getDW_SHBE_Handler() {
-        if (DW_SHBE_Handler == null) {
-            DW_SHBE_Handler = new DW_SHBE_Handler(this);
+    public DW_SHBE_Handler getSHBE_Handler() {
+        if (SHBE_Handler == null) {
+            SHBE_Handler = new DW_SHBE_Handler(this);
         }
-        return DW_SHBE_Handler;
+        return SHBE_Handler;
     }
 
     /**
-     * {@code this.DW_SHBE_Handler = DW_SHBE_Handler;}
+     * {@code this.SHBE_Handler = SHBE_Handler;}
      *
-     * @param DW_SHBE_Handler The DW_SHBE_Handler to set.
+     * @param SHBE_Handler The SHBE_Handler to set.
      */
-    public void setDW_SHBE_Handler(DW_SHBE_Handler DW_SHBE_Handler) {
-        this.DW_SHBE_Handler = DW_SHBE_Handler;
+    public void setSHBE_Handler(DW_SHBE_Handler SHBE_Handler) {
+        this.SHBE_Handler = SHBE_Handler;
     }
 
     /**
-     * For returning an instance of DW_SHBE_TenancyType_Handler for convenience.
-     *
-     * @return
-     */
-    public DW_SHBE_TenancyType_Handler getDW_SHBE_TenancyType_Handler() {
-        if (DW_SHBE_TenancyType_Handler == null) {
-            DW_SHBE_TenancyType_Handler = new DW_SHBE_TenancyType_Handler(this);
-        }
-        return DW_SHBE_TenancyType_Handler;
-    }
-
-    /**
-     * For returning an instance of DW_SHBE_Data for convenience.
+     * For returning an instance of SHBE_TenancyType_Handler for convenience.
      *
      * @return
      */
-    public DW_SHBE_Data getDW_SHBE_Data() {
-        if (DW_SHBE_Data == null) {
-            DW_SHBE_Data = new DW_SHBE_Data(this);
+    public DW_SHBE_TenancyType_Handler getSHBE_TenancyType_Handler() {
+        if (SHBE_TenancyType_Handler == null) {
+            SHBE_TenancyType_Handler = new DW_SHBE_TenancyType_Handler(this);
         }
-        return DW_SHBE_Data;
+        return SHBE_TenancyType_Handler;
+    }
+
+    /**
+     * For returning an instance of SHBE_Data for convenience.
+     *
+     * @return
+     */
+    public DW_SHBE_Data getSHBE_Data() {
+        if (SHBE_Data == null) {
+            SHBE_Data = new DW_SHBE_Data(this);
+        }
+        return SHBE_Data;
     }
     
     /**
@@ -664,22 +652,22 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      *
      * @return
      */
-    public DW_Maps getDW_Maps() {
-        if (DW_Maps == null) {
-            DW_Maps = new DW_Maps(this);
+    public DW_Maps getMaps() {
+        if (Maps == null) {
+            Maps = new DW_Maps(this);
         }
-        return DW_Maps;
+        return Maps;
     }
 
     /**
-     * For returning an instance of DW_Deprivation_DataHandler for convenience.
+     * For returning an instance of Deprivation_DataHandler for convenience.
      *
      * @return
      */
-    public DW_Deprivation_DataHandler getDW_Deprivation_DataHandler() {
-        if (DW_Deprivation_DataHandler == null) {
-            DW_Deprivation_DataHandler = new DW_Deprivation_DataHandler(this);
+    public DW_Deprivation_DataHandler getDeprivation_DataHandler() {
+        if (Deprivation_DataHandler == null) {
+            Deprivation_DataHandler = new DW_Deprivation_DataHandler(this);
         }
-        return DW_Deprivation_DataHandler;
+        return Deprivation_DataHandler;
     }
 }

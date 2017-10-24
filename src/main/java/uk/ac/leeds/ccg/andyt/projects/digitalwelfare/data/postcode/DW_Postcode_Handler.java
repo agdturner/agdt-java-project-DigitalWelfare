@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -58,24 +58,24 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             DW_ID PostcodeID0,
             DW_ID PostcodeID1) {
         double result = 0.0d;
-        AGDT_Point aPoint;
-        aPoint = env.getDW_SHBE_Data().getPostcodeIDToPointLookup(yM30v).get(PostcodeID0);
-        AGDT_Point bPoint;
-        bPoint = env.getDW_SHBE_Data().getPostcodeIDToPointLookup(yM31v).get(PostcodeID1);
+        Geotools_Point aPoint;
+        aPoint = env.getSHBE_Data().getPostcodeIDToPointLookup(yM30v).get(PostcodeID0);
+        Geotools_Point bPoint;
+        bPoint = env.getSHBE_Data().getPostcodeIDToPointLookup(yM31v).get(PostcodeID1);
         if (aPoint != null && bPoint != null) {
             result = aPoint.getDistance(bPoint);
         } else if (env.DEBUG_Level == env.DEBUG_Level_FINEST) {
             System.out.println("<Issue calculating distance between PostcodeID0 " + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + "/>");
             if (aPoint == null) {
                 System.out.println("No point look up for PostcodeID0 " + PostcodeID0 + " in " + yM30v);
-                aPoint = env.getDW_SHBE_Data().getPostcodeIDToPointLookup(yM31v).get(PostcodeID0);
+                aPoint = env.getSHBE_Data().getPostcodeIDToPointLookup(yM31v).get(PostcodeID0);
                 if (aPoint != null) {
                     System.out.println("However there is a look up for PostcodeID0 " + PostcodeID0 + " in " + yM31v + "! Maybe use this instead?");
                 }
             }
             if (bPoint == null) {
                 System.out.println("No point look up for PostcodeID1 " + PostcodeID1 + " in " + yM31v);
-                bPoint = env.getDW_SHBE_Data().getPostcodeIDToPointLookup(yM30v).get(PostcodeID1);
+                bPoint = env.getSHBE_Data().getPostcodeIDToPointLookup(yM30v).get(PostcodeID1);
                 if (bPoint != null) {
                     System.out.println("However there is a look up for PostcodeID1 " + PostcodeID1 + " in " + yM30v + "! Maybe use this instead?");
                 }
@@ -91,12 +91,12 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             String postcode0,
             String postcode1) {
         double result = 0.0d;
-        AGDT_Point aPoint;
+        Geotools_Point aPoint;
         aPoint = getPointFromPostcode(
                 yM30v,
                 TYPE_UNIT,
                 postcode0);
-        AGDT_Point bPoint;
+        Geotools_Point bPoint;
         bPoint = getPointFromPostcode(
                 yM31v,
                 TYPE_UNIT,
@@ -138,11 +138,11 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
      * @param postcode
      * @return
      */
-    public AGDT_Point getPointFromPostcode(
+    public Geotools_Point getPointFromPostcode(
             DW_YM3 nearestYM3ForONSPDLookup,
             String level,
             String postcode) {
-        AGDT_Point result;
+        Geotools_Point result;
         String formattedPostcode;
         formattedPostcode = formatPostcode(postcode);
         result = DW_Maps.getONSPDlookups().get(level).get(nearestYM3ForONSPDLookup).get(formattedPostcode);
@@ -156,16 +156,16 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
      * @param PostcodeF
      * @return
      */
-    public AGDT_Point getPointFromPostcodeNew(
+    public Geotools_Point getPointFromPostcodeNew(
             DW_YM3 NearestYM3ForONSPDLookup,
             String level,
             String PostcodeF) {
-        AGDT_Point result;
-        TreeMap<String, TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>> ONSPDlookups;
+        Geotools_Point result;
+        TreeMap<String, TreeMap<DW_YM3, TreeMap<String, Geotools_Point>>> ONSPDlookups;
         ONSPDlookups = DW_Maps.getONSPDlookups();
-        TreeMap<DW_YM3, TreeMap<String, AGDT_Point>> ONSPDlookupsLevel;
+        TreeMap<DW_YM3, TreeMap<String, Geotools_Point>> ONSPDlookupsLevel;
         ONSPDlookupsLevel = ONSPDlookups.get(level);
-        TreeMap<String, AGDT_Point> ONSPDlookupsLevelForNearestYM3ForONSPDLookup;
+        TreeMap<String, Geotools_Point> ONSPDlookupsLevelForNearestYM3ForONSPDLookup;
         ONSPDlookupsLevelForNearestYM3ForONSPDLookup = ONSPDlookupsLevel.get(NearestYM3ForONSPDLookup);
         result = ONSPDlookupsLevelForNearestYM3ForONSPDLookup.get(PostcodeF);
         return result;
@@ -182,7 +182,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
      * @param YM3
      * @return
      */
-    public static DW_YM3 getNearestYM3ForONSPDLookup(DW_YM3 YM3) {
+    public DW_YM3 getNearestYM3ForONSPDLookup(DW_YM3 YM3) {
         DW_YM3 defaultLatest = new DW_YM3(2017, 5);
         int year = YM3.getYear();
         int month = YM3.getMonth();
@@ -311,22 +311,22 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
 
     /**
      * @param input TreeMap<String, String> where values are postcodes for which
-     * the coordinates are to be returned as a AGDT_Point.
+ the coordinates are to be returned as a Geotools_Point.
      * @param yM3v
-     * @return TreeMap<String, AGDT_Point> with the keys as in input and values
+     * @return TreeMap<String, Geotools_Point> with the keys as in input and values
      * calculated using getPointFromPostcode(value). If no look up is found for
      * a postcode its key does not get put into the result.
      */
-    public TreeMap<String, AGDT_Point> postcodeToPoints(
+    public TreeMap<String, Geotools_Point> postcodeToPoints(
             TreeMap<String, String> input,
             DW_YM3 yM3v) {
-        TreeMap<String, AGDT_Point> result;
-        result = new TreeMap<String, AGDT_Point>();
+        TreeMap<String, Geotools_Point> result;
+        result = new TreeMap<String, Geotools_Point>();
         Iterator<String> ite_String = input.keySet().iterator();
         while (ite_String.hasNext()) {
             String key = ite_String.next();
             String postcode = input.get(key);
-            AGDT_Point p = getPointFromPostcode(
+            Geotools_Point p = getPointFromPostcode(
                     //env,
                     yM3v,
                     TYPE_UNIT,
@@ -385,9 +385,9 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
 
     public DW_Postcode_Handler(DW_Environment env) {
         this.env = env;
-        this.DW_Strings = env.getDW_Strings();
-        this.DW_Files = env.getDW_Files();
-        this.DW_Maps = env.getDW_Maps();
+        this.DW_Strings = env.getStrings();
+        this.DW_Files = env.getFiles();
+        this.DW_Maps = env.getMaps();
     }
 
     public String getDefaultLookupFilename() {
@@ -413,27 +413,27 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         //new DW_Postcode_Handler(inputFile, processedFile).run3();
     }
 
-    public TreeMap<DW_YM3, TreeMap<String, AGDT_Point>> getPostcodeUnitPointLookups(
+    public TreeMap<DW_YM3, TreeMap<String, Geotools_Point>> getPostcodeUnitPointLookups(
             boolean ignorePointsAtOrigin,
             TreeMap<DW_YM3, File> ONSPDFiles,
             String processedFilename) {
-        TreeMap<DW_YM3, TreeMap<String, AGDT_Point>> result;
-        result = new TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>();
+        TreeMap<DW_YM3, TreeMap<String, Geotools_Point>> result;
+        result = new TreeMap<DW_YM3, TreeMap<String, Geotools_Point>>();
         Iterator<DW_YM3> ite;
         ite = ONSPDFiles.keySet().iterator();
         while (ite.hasNext()) {
             DW_YM3 YM3;
             YM3 = ite.next();
             File outDir = new File(
-                    env.getDW_Files().getGeneratedONSPDDir(),
+                    env.getFiles().getGeneratedONSPDDir(),
                     YM3.toString());
             File outFile = new File(
                     outDir,
                     processedFilename);
-            TreeMap<String, AGDT_Point> postcodeUnitPointLookup;
+            TreeMap<String, Geotools_Point> postcodeUnitPointLookup;
             if (outFile.exists()) {
                 env.logO("Load " + outFile, true);
-                postcodeUnitPointLookup = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(outFile);
+                postcodeUnitPointLookup = (TreeMap<String, Geotools_Point>) Generic_StaticIO.readObject(outFile);
             } else {
                 File f;
                 f = ONSPDFiles.get(YM3);
@@ -466,7 +466,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
 //                lookup,
 //                postcode);
 //        Generic_StaticIO.writeObject(lookup, outputFile);
-//        //lookup = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(lookupFile);
+//        //lookup = (TreeMap<String, Geotools_Point>) Generic_StaticIO.readObject(lookupFile);
         return lookup;
     }
 
@@ -490,7 +490,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         TreeMap<String, String> lookup;
         lookup = readONSPDIntoTreeMapPostcodeString(infile, level, CensusYear, YM3NearestFormat);
         Generic_StaticIO.writeObject(lookup, outFile);
-//        //lookup = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(outFile);
+//        //lookup = (TreeMap<String, Geotools_Point>) Generic_StaticIO.readObject(outFile);
         return lookup;
     }
 
@@ -553,7 +553,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         boolean ignorePointsAtOrigin = true;
         TreeMap<DW_YM3, File> InputONSPDFiles;
         InputONSPDFiles = DW_Files.getInputONSPDFiles();
-        TreeMap<DW_YM3, TreeMap<String, AGDT_Point>> postcodeUnitPointLookups;
+        TreeMap<DW_YM3, TreeMap<String, Geotools_Point>> postcodeUnitPointLookups;
         postcodeUnitPointLookups = getPostcodeUnitPointLookups(
                 ignorePointsAtOrigin,
                 InputONSPDFiles,
@@ -599,7 +599,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
 //                lookup,
 //                postcode);
 //        Generic_StaticIO.writeObject(lookup, outputFile);
-//        //lookup = (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(lookupFile);
+//        //lookup = (TreeMap<String, Geotools_Point>) Generic_StaticIO.readObject(lookupFile);
 //        return lookup;
 //    }
     public HashSet<String> getNumeralsHashSet() {
@@ -661,8 +661,8 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         return result;
     }
 
-    public TreeMap<String, AGDT_Point> getStringToDW_PointLookup(File file) {
-        return (TreeMap<String, AGDT_Point>) Generic_StaticIO.readObject(file);
+    public TreeMap<String, Geotools_Point> getStringToDW_PointLookup(File file) {
+        return (TreeMap<String, Geotools_Point>) Generic_StaticIO.readObject(file);
     }
 
     public TreeMap<String, String[]> getStringToStringArrayLookup(File file) {
@@ -708,11 +708,11 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
      * @param postcodeUnitPointLookup
      * @return
      */
-    private TreeMap<String, AGDT_Point> initPostcodeSectorPointLookup(
-            TreeMap<String, AGDT_Point> postcodeUnitPointLookup,
+    private TreeMap<String, Geotools_Point> initPostcodeSectorPointLookup(
+            TreeMap<String, Geotools_Point> postcodeUnitPointLookup,
             boolean ignorePointsAtOrigin) {
-        TreeMap<String, AGDT_Point> result;
-        result = new TreeMap<String, AGDT_Point>();
+        TreeMap<String, Geotools_Point> result;
+        result = new TreeMap<String, Geotools_Point>();
         // Aggregate by postcode
         // Create postcodeSector to unitPostcodes look up
         TreeMap<String, HashSet<String>> postcodeSectorsAndUnitPostcodes;
@@ -743,13 +743,13 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             ite2 = postcodes.iterator();
             while (ite2.hasNext()) {
                 String unitPostcode = ite2.next();
-                AGDT_Point p = postcodeUnitPointLookup.get(unitPostcode);
+                Geotools_Point p = postcodeUnitPointLookup.get(unitPostcode);
                 sumx += p.getX();
                 sumy += p.getY();
             }
             int x = (int) (sumx / n);
             int y = (int) (sumy / n);
-            AGDT_Point postcodeSectorPoint = new AGDT_Point(x, y);
+            Geotools_Point postcodeSectorPoint = new Geotools_Point(x, y);
             if (ignorePointsAtOrigin) {
                 if (!(x < 1 || y < 1)) {
                     result.put(postcodeSector, postcodeSectorPoint);
@@ -796,11 +796,11 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
      * @param postcodeUnitPointLookup
      * @return
      */
-    private TreeMap<String, AGDT_Point> initPostcodeAreaPointLookup(
-            TreeMap<String, AGDT_Point> postcodeUnitPointLookup,
+    private TreeMap<String, Geotools_Point> initPostcodeAreaPointLookup(
+            TreeMap<String, Geotools_Point> postcodeUnitPointLookup,
             boolean ignorePointsAtOrigin) {
-        TreeMap<String, AGDT_Point> result;
-        result = new TreeMap<String, AGDT_Point>();
+        TreeMap<String, Geotools_Point> result;
+        result = new TreeMap<String, Geotools_Point>();
         // Aggregate by postcode
         // Create postcodeSector to unitPostcodes look up
         TreeMap<String, HashSet<String>> postcodeAreasAndUnitPostcodes;
@@ -831,13 +831,13 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             ite2 = postcodes.iterator();
             while (ite2.hasNext()) {
                 String unitPostcode = ite2.next();
-                AGDT_Point p = postcodeUnitPointLookup.get(unitPostcode);
+                Geotools_Point p = postcodeUnitPointLookup.get(unitPostcode);
                 sumx += p.getX();
                 sumy += p.getY();
             }
             int x = (int) (sumx / n);
             int y = (int) (sumy / n);
-            AGDT_Point postcodeAreaPoint = new AGDT_Point(x, y);
+            Geotools_Point postcodeAreaPoint = new Geotools_Point(x, y);
             if (ignorePointsAtOrigin) {
                 if (!(x < 1 || y < 1)) {
                     result.put(postcodeSector, postcodeAreaPoint);
@@ -889,11 +889,11 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         }
         if (PostcodeF.length() > 5) {
             boolean isMappablePostcode;
-            TreeMap<String, TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>> ONSPDLookups;
+            TreeMap<String, TreeMap<DW_YM3, TreeMap<String, Geotools_Point>>> ONSPDLookups;
             ONSPDLookups = DW_Maps.getONSPDlookups();
-            TreeMap<DW_YM3, TreeMap<String, AGDT_Point>> ONSPDLookupUnitPostcode;
+            TreeMap<DW_YM3, TreeMap<String, Geotools_Point>> ONSPDLookupUnitPostcode;
             ONSPDLookupUnitPostcode = ONSPDLookups.get(TYPE_UNIT);
-            TreeMap<String, AGDT_Point> ONSPDLookupUnitPostcodeNearestYM3;
+            TreeMap<String, Geotools_Point> ONSPDLookupUnitPostcodeNearestYM3;
             ONSPDLookupUnitPostcodeNearestYM3 = ONSPDLookupUnitPostcode.get(NearestYM3ForONSPDLookup);
             if (ONSPDLookupUnitPostcodeNearestYM3 == null) {
                 System.err.println("yM3UnitPostcodeONSPDLookupsONS == null for NearestYM3ForONSPDLookup " + NearestYM3ForONSPDLookup);
@@ -961,10 +961,10 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         return result;
     }
 
-    public TreeMap<String, AGDT_Point> initPostcodeUnitPointLookup(
+    public TreeMap<String, Geotools_Point> initPostcodeUnitPointLookup(
             File file,
             boolean ignorePointsAtOrigin) {
-        TreeMap<String, AGDT_Point> result = new TreeMap<String, AGDT_Point>();
+        TreeMap<String, Geotools_Point> result = new TreeMap<String, Geotools_Point>();
         try {
             int lineCounter = 0;
             int recordCounter = 0;
@@ -983,8 +983,8 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
                         rec = new DW_ONSPDRecord_EastingNorthing(env, line);
                         int easting = rec.getOseast1m();
                         int northing = rec.getOsnrth1m();
-                        AGDT_Point point;
-                        point = new AGDT_Point(easting, northing);
+                        Geotools_Point point;
+                        point = new Geotools_Point(easting, northing);
                         String PostcodeF = rec.getPostcodeF();
                         if (ignorePointsAtOrigin) {
                             // Test for orgin point (postcodes ending ZZ are usually at origin, but some others are too.)

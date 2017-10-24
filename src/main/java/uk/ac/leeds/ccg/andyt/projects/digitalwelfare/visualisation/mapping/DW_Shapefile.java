@@ -19,13 +19,13 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping;
 
 import java.io.File;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_Shapefile extends AGDT_Shapefile {
+public class DW_Shapefile extends Geotools_Shapefile {
     
     public DW_Shapefile(File f) {
         setFile(f);

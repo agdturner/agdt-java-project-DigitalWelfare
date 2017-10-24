@@ -65,7 +65,7 @@ public class DW_Data_CAB0_Handler extends DW_Object {
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> result;
         result = new TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record>();
         File directory = new File(
-                env.getDW_Files().getInputAdviceLeedsDir(),
+                env.getFiles().getInputAdviceLeedsDir(),
                 "ChapeltownCAB");
         File inputFile = new File(
                 directory,

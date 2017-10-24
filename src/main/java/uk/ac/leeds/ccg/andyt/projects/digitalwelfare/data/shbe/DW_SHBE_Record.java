@@ -36,7 +36,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * DW_Strings for convenience. Set from env.getDW_Strings()
+     * DW_Strings for convenience. Set from env.getStrings()
      */
     protected transient DW_Strings DW_Strings;
 
@@ -116,7 +116,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
      */
     public DW_SHBE_Record(DW_Environment env, DW_YM3 YM3, DW_ID ClaimID) {
         super(env);
-        DW_Strings = env.getDW_Strings();
+        DW_Strings = env.getStrings();
         this.YM3 = YM3;
         this.ClaimID = ClaimID;
     }
@@ -135,7 +135,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
             DW_ID ClaimID,
             DW_SHBE_D_Record DRecord) {
         super(env);
-        this.DW_Strings = env.getDW_Strings();
+        this.DW_Strings = env.getStrings();
         this.YM3 = YM3;
         this.ClaimID = ClaimID;
         this.DRecord = DRecord;
@@ -149,7 +149,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
      */
     public void init(DW_Environment env) {
         this.env = env;
-        this.DW_Strings = env.getDW_Strings();
+        this.DW_Strings = env.getStrings();
     }
 
     /**
@@ -246,7 +246,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
      * @return PaymentType
      */
     public String getPaymentType() {
-        return env.getDW_Strings().getPaymentTypes().get(StatusOfHBClaimAtExtractDate + 1);
+        return env.getStrings().getPaymentTypes().get(StatusOfHBClaimAtExtractDate + 1);
     }
 
     /**

@@ -22,13 +22,13 @@ import java.awt.Color;
 import java.util.ArrayList;
 import org.geotools.styling.Mark;
 import org.geotools.styling.Style;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Style;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Style;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_Style extends AGDT_Style {
+public class DW_Style extends Geotools_Style {
 
     /**
      * Create and returns a Style to draw point features as circles with blue
@@ -37,7 +37,7 @@ public class DW_Style extends AGDT_Style {
      * @return A Style to draw point features as circles with blue outlines and
      * cyan fill.
      */
-    public static ArrayList<Style> createAdviceLeedsPointStyles() {
+    public ArrayList<Style> createAdviceLeedsPointStyles() {
 //        StyleBuilder sb = new StyleBuilder();
 //        PointSymbolizer ps = sb.createPointSymbolizer();
 //        FilterFactory2 ff = sb.getFilterFactory();

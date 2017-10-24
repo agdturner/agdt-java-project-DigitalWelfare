@@ -18,7 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping;
 
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.File;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.opengis.feature.simple.SimpleFeatureType;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds.DW_ProcessorAdviceLeeds;
 
@@ -47,9 +47,9 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
     public TreeSetFeatureCollection getAdviceLeedsPointFeatureCollection(
             SimpleFeatureType sft) {
         TreeSetFeatureCollection result;
-        TreeMap<String, AGDT_Point> tAdviceLeedsNamesAndPoints;
+        TreeMap<String, Geotools_Point> tAdviceLeedsNamesAndPoints;
         tAdviceLeedsNamesAndPoints = DW_ProcessorAdviceLeeds.getAdviceLeedsNamesAndPoints();
-        TreeMap<String, AGDT_Point> map = tAdviceLeedsNamesAndPoints;
+        TreeMap<String, Geotools_Point> map = tAdviceLeedsNamesAndPoints;
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
          * using a Point object for the location.
@@ -61,7 +61,7 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
         while (ite.hasNext()) {
             String outlet = ite.next();
             String name = outlet;
-            AGDT_Point p = map.get(outlet);
+            Geotools_Point p = map.get(outlet);
             addPointFeature(p, gf, sfb, name, result);
         }
         return result;
@@ -88,14 +88,14 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
             SimpleFeatureBuilder sfb) {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
-        TreeMap<String, AGDT_Point> tAdviceLeedsNamesAndPoints;
+        TreeMap<String, Geotools_Point> tAdviceLeedsNamesAndPoints;
         tAdviceLeedsNamesAndPoints = DW_ProcessorAdviceLeeds.getAdviceLeedsNamesAndPoints();
-        TreeMap<String, AGDT_Point> map = tAdviceLeedsNamesAndPoints;
+        TreeMap<String, Geotools_Point> map = tAdviceLeedsNamesAndPoints;
         Iterator<String> ite = map.keySet().iterator();
         while (ite.hasNext()) {
             String outlet = ite.next();
             if (outlet.equalsIgnoreCase(outletTarget)) {
-                AGDT_Point p = map.get(outlet);
+                Geotools_Point p = map.get(outlet);
                 String name = outlet;
                 addPointFeature(p, gf, sfb, name, result);
             }
@@ -150,7 +150,7 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
         String tAdviceLeedsPointName = "AllAdviceLeedsPoints";
         File tAdviceLeedsPointShapefileDir;
         tAdviceLeedsPointShapefileDir = new File(
-                de.getDW_Files().getGeneratedAdviceLeedsDir(),
+                de.getFiles().getGeneratedAdviceLeedsDir(),
                 tAdviceLeedsPointName);
         String tAdviceLeedsPointShapefileFilename;
         tAdviceLeedsPointShapefileFilename = tAdviceLeedsPointName + ".shp";
@@ -164,9 +164,9 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
     /**
      * @return
      */
-    public ArrayList<AGDT_Shapefile> getAdviceLeedsPointDW_Shapefiles() {
-        ArrayList<AGDT_Shapefile> result;
-        result = new ArrayList<AGDT_Shapefile>();
+    public ArrayList<Geotools_Shapefile> getAdviceLeedsPointDW_Shapefiles() {
+        ArrayList<Geotools_Shapefile> result;
+        result = new ArrayList<Geotools_Shapefile>();
         ArrayList<String> tAdviceLeedsServiceNames;
         tAdviceLeedsServiceNames = DW_ProcessorAdviceLeeds.getAdviceLeedsServiceNames();
         Iterator<String> ite;
@@ -175,7 +175,7 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
             String tAdviceLeedsPointName = ite.next();
             File tAdviceLeedsPointShapefileDir;
             tAdviceLeedsPointShapefileDir = new File(
-                    df.getGeneratedAdviceLeedsDir(),
+                    Files.getGeneratedAdviceLeedsDir(),
                     tAdviceLeedsPointName);
             String tAdviceLeedsPointShapefileFilename;
             tAdviceLeedsPointShapefileFilename = tAdviceLeedsPointName + ".shp";
@@ -184,7 +184,7 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
                     tAdviceLeedsPointShapefileDir,
                     tAdviceLeedsPointShapefileFilename,
                     tAdviceLeedsPointName);
-            result.add(new AGDT_Shapefile(tAdviceLeedsPointShapefile));
+            result.add(new Geotools_Shapefile(ge, tAdviceLeedsPointShapefile));
         }
         return result;
     }

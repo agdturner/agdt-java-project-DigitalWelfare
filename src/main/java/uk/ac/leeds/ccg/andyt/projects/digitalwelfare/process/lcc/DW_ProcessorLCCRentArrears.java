@@ -60,11 +60,11 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
             Generic_StaticIO.writeObject(RentArrearsUO, f);
         } else if (f.exists()) {
             RentArrearsUO = (RentArrearsUO) Generic_StaticIO.readObject(f);
-            RentArrearsUO.DW_SHBE_Data = env.getDW_SHBE_Data();
-            RentArrearsUO.DW_SHBE_Handler = env.getDW_SHBE_Handler();
-            RentArrearsUO.DW_Strings = env.getDW_Strings();
-            RentArrearsUO.DW_Files = env.getDW_Files();
-            RentArrearsUO.DW_UO_Data = env.getDW_UO_Data();
+            RentArrearsUO.DW_SHBE_Data = env.getSHBE_Data();
+            RentArrearsUO.DW_SHBE_Handler = env.getSHBE_Handler();
+            RentArrearsUO.DW_Strings = env.getStrings();
+            RentArrearsUO.DW_Files = env.getFiles();
+            RentArrearsUO.DW_UO_Data = env.getUO_Data();
 // The following code was an attempt to automatically detect if a reload was 
 // necessary and simplify things a bit, but I didn't quite get it to work. The
 // idea was to count the number of files and compare this with the size of the 
@@ -299,7 +299,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 
         ArrayList<Integer> include;
         //include = env.getDW_SHBE_Handler().getIncludeMonthlyUO();
-        include = env.getDW_SHBE_Handler().getIncludeAll();
+        include = env.getSHBE_Handler().getIncludeAll();
         int i0 = include.iterator().next();
 
         String line;

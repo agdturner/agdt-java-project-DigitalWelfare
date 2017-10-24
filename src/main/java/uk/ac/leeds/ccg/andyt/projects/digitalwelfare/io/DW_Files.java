@@ -120,7 +120,7 @@ public class DW_Files extends DW_Object {
     public DW_Files(DW_Environment env) {
         super(env);
         if (env != null) {
-            this.ds = env.getDW_Strings();
+            this.ds = env.getStrings();
         } else {
             this.ds = new DW_Strings();
         }

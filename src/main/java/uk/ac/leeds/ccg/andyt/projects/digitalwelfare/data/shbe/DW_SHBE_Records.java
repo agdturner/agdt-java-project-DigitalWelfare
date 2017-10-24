@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -54,17 +54,20 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     /**
      * For convenience.
      */
-    private transient DW_Strings DW_Strings;
+    private transient DW_Strings Strings;
+    private transient DW_Postcode_Handler Postcode_Handler;
+    
 
     /**
      * Call this method to initialise fields declared transient after having
      * read this back as a Serialized Object.
      *
-     * @param env
+     * @param e
      */
-    public void init(DW_Environment env) {
-        this.env = env;
-        this.DW_Strings = env.getDW_Strings();
+    public void init(DW_Environment e) {
+        env = e;
+        Strings = e.getStrings();
+        Postcode_Handler = e.getPostcode_Handler();
     }
 
     /**
@@ -1236,7 +1239,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected File getDir() {
         if (Dir == null) {
             Dir = new File(
-                    env.getDW_Files().getGeneratedSHBEDir(), getYM3().toString());
+                    env.getFiles().getGeneratedSHBEDir(), getYM3().toString());
             Dir.mkdirs();
         }
         return Dir;
@@ -1268,10 +1271,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     ) {
         super(env);
         this.YM3 = YM3;
-        NearestYM3ForONSPDLookup = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
+        NearestYM3ForONSPDLookup = Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
         env.logO("YM3 " + YM3, true);
         env.logO("NearestYM3ForONSPDLookup " + NearestYM3ForONSPDLookup, true);
-        DW_Strings = env.getDW_Strings();
+        Strings = env.getStrings();
         Records = getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
         ClaimIDsOfNewSHBEClaims = getClaimIDsOfNewSHBEClaims(env.HandleOutOfMemoryError);
         ClaimantPersonIDs = getClaimantPersonIDs(env.HandleOutOfMemoryError);
@@ -1328,15 +1331,15 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     ) {
         super(env);
         DW_SHBE_Handler DW_SHBE_Handler;
-        DW_SHBE_Handler = env.getDW_SHBE_Handler();
+        DW_SHBE_Handler = env.getSHBE_Handler();
         DW_Postcode_Handler DW_Postcode_Handler;
-        DW_Postcode_Handler = env.getDW_Postcode_Handler();
+        DW_Postcode_Handler = env.getPostcode_Handler();
         DW_SHBE_Data DW_SHBE_Data;
-        DW_SHBE_Data = env.getDW_SHBE_Data();
+        DW_SHBE_Data = env.getSHBE_Data();
         InputFile = new File(inputDirectory, inputFilename);
         YM3 = DW_SHBE_Handler.getYM3(inputFilename);
         NearestYM3ForONSPDLookup = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
-        DW_Strings = env.getDW_Strings();
+        Strings = env.getStrings();
         Records = new HashMap<DW_ID, DW_SHBE_Record>();
         ClaimIDs = new HashSet<DW_ID>();
         ClaimIDsOfNewSHBEClaims = new HashSet<DW_ID>();
@@ -1424,7 +1427,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         /**
          * Mapping of DW_ID to a Unit Postcode.
          */
-        HashMap<DW_ID, AGDT_Point> PostcodeIDToPointLookup;
+        HashMap<DW_ID, Geotools_Point> PostcodeIDToPointLookup;
         /**
          * Mapping of ClaimRef String to Claim DW_ID.
          */
@@ -1785,10 +1788,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                 record.ClaimPostcodeFMappable = true;
                                                 record.PostcodeID = PostcodeToPostcodeIDLookup.get(record.ClaimPostcodeF);
                                                 // Add the point to the lookup
-                                                AGDT_Point AGDT_Point;
+                                                Geotools_Point AGDT_Point;
                                                 AGDT_Point = DW_Postcode_Handler.getPointFromPostcodeNew(
                                                         NearestYM3ForONSPDLookup,
-                                                        DW_Strings.sUnit,
+                                                        Strings.sUnit,
                                                         record.ClaimPostcodeF);
                                                 PostcodeIDToPointLookup.put(record.PostcodeID, AGDT_Point);
                                             } else if (isMappablePostcode) {
@@ -1801,16 +1804,16 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                         PostcodeToPostcodeIDLookup,
                                                         PostcodeIDToPostcodeLookup);
                                                 // Add the point to the lookup
-                                                AGDT_Point AGDT_Point;
+                                                Geotools_Point AGDT_Point;
                                                 if (isMappablePostcodeLastestYM3) {
                                                     AGDT_Point = DW_Postcode_Handler.getPointFromPostcodeNew(
                                                             LatestYM3ForONSPDFormat,
-                                                            DW_Strings.sUnit,
+                                                            Strings.sUnit,
                                                             record.ClaimPostcodeF);
                                                 } else {
                                                     AGDT_Point = DW_Postcode_Handler.getPointFromPostcodeNew(
                                                             NearestYM3ForONSPDLookup,
-                                                            DW_Strings.sUnit,
+                                                            Strings.sUnit,
                                                             record.ClaimPostcodeF);
                                                 }
                                                 PostcodeIDToPointLookup.put(record.PostcodeID, AGDT_Point);
@@ -1915,7 +1918,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                 otherClaimID = (DW_ID) key;
                                                 otherClaimRef = ClaimIDToClaimRefLookup.get(otherClaimID);
                                                 // Treat those paired records for Cottingley Springs Caravan Park differently
-                                                if (Postcode.equalsIgnoreCase(DW_Strings.CottingleySpringsCaravanParkPostcode)) {
+                                                if (Postcode.equalsIgnoreCase(Strings.CottingleySpringsCaravanParkPostcode)) {
 //                                                    env.logO("Cottingley Springs Caravan Park "
 //                                                            + DW_Strings.CottingleySpringsCaravanParkPostcode
 //                                                            + " ClaimRef " + ClaimRef + " paired with " + otherClaimRef
@@ -2183,62 +2186,62 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             /**
              * Statistics on New SHBE Claims
              */
-            addLoadSummaryCount(DW_Strings.sCountOfNewSHBEClaims,
+            addLoadSummaryCount(Strings.sCountOfNewSHBEClaims,
                     ClaimIDsOfNewSHBEClaims.size());
-            addLoadSummaryCount(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore,
+            addLoadSummaryCount(Strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore,
                     ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore.size());
-            addLoadSummaryCount(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
+            addLoadSummaryCount(Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
                     ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.size());
-            addLoadSummaryCount(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore,
+            addLoadSummaryCount(Strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore,
                     ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore.size());
-            addLoadSummaryCount(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantIsNew,
+            addLoadSummaryCount(Strings.sCountOfNewSHBEClaimsWhereClaimantIsNew,
                     ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew.size());
             /**
              * Statistics on Postcodes
              */
             addLoadSummaryCount(
-                    DW_Strings.sCountOfNewClaimantPostcodes,
+                    Strings.sCountOfNewClaimantPostcodes,
                     CountOfNewClaimantPostcodes);
             addLoadSummaryCount(
-                    DW_Strings.sCountOfNewValidMappableClaimantPostcodes,
+                    Strings.sCountOfNewValidMappableClaimantPostcodes,
                     CountOfNewMappableClaimantPostcodes);
-            addLoadSummaryCount(DW_Strings.sCountOfMappableClaimantPostcodes,
+            addLoadSummaryCount(Strings.sCountOfMappableClaimantPostcodes,
                     CountOfMappableClaimantPostcodes);
             addLoadSummaryCount(
-                    DW_Strings.sCountOfNonMappableClaimantPostcodes,
+                    Strings.sCountOfNonMappableClaimantPostcodes,
                     CountOfNonMappableClaimantPostcodes);
             addLoadSummaryCount(
-                    DW_Strings.sCountOfInvalidFormatClaimantPostcodes,
+                    Strings.sCountOfInvalidFormatClaimantPostcodes,
                     CountOfValidFormatClaimantPostcodes);
             /**
              * General count statistics
              */
             addLoadSummaryCount(
-                    DW_Strings.sCountOfClaims,
+                    Strings.sCountOfClaims,
                     Records.size());
             addLoadSummaryCount(
-                    DW_Strings.sCountOfCTBClaims,
+                    Strings.sCountOfCTBClaims,
                     totalCouncilTaxBenefitClaims);
             addLoadSummaryCount(
-                    DW_Strings.sCountOfCTBAndHBClaims,
+                    Strings.sCountOfCTBAndHBClaims,
                     totalCouncilTaxAndHousingBenefitClaims);
             addLoadSummaryCount(
-                    DW_Strings.sCountOfHBClaims,
+                    Strings.sCountOfHBClaims,
                     totalHousingBenefitClaims);
             addLoadSummaryCount(
-                    DW_Strings.sCountOfRecords,
+                    Strings.sCountOfRecords,
                     Records.size());
             addLoadSummaryCount(
-                    DW_Strings.sCountOfSRecords,
+                    Strings.sCountOfSRecords,
                     countSRecords);
             addLoadSummaryCount(
-                    DW_Strings.sCountOfSRecordsNotLoaded,
+                    Strings.sCountOfSRecordsNotLoaded,
                     SRecordNotLoadedCount);
             addLoadSummaryCount(
-                    DW_Strings.sCountOfIncompleteDRecords,
+                    Strings.sCountOfIncompleteDRecords,
                     NumberOfIncompleteDRecords);
             addLoadSummaryCount(
-                    DW_Strings.sCountOfRecordIDsNotLoaded,
+                    Strings.sCountOfRecordIDsNotLoaded,
                     RecordIDsNotLoaded.size());
             HashSet<DW_PersonID> set;
             HashSet<DW_PersonID> allSet;
@@ -2250,17 +2253,17 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             set.addAll(ClaimIDToClaimantPersonIDLookup.values());
             allSet.addAll(set);
             addLoadSummaryCount(
-                    DW_Strings.sCountOfUniqueClaimants,
+                    Strings.sCountOfUniqueClaimants,
                     set.size());
             /**
              * Partners
              */
-            addLoadSummaryCount(DW_Strings.sCountOfClaimsWithPartners,
+            addLoadSummaryCount(Strings.sCountOfClaimsWithPartners,
                     ClaimIDToPartnerPersonIDLookup.size());
             set = DW_SHBE_Handler.getUniquePersonIDs0(ClaimIDToPartnerPersonIDLookup);
             allSet.addAll(set);
             addLoadSummaryCount(
-                    DW_Strings.sCountOfUniquePartners,
+                    Strings.sCountOfUniquePartners,
                     set.size());
             /**
              * Dependents
@@ -2268,13 +2271,13 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             int nDependents;
             nDependents = DW_Collections.getCountHashMap_DW_ID__HashSet_DW_PersonID(ClaimIDToDependentPersonIDsLookup);
             addLoadSummaryCount(
-                    DW_Strings.sCountOfDependentsInAllClaims,
+                    Strings.sCountOfDependentsInAllClaims,
                     nDependents);
             set = DW_SHBE_Handler.getUniquePersonIDs(ClaimIDToDependentPersonIDsLookup);
             allSet.addAll(set);
             int CountOfUniqueDependents = set.size();
             addLoadSummaryCount(
-                    DW_Strings.sCountOfUniqueDependents,
+                    Strings.sCountOfUniqueDependents,
                     CountOfUniqueDependents);
             /**
              * NonDependents
@@ -2282,19 +2285,19 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             int nNonDependents;
             nNonDependents = DW_Collections.getCountHashMap_DW_ID__HashSet_DW_PersonID(ClaimIDToNonDependentPersonIDsLookup);
             addLoadSummaryCount(
-                    DW_Strings.sCountOfNonDependentsInAllClaims,
+                    Strings.sCountOfNonDependentsInAllClaims,
                     nNonDependents);
             set = DW_SHBE_Handler.getUniquePersonIDs(ClaimIDToNonDependentPersonIDsLookup);
             allSet.addAll(set);
             int CountOfUniqueNonDependents = set.size();
             addLoadSummaryCount(
-                    DW_Strings.sCountOfUniqueNonDependents,
+                    Strings.sCountOfUniqueNonDependents,
                     CountOfUniqueNonDependents);
             /**
              * All individuals
              */
             addLoadSummaryCount(
-                    DW_Strings.sCountOfIndividuals,
+                    Strings.sCountOfIndividuals,
                     allSet.size());
             /**
              * Counts of: ClaimsWithClaimantsThatAreClaimantsInAnotherClaim
@@ -2305,33 +2308,33 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
              * PartnersInMultipleClaimsInAMonth
              * NonDependentsInMultipleClaimsInAMonth
              */
-            addLoadSummaryCount(DW_Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
+            addLoadSummaryCount(Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
                     ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim.size());
-            addLoadSummaryCount(DW_Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
+            addLoadSummaryCount(Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
                     ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim.size());
-            addLoadSummaryCount(DW_Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
+            addLoadSummaryCount(Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
                     ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim.size());
-            addLoadSummaryCount(DW_Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim,
+            addLoadSummaryCount(Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim,
                     ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim.size());
-            addLoadSummaryCount(DW_Strings.sCountOfClaimantsInMultipleClaimsInAMonth,
+            addLoadSummaryCount(Strings.sCountOfClaimantsInMultipleClaimsInAMonth,
                     ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.size());
-            addLoadSummaryCount(DW_Strings.sCountOfPartnersInMultipleClaimsInAMonth,
+            addLoadSummaryCount(Strings.sCountOfPartnersInMultipleClaimsInAMonth,
                     PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.size());
-            addLoadSummaryCount(DW_Strings.sCountOfNonDependentsInMultipleClaimsInAMonth,
+            addLoadSummaryCount(Strings.sCountOfNonDependentsInMultipleClaimsInAMonth,
                     NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.size());
-            addLoadSummaryCount(DW_Strings.sLineCount,
+            addLoadSummaryCount(Strings.sLineCount,
                     lineCount);
-            addLoadSummaryCount(DW_Strings.sTotalIncome,
+            addLoadSummaryCount(Strings.sTotalIncome,
                     grandTotalIncome);
-            addLoadSummaryCount(DW_Strings.sTotalIncomeGreaterThanZeroCount,
+            addLoadSummaryCount(Strings.sTotalIncomeGreaterThanZeroCount,
                     totalIncomeGreaterThanZeroCount);
-            addLoadSummaryCount(DW_Strings.sAverage_NonZero_Income,
+            addLoadSummaryCount(Strings.sAverage_NonZero_Income,
                     grandTotalIncome / (double) totalIncomeGreaterThanZeroCount);
-            addLoadSummaryCount(DW_Strings.sTotalWeeklyEligibleRentAmount,
+            addLoadSummaryCount(Strings.sTotalWeeklyEligibleRentAmount,
                     grandTotalWeeklyEligibleRentAmount);
-            addLoadSummaryCount(DW_Strings.sTotalWeeklyEligibleRentAmountGreaterThanZeroCount,
+            addLoadSummaryCount(Strings.sTotalWeeklyEligibleRentAmountGreaterThanZeroCount,
                     totalWeeklyEligibleRentAmountGreaterThanZeroCount);
-            addLoadSummaryCount(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmount,
+            addLoadSummaryCount(Strings.sAverage_NonZero_WeeklyEligibleRentAmount,
                     grandTotalWeeklyEligibleRentAmount / (double) totalWeeklyEligibleRentAmountGreaterThanZeroCount);
             env.log("<Summary Statistics>");
 
@@ -2578,10 +2581,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     case 1:
                         ClaimantsNINO = SRecord.getClaimantsNationalInsuranceNumber();
                         if (ClaimantsNINO.trim().isEmpty()) {
-                            ClaimantsNINO = DW_Strings.sDefaultNINO;
+                            ClaimantsNINO = Strings.sDefaultNINO;
                             env.logE("ClaimantsNINO is empty for "
                                     + "ClaimID " + ClaimID + " ClaimRef "
-                                    + env.getDW_SHBE_Data().getClaimIDToClaimRefLookup().get(ClaimID)
+                                    + env.getSHBE_Data().getClaimIDToClaimRefLookup().get(ClaimID)
                                     + " Setting as default NINO " + ClaimantsNINO);
                         }
                         int i;
@@ -2616,7 +2619,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                             "NINO " + NINO + " is not unique for " + ClaimantsNINO
                                             + " and ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim does not contain "
                                             + "ClaimID " + ClaimID + " for ClaimRef "
-                                            + env.getDW_SHBE_Data().getClaimIDToClaimRefLookup().get(ClaimID));
+                                            + env.getSHBE_Data().getClaimIDToClaimRefLookup().get(ClaimID));
                                 }
                             } else {
                                 set = true;
@@ -3813,7 +3816,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         if (File == null) {
             File = getFile(
                     "DW_SHBE_Records"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return File;
     }
@@ -3824,10 +3827,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected final File getRecordsFile() {
         if (RecordsFile == null) {
             RecordsFile = getFile(
-                    DW_Strings.sRecords
-                    + DW_Strings.sUnderscore
+                    Strings.sRecords
+                    + Strings.sUnderscore
                     + "HashMap_String__DW_SHBE_Record"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return RecordsFile;
     }
@@ -3840,9 +3843,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         if (ClaimIDsOfNewSHBEClaimsFile == null) {
             ClaimIDsOfNewSHBEClaimsFile = getFile(
                     "ClaimIDsOfNewSHBEClaims"
-                    + DW_Strings.sUnderscore
+                    + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsOfNewSHBEClaimsFile;
     }
@@ -3855,9 +3858,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         if (ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile == null) {
             ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile = getFile(
                     "ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore"
-                    + DW_Strings.sUnderscore
+                    + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBeforeFile;
     }
@@ -3870,9 +3873,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         if (ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile == null) {
             ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile = getFile(
                     "ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore"
-                    + DW_Strings.sUnderscore
+                    + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBeforeFile;
     }
@@ -3885,9 +3888,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         if (ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile == null) {
             ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile = getFile(
                     "ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore"
-                    + DW_Strings.sUnderscore
+                    + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBeforeFile;
     }
@@ -3900,9 +3903,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         if (ClaimIDsOfNewSHBEClaimsWhereClaimantIsNewFile == null) {
             ClaimIDsOfNewSHBEClaimsWhereClaimantIsNewFile = getFile(
                     "ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew"
-                    + DW_Strings.sUnderscore
+                    + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsOfNewSHBEClaimsWhereClaimantIsNewFile;
     }
@@ -3911,9 +3914,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         if (ClaimantPersonIDsFile == null) {
             ClaimantPersonIDsFile = getFile(
                     "Claimant"
-                    + DW_Strings.sUnderscore
+                    + Strings.sUnderscore
                     + "HashSet_DW_PersonID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimantPersonIDsFile;
     }
@@ -3922,9 +3925,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         if (PartnerPersonIDsFile == null) {
             PartnerPersonIDsFile = getFile(
                     "Partner"
-                    + DW_Strings.sUnderscore
+                    + Strings.sUnderscore
                     + "HashSet_DW_PersonID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return PartnerPersonIDsFile;
     }
@@ -3933,9 +3936,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         if (NonDependentPersonIDsFile == null) {
             NonDependentPersonIDsFile = getFile(
                     "NonDependent"
-                    + DW_Strings.sUnderscore
+                    + Strings.sUnderscore
                     + "HashSet_DW_PersonID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return NonDependentPersonIDsFile;
     }
@@ -4058,10 +4061,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected final File getCottingleySpringsCaravanParkPairedClaimIDsFile() {
         if (CottingleySpringsCaravanParkPairedClaimIDsFile == null) {
             CottingleySpringsCaravanParkPairedClaimIDsFile = getFile(
-                    DW_Strings.sCottingleySpringsCaravanPark + "PairedClaimIDs"
-                    + DW_Strings.sUnderscore
+                    Strings.sCottingleySpringsCaravanPark + "PairedClaimIDs"
+                    + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return CottingleySpringsCaravanParkPairedClaimIDsFile;
     }
@@ -4073,10 +4076,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected final File getClaimIDsWithStatusOfHBAtExtractDateInPaymentFile() {
         if (ClaimIDsWithStatusOfHBAtExtractDateInPaymentFile == null) {
             ClaimIDsWithStatusOfHBAtExtractDateInPaymentFile = getFile(
-                    DW_Strings.sHB + DW_Strings.sPaymentTypeIn
-                    + DW_Strings.sUnderscore
+                    Strings.sHB + Strings.sPaymentTypeIn
+                    + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsWithStatusOfHBAtExtractDateInPaymentFile;
     }
@@ -4088,10 +4091,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected final File getClaimIDsWithStatusOfHBAtExtractDateSuspendedFile() {
         if (ClaimIDsWithStatusOfHBAtExtractDateSuspendedFile == null) {
             ClaimIDsWithStatusOfHBAtExtractDateSuspendedFile = getFile(
-                    DW_Strings.sHB + DW_Strings.sPaymentTypeSuspended
-                    + DW_Strings.sUnderscore
+                    Strings.sHB + Strings.sPaymentTypeSuspended
+                    + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsWithStatusOfHBAtExtractDateSuspendedFile;
     }
@@ -4103,10 +4106,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected final File getClaimIDsWithStatusOfHBAtExtractDateOtherFile() {
         if (ClaimIDsWithStatusOfHBAtExtractDateOtherFile == null) {
             ClaimIDsWithStatusOfHBAtExtractDateOtherFile = getFile(
-                    DW_Strings.sHB + DW_Strings.sPaymentTypeOther
-                    + DW_Strings.sUnderscore
+                    Strings.sHB + Strings.sPaymentTypeOther
+                    + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsWithStatusOfHBAtExtractDateOtherFile;
     }
@@ -4118,10 +4121,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected final File getClaimIDsWithStatusOfCTBAtExtractDateInPaymentFile() {
         if (ClaimIDsWithStatusOfCTBAtExtractDateInPaymentFile == null) {
             ClaimIDsWithStatusOfCTBAtExtractDateInPaymentFile = getFile(
-                    DW_Strings.sCTB + DW_Strings.sPaymentTypeIn
-                    + DW_Strings.sUnderscore
+                    Strings.sCTB + Strings.sPaymentTypeIn
+                    + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsWithStatusOfCTBAtExtractDateInPaymentFile;
     }
@@ -4133,10 +4136,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected final File getClaimIDsWithStatusOfCTBAtExtractDateSuspendedFile() {
         if (ClaimIDsWithStatusOfCTBAtExtractDateSuspendedFile == null) {
             ClaimIDsWithStatusOfCTBAtExtractDateSuspendedFile = getFile(
-                    DW_Strings.sCTB + DW_Strings.sPaymentTypeSuspended
-                    + DW_Strings.sUnderscore
+                    Strings.sCTB + Strings.sPaymentTypeSuspended
+                    + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsWithStatusOfCTBAtExtractDateSuspendedFile;
     }
@@ -4148,10 +4151,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected final File getClaimIDsWithStatusOfCTBAtExtractDateOtherFile() {
         if (ClaimIDsWithStatusOfCTBAtExtractDateOtherFile == null) {
             ClaimIDsWithStatusOfCTBAtExtractDateOtherFile = getFile(
-                    DW_Strings.sCTB + DW_Strings.sPaymentTypeOther
-                    + DW_Strings.sUnderscore
+                    Strings.sCTB + Strings.sPaymentTypeOther
+                    + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsWithStatusOfCTBAtExtractDateOtherFile;
     }
@@ -4163,9 +4166,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected final File getSRecordsWithoutDRecordsFile() {
         if (SRecordsWithoutDRecordsFile == null) {
             SRecordsWithoutDRecordsFile = getFile(
-                    "SRecordsWithoutDRecordsFile" + DW_Strings.sUnderscore
+                    "SRecordsWithoutDRecordsFile" + Strings.sUnderscore
                     + "HashMap_DW_ID__ArrayList_DW_SHBE_S_Record"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return SRecordsWithoutDRecordsFile;
     }
@@ -4177,9 +4180,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected final File getClaimIDAndCountOfRecordsWithSRecordsFile() {
         if (ClaimIDAndCountOfRecordsWithSRecordsFile == null) {
             ClaimIDAndCountOfRecordsWithSRecordsFile = getFile(
-                    "ClaimIDAndCountOfRecordsWithSRecordsFile" + DW_Strings.sUnderscore
+                    "ClaimIDAndCountOfRecordsWithSRecordsFile" + Strings.sUnderscore
                     + "HashMap_DW_ID__Integer"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDAndCountOfRecordsWithSRecordsFile;
     }
@@ -4191,9 +4194,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected final File getClaimIDsOfClaimsWithoutAMappableClaimantPostcodeFile() {
         if (ClaimIDsOfClaimsWithoutAMappableClaimantPostcodeFile == null) {
             ClaimIDsOfClaimsWithoutAMappableClaimantPostcodeFile = getFile(
-                    "ClaimIDsOfClaimsWithoutAMappableClaimantPostcode" + DW_Strings.sUnderscore
+                    "ClaimIDsOfClaimsWithoutAMappableClaimantPostcode" + Strings.sUnderscore
                     + "HashMap_DW_ID__Integer"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsOfClaimsWithoutAMappableClaimantPostcodeFile;
     }
@@ -4205,9 +4208,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimIDToClaimantPersonIDLookupFile() {
         if (ClaimIDToClaimantPersonIDLookupFile == null) {
             ClaimIDToClaimantPersonIDLookupFile = getFile(
-                    "ClaimIDToClaimantPersonIDLookup" + DW_Strings.sUnderscore
+                    "ClaimIDToClaimantPersonIDLookup" + Strings.sUnderscore
                     + "HashMap_DW_ID_DW_PersonID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDToClaimantPersonIDLookupFile;
     }
@@ -4219,9 +4222,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimIDToPartnerPersonIDLookupFile() {
         if (ClaimIDToPartnerPersonIDLookupFile == null) {
             ClaimIDToPartnerPersonIDLookupFile = getFile(
-                    "ClaimIDToPartnerPersonIDLookup" + DW_Strings.sUnderscore
+                    "ClaimIDToPartnerPersonIDLookup" + Strings.sUnderscore
                     + "HashMap_DW_ID__DW_PersonID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDToPartnerPersonIDLookupFile;
     }
@@ -4233,9 +4236,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimIDToDependentPersonIDsLookupFile() {
         if (ClaimIDToDependentPersonIDsLookupFile == null) {
             ClaimIDToDependentPersonIDsLookupFile = getFile(
-                    "ClaimIDToDependentPersonIDsLookupFile" + DW_Strings.sUnderscore
+                    "ClaimIDToDependentPersonIDsLookupFile" + Strings.sUnderscore
                     + "HashMap_DW_ID__HashSet<DW_PersonID>"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDToDependentPersonIDsLookupFile;
     }
@@ -4247,9 +4250,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimIDToNonDependentPersonIDsLookupFile() {
         if (ClaimIDToNonDependentPersonIDsLookupFile == null) {
             ClaimIDToNonDependentPersonIDsLookupFile = getFile(
-                    "ClaimIDToNonDependentPersonIDsLookupFile" + DW_Strings.sUnderscore
+                    "ClaimIDToNonDependentPersonIDsLookupFile" + Strings.sUnderscore
                     + "HashMap_DW_ID__HashSet_DW_PersonID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDToNonDependentPersonIDsLookupFile;
     }
@@ -4261,9 +4264,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile() {
         if (ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile == null) {
             ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile = getFile(
-                    "ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim" + DW_Strings.sUnderscore
+                    "ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim" + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaimFile;
     }
@@ -4275,9 +4278,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile() {
         if (ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile == null) {
             ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile = getFile(
-                    "ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim" + DW_Strings.sUnderscore
+                    "ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim" + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaimFile;
     }
@@ -4289,9 +4292,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile() {
         if (ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile == null) {
             ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile = getFile(
-                    "ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile" + DW_Strings.sUnderscore
+                    "ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile" + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaimFile;
     }
@@ -4303,9 +4306,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile() {
         if (ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile == null) {
             ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile = getFile(
-                    "ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim" + DW_Strings.sUnderscore
+                    "ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim" + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaimFile;
     }
@@ -4318,9 +4321,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile() {
         if (ClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile == null) {
             ClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile = getFile(
-                    "ClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaim" + DW_Strings.sUnderscore
+                    "ClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaim" + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaimFile;
     }
@@ -4332,9 +4335,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile() {
         if (ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile == null) {
             ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile = getFile(
-                    "ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup" + DW_Strings.sUnderscore
+                    "ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup" + Strings.sUnderscore
                     + "HashMap_DW_PersonID__HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile;
     }
@@ -4346,9 +4349,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile() {
         if (PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile == null) {
             PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile = getFile(
-                    "PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile" + DW_Strings.sUnderscore
+                    "PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile" + Strings.sUnderscore
                     + "HashMap_DW_PersonID__HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile;
     }
@@ -4360,9 +4363,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile() {
         if (NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile == null) {
             NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile = getFile(
-                    "NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile" + DW_Strings.sUnderscore
+                    "NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile" + Strings.sUnderscore
                     + "HashMap_DW_PersonID__HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookupFile;
     }
@@ -4374,9 +4377,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimIDToPostcodeIDLookupFile() {
         if (ClaimIDToPostcodeIDLookupFile == null) {
             ClaimIDToPostcodeIDLookupFile = getFile(
-                    "ClaimIDToPostcodeIDLookup" + DW_Strings.sUnderscore
+                    "ClaimIDToPostcodeIDLookup" + Strings.sUnderscore
                     + "HashMap_DW_ID__DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDToPostcodeIDLookupFile;
     }
@@ -4388,9 +4391,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile() {
         if (ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile == null) {
             ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile = getFile(
-                    "ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture" + DW_Strings.sUnderscore
+                    "ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture" + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile;
     }
@@ -4402,9 +4405,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimIDToTenancyTypeLookupFile() {
         if (ClaimIDToTenancyTypeLookupFile == null) {
             ClaimIDToTenancyTypeLookupFile = getFile(
-                    "ClaimIDToTenancyTypeLookup" + DW_Strings.sUnderscore
+                    "ClaimIDToTenancyTypeLookup" + Strings.sUnderscore
                     + "HashMap_DW_ID__Integer"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDToTenancyTypeLookupFile;
     }
@@ -4415,9 +4418,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getLoadSummaryFile() {
         if (LoadSummaryFile == null) {
             LoadSummaryFile = getFile(
-                    "LoadSummary" + DW_Strings.sUnderscore
+                    "LoadSummary" + Strings.sUnderscore
                     + "HashMap_String__Integer"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return LoadSummaryFile;
     }
@@ -4429,9 +4432,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getRecordIDsNotLoadedFile() {
         if (RecordIDsNotLoadedFile == null) {
             RecordIDsNotLoadedFile = getFile(
-                    "RecordIDsNotLoaded" + DW_Strings.sUnderscore
+                    "RecordIDsNotLoaded" + Strings.sUnderscore
                     + "ArrayList_Long"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return RecordIDsNotLoadedFile;
     }
@@ -4443,9 +4446,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimIDsOfInvalidClaimantNINOClaimsFile() {
         if (ClaimIDsOfInvalidClaimantNINOClaimsFile == null) {
             ClaimIDsOfInvalidClaimantNINOClaimsFile = getFile(
-                    "ClaimIDsOfInvalidClaimantNINOClaimsFile" + DW_Strings.sUnderscore
+                    "ClaimIDsOfInvalidClaimantNINOClaimsFile" + Strings.sUnderscore
                     + "HashSet_DW_ID"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimIDsOfInvalidClaimantNINOClaimsFile;
     }
@@ -4457,9 +4460,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimantPostcodesUnmappableFile() {
         if (ClaimantPostcodesUnmappableFile == null) {
             ClaimantPostcodesUnmappableFile = getFile(
-                    "ClaimantPostcodesUnmappable" + DW_Strings.sUnderscore
+                    "ClaimantPostcodesUnmappable" + Strings.sUnderscore
                     + "HashMap_DW_ID__String"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimantPostcodesUnmappableFile;
     }
@@ -4471,9 +4474,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimantPostcodesModifiedFile() {
         if (ClaimantPostcodesModifiedFile == null) {
             ClaimantPostcodesModifiedFile = getFile(
-                    "ClaimantPostcodesModified" + DW_Strings.sUnderscore
+                    "ClaimantPostcodesModified" + Strings.sUnderscore
                     + "HashMap_DW_ID__String[]"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimantPostcodesModifiedFile;
     }
@@ -4485,9 +4488,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     public final File getClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodesFile() {
         if (ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodesFile == null) {
             ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodesFile = getFile(
-                    "ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes" + DW_Strings.sUnderscore
+                    "ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes" + Strings.sUnderscore
                     + "HashMap_DW_ID__String"
-                    + DW_Strings.sBinaryFileExtension);
+                    + Strings.sBinaryFileExtension);
         }
         return ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodesFile;
     }

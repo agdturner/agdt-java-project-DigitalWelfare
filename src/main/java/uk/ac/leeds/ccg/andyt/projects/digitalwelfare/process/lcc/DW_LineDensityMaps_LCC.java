@@ -21,7 +21,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
@@ -41,8 +41,8 @@ protected DW_LineMapsLCC DW_LineMaps_LCC;
     private static final String targetPropertyNameLSOA = "LSOA11CD";
     private DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
 //    private DW_AreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
-    protected ArrayList<AGDT_Shapefile> midgrounds;
-    protected ArrayList<AGDT_Shapefile> foregrounds;
+    protected ArrayList<Geotools_Shapefile> midgrounds;
+    protected ArrayList<Geotools_Shapefile> foregrounds;
 
     public DW_LineDensityMaps_LCC(DW_Environment env) {
         super(env);
@@ -246,7 +246,7 @@ protected DW_LineMapsLCC DW_LineMaps_LCC;
 ////            Iterator<AGDT_Shapefile> ite1;
 ////            ite1 = midgrounds.iterator();
 ////            while (ite1.hasNext()) {
-////                AGDT_Shapefile s = ite1.next();
+////                Geotools_Shapefile s = ite1.next();
 ////                s.dispose();
 ////            }
 //            Iterator<AGDT_Shapefile> ite;
@@ -503,8 +503,8 @@ protected DW_LineMapsLCC DW_LineMaps_LCC;
 //            Grids_Grid2DSquareCellDouble g = initiliseGrid(grid);
 //
 //            // Open Shapefile reader
-//            AGDT_Shapefile shapefile;
-//            shapefile = new AGDT_Shapefile(f);
+//            Geotools_Shapefile shapefile;
+//            shapefile = new Geotools_Shapefile(f);
 //
 //            FeatureCollection fc;
 //            fc = shapefile.getFeatureCollection();

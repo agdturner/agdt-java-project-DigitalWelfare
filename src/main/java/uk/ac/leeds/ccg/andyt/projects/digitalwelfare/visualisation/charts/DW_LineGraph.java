@@ -68,11 +68,11 @@ public class DW_LineGraph extends Generic_LineGraph {
 
     public DW_LineGraph(DW_Environment de) {
         this.env = de;
-        this.DW_Files = de.getDW_Files();
-        this.DW_Strings = de.getDW_Strings();
-        this.DW_SHBE_Handler = de.getDW_SHBE_Handler();
-        this.DW_UO_Data = de.getDW_UO_Data();
-        this.DW_UO_Handler = de.getDW_UO_Handler();
+        this.DW_Files = de.getFiles();
+        this.DW_Strings = de.getStrings();
+        this.DW_SHBE_Handler = de.getSHBE_Handler();
+        this.DW_UO_Data = de.getUO_Data();
+        this.DW_UO_Handler = de.getUO_Handler();
     }
 
     public DW_LineGraph(
@@ -97,11 +97,11 @@ public class DW_LineGraph extends Generic_LineGraph {
                 numberOfYAxisTicks, decimalPlacePrecisionForCalculations,
                 decimalPlacePrecisionForDisplay, aRoundingMode);
         this.env = de;
-        this.DW_Files = de.getDW_Files();
-        this.DW_Strings = de.getDW_Strings();
-        this.DW_SHBE_Handler = de.getDW_SHBE_Handler();
-        this.DW_UO_Data = de.getDW_UO_Data();
-        this.DW_UO_Handler = de.getDW_UO_Handler();
+        this.DW_Files = de.getFiles();
+        this.DW_Strings = de.getStrings();
+        this.DW_SHBE_Handler = de.getSHBE_Handler();
+        this.DW_UO_Data = de.getUO_Data();
+        this.DW_UO_Handler = de.getUO_Handler();
     }
 
     HashSet<Future> futures;
@@ -2737,7 +2737,7 @@ public class DW_LineGraph extends Generic_LineGraph {
 //        labels.addAll(maps.keySet()); // This does not work as maps is gc resulting in labels becoming null for some reason.
         // Declare nonZero2
         DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
-        DW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
+        DW_SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
         TreeMap<String, Boolean> nonZero2;
         nonZero2 = new TreeMap<String, Boolean>();
         Iterator<String> iteS;

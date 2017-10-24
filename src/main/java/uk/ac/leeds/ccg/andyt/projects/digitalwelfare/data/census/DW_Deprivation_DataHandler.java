@@ -20,8 +20,8 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census;
 
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
+import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
+import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
@@ -33,14 +33,14 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstrac
  *
  * @author geoagdt
  */
-public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
+public class DW_Deprivation_DataHandler extends Census_DeprivationDataHandler {
 
     protected transient DW_Environment env;
     protected DW_Postcode_Handler DW_Postcode_Handler;
     
     public DW_Deprivation_DataHandler(DW_Environment env) {
         this.env = env;
-        this.DW_Postcode_Handler = env.getDW_Postcode_Handler();
+        this.DW_Postcode_Handler = env.getPostcode_Handler();
     }
     /**
      *
@@ -54,7 +54,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
     public Object[] getDeprivationClassCountOfCABClients(
             int type,
             TreeMap tCABData,
-            TreeMap<String, Deprivation_DataRecord> tDeprivationData,
+            TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
             TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
             TreeMap<Integer, Integer> deprivationClasses) {
         Object[] result = new Object[2];
@@ -73,7 +73,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
                     if (SOACode == null) {
                         recsWithoutARecognisedPostcode++;
                     } else {
-                        Deprivation_DataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
+                        Census_DeprivationDataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
                         if (aDeprivation_DataRecord != null) {
                             Integer deprivationClass = getDeprivationClass(deprivationClasses, aDeprivation_DataRecord);
                             if (deprivationClassCountOfCABClients.containsKey(deprivationClass)) {
@@ -105,7 +105,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
                     if (SOACode == null) {
                         recsWithoutARecognisedPostcode++;
                     } else {
-                        Deprivation_DataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
+                        Census_DeprivationDataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
                         if (aDeprivation_DataRecord != null) {
                             Integer deprivationClass = getDeprivationClass(deprivationClasses, aDeprivation_DataRecord);
                             if (deprivationClassCountOfCABClients.containsKey(deprivationClass)) {
@@ -145,7 +145,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
 //     */
 //    public Object[] getDeprivationClassCountOfCABClients(
 //            TreeMap<EnquiryClientBureauOutletID, DW_Data_CAB2_Record> tLeedsCABData,
-//            TreeMap<String, Deprivation_DataRecord> tDeprivationData,
+//            TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
 //            TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
 //            TreeMap<Integer, Integer> deprivationClasses) {
 //        Object[] result = new Object[2];
@@ -164,7 +164,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
 //                if (SOACode == null) {
 //                    clientsWithoutARecognisedPostcode++;
 //                } else {
-//                    Deprivation_DataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
+//                    Census_DeprivationDataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
 //                    if (aDeprivation_DataRecord != null) {
 //                        Integer deprivationClass = getDeprivationClass(deprivationClasses, aDeprivation_DataRecord);
 //                        if (deprivationClassCountOfCABClients.containsKey(deprivationClass)) {
@@ -206,7 +206,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
 //            int count,
 //            int percentageBand,
 //            TreeMap<String, DW_Data_CAB2_Record> tLeedsCABData,
-//            TreeMap<String, Deprivation_DataRecord> tDeprivationData,
+//            TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
 //            TreeMap<String, String[]> tLookupFromPostcodeToCensusCodes,
 //            int classWidth,
 //            int numberOfClasses) {
@@ -225,7 +225,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
 //                    clientsWithoutARecognisedPostcode++;
 //                } else {
 //                    String SOACode = codes[1];
-//                    Deprivation_DataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
+//                    Census_DeprivationDataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
 //                    if (aDeprivation_DataRecord != null) {
 //                        Integer deprivationClass = getDeprivationClass(count, percentageBand, classWidth, numberOfClasses, aDeprivation_DataRecord);
 //                        if (deprivationClassCountOfCABClients.containsKey(deprivationClass)) {
@@ -265,7 +265,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
 //     */
 //    public Object[] getDeprivationClassCountOfCABClients(
 //            TreeMap<String, DW_Data_CAB1_Record> tLeedsCABData,
-//            TreeMap<String, Deprivation_DataRecord> tDeprivationData,
+//            TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
 //            TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
 //            int count,
 //            int percentageBand,
@@ -285,7 +285,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
 //                if (SOACode == null) {
 //                    clientsWithoutARecognisedPostcode++;
 //                } else {
-//                    Deprivation_DataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
+//                    Census_DeprivationDataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
 //                    if (aDeprivation_DataRecord != null) {
 //                        Integer deprivationClass = getDeprivationClass(count, percentageBand, classWidth, numberOfClasses, aDeprivation_DataRecord);
 //                        if (deprivationClassCountOfCABClients.containsKey(deprivationClass)) {
@@ -315,7 +315,7 @@ public class DW_Deprivation_DataHandler extends Deprivation_DataHandler {
             int percentageBand,
             int classWidth,
             int numberOfClasses,
-            Deprivation_DataRecord aDeprivation_DataRecord) {
+            Census_DeprivationDataRecord aDeprivation_DataRecord) {
         String rankOfIMDScoreForEngland = aDeprivation_DataRecord.getRankOfIMDScoreForEngland();
         Integer rankOfIMDScoreForEnglandInteger;
         int thisRank = 0;

@@ -23,9 +23,6 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,42 +38,47 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
-import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.swing.JMapFrame;
 import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
-import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
+import uk.ac.leeds.ccg.andyt.geotools.core.Geotools_Environment;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGrid2DSquareCell;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendItem;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendLayer;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
-//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.AGDT_LegendItem;
-//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.AGDT_LegendLayer;
-//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps;
-//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Shapefile;
-//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Style;
-//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.AGDT_StyleParameters;
-//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.mapping.DW_Maps.getOutputImageFile;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_LegendItem;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_LegendLayer;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
  * A class for holding various useful methods for doing things with
- * AGDT_Geotools Objects.
+ * Geotools_Environment Objects.
  *
  * @author geoagdt
  */
-public class DW_Geotools extends AGDT_Geotools {
+public class DW_Geotools extends Geotools_Environment {
 
-    public static boolean doDebug = true;
+    public boolean doDebug = true;
 
+    public DW_Environment de;
+    
+
+    protected DW_Geotools() {
+    }
+
+    public DW_Geotools(DW_Environment de) {
+        this.de = de;
+    }
+
+    @Override
+    public DW_Style getStyle() {
+        if (Style == null) {
+            Style = new DW_Style();
+        }
+        return (DW_Style) Style;
+    }
+    
     /**
      * Warning this will set g to null.
      *
@@ -94,16 +96,17 @@ public class DW_Geotools extends AGDT_Geotools {
      * @param showMapsInJMapPane
      * @param scaleToFirst
      */
-    public static void outputToImageUsingGeoToolsAndSetCommonStyle(
+    @Override
+    public void outputToImageUsingGeoToolsAndSetCommonStyle(
             double normalisation,
-            AGDT_StyleParameters styleParameters,
+            Geotools_StyleParameters styleParameters,
             int index,
             String outname,
             Grids_AbstractGrid2DSquareCell g,
             GridCoverage2D gc,
-            ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0,
-            AGDT_Shapefile foregroundDW_Shapefile1,
-            AGDT_Shapefile backgroundDW_Shapefile,
+            ArrayList<Geotools_Shapefile> foregroundDW_Shapefile0,
+            Geotools_Shapefile foregroundDW_Shapefile1,
+            Geotools_Shapefile backgroundDW_Shapefile,
             File outputDir,
             int imageWidth,
             boolean showMapsInJMapPane,
@@ -131,17 +134,18 @@ public class DW_Geotools extends AGDT_Geotools {
         File outputFile = getOutputFile(
                 outputDir,
                 outname,
-                DW_Maps.png_String);
-        File outputImageFile = DW_Maps.getOutputImageFile(
-                outputFile, DW_Maps.png_String);
+                gs.png_String);
+        File outputImageFile = de.getMaps().getOutputImageFile(
+                outputFile,
+                gs.png_String);
 
-        AGDT_Geotools.writeImageFile(
-                g.ge,  // For handling OutOfMemoryErrors
+        writeImageFile(
+                g.ge, // For handling OutOfMemoryErrors
                 mc,
                 newImageWidth,
                 newImageHeight,
                 outputImageFile,
-                DW_Maps.png_String);
+                gs.png_String);
 
 //Tried commenting this out as a workaround as somehow loosing the legends, but this was not the solution...
         // Dispose of MapContent to prevent memory leaks
@@ -184,16 +188,16 @@ public class DW_Geotools extends AGDT_Geotools {
      * @param scaleToFirst
      * @return
      */
-    private static Object[] createMapContent(
+    private Object[] createMapContent(
             double normalisation,
             String name,
             Grids_AbstractGrid2DSquareCell g,
             GridCoverage2D gc,
-            ArrayList<AGDT_Shapefile> foregroundShapefiles,
-            AGDT_Shapefile foregroundDW_Shapefile1,
-            AGDT_Shapefile backgroundDW_Shapefile,
+            ArrayList<Geotools_Shapefile> foregroundShapefiles,
+            Geotools_Shapefile foregroundDW_Shapefile1,
+            Geotools_Shapefile backgroundDW_Shapefile,
             int imageWidth,
-            AGDT_StyleParameters styleParameters,
+            Geotools_StyleParameters styleParameters,
             int index,
             boolean scaleToFirst) {
         Object[] result;
@@ -204,7 +208,7 @@ public class DW_Geotools extends AGDT_Geotools {
         Style style;
         //style = styleParameters.getStyle(name, index);
         style = null; //horrible hack workaound to ensure legend is drawn.
-        ArrayList<AGDT_LegendItem> legendItems = null;
+        ArrayList<Geotools_LegendItem> legendItems = null;
 
         if (styleParameters.isDrawBoundaries()) {
             FeatureLayer backgroundFeatureLayer;
@@ -221,16 +225,16 @@ public class DW_Geotools extends AGDT_Geotools {
             Object[] styleAndLegendItems;
 //            styleAndLegendItems = DW_Style.getEqualIntervalStyleAndLegendItems(
             if (styleParameters.getPaletteName2() == null) {
-                styleAndLegendItems = DW_Style.getStyleAndLegendItems(
+                styleAndLegendItems = getStyle().getStyleAndLegendItems(
                         normalisation,
                         g,
                         gc,
                         styleParameters.getClassificationFunctionName(),
                         styleParameters.getnClasses(),
                         styleParameters.getPaletteName(),
-                        styleParameters.isAddWhiteForZero()); 
+                        styleParameters.isAddWhiteForZero());
             } else {
-                styleAndLegendItems = DW_Style.getStyleAndLegendItems(
+                styleAndLegendItems = getStyle().getStyleAndLegendItems(
                         normalisation,
                         g,
                         gc,
@@ -242,7 +246,7 @@ public class DW_Geotools extends AGDT_Geotools {
             }
             style = (Style) styleAndLegendItems[0];
             styleParameters.setStyle(name, style, index);
-            legendItems = (ArrayList<AGDT_LegendItem>) styleAndLegendItems[1];
+            legendItems = (ArrayList<Geotools_LegendItem>) styleAndLegendItems[1];
             styleParameters.setLegendItems(legendItems, index);
         } else {
             if (scaleToFirst) {
@@ -258,7 +262,7 @@ public class DW_Geotools extends AGDT_Geotools {
                 mc,
                 styleParameters,
                 foregroundShapefiles);
-        
+
         // Add foreground1
         // ---------------
         if (foregroundDW_Shapefile1 != null) {
@@ -290,11 +294,11 @@ public class DW_Geotools extends AGDT_Geotools {
             double width = maxX - minX;
             double height = maxY - minY;
             double widthoverimageWidth;
-            widthoverimageWidth = width/(double)imageWidth;
+            widthoverimageWidth = width / (double) imageWidth;
             double heightoverimageHeight;
-            heightoverimageHeight = height/(double)imageHeight;
-            
-            AGDT_LegendLayer ll = new AGDT_LegendLayer(
+            heightoverimageHeight = height / (double) imageHeight;
+
+            Geotools_LegendLayer ll = new Geotools_LegendLayer(
                     styleParameters,
                     "Legend",
                     legendItems,
@@ -303,11 +307,11 @@ public class DW_Geotools extends AGDT_Geotools {
                     imageHeight,
                     addLegendToTheSide);
             mc.addLayer(ll);
-            
+
             //bounds.expandToInclude(ll.getBounds());
             //bounds = mc.getMaxBounds();
             bounds = ll.getBounds();
-            
+
             minX = bounds.getMinX();
             minY = bounds.getMinY();
             maxX = bounds.getMaxX();
@@ -341,21 +345,21 @@ public class DW_Geotools extends AGDT_Geotools {
     }
 
     /**
-     * 
+     *
      * @param mc The MapContent to be added to.
      * @param sp The style parameters for the style of the layer to be added.
-     * @param shapefiles The shapefiles for creating the layers. 
+     * @param shapefiles The shapefiles for creating the layers.
      */
-    private static void addToMapContent(
+    private void addToMapContent(
             MapContent mc,
-            AGDT_StyleParameters sp,
-            ArrayList<AGDT_Shapefile> shapefiles) {
+            Geotools_StyleParameters sp,
+            ArrayList<Geotools_Shapefile> shapefiles) {
         if (shapefiles != null) {
-            Iterator<AGDT_Shapefile> ite;
+            Iterator<Geotools_Shapefile> ite;
             ite = shapefiles.iterator();
             int i = 0;
             while (ite.hasNext()) {
-                AGDT_Shapefile sf = ite.next();
+                Geotools_Shapefile sf = ite.next();
                 FeatureLayer fl;
                 fl = sf.getFeatureLayer(
                         sp.getForegroundStyle0().get(i));
@@ -385,17 +389,17 @@ public class DW_Geotools extends AGDT_Geotools {
      * @param max
      * @param showMapsInJMapPane
      */
-    public static void outputToImage(
+    public void outputToImage(
             String outname,
             File outputShapefile,
-            ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0,
-            AGDT_Shapefile foregroundDW_Shapefile1,
-            AGDT_Shapefile backgroundDW_Shapefile,
+            ArrayList<Geotools_Shapefile> foregroundDW_Shapefile0,
+            Geotools_Shapefile foregroundDW_Shapefile1,
+            Geotools_Shapefile backgroundDW_Shapefile,
             String attributeName,
             File outputDir,
             String png_String,
             int imageWidth,
-            AGDT_StyleParameters styleParameters,
+            Geotools_StyleParameters styleParameters,
             int styleIndex,
             double max,
             boolean showMapsInJMapPane) {
@@ -423,15 +427,15 @@ public class DW_Geotools extends AGDT_Geotools {
                 showMapsInJMapPane);
     }
 
-    public static void outputToImage(
+    public void outputToImage(
             String outname,
-            ArrayList<AGDT_Shapefile> midgrounds,
-            ArrayList<AGDT_Shapefile> foregrounds,
+            ArrayList<Geotools_Shapefile> midgrounds,
+            ArrayList<Geotools_Shapefile> foregrounds,
             String attributeName,
             File outputDir,
             String png_String,
             int imageWidth,
-            AGDT_StyleParameters styleParameters,
+            Geotools_StyleParameters styleParameters,
             int styleIndex,
             double max,
             boolean showMapsInJMapPane) {
@@ -455,11 +459,11 @@ public class DW_Geotools extends AGDT_Geotools {
 //                showMapsInJMapPane);
     }
 
-    public static void outputToImage(
+    public void outputToImage(
             String legendMessage,
             String outname,
-            ArrayList<AGDT_Shapefile> midgrounds,
-            ArrayList<AGDT_Shapefile> foregrounds,
+            ArrayList<Geotools_Shapefile> midgrounds,
+            ArrayList<Geotools_Shapefile> foregrounds,
             File outputDir,
             String png_String,
             int imageWidth,
@@ -504,11 +508,11 @@ public class DW_Geotools extends AGDT_Geotools {
      * null then (Style) styleParameters[0] is used to render features.
      * @param showMapsInJMapPane
      */
-    public static void outputToImage(
+    public void outputToImage(
             String outname,
-            ArrayList<AGDT_Shapefile> foregrounds,
-            ArrayList<AGDT_Shapefile> midgrounds,
-            ArrayList<AGDT_Shapefile> backgrounds,
+            ArrayList<Geotools_Shapefile> foregrounds,
+            ArrayList<Geotools_Shapefile> midgrounds,
+            ArrayList<Geotools_Shapefile> backgrounds,
             String attributeName,
             File outputDir,
             String png_String,
@@ -549,12 +553,12 @@ public class DW_Geotools extends AGDT_Geotools {
      * @param imageWidth
      * @param showMapsInJMapPane
      */
-    public static void outputToImage(
+    public void outputToImage(
             MapContent mc,
             String outname,
-            ArrayList<AGDT_Shapefile> foregrounds,
-            ArrayList<AGDT_Shapefile> midgrounds,
-            ArrayList<AGDT_Shapefile> backgrounds,
+            ArrayList<Geotools_Shapefile> foregrounds,
+            ArrayList<Geotools_Shapefile> midgrounds,
+            ArrayList<Geotools_Shapefile> backgrounds,
             File outputDir,
             int imageWidth,
             boolean showMapsInJMapPane) {
@@ -562,14 +566,14 @@ public class DW_Geotools extends AGDT_Geotools {
         File outputFile = getOutputFile(
                 outputDir,
                 outname,
-                DW_Maps.png_String);
-        File outputImageFile = DW_Maps.getOutputImageFile(outputFile, DW_Maps.png_String);
-        AGDT_Geotools.writeImageFile(
+                gs.png_String);
+        File outputImageFile = de.getMaps().getOutputImageFile(outputFile, gs.png_String);
+        writeImageFile(
                 mc,
                 imageWidth,
                 imageHeight,
                 outputImageFile,
-                DW_Maps.png_String);
+                gs.png_String);
         System.out.println("Written " + outputImageFile.getAbsolutePath());
         // Dispose of MapContent to prevent memory leaks
         if (showMapsInJMapPane) {
@@ -598,11 +602,11 @@ public class DW_Geotools extends AGDT_Geotools {
         }
     }
 
-    private static void dispose(ArrayList<AGDT_Shapefile> fs) {
-        Iterator<AGDT_Shapefile> ite;
+    private void dispose(ArrayList<Geotools_Shapefile> fs) {
+        Iterator<Geotools_Shapefile> ite;
         ite = fs.iterator();
         while (ite.hasNext()) {
-            AGDT_Shapefile f;
+            Geotools_Shapefile f;
             f = ite.next();
             f.dispose();
         }
@@ -620,7 +624,7 @@ public class DW_Geotools extends AGDT_Geotools {
      * @param imageWidth
      * @param showMapsInJMapPane
      */
-    public static void outputToImage(
+    public void outputToImage(
             MapContent mc,
             String outname,
             File outputShapefile,
@@ -633,14 +637,14 @@ public class DW_Geotools extends AGDT_Geotools {
         File outputFile = getOutputFile(
                 outputDir,
                 outname,
-                DW_Maps.png_String);
-        File outputImageFile = DW_Maps.getOutputImageFile(outputFile, DW_Maps.png_String);
-        AGDT_Geotools.writeImageFile(
+                gs.png_String);
+        File outputImageFile = de.getMaps().getOutputImageFile(outputFile, gs.png_String);
+        writeImageFile(
                 mc,
                 imageWidth,
                 imageHeight,
                 outputImageFile,
-                DW_Maps.png_String);
+                gs.png_String);
         System.out.println("Written " + outputImageFile.getAbsolutePath());
         // Dispose of MapContent to prevent memory leaks
         if (showMapsInJMapPane) {
@@ -679,10 +683,10 @@ public class DW_Geotools extends AGDT_Geotools {
      * @param imageWidth
      * @param showMapsInJMapPane
      */
-    public static void outputToImage(
+    public void outputToImage(
             MapContent mc,
             String outname,
-            ArrayList<AGDT_Shapefile> midgrounds,
+            ArrayList<Geotools_Shapefile> midgrounds,
             File outputDir,
             int imageWidth,
             boolean showMapsInJMapPane) {
@@ -692,14 +696,14 @@ public class DW_Geotools extends AGDT_Geotools {
         File outputFile = getOutputFile(
                 outputDir,
                 outname,
-                DW_Maps.png_String);
-        File outputImageFile = DW_Maps.getOutputImageFile(outputFile, DW_Maps.png_String);
-        AGDT_Geotools.writeImageFile(
+                gs.png_String);
+        File outputImageFile = de.getMaps().getOutputImageFile(outputFile, gs.png_String);
+        writeImageFile(
                 mc,
                 imageWidth,
                 imageHeight,
                 outputImageFile,
-                DW_Maps.png_String);
+                gs.png_String);
         System.out.println("Written " + outputImageFile.getAbsolutePath());
         // Dispose of MapContent to prevent memory leaks
         if (showMapsInJMapPane) {
@@ -707,10 +711,10 @@ public class DW_Geotools extends AGDT_Geotools {
             JMapFrame.showMap(mc); // Need to not dispose of mc if this is to persist!
         } else {
             // Tidy up
-            Iterator<AGDT_Shapefile> ite1;
+            Iterator<Geotools_Shapefile> ite1;
             ite1 = midgrounds.iterator();
             while (ite1.hasNext()) {
-                AGDT_Shapefile s = ite1.next();
+                Geotools_Shapefile s = ite1.next();
                 s.dispose();
             }
 //            outputDW_Shapefile.dispose();
@@ -750,17 +754,17 @@ public class DW_Geotools extends AGDT_Geotools {
      * @param max
      * @return
      */
-    protected static MapContent createMapContent(
+    protected MapContent createMapContent(
             //File file,
             //File file,
             DW_Shapefile outputDW_Shapefile,
             String title,
             String attributeName,
-            ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0,
-            AGDT_Shapefile foregroundDW_Shapefile1,
-            AGDT_Shapefile backgroundDW_Shapefile,
+            ArrayList<Geotools_Shapefile> foregroundDW_Shapefile0,
+            Geotools_Shapefile foregroundDW_Shapefile1,
+            Geotools_Shapefile backgroundDW_Shapefile,
             int imageWidth,
-            AGDT_StyleParameters styleParameters,
+            Geotools_StyleParameters styleParameters,
             int styleIndex,
             double max) {
         MapContent result;
@@ -768,7 +772,7 @@ public class DW_Geotools extends AGDT_Geotools {
         // Unbox styleParameters
         Style style;
         style = styleParameters.getStyle(attributeName, styleIndex);
-        ArrayList<AGDT_LegendItem> legendItems;
+        ArrayList<Geotools_LegendItem> legendItems;
         legendItems = styleParameters.getLegendItems(styleIndex);
 
         if (styleParameters.isDrawBoundaries()) {
@@ -793,7 +797,7 @@ public class DW_Geotools extends AGDT_Geotools {
                     styleParameters);
             style = (Style) styleAndLegendItems[0];
             styleParameters.setStyle(attributeName, style, styleIndex);
-            legendItems = (ArrayList<AGDT_LegendItem>) styleAndLegendItems[1];
+            legendItems = (ArrayList<Geotools_LegendItem>) styleAndLegendItems[1];
             styleParameters.setLegendItems(legendItems, styleIndex);
         }
 
@@ -826,7 +830,7 @@ public class DW_Geotools extends AGDT_Geotools {
         // ------------
         if (legendItems != null) {
             boolean addLegendToTheSide = true;
-            AGDT_LegendLayer ll = new AGDT_LegendLayer(
+            Geotools_LegendLayer ll = new Geotools_LegendLayer(
                     styleParameters,
                     "Legend",
                     legendItems,
@@ -839,17 +843,17 @@ public class DW_Geotools extends AGDT_Geotools {
         return result;
     }
 
-//    protected static MapContent createMapContent(
+//    protected MapContent createMapContent(
 //            //File file,
 //            //File file,
 //            ArrayList<AGDT_Shapefile> midgrounds,
 //            String title,
 //            String attributeName,
 //            ArrayList<AGDT_Shapefile> foregroundDW_Shapefile0,
-//            AGDT_Shapefile ForegroundDW_Shapefile1,
-//            AGDT_Shapefile BackgroundDW_Shapefile,
+//            Geotools_Shapefile ForegroundDW_Shapefile1,
+//            Geotools_Shapefile BackgroundDW_Shapefile,
 //            int imageWidth,
-//            AGDT_StyleParameters styleParameters,
+//            Geotools_StyleParameters styleParameters,
 //            int styleIndex,
 //            double max) {
 //        MapContent result;
@@ -919,7 +923,7 @@ public class DW_Geotools extends AGDT_Geotools {
 //        // ------------
 //        if (legendItems != null) {
 //            boolean addLegendToTheSide = true;
-//            AGDT_LegendLayer ll = new AGDT_LegendLayer(
+//            Geotools_LegendLayer ll = new Geotools_LegendLayer(
 //                    styleParameters,
 //                    "Legend",
 //                    legendItems,
@@ -931,11 +935,10 @@ public class DW_Geotools extends AGDT_Geotools {
 //        }
 //        return result;
 //    }
-
-    protected static MapContent createMapContent(
+    protected MapContent createMapContent(
             String legendMessage,
-            ArrayList<AGDT_Shapefile> midgrounds,
-            ArrayList<AGDT_Shapefile> foregrounds,
+            ArrayList<Geotools_Shapefile> midgrounds,
+            ArrayList<Geotools_Shapefile> foregrounds,
             String title,
             int imageWidth,
             DW_StyleParameters styleParameters,
@@ -947,19 +950,19 @@ public class DW_Geotools extends AGDT_Geotools {
         Style style;
 //        style = styleParameters.getStyle(attributeName, styleIndex);
         style = styleParameters.getMidgroundStyle(styleIndex);
-        ArrayList<AGDT_LegendItem> legendItems;
-        
+        ArrayList<Geotools_LegendItem> legendItems;
+
         legendItems = styleParameters.getLegendItems(styleIndex);
         if (legendItems == null) {
-            legendItems = new ArrayList<AGDT_LegendItem>();
+            legendItems = new ArrayList<Geotools_LegendItem>();
         }
-        AGDT_LegendItem li;
-        li = new AGDT_LegendItem(legendMessage, Color.WHITE);
+        Geotools_LegendItem li;
+        li = new Geotools_LegendItem(legendMessage, Color.WHITE);
 
         legendItems.add(li);
-        li = new AGDT_LegendItem("Origin", Color.RED);
+        li = new Geotools_LegendItem("Origin", Color.RED);
         legendItems.add(li);
-        li = new AGDT_LegendItem("Destination", Color.BLUE);
+        li = new Geotools_LegendItem("Destination", Color.BLUE);
         legendItems.add(li);
 
 //        if (styleParameters.isDrawBoundaries()) {
@@ -972,7 +975,7 @@ public class DW_Geotools extends AGDT_Geotools {
         // ----------------
         int i;
         i = 0;
-        Iterator<AGDT_Shapefile> ite;
+        Iterator<Geotools_Shapefile> ite;
         ite = midgrounds.iterator();
         while (ite.hasNext()) {
             FeatureSource fs;
@@ -1054,7 +1057,7 @@ public class DW_Geotools extends AGDT_Geotools {
 //        // ------------
         if (legendItems != null) {
             boolean addLegendToTheSide = true;
-            AGDT_LegendLayer ll = new AGDT_LegendLayer(
+            Geotools_LegendLayer ll = new Geotools_LegendLayer(
                     styleParameters,
                     "Legend",
                     legendItems,
@@ -1080,22 +1083,22 @@ public class DW_Geotools extends AGDT_Geotools {
      * null then (Style) styleParameters[0] is used to render features.
      * @return
      */
-    protected static MapContent createMapContent(
-            ArrayList<AGDT_Shapefile> midgrounds,
-            ArrayList<AGDT_Shapefile> foregrounds,
-            ArrayList<AGDT_Shapefile> backgrounds,
+    protected MapContent createMapContent(
+            ArrayList<Geotools_Shapefile> midgrounds,
+            ArrayList<Geotools_Shapefile> foregrounds,
+            ArrayList<Geotools_Shapefile> backgrounds,
             int imageWidth,
             DW_StyleParameters styleParameters) {
         MapContent result;
         result = new MapContent();
-        Iterator<AGDT_Shapefile> ite;
+        Iterator<Geotools_Shapefile> ite;
         int i;
         // Add backgrounds to mc
         // ---------------------
         i = 0;
         ite = backgrounds.iterator();
         while (ite.hasNext()) {
-            AGDT_Shapefile sf;
+            Geotools_Shapefile sf;
             sf = ite.next();
             FeatureSource fs;
             fs = sf.getFeatureSource();
@@ -1113,7 +1116,7 @@ public class DW_Geotools extends AGDT_Geotools {
         i = 0;
         ite = midgrounds.iterator();
         while (ite.hasNext()) {
-            AGDT_Shapefile sf;
+            Geotools_Shapefile sf;
             sf = ite.next();
             FeatureSource fs;
             fs = sf.getFeatureSource();
@@ -1130,7 +1133,7 @@ public class DW_Geotools extends AGDT_Geotools {
         i = 0;
         ite = foregrounds.iterator();
         while (ite.hasNext()) {
-            AGDT_Shapefile sf;
+            Geotools_Shapefile sf;
             sf = ite.next();
             FeatureSource fs;
             fs = sf.getFeatureSource();
@@ -1147,7 +1150,7 @@ public class DW_Geotools extends AGDT_Geotools {
 //        // ------------
 //        if (legendItems != null) {
 //            boolean addLegendToTheSide = true;
-//            AGDT_LegendLayer ll = new AGDT_LegendLayer(
+//            Geotools_LegendLayer ll = new Geotools_LegendLayer(
 //                    styleParameters,
 //                    "Map title.................................",
 //                    "Legend",
@@ -1161,150 +1164,15 @@ public class DW_Geotools extends AGDT_Geotools {
         return result;
     }
 
-//    /**
-//     * polygon0 PostcodeSector
-//     * polygon1 OA
-//     * polygon2 LSOA
-//     * polygon3 postcodeUnitPoly / MSOA
-//     * polygon4 polyGrid,
-//     * line0 lineGrid
-//     * points0 PostcodeUnitPoint
-//     * points1 PostcodeSectorPoint
-//     * @param polygon0
-//     * @param polygon1
-//     * @param polygon2
-//     * @param polygon3
-//     * @param polygon4
-//     * @param line0
-//     * @param points0
-//     * @param points1
-//     * @return
-//     */
-//    public static MapContent createMapContent(
-//            DW_Shapefile polygon0,
-//            DW_Shapefile polygon1,
-//            DW_Shapefile polygon2,
-//            DW_Shapefile polygon3,
-//            DW_Shapefile polygon4,
-//            DW_Shapefile line0,
-//            DW_Shapefile points0,
-//            DW_Shapefile points1) {
-//        MapContent result;
-//        result = new MapContent();
-//
-//        if (polygon0 != null) {
-//            // Add polygon layer 0 to mc
-//            // -------------------------
-//            Style polygon0Style;
-//            polygon0Style = DW_Style.createDefaultPolygonStyle(
-//                    Color.BLUE, Color.WHITE);
-//            FeatureLayer polygon0layer = new FeatureLayer(
-//                    polygon0.getFeatureSource(), polygon0Style);
-//            result.addLayer(polygon0layer);
-//        }
-//
-//        if (polygon3 != null) {
-//            // Add polygon layer 3 to mc
-//            // -------------------------
-//            Color c;
-//            //c = Color.DARK_GRAY;
-//            c = Color.PINK;
-//            Style polygon3Style;
-//            polygon3Style = DW_Style.createDefaultPolygonStyle(c, null);
-//            FeatureLayer polygon3layer = new FeatureLayer(
-//                    polygon3.getFeatureSource(), polygon3Style);
-//            result.addLayer(polygon3layer);
-//        }
-//        
-//        if (polygon1 != null) {
-//            // Add polygon layer 1 to mc
-//            // -------------------------
-//            Color c;
-//            //c = Color.LIGHT_GRAY;
-//            c = Color.BLACK;
-//            Style polygon1Style;
-//            polygon1Style = DW_Style.createDefaultPolygonStyle(c, null);
-//            FeatureLayer polygon1layer = new FeatureLayer(
-//                    polygon1.getFeatureSource(), polygon1Style);
-//            result.addLayer(polygon1layer);
-//        }
-//
-//        if (polygon2 != null) {
-//            // Add polygon layer 2 to mc
-//            // -------------------------
-//            Style polygon2Style;
-//            polygon2Style = DW_Style.createDefaultPolygonStyle(
-//                    Color.GRAY, null);
-//            FeatureLayer polygon2layer = new FeatureLayer(
-//                    polygon2.getFeatureSource(), polygon2Style);
-//            result.addLayer(polygon2layer);
-//        }
-//
-//        
-//
-//        if (polygon4 != null) {
-//            // Add polygon layer 4 to mc
-//            // -------------------------
-//            Color c;
-//            //c = Color.BLACK;
-//            c = Color.LIGHT_GRAY;
-//            Style polygon4Style;
-//            polygon4Style = DW_Style.createDefaultPolygonStyle(c, null);
-//            FeatureLayer polygon4layer = new FeatureLayer(
-//                    polygon4.getFeatureSource(), polygon4Style);
-//            result.addLayer(polygon4layer);
-//        }
-//
-//        if (line0 != null) {
-//            // Add line layer 0 to mc
-//            // -------------------------
-//            Style line0Style;
-//            line0Style = DW_Style.createDefaultLineStyle();
-//            FeatureLayer line0layer = new FeatureLayer(
-//                    line0.getFeatureSource(), line0Style);
-//            result.addLayer(line0layer);
-//        }
-//
-//        // Add point layer 0 to mc
-//        // -----------------------
-//        Style pointStyle0;
-//        pointStyle0 = DW_Style.createDefaultPointStyle();
-//        FeatureLayer pointsFeatureLayer0;
-//        pointsFeatureLayer0 = points0.getFeatureLayer(
-//                pointStyle0);
-//        result.addLayer(pointsFeatureLayer0);
-//
-//        // Add point layer 1 to mc
-//        // -----------------------
-//        int size;
-//        size = 6;
-//        String type;
-//        type = "Circle";
-//        Color fill;
-//        fill = Color.GREEN;
-//        Color outline;
-//        outline = Color.DARK_GRAY;
-//        Style pointStyle1;
-//        pointStyle1 = DW_Style.getPointStyle(
-//                size,
-//                type,
-//                fill,
-//                outline);
-//        FeatureLayer pointsFeatureLayer1;
-//        pointsFeatureLayer1 = points1.getFeatureLayer(
-//                pointStyle1);
-//        result.addLayer(pointsFeatureLayer1);
-//        return result;
-//    }
     /**
      * Here is a programmatic alternative to using JSimpleStyleDialog to get a
      * Style. This methods works out what sort of feature geometry we have in
      * the shapefile and then delegates to an appropriate style creating method.
      */
-    private static Object[] getStyleAndLegendItems(
+    private Object[] getStyleAndLegendItems(
             FeatureSource fs,
             String attributeName,
-            AGDT_StyleParameters styleParameters) {
+            Geotools_StyleParameters styleParameters) {
         SimpleFeatureType schema = (SimpleFeatureType) fs.getSchema();
         Class geomType = schema.getGeometryDescriptor().getType().getBinding();
 
@@ -1314,10 +1182,10 @@ public class DW_Geotools extends AGDT_Geotools {
             try {
                 fc = fs.getFeatures();
             } catch (IOException ex) {
-                Logger.getLogger(AGDT_Geotools.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Geotools_Environment.class.getName()).log(Level.SEVERE, null, ex);
                 return null;
             }
-            return DW_Style.createPolygonStyle(
+            return getStyle().createPolygonStyle(
                     fc,
                     attributeName,
                     styleParameters,
@@ -1326,17 +1194,17 @@ public class DW_Geotools extends AGDT_Geotools {
         if (LineString.class.isAssignableFrom(geomType)
                 || MultiLineString.class.isAssignableFrom(geomType)) {
             Object[] result = new Object[2];
-            result[0] = DW_Style.createDefaultLineStyle();
+            result[0] = getStyle().createDefaultLineStyle();
             return result;
         } else {
             Object[] result = new Object[2];
-            result[0] = DW_Style.createDefaultPointStyle();
-            DW_Style.createDefaultPointStyle();
+            result[0] = getStyle().createDefaultPointStyle();
+            getStyle().createDefaultPointStyle();
             return result;
         }
     }
 
-    private static Object[] getStyleAndLegendItems(
+    private Object[] getStyleAndLegendItems(
             FeatureSource fs,
             String attributeName,
             DW_StyleParameters styleParameters) {
@@ -1349,23 +1217,23 @@ public class DW_Geotools extends AGDT_Geotools {
             try {
                 fc = fs.getFeatures();
             } catch (IOException ex) {
-                Logger.getLogger(AGDT_Geotools.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Geotools_Environment.class.getName()).log(Level.SEVERE, null, ex);
                 return null;
             }
             Object[] result;
             result = new Object[2];
-            result[0] = DW_Style.createDefaultPolygonStyle(Color.yellow, Color.yellow);
+            result[0] = getStyle().createDefaultPolygonStyle(Color.yellow, Color.yellow);
             return result;
         }
         if (LineString.class.isAssignableFrom(geomType)
                 || MultiLineString.class.isAssignableFrom(geomType)) {
             Object[] result = new Object[2];
-            result[0] = DW_Style.createDefaultLineStyle();
+            result[0] = getStyle().createDefaultLineStyle();
             return result;
         } else {
             Object[] result = new Object[2];
-            result[0] = DW_Style.createDefaultPointStyle();
-            DW_Style.createDefaultPointStyle();
+            result[0] = getStyle().createDefaultPointStyle();
+            getStyle().createDefaultPointStyle();
             return result;
         }
     }
@@ -1375,7 +1243,7 @@ public class DW_Geotools extends AGDT_Geotools {
      * Style. This methods works out what sort of feature geometry we have in
      * the shapefile and then delegates to an appropriate style creating method.
      */
-    private static Object[] createStyle(
+    private Object[] createStyle(
             GridCoverage cov,
             //String attributeName,
             String classificationFunctionName,
@@ -1386,48 +1254,7 @@ public class DW_Geotools extends AGDT_Geotools {
         return null;
     }
 
-    /**
-     * @param mapDirectory
-     * @param name
-     * @param fileExtension
-     * @return File
-     */
-    public static File getOutputFile(
-            File mapDirectory,
-            String name,
-            String fileExtension) {
-        File outDirectory = new File(
-                mapDirectory,
-                name);
-        outDirectory.mkdirs();
-        File file = new File(
-                outDirectory,
-                name + "." + fileExtension);
-        return file;
-    }
-
-    /**
-     * Shapefiles are best stored in a directory with the full shapefile name
-     * for GeoTools.
-     *
-     * @param dir
-     * @param name
-     * @return File
-     */
-    public static File getOutputShapefile(
-            File dir,
-            String name) {
-        File result;
-        File outDirectory = new File(
-                dir,
-                name);
-        outDirectory.mkdirs();
-        String shapefileFilename = name + ".shp";
-        result = getShapefile(dir, shapefileFilename);
-        return result;
-    }
-
-    public static File getShapefile(
+    public File getShapefile(
             File dir,
             String shapefileFilename) {
         File result;
@@ -1445,148 +1272,4 @@ public class DW_Geotools extends AGDT_Geotools {
                 shapefileFilename);
         return result;
     }
-
-//    public static void addFeatureLayer(
-//            MapContent mc,
-//            File shapefile,
-//            Style style,
-//            String title) {
-//        FeatureLayer fl;
-//        fl = DW_Shapefile.getFeatureLayer(shapefile, style, title);
-//        mc.addLayer(fl);
-//    }
-    /**
-     * Produces a verbal comparison of sf1 and sf2 printing the results via
-     * System.out.
-     *
-     * @param sf1 One of two simple features to compare.
-     * @param sf2 Two of two simple features to compare.
-     */
-    public static void compareFeatures(
-            SimpleFeature sf1,
-            SimpleFeature sf2) {
-        String sf1String = sf1.toString();
-        System.out.println("sf1String " + sf1String);
-        String sf2String = sf2.toString();
-        System.out.println("sf2String " + sf2String);
-        if (sf1String.equalsIgnoreCase(sf2String)) {
-            System.out.println("sf1String.equalsIgnoreCase(sf2String)");
-        } else {
-            System.out.println("! sf1String.equalsIgnoreCase(sf2String)");
-        }
-        int sf1AttributeCount = sf1.getAttributeCount();
-        int sf2AttributeCount = sf2.getAttributeCount();
-        System.out.println("sf1AttributeCount " + sf1AttributeCount);
-        System.out.println("sf2AttributeCount " + sf2AttributeCount);
-        List<Object> sf1Attributes = sf1.getAttributes();
-        List<Object> sf2Attributes = sf2.getAttributes();
-        int i;
-        Iterator<Object> ite;
-        i = 0;
-        ite = sf1Attributes.iterator();
-        while (ite.hasNext()) {
-            Object o = ite.next();
-            System.out.println("sf1Attribute[" + i + "].getClass() = " + o.getClass());
-            i++;
-        }
-        i = 0;
-        ite = sf2Attributes.iterator();
-        while (ite.hasNext()) {
-            Object o = ite.next();
-            System.out.println("sf2Attribute[" + i + "].getClass() = " + o.getClass());
-            i++;
-        }
-    }
-
-    /**
-     *
-     * @param ge
-     * @param mapContent
-     * @param imageWidth
-     * @param imageHeight
-     * @param outputImageFile
-     * @param outputType
-     */
-    public static void writeImageFile(
-            Grids_Environment ge,
-            MapContent mapContent,
-            int imageWidth,
-            int imageHeight,
-            File outputImageFile,
-            String outputType) {
-        try {
-            writeImageFile(
-                    mapContent,
-                    imageWidth,
-                    imageHeight,
-                    outputImageFile,
-                    outputType);
-        } catch (OutOfMemoryError oome) {
-            if (ge.HandleOutOfMemoryError) {
-                ge.clearMemoryReserve();
-                ge.swapChunk(true);
-                ge.initMemoryReserve(true);
-                writeImageFile(
-                        ge,
-                        mapContent,
-                        imageWidth,
-                        imageHeight,
-                        outputImageFile,
-                        outputType);
-            } else {
-                throw oome;
-            }
-        }
-    }
-
-    /**
-     * Render and output the mapContent and save to a file.
-     *
-     * @param mapContent The map to be written.
-     * @param imageWidth The width of the image to be produced.
-     * @param imageHeight The height of the image to be produced.
-     * @param outputImageFile The file to be written to.
-     * @param outputType The image file type e.g. "png"
-     */
-    public static void writeImageFile(
-            MapContent mapContent,
-            int imageWidth,
-            int imageHeight,
-            File outputImageFile,
-            String outputType) {
-        // Initialise a renderer
-        StreamingRenderer renderer;
-        renderer = new StreamingRenderer();
-        renderer.setMapContent(mapContent);
-        Rectangle rectangle = new Rectangle(imageWidth, imageHeight);
-        //System.out.println(rectangle.height + " " + rectangle.width);
-        BufferedImage bufferedImage;
-        bufferedImage = new BufferedImage(
-                rectangle.width,
-                rectangle.height,
-                //BufferedImage.TYPE_INT_RGB);
-                BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics2D = bufferedImage.createGraphics();
-        // Set white background
-        //graphics2D.setComposite(AlphaComposite.Clear);
-        graphics2D.setBackground(Color.white);
-        graphics2D.fillRect(0, 0, imageWidth, imageHeight);
-        //graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0));
-        // Render onto background
-        //graphics2D.setComposite(AlphaComposite.Src);
-        renderer.paint(graphics2D, rectangle, mapContent.getMaxBounds());
-        Generic_Visualisation.saveImage(bufferedImage, outputType, outputImageFile);
-        graphics2D.dispose();
-    }
-
-//    public static GridCoverage2D vectorToRaster(
-//            DW_Shapefile polygons,
-//            long nrows,
-//            long ncols,
-//            double xllcorner,
-//            double yllcorner,
-//            double cellsize) {
-//        
-//        
-//    }
 }

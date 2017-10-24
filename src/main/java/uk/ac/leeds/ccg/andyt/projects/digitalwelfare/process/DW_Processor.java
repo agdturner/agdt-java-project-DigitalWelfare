@@ -52,8 +52,8 @@ public class DW_Processor extends DW_ProcessorAbstract {
                 DW_Processor DW_ProcessorLCC;
                 DW_ProcessorLCC = new DW_Processor();
                 DW_ProcessorLCC.env = env;
-                DW_ProcessorLCC.df = env.getDW_Files();
-                DW_ProcessorLCC.ds = env.getDW_Strings();
+                DW_ProcessorLCC.df = env.getFiles();
+                DW_ProcessorLCC.ds = env.getStrings();
                 DW_ProcessorLCC.run();
                 /**
                  * Not done this way as this would first load UnderOccupancy

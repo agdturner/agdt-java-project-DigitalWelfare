@@ -3427,7 +3427,7 @@ public class SummaryUO extends Summary {
         // Initialise UO
         CouncilUOSets = DW_UO_Data.getCouncilUOSets();
         RSLUOSets = DW_UO_Data.getRSLUOSets();
-        filenames = env.getDW_UO_Handler().getInputFilenames();
+        filenames = env.getUO_Handler().getInputFilenames();
         CouncilFilenames = (TreeMap<DW_YM3, String>) filenames[0];
         RSLFilenames = (TreeMap<DW_YM3, String>) filenames[1];
 

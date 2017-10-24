@@ -825,12 +825,12 @@ public class Summary extends DW_Object {
 
     public Summary(DW_Environment env) {
         super(env);
-        this.DW_SHBE_Data = env.getDW_SHBE_Data();
-        this.DW_SHBE_Handler = env.getDW_SHBE_Handler();
-        this.DW_Strings = env.getDW_Strings();
-        this.DW_Files = env.getDW_Files();
-        this.DW_Postcode_Handler = env.getDW_Postcode_Handler();
-        this.DW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
+        this.DW_SHBE_Data = env.getSHBE_Data();
+        this.DW_SHBE_Handler = env.getSHBE_Handler();
+        this.DW_Strings = env.getStrings();
+        this.DW_Files = env.getFiles();
+        this.DW_Postcode_Handler = env.getPostcode_Handler();
+        this.DW_SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
     }
 
     public Summary(
@@ -6045,7 +6045,7 @@ public class Summary extends DW_Object {
             boolean underOccupancy) {
         PrintWriter result;
         File dirOut;
-        dirOut = env.getDW_Files().getOutputSHBETableDir(
+        dirOut = env.getFiles().getOutputSHBETableDir(
                 name2,
                 includeKey,
                 underOccupancy);

@@ -78,7 +78,7 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
 
     public DW_SHBE_TenancyType_Handler(DW_Environment env) {
         super(env);
-        ds = env.getDW_Strings();
+        ds = env.getStrings();
     }
 
     public String getTenancyTypeName(String tenancyType) {

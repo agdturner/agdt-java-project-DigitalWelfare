@@ -29,10 +29,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_LC
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientEnquiryID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletID;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Age_EcoAct_LSOA_DataRecord;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Age_EcoAct_LSOA_DataRecord_Handler;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
+import uk.ac.leeds.ccg.andyt.census.Census_Age_EcoAct_LSOA_DataRecord;
+import uk.ac.leeds.ccg.andyt.census.Census_Age_EcoAct_LSOA_DataRecord_Handler;
+import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
+import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
@@ -72,8 +72,8 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             DW_Environment env,
             File tDW_directory) {
         super(env);
-        DW_Postcode_Handler = env.getDW_Postcode_Handler();
-        DW_Deprivation_DataHandler = env.getDW_Deprivation_DataHandler();
+        DW_Postcode_Handler = env.getPostcode_Handler();
+        DW_Deprivation_DataHandler = env.getDeprivation_DataHandler();
     }
 
     /**
@@ -164,7 +164,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         YM3 = new DW_YM3("2011_May");
         int CensusYear = 2011;
         // Get deprivation data
-        TreeMap<String, Deprivation_DataRecord> tDeprivationData;
+        TreeMap<String, Census_DeprivationDataRecord> tDeprivationData;
         tDeprivationData = getDeprivation_Data();
         // Get postcode to LSOA lookup
         TreeMap<String, String> tLookupFromPostcodeToLSOACensusCode;
@@ -188,7 +188,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                     YM3);
         }
         TreeMap<Integer, Integer> deprivationClasses;
-        deprivationClasses = Deprivation_DataHandler.getDeprivationClasses(
+        deprivationClasses = Census_DeprivationDataHandler.getDeprivationClasses(
                 tDeprivationData);
         String year;
         String filename;
@@ -308,10 +308,10 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         System.out.println("Output table 2011-2012");
         outputTable(deprivationClasses, outlets1112, leedsCABData1112);
 
-//        Age_EcoAct_LSOA_DataRecord_Handler aAge_EcoAct_LSOA_DataHandler;
-//        aAge_EcoAct_LSOA_DataHandler = new Age_EcoAct_LSOA_DataRecord_Handler();
+//        Census_Age_EcoAct_LSOA_DataRecord_Handler aAge_EcoAct_LSOA_DataHandler;
+//        aAge_EcoAct_LSOA_DataHandler = new Census_Age_EcoAct_LSOA_DataRecord_Handler();
 //        String censusFilename = "Data_AGE_ECOACT_UNIT.csv";
-//        TreeMap<String, Age_EcoAct_LSOA_DataRecord> censusData;
+//        TreeMap<String, Census_Age_EcoAct_LSOA_DataRecord> censusData;
 //        censusData = aAge_EcoAct_LSOA_DataHandler.loadInputData(
 //                censusFilename);
 //
@@ -327,9 +327,9 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //        Iterator<String> ite = censusData.keySet().iterator();
 //        while (ite.hasNext()) {
 //            String LSOACode = ite.next();
-//            Age_EcoAct_LSOA_DataRecord aAge_EcoAct_LSOA_DataRecord;
+//            Census_Age_EcoAct_LSOA_DataRecord aAge_EcoAct_LSOA_DataRecord;
 //            aAge_EcoAct_LSOA_DataRecord = censusData.get(LSOACode);
-//            Deprivation_DataRecord aDeprivation_DataRecord;
+//            Census_DeprivationDataRecord aDeprivation_DataRecord;
 //            aDeprivation_DataRecord = tDeprivationData.get(LSOACode);
 //            String outputline = LSOACode;
 //            if (aAge_EcoAct_LSOA_DataRecord != null) {
@@ -448,7 +448,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             String Q4Filename,
             TreeMap<String, String> tLookupFromPostcodeToLSOACensusCode,
             TreeMap<String, String> tLookupFromPostcodeToLevelCensusCode,
-            TreeMap<String, Deprivation_DataRecord> tDeprivationData,
+            TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
             TreeMap<Integer, Integer> deprivationClasses) {
         System.out.println("<processChapeltownCABData>");
         Object[] result = new Object[3];
@@ -520,7 +520,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //            String Q4Filename,
 //            String outputFilename,
 //            TreeMap<String, String[]> tLookupFromPostcodeToCensusCodes,
-//            TreeMap<String, Deprivation_DataRecord> tDeprivationData,
+//            TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
 //            TreeMap<Integer, Integer> deprivationClasses) {
 //
 //        init_OutputTextFiles(outputFilename);
@@ -683,7 +683,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //            String Q4Filename,
 //            String outputFilename) {
 //        init_OutputTextFiles("outputFilename");
-//        TreeMap<String, Deprivation_DataRecord> tDeprivationData;
+//        TreeMap<String, Census_DeprivationDataRecord> tDeprivationData;
 //        tDeprivationData = getDeprivation_Data();
 //
 //        String level = "MSOA";
@@ -724,7 +724,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //        int numberOfClasses = 10;
 //
 //        Object[] deprivationClassCountOfQ11314CABClientsETC;
-//        deprivationClassCountOfQ11314CABClientsETC = Deprivation_DataHandler.getDeprivationClassCountOfCABClients(
+//        deprivationClassCountOfQ11314CABClientsETC = Census_DeprivationDataHandler.getDeprivationClassCountOfCABClients(
 //                tQ11314LeedsCABData,
 //                tDeprivationData,
 //                tLookupFromPostcodeToCensusCodes,
@@ -736,7 +736,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //        deprivationClassCountOfQ11314CABClients = (TreeMap<Integer, Integer>) deprivationClassCountOfQ11314CABClientsETC[0];
 //
 //        Object[] deprivationClassCountOfQ21314CABClientsETC;
-//        deprivationClassCountOfQ21314CABClientsETC = Deprivation_DataHandler.getDeprivationClassCountOfCABClients(
+//        deprivationClassCountOfQ21314CABClientsETC = Census_DeprivationDataHandler.getDeprivationClassCountOfCABClients(
 //                tQ21314LeedsCABData,
 //                tDeprivationData,
 //                tLookupFromPostcodeToCensusCodes,
@@ -748,7 +748,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //        deprivationClassCountOfQ21314CABClients = (TreeMap<Integer, Integer>) deprivationClassCountOfQ21314CABClientsETC[0];
 //
 //        Object[] deprivationClassCountOfQ31314CABClientsETC;
-//        deprivationClassCountOfQ31314CABClientsETC = Deprivation_DataHandler.getDeprivationClassCountOfCABClients(
+//        deprivationClassCountOfQ31314CABClientsETC = Census_DeprivationDataHandler.getDeprivationClassCountOfCABClients(
 //                tQ31314LeedsCABData,
 //                tDeprivationData,
 //                tLookupFromPostcodeToCensusCodes,
@@ -760,7 +760,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //        deprivationClassCountOfQ31314CABClients = (TreeMap<Integer, Integer>) deprivationClassCountOfQ31314CABClientsETC[0];
 //
 //        Object[] deprivationClassCountOfQ41314CABClientsETC;
-//        deprivationClassCountOfQ41314CABClientsETC = Deprivation_DataHandler.getDeprivationClassCountOfCABClients(
+//        deprivationClassCountOfQ41314CABClientsETC = Census_DeprivationDataHandler.getDeprivationClassCountOfCABClients(
 //                tQ41314LeedsCABData,
 //                tDeprivationData,
 //                tLookupFromPostcodeToCensusCodes,
@@ -827,7 +827,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
     protected Object[] processLeedsCABData(
             String filename,
             String outputFilename,
-            TreeMap<String, Deprivation_DataRecord> tDeprivationData,
+            TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
             TreeMap<String, String> tLookupFromPostcodeToLSOACensusCode,
             TreeMap<Integer, Integer> deprivationClasses) {
         System.out.println("<processLeedsCABData>");
@@ -1274,7 +1274,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             String postcode,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         DW_Postcode_Handler tDW_Postcode_Handler;
-        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
+        tDW_Postcode_Handler = env.getPostcode_Handler();
         String key = "";
         if (level.equalsIgnoreCase("PostcodeDistrict")
                 || level.equalsIgnoreCase("PostcodeSector")
@@ -1322,7 +1322,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             TreeMap data,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         DW_Postcode_Handler tDW_Postcode_Handler;
-        tDW_Postcode_Handler = env.getDW_Postcode_Handler();
+        tDW_Postcode_Handler = env.getPostcode_Handler();
         TreeMap<String, TreeMap<String, Integer>> result;
         result = new TreeMap<String, TreeMap<String, Integer>>();
         String outlet;
@@ -1559,7 +1559,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
     protected TreeMap<String, Object[]> generaliseByLSOADeprivationClass(
             int type,
             TreeMap<DW_ID_ClientID, ?> tCABData,
-            TreeMap<String, Deprivation_DataRecord> tDeprivationData,
+            TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
             TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
             TreeMap<Integer, Integer> deprivationClasses) {
         TreeMap<String, Object[]> result = new TreeMap<String, Object[]>();
@@ -1686,7 +1686,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //            File dir,
 //            String outputFilename,
 //            TreeMap<String, DW_Data_CAB0_Record> tChapeltownCABData,
-//            TreeMap<String, Deprivation_DataRecord> tDeprivationData,
+//            TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
 //            TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
 //            TreeMap<Integer, Integer> deprivationClasses) {
 //        TreeMap<String, Object[]> result = new TreeMap<String, Object[]>();
@@ -1841,7 +1841,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             DW_Data_CAB2_Handler tCAB_DataRecord2_Handler,
             Object IDType) {
         File dir = new File(
-                env.getDW_Files().getGeneratedAdviceLeedsDir(),
+                env.getFiles().getGeneratedAdviceLeedsDir(),
                 "LeedsCAB");
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> result;
         result = tCAB_DataRecord2_Handler.loadInputData(
@@ -1925,12 +1925,12 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //            int count,
 //            int percentageBand,
 //            TreeMap<String, DW_Data_CAB2_Record> tCABData,
-//            TreeMap<String, Deprivation_DataRecord> tDeprivationData,
+//            TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
 //            TreeMap<String, String[]> tLookupFromPostcodeToCensusCodes,
 //            int classWidth,
 //            int numberOfClasses) {
 //        Object[] deprivationClassCountOfCABClientsETC;
-//        deprivationClassCountOfCABClientsETC = Deprivation_DataHandler.getDeprivationClassCountOfCABClients(
+//        deprivationClassCountOfCABClientsETC = Census_DeprivationDataHandler.getDeprivationClassCountOfCABClients(
 //                count,
 //                percentageBand,
 //                tCABData,
@@ -1976,11 +1976,11 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //     */
 //    public Object[] getAndWriteOutDeprivationClassCounts(
 //            TreeMap<EnquiryClientBureauOutletID, DW_Data_CAB2_Record> tCABData,
-//            TreeMap<String, Deprivation_DataRecord> tDeprivationData,
+//            TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
 //            TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
 //            TreeMap<Integer, Integer> deprivationClasses) {
 //        Object[] deprivationClassCountOfCABClientsETC;
-//        deprivationClassCountOfCABClientsETC = Deprivation_DataHandler.getDeprivationClassCountOfCABClients(
+//        deprivationClassCountOfCABClientsETC = Census_DeprivationDataHandler.getDeprivationClassCountOfCABClients(
 //                tCABData,
 //                tDeprivationData,
 //                tLookupFromPostcodeToCensusCodes,
@@ -2033,7 +2033,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
     public Object[] getAndWriteOutDeprivationClassCounts(
             int type,
             TreeMap tCABData,
-            TreeMap<String, Deprivation_DataRecord> tDeprivationData,
+            TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
             TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
             TreeMap<Integer, Integer> deprivationClasses) {
         Object[] deprivationClassCountOfCABClientsETC;
@@ -2090,7 +2090,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
     protected Object[] getDeprivationClassCountOfCABClients(
             int count,
             TreeMap<String, DW_Data_CAB0_Record> tChapeltownCABData,
-            TreeMap<String, Deprivation_DataRecord> tDeprivationData,
+            TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
             TreeMap<String, String[]> tLookupFromPostcodeToCensusCodes,
             int percentageBand,
             int classWidth,
@@ -2111,9 +2111,9 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                     clientsWithoutARecognisedPostcode++;
                 } else {
                     String SOACode = codes[1];
-                    Deprivation_DataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
+                    Census_DeprivationDataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
                     if (aDeprivation_DataRecord != null) {
-                        Integer deprivationClass = Deprivation_DataHandler.getDeprivationClass(
+                        Integer deprivationClass = Census_DeprivationDataHandler.getDeprivationClass(
                                 count,
                                 percentageBand,
                                 classWidth,
@@ -2146,7 +2146,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //            int percentageBand,
 //            int classWidth,
 //            int numberOfClasses,
-//            Deprivation_DataRecord aDeprivation_DataRecord) {
+//            Census_DeprivationDataRecord aDeprivation_DataRecord) {
 //        String rankOfIMDScoreForEngland = aDeprivation_DataRecord.getRankOfIMDScoreForEngland();
 //        Integer rankOfIMDScoreForEnglandInteger;
 //        int thisRank = 0;

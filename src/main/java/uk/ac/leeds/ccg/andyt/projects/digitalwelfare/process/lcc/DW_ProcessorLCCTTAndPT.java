@@ -55,8 +55,8 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 
     public DW_ProcessorLCCTTAndPT(DW_Environment env) {
         super(env);
-        DW_UO_Handler = env.getDW_UO_Handler();
-        DW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
+        DW_UO_Handler = env.getUO_Handler();
+        DW_SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
         PostcodeToPostcodeIDLookup = DW_SHBE_Data.getPostcodeToPostcodeIDLookup();
         PostcodeIDToPostcodeLookup = DW_SHBE_Data.getPostcodeIDToPostcodeLookup();
     }
@@ -4483,8 +4483,8 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         result[1] = YM30.toString();
         result[2] = YM31.toString();
         result[3] = TTChange;
-        result[4] = env.getDW_SHBE_Data().getPostcodeIDToPostcodeLookup().get(PostcodeID0);
-        result[5] = env.getDW_SHBE_Data().getPostcodeIDToPostcodeLookup().get(PostcodeID1);
+        result[4] = env.getSHBE_Data().getPostcodeIDToPostcodeLookup().get(PostcodeID0);
+        result[5] = env.getSHBE_Data().getPostcodeIDToPostcodeLookup().get(PostcodeID1);
         return result;
     }
 

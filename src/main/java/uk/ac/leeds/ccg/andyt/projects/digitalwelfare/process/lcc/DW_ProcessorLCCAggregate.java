@@ -39,7 +39,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 
     /**
-     * For convenience DW_UO_Handler = env.getDW_UO_Handler().
+     * For convenience UO_Handler = env.getDW_UO_Handler().
      */
     protected DW_UO_Handler DW_UO_Handler;
 
@@ -85,11 +85,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 
     public DW_ProcessorLCCAggregate(DW_Environment env) {
         super(env);
-        DW_UO_Handler = env.getDW_UO_Handler();
-        DW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
-        DW_SHBE_Data = env.getDW_SHBE_Data();
+        DW_UO_Handler = env.getUO_Handler();
+        DW_SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
+        DW_SHBE_Data = env.getSHBE_Data();
         ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
-        DW_UO_Data = env.getDW_UO_Data();
+        DW_UO_Data = env.getUO_Data();
     }
 
     @Override
@@ -568,7 +568,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
             return ClaimIDToPostcodeIDLookups.get(key);
         }
-        result = env.getDW_SHBE_Data().getDW_SHBE_Records(YM3).getClaimIDToPostcodeIDLookup(env.HandleOutOfMemoryError);
+        result = env.getSHBE_Data().getDW_SHBE_Records(YM3).getClaimIDToPostcodeIDLookup(env.HandleOutOfMemoryError);
         ClaimIDToPostcodeIDLookups.put(key, result);
         return result;
     }
@@ -713,7 +713,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             DW_YM3 YM30;
             YM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
             DW_SHBE_Records recs0;
-            recs0 = env.getDW_SHBE_Data().getDW_SHBE_Records(YM30);
+            recs0 = env.getSHBE_Data().getDW_SHBE_Records(YM30);
             DW_YM3 YM30v;
             YM30v = recs0.getNearestYM3ForONSPDLookup();
             HashMap<DW_ID, DW_SHBE_Record> records0;
@@ -966,7 +966,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 DW_YM3 YM31 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                 // Load next data
                 DW_SHBE_Records recs1;
-                recs1 = env.getDW_SHBE_Data().getDW_SHBE_Records(YM31);
+                recs1 = env.getSHBE_Data().getDW_SHBE_Records(YM31);
                 HashMap<DW_ID, String> ClaimIDToPostcodeIDLookup1;
                 ClaimIDToPostcodeIDLookup1 = null;//recs1.getClaimDW_IDToPostcodeLookup();
                 HashMap<DW_ID, Integer> ClaimIDToTTLookup1;

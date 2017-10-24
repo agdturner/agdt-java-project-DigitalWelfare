@@ -5,8 +5,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds;
 
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
+import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
+import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -161,10 +161,10 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
         return result;
     }
 
-    public TreeMap<String, AGDT_Point> getOutletsAndPoints() {
+    public TreeMap<String, Geotools_Point> getOutletsAndPoints() {
         DW_Postcode_Handler DW_Postcode_Handler;
-        DW_Postcode_Handler = env.getDW_Postcode_Handler();
-        TreeMap<String, AGDT_Point> result;
+        DW_Postcode_Handler = env.getPostcode_Handler();
+        TreeMap<String, Geotools_Point> result;
         result = DW_Postcode_Handler.postcodeToPoints(getOutletsAndPostcodes(),
                 DW_Postcode_Handler.getDefaultYM3());
         return result;
@@ -236,10 +236,10 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
         return result;
     }
 
-    public TreeMap<String, AGDT_Point> getAdviceLeedsNamesAndPoints() {
-        TreeMap<String, AGDT_Point> result;
+    public TreeMap<String, Geotools_Point> getAdviceLeedsNamesAndPoints() {
+        TreeMap<String, Geotools_Point> result;
         DW_Postcode_Handler DW_Postcode_Handler;
-        DW_Postcode_Handler = env.getDW_Postcode_Handler();
+        DW_Postcode_Handler = env.getPostcode_Handler();
         result = DW_Postcode_Handler.postcodeToPoints(getAdviceLeedsNamesAndPostcodes(),
                 DW_Postcode_Handler.getDefaultYM3());
         return result;

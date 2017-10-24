@@ -31,11 +31,11 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletEnquiryID;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
+import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 //import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMapsAbstract;
 
@@ -106,7 +106,7 @@ public class DW_ChoroplethMapsAdviceLeeds extends DW_ChoroplethMapsAbstract {
 ////        for (int i = 0; i < paletteNames.length; i++) {
 ////            System.out.println(paletteNames[i]);
 ////        }
-//        styleParameters = new AGDT_StyleParameters();
+//        styleParameters = new Geotools_StyleParameters();
 //        styleParameters.setnClasses(9);
 //        styleParameters.setPaletteName("Reds");
 //        styleParameters.setAddWhiteForZero(true);
@@ -262,7 +262,7 @@ public class DW_ChoroplethMapsAdviceLeeds extends DW_ChoroplethMapsAbstract {
 //                targetPropertyName,
 //                getShapefileDataStoreFactory());
 //        Object[] tLevelData;
-//        TreeMap<String, Deprivation_DataRecord> deprivationRecords;
+//        TreeMap<String, Census_DeprivationDataRecord> deprivationRecords;
 ////        // Map SHBE data
 ////        deprivationRecords = null;
 ////        runSHBE(
@@ -365,7 +365,7 @@ public class DW_ChoroplethMapsAdviceLeeds extends DW_ChoroplethMapsAbstract {
 //    }
 //
 //    public void runAdviceLeeds(
-//            TreeMap<String, Deprivation_DataRecord> deprivationRecords,
+//            TreeMap<String, Census_DeprivationDataRecord> deprivationRecords,
 //            DW_AreaCodesAndShapefiles tAreaCodesAndShapefiles,
 //            String[] tLeedsCABFilenames,
 //            Object[] tLevelData,

@@ -59,11 +59,11 @@ public final class RentArrearsUO extends DW_Object {
 
     public RentArrearsUO(DW_Environment env) {
         super(env);
-        this.DW_SHBE_Data = env.getDW_SHBE_Data();
-        this.DW_SHBE_Handler = env.getDW_SHBE_Handler();
-        this.DW_Strings = env.getDW_Strings();
-        this.DW_Files = env.getDW_Files();
-        this.DW_UO_Data = env.getDW_UO_Data();
+        this.DW_SHBE_Data = env.getSHBE_Data();
+        this.DW_SHBE_Handler = env.getSHBE_Handler();
+        this.DW_Strings = env.getStrings();
+        this.DW_Files = env.getFiles();
+        this.DW_UO_Data = env.getUO_Data();
         initClaimData();
     }
 

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDouble;
@@ -34,7 +34,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstr
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getYM3s;
-////import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.initONSPDLookups;
+////import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.Maps.initONSPDLookups;
 import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
@@ -64,8 +64,8 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
     private static final String targetPropertyNameLSOA = "LSOA11CD";
     private DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
 //    private DW_AreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
-    protected ArrayList<AGDT_Shapefile> midgrounds;
-    protected ArrayList<AGDT_Shapefile> foregrounds;
+    protected ArrayList<Geotools_Shapefile> midgrounds;
+    protected ArrayList<Geotools_Shapefile> foregrounds;
 
     public DW_LineDensityDifferenceMaps_LCC(DW_Environment env) {
         super(env);
@@ -118,7 +118,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 ////        for (int i = 0; i < paletteNames.length; i++) {
 ////            System.out.println(paletteNames[i]);
 ////        }
-//        styleParameters = new AGDT_StyleParameters();
+//        styleParameters = new Geotools_StyleParameters();
 //        styleParameters.setnClasses(5);
 //        styleParameters.setPaletteName("Reds");
 //        styleParameters.setPaletteName2("Blues");
@@ -294,7 +294,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 ////            Iterator<AGDT_Shapefile> ite1;
 ////            ite1 = midgrounds.iterator();
 ////            while (ite1.hasNext()) {
-////                AGDT_Shapefile s = ite1.next();
+////                Geotools_Shapefile s = ite1.next();
 ////                s.dispose();
 ////            }
 //            Iterator<AGDT_Shapefile> ite;
@@ -309,9 +309,9 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 
     private void init() {
         //initStyleParameters();
-//        DW_Maps.setMapDirectory(DW_Files.getOutputSHBELineMapsDir());
+//        Maps.setMapDirectory(DW_Files.getOutputSHBELineMapsDir());
         
-        foregrounds = new ArrayList<AGDT_Shapefile>();
+        foregrounds = new ArrayList<Geotools_Shapefile>();
         //midgrounds = new ArrayList<AGDT_Shapefile>();
 //        backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
@@ -319,7 +319,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
                 env,
                 "LSOA", 
                 targetPropertyNameLSOA, 
-                DW_Maps.getShapefileDataStoreFactory());
+                Maps.getShapefileDataStoreFactory());
         foregrounds.add(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
     }
@@ -562,8 +562,8 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
         // Set grid dimensions    
 //            int multiplier;
 //            multiplier = (int) (400 / cellsize);
-//        DW_Maps.setBackgroundDW_Shapefile(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
-//        DW_Maps.setForegroundDW_Shapefile1(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
+//        Maps.setBackgroundDW_Shapefile(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
+//        Maps.setForegroundDW_Shapefile1(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
         nrows = 554;//70 * multiplier * resolutionMultiplier; //139 * multiplier; //277 * multiplier;
         ncols = 680;//85 * multiplier * resolutionMultiplier; //170 * multiplier; //340 * multiplier;
         xllcorner = 413000;
@@ -611,7 +611,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
         System.out.println("ga " + ga.toString(handleOutOfMemoryErrors));
         Grids_Grid2DSquareCellDouble gb = (Grids_Grid2DSquareCellDouble) gf.create(gridb);
         System.out.println("gb " + gb.toString(handleOutOfMemoryErrors));
-        gp.setDirectory(dirOut2, DW_Maps.doDebug, handleOutOfMemoryErrors);
+        gp.setDirectory(dirOut2, Maps.doDebug, handleOutOfMemoryErrors);
         gp.addToGrid(ga, gb, -1.0d, handleOutOfMemoryErrors);
         System.out.println("ga-gb " + ga.toString(handleOutOfMemoryErrors));
         // output grid
@@ -636,7 +636,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
                 index,
                 scaleToFirst);
         if (!scaleToFirst) {
-            DW_Maps.getStyleParameters().setStyle(name, null, index);
+            Maps.getStyleParameters().setStyle(name, null, index);
         }
 
         // Generalise the grid
@@ -706,7 +706,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
                     index,
                     scaleToFirst);
             if (!scaleToFirst) {
-                DW_Maps.getStyleParameters().setStyle(name, null, index);
+                Maps.getStyleParameters().setStyle(name, null, index);
             }
         }
     }

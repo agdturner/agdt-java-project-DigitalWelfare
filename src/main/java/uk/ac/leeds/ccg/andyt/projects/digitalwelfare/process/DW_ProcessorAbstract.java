@@ -16,8 +16,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
+import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
+import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -39,9 +39,9 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
 
     public DW_ProcessorAbstract(DW_Environment env) {
         super(env);
-        this.DW_Postcode_Handler = env.getDW_Postcode_Handler();
-        this.df = env.getDW_Files();
-        this.ds = env.getDW_Strings();
+        this.DW_Postcode_Handler = env.getPostcode_Handler();
+        this.df = env.getFiles();
+        this.ds = env.getStrings();
     }
 
     public ArrayList<Boolean> getArrayListBoolean() {
@@ -310,12 +310,12 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         return oddPostcodes;
     }
 
-    public TreeMap<String, Deprivation_DataRecord> getDeprivation_Data() {
-        File depravationDir = new File(env.getDW_Files().getInputCensus2011AttributeDataDir("LSOA"), "England/Deprivation");
+    public TreeMap<String, Census_DeprivationDataRecord> getDeprivation_Data() {
+        File depravationDir = new File(env.getFiles().getInputCensus2011AttributeDataDir("LSOA"), "England/Deprivation");
         String deprivationFilename = "1871524.csv";
-        Deprivation_DataHandler aDeprivation_DataHandler;
-        aDeprivation_DataHandler = new Deprivation_DataHandler();
-        TreeMap<String, Deprivation_DataRecord> tDeprivationData;
+        Census_DeprivationDataHandler aDeprivation_DataHandler;
+        aDeprivation_DataHandler = new Census_DeprivationDataHandler();
+        TreeMap<String, Census_DeprivationDataRecord> tDeprivationData;
         tDeprivationData = aDeprivation_DataHandler.loadInputData(depravationDir, deprivationFilename);
         System.out.println(tDeprivationData.firstKey());
         System.out.println(tDeprivationData.firstEntry().getValue());
@@ -326,7 +326,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         ite = tDeprivationData.keySet().iterator();
         while (ite.hasNext()) {
             String SOACode = ite.next();
-            Deprivation_DataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
+            Census_DeprivationDataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
             double aIMDScore = Double.parseDouble(aDeprivation_DataRecord.getIMDScore());
             minIMDScore = Math.min(minIMDScore, aIMDScore);
             maxIMDScore = Math.max(maxIMDScore, aIMDScore);

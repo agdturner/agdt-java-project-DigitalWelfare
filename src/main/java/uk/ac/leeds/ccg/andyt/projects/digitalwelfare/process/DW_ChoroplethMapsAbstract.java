@@ -19,24 +19,9 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import org.geotools.feature.FeatureCollection;
-import org.opengis.feature.simple.SimpleFeatureType;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
-import static uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Maps.png_String;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools.getOutputFile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 
 /**
@@ -56,7 +41,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
     
     public DW_ChoroplethMapsAbstract(DW_Environment env) {
         super(env);
-        DW_Maps = env.getDW_Maps();
+        DW_Maps = env.getMaps();
     }
 
     /**
@@ -92,7 +77,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //            String[] tLeedsCABFilenames,
 //            ArrayList<Integer> include,
 //            Object[] tLevelData,
-//            TreeMap<String, Deprivation_DataRecord> deprivationRecords,
+//            TreeMap<String, Census_DeprivationDataRecord> deprivationRecords,
 //            File dirOut,
 //            String attributeName,
 //            Class<?> binding,
@@ -135,7 +120,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //
 //        if (deprivationRecords != null) {
 //            TreeMap<Integer, Integer> deprivationClasses = null;
-//            deprivationClasses = Deprivation_DataHandler.getDeprivationClasses(
+//            deprivationClasses = Census_DeprivationDataHandler.getDeprivationClasses(
 //                    deprivationRecords);
 //            Iterator<Integer> ite = deprivationClasses.keySet().iterator();
 //            while (ite.hasNext()) {
@@ -165,7 +150,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                                if (cLevelData.size() > 0) {
 //                                    String outname;
 //                                    outname = DW_Maps.getOutName(filename, attributeName, filter);
-//                                    File outputShapefile = AGDT_Geotools.getOutputShapefile(
+//                                    File outputShapefile = Geotools_Environment.getOutputShapefile(
 //                                            dirOut2,
 //                                            outname);
 //                                    // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
@@ -236,7 +221,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                                if (levelData0i0.size() > 0) {
 //                                    String outname;
 //                                    outname = DW_Maps.getOutName(filename, attributeName, filter);
-//                                    File outputShapefile = AGDT_Geotools.getOutputShapefile(
+//                                    File outputShapefile = Geotools_Environment.getOutputShapefile(
 //                                            dirOut2,
 //                                            outname);
 //                                    // Select levelData0i0 Census Codes from all LSOA shapefile and create a new one
@@ -334,7 +319,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //            String[] tLeedsCABFilenames,
 //            ArrayList<Integer> include,
 //            Object[] tLevelData,
-//            TreeMap<String, Deprivation_DataRecord> deprivationRecords,
+//            TreeMap<String, Census_DeprivationDataRecord> deprivationRecords,
 //            File dir,
 //            String attributeName,
 //            Class<?> binding,
@@ -377,7 +362,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //
 //        if (deprivationRecords != null) {
 //            TreeMap<Integer, Integer> deprivationClasses = null;
-//            deprivationClasses = Deprivation_DataHandler.getDeprivationClasses(
+//            deprivationClasses = Census_DeprivationDataHandler.getDeprivationClasses(
 //                    deprivationRecords);
 //            Iterator<Integer> ite = deprivationClasses.keySet().iterator();
 //            while (ite.hasNext()) {
@@ -399,7 +384,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                            if (cLevelData.size() > 0) {
 //                                String outname;
 //                                outname = DW_Maps.getOutName(filename, attributeName, filter);
-//                                File outputShapefile = AGDT_Geotools.getOutputShapefile(
+//                                File outputShapefile = Geotools_Environment.getOutputShapefile(
 //                                        mapDirectory2,
 //                                        outname);
 //                                // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
@@ -468,7 +453,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                                //doDebug = true;
 //                            }
 //
-//                            File outputShapefile = AGDT_Geotools.getOutputShapefile(
+//                            File outputShapefile = Geotools_Environment.getOutputShapefile(
 //                                    mapDirectory2,
 //                                    outname);
 //                            // Select levelData0i0 Census Codes from all LSOA shapefile and create a new one
@@ -582,7 +567,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //            cLSOAData = (TreeMap<String, Integer>) bLSOAData[0];
 //            String outname;
 //            outname = DW_Maps.getOutName(filename, attributeName, filter);
-//            File outputShapefile = AGDT_Geotools.getOutputShapefile(
+//            File outputShapefile = Geotools_Environment.getOutputShapefile(
 //                    dir,
 //                    outname);
 //            // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one

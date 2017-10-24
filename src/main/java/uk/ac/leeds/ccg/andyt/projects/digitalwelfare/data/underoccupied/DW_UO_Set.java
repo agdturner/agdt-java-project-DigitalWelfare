@@ -55,9 +55,9 @@ public class DW_UO_Set extends DW_Object implements Serializable {
     }
 
     protected final void init() {
-        DW_Strings = env.getDW_Strings();
-        DW_Files = env.getDW_Files();
-        DW_UO_Handler = env.getDW_UO_Handler();
+        DW_Strings = env.getStrings();
+        DW_Files = env.getFiles();
+        DW_UO_Handler = env.getUO_Handler();
     }
 
     /**

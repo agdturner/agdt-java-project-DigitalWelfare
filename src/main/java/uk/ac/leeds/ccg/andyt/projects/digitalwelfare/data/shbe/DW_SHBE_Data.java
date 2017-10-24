@@ -22,7 +22,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
@@ -121,10 +121,10 @@ public class DW_SHBE_Data extends DW_Object {
     private HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
 
     /**
-     * Postcode DW_ID to AGDT_Point Lookups. There is a different one for each
+     * Postcode DW_ID to Geotools_Point Lookups. There is a different one for each
      * ONSPD File. The keys are Nearest YM3s for the respective ONSPD File.
      */
-    private HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>> PostcodeIDToPointLookups;
+    private HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>> PostcodeIDToPointLookups;
 
     /**
      * ClaimRefToClaimIDLookup File.
@@ -201,9 +201,9 @@ public class DW_SHBE_Data extends DW_Object {
 
     public DW_SHBE_Data(DW_Environment env) {
         super(env);
-        DW_Postcode_Handler = env.getDW_Postcode_Handler();
-        DW_Files = env.getDW_Files();
-        DW_Strings = env.getDW_Strings();
+        DW_Postcode_Handler = env.getPostcode_Handler();
+        DW_Files = env.getFiles();
+        DW_Strings = env.getStrings();
     }
 
     /**
@@ -589,22 +589,22 @@ public class DW_SHBE_Data extends DW_Object {
 
     /**
      * {@code if (PostcodeIDToPointLookups == null) {
-     * if (f.exists()) {
-     * PostcodeIDToPointLookups = (HashMap<String, HashMap<DW_ID, AGDT_Point>>) Generic_StaticIO.readObject(f);
-     * } else {
-     * PostcodeIDToPointLookups = new HashMap<String, HashMap<DW_ID, AGDT_Point>>();
-     * } } return PostcodeIDToPointLookups;}
+ if (f.exists()) {
+ PostcodeIDToPointLookups = (HashMap<String, HashMap<DW_ID, Geotools_Point>>) Generic_StaticIO.readObject(f);
+ } else {
+ PostcodeIDToPointLookups = new HashMap<String, HashMap<DW_ID, Geotools_Point>>();
+ } } return PostcodeIDToPointLookups;}
      *
      * @param f
      * @return
      */
-    public final HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>> getPostcodeIDToPointLookups(
+    public final HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>> getPostcodeIDToPointLookups(
             File f) {
         if (PostcodeIDToPointLookups == null) {
             if (f.exists()) {
-                PostcodeIDToPointLookups = (HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>>) Generic_StaticIO.readObject(f);
+                PostcodeIDToPointLookups = (HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>>) Generic_StaticIO.readObject(f);
             } else {
-                PostcodeIDToPointLookups = new HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>>();
+                PostcodeIDToPointLookups = new HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>>();
             }
         }
         return PostcodeIDToPointLookups;
@@ -627,7 +627,7 @@ public class DW_SHBE_Data extends DW_Object {
      *
      * @return
      */
-    public HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>> getPostcodeIDToPointLookups() {
+    public HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>> getPostcodeIDToPointLookups() {
         PostcodeIDToPointLookupsFile = getPostcodeIDToPointLookupsFile();
         return getPostcodeIDToPointLookups(PostcodeIDToPointLookupsFile);
     }
@@ -639,15 +639,15 @@ public class DW_SHBE_Data extends DW_Object {
      * @param YM3
      * @return
      */
-    public HashMap<DW_ID, AGDT_Point> getPostcodeIDToPointLookup(DW_YM3 YM3) {
+    public HashMap<DW_ID, Geotools_Point> getPostcodeIDToPointLookup(DW_YM3 YM3) {
         DW_YM3 NearestYM3ForONSPDLookup;
         NearestYM3ForONSPDLookup = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
-        HashMap<DW_ID, AGDT_Point> PostcodeIDToPointLookup;
+        HashMap<DW_ID, Geotools_Point> PostcodeIDToPointLookup;
         PostcodeIDToPointLookups = DW_SHBE_Data.this.getPostcodeIDToPointLookups();
         if (PostcodeIDToPointLookups.containsKey(NearestYM3ForONSPDLookup)) {
             PostcodeIDToPointLookup = PostcodeIDToPointLookups.get(NearestYM3ForONSPDLookup);
         } else {
-            PostcodeIDToPointLookup = new HashMap<DW_ID, AGDT_Point>();
+            PostcodeIDToPointLookup = new HashMap<DW_ID, Geotools_Point>();
             PostcodeIDToPointLookups.put(NearestYM3ForONSPDLookup, PostcodeIDToPointLookup);
         }
         return PostcodeIDToPointLookup;

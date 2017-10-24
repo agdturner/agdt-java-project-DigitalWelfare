@@ -20,7 +20,6 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import java.io.File;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -36,10 +35,10 @@ import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Maps;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
+import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Maps;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -54,11 +53,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
  */
 public abstract class DW_DensityMapsAbstract  extends DW_Object {
     
-// For Convenience
-    protected DW_Maps DW_Maps;
-    protected DW_Files df;
-    protected DW_Strings DW_Strings;
-    protected DW_Postcode_Handler DW_Postcode_Handler;
+    // For Convenience
+    protected DW_Maps Maps;
+    protected DW_Files Files;
+    protected DW_Strings Strings;
+    protected DW_Postcode_Handler Postcode_Handler;
     
     protected Grids_Environment ge;
     protected Grids_ESRIAsciiGridExporter eage;
@@ -81,24 +80,24 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
     //protected boolean outputESRIAsciigrids;
     protected boolean handleOutOfMemoryErrors;
 
-    public DW_DensityMapsAbstract(DW_Environment env) {
-        super(env);
-        DW_Maps = env.getDW_Maps();
-        DW_Strings = env.getDW_Strings();
-        df = env.getDW_Files();
-        DW_Postcode_Handler = env.getDW_Postcode_Handler();
+    public DW_DensityMapsAbstract(DW_Environment de) {
+        super(de);
+        Maps = de.getMaps();
+        Strings = de.getStrings();
+        Files = de.getFiles();
+        Postcode_Handler = de.getPostcode_Handler();
     }
     
     // Add from postcodes
     protected int addFromPostcodes(
             Grids_Grid2DSquareCellDouble g,
             ArrayList<String> postcodes,
-            TreeMap<String, Deprivation_DataRecord> deprivationRecords,
+            TreeMap<String, Census_DeprivationDataRecord> deprivationRecords,
             TreeMap<Integer, Integer> deprivationClasses,
             Integer deprivationClass,
             DW_YM3 yM3) {
         DW_YM3 nearestYM3ForONSPDLookup;
-        nearestYM3ForONSPDLookup = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM3);
+        nearestYM3ForONSPDLookup = Postcode_Handler.getNearestYM3ForONSPDLookup(yM3);
         int countNonMatchingPostcodes = 0;
         Iterator<String> itep = postcodes.iterator();
         while (itep.hasNext()) {
@@ -108,9 +107,9 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
             if (aLSOACode != null) {
                 if (deprivationRecords == null) {
                     String postcodeLevel;
-                    postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(postcode);
-                    AGDT_Point aPoint;
-                    aPoint = DW_Postcode_Handler.getPointFromPostcode(nearestYM3ForONSPDLookup, postcodeLevel, postcode);
+                    postcodeLevel = Postcode_Handler.getPostcodeLevel(postcode);
+                    Geotools_Point aPoint;
+                    aPoint = Postcode_Handler.getPointFromPostcode(nearestYM3ForONSPDLookup, postcodeLevel, postcode);
                     if (aPoint != null) {
                         int x = aPoint.getX();
                         int y = aPoint.getY();
@@ -120,19 +119,19 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
                     }
                 } else {
                     //Convert postcode to LSOA code
-                    Deprivation_DataRecord aDeprivation_DataRecord;
+                    Census_DeprivationDataRecord aDeprivation_DataRecord;
                     aDeprivation_DataRecord = deprivationRecords.get(aLSOACode);
                     // aDeprivation_DataRecord might be null as deprivation data comes from 2001 census...
                     if (aDeprivation_DataRecord != null) {
                         Integer thisDeprivationClass;
-                        thisDeprivationClass = Deprivation_DataHandler.getDeprivationClass(
+                        thisDeprivationClass = Census_DeprivationDataHandler.getDeprivationClass(
                                 deprivationClasses,
                                 aDeprivation_DataRecord);
                         if (thisDeprivationClass == deprivationClass.intValue()) {
                             String postcodeLevel;
-                            postcodeLevel = DW_Postcode_Handler.getPostcodeLevel(postcode);
-                            AGDT_Point aPoint;
-                            aPoint = DW_Postcode_Handler.getPointFromPostcode(nearestYM3ForONSPDLookup, postcodeLevel, postcode);
+                            postcodeLevel = Postcode_Handler.getPostcodeLevel(postcode);
+                            Geotools_Point aPoint;
+                            aPoint = Postcode_Handler.getPointFromPostcode(nearestYM3ForONSPDLookup, postcodeLevel, postcode);
                             if (aPoint != null) {
                                 int x = aPoint.getX();
                                 int y = aPoint.getY();
@@ -185,12 +184,12 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
         // 1.
         // Reading the coverage through a file
         ArcGridReader agr;
-        agr = AGDT_Maps.getArcGridReader(asciigridFile);
+        agr = Maps.getArcGridReader(asciigridFile);
 //        // 2.
 //        AbstractGridFormat format = GridFormatFinder.findFormat(asciigridFile);
 //        GridCoverage2DReader reader = format.getReader(asciigridFile);
         GridCoverage2D gc;
-        gc = AGDT_Maps.getGridCoverage2D(agr);
+        gc = Maps.getGridCoverage2D(agr);
 
         String outname = nameOfGrid + "GeoToolsOutput";
         //showMapsInJMapPane = true;
@@ -199,7 +198,7 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
 //                normalisation, g, gc, "Quantile", ff, 9, "Reds", true);
         //Style style = createGreyscaleStyle(gc, null, sf, ff);
         ReferencedEnvelope re;
-        re = DW_Maps.getCommunityAreasDW_Shapefile().getFeatureLayer().getBounds();
+        re = Maps.getCommunityAreasDW_Shapefile().getFeatureLayer().getBounds();
         double minX = re.getMinX();
         double maxX = re.getMaxX();
         double minY = re.getMinY();
@@ -211,18 +210,18 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
 
 //        DW_Geotools.outputToImageUsingGeoToolsAndSetCommonStyle(
 //                normalisation,
-//                DW_Maps.getStyleParameters(),
+//                Maps.getStyleParameters(),
 //                styleIndex,
 //                outname,
 //                g,
 //                gc,
 //                
 //                getForegroundDW_Shapefile0(),
-//                DW_Maps.getForegroundDW_Shapefile1(),
-//                DW_Maps.getBackgroundDW_Shapefile(),
+//                Maps.getForegroundDW_Shapefile1(),
+//                Maps.getBackgroundDW_Shapefile(),
 //                dir,
-//                DW_Maps.getImageWidth(),
-//                DW_Maps.isShowMapsInJMapPane(),
+//                Maps.getImageWidth(),
+//                Maps.isShowMapsInJMapPane(),
 //                scaleToFirst);
 //        try {
 //            reader.dispose();

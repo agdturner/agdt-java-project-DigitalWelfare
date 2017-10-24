@@ -32,14 +32,12 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.map.MapContent;
 import org.opengis.feature.simple.SimpleFeatureType;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
+import uk.ac.leeds.ccg.andyt.geotools.core.Geotools_Environment;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
-import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.getPointSimpleFeatureType;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
@@ -90,7 +88,7 @@ public class DW_PostcodeMaps extends DW_Maps {
     public void run() {
         showMapsInJMapPane = true;//false;//true;//false;
         imageWidth = 1000;
-        mapDirectory = df.getGeneratedPostcodeDir();
+        mapDirectory = Files.getGeneratedPostcodeDir();
 
         sdsf = getShapefileDataStoreFactory();
 
@@ -103,7 +101,7 @@ public class DW_PostcodeMaps extends DW_Maps {
                 new ShapefileDataStoreFactory());
 
         DW_YM3 yM3;
-        yM3 = DW_Postcode_Handler.getDefaultYM3();
+        yM3 = Postcode_Handler.getDefaultYM3();
 
         String postcodeLevel;
         // Postcode Unit Centroids
@@ -209,7 +207,7 @@ public class DW_PostcodeMaps extends DW_Maps {
                 postcodeUnitPoly_DW_Shapefile,
                 gf);
 
-        MapContent mc = AGDT_Geotools.createMapContent(
+        MapContent mc = de.getGeotools().createMapContent(
                 new DW_Shapefile(aLeedsPostcodeSectorShapefile),
                 OA_Shapefile,
                 null,//LSOA_Shapefile,
@@ -221,7 +219,7 @@ public class DW_PostcodeMaps extends DW_Maps {
 
         File outputDir = mapDirectory;
 
-        DW_Geotools.outputToImage(
+        de.getGeotools().outputToImage(
                 mc,
                 outname,
                 aLeedsPostcodeSectorShapefile,
@@ -280,7 +278,7 @@ public class DW_PostcodeMaps extends DW_Maps {
                 + yllcorner + "_" + cellsize + "_" + ".shp";
         File dir;
         dir = new File(
-                df.getGeneratedDir(),
+                Files.getGeneratedDir(),
                 "LineGrids");
         dir.mkdirs();
         File shapefile = createPolyGridShapefileIfItDoesNotExist(
@@ -307,7 +305,7 @@ public class DW_PostcodeMaps extends DW_Maps {
                 + yllcorner + "_" + cellsize + "_" + ".shp";
         File dir;
         dir = new File(
-                df.getGeneratedDir(),
+                Files.getGeneratedDir(),
                 "LineGrids");
         dir.mkdirs();
         File shapefile = createLineGridShapefileIfItDoesNotExist(
@@ -331,7 +329,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         ArrayList<DW_Shapefile> result;
         result = new ArrayList<DW_Shapefile>();
         File dir;
-        dir = df.getGeneratedPostcodeDir();
+        dir = Files.getGeneratedPostcodeDir();
         ArrayList<String> postCodeLevels;
         postCodeLevels = new ArrayList<String>();
         postCodeLevels.add("Unit");
@@ -392,8 +390,8 @@ public class DW_PostcodeMaps extends DW_Maps {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
         DW_Postcode_Handler dph;
-        dph = de.getDW_Postcode_Handler();
-        TreeMap<String, AGDT_Point> tONSPDlookup;
+        dph = de.getPostcode_Handler();
+        TreeMap<String, Geotools_Point> tONSPDlookup;
         tONSPDlookup = getONSPDlookups().get(postcodeLevel).get(dph.getNearestYM3ForONSPDLookup(yM3));
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
@@ -405,7 +403,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         while (ite.hasNext()) {
             String postcode = ite.next();
             if (postcode.startsWith(target)) {
-                AGDT_Point p = tONSPDlookup.get(postcode);
+                Geotools_Point p = tONSPDlookup.get(postcode);
                 String name = postcode;
                 addPointFeature(p, gf, sfb, name, result);
             }

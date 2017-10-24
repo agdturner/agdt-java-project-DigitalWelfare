@@ -18,7 +18,6 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds.DW_DataProcessorAdviceLeeds;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -48,14 +47,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CA
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_LCC_WRU_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
-//import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Geotools;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
@@ -65,10 +60,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
  */
 public class DW_LineMapsAdviceLeeds extends DW_Maps {
 
-    private DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
-    private DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
-    private DW_Data_LCC_WRU_Handler tLCC_WRU_DataRecord_Handler;
-    private DW_ProcessorAdviceLeeds DW_ProcessorAdviceLeeds;
+    private DW_Data_CAB2_Handler CAB_DataRecord2_Handler;
+    private DW_Data_CAB0_Handler CAB_DataRecord0_Handler;
+    private DW_Data_LCC_WRU_Handler LCC_WRU_DataRecord_Handler;
+    private final DW_ProcessorAdviceLeeds ProcessorAdviceLeeds;
 
     private final String targetPropertyNameMSOA = "MSOA11CD";
     private final String targetPropertyNameLSOA = "LSOA11CD";
@@ -76,14 +71,16 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     private TreeMap<String, String> LookupFromPostcodeToMSOACensusCodes;
     private DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
     private DW_AreaCodesAndShapefiles MSOACodesAndLeedsMSOAShapefile;
-    private TreeMap<String, Point> aLSOAToCentroidLookupTable;
-    private TreeMap<String, Point> aMSOAToCentroidLookupTable;
-    private TreeMap<String, String> tCABOutletPostcodes;
-    private TreeMap<String, AGDT_Point> tCABOutletPoints;
+    private TreeMap<String, Point> LSOAToCentroidLookupTable;
+    private TreeMap<String, Point> MSOAToCentroidLookupTable;
+    private TreeMap<String, String> CABOutletPostcodes;
+    private TreeMap<String, Geotools_Point> CABOutletPoints;
+    
 
-    public DW_LineMapsAdviceLeeds(DW_Environment env) {
-        super(env);
-        DW_ProcessorAdviceLeeds = new DW_ProcessorAdviceLeeds(env);
+    public DW_LineMapsAdviceLeeds(DW_Environment de) {
+        super(de);
+        ProcessorAdviceLeeds = new DW_ProcessorAdviceLeeds(de);
+        Geotools = de.getGeotools();
     }
 
     /**
@@ -94,14 +91,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
             new DW_LineMapsAdviceLeeds(null).run();
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
 //            StackTraceElement[] stes = e.getStackTrace();
 //            for (StackTraceElement ste : stes) {
 //                System.err.println(ste.toString());
 //            }
         } catch (Error e) {
             System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
 //            StackTraceElement[] stes = e.getStackTrace();
 //            for (StackTraceElement ste : stes) {
 //                System.err.println(ste.toString());
@@ -146,37 +143,37 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     private void init() {
         level = "MSOA";
         initStyleParameters();
-        mapDirectory = df.getOutputAdviceLeedsMapsDir();
+        mapDirectory = Files.getOutputAdviceLeedsMapsDir();
         // init tLSOACodesAndLeedsLSOAShapefile
         initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         // init tMSOACodesAndLeedsMSOAShapefile
         initMSOACodesAndLeedsMSOAShapefile(targetPropertyNameMSOA);
         initONSPDLookups();
         initCABOutletPoints();
-        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(de);
-        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(de);
-        tLCC_WRU_DataRecord_Handler = new DW_Data_LCC_WRU_Handler(de);
-        aLSOAToCentroidLookupTable = getCentroidLookupTable(
+        CAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(de);
+        CAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(de);
+        LCC_WRU_DataRecord_Handler = new DW_Data_LCC_WRU_Handler(de);
+        LSOAToCentroidLookupTable = getCentroidLookupTable(
                 "LSOA",
                 targetPropertyNameLSOA);
-        aMSOAToCentroidLookupTable = getCentroidLookupTable(
+        MSOAToCentroidLookupTable = getCentroidLookupTable(
                 "MSOA",
                 targetPropertyNameMSOA);
     }
 
     private void initStyleParameters() {
-        styleParameters = new AGDT_StyleParameters();
+        styleParameters = new Geotools_StyleParameters();
 //        styleParameters.setnClasses(9);
 //        styleParameters.setPaletteName("Reds");
 //        styleParameters.setAddWhiteForZero(true);
         styleParameters.setForegroundStyleName(0, "Foreground Style 0");
 //        styleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
-        styleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
-        styleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
+        styleParameters.setForegroundStyles(Geotools.getStyle().createAdviceLeedsPointStyles());
+        styleParameters.setForegroundStyle1(Geotools.getStyle().createDefaultPolygonStyle(
                 Color.GREEN,
                 Color.WHITE));
         styleParameters.setForegroundStyleTitle1("Foreground Style 1");
-        styleParameters.setBackgroundStyle(DW_Style.createDefaultPolygonStyle(
+        styleParameters.setBackgroundStyle(Geotools.getStyle().createDefaultPolygonStyle(
                 Color.BLACK,
                 Color.WHITE));
         styleParameters.setBackgroundStyleTitle("Background Style");
@@ -201,20 +198,20 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     }
 
     private void initCABOutletPoints() {
-        tCABOutletPostcodes = DW_ProcessorAdviceLeeds.getOutletsAndPostcodes();
-        tCABOutletPoints = new TreeMap<String, AGDT_Point>();
-        Iterator<String> ite_String = tCABOutletPostcodes.keySet().iterator();
+        CABOutletPostcodes = ProcessorAdviceLeeds.getOutletsAndPostcodes();
+        CABOutletPoints = new TreeMap<String, Geotools_Point>();
+        Iterator<String> ite_String = CABOutletPostcodes.keySet().iterator();
         while (ite_String.hasNext()) {
             String outletName = ite_String.next();
-            String postcode = tCABOutletPostcodes.get(outletName);
-            AGDT_Point p = DW_Postcode_Handler.getPointFromPostcode(
-                    DW_Postcode_Handler.getDefaultYM3(),
-                    DW_Postcode_Handler.TYPE_UNIT,
+            String postcode = CABOutletPostcodes.get(outletName);
+            Geotools_Point p = Postcode_Handler.getPointFromPostcode(
+                    Postcode_Handler.getDefaultYM3(),
+                    Postcode_Handler.TYPE_UNIT,
                     postcode);
             if (p == null) {
                 System.out.println("No point for postcode " + postcode);
             } else {
-                tCABOutletPoints.put(outletName, p);
+                CABOutletPoints.put(outletName, p);
                 System.out.println(outletName + " " + p);
             }
         }
@@ -228,12 +225,12 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         int CensusYear = 2011;
         DW_YM3 YM3 = new DW_YM3(2011,5);
         // init postcode to LSOA lookup
-        LookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
+        LookupFromPostcodeToLSOACensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
                 "LSOA",
                 CensusYear,
                 YM3);
         // init postcode to MSOA lookup
-        LookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
+        LookupFromPostcodeToMSOACensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
                 "MSOA",
                 CensusYear,
                 YM3);
@@ -248,15 +245,15 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         year = "1213";
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
-        TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(de,
+        TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> LeedsCABData;
+        LeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(de,
                 filename,
-                aCAB_DataRecord2_Handler,
+                CAB_DataRecord2_Handler,
                 IDType);
         // Load Chapeltown CAB data
-        TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
-        tChapeltownCABData = DW_DataProcessorAdviceLeeds.getChapeltownCABData(
-                tCAB_DataRecord0_Handler,
+        TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> ChapeltownCABData;
+        ChapeltownCABData = DW_DataProcessorAdviceLeeds.getChapeltownCABData(
+                CAB_DataRecord0_Handler,
                 IDType);
 
         // Step 3.
@@ -269,7 +266,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         tsfcs = new TreeMap<String, TreeSetFeatureCollection>();
         TreeMap<String, SimpleFeatureBuilder> sfbs;
         sfbs = new TreeMap<String, SimpleFeatureBuilder>();
-        Iterator<String> ite_String = tCABOutletPostcodes.keySet().iterator();
+        Iterator<String> ite_String = CABOutletPostcodes.keySet().iterator();
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             tsfcs.put(tCABOutlet, new TreeSetFeatureCollection());
@@ -330,21 +327,21 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         countPostcodesWithPointsAndOutlets = 0;
         countPostcodesWithoutPoints = 0;
         //String targetCABOutlet = "Pudsey";
-        Iterator ite2;
-        ite2 = tLeedsCABData.keySet().iterator();
+        Iterator<DW_ID_ClientID> ite2;
+        ite2 = LeedsCABData.keySet().iterator();
         while (ite2.hasNext()) {
-            Object key = ite2.next();
-            DW_Data_CAB2_Record r = tLeedsCABData.get(key);
+            DW_ID_ClientID key = ite2.next();
+            DW_Data_CAB2_Record r = LeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
-            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(
-                    DW_Postcode_Handler.getDefaultYM3(),
-                    DW_Postcode_Handler.TYPE_UNIT,
+            Geotools_Point origin = Postcode_Handler.getPointFromPostcode(
+                    Postcode_Handler.getDefaultYM3(),
+                    Postcode_Handler.TYPE_UNIT,
                     postcode);
             if (origin != null) {
-                String tCABOutletString = DW_ProcessorAdviceLeeds.getCABOutletString(outlet);
+                String tCABOutletString = ProcessorAdviceLeeds.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
-                if (tCABOutletPostcodes.containsKey(tCABOutletString)) {
+                if (CABOutletPostcodes.containsKey(tCABOutletString)) {
                     // Get feature collection and counters
                     TreeSetFeatureCollection tsfc;
                     tsfc = tsfcs.get(tCABOutletString);
@@ -362,13 +359,13 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    AGDT_Point outletPoint = null;
-                    outletPoint = tCABOutletPoints.get(tCABOutletString);
-//                    AGDT_Point a_DW_Point;
+                    Geotools_Point outletPoint = null;
+                    outletPoint = CABOutletPoints.get(tCABOutletString);
+//                    Geotools_Point a_DW_Point;
 //                    a_DW_Point = outletPoint;
 //                    destinationx = a_DW_Point.getX();
 //                    destinationy = a_DW_Point.getY();
-                    String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
+                    String formattedPostcode = Postcode_Handler.formatPostcode(postcode);
                     String aLSOACode = LookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
                     String aMSOACode = LookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
                     if (aLSOACode.equalsIgnoreCase("") || aMSOACode.equalsIgnoreCase("")) {
@@ -389,8 +386,8 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
 //                        int aMSOACount = MSOACount.get(aMSOACode);
 
                         // Get Census geography points
-                        Point aLSOAPoint = aLSOAToCentroidLookupTable.get(aLSOACode);
-                        Point aMSOAPoint = aMSOAToCentroidLookupTable.get(aMSOACode);
+                        Point aLSOAPoint = LSOAToCentroidLookupTable.get(aLSOACode);
+                        Point aMSOAPoint = MSOAToCentroidLookupTable.get(aMSOACode);
                         Coordinate[] coords;
                         LineString line;
                         SimpleFeature feature;
@@ -473,20 +470,20 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         countPostcodesWithPointsAndOutlets = 0;
         countPostcodesWithoutPoints = 0;
         Iterator<DW_ID_ClientID> ite2_String;
-        ite2_String = tChapeltownCABData.keySet().iterator();
+        ite2_String = ChapeltownCABData.keySet().iterator();
         while (ite2_String.hasNext()) {
             DW_ID_ClientID key = ite2_String.next();
-            DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
+            DW_Data_CAB0_Record r = ChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
-            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(
-                    DW_Postcode_Handler.getDefaultYM3(),
-                    DW_Postcode_Handler.TYPE_UNIT,
+            Geotools_Point origin = Postcode_Handler.getPointFromPostcode(
+                    Postcode_Handler.getDefaultYM3(),
+                    Postcode_Handler.TYPE_UNIT,
                     postcode);
             if (origin != null) {
-                String tCABOutletString = DW_ProcessorAdviceLeeds.getCABOutletString(outlet);
+                String tCABOutletString = ProcessorAdviceLeeds.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
-                if (tCABOutletPostcodes.containsKey(tCABOutletString)) {
+                if (CABOutletPostcodes.containsKey(tCABOutletString)) {
                     // Get feature collection and counters
                     TreeSetFeatureCollection tsfc;
                     tsfc = tsfcs.get(tCABOutletString);
@@ -504,13 +501,13 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    AGDT_Point outletPoint = null;
-                    outletPoint = tCABOutletPoints.get(tCABOutletString);
-//                    AGDT_Point a_DW_Point;
+                    Geotools_Point outletPoint = null;
+                    outletPoint = CABOutletPoints.get(tCABOutletString);
+//                    Geotools_Point a_DW_Point;
 //                    a_DW_Point = outletPoint;
 //                    destinationx = a_DW_Point.getX();
 //                    destinationy = a_DW_Point.getY();
-                    String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
+                    String formattedPostcode = Postcode_Handler.formatPostcode(postcode);
                     String aLSOACode = LookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
                     String aMSOACode = LookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
                     if (aLSOACode.equalsIgnoreCase("") || aMSOACode.equalsIgnoreCase("")) {
@@ -531,8 +528,8 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
 //                        int aMSOACount = MSOACount.get(aMSOACode);
 
                         // Get Census geography points
-                        Point aLSOAPoint = aLSOAToCentroidLookupTable.get(aLSOACode);
-                        Point aMSOAPoint = aMSOAToCentroidLookupTable.get(aMSOACode);
+                        Point aLSOAPoint = LSOAToCentroidLookupTable.get(aLSOACode);
+                        Point aMSOAPoint = MSOAToCentroidLookupTable.get(aMSOACode);
                         Coordinate[] coords;
                         LineString line;
                         SimpleFeature feature;
@@ -608,11 +605,11 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         System.out.println("countPostcodesWithPointsAndOutlets " + countPostcodesWithPointsAndOutlets);
         System.out.println("countPostcodesWithoutPoints " + countPostcodesWithoutPoints);
 
-        ite_String = tCABOutletPostcodes.keySet().iterator();
+        ite_String = CABOutletPostcodes.keySet().iterator();
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             TreeSetFeatureCollection tsfc = tsfcs.get(tCABOutlet);
-            File outputShapefile = AGDT_Geotools.getOutputShapefile(
+            File outputShapefile = Geotools.getOutputShapefile(
                     spiderMapDirectory,
                     tCABOutlet);
             DW_Shapefile.transact(
@@ -625,14 +622,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
 //            FeatureLayer backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
 //                backgroundShapefile,
 //                backgroundStyle);
-            DW_Geotools.outputToImage(tCABOutlet,
+            Geotools.outputToImage(tCABOutlet,
                     outputShapefile,
                     foregroundDW_Shapefile0,
                     ForegroundDW_Shapefile1,
                     BackgroundDW_Shapefile,
                     "",
                     spiderMapDirectory,
-                    png_String,
+                    Geotools.getGeotools_Strings().png_String,
                     imageWidth,
                     styleParameters,
                     0,
@@ -653,12 +650,12 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         int CensusYear = 2011;
         DW_YM3 YM3 = new DW_YM3(2011,5);
         // Get postcode to LSOA lookup
-        LookupFromPostcodeToLSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
+        LookupFromPostcodeToLSOACensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
                 "LSOA",
                 CensusYear,
                 YM3);
         // Get postcode to LSOA lookup
-        LookupFromPostcodeToMSOACensusCodes = DW_ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
+        LookupFromPostcodeToMSOACensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
                 "MSOA",
                 CensusYear,
                 YM3);
@@ -676,12 +673,12 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
         tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(de,
                 filename,
-                aCAB_DataRecord2_Handler,
+                CAB_DataRecord2_Handler,
                 IDType);
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessorAdviceLeeds.getChapeltownCABData(
-                tCAB_DataRecord0_Handler,
+                CAB_DataRecord0_Handler,
                 IDType);
 
         // Step 3.
@@ -695,7 +692,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         TreeMap<String, SimpleFeatureBuilder> sfbs;
         sfbs = new TreeMap<String, SimpleFeatureBuilder>();
         Iterator<String> ite_String;
-        ite_String = tCABOutletPostcodes.keySet().iterator();
+        ite_String = CABOutletPostcodes.keySet().iterator();
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             tsfcs.put(tCABOutlet, new TreeSetFeatureCollection());
@@ -724,14 +721,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
             DW_Data_CAB2_Record r = tLeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
-            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(
-                    DW_Postcode_Handler.getDefaultYM3(),
-                    DW_Postcode_Handler.TYPE_UNIT,
+            Geotools_Point origin = Postcode_Handler.getPointFromPostcode(
+                    Postcode_Handler.getDefaultYM3(),
+                    Postcode_Handler.TYPE_UNIT,
                     postcode);
             if (origin != null) {
-                String tCABOutletString = DW_ProcessorAdviceLeeds.getCABOutletString(outlet);
+                String tCABOutletString = ProcessorAdviceLeeds.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
-                if (tCABOutletPostcodes.containsKey(tCABOutletString)) {
+                if (CABOutletPostcodes.containsKey(tCABOutletString)) {
                     // Get feature collection and counters
                     TreeSetFeatureCollection tsfc;
                     tsfc = tsfcs.get(tCABOutletString);
@@ -743,9 +740,9 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    AGDT_Point outletPoint = null;
-                    outletPoint = tCABOutletPoints.get(tCABOutletString);
-                    String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
+                    Geotools_Point outletPoint = null;
+                    outletPoint = CABOutletPoints.get(tCABOutletString);
+                    String formattedPostcode = Postcode_Handler.formatPostcode(postcode);
                     String aLSOACode = LookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
                     String aMSOACode = LookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
                     if (aLSOACode.equalsIgnoreCase("") || aMSOACode.equalsIgnoreCase("")) {
@@ -754,7 +751,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                         countPostcodesWithPointsWithoutCensusCodes++;
                     } else {
                         // Get Census geography points
-                        Point aLSOAPoint = aLSOAToCentroidLookupTable.get(aLSOACode);
+                        Point aLSOAPoint = LSOAToCentroidLookupTable.get(aLSOACode);
                         Coordinate[] coords;
                         LineString line;
                         SimpleFeature feature;
@@ -812,14 +809,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
             DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
-            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(
-                    DW_Postcode_Handler.getDefaultYM3(),
-                    DW_Postcode_Handler.TYPE_UNIT,
+            Geotools_Point origin = Postcode_Handler.getPointFromPostcode(
+                    Postcode_Handler.getDefaultYM3(),
+                    Postcode_Handler.TYPE_UNIT,
                     postcode);
             if (origin != null) {
-                String tCABOutletString = DW_ProcessorAdviceLeeds.getCABOutletString(outlet);
+                String tCABOutletString = ProcessorAdviceLeeds.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
-                if (tCABOutletPostcodes.containsKey(tCABOutletString)) {
+                if (CABOutletPostcodes.containsKey(tCABOutletString)) {
                     // Get feature collection and counters
                     TreeSetFeatureCollection tsfc;
                     tsfc = tsfcs.get(tCABOutletString);
@@ -831,9 +828,9 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    AGDT_Point outletPoint = null;
-                    outletPoint = tCABOutletPoints.get(tCABOutletString);
-                    String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
+                    Geotools_Point outletPoint = null;
+                    outletPoint = CABOutletPoints.get(tCABOutletString);
+                    String formattedPostcode = Postcode_Handler.formatPostcode(postcode);
                     String aLSOACode = LookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
                     String aMSOACode = LookupFromPostcodeToMSOACensusCodes.get(formattedPostcode);
                     if (aLSOACode.equalsIgnoreCase("") || aMSOACode.equalsIgnoreCase("")) {
@@ -842,7 +839,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                         countPostcodesWithPointsWithoutCensusCodes++;
                     } else {
                         // Get Census geography points
-                        Point aLSOAPoint = aLSOAToCentroidLookupTable.get(aLSOACode);
+                        Point aLSOAPoint = LSOAToCentroidLookupTable.get(aLSOACode);
                         Coordinate[] coords;
                         LineString line;
                         SimpleFeature feature;
@@ -888,11 +885,11 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         System.out.println("countPostcodesWithPointsAndOutlets " + countPostcodesWithPointsAndOutlets);
         System.out.println("countPostcodesWithoutPoints " + countPostcodesWithoutPoints);
 
-        ite_String = tCABOutletPostcodes.keySet().iterator();
+        ite_String = CABOutletPostcodes.keySet().iterator();
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             TreeSetFeatureCollection tsfc = tsfcs.get(tCABOutlet);
-            File outputShapefile = AGDT_Geotools.getOutputShapefile(
+            File outputShapefile = Geotools.getOutputShapefile(
                     spiderMapDirectory,
                     tCABOutlet);
             DW_Shapefile.transact(
@@ -900,14 +897,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     aLineSFT,
                     tsfc,
                     getShapefileDataStoreFactory());
-            DW_Geotools.outputToImage(tCABOutlet,
+            Geotools.outputToImage(tCABOutlet,
                     outputShapefile,
                     foregroundDW_Shapefile0,
                     ForegroundDW_Shapefile1,
                     BackgroundDW_Shapefile,
                     "",
                     spiderMapDirectory,
-                    png_String,
+                    Geotools.getGeotools_Strings().png_String,
                     imageWidth,
                     styleParameters,
                     0,
@@ -931,15 +928,15 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         // year 2012-2013
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
-        TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(de,
+        TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> LeedsCABData;
+        LeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(de,
                 filename,
-                aCAB_DataRecord2_Handler,
+                CAB_DataRecord2_Handler,
                 IDType);
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessorAdviceLeeds.getChapeltownCABData(
-                tCAB_DataRecord0_Handler,
+                CAB_DataRecord0_Handler,
                 IDType);
 
         // Step 3.
@@ -953,7 +950,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         TreeMap<String, SimpleFeatureBuilder> sfbs;
         sfbs = new TreeMap<String, SimpleFeatureBuilder>();
         Iterator<String> ite_String;
-        ite_String = tCABOutletPostcodes.keySet().iterator();
+        ite_String = CABOutletPostcodes.keySet().iterator();
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             tsfcs.put(tCABOutlet, new TreeSetFeatureCollection());
@@ -976,21 +973,21 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         countPostcodesWithPointsAndOutlets = 0;
         countPostcodesWithoutPoints = 0;
         //String targetCABOutlet = "Pudsey";
-        Iterator ite2;
-        ite2 = tLeedsCABData.keySet().iterator();
+        Iterator<DW_ID_ClientID> ite2;
+        ite2 = LeedsCABData.keySet().iterator();
         while (ite2.hasNext()) {
-            Object key = ite2.next();
-            DW_Data_CAB2_Record r = tLeedsCABData.get(key);
+            DW_ID_ClientID key = ite2.next();
+            DW_Data_CAB2_Record r = LeedsCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = r.getOutlet();
-            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(
-                    DW_Postcode_Handler.getDefaultYM3(),
-                    DW_Postcode_Handler.TYPE_UNIT,
+            Geotools_Point origin = Postcode_Handler.getPointFromPostcode(
+                    Postcode_Handler.getDefaultYM3(),
+                    Postcode_Handler.TYPE_UNIT,
                     postcode);
             if (origin != null) {
-                String tCABOutletString = DW_ProcessorAdviceLeeds.getCABOutletString(outlet);
+                String tCABOutletString = ProcessorAdviceLeeds.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
-                if (tCABOutletPostcodes.containsKey(tCABOutletString)) {
+                if (CABOutletPostcodes.containsKey(tCABOutletString)) {
                     // Get feature collection and counters
                     TreeSetFeatureCollection tsfc;
                     tsfc = tsfcs.get(tCABOutletString);
@@ -1008,8 +1005,8 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    AGDT_Point outletPoint = null;
-                    outletPoint = tCABOutletPoints.get(tCABOutletString);
+                    Geotools_Point outletPoint = null;
+                    outletPoint = CABOutletPoints.get(tCABOutletString);
                     destinationx = outletPoint.getX();
                     destinationy = outletPoint.getY();
                     Coordinate[] coords;
@@ -1051,14 +1048,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
             DW_Data_CAB0_Record r = tChapeltownCABData.get(key);
             String postcode = r.getPostcode();
             String outlet = "CHAPELTOWN";
-            AGDT_Point origin = DW_Postcode_Handler.getPointFromPostcode(
-                    DW_Postcode_Handler.getDefaultYM3(),
-                    DW_Postcode_Handler.TYPE_UNIT,
+            Geotools_Point origin = Postcode_Handler.getPointFromPostcode(
+                    Postcode_Handler.getDefaultYM3(),
+                    Postcode_Handler.TYPE_UNIT,
                     postcode);
             if (origin != null) {
-                String tCABOutletString = DW_ProcessorAdviceLeeds.getCABOutletString(outlet);
+                String tCABOutletString = ProcessorAdviceLeeds.getCABOutletString(outlet);
                 System.out.println("postcode " + postcode + ", outlet " + tCABOutletString);
-                if (tCABOutletPostcodes.containsKey(tCABOutletString)) {
+                if (CABOutletPostcodes.containsKey(tCABOutletString)) {
                     // Get feature collection and counters
                     TreeSetFeatureCollection tsfc;
                     tsfc = tsfcs.get(tCABOutletString);
@@ -1076,8 +1073,8 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    AGDT_Point outletPoint = null;
-                    outletPoint = tCABOutletPoints.get(tCABOutletString);
+                    Geotools_Point outletPoint = null;
+                    outletPoint = CABOutletPoints.get(tCABOutletString);
                     destinationx = outletPoint.getX();
                     destinationy = outletPoint.getY();
                     Coordinate[] coords;
@@ -1105,11 +1102,11 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         System.out.println("countPostcodesWithPointsAndOutlets " + countPostcodesWithPointsAndOutlets);
         System.out.println("countPostcodesWithoutPoints " + countPostcodesWithoutPoints);
 
-        ite_String = tCABOutletPostcodes.keySet().iterator();
+        ite_String = CABOutletPostcodes.keySet().iterator();
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             TreeSetFeatureCollection tsfc = tsfcs.get(tCABOutlet);
-            File outputShapeFile = AGDT_Geotools.getOutputShapefile(
+            File outputShapeFile = Geotools.getOutputShapefile(
                     spiderMapDirectory,
                     tCABOutlet);
             DW_Shapefile.transact(
@@ -1122,14 +1119,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
 //            FeatureLayer backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
 //                backgroundShapefile,
 //                backgroundStyle);
-            DW_Geotools.outputToImage(tCABOutlet,
+            Geotools.outputToImage(tCABOutlet,
                     outputShapeFile,
                     foregroundDW_Shapefile0,
                     ForegroundDW_Shapefile1,
                     BackgroundDW_Shapefile,
                     "",
                     spiderMapDirectory,
-                    png_String,
+                    Geotools.getGeotools_Strings().png_String,
                     imageWidth,
                     styleParameters,
                     0,
@@ -1151,10 +1148,10 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
             String level,
             String targetPropertyName) {
         TreeMap<String, Point> result;
-        File generatedCensus2011LUTsDir = df.getGeneratedCensus2011LUTsDir();
+        File generatedCensus2011LUTsDir = Files.getGeneratedCensus2011LUTsDir();
         File tLSOAToCentroidLookupTableFile = new File(
                 generatedCensus2011LUTsDir,
-                level + "ToCentroidLookupTable_TreeMap" + ds.sBinaryFileExtension);
+                level + "ToCentroidLookupTable_TreeMap" + Strings.sBinaryFileExtension);
         if (tLSOAToCentroidLookupTableFile.exists()) {
             result = (TreeMap<String, Point>) Generic_StaticIO.readObject(
                     tLSOAToCentroidLookupTableFile);

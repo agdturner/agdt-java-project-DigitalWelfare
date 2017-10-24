@@ -60,9 +60,9 @@ public class DW_UO_Handler extends DW_Object {
 
     public DW_UO_Handler(DW_Environment env) {
         super(env);
-        this.DW_Files = env.getDW_Files();
-        this.DW_Strings = env.getDW_Strings();
-        DW_SHBE_Data = env.getDW_SHBE_Data();
+        this.DW_Files = env.getFiles();
+        this.DW_Strings = env.getStrings();
+        DW_SHBE_Data = env.getSHBE_Data();
         ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
         ClaimRefToClaimIDLookup = DW_SHBE_Data.getClaimRefToClaimIDLookup();
     }
@@ -375,7 +375,7 @@ public class DW_UO_Handler extends DW_Object {
                     CouncilFilenames,
                     RSLFilenames,
                     1,
-                    5);// This number needs increasing as there are more datasets....
+                    6);// This number needs increasing as there are more datasets....
         }
         return inputFilenames;
     }
@@ -397,7 +397,7 @@ public class DW_UO_Handler extends DW_Object {
             s = yearAll + underOccupiedReportForUniversityString + "Month " + i;
 //            String filename;
 //            filename = s + councilEndFilename;
-//            env.getDW_Files().getInputUnderOccupiedDir();
+//            env.getFiles().getInputUnderOccupiedDir();
             CouncilFilenames.put(
                     new DW_YM3(year_Month),
                     s + councilEndFilename);

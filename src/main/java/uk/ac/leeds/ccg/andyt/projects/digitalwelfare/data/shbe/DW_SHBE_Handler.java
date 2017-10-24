@@ -31,7 +31,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
@@ -55,11 +55,12 @@ public class DW_SHBE_Handler extends DW_Object {
     /**
      * For convenience, these are initialised in construction from env.
      */
-    private final transient DW_SHBE_Data DW_SHBE_Data;
+    private final transient DW_SHBE_Data SHBE_Data;
     private final transient HashMap<String, DW_ID> NINOToNINOIDLookup;
     private final transient HashMap<String, DW_ID> DOBToDOBIDLookup;
-    private final transient DW_Strings DW_Strings;
-    private final transient DW_Files DW_Files;
+    private final transient DW_Strings Strings;
+    private final transient DW_Files Files;
+    private final transient DW_Postcode_Handler Postcode_Handler;
 
     /**
      * For a set of expected RecordTypes. ("A", "D", "C", "R", "T", "P", "G",
@@ -70,13 +71,14 @@ public class DW_SHBE_Handler extends DW_Object {
 //    
 //    public DW_SHBE_Handler() {
 //    }
-    public DW_SHBE_Handler(DW_Environment env) {
-        super(env);
-        DW_SHBE_Data = env.getDW_SHBE_Data();
-        DW_Strings = env.getDW_Strings();
-        DW_Files = env.getDW_Files();
-        NINOToNINOIDLookup = DW_SHBE_Data.getNINOToNINOIDLookup();
-        DOBToDOBIDLookup = DW_SHBE_Data.getDOBToDOBIDLookup();
+    public DW_SHBE_Handler(DW_Environment e) {
+        super(e);
+        SHBE_Data = e.getSHBE_Data();
+        Strings = e.getStrings();
+        Files = e.getFiles();
+        Postcode_Handler = e.getPostcode_Handler();
+        NINOToNINOIDLookup = SHBE_Data.getNINOToNINOIDLookup();
+        DOBToDOBIDLookup = SHBE_Data.getDOBToDOBIDLookup();
     }
 
     /**
@@ -90,9 +92,9 @@ public class DW_SHBE_Handler extends DW_Object {
         DW_YM3 LastYM3;
         LastYM3 = getYM3(SHBEFilenames[SHBEFilenames.length - 1]);
         DW_YM3 NearestYM3ForONSPDFormatLookupLastYM3;
-        NearestYM3ForONSPDFormatLookupLastYM3 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(LastYM3);
+        NearestYM3ForONSPDFormatLookupLastYM3 = Postcode_Handler.getNearestYM3ForONSPDLookup(LastYM3);
         File dir;
-        dir = DW_Files.getInputSHBEDir();
+        dir = Files.getInputSHBEDir();
         for (String SHBEFilename : SHBEFilenames) {
             DW_SHBE_Records DW_SHBE_Records;
             DW_SHBE_Records = new DW_SHBE_Records(
@@ -106,55 +108,55 @@ public class DW_SHBE_Handler extends DW_Object {
         writeLookups();
         // Make a backup copy
         File SHBEbackup;
-        SHBEbackup = new File(DW_Files.getGeneratedLCCDir(), "SHBEBackup");
+        SHBEbackup = new File(Files.getGeneratedLCCDir(), "SHBEBackup");
         if (SHBEbackup.isDirectory()) {
             SHBEbackup = Generic_StaticIO.addToArchive(SHBEbackup, 100);
         } else {
             SHBEbackup = Generic_StaticIO.initialiseArchive(SHBEbackup, 100);
         }
-        Generic_StaticIO.copy(DW_Files.getGeneratedSHBEDir(), SHBEbackup);
+        Generic_StaticIO.copy(Files.getGeneratedSHBEDir(), SHBEbackup);
     }
 
     public void writeLookups() {
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getClaimIDToClaimRefLookup(),
-                DW_SHBE_Data.getClaimIDToClaimRefLookupFile());
+                SHBE_Data.getClaimIDToClaimRefLookup(),
+                SHBE_Data.getClaimIDToClaimRefLookupFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getClaimRefToClaimIDLookup(),
-                DW_SHBE_Data.getClaimRefToClaimIDLookupFile());
+                SHBE_Data.getClaimRefToClaimIDLookup(),
+                SHBE_Data.getClaimRefToClaimIDLookupFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getNINOToNINOIDLookup(),
-                DW_SHBE_Data.getNINOToNINOIDLookupFile());
+                SHBE_Data.getNINOToNINOIDLookup(),
+                SHBE_Data.getNINOToNINOIDLookupFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getNINOIDToNINOLookup(),
-                DW_SHBE_Data.getNINOIDToNINOLookupFile());
+                SHBE_Data.getNINOIDToNINOLookup(),
+                SHBE_Data.getNINOIDToNINOLookupFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getDOBToDOBIDLookup(),
-                DW_SHBE_Data.getDOBToDOBIDLookupFile());
+                SHBE_Data.getDOBToDOBIDLookup(),
+                SHBE_Data.getDOBToDOBIDLookupFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getDOBIDToDOBLookup(),
-                DW_SHBE_Data.getDOBIDToDOBLookupFile());
+                SHBE_Data.getDOBIDToDOBLookup(),
+                SHBE_Data.getDOBIDToDOBLookupFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getPostcodeToPostcodeIDLookup(),
-                DW_SHBE_Data.getPostcodeToPostcodeIDLookupFile());
+                SHBE_Data.getPostcodeToPostcodeIDLookup(),
+                SHBE_Data.getPostcodeToPostcodeIDLookupFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getPostcodeIDToPostcodeLookup(),
-                DW_SHBE_Data.getPostcodeIDToPostcodeLookupFile());
+                SHBE_Data.getPostcodeIDToPostcodeLookup(),
+                SHBE_Data.getPostcodeIDToPostcodeLookupFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getPostcodeIDToPointLookups(),
-                DW_SHBE_Data.getPostcodeIDToPointLookupsFile());
+                SHBE_Data.getPostcodeIDToPointLookups(),
+                SHBE_Data.getPostcodeIDToPointLookupsFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getClaimantPersonIDs(),
-                DW_SHBE_Data.getClaimantPersonIDsFile());
+                SHBE_Data.getClaimantPersonIDs(),
+                SHBE_Data.getClaimantPersonIDsFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getPartnerPersonIDs(),
-                DW_SHBE_Data.getPartnerPersonIDsFile());
+                SHBE_Data.getPartnerPersonIDs(),
+                SHBE_Data.getPartnerPersonIDsFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getNonDependentPersonIDs(),
-                DW_SHBE_Data.getNonDependentPersonIDsFile());
+                SHBE_Data.getNonDependentPersonIDs(),
+                SHBE_Data.getNonDependentPersonIDsFile());
         Generic_StaticIO.writeObject(
-                DW_SHBE_Data.getPersonIDToClaimIDLookup(),
-                DW_SHBE_Data.getPersonIDToClaimIDLookupFile());
+                SHBE_Data.getPersonIDToClaimIDLookup(),
+                SHBE_Data.getPersonIDToClaimIDLookupFile());
     }
 
     /**
@@ -164,7 +166,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public void runNew(File logDir) {
         File dir;
-        dir = env.getDW_Files().getInputSHBEDir();
+        dir = env.getFiles().getInputSHBEDir();
         // Ascertain which files are new and need loading
         // Get all filenames
         String[] SHBEFilenames;
@@ -172,7 +174,7 @@ public class DW_SHBE_Handler extends DW_Object {
         ArrayList<String> newFilesToRead;
         newFilesToRead = new ArrayList<String>();
         File[] FormattedSHBEFiles;
-        FormattedSHBEFiles = DW_Files.getGeneratedSHBEDir().listFiles();
+        FormattedSHBEFiles = Files.getGeneratedSHBEDir().listFiles();
         HashSet<DW_YM3> FormattedYM3s;
         FormattedYM3s = new HashSet<DW_YM3>();
         for (File FormattedSHBEFile : FormattedSHBEFiles) {
@@ -190,7 +192,7 @@ public class DW_SHBE_Handler extends DW_Object {
         DW_YM3 LastYM3;
         LastYM3 = getYM3(SHBEFilenames[SHBEFilenames.length - 1]);
         DW_YM3 NearestYM3ForONSPDFormatLookupLastYM3;
-        NearestYM3ForONSPDFormatLookupLastYM3 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(LastYM3);
+        NearestYM3ForONSPDFormatLookupLastYM3 = Postcode_Handler.getNearestYM3ForONSPDLookup(LastYM3);
         if (newFilesToRead.size() > 0) {
             Iterator<String> ite;
             ite = newFilesToRead.iterator();
@@ -209,13 +211,13 @@ public class DW_SHBE_Handler extends DW_Object {
         }
         // Make a backup copy
         File SHBEbackup;
-        SHBEbackup = new File(DW_Files.getGeneratedLCCDir(), "SHBEBackup");
+        SHBEbackup = new File(Files.getGeneratedLCCDir(), "SHBEBackup");
         if (SHBEbackup.isDirectory()) {
             SHBEbackup = Generic_StaticIO.addToArchive(SHBEbackup, 100);
         } else {
             SHBEbackup = Generic_StaticIO.initialiseArchive(SHBEbackup, 100);
         }
-        Generic_StaticIO.copy(DW_Files.getGeneratedSHBEDir(), SHBEbackup);
+        Generic_StaticIO.copy(Files.getGeneratedSHBEDir(), SHBEbackup);
     }
 
     /**
@@ -227,13 +229,13 @@ public class DW_SHBE_Handler extends DW_Object {
         boolean handleOutOfMemoryError;
         handleOutOfMemoryError = true;
         File dir;
-        dir = DW_Files.getInputSHBEDir();
+        dir = Files.getInputSHBEDir();
         HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
-        PostcodeToPostcodeIDLookup = DW_SHBE_Data.getPostcodeToPostcodeIDLookup();
-        HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>> PostcodeIDPointLookups;
-        PostcodeIDPointLookups = DW_SHBE_Data.getPostcodeIDToPointLookups();
+        PostcodeToPostcodeIDLookup = SHBE_Data.getPostcodeToPostcodeIDLookup();
+        HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>> PostcodeIDPointLookups;
+        PostcodeIDPointLookups = SHBE_Data.getPostcodeIDToPointLookups();
         HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
-        ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
+        ClaimIDToClaimRefLookup = SHBE_Data.getClaimIDToClaimRefLookup();
 
         // Prepare for output
         PrintWriter pw = null;
@@ -249,7 +251,7 @@ public class DW_SHBE_Handler extends DW_Object {
         YM31 = getYM3(SHBEFilename1);
         System.out.println("YM31 " + YM31);
         DW_YM3 NearestYM3ForONSPDLookupYM31;
-        NearestYM3ForONSPDLookupYM31 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM31);
+        NearestYM3ForONSPDLookupYM31 = Postcode_Handler.getNearestYM3ForONSPDLookup(YM31);
         System.out.println("NearestYM3ForONSPDLookupYM31 " + NearestYM3ForONSPDLookupYM31);
         DW_SHBE_Records DW_SHBE_Records1;
         DW_SHBE_Records1 = new DW_SHBE_Records(
@@ -258,7 +260,7 @@ public class DW_SHBE_Handler extends DW_Object {
         HashMap<DW_ID, DW_SHBE_Record> recs1;
         recs1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
         DW_SHBE_Record rec1;
-        HashMap<DW_ID, AGDT_Point> PostcodeIDToPointLookup1;
+        HashMap<DW_ID, Geotools_Point> PostcodeIDToPointLookup1;
         PostcodeIDToPointLookup1 = PostcodeIDPointLookups.get(NearestYM3ForONSPDLookupYM31);
 
         HashSet<String> UniqueUnmappablePostcodes;
@@ -314,7 +316,7 @@ public class DW_SHBE_Handler extends DW_Object {
         String unmappablePostcodef0;
         String postcodef1;
 
-        HashMap<DW_ID, AGDT_Point> PostcodeIDToPointLookup0;
+        HashMap<DW_ID, Geotools_Point> PostcodeIDToPointLookup0;
         HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup0 = null;
         HashSet<DW_ID> ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = null;
         boolean modifiedAnyRecs = false;
@@ -337,7 +339,7 @@ public class DW_SHBE_Handler extends DW_Object {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DW_SHBE_Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        NearestYM3ForONSPDLookupYM30 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM30);
+        NearestYM3ForONSPDLookupYM30 = Postcode_Handler.getNearestYM3ForONSPDLookup(YM30);
         System.out.println("NearestYM3ForONSPDLookupYM30 " + NearestYM3ForONSPDLookupYM30);
         DW_SHBE_Records0 = new DW_SHBE_Records(
                 env,
@@ -383,7 +385,7 @@ public class DW_SHBE_Handler extends DW_Object {
                             ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = DW_SHBE_Records0.getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture();
                         }
                         ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0.add(DW_ID);
-                        AGDT_Point p;
+                        Geotools_Point p;
                         p = PostcodeIDToPointLookup1.get(DW_ID);
                         PostcodeIDToPointLookup0.put(DW_ID, p);
                         modifiedRecs = true;
@@ -467,7 +469,7 @@ public class DW_SHBE_Handler extends DW_Object {
         // </Write out UniqueModifiedPostcodes>
         if (modifiedAnyRecs == true) {
             // Write out PostcodeIDPointLookups
-            Generic_StaticIO.writeObject(PostcodeIDPointLookups, DW_SHBE_Data.getPostcodeIDToPointLookupsFile());
+            Generic_StaticIO.writeObject(PostcodeIDPointLookups, SHBE_Data.getPostcodeIDToPointLookupsFile());
         }
     }
 
@@ -480,13 +482,13 @@ public class DW_SHBE_Handler extends DW_Object {
         boolean handleOutOfMemoryError;
         handleOutOfMemoryError = true;
         File dir;
-        dir = DW_Files.getInputSHBEDir();
+        dir = Files.getInputSHBEDir();
         HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
-        PostcodeToPostcodeIDLookup = DW_SHBE_Data.getPostcodeToPostcodeIDLookup();
-        HashMap<DW_YM3, HashMap<DW_ID, AGDT_Point>> PostcodeIDPointLookups;
-        PostcodeIDPointLookups = DW_SHBE_Data.getPostcodeIDToPointLookups();
+        PostcodeToPostcodeIDLookup = SHBE_Data.getPostcodeToPostcodeIDLookup();
+        HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>> PostcodeIDPointLookups;
+        PostcodeIDPointLookups = SHBE_Data.getPostcodeIDToPointLookups();
         HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
-        ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
+        ClaimIDToClaimRefLookup = SHBE_Data.getClaimIDToClaimRefLookup();
 
         // Prepare for output
         PrintWriter pw = null;
@@ -502,7 +504,7 @@ public class DW_SHBE_Handler extends DW_Object {
         YM31 = getYM3(SHBEFilename1);
         System.out.println("YM31 " + YM31);
         DW_YM3 NearestYM3ForONSPDLookupYM31;
-        NearestYM3ForONSPDLookupYM31 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM31);
+        NearestYM3ForONSPDLookupYM31 = Postcode_Handler.getNearestYM3ForONSPDLookup(YM31);
         System.out.println("NearestYM3ForONSPDLookupYM31 " + NearestYM3ForONSPDLookupYM31);
         DW_SHBE_Records DW_SHBE_Records1;
         DW_SHBE_Records1 = new DW_SHBE_Records(
@@ -511,7 +513,7 @@ public class DW_SHBE_Handler extends DW_Object {
         HashMap<DW_ID, DW_SHBE_Record> recs1;
         recs1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
         DW_SHBE_Record rec1;
-        HashMap<DW_ID, AGDT_Point> PostcodeIDToPointLookup1;
+        HashMap<DW_ID, Geotools_Point> PostcodeIDToPointLookup1;
         PostcodeIDToPointLookup1 = PostcodeIDPointLookups.get(NearestYM3ForONSPDLookupYM31);
 
         HashSet<String> UniqueUnmappablePostcodes;
@@ -567,7 +569,7 @@ public class DW_SHBE_Handler extends DW_Object {
         String unmappablePostcodef0;
         String postcodef1;
 
-        HashMap<DW_ID, AGDT_Point> PostcodeIDToPointLookup0;
+        HashMap<DW_ID, Geotools_Point> PostcodeIDToPointLookup0;
         HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup0 = null;
         HashSet<DW_ID> ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = null;
         boolean modifiedAnyRecs = false;
@@ -589,7 +591,7 @@ public class DW_SHBE_Handler extends DW_Object {
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(DW_SHBE_Handler.class.getName()).log(Level.SEVERE, null, ex);
             }
-            NearestYM3ForONSPDLookupYM30 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM30);
+            NearestYM3ForONSPDLookupYM30 = Postcode_Handler.getNearestYM3ForONSPDLookup(YM30);
             System.out.println("NearestYM3ForONSPDLookupYM30 " + NearestYM3ForONSPDLookupYM30);
             DW_SHBE_Records0 = new DW_SHBE_Records(
                     env,
@@ -635,7 +637,7 @@ public class DW_SHBE_Handler extends DW_Object {
                                 ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = DW_SHBE_Records0.getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture();
                             }
                             ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0.add(DW_ID);
-                            AGDT_Point p;
+                            Geotools_Point p;
                             p = PostcodeIDToPointLookup1.get(DW_ID);
                             PostcodeIDToPointLookup0.put(DW_ID, p);
                             modifiedRecs = true;
@@ -719,7 +721,7 @@ public class DW_SHBE_Handler extends DW_Object {
         // </Write out UniqueModifiedPostcodes>
         if (modifiedAnyRecs == true) {
             // Write out PostcodeIDPointLookups
-            Generic_StaticIO.writeObject(PostcodeIDPointLookups, DW_SHBE_Data.getPostcodeIDToPointLookupsFile());
+            Generic_StaticIO.writeObject(PostcodeIDPointLookups, SHBE_Data.getPostcodeIDToPointLookupsFile());
         }
     }
 
@@ -786,15 +788,15 @@ public class DW_SHBE_Handler extends DW_Object {
             String PT) {
         HashSet<DW_ID> result;
         result = null;
-        if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeAll)) {
+        if (PT.equalsIgnoreCase(Strings.sPaymentTypeAll)) {
             result = DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment();
             result.addAll(DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended());
             result.addAll(DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther());
-        } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeIn)) {
+        } else if (PT.equalsIgnoreCase(Strings.sPaymentTypeIn)) {
             result = DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment();
-        } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeSuspended)) {
+        } else if (PT.equalsIgnoreCase(Strings.sPaymentTypeSuspended)) {
             result = DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended();
-        } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeOther)) {
+        } else if (PT.equalsIgnoreCase(Strings.sPaymentTypeOther)) {
             result = DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther();
         }
         return result;
@@ -811,15 +813,15 @@ public class DW_SHBE_Handler extends DW_Object {
             String PT) {
          HashSet<DW_ID> result;
         result = null;
-        if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeAll)) {
+        if (PT.equalsIgnoreCase(Strings.sPaymentTypeAll)) {
             result = DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateInPayment();
             result.addAll(DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended());
             result.addAll(DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther());
-        } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeIn)) {
+        } else if (PT.equalsIgnoreCase(Strings.sPaymentTypeIn)) {
             result = DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateInPayment();
-        } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeSuspended)) {
+        } else if (PT.equalsIgnoreCase(Strings.sPaymentTypeSuspended)) {
             result = DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended();
-        } else if (PT.equalsIgnoreCase(DW_Strings.sPaymentTypeOther)) {
+        } else if (PT.equalsIgnoreCase(Strings.sPaymentTypeOther)) {
             result = DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther();
         }
         return result;
@@ -827,18 +829,18 @@ public class DW_SHBE_Handler extends DW_Object {
 
     public String getClaimantType(DW_SHBE_D_Record D_Record) {
         if (isHBClaim(D_Record)) {
-            return DW_Strings.sHB;
+            return Strings.sHB;
         }
         //if (isCTBOnlyClaim(D_Record)) {
-        return DW_Strings.sCTB;
+        return Strings.sCTB;
         //}
     }
 
     public ArrayList<String> getClaimantTypes() {
         ArrayList<String> result;
         result = new ArrayList<String>();
-        result.add(DW_Strings.sHB);
-        result.add(DW_Strings.sCTB);
+        result.add(Strings.sHB);
+        result.add(Strings.sCTB);
         return result;
     }
 
@@ -1178,7 +1180,7 @@ public class DW_SHBE_Handler extends DW_Object {
             PTsIte = PTs.iterator();
             while (PTsIte.hasNext()) {
                 PT = PTsIte.next();
-                if (HBOrCTB.equalsIgnoreCase(DW_Strings.sHB)) {
+                if (HBOrCTB.equalsIgnoreCase(Strings.sHB)) {
                     ClaimIDs = getClaimIDsWithStatusOfHBAtExtractDate(DW_SHBE_Records, PT);
                 } else {
                     ClaimIDs = getClaimIDsWithStatusOfCTBAtExtractDate(DW_SHBE_Records, PT);
@@ -1203,7 +1205,7 @@ public class DW_SHBE_Handler extends DW_Object {
                                     aDRecord = rec.getDRecord();
                                     TT = aDRecord.getTenancyType();
                                     income = BigDecimal.valueOf(getClaimantsAndPartnersIncomeTotal(aDRecord));
-                                    if (HBOrCTB.equalsIgnoreCase(DW_Strings.sHB)) {
+                                    if (HBOrCTB.equalsIgnoreCase(Strings.sHB)) {
                                         // HB
                                         if (isHBClaim(TT)) {
                                             TotalIncome = TotalIncome.add(income);
@@ -1265,7 +1267,7 @@ public class DW_SHBE_Handler extends DW_Object {
                                     aDRecord = rec.getDRecord();
                                     TT = aDRecord.getTenancyType();
                                     income = BigDecimal.valueOf(getClaimantsAndPartnersIncomeTotal(aDRecord));
-                                    if (HBOrCTB.equalsIgnoreCase(DW_Strings.sHB)) {
+                                    if (HBOrCTB.equalsIgnoreCase(Strings.sHB)) {
                                         // HB
                                         if (isHBClaim(TT)) {
                                             TotalIncome = TotalIncome.add(income);
@@ -1327,7 +1329,7 @@ public class DW_SHBE_Handler extends DW_Object {
                         aDRecord = rec.getDRecord();
                         TT = aDRecord.getTenancyType();
                         income = BigDecimal.valueOf(getClaimantsAndPartnersIncomeTotal(aDRecord));
-                        if (HBOrCTB.equalsIgnoreCase(DW_Strings.sHB)) {
+                        if (HBOrCTB.equalsIgnoreCase(Strings.sHB)) {
                             // HB
                             if (isHBClaim(TT)) {
                                 TotalIncome = TotalIncome.add(income);
@@ -1379,30 +1381,30 @@ public class DW_SHBE_Handler extends DW_Object {
                 nameSuffix = HBOrCTB + PT;
                 tBD = BigDecimal.valueOf(TotalCount_IncomeNonZero);
                 zBD = BigDecimal.valueOf(TotalCount_IncomeZero);
-                result.put(DW_Strings.sTotal_Income + nameSuffix, TotalIncome);
-                result.put(DW_Strings.sTotalCount_IncomeNonZero + nameSuffix, tBD);
-                result.put(DW_Strings.sTotalCount_IncomeZero + nameSuffix, zBD);
+                result.put(Strings.sTotal_Income + nameSuffix, TotalIncome);
+                result.put(Strings.sTotalCount_IncomeNonZero + nameSuffix, tBD);
+                result.put(Strings.sTotalCount_IncomeZero + nameSuffix, zBD);
                 if (tBD.compareTo(BigDecimal.ZERO) == 1) {
-                    result.put(DW_Strings.sAverage_NonZero_Income + nameSuffix,
+                    result.put(Strings.sAverage_NonZero_Income + nameSuffix,
                             Generic_BigDecimal.divideRoundIfNecessary(
                                     TotalIncome, tBD,
                                     2, RoundingMode.HALF_UP));
                 } else {
-                    result.put(DW_Strings.sAverage_NonZero_Income + nameSuffix,
+                    result.put(Strings.sAverage_NonZero_Income + nameSuffix,
                             BigDecimal.ZERO);
                 }
                 tBD = BigDecimal.valueOf(
                         TotalCount_WeeklyEligibleRentAmountNonZero);
                 zBD = BigDecimal.valueOf(
                         TotalCount_WeeklyEligibleRentAmountZero);
-                result.put(DW_Strings.sTotal_WeeklyEligibleRentAmount + nameSuffix,
+                result.put(Strings.sTotal_WeeklyEligibleRentAmount + nameSuffix,
                         TotalWeeklyEligibleRentAmount);
-                result.put(DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix,
+                result.put(Strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix,
                         tBD);
-                result.put(DW_Strings.sTotalCount_WeeklyEligibleRentAmountZero + nameSuffix,
+                result.put(Strings.sTotalCount_WeeklyEligibleRentAmountZero + nameSuffix,
                         zBD);
                 if (tBD.compareTo(BigDecimal.ZERO) == 1) {
-                    result.put(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix,
+                    result.put(Strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix,
                             Generic_BigDecimal.divideRoundIfNecessary(
                                     TotalWeeklyEligibleRentAmount,
                                     tBD,
@@ -1410,43 +1412,43 @@ public class DW_SHBE_Handler extends DW_Object {
                 }
                 for (int i = 0; i < nTT; i++) {
                     // Income
-                    result.put(DW_Strings.sTotal_IncomeTT[i] + nameSuffix,
+                    result.put(Strings.sTotal_IncomeTT[i] + nameSuffix,
                             TotalIncomeTT[i]);
                     tBD = BigDecimal.valueOf(
                             TotalCount_IncomeTTNonZero[i]);
                     zBD = BigDecimal.valueOf(
                             TotalCount_IncomeTTZero[i]);
-                    result.put(DW_Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix, tBD);
-                    result.put(DW_Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix, zBD);
+                    result.put(Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix, tBD);
+                    result.put(Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix, zBD);
                     if (tBD.compareTo(BigDecimal.ZERO) == 1) {
-                        result.put(DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix,
+                        result.put(Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix,
                                 Generic_BigDecimal.divideRoundIfNecessary(
                                         TotalIncomeTT[i],
                                         tBD,
                                         2, RoundingMode.HALF_UP));
                     } else {
-                        result.put(DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix,
+                        result.put(Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix,
                                 BigDecimal.ZERO);
                     }
                     // Rent
-                    result.put(DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix,
+                    result.put(Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix,
                             TotalTTWeeklyEligibleRentAmount[i]);
                     tBD = BigDecimal.valueOf(
                             TotalCount_TTWeeklyEligibleRentAmountNonZero[i]);
                     zBD = BigDecimal.valueOf(
                             TotalCount_TTWeeklyEligibleRentAmountZero[i]);
-                    result.put(DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix,
+                    result.put(Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix,
                             tBD);
-                    result.put(DW_Strings.sTotalCount_WeeklyEligibleRentAmountZeroTT[i] + nameSuffix,
+                    result.put(Strings.sTotalCount_WeeklyEligibleRentAmountZeroTT[i] + nameSuffix,
                             zBD);
                     if (tBD.compareTo(BigDecimal.ZERO) == 1) {
-                        result.put(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix,
+                        result.put(Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix,
                                 Generic_BigDecimal.divideRoundIfNecessary(
                                         TotalTTWeeklyEligibleRentAmount[i],
                                         tBD,
                                         2, RoundingMode.HALF_UP));
                     } else {
-                        result.put(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix,
+                        result.put(Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix,
                                 BigDecimal.ZERO);
                     }
                 }
@@ -2286,20 +2288,20 @@ public class DW_SHBE_Handler extends DW_Object {
      * Method for getting SHBE collections filenames in an array
      *
      * @code {if (SHBEFilenamesAll == null) {
-     * String[] list = env.getDW_Files().getInputSHBEDir().list();
-     * SHBEFilenamesAll = new String[list.length];
-     * String s;
-     * String ym;
-     * TreeMap<String, String> yms;
-     * yms = new TreeMap<String, String>();
-     * for (String list1 : list) {
-     * s = list1;
-     * ym = getYearMonthNumber(s);
-     * yms.put(ym, s);
-     * }
-     * Iterator<String> ite; ite = yms.keySet().iterator(); int i = 0; while
-     * (ite.hasNext()) { ym = ite.next(); SHBEFilenamesAll[i] = yms.get(ym);
-     * i++; } } return SHBEFilenamesAll;} }
+ String[] list = env.getFiles().getInputSHBEDir().list();
+ SHBEFilenamesAll = new String[list.length];
+ String s;
+ String ym;
+ TreeMap<String, String> yms;
+ yms = new TreeMap<String, String>();
+ for (String list1 : list) {
+ s = list1;
+ ym = getYearMonthNumber(s);
+ yms.put(ym, s);
+ }
+ Iterator<String> ite; ite = yms.keySet().iterator(); int i = 0; while
+ (ite.hasNext()) { ym = ite.next(); SHBEFilenamesAll[i] = yms.get(ym);
+ i++; } } return SHBEFilenamesAll;} }
      *
      * @return String[] result of SHBE collections filenames
      */
@@ -2311,7 +2313,7 @@ public class DW_SHBE_Handler extends DW_Object {
 
     public String[] getSHBEFilenamesAll() {
         if (SHBEFilenamesAll == null) {
-            String[] list = env.getDW_Files().getInputSHBEDir().list();
+            String[] list = env.getFiles().getInputSHBEDir().list();
             SHBEFilenamesAll = new String[list.length];
             String s;
             String ym;
@@ -2624,7 +2626,7 @@ public class DW_SHBE_Handler extends DW_Object {
         yM = YearMonth.split("-");
         String m3;
         m3 = Generic_Time.getMonth3Letters(yM[1]);
-        result = yM[0] + DW_Strings.sUnderscore + m3;
+        result = yM[0] + Strings.sUnderscore + m3;
         return result;
     }
 
@@ -2731,39 +2733,39 @@ public class DW_SHBE_Handler extends DW_Object {
             if (doCouncil) {
                 if (doRSL) {
                     //partFilename = "IncomeAndRentSummaryUA_HashMap_String__BigDecimal.dat";
-                    partFilename = DW_Strings.sIncomeAndRentSummary
-                            + DW_Strings.sU + DW_Strings.sA + DW_Strings.sUnderscore
-                            + DW_Strings.sHashMap + DW_Strings.sUnderscore
-                            + DW_Strings.sString + DW_Strings.sUnderscore + DW_Strings.sUnderscore
-                            + DW_Strings.sBigDecimal + DW_Strings.sBinaryFileExtension;
+                    partFilename = Strings.sIncomeAndRentSummary
+                            + Strings.sU + Strings.sA + Strings.sUnderscore
+                            + Strings.sHashMap + Strings.sUnderscore
+                            + Strings.sString + Strings.sUnderscore + Strings.sUnderscore
+                            + Strings.sBigDecimal + Strings.sBinaryFileExtension;
                 } else {
                     //partFilename = "IncomeAndRentSummaryUC_HashMap_String__BigDecimal.dat";
-                    partFilename = DW_Strings.sIncomeAndRentSummary
-                            + DW_Strings.sU + DW_Strings.sCouncil + DW_Strings.sUnderscore
-                            + DW_Strings.sHashMap + DW_Strings.sUnderscore
-                            + DW_Strings.sString + DW_Strings.sUnderscore + DW_Strings.sUnderscore
-                            + DW_Strings.sBigDecimal + DW_Strings.sBinaryFileExtension;
+                    partFilename = Strings.sIncomeAndRentSummary
+                            + Strings.sU + Strings.sCouncil + Strings.sUnderscore
+                            + Strings.sHashMap + Strings.sUnderscore
+                            + Strings.sString + Strings.sUnderscore + Strings.sUnderscore
+                            + Strings.sBigDecimal + Strings.sBinaryFileExtension;
                 }
             } else {
                 //partFilename = "IncomeAndRentSummaryUR_HashMap_String__BigDecimal.dat";
-                partFilename = DW_Strings.sIncomeAndRentSummary
-                        + DW_Strings.sU + DW_Strings.sRSL + DW_Strings.sUnderscore
-                        + DW_Strings.sHashMap + DW_Strings.sUnderscore
-                        + DW_Strings.sString + DW_Strings.sUnderscore + DW_Strings.sUnderscore
-                        + DW_Strings.sBigDecimal + DW_Strings.sBinaryFileExtension;
+                partFilename = Strings.sIncomeAndRentSummary
+                        + Strings.sU + Strings.sRSL + Strings.sUnderscore
+                        + Strings.sHashMap + Strings.sUnderscore
+                        + Strings.sString + Strings.sUnderscore + Strings.sUnderscore
+                        + Strings.sBigDecimal + Strings.sBinaryFileExtension;
             }
         } else {
             //partFilename = "IncomeAndRentSummary_HashMap_String__BigDecimal.dat";
-            partFilename = DW_Strings.sIncomeAndRentSummary
-                    + DW_Strings.sHashMap + DW_Strings.sUnderscore
-                    + DW_Strings.sString + DW_Strings.sUnderscore + DW_Strings.sUnderscore
-                    + DW_Strings.sBigDecimal + DW_Strings.sBinaryFileExtension;
+            partFilename = Strings.sIncomeAndRentSummary
+                    + Strings.sHashMap + Strings.sUnderscore
+                    + Strings.sString + Strings.sUnderscore + Strings.sUnderscore
+                    + Strings.sBigDecimal + Strings.sBinaryFileExtension;
         }
         File dir;
         dir = new File(
-                DW_Files.getGeneratedSHBEDir(),
+                Files.getGeneratedSHBEDir(),
                 YM3.toString());
-        dir = DW_Files.getUODir(dir, doUnderOccupancy, doCouncil);
+        dir = Files.getUODir(dir, doUnderOccupancy, doCouncil);
         dir.mkdirs();
         result = new File(
                 dir,
@@ -3137,42 +3139,42 @@ public class DW_SHBE_Handler extends DW_Object {
         n = tSHBEFilenames.length;
         String omitKey;
         ArrayList<Integer> omitAll;
-        omitKey = DW_Strings.sIncludeAll;
+        omitKey = Strings.sIncludeAll;
         omitAll = getOmitAll();
         result.put(omitKey, omitAll);
-        omitKey = DW_Strings.sIncludeYearly;
+        omitKey = Strings.sIncludeYearly;
         ArrayList<Integer> omitYearly;
         omitYearly = getOmitYearly(n);
         result.put(omitKey, omitYearly);
-        omitKey = DW_Strings.sInclude6Monthly;
+        omitKey = Strings.sInclude6Monthly;
         ArrayList<Integer> omit6Monthly;
         omit6Monthly = getOmit6Monthly(n);
         result.put(omitKey, omit6Monthly);
-        omitKey = DW_Strings.sInclude3Monthly;
+        omitKey = Strings.sInclude3Monthly;
         ArrayList<Integer> omit3Monthly;
         omit3Monthly = getOmit3Monthly(n);
         result.put(omitKey, omit3Monthly);
-        omitKey = DW_Strings.sIncludeMonthly;
+        omitKey = Strings.sIncludeMonthly;
         ArrayList<Integer> omitMonthly;
         omitMonthly = getOmitMonthly();
         result.put(omitKey, omitMonthly);
-        omitKey = DW_Strings.sIncludeMonthlySinceApril2013;
+        omitKey = Strings.sIncludeMonthlySinceApril2013;
         ArrayList<Integer> omitMonthlyUO;
         omitMonthlyUO = getOmitMonthlyUO();
         result.put(omitKey, omitMonthlyUO);
-        omitKey = DW_Strings.sInclude2MonthlySinceApril2013Offset0;
+        omitKey = Strings.sInclude2MonthlySinceApril2013Offset0;
         ArrayList<Integer> omit2MonthlyUO0;
         omit2MonthlyUO0 = getOmit2MonthlyUO0(n);
         result.put(omitKey, omit2MonthlyUO0);
-        omitKey = DW_Strings.sInclude2MonthlySinceApril2013Offset1;
+        omitKey = Strings.sInclude2MonthlySinceApril2013Offset1;
         ArrayList<Integer> omit2MonthlyUO1;
         omit2MonthlyUO1 = getOmit2MonthlyUO1(n);
         result.put(omitKey, omit2MonthlyUO1);
-        omitKey = DW_Strings.sIncludeStartEndSinceApril2013;
+        omitKey = Strings.sIncludeStartEndSinceApril2013;
         ArrayList<Integer> omit2StartEndSinceApril2013;
         omit2StartEndSinceApril2013 = getOmit2StartEndSinceApril2013(n);
         result.put(omitKey, omit2StartEndSinceApril2013);
-        omitKey = DW_Strings.sIncludeApril2013May2013;
+        omitKey = Strings.sIncludeApril2013May2013;
         ArrayList<Integer> omit2April2013May2013;
         omit2April2013May2013 = getOmit2April2013May2013(n);
         result.put(omitKey, omit2April2013May2013);
@@ -3190,7 +3192,7 @@ public class DW_SHBE_Handler extends DW_Object {
             DW_SHBE_D_Record D_Record) {
         String result;
         String[] syM3;
-        syM3 = yM3.split(DW_Strings.sUnderscore);
+        syM3 = yM3.split(Strings.sUnderscore);
         result = getClaimantsAge(syM3[0], syM3[1], D_Record);
         return result;
     }
@@ -3436,7 +3438,7 @@ public class DW_SHBE_Handler extends DW_Object {
         NINO = S_Record.getSubRecordChildReferenceNumberOrNINO();
         ClaimantsNINO = S_Record.getClaimantsNationalInsuranceNumber();
         if (ClaimantsNINO.trim().isEmpty()) {
-            ClaimantsNINO = DW_Strings.sDefaultNINO;
+            ClaimantsNINO = Strings.sDefaultNINO;
             env.logE("ClaimantsNINO is empty for "
                     + "ClaimRef " + S_Record.getCouncilTaxBenefitClaimReferenceNumber()
                     + " Setting as default NINO " + ClaimantsNINO);

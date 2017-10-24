@@ -36,7 +36,7 @@ import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.agdtcensus.AGDT_Census;
+import uk.ac.leeds.ccg.andyt.census.core.Census_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
@@ -85,7 +85,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             String targetPropertyName,
             ShapefileDataStoreFactory sdsf) {
         super(env);
-        this.DW_Maps = env.getDW_Maps();
+        this.DW_Maps = env.getMaps();
         String tLeedsString = "Leeds";
         String tLeedsAndNeighbouringLADsString;
         tLeedsAndNeighbouringLADsString = "LeedsAndNeighbouringLADs";
@@ -137,7 +137,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
                 tLeedsAndNearNeighbouringLADCodes,
                 sdsf);
         File censusDataDirectory = new File(
-                env.getDW_Files().getInputCensus2011AttributeDataDir(level),
+                env.getFiles().getInputCensus2011AttributeDataDir(level),
                 tLeedsString);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
@@ -147,17 +147,17 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             _LevelDW_Shapefile = new DW_Shapefile(levelShapefile);
 
             // Read area level Census Codes
-            _LeedsAreaCodes = AGDT_Census.getCensusCodes(
+            _LeedsAreaCodes = Census_Environment.getCensusCodes(
                     tLeedsString,
                     level,
                     censusDataDirectory);
             // Read Leeds and neighbouring District LADs Census Codes for level
-            _LeedsAndNeighbouringLADAreaCodes = AGDT_Census.getCensusCodes(
+            _LeedsAndNeighbouringLADAreaCodes = Census_Environment.getCensusCodes(
                     tLeedsAndNeighbouringLADsString,
                     level,
                     censusDataDirectory);
             // Read Leeds and neighbouring District LADs and Craven And York Census Codes
-            _LeedsAndNearNeighbouringLADAreaCodes = AGDT_Census.getCensusCodes(
+            _LeedsAndNearNeighbouringLADAreaCodes = Census_Environment.getCensusCodes(
                     tLeedsAndNearNeighbouringLADsString,
                     level,
                     censusDataDirectory);
@@ -228,12 +228,12 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             DW_Shapefile tLevelDW_Shapefile) {
         TreeSet<String> result;
         File censusDataDirectory = new File(
-                env.getDW_Files().getInputCensus2011AttributeDataDir(level),
+                env.getFiles().getInputCensus2011AttributeDataDir(level),
                 area);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
                 || level.equalsIgnoreCase("MSOA")) {
-            result = AGDT_Census.getCensusCodes(
+            result = Census_Environment.getCensusCodes(
                     area,
                     level,
                     censusDataDirectory);
@@ -311,7 +311,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             String level) {
         File result;
         result = new File(
-                env.getDW_Files().getGeneratedPostcodeDir(),
+                env.getFiles().getGeneratedPostcodeDir(),
                 area + level + "PolyShapefile.shp");
         result = new File(
                 result,
@@ -369,7 +369,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             String level) {
         File result;
         File postcodeDataDirectory = new File(
-                env.getDW_Files().getGeneratedPostcodeDir(),
+                env.getFiles().getGeneratedPostcodeDir(),
                 area);
         postcodeDataDirectory = new File(
                 postcodeDataDirectory,
@@ -414,7 +414,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             String level) {
         TreeSet<String> result = null;
         File postcodeDataDirectory = new File(
-                env.getDW_Files().getGeneratedPostcodeDir(),
+                env.getFiles().getGeneratedPostcodeDir(),
                 area);
         postcodeDataDirectory = new File(
                 postcodeDataDirectory,

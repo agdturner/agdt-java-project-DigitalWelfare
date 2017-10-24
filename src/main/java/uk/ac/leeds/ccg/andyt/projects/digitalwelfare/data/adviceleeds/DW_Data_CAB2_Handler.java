@@ -27,7 +27,7 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataHandler;
+import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
@@ -128,7 +128,7 @@ public class DW_Data_CAB2_Handler extends DW_Object {
             }
             br.close();
         } catch (IOException ex) {
-            Logger.getLogger(Deprivation_DataHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Census_DeprivationDataHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }

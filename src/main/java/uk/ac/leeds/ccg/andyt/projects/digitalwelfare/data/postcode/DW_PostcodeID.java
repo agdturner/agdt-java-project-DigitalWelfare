@@ -4,7 +4,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode;
 
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 
 /**
@@ -13,11 +13,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 public class DW_PostcodeID {
 
     protected final DW_ID ID;
-    protected final AGDT_Point p;
+    protected final Geotools_Point p;
 
     public DW_PostcodeID(
             DW_ID ID,
-            AGDT_Point p) {
+            Geotools_Point p) {
         this.ID = ID;
         this.p = p;
     }
@@ -25,7 +25,7 @@ public class DW_PostcodeID {
     /**
      * @return the point
      */
-    public AGDT_Point getPoint() {
+    public Geotools_Point getPoint() {
         return p;
     }
 

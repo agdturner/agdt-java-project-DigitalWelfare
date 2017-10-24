@@ -1258,11 +1258,11 @@ public class TenancyChangesUO extends DW_Object {
             //HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup,
             boolean handleOutOfMemoryError) {
         this(env);
-        this.DW_SHBE_Data = env.getDW_SHBE_Data();
-        this.DW_Strings = env.getDW_Strings();
-        this.DW_Files = env.getDW_Files();
-        this.DW_SHBE_Handler = env.getDW_SHBE_Handler();
-        this.DW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
+        this.DW_SHBE_Data = env.getSHBE_Data();
+        this.DW_Strings = env.getStrings();
+        this.DW_Files = env.getFiles();
+        this.DW_SHBE_Handler = env.getSHBE_Handler();
+        this.DW_SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
         //this.PostcodeToPostcodeIDLookup = tPostcodeToPostcodeIDLookup;
         this.ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
         this.ClaimRefToClaimIDLookup = DW_SHBE_Data.getClaimRefToClaimIDLookup();
@@ -1339,7 +1339,7 @@ public class TenancyChangesUO extends DW_Object {
             year = DW_SHBE_Handler.getYear(SHBEFilenames[i]);
             month = DW_SHBE_Handler.getMonthNumber(SHBEFilenames[i]);
             yM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
-            DW_SHBE_Records = env.getDW_SHBE_Data().getDW_SHBE_Records(yM3);
+            DW_SHBE_Records = env.getSHBE_Data().getDW_SHBE_Records(yM3);
             records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
             ite = ClaimIDs.iterator();
             while (ite.hasNext()) {
@@ -3070,7 +3070,7 @@ public class TenancyChangesUO extends DW_Object {
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             if (CouncilUOSet1 != null) {
                 RSLUOSet1 = RSLUOSets.get(YM31);
-                DW_SHBE_Records1 = env.getDW_SHBE_Data().getDW_SHBE_Records(YM31);
+                DW_SHBE_Records1 = env.getSHBE_Data().getDW_SHBE_Records(YM31);
                 initFirst = true;
                 //arrearsDiffs.put(YM3, 0.0d);
                 //arrearsDiffCounts.put(YM3, 0.0d);
@@ -3448,7 +3448,7 @@ public class TenancyChangesUO extends DW_Object {
             YM31 = DW_SHBE_Handler.getYM3(SHBEFilename1);
             year1 = DW_SHBE_Handler.getYear(SHBEFilename1);
             month1 = DW_SHBE_Handler.getMonthNumber(SHBEFilename1);
-            DW_SHBE_Records1 = env.getDW_SHBE_Data().getDW_SHBE_Records(YM31);
+            DW_SHBE_Records1 = env.getSHBE_Data().getDW_SHBE_Records(YM31);
             //cRecords = Records0;
             Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
             CouncilUOSet1 = CouncilUOSets.get(YM31);

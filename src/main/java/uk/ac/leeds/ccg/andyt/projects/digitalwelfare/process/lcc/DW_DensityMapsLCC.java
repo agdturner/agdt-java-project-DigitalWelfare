@@ -26,9 +26,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Point;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_Shapefile;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGrid2DSquareCell;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_Grid2DSquareCellDouble;
@@ -54,10 +54,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Re
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_MapsLCC;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeGroups;
-//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps.initONSPDLookups;
+//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.Maps.initONSPDLookups;
 import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 
 /**
@@ -66,27 +67,31 @@ import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
  */
 public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
-    DW_MapsLCC DW_MapsLCC;
+    protected DW_MapsLCC MapsLCC;
 
     protected Vector_Environment ve;
-    protected DW_SHBE_Data DW_SHBE_Data;
+    protected DW_SHBE_Data SHBE_Data;
+    protected DW_Geotools Geotools;
 
     private static final String targetPropertyNameLSOA = "LSOA11CD";
-    private DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
+    
+    private DW_AreaCodesAndShapefiles LSOACodesAndLeedsLSOAShapefile;
 //    private DW_AreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
-    protected ArrayList<AGDT_Shapefile> midgrounds;
-    protected ArrayList<AGDT_Shapefile> foregrounds;
+    protected ArrayList<Geotools_Shapefile> midgrounds;
+    protected ArrayList<Geotools_Shapefile> foregrounds;
 
     public DW_DensityMapsLCC(DW_Environment de) {
         super(de);
-        this.DW_SHBE_Data = de.getDW_SHBE_Data();
+        ve = de.getVector_Environment();
+        SHBE_Data = de.getSHBE_Data();
+        Geotools = de.getGeotools();
     }
 
     public void run() throws Exception, Error {
         ve = new Vector_Environment();
         // If showMapsInJMapPane is true, the maps are presented in individual 
         // JMapPanes
-//        DW_Maps.setShowMapsInJMapPane(false);
+//        Maps.setShowMapsInJMapPane(false);
         //showMapsInJMapPane = true;
         //outputESRIAsciigrids = false;
         //initONSPDLookups();
@@ -103,30 +108,31 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        for (int i = 0; i < paletteNames.length; i++) {
 //            System.out.println(paletteNames[i]);
 //        }
-        AGDT_StyleParameters AGDT_StyleParameters;
-        AGDT_StyleParameters = new AGDT_StyleParameters();
-        AGDT_StyleParameters.setnClasses(9);
-        AGDT_StyleParameters.setPaletteName("Reds");
-        AGDT_StyleParameters.setAddWhiteForZero(true);
-//        AGDT_StyleParameters.setForegroundStyleTitle0("Foreground Style 0");
-//        AGDT_StyleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
-//        AGDT_StyleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
-        AGDT_StyleParameters.setForegroundStyle1(DW_Style.createDefaultPolygonStyle(
+        Geotools_StyleParameters sp;
+        sp = new Geotools_StyleParameters();
+        sp.setnClasses(9);
+        sp.setPaletteName("Reds");
+        sp.setAddWhiteForZero(true);
+//        Geotools_StyleParameters.setForegroundStyleTitle0("Foreground Style 0");
+//        Geotools_StyleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
+//        Geotools_StyleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
+        sp.setForegroundStyle1(
+                Geotools.getStyle().createDefaultPolygonStyle(
                 //Color.GREEN,
                 Color.BLACK,
                 Color.WHITE));
-        AGDT_StyleParameters.setForegroundStyleTitle1("Foreground Style 1");
-        DW_MapsLCC.setStyleParameters(AGDT_StyleParameters);
+        sp.setForegroundStyleTitle1("Foreground Style 1");
+        MapsLCC.setStyleParameters(sp);
 
         File generatedGridsDirectory;
         generatedGridsDirectory = new File(
-                df.getGeneratedGridsDir(),
+                Files.getGeneratedGridsDir(),
                 "Density");
-//        DW_MapsLCC.setMapDirectory(mapDirectory);
+//        MapsLCC.setMapDirectory(mapDirectory);
 
         int imageWidth;
         imageWidth = 2000;
-//        DW_MapsLCC.setImageWidth(imageWidth);
+//        MapsLCC.setImageWidth(imageWidth);
 
 //        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefiles();
         init();
@@ -163,10 +169,10 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        individualStyling = true;
 //        runAll(tDW_ID_ClientTypes);
         // Equal Interval runs
-        AGDT_StyleParameters.setClassificationFunctionName("EqualInterval");
-        AGDT_StyleParameters.setStylesNull();
+        sp.setClassificationFunctionName("EqualInterval");
+        sp.setStylesNull();
 //        commonStyling = true;
-//        DW_MapsLCC.setIndividualStyling(true);
+//        MapsLCC.setIndividualStyling(true);
 
         //int resolutionMultiplier = 4;
         cellsize = 50;
@@ -183,30 +189,30 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
     private void init() {
         //initStyleParameters();
         File mapDirectory;
-        mapDirectory = df.getOutputSHBELineMapsDir();
-//        DW_MapsLCC.setMapDirectory(mapDirectory);
-        foregrounds = new ArrayList<AGDT_Shapefile>();
+        mapDirectory = Files.getOutputSHBELineMapsDir();
+//        MapsLCC.setMapDirectory(mapDirectory);
+        foregrounds = new ArrayList<Geotools_Shapefile>();
         //midgrounds = new ArrayList<AGDT_Shapefile>();
 //        backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
-        tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
+        LSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
                 env,
                 "LSOA",
                 targetPropertyNameLSOA,
-                DW_MapsLCC.getShapefileDataStoreFactory());
+                MapsLCC.getShapefileDataStoreFactory());
         //foregrounds.add(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
-        foregrounds.add(DW_MapsLCC.getCommunityAreasDW_Shapefile());
+        foregrounds.add(MapsLCC.getCommunityAreasDW_Shapefile());
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
     }
 
     public void runRateMaps() {
         File dirOut;
         dirOut = new File(
-                df.getOutputSHBEMapsDir(),
+                Files.getOutputSHBEMapsDir(),
                 "Density");
 
         String[] SHBEFilenames;
-        SHBEFilenames = env.getDW_SHBE_Handler().getSHBEFilenamesAll();
+        SHBEFilenames = env.getSHBE_Handler().getSHBEFilenamesAll();
         // Specifiy distances
         ArrayList<Double> distances;
         distances = new ArrayList<Double>();
@@ -218,16 +224,16 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        int multiplier;
 //        multiplier = (int) (400 / cellsize);
         DW_Shapefile backgroundDW_Shapefile;
-        backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
-//        DW_MapsLCC.setBackgroundDW_Shapefile(backgroundDW_Shapefile);
+        backgroundDW_Shapefile = LSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+//        MapsLCC.setBackgroundDW_Shapefile(backgroundDW_Shapefile);
 //        backgroundDW_Shapefile = new DW_Shapefile(f);
         //foregroundDW_Shapefile0 = new ArrayList<AGDT_Shapefile>();
         //foregroundDW_Shapefile0.add(getCommunityAreasDW_Shapefile());
 //        foregroundDW_Shapefile1 = new DW_Shapefile(f);
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
         DW_Shapefile foregroundDW_Shapefile1;
-        foregroundDW_Shapefile1 = DW_MapsLCC.getCommunityAreasDW_Shapefile();
-//        DW_MapsLCC.setForegroundDW_Shapefile1(foregroundDW_Shapefile1);
+        foregroundDW_Shapefile1 = MapsLCC.getCommunityAreasDW_Shapefile();
+//        MapsLCC.setForegroundDW_Shapefile1(foregroundDW_Shapefile1);
 //        DW_Shapefile sf = getCommunityAreasDW_Shapefile();
 //        sf.getFeatureLayer().getFeatureSource();
 
@@ -241,18 +247,18 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 BigDecimal.valueOf(xllcorner + (cellsize * ncols)),
                 BigDecimal.valueOf(yllcorner + (cellsize * nrows)),
                 BigDecimal.valueOf(cellsize));
-        backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+        backgroundDW_Shapefile = LSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
 
         boolean overlaycommunityAreas;
         overlaycommunityAreas = true;
 //        overlaycommunityAreas = false;
         File dirOut1;
         if (overlaycommunityAreas) {
-            foregroundDW_Shapefile1 = DW_MapsLCC.getCommunityAreasDW_Shapefile();
+            foregroundDW_Shapefile1 = MapsLCC.getCommunityAreasDW_Shapefile();
             dirOut1 = new File(dirOut, "CommunityAreasOverlaid");
         } else {
             dirOut1 = new File(dirOut, "LADOverlaid");
-            foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+            foregroundDW_Shapefile1 = LSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
         }
         Grids_Grid2DSquareCellDoubleFactory f;
         f = new Grids_Grid2DSquareCellDoubleFactory(ge, handleOutOfMemoryErrors);
@@ -375,7 +381,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
         // Includes
         TreeMap<String, ArrayList<Integer>> includes;
-        includes = env.getDW_SHBE_Handler().getIncludes();
+        includes = env.getSHBE_Handler().getIncludes();
         includes.remove("All");
         includes.remove("Yearly");
         includes.remove("6Monthly");
@@ -395,7 +401,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         String type = "Social";
 
         DW_SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = env.getDW_SHBE_Handler();
+        tDW_SHBE_Handler = env.getSHBE_Handler();
 
 //        if (true) {
         if (true) {
@@ -645,15 +651,15 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         boolean scaleToFirst = false;
         File dirOut;
         dirOut = new File(
-                df.getOutputSHBEMapsDir(),
+                Files.getOutputSHBEMapsDir(),
                 "Density");
         DW_SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = env.getDW_SHBE_Handler();
+        tDW_SHBE_Handler = env.getSHBE_Handler();
         String[] SHBEFilenames;
         SHBEFilenames = tDW_SHBE_Handler.getSHBEFilenamesAll();
 
         DW_UO_Data DW_UO_Data;
-        DW_UO_Data = env.getDW_UO_Data();
+        DW_UO_Data = env.getUO_Data();
 
 //        Object[] ttgs = DW_SHBE_TenancyType_Handler.getTenancyTypeGroups();
 //        HashMap<Boolean, TreeMap<String, ArrayList<String>>> tenancyTypeGroups;
@@ -696,16 +702,16 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        int multiplier;
 //        multiplier = (int) (400 / cellsize);
         DW_Shapefile backgroundDW_Shapefile;
-        backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
-//        DW_MapsLCC.setBackgroundDW_Shapefile(backgroundDW_Shapefile);
+        backgroundDW_Shapefile = LSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+//        MapsLCC.setBackgroundDW_Shapefile(backgroundDW_Shapefile);
 //        backgroundDW_Shapefile = new DW_Shapefile(f);
         //foregroundDW_Shapefile0 = new ArrayList<AGDT_Shapefile>();
         //foregroundDW_Shapefile0.add(getCommunityAreasDW_Shapefile());
 //        foregroundDW_Shapefile1 = new DW_Shapefile(f);
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
         DW_Shapefile foregroundDW_Shapefile1;
-        foregroundDW_Shapefile1 = DW_MapsLCC.getCommunityAreasDW_Shapefile();
-//        DW_MapsLCC.setForegroundDW_Shapefile1(foregroundDW_Shapefile1);
+        foregroundDW_Shapefile1 = MapsLCC.getCommunityAreasDW_Shapefile();
+//        MapsLCC.setForegroundDW_Shapefile1(foregroundDW_Shapefile1);
 //        DW_Shapefile sf = getCommunityAreasDW_Shapefile();
 //        sf.getFeatureLayer().getFeatureSource();
 
@@ -725,8 +731,8 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         b.add(false);
 
         ArrayList<String> paymentTypes;
-        paymentTypes = DW_Strings.getPaymentTypes();
-        paymentTypes.remove(DW_Strings.sPaymentTypeAll);
+        paymentTypes = Strings.getPaymentTypes();
+        paymentTypes.remove(Strings.sPaymentTypeAll);
 //        paymentTypes.remove(tDW_SHBE_Handler.sPaymentTypeIn);
 //        paymentTypes.remove(tDW_SHBE_Handler.sPaymentTypeSuspended);
 //        paymentTypes.remove(tDW_SHBE_Handler.sPaymentTypeOther);
@@ -765,7 +771,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                             doRSL,
                             doCouncil,
                             scaleToFirst,
-                            df.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
                             SHBEFilenames,
                             tDW_SHBE_Handler,
@@ -780,7 +786,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                             doRSL,
                             doCouncil,
                             scaleToFirst,
-                            df.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
                             SHBEFilenames,
                             tDW_SHBE_Handler,
@@ -795,7 +801,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                             doRSL,
                             doCouncil,
                             scaleToFirst,
-                            df.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
                             SHBEFilenames,
                             tDW_SHBE_Handler,
@@ -979,15 +985,15 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         //foregroundDW_Shapefile0 = new DW_Shapefile(f);
         //foregroundDW_Shapefile1 = getCommunityAreasDW_Shapefile();
         DW_Shapefile backgroundDW_Shapefile;
-        backgroundDW_Shapefile = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
-//        DW_MapsLCC.setBackgroundDW_Shapefile(backgroundDW_Shapefile);
+        backgroundDW_Shapefile = LSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+//        MapsLCC.setBackgroundDW_Shapefile(backgroundDW_Shapefile);
         File dirOut1;
         if (overlaycommunityAreas) {
-//            DW_MapsLCC.setForegroundDW_Shapefile1(DW_MapsLCC.getCommunityAreasDW_Shapefile());
+//            MapsLCC.setForegroundDW_Shapefile1(MapsLCC.getCommunityAreasDW_Shapefile());
             dirOut1 = new File(dirOut, "CommunityAreasOverlaid");
         } else {
             dirOut1 = new File(dirOut, "LADOverlaid");
-//            DW_MapsLCC.setForegroundDW_Shapefile1(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
+//            MapsLCC.setForegroundDW_Shapefile1(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
         }
         // Set grid dimensions    
         nrows = 554;//70 * multiplier * resolutionMultiplier; //139 * multiplier; //277 * multiplier;
@@ -1073,7 +1079,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                         }
                     }
                 }
-                recs0 = env.getDW_SHBE_Data().getDW_SHBE_Records(yM30);
+                recs0 = env.getSHBE_Data().getDW_SHBE_Records(yM30);
 //            DW_SHBE_Records SHBEData00;
 //            SHBEData00 = SHBEData0;
                 yM300 = yM30;
@@ -1117,7 +1123,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //                        i = ite.next();
 //                    }
                     DW_SHBE_Records SHBEData1;
-                    SHBEData1 = DW_SHBE_Data.getDW_SHBE_Records(yM30);
+                    SHBEData1 = SHBE_Data.getDW_SHBE_Records(yM30);
 
                     DW_YM3 yM31;
                     yM31 = tDW_SHBE_Handler.getYM3(SHBEFilenames[i]);
@@ -1204,8 +1210,8 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 dirOut,
                 yM3.toString());
 
-        DW_MapsLCC.getStyleParameters().setnClasses(9);
-        DW_MapsLCC.getStyleParameters().setPaletteName2(null);
+        MapsLCC.getStyleParameters().setnClasses(9);
+        MapsLCC.getStyleParameters().setPaletteName2(null);
 
         String name = "Density" + yM3;
 
@@ -1218,10 +1224,10 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         grid.mkdirs();
         Grids_Grid2DSquareCellDouble g0 = initiliseGrid(grid);
 
-        TreeMap<String, TreeMap<DW_YM3, TreeMap<String, AGDT_Point>>> lookups;
-        lookups = DW_MapsLCC.getONSPDlookups();
-        TreeMap<String, AGDT_Point> lookup;
-        lookup = lookups.get("Unit").get(DW_Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
+        TreeMap<String, TreeMap<DW_YM3, TreeMap<String, Geotools_Point>>> lookups;
+        lookups = MapsLCC.getONSPDlookups();
+        TreeMap<String, Geotools_Point> lookup;
+        lookup = lookups.get("Unit").get(Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 
         HashMap<DW_ID, DW_SHBE_Record> records;
         records = SHBEData.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
@@ -1293,11 +1299,11 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 }
                 if (doMainLoop) {
                     if (postcode != null) {
-                        AGDT_Point p;
-                        p = lookup.get(DW_Postcode_Handler.formatPostcodeForMapping(postcode));
+                        Geotools_Point p;
+                        p = lookup.get(Postcode_Handler.formatPostcodeForMapping(postcode));
 //            String formattedPostcode;
 //            formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
-//            AGDT_Point p1;
+//            Geotools_Point p1;
 //            p1 = DW_Postcode_Handler.getPointFromPostcode(DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode));
                         if (p != null) {
                             g0.addToCell(
@@ -1308,8 +1314,8 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                             nonZero = true;
                         } else {
                             System.out.println("No point for postcode " + postcode + ", "
-                                    + "DW_Postcode_Handler.formatPostcodeForMapping(postcode)" + DW_Postcode_Handler.formatPostcodeForMapping(postcode) + ", "
-                                    + "DW_Postcode_Handler.formatPostcode(postcode) " + DW_Postcode_Handler.formatPostcode(postcode));
+                                    + "DW_Postcode_Handler.formatPostcodeForMapping(postcode)" + Postcode_Handler.formatPostcodeForMapping(postcode) + ", "
+                                    + "DW_Postcode_Handler.formatPostcode(postcode) " + Postcode_Handler.formatPostcode(postcode));
                         }
                     }
                 }
@@ -1341,7 +1347,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                     index,
                     scaleToFirst);
             if (!scaleToFirst) {
-                DW_MapsLCC.getStyleParameters().setStyle(name, null, index);
+                MapsLCC.getStyleParameters().setStyle(name, null, index);
             }
 
             // Generalise the grid
@@ -1407,7 +1413,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                         index,
                         scaleToFirst);
                 if (!scaleToFirst) {
-                    DW_MapsLCC.getStyleParameters().setStyle(name, null, index);
+                    MapsLCC.getStyleParameters().setStyle(name, null, index);
                 }
             }
         } else {
@@ -1423,12 +1429,12 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             String name,
             boolean scaleToFirst) {
 
-        //styleParameters = new AGDT_StyleParameters();
-        DW_MapsLCC.getStyleParameters().setnClasses(5);
+        //styleParameters = new Geotools_StyleParameters();
+        MapsLCC.getStyleParameters().setnClasses(5);
         //styleParameters.setnClasses2(5);
         //styleParameters.setPaletteName("Reds");
-        DW_MapsLCC.getStyleParameters().setPaletteName2("Blues");
-        DW_MapsLCC.getStyleParameters().setAddWhiteForZero(true);
+        MapsLCC.getStyleParameters().setPaletteName2("Blues");
+        MapsLCC.getStyleParameters().setAddWhiteForZero(true);
 
         System.out.println("g1 " + g1.toString(handleOutOfMemoryErrors));
         // output grid
@@ -1453,7 +1459,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 index,
                 scaleToFirst);
         if (!scaleToFirst) {
-            DW_MapsLCC.getStyleParameters().setStyle(name, null, index);
+            MapsLCC.getStyleParameters().setStyle(name, null, index);
         }
 
         // Generalise the grid
@@ -1523,14 +1529,14 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                     index,
                     scaleToFirst);
             if (!scaleToFirst) {
-                DW_MapsLCC.getStyleParameters().setStyle(name, null, index);
+                MapsLCC.getStyleParameters().setStyle(name, null, index);
             }
         }
     }
 
     protected TreeMap<String, ArrayList<String>> getAllTenancyTypeGroups() {
         DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
-        DW_SHBE_TenancyType_Handler = env.getDW_SHBE_TenancyType_Handler();
+        DW_SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
         TreeMap<String, ArrayList<String>> result;
         result = new TreeMap<String, ArrayList<String>>();
         ArrayList<String> l;

@@ -24,11 +24,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.agdtcensus.Deprivation_DataRecord;
+import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ChoroplethMapsAbstract;
@@ -90,8 +90,8 @@ public class DW_ChoroplethMapsLCC extends DW_ChoroplethMapsAbstract {
 ////        for (int i = 0; i < paletteNames.length; i++) {
 ////            System.out.println(paletteNames[i]);
 ////        }
-//        AGDT_StyleParameters styleParameters;
-//        styleParameters = new AGDT_StyleParameters();
+//        Geotools_StyleParameters styleParameters;
+//        styleParameters = new Geotools_StyleParameters();
 //        styleParameters.setnClasses(9);
 //        styleParameters.setPaletteName("Reds");
 //        styleParameters.setAddWhiteForZero(true);
@@ -344,7 +344,7 @@ public class DW_ChoroplethMapsLCC extends DW_ChoroplethMapsAbstract {
 //                 level,
 //                    targetPropertyName,
 //                    getShapefileDataStoreFactory());
-//            TreeMap<String, Deprivation_DataRecord> deprivationRecords;
+//            TreeMap<String, Census_DeprivationDataRecord> deprivationRecords;
 //            Iterator<String> classificationFunctionNamesIte;
 //            classificationFunctionNamesIte = classificationFunctionNames.iterator();
 //            while (classificationFunctionNamesIte.hasNext()) {
@@ -737,7 +737,7 @@ public class DW_ChoroplethMapsLCC extends DW_ChoroplethMapsAbstract {
     public void runSHBE(
             boolean doUnderOccupied,
             boolean doCouncil,
-            TreeMap<String, Deprivation_DataRecord> deprivationRecords,
+            TreeMap<String, Census_DeprivationDataRecord> deprivationRecords,
             DW_AreaCodesAndShapefiles tAreaCodesAndShapefiles,
             String[] tFilenames,
             ArrayList<Integer> include,

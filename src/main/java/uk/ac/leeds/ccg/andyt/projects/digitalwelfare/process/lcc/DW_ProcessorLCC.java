@@ -54,9 +54,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 
     public DW_ProcessorLCC(DW_Environment env) {
         super(env);
-        DW_SHBE_Data = env.getDW_SHBE_Data();
-        DW_SHBE_Handler = env.getDW_SHBE_Handler();
-        DW_UO_Data = env.getDW_UO_Data();
+        DW_SHBE_Data = env.getSHBE_Data();
+        DW_SHBE_Handler = env.getSHBE_Handler();
+        DW_UO_Data = env.getUO_Data();
         SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
         ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
     }
@@ -79,8 +79,8 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 DW_ProcessorLCC DW_ProcessorLCC;
                 DW_ProcessorLCC = new DW_ProcessorLCC();
                 DW_ProcessorLCC.env = env;
-                DW_ProcessorLCC.df = env.getDW_Files();
-                DW_ProcessorLCC.ds = env.getDW_Strings();
+                DW_ProcessorLCC.df = env.getFiles();
+                DW_ProcessorLCC.ds = env.getStrings();
                 DW_ProcessorLCC.run();
                 /**
                  * Not done this way as this would first load UnderOccupancy
@@ -123,38 +123,38 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (!RunAllFromScratch) {
             if (!RunAllFromUpdate) {
                 // Choose which bits to run
-//                doLoadAllONSPDFromSource = true;
-////                doLoadNewONSPDFromSource = true;
-//                doLoadAllSHBEFromSource = true;
-////                doLoadNewSHBEFromSource = true;
-////                doLoadSHBE = true;
-////                doPostcodeCheckLatest = true;
-////                doPostcodeCheck = true;
-//                doLoadUnderOccupancyFromSource = true;
-////                doLoadUnderOccupancy = true;
-//                doLCCSummary = true;
-//                doRentArrears = true;
-////                doRentArrearsNewData = true;
-//                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
-//                doLCCHBGeneralAggregateStatistics = true;
-//                doLCCTTAndPT = true;
-//                if (doLCCTTAndPT) {
-//                    doLCCTTAndPTAll = true; // Runtime 13:23:08.458s
-//                    /**
-//                     * If doLCCTTAndPTAll = false then choose bits otherwise run
-//                     * for all combinations.
-//                     */
-////                    doLCCTTAndPTAll = false;
-////                    LCCTTAndPT_DoGrouped = true;
-////                    LCCTTAndPT_DoPostcodeChanges = true;
-//////                    LCCTTAndPT_DoPostcodeChanges = false;
-////                    LCCTTAndPT_DoAnyTenancyChanges = true;
-//////                    LCCTTAndPT_DoAnyTenancyChanges = false;
-////                    LCCTTAndPT_DoTenancyChanges = true;
-//////                    LCCTTAndPT_DoTenancyChanges = false;
-////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
-//////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = false;
-//                }
+                doLoadAllONSPDFromSource = true;
+//                doLoadNewONSPDFromSource = true;
+                doLoadAllSHBEFromSource = true;
+//                doLoadNewSHBEFromSource = true;
+//                doLoadSHBE = true;
+//                doPostcodeCheckLatest = true;
+//                doPostcodeCheck = true;
+                doLoadUnderOccupancyFromSource = true;
+//                doLoadUnderOccupancy = true;
+                doLCCSummary = true;
+                doRentArrears = true;
+//                doRentArrearsNewData = true;
+                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+                doLCCHBGeneralAggregateStatistics = true;
+                doLCCTTAndPT = true;
+                if (doLCCTTAndPT) {
+                    doLCCTTAndPTAll = true; // Runtime 13:23:08.458s
+                    /**
+                     * If doLCCTTAndPTAll = false then choose bits otherwise run
+                     * for all combinations.
+                     */
+//                    doLCCTTAndPTAll = false;
+//                    LCCTTAndPT_DoGrouped = true;
+//                    LCCTTAndPT_DoPostcodeChanges = true;
+////                    LCCTTAndPT_DoPostcodeChanges = false;
+//                    LCCTTAndPT_DoAnyTenancyChanges = true;
+////                    LCCTTAndPT_DoAnyTenancyChanges = false;
+//                    LCCTTAndPT_DoTenancyChanges = true;
+////                    LCCTTAndPT_DoTenancyChanges = false;
+//                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
+////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = false;
+                }
 //                doChoroplethMapping = true;
 //                doLineMaps = true;
 //                doReports = true;
@@ -229,7 +229,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     range);
             // Process
             DW_Postcode_Handler = new DW_Postcode_Handler(env);
-            env.setDW_Postcode_Handler(DW_Postcode_Handler);
+            env.setPostcode_Handler(DW_Postcode_Handler);
             DW_Postcode_Handler.run(logDir);
             // Close logs
             closeLogs(processName);
@@ -247,7 +247,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     range);
             // Process
             DW_SHBE_Handler = new DW_SHBE_Handler(env);
-            env.setDW_SHBE_Handler(DW_SHBE_Handler);
+            env.setSHBE_Handler(DW_SHBE_Handler);
             DW_SHBE_Handler.run(logDir);
             // Close logs
             closeLogs(processName);
@@ -265,7 +265,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     range);
             // Process
             DW_SHBE_Handler = new DW_SHBE_Handler(env);
-            env.setDW_SHBE_Handler(DW_SHBE_Handler);
+            env.setSHBE_Handler(DW_SHBE_Handler);
             DW_SHBE_Handler.runNew(logDir);
             // Close logs
             closeLogs(processName);
@@ -283,7 +283,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     range);
             // Process
             DW_SHBE_Handler = new DW_SHBE_Handler(env);
-            env.setDW_SHBE_Handler(DW_SHBE_Handler);
+            env.setSHBE_Handler(DW_SHBE_Handler);
             DW_SHBE_Handler.runPostcodeCheck(logDir);
             // Close logs
             closeLogs(processName);
@@ -301,7 +301,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     range);
             // Process
             DW_SHBE_Handler = new DW_SHBE_Handler(env);
-            env.setDW_SHBE_Handler(DW_SHBE_Handler);
+            env.setSHBE_Handler(DW_SHBE_Handler);
             DW_SHBE_Handler.runPostcodeCheckLatest(logDir);
             // Close logs
             closeLogs(processName);
@@ -320,14 +320,14 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     processName,
                     range);
             // Process
-            DW_SHBE_Data = env.getDW_SHBE_Data();
+            DW_SHBE_Data = env.getSHBE_Data();
             HashMap<DW_YM3, DW_SHBE_Records> Data;
             Data = DW_SHBE_Data.getData();
             DW_SHBE_Handler = new DW_SHBE_Handler(env);
-            env.setDW_SHBE_Handler(DW_SHBE_Handler);
+            env.setSHBE_Handler(DW_SHBE_Handler);
             SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
             File dir;
-            dir = env.getDW_Files().getGeneratedSHBEDir();
+            dir = env.getFiles().getGeneratedSHBEDir();
             DW_YM3 YM3;
             for (String SHBEFilename : SHBEFilenames) {
                 YM3 = DW_SHBE_Handler.getYM3(SHBEFilename);
@@ -375,7 +375,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Process
             boolean loadFromSource;
             loadFromSource = true;
-            DW_UO_Data = env.getDW_UO_Data(loadFromSource);
+            DW_UO_Data = env.getUO_Data(loadFromSource);
             // Close logs
             closeLogs(processName);
         }
@@ -390,7 +390,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Process
             boolean loadFromSource;
             loadFromSource = false;
-            DW_UO_Data = env.getDW_UO_Data(loadFromSource);
+            DW_UO_Data = env.getUO_Data(loadFromSource);
             // Close logs
             closeLogs(processName);
         }

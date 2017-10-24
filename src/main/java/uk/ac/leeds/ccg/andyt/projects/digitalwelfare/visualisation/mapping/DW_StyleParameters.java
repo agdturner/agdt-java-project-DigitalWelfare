@@ -20,20 +20,19 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping;
 
 import java.util.ArrayList;
 import org.geotools.styling.Style;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_LegendItem;
-//import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParameters;
-import uk.ac.leeds.ccg.andyt.agdtgeotools.AGDT_StyleParametersAbstract;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_LegendItem;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_AbstractStyleParameters;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_StyleParameters extends AGDT_StyleParametersAbstract {
+public class DW_StyleParameters extends Geotools_AbstractStyleParameters {
     
     private ArrayList<Style> midgroundStyles;
     private ArrayList<Style> backgroundStyles;
     private ArrayList<Style> foregroundStyles;
-    private ArrayList<ArrayList<AGDT_LegendItem>> legendItems;
+    private ArrayList<ArrayList<Geotools_LegendItem>> legendItems;
 
     public DW_StyleParameters() {
     }
@@ -174,9 +173,9 @@ public class DW_StyleParameters extends AGDT_StyleParametersAbstract {
      * @param index
      * @return a specific list of legendItems
      */
-    public ArrayList<AGDT_LegendItem> getLegendItems(int index) {
-        ArrayList<AGDT_LegendItem> result;
-        ArrayList<ArrayList<AGDT_LegendItem>> legendItems0;
+    public ArrayList<Geotools_LegendItem> getLegendItems(int index) {
+        ArrayList<Geotools_LegendItem> result;
+        ArrayList<ArrayList<Geotools_LegendItem>> legendItems0;
         legendItems0 = getLegendItems();
         try {
             result = legendItems0.get(index);
@@ -184,8 +183,8 @@ public class DW_StyleParameters extends AGDT_StyleParametersAbstract {
             result = null;
             int i = legendItems0.size();
             while (i <= index) {
-                ArrayList<AGDT_LegendItem> newLegendItem;
-                newLegendItem = new ArrayList<AGDT_LegendItem>();
+                ArrayList<Geotools_LegendItem> newLegendItem;
+                newLegendItem = new ArrayList<Geotools_LegendItem>();
                 legendItems0.add(i, result);
                 i++;
                 result = newLegendItem;
@@ -199,9 +198,9 @@ public class DW_StyleParameters extends AGDT_StyleParametersAbstract {
      * @param index
      * @return
      */
-    public ArrayList<AGDT_LegendItem> setLegendItems(
-            ArrayList<AGDT_LegendItem> legendItems, int index) {
-        ArrayList<AGDT_LegendItem> result;
+    public ArrayList<Geotools_LegendItem> setLegendItems(
+            ArrayList<Geotools_LegendItem> legendItems, int index) {
+        ArrayList<Geotools_LegendItem> result;
         result = getLegendItems(index); // This ensures that legendItems is initialised to the right length.
         getLegendItems().set(index, legendItems);
         return result;
@@ -210,9 +209,9 @@ public class DW_StyleParameters extends AGDT_StyleParametersAbstract {
     /**
      * @return the legendItems
      */
-    public ArrayList<ArrayList<AGDT_LegendItem>> getLegendItems() {
+    public ArrayList<ArrayList<Geotools_LegendItem>> getLegendItems() {
         if (legendItems == null) {
-            legendItems = new ArrayList<ArrayList<AGDT_LegendItem>>();
+            legendItems = new ArrayList<ArrayList<Geotools_LegendItem>>();
         }
         return legendItems;
     }
@@ -220,7 +219,7 @@ public class DW_StyleParameters extends AGDT_StyleParametersAbstract {
     /**
      * @param legendItems the legendItems to set
      */
-    public void setLegendItems(ArrayList<ArrayList<AGDT_LegendItem>> legendItems) {
+    public void setLegendItems(ArrayList<ArrayList<Geotools_LegendItem>> legendItems) {
         this.legendItems = legendItems;
     }
 
