@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Claim;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -94,7 +93,7 @@ public final class RentArrearsUO extends DW_Object {
         ite = AllCouncilUOClaimIDs.iterator();
         while (ite.hasNext()) {
             ClaimID = ite.next();
-            ClaimData.put(ClaimID, new DW_Claim(ClaimID));
+            ClaimData.put(ClaimID, new DW_Claim(env, ClaimID));
         }
         // Loop through and add data to ClaimData
         // Declare variables

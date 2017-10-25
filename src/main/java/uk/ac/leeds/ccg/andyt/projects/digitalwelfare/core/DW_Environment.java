@@ -41,20 +41,19 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ma
 import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 
 /**
- * This class is for an instance of the environment for the Digital Welfare
- * program. It contains holders for commonly referred to objects that might
- * otherwise be constructed multiple times. It is also for handling memory
+ * This class is for a shared object, common to many objects in a Digital
+ * Welfare program. It contains holders for commonly referred to objects that
+ * might otherwise be constructed multiple times. It is also for handling memory
  * although for the time being, there has not been a need for convoluted
  * swapping of data from memory to disk.
- *
- * @author agdturner
  */
 public class DW_Environment extends DW_OutOfMemoryErrorHandler
         implements Serializable {
 
-    public String sDigitalWelfareDir = "/scratch02/DigitalWelfare";
-    //public String sDigitalWelfareDir = "C:/Users/geoagdt/projects/DigitalWelfare";
-    
+    public String Directory;
+    //public String Directory = "/scratch02/DigitalWelfare";
+    //public String Directory = "C:/Users/geoagdt/projects/DigitalWelfare";
+
     /**
      * Logging levels.
      */
@@ -62,7 +61,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public final int DEBUG_Level_FINEST = 0;
     public final int DEBUG_Level_FINE = 1;
     public final int DEBUG_Level_NORMAL = 2;
-    
+
     /**
      * For storing an instance of DW_Strings for accessing Strings.
      */
@@ -73,27 +72,26 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * therein.
      */
     private DW_Files Files;
-    
+
     /**
      * For storing an instance of Grids_Environment
      */
     protected transient Grids_Environment ge;
-    
+
     /**
      * For storing an instance of Vector_Environment
      */
     protected transient Vector_Environment ve;
-    
+
     /**
      * For storing an instance of DW_Geotools
      */
     protected transient DW_Geotools Geotools;
-    
+
 //    /**
 //     * For storing an instance of HashMap<String, DW_SHBE_CollectionHandler>.
 //     */
 //    private HashMap<String, DW_SHBE_CollectionHandler> DW_SHBE_CollectionHandlers;
-
     /**
      * For storing an instance of UO_Handler for convenience.
      */
@@ -113,12 +111,12 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * For storing an instance of SHBE_Handler for convenience.
      */
     private DW_SHBE_Handler SHBE_Handler;
-    
+
     /**
      * For storing an instance of SHBE_TenancyType_Handler for convenience.
      */
     private DW_SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
-    
+
     /**
      * For storing an instance of DW_Maps for convenience.
      */
@@ -133,24 +131,18 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * For storing an instance of DW_SHBE_DataAll.
      */
     private DW_SHBE_Data SHBE_Data;
-    
-    public DW_Environment(int DEBUG_Level) {
-        init(DEBUG_Level);
-    }
-    
-    public DW_Environment(int DEBUG_Level, String sDigitalWelfareDir) {
-        init(DEBUG_Level, sDigitalWelfareDir);
-    }
 
-    private void init(int DEBUG_Level) {
+    public DW_Environment(int DEBUG_Level) {
         this.DEBUG_Level = DEBUG_Level;
-            this.Files = new DW_Files(this);
+        this.Files = new DW_Files(this);
         this.Strings = new DW_Strings();
     }
-    
-    private void init(int DEBUG_Level, String sDigitalWelfareDir) {
-        this.sDigitalWelfareDir = sDigitalWelfareDir;
-        init(DEBUG_Level);
+
+    public DW_Environment(int DEBUG_Level, String directory) {
+        this.Directory = directory;
+        this.DEBUG_Level = DEBUG_Level;
+        this.Files = new DW_Files(this);
+        this.Strings = new DW_Strings();
     }
 
     @Override
@@ -315,7 +307,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public boolean clearSomeSHBECacheExcept(DW_YM3 YM3) {
         return getSHBE_Data().clearSomeCacheExcept(YM3);
     }
-    
+
     /**
      * For writing output messages to.
      */
@@ -353,7 +345,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         PrintWriterErr.println(s);
         System.out.println(s);
     }
-    
+
 //    private static void log(
 //            String message) {
 //        log(DW_Log.DW_DefaultLogLevel, message);
@@ -364,7 +356,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 //            String message) {
 //        Logger.getLogger(DW_Log.DW_DefaultLoggerName).log(level, message);
 //    }
-
     /**
      * Writes s to a new line of the output log and also prints it to std.out.
      *
@@ -432,7 +423,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             logE(st1.toString());
         }
     }
-    
+
     /**
      * For returning an instance of DW_Strings for convenience.
      *
@@ -468,7 +459,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         }
         return ge;
     }
-            
+
     public Vector_Environment getVector_Environment() {
         if (ve == null) {
             ve = new Vector_Environment();
@@ -546,10 +537,10 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     }
 
     /**
-     * For returning an instance of UO_Data for convenience. If
-     * loadFromSource is true then the data is reloaded from source. Otherwise
-     * if the formatted version exists this is loaded. If the formatted version
-     * does not exist, the data is loaded from source.
+     * For returning an instance of UO_Data for convenience. If loadFromSource
+     * is true then the data is reloaded from source. Otherwise if the formatted
+     * version exists this is loaded. If the formatted version does not exist,
+     * the data is loaded from source.
      *
      * @param loadFromSource
      * @return
@@ -646,7 +637,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         }
         return SHBE_Data;
     }
-    
+
     /**
      * For returning an instance of DW_Maps for convenience.
      *

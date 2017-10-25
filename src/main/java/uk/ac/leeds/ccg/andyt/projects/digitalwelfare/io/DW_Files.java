@@ -43,7 +43,7 @@ public class DW_Files extends DW_Object {
 
     /**
      * For storing the main directory location where the project files are
-     * stored. This is initialised from DW_Environment.sDigitalWelfareDir.
+     * stored. This is initialised from DW_Environment.Directory.
      */
     private File dir;
 
@@ -128,7 +128,7 @@ public class DW_Files extends DW_Object {
 
     public File getDigitalWelfareDir() {
         if (dir == null) {
-            dir = new File(env.sDigitalWelfareDir);
+            dir = new File(env.Directory);
         }
         return dir;
     }
