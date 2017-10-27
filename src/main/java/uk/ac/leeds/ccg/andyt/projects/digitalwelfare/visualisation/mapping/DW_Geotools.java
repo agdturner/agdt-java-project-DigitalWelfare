@@ -45,7 +45,7 @@ import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.geotools.core.Geotools_Environment;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGrid2DSquareCell;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_LegendItem;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_LegendLayer;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
@@ -102,7 +102,7 @@ public class DW_Geotools extends Geotools_Environment {
             Geotools_StyleParameters styleParameters,
             int index,
             String outname,
-            Grids_AbstractGrid2DSquareCell g,
+            Grids_AbstractGridNumber g,
             GridCoverage2D gc,
             ArrayList<Geotools_Shapefile> foregroundDW_Shapefile0,
             Geotools_Shapefile foregroundDW_Shapefile1,
@@ -191,7 +191,7 @@ public class DW_Geotools extends Geotools_Environment {
     private Object[] createMapContent(
             double normalisation,
             String name,
-            Grids_AbstractGrid2DSquareCell g,
+            Grids_AbstractGridNumber g,
             GridCoverage2D gc,
             ArrayList<Geotools_Shapefile> foregroundShapefiles,
             Geotools_Shapefile foregroundDW_Shapefile1,
