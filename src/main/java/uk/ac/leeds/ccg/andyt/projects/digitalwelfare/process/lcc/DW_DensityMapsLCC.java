@@ -36,8 +36,8 @@ import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_GridChunkDoubleArrayFac
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.statistics.Grids_GridStatistics0;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ESRIAsciiGridExporter;
-import uk.ac.leeds.ccg.andyt.grids.exchange.Grids_ImageExporter;
+import uk.ac.leeds.ccg.andyt.grids.io.Grids_ESRIAsciiGridExporter;
+import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
@@ -261,7 +261,10 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             foregroundDW_Shapefile1 = LSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
         }
         Grids_GridDoubleFactory f;
-        f = new Grids_GridDoubleFactory(ge, handleOutOfMemoryErrors);
+        f = new Grids_GridDoubleFactory(
+                Files.getGeneratedGridsGridDoubleFactoryDir(),
+                ge,
+                handleOutOfMemoryErrors);
         f.setDimensions(dimensions);
         f.setGridStatistics(new Grids_GridStatistics0(ge));
         Grids_ProcessorGWS p;

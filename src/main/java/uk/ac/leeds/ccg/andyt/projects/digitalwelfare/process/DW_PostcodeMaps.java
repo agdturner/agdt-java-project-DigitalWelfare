@@ -195,7 +195,10 @@ public class DW_PostcodeMaps extends DW_Maps {
 
         String outname = "outname";
         Grids_GridDoubleFactory gf;
-        gf = new Grids_GridDoubleFactory(de.getGrids_Environment(), true);
+        gf = new Grids_GridDoubleFactory(
+                Files.getGeneratedGridsGridDoubleFactoryDir(),
+                de.getGrids_Environment(),
+                true);
         Grids_GridDouble grid;
         grid = toGrid(
                 polyGrid,

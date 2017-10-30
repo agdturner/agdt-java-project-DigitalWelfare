@@ -22,6 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -39,7 +40,6 @@ public class DW_Files extends DW_Object {
      * Provided for convenience. This is a reference to env.DW_Strings.
      */
     protected DW_Strings ds;
-
 
     /**
      * For storing the main directory location where the project files are
@@ -93,6 +93,7 @@ public class DW_Files extends DW_Object {
     private File generatedCensus2011Dir;
     private File generatedCensus2011LUTsDir;
     private File generatedGridsDir;
+    private File generatedGridsGridDoubleFactoryDir;
     private File generatedPostcodeDir;
     private File generatedCodePointDir;
     private File generatedONSPDDir;
@@ -415,6 +416,16 @@ public class DW_Files extends DW_Object {
             generatedGridsDir.mkdirs();
         }
         return generatedGridsDir;
+    }
+
+    public File getGeneratedGridsGridDoubleFactoryDir() {
+        if (generatedGridsGridDoubleFactoryDir == null) {
+            generatedGridsGridDoubleFactoryDir = new File(
+                    getGeneratedGridsDir(),
+                    ds.sGridDoubleFactory);
+            generatedGridsGridDoubleFactoryDir.mkdirs();
+        }
+        return generatedGridsGridDoubleFactoryDir;
     }
 
     public File getGeneratedCensusDir() {
@@ -795,10 +806,10 @@ public class DW_Files extends DW_Object {
             boolean checkPreviousTenancyType) {
         File result;
         result = getOutputDir(getOutputSHBETablesDir(),
-            ds.sTenancy,
-            //type,
-            ds.sTenancyTypeTransition,
-            checkPreviousTenancyType);
+                ds.sTenancy,
+                //type,
+                ds.sTenancyTypeTransition,
+                checkPreviousTenancyType);
         return result;
     }
 
@@ -817,13 +828,13 @@ public class DW_Files extends DW_Object {
             boolean checkPreviousTenancyType) {
         File result;
         result = getOutputDir(getOutputSHBEPlotsDir(),
-            ds.sTenancy,
-            //type,
-            ds.sTenancyTypeTransitionLineGraph,
-            checkPreviousTenancyType);
+                ds.sTenancy,
+                //type,
+                ds.sTenancyTypeTransitionLineGraph,
+                checkPreviousTenancyType);
         return result;
     }
-    
+
     public File getOutputDir(
             File baseDir,
             String dir1,
@@ -831,11 +842,11 @@ public class DW_Files extends DW_Object {
             boolean checkPreviousTenancyType) {
         File result;
         result = new File(
-            baseDir,
-            dir1);
+                baseDir,
+                dir1);
         result = new File(
-            result,
-            dir2);
+                result,
+                dir2);
         if (checkPreviousTenancyType) {
             result = new File(
                     result,

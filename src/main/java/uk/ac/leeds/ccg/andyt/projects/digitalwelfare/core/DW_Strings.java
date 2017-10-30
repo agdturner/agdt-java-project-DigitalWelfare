@@ -793,6 +793,10 @@ public class DW_Strings {
      */
     public final String sGrids = "Grids";
     /**
+     * Short code for sGrids.
+     */
+    public final String sGridDoubleFactory = "GridDoubleFactory";
+    /**
      * Short code for SHBE.
      */
     public final String sLogs = "Logs";
