@@ -21,24 +21,23 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core;
 import java.io.Serializable;
 
 /**
- * A simple class for representing identifiers using a long.
+ * A simple class for identifiers that uses a single long. There can only be as 
+ * many unique identifiers as there are long numbers.
  *
  * @author geoagdt
  */
-public class DW_ID implements Serializable, Comparable<Object> {
+public class DW_ID implements Serializable, Comparable<DW_ID> {
 
     protected final long l;
 
     public DW_ID(
-            DW_ID ID
-    ) {
-        this.l = ID.l;
+            DW_ID ID) {
+        l = ID.l;
     }
-    
+
     public DW_ID(
-            long ID
-    ) {
-        this.l = ID;
+            long ID) {
+        l = ID;
     }
 
     /**
@@ -64,7 +63,7 @@ public class DW_ID implements Serializable, Comparable<Object> {
         if (obj instanceof DW_ID) {
             DW_ID o;
             o = (DW_ID) obj;
-            if (this.hashCode() == o.hashCode()) {
+            if (hashCode() == o.hashCode()) {
                 return o.l == l;
             }
         }
@@ -74,23 +73,17 @@ public class DW_ID implements Serializable, Comparable<Object> {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 73 * hash + (int) (this.l ^ (this.l >>> 32));
+        hash = 73 * hash + (int) (l ^ (l >>> 32));
         return hash;
     }
-    
-    public int compareTo(Object o) {
-        if (o instanceof DW_ID) {
-            DW_ID that;
-            that = (DW_ID) o;
-            if (this.l > that.l) {
-                return 1;
-            } else if (this.l < that.l) {
-                return -1;
-            }
-            return 0;
-        } else {
+
+    public int compareTo(DW_ID t) {
+        if (l > t.l) {
+            return 1;
+        } else if (l < t.l) {
             return -1;
         }
+        return 0;
     }
 
 }

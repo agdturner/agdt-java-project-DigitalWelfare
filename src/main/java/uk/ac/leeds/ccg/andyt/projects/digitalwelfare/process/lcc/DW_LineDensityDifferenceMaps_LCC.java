@@ -28,7 +28,7 @@ import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.statistics.Grids_GridStatistics0;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.statistics.Grids_GridStatistics;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
@@ -606,7 +606,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
                     + "difference is all shown in grida File " + grida);
             return;
         }
-        gf.setGridStatistics(new Grids_GridStatistics0(ge));
+        gf.setGridStatistics(new Grids_GridStatistics(ge));
         Grids_GridDouble ga = (Grids_GridDouble) gf.create(grida);
         System.out.println("ga " + ga.toString(handleOutOfMemoryErrors));
         Grids_GridDouble gb = (Grids_GridDouble) gf.create(gridb);

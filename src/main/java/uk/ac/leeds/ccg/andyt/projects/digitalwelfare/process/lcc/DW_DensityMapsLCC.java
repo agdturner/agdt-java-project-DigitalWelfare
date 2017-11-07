@@ -34,7 +34,7 @@ import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_GridChunkDoubleArrayFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.statistics.Grids_GridStatistics0;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.statistics.Grids_GridStatistics;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
@@ -266,7 +266,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 ge,
                 handleOutOfMemoryErrors);
         f.setDimensions(dimensions);
-        f.setGridStatistics(new Grids_GridStatistics0(ge));
+        f.setGridStatistics(new Grids_GridStatistics(ge));
         Grids_ProcessorGWS p;
         p = new Grids_ProcessorGWS(ge);
 

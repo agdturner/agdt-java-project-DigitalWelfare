@@ -30,7 +30,7 @@ import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_AbstractGridChunkDoubleFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.statistics.Grids_GridStatistics0;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.statistics.Grids_GridStatistics;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
@@ -154,7 +154,7 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
      * @return
      */
     public Grids_GridDouble initiliseGrid(File dir) {
-        Grids_GridDouble result = (Grids_GridDouble) gf.create(new Grids_GridStatistics0(ge),
+        Grids_GridDouble result = (Grids_GridDouble) gf.create(new Grids_GridStatistics(ge),
                 dir,
                 gcf,
                 nrows,
