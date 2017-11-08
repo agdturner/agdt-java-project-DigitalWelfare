@@ -48,6 +48,7 @@ import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.statistics.Grids_GridDoubleStatisticsNotUpdated;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
@@ -159,13 +160,14 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         chunkNRows = 300;//250; //64
         chunkNCols = 350;//300; //64
         gf = new Grids_GridDoubleFactory(
+                ge,
                 processorDir,
+                -9999d,
                 chunkNRows,
                 chunkNCols,
-                gcf,
-                -9999d,
-                ge,
-                handleOutOfMemoryErrors);
+                new Grids_Dimensions(chunkNRows,chunkNCols),
+                new Grids_GridDoubleStatisticsNotUpdated(ge),
+                gcf);
 
         // Initialise tDW_ID_ClientTypes
         ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes;

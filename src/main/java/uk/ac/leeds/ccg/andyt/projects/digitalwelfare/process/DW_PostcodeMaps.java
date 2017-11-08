@@ -39,6 +39,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ar
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_GridChunkDoubleArrayFactory;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.statistics.Grids_GridDoubleStatisticsNotUpdated;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
@@ -192,13 +194,25 @@ public class DW_PostcodeMaps extends DW_Maps {
         DW_Shapefile polyGrid;
         polyGrid = getPolyGrid(
                 nrows, ncols, xllcorner, yllcorner, cellsize);
+        Grids_Dimensions dimensions;
+        dimensions = new Grids_Dimensions(
+                BigDecimal.valueOf(xllcorner),
+                BigDecimal.valueOf(yllcorner),
+                BigDecimal.valueOf(xllcorner + (cellsize * ncols)),
+                BigDecimal.valueOf(yllcorner + (cellsize * nrows)),
+                BigDecimal.valueOf(cellsize));
 
         String outname = "outname";
         Grids_GridDoubleFactory gf;
         gf = new Grids_GridDoubleFactory(
-                Files.getGeneratedGridsGridDoubleFactoryDir(),
                 de.getGrids_Environment(),
-                true);
+                Files.getGeneratedGridsGridDoubleFactoryDir(),
+                -Double.MAX_VALUE,
+                (int) nrows,
+                (int) ncols,
+                dimensions,
+                new Grids_GridDoubleStatisticsNotUpdated(de.getGrids_Environment()),
+                new Grids_GridChunkDoubleArrayFactory());
         Grids_GridDouble grid;
         grid = toGrid(
                 polyGrid,

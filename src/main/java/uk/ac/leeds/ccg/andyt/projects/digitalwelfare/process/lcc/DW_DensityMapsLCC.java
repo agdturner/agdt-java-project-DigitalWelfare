@@ -34,8 +34,8 @@ import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_GridChunkDoubleArrayFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.statistics.Grids_GridStatistics;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.statistics.Grids_GridDoubleStatisticsNotUpdated;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
@@ -45,7 +45,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Records;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
@@ -150,13 +149,14 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         chunkNRows = 300;//250; //64
         chunkNCols = 350;//300; //64
         gf = new Grids_GridDoubleFactory(
+                ge,
                 generatedGridsDirectory,
+                9999.0d,
                 chunkNRows,
                 chunkNCols,
-                gcf,
-                -9999d,
-                ge,
-                handleOutOfMemoryErrors);
+                new Grids_Dimensions(chunkNRows, chunkNCols),
+                new Grids_GridDoubleStatisticsNotUpdated(ge),
+                gcf);
 //        // Jenks runs
 //        styleParameters.setClassificationFunctionName("Jenks");
 //        commonStyling = true;
@@ -262,11 +262,14 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         }
         Grids_GridDoubleFactory f;
         f = new Grids_GridDoubleFactory(
-                Files.getGeneratedGridsGridDoubleFactoryDir(),
                 ge,
-                handleOutOfMemoryErrors);
-        f.setDimensions(dimensions);
-        f.setGridStatistics(new Grids_GridStatistics(ge));
+                Files.getGeneratedGridsGridDoubleFactoryDir(),
+                -9999.0,
+                chunkNRows,
+                chunkNCols,
+                dimensions,
+                new Grids_GridDoubleStatisticsNotUpdated(ge),
+                gcf);
         Grids_ProcessorGWS p;
         p = new Grids_ProcessorGWS(ge);
 
