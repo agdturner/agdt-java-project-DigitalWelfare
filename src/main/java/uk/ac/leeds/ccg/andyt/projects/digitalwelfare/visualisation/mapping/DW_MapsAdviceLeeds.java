@@ -38,7 +38,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds.DW_Proc
  */
 public class DW_MapsAdviceLeeds extends DW_Maps {
 
-    DW_ProcessorAdviceLeeds DW_ProcessorAdviceLeeds;
+    DW_ProcessorAdviceLeeds ProcessorAdviceLeeds;
     
     public DW_MapsAdviceLeeds(DW_Environment env) {
         super(env);
@@ -48,7 +48,7 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
             SimpleFeatureType sft) {
         TreeSetFeatureCollection result;
         TreeMap<String, Geotools_Point> tAdviceLeedsNamesAndPoints;
-        tAdviceLeedsNamesAndPoints = DW_ProcessorAdviceLeeds.getAdviceLeedsNamesAndPoints();
+        tAdviceLeedsNamesAndPoints = ProcessorAdviceLeeds.getAdviceLeedsNamesAndPoints();
         TreeMap<String, Geotools_Point> map = tAdviceLeedsNamesAndPoints;
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
@@ -89,7 +89,7 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
         TreeMap<String, Geotools_Point> tAdviceLeedsNamesAndPoints;
-        tAdviceLeedsNamesAndPoints = DW_ProcessorAdviceLeeds.getAdviceLeedsNamesAndPoints();
+        tAdviceLeedsNamesAndPoints = ProcessorAdviceLeeds.getAdviceLeedsNamesAndPoints();
         TreeMap<String, Geotools_Point> map = tAdviceLeedsNamesAndPoints;
         Iterator<String> ite = map.keySet().iterator();
         while (ite.hasNext()) {
@@ -150,7 +150,7 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
         String tAdviceLeedsPointName = "AllAdviceLeedsPoints";
         File tAdviceLeedsPointShapefileDir;
         tAdviceLeedsPointShapefileDir = new File(
-                de.getFiles().getGeneratedAdviceLeedsDir(),
+                Env.getFiles().getGeneratedAdviceLeedsDir(),
                 tAdviceLeedsPointName);
         String tAdviceLeedsPointShapefileFilename;
         tAdviceLeedsPointShapefileFilename = tAdviceLeedsPointName + ".shp";
@@ -168,7 +168,7 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
         ArrayList<Geotools_Shapefile> result;
         result = new ArrayList<Geotools_Shapefile>();
         ArrayList<String> tAdviceLeedsServiceNames;
-        tAdviceLeedsServiceNames = DW_ProcessorAdviceLeeds.getAdviceLeedsServiceNames();
+        tAdviceLeedsServiceNames = ProcessorAdviceLeeds.getAdviceLeedsServiceNames();
         Iterator<String> ite;
         ite = tAdviceLeedsServiceNames.iterator();
         while (ite.hasNext()) {

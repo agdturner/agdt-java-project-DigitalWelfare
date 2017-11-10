@@ -18,7 +18,7 @@ public class DW_ONSPDRecord_2011_05May extends DW_ONSPDRecord_2008_02Feb {
      * "AB1 0AB","AB1  0AB","AB1 0AB","198001","199606","S99999999","S12000033","S13002484","0","385177","0801314","1","S08000006","S99999999","S92000003","S99999999","0","S14000002","S15000001","S09000001","S22000001","S03000012","UKM5001031","99ZZ0099","ZZ0099","9","SN9","QA","SN9","72UB43","72UB43","00QA36","99ZZ00","S00001270","7","01C31","S99999999","S99999999","S01000011","S99999999","9","6","Z","S02000007","99ZZ99Z9","4B3","X98" 
      */
     public DW_ONSPDRecord_2011_05May(DW_Environment env, String line) {
-        this.env = env;
+        this.Env = env;
         //System.out.println(line);
         String[] fields = line.split("\",\"");
         int n;

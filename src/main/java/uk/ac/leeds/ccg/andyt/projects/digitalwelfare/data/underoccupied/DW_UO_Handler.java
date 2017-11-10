@@ -45,11 +45,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 public class DW_UO_Handler extends DW_Object {
 
     /**
-     * For convenience this is a reference to env.DW_Files.
+     * For convenience this is a reference to Env.Files.
      */
-    protected DW_Strings DW_Strings;
-    protected DW_Files DW_Files;
-    private DW_SHBE_Data DW_SHBE_Data;
+    protected DW_Strings Strings;
+    protected DW_Files Files;
+    private DW_SHBE_Data SHBE_Data;
     private HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
     private HashMap<String, DW_ID> ClaimRefToClaimIDLookup;
 
@@ -60,11 +60,11 @@ public class DW_UO_Handler extends DW_Object {
 
     public DW_UO_Handler(DW_Environment env) {
         super(env);
-        this.DW_Files = env.getFiles();
-        this.DW_Strings = env.getStrings();
-        DW_SHBE_Data = env.getSHBE_Data();
-        ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
-        ClaimRefToClaimIDLookup = DW_SHBE_Data.getClaimRefToClaimIDLookup();
+        this.Files = env.getFiles();
+        this.Strings = env.getStrings();
+        SHBE_Data = env.getSHBE_Data();
+        ClaimIDToClaimRefLookup = SHBE_Data.getClaimIDToClaimRefLookup();
+        ClaimRefToClaimIDLookup = SHBE_Data.getClaimRefToClaimIDLookup();
     }
 
     public HashSet<String> getRecordTypes() {
@@ -164,10 +164,10 @@ public class DW_UO_Handler extends DW_Object {
             if (addedNewClaimIDs) {
                 Generic_StaticIO.writeObject(
                         ClaimIDToClaimRefLookup,
-                        DW_SHBE_Data.getClaimIDToClaimRefLookupFile());
+                        SHBE_Data.getClaimIDToClaimRefLookupFile());
                 Generic_StaticIO.writeObject(
                         ClaimRefToClaimIDLookup,
-                        DW_SHBE_Data.getClaimRefToClaimIDLookupFile());
+                        SHBE_Data.getClaimRefToClaimIDLookupFile());
             }
         } catch (IOException ex) {
             Logger.getLogger(DW_UO_Handler.class.getName()).log(Level.SEVERE, null, ex);
@@ -184,7 +184,7 @@ public class DW_UO_Handler extends DW_Object {
     public DW_UO_Data loadUnderOccupiedReportData(boolean reload) {
         String methodName;
         methodName = "loadUnderOccupiedReportData()";
-        env.logO("<" + methodName + ">", true);
+        Env.logO("<" + methodName + ">", true);
         DW_UO_Data result;
         TreeMap<DW_YM3, DW_UO_Set> CouncilSets;
         CouncilSets = new TreeMap<DW_YM3, DW_UO_Set>();
@@ -205,7 +205,7 @@ public class DW_UO_Handler extends DW_Object {
         String filename;
         Iterator<DW_YM3> ite;
         ite = CouncilFilenames.keySet().iterator();
-        type = DW_Strings.sCouncil;
+        type = Strings.sCouncil;
         while (ite.hasNext()) {
             YM3 = ite.next();
             filename = CouncilFilenames.get(YM3);
@@ -217,7 +217,7 @@ public class DW_UO_Handler extends DW_Object {
             
             DW_UO_Set set;
             set = new DW_UO_Set(
-                    env,
+                    Env,
                     type,
                     filename,
                     YM3,
@@ -225,21 +225,21 @@ public class DW_UO_Handler extends DW_Object {
             CouncilSets.put(YM3, set);
         }
         ite = RSLFilenames.keySet().iterator();
-        type = DW_Strings.sRSL;
+        type = Strings.sRSL;
         while (ite.hasNext()) {
             YM3 = ite.next();
             filename = RSLFilenames.get(YM3);
             DW_UO_Set set;
             set = new DW_UO_Set(
-                    env,
+                    Env,
                     type,
                     filename,
                     YM3,
                     reload);
             RSLSets.put(YM3, set);
         }
-        result = new DW_UO_Data(env, RSLSets, CouncilSets);
-        env.logO("</" + methodName + ">", true);
+        result = new DW_UO_Data(Env, RSLSets, CouncilSets);
+        Env.logO("</" + methodName + ">", true);
         return result;
     }
 
@@ -251,7 +251,7 @@ public class DW_UO_Handler extends DW_Object {
     public int getNumberOfInputFiles() {
         int result;
         File dirIn;
-        dirIn = DW_Files.getInputUnderOccupiedDir();
+        dirIn = Files.getInputUnderOccupiedDir();
         File[] files;
         files = dirIn.listFiles();
         result = files.length;
@@ -266,7 +266,7 @@ public class DW_UO_Handler extends DW_Object {
     public int getNumberOfGeneratedFiles() {
         int result;
         File dirIn;
-        dirIn = DW_Files.getGeneratedUnderOccupiedDir();
+        dirIn = Files.getGeneratedUnderOccupiedDir();
         result = dirIn.listFiles().length;
         return result;
     }
@@ -295,7 +295,7 @@ public class DW_UO_Handler extends DW_Object {
             RSLFilenames = new TreeMap<DW_YM3, String>();
             inputFilenames[0] = CouncilFilenames;
             inputFilenames[1] = RSLFilenames;
-//            String[] list = DW_Files.getInputUnderOccupiedDir().list();
+//            String[] list = Files.getInputUnderOccupiedDir().list();
 //            String s;
 //            String ym;
 //            TreeMap<String,String> yms;
@@ -397,7 +397,7 @@ public class DW_UO_Handler extends DW_Object {
             s = yearAll + underOccupiedReportForUniversityString + "Month " + i;
 //            String filename;
 //            filename = s + councilEndFilename;
-//            env.getFiles().getInputUnderOccupiedDir();
+//            Env.getFiles().getInputUnderOccupiedDir();
             CouncilFilenames.put(
                     new DW_YM3(year_Month),
                     s + councilEndFilename);

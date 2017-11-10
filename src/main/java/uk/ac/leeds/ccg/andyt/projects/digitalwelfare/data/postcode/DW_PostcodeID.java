@@ -13,20 +13,20 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 public class DW_PostcodeID {
 
     protected final DW_ID ID;
-    protected final Geotools_Point p;
+    protected final Geotools_Point Point;
 
     public DW_PostcodeID(
             DW_ID ID,
             Geotools_Point p) {
         this.ID = ID;
-        this.p = p;
+        this.Point = p;
     }
 
     /**
      * @return the point
      */
     public Geotools_Point getPoint() {
-        return p;
+        return Point;
     }
 
     /**
@@ -46,7 +46,7 @@ public class DW_PostcodeID {
             DW_PostcodeID o;
             o = (DW_PostcodeID) obj;
             if (ID.equals(o.ID)) {
-                if (this.p == o.p) {
+                if (this.Point == o.Point) {
                     return true;
                 }
             }
@@ -58,7 +58,7 @@ public class DW_PostcodeID {
     public int hashCode() {
         int hash = 3;
         hash = 23 * hash + (this.ID != null ? this.ID.hashCode() : 0);
-        hash = 23 * hash + (this.p != null ? this.p.hashCode() : 0);
+        hash = 23 * hash + (this.Point != null ? this.Point.hashCode() : 0);
         return hash;
     }
 

@@ -27,7 +27,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CA
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstract;
 
 /**
  *
@@ -35,12 +34,12 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstrac
  */
 public class DW_Deprivation_DataHandler extends Census_DeprivationDataHandler {
 
-    protected transient DW_Environment env;
-    protected DW_Postcode_Handler DW_Postcode_Handler;
+    protected transient DW_Environment Env;
+    protected DW_Postcode_Handler Postcode_Handler;
     
     public DW_Deprivation_DataHandler(DW_Environment env) {
-        this.env = env;
-        this.DW_Postcode_Handler = env.getPostcode_Handler();
+        this.Env = env;
+        this.Postcode_Handler = env.getPostcode_Handler();
     }
     /**
      *
@@ -67,7 +66,7 @@ public class DW_Deprivation_DataHandler extends Census_DeprivationDataHandler {
                 DW_ID_ClientID id = ite.next();
                 DW_Data_CAB2_Record aLeedsCABData_DataRecord = (DW_Data_CAB2_Record) tCABData.get(id);
                 String postcode = aLeedsCABData_DataRecord.getPostcode();
-                postcode = DW_Postcode_Handler.formatPostcode(postcode);
+                postcode = Postcode_Handler.formatPostcode(postcode);
                 if (!postcode.isEmpty()) {
                     String SOACode = tLookupFromPostcodeToCensusCodes.get(postcode);
                     if (SOACode == null) {
@@ -99,7 +98,7 @@ public class DW_Deprivation_DataHandler extends Census_DeprivationDataHandler {
                 DW_ID_ClientID id = ite.next();
                 DW_Data_CAB0_Record aLeedsCABData_DataRecord = (DW_Data_CAB0_Record) tCABData.get(id);
                 String postcode = aLeedsCABData_DataRecord.getPostcode();
-                postcode = DW_Postcode_Handler.formatPostcode(postcode);
+                postcode = Postcode_Handler.formatPostcode(postcode);
                 if (!postcode.isEmpty()) {
                     String SOACode = tLookupFromPostcodeToCensusCodes.get(postcode);
                     if (SOACode == null) {

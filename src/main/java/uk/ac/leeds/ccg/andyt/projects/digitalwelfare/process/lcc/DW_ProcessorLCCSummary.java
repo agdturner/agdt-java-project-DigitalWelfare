@@ -12,8 +12,8 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.Summary;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.SummaryUO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_Summary;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_SummaryUO;
 
 /**
  * This is the main class for the Digital Welfare Project. For more details of
@@ -50,8 +50,8 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
         int nTT;
         int nEG;
         int nPSI;
-        Summary Summary;
-        SummaryUO SummaryUO;
+        DW_Summary Summary;
+        DW_SummaryUO SummaryUO;
         Iterator<String> includesIte;
         String includeKey;
         ArrayList<Integer> include;
@@ -60,44 +60,44 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
         String subProcessName;
 
         // Initialisation
-        includes = DW_SHBE_Handler.getIncludes();
-//        includes.remove(ds.sIncludeAll);
-//        includes.remove(ds.sIncludeYearly);
-//        includes.remove(ds.sInclude6Monthly);
-//        includes.remove(ds.sInclude3Monthly);
-//        includes.remove(ds.sIncludeMonthlySinceApril2013);
-//        includes.remove(ds.sInclude2MonthlySinceApril2013Offset0);
-//        includes.remove(ds.sInclude2MonthlySinceApril2013Offset1);
-//        includes.remove(ds.sIncludeStartEndSinceApril2013);
-//        includes.remove(ds.sIncludeMonthly);
-        //includes.remove(ds.sIncludeApril2013May2013);
-        PTs = ds.getPaymentTypes();
-//        PTs.remove(ds.sPaymentTypeAll); // No longer a PT
-//        PTs.remove(ds.sPaymentTypeIn);
-//        PTs.remove(ds.sPaymentTypeSuspended);
-//        PTs.remove(ds.sPaymentTypeOther);
+        includes = SHBE_Handler.getIncludes();
+//        includes.remove(Strings.sIncludeAll);
+//        includes.remove(Strings.sIncludeYearly);
+//        includes.remove(Strings.sInclude6Monthly);
+//        includes.remove(Strings.sInclude3Monthly);
+//        includes.remove(Strings.sIncludeMonthlySinceApril2013);
+//        includes.remove(Strings.sInclude2MonthlySinceApril2013Offset0);
+//        includes.remove(Strings.sInclude2MonthlySinceApril2013Offset1);
+//        includes.remove(Strings.sIncludeStartEndSinceApril2013);
+//        includes.remove(Strings.sIncludeMonthly);
+        //includes.remove(Strings.sIncludeApril2013May2013);
+        PTs = Strings.getPaymentTypes();
+//        PTs.remove(Strings.sPaymentTypeAll); // No longer a PT
+//        PTs.remove(Strings.sPaymentTypeIn);
+//        PTs.remove(Strings.sPaymentTypeSuspended);
+//        PTs.remove(Strings.sPaymentTypeOther);
 
         ArrayList<String> HB_CTB;
-        HB_CTB = ds.getHB_CTB();
+        HB_CTB = Strings.getHB_CTB();
         //forceNewSummaries = false;
         forceNewSummaries = true;
-        nTT = DW_SHBE_Handler.getNumberOfTenancyTypes();
-        //nEG = DW_SHBE_Handler.getNumberOfClaimantsEthnicGroups();
-        nEG = DW_SHBE_Handler.getNumberOfClaimantsEthnicGroupsGrouped();
-        nPSI = DW_SHBE_Handler.getOneOverMaxValueOfPassportStandardIndicator();
+        nTT = SHBE_Handler.getNumberOfTenancyTypes();
+        //nEG = SHBE_Handler.getNumberOfClaimantsEthnicGroups();
+        nEG = SHBE_Handler.getNumberOfClaimantsEthnicGroupsGrouped();
+        nPSI = SHBE_Handler.getOneOverMaxValueOfPassportStandardIndicator();
 
         // Processing loop
 //        while (PTsIte.hasNext()) {
 //            PT = PTsIte.next();
-//            env.logO("<" + PT + ">");
-        Summary = new Summary(
-                env,
+//            Env.logO("<" + PT + ">");
+        Summary = new DW_Summary(
+                Env,
                 nTT,
                 nEG,
                 nPSI,
                 handleOutOfMemoryError);
-        SummaryUO = new SummaryUO(
-                env,
+        SummaryUO = new DW_SummaryUO(
+                Env,
                 nTT,
                 nEG,
                 nPSI,
@@ -105,11 +105,11 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
         includesIte = includes.keySet().iterator();
         while (includesIte.hasNext()) {
             includeKey = includesIte.next();
-            env.logO("<" + includeKey + ">", true);
+            Env.logO("<" + includeKey + ">", true);
             include = includes.get(includeKey);
             if (doAll) {
                 subProcessName = "Summary";
-                env.logO("<" + subProcessName + ">", true);
+                Env.logO("<" + subProcessName + ">", true);
                 SummaryTableAll = Summary.getSummaryTable(
                         SHBEFilenames,
                         include,
@@ -126,14 +126,12 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
                         PTs,
                         includeKey,
                         nTT, nEG, nPSI);
-                env.logO("</" + subProcessName + ">", true);
+                Env.logO("</" + subProcessName + ">", true);
             }
             if (doUO) {
                 subProcessName = "SummaryUO";
-                env.logO("<" + subProcessName + ">", true);
-                SummaryTableUO = SummaryUO.getSummaryTable(
-                        
-                        Group,
+                Env.logO("<" + subProcessName + ">", true);
+                SummaryTableUO = SummaryUO.getSummaryTable(Group,
                         
                         SHBEFilenames,
                         include,
@@ -143,18 +141,18 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
                         nTT,
                         nEG,
                         nPSI,
-                        DW_UO_Data,
+                        UO_Data,
                         handleOutOfMemoryError);
                 SummaryUO.writeSummaryTables(
                         SummaryTableUO,
                         PTs,
                         includeKey,
                         nTT, nEG, nPSI);
-                env.logO("</" + subProcessName + ">", true);
+                Env.logO("</" + subProcessName + ">", true);
             }
-            env.logO("</" + includeKey + ">", true);
+            Env.logO("</" + includeKey + ">", true);
         }
-//            env.logO("</" + PT + ">");
+//            Env.logO("</" + PT + ">");
 //        }
     }
 }

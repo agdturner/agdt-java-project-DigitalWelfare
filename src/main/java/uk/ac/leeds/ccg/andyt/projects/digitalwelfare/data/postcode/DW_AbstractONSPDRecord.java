@@ -161,7 +161,7 @@ E05001442       00DAHU  Weetwood
 E05001443       00DAHW  Wetherby
      */
     public DW_AbstractONSPDRecord(DW_Environment env) {
-        this.env = env;
+        this.Env = env;
         PostcodeF = "";
         pcd = "";
         pcd2 = "";
@@ -375,7 +375,7 @@ E05001443       00DAHW  Wetherby
         int n = 0;
         pcd = fields[n].substring(1);
         n++;
-        PostcodeF = env.getPostcode_Handler().formatPostcode(pcd);
+        PostcodeF = Env.getPostcode_Handler().formatPostcode(pcd);
         pcd2 = fields[n];
         n++;
         pcds = fields[n];

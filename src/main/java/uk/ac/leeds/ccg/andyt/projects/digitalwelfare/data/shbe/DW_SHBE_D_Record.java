@@ -6493,7 +6493,7 @@ public class DW_SHBE_D_Record extends DW_SHBE_DC_RecordAbstract {
      * @param LandlordPostcode the LandlordPostcode to set
      */
     protected final void setLandlordPostcode(String LandlordPostcode) {
-        this.LandlordPostcode = env.getPostcode_Handler().formatPostcode(LandlordPostcode);
+        this.LandlordPostcode = Env.getPostcode_Handler().formatPostcode(LandlordPostcode);
     }
 
 }

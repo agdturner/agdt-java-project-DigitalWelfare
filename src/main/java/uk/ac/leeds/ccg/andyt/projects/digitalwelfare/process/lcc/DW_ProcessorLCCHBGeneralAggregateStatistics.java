@@ -35,24 +35,24 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
     /**
      * For convenience.
      */
-    protected DW_UO_Handler DW_UO_Handler;
+    protected DW_UO_Handler UO_Handler;
     
     boolean doHBGeneralAggregateStatistics = false;
 
     /**
      * For convenience DW_SHBE_TenancyType_Handler =
-     * env.getDW_SHBE_TenancyType_Handler().
+ Env.getDW_SHBE_TenancyType_Handler().
      */
     protected DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
 
     public DW_ProcessorLCCHBGeneralAggregateStatistics(DW_Environment env) {
         super(env);
-        DW_UO_Handler = env.getUO_Handler();
+        UO_Handler = env.getUO_Handler();
         DW_SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
-        DW_SHBE_Data = env.getSHBE_Data();
-        ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
-        DW_UO_Data = env.getUO_Data();
-        SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
+        SHBE_Data = env.getSHBE_Data();
+        ClaimIDToClaimRefLookup = SHBE_Data.getClaimIDToClaimRefLookup();
+        UO_Data = env.getUO_Data();
+        SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
     }
 
     @Override
@@ -90,29 +90,29 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         int CensusYear = 2011;
         // Initialisiation
         levels = new ArrayList<String>();
-//        levels.add(ds.sOA);
-        levels.add(ds.sLSOA);
-        levels.add(ds.sMSOA);
+//        levels.add(Strings.sOA);
+        levels.add(Strings.sLSOA);
+        levels.add(Strings.sMSOA);
 //        levels.add("PostcodeUnit");
 //        levels.add("PostcodeSector");
 //        levels.add("PostcodeDistrict");
-        levels.add(ds.sParliamentaryConstituency);
-        levels.add(ds.sStatisticalWard);
-        includes = DW_SHBE_Handler.getIncludes();
-//            includes.remove(ds.sIncludeAll);
-//            includes.remove(ds.sIncludeYearly);
-//            includes.remove(ds.sInclude6Monthly);
-//            includes.remove(ds.sInclude3Monthly);
-//            includes.remove(ds.sIncludeMonthlySinceApril2013);
-//            includes.remove(ds.sIncludeMonthly);
-        PTs = ds.getPaymentTypes();
-//            PTs.remove(ds.sPaymentTypeAll);
-//            PTs.remove(ds.sPaymentTypeIn);
-//            PTs.remove(ds.sPaymentTypeSuspended);
-//            PTs.remove(ds.sPaymentTypeOther);
+        levels.add(Strings.sParliamentaryConstituency);
+        levels.add(Strings.sStatisticalWard);
+        includes = SHBE_Handler.getIncludes();
+//            includes.remove(Strings.sIncludeAll);
+//            includes.remove(Strings.sIncludeYearly);
+//            includes.remove(Strings.sInclude6Monthly);
+//            includes.remove(Strings.sInclude3Monthly);
+//            includes.remove(Strings.sIncludeMonthlySinceApril2013);
+//            includes.remove(Strings.sIncludeMonthly);
+        PTs = Strings.getPaymentTypes();
+//            PTs.remove(Strings.sPaymentTypeAll);
+//            PTs.remove(Strings.sPaymentTypeIn);
+//            PTs.remove(Strings.sPaymentTypeSuspended);
+//            PTs.remove(Strings.sPaymentTypeOther);
         outDir = new File(
-                df.getOutputSHBETablesDir(),
-                ds.sHBGeneralAggregateStatistics);
+                Files.getOutputSHBETablesDir(),
+                Strings.sHBGeneralAggregateStatistics);
         // Load UOdata
         TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
         DW_UO_Set CouncilUOSet;
@@ -120,14 +120,14 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         TreeMap<DW_YM3, DW_UO_Set> RSLUOSets;
         DW_UO_Set RSLUOSet;
         HashMap<DW_ID, DW_UO_Record> RSLUOMap = null;
-        CouncilUOSets = DW_UO_Data.getCouncilUOSets();
-        RSLUOSets = DW_UO_Data.getRSLUOSets();
+        CouncilUOSets = UO_Data.getCouncilUOSets();
+        RSLUOSets = UO_Data.getRSLUOSets();
 
-        env.log("Output Directory " + outDir.toString());
+        Env.log("Output Directory " + outDir.toString());
         PTsIte = PTs.iterator();
         while (PTsIte.hasNext()) {
             PT = PTsIte.next();
-            includeName = ds.sIncludeAll;
+            includeName = Strings.sIncludeAll;
             outDir1 = new File(
                     outDir,
                     PT);
@@ -135,12 +135,12 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
             includeIte = include.iterator();
             while (includeIte.hasNext()) {
                 i = includeIte.next();
-                YM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
-                env.logO("Generalising " + YM3, true);
+                YM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
+                Env.logO("Generalising " + YM3, true);
                 // Get Lookup
                 ClaimPostcodeF_To_LevelCode_Maps = getClaimPostcodeF_To_LevelCode_Maps(levels, YM3, CensusYear);
                 // Load SHBE
-                DW_SHBE_Records = DW_SHBE_Data.getDW_SHBE_Records(YM3);
+                DW_SHBE_Records = SHBE_Data.getDW_SHBE_Records(YM3);
                 // Load UOdata
                 CouncilUOSet = CouncilUOSets.get(YM3);
                 RSLUOSet = RSLUOSets.get(YM3);
@@ -149,8 +149,8 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                     RSLUOMap = RSLUOSet.getMap();
                 }
                 ClaimIDToDW_SHBE_RecordMap = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(true);
-                //DW_SHBE_Records = env.getDW_SHBE_Data().getData().get(YM3);
-                //records0 = DW_SHBE_Records.getDataPTI(env._HandleOutOfMemoryError_boolean);
+                //DW_SHBE_Records = Env.getDW_SHBE_Data().getData().get(YM3);
+                //records0 = DW_SHBE_Records.getDataPTI(Env._HandleOutOfMemoryError_boolean);
                 TreeMap<String, TreeMap<String, int[]>> result;
                 result = new TreeMap<String, TreeMap<String, int[]>>();
                 TreeMap<String, int[]> result0;
@@ -163,9 +163,9 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                     DW_SHBE_Record DW_SHBE_Record;
                     DW_SHBE_Record = ClaimIDToDW_SHBE_RecordMap.get(DW_ID);
                     DRecord = DW_SHBE_Record.getDRecord();
-                    if (DW_SHBE_Handler.isHBClaim(DRecord)) {
+                    if (SHBE_Handler.isHBClaim(DRecord)) {
                         NumberOfChildDependents = DRecord.getNumberOfChildDependents();
-                        HouseholdSize = DW_SHBE_Handler.getHouseholdSizeint(DRecord);
+                        HouseholdSize = SHBE_Handler.getHouseholdSizeint(DRecord);
                         ClaimPostcodeF = DW_SHBE_Record.getClaimPostcodeF();
                         boolean DoUO;
                         DW_UO_Record DW_UO_Record;
@@ -185,7 +185,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                             DoUO = false;
                         }
                         //councilTaxBenefitClaimReferenceNumber0 = DRecord0.getCouncilTaxBenefitClaimReferenceNumber();
-                        //claimantType = DW_SHBE_Handler.getClaimantType(DRecord0);
+                        //claimantType = SHBE_Handler.getClaimantType(DRecord0);
                         if (ClaimPostcodeF != null) {
                             levelsIte = levels.iterator();
                             while (levelsIte.hasNext()) {

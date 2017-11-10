@@ -24,7 +24,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
  */
 public class DW_ID_ClientOutletEnquiryID extends DW_ID_ClientOutletID {
 
-    protected String enquiry_ref;
+    protected String EnquiryRef;
 
     public DW_ID_ClientOutletEnquiryID() {
     }
@@ -33,16 +33,16 @@ public class DW_ID_ClientOutletEnquiryID extends DW_ID_ClientOutletID {
             String client_ref,
             String outlet,
             String enquiry_ref) {
-        this.client_ref = client_ref;
-        this.outlet = outlet;
-        this.enquiry_ref = enquiry_ref;
+        this.ClientRef = client_ref;
+        this.Outlet = outlet;
+        this.EnquiryRef = enquiry_ref;
     }
 
     @Override
     public String toString() {
         return "DW_ID_ClientEnquiryOutletID("
                 + super.toString()
-                + ", enquiry_ref " + enquiry_ref + ")";
+                + ", enquiry_ref " + EnquiryRef + ")";
     }
 
     @Override
@@ -51,9 +51,9 @@ public class DW_ID_ClientOutletEnquiryID extends DW_ID_ClientOutletID {
             DW_ID_ClientOutletEnquiryID oC;
             oC = (DW_ID_ClientOutletEnquiryID) o;
             if (hashCode() == oC.hashCode()) {
-                if (client_ref.equalsIgnoreCase(oC.client_ref)
-                        && outlet.equalsIgnoreCase(oC.outlet)
-                        && enquiry_ref.equalsIgnoreCase(oC.enquiry_ref)) {
+                if (ClientRef.equalsIgnoreCase(oC.ClientRef)
+                        && Outlet.equalsIgnoreCase(oC.Outlet)
+                        && EnquiryRef.equalsIgnoreCase(oC.EnquiryRef)) {
                     return true;
                 }
             }
@@ -64,7 +64,7 @@ public class DW_ID_ClientOutletEnquiryID extends DW_ID_ClientOutletID {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 83 * hash + (this.enquiry_ref != null ? this.enquiry_ref.hashCode() : 0);
+        hash = 83 * hash + (this.EnquiryRef != null ? this.EnquiryRef.hashCode() : 0);
         return hash;
     }
 
@@ -76,11 +76,11 @@ public class DW_ID_ClientOutletEnquiryID extends DW_ID_ClientOutletID {
             }
             DW_ID_ClientOutletEnquiryID oC;
             oC = (DW_ID_ClientOutletEnquiryID) o;
-            int comp0 = enquiry_ref.compareTo(oC.enquiry_ref);
+            int comp0 = EnquiryRef.compareTo(oC.EnquiryRef);
             if (comp0 == 0) {
-                int comp1 = client_ref.compareTo(oC.client_ref);
+                int comp1 = ClientRef.compareTo(oC.ClientRef);
                 if (comp1 == 0) {
-                    return outlet.compareTo(oC.outlet);
+                    return Outlet.compareTo(oC.Outlet);
                 } else {
                     return comp1;
                 }

@@ -28,9 +28,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 public abstract class DW_ProcessorAbstract extends DW_Object {
 
-    protected transient DW_Postcode_Handler DW_Postcode_Handler;
-    protected transient DW_Files df;
-    protected transient DW_Strings ds;
+    protected transient DW_Postcode_Handler Postcode_Handler;
+    protected transient DW_Files Files;
+    protected transient DW_Strings Strings;
 
     private transient ArrayList<Boolean> b;
 
@@ -39,9 +39,9 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
 
     public DW_ProcessorAbstract(DW_Environment env) {
         super(env);
-        this.DW_Postcode_Handler = env.getPostcode_Handler();
-        this.df = env.getFiles();
-        this.ds = env.getStrings();
+        this.Postcode_Handler = env.getPostcode_Handler();
+        this.Files = env.getFiles();
+        this.Strings = env.getStrings();
     }
 
     public ArrayList<Boolean> getArrayListBoolean() {
@@ -96,13 +96,13 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
      * Keys are postcodes; values are census area codes.
      */
 //    public TreeMap<String, String> getClaimPostcodeF_To_LevelCode_Map(
-//            DW_Environment env,
+//            DW_Environment Env,
 //            String level,
 //            int year) {
 //        TreeMap<String, String> result;
 //        String outputFilename;
 //        outputFilename = "PostcodeTo" + level + year
-//                + "LookUp_TreeMap_String_Strings" + ds.sBinaryFileExtension;
+//                + "LookUp_TreeMap_String_Strings" + Strings.sBinaryFileExtension;
 //        File outFile = new File(
 //                DW_Files.getGeneratedONSPDDir(),
 //                outputFilename);
@@ -141,14 +141,14 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
             int CensusYear,
             DW_YM3 YM3) {
         DW_YM3 YM3Nearest;
-        YM3Nearest = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
+        YM3Nearest = Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
         TreeMap<String, String> result;
         String outputFilename;
         File dir;
 //        String[] YM3NearestSplit;
 //        YM3NearestSplit = YM3Nearest.split("_");
 //        HashSet CensusAreaAggregations;
-//        CensusAreaAggregations = ds.getCensusAreaAggregations();
+//        CensusAreaAggregations = Strings.getCensusAreaAggregations();
 //        if (CensusAreaAggregations.contains(level)) {
 //            int year = Integer.valueOf(YM3NearestSplit[0]);
 //            int month = Integer.valueOf(Generic_Time.getMonthNumber(YM3NearestSplit[1]));
@@ -159,17 +159,17 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
 //                yearString = "2011";
 //            }
 //            outputFilename = "PostcodeTo" + level + "_" + yearString
-//                    + "_LookUp_TreeMap_String_Strings" + ds.sBinaryFileExtension;
+//                    + "_LookUp_TreeMap_String_Strings" + Strings.sBinaryFileExtension;
 //            dir = new File(
 //                    DW_Files.getGeneratedONSPDDir(),
 //                    yearString);
 //        } else {
         //String month = YM3NearestSplit[1];
         outputFilename = "PostcodeTo" + level + "_" + YM3Nearest
-                + "_LookUp_TreeMap_String_Strings" + ds.sBinaryFileExtension;
-                //+ "_LookUp_TreeMap_DW_YM3__Strings" + ds.sBinaryFileExtension;
+                + "_LookUp_TreeMap_String_Strings" + Strings.sBinaryFileExtension;
+                //+ "_LookUp_TreeMap_DW_YM3__Strings" + Strings.sBinaryFileExtension;
         dir = new File(
-                df.getGeneratedONSPDDir(),
+                Files.getGeneratedONSPDDir(),
                 YM3Nearest.toString());
 //        }
         File outfile = new File(
@@ -177,7 +177,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
                 outputFilename);
         if (!outfile.exists()) {
             dir.mkdirs();
-            File infile = df.getInputONSPDFile(YM3Nearest);
+            File infile = Files.getInputONSPDFile(YM3Nearest);
             result = initLookupFromPostcodeToCensusCodes(
                     infile,
                     outfile,
@@ -201,7 +201,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
             int CensusYear, // must be 2001 or 2011.
             DW_YM3 YM3NearestFormat) {
         TreeMap<String, String> result;
-        result = DW_Postcode_Handler.getPostcodeUnitCensusCodeLookup(
+        result = Postcode_Handler.getPostcodeUnitCensusCodeLookup(
                 infile,
                 outFile,
                 level,
@@ -311,7 +311,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
     }
 
     public TreeMap<String, Census_DeprivationDataRecord> getDeprivation_Data() {
-        File depravationDir = new File(env.getFiles().getInputCensus2011AttributeDataDir("LSOA"), "England/Deprivation");
+        File depravationDir = new File(Env.getFiles().getInputCensus2011AttributeDataDir("LSOA"), "England/Deprivation");
         String deprivationFilename = "1871524.csv";
         Census_DeprivationDataHandler aDeprivation_DataHandler;
         aDeprivation_DataHandler = new Census_DeprivationDataHandler();
@@ -341,8 +341,8 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
     }
 
     /**
-     * Initialises env logging PrintWriters and returns the directory in which
-     * logs are written. The directory is in an archive structure where the
+     * Initialises Env logging PrintWriters and returns the directory in which
+ logs are written. The directory is in an archive structure where the
      * number of directories or files in the archive (which is a growing
      * structure) is range.
      *
@@ -357,9 +357,9 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
      * @return
      */
     protected File initLogs(int DEBUG_Level, String processName, int range) {
-        env.DEBUG_Level = DEBUG_Level;
+        Env.DEBUG_Level = DEBUG_Level;
         File dir;
-        dir = new File(df.getOutputSHBELogsDir(), processName);
+        dir = new File(Files.getOutputSHBELogsDir(), processName);
         if (dir.isDirectory()) {
             dir = Generic_StaticIO.addToArchive(dir, 100);
         } else {
@@ -375,7 +375,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DW_Processor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        env.setPrintWriterOut(PrintWriterO);
+        Env.setPrintWriterOut(PrintWriterO);
         File fE;
         fE = new File(dir, "Err.txt");
         PrintWriter PrintWriterE;
@@ -385,27 +385,27 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DW_Processor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        env.setPrintWriterErr(PrintWriterE);
-        env.log("<" + processName + ">");
-        env.log("Log Directory " + dir.toString());
-        env.log("Log Output file " + fO.toString());
-        env.log("Log Error file " + fE.toString());
-        env.log("DEBUG_Level = " + env.DEBUG_Level);
-        env.log("env.DEBUG_Level_FINEST = " + env.DEBUG_Level_FINEST);
-        env.log("env.DEBUG_Level_FINE = " + env.DEBUG_Level_FINE);
-        env.log("env.DEBUG_Level_NORMAL = " + env.DEBUG_Level_NORMAL);
+        Env.setPrintWriterErr(PrintWriterE);
+        Env.log("<" + processName + ">");
+        Env.log("Log Directory " + dir.toString());
+        Env.log("Log Output file " + fO.toString());
+        Env.log("Log Error file " + fE.toString());
+        Env.log("DEBUG_Level = " + Env.DEBUG_Level);
+        Env.log("env.DEBUG_Level_FINEST = " + Env.DEBUG_Level_FINEST);
+        Env.log("env.DEBUG_Level_FINE = " + Env.DEBUG_Level_FINE);
+        Env.log("env.DEBUG_Level_NORMAL = " + Env.DEBUG_Level_NORMAL);
         return dir;
     }
 
     /**
-     * Closes env logging PrintWriters.
+     * Closes Env logging PrintWriters.
      *
      * @param processName
      */
     protected void closeLogs(String processName) {
-        env.log("</" + processName + ">");
-        env.getPrintWriterOut().close();
-        env.getPrintWriterErr().close();
+        Env.log("</" + processName + ">");
+        Env.getPrintWriterOut().close();
+        Env.getPrintWriterErr().close();
     }
 
 }

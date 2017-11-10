@@ -46,30 +46,30 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
  */
 public class DW_AreaCodesAndShapefiles extends DW_Object {
 
-    protected DW_Maps DW_Maps;
+    protected DW_Maps Maps;
 
-    private final TreeSet<String> _LeedsAreaCodes;
-    private final TreeSet<String> _LeedsAndNeighbouringLADAreaCodes;
-    private final TreeSet<String> _LeedsAndNearNeighbouringLADAreaCodes;
-    private final DW_Shapefile _LevelDW_Shapefile;
+    private final TreeSet<String> LeedsAreaCodes;
+    private final TreeSet<String> LeedsAndNeighbouringLADAreaCodes;
+    private final TreeSet<String> LeedsAndNearNeighbouringLADAreaCodes;
+    private final DW_Shapefile LevelDW_Shapefile;
 //    private final FeatureCollection levelFC;
 //    private final SimpleFeatureType levelSFT;
-    private final DW_Shapefile _LeedsLevelDW_Shapefile;
+    private final DW_Shapefile LeedsLevelDW_Shapefile;
 //    private final FeatureCollection leedsLADFC;
 //    private final SimpleFeatureType leedsLADSFT;
-    private final DW_Shapefile _LeedsLADDW_Shapefile;
-    private final DW_Shapefile _LeedsAndNeighbouringLADDW_Shapefile;
-    private final DW_Shapefile _LeedsAndNearNeighbouringLADDW_Shapefile;
+    private final DW_Shapefile LeedsLADDW_Shapefile;
+    private final DW_Shapefile LeedsAndNeighbouringLADDW_Shapefile;
+    private final DW_Shapefile LeedsAndNearNeighbouringLADDW_Shapefile;
 
     public DW_AreaCodesAndShapefiles() {
-        _LeedsAreaCodes = null;
-        _LeedsAndNeighbouringLADAreaCodes = null;
-        _LeedsAndNearNeighbouringLADAreaCodes = null;
-        _LevelDW_Shapefile = null;
-        _LeedsLevelDW_Shapefile = null;
-        _LeedsLADDW_Shapefile = null;
-        _LeedsAndNeighbouringLADDW_Shapefile = null;
-        _LeedsAndNearNeighbouringLADDW_Shapefile = null;
+        LeedsAreaCodes = null;
+        LeedsAndNeighbouringLADAreaCodes = null;
+        LeedsAndNearNeighbouringLADAreaCodes = null;
+        LevelDW_Shapefile = null;
+        LeedsLevelDW_Shapefile = null;
+        LeedsLADDW_Shapefile = null;
+        LeedsAndNeighbouringLADDW_Shapefile = null;
+        LeedsAndNearNeighbouringLADDW_Shapefile = null;
     }
 
     /**
@@ -85,7 +85,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             String targetPropertyName,
             ShapefileDataStoreFactory sdsf) {
         super(env);
-        this.DW_Maps = env.getMaps();
+        this.Maps = env.getMaps();
         String tLeedsString = "Leeds";
         String tLeedsAndNeighbouringLADsString;
         tLeedsAndNeighbouringLADsString = "LeedsAndNeighbouringLADs";
@@ -98,7 +98,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
         tLeedsLADCensusAreaCode = new TreeSet<String>();
         // Code for Leeds 00DA = E08000035
         tLeedsLADCensusAreaCode.add("E08000035");
-        _LeedsLADDW_Shapefile = getLADShapefile(
+        LeedsLADDW_Shapefile = getLADShapefile(
                 tLeedsString,
                 tLeedsLADCensusAreaCode,
                 sdsf);
@@ -117,7 +117,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
         tLeedsAndNeighbouringLADCodes.add("E08000034");
         tLeedsAndNeighbouringLADCodes.add("E08000036");
         tLeedsAndNeighbouringLADCodes.add("E07000165");
-        _LeedsAndNeighbouringLADDW_Shapefile = getLADShapefile(
+        LeedsAndNeighbouringLADDW_Shapefile = getLADShapefile(
                 tLeedsAndNeighbouringLADsString,
                 tLeedsAndNeighbouringLADCodes,
                 sdsf);
@@ -132,7 +132,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
         tLeedsAndNearNeighbouringLADCodes.add("E08000033");
         tLeedsAndNearNeighbouringLADCodes.add("E07000163");
         tLeedsAndNearNeighbouringLADCodes.add("E06000014");
-        _LeedsAndNearNeighbouringLADDW_Shapefile = getLADShapefile(
+        LeedsAndNearNeighbouringLADDW_Shapefile = getLADShapefile(
                 tLeedsAndNearNeighbouringLADsString,
                 tLeedsAndNearNeighbouringLADCodes,
                 sdsf);
@@ -143,29 +143,29 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
                 || level.equalsIgnoreCase("LSOA")
                 || level.equalsIgnoreCase("MSOA")) {
             // Read Census Boundary Data of level
-            File levelShapefile = DW_Maps.getAreaBoundaryShapefile(level);
-            _LevelDW_Shapefile = new DW_Shapefile(levelShapefile);
+            File levelShapefile = Maps.getAreaBoundaryShapefile(level);
+            LevelDW_Shapefile = new DW_Shapefile(levelShapefile);
 
             // Read area level Census Codes
-            _LeedsAreaCodes = Census_Environment.getCensusCodes(
+            LeedsAreaCodes = Census_Environment.getCensusCodes(
                     tLeedsString,
                     level,
                     censusDataDirectory);
             // Read Leeds and neighbouring District LADs Census Codes for level
-            _LeedsAndNeighbouringLADAreaCodes = Census_Environment.getCensusCodes(
+            LeedsAndNeighbouringLADAreaCodes = Census_Environment.getCensusCodes(
                     tLeedsAndNeighbouringLADsString,
                     level,
                     censusDataDirectory);
             // Read Leeds and neighbouring District LADs and Craven And York Census Codes
-            _LeedsAndNearNeighbouringLADAreaCodes = Census_Environment.getCensusCodes(
+            LeedsAndNearNeighbouringLADAreaCodes = Census_Environment.getCensusCodes(
                     tLeedsAndNearNeighbouringLADsString,
                     level,
                     censusDataDirectory);
 
             FeatureCollection levelFC;
             SimpleFeatureType levelSFT;
-            levelFC = _LevelDW_Shapefile.getFeatureCollection();
-            levelSFT = _LevelDW_Shapefile.getSimpleFeatureType();
+            levelFC = LevelDW_Shapefile.getFeatureCollection();
+            levelSFT = LevelDW_Shapefile.getSimpleFeatureType();
 
             /*
              * Filter Leeds LAD LSOAs and write new Shapefile if it does not exist
@@ -173,46 +173,43 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
              * backgroundShapefile
              */
             File leedsLevelShapefile;
-            leedsLevelShapefile = DW_Maps.getCensusBoundaryShapefile(
+            leedsLevelShapefile = Maps.getCensusBoundaryShapefile(
                     tLeedsString,
                     level);
-            _LeedsLevelDW_Shapefile = new DW_Shapefile(leedsLevelShapefile);
+            LeedsLevelDW_Shapefile = new DW_Shapefile(leedsLevelShapefile);
             if (!leedsLevelShapefile.exists()) {
-                DW_Maps.selectAndCreateNewShapefile(sdsf,
+                Maps.selectAndCreateNewShapefile(sdsf,
                         levelFC,
                         levelSFT,
-                        _LeedsAreaCodes,
+                        LeedsAreaCodes,
                         targetPropertyName,
                         leedsLevelShapefile);
             }
         } else {
-            File levelShapefile = DW_Maps.getAreaBoundaryShapefile(level);
+            File levelShapefile = Maps.getAreaBoundaryShapefile(level);
             if (levelShapefile == null) {
                 int debug = 1;
             }
-            _LevelDW_Shapefile = new DW_Shapefile(levelShapefile);
-            _LeedsAreaCodes = getAreaCodesAndShapefile(
-                    env,
+            LevelDW_Shapefile = new DW_Shapefile(levelShapefile);
+            LeedsAreaCodes = getAreaCodesAndShapefile(env,
                     tLeedsString,
                     level,
                     targetPropertyName,
-                    _LeedsLADDW_Shapefile,
-                    _LevelDW_Shapefile);
-            _LeedsAndNeighbouringLADAreaCodes = getAreaCodesAndShapefile(
-                    env,
+                    LeedsLADDW_Shapefile,
+                    LevelDW_Shapefile);
+            LeedsAndNeighbouringLADAreaCodes = getAreaCodesAndShapefile(env,
                     tLeedsAndNeighbouringLADsString,
                     level,
                     targetPropertyName,
-                    _LeedsLADDW_Shapefile,
-                    _LevelDW_Shapefile);
-            _LeedsAndNearNeighbouringLADAreaCodes = getAreaCodesAndShapefile(
-                    env,
+                    LeedsLADDW_Shapefile,
+                    LevelDW_Shapefile);
+            LeedsAndNearNeighbouringLADAreaCodes = getAreaCodesAndShapefile(env,
                     tLeedsAndNearNeighbouringLADsString,
                     level,
                     targetPropertyName,
-                    _LeedsLADDW_Shapefile,
-                    _LevelDW_Shapefile);
-            _LeedsLevelDW_Shapefile = new DW_Shapefile(
+                    LeedsLADDW_Shapefile,
+                    LevelDW_Shapefile);
+            LeedsLevelDW_Shapefile = new DW_Shapefile(
                     getPostcodeShapefile(
                             tLeedsString,
                             level));
@@ -311,7 +308,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             String level) {
         File result;
         result = new File(
-                env.getFiles().getGeneratedPostcodeDir(),
+                Env.getFiles().getGeneratedPostcodeDir(),
                 area + level + "PolyShapefile.shp");
         result = new File(
                 result,
@@ -327,7 +324,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
         // Get LAD shapefiles
         String levelLAD = "LAD";
         // Read LAD Census Boundary Data
-        File tLADShapefile = DW_Maps.getAreaBoundaryShapefile(
+        File tLADShapefile = Maps.getAreaBoundaryShapefile(
                 levelLAD);
         DW_Shapefile tLAD_DW_Shapefile;
         tLAD_DW_Shapefile = new DW_Shapefile(tLADShapefile);
@@ -348,12 +345,12 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
         FeatureCollection tLAD_FC = tLAD_DW_Shapefile.getFeatureCollection();
         SimpleFeatureType tLAD_SFT = tLAD_DW_Shapefile.getSimpleFeatureType();
         // Select tLADCensusCodes from LAD Census Boundary Data
-        File tLADShapefile = DW_Maps.getCensusBoundaryShapefile(
+        File tLADShapefile = Maps.getCensusBoundaryShapefile(
                 name,
                 "LAD");
         result = new DW_Shapefile(tLADShapefile);
         if (!tLADShapefile.exists()) {
-            DW_Maps.selectAndCreateNewShapefile(
+            Maps.selectAndCreateNewShapefile(
                     sdsf,
                     tLAD_FC,
                     tLAD_SFT,
@@ -369,7 +366,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             String level) {
         File result;
         File postcodeDataDirectory = new File(
-                env.getFiles().getGeneratedPostcodeDir(),
+                Env.getFiles().getGeneratedPostcodeDir(),
                 area);
         postcodeDataDirectory = new File(
                 postcodeDataDirectory,
@@ -414,7 +411,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             String level) {
         TreeSet<String> result = null;
         File postcodeDataDirectory = new File(
-                env.getFiles().getGeneratedPostcodeDir(),
+                Env.getFiles().getGeneratedPostcodeDir(),
                 area);
         postcodeDataDirectory = new File(
                 postcodeDataDirectory,
@@ -460,28 +457,28 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
      * @return the tLeedsAreaCodes
      */
     public TreeSet<String> getLeedsAreaCodes() {
-        return _LeedsAreaCodes;
+        return LeedsAreaCodes;
     }
 
     /**
-     * @return the _LeedsAndNeighbouringLADAreaCodes
+     * @return the LeedsAndNeighbouringLADAreaCodes
      */
     public TreeSet<String> getLeedsAndNeighbouringLADAreaCodes() {
-        return _LeedsAndNeighbouringLADAreaCodes;
+        return LeedsAndNeighbouringLADAreaCodes;
     }
 
     /**
-     * @return the _LeedsAndNearNeighbouringLADAreaCodes
+     * @return the LeedsAndNearNeighbouringLADAreaCodes
      */
     public TreeSet<String> getLeedsAndNearNeighbouringLADAreaCodes() {
-        return _LeedsAndNearNeighbouringLADAreaCodes;
+        return LeedsAndNearNeighbouringLADAreaCodes;
     }
 
     /**
      * @return the levelShapefile
      */
     public DW_Shapefile getLevelDW_Shapefile() {
-        return _LevelDW_Shapefile;
+        return LevelDW_Shapefile;
     }
 
     /**
@@ -499,10 +496,10 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
     }
 
     /**
-     * @return the _LeedsLevelDW_Shapefile
+     * @return the LeedsLevelDW_Shapefile
      */
     public DW_Shapefile getLeedsLevelDW_Shapefile() {
-        return _LeedsLevelDW_Shapefile;
+        return LeedsLevelDW_Shapefile;
     }
 
     /**
@@ -520,24 +517,24 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
     }
 
     /**
-     * @return the _LeedsLADDW_Shapefile
+     * @return the LeedsLADDW_Shapefile
      */
     public DW_Shapefile getLeedsLADDW_Shapefile() {
-        return _LeedsLADDW_Shapefile;
+        return LeedsLADDW_Shapefile;
     }
 
     /**
-     * @return the _LeedsAndNeighbouringLADDW_Shapefile
+     * @return the LeedsAndNeighbouringLADDW_Shapefile
      */
     public DW_Shapefile getLeedsAndNeighbouringLADDW_Shapefile() {
-        return _LeedsAndNeighbouringLADDW_Shapefile;
+        return LeedsAndNeighbouringLADDW_Shapefile;
     }
 
     /**
-     * @return the _LeedsAndNearNeighbouringLADDW_Shapefile
+     * @return the LeedsAndNearNeighbouringLADDW_Shapefile
      */
     public DW_Shapefile getLeedsAndNearNeighbouringLADDW_Shapefile() {
-        return _LeedsAndNearNeighbouringLADDW_Shapefile;
+        return LeedsAndNearNeighbouringLADDW_Shapefile;
     }
 
     /**

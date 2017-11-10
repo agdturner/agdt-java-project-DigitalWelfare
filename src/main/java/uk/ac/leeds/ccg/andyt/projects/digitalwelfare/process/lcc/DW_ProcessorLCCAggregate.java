@@ -39,14 +39,15 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 
     /**
-     * For convenience UO_Handler = env.getDW_UO_Handler().
+     * For convenience.
      */
-    protected DW_UO_Handler DW_UO_Handler;
+    protected DW_UO_Handler UO_Handler;
+    protected DW_SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
 
 //    /**
 //     * For convenience.
 //     */
-//    String sU = ds.sU;
+//    String sU = Strings.sU;
 //
 //    //String sUOInApril2013 = "UOInApril2013";
 //    String sUOInApril2013 = "UInApr13";
@@ -77,24 +78,19 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     boolean doAggregation = false;
     boolean doHBGeneralAggregateStatistics = false;
 
-    /**
-     * For convenience DW_SHBE_TenancyType_Handler =
-     * env.getDW_SHBE_TenancyType_Handler().
-     */
-    protected DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
-
+    
     public DW_ProcessorLCCAggregate(DW_Environment env) {
         super(env);
-        DW_UO_Handler = env.getUO_Handler();
-        DW_SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
-        DW_SHBE_Data = env.getSHBE_Data();
-        ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
-        DW_UO_Data = env.getUO_Data();
+        UO_Handler = env.getUO_Handler();
+        SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
+        SHBE_Data = env.getSHBE_Data();
+        ClaimIDToClaimRefLookup = SHBE_Data.getClaimIDToClaimRefLookup();
+        UO_Data = env.getUO_Data();
     }
 
     @Override
     public void run() throws Exception, Error {
-        SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
+        SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
         // Declaration
         ArrayList<String> PTs;
         ArrayList<String> levels;
@@ -109,16 +105,16 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         HashMap<Boolean, ArrayList<Integer>> regulatedGroups;
         HashMap<Boolean, ArrayList<Integer>> unregulatedGroups;
 
-        PTs = ds.getPaymentTypes();
-//            PTs.remove(ds.sPaymentTypeAll);
-//            PTs.remove(ds.sPaymentTypeIn);
-//            PTs.remove(ds.sPaymentTypeSuspended);
-//            PTs.remove(ds.sPaymentTypeOther);
+        PTs = Strings.getPaymentTypes();
+//            PTs.remove(Strings.sPaymentTypeAll);
+//            PTs.remove(Strings.sPaymentTypeIn);
+//            PTs.remove(Strings.sPaymentTypeSuspended);
+//            PTs.remove(Strings.sPaymentTypeOther);
 
         levels = new ArrayList<String>();
-//        levels.add(ds.sOA);
-        levels.add(ds.sLSOA);
-        levels.add(ds.sMSOA);
+//        levels.add(Strings.sOA);
+        levels.add(Strings.sLSOA);
+        levels.add(Strings.sMSOA);
 //        levels.add("PostcodeUnit");
 //        levels.add("PostcodeSector");
 //        levels.add("PostcodeDistrict");
@@ -127,37 +123,37 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 
         // Initialisiation
         // intialise levels
-        levels.add(ds.sParliamentaryConstituency);
-        levels.add(ds.sStatisticalWard);
+        levels.add(Strings.sParliamentaryConstituency);
+        levels.add(Strings.sStatisticalWard);
 
         // Initialise includes
-        includes = DW_SHBE_Handler.getIncludes();
-//            includes.remove(ds.sIncludeAll);
-//            includes.remove(ds.sIncludeYearly);
-//            includes.remove(ds.sInclude6Monthly);
-//            includes.remove(ds.sInclude3Monthly);
-//            includes.remove(ds.sIncludeMonthlySinceApril2013);
-//            includes.remove(ds.sIncludeMonthly);
+        includes = SHBE_Handler.getIncludes();
+//            includes.remove(Strings.sIncludeAll);
+//            includes.remove(Strings.sIncludeYearly);
+//            includes.remove(Strings.sInclude6Monthly);
+//            includes.remove(Strings.sInclude3Monthly);
+//            includes.remove(Strings.sIncludeMonthlySinceApril2013);
+//            includes.remove(Strings.sIncludeMonthly);
 
         // Initialise claimantTypes
-        claimantTypes = ds.getHB_CTB();
+        claimantTypes = Strings.getHB_CTB();
 
         // Initialise types
         types = new ArrayList<String>();
-        types.add(ds.sAllClaimants); // Count of all claimants
+        types.add(Strings.sAllClaimants); // Count of all claimants
 //        types.add("NewEntrant"); // New entrants will include people already from Leeds. Will this also include people new to Leeds? - Probably...
-        types.add(ds.sOnFlow); // These are people not claiming the previous month and that have not claimed before.
-        types.add(ds.sReturnFlow); // These are people not claiming the previous month but that have claimed before.
-        types.add(ds.sStable); // The popoulation of claimants who's postcode location is the same as in the previous month.
-        types.add(ds.sAllInChurn); // A count of all claimants that have moved to this area (including all people moving within the area).
-        types.add(ds.sAllOutChurn); // A count of all claimants that have moved that were living in this area (including all people moving within the area).
+        types.add(Strings.sOnFlow); // These are people not claiming the previous month and that have not claimed before.
+        types.add(Strings.sReturnFlow); // These are people not claiming the previous month but that have claimed before.
+        types.add(Strings.sStable); // The popoulation of claimants who's postcode location is the same as in the previous month.
+        types.add(Strings.sAllInChurn); // A count of all claimants that have moved to this area (including all people moving within the area).
+        types.add(Strings.sAllOutChurn); // A count of all claimants that have moved that were living in this area (including all people moving within the area).
 
         // Initialise distanceTypes
         distanceTypes = new ArrayList<String>();
-        distanceTypes.add(ds.sInDistanceChurn); // A count of all claimants that have moved within this area.
+        distanceTypes.add(Strings.sInDistanceChurn); // A count of all claimants that have moved within this area.
         // A useful indication of places where displaced people from Leeds are placed?
-        distanceTypes.add(ds.sWithinDistanceChurn); // A count of all claimants that have moved within this area.
-        distanceTypes.add(ds.sOutDistanceChurn); // A count of all claimants that have moved out from this area.
+        distanceTypes.add(Strings.sWithinDistanceChurn); // A count of all claimants that have moved within this area.
+        distanceTypes.add(Strings.sOutDistanceChurn); // A count of all claimants that have moved out from this area.
 
         // Initialise/Specifiy distances
         distances = new ArrayList<Double>();
@@ -170,13 +166,13 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         TTs = new HashMap<Boolean, ArrayList<String>>();
         boolean doUO;
         doUO = true;
-        TTs.put(doUO, DW_SHBE_TenancyType_Handler.getTenancyTypeAll(doUO));
+        TTs.put(doUO, SHBE_TenancyType_Handler.getTenancyTypeAll(doUO));
         doUO = false;
-        TTs.put(doUO, DW_SHBE_TenancyType_Handler.getTenancyTypeAll(doUO));
+        TTs.put(doUO, SHBE_TenancyType_Handler.getTenancyTypeAll(doUO));
 
         // Initialise TTGroups, TTsGrouped, regulatedGroups and unregulatedGroups
         Object[] TTGs;
-        TTGs = DW_SHBE_TenancyType_Handler.getTenancyTypeGroups();
+        TTGs = SHBE_TenancyType_Handler.getTenancyTypeGroups();
         TTGroups = (HashMap<Boolean, TreeMap<String, ArrayList<String>>>) TTGs[0];
         TTsGrouped = (HashMap<Boolean, ArrayList<String>>) TTGs[1];
         regulatedGroups = (HashMap<Boolean, ArrayList<Integer>>) TTGs[2];
@@ -187,15 +183,14 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (doAggregation) {
             DW_YM3 YM3;
 //            for (int i = 0; i < SHBEFilenames.length; i++) {
-//                YM3 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+//                YM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
             for (String SHBEFilename : SHBEFilenames) {
-                YM3 = DW_SHBE_Handler.getYM3(SHBEFilename);
-                aggregate(
-                        YM3,
+                YM3 = SHBE_Handler.getYM3(SHBEFilename);
+                aggregate(YM3,
                         PTs,
                         levels,
                         this.getArrayListBoolean(),
-                        DW_UO_Data,
+                        UO_Data,
                         SHBEFilenames,
                         claimantTypes,
                         types,
@@ -250,7 +245,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             HashMap<Boolean, ArrayList<Integer>> regulatedGroups,
             HashMap<Boolean, ArrayList<Integer>> unregulatedGroups,
             TreeMap<String, ArrayList<Integer>> includes) {
-        env.logO("<doAggregation>", true);
+        Env.logO("<doAggregation>", true);
         int CensusYear = 2011;
         // Get Lookup
         TreeMap<String, TreeMap<String, String>> LookupsFromPostcodeToLevelCode;
@@ -261,7 +256,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         while (tPTIte.hasNext()) {
             String aPT;
             aPT = tPTIte.next();
-            env.logO("<" + aPT + ">", true);
+            Env.logO("<" + aPT + ">", true);
             //Generic_UKPostcode_Handler.isValidPostcodeForm(String postcode)
             iteB = bArray.iterator();
             while (iteB.hasNext()) {
@@ -274,7 +269,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 //                    if (false) {
                         doCouncil = true;
                         doRSL = true;
-                        env.logO("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
+                        Env.logO("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
                         aggregateClaims(
                                 doUnderOccupied,
                                 doCouncil,
@@ -293,10 +288,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 types,
                                 distanceTypes,
                                 distances);
-                        env.logO("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
+                        Env.logO("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
                         doCouncil = true;
                         doRSL = false;
-                        env.logO("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
+                        Env.logO("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
                         aggregateClaims(
                                 doUnderOccupied,
                                 doCouncil,
@@ -315,10 +310,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 types,
                                 distanceTypes,
                                 distances);
-                        env.logO("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
+                        Env.logO("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
                         doCouncil = false;
                         doRSL = true;
-                        env.logO("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
+                        Env.logO("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
                         aggregateClaims(
                                 doUnderOccupied,
                                 doCouncil,
@@ -337,12 +332,12 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 types,
                                 distanceTypes,
                                 distances);
-                        env.logO("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
+                        Env.logO("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
                     }
                 } else {
                     doCouncil = false;
                     doRSL = false;
-                    env.logO("<aggregateClaimants(doUnderOccupied " + doUnderOccupied + ")>", true);
+                    Env.logO("<aggregateClaimants(doUnderOccupied " + doUnderOccupied + ")>", true);
                     aggregateClaims(
                             doUnderOccupied,
                             doCouncil,
@@ -361,12 +356,12 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                             types,
                             distanceTypes,
                             distances);
-                    env.logO("</aggregateClaimants(doUnderOccupied " + doUnderOccupied + ")>", true);
+                    Env.logO("</aggregateClaimants(doUnderOccupied " + doUnderOccupied + ")>", true);
                 }
             }
-            env.logO("</" + aPT + ">", true);
+            Env.logO("</" + aPT + ">", true);
         }
-        env.logO("</doAggregation>", true);
+        Env.logO("</doAggregation>", true);
     }
 
     /**
@@ -409,13 +404,13 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             int startIndex) {
         String result = null;
         if (i > startIndex + 2) {
-            String lastMonthYear = DW_SHBE_Handler.getYear(SHBEFilenames[i - 1]);
+            String lastMonthYear = SHBE_Handler.getYear(SHBEFilenames[i - 1]);
             int yearInt = Integer.parseInt(year);
             int lastMonthYearInt = Integer.parseInt(lastMonthYear);
             if (!(yearInt == lastMonthYearInt || yearInt == lastMonthYearInt + 1)) {
                 return null;
             }
-            String lastMonthMonth = DW_SHBE_Handler.getMonth(SHBEFilenames[i - 1]);
+            String lastMonthMonth = SHBE_Handler.getMonth(SHBEFilenames[i - 1]);
             result = lastMonthYear + lastMonthMonth;
         }
 
@@ -430,8 +425,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             int startIndex) {
         String result = null;
         if (i > startIndex + 13) {
-            String lastYearYear = DW_SHBE_Handler.getYear(SHBEFilenames[i - 12]);
-            String lastYearMonth = DW_SHBE_Handler.getMonth(SHBEFilenames[i - 12]);
+            String lastYearYear = SHBE_Handler.getYear(SHBEFilenames[i - 12]);
+            String lastYearMonth = SHBE_Handler.getMonth(SHBEFilenames[i - 12]);
             int yearInt = Integer.parseInt(year);
             int lastYearYearInt = Integer.parseInt(lastYearYear);
             if (!(yearInt == lastYearYearInt + 1)) {
@@ -469,7 +464,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 totalCouncil.add(CTBRefID);
             }
         }
-        env.logO("Number of Council tenants effected by underoccupancy " + totalCouncil.size(), true);
+        Env.logO("Number of Council tenants effected by underoccupancy " + totalCouncil.size(), true);
         TreeMap<String, DW_UO_Set> tRSLSets;
         tRSLSets = (TreeMap<String, DW_UO_Set>) UnderOccupiedData[1];
         HashSet<DW_ID> totalRSL;
@@ -487,9 +482,9 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 totalRSL.add(CTBRefID);
             }
         }
-        env.logO("Number of RSL tenants effected by underoccupancy " + totalRSL.size(), true);
+        Env.logO("Number of RSL tenants effected by underoccupancy " + totalRSL.size(), true);
         totalCouncil.addAll(totalRSL);
-        env.logO("Number of Council tenants effected by underoccupancy " + totalCouncil.size(), true);
+        Env.logO("Number of Council tenants effected by underoccupancy " + totalCouncil.size(), true);
     }
 
     /**
@@ -514,7 +509,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             YM3 = ite.next();
             DW_UO_SetAll = result.get(YM3);
             if (DW_UO_SetAll == null) {
-                DW_UO_SetAll = new DW_UO_Set(env);
+                DW_UO_SetAll = new DW_UO_Set(Env);
                 result.put(YM3, DW_UO_SetAll);
             }
             DW_UO_SetCouncil = DW_UO_SetsCouncil.get(YM3);
@@ -525,7 +520,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             YM3 = ite.next();
             DW_UO_SetAll = result.get(YM3);
             if (DW_UO_SetAll == null) {
-                DW_UO_SetAll = new DW_UO_Set(env);
+                DW_UO_SetAll = new DW_UO_Set(Env);
                 result.put(YM3, DW_UO_SetAll);
             }
             DW_UO_SetRSL = DW_UO_SetsRSL.get(YM3);
@@ -544,9 +539,9 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         }
         result = new HashMap<DW_ID, Integer>();
         DW_SHBE_Records DW_SHBE_Records;
-        DW_SHBE_Records = DW_SHBE_Data.getDW_SHBE_Records(YM3);
+        DW_SHBE_Records = SHBE_Data.getDW_SHBE_Records(YM3);
         HashMap<DW_ID, DW_SHBE_Record> records;
-        records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
+        records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
         Iterator<DW_ID> ite;
         ite = records.keySet().iterator();
         DW_ID ClaimID;
@@ -568,7 +563,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
             return ClaimIDToPostcodeIDLookups.get(key);
         }
-        result = env.getSHBE_Data().getDW_SHBE_Records(YM3).getClaimIDToPostcodeIDLookup(env.HandleOutOfMemoryError);
+        result = Env.getSHBE_Data().getDW_SHBE_Records(YM3).getClaimIDToPostcodeIDLookup(Env.HandleOutOfMemoryError);
         ClaimIDToPostcodeIDLookups.put(key, result);
         return result;
     }
@@ -617,18 +612,18 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (reportTenancyTransitionBreaks) {
             dirOut2 = new File(
                     dirOut2,
-                    ds.sIncludingTenancyTransitionBreaks);
+                    Strings.sIncludingTenancyTransitionBreaks);
         } else {
             dirOut2 = new File(
                     dirOut2,
-                    ds.sIncludingTenancyTransitionBreaksNo);
+                    Strings.sIncludingTenancyTransitionBreaksNo);
         }
         dirOut2.mkdirs();
         File f;
         f = new File(
                 dirOut2,
                 name);
-        env.logO("Write " + f, true);
+        Env.logO("Write " + f, true);
         result = Generic_StaticIO.getPrintWriter(f, false);
         return result;
     }
@@ -675,7 +670,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             ArrayList<String> distanceTypes,
             ArrayList<Double> distances) {
         TreeMap<String, File> outputDirs;
-        outputDirs = df.getOutputSHBELevelDirsTreeMap(
+        outputDirs = Files.getOutputSHBELevelDirsTreeMap(
                 levels,
                 doUnderOccupied,
                 doCouncil,
@@ -711,9 +706,9 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             i = includeIte.next();
             // Load first data
             DW_YM3 YM30;
-            YM30 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+            YM30 = SHBE_Handler.getYM3(SHBEFilenames[i]);
             DW_SHBE_Records recs0;
-            recs0 = env.getSHBE_Data().getDW_SHBE_Records(YM30);
+            recs0 = Env.getSHBE_Data().getDW_SHBE_Records(YM30);
             DW_YM3 YM30v;
             YM30v = recs0.getNearestYM3ForONSPDLookup();
             HashMap<DW_ID, DW_SHBE_Record> records0;
@@ -802,7 +797,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 claimantTypeTenureLevelTypeAreaCounts.put(claimantType, TTLevelTypeAreaCounts);
                 claimantTypeTenureLevelTypeTenureCounts.put(claimantType, TTLevelTypeTenureCounts);
             }
-            records0 = recs0.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
+            records0 = recs0.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
 
             // Init underOccupiedSets
             DW_UO_Set councilUOSet0 = null;
@@ -840,7 +835,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                             TreeMap<String, String> tLookupFromPostcodeToLevelCode;
                             tLookupFromPostcodeToLevelCode = lookupsFromPostcodeToLevelCode.get(level);
                             String claimantType;
-                            claimantType = DW_SHBE_Handler.getClaimantType(DRecord0);
+                            claimantType = SHBE_Handler.getClaimantType(DRecord0);
                             Integer TTInt = DRecord0.getTenancyType();
                             if (postcode0 != null) {
                                 String areaCode;
@@ -849,7 +844,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                         postcode0,
                                         tLookupFromPostcodeToLevelCode);
                                 String type;
-                                type = ds.sAllClaimants;
+                                type = Strings.sAllClaimants;
                                 if (types.contains(type)) {
                                     boolean doMainLoop = true;
                                     // Check for UnderOccupied
@@ -956,17 +951,17 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             tIDIndexes = new ArrayList<ArrayList<DW_ID>>();
             if (true) {
 //                ArrayList<DW_ID> tID_HashSet;
-//                tID_HashSet = recs0.getClaimIDToClaimantPersonIDLookup(env.HandleOutOfMemoryError);
+//                tID_HashSet = recs0.getClaimIDToClaimantPersonIDLookup(Env.HandleOutOfMemoryError);
 //                tIDIndexes.add(tID_HashSet);
             }
 
             while (includeIte.hasNext()) {
                 i = includeIte.next();
                 // Set Year and Month variables
-                DW_YM3 YM31 = DW_SHBE_Handler.getYM3(SHBEFilenames[i]);
+                DW_YM3 YM31 = SHBE_Handler.getYM3(SHBEFilenames[i]);
                 // Load next data
                 DW_SHBE_Records recs1;
-                recs1 = env.getSHBE_Data().getDW_SHBE_Records(YM31);
+                recs1 = Env.getSHBE_Data().getDW_SHBE_Records(YM31);
                 HashMap<DW_ID, String> ClaimIDToPostcodeIDLookup1;
                 ClaimIDToPostcodeIDLookup1 = null;//recs1.getClaimDW_IDToPostcodeLookup();
                 HashMap<DW_ID, Integer> ClaimIDToTTLookup1;
@@ -975,8 +970,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 YM31v = recs1.getNearestYM3ForONSPDLookup();
 //            String yearMonth = year + month;
 //            String lastMonth_yearMonth;
-//            String year = DW_SHBE_Handler.getYear(SHBEFilenames[i]);
-//            String month = DW_SHBE_Handler.getMonth(SHBEFilenames[i]);
+//            String year = SHBE_Handler.getYear(SHBEFilenames[i]);
+//            String month = SHBE_Handler.getMonth(SHBEFilenames[i]);
 //            String yearMonth = year + month;
 //            String lastMonth_yearMonth;
 //            lastMonth_yearMonth = getLastMonth_yearMonth(
@@ -1006,12 +1001,12 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 
                 if (true) {
 //                    ArrayList<DW_ID> tID_HashSet;
-//                    tID_HashSet = recs1.getClaimantClaimIDs(env.HandleOutOfMemoryError);
+//                    tID_HashSet = recs1.getClaimantClaimIDs(Env.HandleOutOfMemoryError);
 //                    tIDIndexes.add(tID_HashSet);
                 }
                 //records0 = (TreeMap<String, DW_SHBE_Record>) SHBEData0[0];
                 HashMap<DW_ID, DW_SHBE_Record> records1;
-                records1 = recs1.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
+                records1 = recs1.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
                 /* Initialise A:
                  * output directories;
                  * claimantTypeTenureLevelTypeDirs;
@@ -1227,11 +1222,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 String CTBRef1;
                                 CTBRef1 = DRecord1.getCouncilTaxBenefitClaimReferenceNumber();
                                 DW_ID ClaimID1;
-                                ClaimID1 = DW_SHBE_Data.getClaimRefToClaimIDLookup().get(CTBRef1);
+                                ClaimID1 = SHBE_Data.getClaimRefToClaimIDLookup().get(CTBRef1);
                                 DW_ID claimantDW_ID1;
                                 claimantDW_ID1 = null;//DW_PersonIDtoDW_IDLookup.get(claimantDW_PersonID1);
                                 String claimantType;
-                                claimantType = DW_SHBE_Handler.getClaimantType(DRecord1);
+                                claimantType = SHBE_Handler.getClaimantType(DRecord1);
                                 boolean doAdd = true;
                                 // Check for UnderOccupied
                                 if (doUnderOccupied) {
@@ -1277,7 +1272,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                 ClaimPostcodeF);
                                         if (areaCode != null) {
                                             String type;
-                                            type = ds.sAllClaimants;
+                                            type = Strings.sAllClaimants;
                                             Integer TTInt;
                                             TTInt = DRecord1.getTenancyType();
                                             if (types.contains(type)) {
@@ -1305,7 +1300,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                             include,
                                                             tIDIndexes);
                                                     if (!hasBeenSeenBefore) {
-                                                        type = ds.sOnFlow;
+                                                        type = Strings.sOnFlow;
                                                         if (types.contains(type)) {
                                                             addToResult(
                                                                     claimantTypeTenureLevelTypeAreaCounts,
@@ -1319,7 +1314,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                         }
                                                     } else {
                                                         // If this claimantNINO has been seen before it is a ReturnFlow
-                                                        type = ds.sReturnFlow;
+                                                        type = Strings.sReturnFlow;
                                                         if (types.contains(type)) {
                                                             addToResult(
                                                                     claimantTypeTenureLevelTypeAreaCounts,
@@ -1345,7 +1340,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                     PostcodeID0 = record0.getPostcodeID();
                                                     if (PostcodeID0 == null) {
                                                         // Unknown
-                                                        type = ds.sUnknown;
+                                                        type = Strings.sUnknown;
                                                         if (types.contains(type)) {
                                                             addToResult(
                                                                     claimantTypeTenureLevelTypeAreaCounts,
@@ -1364,7 +1359,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                      * results.
                                                      */ if (PostcodeID0.equals(PostcodeID1)) {
                                                         // Stable
-                                                        type = ds.sStable;
+                                                        type = Strings.sStable;
                                                         if (types.contains(type)) {
                                                             addToResult(
                                                                     claimantTypeTenureLevelTypeAreaCounts,
@@ -1378,7 +1373,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                         }
                                                     } else {
                                                         // AllInChurn
-                                                        type = ds.sAllInChurn;
+                                                        type = Strings.sAllInChurn;
                                                         if (types.contains(type)) {
                                                             addToResult(
                                                                     claimantTypeTenureLevelTypeAreaCounts,
@@ -1391,7 +1386,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                                     TTInt);
                                                         }
                                                         // AllOutChurn
-                                                        type = ds.sAllOutChurn;
+                                                        type = Strings.sAllOutChurn;
                                                         if (types.contains(type)) {
                                                             addToResult(
                                                                     claimantTypeTenureLevelTypeAreaCounts,
@@ -1404,7 +1399,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                                     TTInt);
                                                         }
                                                         double distance;
-                                                        distance = DW_Postcode_Handler.getDistanceBetweenPostcodes(
+                                                        distance = Postcode_Handler.getDistanceBetweenPostcodes(
                                                                 YM30v,
                                                                 YM31v,
                                                                 PostcodeID0,
@@ -1415,7 +1410,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                             double distanceThreshold = ite3.next();
                                                             if (distance > distanceThreshold) {
                                                                 // InDistanceChurn
-                                                                type = ds.sInDistanceChurn;
+                                                                type = Strings.sInDistanceChurn;
                                                                 if (distanceTypes.contains(type)) {
                                                                     addToResult(
                                                                             claimantTypeTenureLevelTypeDistanceAreaCounts,
@@ -1429,7 +1424,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                                             distanceThreshold);
                                                                 }
                                                                 // OutDistanceChurn
-                                                                type = ds.sOutDistanceChurn;
+                                                                type = Strings.sOutDistanceChurn;
                                                                 if (distanceTypes.contains(type)) {
                                                                     addToResult(
                                                                             claimantTypeTenureLevelTypeDistanceAreaCounts,
@@ -1444,7 +1439,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                                 }
                                                             } else {
                                                                 // WithinDistanceChurn
-                                                                type = ds.sWithinDistanceChurn;
+                                                                type = Strings.sWithinDistanceChurn;
                                                                 if (distanceTypes.contains(type)) {
                                                                     addToResult(
                                                                             claimantTypeTenureLevelTypeDistanceAreaCounts,
@@ -1470,7 +1465,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                     }
                                 } else {
                                     Generic_Collections.addToTreeMapStringInteger(
-                                            unexpectedCounts, ds.snull, 1);
+                                            unexpectedCounts, Strings.snull, 1);
                                 }
                             }
                         }
@@ -1569,18 +1564,18 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                             TreeMap<String, Integer> unexpectedCounts;
                             unexpectedCounts = levelUnexpectedCounts.get(level);
                             if (!unexpectedCounts.isEmpty()) {
-                                if (env.DEBUG_Level < env.DEBUG_Level_NORMAL) {
-                                    env.logO("Unexpected Counts for:"
+                                if (Env.DEBUG_Level < Env.DEBUG_Level_NORMAL) {
+                                    Env.logO("Unexpected Counts for:"
                                             + " Claimant Type " + claimantType
                                             + " Tenure " + TT
                                             + " Level " + level, true);
-                                    env.logO("code,count", true);
+                                    Env.logO("code,count", true);
                                     Iterator<String> unexpectedCountsIte;
                                     unexpectedCountsIte = unexpectedCounts.keySet().iterator();
                                     while (unexpectedCountsIte.hasNext()) {
                                         String code = unexpectedCountsIte.next();
                                         Integer count = unexpectedCounts.get(code);
-                                        env.logO("" + code + ", " + count, true);
+                                        Env.logO("" + code + ", " + count, true);
                                     }
                                 }
                             }
@@ -2076,11 +2071,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 //        //Debug
 //        if (areaCounts == null) {
 //            // No area counts for distance
-//            env.logO("No area counts for distance " + distance);
-//            env.logO("claimantType " + claimantType);
-//            env.logO("tenure " + tenure);
-//            env.logO("level " + level);
-//            env.logO("type " + type);
+//            Env.logO("No area counts for distance " + distance);
+//            Env.logO("claimantType " + claimantType);
+//            Env.logO("tenure " + tenure);
+//            Env.logO("level " + level);
+//            Env.logO("type " + type);
 //        }
         Generic_Collections.addToTreeMapStringInteger(
                 areaCounts,

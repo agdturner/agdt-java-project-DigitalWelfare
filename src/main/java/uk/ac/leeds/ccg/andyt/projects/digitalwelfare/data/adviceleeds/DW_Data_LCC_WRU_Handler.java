@@ -60,7 +60,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
             String filename,
             Object IDType) {
         File directory = new File(
-                env.getFiles().getInputAdviceLeedsDir(),
+                Env.getFiles().getInputAdviceLeedsDir(),
                 "LCC_WRU");
         return loadInputData(
                 directory,
@@ -112,7 +112,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
                         line = st.sval;
                         try {
                             DW_Data_LCC_WRU_Record rec;
-                            rec = new DW_Data_LCC_WRU_Record(env, RecordID, line, this);
+                            rec = new DW_Data_LCC_WRU_Record(Env, RecordID, line, this);
                             //String enquiryReferenceNumber = record.getEnquiryReferenceNumber();
                             //1-102J,20-Sep-1936,Not Stated,Refused,LS6 1LS,2-464768375,2-7SFJ2M,Welfare Rights,Home Visit (MacMillan),05-Dec-2011,Blue Badge,-,75,77.11
                             String client_ref;

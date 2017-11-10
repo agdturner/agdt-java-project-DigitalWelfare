@@ -76,12 +76,12 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     /**
      * For storing an instance of Grids_Environment
      */
-    protected transient Grids_Environment ge;
+    protected transient Grids_Environment Grids_Env;
 
     /**
      * For storing an instance of Vector_Environment
      */
-    protected transient Vector_Environment ve;
+    protected transient Vector_Environment Vector_Env;
 
     /**
      * For storing an instance of DW_Geotools
@@ -454,18 +454,18 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     public Grids_Environment getGrids_Environment() {
-        if (ge == null) {
-            ge = new Grids_Environment(Files.getGeneratedGridsDir());
+        if (Grids_Env == null) {
+            Grids_Env = new Grids_Environment(Files.getGeneratedGridsDir());
         }
-        return ge;
+        return Grids_Env;
     }
 
     public Vector_Environment getVector_Environment() {
-        if (ve == null) {
-            ve = new Vector_Environment();
+        if (Vector_Env == null) {
+            Vector_Env = new Vector_Environment();
             //ve = new Vector_Environment(df.getGeneratedVectorDir());
         }
-        return ve;
+        return Vector_Env;
     }
 
     public DW_Geotools getGeotools() {

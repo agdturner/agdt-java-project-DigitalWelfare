@@ -87,7 +87,7 @@ public class DW_Data_CAB2_Handler extends DW_Object {
                     case StreamTokenizer.TT_WORD:
                         line = st.sval;
                         try {
-                            DW_Data_CAB2_Record record = new DW_Data_CAB2_Record(env, RecordID, line, this);
+                            DW_Data_CAB2_Record record = new DW_Data_CAB2_Record(Env, RecordID, line, this);
                             String client_ref = record.getClient_ref();
                             String enquiry_ref = record.getEnquiry_ref();
                             //String bureau = record.getBureau();

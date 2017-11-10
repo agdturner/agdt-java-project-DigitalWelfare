@@ -27,7 +27,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstrac
  */
 public class DW_MapsLCC extends DW_Maps {
 
-    protected DW_ProcessorAbstract DW_Processor;
+    protected DW_ProcessorAbstract Processor;
     
     public DW_MapsLCC(DW_Environment env) {
         super(env);

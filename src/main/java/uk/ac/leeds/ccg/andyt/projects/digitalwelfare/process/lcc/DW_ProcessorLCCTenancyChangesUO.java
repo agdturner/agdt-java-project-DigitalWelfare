@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.TenancyChangesUO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_TenancyChangesUO;
 
 /**
  * This class produces output relating to Tenancy Type Changes for all those
@@ -38,9 +38,9 @@ public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
          */
         Object[] table;
         ArrayList<Integer> include;
-        include = DW_SHBE_Handler.getIncludeMonthlyUO();
-        TenancyChangesUO UOTTC = new TenancyChangesUO(
-                env,
+        include = SHBE_Handler.getIncludeMonthlyUO();
+        DW_TenancyChangesUO UOTTC = new DW_TenancyChangesUO(
+                Env,
                 handleOutOfMemoryError);
         int index;
         String startMonth;
@@ -48,22 +48,21 @@ public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
         String endMonth;
         String endYear;
         index = include.get(0);
-        startMonth = DW_SHBE_Handler.getMonth(
+        startMonth = SHBE_Handler.getMonth(
                 SHBEFilenames[index]);
-        startYear = DW_SHBE_Handler.getYear(
+        startYear = SHBE_Handler.getYear(
                 SHBEFilenames[index]);
         index = include.get(include.size() - 1);
-        endMonth = DW_SHBE_Handler.getMonth(
+        endMonth = SHBE_Handler.getMonth(
                 SHBEFilenames[index]);
-        endYear = DW_SHBE_Handler.getYear(
+        endYear = SHBE_Handler.getYear(
                 SHBEFilenames[index]);
         iteB = bArray.iterator();
         while (iteB.hasNext()) {
             boolean includePreUnderOccupancyValues;
             includePreUnderOccupancyValues = iteB.next();
-            env.logO("<includePreUnderOccupancyValues " + includePreUnderOccupancyValues + ">", true);
-            table = UOTTC.getTable(
-                    DW_UO_Data,
+            Env.logO("<includePreUnderOccupancyValues " + includePreUnderOccupancyValues + ">", true);
+            table = UOTTC.getTable(UO_Data,
                     SHBEFilenames,
                     include,
                     includePreUnderOccupancyValues);
@@ -74,7 +73,7 @@ public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
                     startYear,
                     endMonth,
                     endYear);
-            env.logO("</includePreUnderOccupancyValues " + includePreUnderOccupancyValues + ">", true);
+            Env.logO("</includePreUnderOccupancyValues " + includePreUnderOccupancyValues + ">", true);
         }
     }
 }

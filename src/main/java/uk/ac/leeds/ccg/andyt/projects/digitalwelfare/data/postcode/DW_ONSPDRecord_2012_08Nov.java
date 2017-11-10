@@ -23,7 +23,7 @@ public class DW_ONSPDRecord_2012_08Nov extends DW_ONSPDRecord_2011_05May {
      * @param line 
      */
     public DW_ONSPDRecord_2012_08Nov(DW_Environment env, String line) {
-        this.env = env;
+        this.Env = env;
         String[] fields = line.split("\",\"");
         int n;
         n = initPart1(fields);

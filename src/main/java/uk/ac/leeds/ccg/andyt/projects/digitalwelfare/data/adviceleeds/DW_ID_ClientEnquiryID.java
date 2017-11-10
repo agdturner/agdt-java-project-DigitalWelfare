@@ -24,7 +24,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
  */
 public class DW_ID_ClientEnquiryID extends DW_ID_ClientID implements Comparable {
 
-    protected String enquiry_ref;
+    protected String EnquiryRef;
 
     public DW_ID_ClientEnquiryID() {
     }
@@ -32,15 +32,15 @@ public class DW_ID_ClientEnquiryID extends DW_ID_ClientID implements Comparable 
     public DW_ID_ClientEnquiryID(
             String client_ref,
             String enquiry_ref) {
-        this.client_ref = client_ref;
-        this.enquiry_ref = enquiry_ref;
+        this.ClientRef = client_ref;
+        this.EnquiryRef = enquiry_ref;
     }
 
     @Override
     public String toString() {
         return "DW_ID_ClientEnquiryID("
                 + super.toString()
-                + ", enquiry_ref " + enquiry_ref + ")";
+                + ", EnquiryRef " + EnquiryRef + ")";
     }
 
     @Override
@@ -49,8 +49,8 @@ public class DW_ID_ClientEnquiryID extends DW_ID_ClientID implements Comparable 
             DW_ID_ClientEnquiryID oC;
             oC = (DW_ID_ClientEnquiryID) o;
             if (hashCode() == oC.hashCode()) {
-                if (client_ref.equalsIgnoreCase(oC.client_ref)
-                        && enquiry_ref.equalsIgnoreCase(oC.enquiry_ref)) {
+                if (ClientRef.equalsIgnoreCase(oC.ClientRef)
+                        && EnquiryRef.equalsIgnoreCase(oC.EnquiryRef)) {
                     return true;
                 }
             }
@@ -61,7 +61,7 @@ public class DW_ID_ClientEnquiryID extends DW_ID_ClientID implements Comparable 
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 97 * hash + (this.enquiry_ref != null ? this.enquiry_ref.hashCode() : 0);
+        hash = 97 * hash + (this.EnquiryRef != null ? this.EnquiryRef.hashCode() : 0);
         return hash;
     }
     
@@ -75,9 +75,9 @@ public class DW_ID_ClientEnquiryID extends DW_ID_ClientID implements Comparable 
             }
             DW_ID_ClientEnquiryID oC;
             oC = (DW_ID_ClientEnquiryID) o;
-            int comp0 = client_ref.compareTo(oC.client_ref);
+            int comp0 = ClientRef.compareTo(oC.ClientRef);
                 if (comp0 == 0) {
-                    return enquiry_ref.compareTo(oC.enquiry_ref);
+                    return EnquiryRef.compareTo(oC.EnquiryRef);
                 } else {
                     return comp0;
                 }

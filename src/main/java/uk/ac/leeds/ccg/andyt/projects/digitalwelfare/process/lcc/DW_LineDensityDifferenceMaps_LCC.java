@@ -58,7 +58,7 @@ import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 
     protected Vector_Environment ve;
-    protected DW_LineMapsLCC DW_LineMaps_LCC;
+    protected DW_LineMapsLCC LineMaps_LCC;
 
     private static final String targetPropertyNameLSOA = "LSOA11CD";
     private DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
@@ -68,7 +68,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 
     public DW_LineDensityDifferenceMaps_LCC(DW_Environment env) {
         super(env);
-        DW_LineMaps_LCC = new DW_LineMapsLCC(env);
+        LineMaps_LCC = new DW_LineMapsLCC(env);
         ve = new Vector_Environment();
     }
 
@@ -192,7 +192,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
     //public void runAll(int resolutionMultiplier) {
     public void runAll() throws Exception, Error {
 //        TreeMap<String, ArrayList<Integer>> includes;
-//        includes = env.getDW_SHBE_Handler().getIncludes();
+//        includes = Env.getDW_SHBE_Handler().getIncludes();
 //        includes.remove("All");
 ////        includes.remove("Yearly");
 ////        includes.remove("6Monthly");
@@ -315,7 +315,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 //        backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                env,
+                Env,
                 "LSOA", 
                 targetPropertyNameLSOA, 
                 Maps.getShapefileDataStoreFactory());

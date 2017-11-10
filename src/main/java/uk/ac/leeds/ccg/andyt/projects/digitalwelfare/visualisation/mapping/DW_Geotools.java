@@ -61,14 +61,14 @@ public class DW_Geotools extends Geotools_Environment {
 
     public boolean doDebug = true;
 
-    public DW_Environment de;
+    public DW_Environment Env;
     
 
     protected DW_Geotools() {
     }
 
     public DW_Geotools(DW_Environment de) {
-        this.de = de;
+        this.Env = de;
     }
 
     @Override
@@ -135,7 +135,7 @@ public class DW_Geotools extends Geotools_Environment {
                 outputDir,
                 outname,
                 gs.png_String);
-        File outputImageFile = de.getMaps().getOutputImageFile(
+        File outputImageFile = Env.getMaps().getOutputImageFile(
                 outputFile,
                 gs.png_String);
 
@@ -567,7 +567,7 @@ public class DW_Geotools extends Geotools_Environment {
                 outputDir,
                 outname,
                 gs.png_String);
-        File outputImageFile = de.getMaps().getOutputImageFile(outputFile, gs.png_String);
+        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, gs.png_String);
         writeImageFile(
                 mc,
                 imageWidth,
@@ -638,7 +638,7 @@ public class DW_Geotools extends Geotools_Environment {
                 outputDir,
                 outname,
                 gs.png_String);
-        File outputImageFile = de.getMaps().getOutputImageFile(outputFile, gs.png_String);
+        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, gs.png_String);
         writeImageFile(
                 mc,
                 imageWidth,
@@ -697,7 +697,7 @@ public class DW_Geotools extends Geotools_Environment {
                 outputDir,
                 outname,
                 gs.png_String);
-        File outputImageFile = de.getMaps().getOutputImageFile(outputFile, gs.png_String);
+        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, gs.png_String);
         writeImageFile(
                 mc,
                 imageWidth,

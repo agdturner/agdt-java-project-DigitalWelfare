@@ -49,18 +49,18 @@ public class DW_Processor extends DW_ProcessorAbstract {
                 DW_Environment env = new DW_Environment(
                         new Integer(args[0]),
                         args[1]);
-                DW_Processor DW_ProcessorLCC;
-                DW_ProcessorLCC = new DW_Processor();
-                DW_ProcessorLCC.env = env;
-                DW_ProcessorLCC.df = env.getFiles();
-                DW_ProcessorLCC.ds = env.getStrings();
-                DW_ProcessorLCC.run();
+                DW_Processor p;
+                p = new DW_Processor();
+                p.Env = env;
+                p.Files = env.getFiles();
+                p.Strings = env.getStrings();
+                p.run();
                 /**
                  * Not done this way as this would first load UnderOccupancy
                  * data. This is to be avaoided as we want to load first the
                  * SHBE and then load the UO data.
                  */
-                // new DW_ProcessorLCC(env).run();
+                // new DW_ProcessorLCC(Env).run();
                 
             }
         } catch (Exception e) {
@@ -94,7 +94,7 @@ public class DW_Processor extends DW_ProcessorAbstract {
          * Run LCC SHBE data processing
          */
         DW_ProcessorLCC p;
-        p = new DW_ProcessorLCC(env);
+        p = new DW_ProcessorLCC(Env);
         p.run();
         
     }

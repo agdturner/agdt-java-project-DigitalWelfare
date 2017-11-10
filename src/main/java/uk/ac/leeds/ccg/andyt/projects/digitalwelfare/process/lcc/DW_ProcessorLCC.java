@@ -43,9 +43,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_Lin
 public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 
     // For convenience
-    protected transient DW_SHBE_Data DW_SHBE_Data;
-    protected transient DW_SHBE_Handler DW_SHBE_Handler;
-    protected transient DW_UO_Data DW_UO_Data;
+    protected transient DW_SHBE_Data SHBE_Data;
+    protected transient DW_SHBE_Handler SHBE_Handler;
+    protected transient DW_UO_Data UO_Data;
     protected transient String[] SHBEFilenames;
     protected transient HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
 
@@ -54,11 +54,11 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 
     public DW_ProcessorLCC(DW_Environment env) {
         super(env);
-        DW_SHBE_Data = env.getSHBE_Data();
-        DW_SHBE_Handler = env.getSHBE_Handler();
-        DW_UO_Data = env.getUO_Data();
-        SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
-        ClaimIDToClaimRefLookup = DW_SHBE_Data.getClaimIDToClaimRefLookup();
+        SHBE_Data = env.getSHBE_Data();
+        SHBE_Handler = env.getSHBE_Handler();
+        UO_Data = env.getUO_Data();
+        SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
+        ClaimIDToClaimRefLookup = SHBE_Data.getClaimIDToClaimRefLookup();
     }
 
     /**
@@ -76,18 +76,18 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 DW_Environment env = new DW_Environment(
                         new Integer(args[0]),
                         args[1]);
-                DW_ProcessorLCC DW_ProcessorLCC;
-                DW_ProcessorLCC = new DW_ProcessorLCC();
-                DW_ProcessorLCC.env = env;
-                DW_ProcessorLCC.df = env.getFiles();
-                DW_ProcessorLCC.ds = env.getStrings();
-                DW_ProcessorLCC.run();
+                DW_ProcessorLCC p;
+                p = new DW_ProcessorLCC();
+                p.Env = env;
+                p.Files = env.getFiles();
+                p.Strings = env.getStrings();
+                p.run();
                 /**
                  * Not done this way as this would first load UnderOccupancy
                  * data. This is to be avoided as we want to load first the SHBE
                  * and then load the UO data.
                  */
-                // new DW_ProcessorLCC(env).run();
+                // new DW_ProcessorLCC(Env).run();
 
             }
         } catch (Exception e) {
@@ -122,39 +122,39 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         RunAllFromUpdate = false;
         if (!RunAllFromScratch) {
             if (!RunAllFromUpdate) {
-                // Choose which bits to run
-                doLoadAllONSPDFromSource = true;
-//                doLoadNewONSPDFromSource = true;
-                doLoadAllSHBEFromSource = true;
-//                doLoadNewSHBEFromSource = true;
-//                doLoadSHBE = true;
-//                doPostcodeCheckLatest = true;
-//                doPostcodeCheck = true;
-                doLoadUnderOccupancyFromSource = true;
-//                doLoadUnderOccupancy = true;
-                doLCCSummary = true;
-                doRentArrears = true;
-//                doRentArrearsNewData = true;
-                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
-                doLCCHBGeneralAggregateStatistics = true;
-                doLCCTTAndPT = true;
-                if (doLCCTTAndPT) {
-                    doLCCTTAndPTAll = true; // Runtime 13:23:08.458s
-                    /**
-                     * If doLCCTTAndPTAll = false then choose bits otherwise run
-                     * for all combinations.
-                     */
-//                    doLCCTTAndPTAll = false;
-//                    LCCTTAndPT_DoGrouped = true;
-//                    LCCTTAndPT_DoPostcodeChanges = true;
-////                    LCCTTAndPT_DoPostcodeChanges = false;
-//                    LCCTTAndPT_DoAnyTenancyChanges = true;
-////                    LCCTTAndPT_DoAnyTenancyChanges = false;
-//                    LCCTTAndPT_DoTenancyChanges = true;
-////                    LCCTTAndPT_DoTenancyChanges = false;
-//                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
-////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = false;
-                }
+//                // Choose which bits to run
+//                doLoadAllONSPDFromSource = true;
+////                doLoadNewONSPDFromSource = true;
+//                doLoadAllSHBEFromSource = true;
+////                doLoadNewSHBEFromSource = true;
+////                doLoadSHBE = true;
+////                doPostcodeCheckLatest = true;
+////                doPostcodeCheck = true;
+//                doLoadUnderOccupancyFromSource = true;
+////                doLoadUnderOccupancy = true;
+//                doLCCSummary = true;
+//                doRentArrears = true;
+////                doRentArrearsNewData = true;
+//                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+//                doLCCHBGeneralAggregateStatistics = true;
+//                doLCCTTAndPT = true;
+//                if (doLCCTTAndPT) {
+//                    doLCCTTAndPTAll = true; // Runtime 13:23:08.458s
+//                    /**
+//                     * If doLCCTTAndPTAll = false then choose bits otherwise run
+//                     * for all combinations.
+//                     */
+////                    doLCCTTAndPTAll = false;
+////                    LCCTTAndPT_DoGrouped = true;
+////                    LCCTTAndPT_DoPostcodeChanges = true;
+//////                    LCCTTAndPT_DoPostcodeChanges = false;
+////                    LCCTTAndPT_DoAnyTenancyChanges = true;
+//////                    LCCTTAndPT_DoAnyTenancyChanges = false;
+////                    LCCTTAndPT_DoTenancyChanges = true;
+//////                    LCCTTAndPT_DoTenancyChanges = false;
+////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
+//////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = false;
+//                }
 //                doChoroplethMapping = true;
 //                doLineMaps = true;
 //                doReports = true;
@@ -224,13 +224,13 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 processName = "LoadNewONSPDFromSource";
             }
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
-            DW_Postcode_Handler = new DW_Postcode_Handler(env);
-            env.setPostcode_Handler(DW_Postcode_Handler);
-            DW_Postcode_Handler.run(logDir);
+            Postcode_Handler = new DW_Postcode_Handler(Env);
+            Env.setPostcode_Handler(Postcode_Handler);
+            Postcode_Handler.run(logDir);
             // Close logs
             closeLogs(processName);
         }
@@ -242,13 +242,13 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "LoadAllSHBEFromSource";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
-            DW_SHBE_Handler = new DW_SHBE_Handler(env);
-            env.setSHBE_Handler(DW_SHBE_Handler);
-            DW_SHBE_Handler.run(logDir);
+            SHBE_Handler = new DW_SHBE_Handler(Env);
+            Env.setSHBE_Handler(SHBE_Handler);
+            SHBE_Handler.run(logDir);
             // Close logs
             closeLogs(processName);
         }
@@ -260,13 +260,13 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "LoadNewSHBEFromSource";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
-            DW_SHBE_Handler = new DW_SHBE_Handler(env);
-            env.setSHBE_Handler(DW_SHBE_Handler);
-            DW_SHBE_Handler.runNew(logDir);
+            SHBE_Handler = new DW_SHBE_Handler(Env);
+            Env.setSHBE_Handler(SHBE_Handler);
+            SHBE_Handler.runNew(logDir);
             // Close logs
             closeLogs(processName);
         }
@@ -278,13 +278,13 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "PostcodeCheck";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
-            DW_SHBE_Handler = new DW_SHBE_Handler(env);
-            env.setSHBE_Handler(DW_SHBE_Handler);
-            DW_SHBE_Handler.runPostcodeCheck(logDir);
+            SHBE_Handler = new DW_SHBE_Handler(Env);
+            Env.setSHBE_Handler(SHBE_Handler);
+            SHBE_Handler.runPostcodeCheck(logDir);
             // Close logs
             closeLogs(processName);
         }
@@ -296,13 +296,13 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "PostcodeCheckLatest";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
-            DW_SHBE_Handler = new DW_SHBE_Handler(env);
-            env.setSHBE_Handler(DW_SHBE_Handler);
-            DW_SHBE_Handler.runPostcodeCheckLatest(logDir);
+            SHBE_Handler = new DW_SHBE_Handler(Env);
+            Env.setSHBE_Handler(SHBE_Handler);
+            SHBE_Handler.runPostcodeCheckLatest(logDir);
             // Close logs
             closeLogs(processName);
         }
@@ -316,46 +316,46 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "LoadSHBE";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
-            DW_SHBE_Data = env.getSHBE_Data();
+            SHBE_Data = Env.getSHBE_Data();
             HashMap<DW_YM3, DW_SHBE_Records> Data;
-            Data = DW_SHBE_Data.getData();
-            DW_SHBE_Handler = new DW_SHBE_Handler(env);
-            env.setSHBE_Handler(DW_SHBE_Handler);
-            SHBEFilenames = DW_SHBE_Handler.getSHBEFilenamesAll();
+            Data = SHBE_Data.getData();
+            SHBE_Handler = new DW_SHBE_Handler(Env);
+            Env.setSHBE_Handler(SHBE_Handler);
+            SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
             File dir;
-            dir = env.getFiles().getGeneratedSHBEDir();
+            dir = Env.getFiles().getGeneratedSHBEDir();
             DW_YM3 YM3;
             for (String SHBEFilename : SHBEFilenames) {
-                YM3 = DW_SHBE_Handler.getYM3(SHBEFilename);
+                YM3 = SHBE_Handler.getYM3(SHBEFilename);
                 try {
                     DW_SHBE_Records DW_SHBE_Records;
                     DW_SHBE_Records = new DW_SHBE_Records(
-                            env,
+                            Env,
                             YM3);
-                    env.tryToEnsureThereIsEnoughMemoryToContinue(env.HandleOutOfMemoryError);
+                    Env.tryToEnsureThereIsEnoughMemoryToContinue(Env.HandleOutOfMemoryError);
                     Data.put(YM3, DW_SHBE_Records);
-                    env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env.HandleOutOfMemoryError).size(), true);
-                    env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env.HandleOutOfMemoryError).size(), true);
-                    env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther(env.HandleOutOfMemoryError).size(), true);
-                    env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env.HandleOutOfMemoryError).size(), true);
-                    env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env.HandleOutOfMemoryError).size(), true);
-                    env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther(env.HandleOutOfMemoryError).size(), true);
+                    Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
+                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HandleOutOfMemoryError).size(), true);
+                    Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended().size() "
+                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HandleOutOfMemoryError).size(), true);
+                    Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther().size() "
+                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther(Env.HandleOutOfMemoryError).size(), true);
+                    Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
+                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(Env.HandleOutOfMemoryError).size(), true);
+                    Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended().size() "
+                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(Env.HandleOutOfMemoryError).size(), true);
+                    Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther().size() "
+                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther(Env.HandleOutOfMemoryError).size(), true);
                     DW_SHBE_Records.clearData();
                 } catch (OutOfMemoryError e) {
-                    env.clearMemoryReserve();
-                    env.clearSomeSHBECacheExcept(YM3);
-                    env.initMemoryReserve(env.HandleOutOfMemoryError);
-                    env.tryToEnsureThereIsEnoughMemoryToContinue(env.HandleOutOfMemoryError);
+                    Env.clearMemoryReserve();
+                    Env.clearSomeSHBECacheExcept(YM3);
+                    Env.initMemoryReserve(Env.HandleOutOfMemoryError);
+                    Env.tryToEnsureThereIsEnoughMemoryToContinue(Env.HandleOutOfMemoryError);
                 }
             }
             // Close logs
@@ -369,13 +369,13 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "LoadUnderOccupancyFromSource";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
             boolean loadFromSource;
             loadFromSource = true;
-            DW_UO_Data = env.getUO_Data(loadFromSource);
+            UO_Data = Env.getUO_Data(loadFromSource);
             // Close logs
             closeLogs(processName);
         }
@@ -384,13 +384,13 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "LoadUnderOccupancy";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
             boolean loadFromSource;
             loadFromSource = false;
-            DW_UO_Data = env.getUO_Data(loadFromSource);
+            UO_Data = Env.getUO_Data(loadFromSource);
             // Close logs
             closeLogs(processName);
         }
@@ -399,12 +399,12 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "LCCSummary";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
             DW_ProcessorLCCSummary p;
-            p = new DW_ProcessorLCCSummary(env);
+            p = new DW_ProcessorLCCSummary(Env);
             p.run();
             // Close logs
             closeLogs(processName);
@@ -414,12 +414,12 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "RentArrears";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
             DW_ProcessorLCCRentArrears p;
-            p = new DW_ProcessorLCCRentArrears(env);
+            p = new DW_ProcessorLCCRentArrears(Env);
             p.run(doRentArrearsNewData);
             // Close logs
             closeLogs(processName);
@@ -429,12 +429,12 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "LCCHBGeneralAggregateStatistics";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
             DW_ProcessorLCCHBGeneralAggregateStatistics p;
-            p = new DW_ProcessorLCCHBGeneralAggregateStatistics(env);
+            p = new DW_ProcessorLCCHBGeneralAggregateStatistics(Env);
             p.run();
             // Close logs
             closeLogs(processName);
@@ -444,12 +444,12 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "LCCTenancyChangesUO";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
             DW_ProcessorLCCTenancyChangesUO p;
-            p = new DW_ProcessorLCCTenancyChangesUO(env);
+            p = new DW_ProcessorLCCTenancyChangesUO(Env);
             p.run();
             // Close logs
             closeLogs(processName);
@@ -459,12 +459,12 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "LCCTTAndPT";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
             DW_ProcessorLCCTTAndPT p;
-            p = new DW_ProcessorLCCTTAndPT(env);
+            p = new DW_ProcessorLCCTTAndPT(Env);
 ////            
 ////            // <DEBUG skip to a particular output creation>
 //            p.run(
@@ -503,12 +503,12 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "ChoroplethMapping";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
             DW_ChoroplethMapsLCC p;
-            p = new DW_ChoroplethMapsLCC(env);
+            p = new DW_ChoroplethMapsLCC(Env);
             p.run();
             // Close logs
             closeLogs(processName);
@@ -518,12 +518,12 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "LineMaps";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
             DW_LineMapsLCC p;
-            p = new DW_LineMapsLCC(env);
+            p = new DW_LineMapsLCC(Env);
             p.run();
             boolean underOccupancy;
             underOccupancy = true;
@@ -539,12 +539,12 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "Reports";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
             DW_Report p;
-            p = new DW_Report(env);
+            p = new DW_Report(Env);
             p.run();
             // Close logs
             closeLogs(processName);
@@ -554,12 +554,12 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "LineGraphs";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
             DW_LineGraph p;
-            p = new DW_LineGraph(env);
+            p = new DW_LineGraph(Env);
             //aDW_LineGraph.start();
             p.run(doLineGraphTenancyTypeTransitions,
                     doLineGraphAggregateData);
@@ -571,12 +571,12 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "DensityMaps";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
             DW_DensityMapsLCC p;
-            p = new DW_DensityMapsLCC(env);
+            p = new DW_DensityMapsLCC(Env);
             p.run();
             // Close logs
             closeLogs(processName);
@@ -586,15 +586,15 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             // Set up logging
             processName = "LineDensityMaps";
             File logDir = initLogs(
-                    env.DEBUG_Level_FINE,
+                    Env.DEBUG_Level_FINE,
                     processName,
                     range);
             // Process
             DW_LineDensityMaps_LCC p;
-            p = new DW_LineDensityMaps_LCC(env);
+            p = new DW_LineDensityMaps_LCC(Env);
             p.run();
             DW_LineDensityDifferenceMaps_LCC p2;
-            p2 = new DW_LineDensityDifferenceMaps_LCC(env);
+            p2 = new DW_LineDensityDifferenceMaps_LCC(Env);
             p2.run();
             // Close logs
             closeLogs(processName);
@@ -753,7 +753,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             String level = ite.next();
             //            Iterate over YM3
             TreeMap<String, String> ClaimPostcodeF_To_LevelCode_Map;
-            ClaimPostcodeF_To_LevelCode_Map = getClaimPostcodeF_To_LevelCode_Map(env, level, CensusYear, YM3);
+            ClaimPostcodeF_To_LevelCode_Map = getClaimPostcodeF_To_LevelCode_Map(Env, level, CensusYear, YM3);
             result.put(level, ClaimPostcodeF_To_LevelCode_Map);
         }
         return result;
@@ -775,25 +775,25 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (postcode.trim().isEmpty()) {
             return result;
         }
-        if (level.equalsIgnoreCase(ds.sOA) || level.equalsIgnoreCase(ds.sLSOA) || level.equalsIgnoreCase(ds.sMSOA) || level.equalsIgnoreCase(ds.sStatisticalWard) || level.equalsIgnoreCase(ds.sParliamentaryConstituency)) {
-            String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
+        if (level.equalsIgnoreCase(Strings.sOA) || level.equalsIgnoreCase(Strings.sLSOA) || level.equalsIgnoreCase(Strings.sMSOA) || level.equalsIgnoreCase(Strings.sStatisticalWard) || level.equalsIgnoreCase(Strings.sParliamentaryConstituency)) {
+            String formattedPostcode = Postcode_Handler.formatPostcode(postcode);
             result = LookupFromPostcodeToCensusCode.get(formattedPostcode);
             if (result == null) {
                 result = "";
             }
-        } else if (level.equalsIgnoreCase(ds.sPostcodeUnit) || level.equalsIgnoreCase(ds.sPostcodeSector) || level.equalsIgnoreCase(ds.sPostcodeDistrict)) {
-            if (level.equalsIgnoreCase(ds.sPostcodeUnit)) {
+        } else if (level.equalsIgnoreCase(Strings.sPostcodeUnit) || level.equalsIgnoreCase(Strings.sPostcodeSector) || level.equalsIgnoreCase(Strings.sPostcodeDistrict)) {
+            if (level.equalsIgnoreCase(Strings.sPostcodeUnit)) {
                 result = postcode;
             }
-            if (level.equalsIgnoreCase(ds.sPostcodeSector)) {
-                result = DW_Postcode_Handler.getPostcodeSector(postcode);
+            if (level.equalsIgnoreCase(Strings.sPostcodeSector)) {
+                result = Postcode_Handler.getPostcodeSector(postcode);
             }
-            if (level.equalsIgnoreCase(ds.sPostcodeDistrict)) {
-                result = DW_Postcode_Handler.getPostcodeDistrict(postcode);
+            if (level.equalsIgnoreCase(Strings.sPostcodeDistrict)) {
+                result = Postcode_Handler.getPostcodeDistrict(postcode);
             }
         } else {
             // Unrecognised level
-            env.log("Unrecognised level in " + this.getClass().getName() + ".getAreaCode(String,String,TreeMap<String, String>)");
+            Env.log("Unrecognised level in " + this.getClass().getName() + ".getAreaCode(String,String,TreeMap<String, String>)");
         }
         return result;
     }
@@ -824,10 +824,10 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 result = ClaimPostcodeF1;
             }
             if (level.equalsIgnoreCase("PostcodeSector")) {
-                result = DW_Postcode_Handler.getPostcodeSector(ClaimPostcodeF1);
+                result = Postcode_Handler.getPostcodeSector(ClaimPostcodeF1);
             }
             if (level.equalsIgnoreCase("PostcodeDistrict")) {
-                result = DW_Postcode_Handler.getPostcodeDistrict(ClaimPostcodeF1);
+                result = Postcode_Handler.getPostcodeDistrict(ClaimPostcodeF1);
             }
         } else {
             // Unrecognised level

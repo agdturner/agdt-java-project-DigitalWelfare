@@ -36,7 +36,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * DW_Strings for convenience. Set from env.getStrings()
+     * DW_Strings for convenience. Set from Env.getStrings()
      */
     protected transient DW_Strings DW_Strings;
 
@@ -148,7 +148,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
      * @param env
      */
     public void init(DW_Environment env) {
-        this.env = env;
+        this.Env = env;
         this.DW_Strings = env.getStrings();
     }
 
@@ -246,7 +246,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
      * @return PaymentType
      */
     public String getPaymentType() {
-        return env.getStrings().getPaymentTypes().get(StatusOfHBClaimAtExtractDate + 1);
+        return Env.getStrings().getPaymentTypes().get(StatusOfHBClaimAtExtractDate + 1);
     }
 
     /**

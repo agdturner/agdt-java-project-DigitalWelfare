@@ -61,7 +61,7 @@ public class DW_Data_BLC_Handler extends DW_Data_AbstractRecord {
         TreeMap<String, DW_Data_BLC_Record> result;
         result = new TreeMap<String, DW_Data_BLC_Record>();
         File directory = new File(
-                env.getFiles().getInputAdviceLeedsDir(),
+                Env.getFiles().getInputAdviceLeedsDir(),
                 "BurleyLodgeCentre");
         File inputFile = new File(
                 directory,
@@ -119,7 +119,7 @@ public class DW_Data_BLC_Handler extends DW_Data_AbstractRecord {
 
                         try {
                             DW_Data_BLC_Record record;
-                            record = new DW_Data_BLC_Record(env, RecordID, line, this);
+                            record = new DW_Data_BLC_Record(Env, RecordID, line, this);
                             String clientReference = record.getClientReference();
                             if (!clientReference.equalsIgnoreCase("")) {
                                 if (result.containsKey(clientReference)) {

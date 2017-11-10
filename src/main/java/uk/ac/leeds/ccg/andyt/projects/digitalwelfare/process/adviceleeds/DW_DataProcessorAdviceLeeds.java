@@ -45,15 +45,13 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ma
  */
 public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 
-    DW_MapsAdviceLeeds DW_MapsAdviceLeeds;
+    DW_MapsAdviceLeeds MapsAdviceLeeds;
 
-    private DW_Data_CAB2_Handler tCAB_DataRecord2_Handler;
-    private DW_Data_CAB1_Handler tCAB_DataRecord1_Handler;
-    private DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
-    private DW_Data_LCC_WRU_Handler tDW_Data_LCC_WRU_Handler;
-    private final DW_Deprivation_DataHandler DW_Deprivation_DataHandler;
-
-    private final DW_Postcode_Handler DW_Postcode_Handler;
+    private DW_Data_CAB2_Handler Data_CAB2_Handler;
+    private DW_Data_CAB1_Handler Data_CAB1_Handler;
+    private DW_Data_CAB0_Handler Data_CAB0_Handler;
+    private DW_Data_LCC_WRU_Handler Data_LCC_WRU_Handler;
+    private final DW_Deprivation_DataHandler Deprivation_DataHandler;
 
     private String level;
     private ArrayList<String> levels;
@@ -72,8 +70,8 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             DW_Environment env,
             File tDW_directory) {
         super(env);
-        DW_Postcode_Handler = env.getPostcode_Handler();
-        DW_Deprivation_DataHandler = env.getDeprivation_DataHandler();
+        Postcode_Handler = env.getPostcode_Handler();
+        Deprivation_DataHandler = env.getDeprivation_DataHandler();
     }
 
     /**
@@ -102,9 +100,9 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
     }
 
     public void run() throws Exception, Error {
-        init_tCAB_DataRecord2_Handler();
-        init_tCAB_DataRecord0_Handler();
-        init_tDW_Data_LCC_WRU_Handler();
+        initData_CAB2_Handler();
+        initData_CAB0_Handler();
+        initData_LCC_WRU_Handler();
         // Initialise tDW_ID_ClientTypes
         ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes;
         tDW_ID_ClientTypes = new ArrayList<DW_ID_ClientID>();
@@ -168,8 +166,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         tDeprivationData = getDeprivation_Data();
         // Get postcode to LSOA lookup
         TreeMap<String, String> tLookupFromPostcodeToLSOACensusCode;
-        tLookupFromPostcodeToLSOACensusCode = getClaimPostcodeF_To_LevelCode_Map(
-                env,
+        tLookupFromPostcodeToLSOACensusCode = getClaimPostcodeF_To_LevelCode_Map(Env,
                 "LSOA",
                 CensusYear,
                 YM3);
@@ -181,8 +178,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                 || level.equalsIgnoreCase("LSOA")) {
             tLookupFromPostcodeToCensusCode = tLookupFromPostcodeToLSOACensusCode;
         } else {
-            tLookupFromPostcodeToCensusCode = getClaimPostcodeF_To_LevelCode_Map(
-                    env,
+            tLookupFromPostcodeToCensusCode = getClaimPostcodeF_To_LevelCode_Map(Env,
                     level,
                     CensusYear,
                     YM3);
@@ -245,10 +241,9 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         System.out.println("Load Leeds CAB Data 2012 to 2013");
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         //TreeMap<?, DW_Data_CAB2_Record> tLeedsCABData1213;
-        tLeedsCABData1213 = loadLeedsCABData(
-                env,
+        tLeedsCABData1213 = loadLeedsCABData(Env,
                 filename,
-                tCAB_DataRecord2_Handler,
+                Data_CAB2_Handler,
                 IDType);
         System.out.println("aggregateClientCountsBy " + level);
 
@@ -257,7 +252,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         filename = "WelfareRights - Data Extract.csv";
         TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> tLCC_WRUData1213;
         tLCC_WRUData1213 = loadLCC_WRUData(
-                filename, tDW_Data_LCC_WRU_Handler, IDType);
+                filename, Data_LCC_WRU_Handler, IDType);
 
         // Create and writeout combined aggregate counts
         System.out.println("Create and writeout combined aggregate counts");
@@ -269,7 +264,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                 tLookupFromPostcodeToCensusCode);
         File generatedAdviceLeedsDir;
         generatedAdviceLeedsDir = new File(
-                df.getGeneratedAdviceLeedsDir(),
+                Files.getGeneratedAdviceLeedsDir(),
                 "Combined");
         generatedAdviceLeedsDir = new File(
                 generatedAdviceLeedsDir,
@@ -457,7 +452,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
-        tChapeltownCABData = getChapeltownCABData(tCAB_DataRecord0_Handler, IDType);
+        tChapeltownCABData = getChapeltownCABData(Data_CAB0_Handler, IDType);
         result[0] = tChapeltownCABData;
 
         // Generalise by LSOA Deprivation Class
@@ -478,7 +473,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 
         File generatedAdviceLeedsDir;
         generatedAdviceLeedsDir = new File(
-                df.getGeneratedAdviceLeedsDir(),
+                Files.getGeneratedAdviceLeedsDir(),
                 ChapeltownCAB_String);
 
         // Write out some tables here to map. All this code should move. Instead 
@@ -838,14 +833,13 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = loadLeedsCABData(
-                env,
-                filename, tCAB_DataRecord2_Handler, IDType);
+        tLeedsCABData = loadLeedsCABData(Env,
+                filename, Data_CAB2_Handler, IDType);
         result[0] = tLeedsCABData;
 
         File outputAdviceLeedsTablesDir;
         outputAdviceLeedsTablesDir = new File(
-                df.getOutputAdviceLeedsTablesDir(),
+                Files.getOutputAdviceLeedsTablesDir(),
                 LeedsCAB_String);
 
         // Generalise by LSOA Deprivation Class
@@ -866,7 +860,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 
         File generatedAdviceLeedsDir;
         generatedAdviceLeedsDir = new File(
-                df.getGeneratedAdviceLeedsDir(),
+                Files.getGeneratedAdviceLeedsDir(),
                 LeedsCAB_String);
         generatedAdviceLeedsDir = new File(
                 generatedAdviceLeedsDir,
@@ -1082,7 +1076,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             outlet = aLeedsCABData_DataRecord.getOutlet();
             String postcode = aLeedsCABData_DataRecord.getPostcode();
             String key = getKey(
-                    DW_Postcode_Handler.getDefaultYM3(),
+                    Postcode_Handler.getDefaultYM3(),
                     postcode,
                     tLookupFromPostcodeToCensusCode);
             // Add to counts for specific outlet
@@ -1161,7 +1155,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             //outlet = aCAB_DataRecord0.getOutlet();
             String postcode = aCAB_DataRecord0.getPostcode();
             String key = getKey(
-                    DW_Postcode_Handler.getDefaultYM3(),
+                    Postcode_Handler.getDefaultYM3(),
                     postcode,
                     tLookupFromPostcodeToCensusCode);
             // Add to counts for specific outlet
@@ -1230,7 +1224,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             //outlet = aCAB_DataRecord0.getOutlet();
             String postcode = rec.getPostcode();
             String key = getKey(
-                    DW_Postcode_Handler.getDefaultYM3(),
+                    Postcode_Handler.getDefaultYM3(),
                     postcode,
                     tLookupFromPostcodeToCensusCode);
             // Add to counts for specific outlet
@@ -1274,34 +1268,34 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             String postcode,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         DW_Postcode_Handler tDW_Postcode_Handler;
-        tDW_Postcode_Handler = env.getPostcode_Handler();
+        tDW_Postcode_Handler = Env.getPostcode_Handler();
         String key = "";
         if (level.equalsIgnoreCase("PostcodeDistrict")
                 || level.equalsIgnoreCase("PostcodeSector")
                 || level.equalsIgnoreCase("PostcodeUnit")) {
             if (level.equalsIgnoreCase("PostcodeDistrict")) {
                 if (tDW_Postcode_Handler.isMappablePostcode(yM3, postcode)) {
-                    key = DW_Postcode_Handler.getPostcodeDistrict(postcode);
+                    key = Postcode_Handler.getPostcodeDistrict(postcode);
 //                    } else {
 //                        key = "";
                 }
             }
             if (level.equalsIgnoreCase("PostcodeSector")) {
                 if (tDW_Postcode_Handler.isMappablePostcode(yM3, postcode)) {
-                    key = DW_Postcode_Handler.getPostcodeSector(postcode);
+                    key = Postcode_Handler.getPostcodeSector(postcode);
 //                    } else {
 //                        key = "";
                 }
             }
             if (level.equalsIgnoreCase("PostcodeUnit")) {
                 if (tDW_Postcode_Handler.isMappablePostcode(yM3, postcode)) {
-                    key = DW_Postcode_Handler.formatPostcodeForMapping(postcode);
+                    key = Postcode_Handler.formatPostcodeForMapping(postcode);
 //                    } else {
 //                        key = "";
                 }
             }
         } else {
-            String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
+            String formattedPostcode = Postcode_Handler.formatPostcode(postcode);
             key = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
             if (key == null) {
                 key = "";
@@ -1322,7 +1316,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             TreeMap data,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         DW_Postcode_Handler tDW_Postcode_Handler;
-        tDW_Postcode_Handler = env.getPostcode_Handler();
+        tDW_Postcode_Handler = Env.getPostcode_Handler();
         TreeMap<String, TreeMap<String, Integer>> result;
         result = new TreeMap<String, TreeMap<String, Integer>>();
         String outlet;
@@ -1331,7 +1325,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         allAdviceLeedsCounts = new TreeMap<String, Integer>();
         result.put(outletAllLeedsCAB, allAdviceLeedsCounts);
         DW_YM3 yM3;
-        yM3 = DW_Postcode_Handler.getDefaultYM3();
+        yM3 = Postcode_Handler.getDefaultYM3();
         Iterator<Object> ite;
         ite = data.keySet().iterator();
         if (level.equalsIgnoreCase("PostcodeDistrict")
@@ -1347,7 +1341,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                         String postcode = aLeedsCABData_DataRecord.getPostcode();
                         if (tDW_Postcode_Handler.isMappablePostcode(yM3, postcode)) {
                             String postcodeDistrict;
-                            postcodeDistrict = DW_Postcode_Handler.getPostcodeDistrict(postcode);
+                            postcodeDistrict = Postcode_Handler.getPostcodeDistrict(postcode);
                             // Add to counts
                             addToCounts(
                                     result,
@@ -1365,7 +1359,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                         String postcode = aLeedsCABData_DataRecord.getPostcode();
                         if (tDW_Postcode_Handler.isMappablePostcode(yM3, postcode)) {
                             String postcodeDistrict;
-                            postcodeDistrict = DW_Postcode_Handler.getPostcodeDistrict(postcode);
+                            postcodeDistrict = Postcode_Handler.getPostcodeDistrict(postcode);
                             // Add to counts
                             addToCounts(
                                     result,
@@ -1386,7 +1380,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                             String postcode = aLeedsCABData_DataRecord.getPostcode();
                             if (tDW_Postcode_Handler.isMappablePostcode(yM3, postcode)) {
                                 String postcodeSector;
-                                postcodeSector = DW_Postcode_Handler.getPostcodeSector(postcode);
+                                postcodeSector = Postcode_Handler.getPostcodeSector(postcode);
                                 // Add to counts
                                 addToCounts(
                                         result,
@@ -1404,7 +1398,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                             String postcode = aLeedsCABData_DataRecord.getPostcode();
                             if (tDW_Postcode_Handler.isMappablePostcode(yM3, postcode)) {
                                 String postcodeSector;
-                                postcodeSector = DW_Postcode_Handler.getPostcodeSector(postcode);
+                                postcodeSector = Postcode_Handler.getPostcodeSector(postcode);
                                 // Add to counts
                                 addToCounts(
                                         result,
@@ -1503,7 +1497,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
     private String getCensusCode(String postcode,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         String result;
-        String formattedPostcode = DW_Postcode_Handler.formatPostcode(postcode);
+        String formattedPostcode = Postcode_Handler.formatPostcode(postcode);
         result = tLookupFromPostcodeToCensusCode.get(formattedPostcode);
         return result;
     }
@@ -1762,7 +1756,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             Object IDType,
             DW_Data_CAB2_Handler tCAB_DataRecord2_Handler) {
         File dir = new File(
-                df.getGeneratedAdviceLeedsDir(),
+                Files.getGeneratedAdviceLeedsDir(),
                 "LeedsCAB");
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> result;
         result = tCAB_DataRecord2_Handler.loadInputData(
@@ -1803,7 +1797,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //                DW_Files.getGeneratedAdviceLeedsDir(),
 //                "LCC - Welfare Rights Unit");
         File dir = new File(
-                df.getInputAdviceLeedsDir(),
+                Files.getInputAdviceLeedsDir(),
                 "LCC_WRU");
         result = handler.loadInputData(
                 dir, filename, IDType);
@@ -1879,7 +1873,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             DW_Data_CAB0_Handler tCAB_DataRecord0_Handler,
             Object IDType) {
         File dir = new File(
-                df.getGeneratedAdviceLeedsDir(),
+                Files.getGeneratedAdviceLeedsDir(),
                 "ChapeltownCAB");
         //TreeMap<EnquiryClientBureauOutletID, DW_Data_CAB2_Record> result;
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> result;
@@ -2037,7 +2031,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
             TreeMap<Integer, Integer> deprivationClasses) {
         Object[] deprivationClassCountOfCABClientsETC;
-        deprivationClassCountOfCABClientsETC = DW_Deprivation_DataHandler.getDeprivationClassCountOfCABClients(
+        deprivationClassCountOfCABClientsETC = Deprivation_DataHandler.getDeprivationClassCountOfCABClients(
                 type,
                 tCABData,
                 tDeprivationData,
@@ -2103,7 +2097,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             String clientProfileID = ite.next();
             DW_Data_CAB0_Record aLeedsCABData_DataRecord = tChapeltownCABData.get(clientProfileID);
             String postcode = aLeedsCABData_DataRecord.getPostcode();
-            postcode = DW_Postcode_Handler.formatPostcode(postcode);
+            postcode = Postcode_Handler.formatPostcode(postcode);
             if (!postcode.isEmpty()) {
                 String[] codes = tLookupFromPostcodeToCensusCodes.get(postcode);
                 if (codes == null) {
@@ -2167,20 +2161,20 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //        }
 //        return DeprivationClass;
 //    }
-    public void init_tCAB_DataRecord0_Handler() {
-        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(env);
+    public void initData_CAB0_Handler() {
+        Data_CAB0_Handler = new DW_Data_CAB0_Handler(Env);
     }
 
-    public void init_tCAB_DataRecord1_Handler() {
-        tCAB_DataRecord1_Handler = new DW_Data_CAB1_Handler(env);
+    public void initData_CAB1_Handler() {
+        Data_CAB1_Handler = new DW_Data_CAB1_Handler(Env);
     }
 
-    public void init_tCAB_DataRecord2_Handler() {
-        tCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(env);
+    public void initData_CAB2_Handler() {
+        Data_CAB2_Handler = new DW_Data_CAB2_Handler(Env);
     }
 
-    public void init_tDW_Data_LCC_WRU_Handler() {
-        tDW_Data_LCC_WRU_Handler = new DW_Data_LCC_WRU_Handler(env);
+    public void initData_LCC_WRU_Handler() {
+        Data_LCC_WRU_Handler = new DW_Data_LCC_WRU_Handler(Env);
     }
 
     public static TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> getLCC_WRUData(

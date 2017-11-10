@@ -18,7 +18,7 @@ public class DW_ONSPDRecord_EastingNorthing extends DW_Object {
     private final int osnrth1m;
 
     public DW_ONSPDRecord_EastingNorthing(DW_Environment env, String line) {
-        this.env = env;
+        this.Env = env;
         String[] fields = line.split("\",\"");
         //pcd = fields[0].substring(1);
         PostcodeF = env.getPostcode_Handler().formatPostcode(fields[0]);

@@ -39,25 +39,25 @@ public class DW_UO_Set extends DW_Object implements Serializable {
     /**
      * For convenience
      */
-    transient DW_Strings DW_Strings;
-    transient DW_Files DW_Files;
-    transient DW_UO_Handler DW_UO_Handler;
+    transient DW_Strings Strings;
+    transient DW_Files Files;
+    transient DW_UO_Handler UO_Handler;
 
     /**
      * DW_UO_Records indexed by ClaimID
      */
-    protected HashMap<DW_ID, DW_UO_Record> map;
+    protected HashMap<DW_ID, DW_UO_Record> Map;
 
     public DW_UO_Set(DW_Environment env) {
         super(env);
         init();
-        map = new HashMap<DW_ID, DW_UO_Record>();
+        Map = new HashMap<DW_ID, DW_UO_Record>();
     }
 
     protected final void init() {
-        DW_Strings = env.getStrings();
-        DW_Files = env.getFiles();
-        DW_UO_Handler = env.getUO_Handler();
+        Strings = Env.getStrings();
+        Files = Env.getFiles();
+        UO_Handler = Env.getUO_Handler();
     }
 
     /**
@@ -86,9 +86,9 @@ public class DW_UO_Set extends DW_Object implements Serializable {
         env.logO("filename " + filename, true);
         init();
         File dirIn;
-        dirIn = DW_Files.getInputUnderOccupiedDir();
+        dirIn = Files.getInputUnderOccupiedDir();
         File dirOut;
-        dirOut = new File(DW_Files.getGeneratedUnderOccupiedDir(),
+        dirOut = new File(Files.getGeneratedUnderOccupiedDir(),
                 type);
         dirOut = new File(dirOut,
                 YM3.toString());
@@ -98,13 +98,13 @@ public class DW_UO_Set extends DW_Object implements Serializable {
         File fOut;
         fOut = new File(
                 dirOut,
-                DW_Strings.sDW_UO_Set + DW_Strings.sBinaryFileExtension);
+                Strings.sDW_UO_Set + Strings.sBinaryFileExtension);
         if (fOut.exists() || !reload) {
             DW_UO_Set loadDummy;
             loadDummy = (DW_UO_Set) Generic_StaticIO.readObject(fOut);
-            map = loadDummy.map;
+            Map = loadDummy.Map;
         } else {
-            map = DW_UO_Handler.loadInputData(
+            Map = UO_Handler.loadInputData(
                     dirIn,
                     filename);
             Generic_StaticIO.writeObject(this, fOut);
@@ -114,18 +114,18 @@ public class DW_UO_Set extends DW_Object implements Serializable {
 
     /**
      *
-     * @return map
+     * @return Map
      */
     public HashMap<DW_ID, DW_UO_Record> getMap() {
-        return map;
+        return Map;
     }
 
     /**
-     * Returns a Set of ClaimIDs {@code return map.keySet();}.
+     * Returns a Set of ClaimIDs {@code return Map.keySet();}.
      *
      * @return
      */
     public Set<DW_ID> getClaimIDs() {
-        return map.keySet();
+        return Map.keySet();
     }
 }

@@ -25,11 +25,11 @@ public abstract class DW_Object implements Serializable {
     /**
      * A reference to DW_Environment
      */
-    protected transient DW_Environment env;
+    protected transient DW_Environment Env;
 
     public DW_Object(){}
     
     public DW_Object(DW_Environment env) {
-        this.env = env;
+        Env = env;
     }
 }

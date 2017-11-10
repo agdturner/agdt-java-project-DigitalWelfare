@@ -65,7 +65,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * @param e
      */
     public void init(DW_Environment e) {
-        env = e;
+        Env = e;
         Strings = e.getStrings();
         Postcode_Handler = e.getPostcode_Handler();
     }
@@ -543,11 +543,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getRecords();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -584,11 +584,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsOfNewSHBEClaims();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsOfNewSHBEClaims(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -626,11 +626,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -669,11 +669,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -713,11 +713,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -757,11 +757,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsOfNewSHBEClaimsWhereClaimantIsNew();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsOfNewSHBEClaimsWhereClaimantIsNew(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -800,11 +800,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getCottingleySpringsCaravanParkPairedClaimIDs();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getCottingleySpringsCaravanParkPairedClaimIDs(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -843,11 +843,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsWithStatusOfHBAtExtractDateInPayment();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsWithStatusOfHBAtExtractDateInPayment(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -886,11 +886,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsWithStatusOfHBAtExtractDateSuspended();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsWithStatusOfHBAtExtractDateSuspended(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -929,11 +929,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsWithStatusOfHBAtExtractDateOther();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsWithStatusOfHBAtExtractDateOther(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -972,11 +972,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsWithStatusOfCTBAtExtractDateInPayment();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsWithStatusOfCTBAtExtractDateInPayment(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -1015,11 +1015,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsWithStatusOfCTBAtExtractDateSuspended();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsWithStatusOfCTBAtExtractDateSuspended(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -1058,11 +1058,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsWithStatusOfCTBAtExtractDateOther();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsWithStatusOfCTBAtExtractDateOther(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -1100,11 +1100,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getSRecordsWithoutDRecords();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getSRecordsWithoutDRecords(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -1140,11 +1140,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDAndCountOfRecordsWithSRecords();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDAndCountOfRecordsWithSRecords(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -1164,11 +1164,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsOfClaimsWithoutAMappableClaimantPostcode();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsOfClaimsWithoutAValidClaimantPostcode(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -1239,7 +1239,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     protected File getDir() {
         if (Dir == null) {
             Dir = new File(
-                    env.getFiles().getGeneratedSHBEDir(), getYM3().toString());
+                    Env.getFiles().getGeneratedSHBEDir(), getYM3().toString());
             Dir.mkdirs();
         }
         return Dir;
@@ -1919,7 +1919,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                 otherClaimRef = ClaimIDToClaimRefLookup.get(otherClaimID);
                                                 // Treat those paired records for Cottingley Springs Caravan Park differently
                                                 if (Postcode.equalsIgnoreCase(Strings.CottingleySpringsCaravanParkPostcode)) {
-//                                                    env.logO("Cottingley Springs Caravan Park "
+//                                                    Env.logO("Cottingley Springs Caravan Park "
 //                                                            + DW_Strings.CottingleySpringsCaravanParkPostcode
 //                                                            + " ClaimRef " + ClaimRef + " paired with " + otherClaimRef
 //                                                            + " one claim is for the pitch, the other is for rent of "
@@ -1927,25 +1927,25 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                     CottingleySpringsCaravanParkPairedClaimIDs.add(ClaimID);
                                                     CottingleySpringsCaravanParkPairedClaimIDs.add(otherClaimID);
                                                 } else {
-//                                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                                                    env.logO(
+//                                                    Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                                    Env.logO(
 //                                                            "Claimant with NINO " + ClaimantNINO
 //                                                            + " DoB " + ClaimantDOB
 //                                                            + " has mulitple claims. "
 //                                                            + "The Claimant has had a second claim set up and the "
 //                                                            + "previous claim is still on the system for some reason.");
-//                                                    env.logO("Current ClaimRef " + ClaimRef);
-//                                                    env.logO("Other ClaimRef " + otherClaimRef);
+//                                                    Env.logO("Current ClaimRef " + ClaimRef);
+//                                                    Env.logO("Other ClaimRef " + otherClaimRef);
                                                     otherRecord = Records.get(otherClaimID);
                                                     if (otherRecord == null) {
                                                         env.logE("Unexpected error xx: This should not happen. "
                                                                 + this.getClass().getName()
                                                                 + ".DW_SHBE_Records(DW_Environment, File, String)");
                                                     } else {
-//                                                        env.logO("This D Record");
-//                                                        env.logO(DRecord.toStringBrief());
-//                                                        env.logO("Other D Record");
-//                                                        env.logO(otherRecord.DRecord.toStringBrief());
+//                                                        Env.logO("This D Record");
+//                                                        Env.logO(DRecord.toStringBrief());
+//                                                        Env.logO("Other D Record");
+//                                                        Env.logO(otherRecord.DRecord.toStringBrief());
                                                         /**
                                                          * Add to
                                                          * ClaimantsWithMultipleClaimsInAMonth.
@@ -1962,7 +1962,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                         set.add(ClaimID);
                                                         set.add(otherClaimID);
                                                     }
-//                                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                                    Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                                 }
                                             }
                                         }
@@ -1999,12 +1999,12 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                     ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim.add(otherClaimID);
                                                 }
                                                 ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim.add(ClaimID);
-//                                                env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                                                env.logO("Claimant with NINO " + ClaimantNINO
+//                                                Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                                Env.logO("Claimant with NINO " + ClaimantNINO
 //                                                        + " DOB " + ClaimantDOB
 //                                                        + " in ClaimRef " + ClaimRef
 //                                                        + " is a Partner in " + ClaimIDToClaimRefLookup.get(otherClaimID));
-//                                                env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                                Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                             }
                                         }
                                         DW_PersonID PartnerPersonID;
@@ -2050,12 +2050,12 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                         ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim.add(otherClaimID);
                                                     }
                                                     ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim.add(ClaimID);
-//                                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                                                    env.logO("Partner with NINO " + NINOIDToNINOLookup.get(PartnerPersonID.getNINO_ID())
+//                                                    Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                                    Env.logO("Partner with NINO " + NINOIDToNINOLookup.get(PartnerPersonID.getNINO_ID())
 //                                                            + " DOB " + DOBIDToDOBLookup.get(PartnerPersonID.getDOB_ID())
 //                                                            + " in ClaimRef " + ClaimRef
 //                                                            + " is a Partner in " + ClaimIDToClaimRefLookup.get(otherClaimID));
-//                                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                                    Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                                 }
                                             }
                                             /**
@@ -2100,12 +2100,12 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                         ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim.add(otherClaimID);
                                                     }
                                                     ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim.add(ClaimID);
-//                                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                                                    env.logO("Partner with NINO " + NINOIDToNINOLookup.get(PartnerPersonID.getNINO_ID())
+//                                                    Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                                    Env.logO("Partner with NINO " + NINOIDToNINOLookup.get(PartnerPersonID.getNINO_ID())
 //                                                            + " DOB " + DOBIDToDOBLookup.get(PartnerPersonID.getDOB_ID())
 //                                                            + " in ClaimRef " + ClaimRef
 //                                                            + " is a Claimant in " + ClaimIDToClaimRefLookup.get(otherClaimID));
-//                                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                                    Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
                                                 }
                                                 ClaimIDToPartnerPersonIDLookup.put(ClaimID, PartnerPersonID);
                                             }
@@ -2529,7 +2529,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * @param n
      */
     public final void addLoadSummaryCount(String s, Number n) {
-        env.logO(s + " " + n, true);
+        Env.logO(s + " " + n, true);
         LoadSummary.put(s, n);
     }
 
@@ -2582,9 +2582,9 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                         ClaimantsNINO = SRecord.getClaimantsNationalInsuranceNumber();
                         if (ClaimantsNINO.trim().isEmpty()) {
                             ClaimantsNINO = Strings.sDefaultNINO;
-                            env.logE("ClaimantsNINO is empty for "
+                            Env.logE("ClaimantsNINO is empty for "
                                     + "ClaimID " + ClaimID + " ClaimRef "
-                                    + env.getSHBE_Data().getClaimIDToClaimRefLookup().get(ClaimID)
+                                    + Env.getSHBE_Data().getClaimIDToClaimRefLookup().get(ClaimID)
                                     + " Setting as default NINO " + ClaimantsNINO);
                         }
                         int i;
@@ -2596,7 +2596,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                 NINO = "" + i;
                                 NINO += "_" + ClaimantsNINO;
                                 if (NINOToNINOIDLookup.containsKey(NINO)) {
-                                    env.logO(env.DEBUG_Level_FINEST,
+                                    Env.logO(Env.DEBUG_Level_FINEST,
                                             "NINO " + NINO + " is not unique for " + ClaimantsNINO);
                                 } else {
                                     set = true;
@@ -2615,11 +2615,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                 if (ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim.contains(ClaimID)) {
                                     set = true;
                                 } else {
-                                    env.logO(env.DEBUG_Level_FINEST,
+                                    Env.logO(Env.DEBUG_Level_FINEST,
                                             "NINO " + NINO + " is not unique for " + ClaimantsNINO
                                             + " and ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim does not contain "
                                             + "ClaimID " + ClaimID + " for ClaimRef "
-                                            + env.getSHBE_Data().getClaimIDToClaimRefLookup().get(ClaimID));
+                                            + Env.getSHBE_Data().getClaimIDToClaimRefLookup().get(ClaimID));
                                 }
                             } else {
                                 set = true;
@@ -2628,7 +2628,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                 NINO = "" + i;
                                 NINO += "_" + ClaimantsNINO;
                                 if (NINOToNINOIDLookup.containsKey(NINO)) {
-                                    env.logO(env.DEBUG_Level_FINEST,
+                                    Env.logO(Env.DEBUG_Level_FINEST,
                                             "NINO " + NINO + " is not unique for " + ClaimantsNINO);
                                 } else {
                                     set = true;
@@ -2692,11 +2692,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                 ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(ClaimID);
                                 ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(otherClaimID);
 //                                if (!(NINO.trim().equalsIgnoreCase("") || NINO.startsWith("XX999"))) {
-//                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                                    env.logO("NonDependent with NINO " + NINO + " DOB " + DOB
+//                                    Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                    Env.logO("NonDependent with NINO " + NINO + " DOB " + DOB
 //                                            + " is in ClaimRef " + ClaimIDToClaimRefLookup.get(ClaimID)
 //                                            + " and " + ClaimIDToClaimRefLookup.get(otherClaimID));
-//                                    env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                    Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //                                }
                             }
                             /**
@@ -2718,11 +2718,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                     ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(ClaimID);
                                     ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(otherClaimID);
 //                                    if (!(NINO.trim().equalsIgnoreCase("") || NINO.startsWith("XX999"))) {
-//                                        env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                                        env.logO("NonDependent with NINO " + NINO + " DOB " + DOB
+//                                        Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                        Env.logO("NonDependent with NINO " + NINO + " DOB " + DOB
 //                                                + " in ClaimRef " + ClaimIDToClaimRefLookup.get(ClaimID)
 //                                                + " is a Claimant in " + ClaimIDToClaimRefLookup.get(otherClaimID));
-//                                        env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                        Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //                                    }
                                 }
                             }
@@ -2745,11 +2745,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                     ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(ClaimID);
                                     ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim.add(otherClaimID);
 //                                    if (!(NINO.trim().equalsIgnoreCase("") || NINO.startsWith("XX999"))) {
-//                                        env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                                        env.logO("NonDependent with NINO " + NINO + " DOB " + DOB
+//                                        Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                        Env.logO("NonDependent with NINO " + NINO + " DOB " + DOB
 //                                                + " in ClaimRef " + ClaimIDToClaimRefLookup.get(ClaimID)
 //                                                + " is a Partner in " + ClaimIDToClaimRefLookup.get(otherClaimID));
-//                                        env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                                        Env.logO("!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //                                    }
                                 }
                             }
@@ -2769,7 +2769,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                 PersonIDToClaimRefsLookup);
                         break;
                     default:
-                        env.logE("Unrecognised SubRecordType " + SubRecordType);
+                        Env.logE("Unrecognised SubRecordType " + SubRecordType);
                         break;
                 }
             }
@@ -2879,10 +2879,10 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                 return 1;
             } else {
                 String[] lineSplit = line.split(",");
-                env.logE("Unrecognised header in DW_SHBE_Records.readAndCheckFirstLine(File,String)");
-                env.logE("Number of fields in header " + lineSplit.length);
-                env.logE("header:");
-                env.logE(line);
+                Env.logE("Unrecognised header in DW_SHBE_Records.readAndCheckFirstLine(File,String)");
+                Env.logE("Number of fields in header " + lineSplit.length);
+                Env.logE("header:");
+                Env.logE(line);
 
             }
         } catch (IOException ex) {
@@ -2911,11 +2911,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDToClaimantPersonIDLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDToClaimantPersonIDLookup(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -2954,11 +2954,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDToPartnerPersonIDLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDToPartnerPersonIDLookup(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -2997,11 +2997,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDToDependentPersonIDsLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDToDependentPersonIDsLookup(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3040,11 +3040,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDToNonDependentPersonIDsLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDToNonDependentPersonIDsLookup(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3084,11 +3084,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3129,11 +3129,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3174,11 +3174,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3219,11 +3219,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3264,11 +3264,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsOfNonDependentsThatAreClaimantsOrPartnersInAnotherClaim(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3309,11 +3309,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3353,11 +3353,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3397,11 +3397,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3441,11 +3441,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDToPostcodeIDLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDToPostcodeIDLookup(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3481,11 +3481,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3524,11 +3524,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDToTenancyTypeLookup();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDToTenancyTypeLookup(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3566,11 +3566,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getLoadSummary();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getLoadSummary(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3607,11 +3607,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getRecordIDsNotLoaded();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getRecordIDsNotLoaded(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3649,11 +3649,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimIDsOfInvalidClaimantNINOClaims();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimIDsOfInvalidClaimantNINOClaims(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3692,11 +3692,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimantPostcodesUnmappable();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimantPostcodesUnmappable(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3735,11 +3735,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimantPostcodesModified();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimantPostcodesModified(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3778,11 +3778,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3948,11 +3948,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getClaimantPersonIDs();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getClaimantPersonIDs(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -3985,11 +3985,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getPartnerPersonIDs();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getPartnerPersonIDs(handleOutOfMemoryError);
             } else {
                 throw e;
@@ -4022,11 +4022,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             return getNonDependentPersonIDs();
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
-                env.clearMemoryReserve();
-                if (!env.clearSomeSHBECacheExcept(YM3)) {
+                Env.clearMemoryReserve();
+                if (!Env.clearSomeSHBECacheExcept(YM3)) {
                     throw e;
                 }
-                env.initMemoryReserve(handleOutOfMemoryError);
+                Env.initMemoryReserve(handleOutOfMemoryError);
                 return getNonDependentPersonIDs(handleOutOfMemoryError);
             } else {
                 throw e;

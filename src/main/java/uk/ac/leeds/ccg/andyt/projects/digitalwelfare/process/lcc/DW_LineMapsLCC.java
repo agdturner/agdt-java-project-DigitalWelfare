@@ -598,7 +598,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         TreeMap<String, ArrayList<DW_YM3>> result;
         result = new TreeMap<String, ArrayList<DW_YM3>>();
         DW_SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = de.getSHBE_Handler();
+        tDW_SHBE_Handler = Env.getSHBE_Handler();
         String[] tSHBEFilenamesAll;
         tSHBEFilenamesAll = tDW_SHBE_Handler.getSHBEFilenamesAll();
         ArrayList<DW_YM3> yMs;
@@ -696,7 +696,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
         ArrayList<Integer> includes;
         //includes = DW_SHBE_Handler.getSHBEFilenameIndexesExcept34();
-        includes = de.getSHBE_Handler().getSHBEFilenameIndexes();
+        includes = Env.getSHBE_Handler().getSHBEFilenameIndexes();
 
         TreeMap<String, ArrayList<DW_YM3>> yM3s;
         yM3s = getYM3s(includes);
@@ -779,7 +779,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         imageWidth = 2000;
 
         DW_SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = de.getSHBE_Handler();
+        tDW_SHBE_Handler = Env.getSHBE_Handler();
 
         ArrayList<String> paymentTypes;
         paymentTypes = Strings.getPaymentTypes();
@@ -1366,7 +1366,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         } else {
             DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
             tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                    de,
+                    Env,
                     "LSOA", 
                     targetPropertyNameLSOA, 
                     getShapefileDataStoreFactory());
@@ -1381,7 +1381,7 @@ public class DW_LineMapsLCC extends DW_Maps {
     private void initStyleParameters() {
         styleParameters = new DW_StyleParameters();
         styleParameters.setForegroundStyle(
-                de.getGeotools().getStyle().createDefaultPolygonStyle(
+                Env.getGeotools().getStyle().createDefaultPolygonStyle(
                         Color.BLACK, //Color.GREEN,
                         Color.WHITE), 0);
         styleParameters.setMidgroundStyle(
@@ -1937,10 +1937,10 @@ public class DW_LineMapsLCC extends DW_Maps {
 //        // <Hack>
 //        dirInCouncil = new File(
 //                dirInCouncil,
-//                DW_Strings.sAll);
+//                Strings.sAll);
 //        dirInRSL = new File(
 //                dirInRSL,
-//                DW_Strings.sAll);
+//                Strings.sAll);
 //        // </Hack>
 
         if (grouped) {
@@ -2908,7 +2908,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                 dirOut,
                 Strings.sPostcodeChanges);
         dirOut = Files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
-        //dirIn = DW_Files.getUODir(dirIn, doUnderOccupancyData, doCouncil, doRSL);
+        //dirIn = Files.getUODir(dirIn, doUnderOccupancyData, doCouncil, doRSL);
         dirInCouncil = Files.getUODir(dirIn, doUnderOccupancyData, true);
         dirInRSL = Files.getUODir(dirIn, doUnderOccupancyData, false);
         dirInCouncil = new File(

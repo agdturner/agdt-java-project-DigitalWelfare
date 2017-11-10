@@ -50,15 +50,15 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
  *
  * @author geoagdt
  */
-public class Summary extends DW_Object {
+public class DW_Summary extends DW_Object {
 
     // For convenience.
-    protected DW_SHBE_Data DW_SHBE_Data;
-    protected DW_SHBE_Handler DW_SHBE_Handler;
-    protected DW_Strings DW_Strings;
-    protected DW_Files DW_Files;
-    protected DW_Postcode_Handler DW_Postcode_Handler;
-    protected DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
+    protected DW_SHBE_Data SHBE_Data;
+    protected DW_SHBE_Handler SHBE_Handler;
+    protected DW_Strings Strings;
+    protected DW_Files Files;
+    protected DW_Postcode_Handler Postcode_Handler;
+    protected DW_SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
 
     protected final int decimalPlacePrecisionForAverage = 3;
     protected final int decimalPlacePrecisionForPercentage = 3;
@@ -823,17 +823,17 @@ public class Summary extends DW_Object {
     protected int TotalCount_CTBPostcode0DNEPostcode1NotValid;
     protected int TotalCount_CTBPostcode0NotValidPostcode1DNE;
 
-    public Summary(DW_Environment env) {
+    public DW_Summary(DW_Environment env) {
         super(env);
-        this.DW_SHBE_Data = env.getSHBE_Data();
-        this.DW_SHBE_Handler = env.getSHBE_Handler();
-        this.DW_Strings = env.getStrings();
-        this.DW_Files = env.getFiles();
-        this.DW_Postcode_Handler = env.getPostcode_Handler();
-        this.DW_SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
+        this.SHBE_Data = env.getSHBE_Data();
+        this.SHBE_Handler = env.getSHBE_Handler();
+        this.Strings = env.getStrings();
+        this.Files = env.getFiles();
+        this.Postcode_Handler = env.getPostcode_Handler();
+        this.SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
     }
 
-    public Summary(
+    public DW_Summary(
             DW_Environment env,
             int nTT,
             int nEG,
@@ -865,30 +865,30 @@ public class Summary extends DW_Object {
     }
 
     protected void initSingleTimeStrings(int nTT, int nEG, int nPSI) {
-        DW_Strings.sTotal_IncomeTT = new String[nTT];
-        DW_Strings.sTotalCount_IncomeNonZeroTT = new String[nTT];
-        DW_Strings.sTotalCount_IncomeZeroTT = new String[nTT];
-        DW_Strings.sAverage_NonZero_IncomeTT = new String[nTT];
-        DW_Strings.sTotal_HBIncomeTT = new String[nTT];
-        DW_Strings.sTotalCount_HBIncomeNonZeroTT = new String[nTT];
-        DW_Strings.sTotalCount_HBIncomeZeroTT = new String[nTT];
-        DW_Strings.sAverage_NonZero_HBIncomeTT = new String[nTT];
-        DW_Strings.sTotal_CTBIncomeTT = new String[nTT];
-        DW_Strings.sTotalCount_CTBIncomeNonZeroTT = new String[nTT];
-        DW_Strings.sTotalCount_CTBIncomeZeroTT = new String[nTT];
-        DW_Strings.sAverage_Non_Zero_CTBIncomeTT = new String[nTT];
-        DW_Strings.sTotal_WeeklyEligibleRentAmountTT = new String[nTT];
-        DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        DW_Strings.sTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
-        DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT = new String[nTT];
-        DW_Strings.sTotal_HBWeeklyEligibleRentAmountTT = new String[nTT];
-        DW_Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        DW_Strings.sTotalCount_HBWeeklyEligibleRentAmountZeroTT = new String[nTT];
-        DW_Strings.sAverage_NonZero_HBWeeklyEligibleRentAmountTT = new String[nTT];
-        DW_Strings.sTotal_CTBWeeklyEligibleRentAmountTT = new String[nTT];
-        DW_Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        DW_Strings.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT = new String[nTT];
-        DW_Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT = new String[nTT];
+        Strings.sTotal_IncomeTT = new String[nTT];
+        Strings.sTotalCount_IncomeNonZeroTT = new String[nTT];
+        Strings.sTotalCount_IncomeZeroTT = new String[nTT];
+        Strings.sAverage_NonZero_IncomeTT = new String[nTT];
+        Strings.sTotal_HBIncomeTT = new String[nTT];
+        Strings.sTotalCount_HBIncomeNonZeroTT = new String[nTT];
+        Strings.sTotalCount_HBIncomeZeroTT = new String[nTT];
+        Strings.sAverage_NonZero_HBIncomeTT = new String[nTT];
+        Strings.sTotal_CTBIncomeTT = new String[nTT];
+        Strings.sTotalCount_CTBIncomeNonZeroTT = new String[nTT];
+        Strings.sTotalCount_CTBIncomeZeroTT = new String[nTT];
+        Strings.sAverage_Non_Zero_CTBIncomeTT = new String[nTT];
+        Strings.sTotal_WeeklyEligibleRentAmountTT = new String[nTT];
+        Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        Strings.sTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
+        Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT = new String[nTT];
+        Strings.sTotal_HBWeeklyEligibleRentAmountTT = new String[nTT];
+        Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        Strings.sTotalCount_HBWeeklyEligibleRentAmountZeroTT = new String[nTT];
+        Strings.sAverage_NonZero_HBWeeklyEligibleRentAmountTT = new String[nTT];
+        Strings.sTotal_CTBWeeklyEligibleRentAmountTT = new String[nTT];
+        Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        Strings.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT = new String[nTT];
+        Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT = new String[nTT];
         sTotal_HouseholdSizeTT = new String[nTT];
         sAverage_HouseholdSizeTT = new String[nTT];
         sTotalCount_AllPSI = new String[nPSI];
@@ -965,31 +965,31 @@ public class Summary extends DW_Object {
             sPercentageOfHB_ClaimantTT[i] = "PercentageOfHB_ClaimantTT" + i;
             sPercentageOfCTB_ClaimantTT[i] = "PercentageOfCTB_ClaimantTT" + i;
             // Income
-            DW_Strings.sTotal_IncomeTT[i] = "Total_IncomeTT" + i;
-            DW_Strings.sTotalCount_IncomeNonZeroTT[i] = "TotalCount_IncomeNonZeroTT" + i;
-            DW_Strings.sTotalCount_IncomeZeroTT[i] = "TotalCount_IncomeZeroTT" + i;
-            DW_Strings.sAverage_NonZero_IncomeTT[i] = "Average_NonZero_IncomeTT" + i;
-            DW_Strings.sTotal_HBIncomeTT[i] = "Total_HBIncomeTT" + i;
-            DW_Strings.sTotalCount_HBIncomeNonZeroTT[i] = "TotalCount_HBIncomeNonZeroTT" + i;
-            DW_Strings.sTotalCount_HBIncomeZeroTT[i] = "TotalCount_HBIncomeZeroTT" + i;
-            DW_Strings.sAverage_NonZero_HBIncomeTT[i] = "Average_NonZero_HBIncomeTT" + i;
-            DW_Strings.sTotal_CTBIncomeTT[i] = "Total_CTBIncomeTT" + i;
-            DW_Strings.sTotalCount_CTBIncomeNonZeroTT[i] = "TotalCount_CTBIncomeNonZeroTT" + i;
-            DW_Strings.sTotalCount_CTBIncomeZeroTT[i] = "TotalCount_CTBIncomeZeroTT" + i;
-            DW_Strings.sAverage_Non_Zero_CTBIncomeTT[i] = "Average_Non_Zero_CTBIncomeTT" + i;
+            Strings.sTotal_IncomeTT[i] = "Total_IncomeTT" + i;
+            Strings.sTotalCount_IncomeNonZeroTT[i] = "TotalCount_IncomeNonZeroTT" + i;
+            Strings.sTotalCount_IncomeZeroTT[i] = "TotalCount_IncomeZeroTT" + i;
+            Strings.sAverage_NonZero_IncomeTT[i] = "Average_NonZero_IncomeTT" + i;
+            Strings.sTotal_HBIncomeTT[i] = "Total_HBIncomeTT" + i;
+            Strings.sTotalCount_HBIncomeNonZeroTT[i] = "TotalCount_HBIncomeNonZeroTT" + i;
+            Strings.sTotalCount_HBIncomeZeroTT[i] = "TotalCount_HBIncomeZeroTT" + i;
+            Strings.sAverage_NonZero_HBIncomeTT[i] = "Average_NonZero_HBIncomeTT" + i;
+            Strings.sTotal_CTBIncomeTT[i] = "Total_CTBIncomeTT" + i;
+            Strings.sTotalCount_CTBIncomeNonZeroTT[i] = "TotalCount_CTBIncomeNonZeroTT" + i;
+            Strings.sTotalCount_CTBIncomeZeroTT[i] = "TotalCount_CTBIncomeZeroTT" + i;
+            Strings.sAverage_Non_Zero_CTBIncomeTT[i] = "Average_Non_Zero_CTBIncomeTT" + i;
             // WeeklyEligibleRentAmountTT
-            DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] = "Total_WeeklyEligibleRentAmountTT" + i;
-            DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
-            DW_Strings.sTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountZeroTT" + i;
-            DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] = "Average_NonZero_WeeklyEligibleRentAmountTT" + i;
-            DW_Strings.sTotal_HBWeeklyEligibleRentAmountTT[i] = "Total_HBWeeklyEligibleRentAmountTT" + i;
-            DW_Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountNonZeroTT" + i;
-            DW_Strings.sTotalCount_HBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountZeroTT" + i;
-            DW_Strings.sAverage_NonZero_HBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_HBWeeklyEligibleRentAmountTT" + i;
-            DW_Strings.sTotal_CTBWeeklyEligibleRentAmountTT[i] = "Total_CTBWeeklyEligibleRentAmountTT" + i;
-            DW_Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountNonZeroTT" + i;
-            DW_Strings.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountZeroTT" + i;
-            DW_Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_CTBWeeklyEligibleRentAmountTT" + i;
+            Strings.sTotal_WeeklyEligibleRentAmountTT[i] = "Total_WeeklyEligibleRentAmountTT" + i;
+            Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
+            Strings.sTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountZeroTT" + i;
+            Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] = "Average_NonZero_WeeklyEligibleRentAmountTT" + i;
+            Strings.sTotal_HBWeeklyEligibleRentAmountTT[i] = "Total_HBWeeklyEligibleRentAmountTT" + i;
+            Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountNonZeroTT" + i;
+            Strings.sTotalCount_HBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountZeroTT" + i;
+            Strings.sAverage_NonZero_HBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_HBWeeklyEligibleRentAmountTT" + i;
+            Strings.sTotal_CTBWeeklyEligibleRentAmountTT[i] = "Total_CTBWeeklyEligibleRentAmountTT" + i;
+            Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountNonZeroTT" + i;
+            Strings.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountZeroTT" + i;
+            Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_CTBWeeklyEligibleRentAmountTT" + i;
             // DisabilityAwardTT
             sTotalCount_DisabilityAwardTT[i] = "TotalCount_DisabilityAwardTT" + i;
             sPercentageOfAll_DisabilityAwardTT[i] = "PercentageOfAll_DisabilityAwardTT" + i;
@@ -1037,7 +1037,7 @@ public class Summary extends DW_Object {
         sTotalCount_CTBEthnicGroupClaimant = new String[nEG];
         sPercentageOfCTB_CTBEthnicGroupClaimant = new String[nEG];
         for (int i = 1; i < nEG; i++) {
-            String EGN = DW_SHBE_Handler.getEthnicityGroupName(i);
+            String EGN = SHBE_Handler.getEthnicityGroupName(i);
             for (int j = 1; j < nTT; j++) {
                 sTotalCount_AllEthnicGroupClaimantTT[i][j] = "TotalCount_All_ClaimantEthnicGroup_" + EGN + "__ClaimantTT" + j;
                 sPercentageOfEthnicGroup_EthnicGroupClaimantTT[i][j] = "PercentageOfEthnicGroup_" + EGN + "___ClaimantEthnicGroup_" + EGN + "__ClaimantTT" + j;
@@ -3548,61 +3548,61 @@ public class Summary extends DW_Object {
     protected void addToSummarySingleTimeCounts1(
             HashMap<String, String> summary) {
         // WeeklyHBEntitlement
-        summary.put(DW_Strings.sTotal_WeeklyHBEntitlement,
+        summary.put(Strings.sTotal_WeeklyHBEntitlement,
                 BigDecimal.valueOf(AllTotalWeeklyHBEntitlement).toPlainString());
-        summary.put(DW_Strings.sTotalCount_WeeklyHBEntitlementNonZero,
+        summary.put(Strings.sTotalCount_WeeklyHBEntitlementNonZero,
                 Integer.toString(AllTotalWeeklyHBEntitlementNonZeroCount));
-        summary.put(DW_Strings.sTotalCount_WeeklyHBEntitlementZero,
+        summary.put(Strings.sTotalCount_WeeklyHBEntitlementZero,
                 Integer.toString(AllTotalWeeklyHBEntitlementZeroCount));
-        summary.put(DW_Strings.sTotal_HBWeeklyHBEntitlement,
+        summary.put(Strings.sTotal_HBWeeklyHBEntitlement,
                 BigDecimal.valueOf(HBTotalWeeklyHBEntitlement).toPlainString());
-        summary.put(DW_Strings.sTotalCount_HBWeeklyHBEntitlementNonZero,
+        summary.put(Strings.sTotalCount_HBWeeklyHBEntitlementNonZero,
                 Integer.toString(TotalCount_HBWeeklyHBEntitlementNonZero));
-        summary.put(DW_Strings.sTotalCount_HBWeeklyHBEntitlementZero,
+        summary.put(Strings.sTotalCount_HBWeeklyHBEntitlementZero,
                 Integer.toString(TotalCount_HBWeeklyHBEntitlementZero));
-        summary.put(DW_Strings.sTotal_CTBWeeklyHBEntitlement,
+        summary.put(Strings.sTotal_CTBWeeklyHBEntitlement,
                 BigDecimal.valueOf(CTBTotalWeeklyHBEntitlement).toPlainString());
-        summary.put(DW_Strings.sTotalCount_CTBWeeklyHBEntitlementNonZero,
+        summary.put(Strings.sTotalCount_CTBWeeklyHBEntitlementNonZero,
                 Integer.toString(TotalCount_CTBWeeklyHBEntitlementNonZero));
-        summary.put(DW_Strings.sTotalCount_CTBWeeklyHBEntitlementZero,
+        summary.put(Strings.sTotalCount_CTBWeeklyHBEntitlementZero,
                 Integer.toString(CTBTotalWeeklyHBEntitlementZeroCount));
         // WeeklyCTBEntitlement
-        summary.put(DW_Strings.sTotal_WeeklyCTBEntitlement,
+        summary.put(Strings.sTotal_WeeklyCTBEntitlement,
                 BigDecimal.valueOf(AllTotalWeeklyCTBEntitlement).toPlainString());
-        summary.put(DW_Strings.sTotalCount_WeeklyCTBEntitlementNonZero,
+        summary.put(Strings.sTotalCount_WeeklyCTBEntitlementNonZero,
                 Integer.toString(TotalCount_AllWeeklyCTBEntitlementNonZero));
-        summary.put(DW_Strings.sTotalCount_WeeklyCTBEntitlementZero,
+        summary.put(Strings.sTotalCount_WeeklyCTBEntitlementZero,
                 Integer.toString(AllTotalWeeklyCTBEntitlementZeroCount));
-        summary.put(DW_Strings.sTotal_HBWeeklyCTBEntitlement,
+        summary.put(Strings.sTotal_HBWeeklyCTBEntitlement,
                 BigDecimal.valueOf(HBTotalWeeklyCTBEntitlement).toPlainString());
-        summary.put(DW_Strings.sTotalCount_HBWeeklyCTBEntitlementNonZero,
+        summary.put(Strings.sTotalCount_HBWeeklyCTBEntitlementNonZero,
                 Integer.toString(TotalCount_HBWeeklyCTBEntitlementNonZero));
-        summary.put(DW_Strings.sTotalCount_HBWeeklyCTBEntitlementZero,
+        summary.put(Strings.sTotalCount_HBWeeklyCTBEntitlementZero,
                 Integer.toString(HBTotalWeeklyCTBEntitlementZeroCount));
-        summary.put(DW_Strings.sTotal_CTBWeeklyCTBEntitlement,
+        summary.put(Strings.sTotal_CTBWeeklyCTBEntitlement,
                 BigDecimal.valueOf(CTBTotalWeeklyCTBEntitlement).toPlainString());
-        summary.put(DW_Strings.sTotalCount_CTBWeeklyCTBEntitlementNonZero,
+        summary.put(Strings.sTotalCount_CTBWeeklyCTBEntitlementNonZero,
                 Integer.toString(TotalCount_CTBWeeklyCTBEntitlementNonZero));
-        summary.put(DW_Strings.sTotalCount_CTBWeeklyCTBEntitlementZero,
+        summary.put(Strings.sTotalCount_CTBWeeklyCTBEntitlementZero,
                 Integer.toString(CTBTotalWeeklyCTBEntitlementZeroCount));
         // WeeklyEligibleRentAmount
-        summary.put(DW_Strings.sTotal_WeeklyEligibleRentAmount,
+        summary.put(Strings.sTotal_WeeklyEligibleRentAmount,
                 BigDecimal.valueOf(AllTotalWeeklyEligibleRentAmount).toPlainString());
-        summary.put(DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZero,
+        summary.put(Strings.sTotalCount_WeeklyEligibleRentAmountNonZero,
                 Integer.toString(AllTotalWeeklyEligibleRentAmountNonZeroCount));
-        summary.put(DW_Strings.sTotalCount_WeeklyEligibleRentAmountZero,
+        summary.put(Strings.sTotalCount_WeeklyEligibleRentAmountZero,
                 Integer.toString(AllTotalWeeklyEligibleRentAmountZeroCount));
-        summary.put(DW_Strings.sTotal_HBWeeklyEligibleRentAmount,
+        summary.put(Strings.sTotal_HBWeeklyEligibleRentAmount,
                 BigDecimal.valueOf(HBTotalWeeklyEligibleRentAmount).toPlainString());
-        summary.put(DW_Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero,
+        summary.put(Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero,
                 Integer.toString(HBTotalWeeklyEligibleRentAmountNonZeroCount));
-        summary.put(DW_Strings.sTotalCount_HBWeeklyEligibleRentAmountZero,
+        summary.put(Strings.sTotalCount_HBWeeklyEligibleRentAmountZero,
                 Integer.toString(HBTotalWeeklyEligibleRentAmountZeroCount));
-        summary.put(DW_Strings.sTotal_CTBWeeklyEligibleRentAmount,
+        summary.put(Strings.sTotal_CTBWeeklyEligibleRentAmount,
                 BigDecimal.valueOf(CTBTotalWeeklyEligibleRentAmount).toPlainString());
-        summary.put(DW_Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZero,
+        summary.put(Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZero,
                 Integer.toString(CTBTotalWeeklyEligibleRentAmountNonZeroCount));
-        summary.put(DW_Strings.sTotalCount_CTBWeeklyEligibleRentAmountZero,
+        summary.put(Strings.sTotalCount_CTBWeeklyEligibleRentAmountZero,
                 Integer.toString(CTBTotalWeeklyEligibleRentAmountZeroCount));
         // WeeklyEligibleCouncilTaxAmount
         summary.put(
@@ -3749,123 +3749,123 @@ public class Summary extends DW_Object {
         double d;
         double t;
         // WeeklyHBEntitlement
-        t = Double.valueOf(summary.get(DW_Strings.sTotal_WeeklyHBEntitlement));
+        t = Double.valueOf(summary.get(Strings.sTotal_WeeklyHBEntitlement));
         d = AllTotalWeeklyHBEntitlementNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(DW_Strings.sAverage_NonZero_WeeklyHBEntitlement,
+            summary.put(Strings.sAverage_NonZero_WeeklyHBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(DW_Strings.sAverage_NonZero_WeeklyHBEntitlement,
+            summary.put(Strings.sAverage_NonZero_WeeklyHBEntitlement,
                     s0);
         }
-        t = Double.valueOf(summary.get(DW_Strings.sTotal_HBWeeklyHBEntitlement));
+        t = Double.valueOf(summary.get(Strings.sTotal_HBWeeklyHBEntitlement));
         d = TotalCount_HBWeeklyHBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
-            summary.put(DW_Strings.sAverage_NonZero_HBWeeklyHBEntitlement,
+            summary.put(Strings.sAverage_NonZero_HBWeeklyHBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(DW_Strings.sAverage_NonZero_HBWeeklyHBEntitlement,
+            summary.put(Strings.sAverage_NonZero_HBWeeklyHBEntitlement,
                     s0);
         }
-        t = Double.valueOf(summary.get(DW_Strings.sTotal_CTBWeeklyHBEntitlement));
+        t = Double.valueOf(summary.get(Strings.sTotal_CTBWeeklyHBEntitlement));
         d = TotalCount_CTBWeeklyHBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
-            summary.put(DW_Strings.sAverage_NonZero_CTBWeeklyHBEntitlement,
+            summary.put(Strings.sAverage_NonZero_CTBWeeklyHBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(DW_Strings.sAverage_NonZero_CTBWeeklyHBEntitlement,
+            summary.put(Strings.sAverage_NonZero_CTBWeeklyHBEntitlement,
                     s0);
         }
         // WeeklyCTBEntitlement
-        t = Double.valueOf(summary.get(DW_Strings.sTotal_WeeklyCTBEntitlement));
+        t = Double.valueOf(summary.get(Strings.sTotal_WeeklyCTBEntitlement));
         d = TotalCount_AllWeeklyCTBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
-            summary.put(DW_Strings.sAverage_NonZero_WeeklyCTBEntitlement,
+            summary.put(Strings.sAverage_NonZero_WeeklyCTBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(DW_Strings.sAverage_NonZero_WeeklyCTBEntitlement,
+            summary.put(Strings.sAverage_NonZero_WeeklyCTBEntitlement,
                     s0);
         }
-        t = Double.valueOf(summary.get(DW_Strings.sTotal_HBWeeklyCTBEntitlement));
+        t = Double.valueOf(summary.get(Strings.sTotal_HBWeeklyCTBEntitlement));
         d = TotalCount_HBWeeklyCTBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
-            summary.put(DW_Strings.sAverage_NonZero_HBWeeklyCTBEntitlement,
+            summary.put(Strings.sAverage_NonZero_HBWeeklyCTBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(DW_Strings.sAverage_NonZero_HBWeeklyCTBEntitlement,
+            summary.put(Strings.sAverage_NonZero_HBWeeklyCTBEntitlement,
                     s0);
         }
-        t = Double.valueOf(summary.get(DW_Strings.sTotal_CTBWeeklyCTBEntitlement));
+        t = Double.valueOf(summary.get(Strings.sTotal_CTBWeeklyCTBEntitlement));
         d = TotalCount_CTBWeeklyCTBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
-            summary.put(DW_Strings.sAverage_NonZero_CTBWeeklyCTBEntitlement,
+            summary.put(Strings.sAverage_NonZero_CTBWeeklyCTBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(DW_Strings.sAverage_NonZero_CTBWeeklyCTBEntitlement,
+            summary.put(Strings.sAverage_NonZero_CTBWeeklyCTBEntitlement,
                     s0);
         }
         // WeeklyEligibleRentAmount
-        t = Double.valueOf(summary.get(DW_Strings.sTotal_WeeklyEligibleRentAmount));
+        t = Double.valueOf(summary.get(Strings.sTotal_WeeklyEligibleRentAmount));
         d = AllTotalWeeklyEligibleRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmount,
+            summary.put(Strings.sAverage_NonZero_WeeklyEligibleRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmount,
+            summary.put(Strings.sAverage_NonZero_WeeklyEligibleRentAmount,
                     s0);
         }
-        t = Double.valueOf(summary.get(DW_Strings.sTotal_HBWeeklyEligibleRentAmount));
+        t = Double.valueOf(summary.get(Strings.sTotal_HBWeeklyEligibleRentAmount));
         d = HBTotalWeeklyEligibleRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(DW_Strings.sAverage_NonZero_HBWeeklyEligibleRentAmount,
+            summary.put(Strings.sAverage_NonZero_HBWeeklyEligibleRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(DW_Strings.sAverage_NonZero_HBWeeklyEligibleRentAmount,
+            summary.put(Strings.sAverage_NonZero_HBWeeklyEligibleRentAmount,
                     s0);
         }
-        t = Double.valueOf(summary.get(DW_Strings.sTotal_CTBWeeklyEligibleRentAmount));
+        t = Double.valueOf(summary.get(Strings.sTotal_CTBWeeklyEligibleRentAmount));
         d = CTBTotalWeeklyEligibleRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(DW_Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount,
+            summary.put(Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(DW_Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount,
+            summary.put(Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount,
                     s0);
         }
         // WeeklyEligibleCouncilTaxAmount
@@ -4448,11 +4448,11 @@ public class Summary extends DW_Object {
         boolean isCTBOnlyClaim1;
         isCTBOnlyClaim1 = false;
         int TT1;
-        TT1 = DW_SHBE_TenancyType_Handler.iMinus999;
+        TT1 = SHBE_TenancyType_Handler.iMinus999;
         if (D_Record1 != null) {
             //doSingleTimeCount(Record1, D_Record1);
-            isHBClaim1 = DW_SHBE_Handler.isHBClaim(D_Record1);
-            isCTBOnlyClaim1 = DW_SHBE_Handler.isCTBOnlyClaim(D_Record1);
+            isHBClaim1 = SHBE_Handler.isHBClaim(D_Record1);
+            isCTBOnlyClaim1 = SHBE_Handler.isCTBOnlyClaim(D_Record1);
             TT1 = D_Record1.getTenancyType();
         }
 //        AllCount1 = HBCount1 + CTBCount1;
@@ -4461,10 +4461,10 @@ public class Summary extends DW_Object {
         boolean isCTBOnlyClaim0;
         isCTBOnlyClaim0 = false;
         int TT0;
-        TT0 = DW_SHBE_TenancyType_Handler.iMinus999;
+        TT0 = SHBE_TenancyType_Handler.iMinus999;
         if (D_Record0 != null) {
-            isHBClaim0 = DW_SHBE_Handler.isHBClaim(D_Record0);
-            isCTBOnlyClaim0 = DW_SHBE_Handler.isCTBOnlyClaim(D_Record0);
+            isHBClaim0 = SHBE_Handler.isHBClaim(D_Record0);
+            isCTBOnlyClaim0 = SHBE_Handler.isCTBOnlyClaim(D_Record0);
             TT0 = D_Record0.getTenancyType();
         }
         if (isHBClaim1 || D_Record1 == null) {
@@ -4598,7 +4598,7 @@ public class Summary extends DW_Object {
         int WeeklyAdditionalDiscretionaryPayment;
         int WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
         //ClaimantsEthnicGroup0 = D_Record.getClaimantsEthnicGroup();
-        EG = DW_SHBE_Handler.getEthnicityGroup(D_Record);
+        EG = SHBE_Handler.getEthnicityGroup(D_Record);
         // All unfiltered counts
         TT = D_Record.getTenancyType();
         TotalCount_TTClaimant1[TT]++;
@@ -4631,7 +4631,7 @@ public class Summary extends DW_Object {
         TotalCount_AllPSI[PSI]++;
         TotalCount_AllPSITT[PSI][TT]++;
         // Household size
-        HouseholdSize = DW_SHBE_Handler.getHouseholdSize(D_Record);
+        HouseholdSize = SHBE_Handler.getHouseholdSize(D_Record);
         AllTotalHouseholdSize += HouseholdSize;
         // Entitlements
         WeeklyHousingBenefitEntitlement = D_Record.getWeeklyHousingBenefitEntitlement();
@@ -4686,7 +4686,7 @@ public class Summary extends DW_Object {
             AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
         }
         // HBClaim only counts
-        if (DW_SHBE_Handler.isHBClaim(D_Record)) {
+        if (SHBE_Handler.isHBClaim(D_Record)) {
             TotalCount_HBPSI[PSI]++;
             TotalCount_HBPSITT[PSI][TT]++;
             //if (HBRef.equalsIgnoreCase(CTBRef)) {
@@ -4773,7 +4773,7 @@ public class Summary extends DW_Object {
                     Record.isClaimPostcodeFMappable());
         }
         // CTB Claim only counts
-        if (DW_SHBE_Handler.isCTBOnlyClaim(D_Record)) {
+        if (SHBE_Handler.isCTBOnlyClaim(D_Record)) {
             TotalCount_CTBPSI[PSI]++;
             TotalCount_CTBPSITT[PSI][TT]++;
             CTBTotalHouseholdSize += HouseholdSize;
@@ -4905,12 +4905,12 @@ public class Summary extends DW_Object {
             }
         }
         if (TT0.compareTo(TT1) != 0) {
-            if (!(TT0 == DW_SHBE_TenancyType_Handler.iMinus999
-                    || TT1 == DW_SHBE_TenancyType_Handler.iMinus999)) {
+            if (!(TT0 == SHBE_TenancyType_Handler.iMinus999
+                    || TT1 == SHBE_TenancyType_Handler.iMinus999)) {
                 TotalCount_HBTTChangeClaimant++;
                 //TotalCount_HBTTChangeClaimantIgnoreMinus999++;
             }
-            if (TT0 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (TT0 == SHBE_TenancyType_Handler.iMinus999) {
                 if (TT1 == 1 || TT1 == 4) {
                     TotalCount_Minus999TTToSocialTTs++;
                 }
@@ -4927,7 +4927,7 @@ public class Summary extends DW_Object {
                     TotalCount_HBTTsToMinus999TT++;
                 }
             }
-            if (TT1 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (TT1 == SHBE_TenancyType_Handler.iMinus999) {
                 if (TT0 == 1 || TT0 == 4) {
                     TotalCount_SocialTTsToMinus999TT++;
                 }
@@ -5119,17 +5119,17 @@ public class Summary extends DW_Object {
             }
         }
         if (TT0.compareTo(TT1) != 0) {
-            if (!(TT0 == DW_SHBE_TenancyType_Handler.iMinus999
-                    || TT1 == DW_SHBE_TenancyType_Handler.iMinus999)) {
+            if (!(TT0 == SHBE_TenancyType_Handler.iMinus999
+                    || TT1 == SHBE_TenancyType_Handler.iMinus999)) {
                 TotalCount_CTBTTChangeClaimant++;
                 //TotalCount_CTBTTChangeClaimantIgnoreMinus999++;
             }
-            if (TT1 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (TT1 == SHBE_TenancyType_Handler.iMinus999) {
                 if (TT0 == 5 || TT0 == 7) {
                     TotalCount_CTBTTsToMinus999TT++;
                 }
             }
-            if (TT0 == DW_SHBE_TenancyType_Handler.iMinus999) {
+            if (TT0 == SHBE_TenancyType_Handler.iMinus999) {
                 TotalCount_Minus999TTToCTBTTs++;
             }
             if ((TT0 == 1
@@ -5227,7 +5227,7 @@ public class Summary extends DW_Object {
             boolean handleOutOfMemoryError
     ) {
         String methodName = "getSummaryTable(...)";
-        env.log("<" + methodName + ">");
+        Env.log("<" + methodName + ">");
 
         // Initialise counts
         initCounts(nTT, nEG, nPSI);
@@ -5263,7 +5263,7 @@ public class Summary extends DW_Object {
         while (includeIte.hasNext()) {
             i = includeIte.next();
             summary = new HashMap<String, String>();
-            key = DW_SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
+            key = SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
             result.put(key, summary);
         }
 
@@ -5271,18 +5271,18 @@ public class Summary extends DW_Object {
         includeIte = include.iterator();
         i = includeIte.next();
         filename1 = SHBEFilenames[i];
-        key = DW_SHBE_Handler.getYearMonthNumber(filename1);
-        YM31 = DW_SHBE_Handler.getYM3(filename1);
-        env.log("Load " + YM31);
+        key = SHBE_Handler.getYearMonthNumber(filename1);
+        YM31 = SHBE_Handler.getYM3(filename1);
+        Env.log("Load " + YM31);
 
-        DW_SHBE_Records1 = DW_SHBE_Data.getDW_SHBE_Records(YM31);
+        DW_SHBE_Records1 = SHBE_Data.getDW_SHBE_Records(YM31);
 
-        ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env.HandleOutOfMemoryError);
-        ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env.HandleOutOfMemoryError);
-        ClaimIDsWithStatusOfHBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(env.HandleOutOfMemoryError);
-        ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env.HandleOutOfMemoryError);
-        ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env.HandleOutOfMemoryError);
-        ClaimIDsWithStatusOfCTBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(env.HandleOutOfMemoryError);
+        ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HandleOutOfMemoryError);
+        ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HandleOutOfMemoryError);
+        ClaimIDsWithStatusOfHBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(Env.HandleOutOfMemoryError);
+        ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(Env.HandleOutOfMemoryError);
+        ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(Env.HandleOutOfMemoryError);
+        ClaimIDsWithStatusOfCTBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(Env.HandleOutOfMemoryError);
 
         // Summarise first data
         doPartSummarySingleTime(
@@ -5314,17 +5314,17 @@ public class Summary extends DW_Object {
         while (includeIte.hasNext()) {
             i = includeIte.next();
             filename1 = SHBEFilenames[i];
-            key = DW_SHBE_Handler.getYearMonthNumber(filename1);
-            YM31 = DW_SHBE_Handler.getYM3(filename1);
+            key = SHBE_Handler.getYearMonthNumber(filename1);
+            YM31 = SHBE_Handler.getYM3(filename1);
             // Load next data
-            env.log("Load " + YM31);
-            DW_SHBE_Records1 = DW_SHBE_Data.getDW_SHBE_Records(YM31);
-            ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env.HandleOutOfMemoryError);
-            ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env.HandleOutOfMemoryError);
-            ClaimIDsWithStatusOfHBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(env.HandleOutOfMemoryError);
-            ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env.HandleOutOfMemoryError);
-            ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env.HandleOutOfMemoryError);
-            ClaimIDsWithStatusOfCTBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(env.HandleOutOfMemoryError);
+            Env.log("Load " + YM31);
+            DW_SHBE_Records1 = SHBE_Data.getDW_SHBE_Records(YM31);
+            ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HandleOutOfMemoryError);
+            ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HandleOutOfMemoryError);
+            ClaimIDsWithStatusOfHBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(Env.HandleOutOfMemoryError);
+            ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(Env.HandleOutOfMemoryError);
+            ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(Env.HandleOutOfMemoryError);
+            ClaimIDsWithStatusOfCTBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(Env.HandleOutOfMemoryError);
             // doPartSummaryCompare2Times
             doPartSummaryCompare2Times(
                     DW_SHBE_Records0,
@@ -5370,7 +5370,7 @@ public class Summary extends DW_Object {
             }
 
         }
-        env.log("</" + methodName + ">");
+        Env.log("</" + methodName + ">");
         return result;
     }
 
@@ -5408,10 +5408,10 @@ public class Summary extends DW_Object {
         HashSet<DW_ID> ClaimIDsOfNewSHBEClaims;
 
         // Initialise variables
-        key = DW_SHBE_Handler.getYearMonthNumber(filename);
+        key = SHBE_Handler.getYearMonthNumber(filename);
         summary = summaries.get(key);
-        LoadSummary = DW_SHBE_Records.getLoadSummary(env.HandleOutOfMemoryError);
-        IncomeAndRentSummary = DW_SHBE_Handler.getIncomeAndRentSummary(
+        LoadSummary = DW_SHBE_Records.getLoadSummary(Env.HandleOutOfMemoryError);
+        IncomeAndRentSummary = SHBE_Handler.getIncomeAndRentSummary(
                 DW_SHBE_Records,
                 HB_CTB,
                 PTs,
@@ -5422,7 +5422,7 @@ public class Summary extends DW_Object {
                 false,
                 false,
                 forceNewSummaries);
-        ClaimIDsOfNewSHBEClaims = DW_SHBE_Records.getClaimIDsOfNewSHBEClaims(env.HandleOutOfMemoryError);
+        ClaimIDsOfNewSHBEClaims = DW_SHBE_Records.getClaimIDsOfNewSHBEClaims(Env.HandleOutOfMemoryError);
         // Add load summary to summary
         addToSummary(summary, LoadSummary);
 
@@ -5430,27 +5430,24 @@ public class Summary extends DW_Object {
          * Add things not quite added right from load summary
          */
         HashSet<DW_ID> ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
-        ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = DW_SHBE_Records.getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(env.HandleOutOfMemoryError);
-        summary.put(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
+        ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = DW_SHBE_Records.getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(Env.HandleOutOfMemoryError);
+        summary.put(Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
                 Integer.toString(ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.size()));
         HashSet<DW_PersonID> set;
         // Add unique Partners
-        set = DW_SHBE_Handler.getUniquePersonIDs0(
-                DW_SHBE_Records.getClaimIDToPartnerPersonIDLookup(env.HandleOutOfMemoryError));
-        summary.put(
-                DW_Strings.sCountOfUniquePartners,
+        set = SHBE_Handler.getUniquePersonIDs0(
+                DW_SHBE_Records.getClaimIDToPartnerPersonIDLookup(Env.HandleOutOfMemoryError));
+        summary.put(Strings.sCountOfUniquePartners,
                 "" + set.size());
         // Add unique Dependents
-        set = DW_SHBE_Handler.getUniquePersonIDs(
-                DW_SHBE_Records.getClaimIDToDependentPersonIDsLookup(env.HandleOutOfMemoryError));
-        summary.put(
-                DW_Strings.sCountOfUniqueDependents,
+        set = SHBE_Handler.getUniquePersonIDs(
+                DW_SHBE_Records.getClaimIDToDependentPersonIDsLookup(Env.HandleOutOfMemoryError));
+        summary.put(Strings.sCountOfUniqueDependents,
                 "" + set.size());
         // Add unique NonDependents
-        set = DW_SHBE_Handler.getUniquePersonIDs(
-                DW_SHBE_Records.getClaimIDToNonDependentPersonIDsLookup(env.HandleOutOfMemoryError));
-        summary.put(
-                DW_Strings.sCountOfUniqueNonDependents,
+        set = SHBE_Handler.getUniquePersonIDs(
+                DW_SHBE_Records.getClaimIDToNonDependentPersonIDsLookup(Env.HandleOutOfMemoryError));
+        summary.put(Strings.sCountOfUniqueNonDependents,
                 "" + set.size());
         /**
          * Counts of: ClaimsWithClaimantsThatAreClaimantsInAnotherClaim
@@ -5460,20 +5457,20 @@ public class Summary extends DW_Object {
          * ClaimantsInMultipleClaimsInAMonth PartnersInMultipleClaimsInAMonth
          * NonDependentsInMultipleClaimsInAMonth
          */
-        summary.put(DW_Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
-                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(env.HandleOutOfMemoryError).size());
-        summary.put(DW_Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
-                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(env.HandleOutOfMemoryError).size());
-        summary.put(DW_Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
-                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(env.HandleOutOfMemoryError).size());
-        summary.put(DW_Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim,
-                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(env.HandleOutOfMemoryError).size());
-        summary.put(DW_Strings.sCountOfClaimantsInMultipleClaimsInAMonth,
-                "" + DW_SHBE_Records.getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env.HandleOutOfMemoryError).size());
-        summary.put(DW_Strings.sCountOfPartnersInMultipleClaimsInAMonth,
-                "" + DW_SHBE_Records.getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env.HandleOutOfMemoryError).size());
-        summary.put(DW_Strings.sCountOfNonDependentsInMultipleClaimsInAMonth,
-                "" + DW_SHBE_Records.getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env.HandleOutOfMemoryError).size());
+        summary.put(Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
+                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(Env.HandleOutOfMemoryError).size());
+        summary.put(Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
+                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(Env.HandleOutOfMemoryError).size());
+        summary.put(Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
+                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(Env.HandleOutOfMemoryError).size());
+        summary.put(Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim,
+                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(Env.HandleOutOfMemoryError).size());
+        summary.put(Strings.sCountOfClaimantsInMultipleClaimsInAMonth,
+                "" + DW_SHBE_Records.getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HandleOutOfMemoryError).size());
+        summary.put(Strings.sCountOfPartnersInMultipleClaimsInAMonth,
+                "" + DW_SHBE_Records.getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HandleOutOfMemoryError).size());
+        summary.put(Strings.sCountOfNonDependentsInMultipleClaimsInAMonth,
+                "" + DW_SHBE_Records.getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HandleOutOfMemoryError).size());
 
         addToSummary(summary, ClaimIDsOfNewSHBEClaims, Records);
         // doSingleTimeLoopOverSet
@@ -5516,7 +5513,7 @@ public class Summary extends DW_Object {
 
         doPartSummarySingleTime(
                 DW_SHBE_Records1,
-                DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError),
+                DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError),
                 YM31,
                 filename1,
                 forceNewSummaries,
@@ -5544,7 +5541,7 @@ public class Summary extends DW_Object {
                 ClaimIDsWithStatusOfCTBAtExtractDateOther1);
 
         String key;
-        key = DW_SHBE_Handler.getYearMonthNumber(filename1);
+        key = SHBE_Handler.getYearMonthNumber(filename1);
         HashMap<String, String> summary;
         summary = summaries.get(key);
 
@@ -5590,7 +5587,7 @@ public class Summary extends DW_Object {
                 Records1);
 
         String key;
-        key = DW_SHBE_Handler.getYearMonthNumber(filename1);
+        key = SHBE_Handler.getYearMonthNumber(filename1);
         HashMap<String, String> summary;
         summary = summaries.get(key);
 
@@ -5641,7 +5638,7 @@ public class Summary extends DW_Object {
         DW_SHBE_D_Record D_Record1;
 
         HashMap<DW_ID, DW_SHBE_Record> Records0;
-        Records0 = DW_SHBE_Records0.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
+        Records0 = DW_SHBE_Records0.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
         // Go through previous records
         ite = Records0.keySet().iterator();
         while (ite.hasNext()) {
@@ -5736,7 +5733,7 @@ public class Summary extends DW_Object {
             }
         }
         HashMap<DW_ID, DW_SHBE_Record> Records1;
-        Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
+        Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
         // Go through current records
         ite = Records1.keySet().iterator();
         while (ite.hasNext()) {
@@ -5926,7 +5923,7 @@ public class Summary extends DW_Object {
         DW_SHBE_Record DW_SHBE_Record;
         int PSI;
         int nPSI;
-        nPSI = DW_SHBE_Handler.getNumberOfPassportedStandardIndicators();
+        nPSI = SHBE_Handler.getNumberOfPassportedStandardIndicators();
         int[] counts;
         counts = new int[nPSI];
         while (ite.hasNext()) {
@@ -5936,8 +5933,8 @@ public class Summary extends DW_Object {
             counts[PSI] += 1;
         }
         for (int i = 1; i < nPSI; i++) {
-            summary.put(DW_Strings.sCountOfNewSHBEClaimsPSI + i, "" + counts[i]);
-            //System.out.println(DW_Strings.sCountOfNewSHBEClaimsPSI + "[" + i + "] " + counts[i]);
+            summary.put(Strings.sCountOfNewSHBEClaimsPSI + i, "" + counts[i]);
+            //System.out.println(Strings.sCountOfNewSHBEClaimsPSI + "[" + i + "] " + counts[i]);
         }
     }
 
@@ -5978,7 +5975,7 @@ public class Summary extends DW_Object {
             int nEG,
             int nPSI
     ) {
-        env.logO("<writeSummaryTables>", true);
+        Env.logO("<writeSummaryTables>", true);
         writeSummaryTableCompare2TimesPaymentTypes(
                 summaryTable,
                 includeKey,
@@ -6025,7 +6022,7 @@ public class Summary extends DW_Object {
                 summaryTable,
                 includeKey,
                 nTT, nEG);
-        env.logO("</writeSummaryTables>", true);
+        Env.logO("</writeSummaryTables>", true);
     }
 
     /**
@@ -6045,16 +6042,16 @@ public class Summary extends DW_Object {
             boolean underOccupancy) {
         PrintWriter result;
         File dirOut;
-        dirOut = env.getFiles().getOutputSHBETableDir(
+        dirOut = Env.getFiles().getOutputSHBETableDir(
                 name2,
                 includeKey,
                 underOccupancy);
         String outFilename;
-        outFilename = includeKey + DW_Strings.sUnderscore;
+        outFilename = includeKey + Strings.sUnderscore;
         if (underOccupancy) {
-            outFilename += DW_Strings.sU + DW_Strings.sUnderscore;
+            outFilename += Strings.sU + Strings.sUnderscore;
         }
-        outFilename += summaryTable.firstKey() + "_To_" + summaryTable.lastKey() + DW_Strings.sUnderscore + name + ".csv";
+        outFilename += summaryTable.firstKey() + "_To_" + summaryTable.lastKey() + Strings.sUnderscore + name + ".csv";
         File outFile;
         outFile = new File(dirOut, outFilename);
         result = Generic_StaticIO.getPrintWriter(outFile, false);
@@ -6076,7 +6073,7 @@ public class Summary extends DW_Object {
             int nEG
     ) {
         TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = DW_Files.getInputONSPDFiles();
+        ONSPDFiles = Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPaymentTypes";
         PrintWriter pw;
@@ -6533,7 +6530,7 @@ public class Summary extends DW_Object {
             int nEG
     ) {
         TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = DW_Files.getInputONSPDFiles();
+        ONSPDFiles = Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesTT";
         PrintWriter pw;
@@ -6597,9 +6594,9 @@ public class Summary extends DW_Object {
         String month0;
         String year0;
         if (filename0 != null) {
-            line += DW_SHBE_Handler.getYearMonthNumber(filename0) + sCommaSpace;
-            month0 = DW_SHBE_Handler.getMonth3(filename0);
-            year0 = DW_SHBE_Handler.getYear(filename0);
+            line += SHBE_Handler.getYearMonthNumber(filename0) + sCommaSpace;
+            month0 = SHBE_Handler.getMonth3(filename0);
+            year0 = SHBE_Handler.getYear(filename0);
             line += month0 + " " + year0 + sCommaSpace;
         } else {
             month0 = "null";
@@ -6613,9 +6610,9 @@ public class Summary extends DW_Object {
         String month1;
         String year1;
         if (filename1 != null) {
-            line += DW_SHBE_Handler.getYearMonthNumber(filename1) + sCommaSpace;
-            month1 = DW_SHBE_Handler.getMonth3(filename1);
-            year1 = DW_SHBE_Handler.getYear(filename1);
+            line += SHBE_Handler.getYearMonthNumber(filename1) + sCommaSpace;
+            month1 = SHBE_Handler.getMonth3(filename1);
+            year1 = SHBE_Handler.getYear(filename1);
             line += month1 + " " + year1 + sCommaSpace;
         } else {
             month1 = "null";
@@ -6626,14 +6623,14 @@ public class Summary extends DW_Object {
         DW_YM3 PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename0 != null) {
-            PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(DW_SHBE_Handler.getYM3(filename0));
+            PostCodeLookupDate0 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename0));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }
         line += PostCodeLookupDate0 + sCommaSpace + PostCodeLookupFile0Name + sCommaSpace;
         DW_YM3 PostCodeLookupDate1 = null;
         String PostCodeLookupFile1Name = null;
         if (filename1 != null) {
-            PostCodeLookupDate1 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(DW_SHBE_Handler.getYM3(filename1));
+            PostCodeLookupDate1 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename1));
             PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
         }
         line += PostCodeLookupDate1 + sCommaSpace + PostCodeLookupFile1Name + sCommaSpace;
@@ -6663,7 +6660,7 @@ public class Summary extends DW_Object {
             int nEG
     ) {
         TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = DW_Files.getInputONSPDFiles();
+        ONSPDFiles = Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPostcode";
         PrintWriter pw;
@@ -6710,7 +6707,7 @@ public class Summary extends DW_Object {
             int nPSI
     ) {
         TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = DW_Files.getInputONSPDFiles();
+        ONSPDFiles = Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
         PrintWriter pw;
@@ -6724,44 +6721,44 @@ public class Summary extends DW_Object {
         header += getHeaderSingleTimeGeneric();
         header += "PostCodeLookupDate, ";
         header += "PostCodeLookupFile, ";
-        //header += DW_Strings.sCountOfClaims + sCommaSpace;
-        //header += DW_Strings.sCountOfCTBAndHBClaims + sCommaSpace;
-        //header += DW_Strings.sCountOfCTBClaims + sCommaSpace;
-        header += DW_Strings.sCountOfNewSHBEClaims + sCommaSpace;
+        //header += Strings.sCountOfClaims + sCommaSpace;
+        //header += Strings.sCountOfCTBAndHBClaims + sCommaSpace;
+        //header += Strings.sCountOfCTBClaims + sCommaSpace;
+        header += Strings.sCountOfNewSHBEClaims + sCommaSpace;
         for (int i = 1; i < nPSI; i++) {
-            header += DW_Strings.sCountOfNewSHBEClaimsPSI + i + sCommaSpace;
+            header += Strings.sCountOfNewSHBEClaimsPSI + i + sCommaSpace;
         }
-        header += DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore + sCommaSpace;
-        header += DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore + sCommaSpace;
-        header += DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore + sCommaSpace;
-        header += DW_Strings.sCountOfNewSHBEClaimsWhereClaimantIsNew + sCommaSpace;
-        header += DW_Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim + sCommaSpace;
-        header += DW_Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim + sCommaSpace;
-        header += DW_Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim + sCommaSpace;
-        header += DW_Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim + sCommaSpace;
-        header += DW_Strings.sCountOfClaimantsInMultipleClaimsInAMonth + sCommaSpace;
-        header += DW_Strings.sCountOfPartnersInMultipleClaimsInAMonth + sCommaSpace;
-        header += DW_Strings.sCountOfNonDependentsInMultipleClaimsInAMonth + sCommaSpace;
+        header += Strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore + sCommaSpace;
+        header += Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore + sCommaSpace;
+        header += Strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore + sCommaSpace;
+        header += Strings.sCountOfNewSHBEClaimsWhereClaimantIsNew + sCommaSpace;
+        header += Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim + sCommaSpace;
+        header += Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim + sCommaSpace;
+        header += Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim + sCommaSpace;
+        header += Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim + sCommaSpace;
+        header += Strings.sCountOfClaimantsInMultipleClaimsInAMonth + sCommaSpace;
+        header += Strings.sCountOfPartnersInMultipleClaimsInAMonth + sCommaSpace;
+        header += Strings.sCountOfNonDependentsInMultipleClaimsInAMonth + sCommaSpace;
         header += sHBPTICount1 + sCommaSpace;
         header += sHBPTSCount1 + sCommaSpace;
         header += sHBPTOCount1 + sCommaSpace;
         header += sCTBPTICount1 + sCommaSpace;
         header += sCTBPTSCount1 + sCommaSpace;
         header += sCTBPTOCount1 + sCommaSpace;
-        header += DW_Strings.sCountOfSRecords + sCommaSpace;
-        header += DW_Strings.sCountOfUniqueClaimants + sCommaSpace;
-        header += DW_Strings.sCountOfClaimsWithPartners + sCommaSpace;
-        header += DW_Strings.sCountOfUniquePartners + sCommaSpace;
-        header += DW_Strings.sCountOfDependentsInAllClaims + sCommaSpace;
-        header += DW_Strings.sCountOfUniqueDependents + sCommaSpace;
-        header += DW_Strings.sCountOfNonDependentsInAllClaims + sCommaSpace;
-        header += DW_Strings.sCountOfUniqueNonDependents + sCommaSpace;
-        header += DW_Strings.sCountOfIndividuals + sCommaSpace;
-        header += DW_Strings.sCountOfNewClaimantPostcodes + sCommaSpace;
-        //header += DW_Strings.sCountOfNewValidMappableClaimantPostcodes + sCommaSpace;
-        header += DW_Strings.sCountOfMappableClaimantPostcodes + sCommaSpace;
-        header += DW_Strings.sCountOfNonMappableClaimantPostcodes + sCommaSpace;
-//        //header += DW_Strings.sCountOfInvalidFormatClaimantPostcodes + sCommaSpace;
+        header += Strings.sCountOfSRecords + sCommaSpace;
+        header += Strings.sCountOfUniqueClaimants + sCommaSpace;
+        header += Strings.sCountOfClaimsWithPartners + sCommaSpace;
+        header += Strings.sCountOfUniquePartners + sCommaSpace;
+        header += Strings.sCountOfDependentsInAllClaims + sCommaSpace;
+        header += Strings.sCountOfUniqueDependents + sCommaSpace;
+        header += Strings.sCountOfNonDependentsInAllClaims + sCommaSpace;
+        header += Strings.sCountOfUniqueNonDependents + sCommaSpace;
+        header += Strings.sCountOfIndividuals + sCommaSpace;
+        header += Strings.sCountOfNewClaimantPostcodes + sCommaSpace;
+        //header += Strings.sCountOfNewValidMappableClaimantPostcodes + sCommaSpace;
+        header += Strings.sCountOfMappableClaimantPostcodes + sCommaSpace;
+        header += Strings.sCountOfNonMappableClaimantPostcodes + sCommaSpace;
+//        //header += Strings.sCountOfInvalidFormatClaimantPostcodes + sCommaSpace;
 //        header += sTotalCount_AllPostcodeValidFormat + sCommaSpace;
 //        header += sPercentageOfAllCount1_AllPostcodeValidFormat + sCommaSpace;
 //        //header += sTotalCount_AllPostcodeInvalidFormat + sCommaSpace;
@@ -6796,44 +6793,44 @@ public class Summary extends DW_Object {
             line += filename1 + sCommaSpace;
             line += getLineSingleTimeGeneric(key, summary);
             line += getPostcodeLookupDateAndFilenameLinePart(filename1, ONSPDFiles);
-            //line += summary.get(DW_Strings.sCountOfClaims) + sCommaSpace;
-            //line += summary.get(DW_Strings.sCountOfCTBAndHBClaims) + sCommaSpace;
-            //line += summary.get(DW_Strings.sCountOfCTBClaims) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfNewSHBEClaims) + sCommaSpace;
+            //line += summary.get(Strings.sCountOfClaims) + sCommaSpace;
+            //line += summary.get(Strings.sCountOfCTBAndHBClaims) + sCommaSpace;
+            //line += summary.get(Strings.sCountOfCTBClaims) + sCommaSpace;
+            line += summary.get(Strings.sCountOfNewSHBEClaims) + sCommaSpace;
             for (int i = 1; i < nPSI; i++) {
-                line += summary.get(DW_Strings.sCountOfNewSHBEClaimsPSI + i) + sCommaSpace;
+                line += summary.get(Strings.sCountOfNewSHBEClaimsPSI + i) + sCommaSpace;
             }
-            line += summary.get(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfNewSHBEClaimsWhereClaimantIsNew) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfClaimantsInMultipleClaimsInAMonth) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfPartnersInMultipleClaimsInAMonth) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfNonDependentsInMultipleClaimsInAMonth) + sCommaSpace;
+            line += summary.get(Strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore) + sCommaSpace;
+            line += summary.get(Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore) + sCommaSpace;
+            line += summary.get(Strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore) + sCommaSpace;
+            line += summary.get(Strings.sCountOfNewSHBEClaimsWhereClaimantIsNew) + sCommaSpace;
+            line += summary.get(Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim) + sCommaSpace;
+            line += summary.get(Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim) + sCommaSpace;
+            line += summary.get(Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim) + sCommaSpace;
+            line += summary.get(Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim) + sCommaSpace;
+            line += summary.get(Strings.sCountOfClaimantsInMultipleClaimsInAMonth) + sCommaSpace;
+            line += summary.get(Strings.sCountOfPartnersInMultipleClaimsInAMonth) + sCommaSpace;
+            line += summary.get(Strings.sCountOfNonDependentsInMultipleClaimsInAMonth) + sCommaSpace;
             line += summary.get(sHBPTICount1) + sCommaSpace;
             line += summary.get(sHBPTSCount1) + sCommaSpace;
             line += summary.get(sHBPTOCount1) + sCommaSpace;
             line += summary.get(sCTBPTICount1) + sCommaSpace;
             line += summary.get(sCTBPTSCount1) + sCommaSpace;
             line += summary.get(sCTBPTOCount1) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfSRecords) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfUniqueClaimants) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfClaimsWithPartners) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfUniquePartners) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfDependentsInAllClaims) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfUniqueDependents) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfNonDependentsInAllClaims) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfUniqueNonDependents) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfIndividuals) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfNewClaimantPostcodes) + sCommaSpace;
-            //line += summary.get(DW_Strings.sCountOfNewValidMappableClaimantPostcodes) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfMappableClaimantPostcodes) + sCommaSpace;
-            line += summary.get(DW_Strings.sCountOfNonMappableClaimantPostcodes) + sCommaSpace;
-            //line += summary.get(DW_Strings.sCountOfInvalidFormatClaimantPostcodes) + sCommaSpace;
+            line += summary.get(Strings.sCountOfSRecords) + sCommaSpace;
+            line += summary.get(Strings.sCountOfUniqueClaimants) + sCommaSpace;
+            line += summary.get(Strings.sCountOfClaimsWithPartners) + sCommaSpace;
+            line += summary.get(Strings.sCountOfUniquePartners) + sCommaSpace;
+            line += summary.get(Strings.sCountOfDependentsInAllClaims) + sCommaSpace;
+            line += summary.get(Strings.sCountOfUniqueDependents) + sCommaSpace;
+            line += summary.get(Strings.sCountOfNonDependentsInAllClaims) + sCommaSpace;
+            line += summary.get(Strings.sCountOfUniqueNonDependents) + sCommaSpace;
+            line += summary.get(Strings.sCountOfIndividuals) + sCommaSpace;
+            line += summary.get(Strings.sCountOfNewClaimantPostcodes) + sCommaSpace;
+            //line += summary.get(Strings.sCountOfNewValidMappableClaimantPostcodes) + sCommaSpace;
+            line += summary.get(Strings.sCountOfMappableClaimantPostcodes) + sCommaSpace;
+            line += summary.get(Strings.sCountOfNonMappableClaimantPostcodes) + sCommaSpace;
+            //line += summary.get(Strings.sCountOfInvalidFormatClaimantPostcodes) + sCommaSpace;
 //            line += summary.get(sTotalCount_AllPostcodeValidFormat) + sCommaSpace;
 //            line += summary.get(sPercentageOfAllCount1_AllPostcodeValidFormat) + sCommaSpace;
 //            line += summary.get(sTotalCount_AllPostcodeInvalidFormat) + sCommaSpace;
@@ -6875,7 +6872,7 @@ public class Summary extends DW_Object {
             int nPSI
     ) {
         TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = DW_Files.getInputONSPDFiles();
+        ONSPDFiles = Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeHouseholdSizes";
         PrintWriter pw;
@@ -6949,23 +6946,23 @@ public class Summary extends DW_Object {
         header = "";
         header += sSHBEFilename1 + sCommaSpace;
         header += getHeaderSingleTimeGeneric();
-        header += DW_Strings.sTotal_WeeklyHBEntitlement + sCommaSpace;
-        header += DW_Strings.sTotalCount_WeeklyHBEntitlementNonZero + sCommaSpace;
-        header += DW_Strings.sTotalCount_WeeklyHBEntitlementZero + sCommaSpace;
-        header += DW_Strings.sAverage_NonZero_WeeklyHBEntitlement + sCommaSpace;
+        header += Strings.sTotal_WeeklyHBEntitlement + sCommaSpace;
+        header += Strings.sTotalCount_WeeklyHBEntitlementNonZero + sCommaSpace;
+        header += Strings.sTotalCount_WeeklyHBEntitlementZero + sCommaSpace;
+        header += Strings.sAverage_NonZero_WeeklyHBEntitlement + sCommaSpace;
         // WeeklyEligibleRentAmount
-        header += DW_Strings.sTotal_WeeklyEligibleRentAmount + sCommaSpace;
-        header += DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZero + sCommaSpace;
-        header += DW_Strings.sTotalCount_WeeklyEligibleRentAmountZero + sCommaSpace;
-        header += DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmount + sCommaSpace;
-        header += DW_Strings.sTotal_HBWeeklyEligibleRentAmount + sCommaSpace;
-        header += DW_Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero + sCommaSpace;
-        header += DW_Strings.sTotalCount_HBWeeklyEligibleRentAmountZero + sCommaSpace;
-        header += DW_Strings.sAverage_NonZero_HBWeeklyEligibleRentAmount + sCommaSpace;
-        header += DW_Strings.sTotal_CTBWeeklyEligibleRentAmount + sCommaSpace;
-        header += DW_Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZero + sCommaSpace;
-        header += DW_Strings.sTotalCount_CTBWeeklyEligibleRentAmountZero + sCommaSpace;
-        header += DW_Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount + sCommaSpace;
+        header += Strings.sTotal_WeeklyEligibleRentAmount + sCommaSpace;
+        header += Strings.sTotalCount_WeeklyEligibleRentAmountNonZero + sCommaSpace;
+        header += Strings.sTotalCount_WeeklyEligibleRentAmountZero + sCommaSpace;
+        header += Strings.sAverage_NonZero_WeeklyEligibleRentAmount + sCommaSpace;
+        header += Strings.sTotal_HBWeeklyEligibleRentAmount + sCommaSpace;
+        header += Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero + sCommaSpace;
+        header += Strings.sTotalCount_HBWeeklyEligibleRentAmountZero + sCommaSpace;
+        header += Strings.sAverage_NonZero_HBWeeklyEligibleRentAmount + sCommaSpace;
+        header += Strings.sTotal_CTBWeeklyEligibleRentAmount + sCommaSpace;
+        header += Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZero + sCommaSpace;
+        header += Strings.sTotalCount_CTBWeeklyEligibleRentAmountZero + sCommaSpace;
+        header += Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount + sCommaSpace;
         // WeeklyEligibleCouncilTaxAmount
         header += sAllTotalWeeklyEligibleCouncilTaxAmount + sCommaSpace;
         header += sTotalCount_AllWeeklyEligibleCouncilTaxAmountNonZero + sCommaSpace;
@@ -7033,23 +7030,23 @@ public class Summary extends DW_Object {
             filename1 = summary.get(sSHBEFilename1);
             line += filename1 + sCommaSpace;
             line += getLineSingleTimeGeneric(key, summary);
-            line += summary.get(DW_Strings.sTotal_WeeklyHBEntitlement) + sCommaSpace;
-            line += summary.get(DW_Strings.sTotalCount_WeeklyHBEntitlementNonZero) + sCommaSpace;
-            line += summary.get(DW_Strings.sTotalCount_WeeklyHBEntitlementZero) + sCommaSpace;
-            line += summary.get(DW_Strings.sAverage_NonZero_WeeklyHBEntitlement) + sCommaSpace;
+            line += summary.get(Strings.sTotal_WeeklyHBEntitlement) + sCommaSpace;
+            line += summary.get(Strings.sTotalCount_WeeklyHBEntitlementNonZero) + sCommaSpace;
+            line += summary.get(Strings.sTotalCount_WeeklyHBEntitlementZero) + sCommaSpace;
+            line += summary.get(Strings.sAverage_NonZero_WeeklyHBEntitlement) + sCommaSpace;
             // WeeklyEligibleRentAmount
-            line += summary.get(DW_Strings.sTotal_WeeklyEligibleRentAmount) + sCommaSpace;
-            line += summary.get(DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZero) + sCommaSpace;
-            line += summary.get(DW_Strings.sTotalCount_WeeklyEligibleRentAmountZero) + sCommaSpace;
-            line += summary.get(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmount) + sCommaSpace;
-            line += summary.get(DW_Strings.sTotal_HBWeeklyEligibleRentAmount) + sCommaSpace;
-            line += summary.get(DW_Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero) + sCommaSpace;
-            line += summary.get(DW_Strings.sTotalCount_HBWeeklyEligibleRentAmountZero) + sCommaSpace;
-            line += summary.get(DW_Strings.sAverage_NonZero_HBWeeklyEligibleRentAmount) + sCommaSpace;
-            line += summary.get(DW_Strings.sTotal_CTBWeeklyEligibleRentAmount) + sCommaSpace;
-            line += summary.get(DW_Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZero) + sCommaSpace;
-            line += summary.get(DW_Strings.sTotalCount_CTBWeeklyEligibleRentAmountZero) + sCommaSpace;
-            line += summary.get(DW_Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount) + sCommaSpace;
+            line += summary.get(Strings.sTotal_WeeklyEligibleRentAmount) + sCommaSpace;
+            line += summary.get(Strings.sTotalCount_WeeklyEligibleRentAmountNonZero) + sCommaSpace;
+            line += summary.get(Strings.sTotalCount_WeeklyEligibleRentAmountZero) + sCommaSpace;
+            line += summary.get(Strings.sAverage_NonZero_WeeklyEligibleRentAmount) + sCommaSpace;
+            line += summary.get(Strings.sTotal_HBWeeklyEligibleRentAmount) + sCommaSpace;
+            line += summary.get(Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero) + sCommaSpace;
+            line += summary.get(Strings.sTotalCount_HBWeeklyEligibleRentAmountZero) + sCommaSpace;
+            line += summary.get(Strings.sAverage_NonZero_HBWeeklyEligibleRentAmount) + sCommaSpace;
+            line += summary.get(Strings.sTotal_CTBWeeklyEligibleRentAmount) + sCommaSpace;
+            line += summary.get(Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZero) + sCommaSpace;
+            line += summary.get(Strings.sTotalCount_CTBWeeklyEligibleRentAmountZero) + sCommaSpace;
+            line += summary.get(Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount) + sCommaSpace;
             // WeeklyEligibleCouncilTaxAmount
             line += summary.get(sAllTotalWeeklyEligibleCouncilTaxAmount) + sCommaSpace;
             line += summary.get(sTotalCount_AllWeeklyEligibleCouncilTaxAmountNonZero) + sCommaSpace;
@@ -7192,7 +7189,7 @@ public class Summary extends DW_Object {
         DW_YM3 PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename != null) {
-            PostCodeLookupDate0 = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(DW_SHBE_Handler.getYM3(filename));
+            PostCodeLookupDate0 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }
         result = PostCodeLookupDate0 + sCommaSpace + PostCodeLookupFile0Name + sCommaSpace;
@@ -7230,45 +7227,45 @@ public class Summary extends DW_Object {
             while (PTsIte.hasNext()) {
                 PT = PTsIte.next();
                 nameSuffix = sHB_CTB + PT;
-                header += DW_Strings.sTotal_Income + nameSuffix + sCommaSpace;
-                header += DW_Strings.sTotalCount_IncomeNonZero + nameSuffix + sCommaSpace;
-                header += DW_Strings.sTotalCount_IncomeZero + nameSuffix + sCommaSpace;
-                header += DW_Strings.sAverage_NonZero_Income + nameSuffix + sCommaSpace;
-                header += DW_Strings.sTotal_WeeklyEligibleRentAmount + nameSuffix + sCommaSpace;
-                header += DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix + sCommaSpace;
-                header += DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix + sCommaSpace;
-                if (sHB_CTB.equalsIgnoreCase(DW_Strings.sAll)) {
+                header += Strings.sTotal_Income + nameSuffix + sCommaSpace;
+                header += Strings.sTotalCount_IncomeNonZero + nameSuffix + sCommaSpace;
+                header += Strings.sTotalCount_IncomeZero + nameSuffix + sCommaSpace;
+                header += Strings.sAverage_NonZero_Income + nameSuffix + sCommaSpace;
+                header += Strings.sTotal_WeeklyEligibleRentAmount + nameSuffix + sCommaSpace;
+                header += Strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix + sCommaSpace;
+                header += Strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix + sCommaSpace;
+                if (sHB_CTB.equalsIgnoreCase(Strings.sAll)) {
                     for (int i = 1; i < nTT; i++) {
-                        header += DW_Strings.sTotal_IncomeTT[i] + nameSuffix + sCommaSpace;
-                        header += DW_Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + sCommaSpace;
-                        header += DW_Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + sCommaSpace;
-                        header += DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + sCommaSpace;
-                        header += DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + sCommaSpace;
-                        header += DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + sCommaSpace;
-                        header += DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + sCommaSpace;
+                        header += Strings.sTotal_IncomeTT[i] + nameSuffix + sCommaSpace;
+                        header += Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + sCommaSpace;
+                        header += Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + sCommaSpace;
+                        header += Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + sCommaSpace;
+                        header += Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + sCommaSpace;
+                        header += Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + sCommaSpace;
+                        header += Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + sCommaSpace;
                     }
-                } else if (sHB_CTB.equalsIgnoreCase(DW_Strings.sHB)) {
+                } else if (sHB_CTB.equalsIgnoreCase(Strings.sHB)) {
                     for (int i = 1; i < nTT; i++) {
                         if (!(i == 5 || i == 7)) {
-                            header += DW_Strings.sTotal_IncomeTT[i] + nameSuffix + sCommaSpace;
-                            header += DW_Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + sCommaSpace;
-                            header += DW_Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + sCommaSpace;
-                            header += DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + sCommaSpace;
-                            header += DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + sCommaSpace;
-                            header += DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + sCommaSpace;
-                            header += DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sTotal_IncomeTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + sCommaSpace;
                         }
                     }
                 } else {
                     for (int i = 1; i < nTT; i++) {
                         if (i == 5 || i == 7) {
-                            header += DW_Strings.sTotal_IncomeTT[i] + nameSuffix + sCommaSpace;
-                            header += DW_Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + sCommaSpace;
-                            header += DW_Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + sCommaSpace;
-                            header += DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + sCommaSpace;
-                            header += DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + sCommaSpace;
-                            header += DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + sCommaSpace;
-                            header += DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sTotal_IncomeTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + sCommaSpace;
+                            header += Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + sCommaSpace;
                         }
                     }
                 }
@@ -7296,45 +7293,45 @@ public class Summary extends DW_Object {
                 while (PTsIte.hasNext()) {
                     PT = PTsIte.next();
                     nameSuffix = sHB_CTB + PT;
-                    line += summary.get(DW_Strings.sTotal_Income + nameSuffix) + sCommaSpace;
-                    line += summary.get(DW_Strings.sTotalCount_IncomeNonZero + nameSuffix) + sCommaSpace;
-                    line += summary.get(DW_Strings.sTotalCount_IncomeZero + nameSuffix) + sCommaSpace;
-                    line += summary.get(DW_Strings.sAverage_NonZero_Income + nameSuffix) + sCommaSpace;
-                    line += summary.get(DW_Strings.sTotal_WeeklyEligibleRentAmount + nameSuffix) + sCommaSpace;
-                    line += summary.get(DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix) + sCommaSpace;
-                    line += summary.get(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix) + sCommaSpace;
-                    if (sHB_CTB.equalsIgnoreCase(DW_Strings.sAll)) {
+                    line += summary.get(Strings.sTotal_Income + nameSuffix) + sCommaSpace;
+                    line += summary.get(Strings.sTotalCount_IncomeNonZero + nameSuffix) + sCommaSpace;
+                    line += summary.get(Strings.sTotalCount_IncomeZero + nameSuffix) + sCommaSpace;
+                    line += summary.get(Strings.sAverage_NonZero_Income + nameSuffix) + sCommaSpace;
+                    line += summary.get(Strings.sTotal_WeeklyEligibleRentAmount + nameSuffix) + sCommaSpace;
+                    line += summary.get(Strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix) + sCommaSpace;
+                    line += summary.get(Strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix) + sCommaSpace;
+                    if (sHB_CTB.equalsIgnoreCase(Strings.sAll)) {
                         for (int i = 1; i < nTT; i++) {
-                            line += summary.get(DW_Strings.sTotal_IncomeTT[i] + nameSuffix) + sCommaSpace;
-                            line += summary.get(DW_Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + sCommaSpace;
-                            line += summary.get(DW_Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + sCommaSpace;
-                            line += summary.get(DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + sCommaSpace;
-                            line += summary.get(DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + sCommaSpace;
-                            line += summary.get(DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + sCommaSpace;
-                            line += summary.get(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + sCommaSpace;
+                            line += summary.get(Strings.sTotal_IncomeTT[i] + nameSuffix) + sCommaSpace;
+                            line += summary.get(Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + sCommaSpace;
+                            line += summary.get(Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + sCommaSpace;
+                            line += summary.get(Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + sCommaSpace;
+                            line += summary.get(Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + sCommaSpace;
+                            line += summary.get(Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + sCommaSpace;
+                            line += summary.get(Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + sCommaSpace;
                         }
-                    } else if (sHB_CTB.equalsIgnoreCase(DW_Strings.sHB)) {
+                    } else if (sHB_CTB.equalsIgnoreCase(Strings.sHB)) {
                         for (int i = 1; i < nTT; i++) {
                             if (!(i == 5 || i == 7)) {
-                                line += summary.get(DW_Strings.sTotal_IncomeTT[i] + nameSuffix) + sCommaSpace;
-                                line += summary.get(DW_Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + sCommaSpace;
-                                line += summary.get(DW_Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + sCommaSpace;
-                                line += summary.get(DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + sCommaSpace;
-                                line += summary.get(DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + sCommaSpace;
-                                line += summary.get(DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + sCommaSpace;
-                                line += summary.get(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sTotal_IncomeTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + sCommaSpace;
                             }
                         }
                     } else {
                         for (int i = 5; i < nTT; i++) {
                             if (i == 5 || i == 7) {
-                                line += summary.get(DW_Strings.sTotal_IncomeTT[i] + nameSuffix) + sCommaSpace;
-                                line += summary.get(DW_Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + sCommaSpace;
-                                line += summary.get(DW_Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + sCommaSpace;
-                                line += summary.get(DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + sCommaSpace;
-                                line += summary.get(DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + sCommaSpace;
-                                line += summary.get(DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + sCommaSpace;
-                                line += summary.get(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sTotal_IncomeTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + sCommaSpace;
+                                line += summary.get(Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + sCommaSpace;
                             }
                         }
                     }

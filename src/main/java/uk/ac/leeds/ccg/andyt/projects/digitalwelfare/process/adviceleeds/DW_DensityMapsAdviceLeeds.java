@@ -221,12 +221,11 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
             DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
             tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                    env,
+                    Env,
                     level,
                     targetPropertyName,
                     MapsAdviceLeeds.getShapefileDataStoreFactory());
-            tLookupFromPostcodeToCensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
-                    env,
+            tLookupFromPostcodeToCensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(Env,
                     level,
                     CensusYear,
                     YM3);
@@ -729,10 +728,9 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         result = new TreeMap<String, ArrayList<Geotools_Point>>();
         String filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
-        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(env);
+        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(Env);
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(
-                env,
+        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(Env,
                 filename,
                 aCAB_DataRecord2_Handler,
                 IDType);
@@ -771,10 +769,9 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         result = new TreeMap<String, ArrayList<String>>();
         String filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
-        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(env);
+        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(Env);
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(
-                env,
+        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(Env,
                 filename,
                 aCAB_DataRecord2_Handler,
                 IDType);
@@ -803,7 +800,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         ArrayList<Geotools_Point> result;
         result = new ArrayList<Geotools_Point>();
         DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
-        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(env);
+        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(Env);
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessorAdviceLeeds.getChapeltownCABData(
                 tCAB_DataRecord0_Handler,
@@ -834,7 +831,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         ArrayList<String> result;
         result = new ArrayList<String>();
         DW_Data_LCC_WRU_Handler h;
-        h = new DW_Data_LCC_WRU_Handler(env);
+        h = new DW_Data_LCC_WRU_Handler(Env);
         TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> data;
         data = DW_DataProcessorAdviceLeeds.getLCC_WRUData(
                 h,
@@ -856,7 +853,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         ArrayList<String> result;
         result = new ArrayList<String>();
         DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
-        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(env);
+        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(Env);
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessorAdviceLeeds.getChapeltownCABData(
                 tCAB_DataRecord0_Handler,

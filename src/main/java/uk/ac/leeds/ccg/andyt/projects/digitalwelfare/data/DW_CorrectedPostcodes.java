@@ -37,9 +37,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_CorrectedPostcodes extends DW_Object {
 
-    protected transient DW_Postcode_Handler DW_Postcode_Handler;
-    protected transient DW_Files DW_Files;
-    protected transient DW_Strings DW_Strings;
+    protected transient DW_Postcode_Handler Postcode_Handler;
+    protected transient DW_Files Files;
+    protected transient DW_Strings Strings;
 
     private HashMap<String, HashSet<String>> UnmappableToMappablePostcodes;
     private HashMap<String, ArrayList<String>> ClaimRefToOriginalPostcodes;
@@ -51,9 +51,9 @@ public class DW_CorrectedPostcodes extends DW_Object {
 
     public DW_CorrectedPostcodes(DW_Environment env) {
         super(env);
-        DW_Postcode_Handler = env.getPostcode_Handler();
-        DW_Files = env.getFiles();
-        DW_Strings = env.getStrings();
+        Postcode_Handler = env.getPostcode_Handler();
+        Files = env.getFiles();
+        Strings = env.getStrings();
     }
 
     public static void main(String[] args) {
@@ -66,10 +66,10 @@ public class DW_CorrectedPostcodes extends DW_Object {
      * to be mappable.
      */
     public void run() {
-        DW_Files = getDW_Files();
+        Files = getDW_Files();
         File dir;
         dir = new File(
-                DW_Files.getInputLCCDir(),
+                Files.getInputLCCDir(),
                 "AcademyPostcodeCorrections");
         File f;
         f = new File(
@@ -99,9 +99,9 @@ public class DW_CorrectedPostcodes extends DW_Object {
             split = s.split(",");
             ClaimRef = split[1].trim();
             OriginalPostcode = split[2];
-            OriginalPostcodeF = DW_Postcode_Handler.formatPostcode(OriginalPostcode);
+            OriginalPostcodeF = Postcode_Handler.formatPostcode(OriginalPostcode);
             CorrectedPostcode = split[3];
-            CorrectedPostcodeF = DW_Postcode_Handler.formatPostcode(CorrectedPostcode);
+            CorrectedPostcodeF = Postcode_Handler.formatPostcode(CorrectedPostcode);
 //            for (int i = 0; i < split.length; i ++ ){
 //                System.out.print(split[i].trim() + " ");
 //            }
@@ -154,25 +154,25 @@ public class DW_CorrectedPostcodes extends DW_Object {
         }
 
         File dirout;
-        dirout = DW_Files.getGeneratedLCCDir();
+        dirout = Files.getGeneratedLCCDir();
         File fout;
         fout = new File(dirout,
-        "DW_CorrectedPostcodes" + getDW_Strings().sBinaryFileExtension);
+        "DW_CorrectedPostcodes" + getStrings().sBinaryFileExtension);
         Generic_StaticIO.writeObject(this, fout);
     }
 
     private DW_Files getDW_Files() {
-        if (DW_Files == null) {
-            DW_Files = new DW_Files();
+        if (Files == null) {
+            Files = new DW_Files();
         }
-        return DW_Files;
+        return Files;
     }
 
-    private DW_Strings getDW_Strings() {
-        if (DW_Strings == null) {
-            DW_Strings = new DW_Strings();
+    private DW_Strings getStrings() {
+        if (Strings == null) {
+            Strings = new DW_Strings();
         }
-        return DW_Strings;
+        return Strings;
     }
 
     

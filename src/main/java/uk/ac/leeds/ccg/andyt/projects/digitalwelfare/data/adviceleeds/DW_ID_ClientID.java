@@ -24,20 +24,20 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
  */
 public class DW_ID_ClientID implements Comparable {
 
-    protected String client_ref;
+    protected String ClientRef;
 
     public DW_ID_ClientID() {
     }
 
     public DW_ID_ClientID(
             String client_ref) {
-        this.client_ref = client_ref;
+        this.ClientRef = client_ref;
     }
 
     @Override
     public String toString() {
         return "DW_ID_ClientID("
-                + "client_ref " + client_ref + ")";
+                + "client_ref " + ClientRef + ")";
     }
 
     @Override
@@ -46,7 +46,7 @@ public class DW_ID_ClientID implements Comparable {
             DW_ID_ClientID oC;
             oC = (DW_ID_ClientID) o;
             if (hashCode() == oC.hashCode()) {
-                if (client_ref.equalsIgnoreCase(oC.client_ref)) {
+                if (ClientRef.equalsIgnoreCase(oC.ClientRef)) {
                     return true;
                 }
             }
@@ -57,7 +57,7 @@ public class DW_ID_ClientID implements Comparable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 37 * hash + (this.client_ref != null ? this.client_ref.hashCode() : 0);
+        hash = 37 * hash + (this.ClientRef != null ? this.ClientRef.hashCode() : 0);
         return hash;
     }
 
@@ -69,7 +69,7 @@ public class DW_ID_ClientID implements Comparable {
             }
             DW_ID_ClientID oC;
             oC = (DW_ID_ClientID) o;
-            return client_ref.compareTo(oC.client_ref);
+            return ClientRef.compareTo(oC.ClientRef);
         }
         return -1;
     }

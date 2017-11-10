@@ -196,7 +196,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         LSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                env,
+                Env,
                 "LSOA",
                 targetPropertyNameLSOA,
                 MapsLCC.getShapefileDataStoreFactory());
@@ -212,7 +212,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 "Density");
 
         String[] SHBEFilenames;
-        SHBEFilenames = env.getSHBE_Handler().getSHBEFilenamesAll();
+        SHBEFilenames = Env.getSHBE_Handler().getSHBEFilenamesAll();
         // Specifiy distances
         ArrayList<Double> distances;
         distances = new ArrayList<Double>();
@@ -387,7 +387,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
         // Includes
         TreeMap<String, ArrayList<Integer>> includes;
-        includes = env.getSHBE_Handler().getIncludes();
+        includes = Env.getSHBE_Handler().getIncludes();
         includes.remove("All");
         includes.remove("Yearly");
         includes.remove("6Monthly");
@@ -407,7 +407,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         String type = "Social";
 
         DW_SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = env.getSHBE_Handler();
+        tDW_SHBE_Handler = Env.getSHBE_Handler();
 
 //        if (true) {
         if (true) {
@@ -660,12 +660,12 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 Files.getOutputSHBEMapsDir(),
                 "Density");
         DW_SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = env.getSHBE_Handler();
+        tDW_SHBE_Handler = Env.getSHBE_Handler();
         String[] SHBEFilenames;
         SHBEFilenames = tDW_SHBE_Handler.getSHBEFilenamesAll();
 
         DW_UO_Data DW_UO_Data;
-        DW_UO_Data = env.getUO_Data();
+        DW_UO_Data = Env.getUO_Data();
 
 //        Object[] ttgs = DW_SHBE_TenancyType_Handler.getTenancyTypeGroups();
 //        HashMap<Boolean, TreeMap<String, ArrayList<String>>> tenancyTypeGroups;
@@ -1085,7 +1085,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                         }
                     }
                 }
-                recs0 = env.getSHBE_Data().getDW_SHBE_Records(yM30);
+                recs0 = Env.getSHBE_Data().getDW_SHBE_Records(yM30);
 //            DW_SHBE_Records SHBEData00;
 //            SHBEData00 = SHBEData0;
                 yM300 = yM30;
@@ -1236,7 +1236,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         lookup = lookups.get("Unit").get(Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 
         HashMap<DW_ID, DW_SHBE_Record> records;
-        records = SHBEData.getClaimIDToDW_SHBE_RecordMap(env.HandleOutOfMemoryError);
+        records = SHBEData.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
 
         boolean nonZero = false;
 
@@ -1542,7 +1542,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
     protected TreeMap<String, ArrayList<String>> getAllTenancyTypeGroups() {
         DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
-        DW_SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
+        DW_SHBE_TenancyType_Handler = Env.getSHBE_TenancyType_Handler();
         TreeMap<String, ArrayList<String>> result;
         result = new TreeMap<String, ArrayList<String>>();
         ArrayList<String> l;

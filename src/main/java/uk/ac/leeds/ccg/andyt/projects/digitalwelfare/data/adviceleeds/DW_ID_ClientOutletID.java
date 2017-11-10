@@ -24,23 +24,23 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
  */
 public class DW_ID_ClientOutletID extends DW_ID_ClientID implements Comparable {
 
-    protected String outlet;
+    protected String Outlet;
 
     public DW_ID_ClientOutletID() {
     }
 
     public DW_ID_ClientOutletID(
-            String client_ref,
+            String clientRef,
             String outlet) {
-        this.client_ref = client_ref;
-        this.outlet = outlet;
+        this.ClientRef = clientRef;
+        this.Outlet = outlet;
     }
 
     @Override
     public String toString() {
         return "DW_ID_ClientOutletID("
                 + super.toString()
-                + ", outlet " + outlet + ")";
+                + ", outlet " + Outlet + ")";
     }
 
     @Override
@@ -49,8 +49,8 @@ public class DW_ID_ClientOutletID extends DW_ID_ClientID implements Comparable {
             DW_ID_ClientOutletID oC;
             oC = (DW_ID_ClientOutletID) o;
             if (hashCode() == oC.hashCode()) {
-                if (client_ref.equalsIgnoreCase(oC.client_ref)
-                        && outlet.equalsIgnoreCase(oC.outlet)) {
+                if (ClientRef.equalsIgnoreCase(oC.ClientRef)
+                        && Outlet.equalsIgnoreCase(oC.Outlet)) {
                     return true;
                 }
             }
@@ -61,7 +61,7 @@ public class DW_ID_ClientOutletID extends DW_ID_ClientID implements Comparable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 97 * hash + (this.outlet != null ? this.outlet.hashCode() : 0);
+        hash = 97 * hash + (this.Outlet != null ? this.Outlet.hashCode() : 0);
         return hash;
     }
 
@@ -73,9 +73,9 @@ public class DW_ID_ClientOutletID extends DW_ID_ClientID implements Comparable {
             }
             DW_ID_ClientOutletID oC;
             oC = (DW_ID_ClientOutletID) o;
-            int comp0 = client_ref.compareTo(oC.client_ref);
+            int comp0 = ClientRef.compareTo(oC.ClientRef);
             if (comp0 == 0) {
-                return outlet.compareTo(oC.outlet);
+                return Outlet.compareTo(oC.Outlet);
             } else {
                 return comp0;
             }

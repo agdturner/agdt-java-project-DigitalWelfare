@@ -30,7 +30,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ma
  */
 public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 
-    DW_Maps DW_Maps;
+    DW_Maps Maps;
     
     protected boolean withBoundariesStyling;
     protected boolean withoutBoundariesStyling;
@@ -41,7 +41,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
     
     public DW_ChoroplethMapsAbstract(DW_Environment env) {
         super(env);
-        DW_Maps = env.getMaps();
+        Maps = env.getMaps();
     }
 
     /**
@@ -93,26 +93,26 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //        TreeSet<String> areaCodes;
 //        if (filter == 0) {
 //            areaCodes = tAreaCodesAndShapefiles.getLeedsAreaCodes();
-//            DW_Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsLADDW_Shapefile());
+//            Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsLADDW_Shapefile());
 //        } else {
 //            if (filter == 1) {
 //                areaCodes = tAreaCodesAndShapefiles.getLeedsAndNeighbouringLADAreaCodes();
-//                DW_Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsAndNeighbouringLADDW_Shapefile());
+//                Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsAndNeighbouringLADDW_Shapefile());
 //            } else {
 //                areaCodes = tAreaCodesAndShapefiles.getLeedsAndNearNeighbouringLADAreaCodes();
-//                DW_Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsAndNearNeighbouringLADDW_Shapefile());
+//                Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsAndNearNeighbouringLADDW_Shapefile());
 //            }
 //        }
 //        FeatureCollection levelFC;
 //        levelFC = tAreaCodesAndShapefiles.getLevelFC();
 //        SimpleFeatureType levelSFT;
 //        levelSFT = tAreaCodesAndShapefiles.getLevelSFT();
-//        DW_Maps.setBackgroundDW_Shapefile(tAreaCodesAndShapefiles.getLeedsLevelDW_Shapefile());
+//        Maps.setBackgroundDW_Shapefile(tAreaCodesAndShapefiles.getLeedsLevelDW_Shapefile());
 //
 //        // Get output feature types
 //        String name = attributeName + "FeatureType";
 //        SimpleFeatureType outputFeatureType;
-//        outputFeatureType = DW_Maps.getFeatureType(
+//        outputFeatureType = Maps.getFeatureType(
 //                levelSFT,
 //                binding,
 //                attributeName,
@@ -149,13 +149,13 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                            if (cLevelData != null) {
 //                                if (cLevelData.size() > 0) {
 //                                    String outname;
-//                                    outname = DW_Maps.getOutName(filename, attributeName, filter);
+//                                    outname = Maps.getOutName(filename, attributeName, filter);
 //                                    File outputShapefile = Geotools_Environment.getOutputShapefile(
 //                                            dirOut2,
 //                                            outname);
 //                                    // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
-//                                    DW_Maps.selectAndCreateNewShapefile(
-//                                            DW_Maps.getShapefileDataStoreFactory(),
+//                                    Maps.selectAndCreateNewShapefile(
+//                                            Maps.getShapefileDataStoreFactory(),
 //                                            levelFC,
 //                                            outputFeatureType,
 //                                            areaCodes,
@@ -174,20 +174,20 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                                    DW_Geotools.outputToImage(
 //                                            outname,
 //                                            outputShapefile,
-//                                            DW_Maps.getForegroundDW_Shapefile0(),
-//                                            DW_Maps.getForegroundDW_Shapefile1(),
-//                                            DW_Maps.getBackgroundDW_Shapefile(),
+//                                            Maps.getForegroundDW_Shapefile0(),
+//                                            Maps.getForegroundDW_Shapefile1(),
+//                                            Maps.getBackgroundDW_Shapefile(),
 //                                            attributeName,
 //                                            dirOut2,
 //                                            png_String,
-//                                            DW_Maps.getImageWidth(),
-//                                            DW_Maps.getStyleParameters(),
+//                                            Maps.getImageWidth(),
+//                                            Maps.getStyleParameters(),
 //                                            0,
 //                                            //(Integer) bLevelData[1],
 //                                            max,
-//                                            DW_Maps.isShowMapsInJMapPane());
+//                                            Maps.isShowMapsInJMapPane());
 //                                    if (!scaleToFirst) {
-//                                        DW_Maps.getStyleParameters().setStyle(attributeName, null, 0);
+//                                        Maps.getStyleParameters().setStyle(attributeName, null, 0);
 //                                    }
 //                                }
 //                            }
@@ -220,14 +220,14 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                            if (levelData0i0 != null) {
 //                                if (levelData0i0.size() > 0) {
 //                                    String outname;
-//                                    outname = DW_Maps.getOutName(filename, attributeName, filter);
+//                                    outname = Maps.getOutName(filename, attributeName, filter);
 //                                    File outputShapefile = Geotools_Environment.getOutputShapefile(
 //                                            dirOut2,
 //                                            outname);
 //                                    // Select levelData0i0 Census Codes from all LSOA shapefile and create a new one
 //                                    TreeMap<Integer, Integer> inAndOutOfRegionCount;
-//                                    inAndOutOfRegionCount = DW_Maps.selectAndCreateNewShapefile(
-//                                            DW_Maps.getShapefileDataStoreFactory(),
+//                                    inAndOutOfRegionCount = Maps.selectAndCreateNewShapefile(
+//                                            Maps.getShapefileDataStoreFactory(),
 //                                            levelFC,
 //                                            outputFeatureType,
 //                                            areaCodes,
@@ -249,18 +249,18 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                                    DW_Geotools.outputToImage(
 //                                            outname,
 //                                            outputShapefile,
-//                                            DW_Maps.getForegroundDW_Shapefile0(),
-//                                            DW_Maps.getForegroundDW_Shapefile1(),
-//                                            DW_Maps.getBackgroundDW_Shapefile(),
+//                                            Maps.getForegroundDW_Shapefile0(),
+//                                            Maps.getForegroundDW_Shapefile1(),
+//                                            Maps.getBackgroundDW_Shapefile(),
 //                                            attributeName,
 //                                            dirOut2,
 //                                            png_String,
-//                                            DW_Maps.getImageWidth(),
-//                                            DW_Maps.getStyleParameters(),
+//                                            Maps.getImageWidth(),
+//                                            Maps.getStyleParameters(),
 //                                            0,
 //                                            // (Integer) levelData0i[1],
 //                                            max,
-//                                            DW_Maps.isShowMapsInJMapPane());
+//                                            Maps.isShowMapsInJMapPane());
 //                                    // Output counts
 //                                    Integer count;
 //                                    Integer inCount;
@@ -279,7 +279,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                                    pw.flush();
 //                                    pw.close();
 //                                    if (!scaleToFirst) {
-//                                        DW_Maps.getStyleParameters().setStyle(attributeName, null, 0);
+//                                        Maps.getStyleParameters().setStyle(attributeName, null, 0);
 //                                    }
 //                                }
 //                            }
@@ -335,26 +335,26 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //        TreeSet<String> areaCodes;
 //        if (filter == 0) {
 //            areaCodes = tAreaCodesAndShapefiles.getLeedsAreaCodes();
-//            DW_Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsLADDW_Shapefile());
+//            Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsLADDW_Shapefile());
 //        } else {
 //            if (filter == 1) {
 //                areaCodes = tAreaCodesAndShapefiles.getLeedsAndNeighbouringLADAreaCodes();
-//                DW_Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsAndNeighbouringLADDW_Shapefile());
+//                Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsAndNeighbouringLADDW_Shapefile());
 //            } else {
 //                areaCodes = tAreaCodesAndShapefiles.getLeedsAndNearNeighbouringLADAreaCodes();
-//                DW_Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsAndNearNeighbouringLADDW_Shapefile());
+//                Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsAndNearNeighbouringLADDW_Shapefile());
 //            }
 //        }
 //        FeatureCollection levelFC;
 //        levelFC = tAreaCodesAndShapefiles.getLevelFC();
 //        SimpleFeatureType levelSFT;
 //        levelSFT = tAreaCodesAndShapefiles.getLevelSFT();
-//        DW_Maps.setBackgroundDW_Shapefile(tAreaCodesAndShapefiles.getLeedsLevelDW_Shapefile());
+//        Maps.setBackgroundDW_Shapefile(tAreaCodesAndShapefiles.getLeedsLevelDW_Shapefile());
 //
 //        // Get output feature types
 //        String name = attributeName + "FeatureType";
 //        SimpleFeatureType outputFeatureType;
-//        outputFeatureType = DW_Maps.getFeatureType(
+//        outputFeatureType = Maps.getFeatureType(
 //                levelSFT,
 //                binding,
 //                attributeName,
@@ -383,13 +383,13 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                            cLevelData = (TreeMap<String, Integer>) bLevelData[0];
 //                            if (cLevelData.size() > 0) {
 //                                String outname;
-//                                outname = DW_Maps.getOutName(filename, attributeName, filter);
+//                                outname = Maps.getOutName(filename, attributeName, filter);
 //                                File outputShapefile = Geotools_Environment.getOutputShapefile(
 //                                        mapDirectory2,
 //                                        outname);
 //                                // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
-//                                DW_Maps.selectAndCreateNewShapefile(
-//                                        DW_Maps.getShapefileDataStoreFactory(),
+//                                Maps.selectAndCreateNewShapefile(
+//                                        Maps.getShapefileDataStoreFactory(),
 //                                        levelFC,
 //                                        outputFeatureType,
 //                                        areaCodes,
@@ -406,26 +406,26 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                                        countClientsInAndOutOfRegion);
 //                                // Output to image
 //
-////                                if (DW_Maps.doDebug) {
+////                                if (Maps.doDebug) {
 ////                                    DW_Geotools.doDebug = true;
 ////                                }
 //
 //                                DW_Geotools.outputToImage(
 //                                        outname,
 //                                        outputShapefile,
-//                                        DW_Maps.getForegroundDW_Shapefile0(),
-//                                        DW_Maps.getForegroundDW_Shapefile1(),
-//                                        DW_Maps.getBackgroundDW_Shapefile(),
+//                                        Maps.getForegroundDW_Shapefile0(),
+//                                        Maps.getForegroundDW_Shapefile1(),
+//                                        Maps.getBackgroundDW_Shapefile(),
 //                                        attributeName,
 //                                        mapDirectory2,
 //                                        png_String,
-//                                        DW_Maps.getImageWidth(),
-//                                        DW_Maps.getStyleParameters(),
+//                                        Maps.getImageWidth(),
+//                                        Maps.getStyleParameters(),
 //                                        0,
 //                                        max,
-//                                        DW_Maps.isShowMapsInJMapPane());
+//                                        Maps.isShowMapsInJMapPane());
 //                                if (!scaleToFirst) {
-//                                    DW_Maps.getStyleParameters().setStyle(attributeName, null, 0);
+//                                    Maps.getStyleParameters().setStyle(attributeName, null, 0);
 //                                }
 //                            }
 //                        }
@@ -447,7 +447,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                        levelData0i0 = (TreeMap<String, Integer>) levelData0i[0];
 //                        if (levelData0i0.size() > 0) {
 //                            String outname;
-//                            outname = DW_Maps.getOutName(filename, attributeName, filter);
+//                            outname = Maps.getOutName(filename, attributeName, filter);
 //                            if (outname.startsWith("1213AllAdviceLeedsDensityClippedToLeedsLAD")) {
 //                                int debug = 1;
 //                                //doDebug = true;
@@ -458,8 +458,8 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                                    outname);
 //                            // Select levelData0i0 Census Codes from all LSOA shapefile and create a new one
 //                            TreeMap<Integer, Integer> inAndOutOfRegionCount;
-//                            inAndOutOfRegionCount = DW_Maps.selectAndCreateNewShapefile(
-//                                    DW_Maps.getShapefileDataStoreFactory(),
+//                            inAndOutOfRegionCount = Maps.selectAndCreateNewShapefile(
+//                                    Maps.getShapefileDataStoreFactory(),
 //                                    levelFC,
 //                                    outputFeatureType,
 //                                    areaCodes,
@@ -481,19 +481,19 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //                            DW_Geotools.outputToImage(
 //                                    outname,
 //                                    outputShapefile,
-//                                    DW_Maps.getForegroundDW_Shapefile0(),
-//                                    DW_Maps.getForegroundDW_Shapefile1(),
-//                                    DW_Maps.getBackgroundDW_Shapefile(),
+//                                    Maps.getForegroundDW_Shapefile0(),
+//                                    Maps.getForegroundDW_Shapefile1(),
+//                                    Maps.getBackgroundDW_Shapefile(),
 //                                    attributeName,
 //                                    mapDirectory2,
 //                                    png_String,
-//                                    DW_Maps.getImageWidth(),
-//                                    DW_Maps.getStyleParameters(),
+//                                    Maps.getImageWidth(),
+//                                    Maps.getStyleParameters(),
 //                                    0,
 //                                    max,
-//                                    DW_Maps.isShowMapsInJMapPane());
+//                                    Maps.isShowMapsInJMapPane());
 //                            if (!scaleToFirst) {
-//                                DW_Maps.getStyleParameters().setStyle(attributeName, null, 0);
+//                                Maps.getStyleParameters().setStyle(attributeName, null, 0);
 //                            }
 //                        }
 //                    }
@@ -535,14 +535,14 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //        SimpleFeatureType tLSOAFeatureType;
 //        tLSOAFeatureType = tAreaCodesAndShapefiles.getLevelSFT();
 //
-////        DW_Maps.setBackgroundDW_Shapefile(tAreaCodesAndShapefiles.getLeedsLevelDW_Shapefile());
+////        Maps.setBackgroundDW_Shapefile(tAreaCodesAndShapefiles.getLeedsLevelDW_Shapefile());
 ////
-////        DW_Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsLADDW_Shapefile());
+////        Maps.setForegroundDW_Shapefile1(tAreaCodesAndShapefiles.getLeedsLADDW_Shapefile());
 //
 //        // Get output feature types
 //        String name = attributeName + "FeatureType";
 //        SimpleFeatureType outputFeatureType;
-//        outputFeatureType = DW_Maps.getFeatureType(
+//        outputFeatureType = Maps.getFeatureType(
 //                tLSOAFeatureType,
 //                binding,
 //                attributeName,
@@ -550,13 +550,13 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //
 //        // Read level population data
 //        String area;
-//        if (DW_Maps.getLevel().equalsIgnoreCase("LSOA")) {
+//        if (Maps.getLevel().equalsIgnoreCase("LSOA")) {
 //            area = "England";
 //        } else {
 //            area = "GreatBritain";
 //        }
-//        TreeMap<String, Integer> population = DW_Maps.getPopData(
-//                DW_Maps.getLevel(),
+//        TreeMap<String, Integer> population = Maps.getPopData(
+//                Maps.getLevel(),
 //                area);
 //
 //        for (int i = 0; i < tLeedsCABFilenames.length; i++) {
@@ -566,13 +566,13 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //            TreeMap<String, Integer> cLSOAData;
 //            cLSOAData = (TreeMap<String, Integer>) bLSOAData[0];
 //            String outname;
-//            outname = DW_Maps.getOutName(filename, attributeName, filter);
+//            outname = Maps.getOutName(filename, attributeName, filter);
 //            File outputShapefile = Geotools_Environment.getOutputShapefile(
 //                    dir,
 //                    outname);
 //            // Select cLSOAData LSOA Codes from all LSOA shapefile and create a new one
-//            DW_Maps.selectAndCreateNewShapefile(
-//                    DW_Maps.getShapefileDataStoreFactory(),
+//            Maps.selectAndCreateNewShapefile(
+//                    Maps.getShapefileDataStoreFactory(),
 //                    tLSOAFeatureCollection,
 //                    outputFeatureType,
 //                    areaCodes,
@@ -591,19 +591,19 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
 //            DW_Geotools.outputToImage(
 //                    outname,
 //                    outputShapefile,
-//                    DW_Maps.getForegroundDW_Shapefile0(),
-//                    DW_Maps.getForegroundDW_Shapefile1(),
-//                    DW_Maps.getBackgroundDW_Shapefile(),
+//                    Maps.getForegroundDW_Shapefile0(),
+//                    Maps.getForegroundDW_Shapefile1(),
+//                    Maps.getBackgroundDW_Shapefile(),
 //                    attributeName,
 //                    dir,
 //                    png_String,
-//                    DW_Maps.getImageWidth(),
-//                    DW_Maps.getStyleParameters(),
+//                    Maps.getImageWidth(),
+//                    Maps.getStyleParameters(),
 //                    0,
 //                    max,
-//                    DW_Maps.isShowMapsInJMapPane());
+//                    Maps.isShowMapsInJMapPane());
 //            if (!scaleToFirst) {
-//                DW_Maps.getStyleParameters().setStyle(attributeName, null, 0);
+//                Maps.getStyleParameters().setStyle(attributeName, null, 0);
 //            }
 //        }
 //    }

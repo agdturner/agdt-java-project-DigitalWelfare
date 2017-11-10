@@ -60,9 +60,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
  */
 public class DW_LineMapsAdviceLeeds extends DW_Maps {
 
-    private DW_Data_CAB2_Handler CAB_DataRecord2_Handler;
-    private DW_Data_CAB0_Handler CAB_DataRecord0_Handler;
-    private DW_Data_LCC_WRU_Handler LCC_WRU_DataRecord_Handler;
+    private DW_Data_CAB2_Handler Data_CAB2_Handler;
+    private DW_Data_CAB0_Handler Data_CAB0_Handler;
+    private DW_Data_LCC_WRU_Handler Data_LCC_WRU_Handler;
     private final DW_ProcessorAdviceLeeds ProcessorAdviceLeeds;
 
     private final String targetPropertyNameMSOA = "MSOA11CD";
@@ -150,9 +150,9 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         initMSOACodesAndLeedsMSOAShapefile(targetPropertyNameMSOA);
         initONSPDLookups();
         initCABOutletPoints();
-        CAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(de);
-        CAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(de);
-        LCC_WRU_DataRecord_Handler = new DW_Data_LCC_WRU_Handler(de);
+        Data_CAB2_Handler = new DW_Data_CAB2_Handler(Env);
+        Data_CAB0_Handler = new DW_Data_CAB0_Handler(Env);
+        Data_LCC_WRU_Handler = new DW_Data_LCC_WRU_Handler(Env);
         LSOAToCentroidLookupTable = getCentroidLookupTable(
                 "LSOA",
                 targetPropertyNameLSOA);
@@ -182,7 +182,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     private void initLSOACodesAndLeedsLSOAShapefile(
             String targetPropertyNameLSOA) {
         tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                de,
+                Env,
                 "LSOA",
                 targetPropertyNameLSOA,
                 getShapefileDataStoreFactory());
@@ -191,7 +191,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     private void initMSOACodesAndLeedsMSOAShapefile(
             String targetPropertyNameMSOA) {
         MSOACodesAndLeedsMSOAShapefile = new DW_AreaCodesAndShapefiles(
-                de,
+                Env,
                 "MSOA",
                 targetPropertyNameMSOA,
                 getShapefileDataStoreFactory());
@@ -225,12 +225,12 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         int CensusYear = 2011;
         DW_YM3 YM3 = new DW_YM3(2011,5);
         // init postcode to LSOA lookup
-        LookupFromPostcodeToLSOACensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
+        LookupFromPostcodeToLSOACensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(Env,
                 "LSOA",
                 CensusYear,
                 YM3);
         // init postcode to MSOA lookup
-        LookupFromPostcodeToMSOACensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
+        LookupFromPostcodeToMSOACensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(Env,
                 "MSOA",
                 CensusYear,
                 YM3);
@@ -246,14 +246,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> LeedsCABData;
-        LeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(de,
+        LeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(Env,
                 filename,
-                CAB_DataRecord2_Handler,
+                Data_CAB2_Handler,
                 IDType);
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> ChapeltownCABData;
         ChapeltownCABData = DW_DataProcessorAdviceLeeds.getChapeltownCABData(
-                CAB_DataRecord0_Handler,
+                Data_CAB0_Handler,
                 IDType);
 
         // Step 3.
@@ -650,12 +650,12 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         int CensusYear = 2011;
         DW_YM3 YM3 = new DW_YM3(2011,5);
         // Get postcode to LSOA lookup
-        LookupFromPostcodeToLSOACensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
+        LookupFromPostcodeToLSOACensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(Env,
                 "LSOA",
                 CensusYear,
                 YM3);
         // Get postcode to LSOA lookup
-        LookupFromPostcodeToMSOACensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(de,
+        LookupFromPostcodeToMSOACensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(Env,
                 "MSOA",
                 CensusYear,
                 YM3);
@@ -671,14 +671,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(de,
+        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(Env,
                 filename,
-                CAB_DataRecord2_Handler,
+                Data_CAB2_Handler,
                 IDType);
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessorAdviceLeeds.getChapeltownCABData(
-                CAB_DataRecord0_Handler,
+                Data_CAB0_Handler,
                 IDType);
 
         // Step 3.
@@ -929,14 +929,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> LeedsCABData;
-        LeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(de,
+        LeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(Env,
                 filename,
-                CAB_DataRecord2_Handler,
+                Data_CAB2_Handler,
                 IDType);
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessorAdviceLeeds.getChapeltownCABData(
-                CAB_DataRecord0_Handler,
+                Data_CAB0_Handler,
                 IDType);
 
         // Step 3.

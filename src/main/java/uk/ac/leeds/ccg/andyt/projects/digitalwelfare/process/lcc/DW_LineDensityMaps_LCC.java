@@ -36,7 +36,7 @@ public class DW_LineDensityMaps_LCC extends DW_DensityMapsAbstract {
 
     protected Vector_Environment ve;
     
-protected DW_LineMapsLCC DW_LineMaps_LCC;
+protected DW_LineMapsLCC LineMaps_LCC;
 
     private static final String targetPropertyNameLSOA = "LSOA11CD";
     private DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
@@ -46,7 +46,7 @@ protected DW_LineMapsLCC DW_LineMaps_LCC;
 
     public DW_LineDensityMaps_LCC(DW_Environment env) {
         super(env);
-        DW_LineMaps_LCC = new DW_LineMapsLCC(env);
+        LineMaps_LCC = new DW_LineMapsLCC(env);
     }
     
     public void run() throws Exception, Error {

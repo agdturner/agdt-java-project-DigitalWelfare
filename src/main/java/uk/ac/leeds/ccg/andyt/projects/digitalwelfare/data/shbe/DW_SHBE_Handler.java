@@ -53,7 +53,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 public class DW_SHBE_Handler extends DW_Object {
 
     /**
-     * For convenience, these are initialised in construction from env.
+     * For convenience, these are initialised in construction from Env.
      */
     private final transient DW_SHBE_Data SHBE_Data;
     private final transient HashMap<String, DW_ID> NINOToNINOIDLookup;
@@ -98,7 +98,7 @@ public class DW_SHBE_Handler extends DW_Object {
         for (String SHBEFilename : SHBEFilenames) {
             DW_SHBE_Records DW_SHBE_Records;
             DW_SHBE_Records = new DW_SHBE_Records(
-                    env,
+                    Env,
                     dir,
                     SHBEFilename,
                     NearestYM3ForONSPDFormatLookupLastYM3,
@@ -166,7 +166,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public void runNew(File logDir) {
         File dir;
-        dir = env.getFiles().getInputSHBEDir();
+        dir = Env.getFiles().getInputSHBEDir();
         // Ascertain which files are new and need loading
         // Get all filenames
         String[] SHBEFilenames;
@@ -200,7 +200,7 @@ public class DW_SHBE_Handler extends DW_Object {
                 String SHBEFilename = ite.next();
                 DW_SHBE_Records DW_SHBE_Records;
                 DW_SHBE_Records = new DW_SHBE_Records(
-                        env,
+                        Env,
                         dir,
                         SHBEFilename,
                         NearestYM3ForONSPDFormatLookupLastYM3,
@@ -255,7 +255,7 @@ public class DW_SHBE_Handler extends DW_Object {
         System.out.println("NearestYM3ForONSPDLookupYM31 " + NearestYM3ForONSPDLookupYM31);
         DW_SHBE_Records DW_SHBE_Records1;
         DW_SHBE_Records1 = new DW_SHBE_Records(
-                env,
+                Env,
                 YM31);
         HashMap<DW_ID, DW_SHBE_Record> recs1;
         recs1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
@@ -342,7 +342,7 @@ public class DW_SHBE_Handler extends DW_Object {
         NearestYM3ForONSPDLookupYM30 = Postcode_Handler.getNearestYM3ForONSPDLookup(YM30);
         System.out.println("NearestYM3ForONSPDLookupYM30 " + NearestYM3ForONSPDLookupYM30);
         DW_SHBE_Records0 = new DW_SHBE_Records(
-                env,
+                Env,
                 YM30);
         recs0 = DW_SHBE_Records0.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
         // <writeOutModifiedPostcodes>
@@ -508,7 +508,7 @@ public class DW_SHBE_Handler extends DW_Object {
         System.out.println("NearestYM3ForONSPDLookupYM31 " + NearestYM3ForONSPDLookupYM31);
         DW_SHBE_Records DW_SHBE_Records1;
         DW_SHBE_Records1 = new DW_SHBE_Records(
-                env,
+                Env,
                 YM31);
         HashMap<DW_ID, DW_SHBE_Record> recs1;
         recs1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
@@ -594,7 +594,7 @@ public class DW_SHBE_Handler extends DW_Object {
             NearestYM3ForONSPDLookupYM30 = Postcode_Handler.getNearestYM3ForONSPDLookup(YM30);
             System.out.println("NearestYM3ForONSPDLookupYM30 " + NearestYM3ForONSPDLookupYM30);
             DW_SHBE_Records0 = new DW_SHBE_Records(
-                    env,
+                    Env,
                     YM30);
             recs0 = DW_SHBE_Records0.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
             // <writeOutModifiedPostcodes>
@@ -2001,7 +2001,7 @@ public class DW_SHBE_Handler extends DW_Object {
 //            long NumberOfS_Records;
 //            NumberOfS_Records = S_Records.size();
 //            if (NumberOfS_Records != NumberOfNonDependents ) {
-//                rec.init(env);
+//                rec.init(Env);
 //                Iterator<DW_SHBE_S_Record> ite;
 //                ite = S_Records.iterator();
 //                while (ite.hasNext()) {
@@ -2288,7 +2288,7 @@ public class DW_SHBE_Handler extends DW_Object {
      * Method for getting SHBE collections filenames in an array
      *
      * @code {if (SHBEFilenamesAll == null) {
- String[] list = env.getFiles().getInputSHBEDir().list();
+ String[] list = Env.getFiles().getInputSHBEDir().list();
  SHBEFilenamesAll = new String[list.length];
  String s;
  String ym;
@@ -2313,7 +2313,7 @@ public class DW_SHBE_Handler extends DW_Object {
 
     public String[] getSHBEFilenamesAll() {
         if (SHBEFilenamesAll == null) {
-            String[] list = env.getFiles().getInputSHBEDir().list();
+            String[] list = Env.getFiles().getInputSHBEDir().list();
             SHBEFilenamesAll = new String[list.length];
             String s;
             String ym;
@@ -3439,7 +3439,7 @@ public class DW_SHBE_Handler extends DW_Object {
         ClaimantsNINO = S_Record.getClaimantsNationalInsuranceNumber();
         if (ClaimantsNINO.trim().isEmpty()) {
             ClaimantsNINO = Strings.sDefaultNINO;
-            env.logE("ClaimantsNINO is empty for "
+            Env.logE("ClaimantsNINO is empty for "
                     + "ClaimRef " + S_Record.getCouncilTaxBenefitClaimReferenceNumber()
                     + " Setting as default NINO " + ClaimantsNINO);
         }

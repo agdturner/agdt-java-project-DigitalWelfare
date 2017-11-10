@@ -332,7 +332,7 @@ public class DW_SHBE_Data extends DW_Object {
             if (f.exists()) {
                 CorrectedPostcodes = (DW_CorrectedPostcodes) Generic_StaticIO.readObject(f);
             } else {
-                new DW_CorrectedPostcodes(env).run();
+                new DW_CorrectedPostcodes(Env).run();
                 return getCorrectedPostcodes(f);
             }
         }

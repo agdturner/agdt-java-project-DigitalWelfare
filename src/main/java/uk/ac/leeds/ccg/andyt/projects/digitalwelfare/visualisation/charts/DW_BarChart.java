@@ -48,8 +48,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_BarChart extends Generic_BarChart {
 
-    transient DW_Environment env;
-    DW_Strings DW_Strings;
+    transient DW_Environment Env;
+    DW_Strings Strings;
     private int dataWidth;
     private int dataHeight;
     private String xAxisLabel;
@@ -67,8 +67,8 @@ public class DW_BarChart extends Generic_BarChart {
     HashMap<String, HashSet<String>> areaCodes;
 
     public DW_BarChart(DW_Environment env){
-        this.env = env;
-        this.DW_Strings = env.getStrings();
+        this.Env = env;
+        this.Strings = env.getStrings();
     }
     
     /**
@@ -106,9 +106,9 @@ public class DW_BarChart extends Generic_BarChart {
         executorService = Executors.newSingleThreadExecutor();
 
         String[] SHBEFilenames;
-        SHBEFilenames = env.getSHBE_Handler().getSHBEFilenamesAll();
+        SHBEFilenames = Env.getSHBE_Handler().getSHBEFilenamesAll();
         ArrayList<String> claimantTypes;
-        claimantTypes = DW_Strings.getHB_CTB();
+        claimantTypes = Strings.getHB_CTB();
         ArrayList<String> levels;
         levels = new ArrayList<String>();
         levels.add("OA");
@@ -214,7 +214,7 @@ public class DW_BarChart extends Generic_BarChart {
 
         String format = "PNG";
         DW_Files tDW_Files;
-        tDW_Files = env.getFiles();
+        tDW_Files = Env.getFiles();
         File dirOut;
         dirOut = new File(
                 tDW_Files.getOutputSHBEPlotsDir(),
@@ -228,7 +228,7 @@ public class DW_BarChart extends Generic_BarChart {
         Iterator<Double> distancesIte;
 
         DW_SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = env.getSHBE_Handler();
+        tDW_SHBE_Handler = Env.getSHBE_Handler();
         
         for (int i = startIndex + 1; i < SHBEFilenames.length; i++) {
             String aSHBEFilename = SHBEFilenames[i];
@@ -505,7 +505,7 @@ public class DW_BarChart extends Generic_BarChart {
     public void initAreaCodes(ArrayList<String> levels) {
         areaCodes = new HashMap<String, HashSet<String>>();
         DW_Files tDW_Files;
-        tDW_Files = env.getFiles();
+        tDW_Files = Env.getFiles();
         Iterator<String> ite;
         ite = levels.iterator();
         while (ite.hasNext()) {
@@ -526,7 +526,7 @@ public class DW_BarChart extends Generic_BarChart {
                         "AreaCodes.csv");
                 fout = new File(
                         dir,
-                        "AreaCodes_HashSetString" + DW_Strings.sBinaryFileExtension);
+                        "AreaCodes_HashSetString" + Strings.sBinaryFileExtension);
             } else {
                 dir = new File(
                         tDW_Files.getInputCensus2011AttributeDataDir(level),
@@ -543,7 +543,7 @@ public class DW_BarChart extends Generic_BarChart {
                 dir.mkdirs();
                 fout = new File(
                         dir,
-                        "AreaCodes_HashSetString" + DW_Strings.sBinaryFileExtension);
+                        "AreaCodes_HashSetString" + Strings.sBinaryFileExtension);
             }
             HashSet<String> areaCodesForLevel;
             if (fout.exists()) {

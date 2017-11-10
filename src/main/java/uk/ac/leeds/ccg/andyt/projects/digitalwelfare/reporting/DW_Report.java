@@ -57,7 +57,7 @@ public class DW_Report extends DW_HTMLPage {
         mainDirectoryName = "Report";
         reportName = "Report1";
 
-        claimantTypes = env.getStrings().getHB_CTB();
+        claimantTypes = Env.getStrings().getHB_CTB();
         
         tenureTypeGroups = new ArrayList<String>();
         tenureTypeGroups.add("all");
@@ -87,7 +87,7 @@ public class DW_Report extends DW_HTMLPage {
         distanceTypes.add("OutDistanceChurn"); // A count of all claimants that have moved out from this area.
 
         // Run for consecutive monthly data
-        includes = env.getSHBE_Handler().getIncludes();
+        includes = Env.getSHBE_Handler().getIncludes();
         includes.remove("All");
 //        includes.remove("Yearly");
 //        includes.remove("6Monthly");
@@ -136,7 +136,7 @@ public class DW_Report extends DW_HTMLPage {
                     writeEndOfMaster();
                     boolean writeDefinitions = true;
                     if (writeDefinitions) {
-                        new DW_Types(env).run();
+                        new DW_Types(Env).run();
                     }
                 }
             } else {
@@ -160,7 +160,7 @@ public class DW_Report extends DW_HTMLPage {
                 writeEndOfMaster();
                 boolean writeDefinitions = true;
                 if (writeDefinitions) {
-                    new DW_Types(env).run();
+                    new DW_Types(Env).run();
                 }
             }
         }
@@ -171,7 +171,7 @@ public class DW_Report extends DW_HTMLPage {
             boolean doCouncil) {
         try {
             DW_Files tDW_Files;
-            tDW_Files = env.getFiles();
+            tDW_Files = Env.getFiles();
             File dirOut = new File(
                     tDW_Files.getOutputDir(),
                     baseReportDir);
@@ -199,7 +199,7 @@ public class DW_Report extends DW_HTMLPage {
     public void writeToMaster() {
         try {
             File dir0 = new File(
-                    env.getFiles().getOutputDir(),
+                    Env.getFiles().getOutputDir(),
                     baseReportDir);
             File dir1 = new File(
                     dir0,
@@ -255,7 +255,7 @@ public class DW_Report extends DW_HTMLPage {
             boolean doUnderOccupied,
             boolean doCouncil) {
         DW_Files tDW_Files;
-            tDW_Files = env.getFiles();
+            tDW_Files = Env.getFiles();
             File dirOut = new File(
                 tDW_Files.getOutputDir(),
                 baseReportDir);
@@ -542,7 +542,7 @@ public class DW_Report extends DW_HTMLPage {
         writeLine("", componentFOS);
         writeLine("", componentFOS);
         DW_Files tDW_Files;
-            tDW_Files = env.getFiles();
+            tDW_Files = Env.getFiles();
             File dir;
         File f;
         ArrayList<String> table;
