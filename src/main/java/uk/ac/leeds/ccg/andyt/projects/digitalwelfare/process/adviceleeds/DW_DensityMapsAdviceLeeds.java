@@ -166,7 +166,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
                 chunkNRows,
                 chunkNCols,
                 new Grids_Dimensions(chunkNRows,chunkNCols),
-                new Grids_GridDoubleStatisticsNotUpdated(ge),
+                new Grids_GridDoubleStatisticsNotUpdated(ge), 
                 gcf);
 
         // Initialise tDW_ID_ClientTypes
