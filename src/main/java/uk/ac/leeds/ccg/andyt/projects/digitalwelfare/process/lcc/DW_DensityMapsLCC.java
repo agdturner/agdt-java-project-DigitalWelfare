@@ -38,6 +38,7 @@ import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.statistics.Grids_GridDoubleStatisticsNotUpdated;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
+import uk.ac.leeds.ccg.andyt.grids.process.Grids_Processor;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
@@ -73,7 +74,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
     protected DW_Geotools Geotools;
 
     private static final String targetPropertyNameLSOA = "LSOA11CD";
-    
+
     private DW_AreaCodesAndShapefiles LSOACodesAndLeedsLSOAShapefile;
 //    private DW_AreaCodesAndShapefiles tMSOACodesAndLeedsMSOAShapefile;
     protected ArrayList<Geotools_Shapefile> midgrounds;
@@ -117,9 +118,9 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        Geotools_StyleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
         sp.setForegroundStyle1(
                 Geotools.getStyle().createDefaultPolygonStyle(
-                //Color.GREEN,
-                Color.BLACK,
-                Color.WHITE));
+                        //Color.GREEN,
+                        Color.BLACK,
+                        Color.WHITE));
         sp.setForegroundStyleTitle1("Foreground Style 1");
         MapsLCC.setStyleParameters(sp);
 
@@ -150,13 +151,15 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         chunkNCols = 350;//300; //64
         gf = new Grids_GridDoubleFactory(
                 ge,
-                generatedGridsDirectory,
+                //generatedGridsDirectory,
+                ge.getFiles().getGeneratedGridDoubleDir(),
+                gp.GridChunkDoubleFactory,
+                gp.DefaultGridChunkDoubleFactory,
                 9999.0d,
                 chunkNRows,
                 chunkNCols,
                 new Grids_Dimensions(chunkNRows, chunkNCols),
-                new Grids_GridDoubleStatisticsNotUpdated(ge),
-                gcf);
+                new Grids_GridDoubleStatisticsNotUpdated(ge));
 //        // Jenks runs
 //        styleParameters.setClassificationFunctionName("Jenks");
 //        commonStyling = true;
@@ -260,16 +263,17 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             dirOut1 = new File(dirOut, "LADOverlaid");
             foregroundDW_Shapefile1 = LSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
         }
-        Grids_GridDoubleFactory f;
-        f = new Grids_GridDoubleFactory(
+        Grids_GridDoubleFactory f = new Grids_GridDoubleFactory(
                 ge,
-                Files.getGeneratedGridsGridDoubleFactoryDir(),
+                //Files.getGeneratedGridsGridDoubleFactoryDir(),
+                ge.getFiles().getGeneratedGridDoubleDir(),
+                gp.GridChunkDoubleFactory,
+                gp.DefaultGridChunkDoubleFactory,
                 -9999.0,
                 chunkNRows,
                 chunkNCols,
                 dimensions,
-                new Grids_GridDoubleStatisticsNotUpdated(ge),
-                gcf);
+                new Grids_GridDoubleStatisticsNotUpdated(ge));
         Grids_ProcessorGWS p;
         p = new Grids_ProcessorGWS(ge);
 

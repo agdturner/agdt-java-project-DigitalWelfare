@@ -49,6 +49,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_St
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.statistics.Grids_GridDoubleStatisticsNotUpdated;
+import uk.ac.leeds.ccg.andyt.grids.process.Grids_Processor;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
@@ -158,16 +159,18 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         gp.setDirectory(processorDir, false, handleOutOfMemoryErrors);
         gcf = new Grids_GridChunkDoubleArrayFactory();
         chunkNRows = 300;//250; //64
-        chunkNCols = 350;//300; //64
+        chunkNCols = 350;//300; //64        
         gf = new Grids_GridDoubleFactory(
                 ge,
-                processorDir,
+                //processorDir,
+                ge.getFiles().getGeneratedGridDoubleDir(),
+                gp.GridChunkDoubleFactory,
+                gp.DefaultGridChunkDoubleFactory,
                 -9999d,
                 chunkNRows,
                 chunkNCols,
                 new Grids_Dimensions(chunkNRows,chunkNCols),
-                new Grids_GridDoubleStatisticsNotUpdated(ge), 
-                gcf);
+                new Grids_GridDoubleStatisticsNotUpdated(ge));
 
         // Initialise tDW_ID_ClientTypes
         ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes;

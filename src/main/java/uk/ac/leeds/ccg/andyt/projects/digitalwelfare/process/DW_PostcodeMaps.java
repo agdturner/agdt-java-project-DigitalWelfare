@@ -39,8 +39,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ar
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
+import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_GridChunkDoubleArrayFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.statistics.Grids_GridDoubleStatisticsNotUpdated;
+import uk.ac.leeds.ccg.andyt.grids.process.Grids_Processor;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
@@ -203,16 +205,22 @@ public class DW_PostcodeMaps extends DW_Maps {
                 BigDecimal.valueOf(cellsize));
 
         String outname = "outname";
+        Grids_Environment ge;
+        ge = Env.getGrids_Environment();
         Grids_GridDoubleFactory gf;
+        Grids_Processor gp;
+        gp = ge.getProcessor();
         gf = new Grids_GridDoubleFactory(
-                Env.getGrids_Environment(),
-                Files.getGeneratedGridsGridDoubleFactoryDir(),
+                ge,
+                //Files.getGeneratedGridsGridDoubleFactoryDir(),
+                ge.getFiles().getGeneratedGridDoubleDir(),
+                gp.GridChunkDoubleFactory,
+                gp.DefaultGridChunkDoubleFactory,
                 -Double.MAX_VALUE,
                 (int) nrows,
                 (int) ncols,
                 dimensions,
-                new Grids_GridDoubleStatisticsNotUpdated(Env.getGrids_Environment()),
-                new Grids_GridChunkDoubleArrayFactory());
+                new Grids_GridDoubleStatisticsNotUpdated(Env.getGrids_Environment()));
         Grids_GridDouble grid;
         grid = toGrid(
                 polyGrid,
