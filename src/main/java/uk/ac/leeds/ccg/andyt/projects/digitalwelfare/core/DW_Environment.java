@@ -174,10 +174,10 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     @Override
-    public boolean tryToEnsureThereIsEnoughMemoryToContinue(
+    public boolean checkAndMaybeFreeMemory(
             boolean handleOutOfMemoryError) {
         try {
-            if (tryToEnsureThereIsEnoughMemoryToContinue()) {
+            if (checkAndMaybeFreeMemory()) {
                 return true;
             } else {
                 if (DEBUG_Level < DEBUG_Level_NORMAL) {
@@ -219,7 +219,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                         }
                     }
                 }
-                return tryToEnsureThereIsEnoughMemoryToContinue(
+                return checkAndMaybeFreeMemory(
                         handleOutOfMemoryError);
             } else {
                 throw e;
@@ -233,7 +233,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     @Override
-    protected boolean tryToEnsureThereIsEnoughMemoryToContinue() {
+    protected boolean checkAndMaybeFreeMemory() {
         while (getTotalFreeMemory() < Memory_Threshold) {
             if (!swapDataAny()) {
                 return false;
@@ -246,7 +246,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public boolean swapDataAny(boolean handleOutOfMemoryError) {
         try {
             boolean result = swapDataAny();
-            tryToEnsureThereIsEnoughMemoryToContinue(
+            checkAndMaybeFreeMemory(
                     HandleOutOfMemoryErrorFalse);
             return result;
         } catch (OutOfMemoryError e) {

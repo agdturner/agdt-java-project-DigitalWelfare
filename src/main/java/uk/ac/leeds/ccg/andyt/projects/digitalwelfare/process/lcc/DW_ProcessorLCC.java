@@ -336,7 +336,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     DW_SHBE_Records = new DW_SHBE_Records(
                             Env,
                             YM3);
-                    Env.tryToEnsureThereIsEnoughMemoryToContinue(Env.HandleOutOfMemoryError);
+                    Env.checkAndMaybeFreeMemory(Env.HandleOutOfMemoryError);
                     Data.put(YM3, DW_SHBE_Records);
                     Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
                             + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HandleOutOfMemoryError).size(), true);
@@ -355,7 +355,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     Env.clearMemoryReserve();
                     Env.clearSomeSHBECacheExcept(YM3);
                     Env.initMemoryReserve(Env.HandleOutOfMemoryError);
-                    Env.tryToEnsureThereIsEnoughMemoryToContinue(Env.HandleOutOfMemoryError);
+                    Env.checkAndMaybeFreeMemory(Env.HandleOutOfMemoryError);
                 }
             }
             // Close logs
