@@ -206,8 +206,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                         throw e;
                     }
                     try {
-                        initMemoryReserve(
-                                HandleOutOfMemoryErrorFalse);
+                        initMemoryReserve(HOOMEF);
                         createdRoom = true;
                     } catch (OutOfMemoryError e2) {
                         if (DEBUG_Level < DEBUG_Level_NORMAL) {
@@ -246,15 +245,13 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public boolean swapDataAny(boolean handleOutOfMemoryError) {
         try {
             boolean result = swapDataAny();
-            checkAndMaybeFreeMemory(
-                    HandleOutOfMemoryErrorFalse);
+            checkAndMaybeFreeMemory(HOOMEF);
             return result;
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
-                boolean result = swapDataAny(
-                        HandleOutOfMemoryErrorFalse);
-                initMemoryReserve(HandleOutOfMemoryErrorFalse);
+                boolean result = swapDataAny(HOOMEF);
+                initMemoryReserve(HOOMEF);
                 return result;
             } else {
                 throw e;

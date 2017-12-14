@@ -1340,7 +1340,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             month = SHBE_Handler.getMonthNumber(SHBEFilenames[i]);
             yM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
             DW_SHBE_Records = Env.getSHBE_Data().getDW_SHBE_Records(yM3);
-            records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
+            records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
             ite = ClaimIDs.iterator();
             while (ite.hasNext()) {
                 ClaimID = ite.next();
@@ -2026,7 +2026,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             DW_SHBE_Records1 = SHBE_Data.getDW_SHBE_Records(YM31);
         }
         HashMap<DW_ID, DW_SHBE_Record> Records1;
-        Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
+        Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
         DW_SHBE_Record Record1;
         CouncilUOSet1 = CouncilUOSets.get(YM31);
         HashMap<DW_ID, DW_UO_Record> CouncilUOSetMap1;
@@ -3078,7 +3078,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             header += YM31;
         }
         //TreeMap<String, DW_SHBE_Record> aRecords;
-        Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
+        Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
         HashMap<DW_ID, DW_SHBE_Record> Records0;
         Records0 = null;
 //        HashMap<DW_ID, DW_SHBE_Record> cRecords;
@@ -3096,8 +3096,8 @@ public class DW_TenancyChangesUO extends DW_Object {
 
         HashMap<DW_ID, DW_PersonID> ClaimIDToClaimantPersonIDLookup;
         HashMap<DW_ID, DW_PersonID> ClaimIDToPartnerPersonIDLookup;
-        ClaimIDToClaimantPersonIDLookup = DW_SHBE_Records1.getClaimIDToClaimantPersonIDLookup(Env.HandleOutOfMemoryError);
-        ClaimIDToPartnerPersonIDLookup = DW_SHBE_Records1.getClaimIDToPartnerPersonIDLookup(Env.HandleOutOfMemoryError);
+        ClaimIDToClaimantPersonIDLookup = DW_SHBE_Records1.getClaimIDToClaimantPersonIDLookup(Env.HOOME);
+        ClaimIDToPartnerPersonIDLookup = DW_SHBE_Records1.getClaimIDToPartnerPersonIDLookup(Env.HOOME);
 
         // Add TT of all ClaimRefs to result
         Object[] processResult;
@@ -3450,7 +3450,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             month1 = SHBE_Handler.getMonthNumber(SHBEFilename1);
             DW_SHBE_Records1 = Env.getSHBE_Data().getDW_SHBE_Records(YM31);
             //cRecords = Records0;
-            Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
+            Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             RSLUOSet1 = RSLUOSets.get(YM31);
             header += Strings.sCommaSpace + YM31;

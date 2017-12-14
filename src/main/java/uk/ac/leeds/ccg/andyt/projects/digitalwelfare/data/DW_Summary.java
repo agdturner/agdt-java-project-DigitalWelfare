@@ -5277,12 +5277,12 @@ public class DW_Summary extends DW_Object {
 
         DW_SHBE_Records1 = SHBE_Data.getDW_SHBE_Records(YM31);
 
-        ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HandleOutOfMemoryError);
-        ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HandleOutOfMemoryError);
-        ClaimIDsWithStatusOfHBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(Env.HandleOutOfMemoryError);
-        ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(Env.HandleOutOfMemoryError);
-        ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(Env.HandleOutOfMemoryError);
-        ClaimIDsWithStatusOfCTBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(Env.HandleOutOfMemoryError);
+        ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HOOME);
+        ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HOOME);
+        ClaimIDsWithStatusOfHBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(Env.HOOME);
+        ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(Env.HOOME);
+        ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(Env.HOOME);
+        ClaimIDsWithStatusOfCTBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(Env.HOOME);
 
         // Summarise first data
         doPartSummarySingleTime(
@@ -5319,12 +5319,12 @@ public class DW_Summary extends DW_Object {
             // Load next data
             Env.log("Load " + YM31);
             DW_SHBE_Records1 = SHBE_Data.getDW_SHBE_Records(YM31);
-            ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HandleOutOfMemoryError);
-            ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HandleOutOfMemoryError);
-            ClaimIDsWithStatusOfHBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(Env.HandleOutOfMemoryError);
-            ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(Env.HandleOutOfMemoryError);
-            ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(Env.HandleOutOfMemoryError);
-            ClaimIDsWithStatusOfCTBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(Env.HandleOutOfMemoryError);
+            ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HOOME);
+            ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HOOME);
+            ClaimIDsWithStatusOfHBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(Env.HOOME);
+            ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(Env.HOOME);
+            ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(Env.HOOME);
+            ClaimIDsWithStatusOfCTBAtExtractDateOther1 = DW_SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(Env.HOOME);
             // doPartSummaryCompare2Times
             doPartSummaryCompare2Times(
                     DW_SHBE_Records0,
@@ -5410,7 +5410,7 @@ public class DW_Summary extends DW_Object {
         // Initialise variables
         key = SHBE_Handler.getYearMonthNumber(filename);
         summary = summaries.get(key);
-        LoadSummary = DW_SHBE_Records.getLoadSummary(Env.HandleOutOfMemoryError);
+        LoadSummary = DW_SHBE_Records.getLoadSummary(Env.HOOME);
         IncomeAndRentSummary = SHBE_Handler.getIncomeAndRentSummary(
                 DW_SHBE_Records,
                 HB_CTB,
@@ -5422,7 +5422,7 @@ public class DW_Summary extends DW_Object {
                 false,
                 false,
                 forceNewSummaries);
-        ClaimIDsOfNewSHBEClaims = DW_SHBE_Records.getClaimIDsOfNewSHBEClaims(Env.HandleOutOfMemoryError);
+        ClaimIDsOfNewSHBEClaims = DW_SHBE_Records.getClaimIDsOfNewSHBEClaims(Env.HOOME);
         // Add load summary to summary
         addToSummary(summary, LoadSummary);
 
@@ -5430,23 +5430,23 @@ public class DW_Summary extends DW_Object {
          * Add things not quite added right from load summary
          */
         HashSet<DW_ID> ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
-        ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = DW_SHBE_Records.getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(Env.HandleOutOfMemoryError);
+        ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = DW_SHBE_Records.getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(Env.HOOME);
         summary.put(Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
                 Integer.toString(ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.size()));
         HashSet<DW_PersonID> set;
         // Add unique Partners
         set = SHBE_Handler.getUniquePersonIDs0(
-                DW_SHBE_Records.getClaimIDToPartnerPersonIDLookup(Env.HandleOutOfMemoryError));
+                DW_SHBE_Records.getClaimIDToPartnerPersonIDLookup(Env.HOOME));
         summary.put(Strings.sCountOfUniquePartners,
                 "" + set.size());
         // Add unique Dependents
         set = SHBE_Handler.getUniquePersonIDs(
-                DW_SHBE_Records.getClaimIDToDependentPersonIDsLookup(Env.HandleOutOfMemoryError));
+                DW_SHBE_Records.getClaimIDToDependentPersonIDsLookup(Env.HOOME));
         summary.put(Strings.sCountOfUniqueDependents,
                 "" + set.size());
         // Add unique NonDependents
         set = SHBE_Handler.getUniquePersonIDs(
-                DW_SHBE_Records.getClaimIDToNonDependentPersonIDsLookup(Env.HandleOutOfMemoryError));
+                DW_SHBE_Records.getClaimIDToNonDependentPersonIDsLookup(Env.HOOME));
         summary.put(Strings.sCountOfUniqueNonDependents,
                 "" + set.size());
         /**
@@ -5458,19 +5458,19 @@ public class DW_Summary extends DW_Object {
          * NonDependentsInMultipleClaimsInAMonth
          */
         summary.put(Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
-                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(Env.HandleOutOfMemoryError).size());
+                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(Env.HOOME).size());
         summary.put(Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
-                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(Env.HandleOutOfMemoryError).size());
+                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(Env.HOOME).size());
         summary.put(Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
-                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(Env.HandleOutOfMemoryError).size());
+                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(Env.HOOME).size());
         summary.put(Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim,
-                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(Env.HandleOutOfMemoryError).size());
+                "" + DW_SHBE_Records.getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(Env.HOOME).size());
         summary.put(Strings.sCountOfClaimantsInMultipleClaimsInAMonth,
-                "" + DW_SHBE_Records.getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HandleOutOfMemoryError).size());
+                "" + DW_SHBE_Records.getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HOOME).size());
         summary.put(Strings.sCountOfPartnersInMultipleClaimsInAMonth,
-                "" + DW_SHBE_Records.getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HandleOutOfMemoryError).size());
+                "" + DW_SHBE_Records.getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HOOME).size());
         summary.put(Strings.sCountOfNonDependentsInMultipleClaimsInAMonth,
-                "" + DW_SHBE_Records.getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HandleOutOfMemoryError).size());
+                "" + DW_SHBE_Records.getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HOOME).size());
 
         addToSummary(summary, ClaimIDsOfNewSHBEClaims, Records);
         // doSingleTimeLoopOverSet
@@ -5513,7 +5513,7 @@ public class DW_Summary extends DW_Object {
 
         doPartSummarySingleTime(
                 DW_SHBE_Records1,
-                DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError),
+                DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME),
                 YM31,
                 filename1,
                 forceNewSummaries,
@@ -5638,7 +5638,7 @@ public class DW_Summary extends DW_Object {
         DW_SHBE_D_Record D_Record1;
 
         HashMap<DW_ID, DW_SHBE_Record> Records0;
-        Records0 = DW_SHBE_Records0.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
+        Records0 = DW_SHBE_Records0.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
         // Go through previous records
         ite = Records0.keySet().iterator();
         while (ite.hasNext()) {
@@ -5733,7 +5733,7 @@ public class DW_Summary extends DW_Object {
             }
         }
         HashMap<DW_ID, DW_SHBE_Record> Records1;
-        Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
+        Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
         // Go through current records
         ite = Records1.keySet().iterator();
         while (ite.hasNext()) {

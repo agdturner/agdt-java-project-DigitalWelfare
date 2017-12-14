@@ -541,7 +541,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         DW_SHBE_Records DW_SHBE_Records;
         DW_SHBE_Records = SHBE_Data.getDW_SHBE_Records(YM3);
         HashMap<DW_ID, DW_SHBE_Record> records;
-        records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
+        records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
         Iterator<DW_ID> ite;
         ite = records.keySet().iterator();
         DW_ID ClaimID;
@@ -563,7 +563,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
             return ClaimIDToPostcodeIDLookups.get(key);
         }
-        result = Env.getSHBE_Data().getDW_SHBE_Records(YM3).getClaimIDToPostcodeIDLookup(Env.HandleOutOfMemoryError);
+        result = Env.getSHBE_Data().getDW_SHBE_Records(YM3).getClaimIDToPostcodeIDLookup(Env.HOOME);
         ClaimIDToPostcodeIDLookups.put(key, result);
         return result;
     }
@@ -797,7 +797,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 claimantTypeTenureLevelTypeAreaCounts.put(claimantType, TTLevelTypeAreaCounts);
                 claimantTypeTenureLevelTypeTenureCounts.put(claimantType, TTLevelTypeTenureCounts);
             }
-            records0 = recs0.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
+            records0 = recs0.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
 
             // Init underOccupiedSets
             DW_UO_Set councilUOSet0 = null;
@@ -951,7 +951,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             tIDIndexes = new ArrayList<ArrayList<DW_ID>>();
             if (true) {
 //                ArrayList<DW_ID> tID_HashSet;
-//                tID_HashSet = recs0.getClaimIDToClaimantPersonIDLookup(Env.HandleOutOfMemoryError);
+//                tID_HashSet = recs0.getClaimIDToClaimantPersonIDLookup(Env.HOOME);
 //                tIDIndexes.add(tID_HashSet);
             }
 
@@ -1001,12 +1001,12 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 
                 if (true) {
 //                    ArrayList<DW_ID> tID_HashSet;
-//                    tID_HashSet = recs1.getClaimantClaimIDs(Env.HandleOutOfMemoryError);
+//                    tID_HashSet = recs1.getClaimantClaimIDs(Env.HOOME);
 //                    tIDIndexes.add(tID_HashSet);
                 }
                 //records0 = (TreeMap<String, DW_SHBE_Record>) SHBEData0[0];
                 HashMap<DW_ID, DW_SHBE_Record> records1;
-                records1 = recs1.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
+                records1 = recs1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
                 /* Initialise A:
                  * output directories;
                  * claimantTypeTenureLevelTypeDirs;

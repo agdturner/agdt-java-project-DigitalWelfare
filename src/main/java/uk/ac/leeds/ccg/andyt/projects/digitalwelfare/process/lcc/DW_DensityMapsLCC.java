@@ -1240,7 +1240,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         lookup = lookups.get("Unit").get(Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 
         HashMap<DW_ID, DW_SHBE_Record> records;
-        records = SHBEData.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
+        records = SHBEData.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
 
         boolean nonZero = false;
 

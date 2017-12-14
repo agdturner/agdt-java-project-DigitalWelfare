@@ -3444,7 +3444,7 @@ public class DW_SummaryUO extends DW_Summary {
                 RSLUOSet1 = RSLUOSets.get(YM31);
                 Env.logO("Load " + YM31, true);
                 DW_SHBE_Records1 = SHBE_Data.getDW_SHBE_Records(YM31);
-                Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
+                Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
                 initFirst = true;
             }
         }
@@ -3508,7 +3508,7 @@ public class DW_SummaryUO extends DW_Summary {
             // Load next data
             Env.logO("Load " + YM31, true);
             DW_SHBE_Records1 = SHBE_Data.getDW_SHBE_Records(YM31);
-            Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
+            Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
             // doPartSummaryCompare2Times
             doPartSummaryCompare2Times(
                     
@@ -3726,11 +3726,11 @@ public class DW_SummaryUO extends DW_Summary {
         // Initialise variables
         key = SHBE_Handler.getYearMonthNumber(filename);
         summary = summaries.get(key);
-        LoadSummary = DW_SHBE_Records.getLoadSummary(Env.HandleOutOfMemoryError);
+        LoadSummary = DW_SHBE_Records.getLoadSummary(Env.HOOME);
         addToSummary(summary, LoadSummary);
         DW_UO_SetCouncilMap = CouncilUOSet.getMap();
         DW_UO_SetRSLMap = RSLUOSet.getMap();
-        Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HandleOutOfMemoryError);
+        Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
         // Loop over Council
         CouncilLinkedRecordCount1 = doCouncilSingleTimeLoopOverSet(
                 DW_UO_SetCouncilMap, Records);
