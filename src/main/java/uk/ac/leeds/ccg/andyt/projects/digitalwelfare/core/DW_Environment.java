@@ -232,7 +232,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     @Override
-    protected boolean checkAndMaybeFreeMemory() {
+    public boolean checkAndMaybeFreeMemory() {
         while (getTotalFreeMemory() < Memory_Threshold) {
             if (!swapDataAny()) {
                 return false;
