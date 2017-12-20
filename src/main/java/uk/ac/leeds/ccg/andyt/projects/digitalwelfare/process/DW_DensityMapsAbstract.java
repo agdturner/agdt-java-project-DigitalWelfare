@@ -39,7 +39,7 @@ import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Maps;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.statistics.Grids_GridDoubleStatistics; 
+import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStats; 
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -154,8 +154,7 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
      * @return
      */
     public Grids_GridDouble initiliseGrid(File dir) {
-        Grids_GridDouble result = (Grids_GridDouble) gf.create(
-                new Grids_GridDoubleStatistics(ge),
+        Grids_GridDouble result = (Grids_GridDouble) gf.create(new Grids_GridDoubleStats(ge),
                 dir,
                 gcf,
                 nrows,

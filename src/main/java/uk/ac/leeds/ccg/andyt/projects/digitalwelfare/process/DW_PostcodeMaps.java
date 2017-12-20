@@ -41,7 +41,7 @@ import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_GridChunkDoubleArrayFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.statistics.Grids_GridDoubleStatisticsNotUpdated;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStatsNotUpdated;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_Processor;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
@@ -220,7 +220,7 @@ public class DW_PostcodeMaps extends DW_Maps {
                 (int) nrows,
                 (int) ncols,
                 dimensions,
-                new Grids_GridDoubleStatisticsNotUpdated(Env.getGrids_Environment()));
+                new Grids_GridDoubleStatsNotUpdated(Env.getGrids_Environment()));
         Grids_GridDouble grid;
         grid = toGrid(
                 polyGrid,

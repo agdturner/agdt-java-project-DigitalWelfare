@@ -35,7 +35,7 @@ import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_GridChunkDoubleArrayFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.statistics.Grids_GridDoubleStatisticsNotUpdated;
+import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStatsNotUpdated;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_Processor;
@@ -159,7 +159,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 chunkNRows,
                 chunkNCols,
                 new Grids_Dimensions(chunkNRows, chunkNCols),
-                new Grids_GridDoubleStatisticsNotUpdated(ge));
+                new Grids_GridDoubleStatsNotUpdated(ge));
 //        // Jenks runs
 //        styleParameters.setClassificationFunctionName("Jenks");
 //        commonStyling = true;
@@ -273,7 +273,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 chunkNRows,
                 chunkNCols,
                 dimensions,
-                new Grids_GridDoubleStatisticsNotUpdated(ge));
+                new Grids_GridDoubleStatsNotUpdated(ge));
         Grids_ProcessorGWS p;
         p = new Grids_ProcessorGWS(ge);
 
