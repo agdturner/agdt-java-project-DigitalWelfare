@@ -33,9 +33,4 @@ public abstract class DW_OutOfMemoryErrorHandler
     public boolean checkAndMaybeFreeMemory() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public boolean checkAndMaybeFreeMemory(boolean handleOutOfMemoryError) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

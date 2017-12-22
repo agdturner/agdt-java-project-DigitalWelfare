@@ -145,86 +145,68 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         this.Strings = new DW_Strings();
     }
 
-    @Override
-    public void initMemoryReserve(
-            boolean handleOutOfMemoryError) {
-        try {
-            initMemoryReserve();
-        } catch (OutOfMemoryError e) {
-            if (handleOutOfMemoryError) {
-                clearMemoryReserve();
-                if (!swapDataAny()) {
-                    throw e;
-                }
-                initMemoryReserve(handleOutOfMemoryError);
-            } else {
-                throw e;
-            }
-        }
-    }
-
     public int getDefaultMaximumNumberOfObjectsPerDirectory() {
         return 100;
     }
 
-    /**
-     * A method to ensure there is enough memory to continue.
-     *
-     * @param handleOutOfMemoryError
-     * @return
-     */
-    @Override
-    public boolean checkAndMaybeFreeMemory(
-            boolean handleOutOfMemoryError) {
-        try {
-            if (checkAndMaybeFreeMemory()) {
-                return true;
-            } else {
-                if (DEBUG_Level < DEBUG_Level_NORMAL) {
-                    String message
-                            = "Warning! No data to swap or clear in "
-                            + this.getClass().getName()
-                            + ".tryToEnsureThereIsEnoughMemoryToContinue(boolean)";
-                    System.out.println(message);
-                }
-                // Set to exit method with OutOfMemoryError
-                handleOutOfMemoryError = false;
-                throw new OutOfMemoryError();
-            }
-        } catch (OutOfMemoryError e) {
-            if (handleOutOfMemoryError) {
-                clearMemoryReserve();
-                boolean createdRoom = false;
-                while (!createdRoom) {
-                    if (!swapDataAny()) {
-                        if (DEBUG_Level < DEBUG_Level_NORMAL) {
-                            String message = "Warning! No data to swap or clear in "
-                                    + this.getClass().getName()
-                                    + ".tryToEnsureThereIsEnoughMemoryToContinue(boolean)";
-                            System.out.println(message);
-                        }
-                        throw e;
-                    }
-                    try {
-                        initMemoryReserve(HOOMEF);
-                        createdRoom = true;
-                    } catch (OutOfMemoryError e2) {
-                        if (DEBUG_Level < DEBUG_Level_NORMAL) {
-                            String message
-                                    = "Struggling to ensure there is enough memory in "
-                                    + this.getClass().getName()
-                                    + ".tryToEnsureThereIsEnoughMemoryToContinue(boolean)";
-                            System.out.println(message);
-                        }
-                    }
-                }
-                return checkAndMaybeFreeMemory(
-                        handleOutOfMemoryError);
-            } else {
-                throw e;
-            }
-        }
-    }
+//    /**
+//     * A method to ensure there is enough memory to continue.
+//     *
+//     * @param handleOutOfMemoryError
+//     * @return
+//     */
+//    @Override
+//    public boolean checkAndMaybeFreeMemory(
+//            boolean handleOutOfMemoryError) {
+//        try {
+//            if (checkAndMaybeFreeMemory()) {
+//                return true;
+//            } else {
+//                if (DEBUG_Level < DEBUG_Level_NORMAL) {
+//                    String message
+//                            = "Warning! No data to swap or clear in "
+//                            + this.getClass().getName()
+//                            + ".tryToEnsureThereIsEnoughMemoryToContinue(boolean)";
+//                    System.out.println(message);
+//                }
+//                // Set to exit method with OutOfMemoryError
+//                handleOutOfMemoryError = false;
+//                throw new OutOfMemoryError();
+//            }
+//        } catch (OutOfMemoryError e) {
+//            if (handleOutOfMemoryError) {
+//                clearMemoryReserve();
+//                boolean createdRoom = false;
+//                while (!createdRoom) {
+//                    if (!swapDataAny()) {
+//                        if (DEBUG_Level < DEBUG_Level_NORMAL) {
+//                            String message = "Warning! No data to swap or clear in "
+//                                    + this.getClass().getName()
+//                                    + ".tryToEnsureThereIsEnoughMemoryToContinue(boolean)";
+//                            System.out.println(message);
+//                        }
+//                        throw e;
+//                    }
+//                    try {
+//                        initMemoryReserve();
+//                        createdRoom = true;
+//                    } catch (OutOfMemoryError e2) {
+//                        if (DEBUG_Level < DEBUG_Level_NORMAL) {
+//                            String message
+//                                    = "Struggling to ensure there is enough memory in "
+//                                    + this.getClass().getName()
+//                                    + ".tryToEnsureThereIsEnoughMemoryToContinue(boolean)";
+//                            System.out.println(message);
+//                        }
+//                    }
+//                }
+//                return checkAndMaybeFreeMemory(
+//                        handleOutOfMemoryError);
+//            } else {
+//                throw e;
+//            }
+//        }
+//    }
 
     /**
      * A method to try to ensure there is enough memory to continue.
@@ -245,13 +227,13 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public boolean swapDataAny(boolean handleOutOfMemoryError) {
         try {
             boolean result = swapDataAny();
-            checkAndMaybeFreeMemory(HOOMEF);
+            checkAndMaybeFreeMemory();
             return result;
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
                 boolean result = swapDataAny(HOOMEF);
-                initMemoryReserve(HOOMEF);
+                initMemoryReserve();
                 return result;
             } else {
                 throw e;

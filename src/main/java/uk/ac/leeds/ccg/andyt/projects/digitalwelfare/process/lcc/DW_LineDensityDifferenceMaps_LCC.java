@@ -606,12 +606,12 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
             return;
         }
         Grids_GridDouble ga = (Grids_GridDouble) gf.create(grida);
-        System.out.println("ga " + ga.toString(handleOutOfMemoryErrors));
+        System.out.println("ga " + ga.toString());
         Grids_GridDouble gb = (Grids_GridDouble) gf.create(gridb);
-        System.out.println("gb " + gb.toString(handleOutOfMemoryErrors));
-        gp.setDirectory(dirOut2, Maps.doDebug, handleOutOfMemoryErrors);
-        gp.addToGrid(ga, gb, -1.0d, handleOutOfMemoryErrors);
-        System.out.println("ga-gb " + ga.toString(handleOutOfMemoryErrors));
+        System.out.println("gb " + gb.toString());
+        gp.setDirectory(dirOut2, Maps.doDebug);
+        gp.addToGrid(ga, gb, -1.0d);
+        System.out.println("ga-gb " + ga.toString());
         // output grid
 //            ImageExporter ie;
 //            ie = new ImageExporter(ge);
@@ -622,7 +622,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
         File asciigridFile = new File(
                 dirOut2,
                 outputName + ".asc");
-        eage.toAsciiFile(ga, asciigridFile, handleOutOfMemoryErrors);
+        eage.toAsciiFile(ga, asciigridFile);
         // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
         int index = 0;
         outputGridToImageUsingGeoToolsAndSetCommonStyle(
@@ -690,7 +690,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
             asciigridFile = new File(
                     dirOut2,
                     outputName2 + ".asc");
-            eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+            eage.toAsciiFile(gwsgrid, asciigridFile);
 
             System.out.println(asciigridFile);
             //System.exit(0);

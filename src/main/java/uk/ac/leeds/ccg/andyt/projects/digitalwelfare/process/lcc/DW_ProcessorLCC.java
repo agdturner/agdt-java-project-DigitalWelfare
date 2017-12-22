@@ -336,7 +336,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     DW_SHBE_Records = new DW_SHBE_Records(
                             Env,
                             YM3);
-                    Env.checkAndMaybeFreeMemory(Env.HOOME);
+                    Env.checkAndMaybeFreeMemory();
                     Data.put(YM3, DW_SHBE_Records);
                     Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
                             + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HOOME).size(), true);
@@ -354,8 +354,8 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 } catch (OutOfMemoryError e) {
                     Env.clearMemoryReserve();
                     Env.clearSomeSHBECacheExcept(YM3);
-                    Env.initMemoryReserve(Env.HOOME);
-                    Env.checkAndMaybeFreeMemory(Env.HOOME);
+                    Env.initMemoryReserve();
+                    Env.checkAndMaybeFreeMemory();
                 }
             }
             // Close logs

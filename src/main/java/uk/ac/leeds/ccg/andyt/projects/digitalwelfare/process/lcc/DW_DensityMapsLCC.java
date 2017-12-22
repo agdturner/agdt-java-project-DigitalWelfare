@@ -145,7 +145,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         eage = new Grids_ESRIAsciiGridExporter(ge);
         ie = new Grids_ImageExporter(ge);
         gp = new Grids_ProcessorGWS(ge);
-        gp.setDirectory(generatedGridsDirectory, false, handleOutOfMemoryErrors);
+        gp.setDirectory(generatedGridsDirectory, false);
         gcf = new Grids_GridChunkDoubleArrayFactory();
         chunkNRows = 300;//250; //64
         chunkNCols = 350;//300; //64
@@ -300,7 +300,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                     "2013_AprMinus2015_Oct.asc");
             if (numeratorFile.exists()) {
                 numerator = (Grids_GridDouble) f.create(numeratorFile);
-                System.out.println(numerator.toString(handleOutOfMemoryErrors));
+                System.out.println(numerator.toString());
             } else {
                 int debug = 1;
             }
@@ -308,20 +308,20 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                     dirIn,
                     "2013_Apr/Density2013_Apr_554_ncols_680_cellsize_50.0.asc");
             denominator1 = (Grids_GridDouble) f.create(denominatorFile);
-            System.out.println(denominator1.toString(handleOutOfMemoryErrors));
+            System.out.println(denominator1.toString());
             denominatorFile = new File(
                     dirIn,
                     "2015_Oct/Density2015_Oct_554_ncols_680_cellsize_50.0.asc");
             denominator2 = (Grids_GridDouble) f.create(denominatorFile);
-            System.out.println(denominator2.toString(handleOutOfMemoryErrors));
+            System.out.println(denominator2.toString());
             //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
             //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
 
             for (long row = 0; row < nrows; row++) {
                 for (long col = 0; col < ncols; col++) {
-                    double n = numerator.getCell(row, col, handleOutOfMemoryErrors);
-                    double d1 = denominator1.getCell(row, col, handleOutOfMemoryErrors);
-                    double d2 = denominator2.getCell(row, col, handleOutOfMemoryErrors);
+                    double n = numerator.getCell(row, col);
+                    double d1 = denominator1.getCell(row, col);
+                    double d2 = denominator2.getCell(row, col);
                     double d = d1 + d2;
                     double r;
                     if (d == 0) {
@@ -329,10 +329,10 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                     } else {
                         r = n / (d / 2.0d);
                     }
-                    rate.setCell(row, col, r, handleOutOfMemoryErrors);
+                    rate.setCell(row, col, r);
                 }
             }
-            System.out.println(rate.toString(handleOutOfMemoryErrors));
+            System.out.println(rate.toString());
 
             //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
             for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
@@ -368,7 +368,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                         dirIn,
                         //dirOut1,
                         outputName2 + ".asc");
-                eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+                eage.toAsciiFile(gwsgrid, asciigridFile);
 
                 boolean scaleToFirst = false;
                 outputGrid((Grids_GridDouble) gwsgrid,
@@ -434,24 +434,24 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                         dirIn2,
                         year + "_" + month + "/Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
                 denominator2 = (Grids_GridDouble) f.create(denominatorFile);
-                System.out.println(denominator2.toString(handleOutOfMemoryErrors));
-                //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
-                //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
+                System.out.println(denominator2.toString());
+                //p.addToGrid(denominator1, denominator2);
+                //System.out.println(denominator1.toString());
 
                 for (long row = 0; row < nrows; row++) {
                     for (long col = 0; col < ncols; col++) {
-                        double n = numerator.getCell(row, col, handleOutOfMemoryErrors);
-                        double d1 = denominator2.getCell(row, col, handleOutOfMemoryErrors);
+                        double n = numerator.getCell(row, col);
+                        double d1 = denominator2.getCell(row, col);
                         double r;
                         if (d1 == 0) {
                             r = 0;
                         } else {
                             r = n / d1;
                         }
-                        rate.setCell(row, col, r, handleOutOfMemoryErrors);
+                        rate.setCell(row, col, r);
                     }
                 }
-                System.out.println(rate.toString(handleOutOfMemoryErrors));
+                System.out.println(rate.toString());
 
                 //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
                 for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
@@ -487,7 +487,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                     File asciigridFile = new File(
                             dirIn,
                             outputName2 + ".asc");
-                    eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+                    eage.toAsciiFile(gwsgrid, asciigridFile);
 
                     boolean scaleToFirst = false;
                     outputGrid((Grids_GridDouble) gwsgrid,
@@ -525,20 +525,20 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                         dirOut2,
                         year + "_" + month + "UO_Over_All_" + type + "_Rate.asc");
                 denominator2 = (Grids_GridDouble) f.create(denominatorFile);
-                System.out.println(denominator2.toString(handleOutOfMemoryErrors));
+                System.out.println(denominator2.toString());
                 //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
                 //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
 
                 for (long row = 0; row < nrows; row++) {
                     for (long col = 0; col < ncols; col++) {
-                        double n = numerator.getCell(row, col, handleOutOfMemoryErrors);
-                        double d1 = denominator2.getCell(row, col, handleOutOfMemoryErrors);
+                        double n = numerator.getCell(row, col);
+                        double d1 = denominator2.getCell(row, col);
                         double r;
                         r = n - d1;
-                        rate.setCell(row, col, r, handleOutOfMemoryErrors);
+                        rate.setCell(row, col, r);
                     }
                 }
-                System.out.println(rate.toString(handleOutOfMemoryErrors));
+                System.out.println(rate.toString());
 
                 //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
                 for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
@@ -573,7 +573,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                     File asciigridFile = new File(
                             dirIn,
                             outputName2 + ".asc");
-                    eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+                    eage.toAsciiFile(gwsgrid, asciigridFile);
 
                     boolean scaleToFirst = false;
                     outputGrid((Grids_GridDouble) gwsgrid,
@@ -594,21 +594,20 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                     dirOut2,
                     year0 + "_" + month0 + "UO_Over_All_" + type + "_Rate.asc");
             denominator2 = (Grids_GridDouble) f.create(denominatorFile);
-            System.out.println(denominator2.toString(handleOutOfMemoryErrors));
+            System.out.println(denominator2.toString());
             //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
             //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
 
             for (long row = 0; row < nrows; row++) {
                 for (long col = 0; col < ncols; col++) {
-                    double n = numerator.getCell(row, col, handleOutOfMemoryErrors);
-                    double d1 = denominator2.getCell(row, col, handleOutOfMemoryErrors);
+                    double n = numerator.getCell(row, col);
+                    double d1 = denominator2.getCell(row, col);
                     double r;
                     r = n - d1;
-                    rate.setCell(row, col, r, handleOutOfMemoryErrors);
+                    rate.setCell(row, col, r);
                 }
             }
-            System.out.println(rate.toString(handleOutOfMemoryErrors));
-
+            System.out.println(rate.toString());
             //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
             for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
                     cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
@@ -637,12 +636,12 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //                        imageFile = new File(
 //                                outletmapDirectory,
 //                                outputName + ".png");
-//                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png", handleOutOfMemoryErrors);
+//                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png");
 
                 File asciigridFile = new File(
                         dirIn,
                         outputName2 + ".asc");
-                eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+                eage.toAsciiFile(gwsgrid, asciigridFile);
 
                 boolean scaleToFirst = false;
                 outputGrid((Grids_GridDouble) gwsgrid,
@@ -1164,8 +1163,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //                            yM30,
 //                            "Name" + yM30,
 //                            scaleToFirst);
-                    gp.addToGrid(g1, g0,
-                            -1.0d, handleOutOfMemoryErrors);
+                    gp.addToGrid(g1, g0, -1.0d);
                     outputGrid(
                             g1,
                             dirOut3,
@@ -1190,8 +1188,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                             doCouncil,
                             doRSL,
                             scaleToFirst);
-                    gp.addToGrid(g1, g00,
-                            -1.0d, handleOutOfMemoryErrors);
+                    gp.addToGrid(g1, g00, -1.0d);
                     outputGrid(
                             g1,
                             dirOut3,
@@ -1316,11 +1313,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //            Geotools_Point p1;
 //            p1 = DW_Postcode_Handler.getPointFromPostcode(DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode));
                         if (p != null) {
-                            g0.addToCell(
-                                    (double) p.getX(),
-                                    (double) p.getY(),
-                                    1.0d,
-                                    handleOutOfMemoryErrors);
+                            g0.addToCell((double) p.getX(), (double) p.getY(), 1.0d);
                             nonZero = true;
                         } else {
                             System.out.println("No point for postcode " + postcode + ", "
@@ -1335,7 +1328,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         if (nonZero) {
 
             // output grid
-            gp.setDirectory(dirOut2, false, handleOutOfMemoryErrors);
+            gp.setDirectory(dirOut2, false);
 //            Grids_ImageExporter ie;
 //            ie = new Grids_ImageExporter(ge);
 //            File fout = new File(
@@ -1345,7 +1338,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             File asciigridFile = new File(
                     dirOut2,
                     outputName + ".asc");
-            eage.toAsciiFile(g0, asciigridFile, handleOutOfMemoryErrors);
+            eage.toAsciiFile(g0, asciigridFile);
             // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
             int index = 0;
             outputGridToImageUsingGeoToolsAndSetCommonStyle(
@@ -1411,7 +1404,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 asciigridFile = new File(
                         dirOut2,
                         outputName2 + ".asc");
-                eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+                eage.toAsciiFile(gwsgrid, asciigridFile);
 
                 // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
                 outputGridToImageUsingGeoToolsAndSetCommonStyle(
@@ -1427,7 +1420,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 }
             }
         } else {
-            System.out.println("Grid " + g0.toString(handleOutOfMemoryErrors) + " is not added to and so is not output.");
+            System.out.println("Grid " + g0.toString() + " is not added to and so is not output.");
         }
         return g0;
     }
@@ -1446,7 +1439,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         MapsLCC.getStyleParameters().setPaletteName2("Blues");
         MapsLCC.getStyleParameters().setAddWhiteForZero(true);
 
-        System.out.println("g1 " + g1.toString(handleOutOfMemoryErrors));
+        System.out.println("g1 " + g1.toString());
         // output grid
 //            Grids_ImageExporter ie;
 //            ie = new Grids_ImageExporter(ge);
@@ -1457,7 +1450,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         File asciigridFile = new File(
                 dirOut,
                 outputName + ".asc");
-        eage.toAsciiFile(g1, asciigridFile, handleOutOfMemoryErrors);
+        eage.toAsciiFile(g1, asciigridFile);
         // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
         int index = 0;
         outputGridToImageUsingGeoToolsAndSetCommonStyle(
@@ -1525,7 +1518,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             asciigridFile = new File(
                     dirOut,
                     outputName2 + ".asc");
-            eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+            eage.toAsciiFile(gwsgrid, asciigridFile);
 
             System.out.println(asciigridFile);
             //System.exit(0);

@@ -39,7 +39,7 @@ import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Maps;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStats; 
+import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStats;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -51,14 +51,14 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
  *
  * @author geoagdt
  */
-public abstract class DW_DensityMapsAbstract  extends DW_Object {
-    
+public abstract class DW_DensityMapsAbstract extends DW_Object {
+
     // For Convenience
     protected DW_Maps Maps;
     protected DW_Files Files;
     protected DW_Strings Strings;
     protected DW_Postcode_Handler Postcode_Handler;
-    
+
     protected Grids_Environment ge;
     protected Grids_ESRIAsciiGridExporter eage;
     protected Grids_ImageExporter ie;
@@ -87,7 +87,7 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
         Files = de.getFiles();
         Postcode_Handler = de.getPostcode_Handler();
     }
-    
+
     // Add from postcodes
     protected int addFromPostcodes(
             Grids_GridDouble g,
@@ -113,7 +113,7 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
                     if (aPoint != null) {
                         int x = aPoint.getX();
                         int y = aPoint.getY();
-                        g.addToCell((double) x, (double) y, 1.0, handleOutOfMemoryErrors);
+                        g.addToCell((double) x, (double) y, 1.0);
                     } else {
                         countNonMatchingPostcodes++;
                     }
@@ -135,7 +135,7 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
                             if (aPoint != null) {
                                 int x = aPoint.getX();
                                 int y = aPoint.getY();
-                                g.addToCell((double) x, (double) y, 1.0, handleOutOfMemoryErrors);
+                                g.addToCell((double) x, (double) y, 1.0);
                             } else {
                                 countNonMatchingPostcodes++;
                             }
@@ -154,17 +154,13 @@ public abstract class DW_DensityMapsAbstract  extends DW_Object {
      * @return
      */
     public Grids_GridDouble initiliseGrid(File dir) {
-        Grids_GridDouble result = (Grids_GridDouble) gf.create(new Grids_GridDoubleStats(ge),
-                dir,
-                gcf,
-                nrows,
-                ncols,
-                dimensions,
-                handleOutOfMemoryErrors);
+        Grids_GridDouble result = (Grids_GridDouble) gf.create(
+                new Grids_GridDoubleStats(ge), dir, gcf, nrows, ncols,
+                dimensions, handleOutOfMemoryErrors);
         //System.out.println("" + result.toString(handleOutOfMemoryErrors));
         for (int row = 0; row < nrows; row++) {
             for (int col = 0; col < ncols; col++) {
-                result.setCell(row, col, 0, handleOutOfMemoryErrors); // set all values to 0;
+                result.setCell(row, col, 0); // set all values to 0;
             }
         }
         return result;

@@ -156,7 +156,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         eage = new Grids_ESRIAsciiGridExporter(ge);
         ie = new Grids_ImageExporter(ge);
         gp = new Grids_ProcessorGWS(ge);
-        gp.setDirectory(processorDir, false, handleOutOfMemoryErrors);
+        gp.setDirectory(processorDir, false);
         gcf = new Grids_GridChunkDoubleArrayFactory();
         chunkNRows = 300;//250; //64
         chunkNCols = 350;//300; //64        
@@ -611,7 +611,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
                             deprivationClass,
                             yM3);
                 }
-                System.out.println("" + g.toString(handleOutOfMemoryErrors));
+                System.out.println("" + g.toString());
                 System.out.println("" + countNonMatchingPostcodes);
             } else {
                 System.out.println("Outlet " + outlet);
@@ -627,7 +627,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
                         deprivationClasses,
                         deprivationClass,
                         yM3);
-                System.out.println("" + g.toString(handleOutOfMemoryErrors));
+                System.out.println("" + g.toString());
                 System.out.println("" + countNonMatchingPostcodes);
             }
             // output the grid
@@ -640,7 +640,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             asciigridFile = new File(
                     outletmapDirectory,
                     nameOfGrid + ".asc");
-            eage.toAsciiFile(g, asciigridFile, handleOutOfMemoryErrors);
+            eage.toAsciiFile(g, asciigridFile);
 
             int index;
 
@@ -707,7 +707,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
                 asciigridFile = new File(
                         outletmapDirectory,
                         outputName + ".asc");
-                eage.toAsciiFile(gwsgrid, asciigridFile, handleOutOfMemoryErrors);
+                eage.toAsciiFile(gwsgrid, asciigridFile);
 
                 // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
                 outputGridToImageUsingGeoToolsAndSetCommonStyle(
