@@ -101,11 +101,11 @@ public class DW_UO_Handler extends DW_Object {
             st.wordChars('*', '*');
             String line = "";
             //int duplicateEntriesCount = 0;
-            int replacementEntriesCount = 0;
+            //int replacementEntriesCount = 0;
             long RecordID = 0;
             // Read firstline and check format
             int tokenType;
-            tokenType = st.nextToken();
+            st.nextToken();
             line = st.sval;
             String[] fieldnames = line.split(",");
 //            // Skip the first line
@@ -145,7 +145,7 @@ public class DW_UO_Handler extends DW_Object {
                                     System.out.println("existingUnderOccupiedReport_DataRecord " + existingUnderOccupiedReport_Record);
                                     System.out.println("replacementUnderOccupiedReport_DataRecord " + DW_UO_Record);
                                     System.out.println("RecordID " + RecordID);
-                                    replacementEntriesCount++;
+                                    //replacementEntriesCount++;
                                 }
                             }
                         } catch (Exception e) {
