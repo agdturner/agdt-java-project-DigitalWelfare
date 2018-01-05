@@ -156,7 +156,7 @@ public abstract class DW_DensityMapsAbstract extends DW_Object {
     public Grids_GridDouble initiliseGrid(File dir) {
         Grids_GridDouble result = (Grids_GridDouble) gf.create(
                 new Grids_GridDoubleStats(ge), dir, gcf, nrows, ncols,
-                dimensions, handleOutOfMemoryErrors);
+                dimensions);
         //System.out.println("" + result.toString(handleOutOfMemoryErrors));
         for (int row = 0; row < nrows; row++) {
             for (int col = 0; col < ncols; col++) {
