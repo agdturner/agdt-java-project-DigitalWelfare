@@ -42,6 +42,7 @@ import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_GridChunkDoubleArrayFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStatsNotUpdated;
+import uk.ac.leeds.ccg.andyt.grids.io.Grids_Files;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_Processor;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
@@ -210,29 +211,15 @@ public class DW_PostcodeMaps extends DW_Maps {
         Grids_GridDoubleFactory gf;
         Grids_Processor gp;
         gp = ge.getProcessor();
-        gf = new Grids_GridDoubleFactory(
-                ge,
-                //Files.getGeneratedGridsGridDoubleFactoryDir(),
-                ge.getFiles().getGeneratedGridDoubleDir(),
-                gp.GridChunkDoubleFactory,
-                gp.DefaultGridChunkDoubleFactory,
-                -Double.MAX_VALUE,
-                (int) nrows,
-                (int) ncols,
-                dimensions,
+        gf = new Grids_GridDoubleFactory(ge, gp.GridChunkDoubleFactory,
+                gp.DefaultGridChunkDoubleFactory, -Double.MAX_VALUE,
+                (int) nrows, (int) ncols, dimensions,
                 new Grids_GridDoubleStatsNotUpdated(Env.getGrids_Environment()));
         Grids_GridDouble grid;
-        grid = toGrid(
-                polyGrid,
-                nrows,
-                ncols,
-                xllcorner,
-                yllcorner,
-                cellsize,
-                postcodeUnitPoly_DW_Shapefile,
-                gf);
-
-        MapContent mc = Env.getGeotools().createMapContent(
+        grid = toGrid(polyGrid, nrows, ncols, xllcorner, yllcorner, cellsize,
+                postcodeUnitPoly_DW_Shapefile, gf);
+        MapContent mc;
+        mc = Env.getGeotools().createMapContent(
                 new DW_Shapefile(aLeedsPostcodeSectorShapefile),
                 OA_Shapefile,
                 null,//LSOA_Shapefile,
@@ -244,12 +231,8 @@ public class DW_PostcodeMaps extends DW_Maps {
 
         File outputDir = mapDirectory;
 
-        Env.getGeotools().outputToImage(
-                mc,
-                outname,
-                aLeedsPostcodeSectorShapefile,
-                outputDir,
-                imageWidth,
+        Env.getGeotools().outputToImage(mc, outname,
+                aLeedsPostcodeSectorShapefile, outputDir, imageWidth, 
                 showMapsInJMapPane);
 
     }
@@ -271,7 +254,10 @@ public class DW_PostcodeMaps extends DW_Maps {
                 new BigDecimal(xllcorner + cellsize * ncols),
                 new BigDecimal(yllcorner + cellsize * nrows),
                 new BigDecimal(cellsize));
-        result = (Grids_GridDouble) f.create(nrows, ncols, dimensions);
+        Grids_Files gf;
+        gf = ge.getGrids_Environment().getFiles();
+        File dir = gf.createNewFile(gf.getGeneratedGridDoubleDir());
+        result = (Grids_GridDouble) f.create(dir, nrows, ncols, dimensions);
 
         FeatureCollection cells;
         cells = polyGrid.getFeatureCollection();

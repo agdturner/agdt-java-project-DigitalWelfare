@@ -162,8 +162,6 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         chunkNCols = 350;//300; //64        
         gf = new Grids_GridDoubleFactory(
                 ge,
-                //processorDir,
-                ge.getFiles().getGeneratedGridDoubleDir(),
                 gp.GridChunkDoubleFactory,
                 gp.DefaultGridChunkDoubleFactory,
                 -9999d,

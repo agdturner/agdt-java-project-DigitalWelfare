@@ -37,6 +37,7 @@ import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStatsNotUpdated;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ESRIAsciiGridExporter;
+import uk.ac.leeds.ccg.andyt.grids.io.Grids_Files;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_Processor;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
@@ -151,8 +152,6 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         chunkNCols = 350;//300; //64
         gf = new Grids_GridDoubleFactory(
                 ge,
-                //generatedGridsDirectory,
-                ge.getFiles().getGeneratedGridDoubleDir(),
                 gp.GridChunkDoubleFactory,
                 gp.DefaultGridChunkDoubleFactory,
                 9999.0d,
@@ -265,8 +264,6 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         }
         Grids_GridDoubleFactory f = new Grids_GridDoubleFactory(
                 ge,
-                //Files.getGeneratedGridsGridDoubleFactoryDir(),
-                ge.getFiles().getGeneratedGridDoubleDir(),
                 gp.GridChunkDoubleFactory,
                 gp.DefaultGridChunkDoubleFactory,
                 -9999.0,
@@ -281,7 +278,10 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         Grids_GridDouble denominator1;
         Grids_GridDouble denominator2;
         Grids_GridDouble rate;
-        rate = (Grids_GridDouble) f.create(nrows, ncols);
+        Grids_Files gfiles;
+        gfiles = ge.getFiles();
+        File dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+        rate = (Grids_GridDouble) f.create(dir, nrows, ncols);
 
         int index;
         index = 0;
@@ -295,11 +295,10 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         File numeratorFile;
         File denominatorFile = null;
         if (false) {
-            numeratorFile = new File(
-                    dirIn,
-                    "2013_AprMinus2015_Oct.asc");
+            numeratorFile = new File(                    dirIn,                    "2013_AprMinus2015_Oct.asc");
+            dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
             if (numeratorFile.exists()) {
-                numerator = (Grids_GridDouble) f.create(numeratorFile);
+                numerator = (Grids_GridDouble) f.create(dir,numeratorFile);
                 System.out.println(numerator.toString());
             } else {
                 int debug = 1;
@@ -307,12 +306,12 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             denominatorFile = new File(
                     dirIn,
                     "2013_Apr/Density2013_Apr_554_ncols_680_cellsize_50.0.asc");
-            denominator1 = (Grids_GridDouble) f.create(denominatorFile);
+            denominator1 = (Grids_GridDouble) f.create(dir,denominatorFile);
             System.out.println(denominator1.toString());
             denominatorFile = new File(
                     dirIn,
                     "2015_Oct/Density2015_Oct_554_ncols_680_cellsize_50.0.asc");
-            denominator2 = (Grids_GridDouble) f.create(denominatorFile);
+            denominator2 = (Grids_GridDouble) f.create(dir,denominatorFile);
             System.out.println(denominator2.toString());
             //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
             //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
@@ -343,13 +342,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 double weightFactor = 2.0d;
                 // RegionUnivariateStatistics
                 List<Grids_AbstractGridNumber> gws;
-                gws = gp.regionUnivariateStatistics(
-                        rate,
-                        stats,
-                        distance,
-                        weightIntersect,
-                        weightFactor,
-                        gf);
+                gws = gp.regionUnivariateStatistics(                        rate,                        stats,                        distance,                        weightIntersect,                        weightFactor,                        gf);
                 Iterator<Grids_AbstractGridNumber> itegws;
                 itegws = gws.iterator();
                 // Set normaliser part of the result to null to save space
@@ -429,11 +422,13 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 numeratorFile = new File(
                         dirIn,
                         year + "_" + month + "/Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
-                numerator = (Grids_GridDouble) f.create(numeratorFile);
+                dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+                numerator = (Grids_GridDouble) f.create(dir, numeratorFile);
                 denominatorFile = new File(
                         dirIn2,
                         year + "_" + month + "/Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
-                denominator2 = (Grids_GridDouble) f.create(denominatorFile);
+               dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+                denominator2 = (Grids_GridDouble) f.create(dir, denominatorFile);
                 System.out.println(denominator2.toString());
                 //p.addToGrid(denominator1, denominator2);
                 //System.out.println(denominator1.toString());
@@ -520,11 +515,13 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 numeratorFile = new File(
                         dirOut2,
                         year0 + "_" + month0 + "UO_Over_All_" + type + "_Rate.asc");
-                numerator = (Grids_GridDouble) f.create(numeratorFile);
+                dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+                numerator = (Grids_GridDouble) f.create(dir, numeratorFile);
                 denominatorFile = new File(
                         dirOut2,
                         year + "_" + month + "UO_Over_All_" + type + "_Rate.asc");
-                denominator2 = (Grids_GridDouble) f.create(denominatorFile);
+                dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+               denominator2 = (Grids_GridDouble) f.create(dir, denominatorFile);
                 System.out.println(denominator2.toString());
                 //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
                 //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
@@ -586,14 +583,15 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 month0 = month;
             }
 
-            numeratorFile = new File(
-                    dirOut2,
+            numeratorFile = new File(                    dirOut2,
                     year00 + "_" + month00 + "UO_Over_All_" + type + "_Rate.asc");
-            numerator = (Grids_GridDouble) f.create(numeratorFile);
+           dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+                numerator = (Grids_GridDouble) f.create(dir,numeratorFile);
             denominatorFile = new File(
                     dirOut2,
                     year0 + "_" + month0 + "UO_Over_All_" + type + "_Rate.asc");
-            denominator2 = (Grids_GridDouble) f.create(denominatorFile);
+           dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+                denominator2 = (Grids_GridDouble) f.create(dir,denominatorFile);
             System.out.println(denominator2.toString());
             //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
             //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
