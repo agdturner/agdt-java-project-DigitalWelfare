@@ -310,15 +310,15 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
     private void init() {
         //initStyleParameters();
 //        Maps.setMapDirectory(DW_Files.getOutputSHBELineMapsDir());
-        
+
         foregrounds = new ArrayList<Geotools_Shapefile>();
         //midgrounds = new ArrayList<AGDT_Shapefile>();
 //        backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
                 Env,
-                "LSOA", 
-                targetPropertyNameLSOA, 
+                "LSOA",
+                targetPropertyNameLSOA,
                 Maps.getShapefileDataStoreFactory());
         foregrounds.add(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
@@ -608,13 +608,12 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
         }
         Grids_Files gfiles = ge.getFiles();
         File dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
-               
-        Grids_GridDouble ga = (Grids_GridDouble) gf.create(dir,grida);
+
+        Grids_GridDouble ga = (Grids_GridDouble) gf.create(dir, grida);
         System.out.println("ga " + ga.toString());
         dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
-        Grids_GridDouble gb = (Grids_GridDouble) gf.create(dir,gridb);
+        Grids_GridDouble gb = (Grids_GridDouble) gf.create(dir, gridb);
         System.out.println("gb " + gb.toString());
-        gp.setDirectory(dirOut2, Maps.doDebug);
         gp.addToGrid(ga, gb, -1.0d);
         System.out.println("ga-gb " + ga.toString());
         // output grid
@@ -624,9 +623,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 //                    dirOut2,
 //                    name + ".PNG");
 //            ie.toGreyScaleImage(g, gp, fout, "PNG", handleOutOfMemoryErrors);
-        File asciigridFile = new File(
-                dirOut2,
-                outputName + ".asc");
+        File asciigridFile = new File(dirOut2, outputName + ".asc");
         eage.toAsciiFile(ga, asciigridFile);
         // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
         int index = 0;

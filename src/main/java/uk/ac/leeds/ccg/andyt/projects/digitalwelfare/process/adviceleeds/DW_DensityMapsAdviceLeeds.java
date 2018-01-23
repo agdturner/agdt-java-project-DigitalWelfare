@@ -156,18 +156,12 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         eage = new Grids_ESRIAsciiGridExporter(ge);
         ie = new Grids_ImageExporter(ge);
         gp = new Grids_ProcessorGWS(ge);
-        gp.setDirectory(processorDir, false);
         gcf = new Grids_GridChunkDoubleArrayFactory();
         chunkNRows = 300;//250; //64
         chunkNCols = 350;//300; //64        
-        gf = new Grids_GridDoubleFactory(
-                ge,
-                gp.GridChunkDoubleFactory,
-                gp.DefaultGridChunkDoubleFactory,
-                -9999d,
-                chunkNRows,
-                chunkNCols,
-                new Grids_Dimensions(chunkNRows,chunkNCols),
+        gf = new Grids_GridDoubleFactory(ge, gp.GridChunkDoubleFactory,
+                gp.DefaultGridChunkDoubleFactory, -9999d, chunkNRows,
+                chunkNCols, new Grids_Dimensions(chunkNRows, chunkNCols),
                 new Grids_GridDoubleStatsNotUpdated(ge));
 
         // Initialise tDW_ID_ClientTypes
