@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -208,11 +208,11 @@ public class DW_SHBE_Data extends DW_Object {
 
     /**
      * {@code
-     * if (Data == null) {
-     * if (f.exists()) {
-     * Data = (HashMap<String, DW_SHBE_Records>) Generic_StaticIO.readObject(f);
-     * } else {
-     * Data = new HashMap<String, DW_SHBE_Records>(); } } return Data; }
+ if (Data == null) {
+ if (f.exists()) {
+ Data = (HashMap<String, DW_SHBE_Records>) Generic_IO.readObject(f);
+ } else {
+ Data = new HashMap<String, DW_SHBE_Records>(); } } return Data; }
      *
      * @param f
      * @return
@@ -220,7 +220,7 @@ public class DW_SHBE_Data extends DW_Object {
     public HashMap<DW_YM3, DW_SHBE_Records> getData(File f) {
         if (Data == null) {
             if (f.exists()) {
-                Data = (HashMap<DW_YM3, DW_SHBE_Records>) Generic_StaticIO.readObject(f);
+                Data = (HashMap<DW_YM3, DW_SHBE_Records>) Generic_IO.readObject(f);
             } else {
                 Data = new HashMap<DW_YM3, DW_SHBE_Records>();
             }
@@ -272,10 +272,10 @@ public class DW_SHBE_Data extends DW_Object {
 
     /**
      * {@code HashMap<String, DW_ID> result;
-     * if (f.exists()) {
-     * result = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(f);
-     * } else {
-     * result = new HashMap<String, DW_ID>(); } return result;}
+ if (f.exists()) {
+ result = (HashMap<String, DW_ID>) Generic_IO.readObject(f);
+ } else {
+ result = new HashMap<String, DW_ID>(); } return result;}
      *
      * @param f
      * @return
@@ -284,7 +284,7 @@ public class DW_SHBE_Data extends DW_Object {
             File f) {
         HashMap<String, DW_ID> result;
         if (f.exists()) {
-            result = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(f);
+            result = (HashMap<String, DW_ID>) Generic_IO.readObject(f);
         } else {
             result = new HashMap<String, DW_ID>();
         }
@@ -330,7 +330,7 @@ public class DW_SHBE_Data extends DW_Object {
             File f) {
         if (CorrectedPostcodes == null) {
             if (f.exists()) {
-                CorrectedPostcodes = (DW_CorrectedPostcodes) Generic_StaticIO.readObject(f);
+                CorrectedPostcodes = (DW_CorrectedPostcodes) Generic_IO.readObject(f);
             } else {
                 new DW_CorrectedPostcodes(Env).run();
                 return getCorrectedPostcodes(f);
@@ -590,7 +590,7 @@ public class DW_SHBE_Data extends DW_Object {
     /**
      * {@code if (PostcodeIDToPointLookups == null) {
  if (f.exists()) {
- PostcodeIDToPointLookups = (HashMap<String, HashMap<DW_ID, Geotools_Point>>) Generic_StaticIO.readObject(f);
+ PostcodeIDToPointLookups = (HashMap<String, HashMap<DW_ID, Geotools_Point>>) Generic_IO.readObject(f);
  } else {
  PostcodeIDToPointLookups = new HashMap<String, HashMap<DW_ID, Geotools_Point>>();
  } } return PostcodeIDToPointLookups;}
@@ -602,7 +602,7 @@ public class DW_SHBE_Data extends DW_Object {
             File f) {
         if (PostcodeIDToPointLookups == null) {
             if (f.exists()) {
-                PostcodeIDToPointLookups = (HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>>) Generic_StaticIO.readObject(f);
+                PostcodeIDToPointLookups = (HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>>) Generic_IO.readObject(f);
             } else {
                 PostcodeIDToPointLookups = new HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>>();
             }
@@ -930,7 +930,7 @@ public class DW_SHBE_Data extends DW_Object {
             File f;
             f = getFile(YM3);
             if (f.exists()) {
-                DW_SHBE_Records = (DW_SHBE_Records) Generic_StaticIO.readObject(f);
+                DW_SHBE_Records = (DW_SHBE_Records) Generic_IO.readObject(f);
                 return DW_SHBE_Records;
             }
         }

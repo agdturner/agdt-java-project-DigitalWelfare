@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -119,7 +119,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
 //                    level,
 //                    year);
 //        } else {
-//            Object o = Generic_StaticIO.readObject(outFile);
+//            Object o = Generic_IO.readObject(outFile);
 //            result = (TreeMap<String, String>) o;
 //        }
 //        return result;
@@ -185,7 +185,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
                     CensusYear,
                     YM3Nearest);
         } else {
-            Object o = Generic_StaticIO.readObject(outfile);
+            Object o = Generic_IO.readObject(outfile);
             result = (TreeMap<String, String>) o;
         }
         return result;
@@ -361,9 +361,9 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         File dir;
         dir = new File(Files.getOutputSHBELogsDir(), processName);
         if (dir.isDirectory()) {
-            dir = Generic_StaticIO.addToArchive(dir, 100);
+            dir = Generic_IO.addToArchive(dir, 100);
         } else {
-            dir = Generic_StaticIO.initialiseArchive(dir, 100);
+            dir = Generic_IO.initialiseArchive(dir, 100);
         }
         dir.mkdirs();
         File fO;

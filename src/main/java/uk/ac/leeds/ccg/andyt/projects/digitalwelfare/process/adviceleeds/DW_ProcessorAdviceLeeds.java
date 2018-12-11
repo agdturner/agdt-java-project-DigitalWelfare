@@ -18,8 +18,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
@@ -62,7 +62,7 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
         String outletInUpperCaseNotFirstLetter;
         outletInUpperCaseNotFirstLetter = outletInUpperCase.substring(1);
         String outletInLowerCaseNotFirstLetter;
-        outletInLowerCaseNotFirstLetter = Generic_StaticString.getLowerCase(outletInUpperCaseNotFirstLetter);
+        outletInLowerCaseNotFirstLetter = Generic_String.getLowerCase(outletInUpperCaseNotFirstLetter);
         result = outletInUpperCaseFirstLetter + outletInLowerCaseNotFirstLetter;
         return result;
     }

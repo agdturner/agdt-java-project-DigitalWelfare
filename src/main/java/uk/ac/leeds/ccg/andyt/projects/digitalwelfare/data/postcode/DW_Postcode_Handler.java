@@ -26,10 +26,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
-import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
+import uk.ac.leeds.ccg.andyt.data.postcode.Generic_UKPostcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -433,7 +433,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             TreeMap<String, Geotools_Point> postcodeUnitPointLookup;
             if (outFile.exists()) {
                 Env.logO("Load " + outFile, true);
-                postcodeUnitPointLookup = (TreeMap<String, Geotools_Point>) Generic_StaticIO.readObject(outFile);
+                postcodeUnitPointLookup = (TreeMap<String, Geotools_Point>) Generic_IO.readObject(outFile);
             } else {
                 File f;
                 f = ONSPDFiles.get(YM3);
@@ -442,7 +442,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
                         f,
                         ignorePointsAtOrigin);
                 outDir.mkdirs();
-                Generic_StaticIO.writeObject(postcodeUnitPointLookup, outFile);
+                Generic_IO.writeObject(postcodeUnitPointLookup, outFile);
             }
             result.put(YM3, postcodeUnitPointLookup);
         }
@@ -465,8 +465,8 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
 //        printTest2(
 //                lookup,
 //                postcode);
-//        Generic_StaticIO.writeObject(lookup, outputFile);
-//        //lookup = (TreeMap<String, Geotools_Point>) Generic_StaticIO.readObject(lookupFile);
+//        Generic_IO.writeObject(lookup, outputFile);
+//        //lookup = (TreeMap<String, Geotools_Point>) Generic_IO.readObject(lookupFile);
         return lookup;
     }
 
@@ -489,8 +489,8 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
         // Read NPD into a lookup
         TreeMap<String, String> lookup;
         lookup = readONSPDIntoTreeMapPostcodeString(infile, level, CensusYear, YM3NearestFormat);
-        Generic_StaticIO.writeObject(lookup, outFile);
-//        //lookup = (TreeMap<String, Geotools_Point>) Generic_StaticIO.readObject(outFile);
+        Generic_IO.writeObject(lookup, outFile);
+//        //lookup = (TreeMap<String, Geotools_Point>) Generic_IO.readObject(outFile);
         return lookup;
     }
 
@@ -578,9 +578,9 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
 //        File oaCodeLookUpFile = new File(
 //                directory,
 //                "oaCodeLookUp_HashmapStringString" + Strings.sBinaryFileExtension);
-//        Generic_StaticIO.writeObject(oaCodeLookUp, oaCodeLookUpFile);
-//        Generic_StaticIO.writeObject(oaCodeLookUp, outputFile);
-        //oaCodeLookUp = (HashMap<String, String>) Generic_StaticIO.readObject(lookupFile);
+//        Generic_IO.writeObject(oaCodeLookUp, oaCodeLookUpFile);
+//        Generic_IO.writeObject(oaCodeLookUp, outputFile);
+        //oaCodeLookUp = (HashMap<String, String>) Generic_IO.readObject(lookupFile);
     }
 
 //    public TreeMap<String, String[]> run4() {
@@ -598,8 +598,8 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
 //        printTest2(
 //                lookup,
 //                postcode);
-//        Generic_StaticIO.writeObject(lookup, outputFile);
-//        //lookup = (TreeMap<String, Geotools_Point>) Generic_StaticIO.readObject(lookupFile);
+//        Generic_IO.writeObject(lookup, outputFile);
+//        //lookup = (TreeMap<String, Geotools_Point>) Generic_IO.readObject(lookupFile);
 //        return lookup;
 //    }
     public HashSet<String> getNumeralsHashSet() {
@@ -625,7 +625,7 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             int lineCounter = 0;
             //int recordCounter = 0;
             BufferedReader br;
-            br = Generic_StaticIO.getBufferedReader(file);
+            br = Generic_IO.getBufferedReader(file);
             StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
@@ -662,15 +662,15 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
     }
 
     public TreeMap<String, Geotools_Point> getStringToDW_PointLookup(File file) {
-        return (TreeMap<String, Geotools_Point>) Generic_StaticIO.readObject(file);
+        return (TreeMap<String, Geotools_Point>) Generic_IO.readObject(file);
     }
 
     public TreeMap<String, String[]> getStringToStringArrayLookup(File file) {
-        return (TreeMap<String, String[]>) Generic_StaticIO.readObject(file);
+        return (TreeMap<String, String[]>) Generic_IO.readObject(file);
     }
 
     public HashMap<String, String> getStringToStringLookup(File file) {
-        return (HashMap<String, String>) Generic_StaticIO.readObject(file);
+        return (HashMap<String, String>) Generic_IO.readObject(file);
     }
 
     /**
@@ -969,12 +969,12 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             int lineCounter = 0;
             int recordCounter = 0;
             BufferedReader br;
-            br = Generic_StaticIO.getBufferedReader(file);
+            br = Generic_IO.getBufferedReader(file);
             StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
-            Generic_StaticIO.skipline(aStreamTokenizer);
+            Generic_IO.skipline(aStreamTokenizer);
             tokenType = aStreamTokenizer.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
@@ -1047,12 +1047,12 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
 //            int lineCounter = 0;
 //            int recordCounter = 0;
 //            BufferedReader br;
-//            br = Generic_StaticIO.getBufferedReader(file);
+//            br = Generic_IO.getBufferedReader(file);
 //            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
 //            String line = "";
 //            //Skip the first line
 //            int tokenType;
-//            Generic_StaticIO.skipline(aStreamTokenizer);
+//            Generic_IO.skipline(aStreamTokenizer);
 //            tokenType = aStreamTokenizer.nextToken();
 //            while (tokenType != StreamTokenizer.TT_EOF) {
 //                switch (tokenType) {
@@ -1092,12 +1092,12 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
 //            int lineCounter = 0;
 //            int recordCounter = 0;
 //            BufferedReader br;
-//            br = Generic_StaticIO.getBufferedReader(file);
+//            br = Generic_IO.getBufferedReader(file);
 //            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
 //            String line = "";
 //            //Skip the first line
 //            int tokenType;
-//            Generic_StaticIO.skipline(aStreamTokenizer);
+//            Generic_IO.skipline(aStreamTokenizer);
 //            tokenType = aStreamTokenizer.nextToken();
 //            while (tokenType != StreamTokenizer.TT_EOF) {
 //                switch (tokenType) {
@@ -1149,12 +1149,12 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             int lineCounter = 0;
             int recordCounter = 0;
             BufferedReader br;
-            br = Generic_StaticIO.getBufferedReader(file);
+            br = Generic_IO.getBufferedReader(file);
             StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
-            Generic_StaticIO.skipline(aStreamTokenizer);
+            Generic_IO.skipline(aStreamTokenizer);
             tokenType = aStreamTokenizer.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
@@ -1299,12 +1299,12 @@ public class DW_Postcode_Handler extends Generic_UKPostcode_Handler implements S
             int lineCounter = 0;
             int recordCounter = 0;
             BufferedReader br;
-            br = Generic_StaticIO.getBufferedReader(file);
+            br = Generic_IO.getBufferedReader(file);
             StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
-            Generic_StaticIO.skipline(aStreamTokenizer);
+            Generic_IO.skipline(aStreamTokenizer);
             tokenType = aStreamTokenizer.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {

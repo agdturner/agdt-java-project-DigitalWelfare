@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletEnquiryID;
@@ -454,7 +454,7 @@ public class DW_ChoroplethMapsAdviceLeeds extends DW_ChoroplethMapsAbstract {
 //                    outputInAndOutOfRegionCountsDir,
 //                    "InAndOutOfRegionCounts" + filter + ".csv");
 //            PrintWriter pw;
-//            pw = Generic_StaticIO.getPrintWriter(outputInAndOutOfRegionCountsFile, false);
+//            pw = Generic_IO.getPrintWriter(outputInAndOutOfRegionCountsFile, false);
 //            if (IDType instanceof DW_ID_ClientOutletEnquiryID) {
 //                pw.println("Year AdviceLeeds Service Region,EnquiryClientCountOutOfRegion,EnquiryClientCountInRegion,PercentageOutOfRegion");
 //            } else {

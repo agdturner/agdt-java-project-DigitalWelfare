@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
+import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -181,7 +181,7 @@ public class DW_Report extends DW_HTMLPage {
             File f;
             f = new File(dirOut,
                     pageTitle + ".html");
-            masterFOS = Generic_StaticIO.getFileOutputStream(f);
+            masterFOS = Generic_IO.getFileOutputStream(f);
             writeHTMLHeader(
                     projectName,
                     pageTitle,
@@ -215,7 +215,7 @@ public class DW_Report extends DW_HTMLPage {
             while (claimantTypesIte.hasNext()) {
                 String claimantType;
                 claimantType = claimantTypesIte.next();
-                String claimantType2 = Generic_StaticString.getCapitalFirstLetter(claimantType) + "Claimants";
+                String claimantType2 = Generic_String.getCapitalFirstLetter(claimantType) + "Claimants";
                 File dir2 = new File(
                         dir1,
                         claimantType2);
@@ -226,7 +226,7 @@ public class DW_Report extends DW_HTMLPage {
                 tenureIte = tenureTypeGroups.iterator();
                 while (tenureIte.hasNext()) {
                     String tenure = tenureIte.next();
-                    String tenure2 = Generic_StaticString.getCapitalFirstLetter(tenure) + "Tenure";
+                    String tenure2 = Generic_String.getCapitalFirstLetter(tenure) + "Tenure";
                     String reportFilename = tenure2 + ".html";
                     writeLine("<li><a href=\"./" + levelsString + "/" + claimantType2 + "/" + tenure2 + ".html\">"
                             + tenure2 + "</a></li>", masterFOS);
@@ -270,7 +270,7 @@ public class DW_Report extends DW_HTMLPage {
         while (claimantTypesIte.hasNext()) {
             String claimantType;
             claimantType = claimantTypesIte.next();
-            String claimantType2 = Generic_StaticString.getCapitalFirstLetter(claimantType) + "Claimants";
+            String claimantType2 = Generic_String.getCapitalFirstLetter(claimantType) + "Claimants";
             File dirOut2 = new File(
                     dirOut,
                     claimantType2);
@@ -279,24 +279,24 @@ public class DW_Report extends DW_HTMLPage {
             tenureIte = tenureTypeGroups.iterator();
             while (tenureIte.hasNext()) {
                 String tenure = tenureIte.next();
-                String tenure2 = Generic_StaticString.getCapitalFirstLetter(tenure) + "Tenure";
+                String tenure2 = Generic_String.getCapitalFirstLetter(tenure) + "Tenure";
                 String reportFilename = tenure2 + ".html";
                 File f = new File(
                         dirOut2,
                         reportFilename);
                 int filePathDepth;
-                filePathDepth = Generic_StaticIO.getFileDepth(dirOut2)
-                        - Generic_StaticIO.getFileDepth(dirOut)
-                        + Generic_StaticIO.getFileDepth(baseReportDir);
+                filePathDepth = Generic_IO.getFileDepth(dirOut2)
+                        - Generic_IO.getFileDepth(dirOut)
+                        + Generic_IO.getFileDepth(baseReportDir);
                 String relativeFilePath;
-                relativeFilePath = Generic_StaticIO.getRelativeFilePath(
+                relativeFilePath = Generic_IO.getRelativeFilePath(
                         filePathDepth);
 //                String distanceRelativeFilePath;
-//                distanceRelativeFilePath = Generic_StaticIO.getRelativeFilePath(
+//                distanceRelativeFilePath = Generic_IO.getRelativeFilePath(
 //                        filePathDepth + 1);
                 String definitionsPath;
                 definitionsPath = relativeFilePath + baseReportDir + "/Definitions/";
-                componentFOS = Generic_StaticIO.getFileOutputStream(f);
+                componentFOS = Generic_IO.getFileOutputStream(f);
                 String pageTitle;
                 pageTitle = reportName + " " + claimantType2 + " " + tenure2;
                 write(
@@ -433,7 +433,7 @@ public class DW_Report extends DW_HTMLPage {
                             String type;
                             type = typesIte.next();
                             String type2;
-                            type2 = Generic_StaticString.getCapitalFirstLetter(type);
+                            type2 = Generic_String.getCapitalFirstLetter(type);
                             type2 += "Claimants";
                             idn = type2;
                             idl = yearMonth.replace(" ", "_") + "_" + idn.replace(" ", "_");
@@ -465,7 +465,7 @@ public class DW_Report extends DW_HTMLPage {
                             String distanceType;
                             distanceType = distanceTypesIte.next();
                             String type2;
-                            type2 = Generic_StaticString.getCapitalFirstLetter(distanceType);
+                            type2 = Generic_String.getCapitalFirstLetter(distanceType);
                             type2 += "Claimants";
                             idn = yearMonth + " " + type2;
                             idl = idn.replace(" ", "_");
@@ -724,7 +724,7 @@ public class DW_Report extends DW_HTMLPage {
                         String type;
                         type = typesIte.next();
                         String type2;
-                        type2 = Generic_StaticString.getCapitalFirstLetter(type);
+                        type2 = Generic_String.getCapitalFirstLetter(type);
                         type2 += "Claimants";
                         idn = includeName + " " + yearMonth + " " + type2;
                         idn0 = type2;
@@ -750,7 +750,7 @@ public class DW_Report extends DW_HTMLPage {
                         String distanceType;
                         distanceType = distanceTypesIte.next();
                         String type2;
-                        type2 = Generic_StaticString.getCapitalFirstLetter(distanceType);
+                        type2 = Generic_String.getCapitalFirstLetter(distanceType);
                         type2 += "Claimants";
                         idn = includeName + " " + yearMonth + " " + type2;
                         idl = idn.replace(" ", "_");

@@ -35,7 +35,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.census.core.Census_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -423,10 +423,10 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             try {
                 BufferedReader br;
                 StreamTokenizer st;
-                br = Generic_StaticIO.getBufferedReader(file);
+                br = Generic_IO.getBufferedReader(file);
                 result = new TreeSet<String>();
                 st = new StreamTokenizer(br);
-                Generic_StaticIO.setStreamTokenizerSyntax1(st);
+                Generic_IO.setStreamTokenizerSyntax1(st);
                 int token = st.nextToken();
 //                    long RecordID = 0;
                 String line = "";

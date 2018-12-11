@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 
 /**
  * A simple class for aggregating data for Sarah Craven from unit postcodes to 
@@ -71,9 +71,9 @@ public class SarahAggregator {
     private TreeMap<String, DataRow> loadData(File directory) throws IOException {
         TreeMap<String, DataRow> result = new TreeMap<String, DataRow>();
         File infile = new File(directory, "total_pop.csv");
-        BufferedReader br = Generic_StaticIO.getBufferedReader(infile);
+        BufferedReader br = Generic_IO.getBufferedReader(infile);
         StreamTokenizer st = new StreamTokenizer(br);
-        Generic_StaticIO.setStreamTokenizerSyntax1(st);
+        Generic_IO.setStreamTokenizerSyntax1(st);
         int tokenType = st.nextToken();
         DataRow dr = null;
         while (tokenType != StreamTokenizer.TT_EOF) {

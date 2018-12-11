@@ -26,7 +26,7 @@ import java.io.StreamTokenizer;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
@@ -72,7 +72,7 @@ public class DW_Data_CAB0_Handler extends DW_Object {
                 filename);
         try {
             BufferedReader br;
-            br = Generic_StaticIO.getBufferedReader(inputFile);
+            br = Generic_IO.getBufferedReader(inputFile);
             StreamTokenizer st;
             st = getStreamTokenizer(br);
             String line = "";
@@ -82,7 +82,7 @@ public class DW_Data_CAB0_Handler extends DW_Object {
             // Skip the header
             int headerLines = 1;
             for (int i = 0; i < headerLines; i++) {
-                Generic_StaticIO.skipline(st);
+                Generic_IO.skipline(st);
             }
             // Read data
             int tokenType;
@@ -135,7 +135,7 @@ public class DW_Data_CAB0_Handler extends DW_Object {
     public StreamTokenizer getStreamTokenizer(BufferedReader br) {
         StreamTokenizer result;
         result = new StreamTokenizer(br);
-        Generic_StaticIO.setStreamTokenizerSyntax5(result);
+        Generic_IO.setStreamTokenizerSyntax5(result);
         result.wordChars('`', '`');
         result.wordChars('(', '(');
         result.wordChars(')', ')');

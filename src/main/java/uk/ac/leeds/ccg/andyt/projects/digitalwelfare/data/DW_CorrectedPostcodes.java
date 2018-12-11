@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_ReadCSV;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.data.format.Generic_ReadCSV;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -158,7 +158,7 @@ public class DW_CorrectedPostcodes extends DW_Object {
         File fout;
         fout = new File(dirout,
         "DW_CorrectedPostcodes" + getStrings().sBinaryFileExtension);
-        Generic_StaticIO.writeObject(this, fout);
+        Generic_IO.writeObject(this, fout);
     }
 
     private DW_Files getDW_Files() {

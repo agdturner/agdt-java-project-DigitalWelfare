@@ -25,7 +25,7 @@ import java.io.StreamTokenizer;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 
 /**
  * A class for methods dealing with tables of data.
@@ -44,10 +44,10 @@ public class DW_Table {
         result = new ArrayList<String>();
         try {
             BufferedReader br;
-            br = Generic_StaticIO.getBufferedReader(f);
+            br = Generic_IO.getBufferedReader(f);
             StreamTokenizer st;
             st = new StreamTokenizer(br);
-            Generic_StaticIO.setStreamTokenizerSyntax1(st);
+            Generic_IO.setStreamTokenizerSyntax1(st);
             String line = "";
             int tokenType;
             tokenType = st.nextToken();

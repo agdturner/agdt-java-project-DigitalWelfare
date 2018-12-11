@@ -28,7 +28,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
@@ -8331,7 +8331,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         outFilename = name + ".csv";
         File outFile;
         outFile = new File(dirOut, outFilename);
-        result = Generic_StaticIO.getPrintWriter(outFile, false);
+        result = Generic_IO.getPrintWriter(outFile, false);
         return result;
     }
 

@@ -42,14 +42,14 @@ public class DW_ClaimID_PostcodeID implements Serializable {
     }
 
     /**
-     * @return the Postcode
+     * @return the ClaimID
      */
     public DW_ID getClaimID() {
         return ClaimID;
     }
 
     /**
-     * @return the Postcode
+     * @return the PostcodeID
      */
     public DW_ID getPostcodeID() {
         return PostcodeID;

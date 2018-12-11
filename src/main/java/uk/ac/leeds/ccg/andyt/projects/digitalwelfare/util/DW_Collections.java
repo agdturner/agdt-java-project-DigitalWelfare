@@ -25,8 +25,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_PersonID;
 
@@ -97,7 +97,7 @@ public class DW_Collections extends Generic_Collections {
     public static HashMap<DW_ID, String> getHashMap_DW_ID__String(File f) {
         HashMap<DW_ID, String> result;
         if (f.exists()) {
-            result = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(f);
+            result = (HashMap<DW_ID, String>) Generic_IO.readObject(f);
         } else {
             result = new HashMap<DW_ID, String>();
         }
@@ -107,7 +107,7 @@ public class DW_Collections extends Generic_Collections {
     public static HashSet<DW_ID> getHashSet_DW_ID(File f) {
         HashSet<DW_ID> result;
         if (f.exists()) {
-            result = (HashSet<DW_ID>) Generic_StaticIO.readObject(f);
+            result = (HashSet<DW_ID>) Generic_IO.readObject(f);
         } else {
             result = new HashSet<DW_ID>();
         }
@@ -117,7 +117,7 @@ public class DW_Collections extends Generic_Collections {
     public static HashSet<DW_PersonID> getHashSet_DW_PersonID(File f) {
         HashSet<DW_PersonID> result;
         if (f.exists()) {
-            result = (HashSet<DW_PersonID>) Generic_StaticIO.readObject(f);
+            result = (HashSet<DW_PersonID>) Generic_IO.readObject(f);
         } else {
             result = new HashSet<DW_PersonID>();
         }
@@ -128,7 +128,7 @@ public class DW_Collections extends Generic_Collections {
             File f) {
         HashMap<DW_PersonID, HashSet<DW_ID>> result;
         if (f.exists()) {
-            result = (HashMap<DW_PersonID, HashSet<DW_ID>>) Generic_StaticIO.readObject(f);
+            result = (HashMap<DW_PersonID, HashSet<DW_ID>>) Generic_IO.readObject(f);
         } else {
             result = new HashMap<DW_PersonID, HashSet<DW_ID>>();
         }

@@ -39,7 +39,7 @@ import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
@@ -1153,7 +1153,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                 generatedCensus2011LUTsDir,
                 level + "ToCentroidLookupTable_TreeMap" + Strings.sBinaryFileExtension);
         if (tLSOAToCentroidLookupTableFile.exists()) {
-            result = (TreeMap<String, Point>) Generic_StaticIO.readObject(
+            result = (TreeMap<String, Point>) Generic_IO.readObject(
                     tLSOAToCentroidLookupTableFile);
         } else {
             result = new TreeMap<String, Point>();
@@ -1196,7 +1196,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     }
                 }
             }
-            Generic_StaticIO.writeObject(result, tLSOAToCentroidLookupTableFile);
+            Generic_IO.writeObject(result, tLSOAToCentroidLookupTableFile);
         }
         return result;
     }

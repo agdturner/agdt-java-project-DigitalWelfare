@@ -32,9 +32,9 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
+import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -103,58 +103,58 @@ public class DW_SHBE_Handler extends DW_Object {
                     SHBEFilename,
                     NearestYM3ForONSPDFormatLookupLastYM3,
                     logDir);
-            Generic_StaticIO.writeObject(DW_SHBE_Records, DW_SHBE_Records.getFile());
+            Generic_IO.writeObject(DW_SHBE_Records, DW_SHBE_Records.getFile());
         }
         writeLookups();
         // Make a backup copy
         File SHBEbackup;
         SHBEbackup = new File(Files.getGeneratedLCCDir(), "SHBEBackup");
         if (SHBEbackup.isDirectory()) {
-            SHBEbackup = Generic_StaticIO.addToArchive(SHBEbackup, 100);
+            SHBEbackup = Generic_IO.addToArchive(SHBEbackup, 100);
         } else {
-            SHBEbackup = Generic_StaticIO.initialiseArchive(SHBEbackup, 100);
+            SHBEbackup = Generic_IO.initialiseArchive(SHBEbackup, 100);
         }
-        Generic_StaticIO.copy(Files.getGeneratedSHBEDir(), SHBEbackup);
+        Generic_IO.copy(Files.getGeneratedSHBEDir(), SHBEbackup);
     }
 
     public void writeLookups() {
-        Generic_StaticIO.writeObject(
+        Generic_IO.writeObject(
                 SHBE_Data.getClaimIDToClaimRefLookup(),
                 SHBE_Data.getClaimIDToClaimRefLookupFile());
-        Generic_StaticIO.writeObject(
+        Generic_IO.writeObject(
                 SHBE_Data.getClaimRefToClaimIDLookup(),
                 SHBE_Data.getClaimRefToClaimIDLookupFile());
-        Generic_StaticIO.writeObject(
+        Generic_IO.writeObject(
                 SHBE_Data.getNINOToNINOIDLookup(),
                 SHBE_Data.getNINOToNINOIDLookupFile());
-        Generic_StaticIO.writeObject(
+        Generic_IO.writeObject(
                 SHBE_Data.getNINOIDToNINOLookup(),
                 SHBE_Data.getNINOIDToNINOLookupFile());
-        Generic_StaticIO.writeObject(
+        Generic_IO.writeObject(
                 SHBE_Data.getDOBToDOBIDLookup(),
                 SHBE_Data.getDOBToDOBIDLookupFile());
-        Generic_StaticIO.writeObject(
+        Generic_IO.writeObject(
                 SHBE_Data.getDOBIDToDOBLookup(),
                 SHBE_Data.getDOBIDToDOBLookupFile());
-        Generic_StaticIO.writeObject(
+        Generic_IO.writeObject(
                 SHBE_Data.getPostcodeToPostcodeIDLookup(),
                 SHBE_Data.getPostcodeToPostcodeIDLookupFile());
-        Generic_StaticIO.writeObject(
+        Generic_IO.writeObject(
                 SHBE_Data.getPostcodeIDToPostcodeLookup(),
                 SHBE_Data.getPostcodeIDToPostcodeLookupFile());
-        Generic_StaticIO.writeObject(
+        Generic_IO.writeObject(
                 SHBE_Data.getPostcodeIDToPointLookups(),
                 SHBE_Data.getPostcodeIDToPointLookupsFile());
-        Generic_StaticIO.writeObject(
+        Generic_IO.writeObject(
                 SHBE_Data.getClaimantPersonIDs(),
                 SHBE_Data.getClaimantPersonIDsFile());
-        Generic_StaticIO.writeObject(
+        Generic_IO.writeObject(
                 SHBE_Data.getPartnerPersonIDs(),
                 SHBE_Data.getPartnerPersonIDsFile());
-        Generic_StaticIO.writeObject(
+        Generic_IO.writeObject(
                 SHBE_Data.getNonDependentPersonIDs(),
                 SHBE_Data.getNonDependentPersonIDsFile());
-        Generic_StaticIO.writeObject(
+        Generic_IO.writeObject(
                 SHBE_Data.getPersonIDToClaimIDLookup(),
                 SHBE_Data.getPersonIDToClaimIDLookupFile());
     }
@@ -205,7 +205,7 @@ public class DW_SHBE_Handler extends DW_Object {
                         SHBEFilename,
                         NearestYM3ForONSPDFormatLookupLastYM3,
                         logDir);
-                Generic_StaticIO.writeObject(DW_SHBE_Records, DW_SHBE_Records.getFile());
+                Generic_IO.writeObject(DW_SHBE_Records, DW_SHBE_Records.getFile());
             }
             writeLookups();
         }
@@ -213,11 +213,11 @@ public class DW_SHBE_Handler extends DW_Object {
         File SHBEbackup;
         SHBEbackup = new File(Files.getGeneratedLCCDir(), "SHBEBackup");
         if (SHBEbackup.isDirectory()) {
-            SHBEbackup = Generic_StaticIO.addToArchive(SHBEbackup, 100);
+            SHBEbackup = Generic_IO.addToArchive(SHBEbackup, 100);
         } else {
-            SHBEbackup = Generic_StaticIO.initialiseArchive(SHBEbackup, 100);
+            SHBEbackup = Generic_IO.initialiseArchive(SHBEbackup, 100);
         }
-        Generic_StaticIO.copy(Files.getGeneratedSHBEDir(), SHBEbackup);
+        Generic_IO.copy(Files.getGeneratedSHBEDir(), SHBEbackup);
     }
 
     /**
@@ -421,10 +421,10 @@ public class DW_SHBE_Handler extends DW_Object {
         }
         if (modifiedRecs == true) {
             // Write out recs0
-            Generic_StaticIO.writeObject(ClaimantPostcodesUnmappable0, DW_SHBE_Records0.getClaimantPostcodesUnmappableFile());
-            Generic_StaticIO.writeObject(ClaimIDToPostcodeIDLookup0, DW_SHBE_Records0.getClaimIDToPostcodeIDLookupFile());
-            Generic_StaticIO.writeObject(recs0, DW_SHBE_Records0.getRecordsFile());
-            Generic_StaticIO.writeObject(ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0, DW_SHBE_Records0.getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile());
+            Generic_IO.writeObject(ClaimantPostcodesUnmappable0, DW_SHBE_Records0.getClaimantPostcodesUnmappableFile());
+            Generic_IO.writeObject(ClaimIDToPostcodeIDLookup0, DW_SHBE_Records0.getClaimIDToPostcodeIDLookupFile());
+            Generic_IO.writeObject(recs0, DW_SHBE_Records0.getRecordsFile());
+            Generic_IO.writeObject(ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0, DW_SHBE_Records0.getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile());
         }
 
         // Prepare for next iteration
@@ -469,7 +469,7 @@ public class DW_SHBE_Handler extends DW_Object {
         // </Write out UniqueModifiedPostcodes>
         if (modifiedAnyRecs == true) {
             // Write out PostcodeIDPointLookups
-            Generic_StaticIO.writeObject(PostcodeIDPointLookups, SHBE_Data.getPostcodeIDToPointLookupsFile());
+            Generic_IO.writeObject(PostcodeIDPointLookups, SHBE_Data.getPostcodeIDToPointLookupsFile());
         }
     }
 
@@ -673,10 +673,10 @@ public class DW_SHBE_Handler extends DW_Object {
             }
             if (modifiedRecs == true) {
                 // Write out recs0
-                Generic_StaticIO.writeObject(ClaimantPostcodesUnmappable0, DW_SHBE_Records0.getClaimantPostcodesUnmappableFile());
-                Generic_StaticIO.writeObject(ClaimIDToPostcodeIDLookup0, DW_SHBE_Records0.getClaimIDToPostcodeIDLookupFile());
-                Generic_StaticIO.writeObject(recs0, DW_SHBE_Records0.getRecordsFile());
-                Generic_StaticIO.writeObject(ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0, DW_SHBE_Records0.getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile());
+                Generic_IO.writeObject(ClaimantPostcodesUnmappable0, DW_SHBE_Records0.getClaimantPostcodesUnmappableFile());
+                Generic_IO.writeObject(ClaimIDToPostcodeIDLookup0, DW_SHBE_Records0.getClaimIDToPostcodeIDLookupFile());
+                Generic_IO.writeObject(recs0, DW_SHBE_Records0.getRecordsFile());
+                Generic_IO.writeObject(ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0, DW_SHBE_Records0.getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFutureFile());
             }
 
             // Prepare for next iteration
@@ -721,7 +721,7 @@ public class DW_SHBE_Handler extends DW_Object {
         // </Write out UniqueModifiedPostcodes>
         if (modifiedAnyRecs == true) {
             // Write out PostcodeIDPointLookups
-            Generic_StaticIO.writeObject(PostcodeIDPointLookups, SHBE_Data.getPostcodeIDToPointLookupsFile());
+            Generic_IO.writeObject(PostcodeIDPointLookups, SHBE_Data.getPostcodeIDToPointLookupsFile());
         }
     }
 
@@ -1116,7 +1116,7 @@ public class DW_SHBE_Handler extends DW_Object {
                 doRSL);
         if (IncomeAndRentSummaryFile.exists()) {
             if (!forceNew) {
-                return (HashMap<String, BigDecimal>) Generic_StaticIO.readObject(
+                return (HashMap<String, BigDecimal>) Generic_IO.readObject(
                         IncomeAndRentSummaryFile);
             }
         }
@@ -1454,7 +1454,7 @@ public class DW_SHBE_Handler extends DW_Object {
                 }
             }
         }
-        Generic_StaticIO.writeObject(result, IncomeAndRentSummaryFile);
+        Generic_IO.writeObject(result, IncomeAndRentSummaryFile);
         return result;
     }
 
@@ -2695,7 +2695,7 @@ public class DW_SHBE_Handler extends DW_Object {
             File f) {
         HashMap<DW_ID, String> result;
         if (f.exists()) {
-            result = (HashMap<DW_ID, String>) Generic_StaticIO.readObject(f);
+            result = (HashMap<DW_ID, String>) Generic_IO.readObject(f);
         } else {
             result = new HashMap<DW_ID, String>();
         }
@@ -2706,7 +2706,7 @@ public class DW_SHBE_Handler extends DW_Object {
             File f) {
         HashMap<String, DW_ID> result;
         if (f.exists()) {
-            result = (HashMap<String, DW_ID>) Generic_StaticIO.readObject(f);
+            result = (HashMap<String, DW_ID>) Generic_IO.readObject(f);
         } else {
             result = new HashMap<String, DW_ID>();
         }

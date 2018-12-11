@@ -29,7 +29,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -93,10 +93,10 @@ public class DW_UO_Handler extends DW_Object {
         boolean addedNewClaimIDs;
         addedNewClaimIDs = false;
         try {
-            BufferedReader br = Generic_StaticIO.getBufferedReader(inputFile);
+            BufferedReader br = Generic_IO.getBufferedReader(inputFile);
             StreamTokenizer st
                     = new StreamTokenizer(br);
-            Generic_StaticIO.setStreamTokenizerSyntax5(st);
+            Generic_IO.setStreamTokenizerSyntax5(st);
             st.wordChars('`', '`');
             st.wordChars('*', '*');
             String line = "";
@@ -109,7 +109,7 @@ public class DW_UO_Handler extends DW_Object {
             line = st.sval;
             String[] fieldnames = line.split(",");
 //            // Skip the first line
-//            Generic_StaticIO.skipline(st);
+//            Generic_IO.skipline(st);
 
             // Read data
             tokenType = st.nextToken();
@@ -162,10 +162,10 @@ public class DW_UO_Handler extends DW_Object {
             //System.out.println("replacementEntriesCount " + replacementEntriesCount);
             br.close();
             if (addedNewClaimIDs) {
-                Generic_StaticIO.writeObject(
+                Generic_IO.writeObject(
                         ClaimIDToClaimRefLookup,
                         SHBE_Data.getClaimIDToClaimRefLookupFile());
-                Generic_StaticIO.writeObject(
+                Generic_IO.writeObject(
                         ClaimRefToClaimIDLookup,
                         SHBE_Data.getClaimRefToClaimIDLookupFile());
             }

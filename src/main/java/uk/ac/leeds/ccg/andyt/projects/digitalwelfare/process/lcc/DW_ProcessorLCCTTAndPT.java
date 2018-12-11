@@ -21,8 +21,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
@@ -2012,7 +2012,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 dirOut2,
                 name);
         Env.logO("Write " + f, true);
-        result = Generic_StaticIO.getPrintWriter(f, false);
+        result = Generic_IO.getPrintWriter(f, false);
         return result;
     }
 
@@ -5705,7 +5705,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 
         Env.logO("Write " + f, true);
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(f, false);
+        pw = Generic_IO.getPrintWriter(f, false);
         pw.println("DW_ID, StartTime, EndTime, TenancyTypeChange, StartPostcode, End Postcode");
         Iterator<String[]> ite;
         ite = postcodeChanges.iterator();

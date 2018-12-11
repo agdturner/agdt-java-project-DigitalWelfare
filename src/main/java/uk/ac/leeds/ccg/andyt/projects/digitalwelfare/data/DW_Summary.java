@@ -27,9 +27,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.math.Generic_BigDecimal;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
+import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -6054,7 +6054,7 @@ public class DW_Summary extends DW_Object {
         outFilename += summaryTable.firstKey() + "_To_" + summaryTable.lastKey() + Strings.sUnderscore + name + ".csv";
         File outFile;
         outFile = new File(dirOut, outFilename);
-        result = Generic_StaticIO.getPrintWriter(outFile, false);
+        result = Generic_IO.getPrintWriter(outFile, false);
         return result;
     }
 

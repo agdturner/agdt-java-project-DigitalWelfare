@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
@@ -268,7 +268,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                     outFile = new File(
                             outDir2,
                             YM3 + ".csv");
-                    outPW = Generic_StaticIO.getPrintWriter(outFile, false);
+                    outPW = Generic_IO.getPrintWriter(outFile, false);
                     outPW.println("AreaCode, NumberOfHBClaims, "
                             + "NumberOfChildDependentsInHBClaimingHouseholds, "
                             + "TotalPopulationInHBClaimingHouseholds, "

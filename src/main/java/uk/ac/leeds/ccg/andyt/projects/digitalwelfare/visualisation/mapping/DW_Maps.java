@@ -43,8 +43,8 @@ import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Maps;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -338,9 +338,9 @@ public class DW_Maps extends Geotools_Maps {
                 dir,
                 "pop.csv");
         try {
-            BufferedReader br = Generic_StaticIO.getBufferedReader(file);
+            BufferedReader br = Generic_IO.getBufferedReader(file);
             StreamTokenizer st = new StreamTokenizer(br);
-            Generic_StaticIO.setStreamTokenizerSyntax1(st);
+            Generic_IO.setStreamTokenizerSyntax1(st);
             int token = st.nextToken();
 //            //skip header (2 lines)
 //            st.nextToken();

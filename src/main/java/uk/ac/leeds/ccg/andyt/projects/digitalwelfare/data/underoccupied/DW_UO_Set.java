@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -101,13 +101,13 @@ public class DW_UO_Set extends DW_Object implements Serializable {
                 Strings.sDW_UO_Set + Strings.sBinaryFileExtension);
         if (fOut.exists() || !reload) {
             DW_UO_Set loadDummy;
-            loadDummy = (DW_UO_Set) Generic_StaticIO.readObject(fOut);
+            loadDummy = (DW_UO_Set) Generic_IO.readObject(fOut);
             Map = loadDummy.Map;
         } else {
             Map = UO_Handler.loadInputData(
                     dirIn,
                     filename);
-            Generic_StaticIO.writeObject(this, fOut);
+            Generic_IO.writeObject(this, fOut);
         }
         env.logO("</" + methodName + ">", true);
     }

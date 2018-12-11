@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_Claim;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
@@ -57,9 +57,9 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         DW_RentArrearsUO RentArrearsUO;
         if (newData) {
             RentArrearsUO = new DW_RentArrearsUO(Env);
-            Generic_StaticIO.writeObject(RentArrearsUO, f);
+            Generic_IO.writeObject(RentArrearsUO, f);
         } else if (f.exists()) {
-            RentArrearsUO = (DW_RentArrearsUO) Generic_StaticIO.readObject(f);
+            RentArrearsUO = (DW_RentArrearsUO) Generic_IO.readObject(f);
             RentArrearsUO.SHBE_Data = Env.getSHBE_Data();
             RentArrearsUO.SHBE_Handler = Env.getSHBE_Handler();
             RentArrearsUO.Strings = Env.getStrings();
@@ -73,11 +73,11 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //            int nUOFiles = Files.getInputUnderOccupiedDir().listFiles().length / 2;
 //            if (nUOSets < nUOFiles) {
 //                DW_RentArrearsUO = new DW_RentArrearsUO(Env);
-//                Generic_StaticIO.writeObject(DW_RentArrearsUO, f);
+//                Generic_IO.writeObject(DW_RentArrearsUO, f);
 //            }
         } else {
             RentArrearsUO = new DW_RentArrearsUO(Env);
-            Generic_StaticIO.writeObject(RentArrearsUO, f);
+            Generic_IO.writeObject(RentArrearsUO, f);
         }
 
         HashMap<DW_YM3, DW_SHBE_Records> AllSHBE;

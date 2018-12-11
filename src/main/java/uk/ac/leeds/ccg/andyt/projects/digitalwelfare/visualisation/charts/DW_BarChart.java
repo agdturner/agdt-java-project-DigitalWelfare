@@ -31,9 +31,9 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Execution;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Collections;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.chart.execution.Generic_Execution;
+import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.charts.Generic_BarChart;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -547,13 +547,13 @@ public class DW_BarChart extends Generic_BarChart {
             }
             HashSet<String> areaCodesForLevel;
             if (fout.exists()) {
-                areaCodesForLevel = (HashSet<String>) Generic_StaticIO.readObject(fout);
+                areaCodesForLevel = (HashSet<String>) Generic_IO.readObject(fout);
             } else {
                 ArrayList<String> lines;
                 lines = DW_Table.readCSV(fin);
                 areaCodesForLevel = new HashSet<String>();
                 areaCodesForLevel.addAll(lines);
-                Generic_StaticIO.writeObject(areaCodesForLevel, fout);
+                Generic_IO.writeObject(areaCodesForLevel, fout);
             }
             areaCodes.put(level, areaCodesForLevel);
         }
