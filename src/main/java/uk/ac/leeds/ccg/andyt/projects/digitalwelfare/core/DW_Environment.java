@@ -537,7 +537,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                 UO_Data = UO_Handler.loadUnderOccupiedReportData(loadFromSource);
                 Generic_IO.writeObject(UO_Data, f);
             } else if (f.exists()) {
-                UO_Data = (DW_UO_Data) Generic_IO.readObject(f, true);
+                UO_Data = (DW_UO_Data) Generic_IO.readObject(f);
                 // For debugging/testing load
                 TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
                 CouncilUOSets = UO_Data.getCouncilUOSets();
