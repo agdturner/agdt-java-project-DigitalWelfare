@@ -20,6 +20,8 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
 
 /**
  * A class for holding all Strings used in the DigitalWelfare project. It is
@@ -28,38 +30,9 @@ import java.util.HashSet;
  *
  * @author geoagdt
  */
-public class DW_Strings {
+public class DW_Strings extends Generic_Strings {
 
-    public final String CottingleySpringsCaravanParkPostcode = "LS27 7NS";
-
-    public final String sCottingleySpringsCaravanPark = "CottingleySpringsCaravanPark";
-
-    /**
-     * Code for a Default National Insurance Number. There are other defaults
-     * that appear to be in the source SHBE data that are of a similar form, but
-     * this is the default one used by this program.
-     */
-    public final String sDefaultNINO = "ZX999999XZ";
-
-    /**
-     * Short code for New Line
-     */
-    public final String sNewLine = "\n";
-
-    /**
-     * Short code for Underscore.
-     */
-    public final String sUnderscore = "_";
-
-    /**
-     * Short code for Full Stop.
-     */
-    public String sFullStop = ".";
-
-    /**
-     * Short code for Comma.
-     */
-    public String sComma = ",";
+    public SHBE_Strings SHBE_Strings;
 
     /**
      * Short code for sCommaSpace.
@@ -69,7 +42,7 @@ public class DW_Strings {
     /**
      * Short code for BinaryFileExtension.
      */
-    public String sBinaryFileExtension = sFullStop + "dat";
+    public String sBinaryFileExtension = ".dat";
 
     /**
      * Short code for All.
@@ -222,25 +195,6 @@ public class DW_Strings {
      */
     public final String sInclude3Monthly = "I3M";
 
-    /**
-     * Short code for PaymentTypeIn.
-     */
-    public final String sPaymentTypeIn = "PTI";
-
-    /**
-     * Short code for PaymentTypeOther.
-     */
-    public final String sPaymentTypeOther = "PTO";
-
-    /**
-     * Short code for PaymentTypeAll.
-     */
-    public final String sPaymentTypeAll = "PTA";
-
-    /**
-     * Short code for PaymentTypeSuspended.
-     */
-    public final String sPaymentTypeSuspended = "PTS";
 
     /**
      * Short code for PostcodeChanged.
@@ -512,30 +466,7 @@ public class DW_Strings {
      */
     public final String sCountOfNonDependentsInMultipleClaimsInAMonth = "CountOfNonDependentsInMultipleClaimsInAMonth";
 
-    /**
-     * "CountOfNewSHBEClaims".
-     */
-    public final String sCountOfNewSHBEClaims = "CountOfNewSHBEClaims";
-
-    /**
-     * "CountOfNewSHBEClaimsWhereClaimantWasClaimantBefore".
-     */
-    public final String sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore = "CountOfNewSHBEClaimsWhereClaimantWasClaimantBefore";
-
-    /**
-     * "CountOfNewSHBEClaimsWhereClaimantWasPartnerBefore".
-     */
-    public final String sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore = "CountOfNewSHBEClaimsWhereClaimantWasPartnerBefore";
-
-    /**
-     * "CountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore".
-     */
-    public final String sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore = "CountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore";
-
-    /**
-     * "CountOfNewSHBEClaimsWhereClaimantIsNew".
-     */
-    public final String sCountOfNewSHBEClaimsWhereClaimantIsNew = "CountOfNewSHBEClaimsWhereClaimantIsNew";
+    
 
     /**
      * "CountOfNewClaimantPostcodes".
@@ -681,21 +612,6 @@ public class DW_Strings {
      * "Records".
      */
     public final String sRecords = "Records";
-
-    /**
-     * "Records".
-     */
-    public final String sRegulated = "Regulated";
-
-    /**
-     * "Records".
-     */
-    public final String sUnregulated = "Unregulated";
-
-    /**
-     * "Records".
-     */
-    public final String sUngrouped = "Ungrouped";
 
     /**
      * "Unit".
@@ -902,20 +818,6 @@ public class DW_Strings {
         return CensusAreaAggregations;
     }
 
-    /**
-     * For getting an {@code ArrayList<String>} of PaymentTypes.
-     *
-     * @return
-     */
-    public ArrayList<String> getPaymentTypes() {
-        ArrayList<String> result;
-        result = new ArrayList<>();
-        result.add(sPaymentTypeAll);
-        result.add(sPaymentTypeIn);
-        result.add(sPaymentTypeSuspended);
-        result.add(sPaymentTypeOther);
-        return result;
-    }
 
     public ArrayList<String> getHB_CTB() {
         ArrayList<String> result;

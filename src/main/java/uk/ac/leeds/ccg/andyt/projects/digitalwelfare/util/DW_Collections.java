@@ -28,7 +28,7 @@ import java.util.Set;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_PersonID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_PersonID;
 
 /**
  *

@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
@@ -46,7 +47,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
     /**
      * DW_UO_Records indexed by ClaimID
      */
-    protected HashMap<DW_ID, DW_UO_Record> Map;
+    protected HashMap<SHBE_ID, DW_UO_Record> Map;
 
     public DW_UO_Set(DW_Environment env) {
         super(env);
@@ -84,16 +85,13 @@ public class DW_UO_Set extends DW_Object implements Serializable {
         File dirIn;
         dirIn = Files.getInputUnderOccupiedDir();
         File dirOut;
-        dirOut = new File(Files.getGeneratedUnderOccupiedDir(),
-                type);
-        dirOut = new File(dirOut,
-                YM3.toString());
+        dirOut = new File(Files.getGeneratedUnderOccupiedDir(),                type);
+        dirOut = new File(dirOut,                YM3.toString());
         if (!dirOut.exists()) {
             dirOut.mkdirs();
         }
         File fOut;
-        fOut = new File(dirOut,
-                Strings.sDW_UO_Set + Strings.sBinaryFileExtension);
+        fOut = new File(dirOut,                Strings.sDW_UO_Set + Strings.sBinaryFileExtension);
         if (fOut.exists() || !reload) {
             DW_UO_Set loadDummy;
             loadDummy = (DW_UO_Set) Generic_IO.readObject(fOut);
@@ -109,7 +107,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
      *
      * @return Map
      */
-    public HashMap<DW_ID, DW_UO_Record> getMap() {
+    public HashMap<SHBE_ID, DW_UO_Record> getMap() {
         return Map;
     }
 
@@ -118,7 +116,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
      *
      * @return
      */
-    public Set<DW_ID> getClaimIDs() {
+    public Set<SHBE_ID> getClaimIDs() {
         return Map.keySet();
     }
 }

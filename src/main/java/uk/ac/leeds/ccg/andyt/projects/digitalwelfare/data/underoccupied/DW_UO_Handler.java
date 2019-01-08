@@ -30,12 +30,12 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Data;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
@@ -50,8 +50,8 @@ public class DW_UO_Handler extends DW_Object {
     protected DW_Strings Strings;
     protected DW_Files Files;
     private DW_SHBE_Data SHBE_Data;
-    private HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
-    private HashMap<String, DW_ID> ClaimRefToClaimIDLookup;
+    private HashMap<SHBE_ID, String> ClaimIDToClaimRefLookup;
+    private HashMap<String, SHBE_ID> ClaimRefToClaimIDLookup;
 
     private HashSet<String> RecordTypes;
 
@@ -76,7 +76,7 @@ public class DW_UO_Handler extends DW_Object {
      * @param filename
      * @return
      */
-    public HashMap<DW_ID, DW_UO_Record> loadInputData(
+    public HashMap<SHBE_ID, DW_UO_Record> loadInputData(
             File directory,
             String filename) {
 //        String type;
@@ -85,17 +85,14 @@ public class DW_UO_Handler extends DW_Object {
 //        } else {
 //            type = "Council";
 //        }
-        HashMap<DW_ID, DW_UO_Record> result;
+        HashMap<SHBE_ID, DW_UO_Record> result;
         result = new HashMap<>();
-        File inputFile = new File(
-                directory,
-                filename);
+        File inputFile = new File(                directory,                filename);
         boolean addedNewClaimIDs;
         addedNewClaimIDs = false;
         try {
             BufferedReader br = Generic_IO.getBufferedReader(inputFile);
-            StreamTokenizer st
-                    = new StreamTokenizer(br);
+            StreamTokenizer st                    = new StreamTokenizer(br);
             Generic_IO.setStreamTokenizerSyntax5(st);
             st.wordChars('`', '`');
             st.wordChars('*', '*');
@@ -127,10 +124,10 @@ public class DW_UO_Handler extends DW_Object {
                             //RecordID, line, type);
                             String ClaimRef;
                             ClaimRef = DW_UO_Record.getClaimRef();
-                            DW_ID ClaimID;
+                            SHBE_ID ClaimID;
                             ClaimID = ClaimRefToClaimIDLookup.get(ClaimRef);
                             if (ClaimID == null) {
-                                ClaimID = new DW_ID(ClaimRefToClaimIDLookup.size());
+                                ClaimID = new SHBE_ID(ClaimRefToClaimIDLookup.size());
                                 ClaimRefToClaimIDLookup.put(ClaimRef, ClaimID);
                                 ClaimIDToClaimRefLookup.put(ClaimID, ClaimRef);
                                 addedNewClaimIDs = true;
@@ -187,9 +184,9 @@ public class DW_UO_Handler extends DW_Object {
         Env.logO("<" + methodName + ">", true);
         DW_UO_Data result;
         TreeMap<ONSPD_YM3, DW_UO_Set> CouncilSets;
-        CouncilSets = new TreeMap<ONSPD_YM3, DW_UO_Set>();
+        CouncilSets = new TreeMap<>();
         TreeMap<ONSPD_YM3, DW_UO_Set> RSLSets;
-        RSLSets = new TreeMap<ONSPD_YM3, DW_UO_Set>();
+        RSLSets = new TreeMap<>();
 
         // Look where the generated data should be stored.
         // Look where the input data are.
@@ -291,8 +288,8 @@ public class DW_UO_Handler extends DW_Object {
             inputFilenames = new Object[2];
             TreeMap<ONSPD_YM3, String> CouncilFilenames;
             TreeMap<ONSPD_YM3, String> RSLFilenames;
-            CouncilFilenames = new TreeMap<ONSPD_YM3, String>();
-            RSLFilenames = new TreeMap<ONSPD_YM3, String>();
+            CouncilFilenames = new TreeMap<>();
+            RSLFilenames = new TreeMap<>();
             inputFilenames[0] = CouncilFilenames;
             inputFilenames[1] = RSLFilenames;
 //            String[] list = Files.getInputUnderOccupiedDir().list();
@@ -459,13 +456,13 @@ public class DW_UO_Handler extends DW_Object {
     }
 
     /**
-     * Returns a Set<DW_ID> of the ClaimIDs of those UnderOccupying at the start
+     * Returns a Set<SHBE_ID> of the ClaimIDs of those UnderOccupying at the start
      * of April2013.
      *
      * @param DW_UO_Data
      * @return
      */
-    public Set<DW_ID> getUOStartApril2013ClaimIDs(
+    public Set<SHBE_ID> getUOStartApril2013ClaimIDs(
             DW_UO_Data DW_UO_Data) {
         return DW_UO_Data.getClaimIDsInUO().get(DW_UO_Data.getBaselineYM3());
     }
@@ -477,7 +474,7 @@ public class DW_UO_Handler extends DW_Object {
      * @param DW_UO_Data
      * @return
      */
-    public Set<DW_ID> getAllCouncilUOClaimIDs(
+    public Set<SHBE_ID> getAllCouncilUOClaimIDs(
             DW_UO_Data DW_UO_Data) {
         return DW_UO_Data.getClaimIDsInCouncilUO();
     }

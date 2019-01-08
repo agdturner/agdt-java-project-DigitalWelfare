@@ -24,8 +24,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
 /**
@@ -51,25 +51,25 @@ public class DW_UO_Data extends DW_Object implements Serializable {
      * For storing sets of ClaimIDsInUO. Keys are YM3, values are the
      * respective ClaimIDsInUO for claims classed as Under Occupying.
      */
-    private TreeMap<ONSPD_YM3, Set<DW_ID>> ClaimIDsInUO;
+    private TreeMap<ONSPD_YM3, Set<SHBE_ID>> ClaimIDsInUO;
 
     /**
      * For storing ClaimIDs of claims that were classed as Under Occupying
      * Council claims at some time.
      */
-    private HashSet<DW_ID> ClaimIDsInCouncilUO;
+    private HashSet<SHBE_ID> ClaimIDsInCouncilUO;
 
     /**
      * For storing ClaimIDs of Council claims that were expected in March
      * 2013 to be UnderOccupying in April 2013.
      */
-    private HashSet<DW_ID> ClaimIDsInCouncilBaseline;
+    private HashSet<SHBE_ID> ClaimIDsInCouncilBaseline;
 
     /**
      * For storing ClaimIDs of RSL claims that were expected in March 2013 to
      * be UnderOccupying in April 2013.
      */
-    private HashSet<DW_ID> ClaimIDsInRSLBaseline;
+    private HashSet<SHBE_ID> ClaimIDsInRSLBaseline;
 
     public DW_UO_Data() {
     }
@@ -106,7 +106,7 @@ public class DW_UO_Data extends DW_Object implements Serializable {
     /**
      * @return the ClaimIDsInUO
      */
-    public TreeMap<ONSPD_YM3, Set<DW_ID>> getClaimIDsInUO() {
+    public TreeMap<ONSPD_YM3, Set<SHBE_ID>> getClaimIDsInUO() {
         return ClaimIDsInUO;
     }
 
@@ -128,7 +128,7 @@ public class DW_UO_Data extends DW_Object implements Serializable {
                 ClaimIDsInCouncilBaseline.addAll(CouncilUOSets.get(YM3).getClaimIDs());
                 ClaimIDsInRSLBaseline.addAll(RSLUOSets.get(YM3).getClaimIDs());
             } else {
-                HashSet<DW_ID> ClaimIDsForYM3;
+                HashSet<SHBE_ID> ClaimIDsForYM3;
                 ClaimIDsForYM3 = new HashSet<>();
                 ClaimIDsForYM3.addAll(CouncilUOSets.get(YM3).getClaimIDs());
                 ClaimIDsForYM3.addAll(RSLUOSets.get(YM3).getClaimIDs());
@@ -140,7 +140,7 @@ public class DW_UO_Data extends DW_Object implements Serializable {
     /**
      * @return ClaimIDsInCouncilUO initialising it first if it is null.
      */
-    public HashSet<DW_ID> getClaimIDsInCouncilUO() {
+    public HashSet<SHBE_ID> getClaimIDsInCouncilUO() {
         if (ClaimIDsInCouncilUO == null) {
             initAllCouncilUOClaimIDs();
         }

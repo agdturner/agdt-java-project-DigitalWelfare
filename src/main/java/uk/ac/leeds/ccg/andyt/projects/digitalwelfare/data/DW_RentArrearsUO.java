@@ -24,15 +24,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Records;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Data;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Records;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_D_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Data;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
@@ -54,7 +54,7 @@ public final class DW_RentArrearsUO extends DW_Object {
     public transient DW_Files Files;
     public transient DW_UO_Data UO_Data;
 
-    public HashMap<DW_ID, DW_Claim> ClaimData;
+    public HashMap<SHBE_ID, DW_Claim> ClaimData;
 
     public DW_RentArrearsUO(DW_Environment env) {
         super(env);
@@ -85,11 +85,11 @@ public final class DW_RentArrearsUO extends DW_Object {
         Env.logO("<" + methodName + ">", true);
         // Declare and fill ClaimData with empty DW_Claims
         ClaimData = new HashMap<>();
-        HashSet<DW_ID> AllCouncilUOClaimIDs;
+        HashSet<SHBE_ID> AllCouncilUOClaimIDs;
         AllCouncilUOClaimIDs = UO_Data.getClaimIDsInCouncilUO();
         Env.logO("AllCouncilUOClaimIDs.size() " + AllCouncilUOClaimIDs.size(), true);
-        DW_ID ClaimID;
-        Iterator<DW_ID> ite;
+        SHBE_ID ClaimID;
+        Iterator<SHBE_ID> ite;
         ite = AllCouncilUOClaimIDs.iterator();
         while (ite.hasNext()) {
             ClaimID = ite.next();
@@ -104,7 +104,7 @@ public final class DW_RentArrearsUO extends DW_Object {
         String filename;
         ONSPD_YM3 YM3;
         DW_SHBE_Records DW_SHBE_Records;
-        HashMap<DW_ID, DW_SHBE_Record> Records;
+        HashMap<SHBE_ID, DW_SHBE_Record> Records;
         TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
         DW_UO_Set CouncilUOSet;
         DW_SHBE_Record DW_SHBE_Record;
@@ -157,7 +157,7 @@ public final class DW_RentArrearsUO extends DW_Object {
                     }
                 }
             } else {
-                HashMap<DW_ID, DW_UO_Record> CouncilUOMap;
+                HashMap<SHBE_ID, DW_UO_Record> CouncilUOMap;
                 CouncilUOMap = CouncilUOSet.getMap();
 
                 DW_SHBE_Records = SHBE_Data.getDW_SHBE_Records(YM3);

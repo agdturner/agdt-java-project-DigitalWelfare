@@ -17,16 +17,16 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_Claim;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_RentArrearsUO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_Summary;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_SummaryUO;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Records;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_D_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Records;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
@@ -86,7 +86,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         DecimalFormat df;
         df = new DecimalFormat("0.00");
 
-        HashMap<DW_ID, DW_Claim> ClaimData;
+        HashMap<SHBE_ID, DW_Claim> ClaimData;
         ClaimData = RentArrearsUO.ClaimData;
 
         int AllSHBECount;
@@ -147,11 +147,11 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         DHPTotal = 0;
         DHPCount = 0;
 
-        DW_ID ClaimID;
+        SHBE_ID ClaimID;
         String ClaimRef;
         DW_Claim DW_Claim;
         Iterator<Integer> ite;
-        Iterator<DW_ID> ite2;
+        Iterator<SHBE_ID> ite2;
         Integer i;
         Double BT;
         Double DHP;
@@ -439,7 +439,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //                YM3 = SHBE_Handler.getYM3(SHBEFilenames[j]);
 //                Env.logO("YM3 " + YM3, true);
 //                DW_SHBE_Records = SHBE_Data.getDW_SHBE_Records(YM3);
-//                HashMap<DW_ID, DW_SHBE_Record> Records;
+//                HashMap<SHBE_ID, DW_SHBE_Record> Records;
 //                Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
 //                if (Records.keySet().contains(ClaimID)) {
 //                    SHBECountPriorToApril2013++;
@@ -815,7 +815,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     if (DW_SHBE_Records == null) {
                         Env.logE("AllSHBE.get(YM3) is null!");
                     }
-                    HashMap<DW_ID, DW_SHBE_Record> Records;
+                    HashMap<SHBE_ID, DW_SHBE_Record> Records;
                     Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
                     if (Records == null) {
                         Env.logE("AllSHBE.get(YM3).getRecords(true) is null!");

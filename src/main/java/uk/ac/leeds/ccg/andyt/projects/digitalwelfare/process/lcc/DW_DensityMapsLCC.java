@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
@@ -43,14 +44,13 @@ import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_Processor;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Records;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Data;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Records;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_D_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
@@ -168,7 +168,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        styleParameters.setStylesNull();
 //        commonStyling = true;
 //        individualStyling = true;
-//        runAll(tDW_ID_ClientTypes);
+//        runAll(tSHBE_ID_ClientTypes);
         // Equal Interval runs
         sp.setClassificationFunctionName("EqualInterval");
         sp.setStylesNull();
@@ -736,8 +736,8 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         b.add(false);
 
         ArrayList<String> paymentTypes;
-        paymentTypes = Strings.getPaymentTypes();
-        paymentTypes.remove(Strings.sPaymentTypeAll);
+        paymentTypes = Strings.SHBE_Strings.getPaymentTypes();
+        paymentTypes.remove(Strings.SHBE_Strings.sPaymentTypeAll);
 //        paymentTypes.remove(tDW_SHBE_Handler.sPaymentTypeIn);
 //        paymentTypes.remove(tDW_SHBE_Handler.sPaymentTypeSuspended);
 //        paymentTypes.remove(tDW_SHBE_Handler.sPaymentTypeOther);
@@ -747,9 +747,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         while (inPaymentTypesIte.hasNext()) {
             String inPaymentType;
             inPaymentType = inPaymentTypesIte.next();
-            File dirOut2 = new File(
-                    dirOut,
-                    inPaymentType);
+            File dirOut2 = new File(                    dirOut,                    inPaymentType);
             boolean doUnderOccupied;
 //            doUnderOccupied = true;
 //            doUnderOccupied = false;
@@ -1232,16 +1230,16 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         TreeMap<String, ONSPD_Point> lookup;
         lookup = lookups.get("Unit").get(Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 
-        HashMap<DW_ID, DW_SHBE_Record> records;
+        HashMap<SHBE_ID, DW_SHBE_Record> records;
         records = SHBEData.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
 
         boolean nonZero = false;
 
         // Iterator over records
-        Iterator<DW_ID> recordsIte;
+        Iterator<SHBE_ID> recordsIte;
         recordsIte = records.keySet().iterator();
         while (recordsIte.hasNext()) {
-            DW_ID ClaimID = recordsIte.next();
+            SHBE_ID ClaimID = recordsIte.next();
             DW_SHBE_D_Record DRecord = records.get(ClaimID).getDRecord();
             String postcode = DRecord.getClaimantsPostcode();
 

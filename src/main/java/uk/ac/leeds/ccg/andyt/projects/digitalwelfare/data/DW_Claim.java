@@ -19,8 +19,8 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data;
 
 import java.util.HashMap;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
 /**
@@ -32,7 +32,7 @@ public class DW_Claim extends DW_Object {
     /**
      * The ClaimID of the claim.
      */
-    DW_ID ClaimID;
+    SHBE_ID ClaimID;
     
     /**
      * Keys are SHBE indexes, values are (at the index time):
@@ -108,7 +108,7 @@ public class DW_Claim extends DW_Object {
     
     public DW_Claim(
             DW_Environment env,
-            DW_ID ClaimID){
+            SHBE_ID ClaimID){
         super(env);
         this.ClaimID = ClaimID;
         InSHBE = new HashMap<>();

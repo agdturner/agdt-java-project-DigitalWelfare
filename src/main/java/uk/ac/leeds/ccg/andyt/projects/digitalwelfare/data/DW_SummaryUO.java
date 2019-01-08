@@ -29,13 +29,15 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Records;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Records;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_D_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Record;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
@@ -2352,12 +2354,12 @@ public class DW_SummaryUO extends DW_Summary {
      * latter time period.
      */
     protected void doCouncilCompare2TimesCounts(
-            DW_ID ClaimID,
-            HashSet<DW_ID> Group,
-            HashMap<DW_ID, DW_SHBE_Record> Records0,
-            HashMap<DW_ID, DW_UO_Record> DW_UO_Set0CouncilMap,
-            HashMap<DW_ID, DW_SHBE_Record> Records1,
-            HashMap<DW_ID, DW_UO_Record> DW_UO_Set1CouncilMap
+            SHBE_ID ClaimID,
+            HashSet<SHBE_ID> Group,
+            HashMap<SHBE_ID, DW_SHBE_Record> Records0,
+            HashMap<SHBE_ID, DW_UO_Record> DW_UO_Set0CouncilMap,
+            HashMap<SHBE_ID, DW_SHBE_Record> Records1,
+            HashMap<SHBE_ID, DW_UO_Record> DW_UO_Set1CouncilMap
     ) {
         /**
          * Initialise: Record0, Record1, DRecord0, DRecord1, DW_UO_Record0,
@@ -3083,8 +3085,8 @@ public class DW_SummaryUO extends DW_Summary {
 
     protected void doCouncilCompare2TimesHBCount(
             
-            DW_ID ClaimID,
-            HashSet<DW_ID> Group,
+            SHBE_ID ClaimID,
+            HashSet<SHBE_ID> Group,
             
             Double Arrears0,
             Integer TT0,
@@ -3368,7 +3370,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     public TreeMap<String, HashMap<String, String>> getSummaryTable(
             
-            HashSet<DW_ID> Group,
+            HashSet<SHBE_ID> Group,
             
             String[] SHBEFilenames,
             ArrayList<Integer> include,
@@ -3403,8 +3405,8 @@ public class DW_SummaryUO extends DW_Summary {
         ONSPD_YM3 YM31 = null;
         DW_SHBE_Records DW_SHBE_Records0;
         DW_SHBE_Records DW_SHBE_Records1 = null;
-        HashMap<DW_ID, DW_SHBE_Record> Records0;
-        HashMap<DW_ID, DW_SHBE_Record> Records1 = null;
+        HashMap<SHBE_ID, DW_SHBE_Record> Records0;
+        HashMap<SHBE_ID, DW_SHBE_Record> Records1 = null;
         TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
         TreeMap<ONSPD_YM3, DW_UO_Set> RSLUOSets;
         DW_UO_Set CouncilUOSet0;
@@ -3454,11 +3456,11 @@ public class DW_SummaryUO extends DW_Summary {
         }
         
         // Go through CouncilUOSet1 and initialise Group
-        HashMap<DW_ID, DW_UO_Record> map;
+        HashMap<SHBE_ID, DW_UO_Record> map;
         map = CouncilUOSet1.getMap();
-        Iterator<DW_ID> ite;
+        Iterator<SHBE_ID> ite;
         ite = map.keySet().iterator();
-        DW_ID ClaimID;
+        SHBE_ID ClaimID;
         DW_UO_Record DW_UO_Record;
         Double tra;
         while (ite.hasNext()) {
@@ -3608,16 +3610,16 @@ public class DW_SummaryUO extends DW_Summary {
      */
     protected void doPartSummaryCompare2Times(
             
-            HashSet<DW_ID> Group,
+            HashSet<SHBE_ID> Group,
             
             DW_SHBE_Records DW_SHBE_Records0,
-            HashMap<DW_ID, DW_SHBE_Record> Records0,
+            HashMap<SHBE_ID, DW_SHBE_Record> Records0,
             ONSPD_YM3 YM30,
             String filename0,
             DW_UO_Set CouncilUOSet0,
             DW_UO_Set RSLUOSet0,
             DW_SHBE_Records DW_SHBE_Records1,
-            HashMap<DW_ID, DW_SHBE_Record> Records1,
+            HashMap<SHBE_ID, DW_SHBE_Record> Records1,
             ONSPD_YM3 YM31,
             String filename1,
             DW_UO_Set CouncilUOSet1,
@@ -3648,13 +3650,13 @@ public class DW_SummaryUO extends DW_Summary {
                 RSLUOSet1,
                 summaries);
 
-        HashMap<DW_ID, DW_UO_Record> DW_UO_Set0CouncilMap;
+        HashMap<SHBE_ID, DW_UO_Record> DW_UO_Set0CouncilMap;
         DW_UO_Set0CouncilMap = CouncilUOSet0.getMap();
-        HashMap<DW_ID, DW_UO_Record> DW_UO_Set0RSLMap;
+        HashMap<SHBE_ID, DW_UO_Record> DW_UO_Set0RSLMap;
         DW_UO_Set0RSLMap = RSLUOSet0.getMap();
-        HashMap<DW_ID, DW_UO_Record> DW_UO_Set1CouncilMap;
+        HashMap<SHBE_ID, DW_UO_Record> DW_UO_Set1CouncilMap;
         DW_UO_Set1CouncilMap = CouncilUOSet1.getMap();
-        HashMap<DW_ID, DW_UO_Record> DW_UO_Set1RSLMap;
+        HashMap<SHBE_ID, DW_UO_Record> DW_UO_Set1RSLMap;
         DW_UO_Set1RSLMap = RSLUOSet1.getMap();
 
         // Loop over underoccupancy data
@@ -3718,9 +3720,9 @@ public class DW_SummaryUO extends DW_Summary {
         String key;
         HashMap<String, String> summary;
         HashMap<String, Number> LoadSummary;
-        HashMap<DW_ID, DW_UO_Record> DW_UO_SetCouncilMap;
-        HashMap<DW_ID, DW_UO_Record> DW_UO_SetRSLMap;
-        HashMap<DW_ID, DW_SHBE_Record> Records;
+        HashMap<SHBE_ID, DW_UO_Record> DW_UO_SetCouncilMap;
+        HashMap<SHBE_ID, DW_UO_Record> DW_UO_SetRSLMap;
+        HashMap<SHBE_ID, DW_SHBE_Record> Records;
         HashMap<String, BigDecimal> IncomeAndRentSummaryAllUO;
         HashMap<String, BigDecimal> IncomeAndRentSummaryCouncil;
         HashMap<String, BigDecimal> IncomeAndRentSummaryRSL;
@@ -3813,17 +3815,17 @@ public class DW_SummaryUO extends DW_Summary {
      */
     public void doCouncilCompare2TimesLoopOverSet(
             
-            HashSet<DW_ID> Group,
+            HashSet<SHBE_ID> Group,
                         
-            HashMap<DW_ID, DW_UO_Record> DW_UO_Set0CouncilMap,
-            HashMap<DW_ID, DW_UO_Record> DW_UO_Set1CouncilMap,
-            HashMap<DW_ID, DW_SHBE_Record> Records0,
-            HashMap<DW_ID, DW_SHBE_Record> Records1) {
-        Iterator<DW_ID> ite;
+            HashMap<SHBE_ID, DW_UO_Record> DW_UO_Set0CouncilMap,
+            HashMap<SHBE_ID, DW_UO_Record> DW_UO_Set1CouncilMap,
+            HashMap<SHBE_ID, DW_SHBE_Record> Records0,
+            HashMap<SHBE_ID, DW_SHBE_Record> Records1) {
+        Iterator<SHBE_ID> ite;
         // Go through all those currently and previously UO.
         ite = DW_UO_Set1CouncilMap.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimID;
+            SHBE_ID ClaimID;
             ClaimID = ite.next();
             if (DW_UO_Set0CouncilMap.containsKey(ClaimID)) {
                 doCouncilCompare2TimesCounts(
@@ -3840,7 +3842,7 @@ public class DW_SummaryUO extends DW_Summary {
         // Go through all those currently UO but that were not previously UO.      
         ite = DW_UO_Set1CouncilMap.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimID;
+            SHBE_ID ClaimID;
             ClaimID = ite.next();
             DW_UO_Record UORec;
             UORec = DW_UO_Set1CouncilMap.get(ClaimID);
@@ -3861,7 +3863,7 @@ public class DW_SummaryUO extends DW_Summary {
         // Go through all those that were UO but are not currently UO.
         ite = DW_UO_Set0CouncilMap.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimID;
+            SHBE_ID ClaimID;
             ClaimID = ite.next();
             if (!DW_UO_Set1CouncilMap.containsKey(ClaimID)) {
 //                DW_UO_Record UORec;
@@ -3880,15 +3882,15 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     public void doRSLCompare2TimesLoopOverSet(
-            HashMap<DW_ID, DW_UO_Record> map0,
-            HashMap<DW_ID, DW_UO_Record> map1,
-            HashMap<DW_ID, DW_SHBE_Record> Records0,
-            HashMap<DW_ID, DW_SHBE_Record> Records1) {
-        Iterator<DW_ID> ite;
+            HashMap<SHBE_ID, DW_UO_Record> map0,
+            HashMap<SHBE_ID, DW_UO_Record> map1,
+            HashMap<SHBE_ID, DW_SHBE_Record> Records0,
+            HashMap<SHBE_ID, DW_SHBE_Record> Records1) {
+        Iterator<SHBE_ID> ite;
+        SHBE_ID ClaimID;
         // Go through all those currently and previously UO.
         ite = map1.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimID;
             ClaimID = ite.next();
             if (map0.containsKey(ClaimID)) {
                 doRSLCompare2TimesCountsAsNecessary(
@@ -3900,7 +3902,6 @@ public class DW_SummaryUO extends DW_Summary {
         // Go through all those currently UO but that were not previously UO.      
         ite = map1.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimID;
             ClaimID = ite.next();
             DW_UO_Record UORec;
             UORec = map1.get(ClaimID);
@@ -3916,7 +3917,6 @@ public class DW_SummaryUO extends DW_Summary {
         // Go through all those that were UO but are not currently UO.
         ite = map0.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimID;
             ClaimID = ite.next();
             if (!map1.containsKey(ClaimID)) {
 //                DW_UO_Record UORec;
@@ -3932,9 +3932,9 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     private void doRSLCompare2TimesCountsAsNecessary(
-            DW_ID ClaimID,
-            HashMap<DW_ID, DW_SHBE_Record> Records0,
-            HashMap<DW_ID, DW_SHBE_Record> Records1) {
+            SHBE_ID ClaimID,
+            HashMap<SHBE_ID, DW_SHBE_Record> Records0,
+            HashMap<SHBE_ID, DW_SHBE_Record> Records1) {
         DW_SHBE_Record Record0;
         Record0 = Records0.get(ClaimID);
         DW_SHBE_Record Record1;
@@ -3962,14 +3962,14 @@ public class DW_SummaryUO extends DW_Summary {
      * @return
      */
     public int doCouncilSingleTimeLoopOverSet(
-            HashMap<DW_ID, DW_UO_Record> map,
-            HashMap<DW_ID, DW_SHBE_Record> Records) {
+            HashMap<SHBE_ID, DW_UO_Record> map,
+            HashMap<SHBE_ID, DW_SHBE_Record> Records) {
         int linkedRecords;
         linkedRecords = 0;
-        Iterator<DW_ID> ite;
+        Iterator<SHBE_ID> ite;
         ite = map.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimID;
+            SHBE_ID ClaimID;
             ClaimID = ite.next();
             DW_UO_Record DW_UO_Record;
             DW_UO_Record = map.get(ClaimID);
@@ -3996,14 +3996,14 @@ public class DW_SummaryUO extends DW_Summary {
      * @return
      */
     public int doRSLSingleTimeLoopOverSet(
-            HashMap<DW_ID, DW_UO_Record> map,
-            HashMap<DW_ID, DW_SHBE_Record> D_Records) {
+            HashMap<SHBE_ID, DW_UO_Record> map,
+            HashMap<SHBE_ID, DW_SHBE_Record> D_Records) {
         int linkedRecords;
         linkedRecords = 0;
-        Iterator<DW_ID> ite;
+        Iterator<SHBE_ID> ite;
         ite = map.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID ClaimID;
+            SHBE_ID ClaimID;
             ClaimID = ite.next();
             DW_UO_Record UORec;
             UORec = map.get(ClaimID);
@@ -5214,30 +5214,30 @@ public class DW_SummaryUO extends DW_Summary {
         header += getHeaderSingleTimeGeneric();
         Iterator<String> PTsIte;
         // Council
-        header += sTotal_CouncilHBPTIIncome + Strings.sCommaSpace;
-        header += sTotalCount_CouncilHBPTIIncomeNonZero + Strings.sCommaSpace;
-        header += sTotalCount_CouncilHBPTIIncomeZero + Strings.sCommaSpace;
-        header += sAverage_NonZero_CouncilHBPTIIncome + Strings.sCommaSpace;
-        header += sTotal_CouncilHBPTSIncome + Strings.sCommaSpace;
-        header += sTotalCount_CouncilHBPTSIncomeNonZero + Strings.sCommaSpace;
-        header += sTotalCount_CouncilHBPTSIncomeZero + Strings.sCommaSpace;
-        header += sAverage_NonZero_CouncilHBPTSIncome + Strings.sCommaSpace;
-        header += sTotal_CouncilHBPTOIncome + Strings.sCommaSpace;
-        header += sTotalCount_CouncilHBPTOIncomeNonZero + Strings.sCommaSpace;
-        header += sTotalCount_CouncilHBPTOIncomeZero + Strings.sCommaSpace;
-        header += sAverage_NonZero_CouncilHBPTOIncome + Strings.sCommaSpace;
-        header += sTotal_CouncilWeeklyEligibleRentAmount + Strings.sCommaSpace;
-        header += sTotalCount_CouncilWeeklyEligibleRentAmountNonZero + Strings.sCommaSpace;
-        header += sAverage_NonZero_CouncilAverageWeeklyEligibleRentAmount + Strings.sCommaSpace;
+        header += sTotal_CouncilHBPTIIncome + Strings.special_commaSpace;
+        header += sTotalCount_CouncilHBPTIIncomeNonZero + Strings.special_commaSpace;
+        header += sTotalCount_CouncilHBPTIIncomeZero + Strings.special_commaSpace;
+        header += sAverage_NonZero_CouncilHBPTIIncome + Strings.special_commaSpace;
+        header += sTotal_CouncilHBPTSIncome + Strings.special_commaSpace;
+        header += sTotalCount_CouncilHBPTSIncomeNonZero + Strings.special_commaSpace;
+        header += sTotalCount_CouncilHBPTSIncomeZero + Strings.special_commaSpace;
+        header += sAverage_NonZero_CouncilHBPTSIncome + Strings.special_commaSpace;
+        header += sTotal_CouncilHBPTOIncome + Strings.special_commaSpace;
+        header += sTotalCount_CouncilHBPTOIncomeNonZero + Strings.special_commaSpace;
+        header += sTotalCount_CouncilHBPTOIncomeZero + Strings.special_commaSpace;
+        header += sAverage_NonZero_CouncilHBPTOIncome + Strings.special_commaSpace;
+        header += sTotal_CouncilWeeklyEligibleRentAmount + Strings.special_commaSpace;
+        header += sTotalCount_CouncilWeeklyEligibleRentAmountNonZero + Strings.special_commaSpace;
+        header += sAverage_NonZero_CouncilAverageWeeklyEligibleRentAmount + Strings.special_commaSpace;
         // RSL
-        header += sTotal_RSLHBPTIIncome + Strings.sCommaSpace;
-        header += sTotalCount_RSLHBPTIIncomeNonZero + Strings.sCommaSpace;
-        header += sAverage_NonZero_RSLIncome + Strings.sCommaSpace;
-        header += sTotal_RSLHBPTSIncome + Strings.sCommaSpace;
-        header += sTotal_RSLHBPTOIncome + Strings.sCommaSpace;
-        header += sTotal_RSLWeeklyEligibleRentAmount + Strings.sCommaSpace;
-        header += sTotalCount_RSLWeeklyEligibleRentAmountNonZero + Strings.sCommaSpace;
-        header += sAverage_NonZero_RSLWeeklyEligibleRentAmount + Strings.sCommaSpace;
+        header += sTotal_RSLHBPTIIncome + Strings.special_commaSpace;
+        header += sTotalCount_RSLHBPTIIncomeNonZero + Strings.special_commaSpace;
+        header += sAverage_NonZero_RSLIncome + Strings.special_commaSpace;
+        header += sTotal_RSLHBPTSIncome + Strings.special_commaSpace;
+        header += sTotal_RSLHBPTOIncome + Strings.special_commaSpace;
+        header += sTotal_RSLWeeklyEligibleRentAmount + Strings.special_commaSpace;
+        header += sTotalCount_RSLWeeklyEligibleRentAmountNonZero + Strings.special_commaSpace;
+        header += sAverage_NonZero_RSLWeeklyEligibleRentAmount + Strings.special_commaSpace;
         header = header.substring(0, header.length() - 2);
         // All UO
         // All
@@ -5257,31 +5257,31 @@ public class DW_SummaryUO extends DW_Summary {
             line += getLineSingleTimeGeneric(key, summary);
             // Council
             // All
-            line += summary.get(sTotal_CouncilHBPTIIncome) + Strings.sCommaSpace;
-            line += summary.get(sTotalCount_CouncilHBPTIIncomeNonZero) + Strings.sCommaSpace;
-            line += summary.get(sTotalCount_CouncilHBPTIIncomeZero) + Strings.sCommaSpace;
-            line += summary.get(sAverage_NonZero_CouncilHBPTIIncome) + Strings.sCommaSpace;
-            line += summary.get(sTotal_CouncilHBPTSIncome) + Strings.sCommaSpace;
-            line += summary.get(sTotalCount_CouncilHBPTSIncomeNonZero) + Strings.sCommaSpace;
-            line += summary.get(sTotalCount_CouncilHBPTSIncomeZero) + Strings.sCommaSpace;
-            line += summary.get(sAverage_NonZero_CouncilHBPTSIncome) + Strings.sCommaSpace;
-            line += summary.get(sTotal_CouncilHBPTOIncome) + Strings.sCommaSpace;
-            line += summary.get(sTotalCount_CouncilHBPTOIncomeNonZero) + Strings.sCommaSpace;
-            line += summary.get(sTotalCount_CouncilHBPTOIncomeZero) + Strings.sCommaSpace;
-            line += summary.get(sAverage_NonZero_CouncilHBPTOIncome) + Strings.sCommaSpace;
-            line += summary.get(sTotal_CouncilWeeklyEligibleRentAmount) + Strings.sCommaSpace;
-            line += summary.get(sTotalCount_CouncilWeeklyEligibleRentAmountNonZero) + Strings.sCommaSpace;
-            line += summary.get(sAverage_NonZero_CouncilAverageWeeklyEligibleRentAmount) + Strings.sCommaSpace;
+            line += summary.get(sTotal_CouncilHBPTIIncome) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_CouncilHBPTIIncomeNonZero) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_CouncilHBPTIIncomeZero) + Strings.special_commaSpace;
+            line += summary.get(sAverage_NonZero_CouncilHBPTIIncome) + Strings.special_commaSpace;
+            line += summary.get(sTotal_CouncilHBPTSIncome) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_CouncilHBPTSIncomeNonZero) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_CouncilHBPTSIncomeZero) + Strings.special_commaSpace;
+            line += summary.get(sAverage_NonZero_CouncilHBPTSIncome) + Strings.special_commaSpace;
+            line += summary.get(sTotal_CouncilHBPTOIncome) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_CouncilHBPTOIncomeNonZero) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_CouncilHBPTOIncomeZero) + Strings.special_commaSpace;
+            line += summary.get(sAverage_NonZero_CouncilHBPTOIncome) + Strings.special_commaSpace;
+            line += summary.get(sTotal_CouncilWeeklyEligibleRentAmount) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_CouncilWeeklyEligibleRentAmountNonZero) + Strings.special_commaSpace;
+            line += summary.get(sAverage_NonZero_CouncilAverageWeeklyEligibleRentAmount) + Strings.special_commaSpace;
             // RSL
             // All
-            line += summary.get(sTotal_RSLHBPTIIncome) + Strings.sCommaSpace;
-            line += summary.get(sTotalCount_RSLHBPTIIncomeNonZero) + Strings.sCommaSpace;
-            line += summary.get(sAverage_NonZero_RSLIncome) + Strings.sCommaSpace;
-            line += summary.get(sTotal_RSLHBPTSIncome) + Strings.sCommaSpace;
-            line += summary.get(sTotal_RSLHBPTOIncome) + Strings.sCommaSpace;
-            line += summary.get(sTotal_RSLWeeklyEligibleRentAmount) + Strings.sCommaSpace;
-            line += summary.get(sTotalCount_RSLWeeklyEligibleRentAmountNonZero) + Strings.sCommaSpace;
-            line += summary.get(sAverage_NonZero_RSLWeeklyEligibleRentAmount) + Strings.sCommaSpace;
+            line += summary.get(sTotal_RSLHBPTIIncome) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_RSLHBPTIIncomeNonZero) + Strings.special_commaSpace;
+            line += summary.get(sAverage_NonZero_RSLIncome) + Strings.special_commaSpace;
+            line += summary.get(sTotal_RSLHBPTSIncome) + Strings.special_commaSpace;
+            line += summary.get(sTotal_RSLHBPTOIncome) + Strings.special_commaSpace;
+            line += summary.get(sTotal_RSLWeeklyEligibleRentAmount) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_RSLWeeklyEligibleRentAmountNonZero) + Strings.special_commaSpace;
+            line += summary.get(sAverage_NonZero_RSLWeeklyEligibleRentAmount) + Strings.special_commaSpace;
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
@@ -5578,56 +5578,56 @@ public class DW_SummaryUO extends DW_Summary {
         // Write headers
         String header;
         header = "";
-        header += sSHBEFilename1 + sCommaSpace;
+        header += sSHBEFilename1 + Strings.special_commaSpace;
         header += getHeaderSingleTimeGeneric();
         // All UO
         // DisabilityAward
-        header += sTotalCount_AllDisabilityAward + sCommaSpace;
-        header += sPercentageOfAll_AllDisabilityAward + sCommaSpace;
+        header += sTotalCount_AllDisabilityAward + Strings.special_commaSpace;
+        header += sPercentageOfAll_AllDisabilityAward + Strings.special_commaSpace;
         // DisabilityPremiumAward
-        header += sTotalCount_AllDisabilityPremiumAward + sCommaSpace;
-        header += sPercentageOfAll_AllDisabilityPremiumAward + sCommaSpace;
+        header += sTotalCount_AllDisabilityPremiumAward + Strings.special_commaSpace;
+        header += sPercentageOfAll_AllDisabilityPremiumAward + Strings.special_commaSpace;
         // SevereDisabilityPremiumAward
-        header += sTotalCount_AllSevereDisabilityPremiumAward + sCommaSpace;
-        header += sPercentageOfAll_AllSevereDisabilityPremiumAward + sCommaSpace;
+        header += sTotalCount_AllSevereDisabilityPremiumAward + Strings.special_commaSpace;
+        header += sPercentageOfAll_AllSevereDisabilityPremiumAward + Strings.special_commaSpace;
         // DisabledChildPremiumAward
-        header += sTotalCount_AllDisabledChildPremiumAward + sCommaSpace;
-        header += sPercentageOfAll_AllDisabledChildPremiumAward + sCommaSpace;
+        header += sTotalCount_AllDisabledChildPremiumAward + Strings.special_commaSpace;
+        header += sPercentageOfAll_AllDisabledChildPremiumAward + Strings.special_commaSpace;
         // EnhancedDisabilityPremiumAward
-        header += sTotalCount_AllEnhancedDisabilityPremiumAward + sCommaSpace;
-        header += sPercentageOfAll_AllEnhancedDisabilityPremiumAward + sCommaSpace;
+        header += sTotalCount_AllEnhancedDisabilityPremiumAward + Strings.special_commaSpace;
+        header += sPercentageOfAll_AllEnhancedDisabilityPremiumAward + Strings.special_commaSpace;
         // Council
         // DisabilityAward
-        header += sTotalCount_CouncilDisabilityAward + sCommaSpace;
-        header += sPercentageOfCouncilCount1_CouncilDisabilityAward + sCommaSpace;
+        header += sTotalCount_CouncilDisabilityAward + Strings.special_commaSpace;
+        header += sPercentageOfCouncilCount1_CouncilDisabilityAward + Strings.special_commaSpace;
         // DisabilityPremiumAward
-        header += sTotalCount_CouncilDisabilityPremiumAward + sCommaSpace;
-        header += sPercentageOfCouncilCount1_CouncilDisabilityPremiumAward + sCommaSpace;
+        header += sTotalCount_CouncilDisabilityPremiumAward + Strings.special_commaSpace;
+        header += sPercentageOfCouncilCount1_CouncilDisabilityPremiumAward + Strings.special_commaSpace;
         // SevereDisabilityPremiumAward
-        header += sTotalCount_CouncilSevereDisabilityPremiumAward + sCommaSpace;
-        header += sPercentageOfCouncilCount1_CouncilSevereDisabilityPremiumAward + sCommaSpace;
+        header += sTotalCount_CouncilSevereDisabilityPremiumAward + Strings.special_commaSpace;
+        header += sPercentageOfCouncilCount1_CouncilSevereDisabilityPremiumAward + Strings.special_commaSpace;
         // DisabledChildPremiumAward
-        header += sTotalCount_CouncilDisabledChildPremiumAward + sCommaSpace;
-        header += sPercentageOfCouncilCount1_CouncilDisabledChildPremiumAward + sCommaSpace;
+        header += sTotalCount_CouncilDisabledChildPremiumAward + Strings.special_commaSpace;
+        header += sPercentageOfCouncilCount1_CouncilDisabledChildPremiumAward + Strings.special_commaSpace;
         // EnhancedDisabilityPremiumAward
-        header += sTotalCount_CouncilEnhancedDisabilityPremiumAward + sCommaSpace;
-        header += sPercentageOfCouncilCount1_CouncilEnhancedDisabilityPremiumAward + sCommaSpace;
+        header += sTotalCount_CouncilEnhancedDisabilityPremiumAward + Strings.special_commaSpace;
+        header += sPercentageOfCouncilCount1_CouncilEnhancedDisabilityPremiumAward + Strings.special_commaSpace;
         // RSL
         // DisabilityAward
-        header += sTotalCount_RSLDisabilityAward + sCommaSpace;
-        header += sPercentageOfRSLCount1_RSLDisabilityAward + sCommaSpace;
+        header += sTotalCount_RSLDisabilityAward + Strings.special_commaSpace;
+        header += sPercentageOfRSLCount1_RSLDisabilityAward + Strings.special_commaSpace;
         // DisabilityPremiumAward
-        header += sTotalCount_RSLDisabilityPremiumAward + sCommaSpace;
-        header += sPercentageOfRSLCount1_RSLDisabilityPremiumAward + sCommaSpace;
+        header += sTotalCount_RSLDisabilityPremiumAward + Strings.special_commaSpace;
+        header += sPercentageOfRSLCount1_RSLDisabilityPremiumAward + Strings.special_commaSpace;
         // SevereDisabilityPremiumAward
-        header += sTotalCount_RSLSevereDisabilityPremiumAward + sCommaSpace;
-        header += sPercentageOfRSLCount1_RSLSevereDisabilityPremiumAward + sCommaSpace;
+        header += sTotalCount_RSLSevereDisabilityPremiumAward + Strings.special_commaSpace;
+        header += sPercentageOfRSLCount1_RSLSevereDisabilityPremiumAward + Strings.special_commaSpace;
         // DisabledChildPremiumAward
-        header += sTotalCount_RSLDisabledChildPremiumAward + sCommaSpace;
-        header += sPercentageOfRSLCount1_RSLDisabledChildPremiumAward + sCommaSpace;
+        header += sTotalCount_RSLDisabledChildPremiumAward + Strings.special_commaSpace;
+        header += sPercentageOfRSLCount1_RSLDisabledChildPremiumAward + Strings.special_commaSpace;
         // EnhancedDisabilityPremiumAward
-        header += sTotalCount_RSLEnhancedDisabilityPremiumAward + sCommaSpace;
-        header += sPercentageOfRSLCount1_RSLEnhancedDisabilityPremiumAward + sCommaSpace;
+        header += sTotalCount_RSLEnhancedDisabilityPremiumAward + Strings.special_commaSpace;
+        header += sPercentageOfRSLCount1_RSLEnhancedDisabilityPremiumAward + Strings.special_commaSpace;
         header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
@@ -5645,53 +5645,53 @@ public class DW_SummaryUO extends DW_Summary {
             line += getLineSingleTimeGeneric(key, summary);
             // All UO
             // DisabilityAward
-            line += summary.get(sTotalCount_DisabilityAwardSocialTTs) + sCommaSpace;
-            line += summary.get(sPercentageOfSocialTTs_DisabilityAwardSocialTTs) + sCommaSpace;
+            line += summary.get(sTotalCount_DisabilityAwardSocialTTs) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfSocialTTs_DisabilityAwardSocialTTs) + Strings.special_commaSpace;
             // DisabilityPremiumAward
-            line += summary.get(sTotalCount_DisabilityPremiumAwardSocialTTs) + sCommaSpace;
-            line += summary.get(sPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs) + sCommaSpace;
+            line += summary.get(sTotalCount_DisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
             // SevereDisabilityPremiumAward
-            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardSocialTTs) + sCommaSpace;
-            line += summary.get(sPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs) + sCommaSpace;
+            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
             // DisabledChildPremiumAward
-            line += summary.get(sTotalCount_DisabledChildPremiumAwardSocialTTs) + sCommaSpace;
-            line += summary.get(sPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs) + sCommaSpace;
+            line += summary.get(sTotalCount_DisabledChildPremiumAwardSocialTTs) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs) + Strings.special_commaSpace;
             // EnhancedDisabilityPremiumAward
-            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs) + sCommaSpace;
-            line += summary.get(sPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs) + sCommaSpace;
+            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
 
             // Council
             // DisabilityAward
-            line += summary.get(sTotalCount_CouncilDisabilityAward) + sCommaSpace;
-            line += summary.get(sPercentageOfCouncilCount1_CouncilDisabilityAward) + sCommaSpace;
+            line += summary.get(sTotalCount_CouncilDisabilityAward) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfCouncilCount1_CouncilDisabilityAward) + Strings.special_commaSpace;
             // DisabilityPremiumAward
-            line += summary.get(sTotalCount_CouncilDisabilityPremiumAward) + sCommaSpace;
-            line += summary.get(sPercentageOfCouncilCount1_CouncilDisabilityPremiumAward) + sCommaSpace;
+            line += summary.get(sTotalCount_CouncilDisabilityPremiumAward) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfCouncilCount1_CouncilDisabilityPremiumAward) + Strings.special_commaSpace;
             // SevereDisabilityPremiumAward
-            line += summary.get(sTotalCount_CouncilSevereDisabilityPremiumAward) + sCommaSpace;
-            line += summary.get(sPercentageOfCouncilCount1_CouncilSevereDisabilityPremiumAward) + sCommaSpace;
+            line += summary.get(sTotalCount_CouncilSevereDisabilityPremiumAward) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfCouncilCount1_CouncilSevereDisabilityPremiumAward) + Strings.special_commaSpace;
             // DisabledChildPremiumAward
-            line += summary.get(sTotalCount_CouncilDisabledChildPremiumAward) + sCommaSpace;
-            line += summary.get(sPercentageOfCouncilCount1_CouncilDisabledChildPremiumAward) + sCommaSpace;
+            line += summary.get(sTotalCount_CouncilDisabledChildPremiumAward) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfCouncilCount1_CouncilDisabledChildPremiumAward) + Strings.special_commaSpace;
             // EnhancedDisabilityPremiumAward
-            line += summary.get(sTotalCount_CouncilEnhancedDisabilityPremiumAward) + sCommaSpace;
-            line += summary.get(sPercentageOfCouncilCount1_CouncilEnhancedDisabilityPremiumAward) + sCommaSpace;
+            line += summary.get(sTotalCount_CouncilEnhancedDisabilityPremiumAward) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfCouncilCount1_CouncilEnhancedDisabilityPremiumAward) + Strings.special_commaSpace;
             // RSL
             // DisabilityAward
-            line += summary.get(sTotalCount_RSLDisabilityAward) + sCommaSpace;
-            line += summary.get(sPercentageOfRSLCount1_RSLDisabilityAward) + sCommaSpace;
+            line += summary.get(sTotalCount_RSLDisabilityAward) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfRSLCount1_RSLDisabilityAward) + Strings.special_commaSpace;
             // DisabilityPremiumAward
-            line += summary.get(sTotalCount_RSLDisabilityPremiumAward) + sCommaSpace;
-            line += summary.get(sPercentageOfRSLCount1_RSLDisabilityPremiumAward) + sCommaSpace;
+            line += summary.get(sTotalCount_RSLDisabilityPremiumAward) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfRSLCount1_RSLDisabilityPremiumAward) + Strings.special_commaSpace;
             // SevereDisabilityPremiumAward
-            line += summary.get(sTotalCount_RSLSevereDisabilityPremiumAward) + sCommaSpace;
-            line += summary.get(sPercentageOfRSLCount1_RSLSevereDisabilityPremiumAward) + sCommaSpace;
+            line += summary.get(sTotalCount_RSLSevereDisabilityPremiumAward) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfRSLCount1_RSLSevereDisabilityPremiumAward) + Strings.special_commaSpace;
             // DisabledChildPremiumAward
-            line += summary.get(sTotalCount_RSLDisabledChildPremiumAward) + sCommaSpace;
-            line += summary.get(sPercentageOfRSLCount1_RSLDisabledChildPremiumAward) + sCommaSpace;
+            line += summary.get(sTotalCount_RSLDisabledChildPremiumAward) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfRSLCount1_RSLDisabledChildPremiumAward) + Strings.special_commaSpace;
             // EnhancedDisabilityPremiumAward
-            line += summary.get(sTotalCount_RSLEnhancedDisabilityPremiumAward) + sCommaSpace;
-            line += summary.get(sPercentageOfRSLCount1_RSLEnhancedDisabilityPremiumAward) + sCommaSpace;
+            line += summary.get(sTotalCount_RSLEnhancedDisabilityPremiumAward) + Strings.special_commaSpace;
+            line += summary.get(sPercentageOfRSLCount1_RSLEnhancedDisabilityPremiumAward) + Strings.special_commaSpace;
             pw.println(line);
         }
         pw.close();

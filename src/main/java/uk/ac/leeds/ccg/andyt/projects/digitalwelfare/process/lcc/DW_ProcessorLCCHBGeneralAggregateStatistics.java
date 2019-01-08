@@ -12,14 +12,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Records;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Records;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_D_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 
@@ -68,8 +68,8 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         Iterator<Integer> includeIte;
         int i;
         DW_SHBE_Records DW_SHBE_Records;
-        HashMap<DW_ID, DW_SHBE_Record> ClaimIDToDW_SHBE_RecordMap;
-        DW_ID DW_ID;
+        HashMap<SHBE_ID, DW_SHBE_Record> ClaimIDToDW_SHBE_RecordMap;
+        SHBE_ID SHBE_ID;
         DW_SHBE_D_Record DRecord;
         String ClaimPostcodeF;
         int NumberOfChildDependents;
@@ -105,7 +105,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
 //            includes.remove(Strings.sInclude3Monthly);
 //            includes.remove(Strings.sIncludeMonthlySinceApril2013);
 //            includes.remove(Strings.sIncludeMonthly);
-        PTs = Strings.getPaymentTypes();
+        PTs = Strings.SHBE_Strings.getPaymentTypes();
 //            PTs.remove(Strings.sPaymentTypeAll);
 //            PTs.remove(Strings.sPaymentTypeIn);
 //            PTs.remove(Strings.sPaymentTypeSuspended);
@@ -116,10 +116,10 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         // Load UOdata
         TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
         DW_UO_Set CouncilUOSet;
-        HashMap<DW_ID, DW_UO_Record> CouncilUOMap = null;
+        HashMap<SHBE_ID, DW_UO_Record> CouncilUOMap = null;
         TreeMap<ONSPD_YM3, DW_UO_Set> RSLUOSets;
         DW_UO_Set RSLUOSet;
-        HashMap<DW_ID, DW_UO_Record> RSLUOMap = null;
+        HashMap<SHBE_ID, DW_UO_Record> RSLUOMap = null;
         CouncilUOSets = UO_Data.getCouncilUOSets();
         RSLUOSets = UO_Data.getRSLUOSets();
 
@@ -157,11 +157,11 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                 int[] resultValues;
 
                 // Iterate over records
-                Iterator<DW_ID> DW_IDIte = ClaimIDToDW_SHBE_RecordMap.keySet().iterator();
-                while (DW_IDIte.hasNext()) {
-                    DW_ID = DW_IDIte.next();
+                Iterator<SHBE_ID> SHBE_IDIte = ClaimIDToDW_SHBE_RecordMap.keySet().iterator();
+                while (SHBE_IDIte.hasNext()) {
+                    SHBE_ID = SHBE_IDIte.next();
                     DW_SHBE_Record DW_SHBE_Record;
-                    DW_SHBE_Record = ClaimIDToDW_SHBE_RecordMap.get(DW_ID);
+                    DW_SHBE_Record = ClaimIDToDW_SHBE_RecordMap.get(SHBE_ID);
                     DRecord = DW_SHBE_Record.getDRecord();
                     if (SHBE_Handler.isHBClaim(DRecord)) {
                         NumberOfChildDependents = DRecord.getNumberOfChildDependents();
@@ -170,12 +170,12 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                         boolean DoUO;
                         DW_UO_Record DW_UO_Record;
                         if (CouncilUOSet != null) {
-                            if (CouncilUOMap.containsKey(DW_ID)) {
-                                DW_UO_Record = CouncilUOMap.get(DW_ID);
+                            if (CouncilUOMap.containsKey(SHBE_ID)) {
+                                DW_UO_Record = CouncilUOMap.get(SHBE_ID);
                                 BedroomRequirement = DW_UO_Record.getBedroomRequirement();
                                 DoUO = true;
-                            } else if (RSLUOMap.containsKey(DW_ID)) {
-                                DW_UO_Record = RSLUOMap.get(DW_ID);
+                            } else if (RSLUOMap.containsKey(SHBE_ID)) {
+                                DW_UO_Record = RSLUOMap.get(SHBE_ID);
                                 BedroomRequirement = DW_UO_Record.getBedroomRequirement();
                                 DoUO = true;
                             } else {

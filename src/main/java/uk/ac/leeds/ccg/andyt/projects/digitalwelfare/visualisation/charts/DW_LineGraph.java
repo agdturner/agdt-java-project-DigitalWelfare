@@ -34,16 +34,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import uk.ac.leeds.ccg.andyt.chart.Generic_LineGraph;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 //import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -162,11 +162,11 @@ public class DW_LineGraph extends Generic_LineGraph {
 //        types.add(sPostcodeChangedNo);
 //        types.add("Multiple");
 //        types.add("");
-        PTs = Strings.getPaymentTypes();
+        PTs = Strings.SHBE_Strings.getPaymentTypes();
 //        PTs.remove(DW_SHBE_Handler.sPaymentTypeAll);
-        PTs.remove(Strings.sPaymentTypeIn);
-        PTs.remove(Strings.sPaymentTypeSuspended);
-        PTs.remove(Strings.sPaymentTypeOther);
+        PTs.remove(Strings.SHBE_Strings.sPaymentTypeIn);
+        PTs.remove(Strings.SHBE_Strings.sPaymentTypeSuspended);
+        PTs.remove(Strings.SHBE_Strings.sPaymentTypeOther);
 
         b = new ArrayList<>();
         b.add(true);
@@ -434,7 +434,7 @@ public class DW_LineGraph extends Generic_LineGraph {
             allSelectionsGrouped.put(do999, asssg);
         }
 
-        Set<DW_ID> UOApril2013ClaimIDs;
+        Set<SHBE_ID> UOApril2013ClaimIDs;
         UOApril2013ClaimIDs = UO_Handler.getUOStartApril2013ClaimIDs(UO_Data);
 
         boolean CheckPreviousTenancyType;
@@ -506,7 +506,7 @@ public class DW_LineGraph extends Generic_LineGraph {
 
 //                                boolean DoUOOnlyOnThoseOriginallyUO;
 //                                env.logO("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
-//                                            Set<DW_ID> UOApril2013ClaimIDsDummy;
+//                                            Set<SHBE_ID> UOApril2013ClaimIDsDummy;
 //                                            if (DoUOOnlyOnThoseOriginallyUO) {
 //                                                UOApril2013ClaimIDsDummy = UOApril2013ClaimIDs;
 //                                            } else {

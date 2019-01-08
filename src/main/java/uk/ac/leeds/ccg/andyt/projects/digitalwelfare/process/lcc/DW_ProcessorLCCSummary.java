@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_Summary;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_SummaryUO;
 
@@ -31,7 +31,7 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
     @Override
     public void run() throws Exception, Error {
         
-        HashSet<DW_ID> Group;
+        HashSet<SHBE_ID> Group;
         Group = new HashSet<>();
                 
         boolean doAll;
@@ -71,7 +71,7 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
 //        includes.remove(Strings.sIncludeStartEndSinceApril2013);
 //        includes.remove(Strings.sIncludeMonthly);
         //includes.remove(Strings.sIncludeApril2013May2013);
-        PTs = Strings.getPaymentTypes();
+        PTs = Strings.SHBE_Strings.getPaymentTypes();
 //        PTs.remove(Strings.sPaymentTypeAll); // No longer a PT
 //        PTs.remove(Strings.sPaymentTypeIn);
 //        PTs.remove(Strings.sPaymentTypeSuspended);

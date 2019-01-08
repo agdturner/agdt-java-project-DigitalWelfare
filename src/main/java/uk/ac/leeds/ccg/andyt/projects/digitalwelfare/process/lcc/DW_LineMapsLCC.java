@@ -42,7 +42,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_StyleParameters;
 
 /**
@@ -605,7 +605,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         // All
         Iterator<Integer> includesIte;
         includesIte = includes.iterator();
-        yMs = new ArrayList<ONSPD_YM3>();
+        yMs = new ArrayList<>();
         ONSPD_YM3 yM3 = null;
         boolean first = true;
         String name = "";
@@ -628,7 +628,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         ONSPD_YM3 yM30 = tDW_SHBE_Handler.getYM3(tSHBEFilenamesAll[i]);
         while (includesIte.hasNext()) {
             i = includesIte.next();
-            yMs = new ArrayList<ONSPD_YM3>();
+            yMs = new ArrayList<>();
             ONSPD_YM3 yM31;
             yM31 = tDW_SHBE_Handler.getYM3(tSHBEFilenamesAll[i]);
             yMs.add(yM30);
@@ -782,7 +782,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         tDW_SHBE_Handler = Env.getSHBE_Handler();
 
         ArrayList<String> paymentTypes;
-        paymentTypes = Strings.getPaymentTypes();
+        paymentTypes = Strings.SHBE_Strings.getPaymentTypes();
 //        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
 //        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
 //        paymentTypes.remove(DW_SHBE_Handler.sSuspended);

@@ -30,9 +30,10 @@ import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Data;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Environment;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Data;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
@@ -63,73 +64,20 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public final int DEBUG_Level_FINE = 1;
     public final int DEBUG_Level_NORMAL = 2;
 
-    /**
-     * For storing an instance of DW_Strings for accessing Strings.
-     */
-    private DW_Strings Strings;
-
-    /**
-     * For storing an instance of DW_Files for accessing filenames and Files
-     * therein.
-     */
-    private DW_Files Files;
-
-    protected transient ONSPD_Environment ONSPD_Env;
-        
-    /**
-     * For storing an instance of Grids_Environment
-     */
-    protected transient Grids_Environment Grids_Env;
-
-    /**
-     * For storing an instance of Vector_Environment
-     */
-    protected transient Vector_Environment Vector_Env;
-
-    /**
-     * For storing an instance of DW_Geotools
-     */
-    protected transient DW_Geotools Geotools;
-
-    
-//    /**
-//     * For storing an instance of HashMap<String, DW_SHBE_CollectionHandler>.
-//     */
-//    private HashMap<String, DW_SHBE_CollectionHandler> DW_SHBE_CollectionHandlers;
-    /**
-     * For storing an instance of UO_Handler for convenience.
-     */
-    protected DW_UO_Handler UO_Handler;
-
-    /**
-     * For storing an instance of UO_Data.
-     */
-    protected DW_UO_Data UO_Data;
-
-    /**
-     * For storing an instance of SHBE_Handler for convenience.
-     */
-    private DW_SHBE_Handler SHBE_Handler;
-
-    /**
-     * For storing an instance of SHBE_TenancyType_Handler for convenience.
-     */
-    private DW_SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
-
-    /**
-     * For storing an instance of DW_Maps for convenience.
-     */
-    private DW_Maps Maps;
-
-    /**
-     * For storing an instance of Deprivation_DataHandler for convenience.
-     */
-    DW_Deprivation_DataHandler Deprivation_DataHandler;
-
-    /**
-     * For storing an instance of DW_SHBE_DataAll.
-     */
-    private DW_SHBE_Data SHBE_Data;
+    // For convenience
+    public DW_Strings Strings;
+    public DW_Files Files;
+    public transient ONSPD_Environment ONSPD_Env;
+    public transient SHBE_Environment SHBE_Env;
+    public transient Grids_Environment Grids_Env;
+    public transient Vector_Environment Vector_Env;
+    public transient DW_Geotools Geotools;
+    public DW_UO_Handler UO_Handler;
+    public DW_UO_Data UO_Data;
+    public DW_SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
+    public DW_Maps Maps;
+    public DW_Deprivation_DataHandler Deprivation_DataHandler;
+    public DW_SHBE_Data SHBE_Data;
 
     public DW_Environment(int DEBUG_Level) {
         this.DEBUG_Level = DEBUG_Level;
@@ -206,7 +154,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 //            }
 //        }
 //    }
-
     /**
      * A method to try to ensure there is enough memory to continue.
      *
@@ -432,7 +379,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         }
         return ONSPD_Env;
     }
-    
+
     /**
      * For returning an instance of Grids_Environment for convenience.
      *
@@ -474,7 +421,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     }
 
     public ONSPD_Postcode_Handler Postcode_Handler;
-            
+
     /**
      * {@code this.ONSPD_Postcode_Handler = ONSPD_Postcode_Handler;}
      *
@@ -493,19 +440,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         if (UO_Data == null) {
             try {
                 UO_Data = getUO_Data(false);
-            } catch (IOException e) {
-                try {
-                    UO_Data = getUO_Data(true);
-                } catch (IOException e1) {
-                    System.err.print(e1.getMessage());
-                    e.printStackTrace(System.err);
-                    System.exit(Generic_ErrorAndExceptionHandler.IOException);
-                } catch (ClassNotFoundException e1) {
-                    System.err.print(e1.getMessage());
-                    e.printStackTrace(System.err);
-                    System.exit(Generic_ErrorAndExceptionHandler.ClassNotFoundException);
-                }
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 try {
                     UO_Data = getUO_Data(true);
                 } catch (IOException e1) {
@@ -588,10 +523,10 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     public DW_SHBE_Handler getSHBE_Handler() {
-        if (SHBE_Handler == null) {
-            SHBE_Handler = new DW_SHBE_Handler(this);
+        if (SHBE_Env.SHBE_Handler == null) {
+            SHBE_Env.SHBE_Handler = new DW_SHBE_Handler(SHBE_Env);
         }
-        return SHBE_Handler;
+        return SHBE_Env.SHBE_Handler;
     }
 
     /**
@@ -600,7 +535,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @param SHBE_Handler The SHBE_Handler to set.
      */
     public void setSHBE_Handler(DW_SHBE_Handler SHBE_Handler) {
-        this.SHBE_Handler = SHBE_Handler;
+        SHBE_Env.SHBE_Handler = SHBE_Handler;
     }
 
     /**
@@ -610,7 +545,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      */
     public DW_SHBE_TenancyType_Handler getSHBE_TenancyType_Handler() {
         if (SHBE_TenancyType_Handler == null) {
-            SHBE_TenancyType_Handler = new DW_SHBE_TenancyType_Handler(this);
+            SHBE_TenancyType_Handler = new DW_SHBE_TenancyType_Handler(SHBE_Env);
         }
         return SHBE_TenancyType_Handler;
     }
@@ -622,7 +557,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      */
     public DW_SHBE_Data getSHBE_Data() {
         if (SHBE_Data == null) {
-            SHBE_Data = new DW_SHBE_Data(this);
+            SHBE_Data = new DW_SHBE_Data(SHBE_Env);
         }
         return SHBE_Data;
     }
