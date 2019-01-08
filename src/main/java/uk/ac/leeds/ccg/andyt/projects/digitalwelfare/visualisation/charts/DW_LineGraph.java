@@ -33,6 +33,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import uk.ac.leeds.ccg.andyt.chart.Generic_LineGraph;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 //import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
@@ -46,7 +47,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyTy
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -152,7 +152,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         includes.remove(Strings.sIncludeStartEndSinceApril2013);
         includes.remove(Strings.sIncludeApril2013May2013);
 
-        futures = new HashSet<Future>();
+        futures = new HashSet<>();
 
         format = "PNG";
 
@@ -168,7 +168,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         PTs.remove(Strings.sPaymentTypeSuspended);
         PTs.remove(Strings.sPaymentTypeOther);
 
-        b = new ArrayList<Boolean>();
+        b = new ArrayList<>();
         b.add(true);
         b.add(false);
 
@@ -184,7 +184,7 @@ public class DW_LineGraph extends Generic_LineGraph {
     protected void graphAggregateData() {
 
         ArrayList<String> AZs; // AggregatedZones
-        AZs = new ArrayList<String>();
+        AZs = new ArrayList<>();
 //        AZs.add(DW_Strings.sParliamentaryConstituency);
         AZs.add(Strings.sStatisticalWard);
 //        AZs.add(DW_Strings.sLSOA);
@@ -284,13 +284,13 @@ public class DW_LineGraph extends Generic_LineGraph {
                         fout = new File(
                                 dirOut1,
                                 filename);
-                        TreeMap<String, TreeMap<DW_YM3, BigDecimal>> data0;
-                        data0 = new TreeMap<String, TreeMap<DW_YM3, BigDecimal>>();
+                        TreeMap<String, TreeMap<ONSPD_YM3, BigDecimal>> data0;
+                        data0 = new TreeMap<String, TreeMap<ONSPD_YM3, BigDecimal>>();
                         Iterator<Integer> includeIte;
                         includeIte = include.iterator();
                         while (includeIte.hasNext()) {
                             int i = includeIte.next();
-                            DW_YM3 YM3;
+                            ONSPD_YM3 YM3;
                             YM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
                             File f = new File(
                                     dirIn1,
@@ -320,10 +320,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                                 line = ite.next();
                                 //System.out.println(line);
                                 fields = line.split(Strings.sCommaSpace);
-                                TreeMap<DW_YM3, BigDecimal> dateValue;
+                                TreeMap<ONSPD_YM3, BigDecimal> dateValue;
                                 dateValue = data0.get(fields[0]);
                                 if (dateValue == null) {
-                                    dateValue = new TreeMap<DW_YM3, BigDecimal>();
+                                    dateValue = new TreeMap<ONSPD_YM3, BigDecimal>();
                                     data0.put(fields[0], dateValue);
                                 }
                                 dateValue.put(YM3, new BigDecimal(fields[stat]));
@@ -352,10 +352,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                         TreeMapDateLabelSHBEFilename = SHBE_Handler.getTreeMapDateLabelSHBEFilenamesSingle(
                                 SHBEFilenames,
                                 include);
-                        TreeMap<BigDecimal, DW_YM3> xAxisLabels;
-                        xAxisLabels = (TreeMap<BigDecimal, DW_YM3>) TreeMapDateLabelSHBEFilename[0];
-                        TreeMap<DW_YM3, BigDecimal> fileLabelValue;
-                        fileLabelValue = (TreeMap<DW_YM3, BigDecimal>) TreeMapDateLabelSHBEFilename[1];
+                        TreeMap<BigDecimal, ONSPD_YM3> xAxisLabels;
+                        xAxisLabels = (TreeMap<BigDecimal, ONSPD_YM3>) TreeMapDateLabelSHBEFilename[0];
+                        TreeMap<ONSPD_YM3, BigDecimal> fileLabelValue;
+                        fileLabelValue = (TreeMap<ONSPD_YM3, BigDecimal>) TreeMapDateLabelSHBEFilename[1];
                         Object[] data;
                         data = getData(
                                 data0,
@@ -386,10 +386,10 @@ public class DW_LineGraph extends Generic_LineGraph {
 
         // Init allSelections of different types of tenancy type transitions to graph.
         HashMap<Boolean, HashMap<Boolean, HashMap<Boolean, TreeMap<String, HashSet<String>>>>> allSelections;
-        allSelections = new HashMap<Boolean, HashMap<Boolean, HashMap<Boolean, TreeMap<String, HashSet<String>>>>>();
+        allSelections = new HashMap<>();
         // Init allSelections of different types of tenancy type transitions to graph.
         HashMap<Boolean, HashMap<Boolean, HashMap<Boolean, TreeMap<String, HashSet<String>>>>> allSelectionsGrouped;
-        allSelectionsGrouped = new HashMap<Boolean, HashMap<Boolean, HashMap<Boolean, TreeMap<String, HashSet<String>>>>>();
+        allSelectionsGrouped = new HashMap<>();
 
         Iterator<Boolean> iteB;
         iteB = b.iterator();
@@ -397,18 +397,18 @@ public class DW_LineGraph extends Generic_LineGraph {
             boolean do999;
             do999 = iteB.next();
             HashMap<Boolean, HashMap<Boolean, TreeMap<String, HashSet<String>>>> asss;
-            asss = new HashMap<Boolean, HashMap<Boolean, TreeMap<String, HashSet<String>>>>();
+            asss = new HashMap<>();
             HashMap<Boolean, HashMap<Boolean, TreeMap<String, HashSet<String>>>> asssg;
-            asssg = new HashMap<Boolean, HashMap<Boolean, TreeMap<String, HashSet<String>>>>();
+            asssg = new HashMap<>();
             Iterator<Boolean> iteB2;
             iteB2 = b.iterator();
             while (iteB2.hasNext()) {
                 boolean doUnderOccupancy;
                 doUnderOccupancy = iteB2.next();
                 HashMap<Boolean, TreeMap<String, HashSet<String>>> ass;
-                ass = new HashMap<Boolean, TreeMap<String, HashSet<String>>>();
+                ass = new HashMap<>();
                 HashMap<Boolean, TreeMap<String, HashSet<String>>> assg;
-                assg = new HashMap<Boolean, TreeMap<String, HashSet<String>>>();
+                assg = new HashMap<>();
                 TreeMap<String, HashSet<String>> as;
                 TreeMap<String, HashSet<String>> asg;
                 Iterator<Boolean> iteB3;
@@ -1383,14 +1383,14 @@ public class DW_LineGraph extends Generic_LineGraph {
         TreeMap<String, BigDecimal> fileLabelValue;
         fileLabelValue = (TreeMap<String, BigDecimal>) treeMapDateLabelSHBEFilename[1];
         TreeMap<BigDecimal, TreeMap<String, TreeMap<String, BigDecimal>>> bigMatrix;
-        bigMatrix = new TreeMap<BigDecimal, TreeMap<String, TreeMap<String, BigDecimal>>>();
+        bigMatrix = new TreeMap<>();
 //            int size = Integer.MIN_VALUE;
 //            Double min = Double.MAX_VALUE;
 //            Double max = Double.MIN_VALUE;
         boolean doneFirst;
         doneFirst = false;
 
-        DW_YM3 YM30 = null;
+        ONSPD_YM3 YM30 = null;
         String yM30 = "";
 
         Iterator<Integer> includeIte;
@@ -1409,7 +1409,7 @@ public class DW_LineGraph extends Generic_LineGraph {
             if (doneFirst) {
                 String aSHBEFilename1;
                 aSHBEFilename1 = SHBEFilenames[i];
-                DW_YM3 YM31;
+                ONSPD_YM3 YM31;
                 YM31 = SHBE_Handler.getYM3(aSHBEFilename1);
                 String yM31;
                 yM31 = YM31.toString();
@@ -1591,11 +1591,11 @@ public class DW_LineGraph extends Generic_LineGraph {
             boolean do999,
             boolean sameTenancyType) {
         TreeMap<String, HashSet<String>> result;
-        result = new TreeMap<String, HashSet<String>>();
+        result = new TreeMap<>();
         String selectionName;
         selectionName = Strings.sCouncil;
         HashSet<String> CouncilSelection;
-        CouncilSelection = new HashSet<String>();
+        CouncilSelection = new HashSet<>();
         if (doUnderOccupancy) {
             if (sameTenancyType) {
                 CouncilSelection.add("1UO - 1");
@@ -1654,7 +1654,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         result.put(selectionName, CouncilSelection);
         selectionName = "PrivateRegulated";
         HashSet<String> PrivateRegulatedSelection;
-        PrivateRegulatedSelection = new HashSet<String>();
+        PrivateRegulatedSelection = new HashSet<>();
         if (doUnderOccupancy) {
             if (sameTenancyType) {
                 PrivateRegulatedSelection.add("2UO - 2");
@@ -1712,7 +1712,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         }
         result.put(selectionName, PrivateRegulatedSelection);
         HashSet<String> PrivateDeregulatedSelection;
-        PrivateDeregulatedSelection = new HashSet<String>();
+        PrivateDeregulatedSelection = new HashSet<>();
         selectionName = "PrivateDeregulated";
         if (doUnderOccupancy) {
             if (sameTenancyType) {
@@ -1772,7 +1772,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         }
         result.put(selectionName, PrivateDeregulatedSelection);
         HashSet<String> PrivateHousingAssociationSelection;
-        PrivateHousingAssociationSelection = new HashSet<String>();
+        PrivateHousingAssociationSelection = new HashSet<>();
         selectionName = "PrivateHousingAssociation";
         if (doUnderOccupancy) {
             if (sameTenancyType) {
@@ -1833,7 +1833,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         }
         result.put(selectionName, PrivateHousingAssociationSelection);
         HashSet<String> PrivateOtherSelection;
-        PrivateOtherSelection = new HashSet<String>();
+        PrivateOtherSelection = new HashSet<>();
         selectionName = "PrivateOther";
         if (doUnderOccupancy) {
             if (sameTenancyType) {
@@ -1893,7 +1893,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         result.put(selectionName, PrivateOtherSelection);
 
         HashSet<String> CTBOnlySelection;
-        CTBOnlySelection = new HashSet<String>();
+        CTBOnlySelection = new HashSet<>();
         selectionName = "CTBOnly";
         if (doUnderOccupancy) {
             if (sameTenancyType) {
@@ -1999,7 +1999,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         result.put(selectionName, CTBOnlySelection);
 
         HashSet<String> CouncilNonHRAOnlySelection;
-        CouncilNonHRAOnlySelection = new HashSet<String>();
+        CouncilNonHRAOnlySelection = new HashSet<>();
         selectionName = "CouncilNonHRA";
         if (doUnderOccupancy) {
             if (sameTenancyType) {
@@ -2058,7 +2058,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         }
         result.put(selectionName, CouncilNonHRAOnlySelection);
         HashSet<String> PrivateMealDeductionSelection;
-        PrivateMealDeductionSelection = new HashSet<String>();
+        PrivateMealDeductionSelection = new HashSet<>();
         selectionName = "PrivateMealDeduction";
         if (doUnderOccupancy) {
             if (sameTenancyType) {
@@ -2117,7 +2117,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         }
         result.put(selectionName, PrivateMealDeductionSelection);
         HashSet<String> allSelection;
-        allSelection = new HashSet<String>();
+        allSelection = new HashSet<>();
         selectionName = Strings.sAll;
         allSelection.addAll(CouncilSelection);
         allSelection.addAll(PrivateHousingAssociationSelection);
@@ -2128,7 +2128,7 @@ public class DW_LineGraph extends Generic_LineGraph {
 
         selectionName = "ReportSelection";
         HashSet<String> selection;
-        selection = new HashSet<String>();
+        selection = new HashSet<>();
         if (doUnderOccupancy) {
             if (sameTenancyType) {
                 selection.add("1 - 1UO");
@@ -2206,11 +2206,11 @@ public class DW_LineGraph extends Generic_LineGraph {
             boolean do999,
             boolean sameTenancyType) {
         TreeMap<String, HashSet<String>> result;
-        result = new TreeMap<String, HashSet<String>>();
+        result = new TreeMap<>();
         String selectionName;
         selectionName = "Regulated";
         HashSet<String> regulatedSelection;
-        regulatedSelection = new HashSet<String>();
+        regulatedSelection = new HashSet<>();
         if (doUnderOccupancy) {
             if (sameTenancyType) {
                 regulatedSelection.add("RegulatedUO - Regulated");
@@ -2244,7 +2244,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         }
         result.put(selectionName, regulatedSelection);
         HashSet<String> unregulatedSelection;
-        unregulatedSelection = new HashSet<String>();
+        unregulatedSelection = new HashSet<>();
         selectionName = "Unregulated";
         if (doUnderOccupancy) {
             if (sameTenancyType) {
@@ -2279,7 +2279,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         }
         result.put(selectionName, unregulatedSelection);
         HashSet<String> ungroupedSelection;
-        ungroupedSelection = new HashSet<String>();
+        ungroupedSelection = new HashSet<>();
         selectionName = Strings.sGroupedNo;
         if (doUnderOccupancy) {
             if (sameTenancyType) {
@@ -2314,7 +2314,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         }
         result.put(selectionName, ungroupedSelection);
         HashSet<String> allSelection;
-        allSelection = new HashSet<String>();
+        allSelection = new HashSet<>();
         selectionName = Strings.sAll;
         allSelection.addAll(regulatedSelection);
         allSelection.addAll(unregulatedSelection);
@@ -2367,14 +2367,14 @@ public class DW_LineGraph extends Generic_LineGraph {
 //        Object[] result;
 //        result = new Object[4];
         TreeMap<String, TreeMap<String, BigDecimal>> map;
-        map = new TreeMap<String, TreeMap<String, BigDecimal>>();
+        map = new TreeMap<>();
 //        result[0] = map;
 //        Double min = Double.MAX_VALUE;
 //        Double max = Double.MIN_VALUE;
 //        int size = 0;
         ArrayList<String> lines = DW_Table.readCSV(f);
         ArrayList<String> tenancyTypes;
-        tenancyTypes = new ArrayList<String>();
+        tenancyTypes = new ArrayList<>();
         boolean mapContainsNonZeroValues = false;
         boolean first = true;
         Iterator<String> ite = lines.iterator();
@@ -2389,7 +2389,7 @@ public class DW_LineGraph extends Generic_LineGraph {
                     String tenancyBefore;
                     tenancyBefore = split[i];
                     TreeMap<String, BigDecimal> transitions;
-                    transitions = new TreeMap<String, BigDecimal>();
+                    transitions = new TreeMap<>();
                     map.put(tenancyBefore, transitions);
                     tenancyTypes.add(tenancyBefore);
                 }
@@ -2455,14 +2455,14 @@ public class DW_LineGraph extends Generic_LineGraph {
 //        Object[] result;
 //        result = new Object[4];
         TreeMap<String, TreeMap<String, BigDecimal>> map;
-        map = new TreeMap<String, TreeMap<String, BigDecimal>>();
+        map = new TreeMap<>();
 //        result[0] = map;
 //        Double min = Double.MAX_VALUE;
 //        Double max = Double.MIN_VALUE;
 //        int size = 0;
         ArrayList<String> lines = DW_Table.readCSV(f);
         ArrayList<String> tenancyTypes;
-        tenancyTypes = new ArrayList<String>();
+        tenancyTypes = new ArrayList<>();
         boolean mapContainsNonZeroValues = false;
         boolean first = true;
         Iterator<String> ite = lines.iterator();
@@ -2477,7 +2477,7 @@ public class DW_LineGraph extends Generic_LineGraph {
                     String tenancyStart;
                     tenancyStart = split[i];
                     TreeMap<String, BigDecimal> transitions;
-                    transitions = new TreeMap<String, BigDecimal>();
+                    transitions = new TreeMap<>();
                     map.put(tenancyStart, transitions);
                     tenancyTypes.add(tenancyStart);
                 }
@@ -2538,13 +2538,13 @@ public class DW_LineGraph extends Generic_LineGraph {
      * non-zero values
      */
     private Object[] getData(
-            TreeMap<String, TreeMap<DW_YM3, BigDecimal>> data,
-            TreeMap<BigDecimal, DW_YM3> xAxisLabels,
-            TreeMap<DW_YM3, BigDecimal> fileLabelValue) {
+            TreeMap<String, TreeMap<ONSPD_YM3, BigDecimal>> data,
+            TreeMap<BigDecimal, ONSPD_YM3> xAxisLabels,
+            TreeMap<ONSPD_YM3, BigDecimal> fileLabelValue) {
         Object[] result;
         result = new Object[9];
         TreeMap<String, TreeMap<BigDecimal, BigDecimal>> maps;
-        maps = new TreeMap<String, TreeMap<BigDecimal, BigDecimal>>();
+        maps = new TreeMap<>();
         BigDecimal newMinX;
         newMinX = BigDecimal.valueOf(Double.MAX_VALUE);
         BigDecimal newMaxX;
@@ -2555,20 +2555,20 @@ public class DW_LineGraph extends Generic_LineGraph {
         newMaxY = BigDecimal.valueOf(Double.MIN_VALUE);
 
         TreeMap<String, Boolean> nonZero;
-        nonZero = new TreeMap<String, Boolean>();
+        nonZero = new TreeMap<>();
 
         // Initialise data, newMinX, newMaxX, newMinY, newMaxY
         Iterator<String> iteS;
-        Iterator<DW_YM3> iteS2;
+        Iterator<ONSPD_YM3> iteS2;
         iteS = data.keySet().iterator();
         String key;
-        TreeMap<DW_YM3, BigDecimal> dataYX;
+        TreeMap<ONSPD_YM3, BigDecimal> dataYX;
         while (iteS.hasNext()) {
             key = iteS.next(); // key is aggregate area code
             TreeMap<BigDecimal, BigDecimal> map;
             map = maps.get(key);
             if (map == null) {
-                map = new TreeMap<BigDecimal, BigDecimal>();
+                map = new TreeMap<>();
                 maps.put(key, map);
             }
             dataYX = data.get(key);
@@ -2580,7 +2580,7 @@ public class DW_LineGraph extends Generic_LineGraph {
             }
             iteS2 = dataYX.keySet().iterator();
             while (iteS2.hasNext()) {
-                DW_YM3 YM3;
+                ONSPD_YM3 YM3;
                 YM3 = iteS2.next();
 //                System.out.println("YM3 " + YM3);
                 BigDecimal x = fileLabelValue.get(YM3);
@@ -2606,11 +2606,11 @@ public class DW_LineGraph extends Generic_LineGraph {
         }
 
         TreeMap<String, Boolean> nonZero2;
-        nonZero2 = new TreeMap<String, Boolean>();
+        nonZero2 = new TreeMap<>();
 
         // Initialise labels.
         ArrayList<String> labels;
-        labels = new ArrayList<String>();
+        labels = new ArrayList<>();
         iteS = maps.keySet().iterator();
         while (iteS.hasNext()) {
             String label;
@@ -2659,7 +2659,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         Object[] result;
         result = new Object[9];
         TreeMap<String, TreeMap<BigDecimal, BigDecimal>> maps;
-        maps = new TreeMap<String, TreeMap<BigDecimal, BigDecimal>>();
+        maps = new TreeMap<>();
         BigDecimal newMinX;
         newMinX = BigDecimal.valueOf(Double.MAX_VALUE);
         BigDecimal newMaxX;
@@ -2670,7 +2670,7 @@ public class DW_LineGraph extends Generic_LineGraph {
         newMaxY = BigDecimal.valueOf(Double.MIN_VALUE);
         // Declare nonZero
         TreeMap<String, Boolean> nonZero;
-        nonZero = new TreeMap<String, Boolean>();
+        nonZero = new TreeMap<>();
         Iterator<BigDecimal> ite;
         ite = bigMatrix.keySet().iterator();
         while (ite.hasNext()) {
@@ -2700,7 +2700,7 @@ public class DW_LineGraph extends Generic_LineGraph {
                             TreeMap<BigDecimal, BigDecimal> map;
                             map = maps.get(key);
                             if (map == null) {
-                                map = new TreeMap<BigDecimal, BigDecimal>();
+                                map = new TreeMap<>();
                                 maps.put(key, map);
                             }
                             BigDecimal y;
@@ -2731,13 +2731,13 @@ public class DW_LineGraph extends Generic_LineGraph {
         result[3] = newMinX;
         result[4] = newMaxX;
         ArrayList<String> labels;
-        labels = new ArrayList<String>();
+        labels = new ArrayList<>();
 //        labels.addAll(maps.keySet()); // This does not work as maps is gc resulting in labels becoming null for some reason.
         // Declare nonZero2
         DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
         DW_SHBE_TenancyType_Handler = Env.getSHBE_TenancyType_Handler();
         TreeMap<String, Boolean> nonZero2;
-        nonZero2 = new TreeMap<String, Boolean>();
+        nonZero2 = new TreeMap<>();
         Iterator<String> iteS;
         iteS = maps.keySet().iterator();
         while (iteS.hasNext()) {

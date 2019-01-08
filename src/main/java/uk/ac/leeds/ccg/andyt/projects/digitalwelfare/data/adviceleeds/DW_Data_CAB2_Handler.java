@@ -56,7 +56,7 @@ public class DW_Data_CAB2_Handler extends DW_Object {
             Object IDType) {
         System.out.println("Loading " + filename);
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> result;
-        result = new TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record>();
+        result = new TreeMap<>();
         File inputFile = new File(
                 directory,
                 filename);

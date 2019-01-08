@@ -32,12 +32,12 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.map.MapContent;
 import org.opengis.feature.simple.SimpleFeatureType;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.geotools.core.Geotools_Environment;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_GridChunkDoubleArrayFactory;
@@ -45,8 +45,9 @@ import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStatsNotUpdat
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_Files;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_Processor;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 
 /**
@@ -105,7 +106,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         postcodeUnitPoly_DW_Shapefile = getPostcodeUnitPoly_DW_Shapefile(Env,
                 new ShapefileDataStoreFactory());
 
-        DW_YM3 yM3;
+        ONSPD_YM3 yM3;
         yM3 = Postcode_Handler.getDefaultYM3();
 
         String postcodeLevel;
@@ -336,13 +337,13 @@ public class DW_PostcodeMaps extends DW_Maps {
      * @return
      */
     public ArrayList<DW_Shapefile> getPostcodePointDW_Shapefiles(
-            DW_YM3 yM3) {
+            ONSPD_YM3 yM3) {
         ArrayList<DW_Shapefile> result;
-        result = new ArrayList<DW_Shapefile>();
+        result = new ArrayList<>();
         File dir;
         dir = Files.getGeneratedPostcodeDir();
         ArrayList<String> postCodeLevels;
-        postCodeLevels = new ArrayList<String>();
+        postCodeLevels = new ArrayList<>();
         postCodeLevels.add("Unit");
         postCodeLevels.add("Sector");
         postCodeLevels.add("District");
@@ -374,7 +375,7 @@ public class DW_PostcodeMaps extends DW_Maps {
      * @return
      */
     public File createPostcodePointShapefileIfItDoesNotExist(
-            DW_YM3 yM3,
+            ONSPD_YM3 yM3,
             String postcodeLevel,
             File dir,
             String shapefileFilename,
@@ -394,15 +395,15 @@ public class DW_PostcodeMaps extends DW_Maps {
     }
 
     public TreeSetFeatureCollection getPostcodePointFeatureCollection(
-            DW_YM3 yM3,
+            ONSPD_YM3 yM3,
             String postcodeLevel,
             SimpleFeatureType sft,
             String target) {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
-        DW_Postcode_Handler dph;
+        ONSPD_Postcode_Handler dph;
         dph = Env.getPostcode_Handler();
-        TreeMap<String, Geotools_Point> tONSPDlookup;
+        TreeMap<String, ONSPD_Point> tONSPDlookup;
         tONSPDlookup = getONSPDlookups().get(postcodeLevel).get(dph.getNearestYM3ForONSPDLookup(yM3));
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
@@ -414,9 +415,10 @@ public class DW_PostcodeMaps extends DW_Maps {
         while (ite.hasNext()) {
             String postcode = ite.next();
             if (postcode.startsWith(target)) {
-                Geotools_Point p = tONSPDlookup.get(postcode);
+                ONSPD_Point p = tONSPDlookup.get(postcode);
+                Geotools_Point gp = new Geotools_Point(p.getX(), p.getY());
                 String name = postcode;
-                addPointFeature(p, gf, sfb, name, result);
+                addPointFeature(gp, gf, sfb, name, result);
             }
         }
         return result;

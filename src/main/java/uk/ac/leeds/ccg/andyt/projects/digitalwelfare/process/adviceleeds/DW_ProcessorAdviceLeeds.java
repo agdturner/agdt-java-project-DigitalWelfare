@@ -18,11 +18,11 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -149,7 +149,7 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
 
     public TreeMap<String, String> getOutletsAndPostcodes() {
         TreeMap<String, String> result;
-        result = new TreeMap<String, String>();
+        result = new TreeMap<>();
         // Postcodes in data from Leeds CAB
         result.put("Otley", "LS21 1BG");
         result.put("Morley", "LS27 9DY");
@@ -161,10 +161,10 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
         return result;
     }
 
-    public TreeMap<String, Geotools_Point> getOutletsAndPoints() {
-        DW_Postcode_Handler DW_Postcode_Handler;
+    public TreeMap<String, ONSPD_Point> getOutletsAndPoints() {
+        ONSPD_Postcode_Handler DW_Postcode_Handler;
         DW_Postcode_Handler = Env.getPostcode_Handler();
-        TreeMap<String, Geotools_Point> result;
+        TreeMap<String, ONSPD_Point> result;
         result = DW_Postcode_Handler.postcodeToPoints(getOutletsAndPostcodes(),
                 DW_Postcode_Handler.getDefaultYM3());
         return result;
@@ -172,7 +172,7 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
 
     public TreeMap<String, String> getAdviceLeedsNamesAndPostcodes() {
         TreeMap<String, String> result;
-        result = new TreeMap<String, String>();
+        result = new TreeMap<>();
         ArrayList<String> tAdviceLeedsServiceNames;
         tAdviceLeedsServiceNames = getAdviceLeedsServiceNames();
         ArrayList<String> tAdviceLeedsServicePostcodes;
@@ -192,7 +192,7 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
      */
     public ArrayList<String> getAdviceLeedsServicePostcodes() {
         ArrayList<String> result;
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         // Postcodes in data from Leeds CAB
         result.add("LS21 1BG");
         result.add("LS27 9DY");
@@ -218,7 +218,7 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
      */
     public ArrayList<String> getAdviceLeedsServiceNames() {
         ArrayList<String> result;
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         // Postcodes in data from Leeds CAB
         result.add("Leeds CAB Otley");
         result.add("Leeds CAB Morley");
@@ -236,9 +236,9 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
         return result;
     }
 
-    public TreeMap<String, Geotools_Point> getAdviceLeedsNamesAndPoints() {
-        TreeMap<String, Geotools_Point> result;
-        DW_Postcode_Handler DW_Postcode_Handler;
+    public TreeMap<String, ONSPD_Point> getAdviceLeedsNamesAndPoints() {
+        TreeMap<String, ONSPD_Point> result;
+        ONSPD_Postcode_Handler DW_Postcode_Handler;
         DW_Postcode_Handler = Env.getPostcode_Handler();
         result = DW_Postcode_Handler.postcodeToPoints(getAdviceLeedsNamesAndPostcodes(),
                 DW_Postcode_Handler.getDefaultYM3());

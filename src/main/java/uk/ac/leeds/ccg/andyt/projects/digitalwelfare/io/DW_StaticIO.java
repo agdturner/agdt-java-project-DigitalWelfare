@@ -60,7 +60,7 @@ public class DW_StaticIO {
         String[] split1 = split(s, "\"");
         // a,d,g,"ew,2",x,y
         // "dsas",abd,w
-        List<String> resultsArrayList = new ArrayList<String>();
+        List<String> resultsArrayList = new ArrayList<>();
         // Deal with first string
         if (s.startsWith("\"")) {
             for (int i = 1; i < split1.length; i++) {

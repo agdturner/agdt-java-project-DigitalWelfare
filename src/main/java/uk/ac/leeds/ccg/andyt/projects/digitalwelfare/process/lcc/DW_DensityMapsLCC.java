@@ -26,7 +26,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
@@ -54,7 +55,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Da
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_MapsLCC;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
@@ -192,7 +192,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         File mapDirectory;
         mapDirectory = Files.getOutputSHBELineMapsDir();
 //        MapsLCC.setMapDirectory(mapDirectory);
-        foregrounds = new ArrayList<Geotools_Shapefile>();
+        foregrounds = new ArrayList<>();
         //midgrounds = new ArrayList<AGDT_Shapefile>();
 //        backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
@@ -216,7 +216,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         SHBEFilenames = Env.getSHBE_Handler().getSHBEFilenamesAll();
         // Specifiy distances
         ArrayList<Double> distances;
-        distances = new ArrayList<Double>();
+        distances = new ArrayList<>();
         for (double distance = 1000.0d; distance < 5000.0d; distance += 1000.0d) {
 //        for (double distance = 1000.0d; distance < 2000.0d; distance += 1000.0d) {
             distances.add(distance);
@@ -284,7 +284,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
         int index;
         index = 0;
-        List<String> stats = new ArrayList<String>();
+        List<String> stats = new ArrayList<>();
         stats.add("WSum");
 
         File dirIn;
@@ -302,8 +302,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             } else {
                 int debug = 1;
             }
-            denominatorFile = new File(
-                    dirIn,
+            denominatorFile = new File(                    dirIn,
                     "2013_Apr/Density2013_Apr_554_ncols_680_cellsize_50.0.asc");
             denominator1 = (Grids_GridDouble) f.create(dir, denominatorFile);
             System.out.println(denominator1.toString());
@@ -698,7 +697,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
         // Specifiy distances
         ArrayList<Double> distances;
-        distances = new ArrayList<Double>();
+        distances = new ArrayList<>();
         for (double distance = 1000.0d; distance < 5000.0d; distance += 1000.0d) {
 //        for (double distance = 1000.0d; distance < 2000.0d; distance += 1000.0d) {
             distances.add(distance);
@@ -732,7 +731,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 BigDecimal.valueOf(yllcorner + (cellsize * nrows)),
                 BigDecimal.valueOf(cellsize));
         ArrayList<Boolean> b;
-        b = new ArrayList<Boolean>();
+        b = new ArrayList<>();
         b.add(true);
         b.add(false);
 
@@ -1026,8 +1025,8 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 BigDecimal.valueOf(cellsize));
         DW_UO_Set underOccupiedSetCouncil0 = null;
         DW_UO_Set underOccupiedSetRSL0 = null;
-        TreeMap<DW_YM3, DW_UO_Set> underOccupiedSetsCouncil = null;
-        TreeMap<DW_YM3, DW_UO_Set> underOccupiedSetsRSL = null;
+        TreeMap<ONSPD_YM3, DW_UO_Set> underOccupiedSetsCouncil = null;
+        TreeMap<ONSPD_YM3, DW_UO_Set> underOccupiedSetsRSL = null;
         if (doUnderOccupied) {
             if (doCouncil) {
                 underOccupiedSetsCouncil = DW_UO_Data.getCouncilUOSets();
@@ -1044,9 +1043,9 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         Iterator<Integer> ite;
         int i;
         boolean initialised;
-        DW_YM3 yM30;
+        ONSPD_YM3 yM30;
         DW_SHBE_Records recs0;
-        DW_YM3 yM300;
+        ONSPD_YM3 yM300;
 
         Iterator<String> ites;
         ites = tenancyTypeGroups.keySet().iterator();
@@ -1131,7 +1130,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                     DW_SHBE_Records SHBEData1;
                     SHBEData1 = SHBE_Data.getDW_SHBE_Records(yM30);
 
-                    DW_YM3 yM31;
+                    ONSPD_YM3 yM31;
                     yM31 = tDW_SHBE_Handler.getYM3(SHBEFilenames[i]);
                     // Init underOccupiedSets
                     DW_UO_Set underOccupiedSetCouncil1 = null;
@@ -1200,7 +1199,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
     protected Grids_GridDouble doDensity(
             ArrayList<String> TTs,
             File dirOut,
-            DW_YM3 yM3,
+            ONSPD_YM3 yM3,
             DW_SHBE_Records SHBEData,
             DW_UO_Data DW_UO_Data,
             boolean doUnderOccupied,
@@ -1228,9 +1227,9 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         grid.mkdirs();
         Grids_GridDouble g0 = initiliseGrid(grid);
 
-        TreeMap<String, TreeMap<DW_YM3, TreeMap<String, Geotools_Point>>> lookups;
+        TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> lookups;
         lookups = MapsLCC.getONSPDlookups();
-        TreeMap<String, Geotools_Point> lookup;
+        TreeMap<String, ONSPD_Point> lookup;
         lookup = lookups.get("Unit").get(Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 
         HashMap<DW_ID, DW_SHBE_Record> records;
@@ -1303,12 +1302,12 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 }
                 if (doMainLoop) {
                     if (postcode != null) {
-                        Geotools_Point p;
+                        ONSPD_Point p;
                         p = lookup.get(Postcode_Handler.formatPostcodeForMapping(postcode));
 //            String formattedPostcode;
-//            formattedPostcode = DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
-//            Geotools_Point p1;
-//            p1 = DW_Postcode_Handler.getPointFromPostcode(DW_Postcode_Handler.formatPostcodeForONSPDLookup(postcode));
+//            formattedPostcode = ONSPD_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
+//            ONSPD_Point p1;
+//            p1 = ONSPD_Postcode_Handler.getPointFromPostcode(ONSPD_Postcode_Handler.formatPostcodeForONSPDLookup(postcode));
                         if (p != null) {
                             g0.addToCell((double) p.getX(), (double) p.getY(), 1.0d);
                             nonZero = true;
@@ -1349,7 +1348,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
             // Generalise the grid
             // Generate some geographically weighted statsitics
-            List<String> stats = new ArrayList<String>();
+            List<String> stats = new ArrayList<>();
             stats.add("WSum");
             //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
             for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
@@ -1461,7 +1460,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
         // Generalise the grid
         // Generate some geographically weighted statsitics
-        List<String> stats = new ArrayList<String>();
+        List<String> stats = new ArrayList<>();
         stats.add("WSum");
         //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
         for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
@@ -1535,10 +1534,10 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         DW_SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
         DW_SHBE_TenancyType_Handler = Env.getSHBE_TenancyType_Handler();
         TreeMap<String, ArrayList<String>> result;
-        result = new TreeMap<String, ArrayList<String>>();
+        result = new TreeMap<>();
         ArrayList<String> l;
         // All
-        l = new ArrayList<String>();
+        l = new ArrayList<>();
         l.add(DW_SHBE_TenancyType_Handler.s1);
         l.add(DW_SHBE_TenancyType_Handler.s2);
         l.add(DW_SHBE_TenancyType_Handler.s3);
@@ -1550,7 +1549,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         l.add(DW_SHBE_TenancyType_Handler.s9);
         result.put("All", l);
         // HB
-        l = new ArrayList<String>();
+        l = new ArrayList<>();
         l.add(DW_SHBE_TenancyType_Handler.s1);
         l.add(DW_SHBE_TenancyType_Handler.s2);
         l.add(DW_SHBE_TenancyType_Handler.s3);
@@ -1560,26 +1559,26 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         l.add(DW_SHBE_TenancyType_Handler.s9);
         result.put("HB", l);
         // Social
-        l = new ArrayList<String>();
+        l = new ArrayList<>();
         l.add(DW_SHBE_TenancyType_Handler.s1);
         l.add(DW_SHBE_TenancyType_Handler.s4);
         result.put("Social", l);
         // Council
-        l = new ArrayList<String>();
+        l = new ArrayList<>();
         l.add(DW_SHBE_TenancyType_Handler.s1);
         result.put("Council", l);
         // RSL
-        l = new ArrayList<String>();
+        l = new ArrayList<>();
         l.add(DW_SHBE_TenancyType_Handler.s1);
         l.add(DW_SHBE_TenancyType_Handler.s4);
         result.put("RSL", l);
         // Private Deregulated
-        l = new ArrayList<String>();
+        l = new ArrayList<>();
         l.add(DW_SHBE_TenancyType_Handler.s3);
         l.add(DW_SHBE_TenancyType_Handler.s6);
         result.put("PrivateDeregulated", l);
         // CTB
-        l = new ArrayList<String>();
+        l = new ArrayList<>();
         l.add(DW_SHBE_TenancyType_Handler.s5);
         l.add(DW_SHBE_TenancyType_Handler.s7);
         result.put("CTBOnly", l);

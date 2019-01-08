@@ -35,9 +35,9 @@ import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_DataHandler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_MapsAdviceLeeds;
 
 /**
@@ -105,14 +105,14 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         initData_LCC_WRU_Handler();
         // Initialise tDW_ID_ClientTypes
         ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes;
-        tDW_ID_ClientTypes = new ArrayList<DW_ID_ClientID>();
+        tDW_ID_ClientTypes = new ArrayList<>();
         tDW_ID_ClientTypes.add(new DW_ID_ClientID());
 //        tDW_ID_ClientTypes.add(new DW_ID_ClientOutletID());
 //        tDW_ID_ClientTypes.add(new DW_ID_ClientOutletEnquiryID());
 //        tDW_ID_ClientTypes.add(new DW_ID_ClientEnquiryID());
         // Initialise levels and targetPropertyNames. 
-        levels = new ArrayList<String>();
-        targetPropertyNames = new HashMap<String, String>();
+        levels = new ArrayList<>();
+        targetPropertyNames = new HashMap<>();
 //        // OA
 //        level = "OA";
 //        levels.add(level);
@@ -158,8 +158,8 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
     }
 
     public void runLevel() throws Exception, Error {
-        DW_YM3 YM3;
-        YM3 = new DW_YM3("2011_May");
+        ONSPD_YM3 YM3;
+        YM3 = new ONSPD_YM3("2011_May");
         int CensusYear = 2011;
         // Get deprivation data
         TreeMap<String, Census_DeprivationDataRecord> tDeprivationData;
@@ -357,7 +357,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             TreeMap<Integer, Integer> deprivationClasses,
             Set<String> outlets,
             TreeMap<String, Object[]> leedsCABData) {
-        ArrayList<String> deprivationClassLabels = new ArrayList<String>();
+        ArrayList<String> deprivationClassLabels = new ArrayList<>();
         //String[] outletValues = new String[outlets.size()];
         int[][] clientCounts = new int[deprivationClasses.size()][outlets.size()];
         int i = 0;
@@ -888,11 +888,11 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
         TreeMap<String, Integer> sums;
-        sums = new TreeMap<String, Integer>();
+        sums = new TreeMap<>();
         TreeMap<String, Integer> mins;
-        mins = new TreeMap<String, Integer>();
+        mins = new TreeMap<>();
         TreeMap<String, Integer> maxs;
-        maxs = new TreeMap<String, Integer>();
+        maxs = new TreeMap<>();
 
         Iterator<String> outletIterator = tAdviceLeedsData.keySet().iterator();
         String line;
@@ -917,24 +917,18 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                 if (!(outlet.equalsIgnoreCase("AllLeedsCAB"))) {
                     max = Math.max(max, count);
                     min = Math.min(min, count);
-                    Generic_Collections.addToTreeMapStringInteger(
-                            sums,
-                            area,
-                            count);
+                    Generic_Collections.addToTreeMapValueInteger(
+                            sums, area, count);
                     Generic_Collections.setMaxValueTreeMapStringInteger(
-                            maxs,
-                            area,
-                            count);
+                            maxs, area, count);
                     Generic_Collections.setMinValueTreeMapStringInteger(
-                            mins,
-                            area,
-                            count);
+                            mins, area, count);
                 }
             }
             pw3.close();
         }
         TreeMap<String, Integer> midminmaxs;
-        midminmaxs = new TreeMap<String, Integer>();
+        midminmaxs = new TreeMap<>();
 
         double n = tAdviceLeedsData.keySet().size() - 1;
         int maxSum;
@@ -1029,7 +1023,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> tLCC_WRUData,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         TreeMap<String, TreeMap<String, Integer>> result;
-        result = new TreeMap<String, TreeMap<String, Integer>>();
+        result = new TreeMap<>();
         String outlet;
 
         TreeMap<String, String> outletsAndPostcodes;
@@ -1038,34 +1032,34 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         // AllAdviceLeeds
         String allAdviceLeedsString = "AllAdviceLeeds";
         TreeMap<String, Integer> allAdviceLeedsCounts;
-        allAdviceLeedsCounts = new TreeMap<String, Integer>();
+        allAdviceLeedsCounts = new TreeMap<>();
         result.put(allAdviceLeedsString, allAdviceLeedsCounts);
         Set<DW_ID_ClientID> allAdviceLeedsIDs;
-        allAdviceLeedsIDs = new HashSet<DW_ID_ClientID>();
+        allAdviceLeedsIDs = new HashSet<>();
 
         // AllCABCounts
         String allCABString = "AllCAB";
         TreeMap<String, Integer> allCABCounts;
-        allCABCounts = new TreeMap<String, Integer>();
+        allCABCounts = new TreeMap<>();
         result.put(allCABString, allCABCounts);
         Set<DW_ID_ClientID> allCABIDs;
-        allCABIDs = new HashSet<DW_ID_ClientID>();
+        allCABIDs = new HashSet<>();
 
         // AllCABOutletCounts
         String allCABOutletString = "AllCABOutlet";
         TreeMap<String, Integer> allCABOutletCounts;
-        allCABOutletCounts = new TreeMap<String, Integer>();
+        allCABOutletCounts = new TreeMap<>();
         result.put(allCABOutletString, allCABOutletCounts);
         Set<DW_ID_ClientID> allCABOutletIDs;
-        allCABOutletIDs = new HashSet<DW_ID_ClientID>();
+        allCABOutletIDs = new HashSet<>();
 
         // AllCABNonOutletCounts
         String allCABNonOutletString = "AllCABNonOutlet";
         TreeMap<String, Integer> allCABNonOutletCounts;
-        allCABNonOutletCounts = new TreeMap<String, Integer>();
+        allCABNonOutletCounts = new TreeMap<>();
         result.put(allCABNonOutletString, allCABNonOutletCounts);
         Set<DW_ID_ClientID> allCABNonOutletIDs;
-        allCABNonOutletIDs = new HashSet<DW_ID_ClientID>();
+        allCABNonOutletIDs = new HashSet<>();
 
         // Add from tLeedsCABData
         Iterator<DW_ID_ClientID> ite;
@@ -1092,7 +1086,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                 }
             } else {
                 TreeMap<String, Integer> d;
-                d = new TreeMap<String, Integer>();
+                d = new TreeMap<>();
                 d.put(key, 1);
                 result.put(outlet, d);
             }
@@ -1172,7 +1166,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                 }
             } else {
                 TreeMap<String, Integer> d;
-                d = new TreeMap<String, Integer>();
+                d = new TreeMap<>();
                 d.put(key, 1);
                 result.put(outlet, d);
             }
@@ -1241,7 +1235,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                 }
             } else {
                 TreeMap<String, Integer> d;
-                d = new TreeMap<String, Integer>();
+                d = new TreeMap<>();
                 d.put(key, 1);
                 result.put(outlet, d);
             }
@@ -1264,10 +1258,10 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
      * @return
      */
     private String getKey(
-            DW_YM3 yM3,
+            ONSPD_YM3 yM3,
             String postcode,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
-        DW_Postcode_Handler tDW_Postcode_Handler;
+        ONSPD_Postcode_Handler tDW_Postcode_Handler;
         tDW_Postcode_Handler = Env.getPostcode_Handler();
         String key = "";
         if (level.equalsIgnoreCase("PostcodeDistrict")
@@ -1315,16 +1309,16 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             //String outputFilename,
             TreeMap data,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
-        DW_Postcode_Handler tDW_Postcode_Handler;
+        ONSPD_Postcode_Handler tDW_Postcode_Handler;
         tDW_Postcode_Handler = Env.getPostcode_Handler();
         TreeMap<String, TreeMap<String, Integer>> result;
-        result = new TreeMap<String, TreeMap<String, Integer>>();
+        result = new TreeMap<>();
         String outlet;
         String outletAllLeedsCAB = "AllLeedsCAB";
         TreeMap<String, Integer> allAdviceLeedsCounts;
-        allAdviceLeedsCounts = new TreeMap<String, Integer>();
+        allAdviceLeedsCounts = new TreeMap<>();
         result.put(outletAllLeedsCAB, allAdviceLeedsCounts);
-        DW_YM3 yM3;
+        ONSPD_YM3 yM3;
         yM3 = Postcode_Handler.getDefaultYM3();
         Iterator<Object> ite;
         ite = data.keySet().iterator();
@@ -1520,7 +1514,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             }
         } else {
             TreeMap<String, Integer> d;
-            d = new TreeMap<String, Integer>();
+            d = new TreeMap<>();
             d.put(areaCode, 1);
             aggregateCounts.put(outlet, d);
         }
@@ -1556,7 +1550,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             TreeMap<String, Census_DeprivationDataRecord> tDeprivationData,
             TreeMap<String, String> tLookupFromPostcodeToCensusCodes,
             TreeMap<Integer, Integer> deprivationClasses) {
-        TreeMap<String, Object[]> result = new TreeMap<String, Object[]>();
+        TreeMap<String, Object[]> result = new TreeMap<>();
         //init_OutputTextFiles("outputFilename");
 
         String outlet;
@@ -1586,7 +1580,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             // ClientBureauOutletIDs and the values are CAB_DataRecord2s
             Iterator<DW_ID_ClientID> ite;
             TreeMap<String, TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record>> outletLeedsCABData;
-            outletLeedsCABData = new TreeMap<String, TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record>>();
+            outletLeedsCABData = new TreeMap<>();
             ite = tCABData.keySet().iterator();
             while (ite.hasNext()) {
                 DW_ID_ClientID id = ite.next();
@@ -1598,7 +1592,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                     d.put(id, aLeedsCABData_DataRecord);
                 } else {
                     TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> d;
-                    d = new TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record>();
+                    d = new TreeMap<>();
                     d.put(id, aLeedsCABData_DataRecord);
                     outletLeedsCABData.put(outlet, d);
                 }
@@ -1622,7 +1616,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         } else {
             Iterator<DW_ID_ClientID> ite;
             TreeMap<String, TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record>> outletChapeltownCABData;
-            outletChapeltownCABData = new TreeMap<String, TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record>>();
+            outletChapeltownCABData = new TreeMap<>();
             ite = tCABData.keySet().iterator();
             while (ite.hasNext()) {
                 DW_ID_ClientID id = ite.next();
@@ -1634,7 +1628,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                     d.put(id, aCABData_DataRecord);
                 } else {
                     TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> d;
-                    d = new TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record>();
+                    d = new TreeMap<>();
                     d.put(id, aCABData_DataRecord);
                     outletChapeltownCABData.put(outlet, d);
                 }
@@ -2091,7 +2085,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             int numberOfClasses) {
         Object[] result = new Object[2];
         int clientsWithoutARecognisedPostcode = 0;
-        TreeMap<Integer, Integer> deprivationClassCountOfCABClients = new TreeMap<Integer, Integer>();
+        TreeMap<Integer, Integer> deprivationClassCountOfCABClients = new TreeMap<>();
         Iterator<String> ite = tChapeltownCABData.keySet().iterator();
         while (ite.hasNext()) {
             String clientProfileID = ite.next();
@@ -2208,7 +2202,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tQ4ChapeltownCABData;
         tQ4ChapeltownCABData = tCAB_DataRecord0_Handler.loadInputData(
                 type, Q4Filename, IDType);
-        result = new TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record>();
+        result = new TreeMap<>();
         result.putAll(tQ1ChapeltownCABData);
         result.putAll(tQ2ChapeltownCABData);
         result.putAll(tQ3ChapeltownCABData);

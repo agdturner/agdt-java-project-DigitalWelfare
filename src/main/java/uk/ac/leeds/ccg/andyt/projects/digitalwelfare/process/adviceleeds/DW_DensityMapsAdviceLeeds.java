@@ -43,8 +43,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_LC
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
@@ -52,7 +53,6 @@ import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStatsNotUpdat
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_Processor;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_DensityMapsAbstract;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_MapsAdviceLeeds;
 
@@ -106,8 +106,8 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
 //        Maps.setShowMapsInJMapPane(true);
 //        //outputESRIAsciigrids = false;
 //        Maps.setImageWidth(1000);
-        DW_YM3 YM3;
-        YM3 = new DW_YM3(2011, 5);
+        ONSPD_YM3 YM3;
+        YM3 = new ONSPD_YM3(2011, 5);
         Maps.initONSPDLookups();
         // Initialise styleParameters
         /*
@@ -166,7 +166,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
 
         // Initialise tDW_ID_ClientTypes
         ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes;
-        tDW_ID_ClientTypes = new ArrayList<DW_ID_ClientID>();
+        tDW_ID_ClientTypes = new ArrayList<>();
         tDW_ID_ClientTypes.add(new DW_ID_ClientID());
 //        tDW_ID_ClientTypes.add(new DW_ID_ClientOutletID());
 //        tDW_ID_ClientTypes.add(new DW_ID_ClientOutletEnquiryID());
@@ -197,7 +197,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         }
     }
 
-    public void runAll(ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes, DW_YM3 YM3) throws Exception, Error {
+    public void runAll(ArrayList<DW_ID_ClientID> tDW_ID_ClientTypes, ONSPD_YM3 YM3) throws Exception, Error {
         boolean commonStyling = true;
         boolean individualStyling = true;
 
@@ -233,7 +233,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             // Grids parameters
             // Filter just for specific outlets
             HashSet<String> outlets;
-            outlets = new HashSet<String>();
+            outlets = new HashSet<>();
             outlets.add("OTLEY - LS21 1BG");
             outlets = null; // Set outlets null to run for all outlets
 
@@ -564,7 +564,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         } else {
             process = true;
         }
-        DW_YM3 yM3;
+        ONSPD_YM3 yM3;
         yM3 = Postcode_Handler.getDefaultYM3();
         if (process) {
             // Initialise
@@ -652,7 +652,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
 
             // Generalise the grid
             // Generate some geographically weighted statsitics
-            List<String> stats = new ArrayList<String>();
+            List<String> stats = new ArrayList<>();
             stats.add("WSum");
             for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
                     cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
@@ -717,10 +717,10 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         }
     }
 
-    public TreeMap<String, ArrayList<Geotools_Point>> getLeedsCABDataPoints(
+    public TreeMap<String, ArrayList<ONSPD_Point>> getLeedsCABDataPoints(
             Object IDType) {
-        TreeMap<String, ArrayList<Geotools_Point>> result;
-        result = new TreeMap<String, ArrayList<Geotools_Point>>();
+        TreeMap<String, ArrayList<ONSPD_Point>> result;
+        result = new TreeMap<>();
         String filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
         aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(Env);
@@ -740,13 +740,13 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             String formattedpostcode = Postcode_Handler.formatPostcode(postcode);
             String postcodeLevel;
             postcodeLevel = Postcode_Handler.getPostcodeLevel(formattedpostcode);
-            Geotools_Point aPoint = MapsAdviceLeeds.getONSPDlookups().get(postcodeLevel).get(Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
+            ONSPD_Point aPoint = MapsAdviceLeeds.getONSPDlookups().get(postcodeLevel).get(Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
             if (aPoint != null) {
                 if (result.containsKey(outlet)) {
                     result.get(outlet).add(aPoint);
                 } else {
-                    ArrayList<Geotools_Point> a;
-                    a = new ArrayList<Geotools_Point>();
+                    ArrayList<ONSPD_Point> a;
+                    a = new ArrayList<>();
                     a.add(aPoint);
                     result.put(outlet, a);
                 }
@@ -761,7 +761,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
     public TreeMap<String, ArrayList<String>> getLeedsCABDataPostcodes(
             Object IDType) {
         TreeMap<String, ArrayList<String>> result;
-        result = new TreeMap<String, ArrayList<String>>();
+        result = new TreeMap<>();
         String filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
         aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(Env);
@@ -782,7 +782,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
                 result.get(outlet).add(formattedpostcode);
             } else {
                 ArrayList<String> a;
-                a = new ArrayList<String>();
+                a = new ArrayList<>();
                 a.add(formattedpostcode);
                 result.put(outlet, a);
             }
@@ -790,10 +790,10 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         return result;
     }
 
-    public ArrayList<Geotools_Point> getChapeltownCABDataPoints(
+    public ArrayList<ONSPD_Point> getChapeltownCABDataPoints(
             Object IDType) {
-        ArrayList<Geotools_Point> result;
-        result = new ArrayList<Geotools_Point>();
+        ArrayList<ONSPD_Point> result;
+        result = new ArrayList<>();
         DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
         tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(Env);
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
@@ -810,7 +810,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             String formattedpostcode = Postcode_Handler.formatPostcode(postcode);
             String postcodeLevel;
             postcodeLevel = Postcode_Handler.getPostcodeLevel(formattedpostcode);
-            Geotools_Point aPoint = MapsAdviceLeeds.getONSPDlookups().get(postcodeLevel).get(Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
+            ONSPD_Point aPoint = MapsAdviceLeeds.getONSPDlookups().get(postcodeLevel).get(Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
             if (aPoint != null) {
                 result.add(aPoint);
             } else {
@@ -824,7 +824,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
     public ArrayList<String> getLCC_WRUDataPostcodes(
             Object IDType) {
         ArrayList<String> result;
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         DW_Data_LCC_WRU_Handler h;
         h = new DW_Data_LCC_WRU_Handler(Env);
         TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> data;
@@ -846,7 +846,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
     public ArrayList<String> getChapeltownCABDataPostcodes(
             Object IDType) {
         ArrayList<String> result;
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
         tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(Env);
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;

@@ -28,7 +28,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
@@ -37,7 +37,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_CorrectedPostcodes extends DW_Object {
 
-    protected transient DW_Postcode_Handler Postcode_Handler;
+    protected transient ONSPD_Postcode_Handler Postcode_Handler;
     protected transient DW_Files Files;
     protected transient DW_Strings Strings;
 
@@ -89,10 +89,10 @@ public class DW_CorrectedPostcodes extends DW_Object {
         String OriginalPostcodeF;
         String CorrectedPostcodeF;
 
-        UnmappableToMappablePostcodes = new HashMap<String, HashSet<String>>();
-        ClaimRefToOriginalPostcodes = new HashMap<String, ArrayList<String>>();
-        ClaimRefToCorrectedPostcodes = new HashMap<String, ArrayList<String>>();
-        PostcodesCheckedAsMappable = new HashSet<String>();
+        UnmappableToMappablePostcodes = new HashMap<>();
+        ClaimRefToOriginalPostcodes = new HashMap<>();
+        ClaimRefToCorrectedPostcodes = new HashMap<>();
+        PostcodesCheckedAsMappable = new HashSet<>();
 
         while (ite.hasNext()) {
             s = ite.next();
@@ -114,16 +114,16 @@ public class DW_CorrectedPostcodes extends DW_Object {
                 if (UnmappableToMappablePostcodes.containsKey(OriginalPostcodeF)) {
                     MappablePostcodes = UnmappableToMappablePostcodes.get(OriginalPostcodeF);
                 } else {
-                    MappablePostcodes = new HashSet<String>();
+                    MappablePostcodes = new HashSet<>();
                     UnmappableToMappablePostcodes.put(OriginalPostcodeF, MappablePostcodes);
                 }
                 MappablePostcodes.add(CorrectedPostcodeF);
                 ArrayList<String> OriginalPostcodes;
-                OriginalPostcodes = new ArrayList<String>();
+                OriginalPostcodes = new ArrayList<>();
                 OriginalPostcodes.add(OriginalPostcodeF);
                 getClaimRefToOriginalPostcodes().put(ClaimRef, OriginalPostcodes);
                 ArrayList<String> CorrectedPostcodes;
-                CorrectedPostcodes = new ArrayList<String>();
+                CorrectedPostcodes = new ArrayList<>();
                 CorrectedPostcodes.add(CorrectedPostcodeF);
                 getClaimRefToCorrectedPostcodes().put(ClaimRef, CorrectedPostcodes);
             }

@@ -22,17 +22,18 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_CorrectedPostcodes;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_Collections;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -43,7 +44,7 @@ public class DW_SHBE_Data extends DW_Object {
     /**
      * For convenience
      */
-    transient DW_Postcode_Handler DW_Postcode_Handler;
+    transient ONSPD_Postcode_Handler DW_Postcode_Handler;
     transient DW_Files DW_Files;
     transient DW_Strings DW_Strings;
 
@@ -51,7 +52,7 @@ public class DW_SHBE_Data extends DW_Object {
      * A reference to all the Data for this Payment Type. The keys are YM3 and
      * the values are the respective collection.
      */
-    protected HashMap<DW_YM3, DW_SHBE_Records> Data;
+    protected HashMap<ONSPD_YM3, DW_SHBE_Records> Data;
 
     /**
      * File for storing Data
@@ -69,7 +70,7 @@ public class DW_SHBE_Data extends DW_Object {
     private HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
 
     private DW_CorrectedPostcodes CorrectedPostcodes;
-    
+
     /**
      * National Insurance Number to NINO DW_ID Lookup.
      */
@@ -113,18 +114,18 @@ public class DW_SHBE_Data extends DW_Object {
     /**
      * Postcode to Postcode DW_ID Lookup.
      */
-    private HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
+    private HashMap<String, ONSPD_ID> PostcodeToPostcodeIDLookup;
 
     /**
      * Postcode DW_ID to Postcode Lookup.
      */
-    private HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
+    private HashMap<ONSPD_ID, String> PostcodeIDToPostcodeLookup;
 
     /**
-     * Postcode DW_ID to Geotools_Point Lookups. There is a different one for each
+     * Postcode DW_ID to ONSPD_Point Lookups. There is a different one for each
      * ONSPD File. The keys are Nearest YM3s for the respective ONSPD File.
      */
-    private HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>> PostcodeIDToPointLookups;
+    private HashMap<ONSPD_YM3, HashMap<ONSPD_ID, ONSPD_Point>> PostcodeIDToPointLookups;
 
     /**
      * ClaimRefToClaimIDLookup File.
@@ -170,7 +171,7 @@ public class DW_SHBE_Data extends DW_Object {
      * CorrectedPostcodes File.
      */
     private File CorrectedPostcodesFile;
-            
+
     /**
      * NINOToIDLookup File.
      */
@@ -208,21 +209,21 @@ public class DW_SHBE_Data extends DW_Object {
 
     /**
      * {@code
- if (Data == null) {
- if (f.exists()) {
- Data = (HashMap<String, DW_SHBE_Records>) Generic_IO.readObject(f);
- } else {
- Data = new HashMap<String, DW_SHBE_Records>(); } } return Data; }
+     * if (Data == null) {
+     * if (f.exists()) {
+     * Data = (HashMap<String, DW_SHBE_Records>) Generic_IO.readObject(f);
+     * } else {
+     * Data = new HashMap<String, DW_SHBE_Records>(); } } return Data; }
      *
      * @param f
      * @return
      */
-    public HashMap<DW_YM3, DW_SHBE_Records> getData(File f) {
+    public HashMap<ONSPD_YM3, DW_SHBE_Records> getData(File f) {
         if (Data == null) {
             if (f.exists()) {
-                Data = (HashMap<DW_YM3, DW_SHBE_Records>) Generic_IO.readObject(f);
+                Data = (HashMap<ONSPD_YM3, DW_SHBE_Records>) Generic_IO.readObject(f);
             } else {
-                Data = new HashMap<DW_YM3, DW_SHBE_Records>();
+                Data = new HashMap<>();
             }
         }
         return Data;
@@ -236,7 +237,7 @@ public class DW_SHBE_Data extends DW_Object {
      *
      * @return
      */
-    public HashMap<DW_YM3, DW_SHBE_Records> getData() {
+    public HashMap<ONSPD_YM3, DW_SHBE_Records> getData() {
         DataFile = getDataFile();
         return getData(DataFile);
     }
@@ -272,23 +273,23 @@ public class DW_SHBE_Data extends DW_Object {
 
     /**
      * {@code HashMap<String, DW_ID> result;
- if (f.exists()) {
- result = (HashMap<String, DW_ID>) Generic_IO.readObject(f);
- } else {
- result = new HashMap<String, DW_ID>(); } return result;}
+     * if (f.exists()) {
+     * result = (HashMap<String, DW_ID>) Generic_IO.readObject(f);
+     * } else {
+     * result = new HashMap<String, DW_ID>(); } return result;}
      *
      * @param f
      * @return
      */
     public HashMap<String, DW_ID> getStringToIDLookup(
             File f) {
-        HashMap<String, DW_ID> result;
+        HashMap<String, DW_ID> r;
         if (f.exists()) {
-            result = (HashMap<String, DW_ID>) Generic_IO.readObject(f);
+            r = (HashMap<String, DW_ID>) Generic_IO.readObject(f);
         } else {
-            result = new HashMap<String, DW_ID>();
+            r = new HashMap<>();
         }
-        return result;
+        return r;
     }
 
     /**
@@ -306,7 +307,7 @@ public class DW_SHBE_Data extends DW_Object {
 
     /**
      * {@code ClaimRefToClaimIDLookupFile = getClaimRefToClaimIDLookupFile();
- return getClaimRefToClaimIDLookup(ClaimRefToClaimIDLookupFile);}
+     * return getClaimRefToClaimIDLookup(ClaimRefToClaimIDLookupFile);}
      *
      * @return
      */
@@ -317,7 +318,7 @@ public class DW_SHBE_Data extends DW_Object {
 
     /**
      * {@code ClaimRefToClaimIDLookupFile = getClaimRefToClaimIDLookupFile();
- return getClaimRefToClaimIDLookup(ClaimRefToClaimIDLookupFile);}
+     * return getClaimRefToClaimIDLookup(ClaimRefToClaimIDLookupFile);}
      *
      * @return
      */
@@ -343,7 +344,7 @@ public class DW_SHBE_Data extends DW_Object {
         CorrectedPostcodesFile = getCorrectedPostcodesFile();
         return getCorrectedPostcodes(CorrectedPostcodesFile);
     }
-    
+
     /**
      * {@code if (NINOToDW_IDLookup == null) {
      * NINOToDW_IDLookup = getStringToIDLookup(f);
@@ -527,10 +528,11 @@ public class DW_SHBE_Data extends DW_Object {
         }
         return PersonIDToClaimIDsLookup;
     }
-    
+
     /**
      * All DW_PersonID to ClaimIDs Lookup
-     * @return 
+     *
+     * @return
      */
     public HashMap<DW_PersonID, HashSet<DW_ID>> getPersonIDToClaimIDLookup() {
         PersonIDToClaimIDsLookupFile = getPersonIDToClaimIDLookupFile();
@@ -551,10 +553,14 @@ public class DW_SHBE_Data extends DW_Object {
      * @param f
      * @return
      */
-    public final HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup(
+    public final HashMap<String, ONSPD_ID> getPostcodeToPostcodeIDLookup(
             File f) {
         if (PostcodeToPostcodeIDLookup == null) {
-            PostcodeToPostcodeIDLookup = getStringToIDLookup(f);
+            if (f.exists()) {
+                PostcodeToPostcodeIDLookup = (HashMap<String, ONSPD_ID>) Generic_IO.readObject(f);
+            } else {
+                PostcodeToPostcodeIDLookup = new HashMap<>();
+            }
         }
         return PostcodeToPostcodeIDLookup;
     }
@@ -565,7 +571,7 @@ public class DW_SHBE_Data extends DW_Object {
      *
      * @return
      */
-    public HashMap<String, DW_ID> getPostcodeToPostcodeIDLookup() {
+    public HashMap<String, ONSPD_ID> getPostcodeToPostcodeIDLookup() {
         PostcodeToPostcodeIDLookupFile = getPostcodeToPostcodeIDLookupFile();
         return getPostcodeToPostcodeIDLookup(PostcodeToPostcodeIDLookupFile);
     }
@@ -579,32 +585,36 @@ public class DW_SHBE_Data extends DW_Object {
      * @param f
      * @return
      */
-    public final HashMap<DW_ID, String> getPostcodeIDToPostcodeLookup(
+    public final HashMap<ONSPD_ID, String> getPostcodeIDToPostcodeLookup(
             File f) {
         if (PostcodeIDToPostcodeLookup == null) {
-            PostcodeIDToPostcodeLookup = DW_Collections.getHashMap_DW_ID__String(f);
+            if (f.exists()) {
+                PostcodeIDToPostcodeLookup = (HashMap<ONSPD_ID, String>) Generic_IO.readObject(f);
+            } else {
+                PostcodeIDToPostcodeLookup = new HashMap<>();
+            }
         }
         return PostcodeIDToPostcodeLookup;
     }
 
     /**
      * {@code if (PostcodeIDToPointLookups == null) {
- if (f.exists()) {
- PostcodeIDToPointLookups = (HashMap<String, HashMap<DW_ID, Geotools_Point>>) Generic_IO.readObject(f);
- } else {
- PostcodeIDToPointLookups = new HashMap<String, HashMap<DW_ID, Geotools_Point>>();
- } } return PostcodeIDToPointLookups;}
+     * if (f.exists()) {
+     * PostcodeIDToPointLookups = (HashMap<String, HashMap<DW_ID, ONSPD_Point>>) Generic_IO.readObject(f);
+     * } else {
+     * PostcodeIDToPointLookups = new HashMap<String, HashMap<DW_ID, ONSPD_Point>>();
+     * } } return PostcodeIDToPointLookups;}
      *
      * @param f
      * @return
      */
-    public final HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>> getPostcodeIDToPointLookups(
+    public final HashMap<ONSPD_YM3, HashMap<ONSPD_ID, ONSPD_Point>> getPostcodeIDToPointLookups(
             File f) {
         if (PostcodeIDToPointLookups == null) {
             if (f.exists()) {
-                PostcodeIDToPointLookups = (HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>>) Generic_IO.readObject(f);
+                PostcodeIDToPointLookups = (HashMap<ONSPD_YM3, HashMap<ONSPD_ID, ONSPD_Point>>) Generic_IO.readObject(f);
             } else {
-                PostcodeIDToPointLookups = new HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>>();
+                PostcodeIDToPointLookups = new HashMap<>();
             }
         }
         return PostcodeIDToPointLookups;
@@ -616,7 +626,7 @@ public class DW_SHBE_Data extends DW_Object {
      *
      * @return
      */
-    public HashMap<DW_ID, String> getPostcodeIDToPostcodeLookup() {
+    public HashMap<ONSPD_ID, String> getPostcodeIDToPostcodeLookup() {
         PostcodeIDToPostcodeLookupFile = getPostcodeIDToPostcodeLookupFile();
         return getPostcodeIDToPostcodeLookup(PostcodeIDToPostcodeLookupFile);
     }
@@ -627,7 +637,7 @@ public class DW_SHBE_Data extends DW_Object {
      *
      * @return
      */
-    public HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>> getPostcodeIDToPointLookups() {
+    public HashMap<ONSPD_YM3, HashMap<ONSPD_ID, ONSPD_Point>> getPostcodeIDToPointLookups() {
         PostcodeIDToPointLookupsFile = getPostcodeIDToPointLookupsFile();
         return getPostcodeIDToPointLookups(PostcodeIDToPointLookupsFile);
     }
@@ -639,15 +649,15 @@ public class DW_SHBE_Data extends DW_Object {
      * @param YM3
      * @return
      */
-    public HashMap<DW_ID, Geotools_Point> getPostcodeIDToPointLookup(DW_YM3 YM3) {
-        DW_YM3 NearestYM3ForONSPDLookup;
+    public HashMap<ONSPD_ID, ONSPD_Point> getPostcodeIDToPointLookup(ONSPD_YM3 YM3) {
+        ONSPD_YM3 NearestYM3ForONSPDLookup;
         NearestYM3ForONSPDLookup = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
-        HashMap<DW_ID, Geotools_Point> PostcodeIDToPointLookup;
-        PostcodeIDToPointLookups = DW_SHBE_Data.this.getPostcodeIDToPointLookups();
+        HashMap<ONSPD_ID, ONSPD_Point> PostcodeIDToPointLookup;
+        PostcodeIDToPointLookups = getPostcodeIDToPointLookups();
         if (PostcodeIDToPointLookups.containsKey(NearestYM3ForONSPDLookup)) {
             PostcodeIDToPointLookup = PostcodeIDToPointLookups.get(NearestYM3ForONSPDLookup);
         } else {
-            PostcodeIDToPointLookup = new HashMap<DW_ID, Geotools_Point>();
+            PostcodeIDToPointLookup = new HashMap<>();
             PostcodeIDToPointLookups.put(NearestYM3ForONSPDLookup, PostcodeIDToPointLookup);
         }
         return PostcodeIDToPointLookup;
@@ -767,7 +777,7 @@ public class DW_SHBE_Data extends DW_Object {
         }
         return PostcodeIDToPointLookupsFile;
     }
-    
+
     public final File getCorrectedPostcodesFile() {
         if (CorrectedPostcodesFile == null) {
             String filename = "DW_CorrectedPostcodes"
@@ -903,7 +913,7 @@ public class DW_SHBE_Data extends DW_Object {
         }
         return NonDependentPersonIDsFile;
     }
-    
+
     public final File getPersonIDToClaimIDLookupFile() {
         if (PersonIDToClaimIDsLookupFile == null) {
             String filename = "PersonIDToClaimIDsLookup_HashMap_DW_PersonID__HashSet_DW_ID"
@@ -922,8 +932,7 @@ public class DW_SHBE_Data extends DW_Object {
      * @param YM3
      * @return
      */
-    public DW_SHBE_Records getDW_SHBE_Records(
-            DW_YM3 YM3) {
+    public DW_SHBE_Records getDW_SHBE_Records(ONSPD_YM3 YM3) {
         DW_SHBE_Records DW_SHBE_Records;
         DW_SHBE_Records = getData().get(YM3);
         if (DW_SHBE_Records == null) {
@@ -945,7 +954,7 @@ public class DW_SHBE_Data extends DW_Object {
      * @param YM3
      * @return
      */
-    protected File getDir(DW_YM3 YM3) {
+    protected File getDir(ONSPD_YM3 YM3) {
         return new File(
                 DW_Files.getGeneratedSHBEDir(),
                 YM3.toString());
@@ -967,7 +976,7 @@ public class DW_SHBE_Data extends DW_Object {
      * @param YM3
      * @return
      */
-    protected File getFile(DW_YM3 YM3) {
+    protected File getFile(ONSPD_YM3 YM3) {
         File result;
         File dir;
         dir = getDir(YM3);
@@ -988,9 +997,9 @@ public class DW_SHBE_Data extends DW_Object {
      */
     public int clearAllCache() {
         int result = 0;
-        Iterator<DW_YM3> ite;
+        Iterator<ONSPD_YM3> ite;
         ite = Data.keySet().iterator();
-        DW_YM3 YM3;
+        ONSPD_YM3 YM3;
         DW_SHBE_Records recs;
         while (ite.hasNext()) {
             YM3 = ite.next();
@@ -1011,11 +1020,11 @@ public class DW_SHBE_Data extends DW_Object {
      * cleared from fast access memory.
      * @return The number of DW_SHBE_Records cleared.
      */
-    public int clearAllCacheExcept(DW_YM3 YM3) {
+    public int clearAllCacheExcept(ONSPD_YM3 YM3) {
         int result = 0;
-        Iterator<DW_YM3> ite;
+        Iterator<ONSPD_YM3> ite;
         ite = Data.keySet().iterator();
-        DW_YM3 aYM3;
+        ONSPD_YM3 aYM3;
         DW_SHBE_Records recs;
         while (ite.hasNext()) {
             aYM3 = ite.next();
@@ -1036,9 +1045,9 @@ public class DW_SHBE_Data extends DW_Object {
      * @return true iff some DW_SHBE_Records were cleared and false otherwise.
      */
     public boolean clearSomeCache() {
-        Iterator<DW_YM3> ite;
+        Iterator<ONSPD_YM3> ite;
         ite = Data.keySet().iterator();
-        DW_YM3 YM3;
+        ONSPD_YM3 YM3;
         DW_SHBE_Records recs;
         while (ite.hasNext()) {
             YM3 = ite.next();
@@ -1058,10 +1067,10 @@ public class DW_SHBE_Data extends DW_Object {
      * @param YM3
      * @return true iff some DW_SHBE_Records were cleared and false otherwise.
      */
-    public boolean clearSomeCacheExcept(DW_YM3 YM3) {
-        Iterator<DW_YM3> ite;
+    public boolean clearSomeCacheExcept(ONSPD_YM3 YM3) {
+        Iterator<ONSPD_YM3> ite;
         ite = Data.keySet().iterator();
-        DW_YM3 aYM3;
+        ONSPD_YM3 aYM3;
         DW_SHBE_Records recs;
         while (ite.hasNext()) {
             aYM3 = ite.next();
@@ -1084,7 +1093,7 @@ public class DW_SHBE_Data extends DW_Object {
      * @return true iff the data were cleared and false otherwise (when the data
      * is already cleared).
      */
-    public boolean clearCache(DW_YM3 YM3) {
+    public boolean clearCache(ONSPD_YM3 YM3) {
         DW_SHBE_Records recs;
         recs = Data.get(YM3);
         if (recs != null) {

@@ -41,7 +41,7 @@ public class DW_Table {
      */
     public static ArrayList<String> readCSV(File f) {
         ArrayList<String> result;
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         try {
             BufferedReader br;
             br = Generic_IO.getBufferedReader(f);

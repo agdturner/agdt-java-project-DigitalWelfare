@@ -111,15 +111,15 @@ public class DW_Claim extends DW_Object {
             DW_ID ClaimID){
         super(env);
         this.ClaimID = ClaimID;
-        InSHBE = new HashMap<Integer, Boolean>();
-        Suspended = new HashMap<Integer, Boolean>();
-        InUO = new HashMap<Integer, Boolean>();
-        RentArrears = new HashMap<Integer, Double>();
-        DHP = new HashMap<Integer, Integer>();
-        BT = new HashMap<Integer, Double>();
-        Type14 = new HashMap<Integer, Boolean>();
-        ChildUnder11 = new HashMap<Integer, Boolean>();
-        PostcodeFs = new HashMap<Integer, String>();
+        InSHBE = new HashMap<>();
+        Suspended = new HashMap<>();
+        InUO = new HashMap<>();
+        RentArrears = new HashMap<>();
+        DHP = new HashMap<>();
+        BT = new HashMap<>();
+        Type14 = new HashMap<>();
+        ChildUnder11 = new HashMap<>();
+        PostcodeFs = new HashMap<>();
     }
     
 }

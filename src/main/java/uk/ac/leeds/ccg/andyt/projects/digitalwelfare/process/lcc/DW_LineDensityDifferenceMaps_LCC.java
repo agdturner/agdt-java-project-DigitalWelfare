@@ -311,7 +311,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
         //initStyleParameters();
 //        Maps.setMapDirectory(DW_Files.getOutputSHBELineMapsDir());
 
-        foregrounds = new ArrayList<Geotools_Shapefile>();
+        foregrounds = new ArrayList<>();
         //midgrounds = new ArrayList<AGDT_Shapefile>();
 //        backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
@@ -641,7 +641,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 
         // Generalise the grid
         // Generate some geographically weighted statsitics
-        List<String> stats = new ArrayList<String>();
+        List<String> stats = new ArrayList<>();
         stats.add("WSum");
         //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
         for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;

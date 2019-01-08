@@ -21,11 +21,12 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -50,7 +51,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
      * The Year_Month of the records. This is for retrieving the Year_Month
      * DW_SHBE_Records which this is part of.
      */
-    protected DW_YM3 YM3;
+    protected ONSPD_YM3 YM3;
 
     /**
      * The ClaimRef DW_ID.
@@ -96,7 +97,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
     /**
      * The Postcode DW_ID.
      */
-    protected DW_ID PostcodeID;
+    protected ONSPD_ID PostcodeID;
 
     /**
      * DRecord
@@ -114,7 +115,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
      * @param YM3 The Year_Month of this.
      * @param ClaimID The ClaimRef DW_ID for this.
      */
-    public DW_SHBE_Record(DW_Environment env, DW_YM3 YM3, DW_ID ClaimID) {
+    public DW_SHBE_Record(DW_Environment env, ONSPD_YM3 YM3, DW_ID ClaimID) {
         super(env);
         DW_Strings = env.getStrings();
         this.YM3 = YM3;
@@ -131,7 +132,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
      */
     public DW_SHBE_Record(
             DW_Environment env,
-            DW_YM3 YM3,
+            ONSPD_YM3 YM3,
             DW_ID ClaimID,
             DW_SHBE_D_Record DRecord) {
         super(env);
@@ -295,7 +296,7 @@ public class DW_SHBE_Record extends DW_Object implements Serializable {
     /**
      * @return the PostcodeID
      */
-    public DW_ID getPostcodeID() {
+    public ONSPD_ID getPostcodeID() {
         return PostcodeID;
     }
 }

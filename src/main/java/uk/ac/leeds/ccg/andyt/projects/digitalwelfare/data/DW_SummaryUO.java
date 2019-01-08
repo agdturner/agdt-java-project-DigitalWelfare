@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -37,7 +39,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -3087,12 +3088,12 @@ public class DW_SummaryUO extends DW_Summary {
             
             Double Arrears0,
             Integer TT0,
-            DW_ID PostcodeID0,
+            ONSPD_ID PostcodeID0,
             boolean ClaimPostcodeFValidPostcodeFormat0,
             boolean ClaimPostcodeFMappable0,
             Double Arrears1,
             Integer TT1,
-            DW_ID PostcodeID1,
+            ONSPD_ID PostcodeID1,
             boolean ClaimPostcodeFValidPostcodeFormat1,
             boolean ClaimPostcodeFMappable1) {
         super.doCompare2TimesHBCount(
@@ -3123,11 +3124,11 @@ public class DW_SummaryUO extends DW_Summary {
 
     protected void doCouncilCompare2TimesCTBCount(
             Integer TT0,
-            DW_ID PostcodeID0,
+            ONSPD_ID PostcodeID0,
             boolean ClaimPostcodeFValidPostcodeFormat0,
             boolean ClaimPostcodeFMappable0,
             Integer TT1,
-            DW_ID PostcodeID1,
+            ONSPD_ID PostcodeID1,
             boolean ClaimPostcodeFValidPostcodeFormat1,
             boolean ClaimPostcodeFMappable1) {
         super.doCompare2TimesCTBCount(
@@ -3144,11 +3145,11 @@ public class DW_SummaryUO extends DW_Summary {
 
     public void addToCouncilPostcodeValidityCounts(
             Integer TT0,
-            DW_ID PostcodeID0,
+            ONSPD_ID PostcodeID0,
             boolean ClaimPostcodeFValidPostcodeFormat0,
             boolean ClaimPostcodeFMappable0,
             Integer TT1,
-            DW_ID PostcodeID1,
+            ONSPD_ID PostcodeID1,
             boolean ClaimPostcodeFValidPostcodeFormat1,
             boolean ClaimPostcodeFMappable1) {
         if (ClaimPostcodeFMappable0) {
@@ -3230,11 +3231,11 @@ public class DW_SummaryUO extends DW_Summary {
 
     protected void doRSLCompare2TimesHBCount(
             Integer TT0,
-            DW_ID PostcodeID0,
+            ONSPD_ID PostcodeID0,
             boolean ClaimPostcodeFValidPostcodeFormat0,
             boolean ClaimPostcodeFMappable0,
             Integer TT1,
-            DW_ID PostcodeID1,
+            ONSPD_ID PostcodeID1,
             boolean ClaimPostcodeFValidPostcodeFormat1,
             boolean ClaimPostcodeFMappable1) {
         super.doCompare2TimesHBCount(
@@ -3251,11 +3252,11 @@ public class DW_SummaryUO extends DW_Summary {
 
     protected void doRSLCompare2TimesCTBCount(
             Integer TT0,
-            DW_ID PostcodeID0,
+            ONSPD_ID PostcodeID0,
             boolean ClaimPostcodeFValidPostcodeFormat0,
             boolean ClaimPostcodeFMappable0,
             Integer TT1,
-            DW_ID PostcodeID1,
+            ONSPD_ID PostcodeID1,
             boolean ClaimPostcodeFValidPostcodeFormat1,
             boolean ClaimPostcodeFMappable1) {
         super.doCompare2TimesCTBCount(
@@ -3272,11 +3273,11 @@ public class DW_SummaryUO extends DW_Summary {
 
     protected void addToRSLPostcodeValidityCounts(
             Integer TT0,
-            DW_ID PostcodeID0,
+            ONSPD_ID PostcodeID0,
             boolean ClaimPostcodeFValidPostcodeFormat0,
             boolean ClaimPostcodeFMappable0,
             Integer TT1,
-            DW_ID PostcodeID1,
+            ONSPD_ID PostcodeID1,
             boolean ClaimPostcodeFValidPostcodeFormat1,
             boolean ClaimPostcodeFMappable1) {
         if (ClaimPostcodeFMappable0) {
@@ -3398,28 +3399,28 @@ public class DW_SummaryUO extends DW_Summary {
         String key;
         String filename0;
         String filename1 = "";
-        DW_YM3 YM30 = null;
-        DW_YM3 YM31 = null;
+        ONSPD_YM3 YM30 = null;
+        ONSPD_YM3 YM31 = null;
         DW_SHBE_Records DW_SHBE_Records0;
         DW_SHBE_Records DW_SHBE_Records1 = null;
         HashMap<DW_ID, DW_SHBE_Record> Records0;
         HashMap<DW_ID, DW_SHBE_Record> Records1 = null;
-        TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
-        TreeMap<DW_YM3, DW_UO_Set> RSLUOSets;
+        TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
+        TreeMap<ONSPD_YM3, DW_UO_Set> RSLUOSets;
         DW_UO_Set CouncilUOSet0;
         DW_UO_Set RSLUOSet0;
         DW_UO_Set CouncilUOSet1 = null;
         DW_UO_Set RSLUOSet1 = null;
         Object[] filenames;
-        TreeMap<DW_YM3, String> CouncilFilenames;
-        TreeMap<DW_YM3, String> RSLFilenames;
+        TreeMap<ONSPD_YM3, String> CouncilFilenames;
+        TreeMap<ONSPD_YM3, String> RSLFilenames;
 
         // Initialise result
-        result = new TreeMap<String, HashMap<String, String>>();
+        result = new TreeMap<>();
         includeIte = include.iterator();
         while (includeIte.hasNext()) {
             i = includeIte.next();
-            summary = new HashMap<String, String>();
+            summary = new HashMap<>();
             key = SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
             result.put(key, summary);
         }
@@ -3428,8 +3429,8 @@ public class DW_SummaryUO extends DW_Summary {
         CouncilUOSets = DW_UO_Data.getCouncilUOSets();
         RSLUOSets = DW_UO_Data.getRSLUOSets();
         filenames = Env.getUO_Handler().getInputFilenames();
-        CouncilFilenames = (TreeMap<DW_YM3, String>) filenames[0];
-        RSLFilenames = (TreeMap<DW_YM3, String>) filenames[1];
+        CouncilFilenames = (TreeMap<ONSPD_YM3, String>) filenames[0];
+        RSLFilenames = (TreeMap<ONSPD_YM3, String>) filenames[1];
 
         // Load first data
         includeIte = include.iterator();
@@ -3491,7 +3492,7 @@ public class DW_SummaryUO extends DW_Summary {
 
         filename0 = filename1;
         //YM30 = YM31;
-        YM30 = new DW_YM3(YM31);
+        YM30 = new ONSPD_YM3(YM31);
         DW_SHBE_Records0 = DW_SHBE_Records1;
         Records0 = Records1;
         CouncilUOSet0 = CouncilUOSet1;
@@ -3539,7 +3540,7 @@ public class DW_SummaryUO extends DW_Summary {
             if (includeIte.hasNext()) {
                 filename0 = filename1;
                 //YM30 = YM31;
-                YM30 = new DW_YM3(YM31);
+                YM30 = new ONSPD_YM3(YM31);
                 DW_SHBE_Records0 = DW_SHBE_Records1;
                 CouncilUOSet0 = CouncilUOSet1;
                 RSLUOSet0 = RSLUOSet1;
@@ -3611,13 +3612,13 @@ public class DW_SummaryUO extends DW_Summary {
             
             DW_SHBE_Records DW_SHBE_Records0,
             HashMap<DW_ID, DW_SHBE_Record> Records0,
-            DW_YM3 YM30,
+            ONSPD_YM3 YM30,
             String filename0,
             DW_UO_Set CouncilUOSet0,
             DW_UO_Set RSLUOSet0,
             DW_SHBE_Records DW_SHBE_Records1,
             HashMap<DW_ID, DW_SHBE_Record> Records1,
-            DW_YM3 YM31,
+            ONSPD_YM3 YM31,
             String filename1,
             DW_UO_Set CouncilUOSet1,
             DW_UO_Set RSLUOSet1,
@@ -3627,8 +3628,8 @@ public class DW_SummaryUO extends DW_Summary {
             int nTT,
             int nEG,
             int nPSI,
-            TreeMap<DW_YM3, String> CouncilFilenames,
-            TreeMap<DW_YM3, String> RSLFilenames,
+            TreeMap<ONSPD_YM3, String> CouncilFilenames,
+            TreeMap<ONSPD_YM3, String> RSLFilenames,
             TreeMap<String, HashMap<String, String>> summaries) {
 
         doPartSummarySingleTime(
@@ -3699,7 +3700,7 @@ public class DW_SummaryUO extends DW_Summary {
 
     protected void doPartSummarySingleTime(
             DW_SHBE_Records DW_SHBE_Records,
-            DW_YM3 YM3,
+            ONSPD_YM3 YM3,
             String filename,
             boolean forceNewSummaries,
             ArrayList<String> HB_CTB,
@@ -3707,8 +3708,8 @@ public class DW_SummaryUO extends DW_Summary {
             int nTT,
             int nEG,
             int nPSI,
-            TreeMap<DW_YM3, String> CouncilFilenames,
-            TreeMap<DW_YM3, String> RSLFilenames,
+            TreeMap<ONSPD_YM3, String> CouncilFilenames,
+            TreeMap<ONSPD_YM3, String> RSLFilenames,
             DW_UO_Set CouncilUOSet,
             DW_UO_Set RSLUOSet,
             TreeMap<String, HashMap<String, String>> summaries
@@ -4147,8 +4148,8 @@ public class DW_SummaryUO extends DW_Summary {
             int nTT,
             int nEG
     ) {
-        TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.getInputONSPDFiles();
+        TreeMap<ONSPD_YM3, File> ONSPDFiles;
+        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesRentArrears";
         PrintWriter pw;
@@ -4478,8 +4479,8 @@ public class DW_SummaryUO extends DW_Summary {
             int nTT,
             int nEG
     ) {
-        TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.getInputONSPDFiles();
+        TreeMap<ONSPD_YM3, File> ONSPDFiles;
+        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesTT";
         PrintWriter pw;
@@ -4556,7 +4557,7 @@ public class DW_SummaryUO extends DW_Summary {
     @Override
     public String getLineCompare2TimesGeneric(
             HashMap<String, String> summary,
-            TreeMap<DW_YM3, File> ONSPDFiles) {
+            TreeMap<ONSPD_YM3, File> ONSPDFiles) {
         String line = "";
         String filename0;
         filename0 = summary.get(sSHBEFilename0);
@@ -4590,7 +4591,7 @@ public class DW_SummaryUO extends DW_Summary {
             line += "null, ";
             line += "null, ";
         }
-        DW_YM3 PostCodeLookupDate0 = null;
+        ONSPD_YM3 PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename0 != null) {
             PostCodeLookupDate0 = Postcode_Handler.getNearestYM3ForONSPDLookup(
@@ -4598,7 +4599,7 @@ public class DW_SummaryUO extends DW_Summary {
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }
         line += PostCodeLookupDate0 + ", " + PostCodeLookupFile0Name + ", ";
-        DW_YM3 PostCodeLookupDate1 = null;
+        ONSPD_YM3 PostCodeLookupDate1 = null;
         String PostCodeLookupFile1Name = null;
         if (filename1 != null) {
             PostCodeLookupDate1 = Postcode_Handler.getNearestYM3ForONSPDLookup(
@@ -4652,8 +4653,8 @@ public class DW_SummaryUO extends DW_Summary {
             int nTT,
             int nEG
     ) {
-        TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.getInputONSPDFiles();
+        TreeMap<ONSPD_YM3, File> ONSPDFiles;
+        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPostcode";
         PrintWriter pw;
@@ -4701,8 +4702,8 @@ public class DW_SummaryUO extends DW_Summary {
             int nEG,
             int nPSI
     ) {
-        TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.getInputONSPDFiles();
+        TreeMap<ONSPD_YM3, File> ONSPDFiles;
+        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
         PrintWriter pw;
@@ -4798,8 +4799,8 @@ public class DW_SummaryUO extends DW_Summary {
             int nEG,
             int nPSI
     ) {
-        TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.getInputONSPDFiles();
+        TreeMap<ONSPD_YM3, File> ONSPDFiles;
+        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeHouseholdSizes";
         PrintWriter pw;

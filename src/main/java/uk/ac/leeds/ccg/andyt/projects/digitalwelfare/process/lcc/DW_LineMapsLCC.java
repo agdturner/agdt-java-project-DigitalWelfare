@@ -33,7 +33,8 @@ import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Style;
 import uk.ac.leeds.ccg.andyt.geotools.core.Geotools_Strings;
@@ -42,7 +43,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ar
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_StyleParameters;
 
 /**
@@ -94,7 +94,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     protected HashMap<Boolean, ArrayList<ArrayList<String>>> getAllTenancyTypeChangesSocialGrouped() {
         HashMap<Boolean, ArrayList<ArrayList<String>>> result;
-        result = new HashMap<Boolean, ArrayList<ArrayList<String>>>();
+        result = new HashMap<>();
         boolean doUnderOccupancy;
         ArrayList<ArrayList<String>> attc;
         doUnderOccupancy = true;
@@ -108,7 +108,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     protected HashMap<Boolean, ArrayList<ArrayList<String>>> getAllTenancyTypeChangesSocial() {
         HashMap<Boolean, ArrayList<ArrayList<String>>> result;
-        result = new HashMap<Boolean, ArrayList<ArrayList<String>>>();
+        result = new HashMap<>();
         boolean doUnderOccupancy;
         ArrayList<ArrayList<String>> attc;
         doUnderOccupancy = true;
@@ -122,7 +122,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     protected HashMap<Boolean, ArrayList<ArrayList<String>>> getAllTenancyTypeChanges() {
         HashMap<Boolean, ArrayList<ArrayList<String>>> result;
-        result = new HashMap<Boolean, ArrayList<ArrayList<String>>>();
+        result = new HashMap<>();
         boolean doUnderOccupancy;
         ArrayList<ArrayList<String>> attc;
         doUnderOccupancy = true;
@@ -136,7 +136,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     protected HashMap<Boolean, ArrayList<ArrayList<String>>> getAllTenancyTypeGroups() {
         HashMap<Boolean, ArrayList<ArrayList<String>>> result;
-        result = new HashMap<Boolean, ArrayList<ArrayList<String>>>();
+        result = new HashMap<>();
         boolean doUnderOccupancy;
         ArrayList<ArrayList<String>> attc;
         doUnderOccupancy = true;
@@ -151,29 +151,29 @@ public class DW_LineMapsLCC extends DW_Maps {
     protected ArrayList<ArrayList<String>> getAllTenancyTypeChanges(
             boolean doUnderOccupancy) {
         ArrayList<ArrayList<String>> result;
-        result = new ArrayList<ArrayList<String>>();
+        result = new ArrayList<>();
         ArrayList<String> tenancyTypeChanges;
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("1 - 1UO");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("1UO - 1");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("4 - 4UO");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("4UO - 4");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("1 - 4UO");
             tenancyTypeChanges.add("1UO - 4");
@@ -182,7 +182,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("1 - 4");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("4 - 1UO");
             tenancyTypeChanges.add("4UO - 1");
@@ -191,7 +191,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("4 - 1");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("1UO - 3");
             tenancyTypeChanges.add("1 - 3UO");
@@ -200,7 +200,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("1 - 3");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("4UO - 3");
             tenancyTypeChanges.add("4 - 3UO");
@@ -209,7 +209,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("4 - 3");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             // Regulated to unregulated
             // End in 3
@@ -259,7 +259,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("4 - 6");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             // Social to private deregulated
             // End in 3
@@ -295,7 +295,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("4 - 6");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("3UO - 1");
             tenancyTypeChanges.add("3 - 1UO");
@@ -304,7 +304,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("3 - 1");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("3UO - 4");
             tenancyTypeChanges.add("3 - 4UO");
@@ -314,7 +314,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         }
         result.add(tenancyTypeChanges);
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("3UO - 1");
             tenancyTypeChanges.add("3 - 1UO");
@@ -337,9 +337,9 @@ public class DW_LineMapsLCC extends DW_Maps {
     protected ArrayList<ArrayList<String>> getAllTenancyTypeChangesSocialGrouped(
             boolean doUnderOccupancy) {
         ArrayList<ArrayList<String>> result;
-        result = new ArrayList<ArrayList<String>>();
+        result = new ArrayList<>();
         ArrayList<String> tenancyTypeChanges;
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("Regulated - RegulatedUO");
             tenancyTypeChanges.add("RegulatedUO - Regulated");
@@ -354,9 +354,9 @@ public class DW_LineMapsLCC extends DW_Maps {
     protected ArrayList<ArrayList<String>> getAllTenancyTypeChangesSocial(
             boolean doUnderOccupancy) {
         ArrayList<ArrayList<String>> result;
-        result = new ArrayList<ArrayList<String>>();
+        result = new ArrayList<>();
         ArrayList<String> tenancyTypeChanges;
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             // Social
             tenancyTypeChanges.add("1UO - 1");
@@ -372,7 +372,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("4UO - 1");
             tenancyTypeChanges.add("4UO - 1UO");
             result.add(tenancyTypeChanges);
-            tenancyTypeChanges = new ArrayList<String>();
+            tenancyTypeChanges = new ArrayList<>();
             // Social To UO
             tenancyTypeChanges.add("1 - 1UO");
             tenancyTypeChanges.add("1UO - 1UO");
@@ -383,7 +383,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("4 - 1UO");
             tenancyTypeChanges.add("4UO - 1UO");
             result.add(tenancyTypeChanges);
-            tenancyTypeChanges = new ArrayList<String>();
+            tenancyTypeChanges = new ArrayList<>();
             // Social From UO
             tenancyTypeChanges.add("1UO - 1");
             tenancyTypeChanges.add("1UO - 1UO");
@@ -406,9 +406,9 @@ public class DW_LineMapsLCC extends DW_Maps {
     protected ArrayList<ArrayList<String>> getAllTenancyTypeGroups(
             boolean doUnderOccupancy) {
         ArrayList<ArrayList<String>> result;
-        result = new ArrayList<ArrayList<String>>();
+        result = new ArrayList<>();
         ArrayList<String> tenancyTypeChanges;
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("1UO - 1UO");
             tenancyTypeChanges.add("1UO - 1");
@@ -417,7 +417,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("1 - 1");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("2UO - 2UO");
             tenancyTypeChanges.add("2UO - 2");
@@ -426,7 +426,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("2 - 2");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("3UO - 3UO");
             tenancyTypeChanges.add("3UO - 3");
@@ -435,7 +435,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("3 - 3");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("4UO - 4UO");
             tenancyTypeChanges.add("4UO - 4");
@@ -444,7 +444,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("4 - 4");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("6UO - 6UO");
             tenancyTypeChanges.add("6UO - 6");
@@ -453,7 +453,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("6 - 6");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("1UO - 1UO");
             tenancyTypeChanges.add("1UO - 1");
@@ -470,7 +470,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("4 - 4");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("1UO - 1UO");
             tenancyTypeChanges.add("1UO - 1");
@@ -483,7 +483,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("4 - 4");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("3UO - 3UO");
             tenancyTypeChanges.add("3UO - 3");
@@ -501,7 +501,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     protected HashMap<Boolean, ArrayList<ArrayList<String>>> getAllTenancyTypeChangesGrouped() {
         HashMap<Boolean, ArrayList<ArrayList<String>>> result;
-        result = new HashMap<Boolean, ArrayList<ArrayList<String>>>();
+        result = new HashMap<>();
         boolean doUnderOccupancy;
         ArrayList<ArrayList<String>> attc;
         doUnderOccupancy = true;
@@ -515,7 +515,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     protected HashMap<Boolean, ArrayList<ArrayList<String>>> getAllTenancyTypeGroupsGrouped() {
         HashMap<Boolean, ArrayList<ArrayList<String>>> result;
-        result = new HashMap<Boolean, ArrayList<ArrayList<String>>>();
+        result = new HashMap<>();
         boolean doUnderOccupancy;
         ArrayList<ArrayList<String>> attc;
         doUnderOccupancy = true;
@@ -530,9 +530,9 @@ public class DW_LineMapsLCC extends DW_Maps {
     protected ArrayList<ArrayList<String>> getAllTenancyTypeGroupsGrouped(
             boolean doUnderOccupancy) {
         ArrayList<ArrayList<String>> result;
-        result = new ArrayList<ArrayList<String>>();
+        result = new ArrayList<>();
         ArrayList<String> tenancyTypeChanges;
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("Regulated - RegulatedUO");
             tenancyTypeChanges.add("RegulatedUO - Regulated");
@@ -541,7 +541,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("Regulated - Regulated");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("UnregulatedUO - Unregulated");
             tenancyTypeChanges.add("Unregulated - UnregulatedUO");
@@ -556,9 +556,9 @@ public class DW_LineMapsLCC extends DW_Maps {
     protected ArrayList<ArrayList<String>> getAllTenancyTypeChangesGrouped(
             boolean doUnderOccupancy) {
         ArrayList<ArrayList<String>> result;
-        result = new ArrayList<ArrayList<String>>();
+        result = new ArrayList<>();
         ArrayList<String> tenancyTypeChanges;
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("Regulated - RegulatedUO");
             tenancyTypeChanges.add("RegulatedUO - Regulated");
@@ -566,7 +566,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("Regulated - Regulated");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("UnregulatedUO - Unregulated");
             tenancyTypeChanges.add("Unregulated - UnregulatedUO");
@@ -574,7 +574,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("Unregulated - Unregulated");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("RegulatedUO - Unregulated");
             tenancyTypeChanges.add("Regulated - UnregulatedUO");
@@ -582,7 +582,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             tenancyTypeChanges.add("Regulated - Unregulated");
         }
         result.add(tenancyTypeChanges);
-        tenancyTypeChanges = new ArrayList<String>();
+        tenancyTypeChanges = new ArrayList<>();
         if (doUnderOccupancy) {
             tenancyTypeChanges.add("UnregulatedUO - Regulated");
             tenancyTypeChanges.add("Unregulated - RegulatedUO");
@@ -593,20 +593,20 @@ public class DW_LineMapsLCC extends DW_Maps {
         return result;
     }
 
-    protected TreeMap<String, ArrayList<DW_YM3>> getYM3s(
+    protected TreeMap<String, ArrayList<ONSPD_YM3>> getYM3s(
             ArrayList<Integer> includes) {
-        TreeMap<String, ArrayList<DW_YM3>> result;
-        result = new TreeMap<String, ArrayList<DW_YM3>>();
+        TreeMap<String, ArrayList<ONSPD_YM3>> result;
+        result = new TreeMap<>();
         DW_SHBE_Handler tDW_SHBE_Handler;
         tDW_SHBE_Handler = Env.getSHBE_Handler();
         String[] tSHBEFilenamesAll;
         tSHBEFilenamesAll = tDW_SHBE_Handler.getSHBEFilenamesAll();
-        ArrayList<DW_YM3> yMs;
+        ArrayList<ONSPD_YM3> yMs;
         // All
         Iterator<Integer> includesIte;
         includesIte = includes.iterator();
-        yMs = new ArrayList<DW_YM3>();
-        DW_YM3 yM3 = null;
+        yMs = new ArrayList<ONSPD_YM3>();
+        ONSPD_YM3 yM3 = null;
         boolean first = true;
         String name = "";
         int i;
@@ -625,11 +625,11 @@ public class DW_LineMapsLCC extends DW_Maps {
         // Individual
         includesIte = includes.iterator();
         i = includesIte.next();
-        DW_YM3 yM30 = tDW_SHBE_Handler.getYM3(tSHBEFilenamesAll[i]);
+        ONSPD_YM3 yM30 = tDW_SHBE_Handler.getYM3(tSHBEFilenamesAll[i]);
         while (includesIte.hasNext()) {
             i = includesIte.next();
-            yMs = new ArrayList<DW_YM3>();
-            DW_YM3 yM31;
+            yMs = new ArrayList<ONSPD_YM3>();
+            ONSPD_YM3 yM31;
             yM31 = tDW_SHBE_Handler.getYM3(tSHBEFilenamesAll[i]);
             yMs.add(yM30);
             yMs.add(yM31);
@@ -698,7 +698,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         //includes = DW_SHBE_Handler.getSHBEFilenameIndexesExcept34();
         includes = Env.getSHBE_Handler().getSHBEFilenameIndexes();
 
-        TreeMap<String, ArrayList<DW_YM3>> yM3s;
+        TreeMap<String, ArrayList<ONSPD_YM3>> yM3s;
         yM3s = getYM3s(includes);
 
         ArrayList<ArrayList<String>> allTenancyTypeChanges;
@@ -710,15 +710,15 @@ public class DW_LineMapsLCC extends DW_Maps {
             String name;
             name = yM3sIte.next();
             System.out.println(name);
-            ArrayList<DW_YM3> yMs;
+            ArrayList<ONSPD_YM3> yMs;
             yMs = yM3s.get(name);
             ArrayList<String> lines;
-            lines = new ArrayList<String>();
-            Iterator<DW_YM3> yMsIte;
+            lines = new ArrayList<>();
+            Iterator<ONSPD_YM3> yMsIte;
             yMsIte = yMs.iterator();
-            DW_YM3 yM0 = yMsIte.next();
+            ONSPD_YM3 yM0 = yMsIte.next();
             while (yMsIte.hasNext()) {
-                DW_YM3 yM1;
+                ONSPD_YM3 yM1;
                 yM1 = yMsIte.next();
                 filename = "PostcodeChanges_Start_" + yM0 + "_End_" + yM1 + ".csv";
                 File f;
@@ -818,7 +818,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         allTenancyTypeChangesSocialGrouped = getAllTenancyTypeChangesSocialGrouped();
 
         ArrayList<Boolean> b;
-        b = new ArrayList<Boolean>();
+        b = new ArrayList<>();
         b.add(true);
         b.add(false);
 
@@ -844,7 +844,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                     ArrayList<Integer> include;
                     include = includes.get(includeName);
 
-                    TreeMap<String, ArrayList<DW_YM3>> yM3s;
+                    TreeMap<String, ArrayList<ONSPD_YM3>> yM3s;
                     yM3s = getYM3s(include);
                     // Postcode And Tenancy Type
                     if (true) {
@@ -1356,7 +1356,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     private void init(boolean doCommunityAreasOverlay) {
         initStyleParameters();
-        foregrounds = new ArrayList<Geotools_Shapefile>();
+        foregrounds = new ArrayList<>();
         mapDirectory = Files.getOutputSHBELineMapsDir();
         if (doCommunityAreasOverlay) {
             mapDirectory = new File(
@@ -1412,7 +1412,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 //                "LSOA", targetPropertyNameLSOA, getShapefileDataStoreFactory());
 //    }
     public void postcodeMaps(
-            TreeMap<String, ArrayList<DW_YM3>> yearMonths,
+            TreeMap<String, ArrayList<ONSPD_YM3>> yearMonths,
             String includeName,
             ArrayList<Integer> include,
             ArrayList<ArrayList<String>> allTenancyTypeChanges,
@@ -1513,17 +1513,17 @@ public class DW_LineMapsLCC extends DW_Maps {
             if (name.equalsIgnoreCase("2013_April_TO_2015_September")) {
 
                 System.out.println(name);
-                ArrayList<DW_YM3> yMs;
+                ArrayList<ONSPD_YM3> yMs;
                 yMs = yearMonths.get(name);
                 ArrayList<String> lines;
-                lines = new ArrayList<String>();
-                Iterator<DW_YM3> yMsIte;
+                lines = new ArrayList<>();
+                Iterator<ONSPD_YM3> yMsIte;
                 yMsIte = yMs.iterator();
-                DW_YM3 yM30 = yMsIte.next();
-                DW_YM3 yM30Start = yM30;
-                DW_YM3 yM30End;
+                ONSPD_YM3 yM30 = yMsIte.next();
+                ONSPD_YM3 yM30Start = yM30;
+                ONSPD_YM3 yM30End;
                 while (yMsIte.hasNext()) {
-                    DW_YM3 yM31;
+                    ONSPD_YM3 yM31;
                     yM31 = yMsIte.next();
                     String filename;
                     filename = "PostcodeChanges_Start_" + yM30 + "_End_" + yM31 + ".csv";
@@ -1562,18 +1562,18 @@ public class DW_LineMapsLCC extends DW_Maps {
 
                         // Initialise a FeatureCollections and SimpleFeatureBuilders
                         HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcSs;
-                        tsfcSs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                        tsfcSs = new HashMap<>();
                         HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcMs;
-                        tsfcMs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                        tsfcMs = new HashMap<>();
                         HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcEs;
-                        tsfcEs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                        tsfcEs = new HashMap<>();
 
                         HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbSs;
-                        sfbSs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                        sfbSs = new HashMap<>();
                         HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbMs;
-                        sfbMs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                        sfbMs = new HashMap<>();
                         HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbEs;
-                        sfbEs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                        sfbEs = new HashMap<>();
 
                         // Create SimpleFeatureBuilder
                         //FeatureFactory ff = FactoryFinder.getGeometryFactories();
@@ -1590,25 +1590,25 @@ public class DW_LineMapsLCC extends DW_Maps {
                             String[] lineSplit;
                             lineSplit = line.split(",");
                             //String yM30;
-                            yM30 = new DW_YM3(lineSplit[1].trim());
-                            DW_YM3 yM31;
-                            yM31 = new DW_YM3(lineSplit[2].trim());
+                            yM30 = new ONSPD_YM3(lineSplit[1].trim());
+                            ONSPD_YM3 yM31;
+                            yM31 = new ONSPD_YM3(lineSplit[2].trim());
                             String tenancyTypeChange;
-                            DW_YM3 yM30v;
+                            ONSPD_YM3 yM30v;
                             yM30v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-                            DW_YM3 yM31v;
+                            ONSPD_YM3 yM31v;
                             yM31v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                             tenancyTypeChange = lineSplit[3].trim();
                             if (tenancyTypeChanges.contains(tenancyTypeChange)) {
                                 if (yMs.contains(yM31)) {
                                     String postcode0 = lineSplit[4].trim();
                                     String postcode1 = lineSplit[5].trim();
-                                    Geotools_Point origin;
+                                    ONSPD_Point origin;
                                     origin = Postcode_Handler.getPointFromPostcode(
                                             yM30v,
                                             Postcode_Handler.TYPE_UNIT,
                                             postcode0);
-                                    Geotools_Point destination;
+                                    ONSPD_Point destination;
                                     destination = Postcode_Handler.getPointFromPostcode(
                                             yM31v,
                                             Postcode_Handler.TYPE_UNIT,
@@ -1779,13 +1779,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                                 String name2;
                                 if (i == 0) {
                                     name2 = "DestinationOnTop";
-                                    midgrounds = new ArrayList<Geotools_Shapefile>();
+                                    midgrounds = new ArrayList<>();
                                     midgrounds.add(new DW_Shapefile(f0));
                                     midgrounds.add(new DW_Shapefile(f1));
                                     midgrounds.add(new DW_Shapefile(f2));
                                 } else {
                                     name2 = "OriginOnTop";
-                                    midgrounds = new ArrayList<Geotools_Shapefile>();
+                                    midgrounds = new ArrayList<>();
                                     midgrounds.add(new DW_Shapefile(f0));
                                     midgrounds.add(new DW_Shapefile(f2));
                                     midgrounds.add(new DW_Shapefile(f1));
@@ -1840,7 +1840,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     public void postcodeMaps(
             String paymentType,
-            TreeMap<String, ArrayList<DW_YM3>> yearMonths,
+            TreeMap<String, ArrayList<ONSPD_YM3>> yearMonths,
             String includeName,
             ArrayList<Integer> include,
             ArrayList<ArrayList<String>> allTenancyTypeChanges,
@@ -1997,17 +1997,17 @@ public class DW_LineMapsLCC extends DW_Maps {
             String name;
             name = yearMonthsIte.next();
             System.out.println(name);
-            ArrayList<DW_YM3> yM3s;
+            ArrayList<ONSPD_YM3> yM3s;
             yM3s = yearMonths.get(name);
             ArrayList<String> lines;
-            lines = new ArrayList<String>();
-            Iterator<DW_YM3> yMsIte;
+            lines = new ArrayList<>();
+            Iterator<ONSPD_YM3> yMsIte;
             yMsIte = yM3s.iterator();
-            DW_YM3 yM30 = yMsIte.next();
-            DW_YM3 yM30Start = yM30;
-            DW_YM3 yM30End;
+            ONSPD_YM3 yM30 = yMsIte.next();
+            ONSPD_YM3 yM30Start = yM30;
+            ONSPD_YM3 yM30End;
             while (yMsIte.hasNext()) {
-                DW_YM3 yM31;
+                ONSPD_YM3 yM31;
                 yM31 = yMsIte.next();
                 String filename = "PostcodeChanges_Start_" + yM30 + "_End_" + yM31 + ".csv";
                 File f;
@@ -2054,18 +2054,18 @@ public class DW_LineMapsLCC extends DW_Maps {
 
                     // Initialise a FeatureCollections and SimpleFeatureBuilders
                     HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcSs;
-                    tsfcSs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                    tsfcSs = new HashMap<>();
                     HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcMs;
-                    tsfcMs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                    tsfcMs = new HashMap<>();
                     HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcEs;
-                    tsfcEs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                    tsfcEs = new HashMap<>();
 
                     HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbSs;
-                    sfbSs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                    sfbSs = new HashMap<>();
                     HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbMs;
-                    sfbMs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                    sfbMs = new HashMap<>();
                     HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbEs;
-                    sfbEs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                    sfbEs = new HashMap<>();
 
                     // Create SimpleFeatureBuilder
                     //FeatureFactory ff = FactoryFinder.getGeometryFactories();
@@ -2081,12 +2081,12 @@ public class DW_LineMapsLCC extends DW_Maps {
                         line = linesIte.next();
                         String[] lineSplit;
                         lineSplit = line.split(",");
-                        yM30 = new DW_YM3(lineSplit[1].trim());
-                        DW_YM3 yM31;
-                        yM31 = new DW_YM3(lineSplit[2].trim());
-                        DW_YM3 yM30v;
+                        yM30 = new ONSPD_YM3(lineSplit[1].trim());
+                        ONSPD_YM3 yM31;
+                        yM31 = new ONSPD_YM3(lineSplit[2].trim());
+                        ONSPD_YM3 yM30v;
                         yM30v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-                        DW_YM3 yM31v;
+                        ONSPD_YM3 yM31v;
                         yM31v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
@@ -2102,12 +2102,12 @@ public class DW_LineMapsLCC extends DW_Maps {
                             if (yM3s.contains(yM31)) {
                                 String postcode0 = lineSplit[4].trim();
                                 String postcode1 = lineSplit[5].trim();
-                                Geotools_Point origin;
+                                ONSPD_Point origin;
                                 origin = Postcode_Handler.getPointFromPostcode(
                                         yM30v,
                                         Postcode_Handler.TYPE_UNIT,
                                         postcode0);
-                                Geotools_Point destination;
+                                ONSPD_Point destination;
                                 destination = Postcode_Handler.getPointFromPostcode(
                                         yM31v,
                                         Postcode_Handler.TYPE_UNIT,
@@ -2278,13 +2278,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                             String name2;
                             if (i == 0) {
                                 name2 = "DestinationOnTop";
-                                midgrounds = new ArrayList<Geotools_Shapefile>();
+                                midgrounds = new ArrayList<>();
                                 midgrounds.add(new DW_Shapefile(f0));
                                 midgrounds.add(new DW_Shapefile(f1));
                                 midgrounds.add(new DW_Shapefile(f2));
                             } else {
                                 name2 = "OriginOnTop";
-                                midgrounds = new ArrayList<Geotools_Shapefile>();
+                                midgrounds = new ArrayList<>();
                                 midgrounds.add(new DW_Shapefile(f0));
                                 midgrounds.add(new DW_Shapefile(f2));
                                 midgrounds.add(new DW_Shapefile(f1));
@@ -2324,7 +2324,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     public void postcodeMaps(
             String paymentType,
-            TreeMap<String, ArrayList<DW_YM3>> yearMonths,
+            TreeMap<String, ArrayList<ONSPD_YM3>> yearMonths,
             String includeName,
             ArrayList<Integer> include,
             ArrayList<ArrayList<String>> allTenancyTypeChanges,
@@ -2531,17 +2531,17 @@ public class DW_LineMapsLCC extends DW_Maps {
             String name;
             name = yearMonthsIte.next();
             System.out.println(name);
-            ArrayList<DW_YM3> yM3s;
+            ArrayList<ONSPD_YM3> yM3s;
             yM3s = yearMonths.get(name);
             ArrayList<String> lines;
-            lines = new ArrayList<String>();
-            Iterator<DW_YM3> yMsIte;
+            lines = new ArrayList<>();
+            Iterator<ONSPD_YM3> yMsIte;
             yMsIte = yM3s.iterator();
-            DW_YM3 yM30 = yMsIte.next();
-            DW_YM3 yM30Start = yM30;
-            DW_YM3 yM30End;
+            ONSPD_YM3 yM30 = yMsIte.next();
+            ONSPD_YM3 yM30Start = yM30;
+            ONSPD_YM3 yM30End;
             while (yMsIte.hasNext()) {
-                DW_YM3 yM31;
+                ONSPD_YM3 yM31;
                 yM31 = yMsIte.next();
                 String filename = "PostcodeChanges_Start_" + yM30 + "_End_" + yM31 + ".csv";
                 File f;
@@ -2604,18 +2604,18 @@ public class DW_LineMapsLCC extends DW_Maps {
 
                     // Initialise a FeatureCollections and SimpleFeatureBuilders
                     HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcSs;
-                    tsfcSs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                    tsfcSs = new HashMap<>();
                     HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcMs;
-                    tsfcMs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                    tsfcMs = new HashMap<>();
                     HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcEs;
-                    tsfcEs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                    tsfcEs = new HashMap<>();
 
                     HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbSs;
-                    sfbSs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                    sfbSs = new HashMap<>();
                     HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbMs;
-                    sfbMs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                    sfbMs = new HashMap<>();
                     HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbEs;
-                    sfbEs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                    sfbEs = new HashMap<>();
 
                     // Create SimpleFeatureBuilder
                     //FeatureFactory ff = FactoryFinder.getGeometryFactories();
@@ -2631,12 +2631,12 @@ public class DW_LineMapsLCC extends DW_Maps {
                         line = linesIte.next();
                         String[] lineSplit;
                         lineSplit = line.split(",");
-                        yM30 = new DW_YM3(lineSplit[1].trim());
-                        DW_YM3 yM31;
-                        yM31 = new DW_YM3(lineSplit[2].trim());
-                        DW_YM3 yM30v;
+                        yM30 = new ONSPD_YM3(lineSplit[1].trim());
+                        ONSPD_YM3 yM31;
+                        yM31 = new ONSPD_YM3(lineSplit[2].trim());
+                        ONSPD_YM3 yM30v;
                         yM30v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-                        DW_YM3 yM31v;
+                        ONSPD_YM3 yM31v;
                         yM31v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
@@ -2644,12 +2644,12 @@ public class DW_LineMapsLCC extends DW_Maps {
                             if (yM3s.contains(yM31)) {
                                 String postcode0 = lineSplit[4].trim();
                                 String postcode1 = lineSplit[5].trim();
-                                Geotools_Point origin;
+                                ONSPD_Point origin;
                                 origin = Postcode_Handler.getPointFromPostcode(
                                         yM30v,
                                         Postcode_Handler.TYPE_UNIT,
                                         postcode0);
-                                Geotools_Point destination;
+                                ONSPD_Point destination;
                                 destination = Postcode_Handler.getPointFromPostcode(
                                         yM31v,
                                         Postcode_Handler.TYPE_UNIT,
@@ -2820,13 +2820,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                             String name2;
                             if (i == 0) {
                                 name2 = "DestinationOnTop";
-                                midgrounds = new ArrayList<Geotools_Shapefile>();
+                                midgrounds = new ArrayList<>();
                                 midgrounds.add(new DW_Shapefile(f0));
                                 midgrounds.add(new DW_Shapefile(f1));
                                 midgrounds.add(new DW_Shapefile(f2));
                             } else {
                                 name2 = "OriginOnTop";
-                                midgrounds = new ArrayList<Geotools_Shapefile>();
+                                midgrounds = new ArrayList<>();
                                 midgrounds.add(new DW_Shapefile(f0));
                                 midgrounds.add(new DW_Shapefile(f2));
                                 midgrounds.add(new DW_Shapefile(f1));
@@ -2882,7 +2882,7 @@ public class DW_LineMapsLCC extends DW_Maps {
      */
     public void postcodeMaps(
             String paymentType,
-            TreeMap<String, ArrayList<DW_YM3>> yearMonths,
+            TreeMap<String, ArrayList<ONSPD_YM3>> yearMonths,
             String includeName,
             ArrayList<Integer> include,
             ArrayList<ArrayList<String>> allTenancyTypeGroups,
@@ -2977,17 +2977,17 @@ public class DW_LineMapsLCC extends DW_Maps {
             String name;
             name = yearMonthsIte.next();
             System.out.println(name);
-            ArrayList<DW_YM3> yM3s;
+            ArrayList<ONSPD_YM3> yM3s;
             yM3s = yearMonths.get(name);
             ArrayList<String> lines;
-            lines = new ArrayList<String>();
-            Iterator<DW_YM3> yMsIte;
+            lines = new ArrayList<>();
+            Iterator<ONSPD_YM3> yMsIte;
             yMsIte = yM3s.iterator();
-            DW_YM3 yM30 = yMsIte.next();
-            DW_YM3 yM30Start = yM30;
-            DW_YM3 yM30End;
+            ONSPD_YM3 yM30 = yMsIte.next();
+            ONSPD_YM3 yM30Start = yM30;
+            ONSPD_YM3 yM30End;
             while (yMsIte.hasNext()) {
-                DW_YM3 yM31;
+                ONSPD_YM3 yM31;
                 yM31 = yMsIte.next();
                 String filename = "PostcodeChanges_Start_" + yM30 + "_End_" + yM31 + ".csv";
                 File f;
@@ -3032,18 +3032,18 @@ public class DW_LineMapsLCC extends DW_Maps {
 
                     // Initialise a FeatureCollections and SimpleFeatureBuilders
                     HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcSs;
-                    tsfcSs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                    tsfcSs = new HashMap<>();
                     HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcMs;
-                    tsfcMs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                    tsfcMs = new HashMap<>();
                     HashMap<ArrayList<String>, TreeSetFeatureCollection> tsfcEs;
-                    tsfcEs = new HashMap<ArrayList<String>, TreeSetFeatureCollection>();
+                    tsfcEs = new HashMap<>();
 
                     HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbSs;
-                    sfbSs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                    sfbSs = new HashMap<>();
                     HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbMs;
-                    sfbMs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                    sfbMs = new HashMap<>();
                     HashMap<ArrayList<String>, SimpleFeatureBuilder> sfbEs;
-                    sfbEs = new HashMap<ArrayList<String>, SimpleFeatureBuilder>();
+                    sfbEs = new HashMap<>();
 
                     // Create SimpleFeatureBuilder
                     //FeatureFactory ff = FactoryFinder.getGeometryFactories();
@@ -3059,12 +3059,12 @@ public class DW_LineMapsLCC extends DW_Maps {
                         line = linesIte.next();
                         String[] lineSplit;
                         lineSplit = line.split(",");
-                        yM30 = new DW_YM3(lineSplit[1].trim());
-                        DW_YM3 yM31;
-                        yM31 = new DW_YM3(lineSplit[2].trim());
-                        DW_YM3 yM30v;
+                        yM30 = new ONSPD_YM3(lineSplit[1].trim());
+                        ONSPD_YM3 yM31;
+                        yM31 = new ONSPD_YM3(lineSplit[2].trim());
+                        ONSPD_YM3 yM30v;
                         yM30v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
-                        DW_YM3 yM31v;
+                        ONSPD_YM3 yM31v;
                         yM31v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
@@ -3072,12 +3072,12 @@ public class DW_LineMapsLCC extends DW_Maps {
                             if (yM3s.contains(yM31)) {
                                 String postcode0 = lineSplit[4].trim();
                                 String postcode1 = lineSplit[5].trim();
-                                Geotools_Point origin;
+                                ONSPD_Point origin;
                                 origin = Postcode_Handler.getPointFromPostcode(
                                         yM30v,
                                         Postcode_Handler.TYPE_UNIT,
                                         postcode0);
-                                Geotools_Point destination;
+                                ONSPD_Point destination;
                                 destination = Postcode_Handler.getPointFromPostcode(
                                         yM31v,
                                         Postcode_Handler.TYPE_UNIT,
@@ -3248,13 +3248,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                             String name2;
                             if (i == 0) {
                                 name2 = "DestinationOnTop";
-                                midgrounds = new ArrayList<Geotools_Shapefile>();
+                                midgrounds = new ArrayList<>();
                                 midgrounds.add(new DW_Shapefile(f0));
                                 midgrounds.add(new DW_Shapefile(f1));
                                 midgrounds.add(new DW_Shapefile(f2));
                             } else {
                                 name2 = "OriginOnTop";
-                                midgrounds = new ArrayList<Geotools_Shapefile>();
+                                midgrounds = new ArrayList<>();
                                 midgrounds.add(new DW_Shapefile(f0));
                                 midgrounds.add(new DW_Shapefile(f2));
                                 midgrounds.add(new DW_Shapefile(f1));

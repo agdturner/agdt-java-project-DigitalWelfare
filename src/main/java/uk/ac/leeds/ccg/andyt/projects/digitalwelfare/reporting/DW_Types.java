@@ -56,7 +56,7 @@ public class DW_Types extends DW_HTMLPage {
                 "./");
         // Definitions
         HashMap<String, String> definitions;
-        definitions = new HashMap<String, String>();
+        definitions = new HashMap<>();
         definitions.put(
                 "AllTenure",
                 "All Tenures");

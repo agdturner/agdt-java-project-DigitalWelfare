@@ -63,7 +63,7 @@ public class DW_Data_CAB0_Handler extends DW_Object {
             String filename,
             Object IDType) {
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> result;
-        result = new TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record>();
+        result = new TreeMap<>();
         File directory = new File(
                 Env.getFiles().getInputAdviceLeedsDir(),
                 "ChapeltownCAB");

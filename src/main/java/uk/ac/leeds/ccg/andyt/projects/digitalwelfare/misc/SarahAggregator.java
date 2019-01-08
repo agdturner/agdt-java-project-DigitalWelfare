@@ -69,7 +69,7 @@ public class SarahAggregator {
      * @return @throws java.io.IOException
      */
     private TreeMap<String, DataRow> loadData(File directory) throws IOException {
-        TreeMap<String, DataRow> result = new TreeMap<String, DataRow>();
+        TreeMap<String, DataRow> result = new TreeMap<>();
         File infile = new File(directory, "total_pop.csv");
         BufferedReader br = Generic_IO.getBufferedReader(infile);
         StreamTokenizer st = new StreamTokenizer(br);

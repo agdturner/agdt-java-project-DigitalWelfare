@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -47,7 +48,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Re
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -432,7 +432,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             String endYear) {
         String dates;
         dates = startMonth + " " + startYear + " to " + endMonth + " " + endYear;
-        generalStatisticDescriptions = new HashMap<String, String>();
+        generalStatisticDescriptions = new HashMap<>();
         generalStatisticDescriptions.put(
                 sTotalCount_AlwaysUOTT1FromStart,
                 "\"Total count of claims that were always TT1 and in the "
@@ -1275,7 +1275,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             ArrayList<Integer> NotMonthlyUO
     ) {
         TreeMap<String, String> result;
-        result = new TreeMap<String, String>();
+        result = new TreeMap<>();
         // Init result
         DW_ID ClaimID;
         String ClaimRef;
@@ -1330,7 +1330,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         HashMap<DW_ID, DW_SHBE_Record> records;
         String year;
         String month;
-        DW_YM3 yM3;
+        ONSPD_YM3 yM3;
         DW_SHBE_Record record;
         DW_SHBE_D_Record dRecord;
         tNotMonthlyUOIte = NotMonthlyUO.iterator();
@@ -1807,101 +1807,101 @@ public class DW_TenancyChangesUO extends DW_Object {
         Env.log("<getTable>");
         Object[] result;
         result = new Object[12];
-        ValidPostcodes = new HashSet<String>();
+        ValidPostcodes = new HashSet<>();
 
         // Initialise result part 1
         TreeMap<String, String> TableValues;
-        TableValues = new TreeMap<String, String>();
+        TableValues = new TreeMap<>();
 
-        TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets = null;
-        TreeMap<DW_YM3, DW_UO_Set> RSLUOSets = null;
+        TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets = null;
+        TreeMap<ONSPD_YM3, DW_UO_Set> RSLUOSets = null;
         CouncilUOSets = DW_UO_Data.getCouncilUOSets();
         RSLUOSets = DW_UO_Data.getRSLUOSets();
 
         HashSet<DW_ID> UOClaims;
-        UOClaims = new HashSet<DW_ID>();
+        UOClaims = new HashSet<>();
 
         // Init Time Statistics
         TreeMap<String, TreeMap<String, ?>> TimeStatistics;
-        TimeStatistics = new TreeMap<String, TreeMap<String, ?>>();
+        TimeStatistics = new TreeMap<>();
         TreeMap<String, Integer> TotalCount_CumulativeUniqueClaims;
-        TotalCount_CumulativeUniqueClaims = new TreeMap<String, Integer>();
+        TotalCount_CumulativeUniqueClaims = new TreeMap<>();
         TimeStatistics.put(sTotalCount_CumulativeUniqueClaims,
                 TotalCount_CumulativeUniqueClaims);
         int totalCount_UOClaims;
         TreeMap<String, Integer> TotalCount_UOClaims;
-        TotalCount_UOClaims = new TreeMap<String, Integer>();
+        TotalCount_UOClaims = new TreeMap<>();
         TimeStatistics.put(
                 sTotalCount_UOClaims,
                 TotalCount_UOClaims);
         int totalCount_UOCouncilClaims;
         TreeMap<String, Integer> TotalCount_UOCouncilClaims;
-        TotalCount_UOCouncilClaims = new TreeMap<String, Integer>();
+        TotalCount_UOCouncilClaims = new TreeMap<>();
         TimeStatistics.put(
                 sTotalCount_UOCouncilClaims,
                 TotalCount_UOCouncilClaims);
         int totalCount_UORSLClaims;
         TreeMap<String, Integer> TotalCount_UORSLClaims;
-        TotalCount_UORSLClaims = new TreeMap<String, Integer>();
+        TotalCount_UORSLClaims = new TreeMap<>();
         TimeStatistics.put(
                 sTotalCount_UORSLClaims,
                 TotalCount_UORSLClaims);
         int totalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsSHBE;
         TreeMap<String, Integer> TotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsSHBE;
-        TotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsSHBE = new TreeMap<String, Integer>();
+        TotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsSHBE = new TreeMap<>();
         TimeStatistics.put(sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsSHBE,
                 TotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsSHBE);
         int totalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsUO;
         TreeMap<String, Integer> TotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsUO;
-        TotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsUO = new TreeMap<String, Integer>();
+        TotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsUO = new TreeMap<>();
         TimeStatistics.put(sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsUO,
                 TotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsUO);
 
         int totalHouseholdSizeExcludingPartnersCouncilSHBE;
         TreeMap<String, Integer> TotalHouseholdSizeExcludingPartnersCouncilSHBEs;
-        TotalHouseholdSizeExcludingPartnersCouncilSHBEs = new TreeMap<String, Integer>();
+        TotalHouseholdSizeExcludingPartnersCouncilSHBEs = new TreeMap<>();
         TimeStatistics.put(sTotalHouseholdSizeExcludingPartnersCouncilSHBE,
                 TotalHouseholdSizeExcludingPartnersCouncilSHBEs);
 
         int totalHouseholdSizeCouncilSHBE;
         TreeMap<String, Integer> TotalHouseholdSizeCouncilSHBEs;
-        TotalHouseholdSizeCouncilSHBEs = new TreeMap<String, Integer>();
+        TotalHouseholdSizeCouncilSHBEs = new TreeMap<>();
         TimeStatistics.put(sTotalHouseholdSizeCouncilSHBE,
                 TotalHouseholdSizeCouncilSHBEs);
 
         int totalHouseholdSizeExcludingPartnersCouncilUO;
         TreeMap<String, Integer> TotalHouseholdSizeExcludingPartnersCouncilUOs;
-        TotalHouseholdSizeExcludingPartnersCouncilUOs = new TreeMap<String, Integer>();
+        TotalHouseholdSizeExcludingPartnersCouncilUOs = new TreeMap<>();
         TimeStatistics.put(sTotalHouseholdSizeExcludingPartnersCouncilUO,
                 TotalHouseholdSizeExcludingPartnersCouncilUOs);
 
         int totalHouseholdSizeCouncilUO;
         TreeMap<String, Integer> TotalHouseholdSizeCouncilUOs;
-        TotalHouseholdSizeCouncilUOs = new TreeMap<String, Integer>();
+        TotalHouseholdSizeCouncilUOs = new TreeMap<>();
         TimeStatistics.put(sTotalHouseholdSizeCouncilUO,
                 TotalHouseholdSizeCouncilUOs);
 
         int totalHouseholdSizeExcludingPartnersRSLSHBE;
         TreeMap<String, Integer> TotalHouseholdSizeExcludingPartnersRSLSHBEs;
-        TotalHouseholdSizeExcludingPartnersRSLSHBEs = new TreeMap<String, Integer>();
+        TotalHouseholdSizeExcludingPartnersRSLSHBEs = new TreeMap<>();
         TimeStatistics.put(sTotalHouseholdSizeExcludingPartnersRSLSHBE,
                 TotalHouseholdSizeExcludingPartnersRSLSHBEs);
 
         int totalHouseholdSizeRSLSHBE;
         TreeMap<String, Integer> TotalHouseholdSizeRSLSHBEs;
-        TotalHouseholdSizeRSLSHBEs = new TreeMap<String, Integer>();
+        TotalHouseholdSizeRSLSHBEs = new TreeMap<>();
         TimeStatistics.put(sTotalHouseholdSizeRSLSHBE,
                 TotalHouseholdSizeRSLSHBEs);
 
         int totalHouseholdSizeExcludingPartnersRSLUO;
         TreeMap<String, Integer> TotalHouseholdSizeExcludingPartnersRSLUOs;
-        TotalHouseholdSizeExcludingPartnersRSLUOs = new TreeMap<String, Integer>();
+        TotalHouseholdSizeExcludingPartnersRSLUOs = new TreeMap<>();
         TimeStatistics.put(sTotalHouseholdSizeExcludingPartnersRSLUO,
                 TotalHouseholdSizeExcludingPartnersRSLUOs);
 
         int totalHouseholdSizeRSLUO;
         TreeMap<String, Integer> TotalHouseholdSizeRSLUOs;
-        TotalHouseholdSizeRSLUOs = new TreeMap<String, Integer>();
+        TotalHouseholdSizeRSLUOs = new TreeMap<>();
         TimeStatistics.put(sTotalHouseholdSizeRSLUO,
                 TotalHouseholdSizeRSLUOs);
 
@@ -1931,7 +1931,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         HashSet<DW_ID> RSLClaimIDs;
         RSLClaimIDs = AllClaimIDs[1];
         HashSet<DW_ID> ClaimIDs;
-        ClaimIDs = new HashSet<DW_ID>();
+        ClaimIDs = new HashSet<>();
         ClaimIDs.addAll(CouncilClaimIDs);
         ClaimIDs.addAll(RSLClaimIDs);
 
@@ -1942,7 +1942,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                 SHBEFilenames,
                 include);
         HashSet<DW_ID> StartUOClaimIDs;
-        StartUOClaimIDs = new HashSet<DW_ID>();
+        StartUOClaimIDs = new HashSet<>();
         StartUOClaimIDs.addAll(StartUOClaimIDsX[0]);
         StartUOClaimIDs.addAll(StartUOClaimIDsX[1]);
 
@@ -1953,22 +1953,22 @@ public class DW_TenancyChangesUO extends DW_Object {
                 SHBEFilenames,
                 include);
         HashSet<DW_ID> EndUOClaimIDs;
-        EndUOClaimIDs = new HashSet<DW_ID>();
+        EndUOClaimIDs = new HashSet<>();
         EndUOClaimIDs.addAll(EndUOClaimIDsX[0]);
         EndUOClaimIDs.addAll(EndUOClaimIDsX[1]);
 
         HashSet<DW_ID> SubsequentlyEffectedUOStillUOInLatestSHBE;
-        SubsequentlyEffectedUOStillUOInLatestSHBE = new HashSet<DW_ID>();
+        SubsequentlyEffectedUOStillUOInLatestSHBE = new HashSet<>();
         SubsequentlyEffectedUOStillUOInLatestSHBE.addAll(ClaimIDs);
         SubsequentlyEffectedUOStillUOInLatestSHBE.removeAll(StartUOClaimIDs);
         SubsequentlyEffectedUOStillUOInLatestSHBE.retainAll(EndUOClaimIDs);
 
         TreeMap<String, BigDecimal> GeneralStatistics;
-        GeneralStatistics = new TreeMap<String, BigDecimal>();
+        GeneralStatistics = new TreeMap<>();
         GeneralStatistics.put(sNotUOInApril2013ThenUOAndUOInLatestMonth,
                 BigDecimal.valueOf(SubsequentlyEffectedUOStillUOInLatestSHBE.size()));
         HashSet<DW_ID> EndUOThatWereAlsoStartUOClaimRefs;
-        EndUOThatWereAlsoStartUOClaimRefs = new HashSet<DW_ID>();
+        EndUOThatWereAlsoStartUOClaimRefs = new HashSet<>();
         EndUOThatWereAlsoStartUOClaimRefs.addAll(EndUOClaimIDs);
         EndUOThatWereAlsoStartUOClaimRefs.retainAll(StartUOClaimIDs);
 
@@ -1979,7 +1979,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         ArrayList<Integer> All;
         All = includes.get(Strings.sIncludeAll);
         ArrayList<Integer> NotMonthlyUO;
-        NotMonthlyUO = new ArrayList<Integer>();
+        NotMonthlyUO = new ArrayList<>();
         NotMonthlyUO.addAll(All);
         NotMonthlyUO.removeAll(MonthlyUO);
 
@@ -1993,11 +1993,11 @@ public class DW_TenancyChangesUO extends DW_Object {
         }
 
         DW_SHBE_Records DW_SHBE_Records1 = null;
-        DW_YM3 YM3Start = null;
-        DW_YM3 YM30 = null;
+        ONSPD_YM3 YM3Start = null;
+        ONSPD_YM3 YM30 = null;
         String year0 = s;
         String month0 = s;
-        DW_YM3 YM31 = null;
+        ONSPD_YM3 YM31 = null;
         String year1 = s;
         String month1 = s;
         DW_UO_Set CouncilUOSet0 = null;
@@ -2201,83 +2201,83 @@ public class DW_TenancyChangesUO extends DW_Object {
 //        }
         // All
         HashSet<DW_PersonID> UniqueIndividualsEffectedPersonIDs;
-        UniqueIndividualsEffectedPersonIDs = new HashSet<DW_PersonID>();
+        UniqueIndividualsEffectedPersonIDs = new HashSet<>();
         HashSet<DW_PersonID> UniqueDependentsAgedUnder10EffectedPersonIDs;
-        UniqueDependentsAgedUnder10EffectedPersonIDs = new HashSet<DW_PersonID>();
+        UniqueDependentsAgedUnder10EffectedPersonIDs = new HashSet<>();
         HashSet<DW_PersonID> UniqueDependentsAgedOver10EffectedPersonIDs;
-        UniqueDependentsAgedOver10EffectedPersonIDs = new HashSet<DW_PersonID>();
+        UniqueDependentsAgedOver10EffectedPersonIDs = new HashSet<>();
         HashSet<DW_PersonID> UniqueDependentsEffectedPersonIDs;
-        UniqueDependentsEffectedPersonIDs = new HashSet<DW_PersonID>();
+        UniqueDependentsEffectedPersonIDs = new HashSet<>();
         // Council
         HashSet<DW_PersonID> CouncilUniqueIndividualsEffectedPersonIDs;
-        CouncilUniqueIndividualsEffectedPersonIDs = new HashSet<DW_PersonID>();
+        CouncilUniqueIndividualsEffectedPersonIDs = new HashSet<>();
         HashSet<DW_PersonID> CouncilUniqueClaimantsEffectedPersonIDs;
-        CouncilUniqueClaimantsEffectedPersonIDs = new HashSet<DW_PersonID>();
+        CouncilUniqueClaimantsEffectedPersonIDs = new HashSet<>();
         HashSet<DW_PersonID> CouncilUniquePartnersEffectedPersonIDs;
-        CouncilUniquePartnersEffectedPersonIDs = new HashSet<DW_PersonID>();
+        CouncilUniquePartnersEffectedPersonIDs = new HashSet<>();
         HashSet<DW_PersonID> CouncilUniqueDependentChildrenUnder10EffectedPersonIDs;
-        CouncilUniqueDependentChildrenUnder10EffectedPersonIDs = new HashSet<DW_PersonID>();
+        CouncilUniqueDependentChildrenUnder10EffectedPersonIDs = new HashSet<>();
         HashSet<DW_PersonID> CouncilUniqueDependentChildrenOver10EffectedPersonIDs;
-        CouncilUniqueDependentChildrenOver10EffectedPersonIDs = new HashSet<DW_PersonID>();
+        CouncilUniqueDependentChildrenOver10EffectedPersonIDs = new HashSet<>();
         HashSet<DW_PersonID> CouncilUniqueNonDependentsEffectedPersonIDs;
-        CouncilUniqueNonDependentsEffectedPersonIDs = new HashSet<DW_PersonID>();
+        CouncilUniqueNonDependentsEffectedPersonIDs = new HashSet<>();
         HashMap<DW_ID, Integer> CouncilMaxNumberOfDependentsInClaimWhenUO;
-        CouncilMaxNumberOfDependentsInClaimWhenUO = new HashMap<DW_ID, Integer>();
+        CouncilMaxNumberOfDependentsInClaimWhenUO = new HashMap<>();
         // RSL
         HashSet<DW_PersonID> RSLUniqueIndividualsEffectedPersonIDs;
-        RSLUniqueIndividualsEffectedPersonIDs = new HashSet<DW_PersonID>();
+        RSLUniqueIndividualsEffectedPersonIDs = new HashSet<>();
         HashSet<DW_PersonID> RSLUniqueClaimantsEffectedPersonIDs;
-        RSLUniqueClaimantsEffectedPersonIDs = new HashSet<DW_PersonID>();
+        RSLUniqueClaimantsEffectedPersonIDs = new HashSet<>();
         HashSet<DW_PersonID> RSLUniquePartnersEffectedPersonIDs;
-        RSLUniquePartnersEffectedPersonIDs = new HashSet<DW_PersonID>();
+        RSLUniquePartnersEffectedPersonIDs = new HashSet<>();
         HashSet<DW_PersonID> RSLUniqueDependentChildrenUnder10EffectedPersonIDs;
-        RSLUniqueDependentChildrenUnder10EffectedPersonIDs = new HashSet<DW_PersonID>();
+        RSLUniqueDependentChildrenUnder10EffectedPersonIDs = new HashSet<>();
         HashSet<DW_PersonID> RSLUniqueDependentChildrenOver10EffectedPersonIDs;
-        RSLUniqueDependentChildrenOver10EffectedPersonIDs = new HashSet<DW_PersonID>();
+        RSLUniqueDependentChildrenOver10EffectedPersonIDs = new HashSet<>();
         HashSet<DW_PersonID> RSLUniqueIndividualsEffectedNonDependentsEffectedPersonIDs;
-        RSLUniqueIndividualsEffectedNonDependentsEffectedPersonIDs = new HashSet<DW_PersonID>();
+        RSLUniqueIndividualsEffectedNonDependentsEffectedPersonIDs = new HashSet<>();
         HashMap<DW_ID, Integer> RSLMaxNumberOfDependentsInClaimWhenUO;
-        RSLMaxNumberOfDependentsInClaimWhenUO = new HashMap<DW_ID, Integer>();
+        RSLMaxNumberOfDependentsInClaimWhenUO = new HashMap<>();
 
         // Groups help order the table output. Keys are the group type and 
         // values are ordered sets of keys for writing rows.
         HashMap<String, HashSet<DW_ID>> Groups;
-        Groups = new HashMap<String, HashSet<DW_ID>>();
+        Groups = new HashMap<>();
 
         HashSet<DW_ID> PermanantlyLeftUOButRemainedInSHBEClaimIDs;
-        PermanantlyLeftUOButRemainedInSHBEClaimIDs = new HashSet<DW_ID>();
+        PermanantlyLeftUOButRemainedInSHBEClaimIDs = new HashSet<>();
         Groups.put(sPermanantlyLeftUOButRemainedInSHBE, PermanantlyLeftUOButRemainedInSHBEClaimIDs);
 
         HashSet<DW_ID> PermanantlyLeftUOButRemainedInSHBEPostcodeChangedClaimIDs;
-        PermanantlyLeftUOButRemainedInSHBEPostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        PermanantlyLeftUOButRemainedInSHBEPostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sPermanantlyLeftUOButRemainedInSHBE_PostcodeChanged, PermanantlyLeftUOButRemainedInSHBEPostcodeChangedClaimIDs);
 
         HashSet<DW_ID> PermanantlyLeftUOButRemainedInSHBEHouseholdSizeIncreasedClaimIDs;
-        PermanantlyLeftUOButRemainedInSHBEHouseholdSizeIncreasedClaimIDs = new HashSet<DW_ID>();
+        PermanantlyLeftUOButRemainedInSHBEHouseholdSizeIncreasedClaimIDs = new HashSet<>();
         Groups.put(sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased, PermanantlyLeftUOButRemainedInSHBEHouseholdSizeIncreasedClaimIDs);
 
         HashSet<DW_ID> TravellerClaimIDs;
-        TravellerClaimIDs = new HashSet<DW_ID>();
+        TravellerClaimIDs = new HashSet<>();
         Groups.put(sTravellers, TravellerClaimIDs);
 
         HashSet<DW_ID> TTNot1Or4AndUnderOccupyingClaimIDs;
-        TTNot1Or4AndUnderOccupyingClaimIDs = new HashSet<DW_ID>();
+        TTNot1Or4AndUnderOccupyingClaimIDs = new HashSet<>();
         Groups.put(sTTNot1Or4AndUnderOccupying, TTNot1Or4AndUnderOccupyingClaimIDs);
 
         HashSet<DW_ID> TT1_To_TT3OrTT6ClaimIDs;
-        TT1_To_TT3OrTT6ClaimIDs = new HashSet<DW_ID>();
+        TT1_To_TT3OrTT6ClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_TT3OrTT6, TT1_To_TT3OrTT6ClaimIDs);
 
         HashSet<DW_ID> TT4_To_TT3OrTT6ClaimIDs;
-        TT4_To_TT3OrTT6ClaimIDs = new HashSet<DW_ID>();
+        TT4_To_TT3OrTT6ClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_TT3OrTT6, TT4_To_TT3OrTT6ClaimIDs);
 
         HashSet<DW_ID> TT3OrTT6_To_TT1ClaimIDs;
-        TT3OrTT6_To_TT1ClaimIDs = new HashSet<DW_ID>();
+        TT3OrTT6_To_TT1ClaimIDs = new HashSet<>();
         Groups.put(sTT3OrTT6_To_TT1, TT3OrTT6_To_TT1ClaimIDs);
 
         HashSet<DW_ID> TT3OrTT6_To_TT4ClaimIDs;
-        TT3OrTT6_To_TT4ClaimIDs = new HashSet<DW_ID>();
+        TT3OrTT6_To_TT4ClaimIDs = new HashSet<>();
         Groups.put(sTT3OrTT6_To_TT4, TT3OrTT6_To_TT4ClaimIDs);
 
 //        HashSet<String> NoValidPostcodeChange;
@@ -2285,65 +2285,65 @@ public class DW_TenancyChangesUO extends DW_Object {
 //        NoValidPostcodeChange.addAll(tClaimRefs);
 //        groups.put(sNoValidPostcodeChange, NoValidPostcodeChange);
         HashSet<DW_ID> ValidPostcodeChangeClaimIDs;
-        ValidPostcodeChangeClaimIDs = new HashSet<DW_ID>();
+        ValidPostcodeChangeClaimIDs = new HashSet<>();
         Groups.put(sNoValidPostcodeChange, ValidPostcodeChangeClaimIDs);
 
         HashSet<DW_ID> ChangedTTClaimIDs;
-        ChangedTTClaimIDs = new HashSet<DW_ID>();
+        ChangedTTClaimIDs = new HashSet<>();
         Groups.put(sChangedTT, ChangedTTClaimIDs);
 
         HashSet<DW_ID> UOAtSomePointClaimIDs;
-        UOAtSomePointClaimIDs = new HashSet<DW_ID>();
+        UOAtSomePointClaimIDs = new HashSet<>();
         Groups.put(sUOAtSomePoint, UOAtSomePointClaimIDs);
 
         HashSet<DW_ID> UOTT1AtSomePointClaimIDs;
-        UOTT1AtSomePointClaimIDs = new HashSet<DW_ID>();
+        UOTT1AtSomePointClaimIDs = new HashSet<>();
         Groups.put(sUOTT1AtSomePoint, UOTT1AtSomePointClaimIDs);
 
         HashSet<DW_ID> UOTT4AtSomePointClaimIDs;
-        UOTT4AtSomePointClaimIDs = new HashSet<DW_ID>();
+        UOTT4AtSomePointClaimIDs = new HashSet<>();
         Groups.put(sUOTT4AtSomePoint, UOTT4AtSomePointClaimIDs);
 
         HashSet<DW_ID> AlwaysUOTT1FromStartClaimIDs;
-        AlwaysUOTT1FromStartClaimIDs = new HashSet<DW_ID>();
+        AlwaysUOTT1FromStartClaimIDs = new HashSet<>();
         AlwaysUOTT1FromStartClaimIDs.addAll(CouncilClaimIDs);
         Groups.put(sAlwaysUOTT1FromStart, AlwaysUOTT1FromStartClaimIDs);
 
         HashSet<DW_ID> AlwaysUOTT1FromStartExceptWhenSuspendedClaimIDs;
-        AlwaysUOTT1FromStartExceptWhenSuspendedClaimIDs = new HashSet<DW_ID>();
+        AlwaysUOTT1FromStartExceptWhenSuspendedClaimIDs = new HashSet<>();
         AlwaysUOTT1FromStartExceptWhenSuspendedClaimIDs.addAll(CouncilClaimIDs);
         Groups.put(sAlwaysUOTT1FromStartExceptWhenSuspended, AlwaysUOTT1FromStartExceptWhenSuspendedClaimIDs);
 
         HashSet<DW_ID> AlwaysUOTT1FromWhenStartedClaimIDs;
-        AlwaysUOTT1FromWhenStartedClaimIDs = new HashSet<DW_ID>();
+        AlwaysUOTT1FromWhenStartedClaimIDs = new HashSet<>();
         //AlwaysUOFromWhenStarted.addAll(tClaimRefs);
         Groups.put(sAlwaysUOTT1FromWhenStarted, AlwaysUOTT1FromWhenStartedClaimIDs);
 
         HashSet<DW_ID> AlwaysUOTT4FromStartClaimIDs;
-        AlwaysUOTT4FromStartClaimIDs = new HashSet<DW_ID>();
+        AlwaysUOTT4FromStartClaimIDs = new HashSet<>();
         AlwaysUOTT4FromStartClaimIDs.addAll(RSLClaimIDs);
         Groups.put(sAlwaysUOTT4FromStart, AlwaysUOTT4FromStartClaimIDs);
 
         HashSet<DW_ID> AlwaysUOTT4FromStartExceptWhenSuspendedClaimIDs;
-        AlwaysUOTT4FromStartExceptWhenSuspendedClaimIDs = new HashSet<DW_ID>();
+        AlwaysUOTT4FromStartExceptWhenSuspendedClaimIDs = new HashSet<>();
         AlwaysUOTT4FromStartExceptWhenSuspendedClaimIDs.addAll(RSLClaimIDs);
         Groups.put(sAlwaysUOTT4FromStartExceptWhenSuspended, AlwaysUOTT4FromStartExceptWhenSuspendedClaimIDs);
 
         HashSet<DW_ID> AlwaysUOTT4FromWhenStartedClaimIDs;
-        AlwaysUOTT4FromWhenStartedClaimIDs = new HashSet<DW_ID>();
+        AlwaysUOTT4FromWhenStartedClaimIDs = new HashSet<>();
         //AlwaysUOFromWhenStarted.addAll(tClaimRefs);
         Groups.put(sAlwaysUOTT4FromWhenStarted, AlwaysUOTT4FromWhenStartedClaimIDs);
 
         HashSet<DW_ID> IntermitantUOClaimIDs;
-        IntermitantUOClaimIDs = new HashSet<DW_ID>();
+        IntermitantUOClaimIDs = new HashSet<>();
         Groups.put(sIntermitantUO, IntermitantUOClaimIDs);
 
         HashSet<DW_ID> UO_To_LeftSHBEAtSomePointClaimIDs;
-        UO_To_LeftSHBEAtSomePointClaimIDs = new HashSet<DW_ID>();
+        UO_To_LeftSHBEAtSomePointClaimIDs = new HashSet<>();
         Groups.put(sUO_To_LeftSHBEAtSomePoint, UO_To_LeftSHBEAtSomePointClaimIDs);
 
         HashSet<DW_ID> UO_To_LeftSHBETheVeryNextMonthClaimIDs;
-        UO_To_LeftSHBETheVeryNextMonthClaimIDs = new HashSet<DW_ID>();
+        UO_To_LeftSHBETheVeryNextMonthClaimIDs = new HashSet<>();
         Groups.put(sUO_To_LeftSHBETheVeryNextMonth, UO_To_LeftSHBETheVeryNextMonthClaimIDs);
 
 //        HashSet<DW_ID> UO_To_LeftSHBEBetweenOneAndTwoMonthsClaimIDs;
@@ -2354,133 +2354,133 @@ public class DW_TenancyChangesUO extends DW_Object {
 //        UO_To_LeftSHBEBetweenTwoAndThreeMonthsClaimIDs = new HashSet<DW_ID>();
 //        Groups.put(sUO_To_LeftSHBEBetweenTwoAndThreeMonths, UO_To_LeftSHBEBetweenTwoAndThreeMonthsClaimIDs);
         HashSet<DW_ID> UO_To_LeftSHBEAndNotReturnedClaimIDs;
-        UO_To_LeftSHBEAndNotReturnedClaimIDs = new HashSet<DW_ID>();
+        UO_To_LeftSHBEAndNotReturnedClaimIDs = new HashSet<>();
         Groups.put(sUO_To_LeftSHBE_NotReturned, UO_To_LeftSHBEAndNotReturnedClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_LeftSHBEAndNotReturnedClaimIDs;
-        UOTT1_To_LeftSHBEAndNotReturnedClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_LeftSHBEAndNotReturnedClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_LeftSHBE_NotReturned, UOTT1_To_LeftSHBEAndNotReturnedClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_LeftSHBEAndNotReturnedClaimIDs;
-        UOTT4_To_LeftSHBEAndNotReturnedClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_LeftSHBEAndNotReturnedClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_LeftSHBE_NotReturned, UOTT4_To_LeftSHBEAndNotReturnedClaimIDs);
 
         HashSet<DW_ID> UOTT3OrTT6_To_LeftSHBEAndNotReturnedClaimIDs;
-        UOTT3OrTT6_To_LeftSHBEAndNotReturnedClaimIDs = new HashSet<DW_ID>();
+        UOTT3OrTT6_To_LeftSHBEAndNotReturnedClaimIDs = new HashSet<>();
         Groups.put(sUOTT3OrTT6_To_LeftSHBE_NotReturned, UOTT3OrTT6_To_LeftSHBEAndNotReturnedClaimIDs);
 
         HashSet<DW_ID> UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEAndNotReturnedClaimIDs;
-        UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEAndNotReturnedClaimIDs = new HashSet<DW_ID>();
+        UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEAndNotReturnedClaimIDs = new HashSet<>();
         Groups.put(sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE_NotReturned, UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEAndNotReturnedClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs;
-        UOTT1_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_LeftSHBE_ReturnedAsUOTT1, UOTT1_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT1ClaimIDs;
-        UOTT1_To_LeftSHBE_ReturnedAsTT1ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_LeftSHBE_ReturnedAsTT1ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT1, UOTT1_To_LeftSHBE_ReturnedAsTT1ClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs;
-        UOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6, UOTT1_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs;
-        UOTT1_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_LeftSHBE_ReturnedAsUOTT4, UOTT1_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT4ClaimIDs;
-        UOTT1_To_LeftSHBE_ReturnedAsTT4ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_LeftSHBE_ReturnedAsTT4ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT4, UOTT1_To_LeftSHBE_ReturnedAsTT4ClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs;
-        UOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7, UOTT1_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT8ClaimIDs;
-        UOTT1_To_LeftSHBE_ReturnedAsTT8ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_LeftSHBE_ReturnedAsTT8ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT8, UOTT1_To_LeftSHBE_ReturnedAsTT8ClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAsTT9ClaimIDs;
-        UOTT1_To_LeftSHBE_ReturnedAsTT9ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_LeftSHBE_ReturnedAsTT9ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_LeftSHBE_ReturnedAsTT9, UOTT1_To_LeftSHBE_ReturnedAsTT9ClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs;
-        UOTT4_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_LeftSHBE_ReturnedAsUOTT1, UOTT4_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT1ClaimIDs;
-        UOTT4_To_LeftSHBE_ReturnedAsTT1ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_LeftSHBE_ReturnedAsTT1ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT1, UOTT4_To_LeftSHBE_ReturnedAsTT1ClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs;
-        UOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6, UOTT4_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs;
-        UOTT4_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_LeftSHBE_ReturnedAsUOTT4, UOTT4_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT4ClaimIDs;
-        UOTT4_To_LeftSHBE_ReturnedAsTT4ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_LeftSHBE_ReturnedAsTT4ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT4, UOTT4_To_LeftSHBE_ReturnedAsTT4ClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs;
-        UOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7, UOTT4_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT8ClaimIDs;
-        UOTT4_To_LeftSHBE_ReturnedAsTT8ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_LeftSHBE_ReturnedAsTT8ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT8, UOTT4_To_LeftSHBE_ReturnedAsTT8ClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAsTT9ClaimIDs;
-        UOTT4_To_LeftSHBE_ReturnedAsTT9ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_LeftSHBE_ReturnedAsTT9ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_LeftSHBE_ReturnedAsTT9, UOTT4_To_LeftSHBE_ReturnedAsTT9ClaimIDs);
 
         HashSet<DW_ID> UOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs;
-        UOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs = new HashSet<DW_ID>();
+        UOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs = new HashSet<>();
         Groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1, UOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT1ClaimIDs);
 
         HashSet<DW_ID> UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1ClaimIDs;
-        UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1ClaimIDs = new HashSet<DW_ID>();
+        UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1ClaimIDs = new HashSet<>();
         Groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1, UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT1ClaimIDs);
 
         HashSet<DW_ID> UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs;
-        UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs = new HashSet<DW_ID>();
+        UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs = new HashSet<>();
         Groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6, UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT3OrTT6ClaimIDs);
 
         HashSet<DW_ID> UOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs;
-        UOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs = new HashSet<DW_ID>();
+        UOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs = new HashSet<>();
         Groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4, UOTT3OrTT6_To_LeftSHBE_ReturnedAsUOTT4ClaimIDs);
 
         HashSet<DW_ID> UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4ClaimIDs;
-        UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4ClaimIDs = new HashSet<DW_ID>();
+        UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4ClaimIDs = new HashSet<>();
         Groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4, UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT4ClaimIDs);
 
         HashSet<DW_ID> UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs;
-        UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs = new HashSet<DW_ID>();
+        UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs = new HashSet<>();
         Groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7, UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT5OrTT7ClaimIDs);
 
         HashSet<DW_ID> UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8ClaimIDs;
-        UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8ClaimIDs = new HashSet<DW_ID>();
+        UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8ClaimIDs = new HashSet<>();
         Groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8, UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT8ClaimIDs);
 
         HashSet<DW_ID> UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9ClaimIDs;
-        UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9ClaimIDs = new HashSet<DW_ID>();
+        UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9ClaimIDs = new HashSet<>();
         Groups.put(sUOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9, UOTT3OrTT6_To_LeftSHBE_ReturnedAsTT9ClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePointClaimIDs;
-        UOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePointClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePointClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
                 UOTT1_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePointClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePointClaimIDs;
-        UOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePointClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePointClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePoint,
                 UOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePointClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_LeftSHBEClaimIDs;
-        UOTT1_To_LeftSHBEClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_LeftSHBEClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_LeftSHBE, UOTT1_To_LeftSHBEClaimIDs);
 
 //        HashSet<DW_ID> UOTT1_To_LeftSHBEReturnedAsTT1orTT4;
@@ -2491,7 +2491,7 @@ public class DW_TenancyChangesUO extends DW_Object {
 //        UOTT1_To_LeftSHBEReturnedAsTT3OrTT6 = new HashSet<DW_ID>();
 //        groups.put(sUOTT1_To_LeftSHBEReturnedAsTT3OrTT6, UOTT1_To_LeftSHBEReturnedAsTT3OrTT6);
         HashSet<DW_ID> UOTT4_To_LeftSHBEClaimIDs;
-        UOTT4_To_LeftSHBEClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_LeftSHBEClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_LeftSHBE, UOTT4_To_LeftSHBEClaimIDs);
 
 //        HashSet<DW_ID> UOTT4_To_LeftSHBEReturnedAsTT1orTT4;
@@ -2502,176 +2502,176 @@ public class DW_TenancyChangesUO extends DW_Object {
 //        UOTT4_To_LeftSHBEReturnedAsTT3OrTT6 = new HashSet<DW_ID>();
 //        groups.put(sUOTT4_To_LeftSHBEReturnedAsTT3OrTT6, UOTT4_To_LeftSHBEReturnedAsTT3OrTT6);
         HashSet<DW_ID> UO_NotUOClaimIDs;
-        UO_NotUOClaimIDs = new HashSet<DW_ID>();
+        UO_NotUOClaimIDs = new HashSet<>();
 
         HashSet<DW_ID> UO_NotUO_UO_NotUOClaimIDs;
-        UO_NotUO_UO_NotUOClaimIDs = new HashSet<DW_ID>();
+        UO_NotUO_UO_NotUOClaimIDs = new HashSet<>();
         Groups.put(sUO_NotUO_UO_NotUO, UO_NotUO_UO_NotUOClaimIDs);
 
         HashSet<DW_ID> UO_NotUO_UO_NotUO_UO_NotUOClaimIDs;
-        UO_NotUO_UO_NotUO_UO_NotUOClaimIDs = new HashSet<DW_ID>();
+        UO_NotUO_UO_NotUO_UO_NotUOClaimIDs = new HashSet<>();
         Groups.put(sUO_NotUO_UO_NotUO_UO_NotUO, UO_NotUO_UO_NotUO_UO_NotUOClaimIDs);
 
         HashSet<DW_ID> UO_NotUO_UO_NotUO_UO_NotUO_UO_NotUOClaimIDs;
-        UO_NotUO_UO_NotUO_UO_NotUO_UO_NotUOClaimIDs = new HashSet<DW_ID>();
+        UO_NotUO_UO_NotUO_UO_NotUO_UO_NotUOClaimIDs = new HashSet<>();
         Groups.put(sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO, UO_NotUO_UO_NotUO_UO_NotUO_UO_NotUOClaimIDs);
 
         HashSet<DW_ID> UO_NotUO_UOClaimIDs;
-        UO_NotUO_UOClaimIDs = new HashSet<DW_ID>();
+        UO_NotUO_UOClaimIDs = new HashSet<>();
         Groups.put(sUO_NotUO_UO, UO_NotUO_UOClaimIDs);
 
         HashSet<DW_ID> UO_NotUO_UO_NotUO_UOClaimIDs;
-        UO_NotUO_UO_NotUO_UOClaimIDs = new HashSet<DW_ID>();
+        UO_NotUO_UO_NotUO_UOClaimIDs = new HashSet<>();
         Groups.put(sUO_NotUO_UO_NotUO_UO, UO_NotUO_UO_NotUO_UOClaimIDs);
 
         HashSet<DW_ID> UO_NotUO_UO_NotUO_UO_NotUO_UOClaimIDs;
-        UO_NotUO_UO_NotUO_UO_NotUO_UOClaimIDs = new HashSet<DW_ID>();
+        UO_NotUO_UO_NotUO_UO_NotUO_UOClaimIDs = new HashSet<>();
         Groups.put(sUO_NotUO_UO_NotUO_UO_NotUO_UO, UO_NotUO_UO_NotUO_UO_NotUO_UOClaimIDs);
 
         HashSet<DW_ID> UO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UOClaimIDs;
-        UO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UOClaimIDs = new HashSet<DW_ID>();
+        UO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UOClaimIDs = new HashSet<>();
         Groups.put(sUO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UO, UO_NotUO_UO_NotUO_UO_NotUO_UO_NotUO_UOClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_NotUO_InSHBE_PostcodeChangedClaimIDs;
-        UOTT1_To_NotUO_InSHBE_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_NotUO_InSHBE_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_NotUO_InSHBE_PostcodeChanged, UOTT1_To_NotUO_InSHBE_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_UOTT1_PostcodeChangedClaimIDs;
-        UOTT1_To_UOTT1_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_UOTT1_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_UOTT1_PostcodeChanged, UOTT1_To_UOTT1_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeChangedClaimIDs;
-        UOTT1_To_TT1_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeChanged, UOTT1_To_TT1_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_UOTT4_PostcodeChangedClaimIDs;
-        UOTT1_To_UOTT4_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_UOTT4_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_UOTT4_PostcodeChanged, UOTT1_To_UOTT4_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_TT4_PostcodeChangedClaimIDs;
-        UOTT1_To_TT4_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT4_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT4_PostcodeChanged, UOTT1_To_TT4_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_NotUO_InSHBE_PostcodeChangedClaimIDs;
-        UOTT4_To_NotUO_InSHBE_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_NotUO_InSHBE_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_NotUO_InSHBE_PostcodeChanged, UOTT4_To_NotUO_InSHBE_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_UOTT1_PostcodeChangedClaimIDs;
-        UOTT4_To_UOTT1_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_UOTT1_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_UOTT1_PostcodeChanged, UOTT4_To_UOTT1_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_TT1_PostcodeChangedClaimIDs;
-        UOTT4_To_TT1_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT1_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT1_PostcodeChanged, UOTT4_To_TT1_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_UOTT4_PostcodeChangedClaimIDs;
-        UOTT4_To_UOTT4_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_UOTT4_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_UOTT4_PostcodeChanged, UOTT4_To_UOTT4_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeChangedClaimIDs;
-        UOTT4_To_TT4_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeChanged, UOTT4_To_TT4_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_TT3OrTT6ClaimIDs;
-        UOTT1_To_TT3OrTT6ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT3OrTT6ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT3OrTT6, UOTT1_To_TT3OrTT6ClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_TT3OrTT6AtSomePointClaimIDs;
-        UOTT1_To_TT3OrTT6AtSomePointClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT3OrTT6AtSomePointClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT3OrTT6AtSomePoint, UOTT1_To_TT3OrTT6AtSomePointClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999ClaimIDs;
-        UOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999, UOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999ClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePointClaimIDs;
-        UOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePointClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePointClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePoint, UOTT1_To_TT3OrTT6_To_TT1OrUOTT1AtSomePointClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_TT3OrTT6NotDoneNextChangeClaimIDs;
-        UOTT1_To_TT3OrTT6NotDoneNextChangeClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT3OrTT6NotDoneNextChangeClaimIDs = new HashSet<>();
 
         HashSet<DW_ID> UOTT3OrTT6_To_LeftSHBEClaimIDs;
-        UOTT3OrTT6_To_LeftSHBEClaimIDs = new HashSet<DW_ID>();
+        UOTT3OrTT6_To_LeftSHBEClaimIDs = new HashSet<>();
         Groups.put(sUOTT3OrTT6_To_LeftSHBE, UOTT3OrTT6_To_LeftSHBEClaimIDs);
 
         HashSet<DW_ID> UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEClaimIDs;
-        UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEClaimIDs = new HashSet<DW_ID>();
+        UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEClaimIDs = new HashSet<>();
         Groups.put(sUONotTT1OrTT3OrTT4OrTT6_To_LeftSHBE, UONotTT1OrTT3OrTT4OrTT6_To_LeftSHBEClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_TT3OrTT6ClaimIDs;
-        UOTT4_To_TT3OrTT6ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT3OrTT6ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT3OrTT6, UOTT4_To_TT3OrTT6ClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_TT3OrTT6AtSomePointClaimIDs;
-        UOTT4_To_TT3OrTT6AtSomePointClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT3OrTT6AtSomePointClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT3OrTT6AtSomePoint, UOTT4_To_TT3OrTT6AtSomePointClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999ClaimIDs;
-        UOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999, UOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999ClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePointClaimIDs;
-        UOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePointClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePointClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePoint, UOTT4_To_TT3OrTT6_To_TT4OrUOTT4AtSomePointClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_TT3OrTT6NotDoneNextChangeClaimIDs;
-        UOTT4_To_TT3OrTT6NotDoneNextChangeClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT3OrTT6NotDoneNextChangeClaimIDs = new HashSet<>();
 
         HashSet<DW_ID> TT3OrTT6_To_UOTT1ClaimIDs;
-        TT3OrTT6_To_UOTT1ClaimIDs = new HashSet<DW_ID>();
+        TT3OrTT6_To_UOTT1ClaimIDs = new HashSet<>();
         Groups.put(sTT3OrTT6_To_UOTT1, TT3OrTT6_To_UOTT1ClaimIDs);
 
         HashSet<DW_ID> TT3OrTT6_To_UOTT4ClaimIDs;
-        TT3OrTT6_To_UOTT4ClaimIDs = new HashSet<DW_ID>();
+        TT3OrTT6_To_UOTT4ClaimIDs = new HashSet<>();
         Groups.put(sTT3OrTT6_To_UOTT4, TT3OrTT6_To_UOTT4ClaimIDs);
 
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchangedClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchangedClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchangedClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT1_PostcodeUnchanged, TT1_To_UOTT1_PostcodeUnchangedClaimIDs);
 //        HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month;
 //        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month = new HashSet<DW_ID>();
 //        groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month,
 //                TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1Month);
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
                 TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs);
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1,
                 TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs);
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
                 TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs);
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
                 TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs);
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4,
                 TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs);
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
                 TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs);
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8,
                 TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs);
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9,
                 TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs);
 
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter2Months,
                 TT1_To_UOTT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs);
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchangedButChangedAfter3MonthsClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter3MonthsClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchangedButChangedAfter3MonthsClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT1_PostcodeUnchangedButChangedAfter3Months,
                 TT1_To_UOTT1_PostcodeUnchangedButChangedAfter3MonthsClaimIDs);
 
@@ -2679,61 +2679,61 @@ public class DW_TenancyChangesUO extends DW_Object {
         //UOTT1OrTT1_To_UOTT4 = new HashSet<DW_ID>();
         //groups.put(sUOTT1OrTT1_To_UOTT4, UOTT1OrTT1_To_UOTT4);
         HashSet<DW_ID> UOTT1_To_UOTT4ClaimIDs;
-        UOTT1_To_UOTT4ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_UOTT4ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_UOTT4, UOTT1_To_UOTT4ClaimIDs);
         HashSet<DW_ID> TT1_To_UOTT4ClaimIDs;
-        TT1_To_UOTT4ClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT4ClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT4, TT1_To_UOTT4ClaimIDs);
         HashSet<DW_ID> TT1_To_UOTT4GettingDHPClaimIDs;
-        TT1_To_UOTT4GettingDHPClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT4GettingDHPClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT4GettingDHP, TT1_To_UOTT4GettingDHPClaimIDs);
 
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchangedClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchangedClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchanged, TT4_To_UOTT4_PostcodeUnchangedClaimIDs);
 //        HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month;
 //        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month = new HashSet<DW_ID>();
 //        groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month,
 //                TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1Month);        
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs);
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs);
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs);
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs);
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs);
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs);
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs);
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs);
 
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs);
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs);
 
@@ -2748,213 +2748,213 @@ public class DW_TenancyChangesUO extends DW_Object {
         //groups.put(sUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP,
         //        UOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP);
         HashSet<DW_ID> UOTT4_To_UOTT1ClaimIDs;
-        UOTT4_To_UOTT1ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_UOTT1ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_UOTT1, UOTT4_To_UOTT1ClaimIDs);
         HashSet<DW_ID> UOTT4_To_UOTT1InArrearsClaimIDs;
-        UOTT4_To_UOTT1InArrearsClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_UOTT1InArrearsClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_UOTT1InArrears, UOTT4_To_UOTT1InArrearsClaimIDs);
         HashSet<DW_ID> UOTT4_To_UOTT1GettingDHPClaimIDs;
-        UOTT4_To_UOTT1GettingDHPClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_UOTT1GettingDHPClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_UOTT1GettingDHP,
                 UOTT4_To_UOTT1GettingDHPClaimIDs);
         HashSet<DW_ID> UOTT4_To_UOTT1InArrearsAndGettingDHPClaimIDs;
-        UOTT4_To_UOTT1InArrearsAndGettingDHPClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_UOTT1InArrearsAndGettingDHPClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_UOTT1InArrearsAndGettingDHP,
                 UOTT4_To_UOTT1InArrearsAndGettingDHPClaimIDs);
         HashSet<DW_ID> TT4_To_UOTT1ClaimIDs;
-        TT4_To_UOTT1ClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT1ClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT1, TT4_To_UOTT1ClaimIDs);
         HashSet<DW_ID> TT4_To_UOTT1InArrearsClaimIDs;
-        TT4_To_UOTT1InArrearsClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT1InArrearsClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT1InArrears, TT4_To_UOTT1InArrearsClaimIDs);
         HashSet<DW_ID> TT4_To_UOTT1GettingDHPClaimIDs;
-        TT4_To_UOTT1GettingDHPClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT1GettingDHPClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT1GettingDHP,
                 TT4_To_UOTT1GettingDHPClaimIDs);
         HashSet<DW_ID> TT4_To_UOTT1InArrearsAndGettingDHPClaimIDs;
-        TT4_To_UOTT1InArrearsAndGettingDHPClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT1InArrearsAndGettingDHPClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT1InArrearsAndGettingDHP,
                 TT4_To_UOTT1InArrearsAndGettingDHPClaimIDs);
 
         HashSet<DW_ID> InArrearsAtSomePointClaimIDs;
-        InArrearsAtSomePointClaimIDs = new HashSet<DW_ID>();
+        InArrearsAtSomePointClaimIDs = new HashSet<>();
         HashSet<DW_ID> DHPAtSomePoint;
-        DHPAtSomePoint = new HashSet<DW_ID>();
+        DHPAtSomePoint = new HashSet<>();
         HashSet<DW_ID> InArrearsAtSomePoint_And_DHPAtSomePointClaimIDs;
-        InArrearsAtSomePoint_And_DHPAtSomePointClaimIDs = new HashSet<DW_ID>();
+        InArrearsAtSomePoint_And_DHPAtSomePointClaimIDs = new HashSet<>();
         Groups.put(sInArrearsAtSomePoint_And_DHPAtSomePoint,
                 InArrearsAtSomePoint_And_DHPAtSomePointClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchangedClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchanged, UOTT1_To_TT1_PostcodeUnchangedClaimIDs);
 //        HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month;
 //        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month = new HashSet<DW_ID>();
 //        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
 //                UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month);
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs);
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs);
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs);
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs);
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs);
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs);
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs);
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs);
 
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs);
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3MonthsClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3MonthsClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3MonthsClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3MonthsClaimIDs);
 
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchangedClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchanged, UOTT4_To_TT4_PostcodeUnchangedClaimIDs);
 //        HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month;
 //        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month = new HashSet<DW_ID>();
 //        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
 //                UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month);
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs);
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs);
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs);
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs);
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs);
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs);
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs);
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs);
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs);
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs);
 
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchanged1MonthPreviousClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchanged1MonthPreviousClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchanged1MonthPreviousClaimIDs = new HashSet<>();
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchanged2MonthsPreviousClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchanged2MonthsPreviousClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchanged2MonthsPreviousClaimIDs = new HashSet<>();
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchanged3MonthsPreviousClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchanged3MonthsPreviousClaimIDs = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchanged3MonthsPreviousClaimIDs = new HashSet<>();
 
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchanged1MonthPreviousClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchanged1MonthPreviousClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchanged1MonthPreviousClaimIDs = new HashSet<>();
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchanged2MonthsPreviousClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchanged2MonthsPreviousClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchanged2MonthsPreviousClaimIDs = new HashSet<>();
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchanged3MonthsPreviousClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchanged3MonthsPreviousClaimIDs = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchanged3MonthsPreviousClaimIDs = new HashSet<>();
 
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchanged1MonthPreviousClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchanged1MonthPreviousClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchanged1MonthPreviousClaimIDs = new HashSet<>();
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchanged2MonthsPreviousClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchanged2MonthsPreviousClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchanged2MonthsPreviousClaimIDs = new HashSet<>();
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchanged3MonthsPreviousClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchanged3MonthsPreviousClaimIDs = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchanged3MonthsPreviousClaimIDs = new HashSet<>();
 
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchanged1MonthPreviousClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchanged1MonthPreviousClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchanged1MonthPreviousClaimIDs = new HashSet<>();
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchanged2MonthsPreviousClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchanged2MonthsPreviousClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchanged2MonthsPreviousClaimIDs = new HashSet<>();
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchanged3MonthsPreviousClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchanged3MonthsPreviousClaimIDs = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchanged3MonthsPreviousClaimIDs = new HashSet<>();
 
         HashSet<DW_ID> UOTT1_ToTT1_PostcodeChangedClaimIDs;
-        UOTT1_ToTT1_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT1_ToTT1_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeChanged, UOTT1_ToTT1_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOTT1_ToUOTT1_PostcodeChangedClaimIDs;
-        UOTT1_ToUOTT1_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT1_ToUOTT1_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT1_To_UOTT1_PostcodeChanged, UOTT1_ToUOTT1_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOTT4_ToTT4_PostcodeChangedClaimIDs;
-        UOTT4_ToTT4_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT4_ToTT4_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeChanged, UOTT4_ToTT4_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOTT4_ToUOTT4_PostcodeChangedClaimIDs;
-        UOTT4_ToUOTT4_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        UOTT4_ToUOTT4_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_UOTT4_PostcodeChanged, UOTT4_ToUOTT4_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> TT1_ToUOTT1_PostcodeChangedClaimIDs;
-        TT1_ToUOTT1_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        TT1_ToUOTT1_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sTT1_To_UOTT1_PostcodeChanged, TT1_ToUOTT1_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> TT4_ToUOTT4_PostcodeChangedClaimIDs;
-        TT4_ToUOTT4_PostcodeChangedClaimIDs = new HashSet<DW_ID>();
+        TT4_ToUOTT4_PostcodeChangedClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeChanged, TT4_ToUOTT4_PostcodeChangedClaimIDs);
 
         HashSet<DW_ID> UOClaimsRecievingDHPClaimIDs;
-        UOClaimsRecievingDHPClaimIDs = new HashSet<DW_ID>();
+        UOClaimsRecievingDHPClaimIDs = new HashSet<>();
         Groups.put(sUOClaimsRecievingDHP, UOClaimsRecievingDHPClaimIDs);
 
         HashSet<DW_ID> UOTT1ClaimsInRentArrearsAtSomePointClaimIDs;
-        UOTT1ClaimsInRentArrearsAtSomePointClaimIDs = new HashSet<DW_ID>();
+        UOTT1ClaimsInRentArrearsAtSomePointClaimIDs = new HashSet<>();
         Groups.put(sUOTT1ClaimsInRentArrearsAtSomePoint, UOTT1ClaimsInRentArrearsAtSomePointClaimIDs);
 
         HashSet<DW_ID> UOTT1ClaimsInRentArrearsOver500AtSomePointClaimIDs;
-        UOTT1ClaimsInRentArrearsOver500AtSomePointClaimIDs = new HashSet<DW_ID>();
+        UOTT1ClaimsInRentArrearsOver500AtSomePointClaimIDs = new HashSet<>();
         Groups.put(sUOTT1ClaimsInRentArrearsOver500AtSomePoint, UOTT1ClaimsInRentArrearsOver500AtSomePointClaimIDs);
 
         HashSet<DW_ID> UOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePointClaimIDs;
-        UOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePointClaimIDs = new HashSet<DW_ID>();
+        UOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePointClaimIDs = new HashSet<>();
         Groups.put(sUOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePoint, UOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePointClaimIDs);
 
         DW_ID ClaimID;
         String ClaimRef;
         // Initialise aggregateStatistics and generalStatistics
         TreeMap<String, BigDecimal> AggregateStatistics;
-        AggregateStatistics = new TreeMap<String, BigDecimal>();
+        AggregateStatistics = new TreeMap<>();
         ite = ClaimIDs.iterator();
         while (ite.hasNext()) {
             ClaimID = ite.next();
@@ -2980,7 +2980,7 @@ public class DW_TenancyChangesUO extends DW_Object {
 //        generalStatistics.put(sTotalCount_StayPutAndAvoidedUO, BigDecimal.ZERO);
 //        generalStatistics.put(sCostOfUOToTaxPayer, BigDecimal.ZERO);
         HashMap<DW_ID, Integer> DHP_Totals;
-        DHP_Totals = new HashMap<DW_ID, Integer>();
+        DHP_Totals = new HashMap<>();
         // Initialise tableValues (part 2) and DHP_Totals
         ite = ClaimIDs.iterator();
         while (ite.hasNext()) {
@@ -3031,7 +3031,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         header = "ClaimRef, ";
         if (includePreUnderOccupancyValues) {
             Iterator<Integer> ite2;
-            DW_YM3 YM3;
+            ONSPD_YM3 YM3;
             ite2 = NotMonthlyUO.iterator();
             while (ite2.hasNext()) {
                 i = ite2.next();
@@ -3047,14 +3047,14 @@ public class DW_TenancyChangesUO extends DW_Object {
          * is Council tenant under occupying consecutively). The keys are YM3
          * and the differences are from the previous YM3.
          */
-        HashMap<DW_YM3, Double> arrears;
-        HashMap<DW_YM3, Double> arrearsCounts;
-        HashMap<DW_YM3, Double> arrearsDiffs;
-        HashMap<DW_YM3, Double> arrearsDiffCounts;
-        arrears = new HashMap<DW_YM3, Double>();
-        arrearsCounts = new HashMap<DW_YM3, Double>();
-        arrearsDiffs = new HashMap<DW_YM3, Double>();
-        arrearsDiffCounts = new HashMap<DW_YM3, Double>();
+        HashMap<ONSPD_YM3, Double> arrears;
+        HashMap<ONSPD_YM3, Double> arrearsCounts;
+        HashMap<ONSPD_YM3, Double> arrearsDiffs;
+        HashMap<ONSPD_YM3, Double> arrearsDiffCounts;
+        arrears = new HashMap<ONSPD_YM3, Double>();
+        arrearsCounts = new HashMap<ONSPD_YM3, Double>();
+        arrearsDiffs = new HashMap<ONSPD_YM3, Double>();
+        arrearsDiffCounts = new HashMap<ONSPD_YM3, Double>();
         arrearsDiffs.put(YM30, 0.0d);
         arrearsDiffCounts.put(YM30, 0.0d);
 
@@ -3086,13 +3086,13 @@ public class DW_TenancyChangesUO extends DW_Object {
 
         //DW_SHBE_Record aDW_SHBE_Record;
         HashSet<DW_ID> TT1_To_UOTT1_PostcodeUnchangedThisMonth;
-        TT1_To_UOTT1_PostcodeUnchangedThisMonth = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchangedThisMonth = new HashSet<>();
         HashSet<DW_ID> TT4_To_UOTT4_PostcodeUnchangedThisMonth;
-        TT4_To_UOTT4_PostcodeUnchangedThisMonth = new HashSet<DW_ID>();
+        TT4_To_UOTT4_PostcodeUnchangedThisMonth = new HashSet<>();
         HashSet<DW_ID> UOTT1_To_TT1_PostcodeUnchangedThisMonth;
-        UOTT1_To_TT1_PostcodeUnchangedThisMonth = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchangedThisMonth = new HashSet<>();
         HashSet<DW_ID> UOTT4_To_TT4_PostcodeUnchangedThisMonth;
-        UOTT4_To_TT4_PostcodeUnchangedThisMonth = new HashSet<DW_ID>();
+        UOTT4_To_TT4_PostcodeUnchangedThisMonth = new HashSet<>();
 
         HashMap<DW_ID, DW_PersonID> ClaimIDToClaimantPersonIDLookup;
         HashMap<DW_ID, DW_PersonID> ClaimIDToPartnerPersonIDLookup;
@@ -3365,12 +3365,12 @@ public class DW_TenancyChangesUO extends DW_Object {
 
         TT1_To_UOTT1_PostcodeUnchanged1MonthPreviousClaimIDs = TT1_To_UOTT1_PostcodeUnchangedThisMonth;
         TT4_To_UOTT4_PostcodeUnchanged1MonthPreviousClaimIDs = TT4_To_UOTT4_PostcodeUnchangedThisMonth;
-        TT1_To_UOTT1_PostcodeUnchangedThisMonth = new HashSet<DW_ID>();
-        TT4_To_UOTT4_PostcodeUnchangedThisMonth = new HashSet<DW_ID>();
+        TT1_To_UOTT1_PostcodeUnchangedThisMonth = new HashSet<>();
+        TT4_To_UOTT4_PostcodeUnchangedThisMonth = new HashSet<>();
         UOTT1_To_TT1_PostcodeUnchanged1MonthPreviousClaimIDs = UOTT1_To_TT1_PostcodeUnchangedThisMonth;
         UOTT4_To_TT4_PostcodeUnchanged1MonthPreviousClaimIDs = UOTT4_To_TT4_PostcodeUnchangedThisMonth;
-        UOTT1_To_TT1_PostcodeUnchangedThisMonth = new HashSet<DW_ID>();
-        UOTT4_To_TT4_PostcodeUnchangedThisMonth = new HashSet<DW_ID>();
+        UOTT1_To_TT1_PostcodeUnchangedThisMonth = new HashSet<>();
+        UOTT4_To_TT4_PostcodeUnchangedThisMonth = new HashSet<>();
 
         String yearMonth1;
         yearMonth1 = year1 + "-" + month1;
@@ -3435,7 +3435,7 @@ public class DW_TenancyChangesUO extends DW_Object {
 
             //SHBEFilename0 = SHBEFilename1;
             //YM30 = YM31;
-            YM30 = new DW_YM3(YM31);
+            YM30 = new ONSPD_YM3(YM31);
             year0 = year1;
             month0 = month1;
             //DW_SHBE_Records0 = DW_SHBE_Records1;
@@ -3708,8 +3708,8 @@ public class DW_TenancyChangesUO extends DW_Object {
             TT4_To_UOTT4_PostcodeUnchanged2MonthsPreviousClaimIDs = TT4_To_UOTT4_PostcodeUnchanged1MonthPreviousClaimIDs;
             TT1_To_UOTT1_PostcodeUnchanged1MonthPreviousClaimIDs = TT1_To_UOTT1_PostcodeUnchangedThisMonth;
             TT4_To_UOTT4_PostcodeUnchanged1MonthPreviousClaimIDs = TT4_To_UOTT4_PostcodeUnchangedThisMonth;
-            TT1_To_UOTT1_PostcodeUnchangedThisMonth = new HashSet<DW_ID>();
-            TT4_To_UOTT4_PostcodeUnchangedThisMonth = new HashSet<DW_ID>();
+            TT1_To_UOTT1_PostcodeUnchangedThisMonth = new HashSet<>();
+            TT4_To_UOTT4_PostcodeUnchangedThisMonth = new HashSet<>();
 
             UOTT1_To_TT1_PostcodeUnchanged3MonthsPreviousClaimIDs = UOTT1_To_TT1_PostcodeUnchanged2MonthsPreviousClaimIDs;
             UOTT4_To_TT4_PostcodeUnchanged3MonthsPreviousClaimIDs = UOTT4_To_TT4_PostcodeUnchanged2MonthsPreviousClaimIDs;
@@ -3717,8 +3717,8 @@ public class DW_TenancyChangesUO extends DW_Object {
             UOTT4_To_TT4_PostcodeUnchanged2MonthsPreviousClaimIDs = UOTT4_To_TT4_PostcodeUnchanged1MonthPreviousClaimIDs;
             UOTT1_To_TT1_PostcodeUnchanged1MonthPreviousClaimIDs = UOTT1_To_TT1_PostcodeUnchangedThisMonth;
             UOTT4_To_TT4_PostcodeUnchanged1MonthPreviousClaimIDs = UOTT4_To_TT4_PostcodeUnchangedThisMonth;
-            UOTT1_To_TT1_PostcodeUnchangedThisMonth = new HashSet<DW_ID>();
-            UOTT4_To_TT4_PostcodeUnchangedThisMonth = new HashSet<DW_ID>();
+            UOTT1_To_TT1_PostcodeUnchangedThisMonth = new HashSet<>();
+            UOTT4_To_TT4_PostcodeUnchangedThisMonth = new HashSet<>();
 
             yearMonth1 = year1 + "-" + month1;
             TotalCount_CumulativeUniqueClaims.put(
@@ -3781,19 +3781,19 @@ public class DW_TenancyChangesUO extends DW_Object {
 //        ValidPostcodeChangeClaimIDs.removeAll(NoValidPostcodeChange);
 //        groups.put("ValidPostcodeChange", ValidPostcodeChangeClaimIDs);
         HashSet<DW_ID> NoValidPostcodeChange; // Calculate by removing all from NoValidPostcodeChange.
-        NoValidPostcodeChange = new HashSet<DW_ID>();
+        NoValidPostcodeChange = new HashSet<>();
         NoValidPostcodeChange.addAll(ClaimIDs);
         NoValidPostcodeChange.removeAll(ValidPostcodeChangeClaimIDs);
         Groups.put(sNoValidPostcodeChange, ValidPostcodeChangeClaimIDs);
 
         HashSet<DW_ID> NotChangedTT; // Calculate by removing all from ChangedTTClaimIDs.
-        NotChangedTT = new HashSet<DW_ID>();
+        NotChangedTT = new HashSet<>();
         NotChangedTT.addAll(ClaimIDs);
         NotChangedTT.removeAll(ChangedTTClaimIDs);
         Groups.put("NotChangedTT", NotChangedTT);
 
         HashSet<DW_ID> AlwaysUOFromStartNoValidPostcodeChangeNotChangedTT; // Calculate by intersect of sets.
-        AlwaysUOFromStartNoValidPostcodeChangeNotChangedTT = new HashSet<DW_ID>();
+        AlwaysUOFromStartNoValidPostcodeChangeNotChangedTT = new HashSet<>();
         AlwaysUOFromStartNoValidPostcodeChangeNotChangedTT.addAll(AlwaysUOTT1FromStartClaimIDs);
         AlwaysUOFromStartNoValidPostcodeChangeNotChangedTT.addAll(AlwaysUOTT4FromStartClaimIDs);
         AlwaysUOFromStartNoValidPostcodeChangeNotChangedTT.retainAll(NoValidPostcodeChange);
@@ -3801,14 +3801,14 @@ public class DW_TenancyChangesUO extends DW_Object {
         Groups.put(sAlwaysUOFromStart__NoValidPostcodeChange_NotChangedTT, AlwaysUOFromStartNoValidPostcodeChangeNotChangedTT);
 
         HashSet<DW_ID> AlwaysUOFromStartChangedTT; // Calculate by intersect of sets.
-        AlwaysUOFromStartChangedTT = new HashSet<DW_ID>();
+        AlwaysUOFromStartChangedTT = new HashSet<>();
         AlwaysUOFromStartChangedTT.addAll(ChangedTTClaimIDs);
         AlwaysUOFromStartChangedTT.retainAll(AlwaysUOTT1FromStartClaimIDs);
         AlwaysUOFromStartChangedTT.retainAll(AlwaysUOTT4FromStartClaimIDs);
         Groups.put(sAlwaysUOFromStart__ChangedTT, AlwaysUOFromStartChangedTT);
 
         HashSet<DW_ID> AlwaysUOFromStartValidPostcodeChangeNotChangedTT; // Calculate by intersect of sets.
-        AlwaysUOFromStartValidPostcodeChangeNotChangedTT = new HashSet<DW_ID>();
+        AlwaysUOFromStartValidPostcodeChangeNotChangedTT = new HashSet<>();
         AlwaysUOFromStartValidPostcodeChangeNotChangedTT.addAll(AlwaysUOTT1FromStartClaimIDs);
         AlwaysUOFromStartValidPostcodeChangeNotChangedTT.addAll(AlwaysUOTT4FromStartClaimIDs);
         AlwaysUOFromStartValidPostcodeChangeNotChangedTT.removeAll(AlwaysUOFromStartChangedTT);
@@ -3834,7 +3834,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         AlwaysUOTT4FromWhenStartedClaimIDs.removeAll(IntermitantUOClaimIDs);
 
         HashSet<DW_ID> AlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT; // Calculate by intersect of sets.
-        AlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT = new HashSet<DW_ID>();
+        AlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT = new HashSet<>();
         AlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT.addAll(AlwaysUOTT1FromWhenStartedClaimIDs);
         AlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT.addAll(AlwaysUOTT4FromWhenStartedClaimIDs);
         AlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT.removeAll(ChangedTTClaimIDs);
@@ -3842,14 +3842,14 @@ public class DW_TenancyChangesUO extends DW_Object {
         Groups.put(sAlwaysUOFromWhenStarted__NoValidPostcodeChange_NotChangedTT, AlwaysUOFromWhenStartedNoValidPostcodeChangeNotChangedTT);
 
         HashSet<DW_ID> AlwaysUOFromWhenStartedChangedTT; // Calculate by intersect of sets.
-        AlwaysUOFromWhenStartedChangedTT = new HashSet<DW_ID>();
+        AlwaysUOFromWhenStartedChangedTT = new HashSet<>();
         AlwaysUOFromWhenStartedChangedTT.addAll(AlwaysUOTT1FromWhenStartedClaimIDs);
         AlwaysUOFromWhenStartedChangedTT.addAll(AlwaysUOTT4FromWhenStartedClaimIDs);
         AlwaysUOFromWhenStartedChangedTT.retainAll(ChangedTTClaimIDs);
         Groups.put(sAlwaysUOFromWhenStarted__ChangedTT, AlwaysUOFromWhenStartedChangedTT);
 
         HashSet<DW_ID> AlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT; // Calculate by intersect of sets.
-        AlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT = new HashSet<DW_ID>();
+        AlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT = new HashSet<>();
         AlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT.addAll(AlwaysUOTT1FromWhenStartedClaimIDs);
         AlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT.addAll(AlwaysUOTT4FromWhenStartedClaimIDs);
         AlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT.removeAll(NoValidPostcodeChange);
@@ -3857,20 +3857,20 @@ public class DW_TenancyChangesUO extends DW_Object {
         Groups.put(sAlwaysUOFromWhenStarted__ValidPostcodeChange_NotChangedTT, AlwaysUOFromWhenStartedValidPostcodeChangeNotChangedTT);
 
         HashSet<DW_ID> IntermitantUONoValidPostcodeChangeNotChangedTT;
-        IntermitantUONoValidPostcodeChangeNotChangedTT = new HashSet<DW_ID>();
+        IntermitantUONoValidPostcodeChangeNotChangedTT = new HashSet<>();
         IntermitantUONoValidPostcodeChangeNotChangedTT.addAll(IntermitantUOClaimIDs);
         IntermitantUONoValidPostcodeChangeNotChangedTT.retainAll(NoValidPostcodeChange);
         IntermitantUONoValidPostcodeChangeNotChangedTT.retainAll(NotChangedTT);
         Groups.put(sIntermitantUO__NoValidPostcodeChange_NotChangedTT, IntermitantUONoValidPostcodeChangeNotChangedTT);
 
         HashSet<DW_ID> IntermitantUOChangedTT;
-        IntermitantUOChangedTT = new HashSet<DW_ID>();
+        IntermitantUOChangedTT = new HashSet<>();
         IntermitantUOChangedTT.addAll(IntermitantUOClaimIDs);
         IntermitantUOChangedTT.retainAll(ChangedTTClaimIDs);
         Groups.put(sIntermitantUO__ChangedTT, IntermitantUOChangedTT);
 
         HashSet<DW_ID> IntermitantUOValidPostcodeChangeNotChangedTT;
-        IntermitantUOValidPostcodeChangeNotChangedTT = new HashSet<DW_ID>();
+        IntermitantUOValidPostcodeChangeNotChangedTT = new HashSet<>();
         IntermitantUOValidPostcodeChangeNotChangedTT.addAll(IntermitantUOClaimIDs);
         IntermitantUOValidPostcodeChangeNotChangedTT.removeAll(NoValidPostcodeChange);
         IntermitantUOValidPostcodeChangeNotChangedTT.removeAll(ChangedTTClaimIDs);
@@ -3985,8 +3985,8 @@ public class DW_TenancyChangesUO extends DW_Object {
     protected void checkSetsAndAddToGeneralStatistics(
             TreeMap<String, BigDecimal> GeneralStatistics,
             HashSet<DW_ID> ClaimRefs,
-            DW_YM3 YM3Start,
-            DW_YM3 YM3End,
+            ONSPD_YM3 YM3Start,
+            ONSPD_YM3 YM3End,
             HashSet<DW_PersonID> UniqueIndividualsEffectedPersonIDs,
             HashSet<DW_PersonID> UniqueDependentsAgedUnder10EffectedPersonIDs,
             HashSet<DW_PersonID> UniqueDependentsAgedOver10EffectedPersonIDs,
@@ -4722,10 +4722,10 @@ public class DW_TenancyChangesUO extends DW_Object {
             String ClaimRef,
             String year0,
             String month0,
-            DW_YM3 YM30,
+            ONSPD_YM3 YM30,
             String year1,
             String month1,
-            DW_YM3 YM31,
+            ONSPD_YM3 YM31,
             DW_SHBE_Record Record1,
             HashMap<DW_ID, DW_SHBE_Record> Records0,
             //HashMap<DW_ID, DW_SHBE_Record> cRecords,
@@ -4734,10 +4734,10 @@ public class DW_TenancyChangesUO extends DW_Object {
             DW_UO_Set RSLUOSet0,
             DW_UO_Set CouncilUOSet1,
             DW_UO_Set RSLUOSet1,
-            HashMap<DW_YM3, Double> arrears,
-            HashMap<DW_YM3, Double> arrearsCounts,
-            HashMap<DW_YM3, Double> arrearsDiffs,
-            HashMap<DW_YM3, Double> arrearsDiffCounts,
+            HashMap<ONSPD_YM3, Double> arrears,
+            HashMap<ONSPD_YM3, Double> arrearsCounts,
+            HashMap<ONSPD_YM3, Double> arrearsDiffs,
+            HashMap<ONSPD_YM3, Double> arrearsDiffCounts,
             HashSet<DW_PersonID> CouncilUniqueIndividualsEffected,
             HashSet<DW_PersonID> CouncilUniqueClaimantsEffectedPersonIDs,
             HashSet<DW_PersonID> CouncilUniquePartnersEffectedPersonIDs,
@@ -6727,16 +6727,16 @@ public class DW_TenancyChangesUO extends DW_Object {
      * @return
      */
     public HashSet<DW_ID>[] getStartUOClaimIDs(
-            TreeMap<DW_YM3, DW_UO_Set> councilUnderOccupiedSets,
-            TreeMap<DW_YM3, DW_UO_Set> RSLUnderOccupiedSets,
+            TreeMap<ONSPD_YM3, DW_UO_Set> councilUnderOccupiedSets,
+            TreeMap<ONSPD_YM3, DW_UO_Set> RSLUnderOccupiedSets,
             String[] SHBEFilenames,
             ArrayList<Integer> include
     ) {
         HashSet<DW_ID>[] result;
         result = new HashSet[2];
-        result[0] = new HashSet<DW_ID>();
-        result[1] = new HashSet<DW_ID>();
-        DW_YM3 yM31 = null;
+        result[0] = new HashSet<>();
+        result[1] = new HashSet<>();
+        ONSPD_YM3 yM31 = null;
         DW_UO_Set councilUnderOccupiedSet1 = null;
         DW_UO_Set RSLUnderOccupiedSet1 = null;
         String filename1 = null;
@@ -6770,16 +6770,16 @@ public class DW_TenancyChangesUO extends DW_Object {
      * @return
      */
     public HashSet<DW_ID>[] getEndUOClaimIDs(
-            TreeMap<DW_YM3, DW_UO_Set> CouncilUnderOccupiedSets,
-            TreeMap<DW_YM3, DW_UO_Set> RSLUnderOccupiedSets,
+            TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUnderOccupiedSets,
+            TreeMap<ONSPD_YM3, DW_UO_Set> RSLUnderOccupiedSets,
             String[] SHBEFilenames,
             ArrayList<Integer> include
     ) {
         HashSet<DW_ID>[] result;
         result = new HashSet[2];
-        result[0] = new HashSet<DW_ID>();
-        result[1] = new HashSet<DW_ID>();
-        DW_YM3 yM31 = null;
+        result[0] = new HashSet<>();
+        result[1] = new HashSet<>();
+        ONSPD_YM3 yM31 = null;
         DW_UO_Set councilUnderOccupiedSet1 = null;
         DW_UO_Set RSLUnderOccupiedSet1 = null;
         String filename1 = null;
@@ -6803,16 +6803,16 @@ public class DW_TenancyChangesUO extends DW_Object {
     }
 
     public HashSet<DW_ID>[] getUOClaimIDs(
-            TreeMap<DW_YM3, DW_UO_Set> CouncilUnderOccupiedSets,
-            TreeMap<DW_YM3, DW_UO_Set> RSLUnderOccupiedSets,
+            TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUnderOccupiedSets,
+            TreeMap<ONSPD_YM3, DW_UO_Set> RSLUnderOccupiedSets,
             String[] SHBEFilenames,
             ArrayList<Integer> include
     ) {
         HashSet<DW_ID>[] result;
         result = new HashSet[2];
-        result[0] = new HashSet<DW_ID>();
-        result[1] = new HashSet<DW_ID>();
-        DW_YM3 yM31 = null;
+        result[0] = new HashSet<>();
+        result[1] = new HashSet<>();
+        ONSPD_YM3 yM31 = null;
         DW_UO_Set CouncilUnderOccupiedSet1 = null;
         DW_UO_Set RSLUnderOccupiedSet1 = null;
         String filename1 = null;
@@ -6836,7 +6836,7 @@ public class DW_TenancyChangesUO extends DW_Object {
 
     public ArrayList<String> getKeys(String ClaimRef) {
         ArrayList<String> result;
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         // TenancyType
         result.add(ClaimRef + Strings.sUnderscore + sTT);
         // UnderOccupancy
@@ -7546,7 +7546,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         Env.log("</WriteGeneralStatistics>");
 
         HashSet<DW_ID> ClaimIDsCheck;
-        ClaimIDsCheck = new HashSet<DW_ID>();
+        ClaimIDsCheck = new HashSet<>();
         boolean check = true;
 
         String GroupName;
@@ -8223,7 +8223,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         }
 
         HashSet<DW_ID> remainder;
-        remainder = new HashSet<DW_ID>();
+        remainder = new HashSet<>();
         remainder.addAll(ClaimIDs);
         remainder.removeAll(ClaimIDsCheck);
 
@@ -8337,7 +8337,7 @@ public class DW_TenancyChangesUO extends DW_Object {
 
     public TreeMap<String, String> getGroupNameDescriptions(Set<String> GroupNames) {
         TreeMap<String, String> result;
-        result = new TreeMap<String, String>();
+        result = new TreeMap<>();
         String GroupName;
         Iterator<String> ite;
         ite = GroupNames.iterator();
@@ -8359,7 +8359,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             HashMap<DW_ID, Integer> MaxNumberOfDependentsInClaimWhenUO,
             String year,
             String month,
-            DW_YM3 YM3,
+            ONSPD_YM3 YM3,
             ArrayList<DW_SHBE_S_Record> SRecords,
             DW_SHBE_D_Record D_Record,
             HashMap<DW_ID, DW_PersonID> ClaimIDToClaimantPersonIDLookup) {

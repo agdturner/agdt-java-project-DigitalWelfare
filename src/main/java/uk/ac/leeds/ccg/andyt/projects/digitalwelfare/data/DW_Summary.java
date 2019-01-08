@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
@@ -34,7 +35,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_PersonID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Records;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
@@ -43,7 +45,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  * A class for summarising SHBE data.
@@ -57,7 +58,7 @@ public class DW_Summary extends DW_Object {
     protected DW_SHBE_Handler SHBE_Handler;
     protected DW_Strings Strings;
     protected DW_Files Files;
-    protected DW_Postcode_Handler Postcode_Handler;
+    protected ONSPD_Postcode_Handler Postcode_Handler;
     protected DW_SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
 
     protected final int decimalPlacePrecisionForAverage = 3;
@@ -3462,7 +3463,7 @@ public class DW_Summary extends DW_Object {
             }
             t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardTT[i]));
             if (d > 0) {
-                percentage = (TotalCount_SevereDisabilityPremiumAwardTT[i] * 100.0d) / d;
+                percentage = (t * 100.0d) / d;
                 summary.put(
                         sPercentageOfCTB_SevereDisabilityPremiumAwardTT[i],
                         Generic_BigDecimal.roundIfNecessary(
@@ -3472,7 +3473,7 @@ public class DW_Summary extends DW_Object {
             }
             t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardTT[i]));
             if (d > 0) {
-                percentage = (TotalCount_DisabledChildPremiumAwardTT[i] * 100.0d) / d;
+                percentage = (t * 100.0d) / d;
                 summary.put(
                         sPercentageOfCTB_DisabledChildPremiumAwardTT[i],
                         Generic_BigDecimal.roundIfNecessary(
@@ -3482,7 +3483,7 @@ public class DW_Summary extends DW_Object {
             }
             t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardTT[i]));
             if (d > 0) {
-                percentage = (TotalCount_EnhancedDisabilityPremiumAwardTT[i] * 100.0d) / d;
+                percentage = (t * 100.0d) / d;
                 summary.put(
                         sPercentageOfCTB_EnhancedDisabilityPremiumAwardTT[i],
                         Generic_BigDecimal.roundIfNecessary(
@@ -4862,11 +4863,11 @@ public class DW_Summary extends DW_Object {
 
     protected void doCompare2TimesHBCount(
             Integer TT0,
-            DW_ID PostcodeID0,
+            ONSPD_ID PostcodeID0,
             boolean ClaimPostcodeFValidPostcodeFormat0,
             boolean ClaimPostcodeFMappable0,
             Integer TT1,
-            DW_ID PostcodeID1,
+            ONSPD_ID PostcodeID1,
             boolean ClaimPostcodeFValidPostcodeFormat1,
             boolean ClaimPostcodeFMappable1) {
         if (ClaimPostcodeFMappable0) {
@@ -5076,11 +5077,11 @@ public class DW_Summary extends DW_Object {
 
     protected void doCompare2TimesCTBCount(
             Integer TT0,
-            DW_ID PostcodeID0,
+            ONSPD_ID PostcodeID0,
             boolean ClaimPostcodeFValidPostcodeFormat0,
             boolean ClaimPostcodeFMappable0,
             Integer TT1,
-            DW_ID PostcodeID1,
+            ONSPD_ID PostcodeID1,
             boolean ClaimPostcodeFValidPostcodeFormat1,
             boolean ClaimPostcodeFMappable1) {
         if (ClaimPostcodeFMappable0) {
@@ -5240,8 +5241,8 @@ public class DW_Summary extends DW_Object {
         String key;
         String filename0;
         String filename1;
-        DW_YM3 YM30;
-        DW_YM3 YM31;
+        ONSPD_YM3 YM30;
+        ONSPD_YM3 YM31;
         DW_SHBE_Records DW_SHBE_Records0;
         DW_SHBE_Records DW_SHBE_Records1;
         HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0;
@@ -5258,11 +5259,11 @@ public class DW_Summary extends DW_Object {
         HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther1;
 
         // Initialise result
-        result = new TreeMap<String, HashMap<String, String>>();
+        result = new TreeMap<>();
         includeIte = include.iterator();
         while (includeIte.hasNext()) {
             i = includeIte.next();
-            summary = new HashMap<String, String>();
+            summary = new HashMap<>();
             key = SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
             result.put(key, summary);
         }
@@ -5307,7 +5308,7 @@ public class DW_Summary extends DW_Object {
         ClaimIDsWithStatusOfCTBAtExtractDateSuspended0 = ClaimIDsWithStatusOfCTBAtExtractDateSuspended1;
         ClaimIDsWithStatusOfCTBAtExtractDateOther0 = ClaimIDsWithStatusOfCTBAtExtractDateOther1;
         //YM30 = YM31;
-        YM30 = new DW_YM3(YM31);
+        YM30 = new ONSPD_YM3(YM31);
         incrementCounts(nTT);
         initCounts(nTT, nEG, nPSI);
 
@@ -5363,7 +5364,7 @@ public class DW_Summary extends DW_Object {
                 ClaimIDsWithStatusOfCTBAtExtractDateSuspended0 = ClaimIDsWithStatusOfCTBAtExtractDateSuspended1;
                 ClaimIDsWithStatusOfCTBAtExtractDateOther0 = ClaimIDsWithStatusOfCTBAtExtractDateOther1;
                 //YM30 = YM31;
-                YM30 = new DW_YM3(YM31);
+                YM30 = new ONSPD_YM3(YM31);
                 incrementCounts(nTT);
                 initCounts(nTT, nEG, nPSI);
                 // Not used at present. incomeAndRentSummary0 = incomeAndRentSummary1;
@@ -5390,7 +5391,7 @@ public class DW_Summary extends DW_Object {
     protected void doPartSummarySingleTime(
             DW_SHBE_Records DW_SHBE_Records,
             HashMap<DW_ID, DW_SHBE_Record> Records,
-            DW_YM3 YM3,
+            ONSPD_YM3 YM3,
             String filename,
             boolean forceNewSummaries,
             ArrayList<String> HB_CTB,
@@ -5491,7 +5492,7 @@ public class DW_Summary extends DW_Object {
             HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
             HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
             HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther0,
-            DW_YM3 YM30,
+            ONSPD_YM3 YM30,
             String filename0,
             DW_SHBE_Records DW_SHBE_Records1,
             HashSet<DW_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
@@ -5500,7 +5501,7 @@ public class DW_Summary extends DW_Object {
             HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
             HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
             HashSet<DW_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther1,
-            DW_YM3 YM31,
+            ONSPD_YM3 YM31,
             String filename1,
             boolean forceNewSummaries,
             ArrayList<String> HB_CTB,
@@ -5555,11 +5556,11 @@ public class DW_Summary extends DW_Object {
     protected void doPartSummaryCompare2Times(
             DW_SHBE_Records DW_SHBE_Records0,
             HashMap<DW_ID, DW_SHBE_Record> Records0,
-            DW_YM3 YM30,
+            ONSPD_YM3 YM30,
             String filename0,
             DW_SHBE_Records DW_SHBE_Records1,
             HashMap<DW_ID, DW_SHBE_Record> Records1,
-            DW_YM3 YM31,
+            ONSPD_YM3 YM31,
             String filename1,
             boolean forceNewSummaries,
             ArrayList<String> HB_CTB,
@@ -6072,8 +6073,8 @@ public class DW_Summary extends DW_Object {
             int nTT,
             int nEG
     ) {
-        TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.getInputONSPDFiles();
+        TreeMap<ONSPD_YM3, File> ONSPDFiles;
+        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPaymentTypes";
         PrintWriter pw;
@@ -6529,8 +6530,8 @@ public class DW_Summary extends DW_Object {
             int nTT,
             int nEG
     ) {
-        TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.getInputONSPDFiles();
+        TreeMap<ONSPD_YM3, File> ONSPDFiles;
+        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesTT";
         PrintWriter pw;
@@ -6586,7 +6587,7 @@ public class DW_Summary extends DW_Object {
 
     public String getLineCompare2TimesGeneric(
             HashMap<String, String> summary,
-            TreeMap<DW_YM3, File> ONSPDFiles) {
+            TreeMap<ONSPD_YM3, File> ONSPDFiles) {
         String line = "";
         String filename0;
         filename0 = summary.get(sSHBEFilename0);
@@ -6620,14 +6621,14 @@ public class DW_Summary extends DW_Object {
             line += "null, ";
             line += "null, ";
         }
-        DW_YM3 PostCodeLookupDate0 = null;
+        ONSPD_YM3 PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename0 != null) {
             PostCodeLookupDate0 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename0));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }
         line += PostCodeLookupDate0 + sCommaSpace + PostCodeLookupFile0Name + sCommaSpace;
-        DW_YM3 PostCodeLookupDate1 = null;
+        ONSPD_YM3 PostCodeLookupDate1 = null;
         String PostCodeLookupFile1Name = null;
         if (filename1 != null) {
             PostCodeLookupDate1 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename1));
@@ -6659,8 +6660,8 @@ public class DW_Summary extends DW_Object {
             int nTT,
             int nEG
     ) {
-        TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.getInputONSPDFiles();
+        TreeMap<ONSPD_YM3, File> ONSPDFiles;
+        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPostcode";
         PrintWriter pw;
@@ -6706,8 +6707,8 @@ public class DW_Summary extends DW_Object {
             int nEG,
             int nPSI
     ) {
-        TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.getInputONSPDFiles();
+        TreeMap<ONSPD_YM3, File> ONSPDFiles;
+        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
         PrintWriter pw;
@@ -6871,8 +6872,8 @@ public class DW_Summary extends DW_Object {
             int nEG,
             int nPSI
     ) {
-        TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.getInputONSPDFiles();
+        TreeMap<ONSPD_YM3, File> ONSPDFiles;
+        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeHouseholdSizes";
         PrintWriter pw;
@@ -7184,9 +7185,9 @@ public class DW_Summary extends DW_Object {
 
     protected String getPostcodeLookupDateAndFilenameLinePart(
             String filename,
-            TreeMap<DW_YM3, File> ONSPDFiles) {
+            TreeMap<ONSPD_YM3, File> ONSPDFiles) {
         String result;
-        DW_YM3 PostCodeLookupDate0 = null;
+        ONSPD_YM3 PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename != null) {
             PostCodeLookupDate0 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename));

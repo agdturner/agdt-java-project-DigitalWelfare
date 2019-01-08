@@ -23,10 +23,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  * Class for holds and referring to all the UnderOccupancy data.
@@ -39,19 +39,19 @@ public class DW_UO_Data extends DW_Object implements Serializable {
      * For storing all DW_UO_Sets for RSL. Keys are YM3, values are the
      * respective sets.
      */
-    private TreeMap<DW_YM3, DW_UO_Set> RSLUOSets;
+    private TreeMap<ONSPD_YM3, DW_UO_Set> RSLUOSets;
 
     /**
      * For storing all DW_UO_Sets for Council. Keys are YM3, values are the
      * respective sets.
      */
-    private TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
+    private TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
 
     /**
      * For storing sets of ClaimIDsInUO. Keys are YM3, values are the
      * respective ClaimIDsInUO for claims classed as Under Occupying.
      */
-    private TreeMap<DW_YM3, Set<DW_ID>> ClaimIDsInUO;
+    private TreeMap<ONSPD_YM3, Set<DW_ID>> ClaimIDsInUO;
 
     /**
      * For storing ClaimIDs of claims that were classed as Under Occupying
@@ -81,8 +81,8 @@ public class DW_UO_Data extends DW_Object implements Serializable {
 
     public DW_UO_Data(
             DW_Environment env,
-            TreeMap<DW_YM3, DW_UO_Set> RSLUOSets,
-            TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets) {
+            TreeMap<ONSPD_YM3, DW_UO_Set> RSLUOSets,
+            TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets) {
         super(env);
         this.RSLUOSets = RSLUOSets;
         this.CouncilUOSets = CouncilUOSets;
@@ -92,21 +92,21 @@ public class DW_UO_Data extends DW_Object implements Serializable {
     /**
      * @return the RSL_Sets
      */
-    public TreeMap<DW_YM3, DW_UO_Set> getRSLUOSets() {
+    public TreeMap<ONSPD_YM3, DW_UO_Set> getRSLUOSets() {
         return RSLUOSets;
     }
 
     /**
      * @return the tCouncil_Data
      */
-    public TreeMap<DW_YM3, DW_UO_Set> getCouncilUOSets() {
+    public TreeMap<ONSPD_YM3, DW_UO_Set> getCouncilUOSets() {
         return CouncilUOSets;
     }
 
     /**
      * @return the ClaimIDsInUO
      */
-    public TreeMap<DW_YM3, Set<DW_ID>> getClaimIDsInUO() {
+    public TreeMap<ONSPD_YM3, Set<DW_ID>> getClaimIDsInUO() {
         return ClaimIDsInUO;
     }
 
@@ -114,13 +114,13 @@ public class DW_UO_Data extends DW_Object implements Serializable {
      * Initialises ClaimIDsInUO.
      */
     private void initClaimIDs() {
-        ClaimIDsInUO = new TreeMap<DW_YM3, Set<DW_ID>>();
-        ClaimIDsInCouncilBaseline = new HashSet<DW_ID>();
-        ClaimIDsInRSLBaseline = new HashSet<DW_ID>();
-        DW_YM3 YM3;
-        DW_YM3 baselineYM3;
+        ClaimIDsInUO = new TreeMap<>();
+        ClaimIDsInCouncilBaseline = new HashSet<>();
+        ClaimIDsInRSLBaseline = new HashSet<>();
+        ONSPD_YM3 YM3;
+        ONSPD_YM3 baselineYM3;
         baselineYM3 = getBaselineYM3();
-        Iterator<DW_YM3> ite;
+        Iterator<ONSPD_YM3> ite;
         ite = CouncilUOSets.keySet().iterator();
         while (ite.hasNext()) {
             YM3 = ite.next();
@@ -129,7 +129,7 @@ public class DW_UO_Data extends DW_Object implements Serializable {
                 ClaimIDsInRSLBaseline.addAll(RSLUOSets.get(YM3).getClaimIDs());
             } else {
                 HashSet<DW_ID> ClaimIDsForYM3;
-                ClaimIDsForYM3 = new HashSet<DW_ID>();
+                ClaimIDsForYM3 = new HashSet<>();
                 ClaimIDsForYM3.addAll(CouncilUOSets.get(YM3).getClaimIDs());
                 ClaimIDsForYM3.addAll(RSLUOSets.get(YM3).getClaimIDs());
                 ClaimIDsInUO.put(YM3, ClaimIDsForYM3);
@@ -151,10 +151,10 @@ public class DW_UO_Data extends DW_Object implements Serializable {
      * Initialises ClaimIDsInCouncilUO.
      */
     private void initAllCouncilUOClaimIDs() {
-        ClaimIDsInCouncilUO = new HashSet<DW_ID>();
-        DW_YM3 YM3;
-        DW_YM3 baselineYM3 = getBaselineYM3();
-        Iterator<DW_YM3> ite;
+        ClaimIDsInCouncilUO = new HashSet<>();
+        ONSPD_YM3 YM3;
+        ONSPD_YM3 baselineYM3 = getBaselineYM3();
+        Iterator<ONSPD_YM3> ite;
         ite = CouncilUOSets.keySet().iterator();
         while (ite.hasNext()) {
             YM3 = ite.next();
@@ -164,11 +164,11 @@ public class DW_UO_Data extends DW_Object implements Serializable {
         }
     }
 
-    DW_YM3  BaselineYM3;
+    ONSPD_YM3  BaselineYM3;
     
-    public DW_YM3 getBaselineYM3() {
+    public ONSPD_YM3 getBaselineYM3() {
         //if (BaselineYM3 == null) {
-            BaselineYM3 = new DW_YM3(2013, 4);
+            BaselineYM3 = new ONSPD_YM3(2013, 4);
         //}
         return BaselineYM3;
     }

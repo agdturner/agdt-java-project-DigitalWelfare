@@ -44,7 +44,7 @@ public class DW_Style extends Geotools_Style {
 //        StyleFactory sf = sb.getStyleFactory();
 //        sf.
         ArrayList<Style> result;
-        result = new ArrayList<Style>();
+        result = new ArrayList<>();
         Mark mark;
         int size;
         String type;

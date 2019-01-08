@@ -787,7 +787,7 @@ public class DW_Strings {
     /**
      * Short code for ONS Postcode Directory
      */
-    public final String sONSPD = "ONSPD";
+    public final String S_ONSPD = "ONSPD";
     /**
      * Short code for sGrids.
      */
@@ -893,7 +893,7 @@ public class DW_Strings {
      */
     public HashSet<String> getCensusAreaAggregations() {
         if (CensusAreaAggregations == null) {
-            CensusAreaAggregations = new HashSet<String>();
+            CensusAreaAggregations = new HashSet<>();
             CensusAreaAggregations.add(sOA);
             CensusAreaAggregations.add(sLSOA);
             CensusAreaAggregations.add(sMSOA);
@@ -909,7 +909,7 @@ public class DW_Strings {
      */
     public ArrayList<String> getPaymentTypes() {
         ArrayList<String> result;
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         result.add(sPaymentTypeAll);
         result.add(sPaymentTypeIn);
         result.add(sPaymentTypeSuspended);
@@ -919,7 +919,7 @@ public class DW_Strings {
 
     public ArrayList<String> getHB_CTB() {
         ArrayList<String> result;
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         result.add(sHB);
         result.add(sCTB);
         return result;

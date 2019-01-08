@@ -47,7 +47,7 @@ public class DW_StyleParameters extends Geotools_AbstractStyleParameters {
         ArrayList<Style> styles;
         styles = getMidgroundStyles();
         if (styles == null) {
-            styles = new ArrayList<Style>();
+            styles = new ArrayList<>();
             setMidgroundStyles(styles);
         }
         try {
@@ -73,7 +73,7 @@ public class DW_StyleParameters extends Geotools_AbstractStyleParameters {
         ArrayList<Style> styles;
         styles = getMidgroundStyles();
         if (styles == null) {
-            styles = new ArrayList<Style>();
+            styles = new ArrayList<>();
             setMidgroundStyles(styles);
         }
         result = getMidgroundStyle(index); // This ensures that styles is initialised to the right length.
@@ -91,7 +91,7 @@ public class DW_StyleParameters extends Geotools_AbstractStyleParameters {
         ArrayList<Style> styles;
         styles = getBackgroundStyles();
         if (styles == null) {
-            styles = new ArrayList<Style>();
+            styles = new ArrayList<>();
             setBackgroundStyles(styles);
         }
         try {
@@ -117,7 +117,7 @@ public class DW_StyleParameters extends Geotools_AbstractStyleParameters {
         ArrayList<Style> styles;
         styles = getBackgroundStyles();
         if (styles == null) {
-            styles = new ArrayList<Style>();
+            styles = new ArrayList<>();
             setBackgroundStyles(styles);
         }
         result = getBackgroundStyle(index); // This ensures that styles is initialised to the right length.
@@ -135,7 +135,7 @@ public class DW_StyleParameters extends Geotools_AbstractStyleParameters {
         ArrayList<Style> styles;
         styles = getBackgroundStyles();
         if (styles == null) {
-            styles = new ArrayList<Style>();
+            styles = new ArrayList<>();
             setBackgroundStyles(styles);
         }
         try {
@@ -161,7 +161,7 @@ public class DW_StyleParameters extends Geotools_AbstractStyleParameters {
         ArrayList<Style> styles;
         styles = getBackgroundStyles();
         if (styles == null) {
-            styles = new ArrayList<Style>();
+            styles = new ArrayList<>();
             setBackgroundStyles(styles);
         }
         result = getBackgroundStyle(index); // This ensures that styles is initialised to the right length.
@@ -184,7 +184,7 @@ public class DW_StyleParameters extends Geotools_AbstractStyleParameters {
             int i = legendItems0.size();
             while (i <= index) {
                 ArrayList<Geotools_LegendItem> newLegendItem;
-                newLegendItem = new ArrayList<Geotools_LegendItem>();
+                newLegendItem = new ArrayList<>();
                 legendItems0.add(i, result);
                 i++;
                 result = newLegendItem;
@@ -211,7 +211,7 @@ public class DW_StyleParameters extends Geotools_AbstractStyleParameters {
      */
     public ArrayList<ArrayList<Geotools_LegendItem>> getLegendItems() {
         if (legendItems == null) {
-            legendItems = new ArrayList<ArrayList<Geotools_LegendItem>>();
+            legendItems = new ArrayList<>();
         }
         return legendItems;
     }

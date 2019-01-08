@@ -82,7 +82,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
             Object IDType) {
         System.out.println("Loading " + filename);
         TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> result;
-        result = new TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record>();
+        result = new TreeMap<>();
         File inputFile = new File(
                 dir,
                 filename);

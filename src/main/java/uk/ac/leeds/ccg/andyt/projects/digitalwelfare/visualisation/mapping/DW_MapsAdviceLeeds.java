@@ -18,7 +18,6 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping;
 
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.File;
 import java.util.ArrayList;
@@ -28,6 +27,8 @@ import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.opengis.feature.simple.SimpleFeatureType;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds.DW_ProcessorAdviceLeeds;
@@ -39,7 +40,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds.DW_Proc
 public class DW_MapsAdviceLeeds extends DW_Maps {
 
     DW_ProcessorAdviceLeeds ProcessorAdviceLeeds;
-    
+
     public DW_MapsAdviceLeeds(DW_Environment env) {
         super(env);
     }
@@ -47,9 +48,9 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
     public TreeSetFeatureCollection getAdviceLeedsPointFeatureCollection(
             SimpleFeatureType sft) {
         TreeSetFeatureCollection result;
-        TreeMap<String, Geotools_Point> tAdviceLeedsNamesAndPoints;
+        TreeMap<String, ONSPD_Point> tAdviceLeedsNamesAndPoints;
         tAdviceLeedsNamesAndPoints = ProcessorAdviceLeeds.getAdviceLeedsNamesAndPoints();
-        TreeMap<String, Geotools_Point> map = tAdviceLeedsNamesAndPoints;
+        TreeMap<String, ONSPD_Point> map = tAdviceLeedsNamesAndPoints;
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
          * using a Point object for the location.
@@ -61,8 +62,9 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
         while (ite.hasNext()) {
             String outlet = ite.next();
             String name = outlet;
-            Geotools_Point p = map.get(outlet);
-            addPointFeature(p, gf, sfb, name, result);
+            ONSPD_Point p = map.get(outlet);
+            Geotools_Point gp = new Geotools_Point(p.getX(), p.getY());
+            addPointFeature(gp, gf, sfb, name, result);
         }
         return result;
     }
@@ -88,16 +90,17 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
             SimpleFeatureBuilder sfb) {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
-        TreeMap<String, Geotools_Point> tAdviceLeedsNamesAndPoints;
+        TreeMap<String, ONSPD_Point> tAdviceLeedsNamesAndPoints;
         tAdviceLeedsNamesAndPoints = ProcessorAdviceLeeds.getAdviceLeedsNamesAndPoints();
-        TreeMap<String, Geotools_Point> map = tAdviceLeedsNamesAndPoints;
+        TreeMap<String, ONSPD_Point> map = tAdviceLeedsNamesAndPoints;
         Iterator<String> ite = map.keySet().iterator();
         while (ite.hasNext()) {
             String outlet = ite.next();
             if (outlet.equalsIgnoreCase(outletTarget)) {
-                Geotools_Point p = map.get(outlet);
+                ONSPD_Point p = map.get(outlet);
                 String name = outlet;
-                addPointFeature(p, gf, sfb, name, result);
+                Geotools_Point gp = new Geotools_Point(p.getX(), p.getY());
+                addPointFeature(gp, gf, sfb, name, result);
             }
         }
         return result;
@@ -166,7 +169,7 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
      */
     public ArrayList<Geotools_Shapefile> getAdviceLeedsPointDW_Shapefiles() {
         ArrayList<Geotools_Shapefile> result;
-        result = new ArrayList<Geotools_Shapefile>();
+        result = new ArrayList<>();
         ArrayList<String> tAdviceLeedsServiceNames;
         tAdviceLeedsServiceNames = ProcessorAdviceLeeds.getAdviceLeedsServiceNames();
         Iterator<String> ite;

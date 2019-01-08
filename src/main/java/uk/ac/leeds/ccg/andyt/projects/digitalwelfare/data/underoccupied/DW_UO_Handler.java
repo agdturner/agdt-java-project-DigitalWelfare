@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
@@ -36,7 +37,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -86,7 +86,7 @@ public class DW_UO_Handler extends DW_Object {
 //            type = "Council";
 //        }
         HashMap<DW_ID, DW_UO_Record> result;
-        result = new HashMap<DW_ID, DW_UO_Record>();
+        result = new HashMap<>();
         File inputFile = new File(
                 directory,
                 filename);
@@ -186,10 +186,10 @@ public class DW_UO_Handler extends DW_Object {
         methodName = "loadUnderOccupiedReportData()";
         Env.logO("<" + methodName + ">", true);
         DW_UO_Data result;
-        TreeMap<DW_YM3, DW_UO_Set> CouncilSets;
-        CouncilSets = new TreeMap<DW_YM3, DW_UO_Set>();
-        TreeMap<DW_YM3, DW_UO_Set> RSLSets;
-        RSLSets = new TreeMap<DW_YM3, DW_UO_Set>();
+        TreeMap<ONSPD_YM3, DW_UO_Set> CouncilSets;
+        CouncilSets = new TreeMap<ONSPD_YM3, DW_UO_Set>();
+        TreeMap<ONSPD_YM3, DW_UO_Set> RSLSets;
+        RSLSets = new TreeMap<ONSPD_YM3, DW_UO_Set>();
 
         // Look where the generated data should be stored.
         // Look where the input data are.
@@ -197,13 +197,13 @@ public class DW_UO_Handler extends DW_Object {
         // then load and return the cached object.
         String type;
         Object[] filenames = getInputFilenames();
-        TreeMap<DW_YM3, String> CouncilFilenames;
-        CouncilFilenames = (TreeMap<DW_YM3, String>) filenames[0];
-        TreeMap<DW_YM3, String> RSLFilenames;
-        RSLFilenames = (TreeMap<DW_YM3, String>) filenames[1];
-        DW_YM3 YM3;
+        TreeMap<ONSPD_YM3, String> CouncilFilenames;
+        CouncilFilenames = (TreeMap<ONSPD_YM3, String>) filenames[0];
+        TreeMap<ONSPD_YM3, String> RSLFilenames;
+        RSLFilenames = (TreeMap<ONSPD_YM3, String>) filenames[1];
+        ONSPD_YM3 YM3;
         String filename;
-        Iterator<DW_YM3> ite;
+        Iterator<ONSPD_YM3> ite;
         ite = CouncilFilenames.keySet().iterator();
         type = Strings.sCouncil;
         while (ite.hasNext()) {
@@ -289,10 +289,10 @@ public class DW_UO_Handler extends DW_Object {
     public Object[] getInputFilenames() {
         if (inputFilenames == null) {
             inputFilenames = new Object[2];
-            TreeMap<DW_YM3, String> CouncilFilenames;
-            TreeMap<DW_YM3, String> RSLFilenames;
-            CouncilFilenames = new TreeMap<DW_YM3, String>();
-            RSLFilenames = new TreeMap<DW_YM3, String>();
+            TreeMap<ONSPD_YM3, String> CouncilFilenames;
+            TreeMap<ONSPD_YM3, String> RSLFilenames;
+            CouncilFilenames = new TreeMap<ONSPD_YM3, String>();
+            RSLFilenames = new TreeMap<ONSPD_YM3, String>();
             inputFilenames[0] = CouncilFilenames;
             inputFilenames[1] = RSLFilenames;
 //            String[] list = Files.getInputUnderOccupiedDir().list();
@@ -314,10 +314,10 @@ public class DW_UO_Handler extends DW_Object {
 //                i ++;
 //            }
             CouncilFilenames.put(
-                    new DW_YM3(2013,3),
+                    new ONSPD_YM3(2013,3),
                     "2013 14 Under Occupied Report For University Year Start Council Tenants.csv");
             RSLFilenames.put(
-                    new DW_YM3(2013,3),
+                    new ONSPD_YM3(2013,3),
                     "2013 14 Under Occupied Report For University Year Start RSLs.csv");
             String councilEndFilename = " Council Tenants.csv";
             String RSLEndFilename = " RSLs.csv";
@@ -385,8 +385,8 @@ public class DW_UO_Handler extends DW_Object {
             String underOccupiedReportForUniversityString,
             String councilEndFilename,
             String RSLEndFilename2,
-            TreeMap<DW_YM3, String> CouncilFilenames,
-            TreeMap<DW_YM3, String> RSLFilenames,
+            TreeMap<ONSPD_YM3, String> CouncilFilenames,
+            TreeMap<ONSPD_YM3, String> RSLFilenames,
             int minMonth,
             int maxMonth) {
         for (int i = minMonth; i <= maxMonth; i++) {
@@ -399,10 +399,10 @@ public class DW_UO_Handler extends DW_Object {
 //            filename = s + councilEndFilename;
 //            Env.getFiles().getInputUnderOccupiedDir();
             CouncilFilenames.put(
-                    new DW_YM3(year_Month),
+                    new ONSPD_YM3(year_Month),
                     s + councilEndFilename);
             RSLFilenames.put(
-                    new DW_YM3(year_Month),
+                    new ONSPD_YM3(year_Month),
                     s + RSLEndFilename2);
         }
     }

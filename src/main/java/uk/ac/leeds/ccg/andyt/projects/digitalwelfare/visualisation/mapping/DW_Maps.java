@@ -19,7 +19,6 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping;
 
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
@@ -47,11 +46,13 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -63,11 +64,11 @@ public class DW_Maps extends Geotools_Maps {
     protected transient DW_Geotools Geotools;
     protected transient DW_Files Files;
     protected transient DW_Strings Strings;
-    protected transient DW_Postcode_Handler Postcode_Handler;
+    protected transient ONSPD_Postcode_Handler Postcode_Handler;
     
-    //private TreeMap<String, Geotools_Point>[] ONSPDlookups;
-    //private TreeMap<String, TreeMap<String, Geotools_Point>> ONSPDlookups;
-    private TreeMap<String, TreeMap<DW_YM3, TreeMap<String, Geotools_Point>>> ONSPDlookups;
+    //private TreeMap<String, ONSPD_Point>[] ONSPDlookups;
+    //private TreeMap<String, TreeMap<String, ONSPD_Point>> ONSPDlookups;
+    private TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDlookups;
 
     /**
      * For storing level(s) (OA, LSOA, MSOA, PostcodeSector, PostcodeUnit, ...)
@@ -86,8 +87,8 @@ public class DW_Maps extends Geotools_Maps {
         //DW_Postcode_Handler = env.getDW_Postcode_Handler(); Stack overflow doing this here.
     }
 
-    //public TreeMap<String, Geotools_Point>[] getONSPDlookups() {
-    public TreeMap<String, TreeMap<DW_YM3, TreeMap<String, Geotools_Point>>> getONSPDlookups() {
+    //public TreeMap<String, ONSPD_Point>[] getONSPDlookups() {
+    public TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> getONSPDlookups() {
         if (ONSPDlookups == null) {
             initONSPDLookups();
         }
@@ -96,24 +97,25 @@ public class DW_Maps extends Geotools_Maps {
 
     protected void initDW_Postcode_Handler() {
         if (Postcode_Handler == null) {
-            Postcode_Handler = new DW_Postcode_Handler(Env);
+//            Postcode_Handler = new ONSPD_Postcode_Handler(Env.ONSPD_Environment);
+            Postcode_Handler = new ONSPD_Postcode_Handler(new ONSPD_Environment());
         }
     }
 
     public void initONSPDLookups() {
         initDW_Postcode_Handler();
-        ONSPDlookups = new TreeMap<String, TreeMap<DW_YM3, TreeMap<String, Geotools_Point>>>();
-        levels = new ArrayList<String>();
+        ONSPDlookups = new TreeMap<>();
+        levels = new ArrayList<>();
         levels.add("Unit");
         //levels.add("Sector");
         //levels.add("Area");
-        TreeMap<DW_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.getInputONSPDFiles();
+        TreeMap<ONSPD_YM3, File> ONSPDFiles;
+        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
         Iterator<String> ite2;
         ite2 = levels.iterator();
         while (ite2.hasNext()) {
             level = ite2.next();
-            TreeMap<DW_YM3, TreeMap<String, Geotools_Point>> ONSPDlookup;
+            TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> ONSPDlookup;
             ONSPDlookup = Postcode_Handler.getPostcodeUnitPointLookups(true,
                     ONSPDFiles,
                     Postcode_Handler.getDefaultLookupFilename());
@@ -127,7 +129,7 @@ public class DW_Maps extends Geotools_Maps {
         DW_Shapefile result;
         // Code Point Boundaries
         TreeSet<String> postcodes;
-        postcodes = new TreeSet<String>();
+        postcodes = new TreeSet<>();
         postcodes.add("ls");
         postcodes.add("hg");
         postcodes.add("yo");
@@ -330,7 +332,7 @@ public class DW_Maps extends Geotools_Maps {
             String level,
             String area) {
         TreeMap<String, Integer> result;
-        result = new TreeMap<String, Integer>();
+        result = new TreeMap<>();
         File dir = new File(
                 Env.getFiles().getInputCensus2011AttributeDataDir(level),
                 area);
@@ -545,7 +547,7 @@ public class DW_Maps extends Geotools_Maps {
         SimpleFeatureBuilder sfb;
         sfb = new SimpleFeatureBuilder(sft);
         if (countClientsInAndOutOfRegion) {
-            inAndOutOfRegionCount = new TreeMap<Integer, Integer>();
+            inAndOutOfRegionCount = new TreeMap<>();
             inAndOutOfRegionCount.put(0, 0);
             inAndOutOfRegionCount.put(1, 0);
         }
@@ -863,7 +865,7 @@ public class DW_Maps extends Geotools_Maps {
         return styleParameters;
     }
 
-    public void setONSPDlookups(TreeMap<String, TreeMap<DW_YM3, TreeMap<String, Geotools_Point>>> ONSPDlookups) {
+    public void setONSPDlookups(TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDlookups) {
         this.ONSPDlookups = ONSPDlookups;
     }
 

@@ -42,9 +42,9 @@ public class DW_Report extends DW_HTMLPage {
     }
 
     public void run() {
-        levels = new ArrayList<String>();
+        levels = new ArrayList<>();
         ArrayList<String> levelsCopy;
-        levelsCopy = new ArrayList<String>();
+        levelsCopy = new ArrayList<>();
         levelsCopy.add("OA");
         levelsCopy.add("LSOA");
         levelsCopy.add("MSOA");
@@ -59,19 +59,19 @@ public class DW_Report extends DW_HTMLPage {
 
         claimantTypes = Env.getStrings().getHB_CTB();
         
-        tenureTypeGroups = new ArrayList<String>();
+        tenureTypeGroups = new ArrayList<>();
         tenureTypeGroups.add("all");
         tenureTypeGroups.add("regulated");
         tenureTypeGroups.add("unregulated");
 
         // Specifiy distances
-        distances = new ArrayList<Double>();
+        distances = new ArrayList<>();
         for (double distance = 1000.0d; distance < 5000.0d; distance += 1000.0d) {
             //for (double distance = 1000.0d; distance < 2000.0d; distance += 1000.0d) {
             distances.add(distance);
         }
 
-        types = new ArrayList<String>();
+        types = new ArrayList<>();
         types.add("All"); // Count of all claimants
 ////        types.add("NewEntrant"); // New entrants will include people already from Leeds. Will this also include people new to Leeds? - Probably...
         types.add("OnFlow"); // These are people not claiming the previous month and that have not claimed before.
@@ -80,7 +80,7 @@ public class DW_Report extends DW_HTMLPage {
         types.add("AllInChurn"); // A count of all claimants that have moved to this area (including all people moving within the area).
         types.add("AllOutChurn"); // A count of all claimants that have moved that were living in this area (including all people moving within the area).
 
-        distanceTypes = new ArrayList<String>();
+        distanceTypes = new ArrayList<>();
         distanceTypes.add("InDistanceChurn"); // A count of all claimants that have moved within this area.
         // A useful indication of places where displaced people from Leeds are placed?
         distanceTypes.add("WithinDistanceChurn"); // A count of all claimants that have moved within this area.
@@ -101,7 +101,7 @@ public class DW_Report extends DW_HTMLPage {
         date = Generic_Time.getDate();
 
         ArrayList<Boolean> b;
-        b = new ArrayList<Boolean>();
+        b = new ArrayList<>();
         b.add(true);
         b.add(false);
 

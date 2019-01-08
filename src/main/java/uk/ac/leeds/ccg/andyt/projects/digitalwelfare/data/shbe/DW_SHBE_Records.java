@@ -31,7 +31,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -39,9 +40,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_CorrectedPostcodes;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_Collections;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -55,7 +56,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * For convenience.
      */
     private transient DW_Strings Strings;
-    private transient DW_Postcode_Handler Postcode_Handler;
+    private transient ONSPD_Postcode_Handler Postcode_Handler;
     
 
     /**
@@ -147,13 +148,13 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     /**
      * For storing the Year_Month of this. This is an identifier for these data.
      */
-    private DW_YM3 YM3;
+    private ONSPD_YM3 YM3;
 
     /**
      * For storing the NearestYM3ForONSPDLookup of this. This is derived from
      * YM3.
      */
-    private DW_YM3 NearestYM3ForONSPDLookup;
+    private ONSPD_YM3 NearestYM3ForONSPDLookup;
 
     /**
      * Holds a reference to the original input data file from which this was
@@ -344,7 +345,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     /**
      * ClaimIDs mapped to Postcode DW_IDs.
      */
-    private HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup;
+    private HashMap<DW_ID, ONSPD_ID> ClaimIDToPostcodeIDLookup;
 
     /**
      * ClaimIDs of the claims that have had PostcodeF updated from the future.
@@ -567,7 +568,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 Records = (HashMap<DW_ID, DW_SHBE_Record>) Generic_IO.readObject(f);
             } else {
-                Records = new HashMap<DW_ID, DW_SHBE_Record>();
+                Records = new HashMap<>();
             }
         }
         return Records;
@@ -608,7 +609,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsOfNewSHBEClaims = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsOfNewSHBEClaims = new HashSet<DW_ID>();
+                ClaimIDsOfNewSHBEClaims = new HashSet<>();
             }
         }
         return ClaimIDsOfNewSHBEClaims;
@@ -651,7 +652,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore = new HashSet<DW_ID>();
+                ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore = new HashSet<>();
             }
         }
         return ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore;
@@ -694,7 +695,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = new HashSet<DW_ID>();
+                ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = new HashSet<>();
             }
         }
         return ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
@@ -739,7 +740,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore = new HashSet<DW_ID>();
+                ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore = new HashSet<>();
             }
         }
         return ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore;
@@ -782,7 +783,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew = new HashSet<DW_ID>();
+                ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew = new HashSet<>();
             }
         }
         return ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew;
@@ -825,7 +826,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 CottingleySpringsCaravanParkPairedClaimIDs = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                CottingleySpringsCaravanParkPairedClaimIDs = new HashSet<DW_ID>();
+                CottingleySpringsCaravanParkPairedClaimIDs = new HashSet<>();
             }
         }
         return CottingleySpringsCaravanParkPairedClaimIDs;
@@ -868,7 +869,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsWithStatusOfHBAtExtractDateInPayment = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsWithStatusOfHBAtExtractDateInPayment = new HashSet<DW_ID>();
+                ClaimIDsWithStatusOfHBAtExtractDateInPayment = new HashSet<>();
             }
         }
         return ClaimIDsWithStatusOfHBAtExtractDateInPayment;
@@ -911,7 +912,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsWithStatusOfHBAtExtractDateSuspended = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsWithStatusOfHBAtExtractDateSuspended = new HashSet<DW_ID>();
+                ClaimIDsWithStatusOfHBAtExtractDateSuspended = new HashSet<>();
             }
         }
         return ClaimIDsWithStatusOfHBAtExtractDateSuspended;
@@ -954,7 +955,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsWithStatusOfHBAtExtractDateOther = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsWithStatusOfHBAtExtractDateOther = new HashSet<DW_ID>();
+                ClaimIDsWithStatusOfHBAtExtractDateOther = new HashSet<>();
             }
         }
         return ClaimIDsWithStatusOfHBAtExtractDateOther;
@@ -997,7 +998,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsWithStatusOfCTBAtExtractDateInPayment = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsWithStatusOfCTBAtExtractDateInPayment = new HashSet<DW_ID>();
+                ClaimIDsWithStatusOfCTBAtExtractDateInPayment = new HashSet<>();
             }
         }
         return ClaimIDsWithStatusOfCTBAtExtractDateInPayment;
@@ -1040,7 +1041,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsWithStatusOfCTBAtExtractDateSuspended = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsWithStatusOfCTBAtExtractDateSuspended = new HashSet<DW_ID>();
+                ClaimIDsWithStatusOfCTBAtExtractDateSuspended = new HashSet<>();
             }
         }
         return ClaimIDsWithStatusOfCTBAtExtractDateSuspended;
@@ -1083,7 +1084,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsWithStatusOfCTBAtExtractDateOther = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsWithStatusOfCTBAtExtractDateOther = new HashSet<DW_ID>();
+                ClaimIDsWithStatusOfCTBAtExtractDateOther = new HashSet<>();
             }
         }
         return ClaimIDsWithStatusOfCTBAtExtractDateOther;
@@ -1122,7 +1123,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 SRecordsWithoutDRecords = (HashMap<DW_ID, ArrayList<DW_SHBE_S_Record>>) Generic_IO.readObject(f);
             } else {
-                SRecordsWithoutDRecords = new HashMap<DW_ID, ArrayList<DW_SHBE_S_Record>>();
+                SRecordsWithoutDRecords = new HashMap<>();
             }
         }
         return SRecordsWithoutDRecords;
@@ -1186,7 +1187,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDAndCountOfRecordsWithSRecords = (HashMap<DW_ID, Integer>) Generic_IO.readObject(f);
             } else {
-                ClaimIDAndCountOfRecordsWithSRecords = new HashMap<DW_ID, Integer>();
+                ClaimIDAndCountOfRecordsWithSRecords = new HashMap<>();
             }
         }
         return ClaimIDAndCountOfRecordsWithSRecords;
@@ -1202,7 +1203,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsOfClaimsWithoutAMappableClaimantPostcode = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsOfClaimsWithoutAMappableClaimantPostcode = new HashSet<DW_ID>();
+                ClaimIDsOfClaimsWithoutAMappableClaimantPostcode = new HashSet<>();
             }
         }
         return ClaimIDsOfClaimsWithoutAMappableClaimantPostcode;
@@ -1211,14 +1212,14 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     /**
      * @return YM3
      */
-    public DW_YM3 getYM3() {
+    public ONSPD_YM3 getYM3() {
         return YM3;
     }
 
     /**
      * @return NearestYM3ForONSPDLookup
      */
-    public DW_YM3 getNearestYM3ForONSPDLookup() {
+    public ONSPD_YM3 getNearestYM3ForONSPDLookup() {
         return NearestYM3ForONSPDLookup;
     }
 
@@ -1265,10 +1266,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * @param env
      * @param YM3
      */
-    public DW_SHBE_Records(
-            DW_Environment env,
-            DW_YM3 YM3
-    ) {
+    public DW_SHBE_Records(            DW_Environment env,            ONSPD_YM3 YM3    ) {
         super(env);
         this.YM3 = YM3;
         NearestYM3ForONSPDLookup = Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
@@ -1326,13 +1324,13 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             DW_Environment env,
             File inputDirectory,
             String inputFilename,
-            DW_YM3 LatestYM3ForONSPDFormat,
+            ONSPD_YM3 LatestYM3ForONSPDFormat,
             File logDir
     ) {
         super(env);
         DW_SHBE_Handler DW_SHBE_Handler;
         DW_SHBE_Handler = env.getSHBE_Handler();
-        DW_Postcode_Handler DW_Postcode_Handler;
+        ONSPD_Postcode_Handler DW_Postcode_Handler;
         DW_Postcode_Handler = env.getPostcode_Handler();
         DW_SHBE_Data DW_SHBE_Data;
         DW_SHBE_Data = env.getSHBE_Data();
@@ -1340,47 +1338,47 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         YM3 = DW_SHBE_Handler.getYM3(inputFilename);
         NearestYM3ForONSPDLookup = DW_Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
         Strings = env.getStrings();
-        Records = new HashMap<DW_ID, DW_SHBE_Record>();
-        ClaimIDs = new HashSet<DW_ID>();
-        ClaimIDsOfNewSHBEClaims = new HashSet<DW_ID>();
-        ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore = new HashSet<DW_ID>();
-        ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = new HashSet<DW_ID>();
-        ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore = new HashSet<DW_ID>();
-        ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew = new HashSet<DW_ID>();
-        ClaimantPersonIDs = new HashSet<DW_PersonID>();
-        PartnerPersonIDs = new HashSet<DW_PersonID>();
-        NonDependentPersonIDs = new HashSet<DW_PersonID>();
-        CottingleySpringsCaravanParkPairedClaimIDs = new HashSet<DW_ID>();
-        ClaimIDsWithStatusOfHBAtExtractDateInPayment = new HashSet<DW_ID>();
-        ClaimIDsWithStatusOfHBAtExtractDateSuspended = new HashSet<DW_ID>();
-        ClaimIDsWithStatusOfHBAtExtractDateOther = new HashSet<DW_ID>();
-        ClaimIDsWithStatusOfCTBAtExtractDateInPayment = new HashSet<DW_ID>();
-        ClaimIDsWithStatusOfCTBAtExtractDateSuspended = new HashSet<DW_ID>();
-        ClaimIDsWithStatusOfCTBAtExtractDateOther = new HashSet<DW_ID>();
-        SRecordsWithoutDRecords = new HashMap<DW_ID, ArrayList<DW_SHBE_S_Record>>();
-        ClaimIDAndCountOfRecordsWithSRecords = new HashMap<DW_ID, Integer>();
-        ClaimIDsOfClaimsWithoutAMappableClaimantPostcode = new HashSet<DW_ID>();
-        ClaimIDToClaimantPersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
-        ClaimIDToPartnerPersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
-        ClaimIDToDependentPersonIDsLookup = new HashMap<DW_ID, HashSet<DW_PersonID>>();
-        ClaimIDToNonDependentPersonIDsLookup = new HashMap<DW_ID, HashSet<DW_PersonID>>();
-        ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim = new HashSet<DW_ID>();
-        ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim = new HashSet<DW_ID>();
-        ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim = new HashSet<DW_ID>();
-        ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim = new HashSet<DW_ID>();
-        ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim = new HashSet<DW_ID>();
-        ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
-        PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
-        NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
-        ClaimIDToPostcodeIDLookup = new HashMap<DW_ID, DW_ID>();
-        ClaimIDToTenancyTypeLookup = new HashMap<DW_ID, Integer>();
-        LoadSummary = new HashMap<String, Number>();
-        RecordIDsNotLoaded = new ArrayList<Long>();
-        ClaimIDsOfInvalidClaimantNINOClaims = new HashSet<DW_ID>();
-        ClaimantPostcodesUnmappable = new HashMap<DW_ID, String>();
-        ClaimantPostcodesModified = new HashMap<DW_ID, String[]>();
-        ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes = new HashMap<DW_ID, String>();
-        ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture = new HashSet<DW_ID>();
+        Records = new HashMap<>();
+        ClaimIDs = new HashSet<>();
+        ClaimIDsOfNewSHBEClaims = new HashSet<>();
+        ClaimIDsOfNewSHBEClaimsWhereClaimantWasClaimantBefore = new HashSet<>();
+        ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = new HashSet<>();
+        ClaimIDsOfNewSHBEClaimsWhereClaimantWasNonDependentBefore = new HashSet<>();
+        ClaimIDsOfNewSHBEClaimsWhereClaimantIsNew = new HashSet<>();
+        ClaimantPersonIDs = new HashSet<>();
+        PartnerPersonIDs = new HashSet<>();
+        NonDependentPersonIDs = new HashSet<>();
+        CottingleySpringsCaravanParkPairedClaimIDs = new HashSet<>();
+        ClaimIDsWithStatusOfHBAtExtractDateInPayment = new HashSet<>();
+        ClaimIDsWithStatusOfHBAtExtractDateSuspended = new HashSet<>();
+        ClaimIDsWithStatusOfHBAtExtractDateOther = new HashSet<>();
+        ClaimIDsWithStatusOfCTBAtExtractDateInPayment = new HashSet<>();
+        ClaimIDsWithStatusOfCTBAtExtractDateSuspended = new HashSet<>();
+        ClaimIDsWithStatusOfCTBAtExtractDateOther = new HashSet<>();
+        SRecordsWithoutDRecords = new HashMap<>();
+        ClaimIDAndCountOfRecordsWithSRecords = new HashMap<>();
+        ClaimIDsOfClaimsWithoutAMappableClaimantPostcode = new HashSet<>();
+        ClaimIDToClaimantPersonIDLookup = new HashMap<>();
+        ClaimIDToPartnerPersonIDLookup = new HashMap<>();
+        ClaimIDToDependentPersonIDsLookup = new HashMap<>();
+        ClaimIDToNonDependentPersonIDsLookup = new HashMap<>();
+        ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim = new HashSet<>();
+        ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim = new HashSet<>();
+        ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim = new HashSet<>();
+        ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim = new HashSet<>();
+        ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim = new HashSet<>();
+        ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<>();
+        PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<>();
+        NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<>();
+        ClaimIDToPostcodeIDLookup = new HashMap<>();
+        ClaimIDToTenancyTypeLookup = new HashMap<>();
+        LoadSummary = new HashMap<>();
+        RecordIDsNotLoaded = new ArrayList<>();
+        ClaimIDsOfInvalidClaimantNINOClaims = new HashSet<>();
+        ClaimantPostcodesUnmappable = new HashMap<>();
+        ClaimantPostcodesModified = new HashMap<>();
+        ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes = new HashMap<>();
+        ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture = new HashSet<>();
         env.log("----------------------");
         env.log("Load " + YM3);
         env.log("----------------------");
@@ -1419,15 +1417,15 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         /**
          * Mapping of Unit Postcodes to simple DW_IDs.
          */
-        HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
+        HashMap<String, ONSPD_ID> PostcodeToPostcodeIDLookup;
         /**
          * Mapping of DW_ID to a Unit Postcode.
          */
-        HashMap<DW_ID, String> PostcodeIDToPostcodeLookup;
+        HashMap<ONSPD_ID, String> PostcodeIDToPostcodeLookup;
         /**
          * Mapping of DW_ID to a Unit Postcode.
          */
-        HashMap<DW_ID, Geotools_Point> PostcodeIDToPointLookup;
+        HashMap<ONSPD_ID, ONSPD_Point> PostcodeIDToPointLookup;
         /**
          * Mapping of ClaimRef String to Claim DW_ID.
          */
@@ -1573,7 +1571,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                     ArrayList<DW_SHBE_S_Record> recs;
                                     recs = SRecordsWithoutDRecords.get(ClaimID);
                                     if (recs == null) {
-                                        recs = new ArrayList<DW_SHBE_S_Record>();
+                                        recs = new ArrayList<>();
                                         SRecordsWithoutDRecords.put(ClaimID, recs);
                                     }
                                     recs.add(SRecord);
@@ -1788,7 +1786,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                 record.ClaimPostcodeFMappable = true;
                                                 record.PostcodeID = PostcodeToPostcodeIDLookup.get(record.ClaimPostcodeF);
                                                 // Add the point to the lookup
-                                                Geotools_Point AGDT_Point;
+                                                ONSPD_Point AGDT_Point;
                                                 AGDT_Point = DW_Postcode_Handler.getPointFromPostcodeNew(
                                                         NearestYM3ForONSPDLookup,
                                                         Strings.sUnit,
@@ -1804,19 +1802,19 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                         PostcodeToPostcodeIDLookup,
                                                         PostcodeIDToPostcodeLookup);
                                                 // Add the point to the lookup
-                                                Geotools_Point AGDT_Point;
+                                                ONSPD_Point p;
                                                 if (isMappablePostcodeLastestYM3) {
-                                                    AGDT_Point = DW_Postcode_Handler.getPointFromPostcodeNew(
+                                                    p = DW_Postcode_Handler.getPointFromPostcodeNew(
                                                             LatestYM3ForONSPDFormat,
                                                             Strings.sUnit,
                                                             record.ClaimPostcodeF);
                                                 } else {
-                                                    AGDT_Point = DW_Postcode_Handler.getPointFromPostcodeNew(
+                                                    p = DW_Postcode_Handler.getPointFromPostcodeNew(
                                                             NearestYM3ForONSPDLookup,
                                                             Strings.sUnit,
                                                             record.ClaimPostcodeF);
                                                 }
-                                                PostcodeIDToPointLookup.put(record.PostcodeID, AGDT_Point);
+                                                PostcodeIDToPointLookup.put(record.PostcodeID, p);
                                             } else {
                                                 CountOfNonMappableClaimantPostcodes++;
                                                 CountOfNewClaimantPostcodes++;
@@ -1956,7 +1954,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                         if (ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.containsKey(ClaimantPersonID)) {
                                                             set = ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(ClaimantPersonID);
                                                         } else {
-                                                            set = new HashSet<DW_ID>();
+                                                            set = new HashSet<>();
                                                             ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(ClaimantPersonID, set);
                                                         }
                                                         set.add(ClaimID);
@@ -2042,7 +2040,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                         if (PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.containsKey(PartnerPersonID)) {
                                                             set = PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(PartnerPersonID);
                                                         } else {
-                                                            set = new HashSet<DW_ID>();
+                                                            set = new HashSet<>();
                                                             PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(PartnerPersonID, set);
                                                         }
                                                         set.add(ClaimID);
@@ -2084,7 +2082,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                         if (PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.containsKey(PartnerPersonID)) {
                                                             set = PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(PartnerPersonID);
                                                         } else {
-                                                            set = new HashSet<DW_ID>();
+                                                            set = new HashSet<>();
                                                             PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(PartnerPersonID, set);
                                                         }
                                                         set.add(ClaimID);
@@ -2092,7 +2090,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                                         if (ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.containsKey(PartnerPersonID)) {
                                                             set = ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(PartnerPersonID);
                                                         } else {
-                                                            set = new HashSet<DW_ID>();
+                                                            set = new HashSet<>();
                                                             ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(PartnerPersonID, set);
                                                         }
                                                         set.add(ClaimID);
@@ -2245,11 +2243,11 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                     RecordIDsNotLoaded.size());
             HashSet<DW_PersonID> set;
             HashSet<DW_PersonID> allSet;
-            allSet = new HashSet<DW_PersonID>();
+            allSet = new HashSet<>();
             /**
              * Claimants
              */
-            set = new HashSet<DW_PersonID>();
+            set = new HashSet<>();
             set.addAll(ClaimIDToClaimantPersonIDLookup.values());
             allSet.addAll(set);
             addLoadSummaryCount(
@@ -2649,7 +2647,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                         HashSet<DW_PersonID> s;
                         s = ClaimIDToDependentPersonIDsLookup.get(ClaimID);
                         if (s == null) {
-                            s = new HashSet<DW_PersonID>();
+                            s = new HashSet<>();
                             ClaimIDToDependentPersonIDsLookup.put(ClaimID, s);
                         }
                         s.add(DW_PersonID);
@@ -2684,7 +2682,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                 HashSet<DW_ID> set;
                                 set = NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(DW_PersonID);
                                 if (set == null) {
-                                    set = new HashSet<DW_ID>();
+                                    set = new HashSet<>();
                                     NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(DW_PersonID, set);
                                 }
                                 set.add(ClaimID);
@@ -2710,7 +2708,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                     HashSet<DW_ID> set;
                                     set = NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(DW_PersonID);
                                     if (set == null) {
-                                        set = new HashSet<DW_ID>();
+                                        set = new HashSet<>();
                                         NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(DW_PersonID, set);
                                     }
                                     set.add(ClaimID);
@@ -2737,7 +2735,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                                     HashSet<DW_ID> set;
                                     set = NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.get(DW_PersonID);
                                     if (set == null) {
-                                        set = new HashSet<DW_ID>();
+                                        set = new HashSet<>();
                                         NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup.put(DW_PersonID, set);
                                     }
                                     set.add(ClaimID);
@@ -2757,7 +2755,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
                         //HashSet<DW_PersonID> s;
                         s = ClaimIDToNonDependentPersonIDsLookup.get(ClaimID);
                         if (s == null) {
-                            s = new HashSet<DW_PersonID>();
+                            s = new HashSet<>();
                             ClaimIDToNonDependentPersonIDsLookup.put(ClaimID, s);
                         }
                         s.add(DW_PersonID);
@@ -2794,7 +2792,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
         if (PersonIDToClaimRefsLookup.containsKey(DW_PersonID)) {
             s = PersonIDToClaimRefsLookup.get(DW_PersonID);
         } else {
-            s = new HashSet<DW_ID>();
+            s = new HashSet<>();
             PersonIDToClaimRefsLookup.put(DW_PersonID, s);
         }
         s.add(ClaimID);
@@ -2936,7 +2934,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDToClaimantPersonIDLookup = (HashMap<DW_ID, DW_PersonID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDToClaimantPersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
+                ClaimIDToClaimantPersonIDLookup = new HashMap<>();
             }
         }
         return ClaimIDToClaimantPersonIDLookup;
@@ -2979,7 +2977,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDToPartnerPersonIDLookup = (HashMap<DW_ID, DW_PersonID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDToPartnerPersonIDLookup = new HashMap<DW_ID, DW_PersonID>();
+                ClaimIDToPartnerPersonIDLookup = new HashMap<>();
             }
         }
         return ClaimIDToPartnerPersonIDLookup;
@@ -3022,7 +3020,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDToDependentPersonIDsLookup = (HashMap<DW_ID, HashSet<DW_PersonID>>) Generic_IO.readObject(f);
             } else {
-                ClaimIDToDependentPersonIDsLookup = new HashMap<DW_ID, HashSet<DW_PersonID>>();
+                ClaimIDToDependentPersonIDsLookup = new HashMap<>();
             }
         }
         return ClaimIDToDependentPersonIDsLookup;
@@ -3065,7 +3063,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDToNonDependentPersonIDsLookup = (HashMap<DW_ID, HashSet<DW_PersonID>>) Generic_IO.readObject(f);
             } else {
-                ClaimIDToNonDependentPersonIDsLookup = new HashMap<DW_ID, HashSet<DW_PersonID>>();
+                ClaimIDToNonDependentPersonIDsLookup = new HashMap<>();
             }
         }
         return ClaimIDToNonDependentPersonIDsLookup;
@@ -3110,7 +3108,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim = new HashSet<DW_ID>();
+                ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim = new HashSet<>();
             }
         }
         return ClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim;
@@ -3155,7 +3153,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim = new HashSet<DW_ID>();
+                ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim = new HashSet<>();
             }
         }
         return ClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim;
@@ -3200,7 +3198,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim = new HashSet<DW_ID>();
+                ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim = new HashSet<>();
             }
         }
         return ClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim;
@@ -3245,7 +3243,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim = new HashSet<DW_ID>();
+                ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim = new HashSet<>();
             }
         }
         return ClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim;
@@ -3290,7 +3288,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim = new HashSet<DW_ID>();
+                ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim = new HashSet<>();
             }
         }
         return ClaimIDsOfClaimsWithNonDependentsThatAreClaimantsOrPartnersInAnotherClaim;
@@ -3335,7 +3333,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = (HashMap<DW_PersonID, HashSet<DW_ID>>) Generic_IO.readObject(f);
             } else {
-                ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
+                ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<>();
             }
         }
         return ClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup;
@@ -3378,7 +3376,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = (HashMap<DW_PersonID, HashSet<DW_ID>>) Generic_IO.readObject(f);
             } else {
-                PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
+                PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<>();
             }
         }
         return PartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup;
@@ -3423,7 +3421,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = (HashMap<DW_PersonID, HashSet<DW_ID>>) Generic_IO.readObject(f);
             } else {
-                NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<DW_PersonID, HashSet<DW_ID>>();
+                NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup = new HashMap<>();
             }
         }
         return NonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup;
@@ -3436,7 +3434,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
      * @param handleOutOfMemoryError
      * @return
      */
-    public final HashMap<DW_ID, DW_ID> getClaimIDToPostcodeIDLookup(boolean handleOutOfMemoryError) {
+    public final HashMap<DW_ID, ONSPD_ID> getClaimIDToPostcodeIDLookup(boolean handleOutOfMemoryError) {
         try {
             return getClaimIDToPostcodeIDLookup();
         } catch (OutOfMemoryError e) {
@@ -3456,14 +3454,14 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
     /**
      * @return the ClaimIDToPostcodeLookup
      */
-    protected HashMap<DW_ID, DW_ID> getClaimIDToPostcodeIDLookup() {
+    protected HashMap<DW_ID, ONSPD_ID> getClaimIDToPostcodeIDLookup() {
         if (ClaimIDToPostcodeIDLookup == null) {
             File f;
             f = getClaimIDToPostcodeIDLookupFile();
             if (f.exists()) {
-                ClaimIDToPostcodeIDLookup = (HashMap<DW_ID, DW_ID>) Generic_IO.readObject(f);
+                ClaimIDToPostcodeIDLookup = (HashMap<DW_ID, ONSPD_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDToPostcodeIDLookup = new HashMap<DW_ID, DW_ID>();
+                ClaimIDToPostcodeIDLookup = new HashMap<>();
             }
         }
         return ClaimIDToPostcodeIDLookup;
@@ -3506,7 +3504,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture = new HashSet<DW_ID>();
+                ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture = new HashSet<>();
             }
         }
         return ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture;
@@ -3549,7 +3547,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDToTenancyTypeLookup = (HashMap<DW_ID, Integer>) Generic_IO.readObject(f);
             } else {
-                ClaimIDToTenancyTypeLookup = new HashMap<DW_ID, Integer>();
+                ClaimIDToTenancyTypeLookup = new HashMap<>();
             }
         }
         return ClaimIDToTenancyTypeLookup;
@@ -3590,7 +3588,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 LoadSummary = (HashMap<String, Number>) Generic_IO.readObject(f);
             } else {
-                LoadSummary = new HashMap<String, Number>();
+                LoadSummary = new HashMap<>();
             }
         }
         return LoadSummary;
@@ -3631,7 +3629,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 RecordIDsNotLoaded = (ArrayList<Long>) Generic_IO.readObject(f);
             } else {
-                RecordIDsNotLoaded = new ArrayList<Long>();
+                RecordIDsNotLoaded = new ArrayList<>();
             }
         }
         return RecordIDsNotLoaded;
@@ -3674,7 +3672,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimIDsOfInvalidClaimantNINOClaims = (HashSet<DW_ID>) Generic_IO.readObject(f);
             } else {
-                ClaimIDsOfInvalidClaimantNINOClaims = new HashSet<DW_ID>();
+                ClaimIDsOfInvalidClaimantNINOClaims = new HashSet<>();
             }
         }
         return ClaimIDsOfInvalidClaimantNINOClaims;
@@ -3717,7 +3715,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimantPostcodesUnmappable = (HashMap<DW_ID, String>) Generic_IO.readObject(f);
             } else {
-                ClaimantPostcodesUnmappable = new HashMap<DW_ID, String>();
+                ClaimantPostcodesUnmappable = new HashMap<>();
             }
         }
         return ClaimantPostcodesUnmappable;
@@ -3760,7 +3758,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimantPostcodesModified = (HashMap<DW_ID, String[]>) Generic_IO.readObject(f);
             } else {
-                ClaimantPostcodesModified = new HashMap<DW_ID, String[]>();
+                ClaimantPostcodesModified = new HashMap<>();
             }
         }
         return ClaimantPostcodesModified;
@@ -3803,7 +3801,7 @@ public class DW_SHBE_Records extends DW_Object implements Serializable {
             if (f.exists()) {
                 ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes = (HashMap<DW_ID, String>) Generic_IO.readObject(f);
             } else {
-                ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes = new HashMap<DW_ID, String>();
+                ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes = new HashMap<>();
             }
         }
         return ClaimantPostcodesCheckedAsMappableButNotInONSPDPostcodes;

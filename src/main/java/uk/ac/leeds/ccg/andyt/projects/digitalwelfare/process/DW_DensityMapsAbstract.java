@@ -36,16 +36,16 @@ import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Maps;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStats;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -57,7 +57,7 @@ public abstract class DW_DensityMapsAbstract extends DW_Object {
     protected DW_Maps Maps;
     protected DW_Files Files;
     protected DW_Strings Strings;
-    protected DW_Postcode_Handler Postcode_Handler;
+    protected ONSPD_Postcode_Handler Postcode_Handler;
 
     protected Grids_Environment ge;
     protected Grids_ESRIAsciiGridExporter eage;
@@ -95,8 +95,8 @@ public abstract class DW_DensityMapsAbstract extends DW_Object {
             TreeMap<String, Census_DeprivationDataRecord> deprivationRecords,
             TreeMap<Integer, Integer> deprivationClasses,
             Integer deprivationClass,
-            DW_YM3 yM3) {
-        DW_YM3 nearestYM3ForONSPDLookup;
+            ONSPD_YM3 yM3) {
+        ONSPD_YM3 nearestYM3ForONSPDLookup;
         nearestYM3ForONSPDLookup = Postcode_Handler.getNearestYM3ForONSPDLookup(yM3);
         int countNonMatchingPostcodes = 0;
         Iterator<String> itep = postcodes.iterator();
@@ -108,7 +108,7 @@ public abstract class DW_DensityMapsAbstract extends DW_Object {
                 if (deprivationRecords == null) {
                     String postcodeLevel;
                     postcodeLevel = Postcode_Handler.getPostcodeLevel(postcode);
-                    Geotools_Point aPoint;
+                    ONSPD_Point aPoint;
                     aPoint = Postcode_Handler.getPointFromPostcode(nearestYM3ForONSPDLookup, postcodeLevel, postcode);
                     if (aPoint != null) {
                         int x = aPoint.getX();
@@ -130,7 +130,7 @@ public abstract class DW_DensityMapsAbstract extends DW_Object {
                         if (thisDeprivationClass == deprivationClass.intValue()) {
                             String postcodeLevel;
                             postcodeLevel = Postcode_Handler.getPostcodeLevel(postcode);
-                            Geotools_Point aPoint;
+                            ONSPD_Point aPoint;
                             aPoint = Postcode_Handler.getPointFromPostcode(nearestYM3ForONSPDLookup, postcodeLevel, postcode);
                             if (aPoint != null) {
                                 int x = aPoint.getX();

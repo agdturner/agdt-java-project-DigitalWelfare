@@ -95,7 +95,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
         // ---------------------
         // Get Leeds LAD Shapefile
         TreeSet<String> tLeedsLADCensusAreaCode;
-        tLeedsLADCensusAreaCode = new TreeSet<String>();
+        tLeedsLADCensusAreaCode = new TreeSet<>();
         // Code for Leeds 00DA = E08000035
         tLeedsLADCensusAreaCode.add("E08000035");
         LeedsLADDW_Shapefile = getLADShapefile(
@@ -104,7 +104,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
                 sdsf);
         // Get Leeds and Neighbouring LAD Shapefile
         TreeSet<String> tLeedsAndNeighbouringLADCodes;
-        tLeedsAndNeighbouringLADCodes = new TreeSet<String>();
+        tLeedsAndNeighbouringLADCodes = new TreeSet<>();
         tLeedsAndNeighbouringLADCodes.addAll(
                 tLeedsLADCensusAreaCode);
         // Code for Selby 36UH = E07000169
@@ -123,7 +123,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
                 sdsf);
         // Get Leeds and Near Neighbouring LAD Shapefile
         TreeSet<String> tLeedsAndNearNeighbouringLADCodes;
-        tLeedsAndNearNeighbouringLADCodes = new TreeSet<String>();
+        tLeedsAndNearNeighbouringLADCodes = new TreeSet<>();
         tLeedsAndNearNeighbouringLADCodes.addAll(
                 tLeedsAndNeighbouringLADCodes);
         // Code for Calderdale 00CY = E08000033
@@ -239,7 +239,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             tPostcodeShapefile = getPostcodeShapefile(
                     area,
                     level);
-            result = new TreeSet<String>();
+            result = new TreeSet<>();
             File postcodeAreaCodesFile = getPostcodeDataAreaCodesFile(
                     area,
                     level);
@@ -424,7 +424,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
                 BufferedReader br;
                 StreamTokenizer st;
                 br = Generic_IO.getBufferedReader(file);
-                result = new TreeSet<String>();
+                result = new TreeSet<>();
                 st = new StreamTokenizer(br);
                 Generic_IO.setStreamTokenizerSyntax1(st);
                 int token = st.nextToken();

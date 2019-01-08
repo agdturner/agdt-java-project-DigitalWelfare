@@ -954,7 +954,7 @@ public class DW_Geotools extends Geotools_Environment {
 
         legendItems = styleParameters.getLegendItems(styleIndex);
         if (legendItems == null) {
-            legendItems = new ArrayList<Geotools_LegendItem>();
+            legendItems = new ArrayList<>();
         }
         Geotools_LegendItem li;
         li = new Geotools_LegendItem(legendMessage, Color.WHITE);

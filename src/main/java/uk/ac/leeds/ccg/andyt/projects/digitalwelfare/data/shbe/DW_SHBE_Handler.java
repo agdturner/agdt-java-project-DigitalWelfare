@@ -31,7 +31,8 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
@@ -39,11 +40,11 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  * Class for handling DW_SHBE_Data.
@@ -60,7 +61,7 @@ public class DW_SHBE_Handler extends DW_Object {
     private final transient HashMap<String, DW_ID> DOBToDOBIDLookup;
     private final transient DW_Strings Strings;
     private final transient DW_Files Files;
-    private final transient DW_Postcode_Handler Postcode_Handler;
+    private final transient ONSPD_Postcode_Handler Postcode_Handler;
 
     /**
      * For a set of expected RecordTypes. ("A", "D", "C", "R", "T", "P", "G",
@@ -89,9 +90,9 @@ public class DW_SHBE_Handler extends DW_Object {
     public void run(File logDir) {
         String[] SHBEFilenames;
         SHBEFilenames = getSHBEFilenamesAll();
-        DW_YM3 LastYM3;
+        ONSPD_YM3 LastYM3;
         LastYM3 = getYM3(SHBEFilenames[SHBEFilenames.length - 1]);
-        DW_YM3 NearestYM3ForONSPDFormatLookupLastYM3;
+        ONSPD_YM3 NearestYM3ForONSPDFormatLookupLastYM3;
         NearestYM3ForONSPDFormatLookupLastYM3 = Postcode_Handler.getNearestYM3ForONSPDLookup(LastYM3);
         File dir;
         dir = Files.getInputSHBEDir();
@@ -172,26 +173,26 @@ public class DW_SHBE_Handler extends DW_Object {
         String[] SHBEFilenames;
         SHBEFilenames = getSHBEFilenamesAll();
         ArrayList<String> newFilesToRead;
-        newFilesToRead = new ArrayList<String>();
+        newFilesToRead = new ArrayList<>();
         File[] FormattedSHBEFiles;
         FormattedSHBEFiles = Files.getGeneratedSHBEDir().listFiles();
-        HashSet<DW_YM3> FormattedYM3s;
-        FormattedYM3s = new HashSet<DW_YM3>();
+        HashSet<ONSPD_YM3> FormattedYM3s;
+        FormattedYM3s = new HashSet<>();
         for (File FormattedSHBEFile : FormattedSHBEFiles) {
             if (FormattedSHBEFile.isDirectory()) {
-                FormattedYM3s.add(new DW_YM3(FormattedSHBEFile.getName()));
+                FormattedYM3s.add(new ONSPD_YM3(FormattedSHBEFile.getName()));
             }
         }
-        DW_YM3 YM3;
+        ONSPD_YM3 YM3;
         for (String SHBEFilename : SHBEFilenames) {
             YM3 = getYM3(SHBEFilename);
             if (!FormattedYM3s.contains(YM3)) {
                 newFilesToRead.add(SHBEFilename);
             }
         }
-        DW_YM3 LastYM3;
+        ONSPD_YM3 LastYM3;
         LastYM3 = getYM3(SHBEFilenames[SHBEFilenames.length - 1]);
-        DW_YM3 NearestYM3ForONSPDFormatLookupLastYM3;
+        ONSPD_YM3 NearestYM3ForONSPDFormatLookupLastYM3;
         NearestYM3ForONSPDFormatLookupLastYM3 = Postcode_Handler.getNearestYM3ForONSPDLookup(LastYM3);
         if (newFilesToRead.size() > 0) {
             Iterator<String> ite;
@@ -230,9 +231,9 @@ public class DW_SHBE_Handler extends DW_Object {
         handleOutOfMemoryError = true;
         File dir;
         dir = Files.getInputSHBEDir();
-        HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
+        HashMap<String, ONSPD_ID> PostcodeToPostcodeIDLookup;
         PostcodeToPostcodeIDLookup = SHBE_Data.getPostcodeToPostcodeIDLookup();
-        HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>> PostcodeIDPointLookups;
+        HashMap<ONSPD_YM3, HashMap<ONSPD_ID, ONSPD_Point>> PostcodeIDPointLookups;
         PostcodeIDPointLookups = SHBE_Data.getPostcodeIDToPointLookups();
         HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
         ClaimIDToClaimRefLookup = SHBE_Data.getClaimIDToClaimRefLookup();
@@ -247,38 +248,36 @@ public class DW_SHBE_Handler extends DW_Object {
         String SHBEFilename1;
         SHBEFilename1 = SHBEFilenames[SHBEFilenames.length - 1];
         YMN = getYearMonthNumber(SHBEFilename1);
-        DW_YM3 YM31;
+        ONSPD_YM3 YM31;
         YM31 = getYM3(SHBEFilename1);
         System.out.println("YM31 " + YM31);
-        DW_YM3 NearestYM3ForONSPDLookupYM31;
+        ONSPD_YM3 NearestYM3ForONSPDLookupYM31;
         NearestYM3ForONSPDLookupYM31 = Postcode_Handler.getNearestYM3ForONSPDLookup(YM31);
         System.out.println("NearestYM3ForONSPDLookupYM31 " + NearestYM3ForONSPDLookupYM31);
         DW_SHBE_Records DW_SHBE_Records1;
-        DW_SHBE_Records1 = new DW_SHBE_Records(
-                Env,
-                YM31);
+        DW_SHBE_Records1 = new DW_SHBE_Records(                Env,                YM31);
         HashMap<DW_ID, DW_SHBE_Record> recs1;
         recs1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
         DW_SHBE_Record rec1;
-        HashMap<DW_ID, Geotools_Point> PostcodeIDToPointLookup1;
+        HashMap<ONSPD_ID, ONSPD_Point> PostcodeIDToPointLookup1;
         PostcodeIDToPointLookup1 = PostcodeIDPointLookups.get(NearestYM3ForONSPDLookupYM31);
 
         HashSet<String> UniqueUnmappablePostcodes;
-        UniqueUnmappablePostcodes = new HashSet<String>();
+        UniqueUnmappablePostcodes = new HashSet<>();
         HashMap<DW_ID, String> ClaimantPostcodesUnmappable;
         ClaimantPostcodesUnmappable = DW_SHBE_Records1.getClaimantPostcodesUnmappable();
-        DW_ID DW_ID;
+        DW_ID claimID;
         Iterator<DW_ID> ite;
         String ClaimRef;
         ite = ClaimantPostcodesUnmappable.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID = ite.next();
-            ClaimRef = ClaimIDToClaimRefLookup.get(DW_ID);
-            UniqueUnmappablePostcodes.add(ClaimRef + "," + ClaimantPostcodesUnmappable.get(DW_ID));
+            claimID = ite.next();
+            ClaimRef = ClaimIDToClaimRefLookup.get(claimID);
+            UniqueUnmappablePostcodes.add(ClaimRef + "," + ClaimantPostcodesUnmappable.get(claimID));
         }
 
         HashSet<String> UniqueModifiedPostcodes;
-        UniqueModifiedPostcodes = new HashSet<String>();
+        UniqueModifiedPostcodes = new HashSet<>();
         // <writeOutModifiedPostcodes>
         writeOutModifiedPostcodes(
                 UniqueModifiedPostcodes,
@@ -304,8 +303,8 @@ public class DW_SHBE_Handler extends DW_Object {
         pw2.println("Ref,Year_Month,ClaimRef,Recorded Postcode,Correct Postcode,Input To Academy (Y/N)");
         int ref2 = 1;
 
-        DW_YM3 YM30;
-        DW_YM3 NearestYM3ForONSPDLookupYM30;
+        ONSPD_YM3 YM30;
+        ONSPD_YM3 NearestYM3ForONSPDLookupYM30;
         HashMap<DW_ID, String> ClaimantPostcodesUnmappable0;
         DW_SHBE_Records DW_SHBE_Records0;
         HashMap<DW_ID, DW_SHBE_Record> recs0;
@@ -316,8 +315,8 @@ public class DW_SHBE_Handler extends DW_Object {
         String unmappablePostcodef0;
         String postcodef1;
 
-        HashMap<DW_ID, Geotools_Point> PostcodeIDToPointLookup0;
-        HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup0 = null;
+        HashMap<ONSPD_ID, ONSPD_Point> PostcodeIDToPointLookup0;
+        HashMap<DW_ID, ONSPD_ID> ClaimIDToPostcodeIDLookup0 = null;
         HashSet<DW_ID> ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = null;
         boolean modifiedAnyRecs = false;
 
@@ -330,8 +329,7 @@ public class DW_SHBE_Handler extends DW_Object {
         System.out.println("YM30 " + YM30);
         YMN = getYearMonthNumber(SHBEFilenames[i]);
         // Set up to write FutureModifiedPostcodes
-        FutureModifiedPostcodesFile = new File(
-                logDir,
+        FutureModifiedPostcodesFile = new File(                logDir,
                 "FutureModifiedPostcodes" + YMN + ".csv");
         try {
             pw = new PrintWriter(FutureModifiedPostcodesFile);
@@ -341,9 +339,7 @@ public class DW_SHBE_Handler extends DW_Object {
         }
         NearestYM3ForONSPDLookupYM30 = Postcode_Handler.getNearestYM3ForONSPDLookup(YM30);
         System.out.println("NearestYM3ForONSPDLookupYM30 " + NearestYM3ForONSPDLookupYM30);
-        DW_SHBE_Records0 = new DW_SHBE_Records(
-                Env,
-                YM30);
+        DW_SHBE_Records0 = new DW_SHBE_Records(                Env,                YM30);
         recs0 = DW_SHBE_Records0.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
         // <writeOutModifiedPostcodes>
         writeOutModifiedPostcodes(
@@ -357,19 +353,18 @@ public class DW_SHBE_Handler extends DW_Object {
         ClaimantPostcodesUnmappable0 = DW_SHBE_Records0.getClaimantPostcodesUnmappable(handleOutOfMemoryError);
         boolean modifiedRecs = false;
         ite = ClaimantPostcodesUnmappable0.keySet().iterator();
-        HashSet<DW_ID> ClaimantPostcodesUnmappable0Remove = new HashSet<DW_ID>();
+        HashSet<DW_ID> ClaimantPostcodesUnmappable0Remove = new HashSet<>();
         while (ite.hasNext()) {
-            DW_ID = ite.next();
-            unmappablePostcodef0 = ClaimantPostcodesUnmappable0.get(DW_ID);
-            ClaimRef = ClaimIDToClaimRefLookup.get(DW_ID);
+            claimID = ite.next();
+            unmappablePostcodef0 = ClaimantPostcodesUnmappable0.get(claimID);
+            ClaimRef = ClaimIDToClaimRefLookup.get(claimID);
             System.out.println(ClaimRef);
-            rec1 = recs1.get(DW_ID);
-            rec0 = recs0.get(DW_ID);
+            rec1 = recs1.get(claimID);
+            rec0 = recs0.get(claimID);
             postcodef0 = rec0.getClaimPostcodeF();
             postcode0 = rec0.getDRecord().getClaimantsPostcode();
             if (rec1 != null) {
                 postcodef1 = rec1.getClaimPostcodeF();
-
                 if (rec1.isClaimPostcodeFMappable()) {
                     System.out.println("Claimants Postcode 0 \"" + postcode0 + "\" unmappablePostcodef0 \"" + unmappablePostcodef0 + "\" postcodef0 \"" + postcodef0 + "\" changed to " + postcodef1 + " which is mappable.");
                     if (!rec0.ClaimPostcodeFValidPostcodeFormat) {
@@ -380,20 +375,22 @@ public class DW_SHBE_Handler extends DW_Object {
                         if (ClaimIDToPostcodeIDLookup0 == null) {
                             ClaimIDToPostcodeIDLookup0 = DW_SHBE_Records0.getClaimIDToPostcodeIDLookup();
                         }
-                        ClaimIDToPostcodeIDLookup0.put(DW_ID, PostcodeToPostcodeIDLookup.get(postcodef1));
+                        ClaimIDToPostcodeIDLookup0.put(claimID, PostcodeToPostcodeIDLookup.get(postcodef1));
                         if (ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 == null) {
                             ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = DW_SHBE_Records0.getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture();
                         }
-                        ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0.add(DW_ID);
-                        Geotools_Point p;
-                        p = PostcodeIDToPointLookup1.get(DW_ID);
-                        PostcodeIDToPointLookup0.put(DW_ID, p);
+                        ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0.add(claimID);
+                        ONSPD_ID postcodeID;
+                        postcodeID = ClaimIDToPostcodeIDLookup0.get(claimID);
+                        ONSPD_Point p;
+                        p = PostcodeIDToPointLookup1.get(postcodeID);
+                        PostcodeIDToPointLookup0.put(postcodeID, p);
                         modifiedRecs = true;
                         modifiedAnyRecs = true;
                         postcode1 = postcodef1.replaceAll(" ", "");
                         postcode1 = postcode1.substring(0, postcode1.length() - 3) + " " + postcode1.substring(postcode1.length() - 3);
                         pw.println(ClaimRef + "," + postcode0 + "," + postcode1);
-                        ClaimantPostcodesUnmappable0Remove.add(DW_ID);
+                        ClaimantPostcodesUnmappable0Remove.add(claimID);
                     }
                 } else {
                     System.out.println("postcodef1 " + postcodef1 + " is not mappable.");
@@ -416,8 +413,8 @@ public class DW_SHBE_Handler extends DW_Object {
         }
         ite = ClaimantPostcodesUnmappable0Remove.iterator();
         while (ite.hasNext()) {
-            DW_ID = ite.next();
-            ClaimantPostcodesUnmappable0.remove(DW_ID);
+            claimID = ite.next();
+            ClaimantPostcodesUnmappable0.remove(claimID);
         }
         if (modifiedRecs == true) {
             // Write out recs0
@@ -483,9 +480,9 @@ public class DW_SHBE_Handler extends DW_Object {
         handleOutOfMemoryError = true;
         File dir;
         dir = Files.getInputSHBEDir();
-        HashMap<String, DW_ID> PostcodeToPostcodeIDLookup;
+        HashMap<String, ONSPD_ID> PostcodeToPostcodeIDLookup;
         PostcodeToPostcodeIDLookup = SHBE_Data.getPostcodeToPostcodeIDLookup();
-        HashMap<DW_YM3, HashMap<DW_ID, Geotools_Point>> PostcodeIDPointLookups;
+        HashMap<ONSPD_YM3, HashMap<ONSPD_ID, ONSPD_Point>> PostcodeIDPointLookups;
         PostcodeIDPointLookups = SHBE_Data.getPostcodeIDToPointLookups();
         HashMap<DW_ID, String> ClaimIDToClaimRefLookup;
         ClaimIDToClaimRefLookup = SHBE_Data.getClaimIDToClaimRefLookup();
@@ -500,10 +497,10 @@ public class DW_SHBE_Handler extends DW_Object {
         String SHBEFilename1;
         SHBEFilename1 = SHBEFilenames[SHBEFilenames.length - 1];
         YMN = getYearMonthNumber(SHBEFilename1);
-        DW_YM3 YM31;
+        ONSPD_YM3 YM31;
         YM31 = getYM3(SHBEFilename1);
         System.out.println("YM31 " + YM31);
-        DW_YM3 NearestYM3ForONSPDLookupYM31;
+        ONSPD_YM3 NearestYM3ForONSPDLookupYM31;
         NearestYM3ForONSPDLookupYM31 = Postcode_Handler.getNearestYM3ForONSPDLookup(YM31);
         System.out.println("NearestYM3ForONSPDLookupYM31 " + NearestYM3ForONSPDLookupYM31);
         DW_SHBE_Records DW_SHBE_Records1;
@@ -513,25 +510,25 @@ public class DW_SHBE_Handler extends DW_Object {
         HashMap<DW_ID, DW_SHBE_Record> recs1;
         recs1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(handleOutOfMemoryError);
         DW_SHBE_Record rec1;
-        HashMap<DW_ID, Geotools_Point> PostcodeIDToPointLookup1;
+        HashMap<ONSPD_ID, ONSPD_Point> PostcodeIDToPointLookup1;
         PostcodeIDToPointLookup1 = PostcodeIDPointLookups.get(NearestYM3ForONSPDLookupYM31);
 
         HashSet<String> UniqueUnmappablePostcodes;
-        UniqueUnmappablePostcodes = new HashSet<String>();
+        UniqueUnmappablePostcodes = new HashSet<>();
         HashMap<DW_ID, String> ClaimantPostcodesUnmappable;
         ClaimantPostcodesUnmappable = DW_SHBE_Records1.getClaimantPostcodesUnmappable();
-        DW_ID DW_ID;
+        DW_ID claimID;
         Iterator<DW_ID> ite;
         String ClaimRef;
         ite = ClaimantPostcodesUnmappable.keySet().iterator();
         while (ite.hasNext()) {
-            DW_ID = ite.next();
-            ClaimRef = ClaimIDToClaimRefLookup.get(DW_ID);
-            UniqueUnmappablePostcodes.add(ClaimRef + "," + ClaimantPostcodesUnmappable.get(DW_ID));
+            claimID = ite.next();
+            ClaimRef = ClaimIDToClaimRefLookup.get(claimID);
+            UniqueUnmappablePostcodes.add(ClaimRef + "," + ClaimantPostcodesUnmappable.get(claimID));
         }
 
         HashSet<String> UniqueModifiedPostcodes;
-        UniqueModifiedPostcodes = new HashSet<String>();
+        UniqueModifiedPostcodes = new HashSet<>();
         // <writeOutModifiedPostcodes>
         writeOutModifiedPostcodes(
                 UniqueModifiedPostcodes,
@@ -545,8 +542,7 @@ public class DW_SHBE_Handler extends DW_Object {
          * Claimant Postcodes that are not yet mappable by any means.
          */
         File UnmappablePostcodesFile;
-        UnmappablePostcodesFile = new File(
-                logDir,
+        UnmappablePostcodesFile = new File(                logDir,
                 "UnmappablePostcodes" + YMN + ".csv");
         PrintWriter pw2 = null;
         try {
@@ -557,8 +553,8 @@ public class DW_SHBE_Handler extends DW_Object {
         pw2.println("Ref,Year_Month,ClaimRef,Recorded Postcode,Correct Postcode,Input To Academy (Y/N)");
         int ref2 = 1;
 
-        DW_YM3 YM30;
-        DW_YM3 NearestYM3ForONSPDLookupYM30;
+        ONSPD_YM3 YM30;
+        ONSPD_YM3 NearestYM3ForONSPDLookupYM30;
         HashMap<DW_ID, String> ClaimantPostcodesUnmappable0;
         DW_SHBE_Records DW_SHBE_Records0;
         HashMap<DW_ID, DW_SHBE_Record> recs0;
@@ -569,8 +565,8 @@ public class DW_SHBE_Handler extends DW_Object {
         String unmappablePostcodef0;
         String postcodef1;
 
-        HashMap<DW_ID, Geotools_Point> PostcodeIDToPointLookup0;
-        HashMap<DW_ID, DW_ID> ClaimIDToPostcodeIDLookup0 = null;
+        HashMap<ONSPD_ID, ONSPD_Point> PostcodeIDToPointLookup0;
+        HashMap<DW_ID, ONSPD_ID> ClaimIDToPostcodeIDLookup0 = null;
         HashSet<DW_ID> ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = null;
         boolean modifiedAnyRecs = false;
 
@@ -609,14 +605,14 @@ public class DW_SHBE_Handler extends DW_Object {
             ClaimantPostcodesUnmappable0 = DW_SHBE_Records0.getClaimantPostcodesUnmappable(handleOutOfMemoryError);
             boolean modifiedRecs = false;
             ite = ClaimantPostcodesUnmappable0.keySet().iterator();
-            HashSet<DW_ID> ClaimantPostcodesUnmappable0Remove = new HashSet<DW_ID>();
+            HashSet<DW_ID> ClaimantPostcodesUnmappable0Remove = new HashSet<>();
             while (ite.hasNext()) {
-                DW_ID = ite.next();
-                unmappablePostcodef0 = ClaimantPostcodesUnmappable0.get(DW_ID);
-                ClaimRef = ClaimIDToClaimRefLookup.get(DW_ID);
+                claimID = ite.next();
+                unmappablePostcodef0 = ClaimantPostcodesUnmappable0.get(claimID);
+                ClaimRef = ClaimIDToClaimRefLookup.get(claimID);
                 System.out.println(ClaimRef);
-                rec1 = recs1.get(DW_ID);
-                rec0 = recs0.get(DW_ID);
+                rec1 = recs1.get(claimID);
+                rec0 = recs0.get(claimID);
                 postcodef0 = rec0.getClaimPostcodeF();
                 postcode0 = rec0.getDRecord().getClaimantsPostcode();
                 if (rec1 != null) {
@@ -632,20 +628,21 @@ public class DW_SHBE_Handler extends DW_Object {
                             if (ClaimIDToPostcodeIDLookup0 == null) {
                                 ClaimIDToPostcodeIDLookup0 = DW_SHBE_Records0.getClaimIDToPostcodeIDLookup();
                             }
-                            ClaimIDToPostcodeIDLookup0.put(DW_ID, PostcodeToPostcodeIDLookup.get(postcodef1));
+                            ONSPD_ID postcodeID = PostcodeToPostcodeIDLookup.get(postcodef1);
+                            ClaimIDToPostcodeIDLookup0.put(claimID, postcodeID);
                             if (ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 == null) {
                                 ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0 = DW_SHBE_Records0.getClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture();
                             }
-                            ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0.add(DW_ID);
-                            Geotools_Point p;
-                            p = PostcodeIDToPointLookup1.get(DW_ID);
-                            PostcodeIDToPointLookup0.put(DW_ID, p);
+                            ClaimIDsOfClaimsWithClaimPostcodeFUpdatedFromTheFuture0.add(claimID);
+                            ONSPD_Point p;
+                            p = PostcodeIDToPointLookup1.get(postcodeID);
+                            PostcodeIDToPointLookup0.put(postcodeID, p);
                             modifiedRecs = true;
                             modifiedAnyRecs = true;
                             postcode1 = postcodef1.replaceAll(" ", "");
                             postcode1 = postcode1.substring(0, postcode1.length() - 3) + " " + postcode1.substring(postcode1.length() - 3);
                             pw.println(ClaimRef + "," + postcode0 + "," + postcode1);
-                            ClaimantPostcodesUnmappable0Remove.add(DW_ID);
+                            ClaimantPostcodesUnmappable0Remove.add(claimID);
                         }
                     } else {
                         System.out.println("postcodef1 " + postcodef1 + " is not mappable.");
@@ -666,10 +663,11 @@ public class DW_SHBE_Handler extends DW_Object {
                     }
                 }
             }
-            ite = ClaimantPostcodesUnmappable0Remove.iterator();
-            while (ite.hasNext()) {
-                DW_ID = ite.next();
-                ClaimantPostcodesUnmappable0.remove(DW_ID);
+            Iterator<DW_ID> ite2;
+            ite2 = ClaimantPostcodesUnmappable0Remove.iterator();
+            while (ite2.hasNext()) {
+                claimID = ite2.next();
+                ClaimantPostcodesUnmappable0.remove(claimID);
             }
             if (modifiedRecs == true) {
                 // Write out recs0
@@ -838,7 +836,7 @@ public class DW_SHBE_Handler extends DW_Object {
 
     public ArrayList<String> getClaimantTypes() {
         ArrayList<String> result;
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         result.add(Strings.sHB);
         result.add(Strings.sCTB);
         return result;
@@ -934,7 +932,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public final void initRecordTypes() {
         if (RecordTypes == null) {
-            RecordTypes = new HashSet<String>();
+            RecordTypes = new HashSet<>();
             RecordTypes.add("A");
             RecordTypes.add("D");
             RecordTypes.add("C");
@@ -947,18 +945,18 @@ public class DW_SHBE_Handler extends DW_Object {
         }
     }
 
-    HashMap<Integer, DW_YM3> indexYM3s;
+    HashMap<Integer, ONSPD_YM3> indexYM3s;
 
     /**
      *
      * @return
      */
-    public HashMap<Integer, DW_YM3> getIndexYM3s() {
+    public HashMap<Integer, ONSPD_YM3> getIndexYM3s() {
         if (indexYM3s == null) {
-            indexYM3s = new HashMap<Integer, DW_YM3>();
+            indexYM3s = new HashMap<>();
             String[] filenames = getSHBEFilenamesAll();
             int i = 0;
-            DW_YM3 yM3;
+            ONSPD_YM3 yM3;
             for (String filename : filenames) {
                 yM3 = getYM3(filename);
                 indexYM3s.put(i, yM3);
@@ -1059,24 +1057,23 @@ public class DW_SHBE_Handler extends DW_Object {
      * @param PostcodeIDToPostcodeLookup
      * @return
      */
-    public DW_ID getPostcodeIDAddIfNeeded(
+    public ONSPD_ID getPostcodeIDAddIfNeeded(
             String PostcodeF,
-            HashMap<String, DW_ID> PostcodeToPostcodeIDLookup,
-            HashMap<DW_ID, String> PostcodeIDToPostcodeLookup) {
-        DW_ID result;
-        result = null;
+            HashMap<String, ONSPD_ID> PostcodeToPostcodeIDLookup,
+            HashMap<ONSPD_ID, String> PostcodeIDToPostcodeLookup) {
+        ONSPD_ID r;
+        r = null;
         if (PostcodeToPostcodeIDLookup.containsKey(PostcodeF)) {
-            result = PostcodeToPostcodeIDLookup.get(PostcodeF);
+            r = PostcodeToPostcodeIDLookup.get(PostcodeF);
         } else {
-            result = new DW_ID(PostcodeIDToPostcodeLookup.size());
+            r = new ONSPD_ID(PostcodeIDToPostcodeLookup.size());
 //            if (IDToSLookup.size() > Integer.MAX_VALUE) {
 //                throw new Error("LookupFiles are full!");
 //            }
-            PostcodeIDToPostcodeLookup.put(result, PostcodeF);
-            PostcodeToPostcodeIDLookup.put(PostcodeF, result);
-
+            PostcodeIDToPostcodeLookup.put(r, PostcodeF);
+            PostcodeToPostcodeIDLookup.put(PostcodeF, r);
         }
-        return result;
+        return r;
     }
 
     /**
@@ -1100,7 +1097,7 @@ public class DW_SHBE_Handler extends DW_Object {
             DW_SHBE_Records DW_SHBE_Records,
             ArrayList<String> HB_CTB,
             ArrayList<String> PTs,
-            DW_YM3 YM30,
+            ONSPD_YM3 YM30,
             DW_UO_Set UOReportSetCouncil,
             DW_UO_Set UOReportSetRSL,
             boolean doUnderOccupancy,
@@ -1108,7 +1105,7 @@ public class DW_SHBE_Handler extends DW_Object {
             boolean doRSL,
             boolean forceNew) {
         HashMap<String, BigDecimal> result;
-        result = new HashMap<String, BigDecimal>();
+        result = new HashMap<>();
         File IncomeAndRentSummaryFile = getIncomeAndRentSummaryFile(
                 YM30,
                 doUnderOccupancy,
@@ -2318,7 +2315,7 @@ public class DW_SHBE_Handler extends DW_Object {
             String s;
             String ym;
             TreeMap<String, String> yms;
-            yms = new TreeMap<String, String>();
+            yms = new TreeMap<>();
             for (String list1 : list) {
                 s = list1;
                 ym = getYearMonthNumber(s);
@@ -2336,12 +2333,12 @@ public class DW_SHBE_Handler extends DW_Object {
         return SHBEFilenamesAll;
     }
 
-    private ArrayList<DW_YM3> YM3All;
+    private ArrayList<ONSPD_YM3> YM3All;
 
-    public ArrayList<DW_YM3> getYM3All() {
+    public ArrayList<ONSPD_YM3> getYM3All() {
         if (YM3All == null) {
             SHBEFilenamesAll = getSHBEFilenamesAll();
-            YM3All = new ArrayList<DW_YM3>();
+            YM3All = new ArrayList<>();
             SHBEFilenamesAll = getSHBEFilenamesAll();
             for (String SHBEFilename : SHBEFilenamesAll) {
                 YM3All.add(getYM3(SHBEFilename));
@@ -2352,7 +2349,7 @@ public class DW_SHBE_Handler extends DW_Object {
 
     public ArrayList<Integer> getSHBEFilenameIndexes() {
         ArrayList<Integer> result;
-        result = new ArrayList<Integer>();
+        result = new ArrayList<>();
         SHBEFilenamesAll = getSHBEFilenamesAll();
         for (int i = 0; i < SHBEFilenamesAll.length; i++) {
             result.add(i);
@@ -2381,9 +2378,9 @@ public class DW_SHBE_Handler extends DW_Object {
         Object[] result;
         result = new Object[2];
         TreeMap<BigDecimal, String> valueLabel;
-        valueLabel = new TreeMap<BigDecimal, String>();
+        valueLabel = new TreeMap<>();
         TreeMap<String, BigDecimal> fileLabelValue;
-        fileLabelValue = new TreeMap<String, BigDecimal>();
+        fileLabelValue = new TreeMap<>();
         result[0] = valueLabel;
         result[1] = fileLabelValue;
 
@@ -2396,7 +2393,7 @@ public class DW_SHBE_Handler extends DW_Object {
         int month0Int = 0;
         String month0 = "";
         String m30 = "";
-        DW_YM3 yM30 = null;
+        ONSPD_YM3 yM30 = null;
 
         boolean first = true;
         Iterator<Integer> ite;
@@ -2413,7 +2410,7 @@ public class DW_SHBE_Handler extends DW_Object {
                 startYear = yearInt0;
                 first = false;
             } else {
-                DW_YM3 yM31;
+                ONSPD_YM3 yM31;
                 yM31 = getYM3(tSHBEFilenames[i]);
                 int yearInt;
                 String month;
@@ -2473,10 +2470,10 @@ public class DW_SHBE_Handler extends DW_Object {
             ArrayList<Integer> include) {
         Object[] result;
         result = new Object[2];
-        TreeMap<BigDecimal, DW_YM3> valueLabel;
-        valueLabel = new TreeMap<BigDecimal, DW_YM3>();
-        TreeMap<DW_YM3, BigDecimal> fileLabelValue;
-        fileLabelValue = new TreeMap<DW_YM3, BigDecimal>();
+        TreeMap<BigDecimal, ONSPD_YM3> valueLabel;
+        valueLabel = new TreeMap<>();
+        TreeMap<ONSPD_YM3, BigDecimal> fileLabelValue;
+        fileLabelValue = new TreeMap<>();
         result[0] = valueLabel;
         result[1] = fileLabelValue;
 
@@ -2489,7 +2486,7 @@ public class DW_SHBE_Handler extends DW_Object {
         boolean first = true;
         Iterator<Integer> ite;
         ite = include.iterator();
-        DW_YM3 YM3;
+        ONSPD_YM3 YM3;
         int yearInt;
         String month;
         int monthInt;
@@ -2606,17 +2603,17 @@ public class DW_SHBE_Handler extends DW_Object {
         return result;
     }
 
-    public DW_YM3 getYM3(String SHBEFilename) {
+    public ONSPD_YM3 getYM3(String SHBEFilename) {
         return getYM3(SHBEFilename, "_");
     }
 
-    public DW_YM3 getYM3(String SHBEFilename, String separator) {
-        DW_YM3 result;
+    public ONSPD_YM3 getYM3(String SHBEFilename, String separator) {
+        ONSPD_YM3 result;
         String year;
         year = getYear(SHBEFilename);
         String m3;
         m3 = getMonth3(SHBEFilename);
-        result = new DW_YM3(year + separator + m3);
+        result = new ONSPD_YM3(year + separator + m3);
         return result;
     }
 
@@ -2697,7 +2694,7 @@ public class DW_SHBE_Handler extends DW_Object {
         if (f.exists()) {
             result = (HashMap<DW_ID, String>) Generic_IO.readObject(f);
         } else {
-            result = new HashMap<DW_ID, String>();
+            result = new HashMap<>();
         }
         return result;
     }
@@ -2708,7 +2705,7 @@ public class DW_SHBE_Handler extends DW_Object {
         if (f.exists()) {
             result = (HashMap<String, DW_ID>) Generic_IO.readObject(f);
         } else {
-            result = new HashMap<String, DW_ID>();
+            result = new HashMap<>();
         }
         return result;
     }
@@ -2722,7 +2719,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public File getIncomeAndRentSummaryFile(
             //String PT,
-            DW_YM3 YM3,
+            ONSPD_YM3 YM3,
             boolean doUnderOccupancy,
             boolean doCouncil,
             boolean doRSL
@@ -2811,7 +2808,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public TreeMap<String, ArrayList<Integer>> getIncludes() {
         TreeMap<String, ArrayList<Integer>> result;
-        result = new TreeMap<String, ArrayList<Integer>>();
+        result = new TreeMap<>();
         TreeMap<String, ArrayList<Integer>> omits;
         omits = getOmits();
         Iterator<String> ite;
@@ -2835,7 +2832,7 @@ public class DW_SHBE_Handler extends DW_Object {
      * @return
      */
     public ArrayList<Integer> getOmitAll() {
-        return new ArrayList<Integer>();
+        return new ArrayList<>();
     }
 
     public ArrayList<Integer> getIncludeAll() {
@@ -2854,7 +2851,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public ArrayList<Integer> getOmitYearly(int n) {
         ArrayList<Integer> r;
-        r = new ArrayList<Integer>();
+        r = new ArrayList<>();
         r.add(1);
         r.add(3);
         r.add(5);
@@ -2898,7 +2895,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public ArrayList<Integer> getOmit6Monthly(int n) {
         ArrayList<Integer> r;
-        r = new ArrayList<Integer>();
+        r = new ArrayList<>();
         r.add(6);
         r.add(8);
         r.add(10);
@@ -2937,7 +2934,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public ArrayList<Integer> getOmit3Monthly(int n) {
         ArrayList<Integer> r;
-        r = new ArrayList<Integer>();
+        r = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             r.add(i);
         }
@@ -2983,7 +2980,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public ArrayList<Integer> getOmitMonthly() {
         ArrayList<Integer> r;
-        r = new ArrayList<Integer>();
+        r = new ArrayList<>();
         for (int i = 0; i < 14; i++) {
             r.add(i);
         }
@@ -3009,7 +3006,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public ArrayList<Integer> getOmitMonthlyUO() {
         ArrayList<Integer> r;
-        r = new ArrayList<Integer>();
+        r = new ArrayList<>();
         for (int i = 0; i < 17; i++) {
             r.add(i);
         }
@@ -3024,7 +3021,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public ArrayList<Integer> getOmit2MonthlyUO1(int n) {
         ArrayList<Integer> r;
-        r = new ArrayList<Integer>();
+        r = new ArrayList<>();
         for (int i = 0; i < 17; i++) {
             r.add(i);
         }
@@ -3042,7 +3039,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public ArrayList<Integer> getOmit2StartEndSinceApril2013(int n) {
         ArrayList<Integer> r;
-        r = new ArrayList<Integer>();
+        r = new ArrayList<>();
         for (int i = 0; i < 17; i++) {
             r.add(i);
         }
@@ -3061,7 +3058,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public ArrayList<Integer> getOmit2April2013May2013(int n) {
         ArrayList<Integer> r;
-        r = new ArrayList<Integer>();
+        r = new ArrayList<>();
         for (int i = 0; i < 17; i++) {
             r.add(i);
         }
@@ -3079,7 +3076,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public ArrayList<Integer> getOmit2MonthlyUO0(int n) {
         ArrayList<Integer> r;
-        r = new ArrayList<Integer>();
+        r = new ArrayList<>();
         for (int i = 0; i < 17; i++) {
             r.add(i);
         }
@@ -3132,7 +3129,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public TreeMap<String, ArrayList<Integer>> getOmits() {
         TreeMap<String, ArrayList<Integer>> result;
-        result = new TreeMap<String, ArrayList<Integer>>();
+        result = new TreeMap<>();
         String[] tSHBEFilenames;
         tSHBEFilenames = getSHBEFilenamesAll();
         int n;
@@ -3462,7 +3459,7 @@ public class DW_SHBE_Handler extends DW_Object {
      */
     public HashSet<DW_PersonID> getPersonIDs(ArrayList<DW_SHBE_S_Record> S_Records) {
         HashSet<DW_PersonID> result;
-        result = new HashSet<DW_PersonID>();
+        result = new HashSet<>();
         DW_SHBE_S_Record S_Record;
         DW_ID NINO_ID;
         DW_ID DOB_ID;
@@ -3553,7 +3550,7 @@ public class DW_SHBE_Handler extends DW_Object {
         HashSet<DW_PersonID> result;
         Collection<HashSet<DW_PersonID>> c;
         Iterator<HashSet<DW_PersonID>> ite2;
-        result = new HashSet<DW_PersonID>();
+        result = new HashSet<>();
         c = ClaimIDToPersonIDsLookup.values();
         ite2 = c.iterator();
         while (ite2.hasNext()) {
@@ -3565,7 +3562,7 @@ public class DW_SHBE_Handler extends DW_Object {
     public HashSet<DW_PersonID> getUniquePersonIDs0(
             HashMap<DW_ID, DW_PersonID> ClaimIDToPersonIDLookup) {
         HashSet<DW_PersonID> result;
-        result = new HashSet<DW_PersonID>();
+        result = new HashSet<>();
         result.addAll(ClaimIDToPersonIDLookup.values());
         return result;
     }

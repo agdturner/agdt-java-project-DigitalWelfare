@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -36,7 +37,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Da
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  *
@@ -84,7 +84,7 @@ public final class DW_RentArrearsUO extends DW_Object {
         String methodName = "initClaimData()";
         Env.logO("<" + methodName + ">", true);
         // Declare and fill ClaimData with empty DW_Claims
-        ClaimData = new HashMap<DW_ID, DW_Claim>();
+        ClaimData = new HashMap<>();
         HashSet<DW_ID> AllCouncilUOClaimIDs;
         AllCouncilUOClaimIDs = UO_Data.getClaimIDsInCouncilUO();
         Env.logO("AllCouncilUOClaimIDs.size() " + AllCouncilUOClaimIDs.size(), true);
@@ -102,10 +102,10 @@ public final class DW_RentArrearsUO extends DW_Object {
         ArrayList<Integer> include;
         Iterator<Integer> includeIte;
         String filename;
-        DW_YM3 YM3;
+        ONSPD_YM3 YM3;
         DW_SHBE_Records DW_SHBE_Records;
         HashMap<DW_ID, DW_SHBE_Record> Records;
-        TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
+        TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
         DW_UO_Set CouncilUOSet;
         DW_SHBE_Record DW_SHBE_Record;
         DW_SHBE_D_Record DRecord;

@@ -25,14 +25,14 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Records;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstract;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting.DW_Report;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_BarChart;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_LineGraph;
 
@@ -228,7 +228,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     processName,
                     range);
             // Process
-            Postcode_Handler = new DW_Postcode_Handler(Env);
+            Postcode_Handler = new ONSPD_Postcode_Handler(Env.getONSPD_Environment());
             Env.setPostcode_Handler(Postcode_Handler);
             Postcode_Handler.run(logDir);
             // Close logs
@@ -321,14 +321,14 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     range);
             // Process
             SHBE_Data = Env.getSHBE_Data();
-            HashMap<DW_YM3, DW_SHBE_Records> Data;
+            HashMap<ONSPD_YM3, DW_SHBE_Records> Data;
             Data = SHBE_Data.getData();
             SHBE_Handler = new DW_SHBE_Handler(Env);
             Env.setSHBE_Handler(SHBE_Handler);
             SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
             File dir;
             dir = Env.getFiles().getGeneratedSHBEDir();
-            DW_YM3 YM3;
+            ONSPD_YM3 YM3;
             for (String SHBEFilename : SHBEFilenames) {
                 YM3 = SHBE_Handler.getYM3(SHBEFilename);
                 try {
@@ -744,10 +744,10 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
      */
     public TreeMap<String, TreeMap<String, String>> getClaimPostcodeF_To_LevelCode_Maps(
             ArrayList<String> levels,
-            DW_YM3 YM3,
+            ONSPD_YM3 YM3,
             int CensusYear) {
         TreeMap<String, TreeMap<String, String>> result;
-        result = new TreeMap<String, TreeMap<String, String>>();
+        result = new TreeMap<>();
         Iterator<String> ite = levels.iterator();
         while (ite.hasNext()) {
             String level = ite.next();

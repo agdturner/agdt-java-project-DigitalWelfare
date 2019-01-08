@@ -156,7 +156,7 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
      */
     public ArrayList<String> getTenancyTypeUnregulated() {
         if (TenancyTypeUnregulated == null) {
-            TenancyTypeUnregulated = new ArrayList<String>();
+            TenancyTypeUnregulated = new ArrayList<>();
             TenancyTypeUnregulated.add(s3);
             TenancyTypeUnregulated.add(s6);
         }
@@ -181,7 +181,7 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
     public ArrayList<String> getTenancyTypeRegulated(boolean doUnderOccupiedData) {
         if (doUnderOccupiedData) {
             if (TenancyTypeRegulatedUO == null) {
-                TenancyTypeRegulatedUO = new ArrayList<String>();
+                TenancyTypeRegulatedUO = new ArrayList<>();
                 TenancyTypeRegulatedUO.add(s1);
                 TenancyTypeRegulatedUO.add(s2);
                 TenancyTypeRegulatedUO.add(s4);
@@ -192,7 +192,7 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
             return TenancyTypeRegulatedUO;
         } else {
             if (TenancyTypeRegulated == null) {
-                TenancyTypeRegulated = new ArrayList<String>();
+                TenancyTypeRegulated = new ArrayList<>();
                 TenancyTypeRegulated.add(s1);
                 TenancyTypeRegulated.add(s2);
                 TenancyTypeRegulated.add(s4);
@@ -203,7 +203,7 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
 
     public ArrayList<String> getTenancyTypeAll() {
         ArrayList<String> result;
-        result = new ArrayList<String>();
+        result = new ArrayList<>();
         //result.add(s0);
         result.add(s1);
         result.add(s2);
@@ -253,22 +253,22 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
         result = new Object[4];
         Boolean underOccupied;
         HashMap<Boolean, TreeMap<String, ArrayList<String>>> tenancyTypeGroups;
-        tenancyTypeGroups = new HashMap<Boolean, TreeMap<String, ArrayList<String>>>();
+        tenancyTypeGroups = new HashMap<>();
         HashMap<Boolean, ArrayList<String>> tenancyTypesGrouped;
-        tenancyTypesGrouped = new HashMap<Boolean, ArrayList<String>>();
+        tenancyTypesGrouped = new HashMap<>();
         TreeMap<String, ArrayList<String>> ttgs;
         ArrayList<String> ttg;
         ArrayList<String> all;
         ArrayList<String> regulated;
         ArrayList<String> unregulated;
         HashMap<Boolean, ArrayList<String>> regulatedGroups;
-        regulatedGroups = new HashMap<Boolean, ArrayList<String>>();
+        regulatedGroups = new HashMap<>();
         HashMap<Boolean, ArrayList<String>> unregulatedGroups;
-        unregulatedGroups = new HashMap<Boolean, ArrayList<String>>();
+        unregulatedGroups = new HashMap<>();
         ArrayList<String> rg;
         ArrayList<String> ug;
         underOccupied = false;
-        ttgs = new TreeMap<String, ArrayList<String>>();
+        ttgs = new TreeMap<>();
         all = getTenancyTypeAll(underOccupied);
         ttgs.put(sall, all);
         regulated = getTenancyTypeRegulated(underOccupied);
@@ -276,7 +276,7 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
         unregulated = getTenancyTypeUnregulated();
         ttgs.put(ds.sUnregulated, unregulated);
         tenancyTypeGroups.put(underOccupied, ttgs);
-        ttg = new ArrayList<String>();
+        ttg = new ArrayList<>();
         ttg.add(ds.sRegulated);
         ttg.add(ds.sUnregulated);
         ttg.add(ds.sUngrouped);
@@ -287,7 +287,7 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
         ug = getTenancyTypeUnregulated();
         unregulatedGroups.put(underOccupied, ug);
         underOccupied = true;
-        ttgs = new TreeMap<String, ArrayList<String>>();
+        ttgs = new TreeMap<>();
         all = getTenancyTypeAll(underOccupied);
         ttgs.put(sall, all);
         regulated = getTenancyTypeRegulated(underOccupied);
@@ -295,7 +295,7 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
         unregulated = getTenancyTypeUnregulated();
         ttgs.put(ds.sUnregulated, unregulated);
         tenancyTypeGroups.put(underOccupied, ttgs);
-        ttg = new ArrayList<String>();
+        ttg = new ArrayList<>();
         ttg.add(ds.sRegulated);
         ttg.add(ds.sRegulated + ds.sU);
         ttg.add(ds.sUnregulated);
@@ -318,7 +318,7 @@ public class DW_SHBE_TenancyType_Handler extends DW_Object {
     
     public HashMap<String, String> getTenancyTypeGroupLookup() {
         HashMap<String, String> result;
-        result = new HashMap<String, String>();
+        result = new HashMap<>();
         result.put(s1, ds.sRegulated);
         result.put(s2, ds.sRegulated);
         result.put(s3, ds.sUnregulated);

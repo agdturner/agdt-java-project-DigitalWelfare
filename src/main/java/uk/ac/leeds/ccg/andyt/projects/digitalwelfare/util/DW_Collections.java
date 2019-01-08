@@ -95,13 +95,13 @@ public class DW_Collections extends Generic_Collections {
     }
 
     public static HashMap<DW_ID, String> getHashMap_DW_ID__String(File f) {
-        HashMap<DW_ID, String> result;
+        HashMap<DW_ID, String> r;
         if (f.exists()) {
-            result = (HashMap<DW_ID, String>) Generic_IO.readObject(f);
+            r = (HashMap<DW_ID, String>) Generic_IO.readObject(f);
         } else {
-            result = new HashMap<DW_ID, String>();
+            r = new HashMap<>();
         }
-        return result;
+        return r;
     }
 
     public static HashSet<DW_ID> getHashSet_DW_ID(File f) {
@@ -109,7 +109,7 @@ public class DW_Collections extends Generic_Collections {
         if (f.exists()) {
             result = (HashSet<DW_ID>) Generic_IO.readObject(f);
         } else {
-            result = new HashSet<DW_ID>();
+            result = new HashSet<>();
         }
         return result;
     }
@@ -119,7 +119,7 @@ public class DW_Collections extends Generic_Collections {
         if (f.exists()) {
             result = (HashSet<DW_PersonID>) Generic_IO.readObject(f);
         } else {
-            result = new HashSet<DW_PersonID>();
+            result = new HashSet<>();
         }
         return result;
     }
@@ -130,7 +130,7 @@ public class DW_Collections extends Generic_Collections {
         if (f.exists()) {
             result = (HashMap<DW_PersonID, HashSet<DW_ID>>) Generic_IO.readObject(f);
         } else {
-            result = new HashMap<DW_PersonID, HashSet<DW_ID>>();
+            result = new HashMap<>();
         }
         return result;
     }

@@ -24,10 +24,12 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_DataHandler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
@@ -35,7 +37,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Da
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
@@ -73,6 +74,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      */
     private DW_Files Files;
 
+    protected transient ONSPD_Environment ONSPD_Env;
+        
     /**
      * For storing an instance of Grids_Environment
      */
@@ -88,6 +91,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      */
     protected transient DW_Geotools Geotools;
 
+    
 //    /**
 //     * For storing an instance of HashMap<String, DW_SHBE_CollectionHandler>.
 //     */
@@ -101,11 +105,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * For storing an instance of UO_Data.
      */
     protected DW_UO_Data UO_Data;
-
-    /**
-     * For storing an instance of DW_Postcode_Handler for convenience.
-     */
-    private DW_Postcode_Handler Postcode_Handler;
 
     /**
      * For storing an instance of SHBE_Handler for convenience.
@@ -283,7 +282,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @param YM3
      * @return True iff a collection is swapped.
      */
-    public boolean clearSomeSHBECacheExcept(DW_YM3 YM3) {
+    public boolean clearSomeSHBECacheExcept(ONSPD_YM3 YM3) {
         return getSHBE_Data().clearSomeCacheExcept(YM3);
     }
 
@@ -427,6 +426,13 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         return Files;
     }
 
+    public ONSPD_Environment getONSPD_Environment() {
+        if (ONSPD_Env == null) {
+            ONSPD_Env = new ONSPD_Environment();
+        }
+        return ONSPD_Env;
+    }
+    
     /**
      * For returning an instance of Grids_Environment for convenience.
      *
@@ -467,12 +473,14 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         return UO_Handler;
     }
 
+    public ONSPD_Postcode_Handler Postcode_Handler;
+            
     /**
-     * {@code this.DW_Postcode_Handler = DW_Postcode_Handler;}
+     * {@code this.ONSPD_Postcode_Handler = ONSPD_Postcode_Handler;}
      *
-     * @param Postcode_Handler The DW_Postcode_Handler to set.
+     * @param Postcode_Handler The ONSPD_Postcode_Handler to set.
      */
-    public void setPostcode_Handler(DW_Postcode_Handler Postcode_Handler) {
+    public void setPostcode_Handler(ONSPD_Postcode_Handler Postcode_Handler) {
         this.Postcode_Handler = Postcode_Handler;
     }
 
@@ -539,9 +547,9 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             } else if (f.exists()) {
                 UO_Data = (DW_UO_Data) Generic_IO.readObject(f);
                 // For debugging/testing load
-                TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
+                TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
                 CouncilUOSets = UO_Data.getCouncilUOSets();
-                TreeMap<DW_YM3, DW_UO_Set> RSLUOSets;
+                TreeMap<ONSPD_YM3, DW_UO_Set> RSLUOSets;
                 RSLUOSets = UO_Data.getRSLUOSets();
                 int n;
                 n = CouncilUOSets.size() + RSLUOSets.size();
@@ -561,13 +569,15 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     }
 
     /**
-     * For returning an instance of DW_Postcode_Handler for convenience.
+     * For returning an instance of ONSPD_Postcode_Handler for convenience.
      *
      * @return
      */
-    public DW_Postcode_Handler getPostcode_Handler() {
+    public ONSPD_Postcode_Handler getPostcode_Handler() {
         if (Postcode_Handler == null) {
-            Postcode_Handler = new DW_Postcode_Handler(this);
+            ONSPD_Environment oe;
+            oe = new ONSPD_Environment();
+            Postcode_Handler = new ONSPD_Postcode_Handler(oe);
         }
         return Postcode_Handler;
     }

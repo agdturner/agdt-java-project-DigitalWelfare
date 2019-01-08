@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
@@ -21,7 +22,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  * This is the main class for the Digital Welfare Project. For more details of
@@ -83,13 +83,13 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         File outDir1;
         File outDir2;
         File outFile;
-        DW_YM3 YM3;
+        ONSPD_YM3 YM3;
         PrintWriter outPW;
         String PT;
 
         int CensusYear = 2011;
         // Initialisiation
-        levels = new ArrayList<String>();
+        levels = new ArrayList<>();
 //        levels.add(Strings.sOA);
         levels.add(Strings.sLSOA);
         levels.add(Strings.sMSOA);
@@ -114,10 +114,10 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                 Files.getOutputSHBETablesDir(),
                 Strings.sHBGeneralAggregateStatistics);
         // Load UOdata
-        TreeMap<DW_YM3, DW_UO_Set> CouncilUOSets;
+        TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
         DW_UO_Set CouncilUOSet;
         HashMap<DW_ID, DW_UO_Record> CouncilUOMap = null;
-        TreeMap<DW_YM3, DW_UO_Set> RSLUOSets;
+        TreeMap<ONSPD_YM3, DW_UO_Set> RSLUOSets;
         DW_UO_Set RSLUOSet;
         HashMap<DW_ID, DW_UO_Record> RSLUOMap = null;
         CouncilUOSets = UO_Data.getCouncilUOSets();
@@ -152,7 +152,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                 //DW_SHBE_Records = Env.getDW_SHBE_Data().getData().get(YM3);
                 //records0 = DW_SHBE_Records.getDataPTI(Env._HandleOutOfMemoryError_boolean);
                 TreeMap<String, TreeMap<String, int[]>> result;
-                result = new TreeMap<String, TreeMap<String, int[]>>();
+                result = new TreeMap<>();
                 TreeMap<String, int[]> result0;
                 int[] resultValues;
 
@@ -193,7 +193,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                                 if (result.containsKey(level)) {
                                     result0 = result.get(level);
                                 } else {
-                                    result0 = new TreeMap<String, int[]>();
+                                    result0 = new TreeMap<>();
                                     result.put(level, result0);
                                 }
                                 ClaimPostcodeF_To_LevelCodeMap = ClaimPostcodeF_To_LevelCode_Maps.get(level);

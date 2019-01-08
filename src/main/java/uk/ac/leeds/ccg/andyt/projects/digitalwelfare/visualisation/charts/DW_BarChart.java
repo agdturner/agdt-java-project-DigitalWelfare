@@ -110,7 +110,7 @@ public class DW_BarChart extends Generic_BarChart {
         ArrayList<String> claimantTypes;
         claimantTypes = Strings.getHB_CTB();
         ArrayList<String> levels;
-        levels = new ArrayList<String>();
+        levels = new ArrayList<>();
         levels.add("OA");
         levels.add("LSOA");
         levels.add("MSOA");
@@ -121,7 +121,7 @@ public class DW_BarChart extends Generic_BarChart {
         initAreaCodes(levels);
 
         ArrayList<String> types;
-        types = new ArrayList<String>();
+        types = new ArrayList<>();
         types.add("All"); // Count of all claimants
 ////                allTypes.add("NewEntrant"); // New entrants will include people already from Leeds. Will this also include people new to Leeds? - Probably...
         types.add("OnFlow"); // These are people not claiming the previous month and that have not claimed before.
@@ -131,7 +131,7 @@ public class DW_BarChart extends Generic_BarChart {
         types.add("AllOutChurn"); // A count of all claimants that have moved that were living in this area (including all people moving within the area).
 
         ArrayList<String> distanceTypes;
-        distanceTypes = new ArrayList<String>();
+        distanceTypes = new ArrayList<>();
         distanceTypes.add("InDistanceChurn"); // A count of all claimants that have moved within this area.
         // A useful indication of places where displaced people from Leeds are placed?
         distanceTypes.add("WithinDistanceChurn"); // A count of all claimants that have moved within this area.
@@ -139,14 +139,14 @@ public class DW_BarChart extends Generic_BarChart {
 
         // Tenure Type Groups
         ArrayList<String> tenureTypes;
-        tenureTypes = new ArrayList<String>();
+        tenureTypes = new ArrayList<>();
         tenureTypes.add("all");
         tenureTypes.add("regulated");
         tenureTypes.add("unregulated");
 
         // Specifiy distances
         ArrayList<Double> distances;
-        distances = new ArrayList<Double>();
+        distances = new ArrayList<>();
         for (double distance = 1000.0d; distance < 5000.0d; distance += 1000.0d) {
 //        for (double distance = 1000.0d; distance < 2000.0d; distance += 1000.0d) {
             distances.add(distance);
@@ -157,7 +157,7 @@ public class DW_BarChart extends Generic_BarChart {
 //        startIndex = 19;
 
         ArrayList<Boolean> b;
-        b = new ArrayList<Boolean>();
+        b = new ArrayList<>();
         b.add(true);
         b.add(false);
 
@@ -425,7 +425,7 @@ public class DW_BarChart extends Generic_BarChart {
         areaCodes2 = areaCodes.get(level);
 
         TreeMap<String, BigDecimal> map;
-        map = new TreeMap<String, BigDecimal>();
+        map = new TreeMap<>();
 
         Iterator<String> ite;
         ite = lines.iterator();
@@ -503,7 +503,7 @@ public class DW_BarChart extends Generic_BarChart {
     }
 
     public void initAreaCodes(ArrayList<String> levels) {
-        areaCodes = new HashMap<String, HashSet<String>>();
+        areaCodes = new HashMap<>();
         DW_Files tDW_Files;
         tDW_Files = Env.getFiles();
         Iterator<String> ite;
@@ -551,7 +551,7 @@ public class DW_BarChart extends Generic_BarChart {
             } else {
                 ArrayList<String> lines;
                 lines = DW_Table.readCSV(fin);
-                areaCodesForLevel = new HashSet<String>();
+                areaCodesForLevel = new HashSet<>();
                 areaCodesForLevel.addAll(lines);
                 Generic_IO.writeObject(areaCodesForLevel, fout);
             }

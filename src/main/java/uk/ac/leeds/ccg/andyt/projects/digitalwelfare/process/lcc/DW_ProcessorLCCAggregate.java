@@ -16,6 +16,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -28,7 +30,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_TenancyTy
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  * Class for aggregating data.
@@ -74,11 +75,9 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 //    String sInDistanceChurn = "InDistanceChurn";
 //    String sWithinDistanceChurn = "WithinDistanceChurn";
 //    String sOutDistanceChurn = "OutDistanceChurn";
-
     boolean doAggregation = false;
     boolean doHBGeneralAggregateStatistics = false;
 
-    
     public DW_ProcessorLCCAggregate(DW_Environment env) {
         super(env);
         UO_Handler = env.getUO_Handler();
@@ -111,7 +110,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 //            PTs.remove(Strings.sPaymentTypeSuspended);
 //            PTs.remove(Strings.sPaymentTypeOther);
 
-        levels = new ArrayList<String>();
+        levels = new ArrayList<>();
 //        levels.add(Strings.sOA);
         levels.add(Strings.sLSOA);
         levels.add(Strings.sMSOA);
@@ -139,7 +138,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         claimantTypes = Strings.getHB_CTB();
 
         // Initialise types
-        types = new ArrayList<String>();
+        types = new ArrayList<>();
         types.add(Strings.sAllClaimants); // Count of all claimants
 //        types.add("NewEntrant"); // New entrants will include people already from Leeds. Will this also include people new to Leeds? - Probably...
         types.add(Strings.sOnFlow); // These are people not claiming the previous month and that have not claimed before.
@@ -149,21 +148,21 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         types.add(Strings.sAllOutChurn); // A count of all claimants that have moved that were living in this area (including all people moving within the area).
 
         // Initialise distanceTypes
-        distanceTypes = new ArrayList<String>();
+        distanceTypes = new ArrayList<>();
         distanceTypes.add(Strings.sInDistanceChurn); // A count of all claimants that have moved within this area.
         // A useful indication of places where displaced people from Leeds are placed?
         distanceTypes.add(Strings.sWithinDistanceChurn); // A count of all claimants that have moved within this area.
         distanceTypes.add(Strings.sOutDistanceChurn); // A count of all claimants that have moved out from this area.
 
         // Initialise/Specifiy distances
-        distances = new ArrayList<Double>();
+        distances = new ArrayList<>();
         for (double distance = 1000.0d; distance < 5000.0d; distance += 1000.0d) {
 //        for (double distance = 1000.0d; distance < 2000.0d; distance += 1000.0d) {
             distances.add(distance);
         }
 
         // Initialise TTs
-        TTs = new HashMap<Boolean, ArrayList<String>>();
+        TTs = new HashMap<>();
         boolean doUO;
         doUO = true;
         TTs.put(doUO, SHBE_TenancyType_Handler.getTenancyTypeAll(doUO));
@@ -181,7 +180,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         doHBGeneralAggregateStatistics = true;
 
         if (doAggregation) {
-            DW_YM3 YM3;
+            ONSPD_YM3 YM3;
 //            for (int i = 0; i < SHBEFilenames.length; i++) {
 //                YM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
             for (String SHBEFilename : SHBEFilenames) {
@@ -229,7 +228,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
      * @param includes
      */
     protected void aggregate(
-            DW_YM3 YM3,
+            ONSPD_YM3 YM3,
             ArrayList<String> PTs,
             ArrayList<String> levels,
             ArrayList<Boolean> bArray,
@@ -450,7 +449,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         Iterator<String> ite;
         Iterator<DW_ID> ite2;
         HashSet<DW_ID> totalCouncil;
-        totalCouncil = new HashSet<DW_ID>();
+        totalCouncil = new HashSet<>();
         ite = CouncilSets.keySet().iterator();
         while (ite.hasNext()) {
             String YM3;
@@ -468,7 +467,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         TreeMap<String, DW_UO_Set> tRSLSets;
         tRSLSets = (TreeMap<String, DW_UO_Set>) UnderOccupiedData[1];
         HashSet<DW_ID> totalRSL;
-        totalRSL = new HashSet<DW_ID>();
+        totalRSL = new HashSet<>();
         ite = tRSLSets.keySet().iterator();
         while (ite.hasNext()) {
             String yM;
@@ -497,7 +496,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             TreeMap<String, DW_UO_Set> DW_UO_SetsCouncil,
             TreeMap<String, DW_UO_Set> DW_UO_SetsRSL) {
         TreeMap<String, DW_UO_Set> result;
-        result = new TreeMap<String, DW_UO_Set>();
+        result = new TreeMap<>();
         String YM3;
         DW_UO_Set DW_UO_SetAll;
         DW_UO_Set DW_UO_SetCouncil;
@@ -530,14 +529,14 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     }
 
     protected HashMap<DW_ID, Integer> loadClaimIDToTTLookup(
-            DW_YM3 YM3,
+            ONSPD_YM3 YM3,
             Integer key,
             HashMap<Integer, HashMap<DW_ID, Integer>> ClaimIDToTTLookups) {
         HashMap<DW_ID, Integer> result;
         if (ClaimIDToTTLookups.containsKey(key)) {
             return ClaimIDToTTLookups.get(key);
         }
-        result = new HashMap<DW_ID, Integer>();
+        result = new HashMap<>();
         DW_SHBE_Records DW_SHBE_Records;
         DW_SHBE_Records = SHBE_Data.getDW_SHBE_Records(YM3);
         HashMap<DW_ID, DW_SHBE_Record> records;
@@ -555,17 +554,17 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         return result;
     }
 
-    protected HashMap<DW_ID, DW_ID> loadClaimIDToPostcodeIDLookup(
-            DW_YM3 YM3,
+    protected HashMap<DW_ID, ONSPD_ID> loadClaimIDToPostcodeIDLookup(
+            ONSPD_YM3 YM3,
             Integer key,
-            HashMap<Integer, HashMap<DW_ID, DW_ID>> ClaimIDToPostcodeIDLookups) {
-        HashMap<DW_ID, DW_ID> result;
+            HashMap<Integer, HashMap<DW_ID, ONSPD_ID>> ClaimIDToPostcodeIDLookups) {
+        HashMap<DW_ID, ONSPD_ID> r;
         if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
             return ClaimIDToPostcodeIDLookups.get(key);
         }
-        result = Env.getSHBE_Data().getDW_SHBE_Records(YM3).getClaimIDToPostcodeIDLookup(Env.HOOME);
-        ClaimIDToPostcodeIDLookups.put(key, result);
-        return result;
+        r = Env.getSHBE_Data().getDW_SHBE_Records(YM3).getClaimIDToPostcodeIDLookup(Env.HOOME);
+        ClaimIDToPostcodeIDLookups.put(key, r);
+        return r;
     }
 
     private void writeTransitionFrequencies(
@@ -676,8 +675,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 doCouncil,
                 doRSL);
         // Init underOccupiedSets
-        TreeMap<DW_YM3, DW_UO_Set> councilUnderOccupiedSets = null;
-        TreeMap<DW_YM3, DW_UO_Set> RSLUnderOccupiedSets = null;
+        TreeMap<ONSPD_YM3, DW_UO_Set> councilUnderOccupiedSets = null;
+        TreeMap<ONSPD_YM3, DW_UO_Set> RSLUnderOccupiedSets = null;
         if (doUnderOccupied) {
             if (doCouncil) {
                 councilUnderOccupiedSets = DW_UO_Data.getCouncilUOSets();
@@ -705,44 +704,44 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             int i;
             i = includeIte.next();
             // Load first data
-            DW_YM3 YM30;
+            ONSPD_YM3 YM30;
             YM30 = SHBE_Handler.getYM3(SHBEFilenames[i]);
             DW_SHBE_Records recs0;
             recs0 = Env.getSHBE_Data().getDW_SHBE_Records(YM30);
-            DW_YM3 YM30v;
+            ONSPD_YM3 YM30v;
             YM30v = recs0.getNearestYM3ForONSPDLookup();
             HashMap<DW_ID, DW_SHBE_Record> records0;
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>> claimantTypeTenureLevelTypeAreaCounts;
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>>> claimantTypeTenureLevelTypeTenureCounts;
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, File>>>> claimantTypeTenureLevelTypeDirs;
-            claimantTypeTenureLevelTypeDirs = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, File>>>>();
-            claimantTypeTenureLevelTypeAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>>();
-            claimantTypeTenureLevelTypeTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>>>();
+            claimantTypeTenureLevelTypeDirs = new TreeMap<>();
+            claimantTypeTenureLevelTypeAreaCounts = new TreeMap<>();
+            claimantTypeTenureLevelTypeTenureCounts = new TreeMap<>();
             claimantTypesIte = claimantTypes.iterator();
             while (claimantTypesIte.hasNext()) {
                 String claimantType;
                 claimantType = claimantTypesIte.next();
                 // Initialise Dirs
                 TreeMap<String, TreeMap<String, TreeMap<String, File>>> TTLevelTypeDirs;
-                TTLevelTypeDirs = new TreeMap<String, TreeMap<String, TreeMap<String, File>>>();
+                TTLevelTypeDirs = new TreeMap<>();
                 // Initialise AreaCounts
                 TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>> TTLevelTypeAreaCounts;
-                TTLevelTypeAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>();
+                TTLevelTypeAreaCounts = new TreeMap<>();
                 // Initialise TenureCounts
                 TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>> TTLevelTypeTenureCounts;
-                TTLevelTypeTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>>();
+                TTLevelTypeTenureCounts = new TreeMap<>();
                 TTIte = TTGroups.keySet().iterator();
                 while (TTIte.hasNext()) {
                     String TT = TTIte.next();
                     // Initialise Dirs
                     TreeMap<String, TreeMap<String, File>> levelTypeDirs;
-                    levelTypeDirs = new TreeMap<String, TreeMap<String, File>>();
+                    levelTypeDirs = new TreeMap<>();
                     // Initialise AreaCounts
                     TreeMap<String, TreeMap<String, TreeMap<String, Integer>>> levelTypeAreaCounts;
-                    levelTypeAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>();
+                    levelTypeAreaCounts = new TreeMap<>();
                     // Initialise TenureCounts
                     TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>> levelTypeTenureCounts;
-                    levelTypeTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>();
+                    levelTypeTenureCounts = new TreeMap<>();
                     levelsIte = levels.iterator();
                     while (levelsIte.hasNext()) {
                         String level = levelsIte.next();
@@ -753,13 +752,13 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 outDir0,
                                 includeName);
                         TreeMap<String, File> typeDirs;
-                        typeDirs = new TreeMap<String, File>();
+                        typeDirs = new TreeMap<>();
                         // Initialise AreaCounts
                         TreeMap<String, TreeMap<String, Integer>> typeAreaCounts;
-                        typeAreaCounts = new TreeMap<String, TreeMap<String, Integer>>();
+                        typeAreaCounts = new TreeMap<>();
                         // Initialise TenureCounts
                         TreeMap<String, TreeMap<Integer, Integer>> typeTenureCounts;
-                        typeTenureCounts = new TreeMap<String, TreeMap<Integer, Integer>>();
+                        typeTenureCounts = new TreeMap<>();
                         typesIte = types.iterator();
                         while (typesIte.hasNext()) {
                             String type;
@@ -778,11 +777,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                             typeDirs.put(type, outDir1);
                             // Initialise AreaCounts
                             TreeMap<String, Integer> areaCount;
-                            areaCount = new TreeMap<String, Integer>();
+                            areaCount = new TreeMap<>();
                             typeAreaCounts.put(type, areaCount);
                             // Initialise TenureCounts
                             TreeMap<Integer, Integer> TTCounts;
-                            TTCounts = new TreeMap<Integer, Integer>();
+                            TTCounts = new TreeMap<>();
                             typeTenureCounts.put(type, TTCounts);
                         }
                         levelTypeDirs.put(level, typeDirs);
@@ -891,30 +890,30 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             }
             // Write out results
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>> claimantTypeTenureLevelTypeCountAreas;
-            claimantTypeTenureLevelTypeCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>();
+            claimantTypeTenureLevelTypeCountAreas = new TreeMap<>();
             //yearMonthClaimantTypeTenureLevelTypeCountAreas.put(yearMonth, claimantTypeTenureLevelTypeCountAreas);
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>> claimantTypeTenureLevelDistanceTypeDistanceCountAreas;
-            claimantTypeTenureLevelDistanceTypeDistanceCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>();
+            claimantTypeTenureLevelDistanceTypeDistanceCountAreas = new TreeMap<>();
             //yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas.put(yearMonth, claimantTypeTenureLevelDistanceTypeDistanceCountAreas);
             // claimantTypeLoop
             claimantTypesIte = claimantTypes.iterator();
             while (claimantTypesIte.hasNext()) {
                 String claimantType = claimantTypesIte.next();
                 TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>> TTLevelTypeCountAreas;
-                TTLevelTypeCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>();
+                TTLevelTypeCountAreas = new TreeMap<>();
                 claimantTypeTenureLevelTypeCountAreas.put(claimantType, TTLevelTypeCountAreas);
                 TTIte = TTGroups.keySet().iterator();
                 while (TTIte.hasNext()) {
                     String TT;
                     TT = TTIte.next();
                     TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>> levelTypeCountAreas;
-                    levelTypeCountAreas = new TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>();
+                    levelTypeCountAreas = new TreeMap<>();
                     TTLevelTypeCountAreas.put(TT, levelTypeCountAreas);
                     levelsIte = levels.iterator();
                     while (levelsIte.hasNext()) {
                         String level = levelsIte.next();
                         TreeMap<String, TreeMap<Integer, TreeSet<String>>> typeCountAreas;
-                        typeCountAreas = new TreeMap<String, TreeMap<Integer, TreeSet<String>>>();
+                        typeCountAreas = new TreeMap<>();
                         levelTypeCountAreas.put(level, typeCountAreas);
                         typesIte = types.iterator();
                         while (typesIte.hasNext()) {
@@ -940,15 +939,15 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             }
 
             // Get Top 10 areas
-            TreeMap<DW_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>> yearMonthClaimantTypeTenureLevelTypeCountAreas;
-            yearMonthClaimantTypeTenureLevelTypeCountAreas = new TreeMap<DW_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>>();
+            TreeMap<ONSPD_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>> yearMonthClaimantTypeTenureLevelTypeCountAreas;
+            yearMonthClaimantTypeTenureLevelTypeCountAreas = new TreeMap<ONSPD_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>>();
 
-            TreeMap<DW_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>> yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas;
-            yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas = new TreeMap<DW_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>>();
+            TreeMap<ONSPD_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>> yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas;
+            yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas = new TreeMap<ONSPD_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>>();
 
             // Initialise tIDIndexes
             ArrayList<ArrayList<DW_ID>> tIDIndexes;
-            tIDIndexes = new ArrayList<ArrayList<DW_ID>>();
+            tIDIndexes = new ArrayList<>();
             if (true) {
 //                ArrayList<DW_ID> tID_HashSet;
 //                tID_HashSet = recs0.getClaimIDToClaimantPersonIDLookup(Env.HOOME);
@@ -958,7 +957,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             while (includeIte.hasNext()) {
                 i = includeIte.next();
                 // Set Year and Month variables
-                DW_YM3 YM31 = SHBE_Handler.getYM3(SHBEFilenames[i]);
+                ONSPD_YM3 YM31 = SHBE_Handler.getYM3(SHBEFilenames[i]);
                 // Load next data
                 DW_SHBE_Records recs1;
                 recs1 = Env.getSHBE_Data().getDW_SHBE_Records(YM31);
@@ -966,7 +965,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 ClaimIDToPostcodeIDLookup1 = null;//recs1.getClaimDW_IDToPostcodeLookup();
                 HashMap<DW_ID, Integer> ClaimIDToTTLookup1;
                 ClaimIDToTTLookup1 = null;//recs1.getClaimantIDToTenancyTypeLookup();
-                DW_YM3 YM31v;
+                ONSPD_YM3 YM31v;
                 YM31v = recs1.getNearestYM3ForONSPDLookup();
 //            String yearMonth = year + month;
 //            String lastMonth_yearMonth;
@@ -1015,21 +1014,21 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                  * TTDistanceAreaCount.
                  */
 //            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, File>>>> claimantTypeTenureLevelTypeDirs;
-                claimantTypeTenureLevelTypeDirs = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, File>>>>();
+                claimantTypeTenureLevelTypeDirs = new TreeMap<>();
                 TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, File>>>>> claimantTypeTenureLevelTypeDistanceDirs;
-                claimantTypeTenureLevelTypeDistanceDirs = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, File>>>>>();
+                claimantTypeTenureLevelTypeDistanceDirs = new TreeMap<>();
 //            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>> claimantTypeTenureLevelTypeAreaCounts;
-                claimantTypeTenureLevelTypeAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>>();
+                claimantTypeTenureLevelTypeAreaCounts = new TreeMap<>();
                 TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>>>> claimantTypeTenureLevelTypeDistanceAreaCounts;
-                claimantTypeTenureLevelTypeDistanceAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>>>>();
+                claimantTypeTenureLevelTypeDistanceAreaCounts = new TreeMap<>();
                 /* Initialise B:
                  * claimantTypeLevelTypeTenureCounts;
                  * claimantTypeLevelTypeDistanceTenureCounts;
                  */
 //            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>>> claimantTypeTenureLevelTypeTenureCounts;
-                claimantTypeTenureLevelTypeTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>>>();
+                claimantTypeTenureLevelTypeTenureCounts = new TreeMap<>();
                 TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>>>> claimantTypeTenureLevelTypeDistanceTenureCounts;
-                claimantTypeTenureLevelTypeDistanceTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>>>>();
+                claimantTypeTenureLevelTypeDistanceTenureCounts = new TreeMap<>();
                 // claimantTypeLoop
                 claimantTypesIte = claimantTypes.iterator();
                 while (claimantTypesIte.hasNext()) {
@@ -1037,37 +1036,37 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                     claimantType = claimantTypesIte.next();
                     // Initialise Dirs
                     TreeMap<String, TreeMap<String, TreeMap<String, File>>> TTLevelTypeDirs;
-                    TTLevelTypeDirs = new TreeMap<String, TreeMap<String, TreeMap<String, File>>>();
+                    TTLevelTypeDirs = new TreeMap<>();
                     TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, File>>>> TTLevelTypeDistanceDirs;
-                    TTLevelTypeDistanceDirs = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, File>>>>();
+                    TTLevelTypeDistanceDirs = new TreeMap<>();
                     // Initialise AreaCounts
                     TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>> TTLevelTypeAreaCounts;
-                    TTLevelTypeAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>();
+                    TTLevelTypeAreaCounts = new TreeMap<>();
                     TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>>> TTLevelTypeDistanceAreaCounts;
-                    TTLevelTypeDistanceAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>>>();
+                    TTLevelTypeDistanceAreaCounts = new TreeMap<>();
                     // Initialise TenureCounts
                     TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>> TTLevelTypeTenureCounts;
-                    TTLevelTypeTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>>();
+                    TTLevelTypeTenureCounts = new TreeMap<>();
                     TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>>> TTLevelTypeDistanceTenureCounts;
-                    TTLevelTypeDistanceTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>>>();
+                    TTLevelTypeDistanceTenureCounts = new TreeMap<>();
                     TTIte = TTGroups.keySet().iterator();
                     while (TTIte.hasNext()) {
                         String TT = TTIte.next();
                         // Initialise Dirs
                         TreeMap<String, TreeMap<String, File>> levelTypeDirs;
-                        levelTypeDirs = new TreeMap<String, TreeMap<String, File>>();
+                        levelTypeDirs = new TreeMap<>();
                         TreeMap<String, TreeMap<String, TreeMap<Double, File>>> levelTypeDistanceDirs;
-                        levelTypeDistanceDirs = new TreeMap<String, TreeMap<String, TreeMap<Double, File>>>();
+                        levelTypeDistanceDirs = new TreeMap<>();
                         // Initialise AreaCounts
                         TreeMap<String, TreeMap<String, TreeMap<String, Integer>>> levelTypeAreaCounts;
-                        levelTypeAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>();
+                        levelTypeAreaCounts = new TreeMap<>();
                         TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>> levelTypeDistanceAreaCounts;
-                        levelTypeDistanceAreaCounts = new TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>>();
+                        levelTypeDistanceAreaCounts = new TreeMap<>();
                         // Initialise TenureCounts
                         TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>> levelTypeTenureCounts;
-                        levelTypeTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>();
+                        levelTypeTenureCounts = new TreeMap<>();
                         TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>> levelTypeDistanceTenureCounts;
-                        levelTypeDistanceTenureCounts = new TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>>();
+                        levelTypeDistanceTenureCounts = new TreeMap<>();
                         levelsIte = levels.iterator();
                         while (levelsIte.hasNext()) {
                             String level = levelsIte.next();
@@ -1078,19 +1077,19 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                     outDir0,
                                     includeName);
                             TreeMap<String, File> typeDirs;
-                            typeDirs = new TreeMap<String, File>();
+                            typeDirs = new TreeMap<>();
                             TreeMap<String, TreeMap<Double, File>> typeDistanceDirs;
-                            typeDistanceDirs = new TreeMap<String, TreeMap<Double, File>>();
+                            typeDistanceDirs = new TreeMap<>();
                             // Initialise AreaCounts
                             TreeMap<String, TreeMap<String, Integer>> typeAreaCounts;
-                            typeAreaCounts = new TreeMap<String, TreeMap<String, Integer>>();
+                            typeAreaCounts = new TreeMap<>();
                             TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>> typeDistanceAreaCounts;
-                            typeDistanceAreaCounts = new TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>();
+                            typeDistanceAreaCounts = new TreeMap<>();
                             // Initialise TenureCounts
                             TreeMap<String, TreeMap<Integer, Integer>> typeTenureCounts;
-                            typeTenureCounts = new TreeMap<String, TreeMap<Integer, Integer>>();
+                            typeTenureCounts = new TreeMap<>();
                             TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>> typeDistanceTenureCounts;
-                            typeDistanceTenureCounts = new TreeMap<String, TreeMap<Double, TreeMap<Integer, Integer>>>();
+                            typeDistanceTenureCounts = new TreeMap<>();
                             typesIte = types.iterator();
                             while (typesIte.hasNext()) {
                                 String type;
@@ -1109,11 +1108,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 typeDirs.put(type, outDir1);
                                 // Initialise AreaCounts
                                 TreeMap<String, Integer> areaCount;
-                                areaCount = new TreeMap<String, Integer>();
+                                areaCount = new TreeMap<>();
                                 typeAreaCounts.put(type, areaCount);
                                 // Initialise TenureCounts
                                 TreeMap<Integer, Integer> TTCounts;
-                                TTCounts = new TreeMap<Integer, Integer>();
+                                TTCounts = new TreeMap<>();
                                 typeTenureCounts.put(type, TTCounts);
                             }
                             levelTypeDirs.put(level, typeDirs);
@@ -1125,13 +1124,13 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 distanceType = distanceTypesIte.next();
                                 // Initialise Dirs
                                 TreeMap<Double, File> distanceDirs;
-                                distanceDirs = new TreeMap<Double, File>();
+                                distanceDirs = new TreeMap<>();
                                 // Initialise AreaCounts
                                 TreeMap<Double, TreeMap<String, Integer>> distanceAreaCounts;
-                                distanceAreaCounts = new TreeMap<Double, TreeMap<String, Integer>>();
+                                distanceAreaCounts = new TreeMap<>();
                                 // Initialise TenureCounts
                                 TreeMap<Double, TreeMap<Integer, Integer>> distanceTenureCounts;
-                                distanceTenureCounts = new TreeMap<Double, TreeMap<Integer, Integer>>();
+                                distanceTenureCounts = new TreeMap<>();
                                 distancesIte = distances.iterator();
                                 while (distancesIte.hasNext()) {
                                     double distance = distancesIte.next();
@@ -1152,11 +1151,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                     distanceDirs.put(distance, outDir1);
                                     // Initialise AreaCounts
                                     TreeMap<String, Integer> areaCounts;
-                                    areaCounts = new TreeMap<String, Integer>();
+                                    areaCounts = new TreeMap<>();
                                     distanceAreaCounts.put(distance, areaCounts);
                                     // Initialise TenureCounts
                                     TreeMap<Integer, Integer> TTCounts;
-                                    TTCounts = new TreeMap<Integer, Integer>();
+                                    TTCounts = new TreeMap<>();
                                     distanceTenureCounts.put(distance, TTCounts);
                                 }
                                 typeDistanceDirs.put(distanceType, distanceDirs);
@@ -1183,13 +1182,13 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 }
                 // Initialise levelUnexpectedCounts
                 TreeMap<String, TreeMap<String, Integer>> levelUnexpectedCounts;
-                levelUnexpectedCounts = new TreeMap<String, TreeMap<String, Integer>>();
+                levelUnexpectedCounts = new TreeMap<>();
                 levelsIte = levels.iterator();
                 while (levelsIte.hasNext()) {
                     String level;
                     level = levelsIte.next();
                     TreeMap<String, Integer> unexpectedCounts;
-                    unexpectedCounts = new TreeMap<String, Integer>();
+                    unexpectedCounts = new TreeMap<>();
                     levelUnexpectedCounts.put(level, unexpectedCounts);
                 }
                 // Iterator over records
@@ -1200,7 +1199,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                     DW_SHBE_Record Record1;
                     Record1 = records1.get(ClaimID);
                     DW_SHBE_D_Record DRecord1 = Record1.getDRecord();
-                    DW_ID PostcodeID1 = Record1.getPostcodeID();
+                    ONSPD_ID PostcodeID1 = Record1.getPostcodeID();
                     String ClaimPostcodeF;
                     ClaimPostcodeF = Record1.getClaimPostcodeF();
                     Integer TT1Integer = DRecord1.getTenancyType();
@@ -1221,8 +1220,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 unexpectedCounts = levelUnexpectedCounts.get(level);
                                 String CTBRef1;
                                 CTBRef1 = DRecord1.getCouncilTaxBenefitClaimReferenceNumber();
-                                DW_ID ClaimID1;
-                                ClaimID1 = SHBE_Data.getClaimRefToClaimIDLookup().get(CTBRef1);
+                                DW_ID claimID1;
+                                claimID1 = SHBE_Data.getClaimRefToClaimIDLookup().get(CTBRef1);
                                 DW_ID claimantDW_ID1;
                                 claimantDW_ID1 = null;//DW_PersonIDtoDW_IDLookup.get(claimantDW_PersonID1);
                                 String claimantType;
@@ -1237,11 +1236,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                         DW_UO_Record councilUO1 = null;
                                         if (councilUOSet0 != null) {
                                             councilUO0 = councilUOSet0.getMap().get(
-                                                    ClaimID1);
+                                                    claimID1);
                                         }
                                         if (councilUOSet1 != null) {
                                             councilUO1 = councilUOSet1.getMap().get(
-                                                    ClaimID1);
+                                                    claimID1);
                                         }
                                         councilDoAdd = councilUO0 != null || councilUO1 != null;
                                     }
@@ -1288,7 +1287,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                             }
                                             if (areaCode != null) {
                                                 DW_SHBE_Record record0 = records0.get(ClaimID);
-                                                DW_ID PostcodeID0;
+                                                ONSPD_ID PostcodeID0;
                                                 if (record0 == null) {
 //                                        //This is a new entrant to the data
 //                                        type = "NewEntrant";
@@ -1400,10 +1399,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                         }
                                                         double distance;
                                                         distance = Postcode_Handler.getDistanceBetweenPostcodes(
-                                                                YM30v,
-                                                                YM31v,
-                                                                PostcodeID0,
-                                                                PostcodeID1);
+                                                                Env.getSHBE_Data().getPostcodeIDToPointLookup(YM30v).get(PostcodeID0),
+                                                                Env.getSHBE_Data().getPostcodeIDToPointLookup(YM31v).get(PostcodeID1),
+                                                                Env.getSHBE_Data().getPostcodeIDToPointLookup(YM31v).get(PostcodeID0),
+                                                                Env.getSHBE_Data().getPostcodeIDToPointLookup(YM30v).get(PostcodeID1),
+                                                                YM30v, YM31v, PostcodeID0, PostcodeID1);
                                                         Iterator<Double> ite3;
                                                         ite3 = distances.iterator();
                                                         while (ite3.hasNext()) {
@@ -1458,13 +1458,13 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                 }
                                             } else {
                                                 //env.logO("No Census code for postcode: " + postcode1);
-                                                Generic_Collections.addToTreeMapStringInteger(
+                                                Generic_Collections.addToTreeMapValueInteger(
                                                         unexpectedCounts, ClaimPostcodeF, 1);
                                             }
                                         }
                                     }
                                 } else {
-                                    Generic_Collections.addToTreeMapStringInteger(
+                                    Generic_Collections.addToTreeMapValueInteger(
                                             unexpectedCounts, Strings.snull, 1);
                                 }
                             }
@@ -1473,36 +1473,36 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 }
                 // Write out results
 //            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>> claimantTypeTenureLevelTypeCountAreas;
-                claimantTypeTenureLevelTypeCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>();
+                claimantTypeTenureLevelTypeCountAreas = new TreeMap<>();
                 yearMonthClaimantTypeTenureLevelTypeCountAreas.put(YM31, claimantTypeTenureLevelTypeCountAreas);
 //            TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>> claimantTypeTenureLevelDistanceTypeDistanceCountAreas;
-                claimantTypeTenureLevelDistanceTypeDistanceCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>();
+                claimantTypeTenureLevelDistanceTypeDistanceCountAreas = new TreeMap<>();
                 yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas.put(YM31, claimantTypeTenureLevelDistanceTypeDistanceCountAreas);
                 // claimantTypeLoop
                 claimantTypesIte = claimantTypes.iterator();
                 while (claimantTypesIte.hasNext()) {
                     String claimantType = claimantTypesIte.next();
                     TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>> TTLevelTypeCountAreas;
-                    TTLevelTypeCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>();
+                    TTLevelTypeCountAreas = new TreeMap<>();
                     claimantTypeTenureLevelTypeCountAreas.put(claimantType, TTLevelTypeCountAreas);
                     TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>> TTLevelDistanceTypeDistanceCountAreas;
-                    TTLevelDistanceTypeDistanceCountAreas = new TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>();
+                    TTLevelDistanceTypeDistanceCountAreas = new TreeMap<>();
                     claimantTypeTenureLevelDistanceTypeDistanceCountAreas.put(claimantType, TTLevelDistanceTypeDistanceCountAreas);
                     TTIte = TTGroups.keySet().iterator();
                     while (TTIte.hasNext()) {
                         String TT;
                         TT = TTIte.next();
                         TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>> levelTypeCountAreas;
-                        levelTypeCountAreas = new TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>();
+                        levelTypeCountAreas = new TreeMap<>();
                         TTLevelTypeCountAreas.put(TT, levelTypeCountAreas);
                         TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>> levelDistanceTypeDistanceCountAreas;
-                        levelDistanceTypeDistanceCountAreas = new TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>();
+                        levelDistanceTypeDistanceCountAreas = new TreeMap<>();
                         TTLevelDistanceTypeDistanceCountAreas.put(TT, levelDistanceTypeDistanceCountAreas);
                         levelsIte = levels.iterator();
                         while (levelsIte.hasNext()) {
                             String level = levelsIte.next();
                             TreeMap<String, TreeMap<Integer, TreeSet<String>>> typeCountAreas;
-                            typeCountAreas = new TreeMap<String, TreeMap<Integer, TreeSet<String>>>();
+                            typeCountAreas = new TreeMap<>();
                             levelTypeCountAreas.put(level, typeCountAreas);
                             typesIte = types.iterator();
                             while (typesIte.hasNext()) {
@@ -1527,14 +1527,14 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 typeCountAreas.put(type, countAreas);
                             }
                             TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>> distanceTypeDistanceCountAreas;
-                            distanceTypeDistanceCountAreas = new TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>();
+                            distanceTypeDistanceCountAreas = new TreeMap<>();
                             levelDistanceTypeDistanceCountAreas.put(level, distanceTypeDistanceCountAreas);
                             distanceTypesIte = distanceTypes.iterator();
                             while (distanceTypesIte.hasNext()) {
                                 String distanceType;
                                 distanceType = distanceTypesIte.next();
                                 TreeMap<Double, TreeMap<Integer, TreeSet<String>>> distanceCountAreas;
-                                distanceCountAreas = new TreeMap<Double, TreeMap<Integer, TreeSet<String>>>();
+                                distanceCountAreas = new TreeMap<>();
                                 distanceTypeDistanceCountAreas.put(distanceType, distanceCountAreas);
                                 distancesIte = distances.iterator();
                                 while (distancesIte.hasNext()) {
@@ -1592,9 +1592,9 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 records0 = records1;
                 //ClaimIDToPostcodeIDLookup0 = ClaimIDToPostcodeIDLookup1;
                 //YM30 = YM31;
-                YM30 = new DW_YM3(YM31);
+                YM30 = new ONSPD_YM3(YM31);
                 //YM30v = YM31v;
-                YM30v = new DW_YM3(YM31v);
+                YM30v = new ONSPD_YM3(YM31v);
             }
         }
     }
@@ -1602,7 +1602,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     protected TreeMap<Integer, TreeSet<String>> writeResults(
             TreeMap<String, Integer> areaCounts,
             TreeMap<Integer, TreeSet<String>> YM31CountAreas,
-            DW_YM3 YM31,
+            ONSPD_YM3 YM31,
             TreeMap<Integer, Integer> TTCounts,
             String level,
             File dir) {
@@ -1633,7 +1633,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             TreeMap<Integer, Integer> TTCounts,
             String level,
             File dir,
-            DW_YM3 YM3) {
+            ONSPD_YM3 YM3) {
         if (areaCounts.size() > 0) {
             int num = 5;
             TreeMap<Integer, TreeSet<String>> result;
@@ -1666,7 +1666,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             String YM30,
             int num,
             File dir,
-            DW_YM3 YM31) {
+            ONSPD_YM3 YM31) {
         if (lastTimeCountAreas != null) {
             TreeMap<String, Integer> areaCounts;
             areaCounts = getAreaCounts(countAreas);
@@ -1674,11 +1674,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             lastTimeAreaCounts = getAreaCounts(lastTimeCountAreas);
             int n = 2;
             TreeMap<String, Double> areaAbsoluteDiffs;
-            areaAbsoluteDiffs = new TreeMap<String, Double>();
+            areaAbsoluteDiffs = new TreeMap<>();
             TreeMap<String, Double> areaRelativeDiffs;
-            areaRelativeDiffs = new TreeMap<String, Double>();
+            areaRelativeDiffs = new TreeMap<>();
             TreeSet<String> allAreas;
-            allAreas = new TreeSet<String>();
+            allAreas = new TreeSet<>();
             allAreas.addAll(areaCounts.keySet());
             allAreas.addAll(lastTimeAreaCounts.keySet());
             Iterator<String> ite;
@@ -1768,7 +1768,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             String YM30,
             int num,
             File dir,
-            DW_YM3 YM31) {
+            ONSPD_YM3 YM31) {
         if (diffsAreas.size() > 0) {
             PrintWriter pw;
             String type;
@@ -1840,7 +1840,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     protected TreeMap<String, Integer> getAreaCounts(
             TreeMap<Integer, TreeSet<String>> countAreas) {
         TreeMap<String, Integer> result;
-        result = new TreeMap<String, Integer>();
+        result = new TreeMap<>();
         Iterator<Integer> ite;
         ite = countAreas.keySet().iterator();
         while (ite.hasNext()) {
@@ -1867,7 +1867,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     protected TreeMap<Double, TreeSet<String>> getCountAreas(
             TreeMap<String, Double> areaCounts) {
         TreeMap<Double, TreeSet<String>> result;
-        result = new TreeMap<Double, TreeSet<String>>();
+        result = new TreeMap<>();
         Iterator<String> ite;
         ite = areaCounts.keySet().iterator();
         while (ite.hasNext()) {
@@ -1882,7 +1882,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             TreeSet<String> areas;
             areas = result.get(count);
             if (areas == null) {
-                areas = new TreeSet<String>();
+                areas = new TreeSet<>();
                 areas.add(area);
                 result.put(count, areas);
             } else {
@@ -1904,7 +1904,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             TreeMap<Integer, TreeSet<String>> countAreas,
             int num,
             File dir,
-            DW_YM3 YM3) {
+            ONSPD_YM3 YM3) {
         if (countAreas.size() > 0) {
             PrintWriter pw;
             pw = init_OutputTextFilePrintWriter(
@@ -1949,10 +1949,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             TreeMap<String, Integer> areaCounts,
             String level,
             File dir,
-            DW_YM3 YM3) {
+            ONSPD_YM3 YM3) {
         if (areaCounts.size() > 0) {
             TreeMap<Integer, TreeSet<String>> result;
-            result = new TreeMap<Integer, TreeSet<String>>();
+            result = new TreeMap<>();
             PrintWriter pw;
             pw = init_OutputTextFilePrintWriter(
                     dir,
@@ -1974,7 +1974,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 TreeSet<String> set;
                 set = result.get(count);
                 if (set == null) {
-                    set = new TreeSet<String>();
+                    set = new TreeSet<>();
                     set.add(areaCode);
                     result.put(count, set);
                 } else {
@@ -1992,7 +1992,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     private void writeCountsByTenure(
             TreeMap<Integer, Integer> TTCounts,
             File dir,
-            DW_YM3 YM3) {
+            ONSPD_YM3 YM3) {
         if (TTCounts.size() > 0) {
             PrintWriter pw;
             pw = init_OutputTextFilePrintWriter(
@@ -2047,26 +2047,14 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 
     private void addToAreaCount(
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>> claimantTypeTenureLevelTypeAreaCounts,
-            String areaCode,
-            String claimantType,
-            String tenure,
-            String level,
-            String type) {
+            String areaCode, String claimantType, String tenure, String level, String type) {
         TreeMap<String, Integer> areaCounts = claimantTypeTenureLevelTypeAreaCounts.get(claimantType).get(tenure).get(level).get(type);
-        Generic_Collections.addToTreeMapStringInteger(
-                areaCounts,
-                areaCode,
-                1);
+        Generic_Collections.addToTreeMapValueInteger(areaCounts, areaCode, 1);
     }
 
     private void addToAreaCount(
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<String, Integer>>>>>> claimantTypeTenureLevelTypeDistanceAreaCounts,
-            String areaCode,
-            String claimantType,
-            String tenure,
-            String level,
-            String type,
-            Double distance) {
+            String areaCode, String claimantType, String tenure, String level, String type, Double distance) {
         TreeMap<String, Integer> areaCounts = claimantTypeTenureLevelTypeDistanceAreaCounts.get(claimantType).get(tenure).get(level).get(type).get(distance);
 //        //Debug
 //        if (areaCounts == null) {
@@ -2077,9 +2065,6 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 //            Env.logO("level " + level);
 //            Env.logO("type " + type);
 //        }
-        Generic_Collections.addToTreeMapStringInteger(
-                areaCounts,
-                areaCode,
-                1);
+        Generic_Collections.addToTreeMapValueInteger(areaCounts, areaCode, 1);
     }
 }

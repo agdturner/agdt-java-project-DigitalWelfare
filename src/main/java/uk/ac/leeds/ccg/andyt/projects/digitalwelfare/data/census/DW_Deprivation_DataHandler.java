@@ -26,7 +26,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
 
 /**
  *
@@ -35,7 +35,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.postcode.DW_Postcode_H
 public class DW_Deprivation_DataHandler extends Census_DeprivationDataHandler {
 
     protected transient DW_Environment Env;
-    protected DW_Postcode_Handler Postcode_Handler;
+    protected ONSPD_Postcode_Handler Postcode_Handler;
     
     public DW_Deprivation_DataHandler(DW_Environment env) {
         this.Env = env;
@@ -58,7 +58,7 @@ public class DW_Deprivation_DataHandler extends Census_DeprivationDataHandler {
             TreeMap<Integer, Integer> deprivationClasses) {
         Object[] result = new Object[2];
         int recsWithoutARecognisedPostcode = 0;
-        TreeMap<Integer, Integer> deprivationClassCountOfCABClients = new TreeMap<Integer, Integer>();
+        TreeMap<Integer, Integer> deprivationClassCountOfCABClients = new TreeMap<>();
         if (type == 0) {
             Iterator<DW_ID_ClientID> ite;
             ite = tCABData.keySet().iterator();

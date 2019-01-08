@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_Claim;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -27,7 +28,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.shbe.DW_SHBE_Records;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.util.DW_YM3;
 
 /**
  * This is the main class for the Digital Welfare Project. For more details of
@@ -80,7 +80,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
             Generic_IO.writeObject(RentArrearsUO, f);
         }
 
-        HashMap<DW_YM3, DW_SHBE_Records> AllSHBE;
+        HashMap<ONSPD_YM3, DW_SHBE_Records> AllSHBE;
         AllSHBE = SHBE_Data.getData();
 
         DecimalFormat df;
@@ -286,7 +286,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         AllRADNoDHPCount = 0;
         AllRADPositiveNoDHPCount = 0;
         AllRADNegativeNoDHPCount = 0;
-        DW_YM3 YM3;
+        ONSPD_YM3 YM3;
         DW_SHBE_Records DW_SHBE_Records;
         DW_SHBE_Record Record;
         DW_SHBE_D_Record DRecord;
