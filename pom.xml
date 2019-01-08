@@ -74,6 +74,12 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <!-- agdt-java dependency list -->
+        <dependency>
+            <groupId>uk.ac.leeds.ccg.andyt</groupId>
+            <artifactId>agdt-generic</artifactId>
+            <version>${agdt-java-generic.version}</version>
+        </dependency>
         <dependency>
             <groupId>uk.ac.leeds.ccg.andyt</groupId>
             <artifactId>agdt-java-generic-chart</artifactId>
@@ -91,8 +97,8 @@
         </dependency>
         <dependency>
             <groupId>uk.ac.leeds.ccg.andyt</groupId>
-            <artifactId>agdt-generic</artifactId>
-            <version>${agdt-java-generic.version}</version>
+            <artifactId>agdt-java-generic-data-SHBE</artifactId>
+            <version>${agdt-java-generic-data-SHBE.version}</version>
         </dependency>
         <dependency>
             <groupId>uk.ac.leeds.ccg.andyt</groupId>
@@ -124,6 +130,7 @@
             <artifactId>agdt-java-generic-web</artifactId>
             <version>${agdt-java-generic-web.version}</version>
         </dependency>
+        <!-- Third party dependencies. -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
