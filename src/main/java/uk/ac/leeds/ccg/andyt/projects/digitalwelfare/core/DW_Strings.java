@@ -32,7 +32,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
  */
 public class DW_Strings extends Generic_Strings {
 
-    public SHBE_Strings SHBE_Strings;
+    public final SHBE_Strings SHBE_Strings;
 
     /**
      * Short code for BinaryFileExtension.
@@ -541,6 +541,7 @@ public class DW_Strings extends Generic_Strings {
 //     */
 //    public final String sUO = "UO";
     public DW_Strings() {
+        SHBE_Strings = new SHBE_Strings();
     }
 
     /**

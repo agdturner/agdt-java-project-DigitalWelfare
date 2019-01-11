@@ -98,7 +98,7 @@ public class DW_Maps extends Geotools_Maps {
     protected void initDW_Postcode_Handler() {
         if (Postcode_Handler == null) {
 //            Postcode_Handler = new ONSPD_Postcode_Handler(Env.ONSPD_Environment);
-            Postcode_Handler = new ONSPD_Postcode_Handler(new ONSPD_Environment());
+            Postcode_Handler = new ONSPD_Postcode_Handler(new ONSPD_Environment(Files.getDataDir()));
         }
     }
 

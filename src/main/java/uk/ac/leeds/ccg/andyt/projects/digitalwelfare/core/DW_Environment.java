@@ -377,7 +377,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     public ONSPD_Environment getONSPD_Environment() {
         if (ONSPD_Env == null) {
-            ONSPD_Env = new ONSPD_Environment();
+            ONSPD_Env = new ONSPD_Environment(Files.getDataDir());
         }
         return ONSPD_Env;
     }
@@ -511,7 +511,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public ONSPD_Postcode_Handler getPostcode_Handler() {
         if (Postcode_Handler == null) {
             ONSPD_Environment oe;
-            oe = new ONSPD_Environment();
+            oe = new ONSPD_Environment(Files.getDataDir());
             Postcode_Handler = new ONSPD_Postcode_Handler(oe);
         }
         return Postcode_Handler;

@@ -56,7 +56,7 @@ public class DW_Processor extends DW_ProcessorAbstract {
                 p.Strings = env.getStrings();
                 p.Files = env.getFiles();
                 p.Env.SHBE_Env = new SHBE_Environment(p.Files.getDataDir());
-                p.Env.ONSPD_Env = new ONSPD_Environment();
+                p.Env.ONSPD_Env = new ONSPD_Environment(p.Files.getDataDir());
                 p.run();
             }
         } catch (Exception | Error e) {
