@@ -28,11 +28,11 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Data;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Data;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
@@ -48,8 +48,8 @@ public final class DW_RentArrearsUO extends DW_Object {
      * For convenience
      */
     // For convenience.
-    public transient DW_SHBE_Data SHBE_Data;
-    public transient DW_SHBE_Handler SHBE_Handler;
+    public transient SHBE_Data SHBE_Data;
+    public transient SHBE_Handler SHBE_Handler;
     public transient DW_Strings Strings;
     public transient DW_Files Files;
     public transient DW_UO_Data UO_Data;
@@ -103,12 +103,12 @@ public final class DW_RentArrearsUO extends DW_Object {
         Iterator<Integer> includeIte;
         String filename;
         ONSPD_YM3 YM3;
-        DW_SHBE_Records DW_SHBE_Records;
-        HashMap<SHBE_ID, DW_SHBE_Record> Records;
+        SHBE_Records SHBE_Records;
+        HashMap<SHBE_ID, SHBE_Record> Records;
         TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
         DW_UO_Set CouncilUOSet;
-        DW_SHBE_Record DW_SHBE_Record;
-        DW_SHBE_D_Record DRecord;
+        SHBE_Record SHBE_Record;
+        SHBE_D_Record DRecord;
         DW_Claim DW_Claim;
         int DHP;
         DW_UO_Record DW_UO_Record;
@@ -134,15 +134,15 @@ public final class DW_RentArrearsUO extends DW_Object {
             Env.logO("YM3 " + YM3, true);
             CouncilUOSet = CouncilUOSets.get(YM3);
             if (CouncilUOSet == null) {
-                DW_SHBE_Records = SHBE_Data.getDW_SHBE_Records(YM3);
-                Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+                SHBE_Records = SHBE_Data.getSHBE_Records(YM3);
+                Records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
                 ite = AllCouncilUOClaimIDs.iterator();
                 while (ite.hasNext()) {
                     ClaimID = ite.next();
                     DW_Claim = ClaimData.get(ClaimID);
                     if (Records.containsKey(ClaimID)) {
-                        DW_SHBE_Record = Records.get(ClaimID);
-                        DRecord = DW_SHBE_Record.getDRecord();
+                        SHBE_Record = Records.get(ClaimID);
+                        DRecord = SHBE_Record.getDRecord();
                         DHP = DRecord.getWeeklyAdditionalDiscretionaryPayment();
                         DW_Claim.DHP.put(i, DHP);
                         if (DRecord.getStatusOfHBClaimAtExtractDate() == 1) {
@@ -160,16 +160,16 @@ public final class DW_RentArrearsUO extends DW_Object {
                 HashMap<SHBE_ID, DW_UO_Record> CouncilUOMap;
                 CouncilUOMap = CouncilUOSet.getMap();
 
-                DW_SHBE_Records = SHBE_Data.getDW_SHBE_Records(YM3);
-                Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+                SHBE_Records = SHBE_Data.getSHBE_Records(YM3);
+                Records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
 
                 ite = AllCouncilUOClaimIDs.iterator();
                 while (ite.hasNext()) {
                     ClaimID = ite.next();
                     DW_Claim = ClaimData.get(ClaimID);
                     if (Records.containsKey(ClaimID)) {
-                        DW_SHBE_Record = Records.get(ClaimID);
-                        DRecord = DW_SHBE_Record.getDRecord();
+                        SHBE_Record = Records.get(ClaimID);
+                        DRecord = SHBE_Record.getDRecord();
                         DHP = DRecord.getWeeklyAdditionalDiscretionaryPayment();
                         DW_Claim.DHP.put(i, DHP);
                         if (DRecord.getStatusOfHBClaimAtExtractDate() == 1) {
@@ -202,7 +202,7 @@ public final class DW_RentArrearsUO extends DW_Object {
                             DW_Claim.InUO.put(i, false);
                         }
                         DW_Claim.InSHBE.put(i, true);
-                        PostcodeF = DW_SHBE_Record.getClaimPostcodeF();
+                        PostcodeF = SHBE_Record.getClaimPostcodeF();
                         DW_Claim.PostcodeFs.put(i, PostcodeF);
                     } else {
                         if (CouncilUOSet.getClaimIDs().contains(ClaimID)) {

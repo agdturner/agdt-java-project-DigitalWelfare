@@ -28,7 +28,7 @@ import java.util.Set;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_PersonID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_PersonID;
 
 /**
  *
@@ -43,7 +43,7 @@ public class DW_Collections extends Generic_Collections {
      * @param m
      * @return
      */
-    public static int getCountHashMap_DW_PersonID__HashSet_DW_ID(HashMap<DW_PersonID, HashSet<DW_ID>> m) {
+    public static int getCountHashMap_DW_PersonID__HashSet_DW_ID(HashMap<SHBE_PersonID, HashSet<DW_ID>> m) {
         int result = 0;
         Collection<HashSet<DW_ID>> c;
         c = m.values();
@@ -62,11 +62,11 @@ public class DW_Collections extends Generic_Collections {
      * @param m
      * @return
      */
-    public static int getCountHashMap_DW_ID__HashSet_DW_PersonID(HashMap<DW_ID, HashSet<DW_PersonID>> m) {
+    public static int getCountHashMap_DW_ID__HashSet_DW_PersonID(HashMap<DW_ID, HashSet<SHBE_PersonID>> m) {
         int result = 0;
-        Collection<HashSet<DW_PersonID>> c;
+        Collection<HashSet<SHBE_PersonID>> c;
         c = m.values();
-        Iterator<HashSet<DW_PersonID>> ite;
+        Iterator<HashSet<SHBE_PersonID>> ite;
         ite = c.iterator();
         while (ite.hasNext()) {
             result += ite.next().size();
@@ -75,15 +75,15 @@ public class DW_Collections extends Generic_Collections {
     }
     
     public static DW_ID getKeyOfSetValue(
-            HashMap<DW_ID, HashSet<DW_PersonID>> map,
-            DW_PersonID DW_PersonID) {
+            HashMap<DW_ID, HashSet<SHBE_PersonID>> map,
+            SHBE_PersonID DW_PersonID) {
         DW_ID result;
-        Set<Entry<DW_ID, HashSet<DW_PersonID>>> mapEntrySet;
+        Set<Entry<DW_ID, HashSet<SHBE_PersonID>>> mapEntrySet;
         mapEntrySet = map.entrySet();
-        Iterator<Entry<DW_ID, HashSet<DW_PersonID>>> ite;
+        Iterator<Entry<DW_ID, HashSet<SHBE_PersonID>>> ite;
         ite = mapEntrySet.iterator();
-        Entry<DW_ID, HashSet<DW_PersonID>> entry;
-        HashSet<DW_PersonID> set;
+        Entry<DW_ID, HashSet<SHBE_PersonID>> entry;
+        HashSet<SHBE_PersonID> set;
         while (ite.hasNext()) {
             entry = ite.next();
             result = entry.getKey();
@@ -114,21 +114,21 @@ public class DW_Collections extends Generic_Collections {
         return result;
     }
     
-    public static HashSet<DW_PersonID> getHashSet_DW_PersonID(File f) {
-        HashSet<DW_PersonID> result;
+    public static HashSet<SHBE_PersonID> getHashSet_DW_PersonID(File f) {
+        HashSet<SHBE_PersonID> result;
         if (f.exists()) {
-            result = (HashSet<DW_PersonID>) Generic_IO.readObject(f);
+            result = (HashSet<SHBE_PersonID>) Generic_IO.readObject(f);
         } else {
             result = new HashSet<>();
         }
         return result;
     }
     
-    public static HashMap<DW_PersonID, HashSet<DW_ID>> getHashMap_DW_PersonID__HashSet_DW_ID(
+    public static HashMap<SHBE_PersonID, HashSet<DW_ID>> getHashMap_DW_PersonID__HashSet_DW_ID(
             File f) {
-        HashMap<DW_PersonID, HashSet<DW_ID>> result;
+        HashMap<SHBE_PersonID, HashSet<DW_ID>> result;
         if (f.exists()) {
-            result = (HashMap<DW_PersonID, HashSet<DW_ID>>) Generic_IO.readObject(f);
+            result = (HashMap<SHBE_PersonID, HashSet<DW_ID>>) Generic_IO.readObject(f);
         } else {
             result = new HashMap<>();
         }

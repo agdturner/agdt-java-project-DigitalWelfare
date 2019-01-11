@@ -31,9 +31,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Environment;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Data;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Data;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
@@ -72,12 +72,14 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public transient Grids_Environment Grids_Env;
     public transient Vector_Environment Vector_Env;
     public transient DW_Geotools Geotools;
-    public DW_UO_Handler UO_Handler;
+public ONSPD_Postcode_Handler Postcode_Handler;
+
+        public DW_UO_Handler UO_Handler;
     public DW_UO_Data UO_Data;
-    public DW_SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
+    public SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
     public DW_Maps Maps;
     public DW_Deprivation_DataHandler Deprivation_DataHandler;
-    public DW_SHBE_Data SHBE_Data;
+    public SHBE_Data SHBE_Data;
 
     public DW_Environment(int DEBUG_Level) {
         this.DEBUG_Level = DEBUG_Level;
@@ -420,8 +422,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         return UO_Handler;
     }
 
-    public ONSPD_Postcode_Handler Postcode_Handler;
-
     /**
      * {@code this.ONSPD_Postcode_Handler = ONSPD_Postcode_Handler;}
      *
@@ -518,24 +518,24 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     }
 
     /**
-     * For returning an instance of SHBE_Handler for convenience.
+     * For returning an instance of Handler for convenience.
      *
      * @return
      */
-    public DW_SHBE_Handler getSHBE_Handler() {
-        if (SHBE_Env.SHBE_Handler == null) {
-            SHBE_Env.SHBE_Handler = new DW_SHBE_Handler(SHBE_Env);
+    public SHBE_Handler getSHBE_Handler() {
+        if (SHBE_Env.Handler == null) {
+            SHBE_Env.Handler = new SHBE_Handler(SHBE_Env);
         }
-        return SHBE_Env.SHBE_Handler;
+        return SHBE_Env.Handler;
     }
 
     /**
-     * {@code this.SHBE_Handler = SHBE_Handler;}
+     * {@code this.Handler = Handler;}
      *
-     * @param SHBE_Handler The SHBE_Handler to set.
+     * @param SHBE_Handler The Handler to set.
      */
-    public void setSHBE_Handler(DW_SHBE_Handler SHBE_Handler) {
-        SHBE_Env.SHBE_Handler = SHBE_Handler;
+    public void setSHBE_Handler(SHBE_Handler SHBE_Handler) {
+        SHBE_Env.Handler = SHBE_Handler;
     }
 
     /**
@@ -543,9 +543,9 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      *
      * @return
      */
-    public DW_SHBE_TenancyType_Handler getSHBE_TenancyType_Handler() {
+    public SHBE_TenancyType_Handler getSHBE_TenancyType_Handler() {
         if (SHBE_TenancyType_Handler == null) {
-            SHBE_TenancyType_Handler = new DW_SHBE_TenancyType_Handler(SHBE_Env);
+            SHBE_TenancyType_Handler = new SHBE_TenancyType_Handler(SHBE_Env);
         }
         return SHBE_TenancyType_Handler;
     }
@@ -555,11 +555,11 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      *
      * @return
      */
-    public DW_SHBE_Data getSHBE_Data() {
-        if (SHBE_Data == null) {
-            SHBE_Data = new DW_SHBE_Data(SHBE_Env);
+    public SHBE_Data getSHBE_Data() {
+        if (SHBE_Env.Data == null) {
+            SHBE_Env.Data = new SHBE_Data(SHBE_Env);
         }
-        return SHBE_Data;
+        return SHBE_Env.Data;
     }
 
     /**

@@ -9,7 +9,7 @@
 
     <name>agdt-project-DigitalWelfare</name>
     <url>https://github.com/agdturner/agdt-data-land-registry</url>
-    <description>A Java Library for a project looking into Private Finance Initiatives in the UK.</description>
+    <description>Java for the Digital Welfare project.</description>
     <scm>
         <url>git@github.com:agdturner/agdt-data-land-registry.git</url>
         <connection>scm:git:git@github.com:agdturner/agdt-data-land-registry.git</connection>
@@ -54,9 +54,9 @@
         -->
         <agdt-java-generic.version>1.0.0</agdt-java-generic.version>
         <agdt-java-generic-data.version>0.1-SNAPSHOT</agdt-java-generic-data.version>
+        <agdt-java-generic-data-Census.version>0.1-SNAPSHOT</agdt-java-generic-data-Census.version>
         <agdt-java-generic-data-ONSPD.version>0.1-SNAPSHOT</agdt-java-generic-data-ONSPD.version>
         <agdt-java-generic-data-SHBE.version>0.1-SNAPSHOT</agdt-java-generic-data-SHBE.version>
-        <agdt-java-generic-data-Census.version>0.1-SNAPSHOT</agdt-java-generic-data-Census.version>
         <agdt-java-generic-chart.version>0.1-SNAPSHOT</agdt-java-generic-chart.version>
         <agdt-java-generic-math.version>0.1-SNAPSHOT</agdt-java-generic-math.version>
         <agdt-java-generic-geotools.version>0.1-SNAPSHOT</agdt-java-generic-geotools.version>

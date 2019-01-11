@@ -35,7 +35,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Data;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
@@ -49,7 +49,7 @@ public class DW_UO_Handler extends DW_Object {
      */
     protected DW_Strings Strings;
     protected DW_Files Files;
-    private DW_SHBE_Data SHBE_Data;
+    private SHBE_Data SHBE_Data;
     private HashMap<SHBE_ID, String> ClaimIDToClaimRefLookup;
     private HashMap<String, SHBE_ID> ClaimRefToClaimIDLookup;
 
@@ -87,12 +87,12 @@ public class DW_UO_Handler extends DW_Object {
 //        }
         HashMap<SHBE_ID, DW_UO_Record> result;
         result = new HashMap<>();
-        File inputFile = new File(                directory,                filename);
+        File inputFile = new File(directory, filename);
         boolean addedNewClaimIDs;
         addedNewClaimIDs = false;
         try {
             BufferedReader br = Generic_IO.getBufferedReader(inputFile);
-            StreamTokenizer st                    = new StreamTokenizer(br);
+            StreamTokenizer st = new StreamTokenizer(br);
             Generic_IO.setStreamTokenizerSyntax5(st);
             st.wordChars('`', '`');
             st.wordChars('*', '*');
@@ -188,10 +188,11 @@ public class DW_UO_Handler extends DW_Object {
         TreeMap<ONSPD_YM3, DW_UO_Set> RSLSets;
         RSLSets = new TreeMap<>();
 
-        // Look where the generated data should be stored.
-        // Look where the input data are.
-        // Are there new files to load? If so, load them from source. If not, 
-        // then load and return the cached object.
+        /**
+         * Look where the generated data should be stored. Look where the input
+         * data are. Are there new files to load? If so, load them from source.
+         * If not, then load and return the cached object.
+         */
         String type;
         Object[] filenames = getInputFilenames();
         TreeMap<ONSPD_YM3, String> CouncilFilenames;
@@ -206,19 +207,8 @@ public class DW_UO_Handler extends DW_Object {
         while (ite.hasNext()) {
             YM3 = ite.next();
             filename = CouncilFilenames.get(YM3);
-            
-            if (filename == null) {
-                int debug = 1;
-                filename = CouncilFilenames.get(YM3);
-            }
-            
             DW_UO_Set set;
-            set = new DW_UO_Set(
-                    Env,
-                    type,
-                    filename,
-                    YM3,
-                    reload);
+            set = new DW_UO_Set(Env, type, filename, YM3, reload);
             CouncilSets.put(YM3, set);
         }
         ite = RSLFilenames.keySet().iterator();
@@ -227,12 +217,7 @@ public class DW_UO_Handler extends DW_Object {
             YM3 = ite.next();
             filename = RSLFilenames.get(YM3);
             DW_UO_Set set;
-            set = new DW_UO_Set(
-                    Env,
-                    type,
-                    filename,
-                    YM3,
-                    reload);
+            set = new DW_UO_Set(Env, type, filename, YM3, reload);
             RSLSets.put(YM3, set);
         }
         result = new DW_UO_Data(Env, RSLSets, CouncilSets);
@@ -271,7 +256,7 @@ public class DW_UO_Handler extends DW_Object {
     /**
      * Do we really want to store these?
      *
-     * @return Object[] result where: null null null null     {@code 
+     * @return Object[] result where: null null null null null null     {@code 
      * result[0] TreeMap<String, String> councilFilenames (year_Month, filename)
      * result[1] TreeMap<String, String> RSLFilenames (year_Month, filename)
      * }
@@ -311,10 +296,10 @@ public class DW_UO_Handler extends DW_Object {
 //                i ++;
 //            }
             CouncilFilenames.put(
-                    new ONSPD_YM3(2013,3),
+                    new ONSPD_YM3(2013, 3),
                     "2013 14 Under Occupied Report For University Year Start Council Tenants.csv");
             RSLFilenames.put(
-                    new ONSPD_YM3(2013,3),
+                    new ONSPD_YM3(2013, 3),
                     "2013 14 Under Occupied Report For University Year Start RSLs.csv");
             String councilEndFilename = " Council Tenants.csv";
             String RSLEndFilename = " RSLs.csv";
@@ -456,8 +441,8 @@ public class DW_UO_Handler extends DW_Object {
     }
 
     /**
-     * Returns a Set<SHBE_ID> of the ClaimIDs of those UnderOccupying at the start
-     * of April2013.
+     * Returns a Set<SHBE_ID> of the ClaimIDs of those UnderOccupying at the
+     * start of April2013.
      *
      * @param DW_UO_Data
      * @return

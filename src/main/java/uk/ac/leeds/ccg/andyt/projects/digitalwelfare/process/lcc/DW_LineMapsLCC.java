@@ -42,7 +42,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_StyleParameters;
 
 /**
@@ -597,7 +597,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             ArrayList<Integer> includes) {
         TreeMap<String, ArrayList<ONSPD_YM3>> result;
         result = new TreeMap<>();
-        DW_SHBE_Handler tDW_SHBE_Handler;
+        SHBE_Handler tDW_SHBE_Handler;
         tDW_SHBE_Handler = Env.getSHBE_Handler();
         String[] tSHBEFilenamesAll;
         tSHBEFilenamesAll = tDW_SHBE_Handler.getSHBEFilenamesAll();
@@ -695,7 +695,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                 Strings.sCheckedPreviousPostcode);
 
         ArrayList<Integer> includes;
-        //includes = DW_SHBE_Handler.getSHBEFilenameIndexesExcept34();
+        //includes = SHBE_Handler.getSHBEFilenameIndexesExcept34();
         includes = Env.getSHBE_Handler().getSHBEFilenameIndexes();
 
         TreeMap<String, ArrayList<ONSPD_YM3>> yM3s;
@@ -778,15 +778,15 @@ public class DW_LineMapsLCC extends DW_Maps {
         showMapsInJMapPane = false;
         imageWidth = 2000;
 
-        DW_SHBE_Handler tDW_SHBE_Handler;
+        SHBE_Handler tDW_SHBE_Handler;
         tDW_SHBE_Handler = Env.getSHBE_Handler();
 
         ArrayList<String> paymentTypes;
         paymentTypes = Strings.SHBE_Strings.getPaymentTypes();
-//        paymentTypes.remove(DW_SHBE_Handler.sAllPT);
-//        paymentTypes.remove(DW_SHBE_Handler.sInPayment);
-//        paymentTypes.remove(DW_SHBE_Handler.sSuspended);
-//        paymentTypes.remove(DW_SHBE_Handler.sOtherPT);
+//        paymentTypes.remove(SHBE_Handler.sAllPT);
+//        paymentTypes.remove(SHBE_Handler.sInPayment);
+//        paymentTypes.remove(SHBE_Handler.sSuspended);
+//        paymentTypes.remove(SHBE_Handler.sOtherPT);
 
         Iterator<String> paymentTypesIte;
 

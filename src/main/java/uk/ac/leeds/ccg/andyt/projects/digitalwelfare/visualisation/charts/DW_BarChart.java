@@ -39,7 +39,7 @@ import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
@@ -227,7 +227,7 @@ public class DW_BarChart extends Generic_BarChart {
         Iterator<String> distanceTypesIte;
         Iterator<Double> distancesIte;
 
-        DW_SHBE_Handler tDW_SHBE_Handler;
+        SHBE_Handler tDW_SHBE_Handler;
         tDW_SHBE_Handler = Env.getSHBE_Handler();
         
         for (int i = startIndex + 1; i < SHBEFilenames.length; i++) {

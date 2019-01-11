@@ -33,11 +33,9 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Record;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
@@ -533,12 +531,12 @@ public class DW_SummaryUO extends DW_Summary {
     // Council
     protected int TotalCount_CouncilInBoth;
     protected double SumArrearsDiffInBoth;
-    
+
     protected int TotalCount_CouncilInBothG0;
     protected double SumArrearsDiffInBothG0;
     protected int TotalCount_CouncilInBothG1;
     protected double SumArrearsDiffInBothG1;
-            
+
     protected int TotalCount_CouncilTT1ToMinus999TT;
     protected int TotalCount_CouncilMinus999TTToTT1;
     protected int TotalCount_CouncilTT1ToPrivateDeregulatedTTs;
@@ -2348,27 +2346,27 @@ public class DW_SummaryUO extends DW_Summary {
      * DW_UO_Record for the former time period.
      * @param DW_UO_Set1CouncilMap Keys are ClaimIDs values are Council
      * DW_UO_Record for the latter time period.
-     * @param Records0 Keys are ClaimIDs values are DW_SHBE_Record for the
-     * former time period.
-     * @param Records1 Keys are ClaimIDs values are DW_SHBE_Record for the
-     * latter time period.
+     * @param Records0 Keys are ClaimIDs values are SHBE_Record for the
+ former time period.
+     * @param Records1 Keys are ClaimIDs values are SHBE_Record for the
+ latter time period.
      */
     protected void doCouncilCompare2TimesCounts(
             SHBE_ID ClaimID,
             HashSet<SHBE_ID> Group,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records0,
+            HashMap<SHBE_ID, SHBE_Record> Records0,
             HashMap<SHBE_ID, DW_UO_Record> DW_UO_Set0CouncilMap,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records1,
+            HashMap<SHBE_ID, SHBE_Record> Records1,
             HashMap<SHBE_ID, DW_UO_Record> DW_UO_Set1CouncilMap
     ) {
         /**
          * Initialise: Record0, Record1, DRecord0, DRecord1, DW_UO_Record0,
          * DW_UO_Record1.
          */
-        DW_SHBE_Record Record0;
-        DW_SHBE_Record Record1;
-        DW_SHBE_D_Record DRecord0;
-        DW_SHBE_D_Record DRecord1;
+        SHBE_Record Record0;
+        SHBE_Record Record1;
+        SHBE_D_Record DRecord0;
+        SHBE_D_Record DRecord1;
         DW_UO_Record DW_UO_Record0;
         DW_UO_Record DW_UO_Record1;
         Record0 = Records0.get(ClaimID);
@@ -2427,10 +2425,8 @@ public class DW_SummaryUO extends DW_Summary {
                     if (isHBClaim0) {
                         // Case when Record1 == null and isHBClaim0.
                         doCouncilCompare2TimesHBCount(
-                                
                                 ClaimID,
                                 Group,
-                                
                                 RentArrears0,
                                 TT0,
                                 Record0.getPostcodeID(),
@@ -2444,10 +2440,8 @@ public class DW_SummaryUO extends DW_Summary {
                     } else if (Record0 == null) {
                         // Case when Record1 == null and Record0 == null.
                         doCouncilCompare2TimesHBCount(
-                                
                                 ClaimID,
                                 Group,
-                                
                                 RentArrears0,
                                 TT0,
                                 null,
@@ -2462,11 +2456,9 @@ public class DW_SummaryUO extends DW_Summary {
                 } else if (Record0 == null) {
                     // Case when Record1 != null and Record0 == null.
                     doCouncilCompare2TimesHBCount(
-                            
-                                ClaimID,
-                                Group,
-                                
-                                RentArrears0,
+                            ClaimID,
+                            Group,
+                            RentArrears0,
                             TT0,
                             null,
                             false,
@@ -2479,11 +2471,9 @@ public class DW_SummaryUO extends DW_Summary {
                 } else if (isHBClaim0) {
                     // Case when Record1 != null and isHBClaim0.
                     doCouncilCompare2TimesHBCount(
-                            
-                                ClaimID,
-                                Group,
-                                
-                                RentArrears0,
+                            ClaimID,
+                            Group,
+                            RentArrears0,
                             TT0,
                             Record0.getPostcodeID(),
                             Record0.isClaimPostcodeFValidFormat(),
@@ -2547,10 +2537,10 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     protected void doRSLCompare2TimesCounts(
-            DW_SHBE_Record Record0,
-            DW_SHBE_D_Record D_Record0,
-            DW_SHBE_Record Record1,
-            DW_SHBE_D_Record D_Record1) {
+            SHBE_Record Record0,
+            SHBE_D_Record D_Record0,
+            SHBE_Record Record1,
+            SHBE_D_Record D_Record1) {
         super.doCompare2TimesCounts(Record0, D_Record0, Record1, D_Record1);
         boolean isHBClaim1;
         isHBClaim1 = false;
@@ -2673,8 +2663,8 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     protected void doCouncilSingleTimeCount(
-            DW_SHBE_Record Record,
-            DW_SHBE_D_Record D_Record) {
+            SHBE_Record Record,
+            SHBE_D_Record D_Record) {
         super.doSingleTimeCount(Record, D_Record);
         // Declaration
         int EG;
@@ -2871,8 +2861,8 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     protected void doRSLSingleTimeCount(
-            DW_SHBE_Record Record,
-            DW_SHBE_D_Record D_Record) {
+            SHBE_Record Record,
+            SHBE_D_Record D_Record) {
         super.doSingleTimeCount(Record, D_Record);
         // Declaration
         int StatusOfHBClaimAtExtractDate;
@@ -3084,10 +3074,8 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     protected void doCouncilCompare2TimesHBCount(
-            
             SHBE_ID ClaimID,
             HashSet<SHBE_ID> Group,
-            
             Double Arrears0,
             Integer TT0,
             ONSPD_ID PostcodeID0,
@@ -3113,10 +3101,10 @@ public class DW_SummaryUO extends DW_Summary {
             TotalCount_CouncilInBoth++;
             if (Group.contains(ClaimID)) {
                 SumArrearsDiffInBothG0 += (Arrears1 - Arrears0);
-                TotalCount_CouncilInBothG0 ++;
+                TotalCount_CouncilInBothG0++;
             } else {
                 SumArrearsDiffInBothG1 += (Arrears1 - Arrears0);
-                TotalCount_CouncilInBothG1 ++;
+                TotalCount_CouncilInBothG1++;
             }
 //        } else {
 //            System.out.println("Arrears0 " + Arrears0);
@@ -3369,9 +3357,7 @@ public class DW_SummaryUO extends DW_Summary {
      * @return
      */
     public TreeMap<String, HashMap<String, String>> getSummaryTable(
-            
             HashSet<SHBE_ID> Group,
-            
             String[] SHBEFilenames,
             ArrayList<Integer> include,
             boolean forceNewSummaries,
@@ -3403,10 +3389,10 @@ public class DW_SummaryUO extends DW_Summary {
         String filename1 = "";
         ONSPD_YM3 YM30 = null;
         ONSPD_YM3 YM31 = null;
-        DW_SHBE_Records DW_SHBE_Records0;
-        DW_SHBE_Records DW_SHBE_Records1 = null;
-        HashMap<SHBE_ID, DW_SHBE_Record> Records0;
-        HashMap<SHBE_ID, DW_SHBE_Record> Records1 = null;
+        SHBE_Records SHBE_Records0;
+        SHBE_Records SHBE_Records1 = null;
+        HashMap<SHBE_ID, SHBE_Record> Records0;
+        HashMap<SHBE_ID, SHBE_Record> Records1 = null;
         TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
         TreeMap<ONSPD_YM3, DW_UO_Set> RSLUOSets;
         DW_UO_Set CouncilUOSet0;
@@ -3446,15 +3432,15 @@ public class DW_SummaryUO extends DW_Summary {
             if (CouncilUOSet1 != null) {
                 RSLUOSet1 = RSLUOSets.get(YM31);
                 Env.logO("Load " + YM31, true);
-                DW_SHBE_Records1 = SHBE_Data.getDW_SHBE_Records(YM31);
-                Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+                SHBE_Records1 = SHBE_Data.getSHBE_Records(YM31);
+                Records1 = SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME);
                 initFirst = true;
             }
         }
         if (Records1 == null) {
             return result;
         }
-        
+
         // Go through CouncilUOSet1 and initialise Group
         HashMap<SHBE_ID, DW_UO_Record> map;
         map = CouncilUOSet1.getMap();
@@ -3474,10 +3460,10 @@ public class DW_SummaryUO extends DW_Summary {
                 }
             }
         }
-        
+
         // Summarise first data
         doPartSummarySingleTime(
-                DW_SHBE_Records1,
+                SHBE_Records1,
                 YM31,
                 filename1,
                 forceNewSummaries,
@@ -3495,7 +3481,7 @@ public class DW_SummaryUO extends DW_Summary {
         filename0 = filename1;
         //YM30 = YM31;
         YM30 = new ONSPD_YM3(YM31);
-        DW_SHBE_Records0 = DW_SHBE_Records1;
+        SHBE_Records0 = SHBE_Records1;
         Records0 = Records1;
         CouncilUOSet0 = CouncilUOSet1;
         RSLUOSet0 = RSLUOSet1;
@@ -3510,20 +3496,18 @@ public class DW_SummaryUO extends DW_Summary {
             RSLUOSet1 = RSLUOSets.get(YM31);
             // Load next data
             Env.logO("Load " + YM31, true);
-            DW_SHBE_Records1 = SHBE_Data.getDW_SHBE_Records(YM31);
-            Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+            SHBE_Records1 = SHBE_Data.getSHBE_Records(YM31);
+            Records1 = SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME);
             // doPartSummaryCompare2Times
             doPartSummaryCompare2Times(
-                    
                     Group,
-                    
-                    DW_SHBE_Records0,
+                    SHBE_Records0,
                     Records0,
                     YM30,
                     filename0,
                     CouncilUOSet0,
                     RSLUOSet0,
-                    DW_SHBE_Records1,
+                    SHBE_Records1,
                     Records1,
                     YM31,
                     filename1,
@@ -3543,7 +3527,7 @@ public class DW_SummaryUO extends DW_Summary {
                 filename0 = filename1;
                 //YM30 = YM31;
                 YM30 = new ONSPD_YM3(YM31);
-                DW_SHBE_Records0 = DW_SHBE_Records1;
+                SHBE_Records0 = SHBE_Records1;
                 CouncilUOSet0 = CouncilUOSet1;
                 RSLUOSet0 = RSLUOSet1;
                 incrementCounts(nTT);
@@ -3586,11 +3570,11 @@ public class DW_SummaryUO extends DW_Summary {
 
     /**
      * @param Group
-     * @param DW_SHBE_Records0
+     * @param SHBE_Records0
      * @param Records0
      * @param YM30
      * @param filename0
-     * @param DW_SHBE_Records1
+     * @param SHBE_Records1
      * @param YM31
      * @param filename1
      * @param Records1
@@ -3609,17 +3593,15 @@ public class DW_SummaryUO extends DW_Summary {
      * @param summaries
      */
     protected void doPartSummaryCompare2Times(
-            
             HashSet<SHBE_ID> Group,
-            
-            DW_SHBE_Records DW_SHBE_Records0,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records0,
+            SHBE_Records SHBE_Records0,
+            HashMap<SHBE_ID, SHBE_Record> Records0,
             ONSPD_YM3 YM30,
             String filename0,
             DW_UO_Set CouncilUOSet0,
             DW_UO_Set RSLUOSet0,
-            DW_SHBE_Records DW_SHBE_Records1,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records1,
+            SHBE_Records SHBE_Records1,
+            HashMap<SHBE_ID, SHBE_Record> Records1,
             ONSPD_YM3 YM31,
             String filename1,
             DW_UO_Set CouncilUOSet1,
@@ -3635,7 +3617,7 @@ public class DW_SummaryUO extends DW_Summary {
             TreeMap<String, HashMap<String, String>> summaries) {
 
         doPartSummarySingleTime(
-                DW_SHBE_Records1,
+                SHBE_Records1,
                 YM31,
                 filename1,
                 forceNewSummaries,
@@ -3662,9 +3644,7 @@ public class DW_SummaryUO extends DW_Summary {
         // Loop over underoccupancy data
         // Loop over Council
         doCouncilCompare2TimesLoopOverSet(
-               
                 Group,
-                
                 DW_UO_Set0CouncilMap,
                 DW_UO_Set1CouncilMap,
                 Records0,
@@ -3701,7 +3681,7 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     protected void doPartSummarySingleTime(
-            DW_SHBE_Records DW_SHBE_Records,
+            SHBE_Records SHBE_Records,
             ONSPD_YM3 YM3,
             String filename,
             boolean forceNewSummaries,
@@ -3722,18 +3702,18 @@ public class DW_SummaryUO extends DW_Summary {
         HashMap<String, Number> LoadSummary;
         HashMap<SHBE_ID, DW_UO_Record> DW_UO_SetCouncilMap;
         HashMap<SHBE_ID, DW_UO_Record> DW_UO_SetRSLMap;
-        HashMap<SHBE_ID, DW_SHBE_Record> Records;
+        HashMap<SHBE_ID, SHBE_Record> Records;
         HashMap<String, BigDecimal> IncomeAndRentSummaryAllUO;
         HashMap<String, BigDecimal> IncomeAndRentSummaryCouncil;
         HashMap<String, BigDecimal> IncomeAndRentSummaryRSL;
         // Initialise variables
         key = SHBE_Handler.getYearMonthNumber(filename);
         summary = summaries.get(key);
-        LoadSummary = DW_SHBE_Records.getLoadSummary(Env.HOOME);
+        LoadSummary = SHBE_Records.getLoadSummary(Env.HOOME);
         addToSummary(summary, LoadSummary);
         DW_UO_SetCouncilMap = CouncilUOSet.getMap();
         DW_UO_SetRSLMap = RSLUOSet.getMap();
-        Records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+        Records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
         // Loop over Council
         CouncilLinkedRecordCount1 = doCouncilSingleTimeLoopOverSet(
                 DW_UO_SetCouncilMap, Records);
@@ -3746,44 +3726,19 @@ public class DW_SummaryUO extends DW_Summary {
         AllUOAllCount1 = CouncilCount1 + RSLCount1;
         AllUOLinkedRecordCount1 = CouncilLinkedRecordCount1 + RSLLinkedRecordCount1;
         // Add to counts
-        IncomeAndRentSummaryAllUO = SHBE_Handler.getIncomeAndRentSummary(
-                DW_SHBE_Records,
-                HB_CTB,
-                PTs,
-                YM3,
-                CouncilUOSet,
-                RSLUOSet,
-                true,
-                true,
-                true,
-                forceNewSummaries);
-        IncomeAndRentSummaryCouncil = SHBE_Handler.getIncomeAndRentSummary(
-                DW_SHBE_Records,
-                HB_CTB,
-                PTs,
-                YM3,
-                CouncilUOSet,
-                null,
-                true,
-                true,
-                false,
-                forceNewSummaries);
-        IncomeAndRentSummaryRSL = SHBE_Handler.getIncomeAndRentSummary(
-                DW_SHBE_Records,
-                HB_CTB,
-                PTs,
-                YM3,
-                null,
-                RSLUOSet,
-                true,
-                false,
-                true,
-                forceNewSummaries);
-        addToSummarySingleTimeIncomeAndRent(
-                summary,
-                IncomeAndRentSummaryAllUO,
-                IncomeAndRentSummaryCouncil,
-                IncomeAndRentSummaryRSL);
+        DW_IncomeAndRentSummary iars;
+        iars = new DW_IncomeAndRentSummary(Env);
+        IncomeAndRentSummaryAllUO = iars.getIncomeAndRentSummary(
+                SHBE_Records, HB_CTB, PTs, YM3, CouncilUOSet, RSLUOSet, true,
+                true, true, forceNewSummaries);
+        IncomeAndRentSummaryCouncil = iars.getIncomeAndRentSummary(
+                SHBE_Records, HB_CTB, PTs, YM3, CouncilUOSet, null, true,
+                true, false, forceNewSummaries);
+        IncomeAndRentSummaryRSL = iars.getIncomeAndRentSummary(
+                SHBE_Records, HB_CTB, PTs, YM3, null, RSLUOSet, true, false,
+                true, forceNewSummaries);
+        addToSummarySingleTimeIncomeAndRent(summary, IncomeAndRentSummaryAllUO, 
+                IncomeAndRentSummaryCouncil, IncomeAndRentSummaryRSL);
         addToSummarySingleTime(nTT, nEG, nPSI, summary);
         addToSummarySingleTimeRentArrears(summary);
         summary.put(sSHBEFilename1, filename);
@@ -3808,19 +3763,17 @@ public class DW_SummaryUO extends DW_Summary {
      * DW_UO_Record for the former time period.
      * @param DW_UO_Set1CouncilMap Keys are ClaimIDs values are Council
      * DW_UO_Record for the latter time period.
-     * @param Records0 Keys are ClaimIDs values are DW_SHBE_Record for the
-     * former time period.
-     * @param Records1 Keys are ClaimIDs values are DW_SHBE_Record for the
-     * latter time period.
+     * @param Records0 Keys are ClaimIDs values are SHBE_Record for the
+ former time period.
+     * @param Records1 Keys are ClaimIDs values are SHBE_Record for the
+ latter time period.
      */
     public void doCouncilCompare2TimesLoopOverSet(
-            
             HashSet<SHBE_ID> Group,
-                        
             HashMap<SHBE_ID, DW_UO_Record> DW_UO_Set0CouncilMap,
             HashMap<SHBE_ID, DW_UO_Record> DW_UO_Set1CouncilMap,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records0,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records1) {
+            HashMap<SHBE_ID, SHBE_Record> Records0,
+            HashMap<SHBE_ID, SHBE_Record> Records1) {
         Iterator<SHBE_ID> ite;
         // Go through all those currently and previously UO.
         ite = DW_UO_Set1CouncilMap.keySet().iterator();
@@ -3830,9 +3783,7 @@ public class DW_SummaryUO extends DW_Summary {
             if (DW_UO_Set0CouncilMap.containsKey(ClaimID)) {
                 doCouncilCompare2TimesCounts(
                         ClaimID,
-                        
                         Group,
-                                
                         Records0,
                         DW_UO_Set0CouncilMap,
                         Records1,
@@ -3851,9 +3802,7 @@ public class DW_SummaryUO extends DW_Summary {
             if (!DW_UO_Set0CouncilMap.keySet().contains(ClaimID)) {
                 doCouncilCompare2TimesCounts(
                         ClaimID,
-                        
                         Group,
-                        
                         Records0,
                         DW_UO_Set0CouncilMap,
                         Records1,
@@ -3884,8 +3833,8 @@ public class DW_SummaryUO extends DW_Summary {
     public void doRSLCompare2TimesLoopOverSet(
             HashMap<SHBE_ID, DW_UO_Record> map0,
             HashMap<SHBE_ID, DW_UO_Record> map1,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records0,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records1) {
+            HashMap<SHBE_ID, SHBE_Record> Records0,
+            HashMap<SHBE_ID, SHBE_Record> Records1) {
         Iterator<SHBE_ID> ite;
         SHBE_ID ClaimID;
         // Go through all those currently and previously UO.
@@ -3933,18 +3882,18 @@ public class DW_SummaryUO extends DW_Summary {
 
     private void doRSLCompare2TimesCountsAsNecessary(
             SHBE_ID ClaimID,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records0,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records1) {
-        DW_SHBE_Record Record0;
+            HashMap<SHBE_ID, SHBE_Record> Records0,
+            HashMap<SHBE_ID, SHBE_Record> Records1) {
+        SHBE_Record Record0;
         Record0 = Records0.get(ClaimID);
-        DW_SHBE_Record Record1;
+        SHBE_Record Record1;
         Record1 = Records1.get(ClaimID);
-        DW_SHBE_D_Record D_Record0;
+        SHBE_D_Record D_Record0;
         D_Record0 = null;
         if (Record0 != null) {
             D_Record0 = Record0.getDRecord();
         }
-        DW_SHBE_D_Record D_Record1;
+        SHBE_D_Record D_Record1;
         D_Record1 = null;
         if (Record1 == null) {
             doRSLCompare2TimesCounts(
@@ -3963,7 +3912,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     public int doCouncilSingleTimeLoopOverSet(
             HashMap<SHBE_ID, DW_UO_Record> map,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records) {
+            HashMap<SHBE_ID, SHBE_Record> Records) {
         int linkedRecords;
         linkedRecords = 0;
         Iterator<SHBE_ID> ite;
@@ -3975,10 +3924,10 @@ public class DW_SummaryUO extends DW_Summary {
             DW_UO_Record = map.get(ClaimID);
             // Rent Arrears DW_Summary
             doSingleTimeRentArrearsCount(DW_UO_Record);
-            DW_SHBE_Record Record;
+            SHBE_Record Record;
             Record = Records.get(ClaimID);
             if (Record != null) {
-                DW_SHBE_D_Record D_Record;
+                SHBE_D_Record D_Record;
                 D_Record = Record.getDRecord();
                 if (D_Record != null) {
                     doCouncilSingleTimeCount(Record, D_Record);
@@ -3997,7 +3946,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     public int doRSLSingleTimeLoopOverSet(
             HashMap<SHBE_ID, DW_UO_Record> map,
-            HashMap<SHBE_ID, DW_SHBE_Record> D_Records) {
+            HashMap<SHBE_ID, SHBE_Record> D_Records) {
         int linkedRecords;
         linkedRecords = 0;
         Iterator<SHBE_ID> ite;
@@ -4009,10 +3958,10 @@ public class DW_SummaryUO extends DW_Summary {
             UORec = map.get(ClaimID);
             // Rent Arrears DW_Summary
             doSingleTimeRentArrearsCount(UORec);
-            DW_SHBE_Record Record;
+            SHBE_Record Record;
             Record = D_Records.get(ClaimID);
             if (Record != null) {
-                DW_SHBE_D_Record D_Record;
+                SHBE_D_Record D_Record;
                 D_Record = Record.getDRecord();
                 if (D_Record != null) {
                     doRSLSingleTimeCount(Record, D_Record);
@@ -4182,7 +4131,7 @@ public class DW_SummaryUO extends DW_Summary {
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
             String line;
-            line = getLineCompare2TimesGeneric(summary, ONSPDFiles);            
+            line = getLineCompare2TimesGeneric(summary, ONSPDFiles);
             String sCount;
             Double count = null;
             String sTotalArrearsDiff;

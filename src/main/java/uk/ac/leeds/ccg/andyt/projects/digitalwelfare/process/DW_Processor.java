@@ -18,12 +18,15 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc.DW_ProcessorLCC;
 
 /**
+ * This is the main processing class for the project.
  *
- * @author geoagdt
+ * @author Andy Turner
  */
 public class DW_Processor extends DW_ProcessorAbstract {
 
@@ -40,37 +43,23 @@ public class DW_Processor extends DW_ProcessorAbstract {
     public static void main(String[] args) {
         try {
             if (args.length != 2) {
-                System.err.println(
-                        "Expected an argument which is the location "
+                System.err.println("Expected an argument which is the location "
                         + "of the directory containing the input data. "
                         + "Aborting.");
                 System.exit(0);
             } else {
                 DW_Environment env = new DW_Environment(
-                        new Integer(args[0]),
-                        args[1]);
+                        Integer.valueOf(args[0]), args[1]);
                 DW_Processor p;
                 p = new DW_Processor();
                 p.Env = env;
+                p.Env.SHBE_Env = new SHBE_Environment();
+                p.Env.ONSPD_Env = new ONSPD_Environment();
                 p.Files = env.getFiles();
                 p.Strings = env.getStrings();
                 p.run();
-                /**
-                 * Not done this way as this would first load UnderOccupancy
-                 * data. This is to be avaoided as we want to load first the
-                 * SHBE and then load the UO data.
-                 */
-                // new DW_ProcessorLCC(Env).run();
-                
             }
-        } catch (Exception e) {
-            System.err.println(e.getLocalizedMessage());
-            e.printStackTrace(System.err);
-//            StackTraceElement[] stes = e.getStackTrace();
-//            for (StackTraceElement ste : stes) {
-//                System.err.println(ste.toString());
-//            }
-        } catch (Error e) {
+        } catch (Exception | Error e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace(System.err);
 //            StackTraceElement[] stes = e.getStackTrace();
@@ -89,14 +78,13 @@ public class DW_Processor extends DW_ProcessorAbstract {
         /**
          * Run Advice Leeds processing
          */
-        
+
         /**
          * Run LCC SHBE data processing
          */
         DW_ProcessorLCC p;
         p = new DW_ProcessorLCC(Env);
         p.run();
-        
     }
 
 }

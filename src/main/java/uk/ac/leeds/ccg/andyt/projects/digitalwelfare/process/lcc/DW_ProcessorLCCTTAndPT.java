@@ -28,10 +28,10 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
@@ -49,7 +49,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
      * For convenience
      */
     protected DW_UO_Handler UO_Handler;
-    protected DW_SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
+    protected SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
     protected HashMap<String, ONSPD_ID> PostcodeToPostcodeIDLookup;
     protected HashMap<ONSPD_ID, String> PostcodeIDToPostcodeLookup;
     String sU = Strings.sU;
@@ -623,10 +623,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             DW_UO_Set AllUOSet0 = null;
             DW_UO_Set CouncilUOSet0 = null;
             DW_UO_Set RSLUOSet0 = null;
-            DW_SHBE_Records DW_SHBE_Records0 = null;
-            DW_SHBE_Records0 = SHBE_Data.getDW_SHBE_Records(YM30);
-            HashMap<SHBE_ID, DW_SHBE_Record> Records0;
-            Records0 = DW_SHBE_Records0.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+            SHBE_Records SHBE_Records0 = null;
+            SHBE_Records0 = SHBE_Data.getSHBE_Records(YM30);
+            HashMap<SHBE_ID, SHBE_Record> Records0;
+            Records0 = SHBE_Records0.getClaimIDToSHBE_RecordMap(Env.HOOME);
             // ClaimIDToTTLookups
             HashMap<Integer, HashMap<SHBE_ID, Integer>> ClaimIDToTTLookups;
             ClaimIDToTTLookups = new HashMap<>();
@@ -683,15 +683,15 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     // Set Year and Month variables
                     ONSPD_YM3 YM31 = SHBE_Handler.getYM3(filename);
                     Env.logO("Year Month " + YM31, true);
-                    DW_SHBE_Records DW_SHBE_Records1;
-                    DW_SHBE_Records1 = SHBE_Data.getDW_SHBE_Records(YM31);
+                    SHBE_Records SHBE_Records1;
+                    SHBE_Records1 = SHBE_Data.getSHBE_Records(YM31);
                     ClaimIDToPostcodeIDLookup = loadClaimIDToPostcodeIDLookup(
                             YM31,
                             i,
                             ClaimIDToPostcodeIDLookups);
                     ClaimIDToPostcodeIDLookups.put(i, ClaimIDToPostcodeIDLookup);
-                    HashMap<SHBE_ID, DW_SHBE_Record> Records1;
-                    Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+                    HashMap<SHBE_ID, SHBE_Record> Records1;
+                    Records1 = SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME);
                     // ClaimIDToTTLookup1
                     HashMap<SHBE_ID, Integer> ClaimIDToTTLookup1;
                     ClaimIDToTTLookup1 = loadClaimIDToTTLookup(
@@ -1880,10 +1880,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             return ClaimIDToTTLookups.get(key);
         }
         result = new HashMap<>();
-        DW_SHBE_Records DW_SHBE_Records;
-        DW_SHBE_Records = SHBE_Data.getDW_SHBE_Records(YM3);
-        HashMap<SHBE_ID, DW_SHBE_Record> records;
-        records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+        SHBE_Records SHBE_Records;
+        SHBE_Records = SHBE_Data.getSHBE_Records(YM3);
+        HashMap<SHBE_ID, SHBE_Record> records;
+        records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
         Iterator<SHBE_ID> ite;
         ite = records.keySet().iterator();
         SHBE_ID ClaimID;
@@ -1904,7 +1904,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
             return ClaimIDToPostcodeIDLookups.get(key);
         }
-        r = SHBE_Data.getDW_SHBE_Records(YM3).getClaimIDToPostcodeIDLookup(Env.HOOME);
+        r = SHBE_Data.getSHBE_Records(YM3).getClaimIDToPostcodeIDLookup(Env.HOOME);
         ClaimIDToPostcodeIDLookups.put(key, r);
         return r;
     }
@@ -1942,29 +1942,21 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         }
     }
 
-    private PrintWriter getFrequencyPrintWriter(
-            File dirOut,
-            String name,
+    private PrintWriter getFrequencyPrintWriter(File dirOut, String name,
             boolean reportTenancyTransitionBreaks) {
         PrintWriter result;
         File dirOut2;
-        dirOut2 = new File(
-                dirOut,
-                "Frequencies");
+        dirOut2 = new File(dirOut, "Frequencies");
         if (reportTenancyTransitionBreaks) {
-            dirOut2 = new File(
-                    dirOut2,
-                    Strings.sIncludingTenancyTransitionBreaks);
+            dirOut2 = new File(dirOut2,
+                    Strings.SHBE_Strings.sIncludingTenancyTransitionBreaks);
         } else {
-            dirOut2 = new File(
-                    dirOut2,
-                    Strings.sIncludingTenancyTransitionBreaksNo);
+            dirOut2 = new File(dirOut2,
+                    Strings.SHBE_Strings.sIncludingTenancyTransitionBreaksNo);
         }
         dirOut2.mkdirs();
         File f;
-        f = new File(
-                dirOut2,
-                name);
+        f = new File(dirOut2, name);
         Env.logO("Write " + f, true);
         result = Generic_IO.getPrintWriter(f, false);
         return result;
@@ -1979,20 +1971,11 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             File dir) {
         if (areaCounts.size() > 0) {
             TreeMap<Integer, TreeSet<String>> result = writeResults(
-                    areaCounts,
-                    TTCounts,
-                    level,
-                    dir,
-                    YM31);
+                    areaCounts, TTCounts, level, dir, YM31);
             int num = 5;
             // Write out areas with biggest increases from last year
-            writeExtremeAreaChanges(
-                    result,
-                    YM31CountAreas,
-                    "LastYear",
-                    num,
-                    dir,
-                    YM31);
+            writeExtremeAreaChanges(result, YM31CountAreas, "LastYear", num,
+                    dir, YM31);
             return result;
         } else {
             return null;
@@ -2002,29 +1985,16 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
     protected TreeMap<Integer, TreeSet<String>> writeResults(
             TreeMap<String, Integer> areaCounts,
             TreeMap<Integer, Integer> TTCounts,
-            String level,
-            File dir,
-            String YM3) {
+            String level, File dir, String YM3) {
         if (areaCounts.size() > 0) {
             int num = 5;
             TreeMap<Integer, TreeSet<String>> result;
             // Write out counts by area
-            result = writeCountsByArea(
-                    areaCounts,
-                    level,
-                    dir,
-                    YM3);
+            result = writeCountsByArea(areaCounts, level, dir, YM3);
             // Write out areas with highest counts
-            writeAreasWithHighestNumbersOfClaimants(
-                    result,
-                    num,
-                    dir,
-                    YM3);
+            writeAreasWithHighestNumbersOfClaimants(result, num, dir, YM3);
             // Write out counts by TT
-            writeCountsByTenure(
-                    TTCounts,
-                    dir,
-                    YM3);
+            writeCountsByTenure(TTCounts, dir, YM3);
             return result;
         } else {
             return null;
@@ -2034,10 +2004,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
     protected void writeExtremeAreaChanges(
             TreeMap<Integer, TreeSet<String>> countAreas,
             TreeMap<Integer, TreeSet<String>> lastTimeCountAreas,
-            String YM30,
-            int num,
-            File dir,
-            String YM31) {
+            String YM30, int num, File dir, String YM31) {
         if (lastTimeCountAreas != null) {
             TreeMap<String, Integer> areaCounts;
             areaCounts = getAreaCounts(countAreas);
@@ -2078,22 +2045,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             }
             TreeMap<Double, TreeSet<String>> absoluteDiffsAreas;
             absoluteDiffsAreas = getCountAreas(areaAbsoluteDiffs);
-            writeDiffs(
-                    absoluteDiffsAreas,
-                    "Absolute",
-                    YM30,
-                    num,
-                    dir,
-                    YM31);
+            writeDiffs(absoluteDiffsAreas, "Absolute", YM30, num, dir, YM31);
             TreeMap<Double, TreeSet<String>> relativeDiffsAreas;
             relativeDiffsAreas = getCountAreas(areaRelativeDiffs);
-            writeDiffs(
-                    relativeDiffsAreas,
-                    "Relative",
-                    YM30,
-                    num,
-                    dir,
-                    YM31);
+            writeDiffs(relativeDiffsAreas, "Relative", YM30, num, dir, YM31);
         }
     }
 
@@ -2104,10 +2059,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
      * @param n
      * @return
      */
-    public double getRelativeDifference(
-            double a,
-            double b,
-            int n) {
+    public double getRelativeDifference(double a, double b, int n) {
         double result;
         if (a == b) {
             return 0.0d;
@@ -2133,48 +2085,27 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         return result;
     }
 
-    protected void writeDiffs(
-            TreeMap<Double, TreeSet<String>> diffsAreas,
-            String name,
-            String YM30,
-            int num,
-            File dir,
-            String YM31) {
+    protected void writeDiffs(TreeMap<Double, TreeSet<String>> diffsAreas,
+            String name, String YM30, int num, File dir, String YM31) {
         if (diffsAreas.size() > 0) {
             PrintWriter pw;
             String type;
             type = "Increases";
-            pw = init_OutputTextFilePrintWriter(
-                    dir,
+            pw = init_OutputTextFilePrintWriter(dir,
                     "ExtremeAreaChanges" + name + type + YM30 + "_TO_" + YM31 + ".csv");
             Iterator<Double> iteD;
             iteD = diffsAreas.descendingKeySet().iterator();
-            writeDiffs(
-                    diffsAreas,
-                    num,
-                    type,
-                    pw,
-                    iteD);
+            writeDiffs(diffsAreas, num, type, pw, iteD);
             type = "Decreases";
-            pw = init_OutputTextFilePrintWriter(
-                    dir,
+            pw = init_OutputTextFilePrintWriter(dir,
                     "ExtremeAreaChanges" + name + type + YM30 + "_TO_" + YM31 + ".csv");
             iteD = diffsAreas.keySet().iterator();
-            writeDiffs(
-                    diffsAreas,
-                    num,
-                    type,
-                    pw,
-                    iteD);
+            writeDiffs(diffsAreas, num, type, pw, iteD);
         }
     }
 
-    protected void writeDiffs(
-            TreeMap<Double, TreeSet<String>> diffsAreas,
-            int num,
-            String type,
-            PrintWriter pw,
-            Iterator<Double> iteD) {
+    protected void writeDiffs(TreeMap<Double, TreeSet<String>> diffsAreas, int num,
+            String type, PrintWriter pw, Iterator<Double> iteD) {
         if (diffsAreas.size() > 0) {
             MathContext mc;
             mc = new MathContext(5, RoundingMode.HALF_UP);
@@ -2272,14 +2203,11 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
      * @param YM3
      */
     protected void writeAreasWithHighestNumbersOfClaimants(
-            TreeMap<Integer, TreeSet<String>> countAreas,
-            int num,
-            File dir,
+            TreeMap<Integer, TreeSet<String>> countAreas, int num, File dir,
             String YM3) {
         if (countAreas.size() > 0) {
             PrintWriter pw;
-            pw = init_OutputTextFilePrintWriter(
-                    dir,
+            pw = init_OutputTextFilePrintWriter(dir,
                     "HighestClaimants" + YM3 + ".csv");
             pw.println("Area, Count");
             int counter;
@@ -2317,17 +2245,13 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
      * This is an ordered list from minimum to maximum counts.
      */
     protected TreeMap<Integer, TreeSet<String>> writeCountsByArea(
-            TreeMap<String, Integer> areaCounts,
-            String level,
-            File dir,
+            TreeMap<String, Integer> areaCounts, String level, File dir,
             String YM3) {
         if (areaCounts.size() > 0) {
             TreeMap<Integer, TreeSet<String>> result;
             result = new TreeMap<>();
             PrintWriter pw;
-            pw = init_OutputTextFilePrintWriter(
-                    dir,
-                    YM3 + ".csv");
+            pw = init_OutputTextFilePrintWriter(dir, YM3 + ".csv");
             pw.println(level + ", Count");
             Iterator<String> ite;
             ite = areaCounts.keySet().iterator();
@@ -3073,8 +2997,8 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
      */
     public TreeMap<String, TreeMap<String, Integer>> getTTTMatrixAndRecordTTT(
             HashMap<Integer, HashMap<SHBE_ID, ONSPD_ID>> ClaimIDToPostcodeIDLookups,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records0,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records1,
+            HashMap<SHBE_ID, SHBE_Record> Records0,
+            HashMap<SHBE_ID, SHBE_Record> Records1,
             HashMap<SHBE_ID, Integer> ClaimIDToTTLookup0,
             HashMap<SHBE_ID, Integer> ClaimIDToTTLookup1,
             HashMap<Integer, HashMap<SHBE_ID, Integer>> ClaimIDToTTLookups,
@@ -3109,10 +3033,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             }
         }
         SHBE_ID ClaimID;
-        DW_SHBE_Record Record0;
-        DW_SHBE_Record Record1;
-        DW_SHBE_D_Record DRecord0;
-        DW_SHBE_D_Record DRecord1;
+        SHBE_Record Record0;
+        SHBE_Record Record1;
+        SHBE_D_Record DRecord0;
+        SHBE_D_Record DRecord1;
         DW_UO_Record DW_UO_Record0 = null;
         DW_UO_Record DW_UO_Record1 = null;
         Iterator<SHBE_ID> ite;
@@ -4394,9 +4318,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 
     private String[] getTTTDetails(
             String sTT0,
-            DW_SHBE_Record Record0,
+            SHBE_Record Record0,
             String sTT1,
-            DW_SHBE_Record Record1) {
+            SHBE_Record Record1) {
         String[] result;
         result = new String[3];
         ONSPD_ID PostCodeID0 = null;
@@ -4824,20 +4748,20 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 //                                    }
 //                                }
 //                            } else {
-//                                TT0 = DW_SHBE_TenancyType_Handler.sMinus999;
+//                                TT0 = SHBE_TenancyType_Handler.sMinus999;
 //                                if (doUnderOccupiedData) {
 //                                    TT0 += sU;
 //                                }
 //                            }
 //                        }
 //                    } else {
-//                        TT0 = DW_SHBE_TenancyType_Handler.sMinus999;
+//                        TT0 = SHBE_TenancyType_Handler.sMinus999;
 //                        if (doUnderOccupiedData) {
 //                            TT0 += sU;
 //                        }
 //                    }
 //                } else {
-//                    TT0 = DW_SHBE_TenancyType_Handler.sMinus999;
+//                    TT0 = SHBE_TenancyType_Handler.sMinus999;
 //                    if (doUnderOccupiedData) {
 //                        TT0 += sU;
 //                    }
@@ -4905,7 +4829,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 //                            }
 //                        }
 //                    } else if (TT0Integer.compareTo(TT1Integer) == 0
-//                            || TT0.equalsIgnoreCase(DW_SHBE_TenancyType_Handler.sMinus999)) { // Major diff
+//                            || TT0.equalsIgnoreCase(SHBE_TenancyType_Handler.sMinus999)) { // Major diff
 //                        TTChange = getTTTName(
 //                                TT0Integer,
 //                                TT1Integer);
@@ -5062,7 +4986,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 //                    String sTT0 = Integer.toString(TT0);
 //                    Integer TT1 = -999;
 //                    String sTT1;
-//                    sTT1 = DW_SHBE_TenancyType_Handler.sMinus999;
+//                    sTT1 = SHBE_TenancyType_Handler.sMinus999;
 //                    String TTT;
 //                    if (doUnderOccupiedData) {
 //                        String[] ttc = DW_ProcessorLCCTTAndPT.this.getTTTName(
@@ -5961,20 +5885,20 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         // Start
         ONSPD_YM3 YM30;
         YM30 = SHBE_Handler.getYM3(SHBEFilenames[startIndex]);
-        DW_SHBE_Records recs0;
-        recs0 = SHBE_Data.getDW_SHBE_Records(YM30);
-//        recs0 = Env.getDW_SHBE_Data().getData().get(YM30);
-        HashMap<SHBE_ID, DW_SHBE_Record> recordsStart;
-        recordsStart = recs0.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+        SHBE_Records recs0;
+        recs0 = SHBE_Data.getSHBE_Records(YM30);
+//        recs0 = Env.getSHBE_Data().getData().get(YM30);
+        HashMap<SHBE_ID, SHBE_Record> recordsStart;
+        recordsStart = recs0.getClaimIDToSHBE_RecordMap(Env.HOOME);
         // End
         ONSPD_YM3 YM31;
         YM31 = SHBE_Handler.getYM3(SHBEFilenames[endIndex]);
-        DW_SHBE_Records recs1;
-        recs1 = SHBE_Data.getDW_SHBE_Records(YM31);
-//        recs1 = Env.getDW_SHBE_Data().getData().get(YM31);
-        HashMap<SHBE_ID, DW_SHBE_Record> recordsEnd;
-        recordsEnd = recs1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
-        //TreeMap<String, DW_SHBE_Record> SRecordsEnd = (TreeMap<String, DW_SHBE_Record>) SHBEDataEnd[1];
+        SHBE_Records recs1;
+        recs1 = SHBE_Data.getSHBE_Records(YM31);
+//        recs1 = Env.getSHBE_Data().getData().get(YM31);
+        HashMap<SHBE_ID, SHBE_Record> recordsEnd;
+        recordsEnd = recs1.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        //TreeMap<String, SHBE_Record> SRecordsEnd = (TreeMap<String, SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<Integer, Integer> destinationCounts;
         Iterator<SHBE_ID> ite;
@@ -5982,7 +5906,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         String councilTaxClaimNumber;
         while (ite.hasNext()) {
             SHBE_ID SHBE_ID = ite.next();
-            DW_SHBE_D_Record startDRecord;
+            SHBE_D_Record startDRecord;
             startDRecord = recordsStart.get(SHBE_ID).getDRecord();
             if (startDRecord != null) {
                 String postcodeStart = startDRecord.getClaimantsPostcode();
@@ -6008,7 +5932,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     //originsAndDestinations.add(startPostcodeDistrict);
                 }
 
-                DW_SHBE_D_Record endDRecord;
+                SHBE_D_Record endDRecord;
                 endDRecord = recordsEnd.get(SHBE_ID).getDRecord();
                 //String destinationPostcodeDistrict;
                 Integer endTenancyType;
@@ -6058,10 +5982,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         ite = recordsEnd.keySet().iterator();
         while (ite.hasNext()) {
             SHBE_ID SHBE_ID = ite.next();
-            DW_SHBE_D_Record DRecordEnd;
+            SHBE_D_Record DRecordEnd;
             DRecordEnd = recordsEnd.get(SHBE_ID).getDRecord();
             if (DRecordEnd != null) {
-                DW_SHBE_D_Record DRecordStart;
+                SHBE_D_Record DRecordStart;
                 DRecordStart = recordsStart.get(SHBE_ID).getDRecord();
                 if (DRecordStart == null) {
                     //String startPostcodeDistrict = "unknown";
@@ -6160,18 +6084,18 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         result[1] = originsAndDestinations;
         ONSPD_YM3 YM30;
         YM30 = SHBE_Handler.getYM3(SHBEFilenames[startIndex]);
-        DW_SHBE_Records recs0;
-        recs0 = SHBE_Data.getDW_SHBE_Records(YM30);
-        //recs0 = Env.getDW_SHBE_Data().getData().get(YM30);
-        HashMap<SHBE_ID, DW_SHBE_Record> recordsStart;
-        recordsStart = recs0.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+        SHBE_Records recs0;
+        recs0 = SHBE_Data.getSHBE_Records(YM30);
+        //recs0 = Env.getSHBE_Data().getData().get(YM30);
+        HashMap<SHBE_ID, SHBE_Record> recordsStart;
+        recordsStart = recs0.getClaimIDToSHBE_RecordMap(Env.HOOME);
         ONSPD_YM3 YM31;
         YM31 = SHBE_Handler.getYM3(SHBEFilenames[endIndex]);
-        DW_SHBE_Records recs1;
-        recs1 = SHBE_Data.getDW_SHBE_Records(YM31);
-        //recs1 = Env.getDW_SHBE_Data().getData().get(YM31);
-        HashMap<SHBE_ID, DW_SHBE_Record> recordsEnd;
-        recordsEnd = recs1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+        SHBE_Records recs1;
+        recs1 = SHBE_Data.getSHBE_Records(YM31);
+        //recs1 = Env.getSHBE_Data().getData().get(YM31);
+        HashMap<SHBE_ID, SHBE_Record> recordsEnd;
+        recordsEnd = recs1.getClaimIDToSHBE_RecordMap(Env.HOOME);
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<Integer, Integer> destinationCounts;
         Iterator<SHBE_ID> ite;
@@ -6179,7 +6103,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         SHBE_ID SHBE_ID;
         while (ite.hasNext()) {
             SHBE_ID = ite.next();
-            DW_SHBE_D_Record startDRecord = recordsStart.get(SHBE_ID).getDRecord();
+            SHBE_D_Record startDRecord = recordsStart.get(SHBE_ID).getDRecord();
             if (startDRecord != null) {
                 int startTenancyType = startDRecord.getTenancyType();
                 if (resultMatrix.containsKey(startTenancyType)) {
@@ -6189,7 +6113,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     resultMatrix.put(startTenancyType, destinationCounts);
                     originsAndDestinations.add(startTenancyType);
                 }
-                DW_SHBE_D_Record endDRecord = recordsEnd.get(SHBE_ID).getDRecord();
+                SHBE_D_Record endDRecord = recordsEnd.get(SHBE_ID).getDRecord();
                 Integer endTenancyType;
                 if (endDRecord == null) {
                     endTenancyType = -999;
@@ -6209,9 +6133,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         ite = recordsEnd.keySet().iterator();
         while (ite.hasNext()) {
             SHBE_ID = ite.next();
-            DW_SHBE_D_Record endDRecord = recordsEnd.get(SHBE_ID).getDRecord();
+            SHBE_D_Record endDRecord = recordsEnd.get(SHBE_ID).getDRecord();
             if (endDRecord != null) {
-                DW_SHBE_D_Record DRecordStart = recordsStart.get(SHBE_ID).getDRecord();
+                SHBE_D_Record DRecordStart = recordsStart.get(SHBE_ID).getDRecord();
                 if (DRecordStart == null) {
                     //String startPostcodeDistrict = "unknown";
                     Integer startTenancyType = -999;

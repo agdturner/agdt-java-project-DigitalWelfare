@@ -36,14 +36,14 @@ import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_PersonID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Data;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_S_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_PersonID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Data;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_S_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
@@ -59,11 +59,11 @@ public class DW_TenancyChangesUO extends DW_Object {
     /**
      * For convenience;
      */
-    DW_SHBE_Data SHBE_Data;
+    SHBE_Data SHBE_Data;
     DW_Strings Strings;
     DW_Files Files;
-    DW_SHBE_Handler SHBE_Handler;
-    DW_SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
+    SHBE_Handler SHBE_Handler;
+    SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
     HashMap<SHBE_ID, String> ClaimIDToClaimRefLookup;
     HashMap<String, SHBE_ID> ClaimRefToClaimIDLookup;
     HashMap<String, ONSPD_ID> PostcodeToPostcodeIDLookup;
@@ -1321,27 +1321,27 @@ public class DW_TenancyChangesUO extends DW_Object {
             result.put(ClaimRef + Strings.symbol_underscore + sA, s);
         }
         Iterator<Integer> tNotMonthlyUOIte;
-        DW_SHBE_Records DW_SHBE_Records;
+        SHBE_Records SHBE_Records;
         int i;
         String key;
         String aS;
         int j;
         String bS;
         boolean b;
-        HashMap<SHBE_ID, DW_SHBE_Record> records;
+        HashMap<SHBE_ID, SHBE_Record> records;
         String year;
         String month;
         ONSPD_YM3 yM3;
-        DW_SHBE_Record record;
-        DW_SHBE_D_Record dRecord;
+        SHBE_Record record;
+        SHBE_D_Record dRecord;
         tNotMonthlyUOIte = NotMonthlyUO.iterator();
         while (tNotMonthlyUOIte.hasNext()) {
             i = tNotMonthlyUOIte.next();
             year = SHBE_Handler.getYear(SHBEFilenames[i]);
             month = SHBE_Handler.getMonthNumber(SHBEFilenames[i]);
             yM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
-            DW_SHBE_Records = Env.getSHBE_Data().getDW_SHBE_Records(yM3);
-            records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+            SHBE_Records = Env.getSHBE_Data().getSHBE_Records(yM3);
+            records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
             ite = ClaimIDs.iterator();
             while (ite.hasNext()) {
                 ClaimID = ite.next();
@@ -1976,9 +1976,9 @@ public class DW_TenancyChangesUO extends DW_Object {
         TreeMap<String, ArrayList<Integer>> includes;
         includes = SHBE_Handler.getIncludes();
         ArrayList<Integer> MonthlyUO;
-        MonthlyUO = includes.get(Strings.sIncludeMonthlySinceApril2013);
+        MonthlyUO = includes.get(Strings.SHBE_Strings.sIncludeMonthlySinceApril2013);
         ArrayList<Integer> All;
-        All = includes.get(Strings.sIncludeAll);
+        All = includes.get(Strings.SHBE_Strings.sIncludeAll);
         ArrayList<Integer> NotMonthlyUO;
         NotMonthlyUO = new ArrayList<>();
         NotMonthlyUO.addAll(All);
@@ -1993,7 +1993,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             result[4] = preUnderOccupancyValues;
         }
 
-        DW_SHBE_Records DW_SHBE_Records1 = null;
+        SHBE_Records SHBE_Records1 = null;
         ONSPD_YM3 YM3Start = null;
         ONSPD_YM3 YM30 = null;
         String year0 = s;
@@ -2024,11 +2024,11 @@ public class DW_TenancyChangesUO extends DW_Object {
         CouncilUOSet1 = CouncilUOSets.get(YM31);
         if (CouncilUOSet1 != null) {
             RSLUOSet1 = RSLUOSets.get(YM31);
-            DW_SHBE_Records1 = SHBE_Data.getDW_SHBE_Records(YM31);
+            SHBE_Records1 = SHBE_Data.getSHBE_Records(YM31);
         }
-        HashMap<SHBE_ID, DW_SHBE_Record> Records1;
-        Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
-        DW_SHBE_Record Record1;
+        HashMap<SHBE_ID, SHBE_Record> Records1;
+        Records1 = SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        SHBE_Record Record1;
         CouncilUOSet1 = CouncilUOSets.get(YM31);
         HashMap<SHBE_ID, DW_UO_Record> CouncilUOSetMap1;
         CouncilUOSetMap1 = CouncilUOSet1.getMap();
@@ -2040,7 +2040,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         int TotalCount_InArrearsOver5001;
         int ReceivingDHPCount1;
         int InArrearsAndReceivingDHPCount1;
-        DW_SHBE_D_Record DRecord1;
+        SHBE_D_Record DRecord1;
         /*
         * Iterate over records in EndUOClaimRefs
          */
@@ -2201,41 +2201,41 @@ public class DW_TenancyChangesUO extends DW_Object {
 //            result[4] = preUnderOccupancyValues;
 //        }
         // All
-        HashSet<DW_PersonID> UniqueIndividualsEffectedPersonIDs;
+        HashSet<SHBE_PersonID> UniqueIndividualsEffectedPersonIDs;
         UniqueIndividualsEffectedPersonIDs = new HashSet<>();
-        HashSet<DW_PersonID> UniqueDependentsAgedUnder10EffectedPersonIDs;
+        HashSet<SHBE_PersonID> UniqueDependentsAgedUnder10EffectedPersonIDs;
         UniqueDependentsAgedUnder10EffectedPersonIDs = new HashSet<>();
-        HashSet<DW_PersonID> UniqueDependentsAgedOver10EffectedPersonIDs;
+        HashSet<SHBE_PersonID> UniqueDependentsAgedOver10EffectedPersonIDs;
         UniqueDependentsAgedOver10EffectedPersonIDs = new HashSet<>();
-        HashSet<DW_PersonID> UniqueDependentsEffectedPersonIDs;
+        HashSet<SHBE_PersonID> UniqueDependentsEffectedPersonIDs;
         UniqueDependentsEffectedPersonIDs = new HashSet<>();
         // Council
-        HashSet<DW_PersonID> CouncilUniqueIndividualsEffectedPersonIDs;
+        HashSet<SHBE_PersonID> CouncilUniqueIndividualsEffectedPersonIDs;
         CouncilUniqueIndividualsEffectedPersonIDs = new HashSet<>();
-        HashSet<DW_PersonID> CouncilUniqueClaimantsEffectedPersonIDs;
+        HashSet<SHBE_PersonID> CouncilUniqueClaimantsEffectedPersonIDs;
         CouncilUniqueClaimantsEffectedPersonIDs = new HashSet<>();
-        HashSet<DW_PersonID> CouncilUniquePartnersEffectedPersonIDs;
+        HashSet<SHBE_PersonID> CouncilUniquePartnersEffectedPersonIDs;
         CouncilUniquePartnersEffectedPersonIDs = new HashSet<>();
-        HashSet<DW_PersonID> CouncilUniqueDependentChildrenUnder10EffectedPersonIDs;
+        HashSet<SHBE_PersonID> CouncilUniqueDependentChildrenUnder10EffectedPersonIDs;
         CouncilUniqueDependentChildrenUnder10EffectedPersonIDs = new HashSet<>();
-        HashSet<DW_PersonID> CouncilUniqueDependentChildrenOver10EffectedPersonIDs;
+        HashSet<SHBE_PersonID> CouncilUniqueDependentChildrenOver10EffectedPersonIDs;
         CouncilUniqueDependentChildrenOver10EffectedPersonIDs = new HashSet<>();
-        HashSet<DW_PersonID> CouncilUniqueNonDependentsEffectedPersonIDs;
+        HashSet<SHBE_PersonID> CouncilUniqueNonDependentsEffectedPersonIDs;
         CouncilUniqueNonDependentsEffectedPersonIDs = new HashSet<>();
         HashMap<SHBE_ID, Integer> CouncilMaxNumberOfDependentsInClaimWhenUO;
         CouncilMaxNumberOfDependentsInClaimWhenUO = new HashMap<>();
         // RSL
-        HashSet<DW_PersonID> RSLUniqueIndividualsEffectedPersonIDs;
+        HashSet<SHBE_PersonID> RSLUniqueIndividualsEffectedPersonIDs;
         RSLUniqueIndividualsEffectedPersonIDs = new HashSet<>();
-        HashSet<DW_PersonID> RSLUniqueClaimantsEffectedPersonIDs;
+        HashSet<SHBE_PersonID> RSLUniqueClaimantsEffectedPersonIDs;
         RSLUniqueClaimantsEffectedPersonIDs = new HashSet<>();
-        HashSet<DW_PersonID> RSLUniquePartnersEffectedPersonIDs;
+        HashSet<SHBE_PersonID> RSLUniquePartnersEffectedPersonIDs;
         RSLUniquePartnersEffectedPersonIDs = new HashSet<>();
-        HashSet<DW_PersonID> RSLUniqueDependentChildrenUnder10EffectedPersonIDs;
+        HashSet<SHBE_PersonID> RSLUniqueDependentChildrenUnder10EffectedPersonIDs;
         RSLUniqueDependentChildrenUnder10EffectedPersonIDs = new HashSet<>();
-        HashSet<DW_PersonID> RSLUniqueDependentChildrenOver10EffectedPersonIDs;
+        HashSet<SHBE_PersonID> RSLUniqueDependentChildrenOver10EffectedPersonIDs;
         RSLUniqueDependentChildrenOver10EffectedPersonIDs = new HashSet<>();
-        HashSet<DW_PersonID> RSLUniqueIndividualsEffectedNonDependentsEffectedPersonIDs;
+        HashSet<SHBE_PersonID> RSLUniqueIndividualsEffectedNonDependentsEffectedPersonIDs;
         RSLUniqueIndividualsEffectedNonDependentsEffectedPersonIDs = new HashSet<>();
         HashMap<SHBE_ID, Integer> RSLMaxNumberOfDependentsInClaimWhenUO;
         RSLMaxNumberOfDependentsInClaimWhenUO = new HashMap<>();
@@ -3071,21 +3071,21 @@ public class DW_TenancyChangesUO extends DW_Object {
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             if (CouncilUOSet1 != null) {
                 RSLUOSet1 = RSLUOSets.get(YM31);
-                DW_SHBE_Records1 = Env.getSHBE_Data().getDW_SHBE_Records(YM31);
+                SHBE_Records1 = Env.getSHBE_Data().getSHBE_Records(YM31);
                 initFirst = true;
                 //arrearsDiffs.put(YM3, 0.0d);
                 //arrearsDiffCounts.put(YM3, 0.0d);
             }
             header += YM31;
         }
-        //TreeMap<String, DW_SHBE_Record> aRecords;
-        Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
-        HashMap<SHBE_ID, DW_SHBE_Record> Records0;
+        //TreeMap<String, SHBE_Record> aRecords;
+        Records1 = SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        HashMap<SHBE_ID, SHBE_Record> Records0;
         Records0 = null;
-//        HashMap<SHBE_ID, DW_SHBE_Record> cRecords;
+//        HashMap<SHBE_ID, SHBE_Record> cRecords;
 //        cRecords = null;
 
-        //DW_SHBE_Record aDW_SHBE_Record;
+        //SHBE_Record aSHBE_Record;
         HashSet<SHBE_ID> TT1_To_UOTT1_PostcodeUnchangedThisMonth;
         TT1_To_UOTT1_PostcodeUnchangedThisMonth = new HashSet<>();
         HashSet<SHBE_ID> TT4_To_UOTT4_PostcodeUnchangedThisMonth;
@@ -3095,10 +3095,10 @@ public class DW_TenancyChangesUO extends DW_Object {
         HashSet<SHBE_ID> UOTT4_To_TT4_PostcodeUnchangedThisMonth;
         UOTT4_To_TT4_PostcodeUnchangedThisMonth = new HashSet<>();
 
-        HashMap<SHBE_ID, DW_PersonID> ClaimIDToClaimantPersonIDLookup;
-        HashMap<SHBE_ID, DW_PersonID> ClaimIDToPartnerPersonIDLookup;
-        ClaimIDToClaimantPersonIDLookup = DW_SHBE_Records1.getClaimIDToClaimantPersonIDLookup(Env.HOOME);
-        ClaimIDToPartnerPersonIDLookup = DW_SHBE_Records1.getClaimIDToPartnerPersonIDLookup(Env.HOOME);
+        HashMap<SHBE_ID, SHBE_PersonID> ClaimIDToClaimantPersonIDLookup;
+        HashMap<SHBE_ID, SHBE_PersonID> ClaimIDToPartnerPersonIDLookup;
+        ClaimIDToClaimantPersonIDLookup = SHBE_Records1.getClaimIDToClaimantPersonIDLookup(Env.HOOME);
+        ClaimIDToPartnerPersonIDLookup = SHBE_Records1.getClaimIDToPartnerPersonIDLookup(Env.HOOME);
 
         // Add TT of all ClaimRefs to result
         Object[] processResult;
@@ -3439,7 +3439,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             YM30 = new ONSPD_YM3(YM31);
             year0 = year1;
             month0 = month1;
-            //DW_SHBE_Records0 = DW_SHBE_Records1;
+            //SHBE_Records0 = SHBE_Records1;
             Records0 = Records1;
             CouncilUOSet0 = CouncilUOSet1;
             RSLUOSet0 = RSLUOSet1;
@@ -3449,9 +3449,9 @@ public class DW_TenancyChangesUO extends DW_Object {
             YM31 = SHBE_Handler.getYM3(SHBEFilename1);
             year1 = SHBE_Handler.getYear(SHBEFilename1);
             month1 = SHBE_Handler.getMonthNumber(SHBEFilename1);
-            DW_SHBE_Records1 = Env.getSHBE_Data().getDW_SHBE_Records(YM31);
+            SHBE_Records1 = Env.getSHBE_Data().getSHBE_Records(YM31);
             //cRecords = Records0;
-            Records1 = DW_SHBE_Records1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+            Records1 = SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME);
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             RSLUOSet1 = RSLUOSets.get(YM31);
             header += Strings.special_commaSpace + YM31;
@@ -3913,7 +3913,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         iteS = AlwaysUOTT1FromStartClaimIDs.iterator();
         while (iteS.hasNext()) {
             ClaimID = iteS.next();
-            DW_SHBE_Record rec = Records1.get(ClaimID);
+            SHBE_Record rec = Records1.get(ClaimID);
             if (rec != null) {
                 totalHouseholdSize += SHBE_Handler.getHouseholdSize(rec);
                 d += 1.0d;
@@ -3933,7 +3933,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         iteS = AlwaysUOTT4FromStartClaimIDs.iterator();
         while (iteS.hasNext()) {
             ClaimID = iteS.next();
-            DW_SHBE_Record rec = Records1.get(ClaimID);
+            SHBE_Record rec = Records1.get(ClaimID);
             if (rec != null) {
                 totalHouseholdSize += SHBE_Handler.getHouseholdSize(rec);
                 d += 1.0d;
@@ -3988,25 +3988,25 @@ public class DW_TenancyChangesUO extends DW_Object {
             HashSet<SHBE_ID> ClaimRefs,
             ONSPD_YM3 YM3Start,
             ONSPD_YM3 YM3End,
-            HashSet<DW_PersonID> UniqueIndividualsEffectedPersonIDs,
-            HashSet<DW_PersonID> UniqueDependentsAgedUnder10EffectedPersonIDs,
-            HashSet<DW_PersonID> UniqueDependentsAgedOver10EffectedPersonIDs,
-            HashSet<DW_PersonID> UniqueDependentsEffectedPersonIDs,
+            HashSet<SHBE_PersonID> UniqueIndividualsEffectedPersonIDs,
+            HashSet<SHBE_PersonID> UniqueDependentsAgedUnder10EffectedPersonIDs,
+            HashSet<SHBE_PersonID> UniqueDependentsAgedOver10EffectedPersonIDs,
+            HashSet<SHBE_PersonID> UniqueDependentsEffectedPersonIDs,
             HashSet<SHBE_ID> CouncilClaimRefs,
-            HashSet<DW_PersonID> CouncilUniqueIndividualsEffectedPersonIDs,
-            HashSet<DW_PersonID> CouncilUniqueClaimantsEffectedPersonIDs,
-            HashSet<DW_PersonID> CouncilUniquePartnersEffectedPersonIDs,
-            HashSet<DW_PersonID> CouncilUniqueDependentsAgedUnder10EffectedPersonIDs,
-            HashSet<DW_PersonID> CouncilUniqueDependentsAgedOver10EffectedPersonIDs,
-            HashSet<DW_PersonID> CouncilUniqueNonDependentsEffectedPersonIDs,
+            HashSet<SHBE_PersonID> CouncilUniqueIndividualsEffectedPersonIDs,
+            HashSet<SHBE_PersonID> CouncilUniqueClaimantsEffectedPersonIDs,
+            HashSet<SHBE_PersonID> CouncilUniquePartnersEffectedPersonIDs,
+            HashSet<SHBE_PersonID> CouncilUniqueDependentsAgedUnder10EffectedPersonIDs,
+            HashSet<SHBE_PersonID> CouncilUniqueDependentsAgedOver10EffectedPersonIDs,
+            HashSet<SHBE_PersonID> CouncilUniqueNonDependentsEffectedPersonIDs,
             HashMap<SHBE_ID, Integer> CouncilMaxNumberOfDependentsInClaimWhenUO,
             HashSet<SHBE_ID> RSLClaimRefs,
-            HashSet<DW_PersonID> RSLUniqueIndividualsEffectedPersonIDs,
-            HashSet<DW_PersonID> RSLUniqueClaimantsEffectedPersonIDs,
-            HashSet<DW_PersonID> RSLUniquePartnersEffectedPersonIDs,
-            HashSet<DW_PersonID> RSLUniqueDependentsAgedUnder10EffectedPersonIDs,
-            HashSet<DW_PersonID> RSLUniqueDependentsAgedOver10EffectedPersonIDs,
-            HashSet<DW_PersonID> RSLUniqueNonDependentsEffectedPersonIDs,
+            HashSet<SHBE_PersonID> RSLUniqueIndividualsEffectedPersonIDs,
+            HashSet<SHBE_PersonID> RSLUniqueClaimantsEffectedPersonIDs,
+            HashSet<SHBE_PersonID> RSLUniquePartnersEffectedPersonIDs,
+            HashSet<SHBE_PersonID> RSLUniqueDependentsAgedUnder10EffectedPersonIDs,
+            HashSet<SHBE_PersonID> RSLUniqueDependentsAgedOver10EffectedPersonIDs,
+            HashSet<SHBE_PersonID> RSLUniqueNonDependentsEffectedPersonIDs,
             HashMap<SHBE_ID, Integer> RSLMaxNumberOfDependentsInClaimWhenUO,
             HashMap<String, HashSet<SHBE_ID>> Groups) {
         SHBE_ID ClaimID;
@@ -4714,8 +4714,8 @@ public class DW_TenancyChangesUO extends DW_Object {
      * result[8] = int household size from UO data + PartnerFlag from SHBE data
      */
     public Object[] process(
-            HashMap<SHBE_ID, DW_PersonID> ClaimIDToClaimantPersonIDLookup,
-            HashMap<SHBE_ID, DW_PersonID> ClaimIDToPartnerPersonIDLookup,
+            HashMap<SHBE_ID, SHBE_PersonID> ClaimIDToClaimantPersonIDLookup,
+            HashMap<SHBE_ID, SHBE_PersonID> ClaimIDToPartnerPersonIDLookup,
             HashSet<SHBE_ID> tUOClaims,
             TreeMap<String, BigDecimal> AggregateStatistics,
             TreeMap<String, BigDecimal> generalStatistics,
@@ -4727,9 +4727,9 @@ public class DW_TenancyChangesUO extends DW_Object {
             String year1,
             String month1,
             ONSPD_YM3 YM31,
-            DW_SHBE_Record Record1,
-            HashMap<SHBE_ID, DW_SHBE_Record> Records0,
-            //HashMap<SHBE_ID, DW_SHBE_Record> cRecords,
+            SHBE_Record Record1,
+            HashMap<SHBE_ID, SHBE_Record> Records0,
+            //HashMap<SHBE_ID, SHBE_Record> cRecords,
             TreeMap<String, String> TableValues,
             DW_UO_Set CouncilUOSet0,
             DW_UO_Set RSLUOSet0,
@@ -4739,19 +4739,19 @@ public class DW_TenancyChangesUO extends DW_Object {
             HashMap<ONSPD_YM3, Double> arrearsCounts,
             HashMap<ONSPD_YM3, Double> arrearsDiffs,
             HashMap<ONSPD_YM3, Double> arrearsDiffCounts,
-            HashSet<DW_PersonID> CouncilUniqueIndividualsEffected,
-            HashSet<DW_PersonID> CouncilUniqueClaimantsEffectedPersonIDs,
-            HashSet<DW_PersonID> CouncilUniquePartnersEffectedPersonIDs,
-            HashSet<DW_PersonID> CouncilUniqueDependentChildrenUnder10EffectedPersonIDs,
-            HashSet<DW_PersonID> CouncilUniqueDependentChildrenOver10EffectedPersonIDs,
-            HashSet<DW_PersonID> CouncilUniqueNonDependentsEffectedPersonIDs,
+            HashSet<SHBE_PersonID> CouncilUniqueIndividualsEffected,
+            HashSet<SHBE_PersonID> CouncilUniqueClaimantsEffectedPersonIDs,
+            HashSet<SHBE_PersonID> CouncilUniquePartnersEffectedPersonIDs,
+            HashSet<SHBE_PersonID> CouncilUniqueDependentChildrenUnder10EffectedPersonIDs,
+            HashSet<SHBE_PersonID> CouncilUniqueDependentChildrenOver10EffectedPersonIDs,
+            HashSet<SHBE_PersonID> CouncilUniqueNonDependentsEffectedPersonIDs,
             HashMap<SHBE_ID, Integer> CouncilMaxNumberOfDependentsInClaimWhenUO,
-            HashSet<DW_PersonID> RSLUniqueIndividualsEffected,
-            HashSet<DW_PersonID> RSLUniqueClaimantsEffectedPersonIDs,
-            HashSet<DW_PersonID> RSLUniquePartnersEffectedPersonIDs,
-            HashSet<DW_PersonID> RSLUniqueDependentChildrenUnder10EffectedPersonIDs,
-            HashSet<DW_PersonID> RSLUniqueDependentChildrenOver10EffectedPersonIDs,
-            HashSet<DW_PersonID> RSLUniqueNonDependentsEffectedPersonIDs,
+            HashSet<SHBE_PersonID> RSLUniqueIndividualsEffected,
+            HashSet<SHBE_PersonID> RSLUniqueClaimantsEffectedPersonIDs,
+            HashSet<SHBE_PersonID> RSLUniquePartnersEffectedPersonIDs,
+            HashSet<SHBE_PersonID> RSLUniqueDependentChildrenUnder10EffectedPersonIDs,
+            HashSet<SHBE_PersonID> RSLUniqueDependentChildrenOver10EffectedPersonIDs,
+            HashSet<SHBE_PersonID> RSLUniqueNonDependentsEffectedPersonIDs,
             HashMap<SHBE_ID, Integer> RSLMaxNumberOfDependentsInClaimWhenUO,
             HashSet<SHBE_ID> PermanantlyLeftUOButRemainedInSHBEClaimIDs,
             HashSet<SHBE_ID> PermanantlyLeftUOButRemainedInSHBEPostcodeChangedClaimIDs,
@@ -4953,7 +4953,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         String aS;
         String key;
         // Declare
-        DW_SHBE_D_Record DRecord1 = null;
+        SHBE_D_Record DRecord1 = null;
         int TT1;
         String PC1;
         int Status1;
@@ -4980,7 +4980,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         String DE1;
         int HBDP1 = 0;
         Double Arrears1;
-        DW_SHBE_D_Record DRecord0;
+        SHBE_D_Record DRecord0;
         int TT0;
         String PC0;
         int Status0;
@@ -4999,17 +4999,17 @@ public class DW_TenancyChangesUO extends DW_Object {
         String CA0;
         String PA0;
         Double Arrears0;
-        DW_SHBE_Record Record0;
+        SHBE_Record Record0;
         if (Records0 == null) {
             Record0 = null;
         } else {
             Record0 = Records0.get(ClaimID);
         }
-//        DW_SHBE_D_Record cD_Record;
+//        SHBE_D_Record cD_Record;
 //        int cTT;
 //        String cPC;
 //        int cStatus;
-//        DW_SHBE_Record cRecord;
+//        SHBE_Record cRecord;
 //        if (cRecords == null) {
 //            cRecord = null;
 //        } else {
@@ -5131,7 +5131,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             PSI0 = DRecord0.getPassportedStandardIndicator();
             SHBC0 = DRecord0.getStatusOfHBClaimAtExtractDate();
             RTHBCC0 = DRecord0.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
-            //bCEG = bDW_SHBE_D_Record.getClaimantsEthnicGroup();
+            //bCEG = bSHBE_D_Record.getClaimantsEthnicGroup();
             CEG0 = SHBE_Handler.getEthnicityGroup(DRecord0);
             HS0 = SHBE_Handler.getHouseholdSize(DRecord0);
             ND0 = DRecord0.getNumberOfNonDependents();
@@ -8350,19 +8350,19 @@ public class DW_TenancyChangesUO extends DW_Object {
 
     protected void addToSets(
             SHBE_ID ClaimID,
-            HashSet<DW_PersonID> ClaimantPersonIDs,
-            HashSet<DW_PersonID> PartnersPersonIDs,
-            HashSet<DW_PersonID> DependentChildrenUnder10,
-            HashSet<DW_PersonID> DependentChildrenOver10,
-            HashSet<DW_PersonID> NonDependentPersonIDs,
+            HashSet<SHBE_PersonID> ClaimantPersonIDs,
+            HashSet<SHBE_PersonID> PartnersPersonIDs,
+            HashSet<SHBE_PersonID> DependentChildrenUnder10,
+            HashSet<SHBE_PersonID> DependentChildrenOver10,
+            HashSet<SHBE_PersonID> NonDependentPersonIDs,
             HashMap<SHBE_ID, Integer> MaxNumberOfDependentsInClaimWhenUO,
             String year,
             String month,
             ONSPD_YM3 YM3,
-            ArrayList<DW_SHBE_S_Record> SRecords,
-            DW_SHBE_D_Record D_Record,
-            HashMap<SHBE_ID, DW_PersonID> ClaimIDToClaimantPersonIDLookup) {
-        DW_PersonID ClaimantPersonID;
+            ArrayList<SHBE_S_Record> SRecords,
+            SHBE_D_Record D_Record,
+            HashMap<SHBE_ID, SHBE_PersonID> ClaimIDToClaimantPersonIDLookup) {
+        SHBE_PersonID ClaimantPersonID;
         ClaimantPersonID = ClaimIDToClaimantPersonIDLookup.get(ClaimID);
         ClaimantPersonIDs.add(ClaimantPersonID);
         if (D_Record.getPartnerFlag() == 1) {
@@ -8370,8 +8370,8 @@ public class DW_TenancyChangesUO extends DW_Object {
         }
         if (SRecords != null) {
             int index = 0;
-            DW_SHBE_S_Record SRecord;
-            Iterator<DW_SHBE_S_Record> sIte;
+            SHBE_S_Record SRecord;
+            Iterator<SHBE_S_Record> sIte;
             sIte = SRecords.iterator();
             while (sIte.hasNext()) {
                 SRecord = sIte.next();

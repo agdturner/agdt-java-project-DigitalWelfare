@@ -27,9 +27,9 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Data;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Records;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Data;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstract;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting.DW_Report;
@@ -43,8 +43,8 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_Lin
 public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 
     // For convenience
-    protected transient DW_SHBE_Data SHBE_Data;
-    protected transient DW_SHBE_Handler SHBE_Handler;
+    protected transient SHBE_Data SHBE_Data;
+    protected transient SHBE_Handler SHBE_Handler;
     protected transient DW_UO_Data UO_Data;
     protected transient String[] SHBEFilenames;
     protected transient HashMap<SHBE_ID, String> ClaimIDToClaimRefLookup;
@@ -239,7 +239,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     processName,
                     range);
             // Process
-            SHBE_Handler = new DW_SHBE_Handler(Env.SHBE_Env);
+            SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
             Env.setSHBE_Handler(SHBE_Handler);
             SHBE_Handler.run(logDir);
             // Close logs
@@ -257,7 +257,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     processName,
                     range);
             // Process
-            SHBE_Handler = new DW_SHBE_Handler(Env.SHBE_Env);
+            SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
             Env.setSHBE_Handler(SHBE_Handler);
             SHBE_Handler.runNew(logDir);
             // Close logs
@@ -275,7 +275,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     processName,
                     range);
             // Process
-            SHBE_Handler = new DW_SHBE_Handler(Env.SHBE_Env);
+            SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
             Env.setSHBE_Handler(SHBE_Handler);
             SHBE_Handler.runPostcodeCheck(logDir);
             // Close logs
@@ -293,7 +293,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     processName,
                     range);
             // Process
-            SHBE_Handler = new DW_SHBE_Handler(Env.SHBE_Env);
+            SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
             Env.setSHBE_Handler(SHBE_Handler);
             SHBE_Handler.runPostcodeCheckLatest(logDir);
             // Close logs
@@ -314,9 +314,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     range);
             // Process
             SHBE_Data = Env.getSHBE_Data();
-            HashMap<ONSPD_YM3, DW_SHBE_Records> Data;
+            HashMap<ONSPD_YM3, SHBE_Records> Data;
             Data = SHBE_Data.getData();
-            SHBE_Handler = new DW_SHBE_Handler(Env.SHBE_Env);
+            SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
             Env.setSHBE_Handler(SHBE_Handler);
             SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
             File dir;
@@ -325,8 +325,8 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             for (String SHBEFilename : SHBEFilenames) {
                 YM3 = SHBE_Handler.getYM3(SHBEFilename);
                 try {
-                    DW_SHBE_Records DW_SHBE_Records;
-                    DW_SHBE_Records = new DW_SHBE_Records(                            Env.SHBE_Env,                            YM3);
+                    SHBE_Records DW_SHBE_Records;
+                    DW_SHBE_Records = new SHBE_Records(                            Env.SHBE_Env,                            YM3);
                     Env.checkAndMaybeFreeMemory();
                     Data.put(YM3, DW_SHBE_Records);
                     Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "

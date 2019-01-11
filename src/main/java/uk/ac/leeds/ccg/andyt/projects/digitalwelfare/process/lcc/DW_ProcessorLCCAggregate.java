@@ -23,10 +23,10 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.DW_SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
@@ -43,7 +43,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
      * For convenience.
      */
     protected DW_UO_Handler UO_Handler;
-    protected DW_SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
+    protected SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
 
 //    /**
 //     * For convenience.
@@ -535,10 +535,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             return ClaimIDToTTLookups.get(key);
         }
         result = new HashMap<>();
-        DW_SHBE_Records DW_SHBE_Records;
-        DW_SHBE_Records = SHBE_Data.getDW_SHBE_Records(YM3);
-        HashMap<SHBE_ID, DW_SHBE_Record> records;
-        records = DW_SHBE_Records.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+        SHBE_Records SHBE_Records;
+        SHBE_Records = SHBE_Data.getSHBE_Records(YM3);
+        HashMap<SHBE_ID, SHBE_Record> records;
+        records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
         Iterator<SHBE_ID> ite;
         ite = records.keySet().iterator();
         SHBE_ID ClaimID;
@@ -560,7 +560,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
             return ClaimIDToPostcodeIDLookups.get(key);
         }
-        r = Env.getSHBE_Data().getDW_SHBE_Records(YM3).getClaimIDToPostcodeIDLookup(Env.HOOME);
+        r = Env.getSHBE_Data().getSHBE_Records(YM3).getClaimIDToPostcodeIDLookup(Env.HOOME);
         ClaimIDToPostcodeIDLookups.put(key, r);
         return r;
     }
@@ -609,11 +609,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (reportTenancyTransitionBreaks) {
             dirOut2 = new File(
                     dirOut2,
-                    Strings.sIncludingTenancyTransitionBreaks);
+                    Strings.SHBE_Strings.sIncludingTenancyTransitionBreaks);
         } else {
             dirOut2 = new File(
                     dirOut2,
-                    Strings.sIncludingTenancyTransitionBreaksNo);
+                    Strings.SHBE_Strings.sIncludingTenancyTransitionBreaksNo);
         }
         dirOut2.mkdirs();
         File f;
@@ -704,11 +704,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             // Load first data
             ONSPD_YM3 YM30;
             YM30 = SHBE_Handler.getYM3(SHBEFilenames[i]);
-            DW_SHBE_Records recs0;
-            recs0 = Env.getSHBE_Data().getDW_SHBE_Records(YM30);
+            SHBE_Records recs0;
+            recs0 = Env.getSHBE_Data().getSHBE_Records(YM30);
             ONSPD_YM3 YM30v;
             YM30v = recs0.getNearestYM3ForONSPDLookup();
-            HashMap<SHBE_ID, DW_SHBE_Record> records0;
+            HashMap<SHBE_ID, SHBE_Record> records0;
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>> claimantTypeTenureLevelTypeAreaCounts;
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>>> claimantTypeTenureLevelTypeTenureCounts;
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, File>>>> claimantTypeTenureLevelTypeDirs;
@@ -794,7 +794,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 claimantTypeTenureLevelTypeAreaCounts.put(claimantType, TTLevelTypeAreaCounts);
                 claimantTypeTenureLevelTypeTenureCounts.put(claimantType, TTLevelTypeTenureCounts);
             }
-            records0 = recs0.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+            records0 = recs0.getClaimIDToSHBE_RecordMap(Env.HOOME);
 
             // Init underOccupiedSets
             DW_UO_Set councilUOSet0 = null;
@@ -813,9 +813,9 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             while (recordsIte.hasNext()) {
                 SHBE_ID ClaimID;
                 ClaimID = recordsIte.next();
-                DW_SHBE_Record DW_SHBE_Record0;
-                DW_SHBE_Record0 = records0.get(ClaimID);
-                DW_SHBE_D_Record DRecord0 = DW_SHBE_Record0.getDRecord();
+                SHBE_Record SHBE_Record0;
+                SHBE_Record0 = records0.get(ClaimID);
+                SHBE_D_Record DRecord0 = SHBE_Record0.getDRecord();
                 String postcode0 = DRecord0.getClaimantsPostcode();
                 Integer TT1Integer = DRecord0.getTenancyType();
                 String TT1 = TT1Integer.toString();
@@ -957,8 +957,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 // Set Year and Month variables
                 ONSPD_YM3 YM31 = SHBE_Handler.getYM3(SHBEFilenames[i]);
                 // Load next data
-                DW_SHBE_Records recs1;
-                recs1 = Env.getSHBE_Data().getDW_SHBE_Records(YM31);
+                SHBE_Records recs1;
+                recs1 = Env.getSHBE_Data().getSHBE_Records(YM31);
                 HashMap<SHBE_ID, String> ClaimIDToPostcodeIDLookup1;
                 ClaimIDToPostcodeIDLookup1 = null;//recs1.getClaimSHBE_IDToPostcodeLookup();
                 HashMap<SHBE_ID, Integer> ClaimIDToTTLookup1;
@@ -1001,9 +1001,9 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 //                    tID_HashSet = recs1.getClaimantClaimIDs(Env.HOOME);
 //                    tIDIndexes.add(tID_HashSet);
                 }
-                //records0 = (TreeMap<String, DW_SHBE_Record>) SHBEData0[0];
-                HashMap<SHBE_ID, DW_SHBE_Record> records1;
-                records1 = recs1.getClaimIDToDW_SHBE_RecordMap(Env.HOOME);
+                //records0 = (TreeMap<String, SHBE_Record>) SHBEData0[0];
+                HashMap<SHBE_ID, SHBE_Record> records1;
+                records1 = recs1.getClaimIDToSHBE_RecordMap(Env.HOOME);
                 /* Initialise A:
                  * output directories;
                  * claimantTypeTenureLevelTypeDirs;
@@ -1194,9 +1194,9 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 while (SHBE_IDIte.hasNext()) {
                     SHBE_ID ClaimID;
                     ClaimID = SHBE_IDIte.next();
-                    DW_SHBE_Record Record1;
+                    SHBE_Record Record1;
                     Record1 = records1.get(ClaimID);
-                    DW_SHBE_D_Record DRecord1 = Record1.getDRecord();
+                    SHBE_D_Record DRecord1 = Record1.getDRecord();
                     ONSPD_ID PostcodeID1 = Record1.getPostcodeID();
                     String ClaimPostcodeF;
                     ClaimPostcodeF = Record1.getClaimPostcodeF();
@@ -1284,7 +1284,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                         TTInt);
                                             }
                                             if (areaCode != null) {
-                                                DW_SHBE_Record record0 = records0.get(ClaimID);
+                                                SHBE_Record record0 = records0.get(ClaimID);
                                                 ONSPD_ID PostcodeID0;
                                                 if (record0 == null) {
 //                                        //This is a new entrant to the data
@@ -1333,7 +1333,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 //                                addToType(type, types, claimantCountsByArea, areaCode);
                                                     }
                                                 } else {
-                                                    DW_SHBE_D_Record DRecord0 = record0.getDRecord();
+                                                    SHBE_D_Record DRecord0 = record0.getDRecord();
                                                     PostcodeID0 = record0.getPostcodeID();
                                                     if (PostcodeID0 == null) {
                                                         // Unknown
