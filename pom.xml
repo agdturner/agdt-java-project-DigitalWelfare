@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>uk.ac.leeds.ccg.andyt</groupId>
-    <artifactId>agdt-project-DigitalWelfare</artifactId>
+    <artifactId>agdt-java-project-DigitalWelfare</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>agdt-project-DigitalWelfare</name>
+    <name>agdt-java-project-DigitalWelfare</name>
     <url>https://github.com/agdturner/agdt-data-land-registry</url>
     <description>Java for the Digital Welfare project.</description>
     <scm>
