@@ -58,7 +58,7 @@ public class DW_Report extends DW_HTMLPage {
         reportName = "Report1";
 
         claimantTypes = Env.getStrings().getHB_CTB();
-        
+
         tenureTypeGroups = new ArrayList<>();
         tenureTypeGroups.add("all");
         tenureTypeGroups.add("regulated");
@@ -172,24 +172,15 @@ public class DW_Report extends DW_HTMLPage {
         try {
             DW_Files tDW_Files;
             tDW_Files = Env.getFiles();
-            File dirOut = new File(
-                    tDW_Files.getOutputDir(),
-                    baseReportDir);
+            File dirOut = new File(tDW_Files.getOutputDataDir(), baseReportDir);
             dirOut = tDW_Files.getUODir(dirOut, doUnderOccupied, doCouncil);
             dirOut.mkdirs();
             String pageTitle = "Results";
             File f;
-            f = new File(dirOut,
-                    pageTitle + ".html");
+            f = new File(dirOut, pageTitle + ".html");
             masterFOS = Generic_IO.getFileOutputStream(f);
-            writeHTMLHeader(
-                    projectName,
-                    pageTitle,
-                    masterFOS);
-            writeStartOfBody(
-                    baseURLString0,
-                    pageTitle,
-                    masterFOS);
+            writeHTMLHeader(projectName, pageTitle, masterFOS);
+            writeStartOfBody(baseURLString0, pageTitle, masterFOS);
         } catch (IOException e) {
             System.err.println(e.getMessage());
             e.printStackTrace(System.err);
@@ -198,12 +189,8 @@ public class DW_Report extends DW_HTMLPage {
 
     public void writeToMaster() {
         try {
-            File dir0 = new File(
-                    Env.getFiles().getOutputDir(),
-                    baseReportDir);
-            File dir1 = new File(
-                    dir0,
-                    levelsString);
+            File dir0 = new File(Env.getFiles().getOutputDataDir(), baseReportDir);
+            File dir1 = new File(dir0, levelsString);
             writeLine("<div>", masterFOS);
             writeLine("<ul>", masterFOS);
             writeLine("<li><h2>" + levelsString + "</h2>", masterFOS);
@@ -216,9 +203,7 @@ public class DW_Report extends DW_HTMLPage {
                 String claimantType;
                 claimantType = claimantTypesIte.next();
                 String claimantType2 = Generic_String.getCapitalFirstLetter(claimantType) + "Claimants";
-                File dir2 = new File(
-                        dir1,
-                        claimantType2);
+                File dir2 = new File(dir1, claimantType2);
                 writeLine("<li>" + claimantType2, masterFOS);
                 writeLine("<ul>", masterFOS);
                 //dir2.mkdirs();
@@ -255,13 +240,9 @@ public class DW_Report extends DW_HTMLPage {
             boolean doUnderOccupied,
             boolean doCouncil) {
         DW_Files tDW_Files;
-            tDW_Files = Env.getFiles();
-            File dirOut = new File(
-                tDW_Files.getOutputDir(),
-                baseReportDir);
-        dirOut = new File(
-                dirOut,
-                levelsString);
+        tDW_Files = Env.getFiles();
+        File dirOut = new File(tDW_Files.getOutputDataDir(), baseReportDir);
+        dirOut = new File(dirOut, levelsString);
         dirOut = tDW_Files.getUODir(dirOut, doUnderOccupied, doCouncil);
         String[] tFilenames;
         tFilenames = getFilenames();
@@ -271,9 +252,7 @@ public class DW_Report extends DW_HTMLPage {
             String claimantType;
             claimantType = claimantTypesIte.next();
             String claimantType2 = Generic_String.getCapitalFirstLetter(claimantType) + "Claimants";
-            File dirOut2 = new File(
-                    dirOut,
-                    claimantType2);
+            File dirOut2 = new File(dirOut, claimantType2);
             dirOut2.mkdirs();
             Iterator<String> tenureIte;
             tenureIte = tenureTypeGroups.iterator();
@@ -281,9 +260,7 @@ public class DW_Report extends DW_HTMLPage {
                 String tenure = tenureIte.next();
                 String tenure2 = Generic_String.getCapitalFirstLetter(tenure) + "Tenure";
                 String reportFilename = tenure2 + ".html";
-                File f = new File(
-                        dirOut2,
-                        reportFilename);
+                File f = new File(dirOut2, reportFilename);
                 int filePathDepth;
                 filePathDepth = Generic_IO.getFileDepth(dirOut2)
                         - Generic_IO.getFileDepth(dirOut)
@@ -299,19 +276,11 @@ public class DW_Report extends DW_HTMLPage {
                 componentFOS = Generic_IO.getFileOutputStream(f);
                 String pageTitle;
                 pageTitle = reportName + " " + claimantType2 + " " + tenure2;
-                write(
-                        doUnderOccupied,
-                        doCouncil,
-                        definitionsPath,
+                write(doUnderOccupied, doCouncil, definitionsPath,
                         relativeFilePath,
                         //distanceRelativeFilePath,
-                        pageTitle,
-                        claimantType,
-                        claimantType2,
-                        tenure,
-                        tenure2,
-                        reportFilename,
-                        tFilenames);
+                        pageTitle, claimantType, claimantType2, tenure, tenure2,
+                        reportFilename, tFilenames);
                 try {
                     writeHTMLFooter(date, componentFOS);
                     componentFOS.close();
@@ -351,30 +320,20 @@ public class DW_Report extends DW_HTMLPage {
             Iterator<Double> distancesIte;
 
             String claimantTypeLink;
-            claimantTypeLink = getLink2(
-                    claimantType2,
-                    definitionsPath);
+            claimantTypeLink = getLink2(claimantType2, definitionsPath);
             String link;
-            link = getLink2(
-                    tenure2,
-                    definitionsPath);
-
             writeLine("<div>", componentFOS);
             writeLine("<ul>", componentFOS);
             writeLine("<li><h2>Definitions</h2>", componentFOS);
             writeLine("<ul>", componentFOS);
             writeLine("<li>" + claimantTypeLink + "</li>", componentFOS);
-            link = getLink2(
-                    tenure2,
-                    definitionsPath);
+            link = getLink2(tenure2, definitionsPath);
             writeLine("<li>" + link + "</li>", componentFOS);
             writeLine("<li>Types", componentFOS);
             writeLine("<ul>", componentFOS);
             typesIte = types.iterator();
             while (typesIte.hasNext()) {
-                link = getLink2(
-                        typesIte.next() + "Claimants",
-                        definitionsPath);
+                link = getLink2(typesIte.next() + "Claimants", definitionsPath);
                 writeLine("<li>" + link + "</li>", componentFOS);
             }
             writeLine("</ul></li>", componentFOS);
@@ -382,8 +341,7 @@ public class DW_Report extends DW_HTMLPage {
             writeLine("<ul>", componentFOS);
             distanceTypesIte = distanceTypes.iterator();
             while (distanceTypesIte.hasNext()) {
-                link = getLink2(
-                        distanceTypesIte.next() + "Claimants",
+                link = getLink2(                        distanceTypesIte.next() + "Claimants",
                         definitionsPath);
                 writeLine("<li>" + link + "</li>", componentFOS);
             }
@@ -392,15 +350,14 @@ public class DW_Report extends DW_HTMLPage {
             writeLine("<ul>", componentFOS);
             levelsIte = levels.iterator();
             while (levelsIte.hasNext()) {
-                link = getLink2(
-                        levelsIte.next(),
-                        definitionsPath);
+                link = getLink2(                        levelsIte.next(),                        definitionsPath);
                 writeLine("<li>" + link + "</li>", componentFOS);
             }
             writeLine("</ul></li>", componentFOS);
             writeLine("</ul>", componentFOS);
             writeLine("</div>", componentFOS);
-            writeContents(tFilenames, claimantType, claimantTypeLink, componentFOS);
+            writeContents(tFilenames, claimantType, claimantTypeLink, 
+                    componentFOS);
 
             Iterator<String> includesIte;
             includesIte = includes.keySet().iterator();
@@ -444,7 +401,7 @@ public class DW_Report extends DW_HTMLPage {
                                 level = levelsIte.next();
                                 idn = yearMonth + " " + type2;
                                 idn += " " + level;
-                                idl = idn.replace(" ", "_");
+                                //idl = idn.replace(" ", "_");
                                 writeStartOfSection(idn, 5, componentFOS);
                                 writeSection(
                                         doUnderOccupied,
@@ -480,7 +437,7 @@ public class DW_Report extends DW_HTMLPage {
                                     idn = yearMonth + " " + type2;
                                     idn += " " + distanceThreshold + " Metres";
                                     idn += " " + level;
-                                    idl = idn.replace(" ", "_");
+                                    //idl = idn.replace(" ", "_");
                                     writeStartOfSection(idn, 5, componentFOS);
                                     writeSection(
                                             doUnderOccupied,
@@ -542,8 +499,8 @@ public class DW_Report extends DW_HTMLPage {
         writeLine("", componentFOS);
         writeLine("", componentFOS);
         DW_Files tDW_Files;
-            tDW_Files = Env.getFiles();
-            File dir;
+        tDW_Files = Env.getFiles();
+        File dir;
         File f;
         ArrayList<String> table;
         // Total, In and Out Count Table

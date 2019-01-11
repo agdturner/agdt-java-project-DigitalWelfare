@@ -2,14 +2,11 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
-import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 public class DW_Types extends DW_HTMLPage {
 
@@ -121,7 +118,7 @@ public class DW_Types extends DW_HTMLPage {
         definitions.put(
                 "HBClaimants",
                 "Housing Benefit claimant population. (Housing Benefit "
-                        + "claimants are also Council Tax Benefit claimants.)");
+                + "claimants are also Council Tax Benefit claimants.)");
         definitions.put(
                 "CTBClaimants",
                 "Council Tax Benefit claimant populations not including "
@@ -191,43 +188,27 @@ public class DW_Types extends DW_HTMLPage {
                 + projectName + "/" + baseReportDir;
         String date = Generic_Time.getDate();
 
-        File dir = new File(
-                Env.getFiles().getOutputDir(),
-                baseReportDir);
+        File dir = new File(Env.getFiles().getOutputDataDir(), baseReportDir);
         dir.mkdirs();
         String reportFilename = type + ".html";
         String baseURLString1 = baseURLString0 + reportFilename;
-        File f = new File(
-                dir,
-                reportFilename);
+        File f = new File(dir, reportFilename);
         componentFOS = Generic_IO.getFileOutputStream(f);
-        write(type,
-                definitions,
-                projectName,
-                reportName,
-                reportFilename,
-                baseReportDir,
-                baseURLString0,
-                baseURLString1);
+        write(type, definitions, projectName, reportName, reportFilename,
+                baseReportDir, baseURLString0, baseURLString1);
         try {
             writeHTMLFooter(date, componentFOS);
             componentFOS.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
 
     }
 
-    public void write(
-            String type,
-            HashMap<String, String> definitions,
-            String projectName,
-            String reportName,
-            String reportFilename,
-            String directories,
-            String baseURLString0,
-            String baseURLString1) {
+    public void write(String type, HashMap<String, String> definitions,
+            String projectName, String reportName, String reportFilename,
+            String directories, String baseURLString0, String baseURLString1) {
         try {
             String definition;
             definition = definitions.get(type);
@@ -245,7 +226,7 @@ public class DW_Types extends DW_HTMLPage {
             writeLine("</div>", componentFOS);
         } catch (IOException e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
 

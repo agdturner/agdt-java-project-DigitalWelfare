@@ -178,7 +178,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
                 outputFilename);
         if (!outfile.exists()) {
             dir.mkdirs();
-            File infile = Files.ONSPD_Files.getInputONSPDFile(YM3Nearest);
+            File infile = Files.getONSPD_Files().getInputONSPDFile(YM3Nearest);
             result = initLookupFromPostcodeToCensusCodes(
                     infile,
                     outfile,

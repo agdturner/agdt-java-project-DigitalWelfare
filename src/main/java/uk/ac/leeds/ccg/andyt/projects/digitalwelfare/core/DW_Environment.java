@@ -72,9 +72,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public transient Grids_Environment Grids_Env;
     public transient Vector_Environment Vector_Env;
     public transient DW_Geotools Geotools;
-public ONSPD_Postcode_Handler Postcode_Handler;
-
-        public DW_UO_Handler UO_Handler;
+    public ONSPD_Postcode_Handler Postcode_Handler;
+    public DW_UO_Handler UO_Handler;
     public DW_UO_Data UO_Data;
     public SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
     public DW_Maps Maps;
@@ -83,15 +82,15 @@ public ONSPD_Postcode_Handler Postcode_Handler;
 
     public DW_Environment(int DEBUG_Level) {
         this.DEBUG_Level = DEBUG_Level;
-        this.Files = new DW_Files(this);
         this.Strings = new DW_Strings();
+        this.Files = new DW_Files(Strings);
     }
 
     public DW_Environment(int DEBUG_Level, String directory) {
         this.Directory = directory;
         this.DEBUG_Level = DEBUG_Level;
-        this.Files = new DW_Files(this);
         this.Strings = new DW_Strings();
+        this.Files = new DW_Files(Strings);
     }
 
     public int getDefaultMaximumNumberOfObjectsPerDirectory() {
@@ -370,7 +369,7 @@ public ONSPD_Postcode_Handler Postcode_Handler;
      */
     public DW_Files getFiles() {
         if (Files == null) {
-            Files = new DW_Files(this);
+            Files = new DW_Files(getStrings());
         }
         return Files;
     }

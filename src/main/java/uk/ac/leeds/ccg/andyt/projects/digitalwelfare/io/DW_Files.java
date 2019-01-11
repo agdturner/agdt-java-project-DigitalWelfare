@@ -23,10 +23,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.io.ONSPD_Files;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.io.SHBE_Files;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 
 /**
@@ -35,26 +33,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
  *
  * @author geoagdt
  */
-public class DW_Files extends DW_Object {
+public class DW_Files extends Generic_Files {
 
-    public ONSPD_Files ONSPD_Files;
-    public SHBE_Files SHBE_Files;
-
-    /**
-     * Provided for convenience. This is a reference to Env.DW_Strings.
-     */
-    protected DW_Strings Strings;
-
-    /**
-     * For storing the main directory location where the project files are
-     * stored. This is initialised from DW_Environment.Directory.
-     */
-    private File dir;
-
-    /**
-     * For storing the main input data directory.
-     */
-    private File inputDir;
+    private ONSPD_Files ONSPD_Files;
+    private SHBE_Files SHBE_Files;
 
     /**
      * For storing the input AdviceLeeds data directory inside
@@ -118,49 +100,37 @@ public class DW_Files extends DW_Object {
     private File outputAdviceLeedsTablesDir;
     private File outputUnderOccupiedDir;
 
-    public DW_Files() {
+    public DW_Files(DW_Strings s, ONSPD_Files of, SHBE_Files sf) {
+        super(s);
+        ONSPD_Files = of;
+        SHBE_Files = sf;
     }
 
-    public DW_Files(DW_Environment env) {
-        super(env);
-        if (env != null) {
-            this.Strings = env.getStrings();
-        } else {
-            this.Strings = new DW_Strings();
-        }
+    public DW_Files(DW_Strings s) {
+        super(s);
     }
-
-    public File getDigitalWelfareDir() {
-        if (dir == null) {
-            dir = new File(Env.Directory);
-        }
-        return dir;
-    }
-
-    public File getInputDir() {
-        if (inputDir == null) {
-            inputDir = new File(getDigitalWelfareDir(), Strings.sInput);
-        }
-        return inputDir;
+    
+    public DW_Strings getStrings() {
+        return (DW_Strings) Strings;
     }
 
     public File getInputAdviceLeedsDir() {
         if (inputAdviceLeedsDir == null) {
-            inputAdviceLeedsDir = new File(getInputDir(), Strings.sAdviceLeeds);
+            inputAdviceLeedsDir = new File(getInputDataDir(), getStrings().sAdviceLeeds);
         }
         return inputAdviceLeedsDir;
     }
 
     public File getInputCensusDir() {
         if (inputCensusDir == null) {
-            inputCensusDir = new File(getInputDir(), Strings.sCensus);
+            inputCensusDir = new File(getInputDataDir(), getStrings().sCensus);
         }
         return inputCensusDir;
     }
 
     public File getInputCensus2011Dir() {
         if (inputCensus2011Dir == null) {
-            inputCensus2011Dir = new File(getInputCensusDir(), Strings.s2011);
+            inputCensus2011Dir = new File(getInputCensusDir(), getStrings().s2011);
         }
         return inputCensus2011Dir;
     }
@@ -170,19 +140,19 @@ public class DW_Files extends DW_Object {
     }
 
     public File getInputCensus2011AttributeDataDir(String level) {
-        return new File(getInputCensus2011Dir(level), Strings.sAttributeData);
+        return new File(getInputCensus2011Dir(level), getStrings().sAttributeData);
     }
 
     public File getInputCensus2011BoundaryDataDir(String level) {
-        return new File(getInputCensus2011Dir(level), Strings.sBoundaryData);
+        return new File(getInputCensus2011Dir(level), getStrings().sBoundaryData);
     }
 
     public File getInputCodePointDir(String year, String dirname) {
         if (inputCodePointDir == null) {
-            inputCodePointDir = new File(getInputPostcodeDir(), 
-                    Strings.sBoundaryData);
-            inputCodePointDir = new File(inputCodePointDir, 
-                    Strings.sCodePoint);
+            inputCodePointDir = new File(getInputPostcodeDir(),
+                    getStrings().sBoundaryData);
+            inputCodePointDir = new File(inputCodePointDir,
+                    getStrings().sCodePoint);
             inputCodePointDir = new File(inputCodePointDir, year);//"2015");
             inputCodePointDir = new File(inputCodePointDir, dirname);
         }
@@ -191,36 +161,36 @@ public class DW_Files extends DW_Object {
 
     public File getInputPostcodeDir() {
         if (inputPostcodeDir == null) {
-            inputPostcodeDir = new File(getInputDir(), Strings.sPostcode);
+            inputPostcodeDir = new File(getInputDataDir(), getStrings().sPostcode);
         }
         return inputPostcodeDir;
     }
 
     public File getInputLCCDir() {
         if (inputLCCDir == null) {
-            inputLCCDir = new File(getInputDir(), Strings.sLCC);
+            inputLCCDir = new File(getInputDataDir(), getStrings().sLCC);
         }
         return inputLCCDir;
     }
 
     public File getInputSHBEDir() {
         if (inputSHBEDir == null) {
-            inputSHBEDir = new File(getInputLCCDir(), Strings.sSHBE);
+            inputSHBEDir = new File(getInputLCCDir(), getStrings().sSHBE);
         }
         return inputSHBEDir;
     }
 
     public File getInputUnderOccupiedDir() {
         if (inputUnderOccupiedDir == null) {
-            inputUnderOccupiedDir = new File(getInputLCCDir(), 
-                    Strings.sUnderOccupied);
+            inputUnderOccupiedDir = new File(getInputLCCDir(),
+                    getStrings().sUnderOccupied);
         }
         return inputUnderOccupiedDir;
     }
 
     public File getSwapDir() {
         if (swapDir == null) {
-            swapDir = new File(getDigitalWelfareDir(), Strings.sSwap);
+            swapDir = new File(getGeneratedDataDir(), getStrings().sSwap);
             swapDir.mkdirs();
         }
         return swapDir;
@@ -228,7 +198,7 @@ public class DW_Files extends DW_Object {
 
     public File getSwapLCCDir() {
         if (swapLCCDir == null) {
-            swapLCCDir = new File(getSwapDir(), Strings.sLCC);
+            swapLCCDir = new File(getSwapDir(), getStrings().sLCC);
             swapLCCDir.mkdirs();
         }
         return swapLCCDir;
@@ -236,24 +206,16 @@ public class DW_Files extends DW_Object {
 
     public File getSwapSHBEDir() {
         if (swapSHBEDir == null) {
-            swapSHBEDir = new File(getSwapLCCDir(), Strings.sSHBE);
+            swapSHBEDir = new File(getSwapLCCDir(), getStrings().sSHBE);
             swapSHBEDir.mkdirs();
         }
         return swapSHBEDir;
     }
 
-    public File getGeneratedDir() {
-        if (generatedDir == null) {
-            generatedDir = new File(getDigitalWelfareDir(), Strings.sGenerated);
-            generatedDir.mkdirs();
-        }
-        return generatedDir;
-    }
-
     public File getGeneratedAdviceLeedsDir() {
         if (generatedAdviceLeedsDir == null) {
-            generatedAdviceLeedsDir = new File(getGeneratedDir(), 
-                    Strings.sAdviceLeeds);
+            generatedAdviceLeedsDir = new File(getGeneratedDataDir(),
+                    getStrings().sAdviceLeeds);
             generatedAdviceLeedsDir.mkdirs();
         }
         return generatedAdviceLeedsDir;
@@ -261,7 +223,8 @@ public class DW_Files extends DW_Object {
 
     public File getGeneratedGridsDir() {
         if (generatedGridsDir == null) {
-            generatedGridsDir = new File(getGeneratedDir(), Strings.sGrids);
+            generatedGridsDir = new File(getGeneratedDataDir(),
+                    getStrings().sGrids);
             generatedGridsDir.mkdirs();
         }
         return generatedGridsDir;
@@ -270,7 +233,7 @@ public class DW_Files extends DW_Object {
     public File getGeneratedGridsGridDoubleFactoryDir() {
         if (generatedGridsGridDoubleFactoryDir == null) {
             generatedGridsGridDoubleFactoryDir = new File(
-                    getGeneratedGridsDir(), Strings.sGridDoubleFactory);
+                    getGeneratedGridsDir(), getStrings().sGridDoubleFactory);
             generatedGridsGridDoubleFactoryDir.mkdirs();
         }
         return generatedGridsGridDoubleFactoryDir;
@@ -278,7 +241,7 @@ public class DW_Files extends DW_Object {
 
     public File getGeneratedCensusDir() {
         if (generatedCensusDir == null) {
-            generatedCensusDir = new File(getGeneratedDir(), Strings.sCensus);
+            generatedCensusDir = new File(getGeneratedDataDir(), getStrings().sCensus);
             generatedCensusDir.mkdirs();
         }
         return generatedCensusDir;
@@ -287,7 +250,7 @@ public class DW_Files extends DW_Object {
     public File getGeneratedCensus2011Dir() {
         if (generatedCensus2011Dir == null) {
             generatedCensus2011Dir = new File(getGeneratedCensusDir(),
-                    Strings.s2011);
+                    getStrings().s2011);
             generatedCensus2011Dir.mkdirs();
         }
         return generatedCensus2011Dir;
@@ -299,8 +262,8 @@ public class DW_Files extends DW_Object {
 
     public File getGeneratedCensus2011LUTsDir() {
         if (generatedCensus2011LUTsDir == null) {
-            generatedCensus2011LUTsDir = new File(getGeneratedCensus2011Dir(), 
-                    Strings.sLUTs);
+            generatedCensus2011LUTsDir = new File(getGeneratedCensus2011Dir(),
+                    getStrings().sLUTs);
             generatedCensus2011LUTsDir.mkdirs();
         }
         return generatedCensus2011LUTsDir;
@@ -308,8 +271,8 @@ public class DW_Files extends DW_Object {
 
     public File getGeneratedPostcodeDir() {
         if (generatedPostcodeDir == null) {
-            generatedPostcodeDir = new File(getGeneratedDir(), 
-                    Strings.sPostcode);
+            generatedPostcodeDir = new File(getGeneratedDataDir(),
+                    getStrings().sPostcode);
             generatedPostcodeDir.mkdirs();
         }
         return generatedPostcodeDir;
@@ -317,10 +280,10 @@ public class DW_Files extends DW_Object {
 
     public File getGeneratedCodePointDir() {
         if (generatedCodePointDir == null) {
-            generatedCodePointDir = new File(getGeneratedPostcodeDir(), 
-                    Strings.sBoundaryData);
-            generatedCodePointDir = new File(generatedCodePointDir, 
-                    Strings.sCodePoint);
+            generatedCodePointDir = new File(getGeneratedPostcodeDir(),
+                    getStrings().sBoundaryData);
+            generatedCodePointDir = new File(generatedCodePointDir,
+                    getStrings().sCodePoint);
             generatedCodePointDir.mkdirs();
         }
         return generatedCodePointDir;
@@ -328,8 +291,8 @@ public class DW_Files extends DW_Object {
 
     public File getGeneratedONSPDDir() {
         if (generatedONSPDDir == null) {
-            generatedONSPDDir = new File(getGeneratedPostcodeDir(), 
-                    Strings.S_ONSPD);
+            generatedONSPDDir = new File(getGeneratedPostcodeDir(),
+                    getStrings().S_ONSPD);
             generatedONSPDDir.mkdirs();
         }
         return generatedONSPDDir;
@@ -337,7 +300,7 @@ public class DW_Files extends DW_Object {
 
     public File getGeneratedLCCDir() {
         if (generatedLCCDir == null) {
-            generatedLCCDir = new File(getGeneratedDir(), Strings.sLCC);
+            generatedLCCDir = new File(getGeneratedDataDir(), getStrings().sLCC);
             generatedLCCDir.mkdirs();
         }
         return generatedLCCDir;
@@ -345,7 +308,7 @@ public class DW_Files extends DW_Object {
 
     public File getGeneratedSHBEDir() {
         if (generatedSHBEDir == null) {
-            generatedSHBEDir = new File(getGeneratedLCCDir(), Strings.sSHBE);
+            generatedSHBEDir = new File(getGeneratedLCCDir(), getStrings().sSHBE);
             generatedSHBEDir.mkdirs();
         }
         return generatedSHBEDir;
@@ -358,7 +321,7 @@ public class DW_Files extends DW_Object {
         return new File(getGeneratedSHBEDir(), dirname);
     }
 
-    public File getGeneratedSHBEDir(String level, boolean doUnderOccupied, 
+    public File getGeneratedSHBEDir(String level, boolean doUnderOccupied,
             boolean doCouncil) {
         File result;
         result = new File(getGeneratedSHBEDir(), level);
@@ -376,40 +339,40 @@ public class DW_Files extends DW_Object {
     public File getUODir(File dir, boolean doUnderOccupied, boolean doCouncil) {
         File result;
         if (doUnderOccupied) {
-            result = new File(dir, Strings.sU);
+            result = new File(dir, getStrings().sU);
             //UnderOccupiedString);
             if (doCouncil) {
-                result = new File(result, Strings.sCouncil);
+                result = new File(result, getStrings().sCouncil);
             } else {
-                result = new File(result, Strings.sRSL);
+                result = new File(result, getStrings().sRSL);
             }
         } else {
-            result = new File(dir, Strings.sA);
+            result = new File(dir, getStrings().sA);
         }
         return result;
     }
 
-    public File getUOFile(File f, boolean doUnderOccupied, boolean doCouncil, 
+    public File getUOFile(File f, boolean doUnderOccupied, boolean doCouncil,
             boolean doRSL) {
         File result;
         if (doUnderOccupied) {
-            result = new File(f, Strings.sU);
+            result = new File(f, getStrings().sU);
             //UnderOccupiedString);
             if (doCouncil & doRSL) {
-                result = new File(result, Strings.sB);
+                result = new File(result, getStrings().sB);
             } else if (doCouncil) {
-                result = new File(result, Strings.sCouncil);
+                result = new File(result, getStrings().sCouncil);
             } else {
-                result = new File(result, Strings.sRSL);
+                result = new File(result, getStrings().sRSL);
             }
         } else {
-            result = new File(f, Strings.sA);
+            result = new File(f, getStrings().sA);
         }
         return result;
     }
 
     public ArrayList<File> getOutputSHBELevelDirsArrayList(
-            ArrayList<String> levels, boolean doUnderOccupied, 
+            ArrayList<String> levels, boolean doUnderOccupied,
             boolean doCouncil) {
         ArrayList<File> result;
         result = new ArrayList<>();
@@ -469,24 +432,16 @@ public class DW_Files extends DW_Object {
     public File getGeneratedUnderOccupiedDir() {
         if (generatedUnderOccupiedDir == null) {
             generatedUnderOccupiedDir = new File(getGeneratedLCCDir(),
-                    Strings.sUnderOccupied);
+                    getStrings().sUnderOccupied);
             generatedUnderOccupiedDir.mkdirs();
         }
         return generatedUnderOccupiedDir;
     }
 
-    public File getOutputDir() {
-        if (outputDir == null) {
-            outputDir = new File(getDigitalWelfareDir(), Strings.sOutput);
-            outputDir.mkdirs();
-        }
-        return outputDir;
-    }
-
     public File getOutputAdviceLeedsDir() {
         if (outputAdviceLeedsDir == null) {
-            outputAdviceLeedsDir = new File(getOutputDir(), 
-                    Strings.sAdviceLeeds);
+            outputAdviceLeedsDir = new File(getOutputDataDir(),
+                    getStrings().sAdviceLeeds);
             outputAdviceLeedsDir.mkdirs();
         }
         return outputAdviceLeedsDir;
@@ -494,8 +449,8 @@ public class DW_Files extends DW_Object {
 
     public File getOutputAdviceLeedsMapsDir() {
         if (outputAdviceLeedsMapsDir == null) {
-            outputAdviceLeedsMapsDir = new File(getOutputAdviceLeedsDir(), 
-                    Strings.sMaps);
+            outputAdviceLeedsMapsDir = new File(getOutputAdviceLeedsDir(),
+                    getStrings().sMaps);
             outputAdviceLeedsMapsDir.mkdirs();
 
         }
@@ -505,7 +460,7 @@ public class DW_Files extends DW_Object {
     public File getOutputAdviceLeedsTablesDir() {
         if (outputAdviceLeedsTablesDir == null) {
             outputAdviceLeedsTablesDir = new File(
-                    getOutputAdviceLeedsDir(), Strings.sTables);
+                    getOutputAdviceLeedsDir(), getStrings().sTables);
             outputAdviceLeedsTablesDir.mkdirs();
         }
         return outputAdviceLeedsTablesDir;
@@ -513,7 +468,7 @@ public class DW_Files extends DW_Object {
 
     public File getOutputCensusDir() {
         if (outputCensusDir == null) {
-            outputCensusDir = new File(getOutputDir(), Strings.sCensus);
+            outputCensusDir = new File(getOutputDataDir(), getStrings().sCensus);
             outputCensusDir.mkdirs();
         }
         return outputCensusDir;
@@ -521,7 +476,7 @@ public class DW_Files extends DW_Object {
 
     public File getOutputCensus2011Dir() {
         if (outputCensus2011Dir == null) {
-            outputCensus2011Dir = new File(getOutputCensusDir(), Strings.s2011);
+            outputCensus2011Dir = new File(getOutputCensusDir(), getStrings().s2011);
             outputCensus2011Dir.mkdirs();
         }
         return outputCensus2011Dir;
@@ -536,7 +491,7 @@ public class DW_Files extends DW_Object {
 
     public File getOutputLCCDir() {
         if (outputLCCDir == null) {
-            outputLCCDir = new File(getOutputDir(), Strings.sLCC);
+            outputLCCDir = new File(getOutputDataDir(), getStrings().sLCC);
             outputLCCDir.mkdirs();
         }
         return outputLCCDir;
@@ -544,7 +499,7 @@ public class DW_Files extends DW_Object {
 
     public File getOutputSHBEDir() {
         if (outputSHBEDir == null) {
-            outputSHBEDir = new File(getOutputLCCDir(), Strings.sSHBE);
+            outputSHBEDir = new File(getOutputLCCDir(), getStrings().sSHBE);
             outputSHBEDir.mkdirs();
         }
         return outputSHBEDir;
@@ -552,7 +507,7 @@ public class DW_Files extends DW_Object {
 
     public File getOutputSHBELogsDir() {
         if (outputSHBELogsDir == null) {
-            outputSHBELogsDir = new File(getOutputSHBEDir(), Strings.sLogs);
+            outputSHBELogsDir = new File(getOutputSHBEDir(), getStrings().sLogs);
             outputSHBELogsDir.mkdirs();
         }
         return outputSHBELogsDir;
@@ -560,7 +515,7 @@ public class DW_Files extends DW_Object {
 
     public File getOutputSHBEMapsDir() {
         if (outputSHBEMapsDir == null) {
-            outputSHBEMapsDir = new File(getOutputSHBEDir(), Strings.sMaps);
+            outputSHBEMapsDir = new File(getOutputSHBEDir(), getStrings().sMaps);
             outputSHBEMapsDir.mkdirs();
         }
         return outputSHBEMapsDir;
@@ -568,7 +523,7 @@ public class DW_Files extends DW_Object {
 
     public File getOutputSHBETablesDir() {
         if (outputSHBETablesDir == null) {
-            outputSHBETablesDir = new File(getOutputSHBEDir(), Strings.sTables);
+            outputSHBETablesDir = new File(getOutputSHBEDir(), getStrings().sTables);
             outputSHBETablesDir.mkdirs();
         }
         return outputSHBETablesDir;
@@ -578,17 +533,17 @@ public class DW_Files extends DW_Object {
             //String type,
             boolean checkPreviousTenancyType) {
         File result;
-        result = getOutputDir(getOutputSHBETablesDir(),
-                Strings.sTenancy,
+        result = getOutputDataDir(getOutputSHBETablesDir(),
+                getStrings().sTenancy,
                 //type,
-                Strings.sTenancyTypeTransition,
+                getStrings().sTenancyTypeTransition,
                 checkPreviousTenancyType);
         return result;
     }
 
     public File getOutputSHBEPlotsDir() {
         if (outputSHBEPlotsDir == null) {
-            outputSHBEPlotsDir = new File(getOutputSHBEDir(), Strings.sPlots);
+            outputSHBEPlotsDir = new File(getOutputSHBEDir(), getStrings().sPlots);
             outputSHBEPlotsDir.mkdirs();
         }
         return outputSHBEPlotsDir;
@@ -598,15 +553,15 @@ public class DW_Files extends DW_Object {
             //String type,
             boolean checkPreviousTenancyType) {
         File result;
-        result = getOutputDir(getOutputSHBEPlotsDir(),
-                Strings.sTenancy,
+        result = getOutputDataDir(getOutputSHBEPlotsDir(),
+                getStrings().sTenancy,
                 //type,
-                Strings.sTenancyTypeTransitionLineGraph,
+                getStrings().sTenancyTypeTransitionLineGraph,
                 checkPreviousTenancyType);
         return result;
     }
 
-    public File getOutputDir(
+    public File getOutputDataDir(
             File baseDir,
             String dir1,
             String dir2,
@@ -615,19 +570,19 @@ public class DW_Files extends DW_Object {
         result = new File(baseDir, dir1);
         result = new File(result, dir2);
         if (checkPreviousTenancyType) {
-            result = new File(result, Strings.sCheckedPreviousTenancyType);
+            result = new File(result, getStrings().sCheckedPreviousTenancyType);
         } else {
-            result = new File(result, Strings.sCheckedPreviousTenancyTypeNo);
+            result = new File(result, getStrings().sCheckedPreviousTenancyTypeNo);
         }
         return result;
     }
 
     public File getOutputSHBELineMapsDir() {
-        return new File(getOutputSHBEMapsDir(), Strings.sLine);
+        return new File(getOutputSHBEMapsDir(), getStrings().sLine);
     }
 
     public File getOutputSHBEChoroplethDir() {
-        return new File(getOutputSHBEMapsDir(), Strings.sChoropleth);
+        return new File(getOutputSHBEMapsDir(), getStrings().sChoropleth);
     }
 
     public File getOutputSHBEChoroplethDir(String level) {
@@ -636,8 +591,8 @@ public class DW_Files extends DW_Object {
 
     public File getOutputUnderOccupiedDir() {
         if (outputUnderOccupiedDir == null) {
-            outputUnderOccupiedDir = new File(getOutputLCCDir(), 
-                    Strings.sUnderOccupied);
+            outputUnderOccupiedDir = new File(getOutputLCCDir(),
+                    getStrings().sUnderOccupied);
             outputUnderOccupiedDir.mkdirs();
         }
         return outputUnderOccupiedDir;
@@ -650,7 +605,7 @@ public class DW_Files extends DW_Object {
      * @param doUnderOccupancy
      * @return
      */
-    public File getOutputSHBETableDir(String name, String includeKey, 
+    public File getOutputSHBETableDir(String name, String includeKey,
             boolean doUnderOccupancy) {
         File result;
         result = DW_Files.this.getOutputSHBETableDir(name, doUnderOccupancy);
@@ -671,9 +626,9 @@ public class DW_Files extends DW_Object {
         File result;
         result = new File(getOutputSHBETablesDir(), name);
         if (doUnderOccupancy) {
-            result = new File(result, Strings.sU);
+            result = new File(result, getStrings().sU);
         } else {
-            result = new File(result, Strings.sA);
+            result = new File(result, getStrings().sA);
         }
         if (!result.exists()) {
             result.mkdirs();
@@ -682,6 +637,34 @@ public class DW_Files extends DW_Object {
     }
 
     public String getDefaultBinaryFileExtension() {
-        return Strings.sBinaryFileExtension;
+        return getStrings().sBinaryFileExtension;
+    }
+
+    /**
+     * @return the ONSPD_Files
+     */
+    public ONSPD_Files getONSPD_Files() {
+        return ONSPD_Files;
+    }
+
+    /**
+     * @param ONSPD_Files the ONSPD_Files to set
+     */
+    public void setONSPD_Files(ONSPD_Files ONSPD_Files) {
+        this.ONSPD_Files = ONSPD_Files;
+    }
+
+    /**
+     * @return the SHBE_Files
+     */
+    public SHBE_Files getSHBE_Files() {
+        return SHBE_Files;
+    }
+
+    /**
+     * @param SHBE_Files the SHBE_Files to set
+     */
+    public void setSHBE_Files(SHBE_Files SHBE_Files) {
+        this.SHBE_Files = SHBE_Files;
     }
 }

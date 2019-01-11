@@ -65,7 +65,7 @@ public class DW_Maps extends Geotools_Maps {
     protected transient DW_Files Files;
     protected transient DW_Strings Strings;
     protected transient ONSPD_Postcode_Handler Postcode_Handler;
-    
+
     //private TreeMap<String, ONSPD_Point>[] ONSPDlookups;
     //private TreeMap<String, TreeMap<String, ONSPD_Point>> ONSPDlookups;
     private TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDlookups;
@@ -81,7 +81,7 @@ public class DW_Maps extends Geotools_Maps {
 
     public DW_Maps(DW_Environment de) {
         this.Env = de;
-        this.Geotools =     de.getGeotools();
+        this.Geotools = de.getGeotools();
         Files = de.getFiles();
         Strings = de.getStrings();
         //DW_Postcode_Handler = env.getDW_Postcode_Handler(); Stack overflow doing this here.
@@ -110,7 +110,7 @@ public class DW_Maps extends Geotools_Maps {
         //levels.add("Sector");
         //levels.add("Area");
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
+        ONSPDFiles = Files.getONSPD_Files().getInputONSPDFiles();
         Iterator<String> ite2;
         ite2 = levels.iterator();
         while (ite2.hasNext()) {
@@ -336,9 +336,7 @@ public class DW_Maps extends Geotools_Maps {
         File dir = new File(
                 Env.getFiles().getInputCensus2011AttributeDataDir(level),
                 area);
-        File file = new File(
-                dir,
-                "pop.csv");
+        File file = new File(dir, "pop.csv");
         try {
             BufferedReader br = Generic_IO.getBufferedReader(file);
             StreamTokenizer st = new StreamTokenizer(br);
@@ -841,14 +839,10 @@ public class DW_Maps extends Geotools_Maps {
     public DW_Shapefile getCommunityAreasDW_Shapefile() {
         DW_Shapefile result;
         String name = "communityareas_region.shp";
-        File dir = new File(
-                Env.getFiles().getInputDir(),
-                "CommunityAreas");
+        File dir = new File(Env.getFiles().getInputDataDir(), "CommunityAreas");
         dir = new File(dir, name);
         File f;
-        f = new File(
-                dir,
-                name);
+        f = new File(dir, name);
         result = new DW_Shapefile(f);
         return result;
     }
@@ -872,6 +866,5 @@ public class DW_Maps extends Geotools_Maps {
     public void setStyleParameters(Geotools_StyleParameters styleParameters) {
         this.styleParameters = styleParameters;
     }
-    
-    
+
 }

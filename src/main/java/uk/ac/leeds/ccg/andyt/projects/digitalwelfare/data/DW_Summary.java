@@ -6060,7 +6060,7 @@ public class DW_Summary extends DW_Object {
             int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
+        ONSPDFiles = Files.getONSPD_Files().getInputONSPDFiles();
         String name;
         name = "Compare2TimesPaymentTypes";
         PrintWriter pw;
@@ -6517,7 +6517,7 @@ public class DW_Summary extends DW_Object {
             int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
+        ONSPDFiles = Files.getONSPD_Files().getInputONSPDFiles();
         String name;
         name = "Compare2TimesTT";
         PrintWriter pw;
@@ -6647,7 +6647,7 @@ public class DW_Summary extends DW_Object {
             int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
+        ONSPDFiles = Files.getONSPD_Files().getInputONSPDFiles();
         String name;
         name = "Compare2TimesPostcode";
         PrintWriter pw;
@@ -6690,7 +6690,7 @@ public class DW_Summary extends DW_Object {
             TreeMap<String, HashMap<String, String>> summaryTable,
             String includeKey, int nTT, int nEG, int nPSI) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
+        ONSPDFiles = Files.getONSPD_Files().getInputONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
         PrintWriter pw;
@@ -6855,7 +6855,7 @@ public class DW_Summary extends DW_Object {
             int nPSI
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.ONSPD_Files.getInputONSPDFiles();
+        ONSPDFiles = Files.getONSPD_Files().getInputONSPDFiles();
         String name;
         name = "SingleTimeHouseholdSizes";
         PrintWriter pw;
