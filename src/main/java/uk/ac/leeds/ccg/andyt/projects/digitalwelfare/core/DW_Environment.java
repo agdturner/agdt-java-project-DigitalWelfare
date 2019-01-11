@@ -91,6 +91,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         this.DEBUG_Level = DEBUG_Level;
         this.Strings = new DW_Strings();
         this.Files = new DW_Files(Strings);
+        Files.setDataDirectory(new File(directory));
     }
 
     public int getDefaultMaximumNumberOfObjectsPerDirectory() {
