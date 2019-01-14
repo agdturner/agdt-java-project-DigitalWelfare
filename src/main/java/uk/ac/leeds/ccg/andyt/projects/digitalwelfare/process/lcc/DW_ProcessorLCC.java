@@ -217,10 +217,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             } else {
                 processName = "LoadNewONSPDFromSource";
             }
-            File logDir = initLogs(
-                    Env.DEBUG_Level_FINE,
-                    processName,
-                    range);
+            File logDir = initLogs(Env.DEBUG_Level_FINE, processName, range);
             // Process
             Postcode_Handler = new ONSPD_Postcode_Handler(Env.getONSPD_Environment());
             Env.setPostcode_Handler(Postcode_Handler);
