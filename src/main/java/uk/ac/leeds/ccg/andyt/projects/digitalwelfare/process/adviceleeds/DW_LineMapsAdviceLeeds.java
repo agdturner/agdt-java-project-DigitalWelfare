@@ -148,7 +148,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         // init tMSOACodesAndLeedsMSOAShapefile
         initMSOACodesAndLeedsMSOAShapefile(targetPropertyNameMSOA);
-        initONSPDLookups();
+        Env.ONSPD_Env.initONSPDLookups();
         initCABOutletPoints();
         Data_CAB2_Handler = new DW_Data_CAB2_Handler(Env);
         Data_CAB0_Handler = new DW_Data_CAB0_Handler(Env);

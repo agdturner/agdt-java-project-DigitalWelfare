@@ -357,7 +357,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         ONSPD_Postcode_Handler dph;
         dph = Env.getPostcode_Handler();
         TreeMap<String, ONSPD_Point> tONSPDlookup;
-        tONSPDlookup = getONSPDlookups().get(postcodeLevel).get(
+        tONSPDlookup = Env.ONSPD_Env.getONSPDlookups().get(postcodeLevel).get(
                 dph.getNearestYM3ForONSPDLookup(yM3));
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,

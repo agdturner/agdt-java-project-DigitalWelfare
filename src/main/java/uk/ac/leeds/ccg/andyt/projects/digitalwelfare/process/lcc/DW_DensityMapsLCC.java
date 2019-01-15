@@ -1226,7 +1226,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         Grids_GridDouble g0 = initiliseGrid(grid);
 
         TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> lookups;
-        lookups = MapsLCC.getONSPDlookups();
+        lookups = Env.ONSPD_Env.getONSPDlookups();
         TreeMap<String, ONSPD_Point> lookup;
         lookup = lookups.get("Unit").get(Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 

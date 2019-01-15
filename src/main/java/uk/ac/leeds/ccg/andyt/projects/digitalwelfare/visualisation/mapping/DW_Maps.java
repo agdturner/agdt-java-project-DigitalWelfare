@@ -68,7 +68,7 @@ public class DW_Maps extends Geotools_Maps {
 
     //private TreeMap<String, ONSPD_Point>[] ONSPDlookups;
     //private TreeMap<String, TreeMap<String, ONSPD_Point>> ONSPDlookups;
-    private TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDlookups;
+//    private TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDlookups;
 
     /**
      * For storing level(s) (OA, LSOA, MSOA, PostcodeSector, PostcodeUnit, ...)
@@ -87,41 +87,41 @@ public class DW_Maps extends Geotools_Maps {
         //DW_Postcode_Handler = env.getDW_Postcode_Handler(); Stack overflow doing this here.
     }
 
-    //public TreeMap<String, ONSPD_Point>[] getONSPDlookups() {
-    public TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> getONSPDlookups() {
-        if (ONSPDlookups == null) {
-            initONSPDLookups();
-        }
-        return ONSPDlookups;
-    }
-
-    protected void initDW_Postcode_Handler() {
-        if (Postcode_Handler == null) {
-//            Postcode_Handler = new ONSPD_Postcode_Handler(Env.ONSPD_Environment);
-            Postcode_Handler = new ONSPD_Postcode_Handler(new ONSPD_Environment(Files.getDataDir()));
-        }
-    }
-
-    public void initONSPDLookups() {
-        initDW_Postcode_Handler();
-        ONSPDlookups = new TreeMap<>();
-        levels = new ArrayList<>();
-        levels.add("Unit");
-        //levels.add("Sector");
-        //levels.add("Area");
-        TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.getONSPD_Files().getInputONSPDFiles();
-        Iterator<String> ite2;
-        ite2 = levels.iterator();
-        while (ite2.hasNext()) {
-            level = ite2.next();
-            TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> ONSPDlookup;
-            ONSPDlookup = Postcode_Handler.getPostcodeUnitPointLookups(true,
-                    ONSPDFiles,
-                    Postcode_Handler.getDefaultLookupFilename());
-            ONSPDlookups.put(level, ONSPDlookup);
-        }
-    }
+//    //public TreeMap<String, ONSPD_Point>[] getONSPDlookups() {
+//    public TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> getONSPDlookups() {
+//        if (ONSPDlookups == null) {
+//            initONSPDLookups();
+//        }
+//        return ONSPDlookups;
+//    }
+//
+//    protected void initPostcode_Handler() {
+//        if (Postcode_Handler == null) {
+////            Postcode_Handler = new ONSPD_Postcode_Handler(Env.ONSPD_Environment);
+//            Postcode_Handler = new ONSPD_Postcode_Handler(new ONSPD_Environment(Files.getDataDir()));
+//        }
+//    }
+//
+//    public void initONSPDLookups() {
+//        initPostcode_Handler();
+//        ONSPDlookups = new TreeMap<>();
+//        levels = new ArrayList<>();
+//        levels.add("Unit");
+//        //levels.add("Sector");
+//        //levels.add("Area");
+//        TreeMap<ONSPD_YM3, File> ONSPDFiles;
+//        ONSPDFiles = Files.getONSPD_Files().getInputONSPDFiles();
+//        Iterator<String> ite2;
+//        ite2 = levels.iterator();
+//        while (ite2.hasNext()) {
+//            level = ite2.next();
+//            TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> ONSPDlookup;
+//            ONSPDlookup = Postcode_Handler.getPostcodeUnitPointLookups(true,
+//                    ONSPDFiles,
+//                    Postcode_Handler.getDefaultLookupFilename());
+//            ONSPDlookups.put(level, ONSPDlookup);
+//        }
+//    }
 
     public DW_Shapefile getPostcodeUnitPoly_DW_Shapefile(
             DW_Environment env,
@@ -859,9 +859,9 @@ public class DW_Maps extends Geotools_Maps {
         return styleParameters;
     }
 
-    public void setONSPDlookups(TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDlookups) {
-        this.ONSPDlookups = ONSPDlookups;
-    }
+//    public void setONSPDlookups(TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDlookups) {
+//        this.ONSPDlookups = ONSPDlookups;
+//    }
 
     public void setStyleParameters(Geotools_StyleParameters styleParameters) {
         this.styleParameters = styleParameters;

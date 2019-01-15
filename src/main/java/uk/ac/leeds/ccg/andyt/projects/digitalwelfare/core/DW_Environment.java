@@ -60,9 +60,9 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * Logging levels.
      */
     public int DEBUG_Level;
-    public final int DEBUG_Level_FINEST = 0;
-    public final int DEBUG_Level_FINE = 1;
-    public final int DEBUG_Level_NORMAL = 2;
+    public static final int DEBUG_Level_FINEST = 0;
+    public static final int DEBUG_Level_FINE = 1;
+    public static final int DEBUG_Level_NORMAL = 2;
 
     // For convenience
     public DW_Strings Strings;
