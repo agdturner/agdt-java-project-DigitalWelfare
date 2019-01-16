@@ -624,9 +624,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             DW_UO_Set CouncilUOSet0 = null;
             DW_UO_Set RSLUOSet0 = null;
             SHBE_Records SHBE_Records0 = null;
-            SHBE_Records0 = SHBE_Data.getSHBE_Records(YM30);
+            SHBE_Records0 = SHBE_Data.getRecords(YM30, Env.HOOME);
             HashMap<SHBE_ID, SHBE_Record> Records0;
-            Records0 = SHBE_Records0.getClaimIDToSHBE_RecordMap(Env.HOOME);
+            Records0 = SHBE_Records0.getRecords(Env.HOOME);
             // ClaimIDToTTLookups
             HashMap<Integer, HashMap<SHBE_ID, Integer>> ClaimIDToTTLookups;
             ClaimIDToTTLookups = new HashMap<>();
@@ -684,14 +684,14 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     ONSPD_YM3 YM31 = SHBE_Handler.getYM3(filename);
                     Env.logO("Year Month " + YM31, true);
                     SHBE_Records SHBE_Records1;
-                    SHBE_Records1 = SHBE_Data.getSHBE_Records(YM31);
+                    SHBE_Records1 = SHBE_Data.getRecords(YM31, Env.HOOME);
                     ClaimIDToPostcodeIDLookup = loadClaimIDToPostcodeIDLookup(
                             YM31,
                             i,
                             ClaimIDToPostcodeIDLookups);
                     ClaimIDToPostcodeIDLookups.put(i, ClaimIDToPostcodeIDLookup);
                     HashMap<SHBE_ID, SHBE_Record> Records1;
-                    Records1 = SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME);
+                    Records1 = SHBE_Records1.getRecords(Env.HOOME);
                     // ClaimIDToTTLookup1
                     HashMap<SHBE_ID, Integer> ClaimIDToTTLookup1;
                     ClaimIDToTTLookup1 = loadClaimIDToTTLookup(
@@ -1881,9 +1881,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         }
         result = new HashMap<>();
         SHBE_Records SHBE_Records;
-        SHBE_Records = SHBE_Data.getSHBE_Records(YM3);
+        SHBE_Records = SHBE_Data.getRecords(YM3, Env.HOOME);
         HashMap<SHBE_ID, SHBE_Record> records;
-        records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        records = SHBE_Records.getRecords(Env.HOOME);
         Iterator<SHBE_ID> ite;
         ite = records.keySet().iterator();
         SHBE_ID ClaimID;
@@ -1904,7 +1904,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
             return ClaimIDToPostcodeIDLookups.get(key);
         }
-        r = SHBE_Data.getSHBE_Records(YM3).getClaimIDToPostcodeIDLookup(Env.HOOME);
+        r = SHBE_Data.getRecords(YM3, Env.HOOME).getClaimIDToPostcodeIDLookup(Env.HOOME);
         ClaimIDToPostcodeIDLookups.put(key, r);
         return r;
     }
@@ -5886,18 +5886,18 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         ONSPD_YM3 YM30;
         YM30 = SHBE_Handler.getYM3(SHBEFilenames[startIndex]);
         SHBE_Records recs0;
-        recs0 = SHBE_Data.getSHBE_Records(YM30);
+        recs0 = SHBE_Data.getRecords(YM30, Env.HOOME);
 //        recs0 = Env.getSHBE_Data().getData().get(YM30);
         HashMap<SHBE_ID, SHBE_Record> recordsStart;
-        recordsStart = recs0.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        recordsStart = recs0.getRecords(Env.HOOME);
         // End
         ONSPD_YM3 YM31;
         YM31 = SHBE_Handler.getYM3(SHBEFilenames[endIndex]);
         SHBE_Records recs1;
-        recs1 = SHBE_Data.getSHBE_Records(YM31);
+        recs1 = SHBE_Data.getRecords(YM31, Env.HOOME);
 //        recs1 = Env.getSHBE_Data().getData().get(YM31);
         HashMap<SHBE_ID, SHBE_Record> recordsEnd;
-        recordsEnd = recs1.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        recordsEnd = recs1.getRecords(Env.HOOME);
         //TreeMap<String, SHBE_Record> SRecordsEnd = (TreeMap<String, SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<Integer, Integer> destinationCounts;
@@ -6085,17 +6085,17 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         ONSPD_YM3 YM30;
         YM30 = SHBE_Handler.getYM3(SHBEFilenames[startIndex]);
         SHBE_Records recs0;
-        recs0 = SHBE_Data.getSHBE_Records(YM30);
+        recs0 = SHBE_Data.getRecords(YM30, Env.HOOME);
         //recs0 = Env.getSHBE_Data().getData().get(YM30);
         HashMap<SHBE_ID, SHBE_Record> recordsStart;
-        recordsStart = recs0.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        recordsStart = recs0.getRecords(Env.HOOME);
         ONSPD_YM3 YM31;
         YM31 = SHBE_Handler.getYM3(SHBEFilenames[endIndex]);
         SHBE_Records recs1;
-        recs1 = SHBE_Data.getSHBE_Records(YM31);
+        recs1 = SHBE_Data.getRecords(YM31, Env.HOOME);
         //recs1 = Env.getSHBE_Data().getData().get(YM31);
         HashMap<SHBE_ID, SHBE_Record> recordsEnd;
-        recordsEnd = recs1.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        recordsEnd = recs1.getRecords(Env.HOOME);
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<Integer, Integer> destinationCounts;
         Iterator<SHBE_ID> ite;

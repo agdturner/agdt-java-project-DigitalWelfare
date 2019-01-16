@@ -5207,33 +5207,25 @@ public class DW_Summary extends DW_Object {
      * @param include
      * @param forceNewSummaries
      * @param HB_CTB
-     * @param PTs
+     * @param PTs Payment Types
      * @param nTT
      * @param nEG
      * @param nPSI
-     * @param handleOutOfMemoryError
+     * @param hoome If true there should be an attempt to handle
+     * OutOfMemoryErrors if they are encountered.
      * @return
      */
     public TreeMap<String, HashMap<String, String>> getSummaryTable(
-            String[] SHBEFilenames,
-            ArrayList<Integer> include,
-            boolean forceNewSummaries,
-            ArrayList<String> HB_CTB,
-            ArrayList<String> PTs,
-            //String PT,
-            int nTT,
-            int nEG,
-            int nPSI,
-            boolean handleOutOfMemoryError
+            String[] SHBEFilenames, ArrayList<Integer> include,
+            boolean forceNewSummaries, ArrayList<String> HB_CTB,
+            ArrayList<String> PTs, int nTT, int nEG, int nPSI, boolean hoome
     ) {
         String methodName = "getSummaryTable(...)";
         Env.log("<" + methodName + ">");
 
-        // Initialise counts
-        initCounts(nTT, nEG, nPSI);
-
         // Declare variables
-        TreeMap<String, HashMap<String, String>> result;
+        // Declare result
+        TreeMap<String, HashMap<String, String>> r;
         int i;
         Iterator<Integer> includeIte;
         HashMap<String, String> summary;
@@ -5257,25 +5249,28 @@ public class DW_Summary extends DW_Object {
         HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1;
         HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther1;
 
+        // Initialise counts
+        initCounts(nTT, nEG, nPSI);
+
         // Initialise result
-        result = new TreeMap<>();
+        r = new TreeMap<>();
         includeIte = include.iterator();
         while (includeIte.hasNext()) {
             i = includeIte.next();
             summary = new HashMap<>();
             key = SHBE_Handler.getYearMonthNumber(SHBEFilenames[i]);
-            result.put(key, summary);
+            r.put(key, summary);
         }
 
         // Load first data
         includeIte = include.iterator();
         i = includeIte.next();
         filename1 = SHBEFilenames[i];
-        key = SHBE_Handler.getYearMonthNumber(filename1);
+        //key = SHBE_Handler.getYearMonthNumber(filename1);
         YM31 = SHBE_Handler.getYM3(filename1);
         Env.log("Load " + YM31);
 
-        SHBE_Records1 = SHBE_Data.getSHBE_Records(YM31);
+        SHBE_Records1 = SHBE_Data.getRecords(YM31, Env.HOOME);
 
         ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HOOME);
         ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HOOME);
@@ -5285,18 +5280,9 @@ public class DW_Summary extends DW_Object {
         ClaimIDsWithStatusOfCTBAtExtractDateOther1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(Env.HOOME);
 
         // Summarise first data
-        doPartSummarySingleTime(
-                SHBE_Records1,
-                SHBE_Records1.getClaimIDToSHBE_RecordMap(handleOutOfMemoryError),
-                YM31,
-                filename1,
-                forceNewSummaries,
-                HB_CTB,
-                PTs,
-                nTT,
-                nEG,
-                nPSI,
-                result);
+        doPartSummarySingleTime(SHBE_Records1,
+                SHBE_Records1.getRecords(hoome), YM31,
+                filename1, forceNewSummaries, HB_CTB, PTs, nTT, nEG, nPSI, r);
 
         filename0 = filename1;
         SHBE_Records0 = SHBE_Records1;
@@ -5314,11 +5300,11 @@ public class DW_Summary extends DW_Object {
         while (includeIte.hasNext()) {
             i = includeIte.next();
             filename1 = SHBEFilenames[i];
-            key = SHBE_Handler.getYearMonthNumber(filename1);
+            //key = SHBE_Handler.getYearMonthNumber(filename1);
             YM31 = SHBE_Handler.getYM3(filename1);
             // Load next data
             Env.log("Load " + YM31);
-            SHBE_Records1 = SHBE_Data.getSHBE_Records(YM31);
+            SHBE_Records1 = SHBE_Data.getRecords(YM31, Env.HOOME);
             ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HOOME);
             ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HOOME);
             ClaimIDsWithStatusOfHBAtExtractDateOther1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(Env.HOOME);
@@ -5326,32 +5312,21 @@ public class DW_Summary extends DW_Object {
             ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(Env.HOOME);
             ClaimIDsWithStatusOfCTBAtExtractDateOther1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(Env.HOOME);
             // doPartSummaryCompare2Times
-            doPartSummaryCompare2Times(
-                    SHBE_Records0,
+            doPartSummaryCompare2Times(SHBE_Records0,
                     ClaimIDsWithStatusOfHBAtExtractDateInPayment0,
                     ClaimIDsWithStatusOfHBAtExtractDateSuspended0,
                     ClaimIDsWithStatusOfHBAtExtractDateOther0,
                     ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
                     ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
                     ClaimIDsWithStatusOfCTBAtExtractDateOther0,
-                    YM30,
-                    filename0,
-                    SHBE_Records1,
+                    YM30, filename0, SHBE_Records1,
                     ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
                     ClaimIDsWithStatusOfHBAtExtractDateSuspended1,
                     ClaimIDsWithStatusOfHBAtExtractDateOther1,
                     ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
                     ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
-                    ClaimIDsWithStatusOfCTBAtExtractDateOther1,
-                    YM31,
-                    filename1,
-                    forceNewSummaries,
-                    HB_CTB,
-                    PTs,
-                    nTT,
-                    nEG,
-                    nPSI,
-                    result);
+                    ClaimIDsWithStatusOfCTBAtExtractDateOther1, YM31, filename1,
+                    forceNewSummaries, HB_CTB, PTs, nTT, nEG, nPSI, r);
             // Set up vars for next iteration
             if (includeIte.hasNext()) {
                 filename0 = filename1;
@@ -5368,10 +5343,9 @@ public class DW_Summary extends DW_Object {
                 initCounts(nTT, nEG, nPSI);
                 // Not used at present. incomeAndRentSummary0 = incomeAndRentSummary1;
             }
-
         }
         Env.log("</" + methodName + ">");
-        return result;
+        return r;
     }
 
     protected void incrementCounts(int nTT) {
@@ -5504,7 +5478,7 @@ public class DW_Summary extends DW_Object {
 
         doPartSummarySingleTime(
                 SHBE_Records1,
-                SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME),
+                SHBE_Records1.getRecords(Env.HOOME),
                 YM31,
                 filename1,
                 forceNewSummaries,
@@ -5629,7 +5603,7 @@ public class DW_Summary extends DW_Object {
         SHBE_D_Record D_Record1;
 
         HashMap<SHBE_ID, SHBE_Record> Records0;
-        Records0 = SHBE_Records0.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        Records0 = SHBE_Records0.getRecords(Env.HOOME);
         // Go through previous records
         ite = Records0.keySet().iterator();
         while (ite.hasNext()) {
@@ -5724,7 +5698,7 @@ public class DW_Summary extends DW_Object {
             }
         }
         HashMap<SHBE_ID, SHBE_Record> Records1;
-        Records1 = SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        Records1 = SHBE_Records1.getRecords(Env.HOOME);
         // Go through current records
         ite = Records1.keySet().iterator();
         while (ite.hasNext()) {

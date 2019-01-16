@@ -1340,8 +1340,8 @@ public class DW_TenancyChangesUO extends DW_Object {
             year = SHBE_Handler.getYear(SHBEFilenames[i]);
             month = SHBE_Handler.getMonthNumber(SHBEFilenames[i]);
             yM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
-            SHBE_Records = Env.getSHBE_Data().getSHBE_Records(yM3);
-            records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
+            SHBE_Records = Env.getSHBE_Data().getRecords(yM3, Env.HOOME);
+            records = SHBE_Records.getRecords(Env.HOOME);
             ite = ClaimIDs.iterator();
             while (ite.hasNext()) {
                 ClaimID = ite.next();
@@ -2024,10 +2024,10 @@ public class DW_TenancyChangesUO extends DW_Object {
         CouncilUOSet1 = CouncilUOSets.get(YM31);
         if (CouncilUOSet1 != null) {
             RSLUOSet1 = RSLUOSets.get(YM31);
-            SHBE_Records1 = SHBE_Data.getSHBE_Records(YM31);
+            SHBE_Records1 = SHBE_Data.getRecords(YM31, Env.HOOME);
         }
         HashMap<SHBE_ID, SHBE_Record> Records1;
-        Records1 = SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        Records1 = SHBE_Records1.getRecords(Env.HOOME);
         SHBE_Record Record1;
         CouncilUOSet1 = CouncilUOSets.get(YM31);
         HashMap<SHBE_ID, DW_UO_Record> CouncilUOSetMap1;
@@ -3071,7 +3071,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             if (CouncilUOSet1 != null) {
                 RSLUOSet1 = RSLUOSets.get(YM31);
-                SHBE_Records1 = Env.getSHBE_Data().getSHBE_Records(YM31);
+                SHBE_Records1 = Env.getSHBE_Data().getRecords(YM31, Env.HOOME);
                 initFirst = true;
                 //arrearsDiffs.put(YM3, 0.0d);
                 //arrearsDiffCounts.put(YM3, 0.0d);
@@ -3079,7 +3079,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             header += YM31;
         }
         //TreeMap<String, SHBE_Record> aRecords;
-        Records1 = SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        Records1 = SHBE_Records1.getRecords(Env.HOOME);
         HashMap<SHBE_ID, SHBE_Record> Records0;
         Records0 = null;
 //        HashMap<SHBE_ID, SHBE_Record> cRecords;
@@ -3449,9 +3449,9 @@ public class DW_TenancyChangesUO extends DW_Object {
             YM31 = SHBE_Handler.getYM3(SHBEFilename1);
             year1 = SHBE_Handler.getYear(SHBEFilename1);
             month1 = SHBE_Handler.getMonthNumber(SHBEFilename1);
-            SHBE_Records1 = Env.getSHBE_Data().getSHBE_Records(YM31);
+            SHBE_Records1 = Env.getSHBE_Data().getRecords(YM31, Env.HOOME);
             //cRecords = Records0;
-            Records1 = SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME);
+            Records1 = SHBE_Records1.getRecords(Env.HOOME);
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             RSLUOSet1 = RSLUOSets.get(YM31);
             header += Strings.special_commaSpace + YM31;

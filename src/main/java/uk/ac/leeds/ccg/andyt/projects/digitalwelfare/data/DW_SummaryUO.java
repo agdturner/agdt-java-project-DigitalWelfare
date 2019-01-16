@@ -3432,8 +3432,8 @@ public class DW_SummaryUO extends DW_Summary {
             if (CouncilUOSet1 != null) {
                 RSLUOSet1 = RSLUOSets.get(YM31);
                 Env.logO("Load " + YM31, true);
-                SHBE_Records1 = SHBE_Data.getSHBE_Records(YM31);
-                Records1 = SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME);
+                SHBE_Records1 = SHBE_Data.getRecords(YM31, Env.HOOME);
+                Records1 = SHBE_Records1.getRecords(Env.HOOME);
                 initFirst = true;
             }
         }
@@ -3496,8 +3496,8 @@ public class DW_SummaryUO extends DW_Summary {
             RSLUOSet1 = RSLUOSets.get(YM31);
             // Load next data
             Env.logO("Load " + YM31, true);
-            SHBE_Records1 = SHBE_Data.getSHBE_Records(YM31);
-            Records1 = SHBE_Records1.getClaimIDToSHBE_RecordMap(Env.HOOME);
+            SHBE_Records1 = SHBE_Data.getRecords(YM31, Env.HOOME);
+            Records1 = SHBE_Records1.getRecords(Env.HOOME);
             // doPartSummaryCompare2Times
             doPartSummaryCompare2Times(
                     Group,
@@ -3713,7 +3713,7 @@ public class DW_SummaryUO extends DW_Summary {
         addToSummary(summary, LoadSummary);
         DW_UO_SetCouncilMap = CouncilUOSet.getMap();
         DW_UO_SetRSLMap = RSLUOSet.getMap();
-        Records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        Records = SHBE_Records.getRecords(Env.HOOME);
         // Loop over Council
         CouncilLinkedRecordCount1 = doCouncilSingleTimeLoopOverSet(
                 DW_UO_SetCouncilMap, Records);

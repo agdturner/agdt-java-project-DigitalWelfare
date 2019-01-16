@@ -370,8 +370,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
      * @return True iff claimantNINO1 is in tIDIndexes in any index from 0 to i
      * - 1.
      */
-    private boolean getHasClaimantBeenSeenBefore(SHBE_ID ID, int i, 
-            ArrayList<Integer> include, 
+    private boolean getHasClaimantBeenSeenBefore(SHBE_ID ID, int i,
+            ArrayList<Integer> include,
             ArrayList<ArrayList<SHBE_ID>> tIDIndexes) {
         boolean result = false;
         Iterator<Integer> iteInclude;
@@ -527,8 +527,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     }
 
     protected HashMap<SHBE_ID, Integer> loadClaimIDToTTLookup(
-            ONSPD_YM3 YM3,
-            Integer key,
+            ONSPD_YM3 YM3, Integer key,
             HashMap<Integer, HashMap<SHBE_ID, Integer>> ClaimIDToTTLookups) {
         HashMap<SHBE_ID, Integer> result;
         if (ClaimIDToTTLookups.containsKey(key)) {
@@ -536,16 +535,15 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         }
         result = new HashMap<>();
         SHBE_Records SHBE_Records;
-        SHBE_Records = SHBE_Data.getSHBE_Records(YM3);
+        SHBE_Records = SHBE_Data.getRecords(YM3, Env.HOOME);
         HashMap<SHBE_ID, SHBE_Record> records;
-        records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        records = SHBE_Records.getRecords(Env.HOOME);
         Iterator<SHBE_ID> ite;
         ite = records.keySet().iterator();
         SHBE_ID ClaimID;
         while (ite.hasNext()) {
             ClaimID = ite.next();
-            result.put(
-                    ClaimID,
+            result.put(ClaimID,
                     records.get(ClaimID).getDRecord().getTenancyType());
         }
         ClaimIDToTTLookups.put(key, result);
@@ -553,14 +551,13 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     }
 
     protected HashMap<SHBE_ID, ONSPD_ID> loadClaimIDToPostcodeIDLookup(
-            ONSPD_YM3 YM3,
-            Integer key,
+            ONSPD_YM3 YM3, Integer key,
             HashMap<Integer, HashMap<SHBE_ID, ONSPD_ID>> ClaimIDToPostcodeIDLookups) {
         HashMap<SHBE_ID, ONSPD_ID> r;
         if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
             return ClaimIDToPostcodeIDLookups.get(key);
         }
-        r = Env.getSHBE_Data().getSHBE_Records(YM3).getClaimIDToPostcodeIDLookup(Env.HOOME);
+        r = Env.getSHBE_Data().getRecords(YM3, Env.HOOME).getClaimIDToPostcodeIDLookup(Env.HOOME);
         ClaimIDToPostcodeIDLookups.put(key, r);
         return r;
     }
@@ -573,14 +570,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             boolean reportTenancyTransitionBreaks) {
         if (transitions.size() > 0) {
             File dirOut2;
-            dirOut2 = new File(
-                    dirOut,
-                    dirname);
+            dirOut2 = new File(dirOut, dirname);
             dirOut2.mkdir();
             PrintWriter pw;
-            pw = getFrequencyPrintWriter(
-                    dirOut2,
-                    name,
+            pw = getFrequencyPrintWriter(dirOut2, name,
                     reportTenancyTransitionBreaks);
             pw.println("Count, Type");
             Iterator<String> ite2;
@@ -648,14 +641,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
      * @param distanceTypes
      * @param distances
      */
-    public void aggregateClaims(
-            boolean doUnderOccupied,
-            boolean doCouncil,
-            boolean doRSL,
-            DW_UO_Data DW_UO_Data,
+    public void aggregateClaims(boolean doUnderOccupied, boolean doCouncil, 
+            boolean doRSL,            DW_UO_Data DW_UO_Data,
             TreeMap<String, TreeMap<String, String>> lookupsFromPostcodeToLevelCode,
-            String[] SHBEFilenames,
-            String aPT,
+            String[] SHBEFilenames,            String aPT,
             ArrayList<String> claimantTypes,
             TreeMap<String, ArrayList<String>> TTGroups,
             ArrayList<String> TTsGrouped,
@@ -705,7 +694,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             ONSPD_YM3 YM30;
             YM30 = SHBE_Handler.getYM3(SHBEFilenames[i]);
             SHBE_Records recs0;
-            recs0 = Env.getSHBE_Data().getSHBE_Records(YM30);
+            recs0 = Env.getSHBE_Data().getRecords(YM30, Env.HOOME);
             ONSPD_YM3 YM30v;
             YM30v = recs0.getNearestYM3ForONSPDLookup();
             HashMap<SHBE_ID, SHBE_Record> records0;
@@ -794,7 +783,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 claimantTypeTenureLevelTypeAreaCounts.put(claimantType, TTLevelTypeAreaCounts);
                 claimantTypeTenureLevelTypeTenureCounts.put(claimantType, TTLevelTypeTenureCounts);
             }
-            records0 = recs0.getClaimIDToSHBE_RecordMap(Env.HOOME);
+            records0 = recs0.getRecords(Env.HOOME);
 
             // Init underOccupiedSets
             DW_UO_Set councilUOSet0 = null;
@@ -958,7 +947,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 ONSPD_YM3 YM31 = SHBE_Handler.getYM3(SHBEFilenames[i]);
                 // Load next data
                 SHBE_Records recs1;
-                recs1 = Env.getSHBE_Data().getSHBE_Records(YM31);
+                recs1 = Env.getSHBE_Data().getRecords(YM31, Env.HOOME);
                 HashMap<SHBE_ID, String> ClaimIDToPostcodeIDLookup1;
                 ClaimIDToPostcodeIDLookup1 = null;//recs1.getClaimSHBE_IDToPostcodeLookup();
                 HashMap<SHBE_ID, Integer> ClaimIDToTTLookup1;
@@ -1003,7 +992,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 }
                 //records0 = (TreeMap<String, SHBE_Record>) SHBEData0[0];
                 HashMap<SHBE_ID, SHBE_Record> records1;
-                records1 = recs1.getClaimIDToSHBE_RecordMap(Env.HOOME);
+                records1 = recs1.getRecords(Env.HOOME);
                 /* Initialise A:
                  * output directories;
                  * claimantTypeTenureLevelTypeDirs;

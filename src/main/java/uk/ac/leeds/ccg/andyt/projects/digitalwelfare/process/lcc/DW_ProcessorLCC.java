@@ -67,8 +67,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
     public static void main(String[] args) {
         try {
             if (args.length != 2) {
-                System.err.println(
-                        "Expected an argument which is the location "
+                System.err.println("Expected an argument which is the location "
                         + "of the directory containing the input data. "
                         + "Aborting.");
                 System.exit(0);
@@ -111,8 +110,8 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
          * in that some parts have to have been run before others will produce 
          * results as expected/desired.
          */
-        RunAllFromScratch = true;
-//        RunAllFromScratch = false;
+//        RunAllFromScratch = true;
+        RunAllFromScratch = false;
 //        RunAllFromUpdate = false;
         if (!RunAllFromScratch) {
             if (!RunAllFromUpdate) {
@@ -121,37 +120,37 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 ////                doLoadNewONSPDFromSource = true;
 //                doLoadAllSHBEFromSource = true;
 ////                doLoadNewSHBEFromSource = true;
-////                doLoadSHBE = true;
+                doLoadSHBE = true;
 ////                doPostcodeCheckLatest = true;
 ////                doPostcodeCheck = true;
 //                doLoadUnderOccupancyFromSource = true;
-////                doLoadUnderOccupancy = true;
-//                doLCCSummary = true;
-//                doRentArrears = true;
-////                doRentArrearsNewData = true;
-//                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
-//                doLCCHBGeneralAggregateStatistics = true;
-//                doLCCTTAndPT = true;
-//                if (doLCCTTAndPT) {
-//                    doLCCTTAndPTAll = true; // Runtime 13:23:08.458s
-//                    /**
-//                     * If doLCCTTAndPTAll = false then choose bits otherwise run
-//                     * for all combinations.
-//                     */
-////                    doLCCTTAndPTAll = false;
-////                    LCCTTAndPT_DoGrouped = true;
-////                    LCCTTAndPT_DoPostcodeChanges = true;
-//////                    LCCTTAndPT_DoPostcodeChanges = false;
-////                    LCCTTAndPT_DoAnyTenancyChanges = true;
-//////                    LCCTTAndPT_DoAnyTenancyChanges = false;
-////                    LCCTTAndPT_DoTenancyChanges = true;
-//////                    LCCTTAndPT_DoTenancyChanges = false;
-////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
-//////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = false;
-//                }
-//                doChoroplethMapping = true;
-//                doLineMaps = true;
-//                doReports = true;
+                doLoadUnderOccupancy = true;
+                doLCCSummary = true;
+                doRentArrears = true;
+//                doRentArrearsNewData = true;
+                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+                doLCCHBGeneralAggregateStatistics = true;
+                doLCCTTAndPT = true;
+                if (doLCCTTAndPT) {
+                    doLCCTTAndPTAll = true; // Runtime 13:23:08.458s
+                    /**
+                     * If doLCCTTAndPTAll = false then choose bits otherwise run
+                     * for all combinations.
+                     */
+//                    doLCCTTAndPTAll = false;
+//                    LCCTTAndPT_DoGrouped = true;
+//                    LCCTTAndPT_DoPostcodeChanges = true;
+////                    LCCTTAndPT_DoPostcodeChanges = false;
+//                    LCCTTAndPT_DoAnyTenancyChanges = true;
+////                    LCCTTAndPT_DoAnyTenancyChanges = false;
+//                    LCCTTAndPT_DoTenancyChanges = true;
+////                    LCCTTAndPT_DoTenancyChanges = false;
+//                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
+////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = false;
+                }
+                doChoroplethMapping = true;
+                doLineMaps = true;
+                doReports = true;
                 doLineGraphs = true;
                 if (doLineGraphs) {
                     doLineGraphTenancyTypeTransitions = true;
@@ -200,9 +199,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
     }
 
     /**
-     * 
+     *
      * @param range The number of directories or files in any archives.
-     * @throws Exception 
+     * @throws Exception
      */
     private void process(int range) throws Exception {
         String processName;
@@ -237,7 +236,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLoadAllSHBEFromSource) {
             // Set up logging
             processName = "LoadAllSHBEFromSource";
-            File logDir = initLogs(                    Env.DEBUG_Level,                    processName,                    range);
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
             Env.setSHBE_Handler(SHBE_Handler);
@@ -252,7 +251,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLoadNewSHBEFromSource) {
             // Set up logging
             processName = "LoadNewSHBEFromSource";
-            File logDir = initLogs(                    Env.DEBUG_Level,                    processName,                    range);
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
             Env.setSHBE_Handler(SHBE_Handler);
@@ -267,7 +266,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doPostcodeCheck) {
             // Set up logging
             processName = "PostcodeCheck";
-            File logDir = initLogs(                    Env.DEBUG_Level,                    processName,                    range);
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
             Env.setSHBE_Handler(SHBE_Handler);
@@ -282,7 +281,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doPostcodeCheckLatest) {
             // Set up logging
             processName = "PostcodeCheckLatest";
-            File logDir = initLogs(                    Env.DEBUG_Level,                    processName,                    range);
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
             Env.setSHBE_Handler(SHBE_Handler);
@@ -299,7 +298,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLoadSHBE) {
             // Set up logging
             processName = "LoadSHBE";
-            File logDir = initLogs(                    Env.DEBUG_Level,                    processName,                    range);
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             SHBE_Data = Env.getSHBE_Data();
             HashMap<ONSPD_YM3, SHBE_Records> Data;
@@ -314,7 +313,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 YM3 = SHBE_Handler.getYM3(SHBEFilename);
                 try {
                     SHBE_Records DW_SHBE_Records;
-                    DW_SHBE_Records = new SHBE_Records(                            Env.SHBE_Env,                            YM3);
+                    DW_SHBE_Records = new SHBE_Records(Env.SHBE_Env, YM3);
                     Env.checkAndMaybeFreeMemory();
                     Data.put(YM3, DW_SHBE_Records);
                     Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
@@ -347,6 +346,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLoadUnderOccupancyFromSource) {
             // Set up logging
             processName = "LoadUnderOccupancyFromSource";
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             boolean loadFromSource;
             loadFromSource = true;
@@ -358,6 +358,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLoadUnderOccupancy) {
             // Set up logging
             processName = "LoadUnderOccupancy";
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             boolean loadFromSource;
             loadFromSource = false;
@@ -369,6 +370,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLCCSummary) {
             // Set up logging
             processName = "LCCSummary";
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             DW_ProcessorLCCSummary p;
             p = new DW_ProcessorLCCSummary(Env);
@@ -380,6 +382,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doRentArrears) {
             // Set up logging
             processName = "RentArrears";
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             DW_ProcessorLCCRentArrears p;
             p = new DW_ProcessorLCCRentArrears(Env);
@@ -391,6 +394,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLCCHBGeneralAggregateStatistics) {
             // Set up logging
             processName = "LCCHBGeneralAggregateStatistics";
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             DW_ProcessorLCCHBGeneralAggregateStatistics p;
             p = new DW_ProcessorLCCHBGeneralAggregateStatistics(Env);
@@ -402,6 +406,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLCCTenancyChangesUO) {
             // Set up logging
             processName = "LCCTenancyChangesUO";
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             DW_ProcessorLCCTenancyChangesUO p;
             p = new DW_ProcessorLCCTenancyChangesUO(Env);
@@ -413,6 +418,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLCCTTAndPT) {
             // Set up logging
             processName = "LCCTTAndPT";
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             DW_ProcessorLCCTTAndPT p;
             p = new DW_ProcessorLCCTTAndPT(Env);
@@ -427,17 +433,17 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 //            System.exit(0);
 ////            // </DEBUG skip to a particular output creation>
 ////
-            if (doLCCTTAndPTAll) {                
+            if (doLCCTTAndPTAll) {
                 LCCTTAndPT_DoGrouped = true;
                 LCCTTAndPT_DoPostcodeChanges = true;
                 LCCTTAndPT_DoAnyTenancyChanges = true;
                 LCCTTAndPT_DoTenancyChanges = true;
                 LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
-                                p.run(LCCTTAndPT_DoGrouped,
-                                        LCCTTAndPT_DoPostcodeChanges,
-                                        LCCTTAndPT_DoAnyTenancyChanges,
-                                        LCCTTAndPT_DoTenancyChanges,
-                                        LCCTTAndPT_DoTenancyAndPostcodeChanges);
+                p.run(LCCTTAndPT_DoGrouped,
+                        LCCTTAndPT_DoPostcodeChanges,
+                        LCCTTAndPT_DoAnyTenancyChanges,
+                        LCCTTAndPT_DoTenancyChanges,
+                        LCCTTAndPT_DoTenancyAndPostcodeChanges);
             } else {
                 // For debugging
                 p.run(LCCTTAndPT_DoGrouped,
@@ -453,6 +459,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doChoroplethMapping) {
             // Set up logging
             processName = "ChoroplethMapping";
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             DW_ChoroplethMapsLCC p;
             p = new DW_ChoroplethMapsLCC(Env);
@@ -464,6 +471,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLineMaps) {
             // Set up logging
             processName = "LineMaps";
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             DW_LineMapsLCC p;
             p = new DW_LineMapsLCC(Env);
@@ -481,6 +489,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doReports) {
             // Set up logging
             processName = "Reports";
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             DW_Report p;
             p = new DW_Report(Env);
@@ -492,6 +501,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLineGraphs) {
             // Set up logging
             processName = "LineGraphs";
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             DW_LineGraph p;
             p = new DW_LineGraph(Env);
@@ -505,6 +515,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doDensityMaps) {
             // Set up logging
             processName = "DensityMaps";
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             DW_DensityMapsLCC p;
             p = new DW_DensityMapsLCC(Env);
@@ -516,6 +527,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLineDensityMaps) {
             // Set up logging
             processName = "LineDensityMaps";
+            File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
             DW_LineDensityMaps_LCC p;
             p = new DW_LineDensityMaps_LCC(Env);

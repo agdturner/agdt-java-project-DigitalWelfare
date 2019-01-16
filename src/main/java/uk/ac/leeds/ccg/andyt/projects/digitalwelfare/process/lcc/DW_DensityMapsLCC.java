@@ -302,7 +302,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             } else {
                 int debug = 1;
             }
-            denominatorFile = new File(                    dirIn,
+            denominatorFile = new File(dirIn,
                     "2013_Apr/Density2013_Apr_554_ncols_680_cellsize_50.0.asc");
             denominator1 = (Grids_GridDouble) f.create(dir, denominatorFile);
             System.out.println(denominator1.toString());
@@ -747,7 +747,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         while (inPaymentTypesIte.hasNext()) {
             String inPaymentType;
             inPaymentType = inPaymentTypesIte.next();
-            File dirOut2 = new File(                    dirOut,                    inPaymentType);
+            File dirOut2 = new File(dirOut, inPaymentType);
             boolean doUnderOccupied;
 //            doUnderOccupied = true;
 //            doUnderOccupied = false;
@@ -960,22 +960,16 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //            }
 //        }
 //    }
-    public void run(
-            String inPaymentType,
+    public void run(String inPaymentType,
             TreeMap<String, ArrayList<String>> tenancyTypeGroups,
             //            HashMap<Boolean, TreeMap<String, ArrayList<String>>> tenancyTypeGroups,
             //            HashMap<Boolean, ArrayList<String>> tenancyTypesGrouped,
             //            HashMap<Boolean, ArrayList<String>> regulatedGroups,
             //            HashMap<Boolean, ArrayList<String>> unregulatedGroups,
-            DW_UO_Data DW_UO_Data,
-            boolean doUnderOccupied,
-            boolean doCouncil,
-            boolean doRSL,
-            boolean scaleToFirst,
-            File dirOut,
-            boolean overlaycommunityAreas,
-            String[] SHBEFilenames,
-            SHBE_Handler tSHBE_Handler,
+            DW_UO_Data DW_UO_Data, boolean doUnderOccupied, boolean doCouncil,
+            boolean doRSL, boolean scaleToFirst, File dirOut,
+            boolean overlaycommunityAreas, String[] SHBEFilenames,
+            SHBE_Handler tSHBE_Handler, 
             TreeMap<String, ArrayList<Integer>> includes) throws Exception, Error {
 //        // Declare iterators
 //        Iterator<String> claimantTypesIte;
@@ -1082,7 +1076,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                         }
                     }
                 }
-                recs0 = Env.getSHBE_Data().getSHBE_Records(yM30);
+                recs0 = Env.getSHBE_Data().getRecords(yM30, Env.HOOME);
 //            SHBE_Records SHBEData00;
 //            SHBEData00 = SHBEData0;
                 yM300 = yM30;
@@ -1097,24 +1091,10 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 File dirOut3 = new File(
                         dirOut2,
                         tenancyTypeGroupName);
-                Grids_GridDouble g0 = doDensity(
-                        TTs,
-                        dirOut3,
-                        yM30,
-                        recs0,
-                        DW_UO_Data,
-                        doUnderOccupied,
-                        underOccupiedSetCouncil0,
-                        underOccupiedSetRSL0,
-                        doCouncil,
-                        doRSL,
-                        scaleToFirst);
-//                outputGrid(
-//                        g0,
-//                        dirOut3,
-//                        yM30,
-//                        "Name" + yM30,
-//                        scaleToFirst);
+                Grids_GridDouble g0 = doDensity(TTs, dirOut3, yM30, recs0,
+                        DW_UO_Data, doUnderOccupied, underOccupiedSetCouncil0,
+                        underOccupiedSetRSL0, doCouncil, doRSL, scaleToFirst);
+//                outputGrid( g0, dirOut3, yM30, "Name" + yM30, scaleToFirst);
                 Grids_GridDouble g00 = g0;
                 boolean hasNext = false;
                 while (ite.hasNext()) {
@@ -1126,7 +1106,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //                        i = ite.next();
 //                    }
                     SHBE_Records SHBEData1;
-                    SHBEData1 = SHBE_Data.getSHBE_Records(yM30);
+                    SHBEData1 = SHBE_Data.getRecords(yM30, Env.HOOME);
 
                     ONSPD_YM3 yM31;
                     yM31 = tSHBE_Handler.getYM3(SHBEFilenames[i]);
@@ -1231,7 +1211,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         lookup = lookups.get("Unit").get(Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 
         HashMap<SHBE_ID, SHBE_Record> records;
-        records = SHBEData.getClaimIDToSHBE_RecordMap(Env.HOOME);
+        records = SHBEData.getRecords(Env.HOOME);
 
         boolean nonZero = false;
 

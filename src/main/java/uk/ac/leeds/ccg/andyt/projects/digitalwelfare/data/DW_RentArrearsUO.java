@@ -134,8 +134,8 @@ public final class DW_RentArrearsUO extends DW_Object {
             Env.logO("YM3 " + YM3, true);
             CouncilUOSet = CouncilUOSets.get(YM3);
             if (CouncilUOSet == null) {
-                SHBE_Records = SHBE_Data.getSHBE_Records(YM3);
-                Records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
+                SHBE_Records = SHBE_Data.getRecords(YM3, Env.HOOME);
+                Records = SHBE_Records.getRecords(Env.HOOME);
                 ite = AllCouncilUOClaimIDs.iterator();
                 while (ite.hasNext()) {
                     ClaimID = ite.next();
@@ -160,8 +160,8 @@ public final class DW_RentArrearsUO extends DW_Object {
                 HashMap<SHBE_ID, DW_UO_Record> CouncilUOMap;
                 CouncilUOMap = CouncilUOSet.getMap();
 
-                SHBE_Records = SHBE_Data.getSHBE_Records(YM3);
-                Records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
+                SHBE_Records = SHBE_Data.getRecords(YM3, Env.HOOME);
+                Records = SHBE_Records.getRecords(Env.HOOME);
 
                 ite = AllCouncilUOClaimIDs.iterator();
                 while (ite.hasNext()) {

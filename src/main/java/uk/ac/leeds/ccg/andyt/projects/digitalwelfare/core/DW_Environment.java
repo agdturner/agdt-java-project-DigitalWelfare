@@ -473,8 +473,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         if (UO_Data == null || loadFromSource) {
             UO_Handler = getUO_Handler();
             File f;
-            f = new File(
-                    Files.getGeneratedUnderOccupiedDir(),
+            f = new File(Files.getGeneratedUnderOccupiedDir(),
                     Strings.sDW_UO_Data + Strings.sBinaryFileExtension);
             if (loadFromSource) {
                 UO_Data = UO_Handler.loadUnderOccupiedReportData(loadFromSource);

@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
@@ -46,15 +45,15 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_IncomeAndRentSummary extends SHBE_Handler {
 
-    DW_Environment Env;
-    public DW_Files Files;
-    public DW_Strings Strings;
+    DW_Environment de;
+    public DW_Files df;
+    public DW_Strings ds;
 
     public DW_IncomeAndRentSummary(DW_Environment e) {
         super(e.SHBE_Env);
-        this.Env = e;
-        this.Files = e.Files;
-        this.Strings = e.Strings;
+        this.de = e;
+        this.df = e.Files;
+        this.ds = e.Strings;
     }
 
     /**
@@ -69,72 +68,72 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
      * @param doCouncil
      * @param doRSL
      * @param forceNew
-     * @return HashMap<String, BigDecimal> result where the keys are Strings for
-     * Income and Rent Summary Statistics. An example key is:
-     * SHBE_Strings.sTotal_Income + nameSuffix , where; nameSuffix =
-     * AllOrHBOrCTB + PT. (AllOrHBOrCTB is given by HB_CTB, PT is given by PTs)
+     * @return HashMap<String, BigDecimal> result where the keys are ds for
+ Income and Rent Summary Statistics. An example key is:
+ SHBE_Strings.sTotal_Income + nameSuffix , where; nameSuffix =
+ AllOrHBOrCTB + PT. (AllOrHBOrCTB is given by HB_CTB, PT is given by PTs)
      */
     public HashMap<String, BigDecimal> getIncomeAndRentSummary(
-            SHBE_Records DW_SHBE_Records,
-            ArrayList<String> HB_CTB,
-            ArrayList<String> PTs,
-            ONSPD_YM3 YM30,
-            DW_UO_Set UOReportSetCouncil,
-            DW_UO_Set UOReportSetRSL,
-            boolean doUnderOccupancy,
-            boolean doCouncil,
-            boolean doRSL,
+            SHBE_Records DW_SHBE_Records, ArrayList<String> HB_CTB,
+            ArrayList<String> PTs, ONSPD_YM3 YM30,
+            DW_UO_Set UOReportSetCouncil, DW_UO_Set UOReportSetRSL,
+            boolean doUnderOccupancy, boolean doCouncil, boolean doRSL,
             boolean forceNew) {
-        HashMap<String, BigDecimal> result;
-        result = new HashMap<>();
-        File IncomeAndRentSummaryFile = getIncomeAndRentSummaryFile(
-                YM30,
-                doUnderOccupancy,
-                doCouncil,
-                doRSL);
+
+        // Initialise result
+        HashMap<String, BigDecimal> r;
+        r = new HashMap<>();
+
+        // Initialise IncomeAndRentSummaryFile
+        File IncomeAndRentSummaryFile;
+        IncomeAndRentSummaryFile = getIncomeAndRentSummaryFile(YM30,
+                doUnderOccupancy, doCouncil, doRSL);
         if (IncomeAndRentSummaryFile.exists()) {
             if (!forceNew) {
                 return (HashMap<String, BigDecimal>) Generic_IO.readObject(
                         IncomeAndRentSummaryFile);
             }
         }
-        int nTT = getNumberOfTenancyTypes();
+
+        // Declare other variables
+        int nTT;
         String HBOrCTB;
         String PT;
         String nameSuffix;
         Iterator<String> HB_CTBIte;
-        HB_CTBIte = HB_CTB.iterator();
         Iterator<String> PTsIte;
-
         HashMap<SHBE_ID, SHBE_Record> recs;
-        recs = DW_SHBE_Records.getRecords();
-
         BigDecimal tBD;
         BigDecimal zBD;
-
-        BigDecimal TotalIncome = null;
-        long TotalCount_IncomeNonZero = 0;
-        long TotalCount_IncomeZero = 0;
-        BigDecimal TotalWeeklyEligibleRentAmount = null;
-        long TotalCount_WeeklyEligibleRentAmountNonZero = 0;
-        long TotalCount_WeeklyEligibleRentAmountZero = 0;
-        BigDecimal[] TotalIncomeTT = null;
-        long[] TotalCount_IncomeTTNonZero = null;
-        long[] TotalCount_IncomeTTZero = null;
-        BigDecimal[] TotalTTWeeklyEligibleRentAmount = null;
-        int[] TotalCount_TTWeeklyEligibleRentAmountNonZero = null;
-        int[] TotalCount_TTWeeklyEligibleRentAmountZero = null;
+        BigDecimal TotalIncome;
+        long TotalCount_IncomeNonZero;
+        long TotalCount_IncomeZero;
+        BigDecimal TotalWeeklyEligibleRentAmount;
+        long TotalCount_WeeklyEligibleRentAmountNonZero;
+        long TotalCount_WeeklyEligibleRentAmountZero;
+        BigDecimal[] TotalIncomeTT;
+        long[] TotalCount_IncomeTTNonZero;
+        long[] TotalCount_IncomeTTZero;
+        BigDecimal[] TotalTTWeeklyEligibleRentAmount;
+        int[] TotalCount_TTWeeklyEligibleRentAmountNonZero;
+        int[] TotalCount_TTWeeklyEligibleRentAmountZero;
         Iterator<SHBE_ID> ite;
         HashMap<SHBE_ID, DW_UO_Record> map;
         SHBE_ID ClaimID;
         int TT;
         BigDecimal income;
 
+        // Initialise some variables
+        nTT = getNumberOfTenancyTypes();
+        HB_CTBIte = HB_CTB.iterator();
+        recs = DW_SHBE_Records.getRecords(de.HOOME);
+
+        // Do loop for HB and CTB
         while (HB_CTBIte.hasNext()) {
             HBOrCTB = HB_CTBIte.next();
             HashSet<SHBE_ID> ClaimIDs;
 
-            // Initialise
+            // Initialise variables
             TotalCount_IncomeNonZero = 0;
             TotalIncome = BigDecimal.ZERO;
             TotalCount_IncomeZero = 0;
@@ -156,9 +155,11 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                 TotalCount_TTWeeklyEligibleRentAmountZero[i] = 0;
             }
             PTsIte = PTs.iterator();
+
+            // Do loop for Payment Types
             while (PTsIte.hasNext()) {
                 PT = PTsIte.next();
-                if (HBOrCTB.equalsIgnoreCase(Strings.sHB)) {
+                if (HBOrCTB.equalsIgnoreCase(ds.sHB)) {
                     ClaimIDs = getClaimIDsWithStatusOfHBAtExtractDate(DW_SHBE_Records, PT);
                 } else {
                     ClaimIDs = getClaimIDsWithStatusOfCTBAtExtractDate(DW_SHBE_Records, PT);
@@ -183,7 +184,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                                     aDRecord = rec.getDRecord();
                                     TT = aDRecord.getTenancyType();
                                     income = BigDecimal.valueOf(getClaimantsAndPartnersIncomeTotal(aDRecord));
-                                    if (HBOrCTB.equalsIgnoreCase(Strings.sHB)) {
+                                    if (HBOrCTB.equalsIgnoreCase(ds.sHB)) {
                                         // HB
                                         if (isHBClaim(TT)) {
                                             TotalIncome = TotalIncome.add(income);
@@ -245,7 +246,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                                     aDRecord = rec.getDRecord();
                                     TT = aDRecord.getTenancyType();
                                     income = BigDecimal.valueOf(getClaimantsAndPartnersIncomeTotal(aDRecord));
-                                    if (HBOrCTB.equalsIgnoreCase(Strings.sHB)) {
+                                    if (HBOrCTB.equalsIgnoreCase(ds.sHB)) {
                                         // HB
                                         if (isHBClaim(TT)) {
                                             TotalIncome = TotalIncome.add(income);
@@ -307,7 +308,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                         aDRecord = rec.getDRecord();
                         TT = aDRecord.getTenancyType();
                         income = BigDecimal.valueOf(getClaimantsAndPartnersIncomeTotal(aDRecord));
-                        if (HBOrCTB.equalsIgnoreCase(Strings.sHB)) {
+                        if (HBOrCTB.equalsIgnoreCase(ds.sHB)) {
                             // HB
                             if (isHBClaim(TT)) {
                                 TotalIncome = TotalIncome.add(income);
@@ -359,81 +360,69 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                 nameSuffix = HBOrCTB + PT;
                 tBD = BigDecimal.valueOf(TotalCount_IncomeNonZero);
                 zBD = BigDecimal.valueOf(TotalCount_IncomeZero);
-                result.put(Strings.sTotal_Income + nameSuffix, TotalIncome);
-                result.put(Strings.sTotalCount_IncomeNonZero + nameSuffix, tBD);
-                result.put(Strings.sTotalCount_IncomeZero + nameSuffix, zBD);
+                r.put(ds.sTotal_Income + nameSuffix, TotalIncome);
+                r.put(ds.sTotalCount_IncomeNonZero + nameSuffix, tBD);
+                r.put(ds.sTotalCount_IncomeZero + nameSuffix, zBD);
                 if (tBD.compareTo(BigDecimal.ZERO) == 1) {
-                    result.put(Strings.SHBE_Strings.sAverage_NonZero_Income + nameSuffix,
+                    r.put(ds.SHBE_Strings.sAverage_NonZero_Income + nameSuffix,
                             Generic_BigDecimal.divideRoundIfNecessary(
-                                    TotalIncome, tBD,
-                                    2, RoundingMode.HALF_UP));
+                                    TotalIncome, tBD, 2, RoundingMode.HALF_UP));
                 } else {
-                    result.put(Strings.SHBE_Strings.sAverage_NonZero_Income + nameSuffix,
-                            BigDecimal.ZERO);
+                    r.put(ds.SHBE_Strings.sAverage_NonZero_Income + nameSuffix, BigDecimal.ZERO);
                 }
-                tBD = BigDecimal.valueOf(
-                        TotalCount_WeeklyEligibleRentAmountNonZero);
-                zBD = BigDecimal.valueOf(
-                        TotalCount_WeeklyEligibleRentAmountZero);
-                result.put(Strings.sTotal_WeeklyEligibleRentAmount + nameSuffix,
+                tBD = BigDecimal.valueOf(TotalCount_WeeklyEligibleRentAmountNonZero);
+                zBD = BigDecimal.valueOf(TotalCount_WeeklyEligibleRentAmountZero);
+                r.put(ds.sTotal_WeeklyEligibleRentAmount + nameSuffix,
                         TotalWeeklyEligibleRentAmount);
-                result.put(Strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix,
-                        tBD);
-                result.put(Strings.sTotalCount_WeeklyEligibleRentAmountZero + nameSuffix,
-                        zBD);
+                r.put(ds.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix, tBD);
+                r.put(ds.sTotalCount_WeeklyEligibleRentAmountZero + nameSuffix, zBD);
                 if (tBD.compareTo(BigDecimal.ZERO) == 1) {
-                    result.put(Strings.SHBE_Strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix,
+                    r.put(ds.SHBE_Strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix,
                             Generic_BigDecimal.divideRoundIfNecessary(
                                     TotalWeeklyEligibleRentAmount,
-                                    tBD,
-                                    2, RoundingMode.HALF_UP));
+                                    tBD, 2, RoundingMode.HALF_UP));
                 }
                 for (int i = 0; i < nTT; i++) {
                     // Income
-                    result.put(Strings.sTotal_IncomeTT[i] + nameSuffix,
+                    r.put(ds.sTotal_IncomeTT[i] + nameSuffix,
                             TotalIncomeTT[i]);
                     tBD = BigDecimal.valueOf(
                             TotalCount_IncomeTTNonZero[i]);
                     zBD = BigDecimal.valueOf(
                             TotalCount_IncomeTTZero[i]);
-                    result.put(Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix, tBD);
-                    result.put(Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix, zBD);
+                    r.put(ds.sTotalCount_IncomeNonZeroTT[i] + nameSuffix, tBD);
+                    r.put(ds.sTotalCount_IncomeZeroTT[i] + nameSuffix, zBD);
                     if (tBD.compareTo(BigDecimal.ZERO) == 1) {
-                        result.put(Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix,
+                        r.put(ds.sAverage_NonZero_IncomeTT[i] + nameSuffix,
                                 Generic_BigDecimal.divideRoundIfNecessary(
                                         TotalIncomeTT[i],
-                                        tBD,
-                                        2, RoundingMode.HALF_UP));
+                                        tBD, 2, RoundingMode.HALF_UP));
                     } else {
-                        result.put(Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix,
-                                BigDecimal.ZERO);
+                        r.put(ds.sAverage_NonZero_IncomeTT[i] + nameSuffix, BigDecimal.ZERO);
                     }
                     // Rent
-                    result.put(Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix,
+                    r.put(ds.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix,
                             TotalTTWeeklyEligibleRentAmount[i]);
                     tBD = BigDecimal.valueOf(
                             TotalCount_TTWeeklyEligibleRentAmountNonZero[i]);
                     zBD = BigDecimal.valueOf(
                             TotalCount_TTWeeklyEligibleRentAmountZero[i]);
-                    result.put(Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix,
-                            tBD);
-                    result.put(Strings.sTotalCount_WeeklyEligibleRentAmountZeroTT[i] + nameSuffix,
-                            zBD);
+                    r.put(ds.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix, tBD);
+                    r.put(ds.sTotalCount_WeeklyEligibleRentAmountZeroTT[i] + nameSuffix, zBD);
                     if (tBD.compareTo(BigDecimal.ZERO) == 1) {
-                        result.put(Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix,
+                        r.put(ds.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix,
                                 Generic_BigDecimal.divideRoundIfNecessary(
                                         TotalTTWeeklyEligibleRentAmount[i],
-                                        tBD,
-                                        2, RoundingMode.HALF_UP));
+                                        tBD, 2, RoundingMode.HALF_UP));
                     } else {
-                        result.put(Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix,
+                        r.put(ds.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix,
                                 BigDecimal.ZERO);
                     }
                 }
             }
         }
-        Generic_IO.writeObject(result, IncomeAndRentSummaryFile);
-        return result;
+        Generic_IO.writeObject(r, IncomeAndRentSummaryFile);
+        return r;
     }
 
     /**
@@ -443,50 +432,45 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
      * @param doRSL
      * @return
      */
-    public File getIncomeAndRentSummaryFile(
-            //String PT,
-            ONSPD_YM3 YM3,
-            boolean doUnderOccupancy,
-            boolean doCouncil,
-            boolean doRSL
-    ) {
+    public File getIncomeAndRentSummaryFile(ONSPD_YM3 YM3, boolean doUnderOccupancy,
+            boolean doCouncil, boolean doRSL) {
         File result;
         String partFilename;
         if (doUnderOccupancy) {
             if (doCouncil) {
                 if (doRSL) {
                     //partFilename = "IncomeAndRentSummaryUA_HashMap_String__BigDecimal.dat";
-                    partFilename = Strings.sIncomeAndRentSummary
-                            + Strings.sU + Strings.s_A + Strings.symbol_underscore
-                            + Strings.s_HashMap + Strings.symbol_underscore
-                            + Strings.s_String + Strings.symbol_underscore + Strings.symbol_underscore
-                            + Strings.s_BigDecimal + Strings.sBinaryFileExtension;
+                    partFilename = ds.sIncomeAndRentSummary
+                            + ds.sU + ds.s_A + ds.symbol_underscore
+                            + ds.s_HashMap + ds.symbol_underscore
+                            + ds.s_String + ds.symbol_underscore + ds.symbol_underscore
+                            + ds.s_BigDecimal + ds.sBinaryFileExtension;
                 } else {
                     //partFilename = "IncomeAndRentSummaryUC_HashMap_String__BigDecimal.dat";
-                    partFilename = Strings.sIncomeAndRentSummary
-                            + Strings.sU + Strings.sCouncil + Strings.symbol_underscore
-                            + Strings.s_HashMap + Strings.symbol_underscore
-                            + Strings.s_String + Strings.symbol_underscore + Strings.symbol_underscore
-                            + Strings.s_BigDecimal + Strings.sBinaryFileExtension;
+                    partFilename = ds.sIncomeAndRentSummary
+                            + ds.sU + ds.sCouncil + ds.symbol_underscore
+                            + ds.s_HashMap + ds.symbol_underscore
+                            + ds.s_String + ds.symbol_underscore + ds.symbol_underscore
+                            + ds.s_BigDecimal + ds.sBinaryFileExtension;
                 }
             } else {
                 //partFilename = "IncomeAndRentSummaryUR_HashMap_String__BigDecimal.dat";
-                partFilename = Strings.sIncomeAndRentSummary
-                        + Strings.sU + Strings.sRSL + Strings.symbol_underscore
-                        + Strings.s_HashMap + Strings.symbol_underscore
-                        + Strings.s_String + Strings.symbol_underscore + Strings.symbol_underscore
-                        + Strings.s_BigDecimal + Strings.sBinaryFileExtension;
+                partFilename = ds.sIncomeAndRentSummary
+                        + ds.sU + ds.sRSL + ds.symbol_underscore
+                        + ds.s_HashMap + ds.symbol_underscore
+                        + ds.s_String + ds.symbol_underscore + ds.symbol_underscore
+                        + ds.s_BigDecimal + ds.sBinaryFileExtension;
             }
         } else {
             //partFilename = "IncomeAndRentSummary_HashMap_String__BigDecimal.dat";
-            partFilename = Strings.sIncomeAndRentSummary
-                    + Strings.s_HashMap + Strings.symbol_underscore
-                    + Strings.s_String + Strings.symbol_underscore + Strings.symbol_underscore
-                    + Strings.s_BigDecimal + Strings.sBinaryFileExtension;
+            partFilename = ds.sIncomeAndRentSummary
+                    + ds.s_HashMap + ds.symbol_underscore
+                    + ds.s_String + ds.symbol_underscore + ds.symbol_underscore
+                    + ds.s_BigDecimal + ds.sBinaryFileExtension;
         }
         File dir;
-        dir = new File(Files.getGeneratedSHBEDir(), YM3.toString());
-        dir = Files.getUODir(dir, doUnderOccupancy, doCouncil);
+        dir = new File(df.getGeneratedSHBEDir(), YM3.toString());
+        dir = df.getUODir(dir, doUnderOccupancy, doCouncil);
         dir.mkdirs();
         result = new File(dir, partFilename);
         return result;

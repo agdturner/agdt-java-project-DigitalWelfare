@@ -66,10 +66,10 @@ public class DW_Processor extends DW_ProcessorAbstract {
         } catch (Exception | Error e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace(System.err);
-//            StackTraceElement[] stes = e.getStackTrace();
-//            for (StackTraceElement ste : stes) {
-//                System.err.println(ste.toString());
-//            }
+            StackTraceElement[] stes = e.getStackTrace();
+            for (StackTraceElement ste : stes) {
+                System.err.println(ste.toString());
+            }
         }
     }
 

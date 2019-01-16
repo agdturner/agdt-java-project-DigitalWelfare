@@ -438,9 +438,9 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //            for (int j = 0; j < 17; j++) {
 //                YM3 = SHBE_Handler.getYM3(SHBEFilenames[j]);
 //                Env.logO("YM3 " + YM3, true);
-//                SHBE_Records = SHBE_Data.getSHBE_Records(YM3);
+//                SHBE_Records = SHBE_Data.getRecords(YM3);
 //                HashMap<SHBE_ID, SHBE_Record> Records;
-//                Records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
+//                Records = SHBE_Records.getRecords(Env.HOOME);
 //                if (Records.keySet().contains(ClaimID)) {
 //                    SHBECountPriorToApril2013++;
 //                    SHBECount++;
@@ -811,12 +811,12 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     //System.out.println("IndexOfFirstBT " + IndexOfFirstBT);
                     //System.out.println("YM3 " + YM3);
                     //SHBE_Records = AllSHBE.get(YM3);
-                    SHBE_Records = SHBE_Data.getSHBE_Records(YM3);
+                    SHBE_Records = SHBE_Data.getRecords(YM3, Env.HOOME);
                     if (SHBE_Records == null) {
                         Env.logE("AllSHBE.get(YM3) is null!");
                     }
                     HashMap<SHBE_ID, SHBE_Record> Records;
-                    Records = SHBE_Records.getClaimIDToSHBE_RecordMap(Env.HOOME);
+                    Records = SHBE_Records.getRecords(Env.HOOME);
                     if (Records == null) {
                         Env.logE("AllSHBE.get(YM3).getRecords(true) is null!");
                     }

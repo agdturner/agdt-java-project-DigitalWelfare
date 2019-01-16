@@ -30,10 +30,10 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
 
     @Override
     public void run() throws Exception, Error {
-        
+
         HashSet<SHBE_ID> Group;
         Group = new HashSet<>();
-                
+
         boolean doAll;
         boolean doUO;
 
@@ -41,7 +41,7 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
 //        doAll = false;
         doUO = true;
 //        doUO = false;
-        boolean handleOutOfMemoryError = false;
+        boolean hoome = false;
 
         // Declaration
         TreeMap<String, ArrayList<Integer>> includes;
@@ -57,7 +57,10 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
         ArrayList<Integer> include;
         TreeMap<String, HashMap<String, String>> SummaryTableAll;
         TreeMap<String, HashMap<String, String>> SummaryTableUO;
-        String subProcessName;
+        /**
+         * Variable to store a sub-process name.
+         */
+        String sName;
 
         // Initialisation
         includes = SHBE_Handler.getIncludes();
@@ -87,72 +90,34 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
         nPSI = SHBE_Handler.getOneOverMaxValueOfPassportStandardIndicator();
 
         // Processing loop
-//        while (PTsIte.hasNext()) {
-//            PT = PTsIte.next();
-//            Env.logO("<" + PT + ">");
-        Summary = new DW_Summary(
-                Env,
-                nTT,
-                nEG,
-                nPSI,
-                handleOutOfMemoryError);
-        SummaryUO = new DW_SummaryUO(
-                Env,
-                nTT,
-                nEG,
-                nPSI,
-                handleOutOfMemoryError);
+        Summary = new DW_Summary(Env, nTT, nEG, nPSI, hoome);
+        SummaryUO = new DW_SummaryUO(Env, nTT, nEG, nPSI, hoome);
         includesIte = includes.keySet().iterator();
         while (includesIte.hasNext()) {
             includeKey = includesIte.next();
             Env.logO("<" + includeKey + ">", true);
             include = includes.get(includeKey);
             if (doAll) {
-                subProcessName = "Summary";
-                Env.logO("<" + subProcessName + ">", true);
-                SummaryTableAll = Summary.getSummaryTable(
-                        SHBEFilenames,
-                        include,
-                        forceNewSummaries,
-                        HB_CTB,
-                        PTs,
-                        nTT,
-                        nEG,
-                        nPSI,
-                        handleOutOfMemoryError);
-                Summary.writeSummaryTables(
-                        SummaryTableAll,
-                        HB_CTB,
-                        PTs,
-                        includeKey,
-                        nTT, nEG, nPSI);
-                Env.logO("</" + subProcessName + ">", true);
+                sName = "Summary";
+                Env.logO("<" + sName + ">", true);
+                SummaryTableAll = Summary.getSummaryTable(SHBEFilenames,
+                        include, forceNewSummaries, HB_CTB, PTs, nTT, nEG, nPSI,
+                        hoome);
+                Summary.writeSummaryTables(SummaryTableAll, HB_CTB, PTs,
+                        includeKey, nTT, nEG, nPSI);
+                Env.logO("</" + sName + ">", true);
             }
             if (doUO) {
-                subProcessName = "SummaryUO";
-                Env.logO("<" + subProcessName + ">", true);
-                SummaryTableUO = SummaryUO.getSummaryTable(Group,
-                        
-                        SHBEFilenames,
-                        include,
-                        forceNewSummaries,
-                        HB_CTB,
-                        PTs,
-                        nTT,
-                        nEG,
-                        nPSI,
-                        UO_Data,
-                        handleOutOfMemoryError);
-                SummaryUO.writeSummaryTables(
-                        SummaryTableUO,
-                        PTs,
-                        includeKey,
+                sName = "SummaryUO";
+                Env.logO("<" + sName + ">", true);
+                SummaryTableUO = SummaryUO.getSummaryTable(Group, SHBEFilenames,
+                        include, forceNewSummaries, HB_CTB, PTs, nTT, nEG, nPSI,
+                        UO_Data, hoome);
+                SummaryUO.writeSummaryTables(SummaryTableUO, PTs, includeKey,
                         nTT, nEG, nPSI);
-                Env.logO("</" + subProcessName + ">", true);
+                Env.logO("</" + sName + ">", true);
             }
             Env.logO("</" + includeKey + ">", true);
         }
-//            Env.logO("</" + PT + ">");
-//        }
     }
 }
