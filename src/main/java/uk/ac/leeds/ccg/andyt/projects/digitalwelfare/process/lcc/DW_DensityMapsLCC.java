@@ -46,7 +46,6 @@ import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
@@ -71,7 +70,6 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
     protected DW_MapsLCC MapsLCC;
 
     protected Vector_Environment ve;
-    protected SHBE_Data SHBE_Data;
     protected DW_Geotools Geotools;
 
     private static final String targetPropertyNameLSOA = "LSOA11CD";
@@ -84,7 +82,6 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
     public DW_DensityMapsLCC(DW_Environment de) {
         super(de);
         ve = de.getVector_Environment();
-        SHBE_Data = de.getSHBE_Data();
         Geotools = de.getGeotools();
     }
 
@@ -292,7 +289,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 dirOut,
                 "AllPT/UO/All/CommunityAreasOverlaid/MonthlyUO/Social");
         File numeratorFile;
-        File denominatorFile = null;
+        File denominatorFile;
         if (false) {
             numeratorFile = new File(dirIn, "2013_AprMinus2015_Oct.asc");
             dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
@@ -1076,7 +1073,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                         }
                     }
                 }
-                recs0 = Env.getSHBE_Data().getRecords(yM30, Env.HOOME);
+                recs0 = Env.getSHBE_Handler().getRecords(yM30, Env.HOOME);
 //            SHBE_Records SHBEData00;
 //            SHBEData00 = SHBEData0;
                 yM300 = yM30;
@@ -1088,9 +1085,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //                tenancyTypeGroupName = ites.next();
                 ArrayList<String> TTs;
                 TTs = tenancyTypeGroups.get(tenancyTypeGroupName);
-                File dirOut3 = new File(
-                        dirOut2,
-                        tenancyTypeGroupName);
+                File dirOut3 = new File(                        dirOut2,                        tenancyTypeGroupName);
                 Grids_GridDouble g0 = doDensity(TTs, dirOut3, yM30, recs0,
                         DW_UO_Data, doUnderOccupied, underOccupiedSetCouncil0,
                         underOccupiedSetRSL0, doCouncil, doRSL, scaleToFirst);
@@ -1106,7 +1101,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //                        i = ite.next();
 //                    }
                     SHBE_Records SHBEData1;
-                    SHBEData1 = SHBE_Data.getRecords(yM30, Env.HOOME);
+                    SHBEData1 = Env.getSHBE_Handler().getRecords(yM30, Env.HOOME);
 
                     ONSPD_YM3 yM31;
                     yM31 = tSHBE_Handler.getYM3(SHBEFilenames[i]);

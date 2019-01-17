@@ -49,8 +49,8 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         super(env);
         UO_Handler = env.getUO_Handler();
         SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
-        SHBE_Data = env.getSHBE_Data();
-        ClaimIDToClaimRefLookup = SHBE_Data.getClaimIDToClaimRefLookup();
+        SHBE_Handler = env.getSHBE_Handler();
+        ClaimIDToClaimRefLookup = SHBE_Handler.getClaimIDToClaimRefLookup();
         UO_Data = env.getUO_Data();
         SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
     }
@@ -140,7 +140,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                 // Get Lookup
                 ClaimPostcodeF_To_LevelCode_Maps = getClaimPostcodeF_To_LevelCode_Maps(levels, YM3, CensusYear);
                 // Load SHBE
-                SHBE_Records = SHBE_Data.getRecords(YM3, Env.HOOME);
+                SHBE_Records = SHBE_Handler.getRecords(YM3, Env.HOOME);
                 // Load UOdata
                 CouncilUOSet = CouncilUOSets.get(YM3);
                 RSLUOSet = RSLUOSets.get(YM3);
@@ -149,7 +149,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                     RSLUOMap = RSLUOSet.getMap();
                 }
                 ClaimIDToSHBE_RecordMap = SHBE_Records.getRecords(true);
-                //SHBE_Records = Env.getSHBE_Data().getData().get(YM3);
+                //SHBE_Records = Env.getSHBE_Handler().getData().get(YM3);
                 //records0 = SHBE_Records.getDataPTI(Env._HandleOutOfMemoryError_boolean);
                 TreeMap<String, TreeMap<String, int[]>> result;
                 result = new TreeMap<>();

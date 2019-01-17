@@ -1211,8 +1211,8 @@ public class DW_SummaryUO extends DW_Summary {
         summary.put(sTotalCount_RSLPrivateDeregulatedTTsToTT4,
                 Integer.toString(TotalCount_RSLPrivateDeregulatedTTsToTT4));
         // Social
-        d = TotalCount_RSLTTClaimant0[1] + TotalCount_RSLTTClaimant0[4];
-        d = TotalCount_RSLTTClaimant0[1];
+        //d = TotalCount_RSLTTClaimant0[1];
+        //d = TotalCount_RSLTTClaimant0[1] + TotalCount_RSLTTClaimant0[4];
         summary.put(sTotalCount_RSLTT1ToTT4,
                 Integer.toString(TotalCount_RSLTT1ToTT4));
         if (d > 0) {
@@ -3432,7 +3432,7 @@ public class DW_SummaryUO extends DW_Summary {
             if (CouncilUOSet1 != null) {
                 RSLUOSet1 = RSLUOSets.get(YM31);
                 Env.logO("Load " + YM31, true);
-                SHBE_Records1 = SHBE_Data.getRecords(YM31, Env.HOOME);
+                SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
                 Records1 = SHBE_Records1.getRecords(Env.HOOME);
                 initFirst = true;
             }
@@ -3496,7 +3496,7 @@ public class DW_SummaryUO extends DW_Summary {
             RSLUOSet1 = RSLUOSets.get(YM31);
             // Load next data
             Env.logO("Load " + YM31, true);
-            SHBE_Records1 = SHBE_Data.getRecords(YM31, Env.HOOME);
+            SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
             Records1 = SHBE_Records1.getRecords(Env.HOOME);
             // doPartSummaryCompare2Times
             doPartSummaryCompare2Times(

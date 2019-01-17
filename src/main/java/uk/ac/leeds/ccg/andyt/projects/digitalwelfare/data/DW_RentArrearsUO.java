@@ -30,7 +30,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
@@ -48,7 +47,6 @@ public final class DW_RentArrearsUO extends DW_Object {
      * For convenience
      */
     // For convenience.
-    public transient SHBE_Data SHBE_Data;
     public transient SHBE_Handler SHBE_Handler;
     public transient DW_Strings Strings;
     public transient DW_Files Files;
@@ -58,7 +56,6 @@ public final class DW_RentArrearsUO extends DW_Object {
 
     public DW_RentArrearsUO(DW_Environment env) {
         super(env);
-        this.SHBE_Data = env.getSHBE_Data();
         this.SHBE_Handler = env.getSHBE_Handler();
         this.Strings = env.getStrings();
         this.Files = env.getFiles();
@@ -134,7 +131,7 @@ public final class DW_RentArrearsUO extends DW_Object {
             Env.logO("YM3 " + YM3, true);
             CouncilUOSet = CouncilUOSets.get(YM3);
             if (CouncilUOSet == null) {
-                SHBE_Records = SHBE_Data.getRecords(YM3, Env.HOOME);
+                SHBE_Records = SHBE_Handler.getRecords(YM3, Env.HOOME);
                 Records = SHBE_Records.getRecords(Env.HOOME);
                 ite = AllCouncilUOClaimIDs.iterator();
                 while (ite.hasNext()) {
@@ -160,7 +157,7 @@ public final class DW_RentArrearsUO extends DW_Object {
                 HashMap<SHBE_ID, DW_UO_Record> CouncilUOMap;
                 CouncilUOMap = CouncilUOSet.getMap();
 
-                SHBE_Records = SHBE_Data.getRecords(YM3, Env.HOOME);
+                SHBE_Records = SHBE_Handler.getRecords(YM3, Env.HOOME);
                 Records = SHBE_Records.getRecords(Env.HOOME);
 
                 ite = AllCouncilUOClaimIDs.iterator();

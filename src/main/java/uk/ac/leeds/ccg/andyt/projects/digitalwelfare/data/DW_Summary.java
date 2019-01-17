@@ -33,18 +33,15 @@ import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_PersonID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  * A class for summarising SHBE data.
@@ -54,10 +51,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 public class DW_Summary extends DW_Object {
 
     // For convenience.
-    protected SHBE_Data SHBE_Data;
     protected SHBE_Handler SHBE_Handler;
-    protected DW_Strings Strings;
-    protected DW_Files Files;
     protected ONSPD_Postcode_Handler Postcode_Handler;
     protected SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
 
@@ -825,20 +819,12 @@ public class DW_Summary extends DW_Object {
 
     public DW_Summary(DW_Environment env) {
         super(env);
-        this.SHBE_Data = env.getSHBE_Data();
         this.SHBE_Handler = env.getSHBE_Handler();
-        this.Strings = env.getStrings();
-        this.Files = env.getFiles();
         this.Postcode_Handler = env.getPostcode_Handler();
         this.SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
     }
 
-    public DW_Summary(
-            DW_Environment env,
-            int nTT,
-            int nEG,
-            int nPSI,
-            boolean handleOutOfMemoryError) {
+    public DW_Summary(DW_Environment env, int nTT, int nEG, int nPSI, boolean hoome) {
         this(env);
         init(nTT, nEG, nPSI);
     }
@@ -4518,8 +4504,7 @@ public class DW_Summary extends DW_Object {
             if (Record1 != null || Record0 != null) {
                 if (Record1 == null) {
                     if (isCTBOnlyClaim0) {
-                        doCompare2TimesCTBCount(
-                                TT0,
+                        doCompare2TimesCTBCount(                                TT0,
                                 Record0.getPostcodeID(),
                                 Record0.isClaimPostcodeFValidFormat(),
                                 Record0.isClaimPostcodeFMappable(),
@@ -5270,7 +5255,7 @@ public class DW_Summary extends DW_Object {
         YM31 = SHBE_Handler.getYM3(filename1);
         Env.log("Load " + YM31);
 
-        SHBE_Records1 = SHBE_Data.getRecords(YM31, Env.HOOME);
+        SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
 
         ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HOOME);
         ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HOOME);
@@ -5304,7 +5289,7 @@ public class DW_Summary extends DW_Object {
             YM31 = SHBE_Handler.getYM3(filename1);
             // Load next data
             Env.log("Load " + YM31);
-            SHBE_Records1 = SHBE_Data.getRecords(YM31, Env.HOOME);
+            SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
             ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HOOME);
             ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HOOME);
             ClaimIDsWithStatusOfHBAtExtractDateOther1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(Env.HOOME);

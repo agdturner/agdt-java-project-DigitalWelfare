@@ -35,11 +35,9 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_PersonID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_S_Record;
@@ -48,7 +46,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Da
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  *
@@ -59,9 +56,6 @@ public class DW_TenancyChangesUO extends DW_Object {
     /**
      * For convenience;
      */
-    SHBE_Data SHBE_Data;
-    DW_Strings Strings;
-    DW_Files Files;
     SHBE_Handler SHBE_Handler;
     SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
     HashMap<SHBE_ID, String> ClaimIDToClaimRefLookup;
@@ -1253,20 +1247,15 @@ public class DW_TenancyChangesUO extends DW_Object {
         super(env);
     }
 
-    public DW_TenancyChangesUO(
-            DW_Environment env,
-            //String aPT,
-            //HashMap<String, DW_ID> tPostcodeToPostcodeIDLookup,
-            boolean handleOutOfMemoryError) {
+    public DW_TenancyChangesUO(DW_Environment env, boolean hoome) {
         this(env);
-        this.SHBE_Data = env.getSHBE_Data();
         this.Strings = env.getStrings();
         this.Files = env.getFiles();
         this.SHBE_Handler = env.getSHBE_Handler();
         this.SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
         //this.PostcodeToPostcodeIDLookup = tPostcodeToPostcodeIDLookup;
-        this.ClaimIDToClaimRefLookup = SHBE_Data.getClaimIDToClaimRefLookup();
-        this.ClaimRefToClaimIDLookup = SHBE_Data.getClaimRefToClaimIDLookup();
+        this.ClaimIDToClaimRefLookup = SHBE_Handler.getClaimIDToClaimRefLookup();
+        this.ClaimRefToClaimIDLookup = SHBE_Handler.getClaimRefToClaimIDLookup();
         initString();
     }
 
@@ -1340,7 +1329,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             year = SHBE_Handler.getYear(SHBEFilenames[i]);
             month = SHBE_Handler.getMonthNumber(SHBEFilenames[i]);
             yM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
-            SHBE_Records = Env.getSHBE_Data().getRecords(yM3, Env.HOOME);
+            SHBE_Records = SHBE_Handler.getRecords(yM3, Env.HOOME);
             records = SHBE_Records.getRecords(Env.HOOME);
             ite = ClaimIDs.iterator();
             while (ite.hasNext()) {
@@ -1814,8 +1803,8 @@ public class DW_TenancyChangesUO extends DW_Object {
         TreeMap<String, String> TableValues;
         TableValues = new TreeMap<>();
 
-        TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets = null;
-        TreeMap<ONSPD_YM3, DW_UO_Set> RSLUOSets = null;
+        TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
+        TreeMap<ONSPD_YM3, DW_UO_Set> RSLUOSets;
         CouncilUOSets = DW_UO_Data.getCouncilUOSets();
         RSLUOSets = DW_UO_Data.getRSLUOSets();
 
@@ -1998,14 +1987,14 @@ public class DW_TenancyChangesUO extends DW_Object {
         ONSPD_YM3 YM30 = null;
         String year0 = s;
         String month0 = s;
-        ONSPD_YM3 YM31 = null;
+        ONSPD_YM3 YM31;
         String year1 = s;
         String month1 = s;
         DW_UO_Set CouncilUOSet0 = null;
         DW_UO_Set RSLUOSet0 = null;
-        DW_UO_Set CouncilUOSet1 = null;
+        DW_UO_Set CouncilUOSet1;
         DW_UO_Set RSLUOSet1 = null;
-        String SHBEFilename1 = null;
+        String SHBEFilename1;
 
         Iterator<Integer> iteX;
         iteX = include.iterator();
@@ -2024,7 +2013,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         CouncilUOSet1 = CouncilUOSets.get(YM31);
         if (CouncilUOSet1 != null) {
             RSLUOSet1 = RSLUOSets.get(YM31);
-            SHBE_Records1 = SHBE_Data.getRecords(YM31, Env.HOOME);
+            SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
         }
         HashMap<SHBE_ID, SHBE_Record> Records1;
         Records1 = SHBE_Records1.getRecords(Env.HOOME);
@@ -3071,7 +3060,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             if (CouncilUOSet1 != null) {
                 RSLUOSet1 = RSLUOSets.get(YM31);
-                SHBE_Records1 = Env.getSHBE_Data().getRecords(YM31, Env.HOOME);
+                SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
                 initFirst = true;
                 //arrearsDiffs.put(YM3, 0.0d);
                 //arrearsDiffCounts.put(YM3, 0.0d);
@@ -3449,7 +3438,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             YM31 = SHBE_Handler.getYM3(SHBEFilename1);
             year1 = SHBE_Handler.getYear(SHBEFilename1);
             month1 = SHBE_Handler.getMonthNumber(SHBEFilename1);
-            SHBE_Records1 = Env.getSHBE_Data().getRecords(YM31, Env.HOOME);
+            SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
             //cRecords = Records0;
             Records1 = SHBE_Records1.getRecords(Env.HOOME);
             CouncilUOSet1 = CouncilUOSets.get(YM31);
@@ -4624,10 +4613,12 @@ public class DW_TenancyChangesUO extends DW_Object {
      * @param TT1_To_UOTT1_PostcodeUnchangedThisMonthClaimIDs
      * @param TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs
      * @param TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs
-     * @param TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs
+     * @param
+     * TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs
      * @param TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs
      * @param TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs
-     * @param TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs
+     * @param
+     * TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs
      * @param TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs
      * @param TT1_To_UOTT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs
      * @param TT1_To_UOTT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs
@@ -4642,10 +4633,12 @@ public class DW_TenancyChangesUO extends DW_Object {
      * @param TT4_To_UOTT4_PostcodeUnchangedThisMonthClaimIDs
      * @param TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs
      * @param TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs
-     * @param TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs
+     * @param
+     * TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs
      * @param TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs
      * @param TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs
-     * @param TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs
+     * @param
+     * TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs
      * @param TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs
      * @param TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs
      * @param TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs
@@ -4667,10 +4660,12 @@ public class DW_TenancyChangesUO extends DW_Object {
      * @param UOTT1_To_TT1_PostcodeUnchangedThisMonthClaimIDs
      * @param UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs
      * @param UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs
-     * @param UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs
+     * @param
+     * UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs
      * @param UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs
      * @param UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs
-     * @param UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs
+     * @param
+     * UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs
      * @param UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs
      * @param UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs
      * @param UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs
@@ -4682,10 +4677,12 @@ public class DW_TenancyChangesUO extends DW_Object {
      * @param UOTT4_To_TT4_PostcodeUnchangedThisMonthClaimIDs
      * @param UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs
      * @param UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs
-     * @param UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs
+     * @param
+     * UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs
      * @param UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs
      * @param UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs
-     * @param UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs
+     * @param
+     * UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs
      * @param UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs
      * @param UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs
      * @param UOTT4_To_TT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs
@@ -6574,7 +6571,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         return result;
     }
 
-    public boolean getContainsAnotherPostcode(            String aS,            String aPC) {
+    public boolean getContainsAnotherPostcode(String aS, String aPC) {
         boolean result;
         result = false;
         String[] split;
@@ -6713,8 +6710,8 @@ public class DW_TenancyChangesUO extends DW_Object {
     }
 
     /**
-     * This returns the Claims of the UnderOccupying claims in the first
-     * include period.
+     * This returns the Claims of the UnderOccupying claims in the first include
+     * period.
      *
      * @TODO For overall computational efficiency, this should probably only be
      * calculated once for each period and stored in a file then re-read from
@@ -6756,8 +6753,8 @@ public class DW_TenancyChangesUO extends DW_Object {
     }
 
     /**
-     * This returns the Claims of the UnderOccupying claims in the last
-     * include period.
+     * This returns the Claims of the UnderOccupying claims in the last include
+     * period.
      *
      * @TODO For overall computational efficiency, this should probably only be
      * calculated once for each period and stored in a file then re-read from
@@ -6922,8 +6919,8 @@ public class DW_TenancyChangesUO extends DW_Object {
     /**
      *
      * @param table table[0] = header; table[1] = TableValues; table[2] =
-     * ClaimDs; table[3] = Groups; table[4] = preUnderOccupancyValues;
-     * table[5] = AggregateStatistics; table[6] = GeneralStatistics; table[7] =
+     * ClaimDs; table[3] = Groups; table[4] = preUnderOccupancyValues; table[5]
+     * = AggregateStatistics; table[6] = GeneralStatistics; table[7] =
      * TimeStatistics;
      * @param includePreUnderOccupancyValues
      * @param startMonth

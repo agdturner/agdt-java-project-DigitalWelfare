@@ -27,7 +27,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_SummaryUO;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  * This is the main class for the Digital Welfare Project. For more details of
@@ -51,8 +50,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         doClaims = true;
 
         File f;
-        f = new File(
-                Files.getGeneratedLCCDir(),
+        f = new File(                Files.getGeneratedLCCDir(),
                 "RentArrearsAll" + Files.getDefaultBinaryFileExtension());
         DW_RentArrearsUO RentArrearsUO;
         if (newData) {
@@ -60,7 +58,6 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
             Generic_IO.writeObject(RentArrearsUO, f);
         } else if (f.exists()) {
             RentArrearsUO = (DW_RentArrearsUO) Generic_IO.readObject(f);
-            RentArrearsUO.SHBE_Data = Env.getSHBE_Data();
             RentArrearsUO.SHBE_Handler = Env.getSHBE_Handler();
             RentArrearsUO.Strings = Env.getStrings();
             RentArrearsUO.Files = Env.getFiles();
@@ -81,7 +78,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         }
 
         HashMap<ONSPD_YM3, SHBE_Records> AllSHBE;
-        AllSHBE = SHBE_Data.getData();
+        AllSHBE = SHBE_Handler.getData();
 
         DecimalFormat df;
         df = new DecimalFormat("0.00");
@@ -438,7 +435,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //            for (int j = 0; j < 17; j++) {
 //                YM3 = SHBE_Handler.getYM3(SHBEFilenames[j]);
 //                Env.logO("YM3 " + YM3, true);
-//                SHBE_Records = SHBE_Data.getRecords(YM3);
+//                SHBE_Records = SHBE_Handler.getRecords(YM3);
 //                HashMap<SHBE_ID, SHBE_Record> Records;
 //                Records = SHBE_Records.getRecords(Env.HOOME);
 //                if (Records.keySet().contains(ClaimID)) {
@@ -811,7 +808,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     //System.out.println("IndexOfFirstBT " + IndexOfFirstBT);
                     //System.out.println("YM3 " + YM3);
                     //SHBE_Records = AllSHBE.get(YM3);
-                    SHBE_Records = SHBE_Data.getRecords(YM3, Env.HOOME);
+                    SHBE_Records = SHBE_Handler.getRecords(YM3, Env.HOOME);
                     if (SHBE_Records == null) {
                         Env.logE("AllSHBE.get(YM3) is null!");
                     }

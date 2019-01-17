@@ -31,7 +31,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Environment;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
@@ -78,7 +77,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
     public DW_Maps Maps;
     public DW_Deprivation_DataHandler Deprivation_DataHandler;
-    public SHBE_Data SHBE_Data;
+    public SHBE_Handler SHBE_Handler;
 
     public DW_Environment(int DEBUG_Level) {
         this.DEBUG_Level = DEBUG_Level;
@@ -213,7 +212,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return The number of sets of records cleared.
      */
     public int clearAllSHBECache() {
-        return SHBE_Data.clearAllCache();
+        return SHBE_Handler.clearAllCache();
     }
 
     /**
@@ -222,7 +221,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return True iff a collection is swapped.
      */
     public boolean clearSomeSHBECache() {
-        return getSHBE_Data().clearSomeCache();
+        return getSHBE_Handler().clearSomeCache();
     }
 
     /**
@@ -232,7 +231,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return True iff a collection is swapped.
      */
     public boolean clearSomeSHBECacheExcept(ONSPD_YM3 YM3) {
-        return getSHBE_Data().clearSomeCacheExcept(YM3);
+        return getSHBE_Handler().clearSomeCacheExcept(YM3);
     }
 
     /**
@@ -517,7 +516,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     }
 
     /**
-     * For returning an instance of Handler for convenience.
+     * For returning an instance of SHBE_Handler for convenience.
      *
      * @return
      */
@@ -547,18 +546,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             SHBE_TenancyType_Handler = new SHBE_TenancyType_Handler(SHBE_Env);
         }
         return SHBE_TenancyType_Handler;
-    }
-
-    /**
-     * For returning an instance of SHBE_Data for convenience.
-     *
-     * @return
-     */
-    public SHBE_Data getSHBE_Data() {
-        if (SHBE_Env.Data == null) {
-            SHBE_Env.Data = new SHBE_Data(SHBE_Env);
-        }
-        return SHBE_Env.Data;
     }
 
     /**

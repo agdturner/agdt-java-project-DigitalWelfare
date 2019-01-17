@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core;
 
 import java.io.Serializable;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 public abstract class DW_Object implements Serializable {
 
@@ -26,10 +27,16 @@ public abstract class DW_Object implements Serializable {
      * A reference to DW_Environment
      */
     protected transient DW_Environment Env;
+    
+    // For convenience
+    protected transient DW_Strings Strings;
+    protected transient DW_Files Files;
 
     public DW_Object(){}
     
-    public DW_Object(DW_Environment env) {
-        Env = env;
+    public DW_Object(DW_Environment e) {
+        Env = e;
+        Strings = e.Strings;
+        Files = e.Files;
     }
 }

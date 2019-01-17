@@ -82,8 +82,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         super(env);
         UO_Handler = env.getUO_Handler();
         SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
-        SHBE_Data = env.getSHBE_Data();
-        ClaimIDToClaimRefLookup = SHBE_Data.getClaimIDToClaimRefLookup();
+        SHBE_Handler = env.getSHBE_Handler();
+        ClaimIDToClaimRefLookup = SHBE_Handler.getClaimIDToClaimRefLookup();
         UO_Data = env.getUO_Data();
     }
 
@@ -535,7 +535,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         }
         result = new HashMap<>();
         SHBE_Records SHBE_Records;
-        SHBE_Records = SHBE_Data.getRecords(YM3, Env.HOOME);
+        SHBE_Records = SHBE_Handler.getRecords(YM3, Env.HOOME);
         HashMap<SHBE_ID, SHBE_Record> records;
         records = SHBE_Records.getRecords(Env.HOOME);
         Iterator<SHBE_ID> ite;
@@ -557,7 +557,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
             return ClaimIDToPostcodeIDLookups.get(key);
         }
-        r = Env.getSHBE_Data().getRecords(YM3, Env.HOOME).getClaimIDToPostcodeIDLookup(Env.HOOME);
+        r = Env.getSHBE_Handler().getRecords(YM3, Env.HOOME).getClaimIDToPostcodeIDLookup(Env.HOOME);
         ClaimIDToPostcodeIDLookups.put(key, r);
         return r;
     }
@@ -694,7 +694,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             ONSPD_YM3 YM30;
             YM30 = SHBE_Handler.getYM3(SHBEFilenames[i]);
             SHBE_Records recs0;
-            recs0 = Env.getSHBE_Data().getRecords(YM30, Env.HOOME);
+            recs0 = Env.getSHBE_Handler().getRecords(YM30, Env.HOOME);
             ONSPD_YM3 YM30v;
             YM30v = recs0.getNearestYM3ForONSPDLookup();
             HashMap<SHBE_ID, SHBE_Record> records0;
@@ -947,7 +947,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 ONSPD_YM3 YM31 = SHBE_Handler.getYM3(SHBEFilenames[i]);
                 // Load next data
                 SHBE_Records recs1;
-                recs1 = Env.getSHBE_Data().getRecords(YM31, Env.HOOME);
+                recs1 = Env.getSHBE_Handler().getRecords(YM31, Env.HOOME);
                 HashMap<SHBE_ID, String> ClaimIDToPostcodeIDLookup1;
                 ClaimIDToPostcodeIDLookup1 = null;//recs1.getClaimSHBE_IDToPostcodeLookup();
                 HashMap<SHBE_ID, Integer> ClaimIDToTTLookup1;
@@ -1208,7 +1208,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 String CTBRef1;
                                 CTBRef1 = DRecord1.getCouncilTaxBenefitClaimReferenceNumber();
                                 SHBE_ID claimID1;
-                                claimID1 = SHBE_Data.getClaimRefToClaimIDLookup().get(CTBRef1);
+                                claimID1 = SHBE_Handler.getClaimRefToClaimIDLookup().get(CTBRef1);
                                 SHBE_ID claimantSHBE_ID1;
                                 claimantSHBE_ID1 = null;//DW_PersonIDtoSHBE_IDLookup.get(claimantDW_PersonID1);
                                 String claimantType;
@@ -1386,10 +1386,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                         }
                                                         double distance;
                                                         distance = Postcode_Handler.getDistanceBetweenPostcodes(
-                                                                Env.getSHBE_Data().getPostcodeIDToPointLookup(YM30v).get(PostcodeID0),
-                                                                Env.getSHBE_Data().getPostcodeIDToPointLookup(YM31v).get(PostcodeID1),
-                                                                Env.getSHBE_Data().getPostcodeIDToPointLookup(YM31v).get(PostcodeID0),
-                                                                Env.getSHBE_Data().getPostcodeIDToPointLookup(YM30v).get(PostcodeID1),
+                                                                Env.getSHBE_Handler().getPostcodeIDToPointLookup(YM30v).get(PostcodeID0),
+                                                                Env.getSHBE_Handler().getPostcodeIDToPointLookup(YM31v).get(PostcodeID1),
+                                                                Env.getSHBE_Handler().getPostcodeIDToPointLookup(YM31v).get(PostcodeID0),
+                                                                Env.getSHBE_Handler().getPostcodeIDToPointLookup(YM30v).get(PostcodeID1),
                                                                 YM30v, YM31v, PostcodeID0, PostcodeID1);
                                                         Iterator<Double> ite3;
                                                         ite3 = distances.iterator();

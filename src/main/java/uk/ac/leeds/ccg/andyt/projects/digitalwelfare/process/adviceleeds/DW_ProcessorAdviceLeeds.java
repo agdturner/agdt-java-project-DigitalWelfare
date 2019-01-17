@@ -5,29 +5,15 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.adviceleeds;
 
-import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
-import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Data;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstract;
 
 /**
@@ -77,23 +63,18 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
      * @param var1 The name for column 0
      * @param var2 The name for column 1
      */
-    public void createCSV(
-            File dir,
-            TreeMap<String, Integer> aSHBEgeneralisation,
-            String name,
-            String var1,
-            String var2) {
-        PrintWriter printWriter = init_OutputTextFilePrintWriter(
-                dir,
-                name + ".csv");
-        printWriter.println(var1 + "," + var2);
-        Iterator<String> ite = aSHBEgeneralisation.keySet().iterator();
-        while (ite.hasNext()) {
-            String key = ite.next();
-            Integer value = aSHBEgeneralisation.get(key);
-            printWriter.println(key + "," + value);
+    public void createCSV(File dir, 
+            TreeMap<String, Integer> aSHBEgeneralisation, String name, 
+            String var1, String var2) {
+        try (PrintWriter pw = init_OutputTextFilePrintWriter(dir, name + ".csv")) {
+            pw.println(var1 + "," + var2);
+            Iterator<String> ite = aSHBEgeneralisation.keySet().iterator();
+            while (ite.hasNext()) {
+                String key = ite.next();
+                Integer value = aSHBEgeneralisation.get(key);
+                pw.println(key + "," + value);
+            }
         }
-        printWriter.close();
     }
 
     /**
@@ -145,7 +126,6 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
         }
         pw.close();
     }
-
 
     public TreeMap<String, String> getOutletsAndPostcodes() {
         TreeMap<String, String> result;
@@ -244,6 +224,5 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
                 DW_Postcode_Handler.getDefaultYM3());
         return result;
     }
-
 
 }

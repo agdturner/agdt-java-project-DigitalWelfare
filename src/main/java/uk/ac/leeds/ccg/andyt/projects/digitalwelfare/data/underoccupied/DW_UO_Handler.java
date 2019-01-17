@@ -34,9 +34,6 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Data;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  *
@@ -47,9 +44,6 @@ public class DW_UO_Handler extends DW_Object {
     /**
      * For convenience this is a reference to Env.Files.
      */
-    protected DW_Strings Strings;
-    protected DW_Files Files;
-    private SHBE_Data SHBE_Data;
     private HashMap<SHBE_ID, String> ClaimIDToClaimRefLookup;
     private HashMap<String, SHBE_ID> ClaimRefToClaimIDLookup;
 
@@ -62,9 +56,8 @@ public class DW_UO_Handler extends DW_Object {
         super(env);
         this.Files = env.getFiles();
         this.Strings = env.getStrings();
-        SHBE_Data = env.getSHBE_Data();
-        ClaimIDToClaimRefLookup = SHBE_Data.getClaimIDToClaimRefLookup();
-        ClaimRefToClaimIDLookup = SHBE_Data.getClaimRefToClaimIDLookup();
+        ClaimIDToClaimRefLookup = env.SHBE_Handler.getClaimIDToClaimRefLookup();
+        ClaimRefToClaimIDLookup = env.SHBE_Handler.getClaimRefToClaimIDLookup();
     }
 
     public HashSet<String> getRecordTypes() {
@@ -91,80 +84,77 @@ public class DW_UO_Handler extends DW_Object {
         boolean addedNewClaimIDs;
         addedNewClaimIDs = false;
         try {
-            BufferedReader br = Generic_IO.getBufferedReader(inputFile);
-            StreamTokenizer st = new StreamTokenizer(br);
-            Generic_IO.setStreamTokenizerSyntax5(st);
-            st.wordChars('`', '`');
-            st.wordChars('*', '*');
-            String line = "";
-            //int duplicateEntriesCount = 0;
-            //int replacementEntriesCount = 0;
-            long RecordID = 0;
-            // Read firstline and check format
-            int tokenType;
-            st.nextToken();
-            line = st.sval;
-            String[] fieldnames = line.split(",");
+            try (BufferedReader br = Generic_IO.getBufferedReader(inputFile)) {
+                StreamTokenizer st = new StreamTokenizer(br);
+                Generic_IO.setStreamTokenizerSyntax5(st);
+                st.wordChars('`', '`');
+                st.wordChars('*', '*');
+                String line;
+                //int duplicateEntriesCount = 0;
+                //int replacementEntriesCount = 0;
+                long RecordID = 0;
+                // Read firstline and check format
+                int tokenType;
+                st.nextToken();
+                line = st.sval;
+                String[] fieldnames = line.split(",");
 //            // Skip the first line
 //            Generic_IO.skipline(st);
-
-            // Read data
-            tokenType = st.nextToken();
-            while (tokenType != StreamTokenizer.TT_EOF) {
-                switch (tokenType) {
-                    case StreamTokenizer.TT_EOL:
-                        //System.out.println(line);
-                        break;
-                    case StreamTokenizer.TT_WORD:
-                        line = st.sval;
-                        try {
-                            DW_UO_Record DW_UO_Record;
-                            DW_UO_Record = new DW_UO_Record(
-                                    RecordID, line, fieldnames);
-                            //RecordID, line, type);
-                            String ClaimRef;
-                            ClaimRef = DW_UO_Record.getClaimRef();
-                            SHBE_ID ClaimID;
-                            ClaimID = ClaimRefToClaimIDLookup.get(ClaimRef);
-                            if (ClaimID == null) {
-                                ClaimID = new SHBE_ID(ClaimRefToClaimIDLookup.size());
-                                ClaimRefToClaimIDLookup.put(ClaimRef, ClaimID);
-                                ClaimIDToClaimRefLookup.put(ClaimID, ClaimRef);
-                                addedNewClaimIDs = true;
-                            }
-                            Object o = result.put(
-                                    ClaimID,
-                                    DW_UO_Record);
-                            if (o != null) {
-                                DW_UO_Record existingUnderOccupiedReport_Record;
-                                existingUnderOccupiedReport_Record = (DW_UO_Record) o;
-                                if (!existingUnderOccupiedReport_Record.equals(DW_UO_Record)) {
-                                    System.out.println("existingUnderOccupiedReport_DataRecord " + existingUnderOccupiedReport_Record);
-                                    System.out.println("replacementUnderOccupiedReport_DataRecord " + DW_UO_Record);
-                                    System.out.println("RecordID " + RecordID);
-                                    //replacementEntriesCount++;
-                                }
-                            }
-                        } catch (Exception e) {
-                            System.err.println("DW_UnderOccupiedReport_Handler error processing from file " + inputFile);
-                            System.err.println(line);
-                            System.err.println("RecordID " + RecordID);
-                            System.err.println(e.getLocalizedMessage());
-                        }
-                        RecordID++;
-                        break;
-                }
+// Read data
                 tokenType = st.nextToken();
+                while (tokenType != StreamTokenizer.TT_EOF) {
+                    switch (tokenType) {
+                        case StreamTokenizer.TT_EOL:
+                            //System.out.println(line);
+                            break;
+                        case StreamTokenizer.TT_WORD:
+                            line = st.sval;
+                            try {
+                                DW_UO_Record DW_UO_Record;
+                                DW_UO_Record = new DW_UO_Record(
+                                        RecordID, line, fieldnames);
+                                //RecordID, line, type);
+                                String ClaimRef;
+                                ClaimRef = DW_UO_Record.getClaimRef();
+                                SHBE_ID ClaimID;
+                                ClaimID = ClaimRefToClaimIDLookup.get(ClaimRef);
+                                if (ClaimID == null) {
+                                    ClaimID = new SHBE_ID(ClaimRefToClaimIDLookup.size());
+                                    ClaimRefToClaimIDLookup.put(ClaimRef, ClaimID);
+                                    ClaimIDToClaimRefLookup.put(ClaimID, ClaimRef);
+                                    addedNewClaimIDs = true;
+                                }
+                                Object o = result.put(
+                                        ClaimID,
+                                        DW_UO_Record);
+                                if (o != null) {
+                                    DW_UO_Record existingUnderOccupiedReport_Record;
+                                    existingUnderOccupiedReport_Record = (DW_UO_Record) o;
+                                    if (!existingUnderOccupiedReport_Record.equals(DW_UO_Record)) {
+                                        System.out.println("existingUnderOccupiedReport_DataRecord " + existingUnderOccupiedReport_Record);
+                                        System.out.println("replacementUnderOccupiedReport_DataRecord " + DW_UO_Record);
+                                        System.out.println("RecordID " + RecordID);
+                                        //replacementEntriesCount++;
+                                    }
+                                }
+                            } catch (Exception e) {
+                                System.err.println("DW_UnderOccupiedReport_Handler error processing from file " + inputFile);
+                                System.err.println(line);
+                                System.err.println("RecordID " + RecordID);
+                                System.err.println(e.getLocalizedMessage());
+                            }
+                            RecordID++;
+                            break;
+                    }
+                    tokenType = st.nextToken();
+                }
+                //System.out.println("replacementEntriesCount " + replacementEntriesCount);
             }
-            //System.out.println("replacementEntriesCount " + replacementEntriesCount);
-            br.close();
             if (addedNewClaimIDs) {
-                Generic_IO.writeObject(
-                        ClaimIDToClaimRefLookup,
-                        SHBE_Data.getClaimIDToClaimRefLookupFile());
-                Generic_IO.writeObject(
-                        ClaimRefToClaimIDLookup,
-                        SHBE_Data.getClaimRefToClaimIDLookupFile());
+                Generic_IO.writeObject(ClaimIDToClaimRefLookup,
+                        Env.SHBE_Handler.getClaimIDToClaimRefLookupFile());
+                Generic_IO.writeObject(ClaimRefToClaimIDLookup,
+                        Env.SHBE_Handler.getClaimRefToClaimIDLookupFile());
             }
         } catch (IOException ex) {
             Logger.getLogger(DW_UO_Handler.class.getName()).log(Level.SEVERE, null, ex);
@@ -256,7 +246,7 @@ public class DW_UO_Handler extends DW_Object {
     /**
      * Do we really want to store these?
      *
-     * @return Object[] result where: null null null null null null     {@code 
+     * @return Object[] result where: null null null null null null null null null     {@code 
      * result[0] TreeMap<String, String> councilFilenames (year_Month, filename)
      * result[1] TreeMap<String, String> RSLFilenames (year_Month, filename)
      * }
@@ -441,8 +431,8 @@ public class DW_UO_Handler extends DW_Object {
     }
 
     /**
-     * Returns a Set<SHBE_ID> of the ClaimIDs of those UnderOccupying at the
-     * start of April2013.
+     * Returns a {@code Set<SHBE_ID>} of the ClaimIDs of those UnderOccupying at
+     * the start of April2013.
      *
      * @param DW_UO_Data
      * @return

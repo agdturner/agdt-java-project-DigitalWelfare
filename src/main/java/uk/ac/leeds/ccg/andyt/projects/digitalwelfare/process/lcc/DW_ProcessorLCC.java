@@ -27,7 +27,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
@@ -43,7 +42,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_Lin
 public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 
     // For convenience
-    protected transient SHBE_Data SHBE_Data;
     protected transient SHBE_Handler SHBE_Handler;
     protected transient DW_UO_Data UO_Data;
     protected transient String[] SHBEFilenames;
@@ -54,11 +52,10 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 
     public DW_ProcessorLCC(DW_Environment env) {
         super(env);
-        SHBE_Data = env.getSHBE_Data();
         SHBE_Handler = env.getSHBE_Handler();
         UO_Data = env.getUO_Data();
         SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
-        ClaimIDToClaimRefLookup = SHBE_Data.getClaimIDToClaimRefLookup();
+        ClaimIDToClaimRefLookup = SHBE_Handler.getClaimIDToClaimRefLookup();
     }
 
     /**
@@ -300,9 +297,8 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             processName = "LoadSHBE";
             File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
-            SHBE_Data = Env.getSHBE_Data();
             HashMap<ONSPD_YM3, SHBE_Records> Data;
-            Data = SHBE_Data.getData();
+            Data = Env.SHBE_Handler.getData();
             SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
             Env.setSHBE_Handler(SHBE_Handler);
             SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
