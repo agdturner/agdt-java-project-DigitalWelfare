@@ -50,7 +50,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
@@ -64,7 +64,7 @@ public class DW_Maps extends Geotools_Maps {
     protected transient DW_Geotools Geotools;
     protected transient DW_Files Files;
     protected transient DW_Strings Strings;
-    protected transient ONSPD_Postcode_Handler Postcode_Handler;
+    protected transient ONSPD_Handler Postcode_Handler;
 
     //private TreeMap<String, ONSPD_Point>[] ONSPDlookups;
     //private TreeMap<String, TreeMap<String, ONSPD_Point>> ONSPDlookups;
@@ -97,8 +97,8 @@ public class DW_Maps extends Geotools_Maps {
 //
 //    protected void initPostcode_Handler() {
 //        if (Postcode_Handler == null) {
-////            Postcode_Handler = new ONSPD_Postcode_Handler(Env.ONSPD_Environment);
-//            Postcode_Handler = new ONSPD_Postcode_Handler(new ONSPD_Environment(Files.getDataDir()));
+////            Postcode_Handler = new ONSPD_Handler(Env.ONSPD_Environment);
+//            Postcode_Handler = new ONSPD_Handler(new ONSPD_Environment(Files.getDataDir()));
 //        }
 //    }
 //

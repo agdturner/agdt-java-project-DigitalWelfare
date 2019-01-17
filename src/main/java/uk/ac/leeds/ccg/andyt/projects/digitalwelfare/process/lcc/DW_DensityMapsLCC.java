@@ -1278,9 +1278,9 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                         ONSPD_Point p;
                         p = lookup.get(Postcode_Handler.formatPostcodeForMapping(postcode));
 //            String formattedPostcode;
-//            formattedPostcode = ONSPD_Postcode_Handler.formatPostcodeForONSPDLookup(postcode);
+//            formattedPostcode = ONSPD_Handler.formatPostcodeForONSPDLookup(postcode);
 //            ONSPD_Point p1;
-//            p1 = ONSPD_Postcode_Handler.getPointFromPostcode(ONSPD_Postcode_Handler.formatPostcodeForONSPDLookup(postcode));
+//            p1 = ONSPD_Handler.getPointFromPostcode(ONSPD_Handler.formatPostcodeForONSPDLookup(postcode));
                         if (p != null) {
                             g0.addToCell((double) p.getX(), (double) p.getY(), 1.0d);
                             nonZero = true;

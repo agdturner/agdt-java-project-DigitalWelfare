@@ -33,7 +33,7 @@ import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_PersonID;
@@ -52,7 +52,7 @@ public class DW_Summary extends DW_Object {
 
     // For convenience.
     protected SHBE_Handler SHBE_Handler;
-    protected ONSPD_Postcode_Handler Postcode_Handler;
+    protected ONSPD_Handler Postcode_Handler;
     protected SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
 
     protected final int decimalPlacePrecisionForAverage = 3;

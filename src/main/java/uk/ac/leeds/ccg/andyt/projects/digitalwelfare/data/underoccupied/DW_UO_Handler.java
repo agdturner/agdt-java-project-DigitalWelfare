@@ -31,13 +31,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
 /**
  *
- * @author geoagdt
+ * @author Andy Turner
  */
 public class DW_UO_Handler extends DW_Object {
 
@@ -56,8 +57,9 @@ public class DW_UO_Handler extends DW_Object {
         super(env);
         this.Files = env.getFiles();
         this.Strings = env.getStrings();
-        ClaimIDToClaimRefLookup = env.SHBE_Handler.getClaimIDToClaimRefLookup();
-        ClaimRefToClaimIDLookup = env.SHBE_Handler.getClaimRefToClaimIDLookup();
+        SHBE_Handler sh = env.getSHBE_Handler();
+        ClaimIDToClaimRefLookup = sh.getClaimIDToClaimRefLookup();
+        ClaimRefToClaimIDLookup = sh.getClaimRefToClaimIDLookup();
     }
 
     public HashSet<String> getRecordTypes() {
@@ -69,8 +71,7 @@ public class DW_UO_Handler extends DW_Object {
      * @param filename
      * @return
      */
-    public HashMap<SHBE_ID, DW_UO_Record> loadInputData(
-            File directory,
+    public HashMap<SHBE_ID, DW_UO_Record> loadInputData(File directory,
             String filename) {
 //        String type;
 //        if (filename.contains("RSL")) {
@@ -152,9 +153,9 @@ public class DW_UO_Handler extends DW_Object {
             }
             if (addedNewClaimIDs) {
                 Generic_IO.writeObject(ClaimIDToClaimRefLookup,
-                        Env.SHBE_Handler.getClaimIDToClaimRefLookupFile());
+                        Env.getSHBE_Handler().getClaimIDToClaimRefLookupFile());
                 Generic_IO.writeObject(ClaimRefToClaimIDLookup,
-                        Env.SHBE_Handler.getClaimRefToClaimIDLookupFile());
+                        Env.getSHBE_Handler().getClaimRefToClaimIDLookupFile());
             }
         } catch (IOException ex) {
             Logger.getLogger(DW_UO_Handler.class.getName()).log(Level.SEVERE, null, ex);
@@ -246,7 +247,8 @@ public class DW_UO_Handler extends DW_Object {
     /**
      * Do we really want to store these?
      *
-     * @return Object[] result where: null null null null null null null null null     {@code 
+     * @return Object[] result where: null null null null null null null null
+     * null null     {@code 
      * result[0] TreeMap<String, String> councilFilenames (year_Month, filename)
      * result[1] TreeMap<String, String> RSLFilenames (year_Month, filename)
      * }

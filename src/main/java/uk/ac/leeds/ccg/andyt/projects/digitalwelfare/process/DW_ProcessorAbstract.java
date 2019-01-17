@@ -23,12 +23,12 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 
 public abstract class DW_ProcessorAbstract extends DW_Object {
 
-    protected transient ONSPD_Postcode_Handler Postcode_Handler;
+    protected transient ONSPD_Handler Postcode_Handler;
     protected transient DW_Files Files;
     protected transient DW_Strings Strings;
 

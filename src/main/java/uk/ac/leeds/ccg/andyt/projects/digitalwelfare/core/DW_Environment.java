@@ -28,7 +28,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_DataHandler;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
@@ -71,7 +71,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public transient Grids_Environment Grids_Env;
     public transient Vector_Environment Vector_Env;
     public transient DW_Geotools Geotools;
-    public ONSPD_Postcode_Handler Postcode_Handler;
+    public ONSPD_Handler Postcode_Handler;
     public DW_UO_Handler UO_Handler;
     public DW_UO_Data UO_Data;
     public SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
@@ -212,7 +212,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return The number of sets of records cleared.
      */
     public int clearAllSHBECache() {
-        return SHBE_Handler.clearAllCache();
+        return getSHBE_Handler().clearAllCache();
     }
 
     /**
@@ -422,11 +422,11 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     }
 
     /**
-     * {@code this.ONSPD_Postcode_Handler = ONSPD_Postcode_Handler;}
+     * {@code this.ONSPD_Handler = ONSPD_Handler;}
      *
-     * @param Postcode_Handler The ONSPD_Postcode_Handler to set.
+     * @param Postcode_Handler The ONSPD_Handler to set.
      */
-    public void setPostcode_Handler(ONSPD_Postcode_Handler Postcode_Handler) {
+    public void setPostcode_Handler(ONSPD_Handler Postcode_Handler) {
         this.Postcode_Handler = Postcode_Handler;
     }
 
@@ -502,15 +502,15 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     }
 
     /**
-     * For returning an instance of ONSPD_Postcode_Handler for convenience.
+     * For returning an instance of ONSPD_Handler for convenience.
      *
      * @return
      */
-    public ONSPD_Postcode_Handler getPostcode_Handler() {
+    public ONSPD_Handler getPostcode_Handler() {
         if (Postcode_Handler == null) {
             ONSPD_Environment oe;
             oe = new ONSPD_Environment(Files.getDataDir());
-            Postcode_Handler = new ONSPD_Postcode_Handler(oe);
+            Postcode_Handler = new ONSPD_Handler(oe);
         }
         return Postcode_Handler;
     }

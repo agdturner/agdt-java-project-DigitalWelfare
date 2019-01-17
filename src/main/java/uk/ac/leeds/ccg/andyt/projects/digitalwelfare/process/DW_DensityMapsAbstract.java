@@ -43,7 +43,7 @@ import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStats;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
@@ -57,7 +57,7 @@ public abstract class DW_DensityMapsAbstract extends DW_Object {
     protected DW_Maps Maps;
     protected DW_Files Files;
     protected DW_Strings Strings;
-    protected ONSPD_Postcode_Handler Postcode_Handler;
+    protected ONSPD_Handler Postcode_Handler;
 
     protected Grids_Environment ge;
     protected Grids_ESRIAsciiGridExporter eage;

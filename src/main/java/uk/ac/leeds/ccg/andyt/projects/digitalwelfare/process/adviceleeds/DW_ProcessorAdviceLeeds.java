@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstract;
 
@@ -142,7 +142,7 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
     }
 
     public TreeMap<String, ONSPD_Point> getOutletsAndPoints() {
-        ONSPD_Postcode_Handler DW_Postcode_Handler;
+        ONSPD_Handler DW_Postcode_Handler;
         DW_Postcode_Handler = Env.getPostcode_Handler();
         TreeMap<String, ONSPD_Point> result;
         result = DW_Postcode_Handler.postcodeToPoints(getOutletsAndPostcodes(),
@@ -218,7 +218,7 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
 
     public TreeMap<String, ONSPD_Point> getAdviceLeedsNamesAndPoints() {
         TreeMap<String, ONSPD_Point> result;
-        ONSPD_Postcode_Handler DW_Postcode_Handler;
+        ONSPD_Handler DW_Postcode_Handler;
         DW_Postcode_Handler = Env.getPostcode_Handler();
         result = DW_Postcode_Handler.postcodeToPoints(getAdviceLeedsNamesAndPostcodes(),
                 DW_Postcode_Handler.getDefaultYM3());

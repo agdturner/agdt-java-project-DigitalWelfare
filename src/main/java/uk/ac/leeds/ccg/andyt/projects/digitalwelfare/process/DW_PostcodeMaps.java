@@ -42,7 +42,7 @@ import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStatsNotUpdat
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_Files;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_Processor;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
@@ -354,7 +354,7 @@ public class DW_PostcodeMaps extends DW_Maps {
             String target) {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
-        ONSPD_Postcode_Handler dph;
+        ONSPD_Handler dph;
         dph = Env.getPostcode_Handler();
         TreeMap<String, ONSPD_Point> tONSPDlookup;
         tONSPDlookup = Env.ONSPD_Env.getONSPDlookups().get(postcodeLevel).get(

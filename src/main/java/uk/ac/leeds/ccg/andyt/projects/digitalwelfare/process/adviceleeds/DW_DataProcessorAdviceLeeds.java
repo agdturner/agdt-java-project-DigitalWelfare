@@ -35,7 +35,7 @@ import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_DataHandler;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_MapsAdviceLeeds;
@@ -1261,7 +1261,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             ONSPD_YM3 yM3,
             String postcode,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
-        ONSPD_Postcode_Handler tDW_Postcode_Handler;
+        ONSPD_Handler tDW_Postcode_Handler;
         tDW_Postcode_Handler = Env.getPostcode_Handler();
         String key = "";
         if (level.equalsIgnoreCase("PostcodeDistrict")
@@ -1309,7 +1309,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             //String outputFilename,
             TreeMap data,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
-        ONSPD_Postcode_Handler tDW_Postcode_Handler;
+        ONSPD_Handler tDW_Postcode_Handler;
         tDW_Postcode_Handler = Env.getPostcode_Handler();
         TreeMap<String, TreeMap<String, Integer>> result;
         result = new TreeMap<>();

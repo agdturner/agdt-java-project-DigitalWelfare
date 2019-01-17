@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
@@ -70,8 +70,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 System.exit(0);
             } else {
                 DW_Environment env = new DW_Environment(
-                        new Integer(args[0]),
-                        args[1]);
+                        Integer.valueOf(args[0]),                        args[1]);
                 DW_ProcessorLCC p;
                 p = new DW_ProcessorLCC();
                 p.Env = env;
@@ -107,8 +106,8 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
          * in that some parts have to have been run before others will produce 
          * results as expected/desired.
          */
-//        RunAllFromScratch = true;
-        RunAllFromScratch = false;
+        RunAllFromScratch = true;
+//        RunAllFromScratch = false;
 //        RunAllFromUpdate = false;
         if (!RunAllFromScratch) {
             if (!RunAllFromUpdate) {
@@ -220,7 +219,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             }
             File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
-            Postcode_Handler = new ONSPD_Postcode_Handler(Env.getONSPD_Environment());
+            Postcode_Handler = new ONSPD_Handler(Env.getONSPD_Environment());
             Env.setPostcode_Handler(Postcode_Handler);
             Postcode_Handler.run(logDir);
             // Close logs
