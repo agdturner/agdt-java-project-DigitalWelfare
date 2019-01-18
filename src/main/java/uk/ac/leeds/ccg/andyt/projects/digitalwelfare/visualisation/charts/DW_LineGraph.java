@@ -138,16 +138,16 @@ public class DW_LineGraph extends Generic_LineGraph {
 //        claimantTypes = DW_Strings.getHB_CTB();
 
         includes = SHBE_Handler.getIncludes();
-        includes.remove(Strings.SHBE_Strings.sIncludeAll);
-        includes.remove(Strings.SHBE_Strings.sIncludeYearly);
-        includes.remove(Strings.SHBE_Strings.sInclude6Monthly);
-        includes.remove(Strings.SHBE_Strings.sInclude3Monthly);
-        includes.remove(Strings.SHBE_Strings.sIncludeMonthly);
-//        includes.remove(DW_Strings.SHBE_Strings.sIncludeMonthlySinceApril2013);
-        includes.remove(Strings.SHBE_Strings.sInclude2MonthlySinceApril2013Offset0);
-        includes.remove(Strings.SHBE_Strings.sInclude2MonthlySinceApril2013Offset1);
-        includes.remove(Strings.SHBE_Strings.sIncludeStartEndSinceApril2013);
-        includes.remove(Strings.SHBE_Strings.sIncludeApril2013May2013);
+        includes.remove(Env.SHBE_Env.Strings.sIncludeAll);
+        includes.remove(Env.SHBE_Env.Strings.sIncludeYearly);
+        includes.remove(Env.SHBE_Env.Strings.sInclude6Monthly);
+        includes.remove(Env.SHBE_Env.Strings.sInclude3Monthly);
+        includes.remove(Env.SHBE_Env.Strings.sIncludeMonthly);
+//        includes.remove(DW_Env.SHBE_Env.Strings.sIncludeMonthlySinceApril2013);
+        includes.remove(Env.SHBE_Env.Strings.sInclude2MonthlySinceApril2013Offset0);
+        includes.remove(Env.SHBE_Env.Strings.sInclude2MonthlySinceApril2013Offset1);
+        includes.remove(Env.SHBE_Env.Strings.sIncludeStartEndSinceApril2013);
+        includes.remove(Env.SHBE_Env.Strings.sIncludeApril2013May2013);
 
         futures = new HashSet<>();
 
@@ -159,11 +159,11 @@ public class DW_LineGraph extends Generic_LineGraph {
 //        types.add(sPostcodeChangedNo);
 //        types.add("Multiple");
 //        types.add("");
-        PTs = Strings.SHBE_Strings.getPaymentTypes();
+        PTs = Env.SHBE_Env.Strings.getPaymentTypes();
 //        PTs.remove(SHBE_Handler.sPaymentTypeAll);
-        PTs.remove(Strings.SHBE_Strings.sPaymentTypeIn);
-        PTs.remove(Strings.SHBE_Strings.sPaymentTypeSuspended);
-        PTs.remove(Strings.SHBE_Strings.sPaymentTypeOther);
+        PTs.remove(Env.SHBE_Env.Strings.sPaymentTypeIn);
+        PTs.remove(Env.SHBE_Env.Strings.sPaymentTypeSuspended);
+        PTs.remove(Env.SHBE_Env.Strings.sPaymentTypeOther);
 
         b = new ArrayList<>();
         b.add(true);
@@ -281,7 +281,7 @@ public class DW_LineGraph extends Generic_LineGraph {
                                 dirOut1,
                                 filename);
                         TreeMap<String, TreeMap<ONSPD_YM3, BigDecimal>> data0;
-                        data0 = new TreeMap<String, TreeMap<ONSPD_YM3, BigDecimal>>();
+                        data0 = new TreeMap<>();
                         Iterator<Integer> includeIte;
                         includeIte = include.iterator();
                         while (includeIte.hasNext()) {
@@ -506,10 +506,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                 File dirOut7;
                                                 if (doSameTenancy) {
                                                     dirOut7 = new File(dirOut6,
-                                                            Strings.SHBE_Strings.sIncludeSameTenancy);
+                                                            Env.SHBE_Env.Strings.sIncludeSameTenancy);
                                                 } else {
                                                     dirOut7 = new File(dirOut6,
-                                                            Strings.SHBE_Strings.sNotIncludeSameTenancy);
+                                                            Env.SHBE_Env.Strings.sNotIncludeSameTenancy);
                                                 }
                                                 Iterator<Boolean> iteB6;
                                                 iteB6 = b.iterator();
@@ -537,10 +537,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                 File dirOut7;
                                                 if (doSameTenancy) {
                                                     dirOut7 = new File(dirOut6,
-                                                            Strings.SHBE_Strings.sIncludeSameTenancy);
+                                                            Env.SHBE_Env.Strings.sIncludeSameTenancy);
                                                 } else {
                                                     dirOut7 = new File(dirOut6,
-                                                            Strings.SHBE_Strings.sNotIncludeSameTenancy);
+                                                            Env.SHBE_Env.Strings.sNotIncludeSameTenancy);
                                                 }
                                                 Iterator<Boolean> iteB6;
                                                 iteB6 = b.iterator();
@@ -590,10 +590,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                     File dirOut7;
                                                     if (doSameTenancy) {
                                                         dirOut7 = new File(dirOut6,
-                                                                Strings.SHBE_Strings.sIncludeSameTenancy);
+                                                                Env.SHBE_Env.Strings.sIncludeSameTenancy);
                                                     } else {
                                                         dirOut7 = new File(dirOut6,
-                                                                Strings.SHBE_Strings.sNotIncludeSameTenancy);
+                                                                Env.SHBE_Env.Strings.sNotIncludeSameTenancy);
                                                     }
                                                     Iterator<Boolean> iteB6;
                                                     iteB6 = b.iterator();
@@ -622,10 +622,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                     File dirOut7;
                                                     if (doSameTenancy) {
                                                         dirOut7 = new File(dirOut6,
-                                                                Strings.SHBE_Strings.sIncludeSameTenancy);
+                                                                Env.SHBE_Env.Strings.sIncludeSameTenancy);
                                                     } else {
                                                         dirOut7 = new File(dirOut6,
-                                                                Strings.SHBE_Strings.sNotIncludeSameTenancy);
+                                                                Env.SHBE_Env.Strings.sNotIncludeSameTenancy);
                                                     }
                                                     Iterator<Boolean> iteB6;
                                                     iteB6 = b.iterator();
@@ -786,9 +786,9 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                         doSameTenancy = iteB7.next();
                                                         File dirOut8;
                                                         if (doSameTenancy) {
-                                                            dirOut8 = new File(dirOut7, Strings.SHBE_Strings.sIncludeSameTenancy);
+                                                            dirOut8 = new File(dirOut7, Env.SHBE_Env.Strings.sIncludeSameTenancy);
                                                         } else {
-                                                            dirOut8 = new File(dirOut7, Strings.SHBE_Strings.sNotIncludeSameTenancy);
+                                                            dirOut8 = new File(dirOut7, Env.SHBE_Env.Strings.sNotIncludeSameTenancy);
                                                         }
                                                         if (grouped) {
                                                             doSumat(dirIn6, dirOut8, include, includeKey,
@@ -810,10 +810,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                         File dirOut8;
                                                         if (doSameTenancy) {
                                                             dirOut8 = new File(dirOut7,
-                                                                    Strings.SHBE_Strings.sIncludeSameTenancy);
+                                                                    Env.SHBE_Env.Strings.sIncludeSameTenancy);
                                                         } else {
                                                             dirOut8 = new File(dirOut7,
-                                                                    Strings.SHBE_Strings.sNotIncludeSameTenancy);
+                                                                    Env.SHBE_Env.Strings.sNotIncludeSameTenancy);
                                                         }
                                                         if (grouped) {
                                                             doSumat(dirIn6, dirOut8, include, includeKey,
@@ -886,10 +886,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                         File dirOut8;
                                                         if (doSameTenancy) {
                                                             dirOut8 = new File(dirOut7,
-                                                                    Strings.SHBE_Strings.sIncludeSameTenancy);
+                                                                    Env.SHBE_Env.Strings.sIncludeSameTenancy);
                                                         } else {
                                                             dirOut8 = new File(dirOut7,
-                                                                    Strings.SHBE_Strings.sNotIncludeSameTenancy);
+                                                                    Env.SHBE_Env.Strings.sNotIncludeSameTenancy);
                                                         }
                                                         if (grouped) {
                                                             doSumat(dirIn6, dirOut8, include, includeKey,
@@ -911,10 +911,10 @@ public class DW_LineGraph extends Generic_LineGraph {
                                                         File dirOut8;
                                                         if (doSameTenancy) {
                                                             dirOut8 = new File(dirOut7,
-                                                                    Strings.SHBE_Strings.sIncludeSameTenancy);
+                                                                    Env.SHBE_Env.Strings.sIncludeSameTenancy);
                                                         } else {
                                                             dirOut8 = new File(dirOut7,
-                                                                    Strings.SHBE_Strings.sNotIncludeSameTenancy);
+                                                                    Env.SHBE_Env.Strings.sNotIncludeSameTenancy);
                                                         }
                                                         if (grouped) {
                                                             doSumat(dirIn6, dirOut8, include, includeKey,

@@ -1965,9 +1965,9 @@ public class DW_TenancyChangesUO extends DW_Object {
         TreeMap<String, ArrayList<Integer>> includes;
         includes = SHBE_Handler.getIncludes();
         ArrayList<Integer> MonthlyUO;
-        MonthlyUO = includes.get(Strings.SHBE_Strings.sIncludeMonthlySinceApril2013);
+        MonthlyUO = includes.get(Env.SHBE_Env.Strings.sIncludeMonthlySinceApril2013);
         ArrayList<Integer> All;
-        All = includes.get(Strings.SHBE_Strings.sIncludeAll);
+        All = includes.get(Env.SHBE_Env.Strings.sIncludeAll);
         ArrayList<Integer> NotMonthlyUO;
         NotMonthlyUO = new ArrayList<>();
         NotMonthlyUO.addAll(All);

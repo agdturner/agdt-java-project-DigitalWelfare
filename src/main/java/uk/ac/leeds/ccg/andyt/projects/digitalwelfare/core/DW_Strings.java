@@ -21,7 +21,6 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core;
 import java.util.ArrayList;
 import java.util.HashSet;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
 
 /**
  * A class for holding all Strings used in the DigitalWelfare project. It is
@@ -31,8 +30,6 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
  * @author geoagdt
  */
 public class DW_Strings extends Generic_Strings {
-
-    public final SHBE_Strings SHBE_Strings;
 
     /**
      * Short code for BinaryFileExtension.
@@ -540,9 +537,7 @@ public class DW_Strings extends Generic_Strings {
 //     * Short code for UnderOccupied.
 //     */
 //    public final String sUO = "UO";
-    public DW_Strings() {
-        SHBE_Strings = new SHBE_Strings();
-    }
+    public DW_Strings() {}
 
     /**
      * For getting an {@code ArrayList<String>} of PaymentTypes.

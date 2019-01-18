@@ -99,13 +99,13 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         levels.add(Strings.sParliamentaryConstituency);
         levels.add(Strings.sStatisticalWard);
         includes = SHBE_Handler.getIncludes();
-//            includes.remove(Strings.SHBE_Strings.sIncludeAll);
-//            includes.remove(Strings.SHBE_Strings.sIncludeYearly);
-//            includes.remove(Strings.SHBE_Strings.sInclude6Monthly);
-//            includes.remove(Strings.SHBE_Strings.sInclude3Monthly);
-//            includes.remove(Strings.SHBE_Strings.sIncludeMonthlySinceApril2013);
-//            includes.remove(Strings.SHBE_Strings.sIncludeMonthly);
-        PTs = Strings.SHBE_Strings.getPaymentTypes();
+//            includes.remove(Env.SHBE_Env.Strings.sIncludeAll);
+//            includes.remove(Env.SHBE_Env.Strings.sIncludeYearly);
+//            includes.remove(Env.SHBE_Env.Strings.sInclude6Monthly);
+//            includes.remove(Env.SHBE_Env.Strings.sInclude3Monthly);
+//            includes.remove(Env.SHBE_Env.Strings.sIncludeMonthlySinceApril2013);
+//            includes.remove(Env.SHBE_Env.Strings.sIncludeMonthly);
+        PTs = Env.SHBE_Env.Strings.getPaymentTypes();
 //            PTs.remove(Strings.sPaymentTypeAll);
 //            PTs.remove(Strings.sPaymentTypeIn);
 //            PTs.remove(Strings.sPaymentTypeSuspended);
@@ -127,7 +127,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         PTsIte = PTs.iterator();
         while (PTsIte.hasNext()) {
             PT = PTsIte.next();
-            includeName = Strings.SHBE_Strings.sIncludeAll;
+            includeName = Env.SHBE_Env.Strings.sIncludeAll;
             outDir1 = new File(
                     outDir,
                     PT);

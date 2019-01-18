@@ -74,7 +74,7 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
 //        includes.remove(Strings.sIncludeStartEndSinceApril2013);
 //        includes.remove(Strings.sIncludeMonthly);
         //includes.remove(Strings.sIncludeApril2013May2013);
-        PTs = Strings.SHBE_Strings.getPaymentTypes();
+        PTs = Env.SHBE_Env.Strings.getPaymentTypes();
 //        PTs.remove(Strings.sPaymentTypeAll); // No longer a PT
 //        PTs.remove(Strings.sPaymentTypeIn);
 //        PTs.remove(Strings.sPaymentTypeSuspended);

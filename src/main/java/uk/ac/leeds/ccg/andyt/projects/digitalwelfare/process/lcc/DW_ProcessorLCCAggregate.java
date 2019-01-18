@@ -104,7 +104,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         HashMap<Boolean, ArrayList<Integer>> regulatedGroups;
         HashMap<Boolean, ArrayList<Integer>> unregulatedGroups;
 
-        PTs = Strings.SHBE_Strings.getPaymentTypes();
+        PTs = Env.SHBE_Env.Strings.getPaymentTypes();
 //            PTs.remove(Strings.sPaymentTypeAll);
 //            PTs.remove(Strings.sPaymentTypeIn);
 //            PTs.remove(Strings.sPaymentTypeSuspended);
@@ -602,11 +602,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (reportTenancyTransitionBreaks) {
             dirOut2 = new File(
                     dirOut2,
-                    Strings.SHBE_Strings.sIncludingTenancyTransitionBreaks);
+                    Env.SHBE_Env.Strings.sIncludingTenancyTransitionBreaks);
         } else {
             dirOut2 = new File(
                     dirOut2,
-                    Strings.SHBE_Strings.sIncludingTenancyTransitionBreaksNo);
+                    Env.SHBE_Env.Strings.sIncludingTenancyTransitionBreaksNo);
         }
         dirOut2.mkdirs();
         File f;

@@ -1949,10 +1949,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         dirOut2 = new File(dirOut, "Frequencies");
         if (reportTenancyTransitionBreaks) {
             dirOut2 = new File(dirOut2,
-                    Strings.SHBE_Strings.sIncludingTenancyTransitionBreaks);
+                    Env.SHBE_Env.Strings.sIncludingTenancyTransitionBreaks);
         } else {
             dirOut2 = new File(dirOut2,
-                    Strings.SHBE_Strings.sIncludingTenancyTransitionBreaksNo);
+                    Env.SHBE_Env.Strings.sIncludingTenancyTransitionBreaksNo);
         }
         dirOut2.mkdirs();
         File f;

@@ -50,10 +50,10 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
     protected DW_ProcessorLCC() {
     }
 
-    public DW_ProcessorLCC(DW_Environment env) {
-        super(env);
-        SHBE_Handler = env.getSHBE_Handler();
-        UO_Data = env.getUO_Data();
+    public DW_ProcessorLCC(DW_Environment e) {
+        super(e);
+        SHBE_Handler = e.getSHBE_Handler();
+        UO_Data = e.getUO_Data();
         SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
         ClaimIDToClaimRefLookup = SHBE_Handler.getClaimIDToClaimRefLookup();
     }
@@ -106,9 +106,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
          * in that some parts have to have been run before others will produce 
          * results as expected/desired.
          */
-        RunAllFromScratch = true;
-//        RunAllFromScratch = false;
-//        RunAllFromUpdate = false;
+//        RunAllFromScratch = true;
+        RunAllFromScratch = false;
+        RunAllFromUpdate = false;
         if (!RunAllFromScratch) {
             if (!RunAllFromUpdate) {
 //                // Choose which bits to run
@@ -116,11 +116,11 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 ////                doLoadNewONSPDFromSource = true;
 //                doLoadAllSHBEFromSource = true;
 ////                doLoadNewSHBEFromSource = true;
-                doLoadSHBE = true;
+//                doLoadSHBE = true;
 ////                doPostcodeCheckLatest = true;
 ////                doPostcodeCheck = true;
 //                doLoadUnderOccupancyFromSource = true;
-                doLoadUnderOccupancy = true;
+//                doLoadUnderOccupancy = true;
                 doLCCSummary = true;
                 doRentArrears = true;
 //                doRentArrearsNewData = true;

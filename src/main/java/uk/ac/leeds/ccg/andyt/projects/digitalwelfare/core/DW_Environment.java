@@ -487,10 +487,8 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                 int n;
                 n = CouncilUOSets.size() + RSLUOSets.size();
                 //logO("Number of UnderOccupancy data sets loaded " + n);
-                int numberOfInputFiles;
-                numberOfInputFiles = UO_Handler.getNumberOfInputFiles();
                 //logO("Number of Input Files " + numberOfInputFiles);
-                if (n != numberOfInputFiles) {
+                if (n != UO_Handler.getNumberOfInputFiles()) {
                     logE("Warning, there are some UnderOccupancy Data that have not been loaded.");
                 }
             } else {

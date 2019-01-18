@@ -35,9 +35,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
  */
 public class DW_Files extends Generic_Files {
 
-    private ONSPD_Files ONSPD_Files;
-    private SHBE_Files SHBE_Files;
-
     /**
      * For storing the input AdviceLeeds data directory inside
      * <code>inputDir</code>.
@@ -99,12 +96,6 @@ public class DW_Files extends Generic_Files {
     private File outputSHBEPlotsDir;
     private File outputAdviceLeedsTablesDir;
     private File outputUnderOccupiedDir;
-
-    public DW_Files(DW_Strings s, ONSPD_Files of, SHBE_Files sf) {
-        super(s);
-        ONSPD_Files = of;
-        SHBE_Files = sf;
-    }
 
     public DW_Files(DW_Strings s) {
         super(s);
@@ -640,31 +631,4 @@ public class DW_Files extends Generic_Files {
         return getStrings().sBinaryFileExtension;
     }
 
-    /**
-     * @return the ONSPD_Files
-     */
-    public ONSPD_Files getONSPD_Files() {
-        return ONSPD_Files;
-    }
-
-    /**
-     * @param ONSPD_Files the ONSPD_Files to set
-     */
-    public void setONSPD_Files(ONSPD_Files ONSPD_Files) {
-        this.ONSPD_Files = ONSPD_Files;
-    }
-
-    /**
-     * @return the SHBE_Files
-     */
-    public SHBE_Files getSHBE_Files() {
-        return SHBE_Files;
-    }
-
-    /**
-     * @param SHBE_Files the SHBE_Files to set
-     */
-    public void setSHBE_Files(SHBE_Files SHBE_Files) {
-        this.SHBE_Files = SHBE_Files;
-    }
 }

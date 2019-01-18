@@ -782,7 +782,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         tDW_SHBE_Handler = Env.getSHBE_Handler();
 
         ArrayList<String> paymentTypes;
-        paymentTypes = Strings.SHBE_Strings.getPaymentTypes();
+        paymentTypes = Env.SHBE_Env.Strings.getPaymentTypes();
 //        paymentTypes.remove(SHBE_Handler.sAllPT);
 //        paymentTypes.remove(SHBE_Handler.sInPayment);
 //        paymentTypes.remove(SHBE_Handler.sSuspended);
