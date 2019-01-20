@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -48,8 +49,6 @@ public final class DW_RentArrearsUO extends DW_Object {
      */
     // For convenience.
     public transient SHBE_Handler SHBE_Handler;
-    public transient DW_Strings Strings;
-    public transient DW_Files Files;
     public transient DW_UO_Data UO_Data;
 
     public HashMap<SHBE_ID, DW_Claim> ClaimData;
@@ -57,8 +56,6 @@ public final class DW_RentArrearsUO extends DW_Object {
     public DW_RentArrearsUO(DW_Environment env) {
         super(env);
         this.SHBE_Handler = env.getSHBE_Handler();
-        this.Strings = env.getStrings();
-        this.Files = env.getFiles();
         this.UO_Data = env.getUO_Data();
         initClaimData();
     }
@@ -204,7 +201,7 @@ public final class DW_RentArrearsUO extends DW_Object {
                     } else {
                         if (CouncilUOSet.getClaimIDs().contains(ClaimID)) {
                             DW_Claim.InUO.put(i, true);
-                            Env.logO(Env.DEBUG_Level_FINE,
+                            Env.logO(Generic_Environment.DEBUG_Level_FINE,
                                     "ClaimID " + ClaimID + 
                                             " Odd case where UO data exists, but claim in SHBE does not.");
                         } else {

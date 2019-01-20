@@ -43,7 +43,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 public class DW_UO_Handler extends DW_Object {
 
     /**
-     * For convenience this is a reference to Env.Files.
+     * For convenience.
      */
     private HashMap<SHBE_ID, String> ClaimIDToClaimRefLookup;
     private HashMap<String, SHBE_ID> ClaimRefToClaimIDLookup;
@@ -55,11 +55,9 @@ public class DW_UO_Handler extends DW_Object {
 
     public DW_UO_Handler(DW_Environment env) {
         super(env);
-        this.Files = env.getFiles();
-        this.Strings = env.getStrings();
-        SHBE_Handler sh = env.getSHBE_Handler();
-        ClaimIDToClaimRefLookup = sh.getClaimIDToClaimRefLookup();
-        ClaimRefToClaimIDLookup = sh.getClaimRefToClaimIDLookup();
+        SHBE_Handler h = env.getSHBE_Handler();
+        ClaimIDToClaimRefLookup = h.getClaimIDToClaimRefLookup();
+        ClaimRefToClaimIDLookup = h.getClaimRefToClaimIDLookup();
     }
 
     public HashSet<String> getRecordTypes() {
@@ -248,7 +246,7 @@ public class DW_UO_Handler extends DW_Object {
      * Do we really want to store these?
      *
      * @return Object[] result where: null null null null null null null null
-     * null null     {@code 
+     * null null null null null null null null null     {@code 
      * result[0] TreeMap<String, String> councilFilenames (year_Month, filename)
      * result[1] TreeMap<String, String> RSLFilenames (year_Month, filename)
      * }
@@ -301,99 +299,62 @@ public class DW_UO_Handler extends DW_Object {
             yearAll = "2013 14";
             //councilFilenames.add(yearAll + underOccupiedReportForUniversityString + "Year Start" + councilEndFilename);
             //registeredSocialLandlordFilenames.add(yearAll + underOccupiedReportForUniversityString + "Year Start" + RSLEndFilename);
-            putFilenames(
-                    yearAll,
-                    underOccupiedReportForUniversityString,
-                    councilEndFilename,
-                    RSLEndFilename,
-                    CouncilFilenames,
-                    RSLFilenames,
-                    1,
-                    12);
+            putFilenames(yearAll, underOccupiedReportForUniversityString,
+                    councilEndFilename, RSLEndFilename, CouncilFilenames,
+                    RSLFilenames, 1, 12);
             yearAll = "2014 15";
-            putFilenames(
-                    yearAll,
-                    underOccupiedReportForUniversityString,
-                    councilEndFilename,
-                    RSLEndFilename2,
-                    CouncilFilenames,
-                    RSLFilenames,
-                    1,
-                    12);
+            putFilenames(yearAll, underOccupiedReportForUniversityString,
+                    councilEndFilename, RSLEndFilename2, CouncilFilenames,
+                    RSLFilenames, 1, 12);
             yearAll = "2015 16";
-            putFilenames(
-                    yearAll,
-                    underOccupiedReportForUniversityString,
-                    councilEndFilename,
-                    RSLEndFilename2,
-                    CouncilFilenames,
-                    RSLFilenames,
-                    1,
-                    12);
+            putFilenames(yearAll, underOccupiedReportForUniversityString,
+                    councilEndFilename, RSLEndFilename2, CouncilFilenames,
+                    RSLFilenames, 1, 12);
             yearAll = "2016 17";
-            putFilenames(
-                    yearAll,
-                    underOccupiedReportForUniversityString,
-                    councilEndFilename,
-                    RSLEndFilename2,
-                    CouncilFilenames,
-                    RSLFilenames,
-                    1,
-                    12);
+            putFilenames(yearAll, underOccupiedReportForUniversityString,
+                    councilEndFilename, RSLEndFilename2, CouncilFilenames,
+                    RSLFilenames, 1, 12);
             yearAll = "2017 18";
-            putFilenames(
-                    yearAll,
-                    underOccupiedReportForUniversityString,
-                    councilEndFilename,
-                    RSLEndFilename2,
-                    CouncilFilenames,
-                    RSLFilenames,
-                    1,
-                    6);// This number needs increasing as there are more datasets....
+            putFilenames(yearAll, underOccupiedReportForUniversityString,
+                    councilEndFilename, RSLEndFilename2, CouncilFilenames,
+                    RSLFilenames, 1, 9); // The number 6 needs increasing as there are more datasets....
         }
         return inputFilenames;
     }
 
-    protected static void putFilenames(
-            String yearAll,
+    protected static void putFilenames(String yearAll,
             String underOccupiedReportForUniversityString,
-            String councilEndFilename,
-            String RSLEndFilename2,
+            String councilEndFilename, String RSLEndFilename2,
             TreeMap<ONSPD_YM3, String> CouncilFilenames,
             TreeMap<ONSPD_YM3, String> RSLFilenames,
-            int minMonth,
-            int maxMonth) {
+            int minMonth, int maxMonth) {
         for (int i = minMonth; i <= maxMonth; i++) {
-            String year = getYear(yearAll, i);
-            String month = getMonth3(i);
-            String year_Month = year + "_" + month;
+            String y = getYear(yearAll, i);
+            String m = getMonth3(i);
+            String ym = y + "_" + m;
             String s;
             s = yearAll + underOccupiedReportForUniversityString + "Month " + i;
 //            String filename;
 //            filename = s + councilEndFilename;
 //            Env.getFiles().getInputUnderOccupiedDir();
-            CouncilFilenames.put(
-                    new ONSPD_YM3(year_Month),
-                    s + councilEndFilename);
-            RSLFilenames.put(
-                    new ONSPD_YM3(year_Month),
-                    s + RSLEndFilename2);
+            CouncilFilenames.put(new ONSPD_YM3(ym), s + councilEndFilename);
+            RSLFilenames.put(new ONSPD_YM3(ym), s + RSLEndFilename2);
         }
     }
 
     protected static String getYear(String yearAll, int i) {
-        String result;
+        String r;
         String[] split;
         split = yearAll.split(" ");
         if (i < 10) {
-            result = split[0];
+            r = split[0];
         } else {
-            int year;
-            year = Integer.valueOf(split[0]);
-            year++;
-            result = Integer.toString(year);
+            int y;
+            y = Integer.valueOf(split[0]);
+            y++;
+            r = Integer.toString(y);
         }
-        return result;
+        return r;
     }
 
     // The first month of this year sequence is April (financial year)

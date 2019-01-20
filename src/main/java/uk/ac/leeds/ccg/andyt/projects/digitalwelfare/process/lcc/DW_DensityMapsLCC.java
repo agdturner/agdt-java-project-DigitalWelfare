@@ -81,7 +81,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
     public DW_DensityMapsLCC(DW_Environment de) {
         super(de);
-        ve = de.getVector_Environment();
+        ve = de.Vector_Env;
         Geotools = de.getGeotools();
     }
 
@@ -1201,7 +1201,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         Grids_GridDouble g0 = initiliseGrid(grid);
 
         TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> lookups;
-        lookups = Env.ONSPD_Env.getONSPDlookups();
+        lookups = Env.SHBE_Env.ONSPD_Env.getONSPDlookups();
         TreeMap<String, ONSPD_Point> lookup;
         lookup = lookups.get("Unit").get(Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 

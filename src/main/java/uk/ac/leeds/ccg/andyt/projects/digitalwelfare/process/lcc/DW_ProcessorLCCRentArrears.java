@@ -59,8 +59,6 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         } else if (f.exists()) {
             RentArrearsUO = (DW_RentArrearsUO) Generic_IO.readObject(f);
             RentArrearsUO.SHBE_Handler = Env.getSHBE_Handler();
-            RentArrearsUO.Strings = Env.getStrings();
-            RentArrearsUO.Files = Env.getFiles();
             RentArrearsUO.UO_Data = Env.getUO_Data();
 // The following code was an attempt to automatically detect if a reload was 
 // necessary and simplify things a bit, but I didn't quite get it to work. The

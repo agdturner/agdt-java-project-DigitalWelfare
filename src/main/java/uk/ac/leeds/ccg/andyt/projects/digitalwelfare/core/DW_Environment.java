@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
@@ -59,19 +60,16 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * Logging levels.
      */
     public int DEBUG_Level;
-    public static final int DEBUG_Level_FINEST = 0;
-    public static final int DEBUG_Level_FINE = 1;
-    public static final int DEBUG_Level_NORMAL = 2;
 
     // For convenience
-    public DW_Strings Strings;
-    public DW_Files Files;
-    public transient ONSPD_Environment ONSPD_Env;
-    public transient SHBE_Environment SHBE_Env;
-    public transient Grids_Environment Grids_Env;
-    public transient Vector_Environment Vector_Env;
+    public final DW_Strings Strings;
+    public final DW_Files Files;
+    public final transient Generic_Environment ge;
+    public final transient SHBE_Environment SHBE_Env;
+    public final transient Grids_Environment Grids_Env;
+    public final transient Vector_Environment Vector_Env;
     public transient DW_Geotools Geotools;
-    public ONSPD_Handler Postcode_Handler;
+    public transient ONSPD_Handler Postcode_Handler;
     public DW_UO_Handler UO_Handler;
     public DW_UO_Data UO_Data;
     public SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
@@ -79,18 +77,14 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public DW_Deprivation_DataHandler Deprivation_DataHandler;
     public SHBE_Handler SHBE_Handler;
 
-    public DW_Environment(int DEBUG_Level) {
+    public DW_Environment(Generic_Environment ge, int DEBUG_Level) {
+        this.ge = ge;
         this.DEBUG_Level = DEBUG_Level;
         this.Strings = new DW_Strings();
         this.Files = new DW_Files(Strings);
-    }
-
-    public DW_Environment(int DEBUG_Level, String directory) {
-        this.Directory = directory;
-        this.DEBUG_Level = DEBUG_Level;
-        this.Strings = new DW_Strings();
-        this.Files = new DW_Files(Strings);
-        Files.setDataDirectory(new File(directory));
+        SHBE_Env = new SHBE_Environment(ge, Generic_Environment.DEBUG_Level_NORMAL);
+        Grids_Env = new Grids_Environment(Files.getGeneratedGridsDir());
+        Vector_Env = new Vector_Environment();
     }
 
     public int getDefaultMaximumNumberOfObjectsPerDirectory() {
@@ -350,57 +344,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         }
     }
 
-    /**
-     * For returning an instance of DW_Strings for convenience.
-     *
-     * @return
-     */
-    public DW_Strings getStrings() {
-        if (Strings == null) {
-            Strings = new DW_Strings();
-        }
-        return Strings;
-    }
-
-    /**
-     * For returning an instance of DW_Files for convenience.
-     *
-     * @return
-     */
-    public DW_Files getFiles() {
-        if (Files == null) {
-            Files = new DW_Files(getStrings());
-        }
-        return Files;
-    }
-
-    public ONSPD_Environment getONSPD_Environment() {
-        if (ONSPD_Env == null) {
-            ONSPD_Env = new ONSPD_Environment(Files.getDataDir());
-        }
-        return ONSPD_Env;
-    }
-
-    /**
-     * For returning an instance of Grids_Environment for convenience.
-     *
-     * @return
-     */
-    public Grids_Environment getGrids_Environment() {
-        if (Grids_Env == null) {
-            Grids_Env = new Grids_Environment(Files.getGeneratedGridsDir());
-        }
-        return Grids_Env;
-    }
-
-    public Vector_Environment getVector_Environment() {
-        if (Vector_Env == null) {
-            Vector_Env = new Vector_Environment();
-            //ve = new Vector_Environment(df.getGeneratedVectorDir());
-        }
-        return Vector_Env;
-    }
-
     public DW_Geotools getGeotools() {
         if (Geotools == null) {
             Geotools = new DW_Geotools(this);
@@ -419,15 +362,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             UO_Handler = new DW_UO_Handler(this);
         }
         return UO_Handler;
-    }
-
-    /**
-     * {@code this.ONSPD_Handler = ONSPD_Handler;}
-     *
-     * @param Postcode_Handler The ONSPD_Handler to set.
-     */
-    public void setPostcode_Handler(ONSPD_Handler Postcode_Handler) {
-        this.Postcode_Handler = Postcode_Handler;
     }
 
     /**
@@ -506,9 +440,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      */
     public ONSPD_Handler getPostcode_Handler() {
         if (Postcode_Handler == null) {
-            ONSPD_Environment oe;
-            oe = new ONSPD_Environment(Files.getDataDir());
-            Postcode_Handler = new ONSPD_Handler(oe);
+            Postcode_Handler = SHBE_Env.ONSPD_Env.getHandler();
         }
         return Postcode_Handler;
     }

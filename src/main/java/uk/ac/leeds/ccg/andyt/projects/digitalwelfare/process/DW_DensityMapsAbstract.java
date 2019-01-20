@@ -37,15 +37,12 @@ import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Maps;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStats;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  *
@@ -55,8 +52,6 @@ public abstract class DW_DensityMapsAbstract extends DW_Object {
 
     // For Convenience
     protected DW_Maps Maps;
-    protected DW_Files Files;
-    protected DW_Strings Strings;
     protected ONSPD_Handler Postcode_Handler;
 
     protected Grids_Environment ge;
@@ -83,8 +78,6 @@ public abstract class DW_DensityMapsAbstract extends DW_Object {
     public DW_DensityMapsAbstract(DW_Environment de) {
         super(de);
         Maps = de.getMaps();
-        Strings = de.getStrings();
-        Files = de.getFiles();
         Postcode_Handler = de.getPostcode_Handler();
     }
 

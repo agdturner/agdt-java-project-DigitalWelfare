@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
@@ -1551,7 +1552,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                             TreeMap<String, Integer> unexpectedCounts;
                             unexpectedCounts = levelUnexpectedCounts.get(level);
                             if (!unexpectedCounts.isEmpty()) {
-                                if (Env.DEBUG_Level < Env.DEBUG_Level_NORMAL) {
+                                if (Env.DEBUG_Level < Generic_Environment.DEBUG_Level_NORMAL) {
                                     Env.logO("Unexpected Counts for:"
                                             + " Claimant Type " + claimantType
                                             + " Tenure " + TT

@@ -18,6 +18,8 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
+import java.io.File;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -48,19 +50,18 @@ public class DW_Processor extends DW_ProcessorAbstract {
                         + "Aborting.");
                 System.exit(0);
             } else {
-                DW_Environment env = new DW_Environment(
-                        Integer.valueOf(args[0]), args[1]);
-//                env.DEBUG_Level = DW_Environment.DEBUG_Level_FINEST;
-                env.DEBUG_Level = DW_Environment.DEBUG_Level_FINE;
-//                env.DEBUG_Level = DW_Environment.DEBUG_Level_NORMAL;
+                File dataDir = new File(args[1]);
+                Generic_Environment ge = new Generic_Environment(dataDir);
+                DW_Environment env = new DW_Environment(ge,
+                        Integer.valueOf(args[0]));
                 DW_Processor p;
                 p = new DW_Processor();
                 p.Env = env;
-                p.Strings = env.getStrings();
-                p.Files = env.getFiles();
-                p.Env.SHBE_Env = new SHBE_Environment(p.Files.getDataDir(), 
-                SHBE_Environment.DEBUG_Level_NORMAL);
-                p.Env.ONSPD_Env = new ONSPD_Environment(p.Files.getDataDir());
+                p.Strings = env.Strings;
+                p.Files = env.Files;
+//                p.Env.SHBE_Env = new SHBE_Environment(p.Files.getDataDir(), 
+//                SHBE_Environment.DEBUG_Level_NORMAL);
+//                p.Env.ONSPD_Env = new ONSPD_Environment(p.Files.getDataDir());
                 p.run();
             }
         } catch (Exception | Error e) {

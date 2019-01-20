@@ -137,7 +137,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
                 tLeedsAndNearNeighbouringLADCodes,
                 sdsf);
         File censusDataDirectory = new File(
-                env.getFiles().getInputCensus2011AttributeDataDir(level),
+                env.Files.getInputCensus2011AttributeDataDir(level),
                 tLeedsString);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
@@ -225,7 +225,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             DW_Shapefile tLevelDW_Shapefile) {
         TreeSet<String> result;
         File censusDataDirectory = new File(
-                env.getFiles().getInputCensus2011AttributeDataDir(level),
+                env.Files.getInputCensus2011AttributeDataDir(level),
                 area);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
@@ -307,12 +307,9 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             String area,
             String level) {
         File result;
-        result = new File(
-                Env.getFiles().getGeneratedPostcodeDir(),
+        result = new File(Env.Files.getGeneratedPostcodeDir(),
                 area + level + "PolyShapefile.shp");
-        result = new File(
-                result,
-                area + level + "PolyShapefile.shp");
+        result = new File(result, area + level + "PolyShapefile.shp");
         return result;
     }
 
@@ -365,24 +362,15 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             String area,
             String level) {
         File result;
-        File postcodeDataDirectory = new File(
-                Env.getFiles().getGeneratedPostcodeDir(),
-                area);
-        postcodeDataDirectory = new File(
-                postcodeDataDirectory,
-                level);
+        File postcodeDataDirectory = new File(Env.Files.getGeneratedPostcodeDir(), area);
+        postcodeDataDirectory = new File(postcodeDataDirectory, level);
         postcodeDataDirectory.mkdirs();
-        result = new File(
-                postcodeDataDirectory,
-                "AreaCodes.csv");
+        result = new File(postcodeDataDirectory, "AreaCodes.csv");
         return result;
     }
 
-    public static void writeAreaCodes(
-            File postcodeDataAreaCodesFile,
-            TreeSet<String> result,
-            String area,
-            String level) {
+    public static void writeAreaCodes(File postcodeDataAreaCodesFile,
+            TreeSet<String> result, String area, String level) {
         postcodeDataAreaCodesFile.getParentFile().mkdirs();
         PrintWriter pw = null;
         try {
@@ -410,15 +398,9 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             String area,
             String level) {
         TreeSet<String> result = null;
-        File postcodeDataDirectory = new File(
-                Env.getFiles().getGeneratedPostcodeDir(),
-                area);
-        postcodeDataDirectory = new File(
-                postcodeDataDirectory,
-                level);
-        File file = new File(
-                postcodeDataDirectory,
-                "AreaCodes.csv");
+        File postcodeDataDirectory = new File(Env.Files.getGeneratedPostcodeDir(), area);
+        postcodeDataDirectory = new File(postcodeDataDirectory, level);
+        File file = new File(postcodeDataDirectory, "AreaCodes.csv");
         if (file.exists()) {
             try {
                 BufferedReader br;

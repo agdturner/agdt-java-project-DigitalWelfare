@@ -166,10 +166,8 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         tDeprivationData = getDeprivation_Data();
         // Get postcode to LSOA lookup
         TreeMap<String, String> tLookupFromPostcodeToLSOACensusCode;
-        tLookupFromPostcodeToLSOACensusCode = getClaimPostcodeF_To_LevelCode_Map(Env,
-                "LSOA",
-                CensusYear,
-                YM3);
+        tLookupFromPostcodeToLSOACensusCode = getClaimPostcodeF_To_LevelCode_Map(
+                "LSOA", CensusYear, YM3);
         // Get postcode to level lookup
         TreeMap<String, String> tLookupFromPostcodeToCensusCode;
         if (level.equalsIgnoreCase("PostcodeDistrict")
@@ -178,10 +176,8 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
                 || level.equalsIgnoreCase("LSOA")) {
             tLookupFromPostcodeToCensusCode = tLookupFromPostcodeToLSOACensusCode;
         } else {
-            tLookupFromPostcodeToCensusCode = getClaimPostcodeF_To_LevelCode_Map(Env,
-                    level,
-                    CensusYear,
-                    YM3);
+            tLookupFromPostcodeToCensusCode = getClaimPostcodeF_To_LevelCode_Map(
+                    level, CensusYear, YM3);
         }
         TreeMap<Integer, Integer> deprivationClasses;
         deprivationClasses = Census_DeprivationDataHandler.getDeprivationClasses(
@@ -196,12 +192,9 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         year = "1213";
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         outputFilename = "Leeds CAB " + year;
-        Object[] allLeedsCABData1213 = processLeedsCABData(
-                filename,
-                outputFilename,
-                tDeprivationData,
-                tLookupFromPostcodeToCensusCode,
-                deprivationClasses);
+        Object[] allLeedsCABData1213 = processLeedsCABData(filename,
+                outputFilename, tDeprivationData,
+                tLookupFromPostcodeToCensusCode, deprivationClasses);
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData1213;
         //TreeMap<String, DW_Data_CAB2_Record> tLeedsCABData1213;
         tLeedsCABData1213 = (TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record>) allLeedsCABData1213[0];
@@ -221,15 +214,10 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         Q3Filename = "Q3.csv";
         Q4Filename = "Q4.csv";
         Object[] allChapeltownCABData1213;
-        allChapeltownCABData1213 = processChapeltownCABData(
-                year,
-                Q1Filename,
-                Q2Filename,
-                Q3Filename,
-                Q4Filename,
+        allChapeltownCABData1213 = processChapeltownCABData(year, Q1Filename,
+                Q2Filename, Q3Filename, Q4Filename,
                 tLookupFromPostcodeToCensusCode,
-                tLookupFromPostcodeToLSOACensusCode,
-                tDeprivationData,
+                tLookupFromPostcodeToLSOACensusCode, tDeprivationData,
                 deprivationClasses);
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData1213;
         tChapeltownCABData1213 = (TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record>) allChapeltownCABData1213[0];
@@ -1828,9 +1816,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             String filename,
             DW_Data_CAB2_Handler tCAB_DataRecord2_Handler,
             Object IDType) {
-        File dir = new File(
-                env.getFiles().getGeneratedAdviceLeedsDir(),
-                "LeedsCAB");
+        File dir = new File(                env.Files.getGeneratedAdviceLeedsDir(),                "LeedsCAB");
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> result;
         result = tCAB_DataRecord2_Handler.loadInputData(
                 dir, filename, IDType);

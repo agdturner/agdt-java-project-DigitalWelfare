@@ -1249,8 +1249,6 @@ public class DW_TenancyChangesUO extends DW_Object {
 
     public DW_TenancyChangesUO(DW_Environment env, boolean hoome) {
         this(env);
-        this.Strings = env.getStrings();
-        this.Files = env.getFiles();
         this.SHBE_Handler = env.getSHBE_Handler();
         this.SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
         //this.PostcodeToPostcodeIDLookup = tPostcodeToPostcodeIDLookup;

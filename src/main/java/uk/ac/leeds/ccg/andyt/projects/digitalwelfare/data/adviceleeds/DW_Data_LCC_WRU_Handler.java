@@ -57,15 +57,9 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
      * @return
      */
     public TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> loadInputData(
-            String filename,
-            Object IDType) {
-        File directory = new File(
-                Env.getFiles().getInputAdviceLeedsDir(),
-                "LCC_WRU");
-        return loadInputData(
-                directory,
-                filename,
-                IDType);
+            String filename,            Object IDType) {
+        File directory = new File(Env.Files.getInputAdviceLeedsDir(), "LCC_WRU");
+        return loadInputData(directory, filename, IDType);
     }
 
     /**
@@ -77,15 +71,11 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
      * @return
      */
     public TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> loadInputData(
-            File dir,
-            String filename,
-            Object IDType) {
+            File dir,            String filename,            Object IDType) {
         System.out.println("Loading " + filename);
         TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> result;
         result = new TreeMap<>();
-        File inputFile = new File(
-                dir,
-                filename);
+        File inputFile = new File(                dir,                filename);
         long RecordID = 0;
         int recordsLoaded = 0;
         int countOfAdditionalRecordsThatAreIgnored = 0;

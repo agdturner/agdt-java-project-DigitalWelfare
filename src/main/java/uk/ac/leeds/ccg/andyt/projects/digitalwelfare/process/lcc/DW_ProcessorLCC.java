@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
@@ -69,13 +70,15 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                         + "Aborting.");
                 System.exit(0);
             } else {
-                DW_Environment env = new DW_Environment(
-                        Integer.valueOf(args[0]),                        args[1]);
+                File dataDir = new File(args[1]);
+                Generic_Environment ge = new Generic_Environment(dataDir);
+                DW_Environment env = new DW_Environment(ge,
+                        Integer.valueOf(args[0]));
                 DW_ProcessorLCC p;
                 p = new DW_ProcessorLCC();
                 p.Env = env;
-                p.Files = env.getFiles();
-                p.Strings = env.getStrings();
+                p.Files = env.Files;
+                p.Strings = env.Strings;
                 p.run();
                 /**
                  * Not done this way as this would first load UnderOccupancy
@@ -219,8 +222,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             }
             File logDir = initLogs(Env.DEBUG_Level, processName, range);
             // Process
-            Postcode_Handler = new ONSPD_Handler(Env.getONSPD_Environment());
-            Env.setPostcode_Handler(Postcode_Handler);
+            Postcode_Handler = Env.SHBE_Env.ONSPD_Env.getHandler();
             Postcode_Handler.run(logDir);
             // Close logs
             closeLogs(processName);
@@ -302,7 +304,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             Env.setSHBE_Handler(SHBE_Handler);
             SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
             File dir;
-            dir = Env.getFiles().getGeneratedSHBEDir();
+            dir = Env.Files.getGeneratedSHBEDir();
             ONSPD_YM3 YM3;
             for (String SHBEFilename : SHBEFilenames) {
                 YM3 = SHBE_Handler.getYM3(SHBEFilename);
@@ -677,9 +679,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
      * @return A set of look ups from postcodes to each level input in levels.
      */
     public TreeMap<String, TreeMap<String, String>> getClaimPostcodeF_To_LevelCode_Maps(
-            ArrayList<String> levels,
-            ONSPD_YM3 YM3,
-            int CensusYear) {
+            ArrayList<String> levels, ONSPD_YM3 YM3, int CensusYear) {
         TreeMap<String, TreeMap<String, String>> result;
         result = new TreeMap<>();
         Iterator<String> ite = levels.iterator();
@@ -687,7 +687,8 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             String level = ite.next();
             //            Iterate over YM3
             TreeMap<String, String> ClaimPostcodeF_To_LevelCode_Map;
-            ClaimPostcodeF_To_LevelCode_Map = getClaimPostcodeF_To_LevelCode_Map(Env, level, CensusYear, YM3);
+            ClaimPostcodeF_To_LevelCode_Map = getClaimPostcodeF_To_LevelCode_Map(
+                    level, CensusYear, YM3);
             result.put(level, ClaimPostcodeF_To_LevelCode_Map);
         }
         return result;

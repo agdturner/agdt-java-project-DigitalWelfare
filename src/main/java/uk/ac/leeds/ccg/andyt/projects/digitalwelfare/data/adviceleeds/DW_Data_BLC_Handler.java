@@ -60,12 +60,9 @@ public class DW_Data_BLC_Handler extends DW_Data_AbstractRecord {
         System.out.println("Loading " + filename);
         TreeMap<String, DW_Data_BLC_Record> result;
         result = new TreeMap<>();
-        File directory = new File(
-                Env.getFiles().getInputAdviceLeedsDir(),
+        File directory = new File(                Env.Files.getInputAdviceLeedsDir(),
                 "BurleyLodgeCentre");
-        File inputFile = new File(
-                directory,
-                filename);
+        File inputFile = new File(                directory,                filename);
         try {
             BufferedReader br;
             br = Generic_IO.getBufferedReader(inputFile);

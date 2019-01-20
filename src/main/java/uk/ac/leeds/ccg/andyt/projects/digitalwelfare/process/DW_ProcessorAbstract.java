@@ -19,29 +19,22 @@ import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 
 public abstract class DW_ProcessorAbstract extends DW_Object {
 
     protected transient ONSPD_Handler Postcode_Handler;
-    protected transient DW_Files Files;
-    protected transient DW_Strings Strings;
-
     private transient ArrayList<Boolean> b;
 
     public DW_ProcessorAbstract() {
     }
 
-    public DW_ProcessorAbstract(DW_Environment env) {
-        super(env);
-        this.Postcode_Handler = env.getPostcode_Handler();
-        this.Files = env.getFiles();
-        this.Strings = env.getStrings();
+    public DW_ProcessorAbstract(DW_Environment e) {
+        super(e);
+        this.Postcode_Handler = e.getPostcode_Handler();
     }
 
     public ArrayList<Boolean> getArrayListBoolean() {
@@ -60,76 +53,26 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
      * @param filename The name of the file to be initialised for writing to.
      * @return PrintWriter for pushing output to.
      */
-    protected PrintWriter init_OutputTextFilePrintWriter(
-            File dir,
+    protected PrintWriter init_OutputTextFilePrintWriter(File dir,
             String filename) {
-        PrintWriter result = null;
-        File outputTextFile = new File(
-                dir,
-                filename);
+        PrintWriter r = null;
+        File f = new File(dir, filename);
         try {
-            outputTextFile.createNewFile();
-        } catch (IOException ex) {
-            Logger.getLogger(DW_ProcessorAbstract.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            result = new PrintWriter(outputTextFile);
-
+            f.createNewFile();
+            r = new PrintWriter(f);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(DW_ProcessorAbstract.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DW_ProcessorAbstract.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DW_ProcessorAbstract.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return result;
+        return r;
     }
 
-    /**
-     * @TODO Adapt to use the ONSPD for a particular time for the postcode look
-     * up returned.
-     * @param env
-     * @param level If level is "OA" returns OutputArea codes. If level is
-     * "LSOA" returns Lower-layer Super Output Area codes. If level is "MSOA"
-     * returns Middle-layer Super Output Area codes.
-     * @param year If year = 2011 returns 2011 census code. If year = 2001
-     * returns 2001 census code.
-     * @return TreeMap<String, String> result where:--------------------------
-     * Keys are postcodes; values are census area codes.
-     */
-//    public TreeMap<String, String> getClaimPostcodeF_To_LevelCode_Map(
-//            DW_Environment Env,
-//            String level,
-//            int year) {
-//        TreeMap<String, String> result;
-//        String outputFilename;
-//        outputFilename = "PostcodeTo" + level + year
-//                + "LookUp_TreeMap_String_Strings" + Strings.sBinaryFileExtension;
-//        File outFile = new File(
-//                DW_Files.getGeneratedONSPDDir(),
-//                outputFilename);
-//        if (!outFile.exists()) {
-//            File inputONSPDDir = new File(
-//                    DW_Files.getInputONSPDDir(),
-//                    "ONSPD_NOV_2013/Data");
-//            File tONSPD_NOV_2013DataFile = new File(
-//                    inputONSPDDir,
-//                    "ONSPD_NOV_2013_UK.csv");
-//            result = initLookupFromPostcodeToCensusCodes(
-//                    tONSPD_NOV_2013DataFile,
-//                    outFile,
-//                    level,
-//                    year);
-//        } else {
-//            Object o = Generic_IO.readObject(outFile);
-//            result = (TreeMap<String, String>) o;
-//        }
-//        return result;
-//    }
     /**
      * @param YM3
      * @param CensusYear
      * @TODO Adapt to use the ONSPD for a particular time for the postcode look
      * up returned.
-     * @param env
      * @param level If level is "OA" returns OutputArea codes. If level is
      * "LSOA" returns Lower-layer Super Output Area codes. If level is "MSOA"
      * returns Middle-layer Super Output Area codes.
@@ -137,89 +80,54 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
      * Keys are postcodes; values are census area codes.
      */
     public TreeMap<String, String> getClaimPostcodeF_To_LevelCode_Map(
-            DW_Environment env,
-            String level,
-            int CensusYear,
-            ONSPD_YM3 YM3) {
+            String level, int CensusYear, ONSPD_YM3 YM3) {
         ONSPD_YM3 YM3Nearest;
         YM3Nearest = Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
-        TreeMap<String, String> result;
+        TreeMap<String, String> r;
         String outputFilename;
         File dir;
-//        String[] YM3NearestSplit;
-//        YM3NearestSplit = YM3Nearest.split("_");
-//        HashSet CensusAreaAggregations;
-//        CensusAreaAggregations = Strings.getCensusAreaAggregations();
-//        if (CensusAreaAggregations.contains(level)) {
-//            int year = Integer.valueOf(YM3NearestSplit[0]);
-//            int month = Integer.valueOf(Generic_Time.getMonthNumber(YM3NearestSplit[1]));
-//            String yearString;
-//            if (year < 2011 || (year == 2011 && month < 4)) {
-//                yearString = "2001";
-//            } else {
-//                yearString = "2011";
-//            }
-//            outputFilename = "PostcodeTo" + level + "_" + yearString
-//                    + "_LookUp_TreeMap_String_Strings" + Strings.sBinaryFileExtension;
-//            dir = new File(
-//                    DW_Files.getGeneratedONSPDDir(),
-//                    yearString);
-//        } else {
-        //String month = YM3NearestSplit[1];
         outputFilename = "PostcodeTo" + level + "_" + YM3Nearest
-                + "_LookUp_TreeMap_String_Strings" + Strings.sBinaryFileExtension;
-                //+ "_LookUp_TreeMap_ONSPD_YM3__Strings" + Strings.sBinaryFileExtension;
-        dir = new File(
-                Files.getGeneratedONSPDDir(),
-                YM3Nearest.toString());
+                + "_LookUp_TreeMap_String_Strings"
+                + Strings.sBinaryFileExtension;
+        dir = new File(Files.getGeneratedONSPDDir(), YM3Nearest.toString());
 //        }
-        File outfile = new File(
-                dir,
-                outputFilename);
+        File outfile = new File(dir, outputFilename);
         if (!outfile.exists()) {
             dir.mkdirs();
-            File infile = Env.ONSPD_Env.Files.getInputONSPDFile(YM3Nearest);
-            result = initLookupFromPostcodeToCensusCodes(
-                    infile,
-                    outfile,
-                    level,
-                    CensusYear,
-                    YM3Nearest);
+            File infile = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFile(YM3Nearest);
+            r = initLookupFromPostcodeToCensusCodes(infile, outfile, level,
+                    CensusYear, YM3Nearest);
         } else {
-            Object o = Generic_IO.readObject(outfile);
-            result = (TreeMap<String, String>) o;
+            r = (TreeMap<String, String>) Generic_IO.readObject(outfile);
         }
-        return result;
+        return r;
     }
 
     /**
-     * Keys are postcodes; values are census codes:-----------------------------
+     * Keys are postcodes; values are census codes:
+     *
+     * @param infile
+     * @param outFile
+     * @param level
+     * @param CensusYear // Expecting 2001 or 2011.
+     * @param YM3 // Expecting the nearest YM3 that is wanted.
+     * @return
      */
     private TreeMap<String, String> initLookupFromPostcodeToCensusCodes(
-            File infile,
-            File outFile,
-            String level,
-            int CensusYear, // must be 2001 or 2011.
-            ONSPD_YM3 YM3NearestFormat) {
-        TreeMap<String, String> result;
-        result = Postcode_Handler.getPostcodeUnitCensusCodeLookup(
-                infile,
-                outFile,
-                level,
-                CensusYear,
-                YM3NearestFormat);
-        return result;
+            File infile, File outFile, String level, int CensusYear,
+            ONSPD_YM3 YM3) {
+        TreeMap<String, String> r;
+        r = Postcode_Handler.getPostcodeUnitCensusCodeLookup(infile, outFile,
+                level, CensusYear, YM3);
+        return r;
     }
 
     public String formatPostcodeDistrict(String postcodeDistrict) {
         String formattedPostcode = formatOddPostcodes(postcodeDistrict);
-        if (this.getExpectedPostcodes().contains(formattedPostcode)) {
+        if (getExpectedPostcodes().contains(formattedPostcode)) {
             return formattedPostcode;
         } else {
             return "NotLS";
-            //            if (formattedPostcode.equalsIgnoreCase(postcodeDistrict)) {
-            //                return "NotLS";
-            //            }
         }
     }
 
@@ -312,7 +220,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
     }
 
     public TreeMap<String, Census_DeprivationDataRecord> getDeprivation_Data() {
-        File depravationDir = new File(Env.getFiles().getInputCensus2011AttributeDataDir("LSOA"), "England/Deprivation");
+        File depravationDir = new File(Env.Files.getInputCensus2011AttributeDataDir("LSOA"), "England/Deprivation");
         String deprivationFilename = "1871524.csv";
         Census_DeprivationDataHandler aDeprivation_DataHandler;
         aDeprivation_DataHandler = new Census_DeprivationDataHandler();
@@ -343,7 +251,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
 
     /**
      * Initialises Env logging PrintWriters and returns the directory in which
- logs are written. The directory is in an archive structure where the
+     * logs are written. The directory is in an archive structure where the
      * number of directories or files in the archive (which is a growing
      * structure) is range.
      *
@@ -392,9 +300,6 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         Env.log("Log Output file " + fO.toString());
         Env.log("Log Error file " + fE.toString());
         Env.log("DEBUG_Level = " + Env.DEBUG_Level);
-        Env.log("env.DEBUG_Level_FINEST = " + Env.DEBUG_Level_FINEST);
-        Env.log("env.DEBUG_Level_FINE = " + Env.DEBUG_Level_FINE);
-        Env.log("env.DEBUG_Level_NORMAL = " + Env.DEBUG_Level_NORMAL);
         return dir;
     }
 

@@ -108,7 +108,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
 //        Maps.setImageWidth(1000);
         ONSPD_YM3 YM3;
         YM3 = new ONSPD_YM3(2011, 5);
-        Env.ONSPD_Env.initONSPDLookups();
+        Env.SHBE_Env.ONSPD_Env.initONSPDLookups();
         // Initialise styleParameters
         /*
          * YlOrRd,PRGn,PuOr,RdGy,Spectral,Grays,PuBuGn,RdPu,BuPu,YlOrBr,Greens,
@@ -216,14 +216,10 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
             DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
             tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                    Env,
-                    level,
-                    targetPropertyName,
+                    Env, level, targetPropertyName, 
                     MapsAdviceLeeds.getShapefileDataStoreFactory());
-            tLookupFromPostcodeToCensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(Env,
-                    level,
-                    CensusYear,
-                    YM3);
+            tLookupFromPostcodeToCensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
+                    level, CensusYear, YM3);
 
             TreeMap<String, Census_DeprivationDataRecord> deprivationRecords;
 
@@ -740,7 +736,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             String formattedpostcode = Postcode_Handler.formatPostcode(postcode);
             String postcodeLevel;
             postcodeLevel = Postcode_Handler.getPostcodeLevel(formattedpostcode);
-            ONSPD_Point aPoint = Env.ONSPD_Env.getONSPDlookups().get(postcodeLevel).get(Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
+            ONSPD_Point aPoint = Env.SHBE_Env.ONSPD_Env.getONSPDlookups().get(postcodeLevel).get(Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
             if (aPoint != null) {
                 if (result.containsKey(outlet)) {
                     result.get(outlet).add(aPoint);
@@ -810,7 +806,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             String formattedpostcode = Postcode_Handler.formatPostcode(postcode);
             String postcodeLevel;
             postcodeLevel = Postcode_Handler.getPostcodeLevel(formattedpostcode);
-            ONSPD_Point aPoint = Env.ONSPD_Env.getONSPDlookups().get(postcodeLevel).get(Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
+            ONSPD_Point aPoint = Env.SHBE_Env.ONSPD_Env.getONSPDlookups().get(postcodeLevel).get(Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
             if (aPoint != null) {
                 result.add(aPoint);
             } else {

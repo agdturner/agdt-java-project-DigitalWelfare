@@ -26,10 +26,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  *
@@ -40,8 +37,6 @@ public class DW_UO_Set extends DW_Object implements Serializable {
     /**
      * For convenience
      */
-    transient DW_Strings Strings;
-    transient DW_Files Files;
     transient DW_UO_Handler UO_Handler;
 
     /**
@@ -51,13 +46,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
 
     public DW_UO_Set(DW_Environment env) {
         super(env);
-        init();
         Map = new HashMap<>();
-    }
-
-    protected final void init() {
-        Strings = Env.getStrings();
-        Files = Env.getFiles();
         UO_Handler = Env.getUO_Handler();
     }
 
@@ -81,17 +70,17 @@ public class DW_UO_Set extends DW_Object implements Serializable {
         methodName = "DW_UO_Set(...)";
         env.logO("<" + methodName + ">", true);
         env.logO("filename " + filename, true);
-        init();
+        UO_Handler = Env.getUO_Handler();
         File dirIn;
         dirIn = Files.getInputUnderOccupiedDir();
         File dirOut;
-        dirOut = new File(Files.getGeneratedUnderOccupiedDir(),                type);
-        dirOut = new File(dirOut,                YM3.toString());
+        dirOut = new File(Files.getGeneratedUnderOccupiedDir(), type);
+        dirOut = new File(dirOut, YM3.toString());
         if (!dirOut.exists()) {
             dirOut.mkdirs();
         }
         File fOut;
-        fOut = new File(dirOut,                Strings.sDW_UO_Set + Strings.sBinaryFileExtension);
+        fOut = new File(dirOut, Strings.sDW_UO_Set + Strings.sBinaryFileExtension);
         if (fOut.exists() || !reload) {
             DW_UO_Set loadDummy;
             loadDummy = (DW_UO_Set) Generic_IO.readObject(fOut);

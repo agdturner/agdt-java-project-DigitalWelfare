@@ -57,7 +57,7 @@ public class DW_Report extends DW_HTMLPage {
         mainDirectoryName = "Report";
         reportName = "Report1";
 
-        claimantTypes = Env.getStrings().getHB_CTB();
+        claimantTypes = Env.Strings.getHB_CTB();
 
         tenureTypeGroups = new ArrayList<>();
         tenureTypeGroups.add("all");
@@ -170,10 +170,8 @@ public class DW_Report extends DW_HTMLPage {
             boolean doUnderOccupied,
             boolean doCouncil) {
         try {
-            DW_Files tDW_Files;
-            tDW_Files = Env.getFiles();
-            File dirOut = new File(tDW_Files.getOutputDataDir(), baseReportDir);
-            dirOut = tDW_Files.getUODir(dirOut, doUnderOccupied, doCouncil);
+            File dirOut = new File(Env.Files.getOutputDataDir(), baseReportDir);
+            dirOut = Env.Files.getUODir(dirOut, doUnderOccupied, doCouncil);
             dirOut.mkdirs();
             String pageTitle = "Results";
             File f;
@@ -189,7 +187,7 @@ public class DW_Report extends DW_HTMLPage {
 
     public void writeToMaster() {
         try {
-            File dir0 = new File(Env.getFiles().getOutputDataDir(), baseReportDir);
+            File dir0 = new File(Env.Files.getOutputDataDir(), baseReportDir);
             File dir1 = new File(dir0, levelsString);
             writeLine("<div>", masterFOS);
             writeLine("<ul>", masterFOS);
@@ -239,11 +237,9 @@ public class DW_Report extends DW_HTMLPage {
     public void write(
             boolean doUnderOccupied,
             boolean doCouncil) {
-        DW_Files tDW_Files;
-        tDW_Files = Env.getFiles();
-        File dirOut = new File(tDW_Files.getOutputDataDir(), baseReportDir);
+        File dirOut = new File(Env.Files.getOutputDataDir(), baseReportDir);
         dirOut = new File(dirOut, levelsString);
-        dirOut = tDW_Files.getUODir(dirOut, doUnderOccupied, doCouncil);
+        dirOut = Env.Files.getUODir(dirOut, doUnderOccupied, doCouncil);
         String[] tFilenames;
         tFilenames = getFilenames();
         Iterator<String> claimantTypesIte;
@@ -341,7 +337,7 @@ public class DW_Report extends DW_HTMLPage {
             writeLine("<ul>", componentFOS);
             distanceTypesIte = distanceTypes.iterator();
             while (distanceTypesIte.hasNext()) {
-                link = getLink2(                        distanceTypesIte.next() + "Claimants",
+                link = getLink2(distanceTypesIte.next() + "Claimants",
                         definitionsPath);
                 writeLine("<li>" + link + "</li>", componentFOS);
             }
@@ -350,13 +346,13 @@ public class DW_Report extends DW_HTMLPage {
             writeLine("<ul>", componentFOS);
             levelsIte = levels.iterator();
             while (levelsIte.hasNext()) {
-                link = getLink2(                        levelsIte.next(),                        definitionsPath);
+                link = getLink2(levelsIte.next(), definitionsPath);
                 writeLine("<li>" + link + "</li>", componentFOS);
             }
             writeLine("</ul></li>", componentFOS);
             writeLine("</ul>", componentFOS);
             writeLine("</div>", componentFOS);
-            writeContents(tFilenames, claimantType, claimantTypeLink, 
+            writeContents(tFilenames, claimantType, claimantTypeLink,
                     componentFOS);
 
             Iterator<String> includesIte;
@@ -498,18 +494,12 @@ public class DW_Report extends DW_HTMLPage {
         writeLine("<img src=\"" + imageSource + "\" alt=\"[" + imageSource + "]\" />", componentFOS);
         writeLine("", componentFOS);
         writeLine("", componentFOS);
-        DW_Files tDW_Files;
-        tDW_Files = Env.getFiles();
         File dir;
         File f;
         ArrayList<String> table;
         // Total, In and Out Count Table
-        dir = new File(
-                tDW_Files.getOutputSHBEChoroplethDir(level),
-                filepath);
-        f = new File(
-                dir,
-                name + ".txt");
+        dir = new File(Env.Files.getOutputSHBEChoroplethDir(level), filepath);
+        f = new File(dir, name + ".txt");
         if (f.exists()) {
             writeLine("", componentFOS);
             writeLine("<h5>Total, In and Out Count Table</h5>", componentFOS);
@@ -518,20 +508,12 @@ public class DW_Report extends DW_HTMLPage {
             writeTable(table, componentFOS);
         }
         // Counts By Tenure Table
-        dir = new File(
-                tDW_Files.getGeneratedSHBEDir(
-                        level,
-                        doUnderOccupied,
-                        doCouncil),
+        dir = new File(Env.Files.getGeneratedSHBEDir(level, doUnderOccupied, doCouncil),
                 type + "/" + claimantType + "/" + tenure);
         if (type.contains("Distance")) {
-            dir = new File(
-                    dir,
-                    "" + distanceThreshold);
+            dir = new File(dir, "" + distanceThreshold);
         }
-        f = new File(
-                dir,
-                "CountsByTenure" + year + month + ".csv");
+        f = new File(dir, "CountsByTenure" + year + month + ".csv");
         if (f.exists()) {
             writeLine("", componentFOS);
             writeLine("<h5>Counts By Tenure Table</h5>", componentFOS);
@@ -541,10 +523,7 @@ public class DW_Report extends DW_HTMLPage {
         }
         // Top 10s
         // Top 10
-        writeExtremeAreaTable(
-                dir,
-                year,
-                month);
+        writeExtremeAreaTable(dir, year, month);
 
         String type2;
         // Top 10 increases
@@ -567,14 +546,10 @@ public class DW_Report extends DW_HTMLPage {
 
     }
 
-    protected void writeExtremeAreaTable(
-            File dir,
-            String year,
-            String month) throws IOException {
+    protected void writeExtremeAreaTable(File dir, String year, String month)
+            throws IOException {
         File f;
-        f = new File(
-                dir,
-                "HighestClaimants" + year + month + ".csv");
+        f = new File(dir, "HighestClaimants" + year + month + ".csv");
         if (f.exists()) {
             writeLine("", componentFOS);
             writeLine("<h5>Areas With The Highest Numbers of Claimants Table</h5>", componentFOS);
@@ -585,12 +560,8 @@ public class DW_Report extends DW_HTMLPage {
         }
     }
 
-    protected void writeExtremeAreaChangesTable(
-            File dir,
-            String name,
-            String type,
-            String year,
-            String month) throws IOException {
+    protected void writeExtremeAreaChangesTable(File dir, String name, 
+            String type, String year, String month) throws IOException {
         File f;
         f = new File(
                 dir,

@@ -97,7 +97,7 @@ public class DW_PostcodeMaps extends DW_Maps {
                 new ShapefileDataStoreFactory());
 
         ONSPD_YM3 yM3;
-        yM3 = Postcode_Handler.getDefaultYM3();
+        yM3 = ONSPD_Handler.getDefaultYM3();
 
         String postcodeLevel;
         // Postcode Unit Centroids
@@ -105,31 +105,19 @@ public class DW_PostcodeMaps extends DW_Maps {
         String aLeedsPostcodeUnitPointShapefile;
         aLeedsPostcodeUnitPointShapefile = "LeedsPostcode" + postcodeLevel + "PointShapefile.shp";
         File aPostcodeUnitPointShapefile = createPostcodePointShapefileIfItDoesNotExist(
-                yM3,
-                postcodeLevel,
-                mapDirectory,
-                aLeedsPostcodeUnitPointShapefile,
-                "LS");
+                yM3, postcodeLevel, mapDirectory, aLeedsPostcodeUnitPointShapefile, "LS");
         // Postcode Sector Centroids
         postcodeLevel = "Sector";
         String aLeedsPostcodeSectorPointShapefile;
         aLeedsPostcodeSectorPointShapefile = "LeedsPostcode" + postcodeLevel + "PointShapefile.shp";
         File aPostcodeSectorPointShapefile = createPostcodePointShapefileIfItDoesNotExist(
-                yM3,
-                postcodeLevel,
-                mapDirectory,
-                aLeedsPostcodeSectorPointShapefile,
-                "LS");
+                yM3, postcodeLevel, mapDirectory, aLeedsPostcodeSectorPointShapefile, "LS");
         // Postcode District Centroids
         postcodeLevel = "District";
         String aLeedsPostcodeDistrictPointShapefile;
         aLeedsPostcodeDistrictPointShapefile = "LeedsPostcode" + postcodeLevel + "PointShapefile.shp";
         File aPostcodeDistrictPointShapefile = createPostcodePointShapefileIfItDoesNotExist(
-                yM3,
-                postcodeLevel,
-                mapDirectory,
-                aLeedsPostcodeSectorPointShapefile,
-                "LS");
+                yM3, postcodeLevel, mapDirectory, aLeedsPostcodeSectorPointShapefile, "LS");
 
         String level;
         // OA
@@ -198,14 +186,14 @@ public class DW_PostcodeMaps extends DW_Maps {
 
         String outname = "outname";
         Grids_Environment ge;
-        ge = Env.getGrids_Environment();
+        ge = Env.Grids_Env;
         Grids_GridDoubleFactory gf;
         Grids_Processor gp;
         gp = ge.getProcessor();
         gf = new Grids_GridDoubleFactory(ge, gp.GridChunkDoubleFactory,
                 gp.DefaultGridChunkDoubleFactory, -Double.MAX_VALUE,
                 (int) nrows, (int) ncols, dimensions,
-                new Grids_GridDoubleStatsNotUpdated(Env.getGrids_Environment()));
+                new Grids_GridDoubleStatsNotUpdated(ge));
         Grids_GridDouble grid;
         grid = toGrid(polyGrid, nrows, ncols, xllcorner, yllcorner, cellsize,
                 postcodeUnitPoly_DW_Shapefile, gf);
@@ -350,14 +338,14 @@ public class DW_PostcodeMaps extends DW_Maps {
     }
 
     public TreeSetFeatureCollection getPostcodePointFeatureCollection(
-            ONSPD_YM3 yM3, String postcodeLevel, SimpleFeatureType sft, 
+            ONSPD_YM3 yM3, String postcodeLevel, SimpleFeatureType sft,
             String target) {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
         ONSPD_Handler dph;
         dph = Env.getPostcode_Handler();
         TreeMap<String, ONSPD_Point> tONSPDlookup;
-        tONSPDlookup = Env.ONSPD_Env.getONSPDlookups().get(postcodeLevel).get(
+        tONSPDlookup = Env.SHBE_Env.ONSPD_Env.getONSPDlookups().get(postcodeLevel).get(
                 dph.getNearestYM3ForONSPDLookup(yM3));
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,

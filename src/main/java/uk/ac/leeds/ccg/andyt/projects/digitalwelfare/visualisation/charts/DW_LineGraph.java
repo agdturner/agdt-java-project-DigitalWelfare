@@ -54,49 +54,37 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_LineGraph extends Generic_LineGraph {
 
-    protected transient DW_Environment Env;
-
-    protected DW_Files Files;
-    protected DW_Strings Strings;
-    protected SHBE_Handler SHBE_Handler;
-    protected DW_UO_Handler UO_Handler;
-    protected DW_UO_Data UO_Data;
+    protected final transient DW_Environment Env;
+    protected final transient DW_Files Files;
+    protected final transient DW_Strings Strings;
+    protected final transient SHBE_Handler SHBE_Handler;
+    protected final transient DW_UO_Handler UO_Handler;
+    protected final transient DW_UO_Data UO_Data;
 
     HashMap<String, HashSet<String>> AreaCodes;
 
     public DW_LineGraph(DW_Environment de) {
         this.Env = de;
-        this.Files = de.getFiles();
-        this.Strings = de.getStrings();
+        this.Files = de.Files;
+        this.Strings = de.Strings;
         this.SHBE_Handler = de.getSHBE_Handler();
         this.UO_Data = de.getUO_Data();
         this.UO_Handler = de.getUO_Handler();
     }
 
-    public DW_LineGraph(
-            DW_Environment de,
-            ExecutorService executorService,
-            File file,
-            String format,
-            String title,
-            int dataWidth,
-            int dataHeight,
-            String xAxisLabel,
-            String yAxisLabel,
-            BigDecimal yMax,
-            BigDecimal yPin,
-            BigDecimal yIncrement,
-            int numberOfYAxisTicks,
-            int decimalPlacePrecisionForCalculations,
-            int decimalPlacePrecisionForDisplay,
-            RoundingMode aRoundingMode) {
-        super(executorService, file, format, title, dataWidth, dataHeight,
+    public DW_LineGraph(DW_Environment de, ExecutorService es, File file, 
+            String format, String title, int dataWidth, int dataHeight, 
+            String xAxisLabel, String yAxisLabel, BigDecimal yMax, 
+            BigDecimal yPin, BigDecimal yIncrement, int numberOfYAxisTicks, 
+            int decimalPlacePrecisionForCalculations, 
+            int decimalPlacePrecisionForDisplay, RoundingMode rm) {
+        super(es, file, format, title, dataWidth, dataHeight,
                 xAxisLabel, yAxisLabel, yMax, yPin, yIncrement,
                 numberOfYAxisTicks, decimalPlacePrecisionForCalculations,
-                decimalPlacePrecisionForDisplay, aRoundingMode);
+                decimalPlacePrecisionForDisplay, rm);
         this.Env = de;
-        this.Files = de.getFiles();
-        this.Strings = de.getStrings();
+        this.Files = de.Files;
+        this.Strings = de.Strings;
         this.SHBE_Handler = de.getSHBE_Handler();
         this.UO_Data = de.getUO_Data();
         this.UO_Handler = de.getUO_Handler();
@@ -1012,7 +1000,7 @@ public class DW_LineGraph extends Generic_LineGraph {
 //            include = includes.get(includeKey);
         Object[] treeMapDateLabelSHBEFilename;
         treeMapDateLabelSHBEFilename = SHBE_Handler.getTreeMapDateLabelSHBEFilenames(
-                SHBEFilenames,                include);
+                SHBEFilenames, include);
         TreeMap<BigDecimal, String> xAxisLabels;
         xAxisLabels = (TreeMap<BigDecimal, String>) treeMapDateLabelSHBEFilename[0];
         TreeMap<String, BigDecimal> fileLabelValue;

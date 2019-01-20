@@ -5977,28 +5977,24 @@ public class DW_Summary extends DW_Object {
      * @param underOccupancy
      * @return
      */
-    protected PrintWriter getPrintWriter(
-            String name,
-            String name2,
+    protected PrintWriter getPrintWriter(            String name,            String name2,
             TreeMap<String, HashMap<String, String>> summaryTable,
-            String includeKey,
-            boolean underOccupancy) {
-        PrintWriter result;
+            String includeKey,            boolean underOccupancy) {
+        PrintWriter r;
         File dirOut;
-        dirOut = Env.getFiles().getOutputSHBETableDir(
-                name2,
-                includeKey,
+        dirOut = Env.Files.getOutputSHBETableDir(name2, includeKey, 
                 underOccupancy);
         String outFilename;
         outFilename = includeKey + Strings.symbol_underscore;
         if (underOccupancy) {
             outFilename += Strings.sU + Strings.symbol_underscore;
         }
-        outFilename += summaryTable.firstKey() + "_To_" + summaryTable.lastKey() + Strings.symbol_underscore + name + ".csv";
+        outFilename += summaryTable.firstKey() + "_To_" + summaryTable.lastKey()
+                + Strings.symbol_underscore + name + ".csv";
         File outFile;
         outFile = new File(dirOut, outFilename);
-        result = Generic_IO.getPrintWriter(outFile, false);
-        return result;
+        r = Generic_IO.getPrintWriter(outFile, false);
+        return r;
     }
 
     /**
@@ -6016,7 +6012,7 @@ public class DW_Summary extends DW_Object {
             int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPaymentTypes";
         PrintWriter pw;
@@ -6473,13 +6469,11 @@ public class DW_Summary extends DW_Object {
             int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesTT";
         PrintWriter pw;
-        pw = getPrintWriter(name, sSummaryTables, summaryTable,
-                //paymentType, 
-                includeKey, false);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, includeKey, false);
         // Write headers
         String header;
         header = getHeaderCompare2TimesGeneric();
@@ -6494,9 +6488,7 @@ public class DW_Summary extends DW_Object {
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
             String line;
-            line = getLineCompare2TimesGeneric(
-                    summary,
-                    ONSPDFiles);
+            line = getLineCompare2TimesGeneric(                    summary,                    ONSPDFiles);
             // General
             // All
             line += getLineCompare2TimesTTChange(summary);
@@ -6598,18 +6590,14 @@ public class DW_Summary extends DW_Object {
      */
     public void writeSummaryTableCompare2TimesPostcode(
             TreeMap<String, HashMap<String, String>> summaryTable,
-            String includeKey,
-            int nTT,
-            int nEG
+            String includeKey,            int nTT,            int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPostcode";
         PrintWriter pw;
-        pw = getPrintWriter(name, sSummaryTables, summaryTable,
-                //paymentType,
-                includeKey, false);
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, includeKey, false);
         // Write headers
         String header;
         header = getHeaderCompare2TimesGeneric();
@@ -6624,9 +6612,7 @@ public class DW_Summary extends DW_Object {
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
             String line;
-            line = getLineCompare2TimesGeneric(
-                    summary,
-                    ONSPDFiles);
+            line = getLineCompare2TimesGeneric(                    summary,                    ONSPDFiles);
             line += getLineCompare2TimesPostcodeChange(summary);
             line = line.substring(0, line.length() - 2);
             pw.println(line);
@@ -6646,11 +6632,11 @@ public class DW_Summary extends DW_Object {
             TreeMap<String, HashMap<String, String>> summaryTable,
             String includeKey, int nTT, int nEG, int nPSI) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
         PrintWriter pw;
-        pw = getPrintWriter(name, sSummaryTables, summaryTable, includeKey, 
+        pw = getPrintWriter(name, sSummaryTables, summaryTable, includeKey,
                 false);
         // Write headers
         String header;
@@ -6810,7 +6796,7 @@ public class DW_Summary extends DW_Object {
             int nPSI
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeHouseholdSizes";
         PrintWriter pw;

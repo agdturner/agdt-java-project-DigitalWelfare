@@ -1595,23 +1595,23 @@ public class DW_LineMapsLCC extends DW_Maps {
                             yM31 = new ONSPD_YM3(lineSplit[2].trim());
                             String tenancyTypeChange;
                             ONSPD_YM3 yM30v;
-                            yM30v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+                            yM30v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM30);
                             ONSPD_YM3 yM31v;
-                            yM31v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+                            yM31v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM31);
                             tenancyTypeChange = lineSplit[3].trim();
                             if (tenancyTypeChanges.contains(tenancyTypeChange)) {
                                 if (yMs.contains(yM31)) {
                                     String postcode0 = lineSplit[4].trim();
                                     String postcode1 = lineSplit[5].trim();
                                     ONSPD_Point origin;
-                                    origin = Postcode_Handler.getPointFromPostcode(
+                                    origin = ONSPD_Handler.getPointFromPostcode(
                                             yM30v,
-                                            Postcode_Handler.TYPE_UNIT,
+                                            ONSPD_Handler.TYPE_UNIT,
                                             postcode0);
                                     ONSPD_Point destination;
-                                    destination = Postcode_Handler.getPointFromPostcode(
+                                    destination = ONSPD_Handler.getPointFromPostcode(
                                             yM31v,
-                                            Postcode_Handler.TYPE_UNIT,
+                                            ONSPD_Handler.TYPE_UNIT,
                                             postcode1);
                                     TreeSetFeatureCollection tsfcS;
                                     tsfcS = tsfcSs.get(tenancyTypeChanges);
@@ -2085,9 +2085,9 @@ public class DW_LineMapsLCC extends DW_Maps {
                         ONSPD_YM3 yM31;
                         yM31 = new ONSPD_YM3(lineSplit[2].trim());
                         ONSPD_YM3 yM30v;
-                        yM30v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+                        yM30v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM30);
                         ONSPD_YM3 yM31v;
-                        yM31v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+                        yM31v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
 
@@ -2103,14 +2103,14 @@ public class DW_LineMapsLCC extends DW_Maps {
                                 String postcode0 = lineSplit[4].trim();
                                 String postcode1 = lineSplit[5].trim();
                                 ONSPD_Point origin;
-                                origin = Postcode_Handler.getPointFromPostcode(
+                                origin = ONSPD_Handler.getPointFromPostcode(
                                         yM30v,
-                                        Postcode_Handler.TYPE_UNIT,
+                                        ONSPD_Handler.TYPE_UNIT,
                                         postcode0);
                                 ONSPD_Point destination;
-                                destination = Postcode_Handler.getPointFromPostcode(
+                                destination = ONSPD_Handler.getPointFromPostcode(
                                         yM31v,
-                                        Postcode_Handler.TYPE_UNIT,
+                                        ONSPD_Handler.TYPE_UNIT,
                                         postcode1);
                                 TreeSetFeatureCollection tsfcS;
                                 tsfcS = tsfcSs.get(tenancyTypeChanges);
@@ -2635,9 +2635,9 @@ public class DW_LineMapsLCC extends DW_Maps {
                         ONSPD_YM3 yM31;
                         yM31 = new ONSPD_YM3(lineSplit[2].trim());
                         ONSPD_YM3 yM30v;
-                        yM30v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+                        yM30v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM30);
                         ONSPD_YM3 yM31v;
-                        yM31v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+                        yM31v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
                         if (tenancyTypeChanges.contains(tenancyTypeChange)) {
@@ -2645,14 +2645,14 @@ public class DW_LineMapsLCC extends DW_Maps {
                                 String postcode0 = lineSplit[4].trim();
                                 String postcode1 = lineSplit[5].trim();
                                 ONSPD_Point origin;
-                                origin = Postcode_Handler.getPointFromPostcode(
+                                origin = ONSPD_Handler.getPointFromPostcode(
                                         yM30v,
-                                        Postcode_Handler.TYPE_UNIT,
+                                        ONSPD_Handler.TYPE_UNIT,
                                         postcode0);
                                 ONSPD_Point destination;
-                                destination = Postcode_Handler.getPointFromPostcode(
+                                destination = ONSPD_Handler.getPointFromPostcode(
                                         yM31v,
-                                        Postcode_Handler.TYPE_UNIT,
+                                        ONSPD_Handler.TYPE_UNIT,
                                         postcode1);
                                 TreeSetFeatureCollection tsfcS;
                                 tsfcS = tsfcSs.get(tenancyTypeChanges);
@@ -3063,9 +3063,9 @@ public class DW_LineMapsLCC extends DW_Maps {
                         ONSPD_YM3 yM31;
                         yM31 = new ONSPD_YM3(lineSplit[2].trim());
                         ONSPD_YM3 yM30v;
-                        yM30v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM30);
+                        yM30v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM30);
                         ONSPD_YM3 yM31v;
-                        yM31v = Postcode_Handler.getNearestYM3ForONSPDLookup(yM31);
+                        yM31v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
                         if (tenancyTypeChanges.contains(tenancyTypeChange)) {
@@ -3073,14 +3073,14 @@ public class DW_LineMapsLCC extends DW_Maps {
                                 String postcode0 = lineSplit[4].trim();
                                 String postcode1 = lineSplit[5].trim();
                                 ONSPD_Point origin;
-                                origin = Postcode_Handler.getPointFromPostcode(
+                                origin = ONSPD_Handler.getPointFromPostcode(
                                         yM30v,
-                                        Postcode_Handler.TYPE_UNIT,
+                                        ONSPD_Handler.TYPE_UNIT,
                                         postcode0);
                                 ONSPD_Point destination;
-                                destination = Postcode_Handler.getPointFromPostcode(
+                                destination = ONSPD_Handler.getPointFromPostcode(
                                         yM31v,
-                                        Postcode_Handler.TYPE_UNIT,
+                                        ONSPD_Handler.TYPE_UNIT,
                                         postcode1);
                                 TreeSetFeatureCollection tsfcS;
                                 tsfcS = tsfcSs.get(tenancyTypeChanges);

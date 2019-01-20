@@ -2346,10 +2346,10 @@ public class DW_SummaryUO extends DW_Summary {
      * DW_UO_Record for the former time period.
      * @param DW_UO_Set1CouncilMap Keys are ClaimIDs values are Council
      * DW_UO_Record for the latter time period.
-     * @param Records0 Keys are ClaimIDs values are SHBE_Record for the
- former time period.
-     * @param Records1 Keys are ClaimIDs values are SHBE_Record for the
- latter time period.
+     * @param Records0 Keys are ClaimIDs values are SHBE_Record for the former
+     * time period.
+     * @param Records1 Keys are ClaimIDs values are SHBE_Record for the latter
+     * time period.
      */
     protected void doCouncilCompare2TimesCounts(
             SHBE_ID ClaimID,
@@ -3426,7 +3426,7 @@ public class DW_SummaryUO extends DW_Summary {
         while (!initFirst) {
             i = includeIte.next();
             filename1 = SHBEFilenames[i];
-            key = SHBE_Handler.getYearMonthNumber(filename1);
+            //key = SHBE_Handler.getYearMonthNumber(filename1);
             YM31 = SHBE_Handler.getYM3(filename1);
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             if (CouncilUOSet1 != null) {
@@ -3680,19 +3680,11 @@ public class DW_SummaryUO extends DW_Summary {
         summary.put(sAllUOLinkedRecordCount1, Integer.toString(CouncilLinkedRecordCount1 + RSLLinkedRecordCount1));
     }
 
-    protected void doPartSummarySingleTime(
-            SHBE_Records SHBE_Records,
-            ONSPD_YM3 YM3,
-            String filename,
-            boolean forceNewSummaries,
-            ArrayList<String> HB_CTB,
-            ArrayList<String> PTs,
-            int nTT,
-            int nEG,
-            int nPSI,
-            TreeMap<ONSPD_YM3, String> CouncilFilenames,
-            TreeMap<ONSPD_YM3, String> RSLFilenames,
-            DW_UO_Set CouncilUOSet,
+    protected void doPartSummarySingleTime(SHBE_Records SHBE_Records,
+            ONSPD_YM3 YM3, String filename, boolean forceNewSummaries,
+            ArrayList<String> HB_CTB, ArrayList<String> PTs, int nTT, int nEG,
+            int nPSI, TreeMap<ONSPD_YM3, String> CouncilFilenames,
+            TreeMap<ONSPD_YM3, String> RSLFilenames, DW_UO_Set CouncilUOSet,
             DW_UO_Set RSLUOSet,
             TreeMap<String, HashMap<String, String>> summaries
     ) {
@@ -3700,8 +3692,8 @@ public class DW_SummaryUO extends DW_Summary {
         String key;
         HashMap<String, String> summary;
         HashMap<String, Number> LoadSummary;
-        HashMap<SHBE_ID, DW_UO_Record> DW_UO_SetCouncilMap;
-        HashMap<SHBE_ID, DW_UO_Record> DW_UO_SetRSLMap;
+        HashMap<SHBE_ID, DW_UO_Record> CouncilUOMap;
+        HashMap<SHBE_ID, DW_UO_Record> RSLUOMap;
         HashMap<SHBE_ID, SHBE_Record> Records;
         HashMap<String, BigDecimal> IncomeAndRentSummaryAllUO;
         HashMap<String, BigDecimal> IncomeAndRentSummaryCouncil;
@@ -3711,18 +3703,17 @@ public class DW_SummaryUO extends DW_Summary {
         summary = summaries.get(key);
         LoadSummary = SHBE_Records.getLoadSummary(Env.HOOME);
         addToSummary(summary, LoadSummary);
-        DW_UO_SetCouncilMap = CouncilUOSet.getMap();
-        DW_UO_SetRSLMap = RSLUOSet.getMap();
+        CouncilUOMap = CouncilUOSet.getMap();
+        RSLUOMap = RSLUOSet.getMap();
         Records = SHBE_Records.getRecords(Env.HOOME);
         // Loop over Council
         CouncilLinkedRecordCount1 = doCouncilSingleTimeLoopOverSet(
-                DW_UO_SetCouncilMap, Records);
+                CouncilUOMap, Records);
         // Loop over RSL
-        RSLLinkedRecordCount1 = doRSLSingleTimeLoopOverSet(
-                DW_UO_SetRSLMap, Records);
+        RSLLinkedRecordCount1 = doRSLSingleTimeLoopOverSet(RSLUOMap, Records);
         // Prepare vars
-        CouncilCount1 = DW_UO_SetCouncilMap.size();
-        RSLCount1 = DW_UO_SetRSLMap.size();
+        CouncilCount1 = CouncilUOMap.size();
+        RSLCount1 = RSLUOMap.size();
         AllUOAllCount1 = CouncilCount1 + RSLCount1;
         AllUOLinkedRecordCount1 = CouncilLinkedRecordCount1 + RSLLinkedRecordCount1;
         // Add to counts
@@ -3737,7 +3728,7 @@ public class DW_SummaryUO extends DW_Summary {
         IncomeAndRentSummaryRSL = iars.getIncomeAndRentSummary(
                 SHBE_Records, HB_CTB, PTs, YM3, null, RSLUOSet, true, false,
                 true, forceNewSummaries);
-        addToSummarySingleTimeIncomeAndRent(summary, IncomeAndRentSummaryAllUO, 
+        addToSummarySingleTimeIncomeAndRent(summary, IncomeAndRentSummaryAllUO,
                 IncomeAndRentSummaryCouncil, IncomeAndRentSummaryRSL);
         addToSummarySingleTime(nTT, nEG, nPSI, summary);
         addToSummarySingleTimeRentArrears(summary);
@@ -3763,10 +3754,10 @@ public class DW_SummaryUO extends DW_Summary {
      * DW_UO_Record for the former time period.
      * @param DW_UO_Set1CouncilMap Keys are ClaimIDs values are Council
      * DW_UO_Record for the latter time period.
-     * @param Records0 Keys are ClaimIDs values are SHBE_Record for the
- former time period.
-     * @param Records1 Keys are ClaimIDs values are SHBE_Record for the
- latter time period.
+     * @param Records0 Keys are ClaimIDs values are SHBE_Record for the former
+     * time period.
+     * @param Records1 Keys are ClaimIDs values are SHBE_Record for the latter
+     * time period.
      */
     public void doCouncilCompare2TimesLoopOverSet(
             HashSet<SHBE_ID> Group,
@@ -4098,7 +4089,7 @@ public class DW_SummaryUO extends DW_Summary {
             int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesRentArrears";
         PrintWriter pw;
@@ -4429,7 +4420,7 @@ public class DW_SummaryUO extends DW_Summary {
             int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesTT";
         PrintWriter pw;
@@ -4603,7 +4594,7 @@ public class DW_SummaryUO extends DW_Summary {
             int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPostcode";
         PrintWriter pw;
@@ -4652,7 +4643,7 @@ public class DW_SummaryUO extends DW_Summary {
             int nPSI
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
         PrintWriter pw;
@@ -4749,7 +4740,7 @@ public class DW_SummaryUO extends DW_Summary {
             int nPSI
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeHouseholdSizes";
         PrintWriter pw;
