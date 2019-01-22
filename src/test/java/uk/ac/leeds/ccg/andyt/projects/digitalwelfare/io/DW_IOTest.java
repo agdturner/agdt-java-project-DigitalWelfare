@@ -19,9 +19,9 @@ import static org.junit.Assert.*;
  *
  * @author geoagdt
  */
-public class DW_StaticIOTest {
+public class DW_IOTest {
 
-    public DW_StaticIOTest() {
+    public DW_IOTest() {
     }
 
     @BeforeClass
@@ -316,7 +316,7 @@ public class DW_StaticIOTest {
         try {
             result = DW_IO.getStartStringCount(s, s0);
         } catch (Exception ex) {
-            Logger.getLogger(DW_StaticIOTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DW_IOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         assertEquals(expResult, result);
         // Test 2
