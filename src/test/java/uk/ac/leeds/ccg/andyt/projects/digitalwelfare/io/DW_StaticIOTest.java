@@ -5,7 +5,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_StaticIO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_IO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -41,7 +41,7 @@ public class DW_StaticIOTest {
     }
 
     /**
-     * Test of splitByQuotesThenCommas method, of class DW_StaticIO.
+     * Test of splitByQuotesThenCommas method, of class DW_IO.
      */
     @Test
     public void testSplitWithQuotesThenCommas() {
@@ -60,7 +60,7 @@ public class DW_StaticIOTest {
         expResult[3] = "4,567";
         expResult[4] = "8";
         expResult[5] = "9";
-        result = DW_StaticIO.splitWithQuotesThenCommas(line);
+        result = DW_IO.splitWithQuotesThenCommas(line);
         printResultComparison(testNumber, line, expResult, result);
         assertArrayEquals(expResult, result);
         // Test2
@@ -73,7 +73,7 @@ public class DW_StaticIOTest {
         expResult[3] = "4,567";
         expResult[4] = "8";
         expResult[5] = "9";
-        result = DW_StaticIO.splitWithQuotesThenCommas(line);
+        result = DW_IO.splitWithQuotesThenCommas(line);
         printResultComparison(testNumber, line, expResult, result);
         assertArrayEquals(expResult, result);
         // Test 3
@@ -87,7 +87,7 @@ public class DW_StaticIOTest {
         expResult[4] = "4,567";
         expResult[5] = "8";
         expResult[6] = "9";
-        result = DW_StaticIO.splitWithQuotesThenCommas(line);
+        result = DW_IO.splitWithQuotesThenCommas(line);
         printResultComparison(testNumber, line, expResult, result);
         assertArrayEquals(expResult, result);
         // Test 4
@@ -107,7 +107,7 @@ public class DW_StaticIOTest {
         expResult[10] = "";
         expResult[11] = "";
         expResult[12] = "F";
-        result = DW_StaticIO.splitWithQuotesThenCommas(line);
+        result = DW_IO.splitWithQuotesThenCommas(line);
         printResultComparison(testNumber, line, expResult, result);
         assertArrayEquals(expResult, result);
         // Test 5
@@ -150,7 +150,7 @@ public class DW_StaticIOTest {
         expResult[33] = "Client agrees to MAS evaluation";
         expResult[34] = "2";
         expResult[35] = "22/02/1954";
-        result = DW_StaticIO.splitWithQuotesThenCommas(line);
+        result = DW_IO.splitWithQuotesThenCommas(line);
         printResultComparison(testNumber, line, expResult, result);
         assertArrayEquals(expResult, result);
         // Test 6
@@ -193,7 +193,7 @@ public class DW_StaticIOTest {
         expResult[33] = "";
         expResult[34] = "";
         expResult[35] = "";
-        result = DW_StaticIO.splitWithQuotesThenCommas(line);
+        result = DW_IO.splitWithQuotesThenCommas(line);
         printResultComparison(testNumber, line, expResult, result);
         assertArrayEquals(expResult, result);
         // Test 7
@@ -206,7 +206,7 @@ public class DW_StaticIOTest {
         expResult[3] = "";
         expResult[4] = "-1";
         expResult[5] = "Female";
-        result = DW_StaticIO.splitWithQuotesThenCommas(line);
+        result = DW_IO.splitWithQuotesThenCommas(line);
         printResultComparison(testNumber, line, expResult, result);
         assertArrayEquals(expResult, result);
         // Test 8
@@ -220,7 +220,7 @@ public class DW_StaticIOTest {
         expResult[4] = "7";
         expResult[5] = "";
         expResult[6] = "";
-        result = DW_StaticIO.splitWithQuotesThenCommas(line);
+        result = DW_IO.splitWithQuotesThenCommas(line);
         printResultComparison(testNumber, line, expResult, result);
         assertArrayEquals(expResult, result);
     }
@@ -240,7 +240,7 @@ public class DW_StaticIOTest {
     }
 
     /**
-     * Test of isAllCommas method, of class DW_StaticIO.
+     * Test of isAllCommas method, of class DW_IO.
      */
     @Test
     public void testIsAllCommas() {
@@ -251,32 +251,32 @@ public class DW_StaticIOTest {
         // Test 1
         s = ", ";
         expResult = false;
-        result = DW_StaticIO.isAllCommas(s);
+        result = DW_IO.isAllCommas(s);
         assertEquals(expResult, result);
         // Test 2
         s = ",";
         expResult = true;
-        result = DW_StaticIO.isAllCommas(s);
+        result = DW_IO.isAllCommas(s);
         assertEquals(expResult, result);
         // Test 3
         s = ",,,,,,,,";
         expResult = true;
-        result = DW_StaticIO.isAllCommas(s);
+        result = DW_IO.isAllCommas(s);
         assertEquals(expResult, result);
         // Test 4
         s = ",,,,,, ,,,,";
         expResult = false;
-        result = DW_StaticIO.isAllCommas(s);
+        result = DW_IO.isAllCommas(s);
         assertEquals(expResult, result);
         // Test 5
         s = " ,";
         expResult = false;
-        result = DW_StaticIO.isAllCommas(s);
+        result = DW_IO.isAllCommas(s);
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of count method, of class DW_StaticIO.
+     * Test of count method, of class DW_IO.
      */
     @Test
     public void testCount() {
@@ -289,18 +289,18 @@ public class DW_StaticIOTest {
         s = "ddsadsa";
         c = 'd';
         expResult = 3;
-        result = DW_StaticIO.count(s, c);
+        result = DW_IO.count(s, c);
         assertEquals(expResult, result);
         // Test 2
         s = "\\zxz,.\\z/c\\zcz\\p;\\\'saaqs";
         c = '\'';
         expResult = 1;
-        result = DW_StaticIO.count(s, c);
+        result = DW_IO.count(s, c);
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of getStartStringCount method, of class DW_StaticIO.
+     * Test of getStartStringCount method, of class DW_IO.
      */
     @Test
     public void testGetStartStringCount() {
@@ -314,7 +314,7 @@ public class DW_StaticIOTest {
         s0 = ",";
         expResult = 3;
         try {
-            result = DW_StaticIO.getStartStringCount(s, s0);
+            result = DW_IO.getStartStringCount(s, s0);
         } catch (Exception ex) {
             Logger.getLogger(DW_StaticIOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -323,12 +323,12 @@ public class DW_StaticIOTest {
         s = ",\",\",12345,13232,4231";
         s0 = ",\"";
         expResult = 2;
-        result = DW_StaticIO.getStartStringCount(s, s0);
+        result = DW_IO.getStartStringCount(s, s0);
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of getEndStringCount method, of class DW_StaticIO.
+     * Test of getEndStringCount method, of class DW_IO.
      */
     @Test
     public void testGetEndStringCount() {
@@ -341,18 +341,18 @@ public class DW_StaticIOTest {
         s = "2,4231,,,,,";
         s0 = ",";
         expResult = 5;
-        result = DW_StaticIO.getEndStringCount(s, s0);
+        result = DW_IO.getEndStringCount(s, s0);
         assertEquals(expResult, result);
         // Test 2
         s = "2,4231,\",\"";
         s0 = ",\"";
         expResult = 2;
-        result = DW_StaticIO.getEndStringCount(s, s0);
+        result = DW_IO.getEndStringCount(s, s0);
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of split method, of class DW_StaticIO.
+     * Test of split method, of class DW_IO.
      */
     @Test
     public void testSplit() {
@@ -374,7 +374,7 @@ public class DW_StaticIOTest {
         expResult[6] = "";
         expResult[7] = "";
         expResult[8] = "";
-        result = DW_StaticIO.split(s, s0);
+        result = DW_IO.split(s, s0);
         assertArrayEquals(expResult, result);
     }
 
