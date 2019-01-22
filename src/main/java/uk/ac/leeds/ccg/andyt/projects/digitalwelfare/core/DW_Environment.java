@@ -20,12 +20,10 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_DataHandler;
@@ -56,11 +54,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     //public String Directory = "/scratch02/DigitalWelfare";
     //public String Directory = "C:/Users/geoagdt/projects/DigitalWelfare";
 
-    /**
-     * Logging levels.
-     */
-    public int DEBUG_Level;
-
     // For convenience
     public final DW_Strings Strings;
     public final DW_Files Files;
@@ -77,12 +70,12 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public DW_Deprivation_DataHandler Deprivation_DataHandler;
     public SHBE_Handler SHBE_Handler;
 
-    public DW_Environment(Generic_Environment ge, int DEBUG_Level) {
+    public DW_Environment(Generic_Environment ge) {
         this.ge = ge;
-        this.DEBUG_Level = DEBUG_Level;
         this.Strings = new DW_Strings();
         this.Files = new DW_Files(Strings);
-        SHBE_Env = new SHBE_Environment(ge, Generic_Environment.DEBUG_Level_NORMAL);
+        this.Files.setDataDirectory(ge.getFiles().getDataDir());
+        SHBE_Env = new SHBE_Environment(ge);
         Grids_Env = new Grids_Environment(Files.getGeneratedGridsDir());
         Vector_Env = new Vector_Environment();
     }
@@ -104,7 +97,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 //            if (checkAndMaybeFreeMemory()) {
 //                return true;
 //            } else {
-//                if (DEBUG_Level < DEBUG_Level_NORMAL) {
+//                if (Level < LOGGING_LEVEL_NORMAL) {
 //                    String message
 //                            = "Warning! No data to swap or clear in "
 //                            + this.getClass().getName()
@@ -121,7 +114,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 //                boolean createdRoom = false;
 //                while (!createdRoom) {
 //                    if (!swapDataAny()) {
-//                        if (DEBUG_Level < DEBUG_Level_NORMAL) {
+//                        if (Level < LOGGING_LEVEL_NORMAL) {
 //                            String message = "Warning! No data to swap or clear in "
 //                                    + this.getClass().getName()
 //                                    + ".tryToEnsureThereIsEnoughMemoryToContinue(boolean)";
@@ -133,7 +126,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 //                        initMemoryReserve();
 //                        createdRoom = true;
 //                    } catch (OutOfMemoryError e2) {
-//                        if (DEBUG_Level < DEBUG_Level_NORMAL) {
+//                        if (Level < LOGGING_LEVEL_NORMAL) {
 //                            String message
 //                                    = "Struggling to ensure there is enough memory in "
 //                                    + this.getClass().getName()
@@ -228,122 +221,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
         return getSHBE_Handler().clearSomeCacheExcept(YM3);
     }
 
-    /**
-     * For writing output messages to.
-     */
-    private PrintWriter PrintWriterOut;
-
-    /**
-     * For writing error messages to.
-     */
-    private PrintWriter PrintWriterErr;
-
-    public PrintWriter getPrintWriterOut() {
-        return PrintWriterOut;
-    }
-
-    public void setPrintWriterOut(PrintWriter PrintWriterOut) {
-        this.PrintWriterOut = PrintWriterOut;
-    }
-
-    public PrintWriter getPrintWriterErr() {
-        return PrintWriterErr;
-    }
-
-    public void setPrintWriterErr(PrintWriter PrintWriterErr) {
-        this.PrintWriterErr = PrintWriterErr;
-    }
-
-    /**
-     * Writes s to a new line of the output log and error log and also prints it
-     * to std.out.
-     *
-     * @param s
-     */
-    public void log(String s) {
-        PrintWriterOut.println(s);
-        PrintWriterErr.println(s);
-        System.out.println(s);
-    }
-
-//    private static void log(
-//            String message) {
-//        log(DW_Log.DW_DefaultLogLevel, message);
-//    }
-//
-//    private static void log(
-//            Level level,
-//            String message) {
-//        Logger.getLogger(DW_Log.DW_DefaultLoggerName).log(level, message);
-//    }
-    /**
-     * Writes s to a new line of the output log and also prints it to std.out.
-     *
-     * @param s
-     * @param println
-     */
-    public void logO(String s, boolean println) {
-        if (PrintWriterOut != null) {
-            PrintWriterOut.println(s);
-        }
-        if (println) {
-            System.out.println(s);
-        }
-    }
-
-    /**
-     * Writes s to a new line of the output log and also prints it to std.out if
-     * {@code this.DEBUG_Level <= DEBUG_Level}.
-     *
-     * @param DEBUG_Level
-     * @param s
-     */
-    public void logO(int DEBUG_Level, String s) {
-        if (this.DEBUG_Level <= DEBUG_Level) {
-            PrintWriterOut.println(s);
-            System.out.println(s);
-        }
-    }
-
-    /**
-     * Writes s to a new line of the error log and also prints it to std.err.
-     *
-     * @param s
-     */
-    public void logE(String s) {
-        if (PrintWriterErr != null) {
-            PrintWriterErr.println(s);
-        }
-        System.err.println(s);
-    }
-
-    /**
-     * Writes {@code e.getStackTrace()} to the error log and also prints it to
-     * std.err.
-     *
-     * @param e
-     */
-    public void logE(Exception e) {
-        StackTraceElement[] st;
-        st = e.getStackTrace();
-        for (StackTraceElement st1 : st) {
-            logE(st1.toString());
-        }
-    }
-
-    /**
-     * Writes e StackTrace to the error log and also prints it to std.err.
-     *
-     * @param e
-     */
-    public void logE(Error e) {
-        StackTraceElement[] st;
-        st = e.getStackTrace();
-        for (StackTraceElement st1 : st) {
-            logE(st1.toString());
-        }
-    }
-
     public DW_Geotools getGeotools() {
         if (Geotools == null) {
             Geotools = new DW_Geotools(this);
@@ -421,9 +298,10 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                 int n;
                 n = CouncilUOSets.size() + RSLUOSets.size();
                 //logO("Number of UnderOccupancy data sets loaded " + n);
-                //logO("Number of Input Files " + numberOfInputFiles);
+                //logO("Number of Input files " + numberOfInputFiles);
                 if (n != UO_Handler.getNumberOfInputFiles()) {
-                    logE("Warning, there are some UnderOccupancy Data that have not been loaded.");
+                    ge.log("Warning, there are some UnderOccupancy Data that "
+                            + "have not been loaded.", true);
                 }
             } else {
                 UO_Data = UO_Handler.loadUnderOccupiedReportData(true);
@@ -440,7 +318,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      */
     public ONSPD_Handler getPostcode_Handler() {
         if (Postcode_Handler == null) {
-            Postcode_Handler = SHBE_Env.ONSPD_Env.getHandler();
+            Postcode_Handler = SHBE_Env.oe.getHandler();
         }
         return Postcode_Handler;
     }
@@ -451,19 +329,19 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * @return
      */
     public SHBE_Handler getSHBE_Handler() {
-        if (SHBE_Env.Handler == null) {
-            SHBE_Env.Handler = new SHBE_Handler(SHBE_Env);
+        if (SHBE_Env.handler == null) {
+            SHBE_Env.handler = new SHBE_Handler(SHBE_Env);
         }
-        return SHBE_Env.Handler;
+        return SHBE_Env.handler;
     }
 
     /**
-     * {@code this.Handler = Handler;}
+     * {@code this.handler = handler;}
      *
-     * @param SHBE_Handler The Handler to set.
+     * @param SHBE_Handler The handler to set.
      */
     public void setSHBE_Handler(SHBE_Handler SHBE_Handler) {
-        SHBE_Env.Handler = SHBE_Handler;
+        SHBE_Env.handler = SHBE_Handler;
     }
 
     /**

@@ -19,7 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
 
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_StaticIO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_IO;
 
 /**
  *
@@ -78,7 +78,7 @@ public class DW_Data_CAB2_Record extends DW_Data_Postcode_Record {
 //            int Debug =1;
 //        }
         
-        String[] fields = DW_StaticIO.splitWithQuotesThenCommas(line);
+        String[] fields = DW_IO.splitWithQuotesThenCommas(line);
         if (fields.length != 24) {
             System.out.println("fields.length " + fields.length);
             System.out.println("RecordID " + RecordID);

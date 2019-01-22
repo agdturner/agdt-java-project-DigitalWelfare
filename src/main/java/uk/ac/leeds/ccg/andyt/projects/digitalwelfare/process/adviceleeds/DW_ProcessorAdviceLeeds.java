@@ -25,9 +25,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstrac
  */
 public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
 
-    public DW_ProcessorAdviceLeeds() {
-    }
-
     public DW_ProcessorAdviceLeeds(DW_Environment env) {
         super(env);
     }

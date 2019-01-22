@@ -560,26 +560,29 @@ public class DW_Report extends DW_HTMLPage {
         }
     }
 
-    protected void writeExtremeAreaChangesTable(File dir, String name, 
+    protected void writeExtremeAreaChangesTable(File dir, String name,
             String type, String year, String month) throws IOException {
         File f;
-        f = new File(
-                dir,
-                "ExtremeAreaChanges" + name + type + "LastYear" + year + month + ".csv");
+        f = new File(dir, "ExtremeAreaChanges" + name + type + "LastYear" + year
+                + month + ".csv");
         if (f.exists()) {
             writeLine("", componentFOS);
-            writeLine("<h5>Areas With The Largest " + name + " " + type + " In Numbers Of Claimants Table From Last Year</h5>", componentFOS);
+            writeLine("<h5>Areas With The Largest " + name + " " + type
+                    + " In Numbers Of Claimants Table From Last Year</h5>",
+                    componentFOS);
             writeLine("", componentFOS);
             ArrayList<String> table;
             table = DW_Table.readCSV(f);
             writeTable(table, componentFOS);
         }
-        f = new File(
-                dir,
-                "ExtremeAreaChanges" + name + type + "LastMonth" + year + month + ".csv");
+        f = new File(dir,
+                "ExtremeAreaChanges" + name + type + "LastMonth" + year + month
+                + ".csv");
         if (f.exists()) {
             writeLine("", componentFOS);
-            writeLine("<h5>Areas With The Largest " + name + " " + type + " In Numbers Of Claimants Table From Last Month</h5>", componentFOS);
+            writeLine("<h5>Areas With The Largest " + name + " " + type
+                    + " In Numbers Of Claimants Table From Last Month</h5>",
+                    componentFOS);
             writeLine("", componentFOS);
             ArrayList<String> table;
             table = DW_Table.readCSV(f);

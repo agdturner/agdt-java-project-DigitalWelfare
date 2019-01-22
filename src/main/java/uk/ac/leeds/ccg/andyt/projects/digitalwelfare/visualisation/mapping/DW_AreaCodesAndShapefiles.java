@@ -61,7 +61,8 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
     private final DW_Shapefile LeedsAndNeighbouringLADDW_Shapefile;
     private final DW_Shapefile LeedsAndNearNeighbouringLADDW_Shapefile;
 
-    public DW_AreaCodesAndShapefiles() {
+    public DW_AreaCodesAndShapefiles(DW_Environment e) {
+        super(e);
         LeedsAreaCodes = null;
         LeedsAndNeighbouringLADAreaCodes = null;
         LeedsAndNearNeighbouringLADAreaCodes = null;
@@ -98,10 +99,8 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
         tLeedsLADCensusAreaCode = new TreeSet<>();
         // Code for Leeds 00DA = E08000035
         tLeedsLADCensusAreaCode.add("E08000035");
-        LeedsLADDW_Shapefile = getLADShapefile(
-                tLeedsString,
-                tLeedsLADCensusAreaCode,
-                sdsf);
+        LeedsLADDW_Shapefile = getLADShapefile(tLeedsString,
+                tLeedsLADCensusAreaCode, sdsf);
         // Get Leeds and Neighbouring LAD Shapefile
         TreeSet<String> tLeedsAndNeighbouringLADCodes;
         tLeedsAndNeighbouringLADCodes = new TreeSet<>();
@@ -173,17 +172,12 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
              * backgroundShapefile
              */
             File leedsLevelShapefile;
-            leedsLevelShapefile = Maps.getCensusBoundaryShapefile(
-                    tLeedsString,
+            leedsLevelShapefile = Maps.getCensusBoundaryShapefile(tLeedsString,
                     level);
             LeedsLevelDW_Shapefile = new DW_Shapefile(leedsLevelShapefile);
             if (!leedsLevelShapefile.exists()) {
-                Maps.selectAndCreateNewShapefile(sdsf,
-                        levelFC,
-                        levelSFT,
-                        LeedsAreaCodes,
-                        targetPropertyName,
-                        leedsLevelShapefile);
+                Maps.selectAndCreateNewShapefile(sdsf, levelFC, levelSFT,
+                        LeedsAreaCodes, targetPropertyName, leedsLevelShapefile);
             }
         } else {
             File levelShapefile = Maps.getAreaBoundaryShapefile(level);
@@ -191,49 +185,30 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
                 int debug = 1;
             }
             LevelDW_Shapefile = new DW_Shapefile(levelShapefile);
-            LeedsAreaCodes = getAreaCodesAndShapefile(env,
-                    tLeedsString,
-                    level,
-                    targetPropertyName,
-                    LeedsLADDW_Shapefile,
-                    LevelDW_Shapefile);
-            LeedsAndNeighbouringLADAreaCodes = getAreaCodesAndShapefile(env,
-                    tLeedsAndNeighbouringLADsString,
-                    level,
-                    targetPropertyName,
-                    LeedsLADDW_Shapefile,
-                    LevelDW_Shapefile);
-            LeedsAndNearNeighbouringLADAreaCodes = getAreaCodesAndShapefile(env,
-                    tLeedsAndNearNeighbouringLADsString,
-                    level,
-                    targetPropertyName,
-                    LeedsLADDW_Shapefile,
-                    LevelDW_Shapefile);
+            LeedsAreaCodes = getAreaCodesAndShapefile(tLeedsString, level,
+                    targetPropertyName, LeedsLADDW_Shapefile, LevelDW_Shapefile);
+            LeedsAndNeighbouringLADAreaCodes = getAreaCodesAndShapefile(
+                    tLeedsAndNeighbouringLADsString, level, targetPropertyName,
+                    LeedsLADDW_Shapefile, LevelDW_Shapefile);
+            LeedsAndNearNeighbouringLADAreaCodes = getAreaCodesAndShapefile(
+                    tLeedsAndNearNeighbouringLADsString, level,
+                    targetPropertyName, LeedsLADDW_Shapefile, LevelDW_Shapefile);
             LeedsLevelDW_Shapefile = new DW_Shapefile(
-                    getPostcodeShapefile(
-                            tLeedsString,
-                            level));
+                    getPostcodeShapefile(tLeedsString, level));
         }
     }
 
-    public TreeSet<String> getAreaCodesAndShapefile(
-            DW_Environment env,
-            String area,
-            String level,
-            String targetPropertyName,
+    public final TreeSet<String> getAreaCodesAndShapefile(String area,
+            String level, String targetPropertyName,
             DW_Shapefile tLeedsLADDW_Shapefile,
             DW_Shapefile tLevelDW_Shapefile) {
         TreeSet<String> result;
         File censusDataDirectory = new File(
-                env.Files.getInputCensus2011AttributeDataDir(level),
-                area);
+                Env.Files.getInputCensus2011AttributeDataDir(level), area);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
                 || level.equalsIgnoreCase("MSOA")) {
-            result = Census_Environment.getCensusCodes(
-                    area,
-                    level,
-                    censusDataDirectory);
+            result = Census_Environment.getCensusCodes(area, level, censusDataDirectory);
         } else {
             File tPostcodeShapefile;
             tPostcodeShapefile = getPostcodeShapefile(
@@ -303,77 +278,57 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
         return result;
     }
 
-    public File getPostcodeShapefile(
-            String area,
-            String level) {
-        File result;
-        result = new File(Env.Files.getGeneratedPostcodeDir(),
+    public final File getPostcodeShapefile(String area, String level) {
+        File r;
+        r = new File(Env.Files.getGeneratedPostcodeDir(),
                 area + level + "PolyShapefile.shp");
-        result = new File(result, area + level + "PolyShapefile.shp");
-        return result;
+        r = new File(r, area + level + "PolyShapefile.shp");
+        return r;
     }
 
-    public DW_Shapefile getLADShapefile(
-            String name,
-            TreeSet<String> tLADCensusCodes,
-            ShapefileDataStoreFactory sdsf) {
-        DW_Shapefile result;
+    public final DW_Shapefile getLADShapefile(String name,
+            TreeSet<String> tLADCensusCodes, ShapefileDataStoreFactory sdsf) {
+        DW_Shapefile r;
         // Get LAD shapefiles
         String levelLAD = "LAD";
         // Read LAD Census Boundary Data
-        File tLADShapefile = Maps.getAreaBoundaryShapefile(
-                levelLAD);
+        File tLADShapefile = Maps.getAreaBoundaryShapefile(levelLAD);
         DW_Shapefile tLAD_DW_Shapefile;
         tLAD_DW_Shapefile = new DW_Shapefile(tLADShapefile);
-        result = getLADShapefile(
-                name,
-                tLADCensusCodes,
-                tLAD_DW_Shapefile,
-                sdsf);
-        return result;
+        r = getLADShapefile(name, tLADCensusCodes, tLAD_DW_Shapefile, sdsf);
+        return r;
     }
 
-    public DW_Shapefile getLADShapefile(
-            String name,
-            TreeSet<String> tLADCensusCodes,
-            DW_Shapefile tLAD_DW_Shapefile,
+    public DW_Shapefile getLADShapefile(String name,
+            TreeSet<String> tLADCensusCodes, DW_Shapefile tLAD_DW_Shapefile,
             ShapefileDataStoreFactory sdsf) {
-        DW_Shapefile result;
+        DW_Shapefile r;
         FeatureCollection tLAD_FC = tLAD_DW_Shapefile.getFeatureCollection();
         SimpleFeatureType tLAD_SFT = tLAD_DW_Shapefile.getSimpleFeatureType();
         // Select tLADCensusCodes from LAD Census Boundary Data
-        File tLADShapefile = Maps.getCensusBoundaryShapefile(
-                name,
-                "LAD");
-        result = new DW_Shapefile(tLADShapefile);
+        File tLADShapefile = Maps.getCensusBoundaryShapefile(name, "LAD");
+        r = new DW_Shapefile(tLADShapefile);
         if (!tLADShapefile.exists()) {
-            Maps.selectAndCreateNewShapefile(
-                    sdsf,
-                    tLAD_FC,
-                    tLAD_SFT,
-                    tLADCensusCodes,
-                    "CODE",
-                    tLADShapefile);
+            Maps.selectAndCreateNewShapefile(sdsf, tLAD_FC, tLAD_SFT, 
+                    tLADCensusCodes, "CODE", tLADShapefile);
         }
-        return result;
+        return r;
     }
 
-    public File getPostcodeDataAreaCodesFile(
-            String area,
-            String level) {
-        File result;
-        File postcodeDataDirectory = new File(Env.Files.getGeneratedPostcodeDir(), area);
-        postcodeDataDirectory = new File(postcodeDataDirectory, level);
-        postcodeDataDirectory.mkdirs();
-        result = new File(postcodeDataDirectory, "AreaCodes.csv");
-        return result;
+    public File getPostcodeDataAreaCodesFile(            String area,            String level) {
+        File r;
+        File dir = new File(Env.Files.getGeneratedPostcodeDir(), area);
+        dir = new File(dir, level);
+        dir.mkdirs();
+        r = new File(dir, "AreaCodes.csv");
+        return r;
     }
 
     public static void writeAreaCodes(File postcodeDataAreaCodesFile,
             TreeSet<String> result, String area, String level) {
         postcodeDataAreaCodesFile.getParentFile().mkdirs();
-        PrintWriter pw = null;
         try {
+            PrintWriter pw;
             pw = new PrintWriter(postcodeDataAreaCodesFile);
             Iterator<String> ite;
             ite = result.iterator();
@@ -394,13 +349,11 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
      * Local Authority District loaded from a specific file within
      * digitalWelfareDir.
      */
-    public TreeSet<String> getAreaCodes(
-            String area,
-            String level) {
+    public TreeSet<String> getAreaCodes(String area, String level) {
         TreeSet<String> result = null;
-        File postcodeDataDirectory = new File(Env.Files.getGeneratedPostcodeDir(), area);
-        postcodeDataDirectory = new File(postcodeDataDirectory, level);
-        File file = new File(postcodeDataDirectory, "AreaCodes.csv");
+        File dir = new File(Env.Files.getGeneratedPostcodeDir(), area);
+        dir = new File(dir, level);
+        File file = new File(dir, "AreaCodes.csv");
         if (file.exists()) {
             try {
                 BufferedReader br;

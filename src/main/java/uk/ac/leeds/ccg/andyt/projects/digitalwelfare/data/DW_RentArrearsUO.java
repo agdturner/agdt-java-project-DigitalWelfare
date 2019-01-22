@@ -23,12 +23,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
@@ -36,7 +34,6 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  *
@@ -76,12 +73,13 @@ public final class DW_RentArrearsUO extends DW_Object {
      */
     void initClaimData() {
         String methodName = "initClaimData()";
-        Env.logO("<" + methodName + ">", true);
+        Env.ge.log("<" + methodName + ">", true);
         // Declare and fill ClaimData with empty DW_Claims
         ClaimData = new HashMap<>();
         HashSet<SHBE_ID> AllCouncilUOClaimIDs;
         AllCouncilUOClaimIDs = UO_Data.getClaimIDsInCouncilUO();
-        Env.logO("AllCouncilUOClaimIDs.size() " + AllCouncilUOClaimIDs.size(), true);
+        Env.ge.log("AllCouncilUOClaimIDs.size() " + AllCouncilUOClaimIDs.size(),
+                true);
         SHBE_ID ClaimID;
         Iterator<SHBE_ID> ite;
         ite = AllCouncilUOClaimIDs.iterator();
@@ -125,7 +123,7 @@ public final class DW_RentArrearsUO extends DW_Object {
             i = includeIte.next();
             filename = SHBEFilenames[i];
             YM3 = SHBE_Handler.getYM3(filename);
-            Env.logO("YM3 " + YM3, true);
+            Env.ge.log("YM3 " + YM3, true);
             CouncilUOSet = CouncilUOSets.get(YM3);
             if (CouncilUOSet == null) {
                 SHBE_Records = SHBE_Handler.getRecords(YM3, Env.HOOME);
@@ -201,9 +199,9 @@ public final class DW_RentArrearsUO extends DW_Object {
                     } else {
                         if (CouncilUOSet.getClaimIDs().contains(ClaimID)) {
                             DW_Claim.InUO.put(i, true);
-                            Env.logO(Generic_Environment.DEBUG_Level_FINE,
-                                    "ClaimID " + ClaimID + 
-                                            " Odd case where UO data exists, but claim in SHBE does not.");
+                            Env.ge.log("ClaimID " + ClaimID + " Odd case where "
+                                    + "UO data exists, but claim in SHBE does "
+                                    + "not.", true);
                         } else {
                             DW_Claim.InUO.put(i, false);
                         }

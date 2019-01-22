@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import uk.ac.leeds.ccg.andyt.chart.Generic_BarChart;
+import uk.ac.leeds.ccg.andyt.chart.examples.Generic_BarChart;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
@@ -48,15 +48,7 @@ public class DW_BarChart extends Generic_BarChart {
 
     protected final transient DW_Environment Env;
     protected final transient DW_Strings Strings;
-    private int dataWidth;
-    private int dataHeight;
-    private String xAxisLabel;
-    private String yAxisLabel;
-    private int barGap;
-    private int xIncrement;
     private int numberOfBars;
-    private int numberOfYAxisTicks;
-    private BigDecimal yPin;
     private BigDecimal yMax;
     private BigDecimal yIncrement;
 //    private MathContext mc;
@@ -98,9 +90,9 @@ public class DW_BarChart extends Generic_BarChart {
 //        yIncrement = BigDecimal.ONE;
         yIncrement = null;
         //int yAxisStartOfEndInterval = 60;
-        setDecimalPlacePrecisionForCalculations(20);
+        decimalPlacePrecisionForCalculations = 20;
         //int decimalPlacePrecisionForDisplay = 3;
-        setRoundingMode(RoundingMode.HALF_UP);
+        roundingMode = RoundingMode.HALF_UP;
         executorService = Executors.newSingleThreadExecutor();
 
         String[] SHBEFilenames;
@@ -210,7 +202,7 @@ public class DW_BarChart extends Generic_BarChart {
             ArrayList<String> distanceTypes,
             ArrayList<Double> distances) {
 
-        String format = "PNG";
+        format = "PNG";
         File dirOut;
         dirOut = new File(Env.Files.getOutputSHBEPlotsDir(), "BarCharts");
         dirOut = Env.Files.getUODir(dirOut, doUnderOccupied, doCouncil);
@@ -251,38 +243,20 @@ public class DW_BarChart extends Generic_BarChart {
                         while (typesIte.hasNext()) {
                             String type;
                             type = typesIte.next();
-                            File dirOut4 = new File(
-                                    dirOut3,
-                                    type);
-                            dirOut4 = new File(
-                                    dirOut4,
-                                    tenure);
+                            File dirOut4 = new File(dirOut3, type);
+                            dirOut4 = new File(dirOut4, tenure);
                             dirOut4.mkdirs();
                             File fout;
-                            fout = new File(
-                                    dirOut4,
-                                    year + month + "BarChart.PNG");
-                            String title;
+                            fout = new File(dirOut4, year + month + "BarChart.PNG");
                             title = year + " " + month + " Bar Chart";
                             xAxisLabel = type + " Count";
                             File dirIn = new File(Env.Files.getGeneratedSHBEDir(
                                     level, doUnderOccupied, doCouncil),
                                     type);
-                            dirIn = new File(
-                                    dirIn,
-                                    claimantType);
-                            dirIn = new File(
-                                    dirIn,
-                                    tenure);
-                            File fin = new File(
-                                    dirIn,
-                                    "" + year + month + ".csv");
-                            generateBarChart(
-                                    level,
-                                    fout,
-                                    fin,
-                                    format,
-                                    title);
+                            dirIn = new File(dirIn, claimantType);
+                            dirIn = new File(dirIn, tenure);
+                            File fin = new File(dirIn, "" + year + month + ".csv");
+                            generateBarChart(level, fout, fin, format, title);
                         }
                         // Do distance types
                         distanceTypesIte = distanceTypes.iterator();
@@ -301,10 +275,7 @@ public class DW_BarChart extends Generic_BarChart {
                                 dir = new File(dir, distanceThreshold.toString());
                                 dir.mkdirs();
                                 File fout;
-                                fout = new File(
-                                        dir,
-                                        year + month + "BarChart.PNG");
-                                String title;
+                                fout = new File(dir, year + month + "BarChart.PNG");
                                 title = year + " " + month + " Bar Chart";
                                 xAxisLabel = distanceType + " " + distanceThreshold + " Count";
                                 dir = new File(Env.Files.getGeneratedSHBEDir(
@@ -325,37 +296,20 @@ public class DW_BarChart extends Generic_BarChart {
                 executorService, future, this);
     }
 
-    private void generateBarChart(
-            String level,
-            File fout,
-            File fin,
-            String format,
-            String title) {
+    private void generateBarChart(String level, File fout, File fin, String format, String title) {
         try {
-            Generic_BarChart chart = new Generic_BarChart(
-                    executorService,
-                    fout,
-                    format,
-                    title,
-                    dataWidth,
-                    dataHeight,
-                    xAxisLabel,
-                    yAxisLabel,
-                    false,
-                    barGap,
-                    xIncrement,
-                    yMax,
-                    yPin,
-                    yIncrement,
-                    numberOfYAxisTicks,
-                    getDecimalPlacePrecisionForCalculations(),
-                    getDecimalPlacePrecisionForDisplay(),
+            Generic_BarChart chart = new Generic_BarChart(executorService,
+                    fout, format, title, dataWidth, dataHeight, xAxisLabel,
+                    yAxisLabel, false, barGap, xAxisIncrement, yMax, yPin,
+                    yIncrement, numberOfYAxisTicks,
+                    decimalPlacePrecisionForCalculations,
+                    decimalPlacePrecisionForDisplay,
                     getRoundingMode());
-            Object[] data = getData(level, fin, numberOfBars);
+            data = getData(level, fin, numberOfBars);
             if (data != null) {
                 chart.setData(data);
                 chart.run();
-                Future future = chart.future;
+                future = chart.future;
             }
         } catch (OutOfMemoryError e) {
             long time;
@@ -366,12 +320,7 @@ public class DW_BarChart extends Generic_BarChart {
                     + "before trying to generate bar chart again...");
             Generic_Execution.waitSychronized(this, time); // wait a minute
             System.out.println("...on we go.");
-            generateBarChart(
-                    level,
-                    fout,
-                    fin,
-                    format,
-                    title);
+            generateBarChart(level, fout, fin, format, title);
         }
     }
 
@@ -383,8 +332,7 @@ public class DW_BarChart extends Generic_BarChart {
         lines = DW_Table.readCSV(f);
 
         MathContext mc;
-        mc = new MathContext(
-                getDecimalPlacePrecisionForCalculations(),
+        mc = new MathContext(decimalPlacePrecisionForCalculations,
                 getRoundingMode());
         HashSet<String> areaCodes2;
         areaCodes2 = areaCodes.get(level);

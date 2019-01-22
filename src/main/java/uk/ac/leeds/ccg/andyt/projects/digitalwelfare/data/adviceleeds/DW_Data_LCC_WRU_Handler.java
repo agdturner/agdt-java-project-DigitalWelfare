@@ -28,12 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 public class DW_Data_LCC_WRU_Handler extends DW_Object {
-
-    public DW_Data_LCC_WRU_Handler() {
-    }
 
     public DW_Data_LCC_WRU_Handler(DW_Environment env) {
         super(env);
@@ -57,7 +53,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
      * @return
      */
     public TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> loadInputData(
-            String filename,            Object IDType) {
+            String filename, Object IDType) {
         File directory = new File(Env.Files.getInputAdviceLeedsDir(), "LCC_WRU");
         return loadInputData(directory, filename, IDType);
     }
@@ -71,11 +67,11 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
      * @return
      */
     public TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> loadInputData(
-            File dir,            String filename,            Object IDType) {
+            File dir, String filename, Object IDType) {
         System.out.println("Loading " + filename);
         TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> result;
         result = new TreeMap<>();
-        File inputFile = new File(                dir,                filename);
+        File inputFile = new File(dir, filename);
         long RecordID = 0;
         int recordsLoaded = 0;
         int countOfAdditionalRecordsThatAreIgnored = 0;
@@ -84,7 +80,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
             br = Generic_IO.getBufferedReader(inputFile);
             StreamTokenizer st;
             st = getStreamTokenizer(br);
-            String line = "";
+            String line;
             // Skip the header
             int headerLines = 3;
             for (int i = 0; i < headerLines; i++) {

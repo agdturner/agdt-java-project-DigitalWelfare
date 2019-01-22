@@ -50,9 +50,6 @@ public class DW_UO_Handler extends DW_Object {
 
     private HashSet<String> RecordTypes;
 
-    public DW_UO_Handler() {
-    }
-
     public DW_UO_Handler(DW_Environment env) {
         super(env);
         SHBE_Handler h = env.getSHBE_Handler();
@@ -170,7 +167,7 @@ public class DW_UO_Handler extends DW_Object {
     public DW_UO_Data loadUnderOccupiedReportData(boolean reload) {
         String methodName;
         methodName = "loadUnderOccupiedReportData()";
-        Env.logO("<" + methodName + ">", true);
+        Env.ge.log("<" + methodName + ">", true);
         DW_UO_Data result;
         TreeMap<ONSPD_YM3, DW_UO_Set> CouncilSets;
         CouncilSets = new TreeMap<>();
@@ -192,7 +189,7 @@ public class DW_UO_Handler extends DW_Object {
         String filename;
         Iterator<ONSPD_YM3> ite;
         ite = CouncilFilenames.keySet().iterator();
-        type = Strings.sCouncil;
+        type = strings.sCouncil;
         while (ite.hasNext()) {
             YM3 = ite.next();
             filename = CouncilFilenames.get(YM3);
@@ -201,7 +198,7 @@ public class DW_UO_Handler extends DW_Object {
             CouncilSets.put(YM3, set);
         }
         ite = RSLFilenames.keySet().iterator();
-        type = Strings.sRSL;
+        type = strings.sRSL;
         while (ite.hasNext()) {
             YM3 = ite.next();
             filename = RSLFilenames.get(YM3);
@@ -210,7 +207,7 @@ public class DW_UO_Handler extends DW_Object {
             RSLSets.put(YM3, set);
         }
         result = new DW_UO_Data(Env, RSLSets, CouncilSets);
-        Env.logO("</" + methodName + ">", true);
+        Env.ge.log("</" + methodName + ">", true);
         return result;
     }
 
@@ -222,7 +219,7 @@ public class DW_UO_Handler extends DW_Object {
     public int getNumberOfInputFiles() {
         int result;
         File dirIn;
-        dirIn = Files.getInputUnderOccupiedDir();
+        dirIn = files.getInputUnderOccupiedDir();
         File[] files;
         files = dirIn.listFiles();
         result = files.length;
@@ -237,7 +234,7 @@ public class DW_UO_Handler extends DW_Object {
     public int getNumberOfGeneratedFiles() {
         int result;
         File dirIn;
-        dirIn = Files.getGeneratedUnderOccupiedDir();
+        dirIn = files.getGeneratedUnderOccupiedDir();
         result = dirIn.listFiles().length;
         return result;
     }
@@ -267,7 +264,7 @@ public class DW_UO_Handler extends DW_Object {
             RSLFilenames = new TreeMap<>();
             inputFilenames[0] = CouncilFilenames;
             inputFilenames[1] = RSLFilenames;
-//            String[] list = Files.getInputUnderOccupiedDir().list();
+//            String[] list = files.getInputUnderOccupiedDir().list();
 //            String s;
 //            String ym;
 //            TreeMap<String,String> yms;

@@ -26,17 +26,21 @@ public abstract class DW_Object implements Serializable {
     /**
      * A reference to DW_Environment
      */
-    protected transient DW_Environment Env;
+    protected transient final DW_Environment Env;
     
+    protected transient final int logID;
     // For convenience
-    protected transient DW_Strings Strings;
-    protected transient DW_Files Files;
+    protected transient DW_Strings strings;
+    protected transient DW_Files files;
 
-    public DW_Object(){}
-    
     public DW_Object(DW_Environment e) {
+        this(e, 0);
+    }
+    
+    public DW_Object(DW_Environment e, int logID) {
         Env = e;
-        Strings = e.Strings;
-        Files = e.Files;
+        this.logID = logID;
+        strings = e.Strings;
+        files = e.Files;
     }
 }

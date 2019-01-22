@@ -28,7 +28,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
 /**
  * For Handling data from Petra.
@@ -36,9 +35,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  * @author geoagdt
  */
 public class DW_Data_CAB0_Handler extends DW_Object {
-
-    public DW_Data_CAB0_Handler() {
-    }
 
     public DW_Data_CAB0_Handler(DW_Environment env) {
         super(env);

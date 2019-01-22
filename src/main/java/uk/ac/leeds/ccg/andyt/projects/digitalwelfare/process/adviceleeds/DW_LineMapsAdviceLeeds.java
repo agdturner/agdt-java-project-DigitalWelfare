@@ -88,14 +88,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     public static void main(String[] args) {
         try {
             new DW_LineMapsAdviceLeeds(null).run();
-        } catch (Exception e) {
-            System.err.println(e.getLocalizedMessage());
-            e.printStackTrace(System.err);
-//            StackTraceElement[] stes = e.getStackTrace();
-//            for (StackTraceElement ste : stes) {
-//                System.err.println(ste.toString());
-//            }
-        } catch (Error e) {
+        } catch (Exception | Error e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace(System.err);
 //            StackTraceElement[] stes = e.getStackTrace();
@@ -147,16 +140,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         // init tMSOACodesAndLeedsMSOAShapefile
         initMSOACodesAndLeedsMSOAShapefile(targetPropertyNameMSOA);
-        Env.SHBE_Env.ONSPD_Env.initONSPDLookups();
+        Env.SHBE_Env.oe.initONSPDLookups();
         initCABOutletPoints();
         Data_CAB2_Handler = new DW_Data_CAB2_Handler(Env);
         Data_CAB0_Handler = new DW_Data_CAB0_Handler(Env);
         Data_LCC_WRU_Handler = new DW_Data_LCC_WRU_Handler(Env);
-        LSOAToCentroidLookupTable = getCentroidLookupTable(
-                "LSOA",
+        LSOAToCentroidLookupTable = getCentroidLookupTable(                "LSOA",
                 targetPropertyNameLSOA);
-        MSOAToCentroidLookupTable = getCentroidLookupTable(
-                "MSOA",
+        MSOAToCentroidLookupTable = getCentroidLookupTable(                "MSOA",
                 targetPropertyNameMSOA);
     }
 
@@ -352,7 +343,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    ONSPD_Point outletPoint = null;
+                    ONSPD_Point outletPoint;
                     outletPoint = CABOutletPoints.get(tCABOutletString);
 //                    ONSPD_Point a_DW_Point;
 //                    a_DW_Point = outletPoint;
@@ -494,7 +485,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    ONSPD_Point outletPoint = null;
+                    ONSPD_Point outletPoint;
                     outletPoint = CABOutletPoints.get(tCABOutletString);
 //                    ONSPD_Point a_DW_Point;
 //                    a_DW_Point = outletPoint;
@@ -722,7 +713,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    ONSPD_Point outletPoint = null;
+                    ONSPD_Point outletPoint;
                     outletPoint = CABOutletPoints.get(tCABOutletString);
                     String formattedPostcode = ONSPD_Handler.formatPostcode(postcode);
                     String aLSOACode = LookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
@@ -809,7 +800,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    ONSPD_Point outletPoint = null;
+                    ONSPD_Point outletPoint;
                     outletPoint = CABOutletPoints.get(tCABOutletString);
                     String formattedPostcode = ONSPD_Handler.formatPostcode(postcode);
                     String aLSOACode = LookupFromPostcodeToLSOACensusCodes.get(formattedPostcode);
@@ -971,7 +962,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    ONSPD_Point outletPoint = null;
+                    ONSPD_Point outletPoint;
                     outletPoint = CABOutletPoints.get(tCABOutletString);
                     destinationx = outletPoint.getX();
                     destinationy = outletPoint.getY();
@@ -1039,7 +1030,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     originy = origin.getY();
                     double destinationx;
                     double destinationy;
-                    ONSPD_Point outletPoint = null;
+                    ONSPD_Point outletPoint;
                     outletPoint = CABOutletPoints.get(tCABOutletString);
                     destinationx = outletPoint.getX();
                     destinationy = outletPoint.getY();

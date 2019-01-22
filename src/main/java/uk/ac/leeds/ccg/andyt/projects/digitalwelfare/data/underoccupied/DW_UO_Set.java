@@ -68,19 +68,19 @@ public class DW_UO_Set extends DW_Object implements Serializable {
         super(env);
         String methodName;
         methodName = "DW_UO_Set(...)";
-        env.logO("<" + methodName + ">", true);
-        env.logO("filename " + filename, true);
+        Env.ge.log("<" + methodName + ">", true);
+        Env.ge.log("filename " + filename, true);
         UO_Handler = Env.getUO_Handler();
         File dirIn;
-        dirIn = Files.getInputUnderOccupiedDir();
+        dirIn = files.getInputUnderOccupiedDir();
         File dirOut;
-        dirOut = new File(Files.getGeneratedUnderOccupiedDir(), type);
+        dirOut = new File(files.getGeneratedUnderOccupiedDir(), type);
         dirOut = new File(dirOut, YM3.toString());
         if (!dirOut.exists()) {
             dirOut.mkdirs();
         }
         File fOut;
-        fOut = new File(dirOut, Strings.sDW_UO_Set + Strings.sBinaryFileExtension);
+        fOut = new File(dirOut, strings.sDW_UO_Set + strings.sBinaryFileExtension);
         if (fOut.exists() || !reload) {
             DW_UO_Set loadDummy;
             loadDummy = (DW_UO_Set) Generic_IO.readObject(fOut);
@@ -89,7 +89,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
             Map = UO_Handler.loadInputData(dirIn, filename);
             Generic_IO.writeObject(this, fOut);
         }
-        env.logO("</" + methodName + ">", true);
+        Env.ge.log("</" + methodName + ">", true);
     }
 
     /**

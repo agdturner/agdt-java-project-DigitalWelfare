@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
@@ -48,9 +48,6 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
     protected transient String[] SHBEFilenames;
     protected transient HashMap<SHBE_ID, String> ClaimIDToClaimRefLookup;
 
-    protected DW_ProcessorLCC() {
-    }
-
     public DW_ProcessorLCC(DW_Environment e) {
         super(e);
         SHBE_Handler = e.getSHBE_Handler();
@@ -71,14 +68,11 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 System.exit(0);
             } else {
                 File dataDir = new File(args[1]);
-                Generic_Environment ge = new Generic_Environment(dataDir);
-                DW_Environment env = new DW_Environment(ge,
-                        Integer.valueOf(args[0]));
+                Generic_Environment ge;
+                ge = new Generic_Environment(dataDir, Level.FINE);
+                DW_Environment env = new DW_Environment(ge);
                 DW_ProcessorLCC p;
-                p = new DW_ProcessorLCC();
-                p.Env = env;
-                p.Files = env.Files;
-                p.Strings = env.Strings;
+                p = new DW_ProcessorLCC(env);
                 p.run();
                 /**
                  * Not done this way as this would first load UnderOccupancy
@@ -109,8 +103,8 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
          * in that some parts have to have been run before others will produce 
          * results as expected/desired.
          */
-//        RunAllFromScratch = true;
-        RunAllFromScratch = false;
+        RunAllFromScratch = true;
+//        RunAllFromScratch = false;
         RunAllFromUpdate = false;
         if (!RunAllFromScratch) {
             if (!RunAllFromUpdate) {
@@ -220,12 +214,12 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             } else {
                 processName = "LoadNewONSPDFromSource";
             }
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
-            Postcode_Handler = Env.SHBE_Env.ONSPD_Env.getHandler();
-            Postcode_Handler.run(logDir);
+            Postcode_Handler = Env.SHBE_Env.oe.getHandler();
+            Postcode_Handler.run(logID2);
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         /**
@@ -234,13 +228,13 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLoadAllSHBEFromSource) {
             // Set up logging
             processName = "LoadAllSHBEFromSource";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
-            SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
+            SHBE_Handler = new SHBE_Handler(Env.SHBE_Env, logID2);
             Env.setSHBE_Handler(SHBE_Handler);
-            SHBE_Handler.run(logDir);
+            SHBE_Handler.run(logID2);
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         /**
@@ -249,13 +243,13 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLoadNewSHBEFromSource) {
             // Set up logging
             processName = "LoadNewSHBEFromSource";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
-            SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
+            SHBE_Handler = new SHBE_Handler(Env.SHBE_Env, logID2);
             Env.setSHBE_Handler(SHBE_Handler);
-            SHBE_Handler.runNew(logDir);
+            SHBE_Handler.runNew();
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         /**
@@ -264,13 +258,13 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doPostcodeCheck) {
             // Set up logging
             processName = "PostcodeCheck";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
-            SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
+            SHBE_Handler = new SHBE_Handler(Env.SHBE_Env, logID2);
             Env.setSHBE_Handler(SHBE_Handler);
-            SHBE_Handler.runPostcodeCheck(logDir);
+            SHBE_Handler.runPostcodeCheck();
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         /**
@@ -279,13 +273,13 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doPostcodeCheckLatest) {
             // Set up logging
             processName = "PostcodeCheckLatest";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             SHBE_Handler = new SHBE_Handler(Env.SHBE_Env);
             Env.setSHBE_Handler(SHBE_Handler);
-            SHBE_Handler.runPostcodeCheckLatest(logDir);
+            SHBE_Handler.runPostcodeCheckLatest();
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         /**
@@ -296,7 +290,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLoadSHBE) {
             // Set up logging
             processName = "LoadSHBE";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             HashMap<ONSPD_YM3, SHBE_Records> Data;
             Data = Env.SHBE_Handler.getData();
@@ -313,17 +307,17 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                     DW_SHBE_Records = new SHBE_Records(Env.SHBE_Env, YM3);
                     Env.checkAndMaybeFreeMemory();
                     Data.put(YM3, DW_SHBE_Records);
-                    Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
+                    Env.ge.log("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
                             + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HOOME).size(), true);
-                    Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended().size() "
+                    Env.ge.log("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended().size() "
                             + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HOOME).size(), true);
-                    Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther().size() "
+                    Env.ge.log("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther().size() "
                             + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther(Env.HOOME).size(), true);
-                    Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
+                    Env.ge.log("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
                             + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(Env.HOOME).size(), true);
-                    Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended().size() "
+                    Env.ge.log("DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended().size() "
                             + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(Env.HOOME).size(), true);
-                    Env.logO("DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther().size() "
+                    Env.ge.log("DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther().size() "
                             + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther(Env.HOOME).size(), true);
                     DW_SHBE_Records.clearData();
                 } catch (OutOfMemoryError e) {
@@ -334,7 +328,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 }
             }
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         /**
@@ -343,93 +337,82 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (doLoadUnderOccupancyFromSource) {
             // Set up logging
             processName = "LoadUnderOccupancyFromSource";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             boolean loadFromSource;
             loadFromSource = true;
             UO_Data = Env.getUO_Data(loadFromSource);
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         if (doLoadUnderOccupancy) {
             // Set up logging
             processName = "LoadUnderOccupancy";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             boolean loadFromSource;
             loadFromSource = false;
             UO_Data = Env.getUO_Data(loadFromSource);
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         if (doLCCSummary) {
             // Set up logging
             processName = "LCCSummary";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             DW_ProcessorLCCSummary p;
             p = new DW_ProcessorLCCSummary(Env);
             p.run();
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         if (doRentArrears) {
             // Set up logging
             processName = "RentArrears";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             DW_ProcessorLCCRentArrears p;
             p = new DW_ProcessorLCCRentArrears(Env);
             p.run(doRentArrearsNewData);
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         if (doLCCHBGeneralAggregateStatistics) {
             // Set up logging
             processName = "LCCHBGeneralAggregateStatistics";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             DW_ProcessorLCCHBGeneralAggregateStatistics p;
             p = new DW_ProcessorLCCHBGeneralAggregateStatistics(Env);
             p.run();
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         if (doLCCTenancyChangesUO) {
             // Set up logging
             processName = "LCCTenancyChangesUO";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+           int logID2 = Env.ge.initLog(processName);
             // Process
             DW_ProcessorLCCTenancyChangesUO p;
             p = new DW_ProcessorLCCTenancyChangesUO(Env);
             p.run();
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         if (doLCCTTAndPT) {
             // Set up logging
             processName = "LCCTTAndPT";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             DW_ProcessorLCCTTAndPT p;
             p = new DW_ProcessorLCCTTAndPT(Env);
-////            
-////            // <DEBUG skip to a particular output creation>
-//            p.run(
-//                    true,
-//                    false,
-//                    true,
-//                    false,
-//                    true);
-//            System.exit(0);
-////            // </DEBUG skip to a particular output creation>
-////
             if (doLCCTTAndPTAll) {
                 LCCTTAndPT_DoGrouped = true;
                 LCCTTAndPT_DoPostcodeChanges = true;
@@ -450,25 +433,25 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                         LCCTTAndPT_DoTenancyAndPostcodeChanges);
             }
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         if (doChoroplethMapping) {
             // Set up logging
             processName = "ChoroplethMapping";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             DW_ChoroplethMapsLCC p;
             p = new DW_ChoroplethMapsLCC(Env);
             p.run();
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         if (doLineMaps) {
             // Set up logging
             processName = "LineMaps";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             DW_LineMapsLCC p;
             p = new DW_LineMapsLCC(Env);
@@ -480,25 +463,25 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             p.run2(false, false);
             p.run();
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         if (doReports) {
             // Set up logging
             processName = "Reports";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             DW_Report p;
             p = new DW_Report(Env);
             p.run();
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         if (doLineGraphs) {
             // Set up logging
             processName = "LineGraphs";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             DW_LineGraph p;
             p = new DW_LineGraph(Env);
@@ -506,25 +489,25 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             p.run(doLineGraphTenancyTypeTransitions,
                     doLineGraphAggregateData);
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         if (doDensityMaps) {
             // Set up logging
             processName = "DensityMaps";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             DW_DensityMapsLCC p;
             p = new DW_DensityMapsLCC(Env);
             p.run();
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
 
         if (doLineDensityMaps) {
             // Set up logging
             processName = "LineDensityMaps";
-            File logDir = initLogs(Env.DEBUG_Level, processName, range);
+            int logID2 = Env.ge.initLog(processName);
             // Process
             DW_LineDensityMaps_LCC p;
             p = new DW_LineDensityMaps_LCC(Env);
@@ -533,7 +516,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
             p2 = new DW_LineDensityDifferenceMaps_LCC(Env);
             p2.run();
             // Close logs
-            closeLogs(processName);
+            Env.ge.closeLog(logID2);
         }
     }
 
@@ -710,25 +693,26 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (postcode.trim().isEmpty()) {
             return result;
         }
-        if (level.equalsIgnoreCase(Strings.sOA) || level.equalsIgnoreCase(Strings.sLSOA) || level.equalsIgnoreCase(Strings.sMSOA) || level.equalsIgnoreCase(Strings.sStatisticalWard) || level.equalsIgnoreCase(Strings.sParliamentaryConstituency)) {
+        if (level.equalsIgnoreCase(strings.sOA) || level.equalsIgnoreCase(strings.sLSOA) || level.equalsIgnoreCase(strings.sMSOA) || level.equalsIgnoreCase(strings.sStatisticalWard) || level.equalsIgnoreCase(strings.sParliamentaryConstituency)) {
             String formattedPostcode = Postcode_Handler.formatPostcode(postcode);
             result = LookupFromPostcodeToCensusCode.get(formattedPostcode);
             if (result == null) {
                 result = "";
             }
-        } else if (level.equalsIgnoreCase(Strings.sPostcodeUnit) || level.equalsIgnoreCase(Strings.sPostcodeSector) || level.equalsIgnoreCase(Strings.sPostcodeDistrict)) {
-            if (level.equalsIgnoreCase(Strings.sPostcodeUnit)) {
+        } else if (level.equalsIgnoreCase(strings.sPostcodeUnit) || level.equalsIgnoreCase(strings.sPostcodeSector) || level.equalsIgnoreCase(strings.sPostcodeDistrict)) {
+            if (level.equalsIgnoreCase(strings.sPostcodeUnit)) {
                 result = postcode;
             }
-            if (level.equalsIgnoreCase(Strings.sPostcodeSector)) {
+            if (level.equalsIgnoreCase(strings.sPostcodeSector)) {
                 result = Postcode_Handler.getPostcodeSector(postcode);
             }
-            if (level.equalsIgnoreCase(Strings.sPostcodeDistrict)) {
+            if (level.equalsIgnoreCase(strings.sPostcodeDistrict)) {
                 result = Postcode_Handler.getPostcodeDistrict(postcode);
             }
         } else {
             // Unrecognised level
-            Env.log("Unrecognised level in " + this.getClass().getName() + ".getAreaCode(String,String,TreeMap<String, String>)");
+            Env.ge.log("Unrecognised level in " + this.getClass().getName() 
+                    + ".getAreaCode(String,String,TreeMap<String, String>)");
         }
         return result;
     }

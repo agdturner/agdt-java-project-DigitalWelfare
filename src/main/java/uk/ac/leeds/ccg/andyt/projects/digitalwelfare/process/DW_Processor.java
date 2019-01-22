@@ -19,9 +19,8 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
 import java.io.File;
+import java.util.logging.Level;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc.DW_ProcessorLCC;
 
@@ -31,9 +30,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc.DW_ProcessorLCC
  * @author Andy Turner
  */
 public class DW_Processor extends DW_ProcessorAbstract {
-
-    protected DW_Processor() {
-    }
 
     public DW_Processor(DW_Environment env) {
         super(env);
@@ -51,17 +47,14 @@ public class DW_Processor extends DW_ProcessorAbstract {
                 System.exit(0);
             } else {
                 File dataDir = new File(args[1]);
-                Generic_Environment ge = new Generic_Environment(dataDir);
-                DW_Environment env = new DW_Environment(ge,
-                        Integer.valueOf(args[0]));
+                Generic_Environment ge;
+                ge = new Generic_Environment(dataDir, Level.FINE, 100);
+                DW_Environment env = new DW_Environment(ge);
                 DW_Processor p;
-                p = new DW_Processor();
-                p.Env = env;
-                p.Strings = env.Strings;
-                p.Files = env.Files;
-//                p.Env.SHBE_Env = new SHBE_Environment(p.Files.getDataDir(), 
+                p = new DW_Processor(env);
+//                p.Env.SHBE_Env = new SHBE_Environment(p.files.getDataDir(), 
 //                SHBE_Environment.DEBUG_Level_NORMAL);
-//                p.Env.ONSPD_Env = new ONSPD_Environment(p.Files.getDataDir());
+//                p.Env.ONSPD_Env = new ONSPD_Environment(p.files.getDataDir());
                 p.run();
             }
         } catch (Exception | Error e) {

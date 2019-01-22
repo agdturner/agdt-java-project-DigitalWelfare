@@ -64,24 +64,24 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
 
         // Initialisation
         includes = SHBE_Handler.getIncludes();
-//        includes.remove(Strings.sIncludeAll);
-//        includes.remove(Strings.sIncludeYearly);
-//        includes.remove(Strings.sInclude6Monthly);
-//        includes.remove(Strings.sInclude3Monthly);
-//        includes.remove(Strings.sIncludeMonthlySinceApril2013);
-//        includes.remove(Strings.sInclude2MonthlySinceApril2013Offset0);
-//        includes.remove(Strings.sInclude2MonthlySinceApril2013Offset1);
-//        includes.remove(Strings.sIncludeStartEndSinceApril2013);
-//        includes.remove(Strings.sIncludeMonthly);
-        //includes.remove(Strings.sIncludeApril2013May2013);
-        PTs = Env.SHBE_Env.Strings.getPaymentTypes();
-//        PTs.remove(Strings.sPaymentTypeAll); // No longer a PT
-//        PTs.remove(Strings.sPaymentTypeIn);
-//        PTs.remove(Strings.sPaymentTypeSuspended);
-//        PTs.remove(Strings.sPaymentTypeOther);
+//        includes.remove(strings.sIncludeAll);
+//        includes.remove(strings.sIncludeYearly);
+//        includes.remove(strings.sInclude6Monthly);
+//        includes.remove(strings.sInclude3Monthly);
+//        includes.remove(strings.sIncludeMonthlySinceApril2013);
+//        includes.remove(strings.sInclude2MonthlySinceApril2013Offset0);
+//        includes.remove(strings.sInclude2MonthlySinceApril2013Offset1);
+//        includes.remove(strings.sIncludeStartEndSinceApril2013);
+//        includes.remove(strings.sIncludeMonthly);
+        //includes.remove(strings.sIncludeApril2013May2013);
+        PTs = Env.SHBE_Env.strings.getPaymentTypes();
+//        PTs.remove(strings.sPaymentTypeAll); // No longer a PT
+//        PTs.remove(strings.sPaymentTypeIn);
+//        PTs.remove(strings.sPaymentTypeSuspended);
+//        PTs.remove(strings.sPaymentTypeOther);
 
         ArrayList<String> HB_CTB;
-        HB_CTB = Strings.getHB_CTB();
+        HB_CTB = strings.getHB_CTB();
         //forceNewSummaries = false;
         forceNewSummaries = true;
         nTT = SHBE_Handler.getNumberOfTenancyTypes();
@@ -95,29 +95,29 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
         includesIte = includes.keySet().iterator();
         while (includesIte.hasNext()) {
             includeKey = includesIte.next();
-            Env.logO("<" + includeKey + ">", true);
+            Env.ge.log("<" + includeKey + ">", true);
             include = includes.get(includeKey);
             if (doAll) {
                 sName = "Summary";
-                Env.logO("<" + sName + ">", true);
+                Env.ge.log("<" + sName + ">", true);
                 SummaryTableAll = Summary.getSummaryTable(SHBEFilenames,
                         include, forceNewSummaries, HB_CTB, PTs, nTT, nEG, nPSI,
                         hoome);
                 Summary.writeSummaryTables(SummaryTableAll, HB_CTB, PTs,
                         includeKey, nTT, nEG, nPSI);
-                Env.logO("</" + sName + ">", true);
+                Env.ge.log("</" + sName + ">", true);
             }
             if (doUO) {
                 sName = "SummaryUO";
-                Env.logO("<" + sName + ">", true);
+                Env.ge.log("<" + sName + ">", true);
                 SummaryTableUO = SummaryUO.getSummaryTable(Group, SHBEFilenames,
                         include, forceNewSummaries, HB_CTB, PTs, nTT, nEG, nPSI,
                         UO_Data, hoome);
                 SummaryUO.writeSummaryTables(SummaryTableUO, PTs, includeKey,
                         nTT, nEG, nPSI);
-                Env.logO("</" + sName + ">", true);
+                Env.ge.log("</" + sName + ">", true);
             }
-            Env.logO("</" + includeKey + ">", true);
+            Env.ge.log("</" + includeKey + ">", true);
         }
     }
 }

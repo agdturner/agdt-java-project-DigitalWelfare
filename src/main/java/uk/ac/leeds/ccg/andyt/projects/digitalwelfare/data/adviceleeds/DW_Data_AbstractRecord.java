@@ -32,9 +32,6 @@ public abstract class DW_Data_AbstractRecord extends DW_Object {
      */
     private long RecordID;
 
-    public DW_Data_AbstractRecord() {
-    }
-
     public DW_Data_AbstractRecord(DW_Environment env) {
         super(env);
     }

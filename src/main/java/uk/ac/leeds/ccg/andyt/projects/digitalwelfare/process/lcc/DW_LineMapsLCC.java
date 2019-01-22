@@ -782,7 +782,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         tDW_SHBE_Handler = Env.getSHBE_Handler();
 
         ArrayList<String> paymentTypes;
-        paymentTypes = Env.SHBE_Env.Strings.getPaymentTypes();
+        paymentTypes = Env.SHBE_Env.strings.getPaymentTypes();
 //        paymentTypes.remove(SHBE_Handler.sAllPT);
 //        paymentTypes.remove(SHBE_Handler.sInPayment);
 //        paymentTypes.remove(SHBE_Handler.sSuspended);
@@ -1937,10 +1937,10 @@ public class DW_LineMapsLCC extends DW_Maps {
 //        // <Hack>
 //        dirInCouncil = new File(
 //                dirInCouncil,
-//                Strings.sAll);
+//                strings.sAll);
 //        dirInRSL = new File(
 //                dirInRSL,
-//                Strings.sAll);
+//                strings.sAll);
 //        // </Hack>
 
         if (grouped) {
@@ -2908,7 +2908,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                 dirOut,
                 Strings.sPostcodeChanges);
         dirOut = Files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
-        //dirIn = Files.getUODir(dirIn, doUnderOccupancyData, doCouncil, doRSL);
+        //dirIn = files.getUODir(dirIn, doUnderOccupancyData, doCouncil, doRSL);
         dirInCouncil = Files.getUODir(dirIn, doUnderOccupancyData, true);
         dirInRSL = Files.getUODir(dirIn, doUnderOccupancyData, false);
         dirInCouncil = new File(

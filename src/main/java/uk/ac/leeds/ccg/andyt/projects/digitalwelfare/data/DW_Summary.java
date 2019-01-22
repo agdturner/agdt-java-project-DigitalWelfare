@@ -147,7 +147,7 @@ public class DW_Summary extends DW_Object {
     protected final String sTotalCount_HB_PTOToNull = "TotalCount_HB_PTOToNull";
 
     // Main vars
-    // Counter Strings
+    // Counter strings
     // HouseholdSize
     protected final String sAllTotalHouseholdSize = "AllTotalHouseholdSize";
     protected final String sAllAverageHouseholdSize = "AllAverageHouseholdSize";
@@ -418,7 +418,7 @@ public class DW_Summary extends DW_Object {
     // CTB
     protected String[] sTotalCount_CTBEthnicGroupClaimant;
     protected String[] sPercentageOfCTB_CTBEthnicGroupClaimant;
-    // Files
+    // files
     protected final String sSHBEFilename00 = "SHBEFilename00";
     protected final String sSHBEFilename0 = "SHBEFilename0";
     protected final String sSHBEFilename1 = "SHBEFilename1";
@@ -851,30 +851,30 @@ public class DW_Summary extends DW_Object {
     }
 
     protected void initSingleTimeStrings(int nTT, int nEG, int nPSI) {
-        Strings.sTotal_IncomeTT = new String[nTT];
-        Strings.sTotalCount_IncomeNonZeroTT = new String[nTT];
-        Strings.sTotalCount_IncomeZeroTT = new String[nTT];
-        Strings.sAverage_NonZero_IncomeTT = new String[nTT];
-        Strings.sTotal_HBIncomeTT = new String[nTT];
-        Strings.sTotalCount_HBIncomeNonZeroTT = new String[nTT];
-        Strings.sTotalCount_HBIncomeZeroTT = new String[nTT];
-        Strings.sAverage_NonZero_HBIncomeTT = new String[nTT];
-        Strings.sTotal_CTBIncomeTT = new String[nTT];
-        Strings.sTotalCount_CTBIncomeNonZeroTT = new String[nTT];
-        Strings.sTotalCount_CTBIncomeZeroTT = new String[nTT];
-        Strings.sAverage_Non_Zero_CTBIncomeTT = new String[nTT];
-        Strings.sTotal_WeeklyEligibleRentAmountTT = new String[nTT];
-        Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        Strings.sTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
-        Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT = new String[nTT];
-        Strings.sTotal_HBWeeklyEligibleRentAmountTT = new String[nTT];
-        Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        Strings.sTotalCount_HBWeeklyEligibleRentAmountZeroTT = new String[nTT];
-        Strings.sAverage_NonZero_HBWeeklyEligibleRentAmountTT = new String[nTT];
-        Strings.sTotal_CTBWeeklyEligibleRentAmountTT = new String[nTT];
-        Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        Strings.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT = new String[nTT];
-        Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT = new String[nTT];
+        strings.sTotal_IncomeTT = new String[nTT];
+        strings.sTotalCount_IncomeNonZeroTT = new String[nTT];
+        strings.sTotalCount_IncomeZeroTT = new String[nTT];
+        strings.sAverage_NonZero_IncomeTT = new String[nTT];
+        strings.sTotal_HBIncomeTT = new String[nTT];
+        strings.sTotalCount_HBIncomeNonZeroTT = new String[nTT];
+        strings.sTotalCount_HBIncomeZeroTT = new String[nTT];
+        strings.sAverage_NonZero_HBIncomeTT = new String[nTT];
+        strings.sTotal_CTBIncomeTT = new String[nTT];
+        strings.sTotalCount_CTBIncomeNonZeroTT = new String[nTT];
+        strings.sTotalCount_CTBIncomeZeroTT = new String[nTT];
+        strings.sAverage_Non_Zero_CTBIncomeTT = new String[nTT];
+        strings.sTotal_WeeklyEligibleRentAmountTT = new String[nTT];
+        strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        strings.sTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
+        strings.sAverage_NonZero_WeeklyEligibleRentAmountTT = new String[nTT];
+        strings.sTotal_HBWeeklyEligibleRentAmountTT = new String[nTT];
+        strings.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        strings.sTotalCount_HBWeeklyEligibleRentAmountZeroTT = new String[nTT];
+        strings.sAverage_NonZero_HBWeeklyEligibleRentAmountTT = new String[nTT];
+        strings.sTotal_CTBWeeklyEligibleRentAmountTT = new String[nTT];
+        strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        strings.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT = new String[nTT];
+        strings.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT = new String[nTT];
         sTotal_HouseholdSizeTT = new String[nTT];
         sAverage_HouseholdSizeTT = new String[nTT];
         sTotalCount_AllPSI = new String[nPSI];
@@ -951,31 +951,31 @@ public class DW_Summary extends DW_Object {
             sPercentageOfHB_ClaimantTT[i] = "PercentageOfHB_ClaimantTT" + i;
             sPercentageOfCTB_ClaimantTT[i] = "PercentageOfCTB_ClaimantTT" + i;
             // Income
-            Strings.sTotal_IncomeTT[i] = "Total_IncomeTT" + i;
-            Strings.sTotalCount_IncomeNonZeroTT[i] = "TotalCount_IncomeNonZeroTT" + i;
-            Strings.sTotalCount_IncomeZeroTT[i] = "TotalCount_IncomeZeroTT" + i;
-            Strings.sAverage_NonZero_IncomeTT[i] = "Average_NonZero_IncomeTT" + i;
-            Strings.sTotal_HBIncomeTT[i] = "Total_HBIncomeTT" + i;
-            Strings.sTotalCount_HBIncomeNonZeroTT[i] = "TotalCount_HBIncomeNonZeroTT" + i;
-            Strings.sTotalCount_HBIncomeZeroTT[i] = "TotalCount_HBIncomeZeroTT" + i;
-            Strings.sAverage_NonZero_HBIncomeTT[i] = "Average_NonZero_HBIncomeTT" + i;
-            Strings.sTotal_CTBIncomeTT[i] = "Total_CTBIncomeTT" + i;
-            Strings.sTotalCount_CTBIncomeNonZeroTT[i] = "TotalCount_CTBIncomeNonZeroTT" + i;
-            Strings.sTotalCount_CTBIncomeZeroTT[i] = "TotalCount_CTBIncomeZeroTT" + i;
-            Strings.sAverage_Non_Zero_CTBIncomeTT[i] = "Average_Non_Zero_CTBIncomeTT" + i;
+            strings.sTotal_IncomeTT[i] = "Total_IncomeTT" + i;
+            strings.sTotalCount_IncomeNonZeroTT[i] = "TotalCount_IncomeNonZeroTT" + i;
+            strings.sTotalCount_IncomeZeroTT[i] = "TotalCount_IncomeZeroTT" + i;
+            strings.sAverage_NonZero_IncomeTT[i] = "Average_NonZero_IncomeTT" + i;
+            strings.sTotal_HBIncomeTT[i] = "Total_HBIncomeTT" + i;
+            strings.sTotalCount_HBIncomeNonZeroTT[i] = "TotalCount_HBIncomeNonZeroTT" + i;
+            strings.sTotalCount_HBIncomeZeroTT[i] = "TotalCount_HBIncomeZeroTT" + i;
+            strings.sAverage_NonZero_HBIncomeTT[i] = "Average_NonZero_HBIncomeTT" + i;
+            strings.sTotal_CTBIncomeTT[i] = "Total_CTBIncomeTT" + i;
+            strings.sTotalCount_CTBIncomeNonZeroTT[i] = "TotalCount_CTBIncomeNonZeroTT" + i;
+            strings.sTotalCount_CTBIncomeZeroTT[i] = "TotalCount_CTBIncomeZeroTT" + i;
+            strings.sAverage_Non_Zero_CTBIncomeTT[i] = "Average_Non_Zero_CTBIncomeTT" + i;
             // WeeklyEligibleRentAmountTT
-            Strings.sTotal_WeeklyEligibleRentAmountTT[i] = "Total_WeeklyEligibleRentAmountTT" + i;
-            Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
-            Strings.sTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountZeroTT" + i;
-            Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] = "Average_NonZero_WeeklyEligibleRentAmountTT" + i;
-            Strings.sTotal_HBWeeklyEligibleRentAmountTT[i] = "Total_HBWeeklyEligibleRentAmountTT" + i;
-            Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountNonZeroTT" + i;
-            Strings.sTotalCount_HBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountZeroTT" + i;
-            Strings.sAverage_NonZero_HBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_HBWeeklyEligibleRentAmountTT" + i;
-            Strings.sTotal_CTBWeeklyEligibleRentAmountTT[i] = "Total_CTBWeeklyEligibleRentAmountTT" + i;
-            Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountNonZeroTT" + i;
-            Strings.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountZeroTT" + i;
-            Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_CTBWeeklyEligibleRentAmountTT" + i;
+            strings.sTotal_WeeklyEligibleRentAmountTT[i] = "Total_WeeklyEligibleRentAmountTT" + i;
+            strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
+            strings.sTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountZeroTT" + i;
+            strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] = "Average_NonZero_WeeklyEligibleRentAmountTT" + i;
+            strings.sTotal_HBWeeklyEligibleRentAmountTT[i] = "Total_HBWeeklyEligibleRentAmountTT" + i;
+            strings.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountNonZeroTT" + i;
+            strings.sTotalCount_HBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountZeroTT" + i;
+            strings.sAverage_NonZero_HBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_HBWeeklyEligibleRentAmountTT" + i;
+            strings.sTotal_CTBWeeklyEligibleRentAmountTT[i] = "Total_CTBWeeklyEligibleRentAmountTT" + i;
+            strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountNonZeroTT" + i;
+            strings.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountZeroTT" + i;
+            strings.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_CTBWeeklyEligibleRentAmountTT" + i;
             // DisabilityAwardTT
             sTotalCount_DisabilityAwardTT[i] = "TotalCount_DisabilityAwardTT" + i;
             sPercentageOfAll_DisabilityAwardTT[i] = "PercentageOfAll_DisabilityAwardTT" + i;
@@ -3534,61 +3534,61 @@ public class DW_Summary extends DW_Object {
     protected void addToSummarySingleTimeCounts1(
             HashMap<String, String> summary) {
         // WeeklyHBEntitlement
-        summary.put(Strings.sTotal_WeeklyHBEntitlement,
+        summary.put(strings.sTotal_WeeklyHBEntitlement,
                 BigDecimal.valueOf(AllTotalWeeklyHBEntitlement).toPlainString());
-        summary.put(Strings.sTotalCount_WeeklyHBEntitlementNonZero,
+        summary.put(strings.sTotalCount_WeeklyHBEntitlementNonZero,
                 Integer.toString(AllTotalWeeklyHBEntitlementNonZeroCount));
-        summary.put(Strings.sTotalCount_WeeklyHBEntitlementZero,
+        summary.put(strings.sTotalCount_WeeklyHBEntitlementZero,
                 Integer.toString(AllTotalWeeklyHBEntitlementZeroCount));
-        summary.put(Strings.sTotal_HBWeeklyHBEntitlement,
+        summary.put(strings.sTotal_HBWeeklyHBEntitlement,
                 BigDecimal.valueOf(HBTotalWeeklyHBEntitlement).toPlainString());
-        summary.put(Strings.sTotalCount_HBWeeklyHBEntitlementNonZero,
+        summary.put(strings.sTotalCount_HBWeeklyHBEntitlementNonZero,
                 Integer.toString(TotalCount_HBWeeklyHBEntitlementNonZero));
-        summary.put(Strings.sTotalCount_HBWeeklyHBEntitlementZero,
+        summary.put(strings.sTotalCount_HBWeeklyHBEntitlementZero,
                 Integer.toString(TotalCount_HBWeeklyHBEntitlementZero));
-        summary.put(Strings.sTotal_CTBWeeklyHBEntitlement,
+        summary.put(strings.sTotal_CTBWeeklyHBEntitlement,
                 BigDecimal.valueOf(CTBTotalWeeklyHBEntitlement).toPlainString());
-        summary.put(Strings.sTotalCount_CTBWeeklyHBEntitlementNonZero,
+        summary.put(strings.sTotalCount_CTBWeeklyHBEntitlementNonZero,
                 Integer.toString(TotalCount_CTBWeeklyHBEntitlementNonZero));
-        summary.put(Strings.sTotalCount_CTBWeeklyHBEntitlementZero,
+        summary.put(strings.sTotalCount_CTBWeeklyHBEntitlementZero,
                 Integer.toString(CTBTotalWeeklyHBEntitlementZeroCount));
         // WeeklyCTBEntitlement
-        summary.put(Strings.sTotal_WeeklyCTBEntitlement,
+        summary.put(strings.sTotal_WeeklyCTBEntitlement,
                 BigDecimal.valueOf(AllTotalWeeklyCTBEntitlement).toPlainString());
-        summary.put(Strings.sTotalCount_WeeklyCTBEntitlementNonZero,
+        summary.put(strings.sTotalCount_WeeklyCTBEntitlementNonZero,
                 Integer.toString(TotalCount_AllWeeklyCTBEntitlementNonZero));
-        summary.put(Strings.sTotalCount_WeeklyCTBEntitlementZero,
+        summary.put(strings.sTotalCount_WeeklyCTBEntitlementZero,
                 Integer.toString(AllTotalWeeklyCTBEntitlementZeroCount));
-        summary.put(Strings.sTotal_HBWeeklyCTBEntitlement,
+        summary.put(strings.sTotal_HBWeeklyCTBEntitlement,
                 BigDecimal.valueOf(HBTotalWeeklyCTBEntitlement).toPlainString());
-        summary.put(Strings.sTotalCount_HBWeeklyCTBEntitlementNonZero,
+        summary.put(strings.sTotalCount_HBWeeklyCTBEntitlementNonZero,
                 Integer.toString(TotalCount_HBWeeklyCTBEntitlementNonZero));
-        summary.put(Strings.sTotalCount_HBWeeklyCTBEntitlementZero,
+        summary.put(strings.sTotalCount_HBWeeklyCTBEntitlementZero,
                 Integer.toString(HBTotalWeeklyCTBEntitlementZeroCount));
-        summary.put(Strings.sTotal_CTBWeeklyCTBEntitlement,
+        summary.put(strings.sTotal_CTBWeeklyCTBEntitlement,
                 BigDecimal.valueOf(CTBTotalWeeklyCTBEntitlement).toPlainString());
-        summary.put(Strings.sTotalCount_CTBWeeklyCTBEntitlementNonZero,
+        summary.put(strings.sTotalCount_CTBWeeklyCTBEntitlementNonZero,
                 Integer.toString(TotalCount_CTBWeeklyCTBEntitlementNonZero));
-        summary.put(Strings.sTotalCount_CTBWeeklyCTBEntitlementZero,
+        summary.put(strings.sTotalCount_CTBWeeklyCTBEntitlementZero,
                 Integer.toString(CTBTotalWeeklyCTBEntitlementZeroCount));
         // WeeklyEligibleRentAmount
-        summary.put(Strings.sTotal_WeeklyEligibleRentAmount,
+        summary.put(strings.sTotal_WeeklyEligibleRentAmount,
                 BigDecimal.valueOf(AllTotalWeeklyEligibleRentAmount).toPlainString());
-        summary.put(Strings.sTotalCount_WeeklyEligibleRentAmountNonZero,
+        summary.put(strings.sTotalCount_WeeklyEligibleRentAmountNonZero,
                 Integer.toString(AllTotalWeeklyEligibleRentAmountNonZeroCount));
-        summary.put(Strings.sTotalCount_WeeklyEligibleRentAmountZero,
+        summary.put(strings.sTotalCount_WeeklyEligibleRentAmountZero,
                 Integer.toString(AllTotalWeeklyEligibleRentAmountZeroCount));
-        summary.put(Strings.sTotal_HBWeeklyEligibleRentAmount,
+        summary.put(strings.sTotal_HBWeeklyEligibleRentAmount,
                 BigDecimal.valueOf(HBTotalWeeklyEligibleRentAmount).toPlainString());
-        summary.put(Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero,
+        summary.put(strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero,
                 Integer.toString(HBTotalWeeklyEligibleRentAmountNonZeroCount));
-        summary.put(Strings.sTotalCount_HBWeeklyEligibleRentAmountZero,
+        summary.put(strings.sTotalCount_HBWeeklyEligibleRentAmountZero,
                 Integer.toString(HBTotalWeeklyEligibleRentAmountZeroCount));
-        summary.put(Strings.sTotal_CTBWeeklyEligibleRentAmount,
+        summary.put(strings.sTotal_CTBWeeklyEligibleRentAmount,
                 BigDecimal.valueOf(CTBTotalWeeklyEligibleRentAmount).toPlainString());
-        summary.put(Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZero,
+        summary.put(strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZero,
                 Integer.toString(CTBTotalWeeklyEligibleRentAmountNonZeroCount));
-        summary.put(Strings.sTotalCount_CTBWeeklyEligibleRentAmountZero,
+        summary.put(strings.sTotalCount_CTBWeeklyEligibleRentAmountZero,
                 Integer.toString(CTBTotalWeeklyEligibleRentAmountZeroCount));
         // WeeklyEligibleCouncilTaxAmount
         summary.put(
@@ -3735,123 +3735,123 @@ public class DW_Summary extends DW_Object {
         double d;
         double t;
         // WeeklyHBEntitlement
-        t = Double.valueOf(summary.get(Strings.sTotal_WeeklyHBEntitlement));
+        t = Double.valueOf(summary.get(strings.sTotal_WeeklyHBEntitlement));
         d = AllTotalWeeklyHBEntitlementNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(Strings.sAverage_NonZero_WeeklyHBEntitlement,
+            summary.put(strings.sAverage_NonZero_WeeklyHBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(Strings.sAverage_NonZero_WeeklyHBEntitlement,
+            summary.put(strings.sAverage_NonZero_WeeklyHBEntitlement,
                     s0);
         }
-        t = Double.valueOf(summary.get(Strings.sTotal_HBWeeklyHBEntitlement));
+        t = Double.valueOf(summary.get(strings.sTotal_HBWeeklyHBEntitlement));
         d = TotalCount_HBWeeklyHBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
-            summary.put(Strings.sAverage_NonZero_HBWeeklyHBEntitlement,
+            summary.put(strings.sAverage_NonZero_HBWeeklyHBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(Strings.sAverage_NonZero_HBWeeklyHBEntitlement,
+            summary.put(strings.sAverage_NonZero_HBWeeklyHBEntitlement,
                     s0);
         }
-        t = Double.valueOf(summary.get(Strings.sTotal_CTBWeeklyHBEntitlement));
+        t = Double.valueOf(summary.get(strings.sTotal_CTBWeeklyHBEntitlement));
         d = TotalCount_CTBWeeklyHBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
-            summary.put(Strings.sAverage_NonZero_CTBWeeklyHBEntitlement,
+            summary.put(strings.sAverage_NonZero_CTBWeeklyHBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(Strings.sAverage_NonZero_CTBWeeklyHBEntitlement,
+            summary.put(strings.sAverage_NonZero_CTBWeeklyHBEntitlement,
                     s0);
         }
         // WeeklyCTBEntitlement
-        t = Double.valueOf(summary.get(Strings.sTotal_WeeklyCTBEntitlement));
+        t = Double.valueOf(summary.get(strings.sTotal_WeeklyCTBEntitlement));
         d = TotalCount_AllWeeklyCTBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
-            summary.put(Strings.sAverage_NonZero_WeeklyCTBEntitlement,
+            summary.put(strings.sAverage_NonZero_WeeklyCTBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(Strings.sAverage_NonZero_WeeklyCTBEntitlement,
+            summary.put(strings.sAverage_NonZero_WeeklyCTBEntitlement,
                     s0);
         }
-        t = Double.valueOf(summary.get(Strings.sTotal_HBWeeklyCTBEntitlement));
+        t = Double.valueOf(summary.get(strings.sTotal_HBWeeklyCTBEntitlement));
         d = TotalCount_HBWeeklyCTBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
-            summary.put(Strings.sAverage_NonZero_HBWeeklyCTBEntitlement,
+            summary.put(strings.sAverage_NonZero_HBWeeklyCTBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(Strings.sAverage_NonZero_HBWeeklyCTBEntitlement,
+            summary.put(strings.sAverage_NonZero_HBWeeklyCTBEntitlement,
                     s0);
         }
-        t = Double.valueOf(summary.get(Strings.sTotal_CTBWeeklyCTBEntitlement));
+        t = Double.valueOf(summary.get(strings.sTotal_CTBWeeklyCTBEntitlement));
         d = TotalCount_CTBWeeklyCTBEntitlementNonZero;
         if (d > 0) {
             ave = t / d;
-            summary.put(Strings.sAverage_NonZero_CTBWeeklyCTBEntitlement,
+            summary.put(strings.sAverage_NonZero_CTBWeeklyCTBEntitlement,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(Strings.sAverage_NonZero_CTBWeeklyCTBEntitlement,
+            summary.put(strings.sAverage_NonZero_CTBWeeklyCTBEntitlement,
                     s0);
         }
         // WeeklyEligibleRentAmount
-        t = Double.valueOf(summary.get(Strings.sTotal_WeeklyEligibleRentAmount));
+        t = Double.valueOf(summary.get(strings.sTotal_WeeklyEligibleRentAmount));
         d = AllTotalWeeklyEligibleRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(Env.SHBE_Env.Strings.sAverage_NonZero_WeeklyEligibleRentAmount,
+            summary.put(Env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(Env.SHBE_Env.Strings.sAverage_NonZero_WeeklyEligibleRentAmount,
+            summary.put(Env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount,
                     s0);
         }
-        t = Double.valueOf(summary.get(Strings.sTotal_HBWeeklyEligibleRentAmount));
+        t = Double.valueOf(summary.get(strings.sTotal_HBWeeklyEligibleRentAmount));
         d = HBTotalWeeklyEligibleRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(Strings.sAverage_NonZero_HBWeeklyEligibleRentAmount,
+            summary.put(strings.sAverage_NonZero_HBWeeklyEligibleRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(Strings.sAverage_NonZero_HBWeeklyEligibleRentAmount,
+            summary.put(strings.sAverage_NonZero_HBWeeklyEligibleRentAmount,
                     s0);
         }
-        t = Double.valueOf(summary.get(Strings.sTotal_CTBWeeklyEligibleRentAmount));
+        t = Double.valueOf(summary.get(strings.sTotal_CTBWeeklyEligibleRentAmount));
         d = CTBTotalWeeklyEligibleRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount,
+            summary.put(strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount,
+            summary.put(strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount,
                     s0);
         }
         // WeeklyEligibleCouncilTaxAmount
@@ -5206,7 +5206,7 @@ public class DW_Summary extends DW_Object {
             ArrayList<String> PTs, int nTT, int nEG, int nPSI, boolean hoome
     ) {
         String methodName = "getSummaryTable(...)";
-        Env.log("<" + methodName + ">");
+        Env.ge.log("<" + methodName + ">", true);
 
         // Declare variables
         // Declare result
@@ -5253,7 +5253,7 @@ public class DW_Summary extends DW_Object {
         filename1 = SHBEFilenames[i];
         //key = SHBE_Handler.getYearMonthNumber(filename1);
         YM31 = SHBE_Handler.getYM3(filename1);
-        Env.log("Load " + YM31);
+        Env.ge.log("Load " + YM31, true);
 
         SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
 
@@ -5288,7 +5288,7 @@ public class DW_Summary extends DW_Object {
             //key = SHBE_Handler.getYearMonthNumber(filename1);
             YM31 = SHBE_Handler.getYM3(filename1);
             // Load next data
-            Env.log("Load " + YM31);
+            Env.ge.log("Load " + YM31, true);
             SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
             ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HOOME);
             ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HOOME);
@@ -5329,7 +5329,7 @@ public class DW_Summary extends DW_Object {
                 // Not used at present. incomeAndRentSummary0 = incomeAndRentSummary1;
             }
         }
-        Env.log("</" + methodName + ">");
+        Env.ge.log("</" + methodName + ">", true);
         return r;
     }
 
@@ -5384,21 +5384,21 @@ public class DW_Summary extends DW_Object {
          */
         HashSet<SHBE_ID> ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
         ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = SHBE_Records.getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(Env.HOOME);
-        summary.put(Env.SHBE_Env.Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
+        summary.put(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
                 Integer.toString(ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.size()));
         HashSet<SHBE_PersonID> set;
         // Add unique Partners
         set = SHBE_Handler.getUniquePersonIDs0(
                 SHBE_Records.getClaimIDToPartnerPersonIDLookup(Env.HOOME));
-        summary.put(Env.SHBE_Env.Strings.sCountOfUniquePartners, "" + set.size());
+        summary.put(Env.SHBE_Env.strings.sCountOfUniquePartners, "" + set.size());
         // Add unique Dependents
         set = SHBE_Handler.getUniquePersonIDs(
                 SHBE_Records.getClaimIDToDependentPersonIDsLookup(Env.HOOME));
-        summary.put(Env.SHBE_Env.Strings.sCountOfUniqueDependents, "" + set.size());
+        summary.put(Env.SHBE_Env.strings.sCountOfUniqueDependents, "" + set.size());
         // Add unique NonDependents
         set = SHBE_Handler.getUniquePersonIDs(
                 SHBE_Records.getClaimIDToNonDependentPersonIDsLookup(Env.HOOME));
-        summary.put(Env.SHBE_Env.Strings.sCountOfUniqueNonDependents, "" + set.size());
+        summary.put(Env.SHBE_Env.strings.sCountOfUniqueNonDependents, "" + set.size());
         /**
          * Counts of: ClaimsWithClaimantsThatAreClaimantsInAnotherClaim
          * ClaimsWithClaimantsThatArePartnersInAnotherClaim
@@ -5407,19 +5407,19 @@ public class DW_Summary extends DW_Object {
          * ClaimantsInMultipleClaimsInAMonth PartnersInMultipleClaimsInAMonth
          * NonDependentsInMultipleClaimsInAMonth
          */
-        summary.put(Env.SHBE_Env.Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
+        summary.put(Env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
                 "" + SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(Env.HOOME).size());
-        summary.put(Env.SHBE_Env.Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
+        summary.put(Env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
                 "" + SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(Env.HOOME).size());
-        summary.put(Env.SHBE_Env.Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
+        summary.put(Env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
                 "" + SHBE_Records.getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(Env.HOOME).size());
-        summary.put(Env.SHBE_Env.Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim,
+        summary.put(Env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim,
                 "" + SHBE_Records.getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(Env.HOOME).size());
-        summary.put(Env.SHBE_Env.Strings.sCountOfClaimantsInMultipleClaimsInAMonth,
+        summary.put(Env.SHBE_Env.strings.sCountOfClaimantsInMultipleClaimsInAMonth,
                 "" + SHBE_Records.getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HOOME).size());
-        summary.put(Env.SHBE_Env.Strings.sCountOfPartnersInMultipleClaimsInAMonth,
+        summary.put(Env.SHBE_Env.strings.sCountOfPartnersInMultipleClaimsInAMonth,
                 "" + SHBE_Records.getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HOOME).size());
-        summary.put(Env.SHBE_Env.Strings.sCountOfNonDependentsInMultipleClaimsInAMonth,
+        summary.put(Env.SHBE_Env.strings.sCountOfNonDependentsInMultipleClaimsInAMonth,
                 "" + SHBE_Records.getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HOOME).size());
 
         addToSummary(summary, ClaimIDsOfNewSHBEClaims, Records);
@@ -5879,8 +5879,8 @@ public class DW_Summary extends DW_Object {
             counts[PSI] += 1;
         }
         for (int i = 1; i < nPSI; i++) {
-            summary.put(Env.SHBE_Env.Strings.sCountOfNewSHBEClaimsPSI + i, "" + counts[i]);
-            //System.out.println(Env.SHBE_Env.Strings.sCountOfNewSHBEClaimsPSI + "[" + i + "] " + counts[i]);
+            summary.put(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsPSI + i, "" + counts[i]);
+            //System.out.println(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsPSI + "[" + i + "] " + counts[i]);
         }
     }
 
@@ -5921,51 +5921,19 @@ public class DW_Summary extends DW_Object {
             int nEG,
             int nPSI
     ) {
-        Env.logO("<writeSummaryTables>", true);
+        Env.ge.log("<writeSummaryTables>", true);
         writeSummaryTableCompare2TimesPaymentTypes(summaryTable, includeKey, nTT, nEG);
-        writeSummaryTableCompare2TimesTT(
-                summaryTable,
-                includeKey,
-                nTT, nEG);
-        writeSummaryTableCompare2TimesPostcode(
-                summaryTable,
-                includeKey,
-                nTT, nEG);
-        writeSummaryTableSingleTimeGenericCounts(
-                summaryTable,
-                includeKey,
-                nTT, nEG, nPSI);
-        writeSummaryTableSingleTimeHouseholdSizes(
-                summaryTable,
-                includeKey,
-                nTT, nEG, nPSI);
-        writeSummaryTableSingleTimeEntitlementEligibleAmountContractualAmount(
-                summaryTable,
-                includeKey,
-                nTT, nEG);
-        writeSummaryTableSingleTimePSI(
-                summaryTable,
-                includeKey,
-                nTT, nEG, nPSI);
-        writeSummaryTableSingleTimeRentAndIncome(
-                summaryTable,
-                HB_CTB,
-                PTs,
-                includeKey,
-                nTT, nEG);
-        writeSummaryTableSingleTimeTT(
-                summaryTable,
-                includeKey,
-                nTT, nEG);
-        writeSummaryTableSingleTimeEthnicity(
-                summaryTable,
-                includeKey,
-                nTT, nEG);
-        writeSummaryTableSingleTimeDisability(
-                summaryTable,
-                includeKey,
-                nTT, nEG);
-        Env.logO("</writeSummaryTables>", true);
+        writeSummaryTableCompare2TimesTT(summaryTable, includeKey, nTT, nEG);
+        writeSummaryTableCompare2TimesPostcode(summaryTable, includeKey, nTT, nEG);
+        writeSummaryTableSingleTimeGenericCounts(summaryTable, includeKey, nTT, nEG, nPSI);
+        writeSummaryTableSingleTimeHouseholdSizes(summaryTable, includeKey, nTT, nEG, nPSI);
+        writeSummaryTableSingleTimeEntitlementEligibleAmountContractualAmount(summaryTable, includeKey, nTT, nEG);
+        writeSummaryTableSingleTimePSI(summaryTable, includeKey, nTT, nEG, nPSI);
+        writeSummaryTableSingleTimeRentAndIncome(summaryTable, HB_CTB, PTs, includeKey, nTT, nEG);
+        writeSummaryTableSingleTimeTT(                summaryTable,                includeKey,                nTT, nEG);
+        writeSummaryTableSingleTimeEthnicity(                summaryTable,                includeKey,                nTT, nEG);
+        writeSummaryTableSingleTimeDisability(                summaryTable,                includeKey,                nTT, nEG);
+        Env.ge.log("</writeSummaryTables>", true);
     }
 
     /**
@@ -5977,20 +5945,20 @@ public class DW_Summary extends DW_Object {
      * @param underOccupancy
      * @return
      */
-    protected PrintWriter getPrintWriter(            String name,            String name2,
+    protected PrintWriter getPrintWriter(String name, String name2,
             TreeMap<String, HashMap<String, String>> summaryTable,
-            String includeKey,            boolean underOccupancy) {
+            String includeKey, boolean underOccupancy) {
         PrintWriter r;
         File dirOut;
-        dirOut = Env.Files.getOutputSHBETableDir(name2, includeKey, 
+        dirOut = Env.Files.getOutputSHBETableDir(name2, includeKey,
                 underOccupancy);
         String outFilename;
-        outFilename = includeKey + Strings.symbol_underscore;
+        outFilename = includeKey + strings.symbol_underscore;
         if (underOccupancy) {
-            outFilename += Strings.sU + Strings.symbol_underscore;
+            outFilename += strings.sU + strings.symbol_underscore;
         }
         outFilename += summaryTable.firstKey() + "_To_" + summaryTable.lastKey()
-                + Strings.symbol_underscore + name + ".csv";
+                + strings.symbol_underscore + name + ".csv";
         File outFile;
         outFile = new File(dirOut, outFilename);
         r = Generic_IO.getPrintWriter(outFile, false);
@@ -6012,7 +5980,7 @@ public class DW_Summary extends DW_Object {
             int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.oe.Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPaymentTypes";
         PrintWriter pw;
@@ -6023,43 +5991,43 @@ public class DW_Summary extends DW_Object {
         String header;
         header = getHeaderCompare2TimesGeneric();
         // HB
-        header += sTotalCount_HB_NotSuspendedToNotSuspended + Strings.special_commaSpace;
-        header += sTotalCount_HB_NotSuspendedToSuspended + Strings.special_commaSpace;
-        header += sTotalCount_HB_NotSuspendedToNull + Strings.special_commaSpace;
-        header += sTotalCount_HB_SuspendedToNotSuspended + Strings.special_commaSpace;
-        header += sTotalCount_HB_SuspendedToSuspended + Strings.special_commaSpace;
-        header += sTotalCount_HB_SuspendedToNull + Strings.special_commaSpace;
-        header += sTotalCount_HB_PTIToPTI + Strings.special_commaSpace;
-        header += sTotalCount_HB_PTIToPTS + Strings.special_commaSpace;
-        header += sTotalCount_HB_PTIToPTO + Strings.special_commaSpace;
-        header += sTotalCount_HB_PTIToNull + Strings.special_commaSpace;
-        header += sTotalCount_HB_PTSToPTI + Strings.special_commaSpace;
-        header += sTotalCount_HB_PTSToPTS + Strings.special_commaSpace;
-        header += sTotalCount_HB_PTSToPTO + Strings.special_commaSpace;
-        header += sTotalCount_HB_PTSToNull + Strings.special_commaSpace;
-        header += sTotalCount_HB_PTOToPTI + Strings.special_commaSpace;
-        header += sTotalCount_HB_PTOToPTS + Strings.special_commaSpace;
-        header += sTotalCount_HB_PTOToPTO + Strings.special_commaSpace;
-        header += sTotalCount_HB_PTOToNull + Strings.special_commaSpace;
+        header += sTotalCount_HB_NotSuspendedToNotSuspended + strings.special_commaSpace;
+        header += sTotalCount_HB_NotSuspendedToSuspended + strings.special_commaSpace;
+        header += sTotalCount_HB_NotSuspendedToNull + strings.special_commaSpace;
+        header += sTotalCount_HB_SuspendedToNotSuspended + strings.special_commaSpace;
+        header += sTotalCount_HB_SuspendedToSuspended + strings.special_commaSpace;
+        header += sTotalCount_HB_SuspendedToNull + strings.special_commaSpace;
+        header += sTotalCount_HB_PTIToPTI + strings.special_commaSpace;
+        header += sTotalCount_HB_PTIToPTS + strings.special_commaSpace;
+        header += sTotalCount_HB_PTIToPTO + strings.special_commaSpace;
+        header += sTotalCount_HB_PTIToNull + strings.special_commaSpace;
+        header += sTotalCount_HB_PTSToPTI + strings.special_commaSpace;
+        header += sTotalCount_HB_PTSToPTS + strings.special_commaSpace;
+        header += sTotalCount_HB_PTSToPTO + strings.special_commaSpace;
+        header += sTotalCount_HB_PTSToNull + strings.special_commaSpace;
+        header += sTotalCount_HB_PTOToPTI + strings.special_commaSpace;
+        header += sTotalCount_HB_PTOToPTS + strings.special_commaSpace;
+        header += sTotalCount_HB_PTOToPTO + strings.special_commaSpace;
+        header += sTotalCount_HB_PTOToNull + strings.special_commaSpace;
         // CTB
-        header += sTotalCount_CTB_NotSuspendedToNotSuspended + Strings.special_commaSpace;
-        header += sTotalCount_CTB_NotSuspendedToSuspended + Strings.special_commaSpace;
-        header += sTotalCount_CTB_NotSuspendedToNull + Strings.special_commaSpace;
-        header += sTotalCount_CTB_SuspendedToNotSuspended + Strings.special_commaSpace;
-        header += sTotalCount_CTB_SuspendedToSuspended + Strings.special_commaSpace;
-        header += sTotalCount_CTB_SuspendedToNull + Strings.special_commaSpace;
-        header += sTotalCount_CTB_PTIToPTI + Strings.special_commaSpace;
-        header += sTotalCount_CTB_PTIToPTS + Strings.special_commaSpace;
-        header += sTotalCount_CTB_PTIToPTO + Strings.special_commaSpace;
-        header += sTotalCount_CTB_PTIToNull + Strings.special_commaSpace;
-        header += sTotalCount_CTB_PTSToPTI + Strings.special_commaSpace;
-        header += sTotalCount_CTB_PTSToPTS + Strings.special_commaSpace;
-        header += sTotalCount_CTB_PTSToPTO + Strings.special_commaSpace;
-        header += sTotalCount_CTB_PTSToNull + Strings.special_commaSpace;
-        header += sTotalCount_CTB_PTOToPTI + Strings.special_commaSpace;
-        header += sTotalCount_CTB_PTOToPTS + Strings.special_commaSpace;
-        header += sTotalCount_CTB_PTOToPTO + Strings.special_commaSpace;
-        header += sTotalCount_CTB_PTOToNull + Strings.special_commaSpace;
+        header += sTotalCount_CTB_NotSuspendedToNotSuspended + strings.special_commaSpace;
+        header += sTotalCount_CTB_NotSuspendedToSuspended + strings.special_commaSpace;
+        header += sTotalCount_CTB_NotSuspendedToNull + strings.special_commaSpace;
+        header += sTotalCount_CTB_SuspendedToNotSuspended + strings.special_commaSpace;
+        header += sTotalCount_CTB_SuspendedToSuspended + strings.special_commaSpace;
+        header += sTotalCount_CTB_SuspendedToNull + strings.special_commaSpace;
+        header += sTotalCount_CTB_PTIToPTI + strings.special_commaSpace;
+        header += sTotalCount_CTB_PTIToPTS + strings.special_commaSpace;
+        header += sTotalCount_CTB_PTIToPTO + strings.special_commaSpace;
+        header += sTotalCount_CTB_PTIToNull + strings.special_commaSpace;
+        header += sTotalCount_CTB_PTSToPTI + strings.special_commaSpace;
+        header += sTotalCount_CTB_PTSToPTS + strings.special_commaSpace;
+        header += sTotalCount_CTB_PTSToPTO + strings.special_commaSpace;
+        header += sTotalCount_CTB_PTSToNull + strings.special_commaSpace;
+        header += sTotalCount_CTB_PTOToPTI + strings.special_commaSpace;
+        header += sTotalCount_CTB_PTOToPTS + strings.special_commaSpace;
+        header += sTotalCount_CTB_PTOToPTO + strings.special_commaSpace;
+        header += sTotalCount_CTB_PTOToNull + strings.special_commaSpace;
         header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
@@ -6074,43 +6042,43 @@ public class DW_Summary extends DW_Object {
                     summary,
                     ONSPDFiles);
             // HB
-            line += summary.get(sTotalCount_HB_NotSuspendedToNotSuspended) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_NotSuspendedToSuspended) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_NotSuspendedToNull) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_SuspendedToNotSuspended) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_SuspendedToSuspended) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_SuspendedToNull) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_PTIToPTI) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_PTIToPTS) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_PTIToPTO) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_PTIToNull) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_PTSToPTI) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_PTSToPTS) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_PTSToPTO) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_PTSToNull) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_PTOToPTI) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_PTOToPTS) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_PTOToPTO) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HB_PTOToNull) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_NotSuspendedToNotSuspended) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_NotSuspendedToSuspended) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_NotSuspendedToNull) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_SuspendedToNotSuspended) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_SuspendedToSuspended) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_SuspendedToNull) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_PTIToPTI) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_PTIToPTS) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_PTIToPTO) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_PTIToNull) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_PTSToPTI) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_PTSToPTS) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_PTSToPTO) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_PTSToNull) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_PTOToPTI) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_PTOToPTS) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_PTOToPTO) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HB_PTOToNull) + strings.special_commaSpace;
             // CTB
-            line += summary.get(sTotalCount_CTB_NotSuspendedToNotSuspended) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_NotSuspendedToSuspended) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_NotSuspendedToNull) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_SuspendedToNotSuspended) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_SuspendedToSuspended) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_SuspendedToNull) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_PTIToPTI) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_PTIToPTS) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_PTIToPTO) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_PTIToNull) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_PTSToPTI) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_PTSToPTS) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_PTSToPTO) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_PTSToNull) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_PTOToPTI) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_PTOToPTS) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_PTOToPTO) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTB_PTOToNull) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_NotSuspendedToNotSuspended) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_NotSuspendedToSuspended) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_NotSuspendedToNull) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_SuspendedToNotSuspended) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_SuspendedToSuspended) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_SuspendedToNull) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_PTIToPTI) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_PTIToPTS) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_PTIToPTO) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_PTIToNull) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_PTSToPTI) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_PTSToPTS) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_PTSToPTO) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_PTSToNull) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_PTOToPTI) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_PTOToPTS) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_PTOToPTO) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTB_PTOToNull) + strings.special_commaSpace;
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
@@ -6120,172 +6088,172 @@ public class DW_Summary extends DW_Object {
     protected String getHeaderCompare2TimesPostcodeChange() {
         String header = "";
         // All Postcode Related
-        header += sTotalCount_AllPostcode0ValidPostcode1Valid + Strings.special_commaSpace;
-        header += sPercentageOfAllCount1_AllPostcode0ValidPostcode1Valid + Strings.special_commaSpace;
-        header += sTotalCount_AllPostcode0ValidPostcode1ValidPostcodeNotChanged + Strings.special_commaSpace;
-        header += sPercentageOfAllCount1_AllPostcode0ValidPostcode1ValidPostcodeNotChanged + Strings.special_commaSpace;
-        header += sTotalCount_AllPostcode0ValidPostcode1ValidPostcodeChange + Strings.special_commaSpace;
-        header += sPercentageOfAllCount1_AllPostcode0ValidPostcode1ValidPostcodeChange + Strings.special_commaSpace;
-        header += sTotalCount_AllPostcode0ValidPostcode1NotValid + Strings.special_commaSpace;
-        header += sPercentageOfAllCount1_AllPostcode0ValidPostcode1NotValid + Strings.special_commaSpace;
-        header += sTotalCount_AllPostcode0NotValidPostcode1Valid + Strings.special_commaSpace;
-        header += sPercentageOfAllCount1_AllPostcode0NotValidPostcode1Valid + Strings.special_commaSpace;
-        header += sTotalCount_AllPostcode0NotValidPostcode1NotValid + Strings.special_commaSpace;
-        header += sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValid + Strings.special_commaSpace;
-        header += sTotalCount_AllPostcode0NotValidPostcode1NotValidPostcodeNotChanged + Strings.special_commaSpace;
-        header += sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValidPostcodeNotChanged + Strings.special_commaSpace;
-        header += sTotalCount_AllPostcode0NotValidPostcode1NotValidPostcodeChanged + Strings.special_commaSpace;
-        header += sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValidPostcodeChanged + Strings.special_commaSpace;
-        header += sTotalCount_AllPostcode0ValidPostcode1DNE + Strings.special_commaSpace;
-        header += sPercentageOfAllCount1_AllPostcode0ValidPostcode1DNE + Strings.special_commaSpace;
-        header += sTotalCount_AllPostcode0DNEPostcode1Valid + Strings.special_commaSpace;
-        header += sPercentageOfAllCount1_AllPostcode0DNEPostcode1Valid + Strings.special_commaSpace;
-        header += sTotalCount_AllPostcode0DNEPostcode1DNE + Strings.special_commaSpace;
-        header += sPercentageOfAllCount1_AllPostcode0DNEPostcode1DNE + Strings.special_commaSpace;
-        header += sTotalCount_AllPostcode0DNEPostcode1NotValid + Strings.special_commaSpace;
-        header += sPercentageOfAllCount1_AllPostcode0DNEPostcode1NotValid + Strings.special_commaSpace;
-        header += sTotalCount_AllPostcode0NotValidPostcode1DNE + Strings.special_commaSpace;
-        header += sPercentageOfAllCount1_AllPostcode0NotValidPostcode1DNE + Strings.special_commaSpace;
+        header += sTotalCount_AllPostcode0ValidPostcode1Valid + strings.special_commaSpace;
+        header += sPercentageOfAllCount1_AllPostcode0ValidPostcode1Valid + strings.special_commaSpace;
+        header += sTotalCount_AllPostcode0ValidPostcode1ValidPostcodeNotChanged + strings.special_commaSpace;
+        header += sPercentageOfAllCount1_AllPostcode0ValidPostcode1ValidPostcodeNotChanged + strings.special_commaSpace;
+        header += sTotalCount_AllPostcode0ValidPostcode1ValidPostcodeChange + strings.special_commaSpace;
+        header += sPercentageOfAllCount1_AllPostcode0ValidPostcode1ValidPostcodeChange + strings.special_commaSpace;
+        header += sTotalCount_AllPostcode0ValidPostcode1NotValid + strings.special_commaSpace;
+        header += sPercentageOfAllCount1_AllPostcode0ValidPostcode1NotValid + strings.special_commaSpace;
+        header += sTotalCount_AllPostcode0NotValidPostcode1Valid + strings.special_commaSpace;
+        header += sPercentageOfAllCount1_AllPostcode0NotValidPostcode1Valid + strings.special_commaSpace;
+        header += sTotalCount_AllPostcode0NotValidPostcode1NotValid + strings.special_commaSpace;
+        header += sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValid + strings.special_commaSpace;
+        header += sTotalCount_AllPostcode0NotValidPostcode1NotValidPostcodeNotChanged + strings.special_commaSpace;
+        header += sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValidPostcodeNotChanged + strings.special_commaSpace;
+        header += sTotalCount_AllPostcode0NotValidPostcode1NotValidPostcodeChanged + strings.special_commaSpace;
+        header += sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValidPostcodeChanged + strings.special_commaSpace;
+        header += sTotalCount_AllPostcode0ValidPostcode1DNE + strings.special_commaSpace;
+        header += sPercentageOfAllCount1_AllPostcode0ValidPostcode1DNE + strings.special_commaSpace;
+        header += sTotalCount_AllPostcode0DNEPostcode1Valid + strings.special_commaSpace;
+        header += sPercentageOfAllCount1_AllPostcode0DNEPostcode1Valid + strings.special_commaSpace;
+        header += sTotalCount_AllPostcode0DNEPostcode1DNE + strings.special_commaSpace;
+        header += sPercentageOfAllCount1_AllPostcode0DNEPostcode1DNE + strings.special_commaSpace;
+        header += sTotalCount_AllPostcode0DNEPostcode1NotValid + strings.special_commaSpace;
+        header += sPercentageOfAllCount1_AllPostcode0DNEPostcode1NotValid + strings.special_commaSpace;
+        header += sTotalCount_AllPostcode0NotValidPostcode1DNE + strings.special_commaSpace;
+        header += sPercentageOfAllCount1_AllPostcode0NotValidPostcode1DNE + strings.special_commaSpace;
         // HB Postcode Related
-        header += sTotalCount_HBPostcode0ValidPostcode1Valid + Strings.special_commaSpace;
-        header += sPercentageOfHBCount1_HBPostcode0ValidPostcode1Valid + Strings.special_commaSpace;
-        header += sTotalCount_HBPostcode0ValidPostcode1ValidPostcodeNotChanged + Strings.special_commaSpace;
-        header += sPercentageOfHBCount1_HBPostcode0ValidPostcode1ValidPostcodeNotChanged + Strings.special_commaSpace;
-        header += sTotalCount_HBPostcode0ValidPostcode1ValidPostcodeChange + Strings.special_commaSpace;
-        header += sPercentageOfHBCount1_HBPostcode0ValidPostcode1ValidPostcodeChange + Strings.special_commaSpace;
-        header += sTotalCount_HBPostcode0ValidPostcode1NotValid + Strings.special_commaSpace;
-        header += sPercentageOfHBCount1_HBPostcode0ValidPostcode1NotValid + Strings.special_commaSpace;
-        header += sTotalCount_HBPostcode0NotValidPostcode1Valid + Strings.special_commaSpace;
-        header += sPercentageOfHBCount1_HBPostcode0NotValidPostcode1Valid + Strings.special_commaSpace;
-        header += sTotalCount_HBPostcode0NotValidPostcode1NotValid + Strings.special_commaSpace;
-        header += sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValid + Strings.special_commaSpace;
-        header += sTotalCount_HBPostcode0NotValidPostcode1NotValidPostcodeNotChanged + Strings.special_commaSpace;
-        header += sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValidPostcodeNotChanged + Strings.special_commaSpace;
-        header += sTotalCount_HBPostcode0NotValidPostcode1NotValidPostcodeChanged + Strings.special_commaSpace;
-        header += sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValidPostcodeChanged + Strings.special_commaSpace;
-        header += sTotalCount_HBPostcode0ValidPostcode1DNE + Strings.special_commaSpace;
-        header += sPercentageOfHBCount1_HBPostcode0ValidPostcode1DNE + Strings.special_commaSpace;
-        header += sTotalCount_HBPostcode0DNEPostcode1Valid + Strings.special_commaSpace;
-        header += sPercentageOfHBCount1_HBPostcode0DNEPostcode1Valid + Strings.special_commaSpace;
-        header += sTotalCount_HBPostcode0DNEPostcode1DNE + Strings.special_commaSpace;
-        header += sPercentageOfHBCount1_HBPostcode0DNEPostcode1DNE + Strings.special_commaSpace;
-        header += sTotalCount_HBPostcode0DNEPostcode1NotValid + Strings.special_commaSpace;
-        header += sPercentageOfHBCount1_HBPostcode0DNEPostcode1NotValid + Strings.special_commaSpace;
-        header += sTotalCount_HBPostcode0NotValidPostcode1DNE + Strings.special_commaSpace;
-        header += sPercentageOfHBCount1_HBPostcode0NotValidPostcode1DNE + Strings.special_commaSpace;
+        header += sTotalCount_HBPostcode0ValidPostcode1Valid + strings.special_commaSpace;
+        header += sPercentageOfHBCount1_HBPostcode0ValidPostcode1Valid + strings.special_commaSpace;
+        header += sTotalCount_HBPostcode0ValidPostcode1ValidPostcodeNotChanged + strings.special_commaSpace;
+        header += sPercentageOfHBCount1_HBPostcode0ValidPostcode1ValidPostcodeNotChanged + strings.special_commaSpace;
+        header += sTotalCount_HBPostcode0ValidPostcode1ValidPostcodeChange + strings.special_commaSpace;
+        header += sPercentageOfHBCount1_HBPostcode0ValidPostcode1ValidPostcodeChange + strings.special_commaSpace;
+        header += sTotalCount_HBPostcode0ValidPostcode1NotValid + strings.special_commaSpace;
+        header += sPercentageOfHBCount1_HBPostcode0ValidPostcode1NotValid + strings.special_commaSpace;
+        header += sTotalCount_HBPostcode0NotValidPostcode1Valid + strings.special_commaSpace;
+        header += sPercentageOfHBCount1_HBPostcode0NotValidPostcode1Valid + strings.special_commaSpace;
+        header += sTotalCount_HBPostcode0NotValidPostcode1NotValid + strings.special_commaSpace;
+        header += sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValid + strings.special_commaSpace;
+        header += sTotalCount_HBPostcode0NotValidPostcode1NotValidPostcodeNotChanged + strings.special_commaSpace;
+        header += sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValidPostcodeNotChanged + strings.special_commaSpace;
+        header += sTotalCount_HBPostcode0NotValidPostcode1NotValidPostcodeChanged + strings.special_commaSpace;
+        header += sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValidPostcodeChanged + strings.special_commaSpace;
+        header += sTotalCount_HBPostcode0ValidPostcode1DNE + strings.special_commaSpace;
+        header += sPercentageOfHBCount1_HBPostcode0ValidPostcode1DNE + strings.special_commaSpace;
+        header += sTotalCount_HBPostcode0DNEPostcode1Valid + strings.special_commaSpace;
+        header += sPercentageOfHBCount1_HBPostcode0DNEPostcode1Valid + strings.special_commaSpace;
+        header += sTotalCount_HBPostcode0DNEPostcode1DNE + strings.special_commaSpace;
+        header += sPercentageOfHBCount1_HBPostcode0DNEPostcode1DNE + strings.special_commaSpace;
+        header += sTotalCount_HBPostcode0DNEPostcode1NotValid + strings.special_commaSpace;
+        header += sPercentageOfHBCount1_HBPostcode0DNEPostcode1NotValid + strings.special_commaSpace;
+        header += sTotalCount_HBPostcode0NotValidPostcode1DNE + strings.special_commaSpace;
+        header += sPercentageOfHBCount1_HBPostcode0NotValidPostcode1DNE + strings.special_commaSpace;
         // CTB Postcode Related
-        header += sTotalCount_CTBPostcode0ValidPostcode1Valid + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1Valid + Strings.special_commaSpace;
-        header += sTotalCount_CTBPostcode0ValidPostcode1ValidPostcodeNotChanged + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1ValidPostcodeNotChanged + Strings.special_commaSpace;
-        header += sTotalCount_CTBPostcode0ValidPostcode1ValidPostcodeChanged + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1ValidPostcodeChanged + Strings.special_commaSpace;
-        header += sTotalCount_CTBPostcode0ValidPostcode1NotValid + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1NotValid + Strings.special_commaSpace;
-        header += sTotalCount_CTBPostcode0NotValidPostcode1Valid + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1Valid + Strings.special_commaSpace;
-        header += sTotalCount_CTBPostcode0NotValidPostcode1NotValid + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValid + Strings.special_commaSpace;
-        header += sTotalCount_CTBPostcode0NotValidPostcode1NotValidPostcodeNotChanged + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValidPostcodeNotChanged + Strings.special_commaSpace;
-        header += sTotalCount_CTBPostcode0NotValidPostcode1NotValidPostcodeChanged + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValidPostcodeChanged + Strings.special_commaSpace;
-        header += sTotalCount_CTBPostcode0ValidPostcode1DNE + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1DNE + Strings.special_commaSpace;
-        header += sTotalCount_CTBPostcode0DNEPostcode1Valid + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1Valid + Strings.special_commaSpace;
-        header += sTotalCount_CTBPostcode0DNEPostcode1DNE + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1DNE + Strings.special_commaSpace;
-        header += sTotalCount_CTBPostcode0DNEPostcode1NotValid + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1NotValid + Strings.special_commaSpace;
-        header += sTotalCount_CTBPostcode0NotValidPostcode1DNE + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1DNE + Strings.special_commaSpace;
+        header += sTotalCount_CTBPostcode0ValidPostcode1Valid + strings.special_commaSpace;
+        header += sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1Valid + strings.special_commaSpace;
+        header += sTotalCount_CTBPostcode0ValidPostcode1ValidPostcodeNotChanged + strings.special_commaSpace;
+        header += sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1ValidPostcodeNotChanged + strings.special_commaSpace;
+        header += sTotalCount_CTBPostcode0ValidPostcode1ValidPostcodeChanged + strings.special_commaSpace;
+        header += sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1ValidPostcodeChanged + strings.special_commaSpace;
+        header += sTotalCount_CTBPostcode0ValidPostcode1NotValid + strings.special_commaSpace;
+        header += sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1NotValid + strings.special_commaSpace;
+        header += sTotalCount_CTBPostcode0NotValidPostcode1Valid + strings.special_commaSpace;
+        header += sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1Valid + strings.special_commaSpace;
+        header += sTotalCount_CTBPostcode0NotValidPostcode1NotValid + strings.special_commaSpace;
+        header += sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValid + strings.special_commaSpace;
+        header += sTotalCount_CTBPostcode0NotValidPostcode1NotValidPostcodeNotChanged + strings.special_commaSpace;
+        header += sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValidPostcodeNotChanged + strings.special_commaSpace;
+        header += sTotalCount_CTBPostcode0NotValidPostcode1NotValidPostcodeChanged + strings.special_commaSpace;
+        header += sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValidPostcodeChanged + strings.special_commaSpace;
+        header += sTotalCount_CTBPostcode0ValidPostcode1DNE + strings.special_commaSpace;
+        header += sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1DNE + strings.special_commaSpace;
+        header += sTotalCount_CTBPostcode0DNEPostcode1Valid + strings.special_commaSpace;
+        header += sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1Valid + strings.special_commaSpace;
+        header += sTotalCount_CTBPostcode0DNEPostcode1DNE + strings.special_commaSpace;
+        header += sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1DNE + strings.special_commaSpace;
+        header += sTotalCount_CTBPostcode0DNEPostcode1NotValid + strings.special_commaSpace;
+        header += sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1NotValid + strings.special_commaSpace;
+        header += sTotalCount_CTBPostcode0NotValidPostcode1DNE + strings.special_commaSpace;
+        header += sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1DNE + strings.special_commaSpace;
         return header;
     }
 
     protected String getLineCompare2TimesPostcodeChange(HashMap<String, String> summary) {
         String line = "";
         // All
-        line += summary.get(sTotalCount_AllPostcode0ValidPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfAllCount1_AllPostcode0ValidPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_AllPostcode0ValidPostcode1ValidPostcodeNotChanged) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfAllCount1_AllPostcode0ValidPostcode1ValidPostcodeNotChanged) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_AllPostcode0ValidPostcode1ValidPostcodeChange) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfAllCount1_AllPostcode0ValidPostcode1ValidPostcodeChange) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_AllPostcode0ValidPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfAllCount1_AllPostcode0ValidPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_AllPostcode0NotValidPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_AllPostcode0NotValidPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_AllPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_AllPostcode0NotValidPostcode1NotValidPostcodeChanged) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValidPostcodeChanged) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_AllPostcode0ValidPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfAllCount1_AllPostcode0ValidPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_AllPostcode0DNEPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfAllCount1_AllPostcode0DNEPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_AllPostcode0DNEPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfAllCount1_AllPostcode0DNEPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_AllPostcode0DNEPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfAllCount1_AllPostcode0DNEPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_AllPostcode0NotValidPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1DNE) + Strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllPostcode0ValidPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfAllCount1_AllPostcode0ValidPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllPostcode0ValidPostcode1ValidPostcodeNotChanged) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfAllCount1_AllPostcode0ValidPostcode1ValidPostcodeNotChanged) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllPostcode0ValidPostcode1ValidPostcodeChange) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfAllCount1_AllPostcode0ValidPostcode1ValidPostcodeChange) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllPostcode0ValidPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfAllCount1_AllPostcode0ValidPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllPostcode0NotValidPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllPostcode0NotValidPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllPostcode0NotValidPostcode1NotValidPostcodeChanged) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValidPostcodeChanged) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllPostcode0ValidPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfAllCount1_AllPostcode0ValidPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllPostcode0DNEPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfAllCount1_AllPostcode0DNEPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllPostcode0DNEPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfAllCount1_AllPostcode0DNEPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllPostcode0DNEPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfAllCount1_AllPostcode0DNEPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllPostcode0NotValidPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1DNE) + strings.special_commaSpace;
         // HB
-        line += summary.get(sTotalCount_HBPostcode0ValidPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount1_HBPostcode0ValidPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_HBPostcode0ValidPostcode1ValidPostcodeNotChanged) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount1_HBPostcode0ValidPostcode1ValidPostcodeNotChanged) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_HBPostcode0ValidPostcode1ValidPostcodeChange) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount1_HBPostcode0ValidPostcode1ValidPostcodeChange) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_HBPostcode0ValidPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount1_HBPostcode0ValidPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_HBPostcode0NotValidPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_HBPostcode0NotValidPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_HBPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_HBPostcode0NotValidPostcode1NotValidPostcodeChanged) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValidPostcodeChanged) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_HBPostcode0ValidPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount1_HBPostcode0ValidPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_HBPostcode0DNEPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount1_HBPostcode0DNEPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_HBPostcode0DNEPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount1_HBPostcode0DNEPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_HBPostcode0DNEPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount1_HBPostcode0DNEPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_HBPostcode0NotValidPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1DNE) + Strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBPostcode0ValidPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount1_HBPostcode0ValidPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBPostcode0ValidPostcode1ValidPostcodeNotChanged) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount1_HBPostcode0ValidPostcode1ValidPostcodeNotChanged) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBPostcode0ValidPostcode1ValidPostcodeChange) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount1_HBPostcode0ValidPostcode1ValidPostcodeChange) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBPostcode0ValidPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount1_HBPostcode0ValidPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBPostcode0NotValidPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBPostcode0NotValidPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBPostcode0NotValidPostcode1NotValidPostcodeChanged) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValidPostcodeChanged) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBPostcode0ValidPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount1_HBPostcode0ValidPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBPostcode0DNEPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount1_HBPostcode0DNEPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBPostcode0DNEPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount1_HBPostcode0DNEPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBPostcode0DNEPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount1_HBPostcode0DNEPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBPostcode0NotValidPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1DNE) + strings.special_commaSpace;
         // CTB
-        line += summary.get(sTotalCount_CTBPostcode0ValidPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBPostcode0ValidPostcode1ValidPostcodeNotChanged) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1ValidPostcodeNotChanged) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBPostcode0ValidPostcode1ValidPostcodeChanged) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1ValidPostcodeChanged) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBPostcode0ValidPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBPostcode0NotValidPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBPostcode0NotValidPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBPostcode0NotValidPostcode1NotValidPostcodeChanged) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValidPostcodeChanged) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBPostcode0ValidPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBPostcode0DNEPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1Valid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBPostcode0DNEPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBPostcode0DNEPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1NotValid) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBPostcode0NotValidPostcode1DNE) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1DNE) + Strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBPostcode0ValidPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBPostcode0ValidPostcode1ValidPostcodeNotChanged) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1ValidPostcodeNotChanged) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBPostcode0ValidPostcode1ValidPostcodeChanged) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1ValidPostcodeChanged) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBPostcode0ValidPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBPostcode0NotValidPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBPostcode0NotValidPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValidPostcodeNotChanged) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBPostcode0NotValidPostcode1NotValidPostcodeChanged) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValidPostcodeChanged) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBPostcode0ValidPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBPostcode0DNEPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1Valid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBPostcode0DNEPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBPostcode0DNEPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1NotValid) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBPostcode0NotValidPostcode1DNE) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1DNE) + strings.special_commaSpace;
         return line;
     }
 
@@ -6293,164 +6261,164 @@ public class DW_Summary extends DW_Object {
         String header = "";
         // General
         // All
-        header += sTotalCount_AllTTChangeClaimant + Strings.special_commaSpace;
-        header += sAllPercentageOfAll_TTChangeClaimant + Strings.special_commaSpace;
-//        header += sTotalCount_AllTTChangeClaimantIgnoreMinus999 + Strings.special_commaSpace;
-//        header += sAllPercentageOfAll_TTChangeClaimantIgnoreMinus999 + Strings.special_commaSpace;
+        header += sTotalCount_AllTTChangeClaimant + strings.special_commaSpace;
+        header += sAllPercentageOfAll_TTChangeClaimant + strings.special_commaSpace;
+//        header += sTotalCount_AllTTChangeClaimantIgnoreMinus999 + strings.special_commaSpace;
+//        header += sAllPercentageOfAll_TTChangeClaimantIgnoreMinus999 + strings.special_commaSpace;
         // General HB related
-        header += sTotalCount_HBTTChangeClaimant + Strings.special_commaSpace;
-        header += sPercentageOfHBCount0_HBTTChangeClaimant + Strings.special_commaSpace;
-//        header += sTotalCount_HBTTChangeClaimantIgnoreMinus999 + Strings.special_commaSpace;
-//        header += sPercentageOfHB_HBTTChangeClaimantIgnoreMinus999 + Strings.special_commaSpace;
+        header += sTotalCount_HBTTChangeClaimant + strings.special_commaSpace;
+        header += sPercentageOfHBCount0_HBTTChangeClaimant + strings.special_commaSpace;
+//        header += sTotalCount_HBTTChangeClaimantIgnoreMinus999 + strings.special_commaSpace;
+//        header += sPercentageOfHB_HBTTChangeClaimantIgnoreMinus999 + strings.special_commaSpace;
 
-        header += sTotalCount_Minus999TTToSocialTTs + Strings.special_commaSpace;
-        header += sTotalCount_Minus999TTToPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sTotalCount_HBTTsToMinus999TT + Strings.special_commaSpace;
-        header += sPercentageOfHBCount0_HBTTsToMinus999TT + Strings.special_commaSpace;
-        header += sTotalCount_SocialTTsToMinus999TT + Strings.special_commaSpace;
-        header += sPercentageOfSocialTTs_SocialTTsToMinus999TT + Strings.special_commaSpace;
-        header += sTotalCount_PrivateDeregulatedTTsToMinus999TT + Strings.special_commaSpace;
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT + Strings.special_commaSpace;
+        header += sTotalCount_Minus999TTToSocialTTs + strings.special_commaSpace;
+        header += sTotalCount_Minus999TTToPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sTotalCount_HBTTsToMinus999TT + strings.special_commaSpace;
+        header += sPercentageOfHBCount0_HBTTsToMinus999TT + strings.special_commaSpace;
+        header += sTotalCount_SocialTTsToMinus999TT + strings.special_commaSpace;
+        header += sPercentageOfSocialTTs_SocialTTsToMinus999TT + strings.special_commaSpace;
+        header += sTotalCount_PrivateDeregulatedTTsToMinus999TT + strings.special_commaSpace;
+        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT + strings.special_commaSpace;
 
-        header += sTotalCount_HBTTsToHBTTs + Strings.special_commaSpace;
-        header += sPercentageOfHBCount0_HBTTsToHBTTs + Strings.special_commaSpace;
-        header += sTotalCount_SocialTTsToPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sTotalCount_PrivateDeregulatedTTsToSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs + Strings.special_commaSpace;
-        header += sTotalCount_TT1ToPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfTT1_TT1ToPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sTotalCount_TT4ToPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfTT4_TT4ToPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sTotalCount_PrivateDeregulatedTTsToTT1 + Strings.special_commaSpace;
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1 + Strings.special_commaSpace;
-        header += sTotalCount_PrivateDeregulatedTTsToTT4 + Strings.special_commaSpace;
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4 + Strings.special_commaSpace;
-        header += sTotalCount_TT1ToTT4 + Strings.special_commaSpace;
-        header += sPercentageOfTT1_TT1ToTT4 + Strings.special_commaSpace;
-        header += sTotalCount_TT4ToTT1 + Strings.special_commaSpace;
-        header += sPercentageOfTT4_TT4ToTT1 + Strings.special_commaSpace;
-        header += sTotalCount_PostcodeChangeWithinSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs + Strings.special_commaSpace;
-        header += sTotalCount_PostcodeChangeWithinTT1 + Strings.special_commaSpace;
-        header += sPercentageOfTT1_PostcodeChangeWithinTT1 + Strings.special_commaSpace;
-        header += sTotalCount_PostcodeChangeWithinTT4 + Strings.special_commaSpace;
-        header += sPercentageOfTT4_PostcodeChangeWithinTT4 + Strings.special_commaSpace;
-        header += sTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs + Strings.special_commaSpace;
+        header += sTotalCount_HBTTsToHBTTs + strings.special_commaSpace;
+        header += sPercentageOfHBCount0_HBTTsToHBTTs + strings.special_commaSpace;
+        header += sTotalCount_SocialTTsToPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sTotalCount_PrivateDeregulatedTTsToSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs + strings.special_commaSpace;
+        header += sTotalCount_TT1ToPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfTT1_TT1ToPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sTotalCount_TT4ToPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfTT4_TT4ToPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sTotalCount_PrivateDeregulatedTTsToTT1 + strings.special_commaSpace;
+        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1 + strings.special_commaSpace;
+        header += sTotalCount_PrivateDeregulatedTTsToTT4 + strings.special_commaSpace;
+        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4 + strings.special_commaSpace;
+        header += sTotalCount_TT1ToTT4 + strings.special_commaSpace;
+        header += sPercentageOfTT1_TT1ToTT4 + strings.special_commaSpace;
+        header += sTotalCount_TT4ToTT1 + strings.special_commaSpace;
+        header += sPercentageOfTT4_TT4ToTT1 + strings.special_commaSpace;
+        header += sTotalCount_PostcodeChangeWithinSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs + strings.special_commaSpace;
+        header += sTotalCount_PostcodeChangeWithinTT1 + strings.special_commaSpace;
+        header += sPercentageOfTT1_PostcodeChangeWithinTT1 + strings.special_commaSpace;
+        header += sTotalCount_PostcodeChangeWithinTT4 + strings.special_commaSpace;
+        header += sPercentageOfTT4_PostcodeChangeWithinTT4 + strings.special_commaSpace;
+        header += sTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs + strings.special_commaSpace;
 
-        header += sTotalCount_HBTTsToCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfHBCount0_HBTTsToCTBTTs + Strings.special_commaSpace;
+        header += sTotalCount_HBTTsToCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfHBCount0_HBTTsToCTBTTs + strings.special_commaSpace;
         // General CTB related
-        header += sTotalCount_CTBTTChangeClaimant + Strings.special_commaSpace;
-        header += PercentageOfCTBCount0_CTBTTChangeClaimant + Strings.special_commaSpace;
-//        header += sTotalCount_CTBTTChangeClaimantIgnoreMinus999 + Strings.special_commaSpace;
-//        header += sPercentageOfCTB_CTBTTChangeClaimantIgnoreMinus999 + Strings.special_commaSpace;
+        header += sTotalCount_CTBTTChangeClaimant + strings.special_commaSpace;
+        header += PercentageOfCTBCount0_CTBTTChangeClaimant + strings.special_commaSpace;
+//        header += sTotalCount_CTBTTChangeClaimantIgnoreMinus999 + strings.special_commaSpace;
+//        header += sPercentageOfCTB_CTBTTChangeClaimantIgnoreMinus999 + strings.special_commaSpace;
 
-        header += sTotalCount_Minus999TTToCTBTTs + Strings.special_commaSpace;
-        header += sTotalCount_CTBTTsToMinus999TT + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount0_CTBTTsToMinus999TT + Strings.special_commaSpace;
+        header += sTotalCount_Minus999TTToCTBTTs + strings.special_commaSpace;
+        header += sTotalCount_CTBTTsToMinus999TT + strings.special_commaSpace;
+        header += sPercentageOfCTBCount0_CTBTTsToMinus999TT + strings.special_commaSpace;
 
-        header += sTotalCount_SocialTTsToCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfSocialTTs_SocialTTsToCTBTTs + Strings.special_commaSpace;
-        header += sTotalCount_TT1ToCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfTT1_TT1ToCTBTTs + Strings.special_commaSpace;
-        header += sTotalCount_TT4ToCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfTT4_TT4ToCTBTTs + Strings.special_commaSpace;
-        header += sTotalCount_PrivateDeregulatedTTsToCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs + Strings.special_commaSpace;
-        header += sTotalCount_CTBTTsToSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount0_CTBTTsToSocialTTs + Strings.special_commaSpace;
-        header += sTotalCount_CTBTTsToTT1 + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount0_CTBTTsToTT1 + Strings.special_commaSpace;
-        header += sTotalCount_CTBTTsToTT4 + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount0_CTBTTsToTT4 + Strings.special_commaSpace;
-        header += sTotalCount_CTBTTsToPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount0_CTBTTsToPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sTotalCount_CTBTTsToHBTTs + Strings.special_commaSpace;
-        header += sPercentageOfCTBCount0_CTBTTsToHBTTs + Strings.special_commaSpace;
+        header += sTotalCount_SocialTTsToCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfSocialTTs_SocialTTsToCTBTTs + strings.special_commaSpace;
+        header += sTotalCount_TT1ToCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfTT1_TT1ToCTBTTs + strings.special_commaSpace;
+        header += sTotalCount_TT4ToCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfTT4_TT4ToCTBTTs + strings.special_commaSpace;
+        header += sTotalCount_PrivateDeregulatedTTsToCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs + strings.special_commaSpace;
+        header += sTotalCount_CTBTTsToSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfCTBCount0_CTBTTsToSocialTTs + strings.special_commaSpace;
+        header += sTotalCount_CTBTTsToTT1 + strings.special_commaSpace;
+        header += sPercentageOfCTBCount0_CTBTTsToTT1 + strings.special_commaSpace;
+        header += sTotalCount_CTBTTsToTT4 + strings.special_commaSpace;
+        header += sPercentageOfCTBCount0_CTBTTsToTT4 + strings.special_commaSpace;
+        header += sTotalCount_CTBTTsToPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfCTBCount0_CTBTTsToPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sTotalCount_CTBTTsToHBTTs + strings.special_commaSpace;
+        header += sPercentageOfCTBCount0_CTBTTsToHBTTs + strings.special_commaSpace;
         return header;
     }
 
     protected String getLineCompare2TimesTTChange(HashMap<String, String> summary) {
         String line = "";
         // All
-        line += summary.get(sTotalCount_AllTTChangeClaimant) + Strings.special_commaSpace;
-        line += summary.get(sAllPercentageOfAll_TTChangeClaimant) + Strings.special_commaSpace;
-//        line += summary.get(sTotalCount_AllTTChangeClaimantIgnoreMinus999) + Strings.special_commaSpace;
-//        line += summary.get(sAllPercentageOfAll_TTChangeClaimantIgnoreMinus999) + Strings.special_commaSpace;
+        line += summary.get(sTotalCount_AllTTChangeClaimant) + strings.special_commaSpace;
+        line += summary.get(sAllPercentageOfAll_TTChangeClaimant) + strings.special_commaSpace;
+//        line += summary.get(sTotalCount_AllTTChangeClaimantIgnoreMinus999) + strings.special_commaSpace;
+//        line += summary.get(sAllPercentageOfAll_TTChangeClaimantIgnoreMinus999) + strings.special_commaSpace;
         // General HB related
-        line += summary.get(sTotalCount_HBTTChangeClaimant) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount0_HBTTChangeClaimant) + Strings.special_commaSpace;
-//        line += summary.get(sTotalCount_HBTTChangeClaimantIgnoreMinus999) + Strings.special_commaSpace;
-//        line += summary.get(sPercentageOfHB_HBTTChangeClaimantIgnoreMinus999) + Strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBTTChangeClaimant) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount0_HBTTChangeClaimant) + strings.special_commaSpace;
+//        line += summary.get(sTotalCount_HBTTChangeClaimantIgnoreMinus999) + strings.special_commaSpace;
+//        line += summary.get(sPercentageOfHB_HBTTChangeClaimantIgnoreMinus999) + strings.special_commaSpace;
 
-        line += summary.get(sTotalCount_Minus999TTToSocialTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_Minus999TTToPrivateDeregulatedTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_HBTTsToMinus999TT) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount0_HBTTsToMinus999TT) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_SocialTTsToMinus999TT) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfSocialTTs_SocialTTsToMinus999TT) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_PrivateDeregulatedTTsToMinus999TT) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT) + Strings.special_commaSpace;
+        line += summary.get(sTotalCount_Minus999TTToSocialTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_Minus999TTToPrivateDeregulatedTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBTTsToMinus999TT) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount0_HBTTsToMinus999TT) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_SocialTTsToMinus999TT) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfSocialTTs_SocialTTsToMinus999TT) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_PrivateDeregulatedTTsToMinus999TT) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT) + strings.special_commaSpace;
 
-        line += summary.get(sTotalCount_HBTTsToHBTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount0_HBTTsToHBTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_SocialTTsToPrivateDeregulatedTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_PrivateDeregulatedTTsToSocialTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_TT1ToPrivateDeregulatedTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfTT1_TT1ToPrivateDeregulatedTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_TT4ToPrivateDeregulatedTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfTT4_TT4ToPrivateDeregulatedTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_PrivateDeregulatedTTsToTT1) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_PrivateDeregulatedTTsToTT4) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_TT1ToTT4) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfTT1_TT1ToTT4) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_TT4ToTT1) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfTT4_TT4ToTT1) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_PostcodeChangeWithinSocialTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_PostcodeChangeWithinTT1) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfTT1_PostcodeChangeWithinTT1) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_PostcodeChangeWithinTT4) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfTT4_PostcodeChangeWithinTT4) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs) + Strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBTTsToHBTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount0_HBTTsToHBTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_SocialTTsToPrivateDeregulatedTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_PrivateDeregulatedTTsToSocialTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_TT1ToPrivateDeregulatedTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfTT1_TT1ToPrivateDeregulatedTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_TT4ToPrivateDeregulatedTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfTT4_TT4ToPrivateDeregulatedTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_PrivateDeregulatedTTsToTT1) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_PrivateDeregulatedTTsToTT4) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_TT1ToTT4) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfTT1_TT1ToTT4) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_TT4ToTT1) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfTT4_TT4ToTT1) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_PostcodeChangeWithinSocialTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_PostcodeChangeWithinTT1) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfTT1_PostcodeChangeWithinTT1) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_PostcodeChangeWithinTT4) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfTT4_PostcodeChangeWithinTT4) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_PostcodeChangeWithinPrivateDeregulatedTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs) + strings.special_commaSpace;
 
-        line += summary.get(sTotalCount_HBTTsToCTBTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfHBCount0_HBTTsToCTBTTs) + Strings.special_commaSpace;
+        line += summary.get(sTotalCount_HBTTsToCTBTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfHBCount0_HBTTsToCTBTTs) + strings.special_commaSpace;
         // General CTB related
-        line += summary.get(sTotalCount_CTBTTChangeClaimant) + Strings.special_commaSpace;
-        line += summary.get(PercentageOfCTBCount0_CTBTTChangeClaimant) + Strings.special_commaSpace;
-//        line += summary.get(sTotalCount_CTBTTChangeClaimantIgnoreMinus999) + Strings.special_commaSpace;
-//        line += summary.get(sPercentageOfCTB_CTBTTChangeClaimantIgnoreMinus999) + Strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBTTChangeClaimant) + strings.special_commaSpace;
+        line += summary.get(PercentageOfCTBCount0_CTBTTChangeClaimant) + strings.special_commaSpace;
+//        line += summary.get(sTotalCount_CTBTTChangeClaimantIgnoreMinus999) + strings.special_commaSpace;
+//        line += summary.get(sPercentageOfCTB_CTBTTChangeClaimantIgnoreMinus999) + strings.special_commaSpace;
 
-        line += summary.get(sTotalCount_Minus999TTToCTBTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBTTsToMinus999TT) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount0_CTBTTsToMinus999TT) + Strings.special_commaSpace;
+        line += summary.get(sTotalCount_Minus999TTToCTBTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBTTsToMinus999TT) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount0_CTBTTsToMinus999TT) + strings.special_commaSpace;
 
-        line += summary.get(sTotalCount_SocialTTsToCTBTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfSocialTTs_SocialTTsToCTBTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_TT1ToCTBTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfTT1_TT1ToCTBTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_TT4ToCTBTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfTT4_TT4ToCTBTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_PrivateDeregulatedTTsToCTBTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBTTsToSocialTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount0_CTBTTsToSocialTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBTTsToTT1) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount0_CTBTTsToTT1) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBTTsToTT4) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount0_CTBTTsToTT4) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBTTsToPrivateDeregulatedTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount0_CTBTTsToPrivateDeregulatedTTs) + Strings.special_commaSpace;
-        line += summary.get(sTotalCount_CTBTTsToHBTTs) + Strings.special_commaSpace;
-        line += summary.get(sPercentageOfCTBCount0_CTBTTsToHBTTs) + Strings.special_commaSpace;
+        line += summary.get(sTotalCount_SocialTTsToCTBTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfSocialTTs_SocialTTsToCTBTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_TT1ToCTBTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfTT1_TT1ToCTBTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_TT4ToCTBTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfTT4_TT4ToCTBTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_PrivateDeregulatedTTsToCTBTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBTTsToSocialTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount0_CTBTTsToSocialTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBTTsToTT1) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount0_CTBTTsToTT1) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBTTsToTT4) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount0_CTBTTsToTT4) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBTTsToPrivateDeregulatedTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount0_CTBTTsToPrivateDeregulatedTTs) + strings.special_commaSpace;
+        line += summary.get(sTotalCount_CTBTTsToHBTTs) + strings.special_commaSpace;
+        line += summary.get(sPercentageOfCTBCount0_CTBTTsToHBTTs) + strings.special_commaSpace;
         return line;
     }
 
@@ -6469,7 +6437,7 @@ public class DW_Summary extends DW_Object {
             int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.oe.Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesTT";
         PrintWriter pw;
@@ -6488,7 +6456,7 @@ public class DW_Summary extends DW_Object {
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
             String line;
-            line = getLineCompare2TimesGeneric(                    summary,                    ONSPDFiles);
+            line = getLineCompare2TimesGeneric(summary, ONSPDFiles);
             // General
             // All
             line += getLineCompare2TimesTTChange(summary);
@@ -6501,20 +6469,20 @@ public class DW_Summary extends DW_Object {
     public String getHeaderCompare2TimesGeneric() {
         String header;
         header = "";
-        header += sSHBEFilename0 + Strings.special_commaSpace;
+        header += sSHBEFilename0 + strings.special_commaSpace;
         header += "Year0-Month0, ";
         header += "Month0 Year0, ";
-        header += sSHBEFilename1 + Strings.special_commaSpace;
+        header += sSHBEFilename1 + strings.special_commaSpace;
         header += "Year1-Month1, ";
         header += "Month1 Year1, ";
         header += "PostCodeLookupDate0, PostCodeLookupFile0, "
                 + "PostCodeLookupDate1, PostCodeLookupFile1, ";
-        header += sAllCount0 + Strings.special_commaSpace;
-        header += sHBCount0 + Strings.special_commaSpace;
-        header += sCTBCount0 + Strings.special_commaSpace;
-        header += sAllCount1 + Strings.special_commaSpace;
-        header += sHBCount1 + Strings.special_commaSpace;
-        header += sCTBCount1 + Strings.special_commaSpace;
+        header += sAllCount0 + strings.special_commaSpace;
+        header += sHBCount0 + strings.special_commaSpace;
+        header += sCTBCount0 + strings.special_commaSpace;
+        header += sAllCount1 + strings.special_commaSpace;
+        header += sHBCount1 + strings.special_commaSpace;
+        header += sCTBCount1 + strings.special_commaSpace;
         header += "Month0 Year0 to Month1 Year1, ";
         return header;
     }
@@ -6525,14 +6493,14 @@ public class DW_Summary extends DW_Object {
         String line = "";
         String filename0;
         filename0 = summary.get(sSHBEFilename0);
-        line += filename0 + Strings.special_commaSpace;
+        line += filename0 + strings.special_commaSpace;
         String month0;
         String year0;
         if (filename0 != null) {
-            line += SHBE_Handler.getYearMonthNumber(filename0) + Strings.special_commaSpace;
+            line += SHBE_Handler.getYearMonthNumber(filename0) + strings.special_commaSpace;
             month0 = SHBE_Handler.getMonth3(filename0);
             year0 = SHBE_Handler.getYear(filename0);
-            line += month0 + " " + year0 + Strings.special_commaSpace;
+            line += month0 + " " + year0 + strings.special_commaSpace;
         } else {
             month0 = "null";
             year0 = "null";
@@ -6541,14 +6509,14 @@ public class DW_Summary extends DW_Object {
         }
         String filename1;
         filename1 = summary.get(sSHBEFilename1);
-        line += filename1 + Strings.special_commaSpace;
+        line += filename1 + strings.special_commaSpace;
         String month1;
         String year1;
         if (filename1 != null) {
-            line += SHBE_Handler.getYearMonthNumber(filename1) + Strings.special_commaSpace;
+            line += SHBE_Handler.getYearMonthNumber(filename1) + strings.special_commaSpace;
             month1 = SHBE_Handler.getMonth3(filename1);
             year1 = SHBE_Handler.getYear(filename1);
-            line += month1 + " " + year1 + Strings.special_commaSpace;
+            line += month1 + " " + year1 + strings.special_commaSpace;
         } else {
             month1 = "null";
             year1 = "null";
@@ -6561,21 +6529,21 @@ public class DW_Summary extends DW_Object {
             PostCodeLookupDate0 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename0));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }
-        line += PostCodeLookupDate0 + Strings.special_commaSpace + PostCodeLookupFile0Name + Strings.special_commaSpace;
+        line += PostCodeLookupDate0 + strings.special_commaSpace + PostCodeLookupFile0Name + strings.special_commaSpace;
         ONSPD_YM3 PostCodeLookupDate1 = null;
         String PostCodeLookupFile1Name = null;
         if (filename1 != null) {
             PostCodeLookupDate1 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename1));
             PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
         }
-        line += PostCodeLookupDate1 + Strings.special_commaSpace + PostCodeLookupFile1Name + Strings.special_commaSpace;
-        line += summary.get(sAllCount0) + Strings.special_commaSpace;
-        line += summary.get(sHBCount0) + Strings.special_commaSpace;
-        line += summary.get(sCTBCount0) + Strings.special_commaSpace;
-        line += summary.get(sAllCount1) + Strings.special_commaSpace;
-        line += summary.get(sHBCount1) + Strings.special_commaSpace;
-        line += summary.get(sCTBCount1) + Strings.special_commaSpace;
-        line += month0 + " " + year0 + " to " + month1 + " " + year1 + Strings.special_commaSpace;
+        line += PostCodeLookupDate1 + strings.special_commaSpace + PostCodeLookupFile1Name + strings.special_commaSpace;
+        line += summary.get(sAllCount0) + strings.special_commaSpace;
+        line += summary.get(sHBCount0) + strings.special_commaSpace;
+        line += summary.get(sCTBCount0) + strings.special_commaSpace;
+        line += summary.get(sAllCount1) + strings.special_commaSpace;
+        line += summary.get(sHBCount1) + strings.special_commaSpace;
+        line += summary.get(sCTBCount1) + strings.special_commaSpace;
+        line += month0 + " " + year0 + " to " + month1 + " " + year1 + strings.special_commaSpace;
         //}
         return line;
     }
@@ -6590,10 +6558,10 @@ public class DW_Summary extends DW_Object {
      */
     public void writeSummaryTableCompare2TimesPostcode(
             TreeMap<String, HashMap<String, String>> summaryTable,
-            String includeKey,            int nTT,            int nEG
+            String includeKey, int nTT, int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.oe.Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPostcode";
         PrintWriter pw;
@@ -6612,7 +6580,7 @@ public class DW_Summary extends DW_Object {
             HashMap<String, String> summary;
             summary = summaryTable.get(key);
             String line;
-            line = getLineCompare2TimesGeneric(                    summary,                    ONSPDFiles);
+            line = getLineCompare2TimesGeneric(summary, ONSPDFiles);
             line += getLineCompare2TimesPostcodeChange(summary);
             line = line.substring(0, line.length() - 2);
             pw.println(line);
@@ -6632,7 +6600,7 @@ public class DW_Summary extends DW_Object {
             TreeMap<String, HashMap<String, String>> summaryTable,
             String includeKey, int nTT, int nEG, int nPSI) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.oe.Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
         PrintWriter pw;
@@ -6641,66 +6609,66 @@ public class DW_Summary extends DW_Object {
         // Write headers
         String header;
         header = "";
-        header += sSHBEFilename1 + Strings.special_commaSpace;
+        header += sSHBEFilename1 + strings.special_commaSpace;
         header += getHeaderSingleTimeGeneric();
         header += "PostCodeLookupDate, ";
         header += "PostCodeLookupFile, ";
-        //header += Env.SHBE_Env.Strings.sCountOfClaims + Strings.special_commaSpace;
-        //header += Env.SHBE_Env.Strings.sCountOfCTBAndHBClaims + Strings.special_commaSpace;
-        //header += Env.SHBE_Env.Strings.sCountOfCTBClaims + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfNewSHBEClaims + Strings.special_commaSpace;
+        //header += Env.SHBE_Env.strings.sCountOfClaims + strings.special_commaSpace;
+        //header += Env.SHBE_Env.strings.sCountOfCTBAndHBClaims + strings.special_commaSpace;
+        //header += Env.SHBE_Env.strings.sCountOfCTBClaims + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfNewSHBEClaims + strings.special_commaSpace;
         for (int i = 1; i < nPSI; i++) {
-            header += Env.SHBE_Env.Strings.sCountOfNewSHBEClaimsPSI + i + Strings.special_commaSpace;
+            header += Env.SHBE_Env.strings.sCountOfNewSHBEClaimsPSI + i + strings.special_commaSpace;
         }
-        header += Env.SHBE_Env.Strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfNewSHBEClaimsWhereClaimantIsNew + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfClaimantsInMultipleClaimsInAMonth + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfPartnersInMultipleClaimsInAMonth + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfNonDependentsInMultipleClaimsInAMonth + Strings.special_commaSpace;
-        header += sHBPTICount1 + Strings.special_commaSpace;
-        header += sHBPTSCount1 + Strings.special_commaSpace;
-        header += sHBPTOCount1 + Strings.special_commaSpace;
-        header += sCTBPTICount1 + Strings.special_commaSpace;
-        header += sCTBPTSCount1 + Strings.special_commaSpace;
-        header += sCTBPTOCount1 + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfSRecords + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfUniqueClaimants + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfClaimsWithPartners + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfUniquePartners + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfDependentsInAllClaims + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfUniqueDependents + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfNonDependentsInAllClaims + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfUniqueNonDependents + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfIndividuals + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfNewClaimantPostcodes + Strings.special_commaSpace;
-        //header += Env.SHBE_Env.Strings.sCountOfNewValidMappableClaimantPostcodes + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfMappableClaimantPostcodes + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sCountOfNonMappableClaimantPostcodes + Strings.special_commaSpace;
-//        //header += Env.SHBE_Env.Strings.sCountOfInvalidFormatClaimantPostcodes + Strings.special_commaSpace;
-//        header += sTotalCount_AllPostcodeValidFormat + Strings.special_commaSpace;
-//        header += sPercentageOfAllCount1_AllPostcodeValidFormat + Strings.special_commaSpace;
-//        //header += sTotalCount_AllPostcodeInvalidFormat + Strings.special_commaSpace;
-//        header += sTotalCount_AllPostcodeValid + Strings.special_commaSpace;
-//        header += sPercentageOfAllCount1_AllPostcodeValid + Strings.special_commaSpace;
-//        //header += sTotalCount_AllPostcodeInvalid + Strings.special_commaSpace;
-//        //header += sTotalCount_HBPostcodeValidFormat + Strings.special_commaSpace;
-//        //header += sPercentageOfHBCount1_HBPostcodeValidFormat + Strings.special_commaSpace;
-//        //header += sTotalCount_HBPostcodeInvalidFormat + Strings.special_commaSpace;
-//        header += sTotalCount_HBPostcodeValid + Strings.special_commaSpace;
-//        header += sPercentageOfHBCount1_HBPostcodeValid + Strings.special_commaSpace;
-//        //header += sTotalCount_HBPostcodeInvalid + Strings.special_commaSpace;
-//        //header += sTotalCount_CTBPostcodeValidFormat + Strings.special_commaSpace;
-//        //header += sPercentageOfCTBCount1_CTBPostcodeValidFormat + Strings.special_commaSpace;
-//        //header += sTotalCount_CTBPostcodeInvalidFormat + Strings.special_commaSpace;
-//        header += sTotalCount_CTBPostcodeValid + Strings.special_commaSpace;
-//        header += sPercentageOfCTBCount1_CTBPostcodeValid + Strings.special_commaSpace;
-//        //header += sTotalCount_CTBPostcodeInvalid + Strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantIsNew + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfClaimantsInMultipleClaimsInAMonth + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfPartnersInMultipleClaimsInAMonth + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfNonDependentsInMultipleClaimsInAMonth + strings.special_commaSpace;
+        header += sHBPTICount1 + strings.special_commaSpace;
+        header += sHBPTSCount1 + strings.special_commaSpace;
+        header += sHBPTOCount1 + strings.special_commaSpace;
+        header += sCTBPTICount1 + strings.special_commaSpace;
+        header += sCTBPTSCount1 + strings.special_commaSpace;
+        header += sCTBPTOCount1 + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfSRecords + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfUniqueClaimants + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfClaimsWithPartners + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfUniquePartners + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfDependentsInAllClaims + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfUniqueDependents + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfNonDependentsInAllClaims + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfUniqueNonDependents + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfIndividuals + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfNewClaimantPostcodes + strings.special_commaSpace;
+        //header += Env.SHBE_Env.strings.sCountOfNewValidMappableClaimantPostcodes + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfMappableClaimantPostcodes + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sCountOfNonMappableClaimantPostcodes + strings.special_commaSpace;
+//        //header += Env.SHBE_Env.strings.sCountOfInvalidFormatClaimantPostcodes + strings.special_commaSpace;
+//        header += sTotalCount_AllPostcodeValidFormat + strings.special_commaSpace;
+//        header += sPercentageOfAllCount1_AllPostcodeValidFormat + strings.special_commaSpace;
+//        //header += sTotalCount_AllPostcodeInvalidFormat + strings.special_commaSpace;
+//        header += sTotalCount_AllPostcodeValid + strings.special_commaSpace;
+//        header += sPercentageOfAllCount1_AllPostcodeValid + strings.special_commaSpace;
+//        //header += sTotalCount_AllPostcodeInvalid + strings.special_commaSpace;
+//        //header += sTotalCount_HBPostcodeValidFormat + strings.special_commaSpace;
+//        //header += sPercentageOfHBCount1_HBPostcodeValidFormat + strings.special_commaSpace;
+//        //header += sTotalCount_HBPostcodeInvalidFormat + strings.special_commaSpace;
+//        header += sTotalCount_HBPostcodeValid + strings.special_commaSpace;
+//        header += sPercentageOfHBCount1_HBPostcodeValid + strings.special_commaSpace;
+//        //header += sTotalCount_HBPostcodeInvalid + strings.special_commaSpace;
+//        //header += sTotalCount_CTBPostcodeValidFormat + strings.special_commaSpace;
+//        //header += sPercentageOfCTBCount1_CTBPostcodeValidFormat + strings.special_commaSpace;
+//        //header += sTotalCount_CTBPostcodeInvalidFormat + strings.special_commaSpace;
+//        header += sTotalCount_CTBPostcodeValid + strings.special_commaSpace;
+//        header += sPercentageOfCTBCount1_CTBPostcodeValid + strings.special_commaSpace;
+//        //header += sTotalCount_CTBPostcodeInvalid + strings.special_commaSpace;
 //        header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
@@ -6714,65 +6682,65 @@ public class DW_Summary extends DW_Object {
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
-            line += filename1 + Strings.special_commaSpace;
+            line += filename1 + strings.special_commaSpace;
             line += getLineSingleTimeGeneric(key, summary);
             line += getPostcodeLookupDateAndFilenameLinePart(filename1, ONSPDFiles);
-            //line += summary.get(Env.SHBE_Env.Strings.sCountOfClaims) + Strings.special_commaSpace;
-            //line += summary.get(Env.SHBE_Env.Strings.sCountOfCTBAndHBClaims) + Strings.special_commaSpace;
-            //line += summary.get(Env.SHBE_Env.Strings.sCountOfCTBClaims) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfNewSHBEClaims) + Strings.special_commaSpace;
+            //line += summary.get(Env.SHBE_Env.strings.sCountOfClaims) + strings.special_commaSpace;
+            //line += summary.get(Env.SHBE_Env.strings.sCountOfCTBAndHBClaims) + strings.special_commaSpace;
+            //line += summary.get(Env.SHBE_Env.strings.sCountOfCTBClaims) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfNewSHBEClaims) + strings.special_commaSpace;
             for (int i = 1; i < nPSI; i++) {
-                line += summary.get(Env.SHBE_Env.Strings.sCountOfNewSHBEClaimsPSI + i) + Strings.special_commaSpace;
+                line += summary.get(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsPSI + i) + strings.special_commaSpace;
             }
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfNewSHBEClaimsWhereClaimantIsNew) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfClaimantsInMultipleClaimsInAMonth) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfPartnersInMultipleClaimsInAMonth) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfNonDependentsInMultipleClaimsInAMonth) + Strings.special_commaSpace;
-            line += summary.get(sHBPTICount1) + Strings.special_commaSpace;
-            line += summary.get(sHBPTSCount1) + Strings.special_commaSpace;
-            line += summary.get(sHBPTOCount1) + Strings.special_commaSpace;
-            line += summary.get(sCTBPTICount1) + Strings.special_commaSpace;
-            line += summary.get(sCTBPTSCount1) + Strings.special_commaSpace;
-            line += summary.get(sCTBPTOCount1) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfSRecords) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfUniqueClaimants) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfClaimsWithPartners) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfUniquePartners) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfDependentsInAllClaims) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfUniqueDependents) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfNonDependentsInAllClaims) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfUniqueNonDependents) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfIndividuals) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfNewClaimantPostcodes) + Strings.special_commaSpace;
-            //line += summary.get(Env.SHBE_Env.Strings.sCountOfNewValidMappableClaimantPostcodes) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfMappableClaimantPostcodes) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sCountOfNonMappableClaimantPostcodes) + Strings.special_commaSpace;
-            //line += summary.get(Env.SHBE_Env.Strings.sCountOfInvalidFormatClaimantPostcodes) + Strings.special_commaSpace;
-//            line += summary.get(sTotalCount_AllPostcodeValidFormat) + Strings.special_commaSpace;
-//            line += summary.get(sPercentageOfAllCount1_AllPostcodeValidFormat) + Strings.special_commaSpace;
-//            line += summary.get(sTotalCount_AllPostcodeInvalidFormat) + Strings.special_commaSpace;
-//            line += summary.get(sTotalCount_AllPostcodeValid) + Strings.special_commaSpace;
-//            line += summary.get(sPercentageOfAllCount1_AllPostcodeValid) + Strings.special_commaSpace;
-//            line += summary.get(sTotalCount_AllPostcodeInvalid) + Strings.special_commaSpace;
-//            line += summary.get(sTotalCount_HBPostcodeValidFormat) + Strings.special_commaSpace;
-//            line += summary.get(sPercentageOfHBCount1_HBPostcodeValidFormat) + Strings.special_commaSpace;
-//            line += summary.get(sTotalCount_HBPostcodeInvalidFormat) + Strings.special_commaSpace;
-//            line += summary.get(sTotalCount_HBPostcodeValid) + Strings.special_commaSpace;
-//            line += summary.get(sPercentageOfHBCount1_HBPostcodeValid) + Strings.special_commaSpace;
-//            line += summary.get(sTotalCount_HBPostcodeInvalid) + Strings.special_commaSpace;
-//            line += summary.get(sTotalCount_CTBPostcodeValidFormat) + Strings.special_commaSpace;
-//            line += summary.get(sPercentageOfCTBCount1_CTBPostcodeValidFormat) + Strings.special_commaSpace;
-//            line += summary.get(sTotalCount_CTBPostcodeInvalidFormat) + Strings.special_commaSpace;
-//            line += summary.get(sTotalCount_CTBPostcodeValid) + Strings.special_commaSpace;
-//            line += summary.get(sPercentageOfCTBCount1_CTBPostcodeValid) + Strings.special_commaSpace;
-//            line += summary.get(sTotalCount_CTBPostcodeInvalid) + Strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantIsNew) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfClaimantsInMultipleClaimsInAMonth) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfPartnersInMultipleClaimsInAMonth) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfNonDependentsInMultipleClaimsInAMonth) + strings.special_commaSpace;
+            line += summary.get(sHBPTICount1) + strings.special_commaSpace;
+            line += summary.get(sHBPTSCount1) + strings.special_commaSpace;
+            line += summary.get(sHBPTOCount1) + strings.special_commaSpace;
+            line += summary.get(sCTBPTICount1) + strings.special_commaSpace;
+            line += summary.get(sCTBPTSCount1) + strings.special_commaSpace;
+            line += summary.get(sCTBPTOCount1) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfSRecords) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfUniqueClaimants) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfClaimsWithPartners) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfUniquePartners) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfDependentsInAllClaims) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfUniqueDependents) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfNonDependentsInAllClaims) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfUniqueNonDependents) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfIndividuals) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfNewClaimantPostcodes) + strings.special_commaSpace;
+            //line += summary.get(Env.SHBE_Env.strings.sCountOfNewValidMappableClaimantPostcodes) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfMappableClaimantPostcodes) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sCountOfNonMappableClaimantPostcodes) + strings.special_commaSpace;
+            //line += summary.get(Env.SHBE_Env.strings.sCountOfInvalidFormatClaimantPostcodes) + strings.special_commaSpace;
+//            line += summary.get(sTotalCount_AllPostcodeValidFormat) + strings.special_commaSpace;
+//            line += summary.get(sPercentageOfAllCount1_AllPostcodeValidFormat) + strings.special_commaSpace;
+//            line += summary.get(sTotalCount_AllPostcodeInvalidFormat) + strings.special_commaSpace;
+//            line += summary.get(sTotalCount_AllPostcodeValid) + strings.special_commaSpace;
+//            line += summary.get(sPercentageOfAllCount1_AllPostcodeValid) + strings.special_commaSpace;
+//            line += summary.get(sTotalCount_AllPostcodeInvalid) + strings.special_commaSpace;
+//            line += summary.get(sTotalCount_HBPostcodeValidFormat) + strings.special_commaSpace;
+//            line += summary.get(sPercentageOfHBCount1_HBPostcodeValidFormat) + strings.special_commaSpace;
+//            line += summary.get(sTotalCount_HBPostcodeInvalidFormat) + strings.special_commaSpace;
+//            line += summary.get(sTotalCount_HBPostcodeValid) + strings.special_commaSpace;
+//            line += summary.get(sPercentageOfHBCount1_HBPostcodeValid) + strings.special_commaSpace;
+//            line += summary.get(sTotalCount_HBPostcodeInvalid) + strings.special_commaSpace;
+//            line += summary.get(sTotalCount_CTBPostcodeValidFormat) + strings.special_commaSpace;
+//            line += summary.get(sPercentageOfCTBCount1_CTBPostcodeValidFormat) + strings.special_commaSpace;
+//            line += summary.get(sTotalCount_CTBPostcodeInvalidFormat) + strings.special_commaSpace;
+//            line += summary.get(sTotalCount_CTBPostcodeValid) + strings.special_commaSpace;
+//            line += summary.get(sPercentageOfCTBCount1_CTBPostcodeValid) + strings.special_commaSpace;
+//            line += summary.get(sTotalCount_CTBPostcodeInvalid) + strings.special_commaSpace;
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
@@ -6796,7 +6764,7 @@ public class DW_Summary extends DW_Object {
             int nPSI
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFiles();
+        ONSPDFiles = Env.SHBE_Env.oe.Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeHouseholdSizes";
         PrintWriter pw;
@@ -6806,19 +6774,19 @@ public class DW_Summary extends DW_Object {
         // Write headers
         String header;
         header = "";
-        header += sSHBEFilename1 + Strings.special_commaSpace;
+        header += sSHBEFilename1 + strings.special_commaSpace;
         header += getHeaderSingleTimeGeneric();
         header += "PostCodeLookupDate, ";
         header += "PostCodeLookupFile, ";
-        header += sAllTotalHouseholdSize + Strings.special_commaSpace;
-        header += sAllAverageHouseholdSize + Strings.special_commaSpace;
-        header += sHBTotalHouseholdSize + Strings.special_commaSpace;
-        header += sHBAverageHouseholdSize + Strings.special_commaSpace;
-        header += sCTBTotalHouseholdSize + Strings.special_commaSpace;
-        header += sCTBAverageHouseholdSize + Strings.special_commaSpace;
+        header += sAllTotalHouseholdSize + strings.special_commaSpace;
+        header += sAllAverageHouseholdSize + strings.special_commaSpace;
+        header += sHBTotalHouseholdSize + strings.special_commaSpace;
+        header += sHBAverageHouseholdSize + strings.special_commaSpace;
+        header += sCTBTotalHouseholdSize + strings.special_commaSpace;
+        header += sCTBAverageHouseholdSize + strings.special_commaSpace;
         for (int i = 1; i < nTT; i++) {
-            header += sTotal_HouseholdSizeTT[i] + Strings.special_commaSpace;
-            header += sAverage_HouseholdSizeTT[i] + Strings.special_commaSpace;
+            header += sTotal_HouseholdSizeTT[i] + strings.special_commaSpace;
+            header += sAverage_HouseholdSizeTT[i] + strings.special_commaSpace;
         }
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -6833,18 +6801,18 @@ public class DW_Summary extends DW_Object {
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
-            line += filename1 + Strings.special_commaSpace;
+            line += filename1 + strings.special_commaSpace;
             line += getLineSingleTimeGeneric(key, summary);
             line += getPostcodeLookupDateAndFilenameLinePart(filename1, ONSPDFiles);
-            line += summary.get(sAllTotalHouseholdSize) + Strings.special_commaSpace;
-            line += summary.get(sAllAverageHouseholdSize) + Strings.special_commaSpace;
-            line += summary.get(sHBTotalHouseholdSize) + Strings.special_commaSpace;
-            line += summary.get(sHBAverageHouseholdSize) + Strings.special_commaSpace;
-            line += summary.get(sCTBTotalHouseholdSize) + Strings.special_commaSpace;
-            line += summary.get(sCTBAverageHouseholdSize) + Strings.special_commaSpace;
+            line += summary.get(sAllTotalHouseholdSize) + strings.special_commaSpace;
+            line += summary.get(sAllAverageHouseholdSize) + strings.special_commaSpace;
+            line += summary.get(sHBTotalHouseholdSize) + strings.special_commaSpace;
+            line += summary.get(sHBAverageHouseholdSize) + strings.special_commaSpace;
+            line += summary.get(sCTBTotalHouseholdSize) + strings.special_commaSpace;
+            line += summary.get(sCTBAverageHouseholdSize) + strings.special_commaSpace;
             for (int i = 1; i < nTT; i++) {
-                line += summary.get(sTotal_HouseholdSizeTT[i]) + Strings.special_commaSpace;
-                line += summary.get(sAverage_HouseholdSizeTT[i]) + Strings.special_commaSpace;
+                line += summary.get(sTotal_HouseholdSizeTT[i]) + strings.special_commaSpace;
+                line += summary.get(sAverage_HouseholdSizeTT[i]) + strings.special_commaSpace;
             }
             line = line.substring(0, line.length() - 2);
             pw.println(line);
@@ -6868,77 +6836,77 @@ public class DW_Summary extends DW_Object {
         // Write headers
         String header;
         header = "";
-        header += sSHBEFilename1 + Strings.special_commaSpace;
+        header += sSHBEFilename1 + strings.special_commaSpace;
         header += getHeaderSingleTimeGeneric();
-        header += Strings.sTotal_WeeklyHBEntitlement + Strings.special_commaSpace;
-        header += Strings.sTotalCount_WeeklyHBEntitlementNonZero + Strings.special_commaSpace;
-        header += Strings.sTotalCount_WeeklyHBEntitlementZero + Strings.special_commaSpace;
-        header += Strings.sAverage_NonZero_WeeklyHBEntitlement + Strings.special_commaSpace;
+        header += strings.sTotal_WeeklyHBEntitlement + strings.special_commaSpace;
+        header += strings.sTotalCount_WeeklyHBEntitlementNonZero + strings.special_commaSpace;
+        header += strings.sTotalCount_WeeklyHBEntitlementZero + strings.special_commaSpace;
+        header += strings.sAverage_NonZero_WeeklyHBEntitlement + strings.special_commaSpace;
         // WeeklyEligibleRentAmount
-        header += Strings.sTotal_WeeklyEligibleRentAmount + Strings.special_commaSpace;
-        header += Strings.sTotalCount_WeeklyEligibleRentAmountNonZero + Strings.special_commaSpace;
-        header += Strings.sTotalCount_WeeklyEligibleRentAmountZero + Strings.special_commaSpace;
-        header += Env.SHBE_Env.Strings.sAverage_NonZero_WeeklyEligibleRentAmount + Strings.special_commaSpace;
-        header += Strings.sTotal_HBWeeklyEligibleRentAmount + Strings.special_commaSpace;
-        header += Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero + Strings.special_commaSpace;
-        header += Strings.sTotalCount_HBWeeklyEligibleRentAmountZero + Strings.special_commaSpace;
-        header += Strings.sAverage_NonZero_HBWeeklyEligibleRentAmount + Strings.special_commaSpace;
-        header += Strings.sTotal_CTBWeeklyEligibleRentAmount + Strings.special_commaSpace;
-        header += Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZero + Strings.special_commaSpace;
-        header += Strings.sTotalCount_CTBWeeklyEligibleRentAmountZero + Strings.special_commaSpace;
-        header += Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount + Strings.special_commaSpace;
+        header += strings.sTotal_WeeklyEligibleRentAmount + strings.special_commaSpace;
+        header += strings.sTotalCount_WeeklyEligibleRentAmountNonZero + strings.special_commaSpace;
+        header += strings.sTotalCount_WeeklyEligibleRentAmountZero + strings.special_commaSpace;
+        header += Env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount + strings.special_commaSpace;
+        header += strings.sTotal_HBWeeklyEligibleRentAmount + strings.special_commaSpace;
+        header += strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero + strings.special_commaSpace;
+        header += strings.sTotalCount_HBWeeklyEligibleRentAmountZero + strings.special_commaSpace;
+        header += strings.sAverage_NonZero_HBWeeklyEligibleRentAmount + strings.special_commaSpace;
+        header += strings.sTotal_CTBWeeklyEligibleRentAmount + strings.special_commaSpace;
+        header += strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZero + strings.special_commaSpace;
+        header += strings.sTotalCount_CTBWeeklyEligibleRentAmountZero + strings.special_commaSpace;
+        header += strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount + strings.special_commaSpace;
         // WeeklyEligibleCouncilTaxAmount
-        header += sAllTotalWeeklyEligibleCouncilTaxAmount + Strings.special_commaSpace;
-        header += sTotalCount_AllWeeklyEligibleCouncilTaxAmountNonZero + Strings.special_commaSpace;
-        header += sTotalCount_AllWeeklyEligibleCouncilTaxAmountZero + Strings.special_commaSpace;
-        header += sAllAverageWeeklyEligibleCouncilTaxAmount + Strings.special_commaSpace;
-        header += sHBTotalWeeklyEligibleCouncilTaxAmount + Strings.special_commaSpace;
-        header += sTotalCount_HBWeeklyEligibleCouncilTaxAmountNonZero + Strings.special_commaSpace;
-        header += sTotalCount_HBWeeklyEligibleCouncilTaxAmountZero + Strings.special_commaSpace;
-        header += sHBAverageWeeklyEligibleCouncilTaxAmount + Strings.special_commaSpace;
-        header += sCTBTotalWeeklyEligibleCouncilTaxAmount + Strings.special_commaSpace;
-        header += sTotalCount_CTBWeeklyEligibleCouncilTaxAmountNonZero + Strings.special_commaSpace;
-        header += sTotalCount_CTBWeeklyEligibleCouncilTaxAmountZero + Strings.special_commaSpace;
-        header += sCTBAverageWeeklyEligibleCouncilTaxAmount + Strings.special_commaSpace;
+        header += sAllTotalWeeklyEligibleCouncilTaxAmount + strings.special_commaSpace;
+        header += sTotalCount_AllWeeklyEligibleCouncilTaxAmountNonZero + strings.special_commaSpace;
+        header += sTotalCount_AllWeeklyEligibleCouncilTaxAmountZero + strings.special_commaSpace;
+        header += sAllAverageWeeklyEligibleCouncilTaxAmount + strings.special_commaSpace;
+        header += sHBTotalWeeklyEligibleCouncilTaxAmount + strings.special_commaSpace;
+        header += sTotalCount_HBWeeklyEligibleCouncilTaxAmountNonZero + strings.special_commaSpace;
+        header += sTotalCount_HBWeeklyEligibleCouncilTaxAmountZero + strings.special_commaSpace;
+        header += sHBAverageWeeklyEligibleCouncilTaxAmount + strings.special_commaSpace;
+        header += sCTBTotalWeeklyEligibleCouncilTaxAmount + strings.special_commaSpace;
+        header += sTotalCount_CTBWeeklyEligibleCouncilTaxAmountNonZero + strings.special_commaSpace;
+        header += sTotalCount_CTBWeeklyEligibleCouncilTaxAmountZero + strings.special_commaSpace;
+        header += sCTBAverageWeeklyEligibleCouncilTaxAmount + strings.special_commaSpace;
         // ContractualRentAmount
-        header += sAllTotalContractualRentAmount + Strings.special_commaSpace;
-        header += sAllTotalCountContractualRentAmountNonZeroCount + Strings.special_commaSpace;
-        header += sAllTotalCountContractualRentAmountZeroCount + Strings.special_commaSpace;
-        header += sAllAverageContractualRentAmount + Strings.special_commaSpace;
-        header += sHBTotalContractualRentAmount + Strings.special_commaSpace;
-        header += sTotalCount_HBContractualRentAmountNonZeroCount + Strings.special_commaSpace;
-        header += sTotalCount_HBContractualRentAmountZeroCount + Strings.special_commaSpace;
-        header += sHBAverageContractualRentAmount + Strings.special_commaSpace;
-        header += sCTBTotalContractualRentAmount + Strings.special_commaSpace;
-        header += sTotalCount_CTBContractualRentAmountNonZeroCount + Strings.special_commaSpace;
-        header += sTotalCount_CTBContractualRentAmountZeroCount + Strings.special_commaSpace;
-        header += sCTBAverageContractualRentAmount + Strings.special_commaSpace;
+        header += sAllTotalContractualRentAmount + strings.special_commaSpace;
+        header += sAllTotalCountContractualRentAmountNonZeroCount + strings.special_commaSpace;
+        header += sAllTotalCountContractualRentAmountZeroCount + strings.special_commaSpace;
+        header += sAllAverageContractualRentAmount + strings.special_commaSpace;
+        header += sHBTotalContractualRentAmount + strings.special_commaSpace;
+        header += sTotalCount_HBContractualRentAmountNonZeroCount + strings.special_commaSpace;
+        header += sTotalCount_HBContractualRentAmountZeroCount + strings.special_commaSpace;
+        header += sHBAverageContractualRentAmount + strings.special_commaSpace;
+        header += sCTBTotalContractualRentAmount + strings.special_commaSpace;
+        header += sTotalCount_CTBContractualRentAmountNonZeroCount + strings.special_commaSpace;
+        header += sTotalCount_CTBContractualRentAmountZeroCount + strings.special_commaSpace;
+        header += sCTBAverageContractualRentAmount + strings.special_commaSpace;
         // WeeklyAdditionalDiscretionaryPayment
-        header += sAllTotalWeeklyAdditionalDiscretionaryPayment + Strings.special_commaSpace;
-        header += sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentNonZero + Strings.special_commaSpace;
-        header += sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentZero + Strings.special_commaSpace;
-        header += sAllAverageWeeklyAdditionalDiscretionaryPayment + Strings.special_commaSpace;
-        header += sHBTotalWeeklyAdditionalDiscretionaryPayment + Strings.special_commaSpace;
-        header += sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentNonZero + Strings.special_commaSpace;
-        header += sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentZero + Strings.special_commaSpace;
-        header += sHBAverageWeeklyAdditionalDiscretionaryPayment + Strings.special_commaSpace;
-        header += sCTBTotalWeeklyAdditionalDiscretionaryPayment + Strings.special_commaSpace;
-        header += sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentNonZero + Strings.special_commaSpace;
-        header += sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentZero + Strings.special_commaSpace;
-        header += sCTBAverageWeeklyAdditionalDiscretionaryPayment + Strings.special_commaSpace;
+        header += sAllTotalWeeklyAdditionalDiscretionaryPayment + strings.special_commaSpace;
+        header += sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentNonZero + strings.special_commaSpace;
+        header += sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentZero + strings.special_commaSpace;
+        header += sAllAverageWeeklyAdditionalDiscretionaryPayment + strings.special_commaSpace;
+        header += sHBTotalWeeklyAdditionalDiscretionaryPayment + strings.special_commaSpace;
+        header += sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentNonZero + strings.special_commaSpace;
+        header += sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentZero + strings.special_commaSpace;
+        header += sHBAverageWeeklyAdditionalDiscretionaryPayment + strings.special_commaSpace;
+        header += sCTBTotalWeeklyAdditionalDiscretionaryPayment + strings.special_commaSpace;
+        header += sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentNonZero + strings.special_commaSpace;
+        header += sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentZero + strings.special_commaSpace;
+        header += sCTBAverageWeeklyAdditionalDiscretionaryPayment + strings.special_commaSpace;
         // WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability
-        header += sAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability + Strings.special_commaSpace;
-        header += sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero + Strings.special_commaSpace;
-        header += sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero + Strings.special_commaSpace;
-        header += sAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability + Strings.special_commaSpace;
-        header += sHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability + Strings.special_commaSpace;
-        header += sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero + Strings.special_commaSpace;
-        header += sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero + Strings.special_commaSpace;
-        header += sHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability + Strings.special_commaSpace;
-        header += sCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability + Strings.special_commaSpace;
-        header += sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero + Strings.special_commaSpace;
-        header += sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero + Strings.special_commaSpace;
-        header += sCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability + Strings.special_commaSpace;
+        header += sAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability + strings.special_commaSpace;
+        header += sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero + strings.special_commaSpace;
+        header += sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero + strings.special_commaSpace;
+        header += sAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability + strings.special_commaSpace;
+        header += sHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability + strings.special_commaSpace;
+        header += sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero + strings.special_commaSpace;
+        header += sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero + strings.special_commaSpace;
+        header += sHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability + strings.special_commaSpace;
+        header += sCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability + strings.special_commaSpace;
+        header += sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero + strings.special_commaSpace;
+        header += sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero + strings.special_commaSpace;
+        header += sCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability + strings.special_commaSpace;
         header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
@@ -6952,77 +6920,77 @@ public class DW_Summary extends DW_Object {
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
-            line += filename1 + Strings.special_commaSpace;
+            line += filename1 + strings.special_commaSpace;
             line += getLineSingleTimeGeneric(key, summary);
-            line += summary.get(Strings.sTotal_WeeklyHBEntitlement) + Strings.special_commaSpace;
-            line += summary.get(Strings.sTotalCount_WeeklyHBEntitlementNonZero) + Strings.special_commaSpace;
-            line += summary.get(Strings.sTotalCount_WeeklyHBEntitlementZero) + Strings.special_commaSpace;
-            line += summary.get(Strings.sAverage_NonZero_WeeklyHBEntitlement) + Strings.special_commaSpace;
+            line += summary.get(strings.sTotal_WeeklyHBEntitlement) + strings.special_commaSpace;
+            line += summary.get(strings.sTotalCount_WeeklyHBEntitlementNonZero) + strings.special_commaSpace;
+            line += summary.get(strings.sTotalCount_WeeklyHBEntitlementZero) + strings.special_commaSpace;
+            line += summary.get(strings.sAverage_NonZero_WeeklyHBEntitlement) + strings.special_commaSpace;
             // WeeklyEligibleRentAmount
-            line += summary.get(Strings.sTotal_WeeklyEligibleRentAmount) + Strings.special_commaSpace;
-            line += summary.get(Strings.sTotalCount_WeeklyEligibleRentAmountNonZero) + Strings.special_commaSpace;
-            line += summary.get(Strings.sTotalCount_WeeklyEligibleRentAmountZero) + Strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.Strings.sAverage_NonZero_WeeklyEligibleRentAmount) + Strings.special_commaSpace;
-            line += summary.get(Strings.sTotal_HBWeeklyEligibleRentAmount) + Strings.special_commaSpace;
-            line += summary.get(Strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero) + Strings.special_commaSpace;
-            line += summary.get(Strings.sTotalCount_HBWeeklyEligibleRentAmountZero) + Strings.special_commaSpace;
-            line += summary.get(Strings.sAverage_NonZero_HBWeeklyEligibleRentAmount) + Strings.special_commaSpace;
-            line += summary.get(Strings.sTotal_CTBWeeklyEligibleRentAmount) + Strings.special_commaSpace;
-            line += summary.get(Strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZero) + Strings.special_commaSpace;
-            line += summary.get(Strings.sTotalCount_CTBWeeklyEligibleRentAmountZero) + Strings.special_commaSpace;
-            line += summary.get(Strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount) + Strings.special_commaSpace;
+            line += summary.get(strings.sTotal_WeeklyEligibleRentAmount) + strings.special_commaSpace;
+            line += summary.get(strings.sTotalCount_WeeklyEligibleRentAmountNonZero) + strings.special_commaSpace;
+            line += summary.get(strings.sTotalCount_WeeklyEligibleRentAmountZero) + strings.special_commaSpace;
+            line += summary.get(Env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount) + strings.special_commaSpace;
+            line += summary.get(strings.sTotal_HBWeeklyEligibleRentAmount) + strings.special_commaSpace;
+            line += summary.get(strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero) + strings.special_commaSpace;
+            line += summary.get(strings.sTotalCount_HBWeeklyEligibleRentAmountZero) + strings.special_commaSpace;
+            line += summary.get(strings.sAverage_NonZero_HBWeeklyEligibleRentAmount) + strings.special_commaSpace;
+            line += summary.get(strings.sTotal_CTBWeeklyEligibleRentAmount) + strings.special_commaSpace;
+            line += summary.get(strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZero) + strings.special_commaSpace;
+            line += summary.get(strings.sTotalCount_CTBWeeklyEligibleRentAmountZero) + strings.special_commaSpace;
+            line += summary.get(strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount) + strings.special_commaSpace;
             // WeeklyEligibleCouncilTaxAmount
-            line += summary.get(sAllTotalWeeklyEligibleCouncilTaxAmount) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_AllWeeklyEligibleCouncilTaxAmountNonZero) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_AllWeeklyEligibleCouncilTaxAmountZero) + Strings.special_commaSpace;
-            line += summary.get(sAllAverageWeeklyEligibleCouncilTaxAmount) + Strings.special_commaSpace;
-            line += summary.get(sHBTotalWeeklyEligibleCouncilTaxAmount) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HBWeeklyEligibleCouncilTaxAmountNonZero) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HBWeeklyEligibleCouncilTaxAmountZero) + Strings.special_commaSpace;
-            line += summary.get(sHBAverageWeeklyEligibleCouncilTaxAmount) + Strings.special_commaSpace;
-            line += summary.get(sCTBTotalWeeklyEligibleCouncilTaxAmount) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTBWeeklyEligibleCouncilTaxAmountNonZero) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTBWeeklyEligibleCouncilTaxAmountZero) + Strings.special_commaSpace;
-            line += summary.get(sCTBAverageWeeklyEligibleCouncilTaxAmount) + Strings.special_commaSpace;
+            line += summary.get(sAllTotalWeeklyEligibleCouncilTaxAmount) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllWeeklyEligibleCouncilTaxAmountNonZero) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllWeeklyEligibleCouncilTaxAmountZero) + strings.special_commaSpace;
+            line += summary.get(sAllAverageWeeklyEligibleCouncilTaxAmount) + strings.special_commaSpace;
+            line += summary.get(sHBTotalWeeklyEligibleCouncilTaxAmount) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HBWeeklyEligibleCouncilTaxAmountNonZero) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HBWeeklyEligibleCouncilTaxAmountZero) + strings.special_commaSpace;
+            line += summary.get(sHBAverageWeeklyEligibleCouncilTaxAmount) + strings.special_commaSpace;
+            line += summary.get(sCTBTotalWeeklyEligibleCouncilTaxAmount) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTBWeeklyEligibleCouncilTaxAmountNonZero) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTBWeeklyEligibleCouncilTaxAmountZero) + strings.special_commaSpace;
+            line += summary.get(sCTBAverageWeeklyEligibleCouncilTaxAmount) + strings.special_commaSpace;
             // ContractualRentAmount
-            line += summary.get(sAllTotalContractualRentAmount) + Strings.special_commaSpace;
-            line += summary.get(sAllTotalCountContractualRentAmountNonZeroCount) + Strings.special_commaSpace;
-            line += summary.get(sAllTotalCountContractualRentAmountZeroCount) + Strings.special_commaSpace;
-            line += summary.get(sAllAverageContractualRentAmount) + Strings.special_commaSpace;
-            line += summary.get(sHBTotalContractualRentAmount) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HBContractualRentAmountNonZeroCount) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HBContractualRentAmountZeroCount) + Strings.special_commaSpace;
-            line += summary.get(sHBAverageContractualRentAmount) + Strings.special_commaSpace;
-            line += summary.get(sCTBTotalContractualRentAmount) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTBContractualRentAmountNonZeroCount) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTBContractualRentAmountZeroCount) + Strings.special_commaSpace;
-            line += summary.get(sCTBAverageContractualRentAmount) + Strings.special_commaSpace;
+            line += summary.get(sAllTotalContractualRentAmount) + strings.special_commaSpace;
+            line += summary.get(sAllTotalCountContractualRentAmountNonZeroCount) + strings.special_commaSpace;
+            line += summary.get(sAllTotalCountContractualRentAmountZeroCount) + strings.special_commaSpace;
+            line += summary.get(sAllAverageContractualRentAmount) + strings.special_commaSpace;
+            line += summary.get(sHBTotalContractualRentAmount) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HBContractualRentAmountNonZeroCount) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HBContractualRentAmountZeroCount) + strings.special_commaSpace;
+            line += summary.get(sHBAverageContractualRentAmount) + strings.special_commaSpace;
+            line += summary.get(sCTBTotalContractualRentAmount) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTBContractualRentAmountNonZeroCount) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTBContractualRentAmountZeroCount) + strings.special_commaSpace;
+            line += summary.get(sCTBAverageContractualRentAmount) + strings.special_commaSpace;
             // WeeklyAdditionalDiscretionaryPayment
-            line += summary.get(sAllTotalWeeklyAdditionalDiscretionaryPayment) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentNonZero) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentZero) + Strings.special_commaSpace;
-            line += summary.get(sAllAverageWeeklyAdditionalDiscretionaryPayment) + Strings.special_commaSpace;
-            line += summary.get(sHBTotalWeeklyAdditionalDiscretionaryPayment) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentNonZero) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentZero) + Strings.special_commaSpace;
-            line += summary.get(sHBAverageWeeklyAdditionalDiscretionaryPayment) + Strings.special_commaSpace;
-            line += summary.get(sCTBTotalWeeklyAdditionalDiscretionaryPayment) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentNonZero) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentZero) + Strings.special_commaSpace;
-            line += summary.get(sCTBAverageWeeklyAdditionalDiscretionaryPayment) + Strings.special_commaSpace;
+            line += summary.get(sAllTotalWeeklyAdditionalDiscretionaryPayment) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentNonZero) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentZero) + strings.special_commaSpace;
+            line += summary.get(sAllAverageWeeklyAdditionalDiscretionaryPayment) + strings.special_commaSpace;
+            line += summary.get(sHBTotalWeeklyAdditionalDiscretionaryPayment) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentNonZero) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentZero) + strings.special_commaSpace;
+            line += summary.get(sHBAverageWeeklyAdditionalDiscretionaryPayment) + strings.special_commaSpace;
+            line += summary.get(sCTBTotalWeeklyAdditionalDiscretionaryPayment) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentNonZero) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentZero) + strings.special_commaSpace;
+            line += summary.get(sCTBAverageWeeklyAdditionalDiscretionaryPayment) + strings.special_commaSpace;
             // WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability
-            line += summary.get(sAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero) + Strings.special_commaSpace;
-            line += summary.get(sAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + Strings.special_commaSpace;
-            line += summary.get(sHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero) + Strings.special_commaSpace;
-            line += summary.get(sHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + Strings.special_commaSpace;
-            line += summary.get(sCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero) + Strings.special_commaSpace;
-            line += summary.get(sCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + Strings.special_commaSpace;
+            line += summary.get(sAllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero) + strings.special_commaSpace;
+            line += summary.get(sAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + strings.special_commaSpace;
+            line += summary.get(sHBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero) + strings.special_commaSpace;
+            line += summary.get(sHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + strings.special_commaSpace;
+            line += summary.get(sCTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZero) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTBWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZero) + strings.special_commaSpace;
+            line += summary.get(sCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability) + strings.special_commaSpace;
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
@@ -7045,26 +7013,26 @@ public class DW_Summary extends DW_Object {
         // Write headers
         String header;
         header = "";
-        header += sSHBEFilename1 + Strings.special_commaSpace;
+        header += sSHBEFilename1 + strings.special_commaSpace;
         header += getHeaderSingleTimeGeneric();
-        header += sTotalCount_AllClaimantsEmployed + Strings.special_commaSpace;
-        header += sPercentageOfAll_AllClaimantsEmployed + Strings.special_commaSpace;
-        header += sTotalCount_AllClaimantsSelfEmployed + Strings.special_commaSpace;
-        header += sPercentageOfAll_AllClaimantsSelfEmployed + Strings.special_commaSpace;
-        header += sTotalCount_AllClaimantsStudents + Strings.special_commaSpace;
-        header += sPercentageOfAll_AllClaimantsStudents + Strings.special_commaSpace;
-        header += sTotalCount_HBClaimantsEmployed + Strings.special_commaSpace;
-        header += sPercentageOfHB_HBClaimantsEmployed + Strings.special_commaSpace;
-        header += sTotalCount_HBClaimantsSelfEmployed + Strings.special_commaSpace;
-        header += sPercentageOfHB_HBClaimantsSelfEmployed + Strings.special_commaSpace;
-        header += sTotalCount_HBClaimantsStudents + Strings.special_commaSpace;
-        header += sPercentageOfHB_HBClaimantsStudents + Strings.special_commaSpace;
-        header += sTotalCount_CTBClaimantsEmployed + Strings.special_commaSpace;
-        header += sPercentageOfCTB_CTBClaimantsEmployed + Strings.special_commaSpace;
-        header += sTotalCount_CTBClaimantsSelfEmployed + Strings.special_commaSpace;
-        header += sPercentageOfCTB_CTBClaimantsSelfEmployed + Strings.special_commaSpace;
-        header += sTotalCount_CTBClaimantsStudents + Strings.special_commaSpace;
-        header += sPercentageOfCTB_CTBClaimantsStudents + Strings.special_commaSpace;
+        header += sTotalCount_AllClaimantsEmployed + strings.special_commaSpace;
+        header += sPercentageOfAll_AllClaimantsEmployed + strings.special_commaSpace;
+        header += sTotalCount_AllClaimantsSelfEmployed + strings.special_commaSpace;
+        header += sPercentageOfAll_AllClaimantsSelfEmployed + strings.special_commaSpace;
+        header += sTotalCount_AllClaimantsStudents + strings.special_commaSpace;
+        header += sPercentageOfAll_AllClaimantsStudents + strings.special_commaSpace;
+        header += sTotalCount_HBClaimantsEmployed + strings.special_commaSpace;
+        header += sPercentageOfHB_HBClaimantsEmployed + strings.special_commaSpace;
+        header += sTotalCount_HBClaimantsSelfEmployed + strings.special_commaSpace;
+        header += sPercentageOfHB_HBClaimantsSelfEmployed + strings.special_commaSpace;
+        header += sTotalCount_HBClaimantsStudents + strings.special_commaSpace;
+        header += sPercentageOfHB_HBClaimantsStudents + strings.special_commaSpace;
+        header += sTotalCount_CTBClaimantsEmployed + strings.special_commaSpace;
+        header += sPercentageOfCTB_CTBClaimantsEmployed + strings.special_commaSpace;
+        header += sTotalCount_CTBClaimantsSelfEmployed + strings.special_commaSpace;
+        header += sPercentageOfCTB_CTBClaimantsSelfEmployed + strings.special_commaSpace;
+        header += sTotalCount_CTBClaimantsStudents + strings.special_commaSpace;
+        header += sPercentageOfCTB_CTBClaimantsStudents + strings.special_commaSpace;
         header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
@@ -7078,28 +7046,28 @@ public class DW_Summary extends DW_Object {
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
-            line += filename1 + Strings.special_commaSpace;
+            line += filename1 + strings.special_commaSpace;
             line += getLineSingleTimeGeneric(key, summary);
-            line += summary.get(sTotalCount_AllClaimantsEmployed) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_AllClaimantsEmployed) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_AllClaimantsSelfEmployed) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_AllClaimantsSelfEmployed) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_AllClaimantsStudents) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_AllClaimantsStudents) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HBClaimantsEmployed) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_HBClaimantsEmployed) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HBClaimantsSelfEmployed) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_HBClaimantsSelfEmployed) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HBClaimantsStudents) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_HBClaimantsStudents) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTBClaimantsEmployed) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfCTB_CTBClaimantsEmployed) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTBClaimantsSelfEmployed) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfCTB_CTBClaimantsSelfEmployed) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTBClaimantsStudents) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfCTB_CTBClaimantsStudents) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTBLHACases) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfCTB_CTBLHACases) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllClaimantsEmployed) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_AllClaimantsEmployed) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllClaimantsSelfEmployed) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_AllClaimantsSelfEmployed) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllClaimantsStudents) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_AllClaimantsStudents) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HBClaimantsEmployed) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_HBClaimantsEmployed) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HBClaimantsSelfEmployed) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_HBClaimantsSelfEmployed) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HBClaimantsStudents) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_HBClaimantsStudents) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTBClaimantsEmployed) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfCTB_CTBClaimantsEmployed) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTBClaimantsSelfEmployed) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfCTB_CTBClaimantsSelfEmployed) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTBClaimantsStudents) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfCTB_CTBClaimantsStudents) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTBLHACases) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfCTB_CTBLHACases) + strings.special_commaSpace;
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
@@ -7116,7 +7084,7 @@ public class DW_Summary extends DW_Object {
             PostCodeLookupDate0 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
         }
-        result = PostCodeLookupDate0 + Strings.special_commaSpace + PostCodeLookupFile0Name + Strings.special_commaSpace;
+        result = PostCodeLookupDate0 + strings.special_commaSpace + PostCodeLookupFile0Name + strings.special_commaSpace;
         return result;
     }
 
@@ -7137,7 +7105,7 @@ public class DW_Summary extends DW_Object {
         // Write headers
         String header;
         header = "";
-        header += sSHBEFilename1 + Strings.special_commaSpace;
+        header += sSHBEFilename1 + strings.special_commaSpace;
         header += getHeaderSingleTimeGeneric();
         String sHB_CTB;
         String PT;
@@ -7151,45 +7119,45 @@ public class DW_Summary extends DW_Object {
             while (PTsIte.hasNext()) {
                 PT = PTsIte.next();
                 nameSuffix = sHB_CTB + PT;
-                header += Strings.sTotal_Income + nameSuffix + Strings.special_commaSpace;
-                header += Strings.sTotalCount_IncomeNonZero + nameSuffix + Strings.special_commaSpace;
-                header += Strings.sTotalCount_IncomeZero + nameSuffix + Strings.special_commaSpace;
-                header += Env.SHBE_Env.Strings.sAverage_NonZero_Income + nameSuffix + Strings.special_commaSpace;
-                header += Strings.sTotal_WeeklyEligibleRentAmount + nameSuffix + Strings.special_commaSpace;
-                header += Strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix + Strings.special_commaSpace;
-                header += Env.SHBE_Env.Strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix + Strings.special_commaSpace;
-                if (sHB_CTB.equalsIgnoreCase(Strings.sAll)) {
+                header += strings.sTotal_Income + nameSuffix + strings.special_commaSpace;
+                header += strings.sTotalCount_IncomeNonZero + nameSuffix + strings.special_commaSpace;
+                header += strings.sTotalCount_IncomeZero + nameSuffix + strings.special_commaSpace;
+                header += Env.SHBE_Env.strings.sAverage_NonZero_Income + nameSuffix + strings.special_commaSpace;
+                header += strings.sTotal_WeeklyEligibleRentAmount + nameSuffix + strings.special_commaSpace;
+                header += strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix + strings.special_commaSpace;
+                header += Env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix + strings.special_commaSpace;
+                if (sHB_CTB.equalsIgnoreCase(strings.sAll)) {
                     for (int i = 1; i < nTT; i++) {
-                        header += Strings.sTotal_IncomeTT[i] + nameSuffix + Strings.special_commaSpace;
-                        header += Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + Strings.special_commaSpace;
-                        header += Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + Strings.special_commaSpace;
-                        header += Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + Strings.special_commaSpace;
-                        header += Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + Strings.special_commaSpace;
-                        header += Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + Strings.special_commaSpace;
-                        header += Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + Strings.special_commaSpace;
+                        header += strings.sTotal_IncomeTT[i] + nameSuffix + strings.special_commaSpace;
+                        header += strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + strings.special_commaSpace;
+                        header += strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + strings.special_commaSpace;
+                        header += strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + strings.special_commaSpace;
+                        header += strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + strings.special_commaSpace;
+                        header += strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + strings.special_commaSpace;
+                        header += strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + strings.special_commaSpace;
                     }
-                } else if (sHB_CTB.equalsIgnoreCase(Strings.sHB)) {
+                } else if (sHB_CTB.equalsIgnoreCase(strings.sHB)) {
                     for (int i = 1; i < nTT; i++) {
                         if (!(i == 5 || i == 7)) {
-                            header += Strings.sTotal_IncomeTT[i] + nameSuffix + Strings.special_commaSpace;
-                            header += Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + Strings.special_commaSpace;
-                            header += Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + Strings.special_commaSpace;
-                            header += Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + Strings.special_commaSpace;
-                            header += Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + Strings.special_commaSpace;
-                            header += Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + Strings.special_commaSpace;
-                            header += Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + Strings.special_commaSpace;
+                            header += strings.sTotal_IncomeTT[i] + nameSuffix + strings.special_commaSpace;
+                            header += strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + strings.special_commaSpace;
+                            header += strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + strings.special_commaSpace;
+                            header += strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + strings.special_commaSpace;
+                            header += strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + strings.special_commaSpace;
+                            header += strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + strings.special_commaSpace;
+                            header += strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + strings.special_commaSpace;
                         }
                     }
                 } else {
                     for (int i = 1; i < nTT; i++) {
                         if (i == 5 || i == 7) {
-                            header += Strings.sTotal_IncomeTT[i] + nameSuffix + Strings.special_commaSpace;
-                            header += Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + Strings.special_commaSpace;
-                            header += Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + Strings.special_commaSpace;
-                            header += Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + Strings.special_commaSpace;
-                            header += Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + Strings.special_commaSpace;
-                            header += Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + Strings.special_commaSpace;
-                            header += Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + Strings.special_commaSpace;
+                            header += strings.sTotal_IncomeTT[i] + nameSuffix + strings.special_commaSpace;
+                            header += strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + strings.special_commaSpace;
+                            header += strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + strings.special_commaSpace;
+                            header += strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + strings.special_commaSpace;
+                            header += strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + strings.special_commaSpace;
+                            header += strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + strings.special_commaSpace;
+                            header += strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + strings.special_commaSpace;
                         }
                     }
                 }
@@ -7208,7 +7176,7 @@ public class DW_Summary extends DW_Object {
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
-            line += filename1 + Strings.special_commaSpace;
+            line += filename1 + strings.special_commaSpace;
             line += getLineSingleTimeGeneric(key, summary);
             HB_CTBIte = HB_CTB.iterator();
             while (HB_CTBIte.hasNext()) {
@@ -7217,45 +7185,45 @@ public class DW_Summary extends DW_Object {
                 while (PTsIte.hasNext()) {
                     PT = PTsIte.next();
                     nameSuffix = sHB_CTB + PT;
-                    line += summary.get(Strings.sTotal_Income + nameSuffix) + Strings.special_commaSpace;
-                    line += summary.get(Strings.sTotalCount_IncomeNonZero + nameSuffix) + Strings.special_commaSpace;
-                    line += summary.get(Strings.sTotalCount_IncomeZero + nameSuffix) + Strings.special_commaSpace;
-                    line += summary.get(Env.SHBE_Env.Strings.sAverage_NonZero_Income + nameSuffix) + Strings.special_commaSpace;
-                    line += summary.get(Strings.sTotal_WeeklyEligibleRentAmount + nameSuffix) + Strings.special_commaSpace;
-                    line += summary.get(Strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix) + Strings.special_commaSpace;
-                    line += summary.get(Env.SHBE_Env.Strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix) + Strings.special_commaSpace;
-                    if (sHB_CTB.equalsIgnoreCase(Strings.sAll)) {
+                    line += summary.get(strings.sTotal_Income + nameSuffix) + strings.special_commaSpace;
+                    line += summary.get(strings.sTotalCount_IncomeNonZero + nameSuffix) + strings.special_commaSpace;
+                    line += summary.get(strings.sTotalCount_IncomeZero + nameSuffix) + strings.special_commaSpace;
+                    line += summary.get(Env.SHBE_Env.strings.sAverage_NonZero_Income + nameSuffix) + strings.special_commaSpace;
+                    line += summary.get(strings.sTotal_WeeklyEligibleRentAmount + nameSuffix) + strings.special_commaSpace;
+                    line += summary.get(strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix) + strings.special_commaSpace;
+                    line += summary.get(Env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix) + strings.special_commaSpace;
+                    if (sHB_CTB.equalsIgnoreCase(strings.sAll)) {
                         for (int i = 1; i < nTT; i++) {
-                            line += summary.get(Strings.sTotal_IncomeTT[i] + nameSuffix) + Strings.special_commaSpace;
-                            line += summary.get(Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + Strings.special_commaSpace;
-                            line += summary.get(Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + Strings.special_commaSpace;
-                            line += summary.get(Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + Strings.special_commaSpace;
-                            line += summary.get(Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + Strings.special_commaSpace;
-                            line += summary.get(Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + Strings.special_commaSpace;
-                            line += summary.get(Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + Strings.special_commaSpace;
+                            line += summary.get(strings.sTotal_IncomeTT[i] + nameSuffix) + strings.special_commaSpace;
+                            line += summary.get(strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + strings.special_commaSpace;
+                            line += summary.get(strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + strings.special_commaSpace;
+                            line += summary.get(strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + strings.special_commaSpace;
+                            line += summary.get(strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + strings.special_commaSpace;
+                            line += summary.get(strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + strings.special_commaSpace;
+                            line += summary.get(strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + strings.special_commaSpace;
                         }
-                    } else if (sHB_CTB.equalsIgnoreCase(Strings.sHB)) {
+                    } else if (sHB_CTB.equalsIgnoreCase(strings.sHB)) {
                         for (int i = 1; i < nTT; i++) {
                             if (!(i == 5 || i == 7)) {
-                                line += summary.get(Strings.sTotal_IncomeTT[i] + nameSuffix) + Strings.special_commaSpace;
-                                line += summary.get(Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + Strings.special_commaSpace;
-                                line += summary.get(Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + Strings.special_commaSpace;
-                                line += summary.get(Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + Strings.special_commaSpace;
-                                line += summary.get(Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + Strings.special_commaSpace;
-                                line += summary.get(Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + Strings.special_commaSpace;
-                                line += summary.get(Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + Strings.special_commaSpace;
+                                line += summary.get(strings.sTotal_IncomeTT[i] + nameSuffix) + strings.special_commaSpace;
+                                line += summary.get(strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + strings.special_commaSpace;
+                                line += summary.get(strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + strings.special_commaSpace;
+                                line += summary.get(strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + strings.special_commaSpace;
+                                line += summary.get(strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + strings.special_commaSpace;
+                                line += summary.get(strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + strings.special_commaSpace;
+                                line += summary.get(strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + strings.special_commaSpace;
                             }
                         }
                     } else {
                         for (int i = 5; i < nTT; i++) {
                             if (i == 5 || i == 7) {
-                                line += summary.get(Strings.sTotal_IncomeTT[i] + nameSuffix) + Strings.special_commaSpace;
-                                line += summary.get(Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + Strings.special_commaSpace;
-                                line += summary.get(Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + Strings.special_commaSpace;
-                                line += summary.get(Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + Strings.special_commaSpace;
-                                line += summary.get(Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + Strings.special_commaSpace;
-                                line += summary.get(Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + Strings.special_commaSpace;
-                                line += summary.get(Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + Strings.special_commaSpace;
+                                line += summary.get(strings.sTotal_IncomeTT[i] + nameSuffix) + strings.special_commaSpace;
+                                line += summary.get(strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + strings.special_commaSpace;
+                                line += summary.get(strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + strings.special_commaSpace;
+                                line += summary.get(strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + strings.special_commaSpace;
+                                line += summary.get(strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + strings.special_commaSpace;
+                                line += summary.get(strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + strings.special_commaSpace;
+                                line += summary.get(strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + strings.special_commaSpace;
                             }
                         }
                     }
@@ -7283,29 +7251,29 @@ public class DW_Summary extends DW_Object {
         // Write headers
         String header;
         header = "";
-        header += sSHBEFilename1 + Strings.special_commaSpace;
+        header += sSHBEFilename1 + strings.special_commaSpace;
         header += getHeaderSingleTimeGeneric();
         for (int i = 1; i < nEG; i++) {
-            header += sTotalCount_AllEthnicGroupClaimant[i] + Strings.special_commaSpace;
-            header += sPercentageOfAll_EthnicGroupClaimant[i] + Strings.special_commaSpace;
-            header += sTotalCount_AllEthnicGroupSocialTTClaimant[i] + Strings.special_commaSpace;
-            header += sPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i] + Strings.special_commaSpace;
-            header += sTotalCount_AllEthnicGroupPrivateDeregulatedTTClaimant[i] + Strings.special_commaSpace;
-            header += sPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i] + Strings.special_commaSpace;
+            header += sTotalCount_AllEthnicGroupClaimant[i] + strings.special_commaSpace;
+            header += sPercentageOfAll_EthnicGroupClaimant[i] + strings.special_commaSpace;
+            header += sTotalCount_AllEthnicGroupSocialTTClaimant[i] + strings.special_commaSpace;
+            header += sPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i] + strings.special_commaSpace;
+            header += sTotalCount_AllEthnicGroupPrivateDeregulatedTTClaimant[i] + strings.special_commaSpace;
+            header += sPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i] + strings.special_commaSpace;
         }
         for (int i = 1; i < nEG; i++) {
-            header += sTotalCount_HBEthnicGroupClaimant[i] + Strings.special_commaSpace;
-            header += sPercentageOfHB_HBEthnicGroupClaimant[i] + Strings.special_commaSpace;
+            header += sTotalCount_HBEthnicGroupClaimant[i] + strings.special_commaSpace;
+            header += sPercentageOfHB_HBEthnicGroupClaimant[i] + strings.special_commaSpace;
         }
         for (int i = 1; i < nEG; i++) {
-            header += sTotalCount_CTBEthnicGroupClaimant[i] + Strings.special_commaSpace;
-            header += sPercentageOfCTB_CTBEthnicGroupClaimant[i] + Strings.special_commaSpace;
+            header += sTotalCount_CTBEthnicGroupClaimant[i] + strings.special_commaSpace;
+            header += sPercentageOfCTB_CTBEthnicGroupClaimant[i] + strings.special_commaSpace;
         }
         for (int i = 1; i < nEG; i++) {
             for (int j = 1; j < nTT; j++) {
-                header += sTotalCount_AllEthnicGroupClaimantTT[i][j] + Strings.special_commaSpace;
-                header += sPercentageOfTT_EthnicGroupClaimantTT[i][j] + Strings.special_commaSpace;
-                header += sPercentageOfEthnicGroup_EthnicGroupClaimantTT[i][j] + Strings.special_commaSpace;
+                header += sTotalCount_AllEthnicGroupClaimantTT[i][j] + strings.special_commaSpace;
+                header += sPercentageOfTT_EthnicGroupClaimantTT[i][j] + strings.special_commaSpace;
+                header += sPercentageOfEthnicGroup_EthnicGroupClaimantTT[i][j] + strings.special_commaSpace;
             }
         }
         header = header.substring(0, header.length() - 2);
@@ -7321,29 +7289,29 @@ public class DW_Summary extends DW_Object {
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
-            line += filename1 + Strings.special_commaSpace;
+            line += filename1 + strings.special_commaSpace;
             line += getLineSingleTimeGeneric(key, summary);
             for (int i = 1; i < nEG; i++) {
-                line += summary.get(sTotalCount_AllEthnicGroupClaimant[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfAll_EthnicGroupClaimant[i]) + Strings.special_commaSpace;
-                line += summary.get(sTotalCount_AllEthnicGroupSocialTTClaimant[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i]) + Strings.special_commaSpace;
-                line += summary.get(sTotalCount_AllEthnicGroupPrivateDeregulatedTTClaimant[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i]) + Strings.special_commaSpace;
+                line += summary.get(sTotalCount_AllEthnicGroupClaimant[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfAll_EthnicGroupClaimant[i]) + strings.special_commaSpace;
+                line += summary.get(sTotalCount_AllEthnicGroupSocialTTClaimant[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i]) + strings.special_commaSpace;
+                line += summary.get(sTotalCount_AllEthnicGroupPrivateDeregulatedTTClaimant[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i]) + strings.special_commaSpace;
             }
             for (int i = 1; i < nEG; i++) {
-                line += summary.get(sTotalCount_HBEthnicGroupClaimant[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfHB_HBEthnicGroupClaimant[i]) + Strings.special_commaSpace;
+                line += summary.get(sTotalCount_HBEthnicGroupClaimant[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfHB_HBEthnicGroupClaimant[i]) + strings.special_commaSpace;
             }
             for (int i = 1; i < nEG; i++) {
-                line += summary.get(sTotalCount_CTBEthnicGroupClaimant[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfCTB_CTBEthnicGroupClaimant[i]) + Strings.special_commaSpace;
+                line += summary.get(sTotalCount_CTBEthnicGroupClaimant[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfCTB_CTBEthnicGroupClaimant[i]) + strings.special_commaSpace;
             }
             for (int i = 1; i < nEG; i++) {
                 for (int j = 1; j < nTT; j++) {
-                    line += summary.get(sTotalCount_AllEthnicGroupClaimantTT[i][j]) + Strings.special_commaSpace;
-                    line += summary.get(sPercentageOfTT_EthnicGroupClaimantTT[i][j]) + Strings.special_commaSpace;
-                    line += summary.get(sPercentageOfEthnicGroup_EthnicGroupClaimantTT[i][j]) + Strings.special_commaSpace;
+                    line += summary.get(sTotalCount_AllEthnicGroupClaimantTT[i][j]) + strings.special_commaSpace;
+                    line += summary.get(sPercentageOfTT_EthnicGroupClaimantTT[i][j]) + strings.special_commaSpace;
+                    line += summary.get(sPercentageOfEthnicGroup_EthnicGroupClaimantTT[i][j]) + strings.special_commaSpace;
                 }
             }
             line = line.substring(0, line.length() - 2);
@@ -7368,29 +7336,29 @@ public class DW_Summary extends DW_Object {
         // Write headers
         String header;
         header = "";
-        header += sSHBEFilename1 + Strings.special_commaSpace;
+        header += sSHBEFilename1 + strings.special_commaSpace;
         header += getHeaderSingleTimeGeneric();
-        header += sTotalCount_SocialTTsClaimant + Strings.special_commaSpace;
-        header += sPercentageOfAll_SocialTTsClaimant + Strings.special_commaSpace;
-        header += sPercentageOfHB_SocialTTsClaimant + Strings.special_commaSpace;
-        header += sTotalCount_PrivateDeregulatedTTsClaimant + Strings.special_commaSpace;
-        header += sPercentageOfAll_PrivateDeregulatedTTsClaimant + Strings.special_commaSpace;
-        header += sPercentageOfHB_PrivateDeregulatedTTsClaimant + Strings.special_commaSpace;
+        header += sTotalCount_SocialTTsClaimant + strings.special_commaSpace;
+        header += sPercentageOfAll_SocialTTsClaimant + strings.special_commaSpace;
+        header += sPercentageOfHB_SocialTTsClaimant + strings.special_commaSpace;
+        header += sTotalCount_PrivateDeregulatedTTsClaimant + strings.special_commaSpace;
+        header += sPercentageOfAll_PrivateDeregulatedTTsClaimant + strings.special_commaSpace;
+        header += sPercentageOfHB_PrivateDeregulatedTTsClaimant + strings.special_commaSpace;
         for (int i = 1; i < nTT; i++) {
-            header += sTotalCount_ClaimantTT[i] + Strings.special_commaSpace;
-            header += sPercentageOfAll_ClaimantTT[i] + Strings.special_commaSpace;
+            header += sTotalCount_ClaimantTT[i] + strings.special_commaSpace;
+            header += sPercentageOfAll_ClaimantTT[i] + strings.special_commaSpace;
             if ((i == 5 || i == 7)) {
-                header += sPercentageOfCTB_ClaimantTT[i] + Strings.special_commaSpace;
+                header += sPercentageOfCTB_ClaimantTT[i] + strings.special_commaSpace;
             } else {
-                header += sPercentageOfHB_ClaimantTT[i] + Strings.special_commaSpace;
+                header += sPercentageOfHB_ClaimantTT[i] + strings.special_commaSpace;
             }
         }
-        header += sTotalCount_AllLHACases + Strings.special_commaSpace;
-        header += sPercentageOfAll_AllLHACases + Strings.special_commaSpace;
-        header += sTotalCount_HBLHACases + Strings.special_commaSpace;
-        header += sPercentageOfHB_HBLHACases + Strings.special_commaSpace;
-        header += sTotalCount_CTBLHACases + Strings.special_commaSpace;
-        header += sPercentageOfCTB_CTBLHACases + Strings.special_commaSpace;
+        header += sTotalCount_AllLHACases + strings.special_commaSpace;
+        header += sPercentageOfAll_AllLHACases + strings.special_commaSpace;
+        header += sTotalCount_HBLHACases + strings.special_commaSpace;
+        header += sPercentageOfHB_HBLHACases + strings.special_commaSpace;
+        header += sTotalCount_CTBLHACases + strings.special_commaSpace;
+        header += sPercentageOfCTB_CTBLHACases + strings.special_commaSpace;
         header = header.substring(0, header.length() - 2);
         pw.println(header);
         Iterator<String> ite;
@@ -7404,29 +7372,29 @@ public class DW_Summary extends DW_Object {
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
-            line += filename1 + Strings.special_commaSpace;
+            line += filename1 + strings.special_commaSpace;
             line += getLineSingleTimeGeneric(key, summary);
-            line += summary.get(sTotalCount_SocialTTsClaimant) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_SocialTTsClaimant) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_SocialTTsClaimant) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_PrivateDeregulatedTTsClaimant) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_PrivateDeregulatedTTsClaimant) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_PrivateDeregulatedTTsClaimant) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_SocialTTsClaimant) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_SocialTTsClaimant) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_SocialTTsClaimant) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_PrivateDeregulatedTTsClaimant) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_PrivateDeregulatedTTsClaimant) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_PrivateDeregulatedTTsClaimant) + strings.special_commaSpace;
             for (int i = 1; i < nTT; i++) {
-                line += summary.get(sTotalCount_ClaimantTT[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfAll_ClaimantTT[i]) + Strings.special_commaSpace;
+                line += summary.get(sTotalCount_ClaimantTT[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfAll_ClaimantTT[i]) + strings.special_commaSpace;
                 if ((i == 5 || i == 7)) {
-                    line += summary.get(sPercentageOfCTB_ClaimantTT[i]) + Strings.special_commaSpace;
+                    line += summary.get(sPercentageOfCTB_ClaimantTT[i]) + strings.special_commaSpace;
                 } else {
-                    line += summary.get(sPercentageOfHB_ClaimantTT[i]) + Strings.special_commaSpace;
+                    line += summary.get(sPercentageOfHB_ClaimantTT[i]) + strings.special_commaSpace;
                 }
             }
-            line += summary.get(sTotalCount_AllLHACases) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_AllLHACases) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_HBLHACases) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_HBLHACases) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_CTBLHACases) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfCTB_CTBLHACases) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllLHACases) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_AllLHACases) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_HBLHACases) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_HBLHACases) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_CTBLHACases) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfCTB_CTBLHACases) + strings.special_commaSpace;
             line = line.substring(0, line.length() - 2);
             pw.println(line);
         }
@@ -7450,30 +7418,30 @@ public class DW_Summary extends DW_Object {
         // Write headers
         String header;
         header = "";
-        header += sSHBEFilename1 + Strings.special_commaSpace;
+        header += sSHBEFilename1 + strings.special_commaSpace;
         header += getHeaderSingleTimeGeneric();
         for (int i = 1; i < nPSI; i++) {
-            header += sTotalCount_AllPSI[i] + Strings.special_commaSpace;
-            header += sPercentageOfAll_AllPSI[i] + Strings.special_commaSpace;
+            header += sTotalCount_AllPSI[i] + strings.special_commaSpace;
+            header += sPercentageOfAll_AllPSI[i] + strings.special_commaSpace;
         }
         for (int i = 1; i < nPSI; i++) {
-            header += sTotalCount_HBPSI[i] + Strings.special_commaSpace;
-            header += sPercentageOfHB_HBPSI[i] + Strings.special_commaSpace;
+            header += sTotalCount_HBPSI[i] + strings.special_commaSpace;
+            header += sPercentageOfHB_HBPSI[i] + strings.special_commaSpace;
         }
         for (int i = 1; i < nPSI; i++) {
-            header += sTotalCount_CTBPSI[i] + Strings.special_commaSpace;
-            header += sPercentageOfCTB_CTBPSI[i] + Strings.special_commaSpace;
+            header += sTotalCount_CTBPSI[i] + strings.special_commaSpace;
+            header += sPercentageOfCTB_CTBPSI[i] + strings.special_commaSpace;
         }
         for (int i = 1; i < nPSI; i++) {
             for (int j = 1; j < nTT; j++) {
-                header += sTotalCount_PSITT[i][j] + Strings.special_commaSpace;
-                header += sPercentageOfAll_PSITT[i][j] + Strings.special_commaSpace;
+                header += sTotalCount_PSITT[i][j] + strings.special_commaSpace;
+                header += sPercentageOfAll_PSITT[i][j] + strings.special_commaSpace;
                 if (j == 5 || j == 7) {
-                    header += sPercentageOfCTB_PSITT[i][j] + Strings.special_commaSpace;
+                    header += sPercentageOfCTB_PSITT[i][j] + strings.special_commaSpace;
                 } else {
-                    header += sPercentageOfHB_PSITT[i][j] + Strings.special_commaSpace;
+                    header += sPercentageOfHB_PSITT[i][j] + strings.special_commaSpace;
                 }
-                header += sPercentageOfTT_PSITT[i][j] + Strings.special_commaSpace;
+                header += sPercentageOfTT_PSITT[i][j] + strings.special_commaSpace;
             }
         }
         header = header.substring(0, header.length() - 2);
@@ -7489,30 +7457,30 @@ public class DW_Summary extends DW_Object {
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
-            line += filename1 + Strings.special_commaSpace;
+            line += filename1 + strings.special_commaSpace;
             line += getLineSingleTimeGeneric(key, summary);
             for (int i = 1; i < nPSI; i++) {
-                line += summary.get(sTotalCount_AllPSI[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfAll_AllPSI[i]) + Strings.special_commaSpace;
+                line += summary.get(sTotalCount_AllPSI[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfAll_AllPSI[i]) + strings.special_commaSpace;
             }
             for (int i = 1; i < nPSI; i++) {
-                line += summary.get(sTotalCount_HBPSI[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfHB_HBPSI[i]) + Strings.special_commaSpace;
+                line += summary.get(sTotalCount_HBPSI[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfHB_HBPSI[i]) + strings.special_commaSpace;
             }
             for (int i = 1; i < nPSI; i++) {
-                line += summary.get(sTotalCount_CTBPSI[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfCTB_CTBPSI[i]) + Strings.special_commaSpace;
+                line += summary.get(sTotalCount_CTBPSI[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfCTB_CTBPSI[i]) + strings.special_commaSpace;
             }
             for (int i = 1; i < nPSI; i++) {
                 for (int j = 1; j < nTT; j++) {
-                    line += summary.get(sTotalCount_PSITT[i][j]) + Strings.special_commaSpace;
-                    line += summary.get(sPercentageOfAll_PSITT[i][j]) + Strings.special_commaSpace;
+                    line += summary.get(sTotalCount_PSITT[i][j]) + strings.special_commaSpace;
+                    line += summary.get(sPercentageOfAll_PSITT[i][j]) + strings.special_commaSpace;
                     if (j == 5 || j == 7) {
-                        line += summary.get(sPercentageOfCTB_PSITT[i][j]) + Strings.special_commaSpace;
+                        line += summary.get(sPercentageOfCTB_PSITT[i][j]) + strings.special_commaSpace;
                     } else {
-                        line += summary.get(sPercentageOfHB_PSITT[i][j]) + Strings.special_commaSpace;
+                        line += summary.get(sPercentageOfHB_PSITT[i][j]) + strings.special_commaSpace;
                     }
-                    line += summary.get(sPercentageOfTT_PSITT[i][j]) + Strings.special_commaSpace;
+                    line += summary.get(sPercentageOfTT_PSITT[i][j]) + strings.special_commaSpace;
                 }
             }
             line = line.substring(0, line.length() - 2);
@@ -7537,152 +7505,152 @@ public class DW_Summary extends DW_Object {
         // Write headers
         String header;
         header = "";
-        header += sSHBEFilename1 + Strings.special_commaSpace;
+        header += sSHBEFilename1 + strings.special_commaSpace;
         header += getHeaderSingleTimeGeneric();
         // General
         // DisabilityAward
-        header += sTotalCount_AllDisabilityAward + Strings.special_commaSpace;
-        header += sPercentageOfAll_AllDisabilityAward + Strings.special_commaSpace;
-        header += sTotalCount_DisabilityAwardHBTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_DisabilityAwardHBTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_DisabilityAwardHBTTs + Strings.special_commaSpace;
-        header += sTotalCount_DisabilityAwardCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_DisabilityAwardCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfCTB_DisabilityAwardCTBTTs + Strings.special_commaSpace;
+        header += sTotalCount_AllDisabilityAward + strings.special_commaSpace;
+        header += sPercentageOfAll_AllDisabilityAward + strings.special_commaSpace;
+        header += sTotalCount_DisabilityAwardHBTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_DisabilityAwardHBTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_DisabilityAwardHBTTs + strings.special_commaSpace;
+        header += sTotalCount_DisabilityAwardCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_DisabilityAwardCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfCTB_DisabilityAwardCTBTTs + strings.special_commaSpace;
         // DisabilityPremiumAward
-        header += sTotalCount_AllDisabilityPremiumAward + Strings.special_commaSpace;
-        header += sPercentageOfAll_AllDisabilityPremiumAward + Strings.special_commaSpace;
-        header += sTotalCount_DisabilityPremiumAwardHBTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_DisabilityPremiumAwardHBTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_DisabilityPremiumAwardHBTTs + Strings.special_commaSpace;
-        header += sTotalCount_DisabilityPremiumAwardCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_DisabilityPremiumAwardCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfCTB_DisabilityPremiumAwardCTBTTs + Strings.special_commaSpace;
+        header += sTotalCount_AllDisabilityPremiumAward + strings.special_commaSpace;
+        header += sPercentageOfAll_AllDisabilityPremiumAward + strings.special_commaSpace;
+        header += sTotalCount_DisabilityPremiumAwardHBTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_DisabilityPremiumAwardHBTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_DisabilityPremiumAwardHBTTs + strings.special_commaSpace;
+        header += sTotalCount_DisabilityPremiumAwardCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_DisabilityPremiumAwardCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfCTB_DisabilityPremiumAwardCTBTTs + strings.special_commaSpace;
         // SevereDisabilityPremiumAward
-        header += sTotalCount_AllSevereDisabilityPremiumAward + Strings.special_commaSpace;
-        header += sPercentageOfAll_AllSevereDisabilityPremiumAward + Strings.special_commaSpace;
-        header += sTotalCount_SevereDisabilityPremiumAwardHBTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_SevereDisabilityPremiumAwardHBTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_SevereDisabilityPremiumAwardHBTTs + Strings.special_commaSpace;
-        header += sTotalCount_SevereDisabilityPremiumAwardCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs + Strings.special_commaSpace;
+        header += sTotalCount_AllSevereDisabilityPremiumAward + strings.special_commaSpace;
+        header += sPercentageOfAll_AllSevereDisabilityPremiumAward + strings.special_commaSpace;
+        header += sTotalCount_SevereDisabilityPremiumAwardHBTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_SevereDisabilityPremiumAwardHBTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_SevereDisabilityPremiumAwardHBTTs + strings.special_commaSpace;
+        header += sTotalCount_SevereDisabilityPremiumAwardCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs + strings.special_commaSpace;
         // DisabledChildPremiumAward
-        header += sTotalCount_AllDisabledChildPremiumAward + Strings.special_commaSpace;
-        header += sPercentageOfAll_AllDisabledChildPremiumAward + Strings.special_commaSpace;
-        header += sTotalCount_DisabledChildPremiumAwardHBTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_DisabledChildPremiumAwardHBTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_DisabledChildPremiumAwardHBTTs + Strings.special_commaSpace;
-        header += sTotalCount_DisabledChildPremiumAwardCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_DisabledChildPremiumAwardCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfCTB_DisabledChildPremiumAwardCTBTTs + Strings.special_commaSpace;
+        header += sTotalCount_AllDisabledChildPremiumAward + strings.special_commaSpace;
+        header += sPercentageOfAll_AllDisabledChildPremiumAward + strings.special_commaSpace;
+        header += sTotalCount_DisabledChildPremiumAwardHBTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_DisabledChildPremiumAwardHBTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_DisabledChildPremiumAwardHBTTs + strings.special_commaSpace;
+        header += sTotalCount_DisabledChildPremiumAwardCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_DisabledChildPremiumAwardCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfCTB_DisabledChildPremiumAwardCTBTTs + strings.special_commaSpace;
         // EnhancedDisabilityPremiumAward
-        header += sTotalCount_AllEnhancedDisabilityPremiumAward + Strings.special_commaSpace;
-        header += sPercentageOfAll_AllEnhancedDisabilityPremiumAward + Strings.special_commaSpace;
-        header += sTotalCount_EnhancedDisabilityPremiumAwardHBTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs + Strings.special_commaSpace;
-        header += sTotalCount_EnhancedDisabilityPremiumAwardCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs + Strings.special_commaSpace;
-        header += sPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs + Strings.special_commaSpace;
+        header += sTotalCount_AllEnhancedDisabilityPremiumAward + strings.special_commaSpace;
+        header += sPercentageOfAll_AllEnhancedDisabilityPremiumAward + strings.special_commaSpace;
+        header += sTotalCount_EnhancedDisabilityPremiumAwardHBTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs + strings.special_commaSpace;
+        header += sTotalCount_EnhancedDisabilityPremiumAwardCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs + strings.special_commaSpace;
+        header += sPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs + strings.special_commaSpace;
         // SocialTTs
         // DisabilityAward
-        header += sTotalCount_DisabilityAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_DisabilityAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_DisabilityAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfSocialTTs_DisabilityAwardSocialTTs + Strings.special_commaSpace;
+        header += sTotalCount_DisabilityAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_DisabilityAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_DisabilityAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfSocialTTs_DisabilityAwardSocialTTs + strings.special_commaSpace;
         // DisabilityPremiumAward
-        header += sTotalCount_DisabilityPremiumAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_DisabilityPremiumAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_DisabilityPremiumAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs + Strings.special_commaSpace;
+        header += sTotalCount_DisabilityPremiumAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_DisabilityPremiumAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_DisabilityPremiumAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs + strings.special_commaSpace;
         // SevereDisabilityPremiumAward
-        header += sTotalCount_SevereDisabilityPremiumAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs + Strings.special_commaSpace;
+        header += sTotalCount_SevereDisabilityPremiumAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs + strings.special_commaSpace;
         // DisabledChildPremiumAward
-        header += sTotalCount_DisabledChildPremiumAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_DisabledChildPremiumAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_DisabledChildPremiumAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs + Strings.special_commaSpace;
+        header += sTotalCount_DisabledChildPremiumAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_DisabledChildPremiumAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_DisabledChildPremiumAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs + strings.special_commaSpace;
         // EnhancedDisabilityPremiumAward
-        header += sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs + Strings.special_commaSpace;
-        header += sPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs + Strings.special_commaSpace;
+        header += sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs + strings.special_commaSpace;
+        header += sPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs + strings.special_commaSpace;
         // PrivateDeregulatedTTs
         // DisabilityAward
-        header += sTotalCount_DisabilityAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
+        header += sTotalCount_DisabilityAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs + strings.special_commaSpace;
         // DisabilityPremiumAward
-        header += sTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
+        header += sTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
         // SevereDisabilityPremiumAward
-        header += sTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
+        header += sTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
         // DisabledChildPremiumAward
-        header += sTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
+        header += sTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
         // EnhancedDisabilityPremiumAward
-        header += sTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
-        header += sPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs + Strings.special_commaSpace;
+        header += sTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
+        header += sPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs + strings.special_commaSpace;
         for (int i = 1; i < nTT; i++) {
             // DisabilityAward
-            header += sTotalCount_DisabilityAwardTT[i] + Strings.special_commaSpace;
-            header += sPercentageOfAll_DisabilityAwardTT[i] + Strings.special_commaSpace;
+            header += sTotalCount_DisabilityAwardTT[i] + strings.special_commaSpace;
+            header += sPercentageOfAll_DisabilityAwardTT[i] + strings.special_commaSpace;
             if (i == 5 || i == 7) {
-                header += sPercentageOfCTB_DisabilityAwardTT[i] + Strings.special_commaSpace;
+                header += sPercentageOfCTB_DisabilityAwardTT[i] + strings.special_commaSpace;
             } else {
-                header += sPercentageOfHB_DisabilityAwardTT[i] + Strings.special_commaSpace;
+                header += sPercentageOfHB_DisabilityAwardTT[i] + strings.special_commaSpace;
             }
-            header += sPercentageOfTT_DisabilityAwardTT[i] + Strings.special_commaSpace;
+            header += sPercentageOfTT_DisabilityAwardTT[i] + strings.special_commaSpace;
             // DisabilityPremiumAward
-            header += sTotalCount_DisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
-            header += sPercentageOfAll_DisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
+            header += sTotalCount_DisabilityPremiumAwardTT[i] + strings.special_commaSpace;
+            header += sPercentageOfAll_DisabilityPremiumAwardTT[i] + strings.special_commaSpace;
             if (i == 5 || i == 7) {
-                header += sPercentageOfCTB_DisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
+                header += sPercentageOfCTB_DisabilityPremiumAwardTT[i] + strings.special_commaSpace;
             } else {
-                header += sPercentageOfHB_DisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
+                header += sPercentageOfHB_DisabilityPremiumAwardTT[i] + strings.special_commaSpace;
             }
-            header += sPercentageOfTT_DisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
+            header += sPercentageOfTT_DisabilityPremiumAwardTT[i] + strings.special_commaSpace;
             // SevereDisabilityPremiumAward
-            header += sTotalCount_SevereDisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
-            header += sPercentageOfAll_SevereDisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
+            header += sTotalCount_SevereDisabilityPremiumAwardTT[i] + strings.special_commaSpace;
+            header += sPercentageOfAll_SevereDisabilityPremiumAwardTT[i] + strings.special_commaSpace;
             if (i == 5 || i == 7) {
-                header += sPercentageOfCTB_SevereDisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
+                header += sPercentageOfCTB_SevereDisabilityPremiumAwardTT[i] + strings.special_commaSpace;
             } else {
-                header += sPercentageOfHB_SevereDisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
+                header += sPercentageOfHB_SevereDisabilityPremiumAwardTT[i] + strings.special_commaSpace;
             }
-            header += sPercentageOfTT_SevereDisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
+            header += sPercentageOfTT_SevereDisabilityPremiumAwardTT[i] + strings.special_commaSpace;
             // DisabledChildPremiumAward
-            header += sTotalCount_DisabledChildPremiumAwardTT[i] + Strings.special_commaSpace;
-            header += sPercentageOfAll_DisabledChildPremiumAwardTT[i] + Strings.special_commaSpace;
+            header += sTotalCount_DisabledChildPremiumAwardTT[i] + strings.special_commaSpace;
+            header += sPercentageOfAll_DisabledChildPremiumAwardTT[i] + strings.special_commaSpace;
             if (i == 5 || i == 7) {
-                header += sPercentageOfCTB_DisabledChildPremiumAwardTT[i] + Strings.special_commaSpace;
+                header += sPercentageOfCTB_DisabledChildPremiumAwardTT[i] + strings.special_commaSpace;
             } else {
-                header += sPercentageOfHB_DisabledChildPremiumAwardTT[i] + Strings.special_commaSpace;
+                header += sPercentageOfHB_DisabledChildPremiumAwardTT[i] + strings.special_commaSpace;
             }
-            header += sPercentageOfTT_DisabledChildPremiumAwardTT[i] + Strings.special_commaSpace;
+            header += sPercentageOfTT_DisabledChildPremiumAwardTT[i] + strings.special_commaSpace;
             // EnhancedDisabilityPremiumAward
-            header += sTotalCount_EnhancedDisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
-            header += sPercentageOfAll_EnhancedDisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
+            header += sTotalCount_EnhancedDisabilityPremiumAwardTT[i] + strings.special_commaSpace;
+            header += sPercentageOfAll_EnhancedDisabilityPremiumAwardTT[i] + strings.special_commaSpace;
             if (i == 5 || i == 7) {
-                header += sPercentageOfCTB_EnhancedDisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
+                header += sPercentageOfCTB_EnhancedDisabilityPremiumAwardTT[i] + strings.special_commaSpace;
             } else {
-                header += sPercentageOfHB_EnhancedDisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
+                header += sPercentageOfHB_EnhancedDisabilityPremiumAwardTT[i] + strings.special_commaSpace;
             }
-            header += sPercentageOfTT_EnhancedDisabilityPremiumAwardTT[i] + Strings.special_commaSpace;
+            header += sPercentageOfTT_EnhancedDisabilityPremiumAwardTT[i] + strings.special_commaSpace;
         }
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -7697,153 +7665,153 @@ public class DW_Summary extends DW_Object {
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
-            line += filename1 + Strings.special_commaSpace;
+            line += filename1 + strings.special_commaSpace;
             line += getLineSingleTimeGeneric(key,
                     summary);
             // General
             // DisabilityAward
-            line += summary.get(sTotalCount_AllDisabilityAward) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_AllDisabilityAward) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_DisabilityAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_DisabilityAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_DisabilityAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_DisabilityAwardCTBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_DisabilityAwardCTBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfCTB_DisabilityAwardCTBTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllDisabilityAward) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_AllDisabilityAward) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_DisabilityAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_DisabilityAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_DisabilityAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_DisabilityAwardCTBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_DisabilityAwardCTBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfCTB_DisabilityAwardCTBTTs) + strings.special_commaSpace;
             // DisabilityPremiumAward
-            line += summary.get(sTotalCount_AllDisabilityPremiumAward) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_AllDisabilityPremiumAward) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_DisabilityPremiumAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_DisabilityPremiumAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_DisabilityPremiumAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_DisabilityPremiumAwardCTBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_DisabilityPremiumAwardCTBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfCTB_DisabilityPremiumAwardCTBTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllDisabilityPremiumAward) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_AllDisabilityPremiumAward) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_DisabilityPremiumAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_DisabilityPremiumAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_DisabilityPremiumAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_DisabilityPremiumAwardCTBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_DisabilityPremiumAwardCTBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfCTB_DisabilityPremiumAwardCTBTTs) + strings.special_commaSpace;
             // SevereDisabilityPremiumAward
-            line += summary.get(sTotalCount_AllSevereDisabilityPremiumAward) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_AllSevereDisabilityPremiumAward) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_SevereDisabilityPremiumAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardCTBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllSevereDisabilityPremiumAward) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_AllSevereDisabilityPremiumAward) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_SevereDisabilityPremiumAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardCTBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs) + strings.special_commaSpace;
             // DisabledChildPremiumAward
-            line += summary.get(sTotalCount_AllDisabledChildPremiumAward) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_AllDisabledChildPremiumAward) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_DisabledChildPremiumAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_DisabledChildPremiumAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_DisabledChildPremiumAwardCTBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardCTBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfCTB_DisabledChildPremiumAwardCTBTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllDisabledChildPremiumAward) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_AllDisabledChildPremiumAward) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_DisabledChildPremiumAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_DisabledChildPremiumAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_DisabledChildPremiumAwardCTBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardCTBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfCTB_DisabledChildPremiumAwardCTBTTs) + strings.special_commaSpace;
             // EnhancedDisabilityPremiumAward
-            line += summary.get(sTotalCount_AllEnhancedDisabilityPremiumAward) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_AllEnhancedDisabilityPremiumAward) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs) + Strings.special_commaSpace;
-            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardCTBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_AllEnhancedDisabilityPremiumAward) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_AllEnhancedDisabilityPremiumAward) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs) + strings.special_commaSpace;
+            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardCTBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs) + strings.special_commaSpace;
             // SocialTTs
             // DisabilityAward
-            line += summary.get(sTotalCount_DisabilityAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_DisabilityAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_DisabilityAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfSocialTTs_DisabilityAwardSocialTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_DisabilityAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_DisabilityAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_DisabilityAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfSocialTTs_DisabilityAwardSocialTTs) + strings.special_commaSpace;
             // DisabilityPremiumAward
-            line += summary.get(sTotalCount_DisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_DisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_DisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_DisabilityPremiumAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_DisabilityPremiumAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_DisabilityPremiumAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs) + strings.special_commaSpace;
             // SevereDisabilityPremiumAward
-            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs) + strings.special_commaSpace;
             // DisabledChildPremiumAward
-            line += summary.get(sTotalCount_DisabledChildPremiumAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_DisabledChildPremiumAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_DisabledChildPremiumAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_DisabledChildPremiumAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs) + strings.special_commaSpace;
             // EnhancedDisabilityPremiumAward
-            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs) + strings.special_commaSpace;
             // PrivateDeregulatedTTs
             // DisabilityAward
-            line += summary.get(sTotalCount_DisabilityAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_DisabilityAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
             // DisabilityPremiumAward
-            line += summary.get(sTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_DisabilityPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
             // SevereDisabilityPremiumAward
-            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_SevereDisabilityPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
             // DisabledChildPremiumAward
-            line += summary.get(sTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_DisabledChildPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
             // EnhancedDisabilityPremiumAward
-            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
-            line += summary.get(sPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs) + Strings.special_commaSpace;
+            line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
+            line += summary.get(sPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs) + strings.special_commaSpace;
             for (int i = 1; i < nTT; i++) {
                 // DisabilityAward
-                line += summary.get(sTotalCount_DisabilityAwardTT[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfAll_DisabilityAwardTT[i]) + Strings.special_commaSpace;
+                line += summary.get(sTotalCount_DisabilityAwardTT[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfAll_DisabilityAwardTT[i]) + strings.special_commaSpace;
                 if (i == 5 || i == 7) {
-                    line += summary.get(sPercentageOfCTB_DisabilityAwardTT[i]) + Strings.special_commaSpace;
+                    line += summary.get(sPercentageOfCTB_DisabilityAwardTT[i]) + strings.special_commaSpace;
                 } else {
-                    line += summary.get(sPercentageOfHB_DisabilityAwardTT[i]) + Strings.special_commaSpace;
+                    line += summary.get(sPercentageOfHB_DisabilityAwardTT[i]) + strings.special_commaSpace;
                 }
-                line += summary.get(sPercentageOfTT_DisabilityAwardTT[i]) + Strings.special_commaSpace;
+                line += summary.get(sPercentageOfTT_DisabilityAwardTT[i]) + strings.special_commaSpace;
                 // DisabilityPremiumAward
-                line += summary.get(sTotalCount_DisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfAll_DisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
+                line += summary.get(sTotalCount_DisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfAll_DisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
                 if (i == 5 || i == 7) {
-                    line += summary.get(sPercentageOfCTB_DisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
+                    line += summary.get(sPercentageOfCTB_DisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
                 } else {
-                    line += summary.get(sPercentageOfHB_DisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
+                    line += summary.get(sPercentageOfHB_DisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
                 }
-                line += summary.get(sPercentageOfTT_DisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
+                line += summary.get(sPercentageOfTT_DisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
                 // SevereDisabilityPremiumAward
-                line += summary.get(sTotalCount_SevereDisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
+                line += summary.get(sTotalCount_SevereDisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfAll_SevereDisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
                 if (i == 5 || i == 7) {
-                    line += summary.get(sPercentageOfCTB_SevereDisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
+                    line += summary.get(sPercentageOfCTB_SevereDisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
                 } else {
-                    line += summary.get(sPercentageOfHB_SevereDisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
+                    line += summary.get(sPercentageOfHB_SevereDisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
                 }
-                line += summary.get(sPercentageOfTT_SevereDisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
+                line += summary.get(sPercentageOfTT_SevereDisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
                 // DisabledChildPremiumAward
-                line += summary.get(sTotalCount_DisabledChildPremiumAwardTT[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardTT[i]) + Strings.special_commaSpace;
+                line += summary.get(sTotalCount_DisabledChildPremiumAwardTT[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfAll_DisabledChildPremiumAwardTT[i]) + strings.special_commaSpace;
                 if (i == 5 || i == 7) {
-                    line += summary.get(sPercentageOfCTB_DisabledChildPremiumAwardTT[i]) + Strings.special_commaSpace;
+                    line += summary.get(sPercentageOfCTB_DisabledChildPremiumAwardTT[i]) + strings.special_commaSpace;
                 } else {
-                    line += summary.get(sPercentageOfHB_DisabledChildPremiumAwardTT[i]) + Strings.special_commaSpace;
+                    line += summary.get(sPercentageOfHB_DisabledChildPremiumAwardTT[i]) + strings.special_commaSpace;
                 }
-                line += summary.get(sPercentageOfTT_DisabledChildPremiumAwardTT[i]) + Strings.special_commaSpace;
+                line += summary.get(sPercentageOfTT_DisabledChildPremiumAwardTT[i]) + strings.special_commaSpace;
                 // EnhancedDisabilityPremiumAward
-                line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
-                line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
+                line += summary.get(sTotalCount_EnhancedDisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
+                line += summary.get(sPercentageOfAll_EnhancedDisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
                 if (i == 5 || i == 7) {
-                    line += summary.get(sPercentageOfCTB_EnhancedDisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
+                    line += summary.get(sPercentageOfCTB_EnhancedDisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
                 } else {
-                    line += summary.get(sPercentageOfHB_EnhancedDisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
+                    line += summary.get(sPercentageOfHB_EnhancedDisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
                 }
-                line += summary.get(sPercentageOfTT_EnhancedDisabilityPremiumAwardTT[i]) + Strings.special_commaSpace;
+                line += summary.get(sPercentageOfTT_EnhancedDisabilityPremiumAwardTT[i]) + strings.special_commaSpace;
             }
             line = line.substring(0, line.length() - 2);
             pw.println(line);
@@ -7853,11 +7821,11 @@ public class DW_Summary extends DW_Object {
 
     protected String getHeaderSingleTimeGeneric() {
         String result;
-        result = "year-month" + Strings.special_commaSpace;
-        result += sAllCount1 + Strings.special_commaSpace;
-        result += sHBCount1 + Strings.special_commaSpace;
-        result += sCTBCount1 + Strings.special_commaSpace;
-        result += "Month Year" + Strings.special_commaSpace;
+        result = "year-month" + strings.special_commaSpace;
+        result += sAllCount1 + strings.special_commaSpace;
+        result += sHBCount1 + strings.special_commaSpace;
+        result += sCTBCount1 + strings.special_commaSpace;
+        result += "Month Year" + strings.special_commaSpace;
         return result;
     }
 
@@ -7865,14 +7833,14 @@ public class DW_Summary extends DW_Object {
             String key,
             HashMap<String, String> summary) {
         String result;
-        result = key + Strings.special_commaSpace;
-        result += summary.get(sAllCount1) + Strings.special_commaSpace;
-        result += summary.get(sHBCount1) + Strings.special_commaSpace;
-        result += summary.get(sCTBCount1) + Strings.special_commaSpace;
+        result = key + strings.special_commaSpace;
+        result += summary.get(sAllCount1) + strings.special_commaSpace;
+        result += summary.get(sHBCount1) + strings.special_commaSpace;
+        result += summary.get(sCTBCount1) + strings.special_commaSpace;
         String[] split;
         split = key.split("-");
         result += Generic_Time.getMonth3Letters(split[1]);
-        result += sSpace + split[0] + Strings.special_commaSpace;
+        result += sSpace + split[0] + strings.special_commaSpace;
         return result;
     }
 }

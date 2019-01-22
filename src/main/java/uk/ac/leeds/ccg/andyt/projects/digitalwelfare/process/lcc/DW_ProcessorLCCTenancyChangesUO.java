@@ -7,7 +7,6 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_TenancyChangesUO;
 
@@ -61,19 +60,15 @@ public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
         while (iteB.hasNext()) {
             boolean includePreUnderOccupancyValues;
             includePreUnderOccupancyValues = iteB.next();
-            Env.logO("<includePreUnderOccupancyValues " + includePreUnderOccupancyValues + ">", true);
-            table = UOTTC.getTable(UO_Data,
-                    SHBEFilenames,
-                    include,
+            Env.ge.log("<includePreUnderOccupancyValues " 
+                    + includePreUnderOccupancyValues + ">", true);
+            table = UOTTC.getTable(UO_Data, SHBEFilenames, include,
                     includePreUnderOccupancyValues);
-            UOTTC.writeTenancyChangeTables(
-                    table,
-                    includePreUnderOccupancyValues,
-                    startMonth,
-                    startYear,
-                    endMonth,
-                    endYear);
-            Env.logO("</includePreUnderOccupancyValues " + includePreUnderOccupancyValues + ">", true);
+            UOTTC.writeTenancyChangeTables(table,
+                    includePreUnderOccupancyValues, startMonth, startYear, 
+                    endMonth, endYear);
+            Env.ge.log("</includePreUnderOccupancyValues " 
+                    + includePreUnderOccupancyValues + ">", true);
         }
     }
 }

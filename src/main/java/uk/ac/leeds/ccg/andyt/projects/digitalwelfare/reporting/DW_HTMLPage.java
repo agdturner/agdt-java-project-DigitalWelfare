@@ -34,9 +34,6 @@ public abstract class DW_HTMLPage extends DW_Object {
     protected FileOutputStream componentFOS;
     protected FileOutputStream masterFOS;
 
-    public DW_HTMLPage() {
-    }
-
     public DW_HTMLPage(DW_Environment env) {
         super(env);
     }
@@ -57,7 +54,7 @@ public abstract class DW_HTMLPage extends DW_Object {
             writeLine("</ul></div>", fos);
         } catch (IOException e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
 

@@ -29,9 +29,6 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
     protected transient ONSPD_Handler Postcode_Handler;
     private transient ArrayList<Boolean> b;
 
-    public DW_ProcessorAbstract() {
-    }
-
     public DW_ProcessorAbstract(DW_Environment e) {
         super(e);
         this.Postcode_Handler = e.getPostcode_Handler();
@@ -88,13 +85,13 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         File dir;
         outputFilename = "PostcodeTo" + level + "_" + YM3Nearest
                 + "_LookUp_TreeMap_String_Strings"
-                + Strings.sBinaryFileExtension;
-        dir = new File(Files.getGeneratedONSPDDir(), YM3Nearest.toString());
+                + strings.sBinaryFileExtension;
+        dir = new File(files.getGeneratedONSPDDir(), YM3Nearest.toString());
 //        }
         File outfile = new File(dir, outputFilename);
         if (!outfile.exists()) {
             dir.mkdirs();
-            File infile = Env.SHBE_Env.ONSPD_Env.Files.getInputONSPDFile(YM3Nearest);
+            File infile = Env.SHBE_Env.oe.Files.getInputONSPDFile(YM3Nearest);
             r = initLookupFromPostcodeToCensusCodes(infile, outfile, level,
                     CensusYear, YM3Nearest);
         } else {
@@ -249,69 +246,6 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         return tDeprivationData;
     }
 
-    /**
-     * Initialises Env logging PrintWriters and returns the directory in which
-     * logs are written. The directory is in an archive structure where the
-     * number of directories or files in the archive (which is a growing
-     * structure) is range.
-     *
-     * @param DEBUG_Level The debugging level - used to control how much is
-     * written to the logs about the process. The following DEBUG_Levels are
-     * defined: DEBUG_Level_FINEST = 0, DEBUG_Level_FINE = 1, DEBUG_Level_NORMAL
-     * = 2.
-     * @param processName The name of the process used for the directory inside
-     * DW_Files.getOutputSHBELogsDir().
-     * @param range The number of directories or files in the archive where the
-     * logs are stored.
-     * @return
-     */
-    protected File initLogs(int DEBUG_Level, String processName, int range) {
-        Env.DEBUG_Level = DEBUG_Level;
-        File dir;
-        dir = new File(Files.getOutputSHBELogsDir(), processName);
-        if (dir.isDirectory()) {
-            dir = Generic_IO.addToArchive(dir, 100);
-        } else {
-            dir = Generic_IO.initialiseArchive(dir, 100);
-        }
-        dir.mkdirs();
-        File fO;
-        fO = new File(dir, "Out.txt");
-        PrintWriter PrintWriterO;
-        PrintWriterO = null;
-        try {
-            PrintWriterO = new PrintWriter(fO);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DW_Processor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Env.setPrintWriterOut(PrintWriterO);
-        File fE;
-        fE = new File(dir, "Err.txt");
-        PrintWriter PrintWriterE;
-        PrintWriterE = null;
-        try {
-            PrintWriterE = new PrintWriter(fE);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DW_Processor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Env.setPrintWriterErr(PrintWriterE);
-        Env.log("<" + processName + ">");
-        Env.log("Log Directory " + dir.toString());
-        Env.log("Log Output file " + fO.toString());
-        Env.log("Log Error file " + fE.toString());
-        Env.log("DEBUG_Level = " + Env.DEBUG_Level);
-        return dir;
-    }
-
-    /**
-     * Closes Env logging PrintWriters.
-     *
-     * @param processName
-     */
-    protected void closeLogs(String processName) {
-        Env.log("</" + processName + ">");
-        Env.getPrintWriterOut().close();
-        Env.getPrintWriterErr().close();
-    }
+    
 
 }

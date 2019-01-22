@@ -124,7 +124,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
         File generatedGridsDirectory;
         generatedGridsDirectory = new File(
-                Files.getGeneratedGridsDir(),
+                files.getGeneratedGridsDir(),
                 "Density");
 //        MapsLCC.setMapDirectory(mapDirectory);
 
@@ -187,7 +187,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
     private void init() {
         //initStyleParameters();
         File mapDirectory;
-        mapDirectory = Files.getOutputSHBELineMapsDir();
+        mapDirectory = files.getOutputSHBELineMapsDir();
 //        MapsLCC.setMapDirectory(mapDirectory);
         foregrounds = new ArrayList<>();
         //midgrounds = new ArrayList<AGDT_Shapefile>();
@@ -206,7 +206,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
     public void runRateMaps() {
         File dirOut;
         dirOut = new File(
-                Files.getOutputSHBEMapsDir(),
+                files.getOutputSHBEMapsDir(),
                 "Density");
 
         String[] SHBEFilenames;
@@ -653,7 +653,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         boolean scaleToFirst = false;
         File dirOut;
         dirOut = new File(
-                Files.getOutputSHBEMapsDir(),
+                files.getOutputSHBEMapsDir(),
                 "Density");
         SHBE_Handler tSHBE_Handler;
         tSHBE_Handler = Env.getSHBE_Handler();
@@ -733,8 +733,8 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         b.add(false);
 
         ArrayList<String> paymentTypes;
-        paymentTypes = Env.SHBE_Env.Strings.getPaymentTypes();
-        paymentTypes.remove(Env.SHBE_Env.Strings.sPaymentTypeAll);
+        paymentTypes = Env.SHBE_Env.strings.getPaymentTypes();
+        paymentTypes.remove(Env.SHBE_Env.strings.sPaymentTypeAll);
 //        paymentTypes.remove(tSHBE_Handler.sPaymentTypeIn);
 //        paymentTypes.remove(tSHBE_Handler.sPaymentTypeSuspended);
 //        paymentTypes.remove(tSHBE_Handler.sPaymentTypeOther);
@@ -771,7 +771,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                             doRSL,
                             doCouncil,
                             scaleToFirst,
-                            Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
                             SHBEFilenames,
                             tSHBE_Handler,
@@ -786,7 +786,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                             doRSL,
                             doCouncil,
                             scaleToFirst,
-                            Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
                             SHBEFilenames,
                             tSHBE_Handler,
@@ -801,7 +801,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                             doRSL,
                             doCouncil,
                             scaleToFirst,
-                            Files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
+                            files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
                             SHBEFilenames,
                             tSHBE_Handler,
@@ -1201,7 +1201,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         Grids_GridDouble g0 = initiliseGrid(grid);
 
         TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> lookups;
-        lookups = Env.SHBE_Env.ONSPD_Env.getONSPDlookups();
+        lookups = Env.SHBE_Env.oe.getONSPDlookups();
         TreeMap<String, ONSPD_Point> lookup;
         lookup = lookups.get("Unit").get(Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 

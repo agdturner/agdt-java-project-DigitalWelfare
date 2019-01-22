@@ -48,8 +48,8 @@ public class DW_UO_Data extends DW_Object implements Serializable {
     private TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
 
     /**
-     * For storing sets of ClaimIDsInUO. Keys are YM3, values are the
-     * respective ClaimIDsInUO for claims classed as Under Occupying.
+     * For storing sets of ClaimIDsInUO. Keys are YM3, values are the respective
+     * ClaimIDsInUO for claims classed as Under Occupying.
      */
     private TreeMap<ONSPD_YM3, Set<SHBE_ID>> ClaimIDsInUO;
 
@@ -60,27 +60,22 @@ public class DW_UO_Data extends DW_Object implements Serializable {
     private HashSet<SHBE_ID> ClaimIDsInCouncilUO;
 
     /**
-     * For storing ClaimIDs of Council claims that were expected in March
-     * 2013 to be UnderOccupying in April 2013.
+     * For storing ClaimIDs of Council claims that were expected in March 2013
+     * to be UnderOccupying in April 2013.
      */
     private HashSet<SHBE_ID> ClaimIDsInCouncilBaseline;
 
     /**
-     * For storing ClaimIDs of RSL claims that were expected in March 2013 to
-     * be UnderOccupying in April 2013.
+     * For storing ClaimIDs of RSL claims that were expected in March 2013 to be
+     * UnderOccupying in April 2013.
      */
     private HashSet<SHBE_ID> ClaimIDsInRSLBaseline;
 
-    public DW_UO_Data() {
-    }
-
-    public DW_UO_Data(
-            DW_Environment env) {
+    public DW_UO_Data(DW_Environment env) {
         super(env);
     }
 
-    public DW_UO_Data(
-            DW_Environment env,
+    public DW_UO_Data(DW_Environment env, 
             TreeMap<ONSPD_YM3, DW_UO_Set> RSLUOSets,
             TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets) {
         super(env);
@@ -164,11 +159,11 @@ public class DW_UO_Data extends DW_Object implements Serializable {
         }
     }
 
-    ONSPD_YM3  BaselineYM3;
-    
+    ONSPD_YM3 BaselineYM3;
+
     public ONSPD_YM3 getBaselineYM3() {
         //if (BaselineYM3 == null) {
-            BaselineYM3 = new ONSPD_YM3(2013, 4);
+        BaselineYM3 = new ONSPD_YM3(2013, 4);
         //}
         return BaselineYM3;
     }

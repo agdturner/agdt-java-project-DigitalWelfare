@@ -27,7 +27,7 @@ import java.util.List;
  *
  * @author geoagdt
  */
-public class DW_StaticIO {
+public class DW_IO {
 
     public static final String[] split(String s, String s0) {
         String[] result;

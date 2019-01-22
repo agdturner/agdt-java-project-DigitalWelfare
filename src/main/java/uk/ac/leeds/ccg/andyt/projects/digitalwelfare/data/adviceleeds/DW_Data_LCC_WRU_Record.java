@@ -19,7 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds;
 
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_StaticIO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_IO;
 
 /**
  *
@@ -67,7 +67,7 @@ public class DW_Data_LCC_WRU_Record extends DW_Data_Postcode_Record {
         super(env);
         setRecordID(RecordID);
         String[] fields;
-        fields = DW_StaticIO.splitWithQuotesThenCommas(line);
+        fields = DW_IO.splitWithQuotesThenCommas(line);
         int fieldCount = fields.length;
         if (fieldCount != 14) {
             System.out.println("RecordID " + RecordID + ", fieldCount" + fieldCount);

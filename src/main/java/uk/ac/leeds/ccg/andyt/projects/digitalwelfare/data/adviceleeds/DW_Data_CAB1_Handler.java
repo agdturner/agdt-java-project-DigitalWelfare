@@ -36,9 +36,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
  */
 public class DW_Data_CAB1_Handler extends DW_Object {
 
-    public DW_Data_CAB1_Handler() {
-    }
-
     public DW_Data_CAB1_Handler(DW_Environment env) {
         super(env);
     }

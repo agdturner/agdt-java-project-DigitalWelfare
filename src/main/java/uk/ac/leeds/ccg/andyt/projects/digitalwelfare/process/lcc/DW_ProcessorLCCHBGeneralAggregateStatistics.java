@@ -90,29 +90,29 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         int CensusYear = 2011;
         // Initialisiation
         levels = new ArrayList<>();
-//        levels.add(Strings.sOA);
-        levels.add(Strings.sLSOA);
-        levels.add(Strings.sMSOA);
+//        levels.add(strings.sOA);
+        levels.add(strings.sLSOA);
+        levels.add(strings.sMSOA);
 //        levels.add("PostcodeUnit");
 //        levels.add("PostcodeSector");
 //        levels.add("PostcodeDistrict");
-        levels.add(Strings.sParliamentaryConstituency);
-        levels.add(Strings.sStatisticalWard);
+        levels.add(strings.sParliamentaryConstituency);
+        levels.add(strings.sStatisticalWard);
         includes = SHBE_Handler.getIncludes();
-//            includes.remove(Env.SHBE_Env.Strings.sIncludeAll);
-//            includes.remove(Env.SHBE_Env.Strings.sIncludeYearly);
-//            includes.remove(Env.SHBE_Env.Strings.sInclude6Monthly);
-//            includes.remove(Env.SHBE_Env.Strings.sInclude3Monthly);
-//            includes.remove(Env.SHBE_Env.Strings.sIncludeMonthlySinceApril2013);
-//            includes.remove(Env.SHBE_Env.Strings.sIncludeMonthly);
-        PTs = Env.SHBE_Env.Strings.getPaymentTypes();
-//            PTs.remove(Strings.sPaymentTypeAll);
-//            PTs.remove(Strings.sPaymentTypeIn);
-//            PTs.remove(Strings.sPaymentTypeSuspended);
-//            PTs.remove(Strings.sPaymentTypeOther);
+//            includes.remove(Env.SHBE_Env.strings.sIncludeAll);
+//            includes.remove(Env.SHBE_Env.strings.sIncludeYearly);
+//            includes.remove(Env.SHBE_Env.strings.sInclude6Monthly);
+//            includes.remove(Env.SHBE_Env.strings.sInclude3Monthly);
+//            includes.remove(Env.SHBE_Env.strings.sIncludeMonthlySinceApril2013);
+//            includes.remove(Env.SHBE_Env.strings.sIncludeMonthly);
+        PTs = Env.SHBE_Env.strings.getPaymentTypes();
+//            PTs.remove(strings.sPaymentTypeAll);
+//            PTs.remove(strings.sPaymentTypeIn);
+//            PTs.remove(strings.sPaymentTypeSuspended);
+//            PTs.remove(strings.sPaymentTypeOther);
         outDir = new File(
-                Files.getOutputSHBETablesDir(),
-                Strings.sHBGeneralAggregateStatistics);
+                files.getOutputSHBETablesDir(),
+                strings.sHBGeneralAggregateStatistics);
         // Load UOdata
         TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
         DW_UO_Set CouncilUOSet;
@@ -123,11 +123,11 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         CouncilUOSets = UO_Data.getCouncilUOSets();
         RSLUOSets = UO_Data.getRSLUOSets();
 
-        Env.log("Output Directory " + outDir.toString());
+        Env.ge.log("Output Directory " + outDir.toString());
         PTsIte = PTs.iterator();
         while (PTsIte.hasNext()) {
             PT = PTsIte.next();
-            includeName = Env.SHBE_Env.Strings.sIncludeAll;
+            includeName = Env.SHBE_Env.strings.sIncludeAll;
             outDir1 = new File(
                     outDir,
                     PT);
@@ -136,7 +136,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
             while (includeIte.hasNext()) {
                 i = includeIte.next();
                 YM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
-                Env.logO("Generalising " + YM3, true);
+                Env.ge.log("Generalising " + YM3, true);
                 // Get Lookup
                 ClaimPostcodeF_To_LevelCode_Maps = getClaimPostcodeF_To_LevelCode_Maps(levels, YM3, CensusYear);
                 // Load SHBE

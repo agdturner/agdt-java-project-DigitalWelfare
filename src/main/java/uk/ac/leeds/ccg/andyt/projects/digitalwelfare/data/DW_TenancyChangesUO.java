@@ -1219,7 +1219,7 @@ public class DW_TenancyChangesUO extends DW_Object {
     }
 
     private void initString() {
-        sTT_ = sTT + Strings.symbol_underscore;
+        sTT_ = sTT + strings.symbol_underscore;
 
         sTravellers = "_a_Travellers"; // Letter_ added for ordering purposes.
         sTTNot1Or4AndUnderOccupying = "_b_TTNot1Or4AndUnderOccupying";
@@ -1272,40 +1272,40 @@ public class DW_TenancyChangesUO extends DW_Object {
         while (ite.hasNext()) {
             ClaimID = ite.next();
             ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
-            result.put(ClaimRef + Strings.symbol_underscore + sTT, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sUnderOccupancy, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sP, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sWHBE, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sWERA, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sPSI, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sSHBC, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sRTHBCC, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sCEG, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sHS, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sND, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sCD, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sNDUO, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sCO16, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sFCU10, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sMCU10, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sFC10To16, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sMC10To16, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sBR, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sNB, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sCDoB, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sCA, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sPDoB, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sPA, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sCG, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sPG, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sDisability, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sDisabilityPremium, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sDisabilitySevere, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sDisabilityEnhanced, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sDisabledChild, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sPDeath, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sHBDP, s);
-            result.put(ClaimRef + Strings.symbol_underscore + sA, s);
+            result.put(ClaimRef + strings.symbol_underscore + sTT, s);
+            result.put(ClaimRef + strings.symbol_underscore + sUnderOccupancy, s);
+            result.put(ClaimRef + strings.symbol_underscore + sP, s);
+            result.put(ClaimRef + strings.symbol_underscore + sWHBE, s);
+            result.put(ClaimRef + strings.symbol_underscore + sWERA, s);
+            result.put(ClaimRef + strings.symbol_underscore + sPSI, s);
+            result.put(ClaimRef + strings.symbol_underscore + sSHBC, s);
+            result.put(ClaimRef + strings.symbol_underscore + sRTHBCC, s);
+            result.put(ClaimRef + strings.symbol_underscore + sCEG, s);
+            result.put(ClaimRef + strings.symbol_underscore + sHS, s);
+            result.put(ClaimRef + strings.symbol_underscore + sND, s);
+            result.put(ClaimRef + strings.symbol_underscore + sCD, s);
+            result.put(ClaimRef + strings.symbol_underscore + sNDUO, s);
+            result.put(ClaimRef + strings.symbol_underscore + sCO16, s);
+            result.put(ClaimRef + strings.symbol_underscore + sFCU10, s);
+            result.put(ClaimRef + strings.symbol_underscore + sMCU10, s);
+            result.put(ClaimRef + strings.symbol_underscore + sFC10To16, s);
+            result.put(ClaimRef + strings.symbol_underscore + sMC10To16, s);
+            result.put(ClaimRef + strings.symbol_underscore + sBR, s);
+            result.put(ClaimRef + strings.symbol_underscore + sNB, s);
+            result.put(ClaimRef + strings.symbol_underscore + sCDoB, s);
+            result.put(ClaimRef + strings.symbol_underscore + sCA, s);
+            result.put(ClaimRef + strings.symbol_underscore + sPDoB, s);
+            result.put(ClaimRef + strings.symbol_underscore + sPA, s);
+            result.put(ClaimRef + strings.symbol_underscore + sCG, s);
+            result.put(ClaimRef + strings.symbol_underscore + sPG, s);
+            result.put(ClaimRef + strings.symbol_underscore + sDisability, s);
+            result.put(ClaimRef + strings.symbol_underscore + sDisabilityPremium, s);
+            result.put(ClaimRef + strings.symbol_underscore + sDisabilitySevere, s);
+            result.put(ClaimRef + strings.symbol_underscore + sDisabilityEnhanced, s);
+            result.put(ClaimRef + strings.symbol_underscore + sDisabledChild, s);
+            result.put(ClaimRef + strings.symbol_underscore + sPDeath, s);
+            result.put(ClaimRef + strings.symbol_underscore + sHBDP, s);
+            result.put(ClaimRef + strings.symbol_underscore + sA, s);
         }
         Iterator<Integer> tNotMonthlyUOIte;
         SHBE_Records SHBE_Records;
@@ -1337,408 +1337,408 @@ public class DW_TenancyChangesUO extends DW_Object {
                 if (record != null) {
                     dRecord = record.getDRecord();
                     // Tenancy Type
-                    key = ClaimRef + Strings.symbol_underscore + sTT;
+                    key = ClaimRef + strings.symbol_underscore + sTT;
                     aS = result.get(key);
                     j = dRecord.getTenancyType();
-                    aS += Strings.special_commaSpace + sTT_ + j;
+                    aS += strings.special_commaSpace + sTT_ + j;
                     result.put(key, aS);
                     // Under Occupancy
-                    key = ClaimRef + Strings.symbol_underscore + sUnderOccupancy;
+                    key = ClaimRef + strings.symbol_underscore + sUnderOccupancy;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Postcode
-                    key = ClaimRef + Strings.symbol_underscore + sP;
+                    key = ClaimRef + strings.symbol_underscore + sP;
                     aS = result.get(key);
                     bS = dRecord.getClaimantsPostcode();
-                    aS += Strings.special_commaSpace + bS;
+                    aS += strings.special_commaSpace + bS;
                     result.put(key, aS);
                     // Weekly Housing Benefit Entitlement
-                    key = ClaimRef + Strings.symbol_underscore + sWHBE;
+                    key = ClaimRef + strings.symbol_underscore + sWHBE;
                     aS = result.get(key);
                     j = dRecord.getWeeklyHousingBenefitEntitlement();
-                    aS += Strings.special_commaSpace + decimalise(j);
+                    aS += strings.special_commaSpace + decimalise(j);
                     result.put(key, aS);
                     // Weekly Eligible Rent Amount
-                    key = ClaimRef + Strings.symbol_underscore + sWERA;
+                    key = ClaimRef + strings.symbol_underscore + sWERA;
                     aS = result.get(key);
                     j = dRecord.getWeeklyEligibleRentAmount();
-                    aS += Strings.special_commaSpace + decimalise(j);
+                    aS += strings.special_commaSpace + decimalise(j);
                     result.put(key, aS);
                     // PassportedStandardIndicator
-                    key = ClaimRef + Strings.symbol_underscore + sPSI;
+                    key = ClaimRef + strings.symbol_underscore + sPSI;
                     aS = result.get(key);
                     j = dRecord.getPassportedStandardIndicator();
-                    aS += Strings.special_commaSpace + j;
+                    aS += strings.special_commaSpace + j;
                     result.put(key, aS);
                     // StatusOfHBClaim
-                    key = ClaimRef + Strings.symbol_underscore + sSHBC;
+                    key = ClaimRef + strings.symbol_underscore + sSHBC;
                     aS = result.get(key);
                     j = dRecord.getStatusOfHBClaimAtExtractDate();
-                    aS += Strings.special_commaSpace + j;
+                    aS += strings.special_commaSpace + j;
                     result.put(key, aS);
                     // ReasonThatHBClaimClosed
-                    key = ClaimRef + Strings.symbol_underscore + sRTHBCC;
+                    key = ClaimRef + strings.symbol_underscore + sRTHBCC;
                     aS = result.get(key);
                     j = dRecord.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
                     if (j == 0) {
-                        aS += Strings.special_commaSpace;
+                        aS += strings.special_commaSpace;
                     } else {
-                        aS += Strings.special_commaSpace + j;
+                        aS += strings.special_commaSpace + j;
                     }
                     result.put(key, aS);
                     // ClaimantEthnicGroup
-                    key = ClaimRef + Strings.symbol_underscore + sCEG;
+                    key = ClaimRef + strings.symbol_underscore + sCEG;
                     aS = result.get(key);
                     //j = dRecord.getClaimantsEthnicGroup();
                     j = SHBE_Handler.getEthnicityGroup(dRecord);
-                    aS += Strings.special_commaSpace + j;
+                    aS += strings.special_commaSpace + j;
                     result.put(key, aS);
                     // Household Size
-                    key = ClaimRef + Strings.symbol_underscore + sHS;
+                    key = ClaimRef + strings.symbol_underscore + sHS;
                     aS = result.get(key);
                     j = (int) SHBE_Handler.getHouseholdSize(dRecord);
-                    aS += Strings.special_commaSpace + j;
+                    aS += strings.special_commaSpace + j;
                     result.put(key, aS);
                     // NonDependents
-                    key = ClaimRef + Strings.symbol_underscore + sND;
+                    key = ClaimRef + strings.symbol_underscore + sND;
                     aS = result.get(key);
                     j = dRecord.getNumberOfNonDependents();
                     if (j == 0) {
-                        aS += Strings.special_commaSpace;
+                        aS += strings.special_commaSpace;
                     } else {
-                        aS += Strings.special_commaSpace + j;
+                        aS += strings.special_commaSpace + j;
                     }
                     result.put(key, aS);
                     // Child Dependents
-                    key = ClaimRef + Strings.symbol_underscore + sCD;
+                    key = ClaimRef + strings.symbol_underscore + sCD;
                     aS = result.get(key);
                     j = dRecord.getNumberOfChildDependents();
                     if (j == 0) {
-                        aS += Strings.special_commaSpace;
+                        aS += strings.special_commaSpace;
                     } else {
-                        aS += Strings.special_commaSpace + j;
+                        aS += strings.special_commaSpace + j;
                     }
                     result.put(key, aS);
                     // NonDependents (UO)
-                    key = ClaimRef + Strings.symbol_underscore + sNDUO;
+                    key = ClaimRef + strings.symbol_underscore + sNDUO;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // ChildrenOver16
-                    key = ClaimRef + Strings.symbol_underscore + sCO16;
+                    key = ClaimRef + strings.symbol_underscore + sCO16;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // FemaleChildrenUnder10";
-                    key = ClaimRef + Strings.symbol_underscore + sFCU10;
+                    key = ClaimRef + strings.symbol_underscore + sFCU10;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // MaleChildrenUnder10";
-                    key = ClaimRef + Strings.symbol_underscore + sMCU10;
+                    key = ClaimRef + strings.symbol_underscore + sMCU10;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // FemaleChildren10to16";
-                    key = ClaimRef + Strings.symbol_underscore + sFC10To16;
+                    key = ClaimRef + strings.symbol_underscore + sFC10To16;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // MaleChildren10to16
-                    key = ClaimRef + Strings.symbol_underscore + sMC10To16;
+                    key = ClaimRef + strings.symbol_underscore + sMC10To16;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Number of Bedrooms
-                    key = ClaimRef + Strings.symbol_underscore + sNB;
+                    key = ClaimRef + strings.symbol_underscore + sNB;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Bedroom Requirement
-                    key = ClaimRef + Strings.symbol_underscore + sBR;
+                    key = ClaimRef + strings.symbol_underscore + sBR;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Claimants Date Of Birth
-                    key = ClaimRef + Strings.symbol_underscore + sCDoB;
+                    key = ClaimRef + strings.symbol_underscore + sCDoB;
                     aS = result.get(key);
                     bS = dRecord.getClaimantsDateOfBirth();
-                    aS += Strings.special_commaSpace + bS;
+                    aS += strings.special_commaSpace + bS;
                     result.put(key, aS);
                     // ClaimantsAge
-                    key = ClaimRef + Strings.symbol_underscore + sCA;
+                    key = ClaimRef + strings.symbol_underscore + sCA;
                     aS = result.get(key);
                     bS = SHBE_Handler.getClaimantsAge(year, month, dRecord);
-                    aS += Strings.special_commaSpace + bS;
+                    aS += strings.special_commaSpace + bS;
                     result.put(key, aS);
                     // Partners Date Of Birth
-                    key = ClaimRef + Strings.symbol_underscore + sPDoB;
+                    key = ClaimRef + strings.symbol_underscore + sPDoB;
                     aS = result.get(key);
                     bS = dRecord.getPartnersDateOfBirth();
-                    aS += Strings.special_commaSpace + bS;
+                    aS += strings.special_commaSpace + bS;
                     result.put(key, aS);
                     // PartnersAge
-                    key = ClaimRef + Strings.symbol_underscore + sPA;
+                    key = ClaimRef + strings.symbol_underscore + sPA;
                     aS = result.get(key);
                     bS = SHBE_Handler.getPartnersAge(year, month, dRecord);
-                    aS += Strings.special_commaSpace + bS;
+                    aS += strings.special_commaSpace + bS;
                     result.put(key, aS);
                     // ClaimantsGender
-                    key = ClaimRef + Strings.symbol_underscore + sCG;
+                    key = ClaimRef + strings.symbol_underscore + sCG;
                     aS = result.get(key);
                     bS = dRecord.getClaimantsGender();
-                    aS += Strings.special_commaSpace + bS;
+                    aS += strings.special_commaSpace + bS;
                     result.put(key, aS);
                     // PartnersGender
-                    key = ClaimRef + Strings.symbol_underscore + sPG;
+                    key = ClaimRef + strings.symbol_underscore + sPG;
                     aS = result.get(key);
                     bS = dRecord.getPartnersGender();
-                    aS += Strings.special_commaSpace + bS;
+                    aS += strings.special_commaSpace + bS;
                     result.put(key, aS);
                     // Disability
-                    key = ClaimRef + Strings.symbol_underscore + sDisability;
+                    key = ClaimRef + strings.symbol_underscore + sDisability;
                     aS = result.get(key);
                     b = SHBE_Handler.getDisability(dRecord);
                     if (b == true) {
-                        aS += Strings.special_commaSpace + sDisability;
+                        aS += strings.special_commaSpace + sDisability;
                     } else {
-                        aS += Strings.special_commaSpace;
+                        aS += strings.special_commaSpace;
                     }
                     result.put(key, aS);
                     // Disability Premium
-                    key = ClaimRef + Strings.symbol_underscore + sDisabilityPremium;
+                    key = ClaimRef + strings.symbol_underscore + sDisabilityPremium;
                     aS = result.get(key);
                     j = dRecord.getDisabilityPremiumAwarded();
                     if (j == 1) {
-                        aS += Strings.special_commaSpace + sDP;
+                        aS += strings.special_commaSpace + sDP;
                     } else {
-                        aS += Strings.special_commaSpace;
+                        aS += strings.special_commaSpace;
                     }
                     result.put(key, aS);
                     // Disability Severe
-                    key = ClaimRef + Strings.symbol_underscore + sDisabilitySevere;
+                    key = ClaimRef + strings.symbol_underscore + sDisabilitySevere;
                     aS = result.get(key);
                     j = dRecord.getSevereDisabilityPremiumAwarded();
                     if (j == 1) {
-                        aS += Strings.special_commaSpace + sDS;
+                        aS += strings.special_commaSpace + sDS;
                     } else {
-                        aS += Strings.special_commaSpace;
+                        aS += strings.special_commaSpace;
                     }
                     result.put(key, aS);
                     // Disability Enhanced
-                    key = ClaimRef + Strings.symbol_underscore + sDisabilityEnhanced;
+                    key = ClaimRef + strings.symbol_underscore + sDisabilityEnhanced;
                     aS = result.get(key);
                     j = dRecord.getEnhancedDisabilityPremiumAwarded();
                     if (j == 1) {
-                        aS += Strings.special_commaSpace + sDE;
+                        aS += strings.special_commaSpace + sDE;
                     } else {
-                        aS += Strings.special_commaSpace;
+                        aS += strings.special_commaSpace;
                     }
                     result.put(key, aS);
                     // Child Disability
-                    key = ClaimRef + Strings.symbol_underscore + sDisabledChild;
+                    key = ClaimRef + strings.symbol_underscore + sDisabledChild;
                     aS = result.get(key);
                     j = dRecord.getDisabledChildPremiumAwarded();
                     if (j == 1) {
-                        aS += Strings.special_commaSpace + sDC;
+                        aS += strings.special_commaSpace + sDC;
                     } else {
-                        aS += Strings.special_commaSpace;
+                        aS += strings.special_commaSpace;
                     }
                     result.put(key, aS);
                     // Partner Death
-                    key = ClaimRef + Strings.symbol_underscore + sPDeath;
+                    key = ClaimRef + strings.symbol_underscore + sPDeath;
                     aS = result.get(key);
                     bS = dRecord.getPartnersDateOfDeath();
                     if (bS == null) {
-                        aS += Strings.special_commaSpace;
+                        aS += strings.special_commaSpace;
                     } else if (bS.isEmpty()) {
-                        aS += Strings.special_commaSpace;
+                        aS += strings.special_commaSpace;
                     } else {
-                        aS += Strings.special_commaSpace + sPDeath + Strings.symbol_underscore + bS;
+                        aS += strings.special_commaSpace + sPDeath + strings.symbol_underscore + bS;
                     }
                     result.put(key, aS);
                     // HB Discretionary Payment
-                    key = ClaimRef + Strings.symbol_underscore + sHBDP;
+                    key = ClaimRef + strings.symbol_underscore + sHBDP;
                     aS = result.get(key);
                     j = dRecord.getWeeklyAdditionalDiscretionaryPayment();
-                    aS += Strings.special_commaSpace + decimalise(j);
+                    aS += strings.special_commaSpace + decimalise(j);
                     result.put(key, aS);
                     // Arrears
-                    key = ClaimRef + Strings.symbol_underscore + sA;
+                    key = ClaimRef + strings.symbol_underscore + sA;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                 } else {
                     // Tenancy Type
-                    key = ClaimRef + Strings.symbol_underscore + sTT;
+                    key = ClaimRef + strings.symbol_underscore + sTT;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Under Occupancy
-                    key = ClaimRef + Strings.symbol_underscore + sUnderOccupancy;
+                    key = ClaimRef + strings.symbol_underscore + sUnderOccupancy;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Postcode
-                    key = ClaimRef + Strings.symbol_underscore + sP;
+                    key = ClaimRef + strings.symbol_underscore + sP;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Weekly Housing Benefit Entitlement
-                    key = ClaimRef + Strings.symbol_underscore + sWHBE;
+                    key = ClaimRef + strings.symbol_underscore + sWHBE;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Weekly Eligible Rent Amount
-                    key = ClaimRef + Strings.symbol_underscore + sWERA;
+                    key = ClaimRef + strings.symbol_underscore + sWERA;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // PassportedStandardIndicator
-                    key = ClaimRef + Strings.symbol_underscore + sPSI;
+                    key = ClaimRef + strings.symbol_underscore + sPSI;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // StatusOfHBClaim
-                    key = ClaimRef + Strings.symbol_underscore + sSHBC;
+                    key = ClaimRef + strings.symbol_underscore + sSHBC;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // ReasonThatHBClaimClosed
-                    key = ClaimRef + Strings.symbol_underscore + sRTHBCC;
+                    key = ClaimRef + strings.symbol_underscore + sRTHBCC;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // ClaimantEthnicGroup
-                    key = ClaimRef + Strings.symbol_underscore + sCEG;
+                    key = ClaimRef + strings.symbol_underscore + sCEG;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Household Size
-                    key = ClaimRef + Strings.symbol_underscore + sHS;
+                    key = ClaimRef + strings.symbol_underscore + sHS;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // NonDependents
-                    key = ClaimRef + Strings.symbol_underscore + sND;
+                    key = ClaimRef + strings.symbol_underscore + sND;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // ChildDependents
-                    key = ClaimRef + Strings.symbol_underscore + sCD;
+                    key = ClaimRef + strings.symbol_underscore + sCD;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // NonDependents (UO)
-                    key = ClaimRef + Strings.symbol_underscore + sNDUO;
+                    key = ClaimRef + strings.symbol_underscore + sNDUO;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // ChildrenOver16
-                    key = ClaimRef + Strings.symbol_underscore + sCO16;
+                    key = ClaimRef + strings.symbol_underscore + sCO16;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // FemaleChildrenUnder10";
-                    key = ClaimRef + Strings.symbol_underscore + sFCU10;
+                    key = ClaimRef + strings.symbol_underscore + sFCU10;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // MaleChildrenUnder10";
-                    key = ClaimRef + Strings.symbol_underscore + sMCU10;
+                    key = ClaimRef + strings.symbol_underscore + sMCU10;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // FemaleChildren10to16";
-                    key = ClaimRef + Strings.symbol_underscore + sFC10To16;
+                    key = ClaimRef + strings.symbol_underscore + sFC10To16;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // MaleChildren10to16
-                    key = ClaimRef + Strings.symbol_underscore + sMC10To16;
+                    key = ClaimRef + strings.symbol_underscore + sMC10To16;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Number of Bedrooms
-                    key = ClaimRef + Strings.symbol_underscore + sNB;
+                    key = ClaimRef + strings.symbol_underscore + sNB;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Bedroom Requirement
-                    key = ClaimRef + Strings.symbol_underscore + sBR;
+                    key = ClaimRef + strings.symbol_underscore + sBR;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Claimants Date Of Birth
-                    key = ClaimRef + Strings.symbol_underscore + sCDoB;
+                    key = ClaimRef + strings.symbol_underscore + sCDoB;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // ClaimantsAge
-                    key = ClaimRef + Strings.symbol_underscore + sCA;
+                    key = ClaimRef + strings.symbol_underscore + sCA;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Partners Date Of Birth
-                    key = ClaimRef + Strings.symbol_underscore + sPDoB;
+                    key = ClaimRef + strings.symbol_underscore + sPDoB;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Partners Age
-                    key = ClaimRef + Strings.symbol_underscore + sPA;
+                    key = ClaimRef + strings.symbol_underscore + sPA;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // ClaimantsGender
-                    key = ClaimRef + Strings.symbol_underscore + sCG;
+                    key = ClaimRef + strings.symbol_underscore + sCG;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Partners Gender
-                    key = ClaimRef + Strings.symbol_underscore + sPG;
+                    key = ClaimRef + strings.symbol_underscore + sPG;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Disability
-                    key = ClaimRef + Strings.symbol_underscore + sDisability;
+                    key = ClaimRef + strings.symbol_underscore + sDisability;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Disability Premium
-                    key = ClaimRef + Strings.symbol_underscore + sDisabilityPremium;
+                    key = ClaimRef + strings.symbol_underscore + sDisabilityPremium;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Disability Severe
-                    key = ClaimRef + Strings.symbol_underscore + sDisabilitySevere;
+                    key = ClaimRef + strings.symbol_underscore + sDisabilitySevere;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Disability Enhanced
-                    key = ClaimRef + Strings.symbol_underscore + sDisabilityEnhanced;
+                    key = ClaimRef + strings.symbol_underscore + sDisabilityEnhanced;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Child Disability
-                    key = ClaimRef + Strings.symbol_underscore + sDisabledChild;
+                    key = ClaimRef + strings.symbol_underscore + sDisabledChild;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Partner Death
-                    key = ClaimRef + Strings.symbol_underscore + sPDeath;
+                    key = ClaimRef + strings.symbol_underscore + sPDeath;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // HB Discretionary Payment
-                    key = ClaimRef + Strings.symbol_underscore + sHBDP;
+                    key = ClaimRef + strings.symbol_underscore + sHBDP;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                     // Arrears
-                    key = ClaimRef + Strings.symbol_underscore + sA;
+                    key = ClaimRef + strings.symbol_underscore + sA;
                     aS = result.get(key);
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                     result.put(key, aS);
                 }
             }
@@ -1792,7 +1792,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             ArrayList<Integer> include,
             boolean includePreUnderOccupancyValues
     ) {
-        Env.log("<getTable>");
+        Env.ge.log("<getTable>", true);
         Object[] result;
         result = new Object[12];
         ValidPostcodes = new HashSet<>();
@@ -1963,9 +1963,9 @@ public class DW_TenancyChangesUO extends DW_Object {
         TreeMap<String, ArrayList<Integer>> includes;
         includes = SHBE_Handler.getIncludes();
         ArrayList<Integer> MonthlyUO;
-        MonthlyUO = includes.get(Env.SHBE_Env.Strings.sIncludeMonthlySinceApril2013);
+        MonthlyUO = includes.get(Env.SHBE_Env.strings.sIncludeMonthlySinceApril2013);
         ArrayList<Integer> All;
-        All = includes.get(Env.SHBE_Env.Strings.sIncludeAll);
+        All = includes.get(Env.SHBE_Env.strings.sIncludeAll);
         ArrayList<Integer> NotMonthlyUO;
         NotMonthlyUO = new ArrayList<>();
         NotMonthlyUO.addAll(All);
@@ -2947,17 +2947,17 @@ public class DW_TenancyChangesUO extends DW_Object {
         while (ite.hasNext()) {
             ClaimID = ite.next();
             ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
-            AggregateStatistics.put(ClaimRef + Strings.symbol_underscore + sTotal_DHP, BigDecimal.ZERO);
-            AggregateStatistics.put(ClaimRef + Strings.symbol_underscore + sTotalCount_DHP, BigDecimal.ZERO);
-            AggregateStatistics.put(ClaimRef + Strings.symbol_underscore + sTotal_HBLossDueToUO, BigDecimal.ZERO);
-            AggregateStatistics.put(ClaimRef + Strings.symbol_underscore + sTotalCount_HBLossDueToUO, BigDecimal.ZERO);
-            AggregateStatistics.put(ClaimRef + Strings.symbol_underscore + sMax_Arrears, BigDecimal.ZERO);
-            AggregateStatistics.put(ClaimRef + Strings.symbol_underscore + sTotalCount_InArrears, BigDecimal.ZERO);
-            AggregateStatistics.put(ClaimRef + Strings.symbol_underscore + sTotalCount_InArrears0To10, BigDecimal.ZERO);
-            AggregateStatistics.put(ClaimRef + Strings.symbol_underscore + sTotalCount_InArrears10To100, BigDecimal.ZERO);
-            AggregateStatistics.put(ClaimRef + Strings.symbol_underscore + sTotalCount_InArrears100To500, BigDecimal.ZERO);
-            AggregateStatistics.put(ClaimRef + Strings.symbol_underscore + sTotalCount_InArrearsOver500, BigDecimal.ZERO);
-            AggregateStatistics.put(ClaimRef + Strings.symbol_underscore + sTotalCount_UnderOccupancy, BigDecimal.ZERO);
+            AggregateStatistics.put(ClaimRef + strings.symbol_underscore + sTotal_DHP, BigDecimal.ZERO);
+            AggregateStatistics.put(ClaimRef + strings.symbol_underscore + sTotalCount_DHP, BigDecimal.ZERO);
+            AggregateStatistics.put(ClaimRef + strings.symbol_underscore + sTotal_HBLossDueToUO, BigDecimal.ZERO);
+            AggregateStatistics.put(ClaimRef + strings.symbol_underscore + sTotalCount_HBLossDueToUO, BigDecimal.ZERO);
+            AggregateStatistics.put(ClaimRef + strings.symbol_underscore + sMax_Arrears, BigDecimal.ZERO);
+            AggregateStatistics.put(ClaimRef + strings.symbol_underscore + sTotalCount_InArrears, BigDecimal.ZERO);
+            AggregateStatistics.put(ClaimRef + strings.symbol_underscore + sTotalCount_InArrears0To10, BigDecimal.ZERO);
+            AggregateStatistics.put(ClaimRef + strings.symbol_underscore + sTotalCount_InArrears10To100, BigDecimal.ZERO);
+            AggregateStatistics.put(ClaimRef + strings.symbol_underscore + sTotalCount_InArrears100To500, BigDecimal.ZERO);
+            AggregateStatistics.put(ClaimRef + strings.symbol_underscore + sTotalCount_InArrearsOver500, BigDecimal.ZERO);
+            AggregateStatistics.put(ClaimRef + strings.symbol_underscore + sTotalCount_UnderOccupancy, BigDecimal.ZERO);
         }
 
         // Use sets?
@@ -2974,40 +2974,40 @@ public class DW_TenancyChangesUO extends DW_Object {
         while (ite.hasNext()) {
             ClaimID = ite.next();
             ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sTT, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sUnderOccupancy, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sP, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sWHBE, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sWERA, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sPSI, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sSHBC, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sRTHBCC, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sCEG, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sHS, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sND, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sCD, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sNDUO, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sCO16, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sFCU10, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sMCU10, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sFC10To16, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sMC10To16, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sNB, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sBR, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sCDoB, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sCA, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sPDoB, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sPA, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sCG, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sPG, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sDisability, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sDisabilityPremium, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sDisabilitySevere, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sDisabilityEnhanced, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sDisabledChild, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sPDeath, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sHBDP, s);
-            TableValues.put(ClaimRef + Strings.symbol_underscore + sA, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sTT, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sUnderOccupancy, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sP, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sWHBE, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sWERA, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sPSI, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sSHBC, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sRTHBCC, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sCEG, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sHS, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sND, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sCD, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sNDUO, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sCO16, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sFCU10, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sMCU10, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sFC10To16, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sMC10To16, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sNB, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sBR, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sCDoB, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sCA, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sPDoB, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sPA, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sCG, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sPG, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sDisability, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sDisabilityPremium, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sDisabilitySevere, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sDisabilityEnhanced, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sDisabledChild, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sPDeath, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sHBDP, s);
+            TableValues.put(ClaimRef + strings.symbol_underscore + sA, s);
             DHP_Totals.put(ClaimID, 0);
         }
 
@@ -3024,7 +3024,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             while (ite2.hasNext()) {
                 i = ite2.next();
                 YM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
-                header += YM3 + Strings.special_commaSpace;
+                header += YM3 + strings.special_commaSpace;
             }
         }
 
@@ -3441,7 +3441,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             Records1 = SHBE_Records1.getRecords(Env.HOOME);
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             RSLUOSet1 = RSLUOSets.get(YM31);
-            header += Strings.special_commaSpace + YM31;
+            header += strings.special_commaSpace + YM31;
             ite = ClaimIDs.iterator();
             while (ite.hasNext()) {
                 ClaimID = ite.next();
@@ -3761,7 +3761,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         UOTT1_To_TT3OrTT6AsNextTTChangeIgnoreMinus999ClaimIDs.retainAll(UOTT1_To_TT3OrTT6AtSomePointClaimIDs);
         UOTT4_To_TT3OrTT6AsNextTTChangeIgnoreMinus999ClaimIDs.retainAll(UOTT4_To_TT3OrTT6AtSomePointClaimIDs);
 
-        header += Strings.special_commaSpace + "HBDPTotal";
+        header += strings.special_commaSpace + "HBDPTotal";
 
 //        HashSet<SHBE_ID> ValidPostcodeChangeClaimIDs; // Calculate by removing all from NoValidPostcodeChange.
 //        ValidPostcodeChangeClaimIDs = new HashSet<SHBE_ID>();
@@ -3809,9 +3809,9 @@ public class DW_TenancyChangesUO extends DW_Object {
         while (ite.hasNext()) {
             ClaimID = ite.next();
             ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
-            key = ClaimRef + Strings.symbol_underscore + sUnderOccupancy;
+            key = ClaimRef + strings.symbol_underscore + sUnderOccupancy;
             aS = TableValues.get(key);
-            if (aS.endsWith(Strings.special_commaSpace)) {
+            if (aS.endsWith(strings.special_commaSpace)) {
                 IntermitantUOClaimIDs.add(ClaimID);
             }
         }
@@ -4018,7 +4018,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             TotalCount_RSLEffectedDependents += m;
         }
 
-        Env.logO("From " + YM3Start + " to " + YM3End + " there were "
+        Env.ge.log("From " + YM3Start + " to " + YM3End + " there were "
                 + "the following counts of claims and individuals effected by "
                 + "UnderOccupancy:", true);
         GeneralStatistics.put(sUO_To_LeftSHBEAtSomePoint,
@@ -4476,7 +4476,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         GeneralStatistics.put(
                 sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased,
                 BigDecimal.valueOf(Groups.get(sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased).size()));
-        Env.log("</getTable>");
+        Env.ge.log("</getTable>", true);
     }
 
     /**
@@ -5153,12 +5153,12 @@ public class DW_TenancyChangesUO extends DW_Object {
 //            }
 //            cStatus = cD_Record.getStatusOfHBClaimAtExtractDate();
 //        }
-        key = ClaimRef + Strings.symbol_underscore + sUnderOccupancy;
+        key = ClaimRef + strings.symbol_underscore + sUnderOccupancy;
         aS = TableValues.get(key);
 
         boolean UO00;
-        UO00 = aS.endsWith(sU + Strings.special_commaSpace + sU)
-                || aS.endsWith(sU + Strings.special_commaSpace);
+        UO00 = aS.endsWith(sU + strings.special_commaSpace + sU)
+                || aS.endsWith(sU + strings.special_commaSpace);
         boolean UO0;
         UO0 = aS.endsWith(sU);
 
@@ -5179,7 +5179,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         }
 
         // TenancyType
-        key = ClaimRef + Strings.symbol_underscore + sTT;
+        key = ClaimRef + strings.symbol_underscore + sTT;
         aS = TableValues.get(key);
         if (TT0 != TT1) {
             if (TT0 == SHBE_TenancyType_Handler.iMinus999
@@ -5449,12 +5449,12 @@ public class DW_TenancyChangesUO extends DW_Object {
                 }
             }
         }
-        aS += Strings.special_commaSpace + sTT_ + TT1;
+        aS += strings.special_commaSpace + sTT_ + TT1;
 
         TableValues.put(key, aS);
 
         // UnderOccupancy
-        key = ClaimRef + Strings.symbol_underscore + sUnderOccupancy;
+        key = ClaimRef + strings.symbol_underscore + sUnderOccupancy;
         aS = TableValues.get(key);
         if (UO1) {
             PermanantlyLeftUOButRemainedInSHBEClaimIDs.remove(ClaimID);
@@ -5467,9 +5467,9 @@ public class DW_TenancyChangesUO extends DW_Object {
             } else if (TT1 == 4) {
                 AlwaysUOTT4FromWhenStartedClaimIDs.add(ClaimID);
             }
-            aS += Strings.special_commaSpace + sU;
+            aS += strings.special_commaSpace + sU;
             BigDecimal bd;
-            String key2 = ClaimRef + Strings.symbol_underscore + sTotalCount_UnderOccupancy;
+            String key2 = ClaimRef + strings.symbol_underscore + sTotalCount_UnderOccupancy;
             bd = AggregateStatistics.get(key2);
             bd = bd.add(BigDecimal.ONE);
             AggregateStatistics.put(key2, bd);
@@ -5592,7 +5592,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                 UOTT4_To_LeftSHBE_ReturnedAndBecameUOAgainAtSomePointClaimIDs.add(ClaimID);
             }
         } else {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
             AlwaysUOTT1FromStartClaimIDs.remove(ClaimID);
             AlwaysUOTT4FromStartClaimIDs.remove(ClaimID);
             if (Status1 == 2) {
@@ -5603,7 +5603,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                 if (aS.contains(sU)) {
                     AlwaysUOTT1FromWhenStartedClaimIDs.remove(ClaimID);
                     AlwaysUOTT4FromWhenStartedClaimIDs.remove(ClaimID);
-                    if (aS.contains(sU + Strings.special_commaSpace + Strings.special_commaSpace)) {
+                    if (aS.contains(sU + strings.special_commaSpace + strings.special_commaSpace)) {
                         // ..., U, ,
                         IntermitantUOClaimIDs.add(ClaimID);
                     }
@@ -5675,14 +5675,14 @@ public class DW_TenancyChangesUO extends DW_Object {
         TableValues.put(key, aS);
 
         // Postcode
-        key = ClaimRef + Strings.symbol_underscore + sP;
+        key = ClaimRef + strings.symbol_underscore + sP;
         aS = TableValues.get(key);
 
         if (PC1.equalsIgnoreCase(PC0)) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
             boolean aSContainsaPC = aS.contains(PC1);
-            aS += Strings.special_commaSpace + PC1;
+            aS += strings.special_commaSpace + PC1;
             if (!PC1.equalsIgnoreCase(defaultPostcode)) {
                 boolean containsAnotherPostcode;
                 if (PC0.equalsIgnoreCase(defaultPostcode)) {
@@ -5921,100 +5921,100 @@ public class DW_TenancyChangesUO extends DW_Object {
         TableValues.put(key, aS);
 
         // HB Entitlement
-        key = ClaimRef + Strings.symbol_underscore + sWHBE;
+        key = ClaimRef + strings.symbol_underscore + sWHBE;
         aS = TableValues.get(key);
         if (WHBE1 == WHBE0) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + decimalise(WHBE1);
+            aS += strings.special_commaSpace + decimalise(WHBE1);
         }
 
         TableValues.put(key, aS);
 
         // ERA
-        key = ClaimRef + Strings.symbol_underscore + sWERA;
+        key = ClaimRef + strings.symbol_underscore + sWERA;
         aS = TableValues.get(key);
         if (WERA1 == WERA0) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + decimalise(WERA1);
+            aS += strings.special_commaSpace + decimalise(WERA1);
         }
 
         TableValues.put(key, aS);
 
         // PassportedStandardIndicator
-        key = ClaimRef + Strings.symbol_underscore + sPSI;
+        key = ClaimRef + strings.symbol_underscore + sPSI;
         aS = TableValues.get(key);
         if (PSI1 == PSI0) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + PSI1;
+            aS += strings.special_commaSpace + PSI1;
         }
 
         TableValues.put(key, aS);
 
         // StatusOfHBClaim
-        key = ClaimRef + Strings.symbol_underscore + sSHBC;
+        key = ClaimRef + strings.symbol_underscore + sSHBC;
         aS = TableValues.get(key);
         if (SHBC1 == SHBC0) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + SHBC1;
+            aS += strings.special_commaSpace + SHBC1;
         }
 
         TableValues.put(key, aS);
 
         // ReasonThatHBClaimClosed
-        key = ClaimRef + Strings.symbol_underscore + sRTHBCC;
+        key = ClaimRef + strings.symbol_underscore + sRTHBCC;
         aS = TableValues.get(key);
         if (RTHBCC1 == RTHBCC0) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + RTHBCC1;
+            aS += strings.special_commaSpace + RTHBCC1;
         }
 
         TableValues.put(key, aS);
 
         // ClaimantEthnicGroup
-        key = ClaimRef + Strings.symbol_underscore + sCEG;
+        key = ClaimRef + strings.symbol_underscore + sCEG;
         aS = TableValues.get(key);
         if (CEG1 == CEG0) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + CEG1;
+            aS += strings.special_commaSpace + CEG1;
         }
 
         TableValues.put(key, aS);
 
         // HS
-        key = ClaimRef + Strings.symbol_underscore + sHS;
+        key = ClaimRef + strings.symbol_underscore + sHS;
         aS = TableValues.get(key);
         if (HS1 == HS0) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + HS1;
+            aS += strings.special_commaSpace + HS1;
         }
 
         TableValues.put(key, aS);
 
         // NonDependents
-        key = ClaimRef + Strings.symbol_underscore + sND;
+        key = ClaimRef + strings.symbol_underscore + sND;
         aS = TableValues.get(key);
         if (ND1 == ND0) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + ND1;
+            aS += strings.special_commaSpace + ND1;
         }
 
         TableValues.put(key, aS);
 
         // ChildDependents
-        key = ClaimRef + Strings.symbol_underscore + sCD;
+        key = ClaimRef + strings.symbol_underscore + sCD;
         aS = TableValues.get(key);
         if (CD1 == CD0) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + CD1;
+            aS += strings.special_commaSpace + CD1;
         }
 
         TableValues.put(key, aS);
@@ -6030,215 +6030,215 @@ public class DW_TenancyChangesUO extends DW_Object {
                 aDW_UOReport_Record = RSLUOSet1.getMap().get(ClaimID);
             }
             // NonDependents
-            key = ClaimRef + Strings.symbol_underscore + sNDUO;
+            key = ClaimRef + strings.symbol_underscore + sNDUO;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace + aDW_UOReport_Record.getNonDependents();
+            aS += strings.special_commaSpace + aDW_UOReport_Record.getNonDependents();
             TableValues.put(key, aS);
             // Children 16 +
-            key = ClaimRef + Strings.symbol_underscore + sCO16;
+            key = ClaimRef + strings.symbol_underscore + sCO16;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace + aDW_UOReport_Record.getChildrenOver16();
+            aS += strings.special_commaSpace + aDW_UOReport_Record.getChildrenOver16();
             TableValues.put(key, aS);
             // FemaleChildrenUnder10
-            key = ClaimRef + Strings.symbol_underscore + sFCU10;
+            key = ClaimRef + strings.symbol_underscore + sFCU10;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace + aDW_UOReport_Record.getFemaleChildrenUnder10();
+            aS += strings.special_commaSpace + aDW_UOReport_Record.getFemaleChildrenUnder10();
             TableValues.put(key, aS);
             // MaleChildrenUnder10
-            key = ClaimRef + Strings.symbol_underscore + sMCU10;
+            key = ClaimRef + strings.symbol_underscore + sMCU10;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace + aDW_UOReport_Record.getMaleChildrenUnder10();
+            aS += strings.special_commaSpace + aDW_UOReport_Record.getMaleChildrenUnder10();
             TableValues.put(key, aS);
             // FemaleChildren10to16
-            key = ClaimRef + Strings.symbol_underscore + sFC10To16;
+            key = ClaimRef + strings.symbol_underscore + sFC10To16;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace + aDW_UOReport_Record.getFemaleChildren10to16();
+            aS += strings.special_commaSpace + aDW_UOReport_Record.getFemaleChildren10to16();
             TableValues.put(key, aS);
             // MaleChildren10to16
-            key = ClaimRef + Strings.symbol_underscore + sMC10To16;
+            key = ClaimRef + strings.symbol_underscore + sMC10To16;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace + aDW_UOReport_Record.getMaleChildren10to16();
+            aS += strings.special_commaSpace + aDW_UOReport_Record.getMaleChildren10to16();
             TableValues.put(key, aS);
             // Number of Bedrooms
-            key = ClaimRef + Strings.symbol_underscore + sNB;
+            key = ClaimRef + strings.symbol_underscore + sNB;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace + aDW_UOReport_Record.getBedroomsInProperty();
+            aS += strings.special_commaSpace + aDW_UOReport_Record.getBedroomsInProperty();
             TableValues.put(key, aS);
             // Bedroom Requirement
-            key = ClaimRef + Strings.symbol_underscore + sBR;
+            key = ClaimRef + strings.symbol_underscore + sBR;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace + aDW_UOReport_Record.getBedroomRequirement();
+            aS += strings.special_commaSpace + aDW_UOReport_Record.getBedroomRequirement();
             TableValues.put(key, aS);
             int loss;
             loss = WERA1 - WHBE1;
-            key = ClaimRef + Strings.symbol_underscore + sTotal_HBLossDueToUO;
+            key = ClaimRef + strings.symbol_underscore + sTotal_HBLossDueToUO;
             BigDecimal bd;
             bd = AggregateStatistics.get(key);
             bd = bd.add(BigDecimal.valueOf(loss));
             AggregateStatistics.put(key, bd);
             if (loss > 0) {
-                key = ClaimRef + Strings.symbol_underscore + sTotalCount_HBLossDueToUO;
+                key = ClaimRef + strings.symbol_underscore + sTotalCount_HBLossDueToUO;
                 bd = AggregateStatistics.get(key);
                 bd = bd.add(BigDecimal.ONE);
                 AggregateStatistics.put(key, bd);
             }
         } else {
             // NonDependents
-            key = ClaimRef + Strings.symbol_underscore + sNDUO;
+            key = ClaimRef + strings.symbol_underscore + sNDUO;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
             TableValues.put(key, aS);
             // Children 16 +
-            key = ClaimRef + Strings.symbol_underscore + sCO16;
+            key = ClaimRef + strings.symbol_underscore + sCO16;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
             TableValues.put(key, aS);
             // FemaleChildrenUnder10
-            key = ClaimRef + Strings.symbol_underscore + sFCU10;
+            key = ClaimRef + strings.symbol_underscore + sFCU10;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
             TableValues.put(key, aS);
             // MaleChildrenUnder10
-            key = ClaimRef + Strings.symbol_underscore + sMCU10;
+            key = ClaimRef + strings.symbol_underscore + sMCU10;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
             TableValues.put(key, aS);
             // FemaleChildren10to16
-            key = ClaimRef + Strings.symbol_underscore + sFC10To16;
+            key = ClaimRef + strings.symbol_underscore + sFC10To16;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
             TableValues.put(key, aS);
             // MaleChildren10to16
-            key = ClaimRef + Strings.symbol_underscore + sMC10To16;
+            key = ClaimRef + strings.symbol_underscore + sMC10To16;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
             TableValues.put(key, aS);
             // Number of Bedrooms
-            key = ClaimRef + Strings.symbol_underscore + sNB;
+            key = ClaimRef + strings.symbol_underscore + sNB;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
             TableValues.put(key, aS);
             // Bedroom Requirement
-            key = ClaimRef + Strings.symbol_underscore + sBR;
+            key = ClaimRef + strings.symbol_underscore + sBR;
             aS = TableValues.get(key);
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
             TableValues.put(key, aS);
         }
         // Claimants DoB
-        key = ClaimRef + Strings.symbol_underscore + sCDoB;
+        key = ClaimRef + strings.symbol_underscore + sCDoB;
         aS = TableValues.get(key);
 
         if (CDoB1.equalsIgnoreCase(CDoB0)) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + CDoB1;
+            aS += strings.special_commaSpace + CDoB1;
         }
 
         TableValues.put(key, aS);
         // Claimants Age
-        key = ClaimRef + Strings.symbol_underscore + sCA;
+        key = ClaimRef + strings.symbol_underscore + sCA;
         aS = TableValues.get(key);
 
         if (CA1.equalsIgnoreCase(CA0)) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + CA1;
+            aS += strings.special_commaSpace + CA1;
         }
 
         TableValues.put(key, aS);
         // Partners DoB
-        key = ClaimRef + Strings.symbol_underscore + sPDoB;
+        key = ClaimRef + strings.symbol_underscore + sPDoB;
         aS = TableValues.get(key);
 
         if (PDoB1.equalsIgnoreCase(PDoB0)) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + PDoB1;
+            aS += strings.special_commaSpace + PDoB1;
         }
 
         TableValues.put(key, aS);
         // Partners Age
-        key = ClaimRef + Strings.symbol_underscore + sPA;
+        key = ClaimRef + strings.symbol_underscore + sPA;
         aS = TableValues.get(key);
 
         if (PA1.equalsIgnoreCase(PA0)) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + PA1;
+            aS += strings.special_commaSpace + PA1;
         }
 
         TableValues.put(key, aS);
         // ClaimantsGender
-        key = ClaimRef + Strings.symbol_underscore + sCG;
+        key = ClaimRef + strings.symbol_underscore + sCG;
         aS = TableValues.get(key);
 
         if (CA1.equalsIgnoreCase(CA0)) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + CG1;
+            aS += strings.special_commaSpace + CG1;
         }
 
         TableValues.put(key, aS);
         // PartnersGender
-        key = ClaimRef + Strings.symbol_underscore + sPG;
+        key = ClaimRef + strings.symbol_underscore + sPG;
         aS = TableValues.get(key);
 
         if (PA1.equalsIgnoreCase(PA0)) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + PG1;
+            aS += strings.special_commaSpace + PG1;
         }
 
         TableValues.put(key, aS);
         // Disability
-        key = ClaimRef + Strings.symbol_underscore + sDisability;
+        key = ClaimRef + strings.symbol_underscore + sDisability;
         aS = TableValues.get(key);
-        aS += Strings.special_commaSpace + D1;
+        aS += strings.special_commaSpace + D1;
 
         TableValues.put(key, aS);
         // Disability Premium
-        key = ClaimRef + Strings.symbol_underscore + sDisabilityPremium;
+        key = ClaimRef + strings.symbol_underscore + sDisabilityPremium;
         aS = TableValues.get(key);
-        aS += Strings.special_commaSpace + DP1;
+        aS += strings.special_commaSpace + DP1;
 
         TableValues.put(key, aS);
         // Disability Severe
-        key = ClaimRef + Strings.symbol_underscore + sDisabilitySevere;
+        key = ClaimRef + strings.symbol_underscore + sDisabilitySevere;
         aS = TableValues.get(key);
-        aS += Strings.special_commaSpace + DS1;
+        aS += strings.special_commaSpace + DS1;
 
         TableValues.put(key, aS);
         // Disability Enhanced
-        key = ClaimRef + Strings.symbol_underscore + sDisabilityEnhanced;
+        key = ClaimRef + strings.symbol_underscore + sDisabilityEnhanced;
         aS = TableValues.get(key);
-        aS += Strings.special_commaSpace + DE1;
+        aS += strings.special_commaSpace + DE1;
 
         TableValues.put(key, aS);
         // Child Disability
-        key = ClaimRef + Strings.symbol_underscore + sDisabledChild;
+        key = ClaimRef + strings.symbol_underscore + sDisabledChild;
         aS = TableValues.get(key);
-        aS += Strings.special_commaSpace + DC1;
+        aS += strings.special_commaSpace + DC1;
 
         TableValues.put(key, aS);
         // Partner Death
-        key = ClaimRef + Strings.symbol_underscore + sPDeath;
+        key = ClaimRef + strings.symbol_underscore + sPDeath;
         aS = TableValues.get(key);
 
         if (PDD1.equalsIgnoreCase(PDD0)) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else if (PDD1 == null) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else if (PDD1.isEmpty()) {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         } else {
-            aS += Strings.special_commaSpace + sPDeath + Strings.symbol_underscore + PDD1;
+            aS += strings.special_commaSpace + sPDeath + strings.symbol_underscore + PDD1;
         }
 
         TableValues.put(key, aS);
 
         // HBDP
         BigDecimal bd;
-        key = ClaimRef + Strings.symbol_underscore + sTotal_DHP;
+        key = ClaimRef + strings.symbol_underscore + sTotal_DHP;
         bd = AggregateStatistics.get(key);
         bd = bd.add(BigDecimal.valueOf(HBDP1));
 
@@ -6246,7 +6246,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         if (HBDP1
                 > 0) {
             DHPAtSomePointClaimIDs.add(ClaimID);
-            key = ClaimRef + Strings.symbol_underscore + sTotalCount_DHP;
+            key = ClaimRef + strings.symbol_underscore + sTotalCount_DHP;
             bd = AggregateStatistics.get(key);
             bd = bd.add(BigDecimal.ONE);
             AggregateStatistics.put(key, bd);
@@ -6262,18 +6262,18 @@ public class DW_TenancyChangesUO extends DW_Object {
 //        }
 //        tableValues.put(key, aS);
         // Arrears
-        key = ClaimRef + Strings.symbol_underscore + sA;
+        key = ClaimRef + strings.symbol_underscore + sA;
         aS = TableValues.get(key);
 
         if (CouncilUOSet1.getMap().keySet().contains(ClaimID)) {
             DW_UO_Record UORec;
             UORec = CouncilUOSet1.getMap().get(ClaimID);
             if (UORec == null) {
-                aS += Strings.special_commaSpace;
+                aS += strings.special_commaSpace;
             } else {
                 Arrears1 = UORec.getTotalRentArrears();
                 if (Arrears1 == null) {
-                    aS += Strings.special_commaSpace;
+                    aS += strings.special_commaSpace;
                 } else {
                     Double arrearsD;
                     arrearsD = arrears.get(YM31);
@@ -6310,25 +6310,25 @@ public class DW_TenancyChangesUO extends DW_Object {
                             }
                         }
                     }
-                    aS += Strings.special_commaSpace + Arrears1;
-                    key = ClaimRef + Strings.symbol_underscore + sMax_Arrears;
+                    aS += strings.special_commaSpace + Arrears1;
+                    key = ClaimRef + strings.symbol_underscore + sMax_Arrears;
                     bd = AggregateStatistics.get(key);
                     bd = bd.max(BigDecimal.valueOf(Arrears1));
                     AggregateStatistics.put(key, bd);
                     if (Arrears1 > 0) {
                         InArrearsAtSomePointClaimIDs.add(ClaimID);
-                        key = ClaimRef + Strings.symbol_underscore + sTotalCount_InArrears;
+                        key = ClaimRef + strings.symbol_underscore + sTotalCount_InArrears;
                         bd = AggregateStatistics.get(key);
                         bd = bd.add(BigDecimal.ONE);
                         AggregateStatistics.put(key, bd);
                         if (Arrears1 < 10) {
-                            key = ClaimRef + Strings.symbol_underscore + sTotalCount_InArrears0To10;
+                            key = ClaimRef + strings.symbol_underscore + sTotalCount_InArrears0To10;
                         } else if (Arrears1 < 100) {
-                            key = ClaimRef + Strings.symbol_underscore + sTotalCount_InArrears10To100;
+                            key = ClaimRef + strings.symbol_underscore + sTotalCount_InArrears10To100;
                         } else if (Arrears1 < 500) {
-                            key = ClaimRef + Strings.symbol_underscore + sTotalCount_InArrears100To500;
+                            key = ClaimRef + strings.symbol_underscore + sTotalCount_InArrears100To500;
                         } else {
-                            key = ClaimRef + Strings.symbol_underscore + sTotalCount_InArrearsOver500;
+                            key = ClaimRef + strings.symbol_underscore + sTotalCount_InArrearsOver500;
                         }
                         bd = AggregateStatistics.get(key);
                         bd = bd.add(BigDecimal.ONE);
@@ -6380,11 +6380,11 @@ public class DW_TenancyChangesUO extends DW_Object {
                         }
                     }
                 }
-                key = ClaimRef + Strings.symbol_underscore + sA;
+                key = ClaimRef + strings.symbol_underscore + sA;
                 TableValues.put(key, aS);
             }
         } else {
-            aS += Strings.special_commaSpace;
+            aS += strings.special_commaSpace;
         }
 
         if (UOTT1_To_TT1_PostcodeChangedClaimIDs.contains(ClaimID)) {
@@ -6551,7 +6551,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         boolean result;
         result = false;
         String[] split;
-        split = aS.split(Strings.symbol_comma);
+        split = aS.split(strings.symbol_comma);
         boolean firstIsTheSame = false;
         String s1;
         for (int i = split.length - 2; i > -1; i--) { // We don't go from the very end as we already added aPC to the end!
@@ -6573,7 +6573,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         boolean result;
         result = false;
         String[] split;
-        split = aS.split(Strings.symbol_comma);
+        split = aS.split(strings.symbol_comma);
         String s1;
         for (int i = 0; i < split.length; i++) {
             //for (String split1 : split) {
@@ -6832,73 +6832,73 @@ public class DW_TenancyChangesUO extends DW_Object {
         ArrayList<String> result;
         result = new ArrayList<>();
         // TenancyType
-        result.add(ClaimRef + Strings.symbol_underscore + sTT);
+        result.add(ClaimRef + strings.symbol_underscore + sTT);
         // UnderOccupancy
-        result.add(ClaimRef + Strings.symbol_underscore + sUnderOccupancy);
+        result.add(ClaimRef + strings.symbol_underscore + sUnderOccupancy);
         // Postcode
-        result.add(ClaimRef + Strings.symbol_underscore + sP);
+        result.add(ClaimRef + strings.symbol_underscore + sP);
         // WeeklyHousingBenefitEntitlement
-        result.add(ClaimRef + Strings.symbol_underscore + sWHBE);
+        result.add(ClaimRef + strings.symbol_underscore + sWHBE);
         // WeeklyHousingBenefitEntitlement
-        result.add(ClaimRef + Strings.symbol_underscore + sWERA);
+        result.add(ClaimRef + strings.symbol_underscore + sWERA);
         // PassportedStandardIndicator
-        result.add(ClaimRef + Strings.symbol_underscore + sPSI);
+        result.add(ClaimRef + strings.symbol_underscore + sPSI);
         // StatusOfHBClaim
-        result.add(ClaimRef + Strings.symbol_underscore + sSHBC);
+        result.add(ClaimRef + strings.symbol_underscore + sSHBC);
         // ReasonThatHBClaimClosed
-        result.add(ClaimRef + Strings.symbol_underscore + sRTHBCC);
+        result.add(ClaimRef + strings.symbol_underscore + sRTHBCC);
         // ClaimantEthnicGroup
-        result.add(ClaimRef + Strings.symbol_underscore + sCEG);
+        result.add(ClaimRef + strings.symbol_underscore + sCEG);
         // Arrears
-        result.add(ClaimRef + Strings.symbol_underscore + sA);
+        result.add(ClaimRef + strings.symbol_underscore + sA);
         // HB DiscretionaryPayment
-        result.add(ClaimRef + Strings.symbol_underscore + sHBDP);
+        result.add(ClaimRef + strings.symbol_underscore + sHBDP);
         // Disability
-        result.add(ClaimRef + Strings.symbol_underscore + sDisability);
+        result.add(ClaimRef + strings.symbol_underscore + sDisability);
         // Disability Premium
-        result.add(ClaimRef + Strings.symbol_underscore + sDisabilityPremium);
+        result.add(ClaimRef + strings.symbol_underscore + sDisabilityPremium);
         // Disability Severe
-        result.add(ClaimRef + Strings.symbol_underscore + sDisabilitySevere);
+        result.add(ClaimRef + strings.symbol_underscore + sDisabilitySevere);
         // Disability Enhanced
-        result.add(ClaimRef + Strings.symbol_underscore + sDisabilityEnhanced);
+        result.add(ClaimRef + strings.symbol_underscore + sDisabilityEnhanced);
         // Child Disability
-        result.add(ClaimRef + Strings.symbol_underscore + sDisabledChild);
+        result.add(ClaimRef + strings.symbol_underscore + sDisabledChild);
         // Partner Death
-        result.add(ClaimRef + Strings.symbol_underscore + sPDeath);
+        result.add(ClaimRef + strings.symbol_underscore + sPDeath);
         // Household Size
-        result.add(ClaimRef + Strings.symbol_underscore + sHS);
+        result.add(ClaimRef + strings.symbol_underscore + sHS);
         // NonDependents
-        result.add(ClaimRef + Strings.symbol_underscore + sND);
+        result.add(ClaimRef + strings.symbol_underscore + sND);
         // ChildDependents
-        result.add(ClaimRef + Strings.symbol_underscore + sCD);
+        result.add(ClaimRef + strings.symbol_underscore + sCD);
         // NonDependents (UO)
-        result.add(ClaimRef + Strings.symbol_underscore + sNDUO);
+        result.add(ClaimRef + strings.symbol_underscore + sNDUO);
         // Children 16 +
-        result.add(ClaimRef + Strings.symbol_underscore + sCO16);
+        result.add(ClaimRef + strings.symbol_underscore + sCO16);
         // FemaleChildrenUnder10
-        result.add(ClaimRef + Strings.symbol_underscore + sFCU10);
+        result.add(ClaimRef + strings.symbol_underscore + sFCU10);
         // MaleChildrenUnder10
-        result.add(ClaimRef + Strings.symbol_underscore + sMCU10);
+        result.add(ClaimRef + strings.symbol_underscore + sMCU10);
         // FemaleChildren10to16
-        result.add(ClaimRef + Strings.symbol_underscore + sFC10To16);
+        result.add(ClaimRef + strings.symbol_underscore + sFC10To16);
         // MaleChildren10to16
-        result.add(ClaimRef + Strings.symbol_underscore + sMC10To16);
+        result.add(ClaimRef + strings.symbol_underscore + sMC10To16);
         // Number of Bedrooms
-        result.add(ClaimRef + Strings.symbol_underscore + sNB);
+        result.add(ClaimRef + strings.symbol_underscore + sNB);
         // Bedroom Requirement
-        result.add(ClaimRef + Strings.symbol_underscore + sBR);
+        result.add(ClaimRef + strings.symbol_underscore + sBR);
         // Claimants DoB
-        result.add(ClaimRef + Strings.symbol_underscore + sCDoB);
+        result.add(ClaimRef + strings.symbol_underscore + sCDoB);
         // Claimants Age
-        result.add(ClaimRef + Strings.symbol_underscore + sCA);
+        result.add(ClaimRef + strings.symbol_underscore + sCA);
         // Claimants Gender
-        result.add(ClaimRef + Strings.symbol_underscore + sCG);
+        result.add(ClaimRef + strings.symbol_underscore + sCG);
         // Partners DoB
-        result.add(ClaimRef + Strings.symbol_underscore + sPDoB);
+        result.add(ClaimRef + strings.symbol_underscore + sPDoB);
         // Partners Age
-        result.add(ClaimRef + Strings.symbol_underscore + sPA);
+        result.add(ClaimRef + strings.symbol_underscore + sPA);
         // Partners Gender
-        result.add(ClaimRef + Strings.symbol_underscore + sPG);
+        result.add(ClaimRef + strings.symbol_underscore + sPG);
         return result;
     }
 
@@ -6908,8 +6908,8 @@ public class DW_TenancyChangesUO extends DW_Object {
             HashMap<String, String> generalStatisticsDescriptions,
             PrintWriter pw) {
         String line;
-        line = generalStatistic + Strings.special_commaSpace
-                + generalStatistics.get(generalStatistic) + Strings.special_commaSpace
+        line = generalStatistic + strings.special_commaSpace
+                + generalStatistics.get(generalStatistic) + strings.special_commaSpace
                 + generalStatisticsDescriptions.get(generalStatistic);
         pw.println(line);
     }
@@ -6934,7 +6934,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             String endMonth,
             String endYear
     ) {
-        Env.log("<WriteTenancyChangeTables>");
+        Env.ge.log("<WriteTenancyChangeTables>", true);
         String Header;
         Header = (String) table[0];
         TreeMap<String, String> tableValues;
@@ -6963,23 +6963,23 @@ public class DW_TenancyChangesUO extends DW_Object {
         String dirName;
         dirName = startMonth + startYear + "_To_" + endMonth + endYear;
 
-        Env.log("<WriteTimeStatistics>");
+        Env.ge.log("<WriteTimeStatistics>", true);
         PrintWriter pw5;
         pw5 = getPrintWriter("__TimeStatistics", dirName);
         pw5.println("Date, " + sTotalCount_CumulativeUniqueClaims
-                + Strings.special_commaSpace + sTotalCount_UOClaims
-                + Strings.special_commaSpace + sTotalCount_UOCouncilClaims
-                + Strings.special_commaSpace + sTotalCount_UORSLClaims
-                + Strings.special_commaSpace + sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsSHBE
-                + Strings.special_commaSpace + sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsUO
-                + Strings.special_commaSpace + sAverageHouseholdSizeCouncilSHBE
-                + Strings.special_commaSpace + sAverageHouseholdSizeCouncilUO
-                + Strings.special_commaSpace + sAverageHouseholdSizeRSLSHBE
-                + Strings.special_commaSpace + sAverageHouseholdSizeRSLUO
-                + Strings.special_commaSpace + "TotalCouncilRentArrears"
-                + Strings.special_commaSpace + "AverageCouncilRentArrears"
-                + Strings.special_commaSpace + "TotalCouncilRentArrearsDiff"
-                + Strings.special_commaSpace + "AverageCouncilRentArrearsDiff");
+                + strings.special_commaSpace + sTotalCount_UOClaims
+                + strings.special_commaSpace + sTotalCount_UOCouncilClaims
+                + strings.special_commaSpace + sTotalCount_UORSLClaims
+                + strings.special_commaSpace + sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsSHBE
+                + strings.special_commaSpace + sTotalCount_UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsUO
+                + strings.special_commaSpace + sAverageHouseholdSizeCouncilSHBE
+                + strings.special_commaSpace + sAverageHouseholdSizeCouncilUO
+                + strings.special_commaSpace + sAverageHouseholdSizeRSLSHBE
+                + strings.special_commaSpace + sAverageHouseholdSizeRSLUO
+                + strings.special_commaSpace + "TotalCouncilRentArrears"
+                + strings.special_commaSpace + "AverageCouncilRentArrears"
+                + strings.special_commaSpace + "TotalCouncilRentArrearsDiff"
+                + strings.special_commaSpace + "AverageCouncilRentArrearsDiff");
         String date;
         int cumulativeCount;
         TreeMap<String, Integer> totalCounts_cumulativeUniqueClaims;
@@ -7113,46 +7113,46 @@ public class DW_TenancyChangesUO extends DW_Object {
                         averageArrearsDiff = 0.0d;
                     }
 
-                    pw5.println(date + Strings.special_commaSpace + Integer.toString(cumulativeCount)
-                            + Strings.special_commaSpace + Integer.toString(UOCount)
-                            + Strings.special_commaSpace + Integer.toString(UOCouncilCount)
-                            + Strings.special_commaSpace + Integer.toString(UORSLCount)
-                            + Strings.special_commaSpace + Integer.toString(UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsSHBE)
-                            + Strings.special_commaSpace + Integer.toString(UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsUO)
-                            + Strings.special_commaSpace + Double.toString(averageHouseholdSizeCouncilSHBE)
-                            + Strings.special_commaSpace + Double.toString(averageHouseholdSizeCouncilUO)
-                            + Strings.special_commaSpace + Double.toString(averageHouseholdSizeRSLSHBE)
-                            + Strings.special_commaSpace + Double.toString(averageHouseholdSizeRSLUO)
-                            + Strings.special_commaSpace + Double.toString(arrearsD)
-                            + Strings.special_commaSpace + Double.toString(averageArrears)
-                            + Strings.special_commaSpace + Double.toString(arrearsDiff)
-                            + Strings.special_commaSpace + Double.toString(averageArrearsDiff)
+                    pw5.println(date + strings.special_commaSpace + Integer.toString(cumulativeCount)
+                            + strings.special_commaSpace + Integer.toString(UOCount)
+                            + strings.special_commaSpace + Integer.toString(UOCouncilCount)
+                            + strings.special_commaSpace + Integer.toString(UORSLCount)
+                            + strings.special_commaSpace + Integer.toString(UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsSHBE)
+                            + strings.special_commaSpace + Integer.toString(UOClaimsInHouseholdsWithHouseholdSizeExcludingPartnersGreaterThanOrEqualToNumberOfBedroomsUO)
+                            + strings.special_commaSpace + Double.toString(averageHouseholdSizeCouncilSHBE)
+                            + strings.special_commaSpace + Double.toString(averageHouseholdSizeCouncilUO)
+                            + strings.special_commaSpace + Double.toString(averageHouseholdSizeRSLSHBE)
+                            + strings.special_commaSpace + Double.toString(averageHouseholdSizeRSLUO)
+                            + strings.special_commaSpace + Double.toString(arrearsD)
+                            + strings.special_commaSpace + Double.toString(averageArrears)
+                            + strings.special_commaSpace + Double.toString(arrearsDiff)
+                            + strings.special_commaSpace + Double.toString(averageArrearsDiff)
                     );
                 }
             }
         }
         pw5.close();
-        Env.log("</WriteTimeStatistics>");
+        Env.ge.log("</WriteTimeStatistics>", true);
 
         TreeMap<String, String> GroupNameDescriptions;
         GroupNameDescriptions = getGroupNameDescriptions(groups.keySet());
 
         String AggregateStatisticsHeader;
         //aggregateStatisticsHeader = "ClaimRef, DHP_Total, Housing Benefit Loss as a Result of UnderOccupancy, Max_Arrears, NumberOfUnderOccupancyMonths";
-        AggregateStatisticsHeader = "ClaimRef " + Strings.special_commaSpace
-                + sTotal_DHP + Strings.special_commaSpace
-                + sTotalCount_DHP + Strings.special_commaSpace
-                + sTotal_HBLossDueToUO + Strings.special_commaSpace
-                + sTotalCount_HBLossDueToUO + Strings.special_commaSpace
-                + sMax_Arrears + Strings.special_commaSpace
-                + sTotalCount_InArrears + Strings.special_commaSpace
-                + sTotalCount_InArrears0To10 + Strings.special_commaSpace
-                + sTotalCount_InArrears10To100 + Strings.special_commaSpace
-                + sTotalCount_InArrears100To500 + Strings.special_commaSpace
-                + sTotalCount_InArrearsOver500 + Strings.special_commaSpace
+        AggregateStatisticsHeader = "ClaimRef " + strings.special_commaSpace
+                + sTotal_DHP + strings.special_commaSpace
+                + sTotalCount_DHP + strings.special_commaSpace
+                + sTotal_HBLossDueToUO + strings.special_commaSpace
+                + sTotalCount_HBLossDueToUO + strings.special_commaSpace
+                + sMax_Arrears + strings.special_commaSpace
+                + sTotalCount_InArrears + strings.special_commaSpace
+                + sTotalCount_InArrears0To10 + strings.special_commaSpace
+                + sTotalCount_InArrears10To100 + strings.special_commaSpace
+                + sTotalCount_InArrears100To500 + strings.special_commaSpace
+                + sTotalCount_InArrearsOver500 + strings.special_commaSpace
                 + sTotalCount_UnderOccupancy;
 
-        Env.log("<WriteGeneralStatistics>");
+        Env.ge.log("<WriteGeneralStatistics>", true);
         String GeneralStatisticsHeader;
         GeneralStatisticsHeader = "GeneralStatistic, Value, GeneralStatisticDescription";
         pw5 = getPrintWriter(
@@ -7537,7 +7537,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         writeLine(sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         pw5.close();
-        Env.log("</WriteGeneralStatistics>");
+        Env.ge.log("</WriteGeneralStatistics>", true);
 
         HashSet<SHBE_ID> ClaimIDsCheck;
         ClaimIDsCheck = new HashSet<>();
@@ -7558,18 +7558,18 @@ public class DW_TenancyChangesUO extends DW_Object {
         //Iterator<String> ite;
         int counter;
 
-        Env.logO("Group Size, Number in the group that have not previously been counted, Group Name", true);
+        Env.ge.log("Group Size, Number in the group that have not previously been counted, Group Name", true);
 
         iteG = GroupNameDescriptions.keySet().iterator();
         while (iteG.hasNext()) {
             GroupName = iteG.next();
             name2 = GroupName;
             if (includePreUnderOccupancyValues) {
-                name2 += Strings.symbol_underscore + sIncludesPreUnderOccupancyValues;
+                name2 += strings.symbol_underscore + sIncludesPreUnderOccupancyValues;
             }
             pw = getPrintWriter(name2, dirName);
             pwAggregateStatistics = getPrintWriter(name2 + sAggregateStatistics, dirName);
-            name2 += Strings.symbol_underscore + "WithDuplicates";
+            name2 += strings.symbol_underscore + "WithDuplicates";
             pw2 = getPrintWriter(name2, dirName);
             pwAggregateStatistics2 = getPrintWriter(name2 + sAggregateStatistics, dirName);
             // Write header
@@ -7608,7 +7608,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                     ClaimRef,
                                     pwAggregateStatistics2);
                         } else {
-                            Env.logO("ClaimRef " + ClaimRef
+                            Env.ge.log("ClaimRef " + ClaimRef
                                     + " is in group " + GroupName
                                     + " and is in one of the not "
                                     + "expected other groups "
@@ -7643,7 +7643,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                         ClaimRef,
                                         pwAggregateStatistics2);
                             } else {
-                                Env.logO("ClaimRef " + ClaimRef
+                                Env.ge.log("ClaimRef " + ClaimRef
                                         + " is in group " + GroupName
                                         + " and is in one of the not "
                                         + "expected other groups "
@@ -7693,7 +7693,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                             ClaimRef,
                                             pwAggregateStatistics2);
                                 } else {
-                                    Env.logO("ClaimRef " + ClaimRef
+                                    Env.ge.log("ClaimRef " + ClaimRef
                                             + " is in group " + GroupName
                                             + " and is in one of the not "
                                             + "expected other groups "
@@ -7758,7 +7758,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                                 ClaimRef,
                                                 pwAggregateStatistics2);
                                     } else {
-                                        Env.logO("ClaimRef " + ClaimRef
+                                        Env.ge.log("ClaimRef " + ClaimRef
                                                 + " is in group " + GroupName
                                                 + " and is in one of the not "
                                                 + "expected other groups "
@@ -7838,7 +7838,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                                     ClaimRef,
                                                     pwAggregateStatistics2);
                                         } else {
-                                            Env.logO("ClaimRef " + ClaimRef
+                                            Env.ge.log("ClaimRef " + ClaimRef
                                                     + " is in group " + GroupName
                                                     + " and is in one of the not "
                                                     + "expected other groups "
@@ -7933,7 +7933,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                                         ClaimRef,
                                                         pwAggregateStatistics2);
                                             } else {
-                                                Env.logO("ClaimRef " + ClaimRef
+                                                Env.ge.log("ClaimRef " + ClaimRef
                                                         + " is in group " + GroupName
                                                         + " and is in one of the not "
                                                         + "expected other groups "
@@ -7973,7 +7973,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                         ClaimRef,
                                         pwAggregateStatistics2);
                             } else {
-                                Env.logO("ClaimRef " + ClaimRef
+                                Env.ge.log("ClaimRef " + ClaimRef
                                         + " is in group " + GroupName
                                         + " and is in one of the not "
                                         + "expected other groups "
@@ -8009,7 +8009,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                         ClaimRef,
                                         pwAggregateStatistics2);
                             } else {
-                                Env.logO("ClaimRef " + ClaimRef
+                                Env.ge.log("ClaimRef " + ClaimRef
                                         + " is in group " + GroupName
                                         + " and is in one of the not "
                                         + "expected other groups "
@@ -8101,7 +8101,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                                         ClaimRef,
                                                         pwAggregateStatistics2);
                                             } else {
-                                                Env.logO("ClaimRef " + ClaimRef
+                                                Env.ge.log("ClaimRef " + ClaimRef
                                                         + " is in group " + GroupName
                                                         + " and is in one of the not "
                                                         + "expected other groups "
@@ -8141,7 +8141,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                         ClaimRef,
                                         pwAggregateStatistics2);
                             } else {
-                                Env.logO("ClaimRef " + ClaimRef
+                                Env.ge.log("ClaimRef " + ClaimRef
                                         + " is in group " + GroupName
                                         + " and is in one of the not "
                                         + "expected other groups "
@@ -8149,7 +8149,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                             }
                         }
                     } else {
-//                                                            Env.logO("ClaimRef " + aClaimRef + " already added to"
+//                                                            Env.ge.log("ClaimRef " + aClaimRef + " already added to"
 //                                                                    + " another group and in " + groupNameDescription);
 //                                                            writeRecordCollectionToStdOut(
 //                                                                    tableValues,
@@ -8202,7 +8202,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                             pwAggregateStatistics2);
                 }
             }
-            Env.logO(Group.size() + ", " + counter + ", " + GroupNameDescription, true);
+            Env.ge.log(Group.size() + ", " + counter + ", " + GroupNameDescription, true);
             pw.close();
             pwAggregateStatistics.close();
             pw2.close();
@@ -8238,7 +8238,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     pw);
         }
         pw.close();
-        Env.log("</WriteTenancyChangeTables>");
+        Env.ge.log("</WriteTenancyChangeTables>", true);
     }
 
     protected void writeAggregateRecords(
@@ -8247,17 +8247,17 @@ public class DW_TenancyChangesUO extends DW_Object {
             PrintWriter pw) {
         String line;
         line = "" + ClaimRef;
-        line += Strings.special_commaSpace + decimalise(aggregateStatistics.get(ClaimRef + Strings.symbol_underscore + sTotal_DHP).intValue());
-        line += Strings.special_commaSpace + aggregateStatistics.get(ClaimRef + Strings.symbol_underscore + sTotalCount_DHP);
-        line += Strings.special_commaSpace + decimalise(aggregateStatistics.get(ClaimRef + Strings.symbol_underscore + sTotal_HBLossDueToUO).intValue());
-        line += Strings.special_commaSpace + aggregateStatistics.get(ClaimRef + Strings.symbol_underscore + sTotalCount_HBLossDueToUO);
-        line += Strings.special_commaSpace + aggregateStatistics.get(ClaimRef + Strings.symbol_underscore + sMax_Arrears);
-        line += Strings.special_commaSpace + aggregateStatistics.get(ClaimRef + Strings.symbol_underscore + sTotalCount_InArrears);
-        line += Strings.special_commaSpace + aggregateStatistics.get(ClaimRef + Strings.symbol_underscore + sTotalCount_InArrears0To10);
-        line += Strings.special_commaSpace + aggregateStatistics.get(ClaimRef + Strings.symbol_underscore + sTotalCount_InArrears10To100);
-        line += Strings.special_commaSpace + aggregateStatistics.get(ClaimRef + Strings.symbol_underscore + sTotalCount_InArrears100To500);
-        line += Strings.special_commaSpace + aggregateStatistics.get(ClaimRef + Strings.symbol_underscore + sTotalCount_InArrearsOver500);
-        line += Strings.special_commaSpace + aggregateStatistics.get(ClaimRef + Strings.symbol_underscore + sTotalCount_UnderOccupancy);
+        line += strings.special_commaSpace + decimalise(aggregateStatistics.get(ClaimRef + strings.symbol_underscore + sTotal_DHP).intValue());
+        line += strings.special_commaSpace + aggregateStatistics.get(ClaimRef + strings.symbol_underscore + sTotalCount_DHP);
+        line += strings.special_commaSpace + decimalise(aggregateStatistics.get(ClaimRef + strings.symbol_underscore + sTotal_HBLossDueToUO).intValue());
+        line += strings.special_commaSpace + aggregateStatistics.get(ClaimRef + strings.symbol_underscore + sTotalCount_HBLossDueToUO);
+        line += strings.special_commaSpace + aggregateStatistics.get(ClaimRef + strings.symbol_underscore + sMax_Arrears);
+        line += strings.special_commaSpace + aggregateStatistics.get(ClaimRef + strings.symbol_underscore + sTotalCount_InArrears);
+        line += strings.special_commaSpace + aggregateStatistics.get(ClaimRef + strings.symbol_underscore + sTotalCount_InArrears0To10);
+        line += strings.special_commaSpace + aggregateStatistics.get(ClaimRef + strings.symbol_underscore + sTotalCount_InArrears10To100);
+        line += strings.special_commaSpace + aggregateStatistics.get(ClaimRef + strings.symbol_underscore + sTotalCount_InArrears100To500);
+        line += strings.special_commaSpace + aggregateStatistics.get(ClaimRef + strings.symbol_underscore + sTotalCount_InArrearsOver500);
+        line += strings.special_commaSpace + aggregateStatistics.get(ClaimRef + strings.symbol_underscore + sTotalCount_UnderOccupancy);
         pw.println(line);
     }
 
@@ -8314,7 +8314,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         PrintWriter result;
         File dirOut;
         dirOut = new File(
-                Files.getOutputSHBETablesDir(),
+                files.getOutputSHBETablesDir(),
                 sUnderOccupancyGroupTables);
         dirOut = new File(
                 dirOut,
